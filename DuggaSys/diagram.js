@@ -5896,7 +5896,6 @@ function fixWriteToLayer(){
     let update = document.getElementById("layerActive");
     let spans = update.getElementsByTagName('span')
     let active = localStorage.getItem("writeToActiveLayers");
-    console.log(active);
     for(let i = 0; i < spans.length; i++){
         spans[i].id = spans[i].id+"_Active";
         spans[i].setAttribute("onclick", "toggleActiveBackgroundLayer(this)");
@@ -5943,7 +5942,6 @@ function setlayer(object){
     toggleBackgroundLayer(document.getElementById(fixID), true)
     writeToLayer = fixID;
     let fixColor = fixID.replace('Layer_','');
-    console.log(fixColor)
     settings.properties.strokeColor = colorArray[fixColor-1]; 
 }
 
@@ -5970,6 +5968,7 @@ function getcorrectlayer(){
 
 function deleteLayerView(){
     let parentNode = document.getElementById("viewLayer");
+    let spans = parentNode.getElementsByTagName('span');
     let deleteArray = []
     for(let i = 0;i < diagram.length;i++){
         if(showLayer.indexOf(diagram[i].properties.setLayer) !== -1){
@@ -5989,32 +5988,41 @@ function deleteLayerView(){
     fixviewLayer();
     fixActiveLayer()
     SaveState()
+    if(spans.length < 1){
+        createLayer();
+        toggleActiveBackgroundLayer(document.getElementById("Layer_1_Active"));
+        setlayer(spans[0]);
+    }
 }
 function deleteLayerActive(){
     let parentNode = document.getElementById("layerActive");
     let spans = parentNode.getElementsByTagName('span');
     let saveIndex;
     let deleteArray = []
-    for(let i = 0; i < spans.length;i++){
-        if(spans[i].classList.contains("isActive")){
-            let deleteLayer = spans[i].parentNode;
-            saveIndex = spans[i].id.replace('_Active','');
-            deleteLayer.parentNode.removeChild(deleteLayer);
+    if(spans.length > 1){
+        for(let i = 0; i < spans.length;i++){
+            if(spans[i].classList.contains("isActive")){
+                let deleteLayer = spans[i].parentNode;
+                saveIndex = spans[i].id.replace('_Active','');
+                deleteLayer.parentNode.removeChild(deleteLayer);
+            }
         }
-    }
-    for(let i = 0;i < diagram.length;i++){
-        if(saveIndex.indexOf(diagram[i].properties.setLayer) !== -1){
-            deleteArray.push(diagram[i]);
+        for(let i = 0;i < diagram.length;i++){
+            if(saveIndex.indexOf(diagram[i].properties.setLayer) !== -1){
+                deleteArray.push(diagram[i]);
+            }
         }
+        for(let i = 0; i < deleteArray.length;i++){
+            diagram.deleteObject(deleteArray[i]);
+        }
+        let elem = document.getElementById(saveIndex);
+        elem.parentNode.removeChild(elem);
+        fixviewLayer();
+        fixActiveLayer()
+        SaveState()
+        setlayer(spans[0]);
+        toggleActiveBackgroundLayer(spans[0])
     }
-    for(let i = 0; i < deleteArray.length;i++){
-        diagram.deleteObject(deleteArray[i]);
-    }
-    let elem = document.getElementById(saveIndex);
-    elem.parentNode.removeChild(elem);
-    fixviewLayer();
-    fixActiveLayer()
-    SaveState() 
 }
 function fixviewLayer(){
     let parentNode = document.getElementById("viewLayer");
@@ -6035,6 +6043,7 @@ function fixviewLayer(){
 function fixActiveLayer(){
     let parentNode = document.getElementById("layerActive");
     let spans = parentNode.getElementsByTagName('span');
+    let checkforActive = false;
 
     localStorage.setItem('layerItems', spans.length);
     for(let i = 1; i <= spans.length;i++){
