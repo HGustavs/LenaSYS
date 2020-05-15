@@ -71,12 +71,12 @@
   border-width:1px;
   padding:5px 5px;
   color:#FFF; 
-  top:115%; 
+  top:110%; 
   left:-25%;
     margin: auto auto;
   text-align: center;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s, top 0.2s;
 }
 
 
@@ -94,6 +94,7 @@
 .analytic-navbutton:hover span.navcomment{
     visibility: visible;
     opacity: 1;
+    top:125%;
 }
 
 @media only screen and (min-width:830px){
