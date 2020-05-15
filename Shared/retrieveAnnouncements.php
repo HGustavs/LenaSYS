@@ -26,10 +26,13 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 
 	foreach ($pdo->query('SELECT * FROM course WHERE cid="'.$cid.'"') AS $course){
 		$coursename = $course['coursename'];
-		$retrievedAnnouncementCard .= "<div class='actionBtns'>";
-		$retrievedAnnouncementCard .= "<span class='editBtn' onclick='updateannouncementForm(".$secondannouncementid.", ".$cid.", ".$versid.", handleResponse);' title='Edit announcement'>Edit</span>";
-		$retrievedAnnouncementCard .="<span class='deleteBtn'><a href='../Shared/announcementService.php?deleteannouncementid=".$secondannouncementid."&uid=".$uid."&courseid=".$cid."&coursevers=".$versid."' title='Delete announcement'>&times;</a></span>";
-		$retrievedAnnouncementCard .="</div>";
+		if ($recipient == $uid) {
+			$retrievedAnnouncementCard .= "<div class='actionBtns'>";
+			$retrievedAnnouncementCard .= "<span class='editBtn' onclick='updateannouncementForm(".$secondannouncementid.", ".$cid.", ".$versid.", handleResponse);' title='Edit announcement'>Edit</span>";
+			$retrievedAnnouncementCard .="<span class='deleteBtn'><a href='../Shared/announcementService.php?deleteannouncementid=".$secondannouncementid."&uid=".$uid."&courseid=".$cid."&coursevers=".$versid."' title='Delete announcement'>&times;</a></span>";
+			$retrievedAnnouncementCard .="</div>";
+			
+		}
 	}
 	$retrievedAnnouncementCard .= "<div><h3>".ucfirst(strtolower($title))."</h3></div>";
 
