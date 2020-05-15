@@ -2839,6 +2839,11 @@ function Path() {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
     };
+    this.minX = null;
+    this.maxX = null;
+    this.minY = null;
+    this.maxY = null;
+    this.id = null;
 
     //--------------------------------------------------------------------
     // setID: Assigns a global id to a symbol
