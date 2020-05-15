@@ -35,7 +35,7 @@ function quiz(parameters) {
 			//app += idunique+" -----------------------------------------------------";
 			for(var i = 0;i < inputSplit.length;i++){
 				
-				var splited = inputSplit[i].split("*");
+				var splited = inputSplit[i].split('"');
 				answerID= splited[0].trim();
 				answerValue = splited[1];
 				answerID = answerID.replace(/^\s+|\s+$/g, '') ;
