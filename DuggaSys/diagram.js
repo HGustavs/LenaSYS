@@ -3768,6 +3768,9 @@ function mousemoveevt(ev) {
                 } else if (hoveredObject && !hoveredObject.isLocked) {
                     if (hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
                         canvas.style.cursor = "pointer";
+                        //If hovering a hidden comment, don't change cursor
+                    } else if (hoveredObject.properties["isComment"] && hideComment) {
+                        canvas.style.cursor = "default";
                     } else {
                         canvas.style.cursor = "all-scroll";
                     }
@@ -5128,7 +5131,9 @@ function doubleclick() {
             freedrawObject.segments.splice(clickedSegmentId+1, 0, {kind:kind.path, pa:newPoint, pb:clickedSegment.pb});
         }
     }
-    else if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
+    //Don't load appearance form if clicked object is a hidden comment
+    else if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true 
+    && !(diagram[lastSelectedObject].properties["isComment"] && hideComment)) {
         loadAppearanceForm();
     }
 }
