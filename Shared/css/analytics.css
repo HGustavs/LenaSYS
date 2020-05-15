@@ -55,7 +55,7 @@
   top: 0;
 }
 
-.CellComment{
+.navcomment{
   visibility: hidden;
   position:absolute; 
   z-index:100;
@@ -64,26 +64,27 @@
   border-width:1px;
   padding:5px 5px;
   color:#FFF; 
-  top:50px; 
-  left:-50px;
+  top:100%; 
+  left:-25%;
+    margin: auto auto;
   text-align: center;
   opacity: 0;
   transition: opacity 0.3s;
 }
 
 
-.CellComment::after {
+.navcomment::after {
   content: "";
   position: absolute;
   bottom: 100%;
-  left: 35%;
+  left: 37px;
   margin-left: -5px;
   border-width: 6px;
   border-style: solid;
   border-color: transparent transparent #7b5a96 transparent;
 }
 
-.CellWithComment:hover span.CellComment{
+.analytic-navbutton:hover span.navcomment{
     visibility: visible;
     opacity: 1;
 }
