@@ -2286,7 +2286,6 @@ function drawKeyMap(map, target) {
         </div>`
     });
     target.innerHTML = html;
-    saveKeyBinds();
 }
 
 //----------------------------------------------------
@@ -2312,6 +2311,7 @@ function openShortcutsDialog() {
 
 function closeShortcutsDialog() {
     $("#edit-shortcuts").css("display", "none");
+    saveKeyBinds();
 }
 
 //----------------------------------------------------

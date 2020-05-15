@@ -165,14 +165,12 @@ function LoadImport(fileContent) {
 }
 
 function saveKeyBinds(){
-    
     localStorage.setItem("Keybinds", JSON.stringify(keyMap));
 }
 
 function loadKeyBinds(){
-    
-    if(true){
-        console.log("Keybinds fetched");
+    //if keybinds have been saved get them from local storage and set the keymap as thier value
+    if(JSON.parse(localStorage.getItem("Keybinds"))){
         keyMap = JSON.parse(localStorage.getItem("Keybinds"));
         drawKeyMap(keyMap, $("#shortcuts-wrap").get(0));
     }
