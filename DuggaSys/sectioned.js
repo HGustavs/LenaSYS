@@ -693,6 +693,7 @@ function returnedSection(data) {
           str += " class='lo' ";
         }
         str += " >";
+  
 
         var hideState = "";
         if (parseInt(item['visible']) === 0) hideState = " hidden"
@@ -702,6 +703,9 @@ function returnedSection(data) {
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment
         var itemKind = parseInt(item['kind']);
 
+        if(itemKind === 2 || itemKind == 5){
+          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+        }
         if (itemKind === 3 || itemKind === 4) {
 
           // Styling for quiz row e.g. add a tab spacer
