@@ -377,8 +377,30 @@ function Symbol(kindOfSymbol) {
                         longestStr = this.attributes[i].text;
                 }
             }
+            //Finding the widest string
+            var widestStr = 0;
+            var calcWidth;
+            for (var i = 0; i < this.attributes.length; i++) {
+                calcWidth = this.attributes[i].text;
+                calcWidth = ctx.measureText(calcWidth).width;
+                if (calcWidth > widestStr) {
+                    widestStr = calcWidth;
+                }
+            }
+            for (var i = 0; i < this.operations.length; i++) {
+                calcWidth = this.operations[i].text;
+                calcWidth = ctx.measureText(calcWidth).width;
+                if (calcWidth > widestStr) {
+                    widestStr = calcWidth;
+                }
+            }
+            calcWidth = this.name;
+            calcWidth = ctx.measureText(calcWidth).width;
+            if (calcWidth > widestStr) {
+                 widestStr = calcWidth;
+            }
             ctx.font = "14px Arial";
-            this.minWidth = ctx.measureText(longestStr).width + 15;
+            this.minWidth = widestStr + 25;
             //console.log(this.minWidth);
             if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
                 // If the height is less than the minimum, push out the
