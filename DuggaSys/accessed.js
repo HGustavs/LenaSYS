@@ -255,6 +255,17 @@ function validateSSN(ssn)
 	return null;	// The provided SSN is correct!
 }
 
+//---------------------------------------------------------------------------------------------------
+// validateEmail(email)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+function validateEmail(email)
+{
+	const delimiter = email.indexOf('@');		// Delimiter of the @ in an email
+
+	return null;	// The provided email is correct!
+}
+
 //-------------------------------------------------------------
 // updateErrorMessage()
 // Updates the error message shown inside the "Add user" window
@@ -262,12 +273,19 @@ function validateSSN(ssn)
 function updateErrorMessage()
 {
 	var errorMsg = '';
-	var testString = '';
+	var validationError = '';
 
-	if(testString = validateSSN(document.getElementById('addSsn').value))	// Check SSN for errors if input has been given
-		errorMsg += testString;
+	validationError = validateSSN(document.getElementById('addSsn').value);		// Check SSN for errors if input has been given
+	if(validationError && document.getElementById('addSsn').value.length > 0)
+		errorMsg += validationError;
 
-	document.getElementById('addErrorMessage').innerHTML = errorMsg + ' ';	// Updates label
+	if(errorMsg.length > 0) errorMsg += '\n';									// Adds a new line if previous errors has been found
+
+	validationError = validateEmail(document.getElementById('addEmail').value);	// Check email for errors if input has been given
+	if(validationError && document.getElementById('addEmail').value.length > 0)
+		errorMsg += validationError;
+
+	document.getElementById('addErrorMessage').innerHTML = errorMsg + ' ';		// Updates label
 }
 
 var inputVerified;
