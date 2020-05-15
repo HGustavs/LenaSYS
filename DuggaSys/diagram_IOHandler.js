@@ -210,9 +210,6 @@ function loadDiagram() {
                 diagram[i].setID(JSON.parse(diagramID)[i]);
             }
             // Points fix
-            for (var i = 0; i < b.points.length; i++) {
-                b.points[i] = Object.assign(new Path, b.points[i]);
-            }
             points.length = b.points.length;
             for (var i = 0; i < b.points.length; i++) {
                 points[i] = b.points[i];

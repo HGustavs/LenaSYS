@@ -1157,9 +1157,9 @@ points.drawPoints = function() {
     ctx.lineWidth = 2 * zoomValue;
     for (var i = 0; i < this.length; i++) {
         var point = this[i];
-        if (!point.isSelected) {
+        if (!point.isSelected && !point=="") {
             drawCross(point);
-        } else {
+        } else if(!point==""){
             ctx.save();
             ctx.fillStyle = crossFillStyle;
             ctx.strokeStyle = crossStrokeStyle2;
