@@ -858,9 +858,10 @@ function loadUserInformation(){
     function updateUserLogInformation(users){
 		var event;
 		var users = {};
+		var user;
         loadAnalytics("userLogInformation", function(data) {
             $.each(data, function(i, row) {
-                var user = row.username;
+                user = row.username;
                 if (!users.hasOwnProperty(user)) {
                     users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "Test"]];
 				}
@@ -869,28 +870,27 @@ function loadUserInformation(){
 						url:"../Shared/basic.php", 
 						type: "POST", 
 						dataType: 'json',
-						async: false, //To be changed
 						   data: {
 							test: "success",
 							ev: row.eventType
 						},success:function(data){
 							event = data;
 							console.log(data);
+							users[user].push([
+								row.uid,
+								row.username,
+								row.eventType,
+								row.description,
+								row.timestamp,
+								event
+							]);
+							updateState(users);
 						},error: function(){
 						   console.log("AJAX error");
 						}
 					});
-					users[user].push([
-						row.uid,
-						row.username,
-						row.eventType,
-						row.description,
-						row.timestamp,
-						event
-					]);
 				}
             });
-            updateState(users);
 		});
     } 
    
