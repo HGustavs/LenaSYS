@@ -199,7 +199,7 @@ function loadDiagram() {
             b = JSON.parse(JSON.stringify(localDiagram));
             for (var i = 0; i < b.diagram.length; i++) {
                 if (b.diagramNames[i] == "Symbol") {
-                    b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+                    b.diagram[i] = Object.assign(new Symbol(b.diagram[i].symbolkind), b.diagram[i]);
                 } else if (b.diagramNames[i] == "Path") {
                     b.diagram[i] = Object.assign(new Path, b.diagram[i]);
                 }
@@ -298,7 +298,7 @@ function LoadFile() {
     //diagram fix
     for (var i = 0; i < b.diagram.length; i++) {
         if (b.diagramNames[i] == "Symbol") {
-            b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+            b.diagram[i] = Object.assign(new Symbol(b.diagram[i].symbolkind), b.diagram[i]);
         } else if (b.diagramNames[i] == "Path") {
             b.diagram[i] = Object.assign(new Path, b.diagram[i]);
         }
@@ -348,7 +348,7 @@ function Load() {
     b = dia;
     for (var i = 0; i < b.diagram.length; i++) {
         if (b.diagramNames[i] == "Symbol") {
-            b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+            b.diagram[i] = Object.assign(new Symbol(b.diagram[i].symbolkind), b.diagram[i]);
         } else if (b.diagramNames[i] == "Path") {
             b.diagram[i] = Object.assign(new Path, b.diagram[i]);
         }
