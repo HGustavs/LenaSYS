@@ -23,7 +23,7 @@ function Symbol(kindOfSymbol) {
     this.isLocked = false;
     this.isLockHovered = false;         // Checks if the lock itself is hovered on the symbol
     this.pointsAtSamePosition = false;
-
+    this.isHovered = false;
 
     //-----------------------------------------------------------------------------------------------
     // isAnyOfSymbolKinds: Returns true if this symbol is any of the symbolKinds in the passed array.
@@ -54,6 +54,7 @@ function Symbol(kindOfSymbol) {
             break;
         case symbolKind.line:
             this.cardinality = {value: "", parentPointIndexes: null};
+            this.isCardinalityPossible = false;
             break;
         case symbolKind.text:
             this.textLines = [];
