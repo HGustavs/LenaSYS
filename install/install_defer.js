@@ -17,6 +17,7 @@ var inputPage = 1;
 var previousInputPage = 0;
 var showHideButton = document.getElementById('showHideInstallation');
 var writeOver1 = document.getElementById('writeOver1');
+var writeOver2 = document.getElementById('writeOver2');
 
 //---------------------------------------------------------------------------------------------------
 // On-click function for show/hide-button
@@ -270,7 +271,7 @@ if(postInstallModalClose !== null){
 }
 
 //---------------------------------------------------------------------------------------------------
-// When clicking writeOver1 focus
+// When clicking writeOver1 focus focusRightBox()
 //--------------------------------------------------------------------------------------------------- 
 if(writeOver1 !== null){
   writeOver1.onclick = function() {
@@ -279,11 +280,12 @@ if(writeOver1 !== null){
 }
 
 //---------------------------------------------------------------------------------------------------
-// When clicking writeOver1 focus
+// When clicking writeOver2 focusRightBox()
 //--------------------------------------------------------------------------------------------------- 
-var writeOver2 = document.getElementById('writeOver2');
-writeOver2.onclick = function() {
-  focusTheRightBox();
+if(writeOver2 !== null){
+  writeOver2.onclick = function() {
+    focusTheRightBox();
+  }
 }
 
 //---------------------------------------------------------------------------------------------------
