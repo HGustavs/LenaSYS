@@ -159,6 +159,12 @@ function loadGeneralStats() {
 			data['stats']['fastestServiceSpeed'] + " ms"
 		]);
 
+		// Slowest Service
+		tableData.push([
+			'Slowest Service: ' + data['stats']['slowestService'],
+			data['stats']['slowestServiceSpeed'] + " ms"
+		]);
+
 		$('#analytic-info').append(renderTable(tableData));
 		
 		// Disk usage
