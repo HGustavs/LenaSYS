@@ -448,8 +448,25 @@ function isFunction(f) {
     return f && {}.toString.call(f) === "[object Function]";
 }
 
+function isObject(o) {
+    return Object.prototype.toString.call(o) === '[object Object]'
+}
+
 function getObjectPropertyKeys(object) {
     return Object.keys(object).filter(key => !isFunction(object[key]));
+}
+
+function getObjectAndChildObjectsPropertyKeys(object) {
+    const objects = Object.keys(object).reduce((result, key) => {
+        if(isObject(object[key])) {
+            result = [...result, ...getObjectPropertyKeys(object[key])];
+        } else if(Array.isArray(object[key])) {
+            result = [...result, ...getObjectAndChildObjectsPropertyKeys(object[key])];
+        }
+        return result;
+    }, []);
+
+    return [...new Set(objects)]
 }
 
 function getAsciiCharsInRange(start, end) {
