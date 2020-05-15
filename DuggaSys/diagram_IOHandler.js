@@ -483,6 +483,28 @@ function generatePropertyKeysMap() {
     return map;
 }
 
+function compressStringifiedObject(stringifiedObject) {
+    const propertyKeyMap = generatePropertyKeysMap();
+    let currentString = stringifiedObject;
+    for(const [key, value] of propertyKeyMap.entries()) {
+        currentString = replaceAll(currentString, `"${key}"`, value);
+    }
+    return currentString;
+}
+
+function decompressStringifiedObject(stringifiedObject) {
+    const propertyKeyMap = generatePropertyKeysMap();
+    let currentString = stringifiedObject;
+    for(const [key, value] of propertyKeyMap.entries()) {
+        currentString = replaceAll(currentString, value, `"${key}"`);
+    }
+    return currentString;
+}
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
 //------------------------------------------------
 // Local storage compressing functions end
 //------------------------------------------------
