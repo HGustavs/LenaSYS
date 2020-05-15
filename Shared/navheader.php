@@ -47,18 +47,19 @@
 				echo "</td>";
 			} else if($requestedService == "analytic.php") {
 				echo '<td class="navButt" id="home" title="Back"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img src="../Shared/icons/Up.svg"></a></td>';
-				echo '<td class="navButt" id="GeneralStats" title="General Stats"><a onclick="loadGeneralStats()"><i class="fas fa-stream faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="CurrentlyOnline" title="Currently Online"><a onclick="loadCurrentlyOnline()"><i class="fas fa-users faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="PasswordGuessing" title="Password guessing"><a onclick="loadPasswordGuessing()"><i class="fas fa-key faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="OSPercentage" title="OS Percentage"><a onclick="loadOsPercentage()"><i class="fas fa-laptop faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Browserpercentage" title="Browser percentage"><a onclick="loadBrowserPercentage()"><i class="fa fa-chrome faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Serviceusage" title="Service usage"><a onclick="loadServiceUsage()"><i class="fas fa-chart-line faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Servicespeed" title="Service speed"><a onclick="loadServiceAvgDuration()"><i class="fas fa-tachometer-alt faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Servicecrashes" title="Service crashes"><a onclick="loadServiceCrashes()"><i class="fas fa-car-crash faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Fileinformation" title="File information"><a onclick="loadFileInformation()"><i class="fas fa-file-pdf faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Pageinformation" title="Page information"><a onclick="loadPageInformation()"><i class="fas fa-globe-europe faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Userinformation" title="User information"><a onclick="loadUserInformation()"><i class="fas fa-user faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="CourseDiskUsage" title="Course Disk Usage"><a onclick="loadCourseDiskUsage()"><i class="fas fa-hdd faNavheader"></i></a></td>';
+                echo '<td class="vl"></td>';
+				echo '<td class="navButt analytic-navbutton CellWithComment" id="GeneralStats" title="General Stats"><a onclick="loadGeneralStats()"><i class="fas fa-stream"></i></a><span class="CellComment">General Stats</span></td>';
+				echo '<td class="navButt analytic-navbutton" id="CurrentlyOnline" title="Currently Online"><a onclick="loadCurrentlyOnline()"><i class="fas fa-users"></i></a></td>';
+				echo '<td class="navButt analytic-navbutton" id="PasswordGuessing" title="Password guessing"><a onclick="loadPasswordGuessing()"><i class="fas fa-key"></i></a></td>';
+				echo '<td class="navButt analytic-navbutton" id="OSPercentage" title="OS Percentage"><a onclick="loadOsPercentage()"><i class="fas fa-laptop"></i></a></td>';
+				echo '<td class="navButt analytic-navbutton" id="Browserpercentage" title="Browser percentage"><a onclick="loadBrowserPercentage()"><i class="fa fa-chrome"></i></a></td>';
+				echo '<td class="navButt analytic-navbutton" id="Serviceusage" title="Service usage"><a onclick="loadServiceUsage()"><i class="fas fa-chart-line"></i></a></td>';
+				echo '<td class="navButt analytic-navbutton" id="Servicespeed" title="Service speed"><a onclick="loadServiceAvgDuration()"><i class="fas fa-tachometer-alt"></i></a></td>';
+				echo '<td class="navButt analytic-navbutton" id="Servicecrashes" title="Service crashes"><a onclick="loadServiceCrashes()"><i class="fas fa-car-crash"></i></a></td>';
+				echo '<td class="navButt analytic-navbutton" id="Fileinformation" title="File information"><a onclick="loadFileInformation()"><i class="fas fa-file-pdf"></i></a></td>';
+				echo '<td class="navButt analytic-navbutton" id="Pageinformation" title="Page information"><a onclick="loadPageInformation()"><i class="fas fa-globe-europe"></i></a></td>';
+				echo '<td class="navButt analytic-navbutton" id="Userinformation" title="User information"><a onclick="loadUserInformation()"><i class="fas fa-user"></i></a></td>';
+				echo '<td class="navButt analytic-navbutton" id="CourseDiskUsage" title="Course Disk Usage"><a onclick="loadCourseDiskUsage()"><i class="fas fa-hdd"></i></a></td>';
 			}
 
 			if($noup!='NONE') {
