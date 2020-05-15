@@ -38,6 +38,18 @@ function Symbol(kindOfSymbol) {
     this.pointsAtSamePosition = false;
     this.UMLCustomResize = false;
 
+    //-----------------------------------------------------------------------------------------------
+    // isAnyOfSymbolKinds: Returns true if this symbol is any of the symbolKinds in the passed array.
+    //                     Also possible to pass a single symbolKind without an array.
+    //-----------------------------------------------------------------------------------------------
+
+    this.isAnyOfSymbolKinds = function(types = []) {
+        if(!Array.isArray(types) && Number.isInteger(types)) {
+            return this.symbolkind === types;
+        }
+        return types.some(type => this.symbolkind === type);
+    }
+
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
