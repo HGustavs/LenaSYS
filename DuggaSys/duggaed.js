@@ -109,8 +109,10 @@ function selectDugga(qid) {
 	$("#releasem").html(makeoptions(quiz['qrelease'].substr(14,2),marro,marrv));
 
 	$("#editDugga").css("display", "flex");
-	/* Validates name as soon as a dugga is selected.*/
-	validateDuggaName();
+	/* Validates name as soon as a dugga is selected, but only if dugga already exists (new duggas will not be validated here).*/
+	if(qid != "UNK"){
+		validateDuggaName();
+	}
 }
 
 
