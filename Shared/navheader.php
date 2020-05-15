@@ -169,9 +169,9 @@
 					echo "<td id='testSearchContainer' class='navButt'>";
 
 					if ($requestedService == "fileed.php")
-						echo   "<input id='searchinput' readonly type='search' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();sortAndFilterTogether();'/>";
+						echo   "<input id='searchinput' readonly type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();sortAndFilterTogether();'/>";
 					else
-						echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/>";
+						echo   "<input id='searchinput' readonly type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/>";
 
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black;'>"; //Dropdown menu for when hovering the search bar
 					echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
@@ -429,22 +429,17 @@ function mouseOutAnnouncement() {
 /*Shadow hover effect for sort button END -------------*/
 
 var searchinput = document.getElementById("searchinput");
-console.log("sdsad1");
-console.log(searchinput);
 if(searchinput){
-console.log("sdsad2");
-	backButton.addEventListener("mouseover", mouseOverSearchInput);
+	searchinput.addEventListener("mouseover", mouseOverSearchInput);
 }
 
 function mouseOverSearchInput() {
-   console.log("sdsad3");
    var obj = document.getElementById("searchinput");
    if(obj != null)
    {
-	obj.removeAttr("readonly");
+	obj.removeAttribute('readonly');
    }
 }
-
 
 </script>
 <script type="text/javascript">
