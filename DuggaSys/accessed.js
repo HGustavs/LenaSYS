@@ -270,6 +270,9 @@ function validateEmail(email)
 	const length = email.length;
 	const delimiter = email.indexOf('@');	// Delimiter of the @ in an email
 
+	if((length-delimiter) > 255)			// Domain part of email can't exceed 255 charachters
+		return 'Email error! Domain part is too long (maximum 255)';
+
 	const formatTest = /[A-z0-9]{1,64}@[A-z0-9]{1,}[.]{1}[A-z0-9]{2,}/;		// Expected format
 	if(!formatTest.test(email))
 		return 'Email error! Format is invalid';
