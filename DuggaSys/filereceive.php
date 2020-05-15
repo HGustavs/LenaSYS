@@ -193,17 +193,17 @@ if ($storefile) {
             if ($fileLocation == "LFILE") {
                 $movname = $currcvd . "/courses/" . $cid . "/" . $vers . "/" . $fileText;
                 $description="VersionLocal"." ".$fileText;
-                logUserEvent($userid, EventTypes::AddFile, $description);
+                logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 $kindid = 4;
             } else if($fileLocation == "MFILE"){
                 $movname = $currcvd . "/courses/" . $cid . "/" . $fileText;
                 $description="CourseLocal"." ".$fileText;
-                logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fileText);
+                logUserEvent($userid, $username, EventTypes::AddFile, "CourseLocal"." , ".$fileText);
                 $kindid = 3;
             } else if($fileLocation == "GFILE"){
                 $movname = $currcvd . "/courses/global/" . $fileText;
                 $description="Global"." ".$fileText;
-                logUserEvent($userid, EventTypes::AddFile, $description);
+                logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 $kindid = 2;
             }
             else{
