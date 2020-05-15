@@ -745,7 +745,6 @@ function loadFile(fileUrl, fileNamez, fileKind) {
 }
 
 function returnFile(data) {
-   
     document.getElementById("filecont").innerHTML = data;
     updateAce(data);
     $(".fileName").html(fileName);
@@ -797,13 +796,6 @@ function saveTextToFile() {
     $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
     
-}
-
-function validatePreviewForm() {
-    if (document.getElementById("cID").value == "Toddler") {
-        return false;
-    }
-    return true;
 }
 
 function setfileCarotPosition() {
