@@ -183,7 +183,7 @@ function loadGeneralStats() {
 				label: 'CPU Free ('+data.cpu.freePercent+'%)',
 				value: data.cpu.freePercent
 			});
-			drawPieChart(chartData, 'CPU Usage on the Server', true);		
+			drawPieChart(chartData, 'CPU Usage on the Server', true);	
 		}
 	});
 }
