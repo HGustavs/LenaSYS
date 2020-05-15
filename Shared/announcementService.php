@@ -7,23 +7,23 @@ session_start();
 
 
 	
-if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && isset($_POST['createBtn']) && isset($_POST['recipients'])){
+if(isset($_POST['secondannouncementid']) && isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && isset($_POST['recipients']) && isset($_POST['createBtn'])){
 	foreach ($_POST['recipients'] as $recipient) {
+		$secondannouncementid = $_POST['secondannouncementid'];
 		$uid = $_POST['uid'];
 		$cid = $_POST['cid'];
 		$versid = $_POST['versid'];
 		$title = $_POST['announcementTitle'];
 		$message = $_POST['announcementMsg'];
-		$read_status = 1;
 
-		$query = $pdo->prepare("INSERT INTO announcement(uid, cid, versid, title, message, read_status, recipient) VALUES (:uid, :cid, :versid, :title, :message, :read_status, :recipient);");
+		$query = $pdo->prepare("INSERT INTO announcement(secondannouncementid, uid, cid, versid, title, message, recipient) VALUES (:secondannouncementid, :uid, :cid, :versid, :title, :message, :recipient);");
 
+		$query->bindParam(':secondannouncementid', $secondannouncementid);
 		$query->bindParam(':uid', $uid);
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':versid', $versid);
 		$query->bindParam(':title', $title);
 		$query->bindParam(':message', $message);
-		$query->bindParam(':read_status', $read_status);
 		$query->bindParam(':recipient', $recipient);
 
 		$query->execute(); 

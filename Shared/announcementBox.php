@@ -16,6 +16,9 @@ pdoConnect();
     <div>
       <input type="hidden" name="uid" id="userid">
     </div>
+    <div>
+      <input type="hidden" name="secondannouncementid" id="secondannouncementid" value="<?php echo substr(str_shuffle("0123456789"), 0, 5); ?>">
+    </div>
     <div id="courseidAndVersid">
       <div>
         <label for="cid">Course</label><br>
