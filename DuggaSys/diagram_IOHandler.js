@@ -439,3 +439,19 @@ function afterPrint(){
     ctx.scale(1,1);
     updateGraphics();
 }
+
+//------------------------------------------------
+// Local storage compressing functions start
+//------------------------------------------------
+
+function isFunction(f) {
+    return f && {}.toString.call(f) === "[object Function]";
+}
+
+function getObjectPropertyKeys(object) {
+    return Object.keys(object).filter(key => !isFunction(object[key]));
+}
+
+//------------------------------------------------
+// Local storage compressing functions end
+//------------------------------------------------
