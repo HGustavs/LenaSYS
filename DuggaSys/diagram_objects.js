@@ -1314,6 +1314,15 @@ function Symbol(kindOfSymbol) {
                     ctx.arc(x2,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
                     ctx.fillStyle = '#F82';
                     ctx.fill();
+                    //Draw highlighted point to UML-class middledivider
+                    if(this.symbolkind == symbolKind.uml){
+                        var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
+                        var midx = pixelsToCanvas(points[this.middleDivider].x, 0).x;
+                        ctx.beginPath();
+                        ctx.arc(midx, midy ,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+                        ctx.fillStyle = '#F82';
+                        ctx.fill();
+                    }
                 }
             }
         }
