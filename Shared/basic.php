@@ -371,18 +371,20 @@ function logDuggaLoadEvent($cid, $uid, $username, $vers, $quizid, $type) {
 
 $test = $_POST['test'];
 
+
 if ($test == "success"){
 	test();
 }
 function test() {
-	$x = 1;
+	$ev = $_POST['ev'];
+	$input = $ev;
 	$EventTypesClass = new ReflectionClass ( 'EventTypes' );
 	$constants = $EventTypesClass->getConstants();
 
 	$constName = null;
 	foreach ( $constants as $name => $value )
 	{
-		if ( $value == $x )
+		if ( $value == $input )
 		{
 			$constName = $name;
 			break;

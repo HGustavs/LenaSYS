@@ -856,37 +856,42 @@ function loadUserInformation(){
     } 
  
     function updateUserLogInformation(users){
+		var event;
 		var users = {};
         loadAnalytics("userLogInformation", function(data) {
             $.each(data, function(i, row) {
                 var user = row.username;
                 if (!users.hasOwnProperty(user)) {
-                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp"]];
+                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "Test"]];
 				}
 				if(row.eventType != "") {
+					$.ajax({
+						url:"../Shared/basic.php", 
+						type: "POST", 
+						dataType: 'json',
+						async: false, //To be changed
+						   data: {
+							test: "success",
+							ev: 1
+						},success:function(data){
+							event = data;
+							console.log(data);
+						},error: function(){
+						   console.log("AJAX error");
+						}
+					});
 					users[user].push([
 						row.uid,
 						row.username,
 						row.eventType,
 						row.description,
-						row.timestamp
+						row.timestamp,
+						event
 					]);
 				}
             });
             updateState(users);
 		});
-		$.ajax({
-        	url:"../Shared/basic.php", 
-            type: "POST", 
-            dataType: 'json',
-           	data: {
-			   test: "success"
-			},success:function(data){
-             	console.log(data);
-           	},error: function(){
-			   console.log("AJAX error");
-		   	}
-        });
     } 
    
     function updateState(users){
