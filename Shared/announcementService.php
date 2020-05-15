@@ -38,10 +38,10 @@ if(isset($_POST['secondannouncementid']) && isset($_POST['uid']) && isset($_POST
 	$cid = $_GET['courseid'];
 	$versid = $_GET['coursevers'];
 
-	$delete = "DELETE FROM announcement WHERE announcementid=:announcementid AND uid=:uid AND cid=:cid AND versid=:versid";
+	$delete = "DELETE FROM announcement WHERE secondannouncementid=:secondannouncementid AND uid=:uid AND cid=:cid AND versid=:versid";
 	
 	$stmt = $pdo->prepare($delete);
-	$stmt->bindParam(':announcementid', $deleteannouncementid);
+	$stmt->bindParam(':secondannouncementid', $deleteannouncementid);
 	$stmt->bindParam(':uid', $uid);   
 	$stmt->bindParam(':cid', $cid);   
 	$stmt->bindParam(':versid', $versid);   
