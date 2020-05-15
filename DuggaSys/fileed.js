@@ -32,7 +32,7 @@ var editor;
 var filedata;
 
 function setup() {
-    AJAXService("GET", {cid: querystring['courseid']}, "FILE");
+    AJAXService("GET", { cid: querystring['courseid'] }, "FILE");
 }
 
 window.onresize = function () {
@@ -43,6 +43,7 @@ $(document).on('click', '.last', function (e) {
     e.stopPropagation();
 });
 
+/*
 $(function () {
     $("#release").datepicker({
         dateFormat: "yy-mm-dd"
@@ -51,6 +52,7 @@ $(function () {
         dateFormat: "yy-mm-dd"
     });
 });
+*/
 
 //----------------------------------------------------------------------------
 // Renderer
