@@ -149,7 +149,7 @@ else{
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
     		</div>
     		<div style='padding:5px;'>
-    			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onchange="validateMOTD('motd','dialog5')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
+    			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog5')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
     			<div class='inputwrapper'><span style='font-style:italic;color:rgba(0,0,0,0.6)'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
 				
     		</div>
