@@ -30,10 +30,6 @@ function Symbol(kindOfSymbol) {
     this.group = 0;                 // What group this symbol belongs to
     this.isLocked = false;          // If the symbol is locked
     this.isLockHovered = false;     // Checks if the lock itself is hovered on the symbol
-    this.isOval = false;
-    this.isAttribute = false;
-    this.isRelation = false;
-    this.isLine = false;
     this.isRecursiveLine = false;
     this.pointsAtSamePosition = false;
     this.UMLCustomResize = false;
@@ -1438,7 +1434,6 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2) {
-		this.isAttribute = true;
 		//if on two or more pages turn redish
         if(!checkSamePage(x1,y1,x2,y2)){
 			ctx.strokeStyle = '#DC143C';
@@ -1553,13 +1548,13 @@ function Symbol(kindOfSymbol) {
                 dbly = diagram[i].corners().bl.y;
 
                 // Stores the midpoints for each corner of the relation in an array
-                if (diagram[i].isRelation) {
+                if (diagram[i].isAnyOfSymbolKinds(symbolKind.erRelation)) {
                     var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
                     var relationMiddleY = ((dbly - dtly) / 2) + dtly;
                     relationMidPoints.push(relationMiddleX, relationMiddleY);
                 }
                 // Setting the line types to normal if they are forced and the connected entity is strong.
-                if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
+                if (diagram[i].isAnyOfSymbolKinds(symbolKind.line) && diagram[i].properties['key_type'] != 'Normal') {
 
                     // Looping through the midpoints for relation entities.
                     for (let j = 0; j < relationMidPoints.length; j++) {
@@ -1610,7 +1605,7 @@ function Symbol(kindOfSymbol) {
                 dbly = diagram[i].corners().bl.y;
 
                 // Stores the midpoints for the relations in an array.
-                if (diagram[i].isRelation) {
+                if (diagram[i].isAnyOfSymbolKinds(symbolKind.erRelation)) {
                     var relationMiddleX = ((dtrx - dtlx) / 2) + dtlx;
                     var relationMiddleY = ((dbly - dtly) / 2) + dtly;
                     relationMidPoints.push(relationMiddleX, relationMiddleY);
@@ -1619,14 +1614,14 @@ function Symbol(kindOfSymbol) {
                 }
 
                 // Stores the midpoints for the attributes in an array
-                if (diagram[i].isAttribute) {
+                if (diagram[i].isAnyOfSymbolKinds(symbolKind.erAttribute)) {
                     var attributeMiddleX = ((dtrx - dtlx) / 2) + dtlx;
                     var attributeMiddleY = ((dbly - dtly) / 2) + dtly;
                     attributeMidPoint.push(attributeMiddleX, attributeMiddleY);
                 }
 
                 // Setting the line types to forced if they are normal and the connected entity is weak.
-                if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Forced') {
+                if (diagram[i].isAnyOfSymbolKinds(symbolKind.line) && diagram[i].properties['key_type'] != 'Forced') {
                     // Looping through the midpoints (top and bot) for relations.
                     for (let j = 0; j < relationMidXPoints.length; j++) {
                         for (let c = 0; c < relationMidXPoints.length; c++) {
@@ -1770,7 +1765,6 @@ function Symbol(kindOfSymbol) {
     // drawLine: Draws line between er objects
     //---------------------------------------------------------------
     this.drawLine = function(x1, y1, x2, y2) {
-        this.isLine = true;
         //Checks if there is cardinality set on this object
         if(this.isCardinalityPossible && this.cardinality.value != "" && this.cardinality.value != null) {
             //Updates x and y position
@@ -2169,7 +2163,6 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawRelation = function(x1, y1, x2, y2, midx, midy) {
-        this.isRelation = true;
         var midx = pixelsToCanvas(points[this.centerPoint].x).x;
         var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
 		
@@ -2768,7 +2761,6 @@ function drawGroup(symbol) {
 // drawOval: Draws an oval, is used for drawing erattributes
 //--------------------------------------------------------------------
 this.drawOval = function (x1, y1, x2, y2) {
-    this.isOval = true;
     var middleX = x1 + ((x2 - x1) * 0.5);
     var middleY = y1 + ((y2 - y1) * 0.5);
 
