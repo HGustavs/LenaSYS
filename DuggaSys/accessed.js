@@ -828,6 +828,8 @@ function mouseUp(e) {
 //----------------------------------------------------------------------------------
 
 document.addEventListener('click', function(e){
+	if (e.target.parentElement === null)
+		return;
 	if(e.target.classList.contains('access-dropdown') || e.target.parentElement.classList.contains('access-dropdown')){
 		var dropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content');
 		if(activeDropdown === undefined){
