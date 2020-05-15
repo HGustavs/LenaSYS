@@ -1266,6 +1266,8 @@ diagram.draw = function() {
 
 diagram.adjustPoints = function() {
     for (var i = 0 ; i < this.length; i++) {
+        console.log(this);
+        
         this[i].adjust();
     }
 }

@@ -349,8 +349,6 @@ function Load() {
     // them to their respecive array so it can redraw the desired canvas.
     var dia = JSON.parse(a);
     b = dia.prevStates[diagramNumber];
-    console.log(b.diagram);
-    console.log(diagram);
     
     
     for (var i = 0; i < b.diagram.length; i++) {
