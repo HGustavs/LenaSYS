@@ -16,14 +16,20 @@ function Symbol(kindOfSymbol) {
     this.id = globalObjectID++;
     this.targeted = false;
     this.symbolkind = kindOfSymbol;     // Symbol kind (1 UML class, 2 ER Attribute, 3 ER Entity, 4 Lines, 5 ER Relation, 6 Text, 7 UML line)
-    this.topLeft;                       // Top left point index
-    this.bottomRight;                   // Bottom right point index
-    this.centerPoint;                   // Center point index
+    this.topLeft = null;                // Top left point index
+    this.bottomRight = null;            // Bottom right point index
     this.group = 0;                     // What group this symbol belongs to
     this.isLocked = false;
     this.isLockHovered = false;         // Checks if the lock itself is hovered on the symbol
     this.pointsAtSamePosition = false;
     this.isHovered = false;
+    
+    // Connector arrays - for connecting and sorting relationships between diagram objects
+    // They are not used for line, UML line and text objects but still created to prevent errors with other functions
+    this.connectorTop = [];
+    this.connectorBottom = [];
+    this.connectorLeft = [];
+    this.connectorRight = [];
 
     //-----------------------------------------------------------------------------------------------
     // isAnyOfSymbolKinds: Returns true if this symbol is any of the symbolKinds in the passed array.
@@ -37,20 +43,18 @@ function Symbol(kindOfSymbol) {
         return types.some(type => this.symbolkind === type);
     }
 
-    // Connector arrays - for connecting and sorting relationships between diagram objects
-    this.connectorTop = [];
-    this.connectorBottom = [];
-    this.connectorLeft = [];
-    this.connectorRight = [];
+    if(!this.isAnyOfSymbolKinds([symbolKind.line, symbolKind.umlLine])) {
+        this.centerPoint = null; // Center point index, not used for line and UML line
+    }
 
     switch(this.symbolkind) {
         case symbolKind.uml:
             this.operations = [];
             this.attributes = [];
-            this.middleDivider;
+            this.middleDivider = null;
             this.UMLCustomResize = false;
-            this.minWidth;
-            this.minHeight;
+            this.minWidth = null;
+            this.minHeight = null;
             break;
         case symbolKind.line:
             this.cardinality = {value: "", parentPointIndexes: null};
@@ -296,7 +300,7 @@ function Symbol(kindOfSymbol) {
         var hw = (points[this.bottomRight].x - x1) * 0.5;
         var hh = (points[this.bottomRight].y - y1) * 0.5;
         var textHeight;
-        if (this.symbolkind == symbolKind.erAttribute || this.symbolkind == symbolKind.erEntity) {
+        if (this.isAnyOfSymbolKinds([symbolKind.erAttribute, symbolKind.erEntity])) {
             if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width) {
                 // If the width is less than the minimum, push out the
                 // point that the user is dragging
@@ -1075,7 +1079,7 @@ function Symbol(kindOfSymbol) {
             if (this.symbolkind == symbolKind.uml) {
                 points[this.middleDivider].x += movex;
                 points[this.middleDivider].y += movey;
-            } else if (this.symbolkind == symbolKind.erAttribute || this.symbolkind == symbolKind.erRelation || this.symbolkind == symbolKind.erEntity || this.symbolkind == symbolKind.text) {
+            } else if (this.isAnyOfSymbolKinds([symbolKind.erAttribute, symbolKind.erRelation, symbolKind.erEntity, symbolKind.text])) {
                 points[this.centerPoint].x += movex;
                 points[this.centerPoint].y += movey;
             }
@@ -1121,7 +1125,7 @@ function Symbol(kindOfSymbol) {
     //             IMP!: Should not be moved back on canvas after this function is run.
     //--------------------------------------------------------------------
     this.movePoints = function () {
-        if (this.symbolkind == symbolKind.line || this.symbolkind == symbolKind.umlLine) return;
+        if (this.isLineType()) return;
         points[this.topLeft] = waldoPoint;
         points[this.bottomRight] = waldoPoint;
         points[this.centerPoint] = waldoPoint;
