@@ -155,7 +155,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		where marked is null or gradeLastExported is null or marked > gradeLastExported';
 
 		*/
-		$statement = $pdo->prepare("SELECT * FROM userAnswer");
+		$statement = $pdo->prepare("SELECT * FROM userAnswer WHERE gradeLastExported IS NULL OR marked IS NOT NULL AND gradeLastExported IS NOT NULL AND marked > gradeLastExported");
 		
 		if ($statement === false) {
 			// Failed to prepare query, log and return an error message

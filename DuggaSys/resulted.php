@@ -91,6 +91,13 @@ pdoConnect();
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
 		<div class="resultedFormsFlex">
+			<label>Typ</label>
+			<select id="exportType">
+				<option value="restricted">Ej exported</option>
+				<option value="all">Allt</option>
+			</select>
+		</div>
+		<div class="resultedFormsFlex">
       <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
 	  <span id="lastExportedDate"></span>
 	  </div>

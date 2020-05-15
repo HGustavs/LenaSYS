@@ -690,8 +690,14 @@ function returnedExportedGrades(gradeData){
 	// Tries to write out the last exported date.
 	// If it fails, then log the error.
 	try {
-		if (typeof gradeData[0].gradeLastExported !== 'undefined') {
-			document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
+		if (typeof gradeData[0] === 'undefined') {
+			console.log("There are no unexported grades");
+		} else {
+			console.log(gradeData[0]);
+			if (typeof gradeData[0].gradeLastExported !== 'undefined') {
+				document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
+				ladexport(gradeData);
+			}
 		}
 	} catch (error) {
 		console.log(error);
@@ -1407,7 +1413,7 @@ function onToggleFilter(colId) {
 
 }
 
-function exportCell(format, cell, colname) {
+function exportCell(format, cell, colname, gradeData = "NONE") {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
@@ -1428,14 +1434,33 @@ function exportCell(format, cell, colname) {
 					str = "-";
 				} else {
 					if (cell.gradeSystem === 1 || cell.gradeSystem === 2) {
-						if (cell.grade === 1) {
-							str = "U";
-						} else if (cell.grade === 2) {
-							str = "G";
-						} else if (cell.grade === 3) {
-							str = "VG";
+						if (gradeData !== "NONE") {
+							for (var i = 0; i < gradeData.length; i++) {
+								if (cell.uid == gradeData[i].uid && cell.lid == gradeData[i].moment) {
+									if (cell.grade === 1) {
+										str = "U";
+									} else if (cell.grade === 2) {
+										str = "G";
+									} else if (cell.grade === 3) {
+										str = "VG";
+									} else {
+										str = "-";
+									}
+									return str;
+								} else {
+									str = "-";
+								}
+							}
 						} else {
-							str = "-";
+							if (cell.grade === 1) {
+								str = "U";
+							} else if (cell.grade === 2) {
+								str = "G";
+							} else if (cell.grade === 3) {
+								str = "VG";
+							} else {
+								str = "-";
+							}
 						}
 					} else {
 						str = "UNK";
@@ -1475,14 +1500,20 @@ function exportColumnHeading(format, heading, colname) {
 //----------------------------------------
 
 //Function for exporting grades to ladoc
-function ladexport() {
-	AJAXService("getunexported", {}, "GEXPORT");
+function ladexport(gradeData = "NONE") {
+	if (document.getElementById("exportType").value === "restricted" && gradeData === "NONE") {
+		AJAXService("getunexported", {}, "GEXPORT");
+	} else {
 	let expo = "";
 
 	expo += document.getElementById("ladselect").value + "\n";
 	expo += document.getElementById("ladgradescale").value + "\n";
 	expo += document.getElementById("laddate").value + "\n";
-	expo += myTable.export("csv", ";");
+	if (gradeData !== "NONE") {
+		expo += myTable.export("csv", ";", gradeData);
+	} else {
+		expo += myTable.export("csv", ";");
+	}
 
 	//alert(expo);
 	document.getElementById("resultlistheader").innerHTML = "Results for: " + document.getElementById("ladselect").value;
@@ -1502,6 +1533,7 @@ function ladexport() {
 	 document.getElementById('lastExportedDate').innerHTML = gradeLastExported;
 
 	 localStorage.setItem('lastExpDate', gradeLastExported);
+	}
 }
 
 function copyLadexport() {
