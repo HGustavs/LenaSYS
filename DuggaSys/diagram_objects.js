@@ -11,28 +11,19 @@
 // Function Symbol() handles the CREATE-functions in the diagram.
 //--------------------------------------------------------------------
 function Symbol(kindOfSymbol) {
-    this.kind = kind.symbol;        // Diagram object kind is always 2 for symbols
-    this.name = "New Class";        // New Class default name in new class
+    this.kind = kind.symbol;
+    this.name = "New Class";
     this.id = globalObjectID++;
     this.targeted = false;
-    this.symbolkind = kindOfSymbol; // Symbol kind (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
-    this.operations = [];           // Operations array
-    this.attributes = [];           // Attributes array
-    this.textLines = [];            // Free text array
-    this.topLeft;                   // Top Left Point
-    this.bottomRight;               // Bottom Right Point
-    this.middleDivider;             // Middle divider Point
-    this.centerPoint;               // centerPoint
-    this.lineDirection = "First";
-    this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
-    this.minWidth;
-    this.minHeight;
-    this.group = 0;                 // What group this symbol belongs to
-    this.isLocked = false;          // If the symbol is locked
-    this.isLockHovered = false;     // Checks if the lock itself is hovered on the symbol
-    this.isRecursiveLine = false;
+    this.symbolkind = kindOfSymbol;     // Symbol kind (1 UML class, 2 ER Attribute, 3 ER Entity, 4 Lines, 5 ER Relation, 6 Text, 7 UML line)
+    this.topLeft;                       // Top left point index
+    this.bottomRight;                   // Bottom right point index
+    this.centerPoint;                   // Center point index
+    this.group = 0;                     // What group this symbol belongs to
+    this.isLocked = false;
+    this.isLockHovered = false;         // Checks if the lock itself is hovered on the symbol
     this.pointsAtSamePosition = false;
-    this.UMLCustomResize = false;
+
 
     //-----------------------------------------------------------------------------------------------
     // isAnyOfSymbolKinds: Returns true if this symbol is any of the symbolKinds in the passed array.
@@ -54,14 +45,24 @@ function Symbol(kindOfSymbol) {
 
     switch(this.symbolkind) {
         case symbolKind.uml:
+            this.operations = [];
+            this.attributes = [];
+            this.middleDivider;
+            this.UMLCustomResize = false;
+            this.minWidth;
+            this.minHeight;
             break;
         case symbolKind.line:
             this.cardinality = {value: "", parentPointIndexes: null};
             break;
         case symbolKind.text:
+            this.textLines = [];
             break;
         case symbolKind.umlLine:
             this.cardinality = {value: "", valueUML: ""};
+            this.lineDirection = "First";
+            this.isRecursiveLine = false;
+            this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
             break;
         default:
             break;
