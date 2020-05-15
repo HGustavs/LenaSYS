@@ -4401,7 +4401,6 @@ function mouseupevt(ev) {
             erLineA.bottomRight = p2;
 
             if(erLineA.isCardinalityPossible) {
-                erLineA.cardinality.value = "";
                 erLineA.cardinality.parentPointIndexes = {
                     topLeft: hoveredObject.topLeft,
                     bottomRight: hoveredObject.bottomRight
@@ -4489,8 +4488,6 @@ function mouseupevt(ev) {
             umlLineA.topLeft = p1;
             umlLineA.bottomRight = p2;
             umlLineA.targeted = true;
-            umlLineA.cardinality.value = "";
-            umlLineA.cardinality.valueUML = "";
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
                 points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;

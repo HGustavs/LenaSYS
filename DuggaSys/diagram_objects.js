@@ -23,7 +23,6 @@ function Symbol(kindOfSymbol) {
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
-    this.cardinality = {};          //Stores value for UML and ER lines, valueUML for UML lines and parentPointIndexes for ER lines
     this.lineDirection = "First";
     this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
@@ -44,6 +43,21 @@ function Symbol(kindOfSymbol) {
     this.connectorBottom = [];
     this.connectorLeft = [];
     this.connectorRight = [];
+
+    switch(this.symbolkind) {
+        case symbolKind.uml:
+            break;
+        case symbolKind.line:
+            this.cardinality = {value: "", parentPointIndexes: null};
+            break;
+        case symbolKind.text:
+            break;
+        case symbolKind.umlLine:
+            this.cardinality = {value: "", valueUML: ""};
+            break;
+        default:
+            break;
+    }
 
     // Variables for UML line breakpoints
     var breakpointStartX = 0;     // X Coordinate for start breakpoint
