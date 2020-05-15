@@ -104,6 +104,8 @@
             var isPermissionsSat = <?php echo json_encode($isPermissionsSat); ?>;
             var modal = document.getElementById('warning'); // Get the modal
             var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
+            var postInstallModal = null;
+            var postInstallModalClose = null;
 
             setPermissionModalText(owner, filePath, operatingSystem);
 
@@ -308,22 +310,12 @@
       echo "
         <script>
           var postInstallModal = document.getElementById('warning'); // Get the modal
-          var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
+          var postInstallModalClose = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
 
           document.getElementById('dialogText').innerHTML = '<div><h1>!!!WARNING!!!</h1><br>' +
             '<h2>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
             '<p>If you don\'t follow these instructions nothing will work. G4-2020 will not take any ' +
             'responsibility for your failing system.</p>';
-
-          span.onclick = function() {
-            postInstallModal.style.display = 'none';
-          }
-
-          window.onclick = function(event) {
-            if (event.target == postInstallModal) {
-              postInstallModal.style.display = 'none';
-            }
-          }
         </script>
       ";
       
