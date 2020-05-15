@@ -1743,20 +1743,12 @@ function hideSSN(ssn){
 	return hiddenSSN;
 }
 
-//Shows and hides element describing the icons and colours
+//Shows element describing the icons and colours
 function showLegend(){
 	var legendBox = $('#resultedLegendContainer');
-	if (legendIsHidden == false){
-
-		legendBox.css("right", "-323px");
-		legendIsHidden = true;
-	}
-	else if (legendIsHidden == true){
+	if (!legendIsHidden == false){
 		legendBox.css("right", "0px");
-		legendIsHidden = false;
-	}
-	else{
-		//alert(legendIsHidden);
+		legendIsHidden = true;
 	}
 }
 
