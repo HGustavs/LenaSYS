@@ -497,6 +497,7 @@
           # Split the sql file at semi-colons to send each query separated.
           $initQueryArray = explode(";", $initQuery);
           $initSuccess = false;
+          $completeQuery = null;
           try {
             if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
               $connection->beginTransaction();
