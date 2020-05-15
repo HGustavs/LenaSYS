@@ -461,11 +461,26 @@ function getAsciiCharsInRange(start, end) {
 }
 
 function generatePropertyKeysMap() {
+    const objects = [new Symbol, new Path()];
+    const map = new Map();
+    const delimiterChar = '~';
     const asciiChars = [
         ...getAsciiCharsInRange(65, 90),
         ...getAsciiCharsInRange(97, 122),
         ...getAsciiCharsInRange(33, 64)
     ];
+    let asciiIndex = 0;
+    
+    objects.forEach(object => {
+        const keys = getObjectPropertyKeys(object);
+        keys.forEach(key => {
+            if(typeof map.get(key) === "undefined" && key.length > 1) {
+                map.set(key, delimiterChar+asciiChars[asciiIndex]);
+                asciiIndex++;
+            }
+        });
+    })
+    return map;
 }
 
 //------------------------------------------------
