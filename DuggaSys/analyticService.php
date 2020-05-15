@@ -140,6 +140,37 @@ function generalStats($dbCon) {
 		ORDER BY percentage DESC
 	')->fetchAll(PDO::FETCH_ASSOC);
 
+	$fastestService = $GLOBALS['log_db']->query('
+	SELECT DISTINCT
+		service,
+		(
+			SELECT AVG(duration) FROM (
+				SELECT s1.service AS subService, (s2.timestamp - s1.timestamp) AS duration
+				FROM serviceLogEntries s1
+				JOIN serviceLogEntries s2 ON s1.uuid=s2.uuid AND s2.eventType='.EventTypes::ServiceServerEnd.'
+				WHERE s1.eventType='.EventTypes::ServiceServerStart.'
+			)
+			WHERE service=subService
+		) AS avgDuration
+	FROM serviceLogEntries ORDER BY avgDuration ASC LIMIT 1;
+	')->fetchAll(PDO::FETCH_ASSOC);
+
+	$slowestService = $GLOBALS['log_db']->query('
+	SELECT DISTINCT
+		service,
+		(
+			SELECT AVG(duration) FROM (
+				SELECT s1.service AS subService, (s2.timestamp - s1.timestamp) AS duration
+				FROM serviceLogEntries s1
+				JOIN serviceLogEntries s2 ON s1.uuid=s2.uuid AND s2.eventType='.EventTypes::ServiceServerEnd.'
+				WHERE s1.eventType='.EventTypes::ServiceServerStart.'
+			)
+			WHERE service=subService
+		) AS avgDuration
+	FROM serviceLogEntries ORDER BY avgDuration DESC LIMIT 1;
+	')->fetchAll(PDO::FETCH_ASSOC);
+	
+
 	$generalStats = [];
 	$generalStats['stats']['loginFails'] = $LoginFail[0];
 	$generalStats['stats']['numOnline'] = count($activeUsers);
@@ -152,6 +183,12 @@ function generalStats($dbCon) {
 
 	$generalStats['stats']['topBrowser'] = $topBrowser[0]['browser'];
 	$generalStats['stats']['topOS'] = $topOS[0]['operatingSystem'];
+
+	$generalStats['stats']['fastestService'] = $fastestService[0]['service'];
+	$generalStats['stats']['fastestServiceSpeed'] = round($fastestService[0]['avgDuration'], 2);
+
+	$generalStats['stats']['slowestService'] = $slowestService[0]['service'];
+	$generalStats['stats']['slowestServiceSpeed'] = round($slowestService[0]['avgDuration'], 2);
 
 
 	$query = $dbCon->prepare("SELECT count(*) as numUsers FROM user");
