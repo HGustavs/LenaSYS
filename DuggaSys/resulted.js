@@ -1752,7 +1752,7 @@ function showLegend(){
 	}
 }
 
-// Function that makes it possible to click both on and outside the div to close it 
+// Function that makes it possible to click on the div to close it 
 document.addEventListener('mouseup', function(e) {
 	var closeLegend = document.getElementById('resultedLegendContainer');
 	if (closeLegend.contains(e.target)) {
