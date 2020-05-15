@@ -83,14 +83,14 @@ pdoConnect();
         			<div class='flexwrapper'><span>Auto-grade:</span><select id='autograde'></select></div>
         			<div class='flexwrapper'><span>Grade System:</span><select id='gradesys'></select></div>
         			<div class='flexwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
-              <div class='flexwrapper'><span>Start Date:</span><span><input class='textinput' type='date' id='qstart' value='' style='width:140px;font-family:"Roboto";color:#6f6f6f;' /><select style='width:55px;' id='qstartt'></select><select style='width:55px;' id='qstartm'></select></span></div>
-              <div class='flexwrapper'><span>Deadline 1:</span><span><input class='textinput' type='date' id='deadline' value='' style='width:140px;font-family:"Roboto";color:#6f6f6f;' /><select style='width:55px;' id='deadlinet'></select><select style='width:55px;' id='deadlinem'></select></span></div>
+              <div class='flexwrapper'><span>Start Date:</span><span><input class='textinput' type='date' id='qstart' value=''  /><select style='width:55px;' id='qstartt'></select><select style='width:55px;' id='qstartm'></select></span></div>
+              <div class='flexwrapper'><span>Deadline 1:</span><span><input class='textinput' type='date' id='deadline' value=''  /><select style='width:55px;' id='deadlinet'></select><select style='width:55px;' id='deadlinem'></select></span></div>
   						<div class='flexwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
-              <div class='flexwrapper'><span>Deadline 2:</span><span><input class='textinput' type='date' id='deadline2' value='' style='width:140px;font-family:"Roboto";color:#6f6f6f;' /><select style='width:55px;' id='deadlinet2'></select><select style='width:55px;' id='deadlinem2'></select></span></div>
+              <div class='flexwrapper'><span>Deadline 2:</span><span><input class='textinput' type='date' id='deadline2' value=''  /><select style='width:55px;' id='deadlinet2'></select><select style='width:55px;' id='deadlinem2'></select></span></div>
   						<div class='flexwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
-              <div class='flexwrapper'><span>Deadline 3:</span><span><input class='textinput' type='date' id='deadline3' value='' style='width:140px;font-family:"Roboto";color:#6f6f6f;' /><select style='width:55px;' id='deadlinet3'></select><select style='width:55px;' id='deadlinem3'></select></span></div>
+              <div class='flexwrapper'><span>Deadline 3:</span><span><input class='textinput' type='date' id='deadline3' value=''  /><select style='width:55px;' id='deadlinet3'></select><select style='width:55px;' id='deadlinem3'></select></span></div>
   						<div class='flexwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
-              <div class='flexwrapper'><span>Result release:</span><span><input class='textinput' type='date' id='release' value='' style='width:140px;font-family:"Roboto";color:#6f6f6f;' /><select style='width:55px;' id='releaset'></select><select style='width:55px;' id='releasem'></select></span></div>
+              <div class='flexwrapper'><span>Result release:</span><span><input class='textinput' type='date' id='release' value=''  /><select style='width:55px;' id='releaset'></select><select style='width:55px;' id='releasem'></select></span></div>
         		</div>
         		<div style='padding:5px;display:flex;justify-content:space-between'>
         			<input id='closeDugga' class='submit-button' type='button' value='Cancel' onclick='closeWindows();' />
