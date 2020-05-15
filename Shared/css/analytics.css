@@ -7,6 +7,21 @@
     height: 300px;
 }
 
+#home{
+    width:50px;
+    font-size:1.5em;
+    text-align:center;
+}
+
+.navheader > tbody > tr > td{
+    position:relative;
+}
+.analytic-navbutton{
+    width:50px;
+    font-size:1.5em;
+    text-align:center;
+    margin-top:12px;
+}
 .analytic-button:hover {
     background-color:#7B5A96;
     border-radius:4px;
@@ -36,4 +51,53 @@
 .analyticsDesc {
     margin-top: 15px; 
     margin-bottom: -20px;
+}
+
+.vl {
+  border-left: 6px solid white;
+  height:50px;
+  width:5px;
+  margin-left:2px;
+  margin-right:2px;
+  top: 0;
+}
+
+.navcomment{
+  visibility: hidden;
+  position:absolute; 
+  z-index:100;
+  background-color:#7b5a96;
+  border-radius:6px;
+  border-width:1px;
+  padding:5px 5px;
+  color:#FFF; 
+  top:115%; 
+  left:-25%;
+    margin: auto auto;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+
+.navcomment::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 37px;
+  margin-left: -5px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent #7b5a96 transparent;
+}
+
+.analytic-navbutton:hover span.navcomment{
+    visibility: visible;
+    opacity: 1;
+}
+
+@media only screen and (min-width:830px){
+    .analytic-navbutton{
+        display:inline-block;
+    }
 }
