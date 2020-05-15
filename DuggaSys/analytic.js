@@ -153,6 +153,12 @@ function loadGeneralStats() {
 			data['stats']['topOS']
 		]);
 
+		// Fastest Service
+		tableData.push([
+			'Fastest Service: ' + data['stats']['fastestService'],
+			data['stats']['fastestServiceSpeed'] + " ms"
+		]);
+
 		$('#analytic-info').append(renderTable(tableData));
 		
 		// Disk usage
