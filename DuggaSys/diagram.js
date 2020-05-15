@@ -2344,6 +2344,53 @@ function disableShortcuts(event){
     }
     updateGraphics();
 }
+//---------------------------------------------------------------------------------
+// resetShortcuts: resets the keybinds to the initial values
+//---------------------------------------------------------------------------------
+
+function resetShortcuts(event){
+    event.stopPropagation();
+    //Reset binds to default keycodes
+    keyMap.backspaceKey = defaultBackspaceKey,
+    keyMap.enterKey = defaultEnterKey,
+    keyMap.shiftKey = defaultShiftKey,
+    keyMap.ctrlKey = defaultCtrlKey,
+    keyMap.altKey = defaultAltKey,
+    keyMap.escapeKey = defaultEscapeKey,
+    keyMap.spacebarKey = defaultSpacebarKey,
+    keyMap.leftArrow = defaultLeftArrow,
+    keyMap.upArrow = defaultUpArrow,
+    keyMap.rightArrow = defaultRightArrow,
+    keyMap.downArrow = defaultDownArrow,
+    keyMap.deleteKey = defaultDeleteKey,
+    keyMap.key0 = defaultKey0,
+    keyMap.key1 = defaultKey1,
+    keyMap.key2 = defaultKey2,
+    keyMap.key4 = defaultKey4,
+    keyMap.aKey = defaultAKey,
+    keyMap.cKey = defaultCKey,
+    keyMap.dKey = defaultDKey,
+    keyMap.eKey = defaultEKey,
+    keyMap.fKey = defaultFKey,
+    keyMap.lKey = defaultLKey,
+    keyMap.mKey = defaultMKey,
+    keyMap.nKey = defaultNKey,
+    keyMap.oKey = defaultOKey,
+    keyMap.rKey = defaultRKey,
+    keyMap.tKey = defaultTKey,
+    keyMap.vKey = defaultVKey,
+    keyMap.zKey = defaultZKey,
+    keyMap.yKey = defaultYKey,
+    keyMap.xKey = defaultXKey,
+    keyMap.windowsKey = defaultWindowsKey,
+    keyMap.num1 = defaultNum1,
+    keyMap.num2 = defaultNum2,
+    keyMap.lessThanKey = defaultLessThanKey,
+    keyMap.f11Key = defaultF11Key,
+    //redraw the keyMap to the html element
+    drawKeyMap(keyMap, $("#shortcuts-wrap").get(0) );
+    updateGraphics();
+}
 
 //-------------------------------------------------------------------------------------------------------
 // eraseLine: Erases passed line from diagram. Makes sure line points are no longer in object connectors.
