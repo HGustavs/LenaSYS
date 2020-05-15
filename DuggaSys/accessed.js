@@ -267,7 +267,12 @@ function validateSSN(ssn)
 //---------------------------------------------------------------------------------------------------
 function validateEmail(email)
 {
-	const delimiter = email.indexOf('@');		// Delimiter of the @ in an email
+	const length = email.length;
+	const delimiter = email.indexOf('@');	// Delimiter of the @ in an email
+
+	const formatTest = /[A-z0-9]{1,64}@[A-z0-9]{1,}[.]{1}[A-z0-9]{2,}/;		// Expected format
+	if(!formatTest.test(email))
+		return 'Email error! Format is invalid';
 
 	return null;	// The provided email is correct!
 }
