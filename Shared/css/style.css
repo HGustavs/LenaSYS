@@ -826,7 +826,7 @@ p {
   padding: 6px;
   text-align: center;
   color: var(--color-text-header);
-  font-size: 24px;
+  font-size: 20px;
   background-color: var(--color-primary);
 }
 .glow {
