@@ -118,6 +118,7 @@
     </div>
   </div> 
 
+  <!-- Header showing the showModalButton-->
   <div id="header">
     <h1>LenaSYS Installer</h1>
     <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
@@ -264,10 +265,9 @@
         <polygon points="50,30 130,75 50,120" />
       </svg>
     </div>
-
-    <!-- Empty footer to show a nice border at bottom -->
   </form>
-  
+
+  <!-- Empty footer to show a nice border at bottom -->
   <div id="inputFooter"></div>
 
   <!-- Install Section -->
@@ -676,7 +676,6 @@
     //---------------------------------------------------------------------------------------------------
     // updateProgressBar(): Wrapper-function for the js-function to update progressbar.
     //---------------------------------------------------------------------------------------------------
-
     function updateProgressBar($cSteps, $tSteps){
       echo "
         <script>
