@@ -872,7 +872,7 @@ function loadUserInformation(){
 						async: false, //To be changed
 						   data: {
 							test: "success",
-							ev: 1
+							ev: row.eventType
 						},success:function(data){
 							event = data;
 							console.log(data);
