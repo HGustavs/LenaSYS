@@ -1234,6 +1234,19 @@ diagram.closestPoint = function(mx, my) {
             }
         });
     });
+
+    //Used for moving UML middledivider
+    this.filter(symbol => symbol.symbolkind == symbolKind.uml).forEach(symbol => {
+            var deltaX = mx - points[symbol.middleDivider].x;
+            var deltaY = my - points[symbol.middleDivider].y;
+            var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
+            if (hypotenuseElevatedBy2 < distance) {
+                distance = hypotenuseElevatedBy2;
+                point = points[symbol.middleDivider];
+                attachedSymbol = symbol;
+            }
+        
+    });
     return {distance:Math.sqrt(distance), point:point, attachedSymbol: attachedSymbol};
 }
 
