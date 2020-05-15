@@ -1760,6 +1760,14 @@ function showLegend(){
 	}
 }
 
+// Function that makes it possible to click both on and outside the div to close it 
+document.addEventListener('mouseup', function(e) {
+	var closeLegend = document.getElementById('resultedLegendContainer');
+	if (!closeLegend.contains(e.target) || closeLegend.contains(e.target)) {
+		closeLegend.style.right = "-323px";
+	}
+  });
+
 function compare(firstCell, secoundCell) {
 	let col = myTable.getSortcolumn(); // Get column name
 	let status = myTable.getSortkind(); // Get if the sort arrow is up or down.
