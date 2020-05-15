@@ -252,7 +252,7 @@ function changedType(kind) {
 
 function showEditVersion() {
   var tempMotd = motd;
-	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö");
+	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&");
   $("#eversname").val(versnme);
   $("#eMOTD").val(tempMotd);
   $("#eversid").val(querystring['coursevers']);

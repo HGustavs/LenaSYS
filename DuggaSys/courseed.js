@@ -255,7 +255,7 @@ function editSettings(){
 	const popupContainer = document.getElementById("editSettings");
 
 	var tempMotd = motd;
-	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö");
+	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&");
 	
 	if(motd !== "UNK") {
 		
@@ -578,8 +578,8 @@ function validateForm(formid) {
 }
 function validateMOTD(motd, dialogid){
 	var emotd = document.getElementById(motd);
-	var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_ !,.]*$)/;
-	var EmotdRange = /^.{0,50}$/;
+	var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# !,.]*$)/;
+	var EmotdRange = /^.{0,100}$/;
 	var x4 = document.getElementById(dialogid);
 	if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
 	  emotd.style.borderColor = "#383";
