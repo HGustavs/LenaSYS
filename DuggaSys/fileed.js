@@ -967,7 +967,7 @@ document.addEventListener('DOMContentLoaded', function (){
  });
 
  function updateAce(data){11111
-    editor.getSession().setValue(data);
+    editor.getSession().setValue(data);2222
 }
 
 // ---------------------------------------------------
