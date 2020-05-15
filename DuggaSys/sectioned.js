@@ -1125,6 +1125,7 @@ function ignoreMOTD(){
 
 function resetMOTDCookieForCurrentCourse(){
   var c_string = getCookie('MOTD');
+  if (c_string != ('') && c_string != null){
   c_array = c_string.split(',');
   for(let i = 0; i<c_array.length;i+=2){
     if(c_array[i] == versnme && c_array[i+1] == versnr){
@@ -1132,6 +1133,7 @@ function resetMOTDCookieForCurrentCourse(){
     }
   }
   document.cookie = 'MOTD=' + c_array;
+}
   showMOTD();
 }
 
