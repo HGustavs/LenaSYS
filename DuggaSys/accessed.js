@@ -280,6 +280,9 @@ function validateEmail(email)
 	if(!formatTest.test(email))
 		return 'Email error! Format is invalid';
 
+	if(email.lastIndexOf('@')!==delimiter)	// Only one @ allowed to separate local and domain parts
+		return 'Email error! Only one "@" is allowed';
+
 	return null;	// The provided email is correct!
 }
 
