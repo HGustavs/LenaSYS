@@ -3470,7 +3470,8 @@ function resetBoxes() {
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
 
-function resizeBoxes(parent, templateId) {
+function resizeBoxes(parent, templateId) 
+{
 	var boxValArray = initResizableBoxValues(parent);
 
 	if (templateId == 1) {
@@ -3480,14 +3481,14 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 1, 2);
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 	} else if (templateId == 2) {
@@ -3497,15 +3498,15 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 1, 2);
-				$(boxValArray['box1']['id']).width("100%");
+				document.querySelector(boxValArray['box1']['id']).style.width = "100%";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 	} else if (templateId == 3) {
@@ -3515,16 +3516,16 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-				$("#box2wrapper").css("left", "");
-				$("#box1wrapper").css("height", "100%");
+				document.getElementById("box2wrapper").style.left = "";
+				document.getElementById("box1wrapper").style.height = "100%"
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
@@ -3532,15 +3533,15 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
-				$(boxValArray['box2']['id']).css("left", " ");
+				document.querySelector(boxValArray['box2']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 	} else if (templateId == 4) {
@@ -3550,16 +3551,16 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "e,s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
-				$("#box2wrapper").css("left", " ");
+				document.getElementById("box2wrapper").style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
@@ -3567,16 +3568,16 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 				alignBoxesWidth(boxValArray, 2, 1);
-				$("#box2wrapper").css("left", " ");
+				document.getElementById("box2wrapper").style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 	} else if (templateId == 5) {
@@ -3586,16 +3587,16 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "e,s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight4boxes(boxValArray, 1, 2);
-				$("#box2wrapper").css("left", " ");
+				document.getElementById("box2wrapper").style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
@@ -3603,15 +3604,15 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight4boxes(boxValArray, 2, 1);
-				$("#box2wrapper").css("left", " ");
+				document.getElementById("box2wrapper").style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
@@ -3619,26 +3620,26 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 3, 4);
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
 	} else if (templateId == 6) {
 		getLocalStorageProperties(templateId, boxValArray);
-		$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
+		document.getElementById("box3wrapper").style.top = localStorage.getItem("template6box2heightPercent") + "%";
 
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignWidth4boxes(boxValArray, 1, 2, 3, 4);
@@ -3646,7 +3647,7 @@ function resizeBoxes(parent, templateId) {
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
@@ -3654,15 +3655,15 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
-				$(boxValArray['box2']['id']).css("left", "");
+				document.querySelector(boxValArray['box2']['id']).style.left = "";
 				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
@@ -3670,27 +3671,27 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
-				$(boxValArray['box3']['id']).css("left", "");
+				document.querySelector(boxValArray['box3']['id']).style.left = "";
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
 	} else if (templateId == 7) {
 		getLocalStorageProperties(templateId, boxValArray);
-		$("#box3wrapper").css("top", localStorage.getItem("template7box2heightPercent") + "%");
+		document.getElementById("box3wrapper").style.top = localStorage.getItem("template7box2heightPercent") + "%";
 
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s,e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
@@ -3698,23 +3699,23 @@ function resizeBoxes(parent, templateId) {
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "s,e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
-				$(boxValArray['box1']['id']).css("left", " ");
+				document.querySelector(boxValArray['box1']['id']).style.left = " ";
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 				alignWidthTemplate7(boxValArray, 3, 2, 4, 1);
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 		
@@ -3722,7 +3723,7 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				$(boxValArray['box4']['id']).css("top", "");
@@ -3730,7 +3731,7 @@ function resizeBoxes(parent, templateId) {
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 	} else if (templateId == 8) {
@@ -3740,30 +3741,32 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "e, s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
+				document.querySelector(boxValArray['box2']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
+				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				alignBoxesWidthTemplate8(boxValArray, 3, 2, 1);
-				$(boxValArray['box2']['id']).css("left", " ");
+				document.querySelector(boxValArray['box2']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 	} else if (templateId == 9) {
@@ -3773,14 +3776,14 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignTemplate9Width(boxValArray, 1, 2, 3, 4, 5);
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
@@ -3788,18 +3791,18 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignTemplate9Height(boxValArray, 2, 3, 4, 5);
-				$(boxValArray['box2']['id']).css("left", " ");
-				$(boxValArray['box3']['id']).css("left", " ");
-				$(boxValArray['box4']['id']).css("left", " ");
-				$(boxValArray['box5']['id']).css("left", " ");
+				document.querySelector(boxValArray['box2']['id']).style.left = " ";
+				document.querySelector(boxValArray['box3']['id']).style.left = " ";
+				document.querySelector(boxValArray['box4']['id']).style.left = " ";
+				document.querySelector(boxValArray['box5']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
@@ -3807,36 +3810,36 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
-				$(boxValArray['box2']['id']).css("left", " ");
-				$(boxValArray['box3']['id']).css("left", " ");
-				$(boxValArray['box4']['id']).css("left", " ");
-				$(boxValArray['box5']['id']).css("left", " ");
+				document.querySelector(boxValArray['box2']['id']).style.left = " ";
+				document.querySelector(boxValArray['box3']['id']).style.left = " ";
+				document.querySelector(boxValArray['box4']['id']).style.left = " ";
+				document.querySelector(boxValArray['box5']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 		$(boxValArray['box4']['id']).resizable({
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignTemplate9Height2Stack(boxValArray, 2, 3, 4, 5);
-				$(boxValArray['box2']['id']).css("left", " ");
-				$(boxValArray['box3']['id']).css("left", " ");
-				$(boxValArray['box4']['id']).css("left", " ");
-				$(boxValArray['box5']['id']).css("left", " ");
+				document.querySelector(boxValArray['box2']['id']).style.left = " ";
+				document.querySelector(boxValArray['box3']['id']).style.left = " ";
+				document.querySelector(boxValArray['box4']['id']).style.left = " ";
+				document.querySelector(boxValArray['box5']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
