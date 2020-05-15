@@ -169,7 +169,7 @@
 					echo "<td id='testSearchContainer' class='navButt'>";
 
 					if ($requestedService == "fileed.php")
-						echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();sortAndFilterTogether();'/>";
+						echo   "<input id='searchinput' readonly type='search' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();sortAndFilterTogether();'/>";
 					else
 						echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/>";
 
@@ -427,6 +427,24 @@ function mouseOutAnnouncement() {
    }
 }
 /*Shadow hover effect for sort button END -------------*/
+
+var searchinput = document.getElementById("searchinput");
+console.log("sdsad1");
+console.log(searchinput);
+if(searchinput){
+console.log("sdsad2");
+	backButton.addEventListener("mouseover", mouseOverSearchInput);
+}
+
+function mouseOverSearchInput() {
+   console.log("sdsad3");
+   var obj = document.getElementById("searchinput");
+   if(obj != null)
+   {
+	obj.removeAttr("readonly");
+   }
+}
+
 
 </script>
 <script type="text/javascript">
