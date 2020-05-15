@@ -172,19 +172,19 @@ function loadGeneralStats() {
 		}
 			
 		// CPU Usage
-		if (!stristr(PHP_OS, "Darwin")) {
-		var chartData = [];
-		chartData.push({
-			label: 'CPU Load ('+data.cpu.totalPercent+'%)',
-			value: data.cpu.totalPercent
-		});
+		if(data.cpu != undefined){
+			var chartData = [];
+			chartData.push({
+				label: 'CPU Load ('+data.cpu.totalPercent+'%)',
+				value: data.cpu.totalPercent
+			});
 	
-		chartData.push({
-			label: 'CPU Free ('+data.cpu.freePercent+'%)',
-			value: data.cpu.freePercent
-		});
-		drawPieChart(chartData, 'CPU Usage on the Server', true);		
-	}
+			chartData.push({
+				label: 'CPU Free ('+data.cpu.freePercent+'%)',
+				value: data.cpu.freePercent
+			});
+			drawPieChart(chartData, 'CPU Usage on the Server', true);		
+		}
 	});
 }
 

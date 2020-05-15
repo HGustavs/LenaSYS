@@ -356,11 +356,7 @@ function getServerLoad()
 			}
 		}
 	}
-	if (is_null($load)) {
-		echo "Not able to estimate CPU load (Perhaps using old version of Windows or missing rights at Linux or Windows)";	
-	} else {
 	return $load;
-	}
 }
 
 //------------------------------------------------------------------------------------------------
