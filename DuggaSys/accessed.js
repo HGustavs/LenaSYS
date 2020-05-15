@@ -161,9 +161,10 @@ function addSingleUser() {
 }
 
 function verifyUserInputForm(input) {
-	// Verify SSN using validateSSN function
 	var errorString = '';
-	if(verifyString = validateSSN(input[0])) {	// Returns null if there is no error
+
+	// Verify SSN using validateSSN function
+	if(verifyString = validateSSN(input[0])) {		// Returns null if there is no error
 		alert(verifyString);
 		return false;
 	}
@@ -180,8 +181,13 @@ function verifyUserInputForm(input) {
 		return false;
 	}
 
+	// Verify email
+	if(verifyString = validateEmail(input[3])) {	// Returns null if there is no error
+		alert(verifyString);
+		return false;
+	}
 	// Verify Email <= 256 characters, contains '@' and <= 80 characters before '@'
-	if (input[3].length > 256) {
+	/*if (input[3].length > 256) {
 		alert('Input exceeded max length for Email (256)');
 		return false;
 	}
@@ -196,7 +202,7 @@ function verifyUserInputForm(input) {
 	if (input[3] && input[3].indexOf('@') == 0) {
 		alert('Email input must contain at least 1 character before "@" to create a username');
 		return false;
-	}
+	}*/
 
 	return true;
 }
