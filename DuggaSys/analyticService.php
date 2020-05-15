@@ -335,31 +335,14 @@ function getServerLoad()
 		}
 	} else {
 		if (is_readable("/proc/stat")) {
-			// Collect 2 samples
 			$statData1 = getServerLoadLinux();
 
-			$statData2 = getServerLoadLinux();
+			// Sum up the 4 values for User, Nice, System and Idle and calculate
+			// the percentage of idle time (which is part of the 4 values!)
+			$cpuTime = $statData1[0] + $statData1[1] + $statData1[2] + $statData1[3];
 
-			if((!is_null($statData1)) && (!is_null($statData2))) {
-				// Get difference
-				$statData2[0] -= $statData1[0];
-				$statData2[1] -= $statData1[1];
-				$statData2[2] -= $statData1[2];
-				$statData2[3] -= $statData1[3];
-
-				// Sum up the 4 values for User, Nice, System and Idle and calculate
-				// the percentage of idle time (which is part of the 4 values!)
-				$cpuTime = $statData2[0] + $statData2[1] + $statData2[2] + $statData2[3];
-
-				// Invert percentage to get CPU time, not idle time
-				$load = 100 - ($statData2[3] * 100 / $cpuTime);
-			} else {
-				// Sum up the 4 values for User, Nice, System and Idle and calculate
-				// the percentage of idle time (which is part of the 4 values!)
-				$cpuTime = $statData1[0] + $statData1[1] + $statData1[2] + $statData1[3];
-
-				// Invert percentage to get CPU time, not idle time
-				$load = 100 - ($statData1[3] * 100 / $cpuTime);
+			// Invert percentage to get CPU time, not idle time
+			$load = 100 - ($statData1[3] * 100 / $cpuTime);
 			}
 		}
 	}
