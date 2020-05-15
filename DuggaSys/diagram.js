@@ -5883,7 +5883,7 @@ function submitAppearanceForm() {
     toggleApperanceElement();
 }
 //----------------------------------------------------------------------------------------
-// createlayer: Used for createing a layer menu object aswell store unique layer ID.
+// createlayer: Used for createing a layer menu span as well store unique layer ID.
 //----------------------------------------------------------------------------------------
 function createLayer(){
     const parentNode = document.getElementById("viewLayer");
@@ -5919,7 +5919,7 @@ function createLayer(){
     addLayersToApperence(id);                           // adds layer to apperance menu
 }
 //----------------------------------------------------------------------------------------
-// loadLayer: Uses LocalStorage to load layers and acitve layers from page load
+// loadLayer: Uses LocalStorage to load layers and acitve layers from LocalStorage
 // localStorageID -> number of created layers from previoues sessions
 //----------------------------------------------------------------------------------------
 function loadLayer(localStorageID){
@@ -5929,7 +5929,6 @@ function loadLayer(localStorageID){
     addLayersToApperence(localStorageID)
     let layerArray = [];
 
-    
     for(let i = 2; i <= localStorageID; i++){
         const newDiv = document.createElement("div");
         const newSpan = document.createElement("span");
