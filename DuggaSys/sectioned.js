@@ -1682,7 +1682,9 @@ function retrieveAnnouncementAuthor(){
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       if($("#userid").length > 0) {
-          document.getElementById("userid").value = this.responseText;
+          var parsed_data = JSON.parse(this.response);
+          document.getElementById("userid").value = parsed_data.uid;
+
       }
     }
   };
@@ -1726,7 +1728,13 @@ function retrieveAnnouncementsCards(){
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("announcementCards").innerHTML = this.responseText;
+      var parsed_data = JSON.parse(this.response);
+      document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+      var unread_announcements = parsed_data.nRows;
+      if(unread_announcements > 0){
+        $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
+        $("#announcementnotificationcount").html(parsed_data.nRows);
+      }
       accessAdminAction();
       readLessOrMore();
       showLessOrMoreAnnouncements();
@@ -1905,6 +1913,15 @@ function showLessOrMoreAnnouncements(){
     $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
   });
 
+}
+function updateReadStatus(announcementid, cid, versid){
+  $.ajax({
+    url: "../Shared/updateviewedAnnouncementCards.php",
+    data: {announcementid : announcementid, cid : cid, versid : versid},
+    type: "POST",
+    success: function(data){
+    }
+  });
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {
