@@ -439,8 +439,7 @@ document.addEventListener('keydown', function (event) {
 //sortAndFilterTogether <- callback function sort and filter files by its kind and search input
 //---------------------------------------------------------------------------------------------
 function sortAndFilterTogether(){
-  filterFilesByKind(sortFilter.kind);
-
+    filterFilesByKind(sortFilter.kind);
 }
 var sortFilter = {
     fileKind : "",
@@ -708,14 +707,15 @@ function deleteFile(fileid, filename, filekind) {
     };
 
     if (confirm("Do you really want to delete the file/link: " + filename)) {
-        AJAXService("DELFILE", tempData
-        , "FILE");
+        AJAXService("DELFILE", tempData, "FILE");
     }
 }
 
+/*
 function createQuickItem() {
     //showFilePopUp('MFILE');
 }
+*/
 
 /*****************************************************************
   loadFile(), editFile(), cancelEditFile() and closeEditFile()
