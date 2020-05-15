@@ -55,6 +55,9 @@ $(function() {
 		case "userInformation":
 			loadUserInformation();
 			break;
+		case "duggaInformation":
+			loadDuggaInformation();
+			break;
 		case "generalStats":
 		default:
 			loadGeneralStats();
@@ -937,6 +940,15 @@ function loadUserInformation(){
     }
  
     pageSelect();
+}
+
+function loadDuggaInformation()
+{
+	localStorage.setItem('analyticsPage', 'duggaInformation');
+	resetAnalyticsChart();
+	$('#pageTitle').text("Dugga Information");
+    $('#analytic-info').empty();
+	$('#analytic-info').append("<p>Dugga Information.</p>");
 }
 
 //------------------------------------------------------------------------------------------------
