@@ -564,28 +564,13 @@ function Symbol(kindOfSymbol) {
         this.sortConnector(this.connectorBottom, 2, x1, x2, y2);
     }
 
-    // return true if connector contains a certain point
-    this.hasConnector = function(point) {
-        for (var i = 0; i < this.connectorTop.length; i++) {
-            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point) {
-                return true;
-            }
-        }
-        for(var i = 0; i < this.connectorRight.length; i++) {
-            if(this.connectorRight[i].to == point || this.connectorRight[i].from == point) {
-                return true;
-            }
-        }
-        for (var i = 0; i < this.connectorBottom.length; i++) {
-            if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point) {
-                return true;
-            }
-        }
-        for (var i = 0; i < this.connectorLeft.length; i++) {
-            if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point) {
-                return true;
-            }
-        }
+    //-------------------------------------------------------------------
+    // hasConnectorPoint: Returns true if any connector contains passed point.
+    //-------------------------------------------------------------------
+    this.hasConnectorPoint = function(point) {
+        return [this.connectorTop, this.connectorRight, this.connectorBottom, this.connectorLeft].some(connector => {
+            return connector.some(coordinate => coordinate.to === point || coordinate.from === point);
+        });
     }
 
     //--------------------------------------------------------------------
@@ -611,30 +596,13 @@ function Symbol(kindOfSymbol) {
         return count;
     }
 
-    //--------------------------------------------------------------------
-    // hasConnectorFromPoint: returns if this symbol has a connector to the point
-    //--------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    // hasConnectorFromPoint: Returns true if this symbol has a connector from the point.
+    //---------------------------------------------------------------------------------
     this.hasConnectorFromPoint = function(point) {
-        for (var i = 0; i < this.connectorTop.length; i++) {
-            if(this.connectorTop[i].from == point) {
-                return true;
-            }
-        }
-        for(var i = 0; i < this.connectorRight.length; i++) {
-            if(this.connectorRight[i].from == point) {
-                return true;
-            }
-        }
-        for (var i = 0; i < this.connectorBottom.length; i++) {
-            if(this.connectorBottom[i].from == point) {
-                return true;
-            }
-        }
-        for (var i = 0; i < this.connectorLeft.length; i++) {
-            if(this.connectorLeft[i].from == point) {
-                return true;
-            }
-        }
+        return [this.connectorTop, this.connectorRight, this.connectorBottom, this.connectorLeft].some(connector => {
+            return connector.some(coordinate => coordinate.from === point);
+        });
     }
 
     //--------------------------------------------------------------------
@@ -663,36 +631,24 @@ function Symbol(kindOfSymbol) {
         }
     }
 
-    //--------------------------------------------------------------------
-    // Gets connected lines
-    //--------------------------------------------------------------------
-    this.getConnectedTo = function(){
-        var connected = [];
-        //top
-        if(this.connectorTop.length > 0){
-            for(var j = 0 ; j < this.connectorTop.length ; j++){
-                connected.push(this.connectorTop[j].from);
-            }
-        }
-        //right
-        if(this.connectorRight.length > 0){
-            for(var j = 0 ; j < this.connectorRight.length ; j++){
-                connected.push(this.connectorRight[j].from);
-            }
-        }
-        //bottom
-        if(this.connectorBottom.length > 0){
-            for(var j = 0 ; j < this.connectorBottom.length ; j++){
-                connected.push(this.connectorBottom[j].from);
-            }
-        }
-        //left
-        if(this.connectorLeft.length > 0){
-            for(var j = 0 ; j < this.connectorLeft.length ; j++){
-                connected.push(this.connectorLeft[j].from);
-            }
-        }
-        return connected;
+    //------------------------------------------------------------------------------------------------
+    // getConnectedFrom: Returns the line points connected from this symbol only (not to other symbols).
+    //------------------------------------------------------------------------------------------------
+    this.getConnectedFrom = function() {
+        return [this.connectorTop, this.connectorRight, this.connectorBottom, this.connectorLeft].reduce((result, connector) => {
+            connector.forEach(coordinate => result.push(coordinate.from));
+            return result;
+        }, []);
+    }
+
+    //-----------------------------------------------------------------------
+    // getConnectedTo: Returns the line points connected to the other symbol.
+    //-----------------------------------------------------------------------
+    this.getConnectedTo = function() {
+        return [this.connectorTop, this.connectorRight, this.connectorBottom, this.connectorLeft].reduce((result, connector) => {
+            connector.forEach(coordinate => result.push(coordinate.to));
+            return result;
+        }, []);
     }
 
     //--------------------------------------------------------------------
@@ -1199,47 +1155,29 @@ function Symbol(kindOfSymbol) {
     //-----------------------------------------------------------------------
     // getPoints: Adds each corner point to an array and returns the array
     //-----------------------------------------------------------------------
+
     this.getPoints = function() {
-        var privatePoints = [];
-        if(this.symbolkind  == symbolKind.erEntity) {
-            for (var i = 0; i < this.connectorTop.length; i++) {
-                if(this.getquadrant(this.connectorTop[i].to.x,this.connectorTop[i].to.y) != -1) {
-                    privatePoints.push(this.connectorTop[i].to);
-                }
-                if(this.getquadrant(this.connectorTop[i].from.x,this.connectorTop[i].from.y) != -1) {
-                    privatePoints.push(this.connectorTop[i].from);
-                }
+        return [this.topLeft, this.bottomRight, this.middleDivider, this.centerPoint].reduce((result, pointIndex) => {
+            if(typeof pointIndex !== "undefined" && pointIndex !== null) {
+                result.push(pointIndex);
             }
-            for (var i = 0; i < this.connectorRight.length; i++) {
-                if(this.getquadrant(this.connectorRight[i].to.x,this.connectorRight[i].to.y) != -1) {
-                    privatePoints.push(this.connectorRight[i].to);
-                }
-                if(this.getquadrant(this.connectorRight[i].from.x,this.connectorRight[i].from.y) != -1) {
-                    privatePoints.push(this.connectorRight[i].from);
-                }
-            }
-            for (var i = 0; i < this.connectorBottom.length; i++) {
-                if(this.getquadrant(this.connectorBottom[i].to.x,this.connectorBottom[i].to.y) != -1) {
-                    privatePoints.push(this.connectorBottom[i].to);
-                }
-                if(this.getquadrant(this.connectorBottom[i].from.x,this.connectorBottom[i].from.y) != -1) {
-                    privatePoints.push(this.connectorBottom[i].from);
-                }
-            }
-            for (var i = 0; i < this.connectorLeft.length; i++) {
-                if(this.getquadrant(this.connectorLeft[i].to.x,this.connectorLeft[i].to.y) != -1) {
-                    privatePoints.push(this.connectorLeft[i].to);
-                }
-                if(this.getquadrant(this.connectorLeft[i].from.x,this.connectorLeft[i].from.y) != -1) {
-                    privatePoints.push(this.connectorLeft[i].from);
-                }
-            }
-        }
-        privatePoints.push(this.topLeft);
-        privatePoints.push(this.bottomRight);
-        privatePoints.push(this.middleDivider);
-        privatePoints.push(this.centerPoint);
-        return privatePoints;
+            return result;
+        }, []);
+    }
+
+    //-------------------------------------------------------------------------------------
+    // getConnectedLinePoints: Adds all connected line points to an array and returns the array.
+    //-------------------------------------------------------------------------------------
+
+    this.getConnectedLinePoints = function() {
+        const points = [this.connectorTop, this.connectorRight, this.connectorBottom, this.connectorLeft].reduce((set, connector) => {
+            connector.forEach(coordinate => {
+                set.add(coordinate.to);
+                set.add(coordinate.from);
+            });
+            return set;
+        }, new Set());
+        return [...points];
     }
 
     //-----------------------------------------------------------------------
@@ -1255,100 +1193,37 @@ function Symbol(kindOfSymbol) {
     //                      function is used on line objects
     //----------------------------------------------------------------
     this.getConnectedObjects = function () {
-        if (this.isLineType()) {
-            var privateObjects = [];
+        const types = [symbolKind.erAttribute, symbolKind.erEntity, symbolKind.erRelation, symbolKind.uml];
+        const objects = diagram.getObjectsByTypes(types);
 
-            // Compare values of all symbols in diagram with current line
-            for (var i = 0; i < diagram.length; i++) {
-                if (diagram[i].kind == kind.symbol && !diagram[i].isLineType()) {
-                    // Top left and bottom right corners for the current object
-                    dtlx = diagram[i].corners().tl.x;
-                    dtly = diagram[i].corners().tl.y;
-                    dbrx = diagram[i].corners().br.x;
-                    dbry = diagram[i].corners().br.y;
-
-                    // Top left and bottom right corners (end points) for the clicked line
-                    ltlx = this.corners().tl.x;
-                    ltly = this.corners().tl.y;
-                    lbrx = this.corners().br.x;
-                    lbry = this.corners().br.y;
-
-                    if (diagram[i].symbolkind == symbolKind.uml) { // UML
-                        // If line's either end point is within the corners of the UML symbol
-                        // Can possibly be optimised, currently uses coordinates because the connector
-                        // points aren't saved somehow to the UML's points
-                        if ((ltlx >= dtlx && ltlx <= dbrx) || (lbrx >= dtlx && lbrx <= dbrx)) {
-                            if ((ltly >= dtly && ltly <= dbry) || (lbry >= dtly && lbry <= dbry)) {
-                                privateObjects.push(diagram[i]);
-                            }
-                        }
-                    } else if (diagram[i].symbolkind == symbolKind.erAttribute) { // Attribute
-                        // If line's either end point is the same as an attribute's center point
-                        if (diagram[i].centerPoint == this.topLeft || diagram[i].centerPoint == this.bottomRight) {
-                            privateObjects.push(diagram[i]);
-                        }
-                    } else if (diagram[i].symbolkind == symbolKind.erEntity) { // Entity
-                        // If line's both end points are included in the entity's list of connectors
-                        if (diagram[i].getPoints().includes(this.topLeft) && diagram[i].getPoints().includes(this.bottomRight)) {
-                            privateObjects.push(diagram[i]);
-                        }
-                    } else if (diagram[i].symbolkind == symbolKind.erRelation) { // Relation
-                        // If line's either end points matches the coordinates of the Relation symbol's connector pointsSelected
-                        // This can be optimised if these points are added when a Relation symbol is created
-                        var connectedToRelation = false;
-
-                        // Finds middle point coordinates for relation symbols
-                        var relationMiddleX = ((dbrx - dtlx) / 2) + dtlx;
-                        var relationMiddleY = ((dbry - dtly) / 2) + dtly;
-
-                        // Line is connected to object if any of these are true
-                        if ((relationMiddleX == ltlx || relationMiddleX == lbrx) && (dtly == ltly || dtly == lbry)) {
-                            // Top point of diamond
-                            connectedToRelation = true;
-                        } else if ((relationMiddleY == ltly || relationMiddleY == lbry) && (dbrx == ltlx || dbrx == lbrx)) {
-                            // Right point of diamond
-                            connectedToRelation = true;
-                        } else if ((relationMiddleX == ltlx || relationMiddleX == lbrx) && (dbry == ltly || dbry == lbry)) {
-                            // Bottom point of diamond
-                            connectedToRelation = true;
-                        } else if ((relationMiddleY == ltly || relationMiddleY == lbry) && (dtlx == ltlx || dtlx == lbrx)) {
-                            // Left point of diamond
-                            connectedToRelation = true;
-                        }
-
-                        if (connectedToRelation) {
-                            privateObjects.push(diagram[i]);
-                        }
-                    }
-
-                    if (privateObjects.length >= 2) {
-                        break;
-                    }
+        return objects.reduce((result, object) => {
+            const connectedLines = object.getConnectedLines();
+            connectedLines.forEach(line => {
+                if(Object.is(this, line)) {
+                    result.push(object);
                 }
-            }
-            return privateObjects;
-        }
+            });
+            return result;
+        }, []);
     }
 
-    //--------------------------------------------------------------------
-    // getLines: Returns all the lines connected to the object
-    //--------------------------------------------------------------------
-    this.getLines = function() {
-        var privatePoints = this.getPoints();
-        var lines = diagram.getLineObjects();
-        var objectLines = [];
-        for (var i = 0; i < lines.length; i++) {
-            //Connected to connectors top, right, bottom and left; topLeft, bottomRight, centerPoint or middleDivider.
-            for (var j = 0; j < privatePoints.length; j++) {
-                if (lines[i].topLeft == privatePoints[j] || lines[i].bottomRight == privatePoints[j]) {
-                    if(objectLines.indexOf(lines[i])==-1) {
-                        objectLines.push(lines[i]);
-                        break;
-                    }
+    //------------------------------------------------------------------
+    // getConnectedLines: Returns all the lines connected to the object.
+    //------------------------------------------------------------------
+    this.getConnectedLines = function() {
+        const points = this.getConnectedFrom();
+        const lines = diagram.getObjectsByTypes([symbolKind.line, symbolKind.umlLine]);
+
+        const connectedLines = lines.reduce((set, line) => {
+            points.forEach(point => {
+                if(line.topLeft === point || line.bottomRight === point) {
+                    set.add(line);
                 }
-            }
-        }
-        return objectLines;
+            });
+            return set;
+        }, new Set());
+
+        return [...connectedLines];
     }
 
     //--------------------------------------------------------------------
@@ -2667,7 +2542,7 @@ function Symbol(kindOfSymbol) {
 //checkLineIntersection: checks if any two lines does intersect
 //--------------------------------------------------------------
 function checkLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY) {
-	var	lines	=	diagram.getLineObjects();
+    var	lines = diagram.getObjectsByType(symbolKind.line);
 	var results = [];
 	for (var i = 0; i < lines.length; i++) {
 		var	line2StartX = pixelsToCanvas(points[lines[i].topLeft].x).x;

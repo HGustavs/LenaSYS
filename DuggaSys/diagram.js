@@ -760,10 +760,10 @@ function setConnectedLines(temp) {
     for (var y = 0; y < cloneTempArray.length; y++) {
         for (var x = 0; x < cloneTempArray.length; x++) {
             if(cloneTempArray[x].kind !== kind.path && cloneTempArray[y].kind !== kind.path) {
-                if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].bottomRight)) {
+                if(x != y && cloneTempArray[y].getConnectedFrom().includes(cloneTempArray[x].bottomRight)) {
                     var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].bottomRight);
                     connected.push({from:y, to:x, loc: location, lineloc: "bottomRight", lineloc2: "topLeft"});
-                } else if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].topLeft)) {
+                } else if(x != y && cloneTempArray[y].getConnectedFrom().includes(cloneTempArray[x].topLeft)) {
                     var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].topLeft);
                     connected.push({from:y, to:x, loc: location, lineloc: "topLeft", lineloc2: "bottomRight"});   
                 }
@@ -1083,11 +1083,7 @@ function copySymbol(symbol) {
 function copyPath(path) {
     const clone = Object.assign(new Path, JSON.parse(JSON.stringify(path)));
 
-    const oldPointIndexes = clone.segments.reduce((result, segment) => {
-        result.push(segment.pa);
-        result.push(segment.pb);
-        return [...new Set(result)];
-    }, []);
+    const oldPointIndexes = clone.getPoints();
 
     const pointIndexes = oldPointIndexes.reduce((result, pointIndex) => {
         const point = points[pointIndex];
@@ -1424,101 +1420,20 @@ diagram.checkForHover = function(posX, posY) {
     return hoveredObjects[hoveredObjects.length - 1];
 }
 
-//--------------------------------------------------------------------
-// eraseLines: removes all the lines connected to an object
-//--------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------
+// getObjectsByType: Returns an array of all diagram objects with the passed symbolKind. (0 for paths).
+//-----------------------------------------------------------------------------------------------------
 
-diagram.eraseLines = function(privateLines) {
-    for (var i = 0; i < privateLines.length; i++) {
-        var eraseLeft = false;
-        var eraseRight = false;
-        for (var j = 0; j < diagram.length;j++) {
-            if (points[diagram[j].centerPoint] == points[privateLines[i].topLeft] ||
-                points[diagram[j].middleDivider] == points[privateLines[i].topLeft]) {
-                eraseLeft = true;
-            }
-            if (points[diagram[j].centerPoint] == points[privateLines[i].bottomRight] ||
-                points[diagram[j].middleDivider] == points[privateLines[i].bottomRight]) {
-                eraseRight = true;
-            }
-        }
-        var connected_objects = connectedObjects(privateLines[i]);
-        if(!eraseLeft) {
-            for(var j = 0; j < connected_objects.length; j++) {
-                connected_objects[j].removePointFromConnector(privateLines[i].topLeft);
-            }
-            points[privateLines[i].topLeft] = waldoPoint;
-        }
-        if(!eraseRight) {
-            for(var j = 0; j < connected_objects.length; j++) {
-                connected_objects[j].removePointFromConnector(privateLines[i].bottomRight);
-            }
-            points[privateLines[i].bottomRight] = waldoPoint;
-        }
-        diagram.deleteObject(privateLines[i]);
-    }
+diagram.getObjectsByType = function(type = 0) {
+    return diagram.filter(object => (object.symbolkind || 0) === type);
 }
 
-//--------------------------------------------------------------------
-// getEntityObjects: Returns a list of all entities
-//--------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------
+// getObjectsByTypes: Returns an array of all diagram objects included in passed array of symbolKinds. (0 for paths).
+//-------------------------------------------------------------------------------------------------------------------
 
-diagram.getEntityObjects = function() {
-    var entities = [];
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == symbolKind.erEntity) {
-            entities.push(diagram[i]);
-        }
-    }
-    return entities;
-}
-
-//--------------------------------------------------------------------
-// getLineObjects: Returns a list of all lines
-//--------------------------------------------------------------------
-
-diagram.getLineObjects = function() {
-    var lines = [];
-    for (var i = 0; i < this.length; i++) {
-        if (diagram[i].symbolkind == symbolKind.line) {
-            lines.push(diagram[i]);
-        }
-    }
-    return lines;
-}
-
-//--------------------------------------------------------------------
-// getRelationObjects: Returns a list of all relations
-//--------------------------------------------------------------------
-
-diagram.getRelationObjects = function() {
-    var relations = [];
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == symbolKind.erRelation) {
-            relations.push(diagram[i]);
-        }
-    }
-    return relations;
-}
-
-//--------------------------------------------------------------------
-// updateLineRelations: Updates a line's relation depending on
-//                      what object it is connected to
-//--------------------------------------------------------------------
-
-diagram.updateLineRelations = function() {
-    var privateLines = this.getLineObjects();
-    for (var i = 0; i < privateLines.length; i++) {
-        privateLines[i].type = "idek";
-        var connected_objects = connectedObjects(privateLines[i]);
-        if (connected_objects.length >= 2) {
-            for (var j = 0; j < connected_objects.length; j++) {
-                if (connected_objects[j].type == "weak") {
-                    privateLines[i].type = "weak";
-                }
-            }
-        }
-    }
+diagram.getObjectsByTypes = function(types = []) {
+    return diagram.filter(object => types.includes(object.symbolkind || 0));
 }
 
 //--------------------------------------------------------------------
@@ -2430,93 +2345,46 @@ function disableShortcuts(event){
     updateGraphics();
 }
 
-//-------------------------------------------
-// Returns lines connected to the object
-//--------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+// eraseLine: Erases passed line from diagram. Makes sure line points are no longer in object connectors.
+//-------------------------------------------------------------------------------------------------------
 
-function getConnectedLines(object) {
-    var privatePoints = object.getPoints();
-    var lines = diagram.getLineObjects();
-    var objectLines = [];
-    for (var i = 0; i < lines.length; i++) {
-        var line = lines[i];
-        //Lines connected to object's centerPoint
-        //Line always have topLeft and bottomRight if symbolkind == 4, because that means it's a line object
-        if (line.topLeft == object.centerPoint || line.bottomRight == object.centerPoint) {
-            objectLines.push(line);
+function eraseLine(line) {
+    const connectedObjects = line.getConnectedObjects();
+
+    connectedObjects.forEach(symbol => {
+        if(symbol.symbolkind == symbolKind.erAttribute){
+            symbol.removePointFromConnector(symbol.centerPoint, line);
+        } else{
+            symbol.removePointFromConnector(line.topLeft);
+            symbol.removePointFromConnector(line.bottomRight);
         }
-        //Connected to connectors top, right, bottom and left.
-        for (var j = 0; j < privatePoints.length; j++) {
-            if (line.topLeft == privatePoints[j] || line.bottomRight == privatePoints[j]) {
-                objectLines.push(line);
-            }
-        }
-    }
-    return objectLines;
+    });
+
+    // Check if the line has a common point with a center point of attributes or relations.
+    const removeTopLeft = !connectedObjects.some(symbol => symbol.centerPoint === line.topLeft || symbol.middleDivider === line.topLeft);
+    const removeBottomRight = !connectedObjects.some(symbol => symbol.centerPoint === line.bottomRight || symbol.middleDivider === line.bottomRight);
+
+    if(removeTopLeft) points[line.topLeft] = "";
+    if(removeBottomRight) points[line.bottomRight] = "";
+
+    diagram.deleteObject(line);
 }
 
-//---------------------------------
-// Erases the object from diagram
-//---------------------------------
+//------------------------------------------------
+// eraseObject: Erases passed object from diagram.
+//------------------------------------------------
 
 function eraseObject(object) {
-    var objectsToDelete = [];
-    if (object.kind == kind.symbol) {
-        // None lines
-        if(object.symbolkind != symbolKind.line && object.symbolkind != symbolKind.umlLine) {
-            var lines = diagram.filter(symbol => symbol.symbolkind == symbolKind.line);
-            var umlLines = diagram.filter(symbol => symbol.symbolkind == symbolKind.umlLine);
-            if(object.symbolkind != symbolKind.uml) {
-            objectsToDelete = lines.filter(
-                line => line.topLeft == object.middleDivider
-                || line.topLeft == object.centerPoint
-                || line.bottomRight == object.middleDivider
-                || line.bottomRight == object.centerPoint
-                || (object.hasConnectorFromPoint(line.topLeft) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
-                || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
-            );  
-            } else if (object.symbolkind == symbolKind.uml) {
-            objectsToDelete = umlLines.filter(
-                umlLine => umlLine.topLeft == object.middleDivider
-                || (object.hasConnectorFromPoint(umlLine.topLeft) && (object.symbolkind == symbolKind.uml))
-                || (object.hasConnectorFromPoint(umlLine.bottomRight) && (object.symbolkind == symbolKind.uml))
-            );
-            }
-        // lines
+    if (object.kind === kind.symbol) {
+        if(object.isLineType()) {
+            eraseLine(object);
         } else {
-            diagram.filter(
-                symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml || symbol.symbolkind == symbolKind.erAttribute)
-                    .filter(symbol =>   symbol.hasConnector(object.topLeft)
-                                     && symbol.hasConnector(object.bottomRight))
-                    .forEach(symbol => {
-                        if(symbol.symbolkind == symbolKind.erAttribute){
-                            symbol.removePointFromConnector(symbol.centerPoint, object);
-                        } else{
-                            symbol.removePointFromConnector(object.topLeft);
-                            symbol.removePointFromConnector(object.bottomRight);
-                        }
-                    });
-
-            var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == symbolKind.erAttribute || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml);
-            // Check if the line has a common point with a centerpoint of attributes or relations.
-            var removeTopleft = attributesAndRelations
-                        .filter(symbol => symbol.centerPoint == object.topLeft
-                                       || symbol.middleDivider == object.topLeft
-                               ).length == 0;
-            var removeBottomright = attributesAndRelations
-                        .filter(symbol => symbol.centerPoint == object.bottomRight
-                                        || symbol.middleDivider == object.bottomRight
-                               ).length == 0;
-            if(removeTopleft) points[object.topLeft] = "";
-            if(removeBottomright) points[object.bottomRight] = "";
+            object.getConnectedLines().forEach(eraseObject);
         }
-        object.erase();
-        diagram.eraseLines(object, object.getLines());
-    } else if (object.kind == kind.path) {
-        object.erase();
     }
+    object.erase();
     diagram.deleteObject(object);
-    objectsToDelete.forEach(eraseObject);
     updateGraphics();
 }
 
@@ -2565,31 +2433,6 @@ $(document).ready(function() {
         }
     });
 });
-
-//--------------------------------------------------
-// Returns connected that are connected to the line
-//--------------------------------------------------
-
-function connectedObjects(line) {
-    var privateObjects = [];
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) {
-            var objectPoints = diagram[i].getPoints();
-            for (var j = 0; j < objectPoints.length; j++) {
-                if (objectPoints[j] == line.topLeft || objectPoints[j] == line.bottomRight) {
-                    privateObjects.push(diagram[i]);
-                }
-                if (privateObjects.length >= 2) {
-                    break;
-                }
-            }
-            if (privateObjects.length >= 2) {
-                break;
-            }
-        }
-    }
-    return privateObjects;
-}
 
 //-----------------------------------
 // Draws the gridlines of the canvas
@@ -4691,7 +4534,6 @@ function mouseupevt(ev) {
     
     hashFunction();
     updateGraphics();
-    diagram.updateLineRelations();
     // Clear mouse state
     md = mouseState.empty;
     if(saveState) SaveState();
@@ -4985,7 +4827,6 @@ function touchEndEvent(event) {
     }
     hashFunction();
     updateGraphics();
-    diagram.updateLineRelations();
     md = mouseState.empty;
     if(saveState) SaveState();
 }
@@ -6294,6 +6135,9 @@ function createRuler(element, length, origoOffset, marginProperty) {
 //-------------------------------------------------------------------------------------
 
 function createRulerLinesObjectPoints() {
+    //Remove all current point liens
+    document.querySelectorAll(".point-line").forEach(element => element.remove());
+
     if(!isRulersActive || selected_objects.length < 1) return;
 
     const rulerExtraLinesX = document.querySelector("#ruler-x .ruler-extra-lines");
@@ -6301,9 +6145,6 @@ function createRulerLinesObjectPoints() {
 
     //Get an array of points used by all selected objects
     const selectedPoints = getSelectedObjectsPoints();
-
-    //Remove all current point liens
-    document.querySelectorAll(".point-line").forEach(element => element.remove());
 
     selectedPoints.forEach(point => {
         const canvasCoordinate = pixelsToCanvas(point.x, point.y);
@@ -6327,11 +6168,7 @@ function createRulerLinesObjectPoints() {
 
 function getSelectedObjectsPoints() {
     const selectedPoints = selected_objects.reduce((set, object) => {
-        object.getPoints().forEach(pointIndex => {
-            if(typeof pointIndex !== "undefined") {
-                set.add(points[pointIndex]);
-            }
-        });
+        object.getPoints().forEach(pointIndex => set.add(points[pointIndex]));
         return set;
     }, new Set());
 

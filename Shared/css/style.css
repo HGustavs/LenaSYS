@@ -5392,6 +5392,10 @@ only screen and (max-device-width: 320px) {
   display: flex;
 }
 
+#diagram-container * {
+  box-sizing: border-box;
+}
+
 #diagram-sidebar-container {
   width: var(--diagram-sidebar-width);
 }
@@ -5506,10 +5510,6 @@ only screen and (max-device-width: 320px) {
   flex-direction: column;
   width: calc(100vw - var(--diagram-sidebar-width));
   overflow: hidden;
-}
-
-#diagram-content * {
-  box-sizing: border-box;
 }
 
 #diagram-content.rulers-active {
