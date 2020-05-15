@@ -5306,7 +5306,7 @@ only screen and (max-device-width: 320px) {
 .flexwrapper #qstart, .flexwrapper #deadline, 
 .flexwrapper #deadline1, .flexwrapper #deadline2, 
 .flexwrapper #deadline3, .flexwrapper #release {
-  width:140px;
+  width:155px;
   font-family:"Roboto";
   color:#6f6f6f;
 }
