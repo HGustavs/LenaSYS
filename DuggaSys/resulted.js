@@ -1533,6 +1533,18 @@ function ladexport(gradeData = "NONE") {
 	 document.getElementById('lastExportedDate').innerHTML = gradeLastExported;
 
 	 localStorage.setItem('lastExpDate', gradeLastExported);
+
+	 // Check if "gradeData" is the default value
+	 // If it's not, then loop through and update the specific grades that have been exported.
+	 // If it is, then just update everything.
+	 if (gradeData !== "NONE") {
+		for (var i = 0; i < gradeData.length; i++) {
+			console.log(gradeData[i].uid + " " + gradeData[i].moment);
+			AJAXService("updateunexported", { exportType: "restricted", luid: gradeData[i].uid, moment: gradeData[i].moment }, "GEXPORT");
+		}
+	 } else {
+		AJAXService("updateunexported", {}, "GEXPORT");
+	 }
 	}
 }
 
@@ -1563,9 +1575,6 @@ function copyLadexport() {
 	 setInterval(function(){
 		lastExpDate.style.color  = '#000';
 	 }, 5000);
-
-	AJAXService("updateunexported", {}, "GEXPORT");
-
 }
 
 function addZero(i) {

@@ -41,6 +41,7 @@ $quizId=getOP("quizId");
 $teacher = getOP('teacher');
 $responsetext=getOP('resptext');
 $responsefile=getOP('respfile');
+$exportType = getOP('exportType');
 $access = false;
 
 $duggaid = getOP('duggaid');
@@ -111,7 +112,20 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 	// Check if opt == updateunexported
 	if ($opt === updateunexported_service_name) {
-		$statement = $pdo->prepare("UPDATE userAnswer SET gradeLastExported = CURRENT_TIMESTAMP");
+		$statement = "";
+
+		// Checks if the export was only unexported or if it exported everything
+		// If it only exported the unexported then update the specific grades.
+		// If it exported everything, them update everything.
+		if ($exportType === "restricted") {
+			$statement = $pdo->prepare("UPDATE userAnswer SET gradeLastExported = CURRENT_TIMESTAMP WHERE uid = :luid AND moment = :moment");
+			$statement->bindParam(":luid", $luid);
+			$statement->bindParam(":moment", $listentry);
+			$statement->execute();
+			return;
+		} else {
+			$statement = $pdo->prepare("UPDATE userAnswer SET gradeLastExported = CURRENT_TIMESTAMP");
+		}
 		
 		if ($statement === false) {
 			// Failed to prepare query, log and return an error message
