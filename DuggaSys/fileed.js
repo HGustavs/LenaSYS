@@ -101,7 +101,6 @@ function returnedFile(data) {
         hasCounterColumn: true
     });
 
-
     myTable.renderTable();
     if (querystring['confirmation'] != undefined) {
         $(".confirmationWindow").css("display", "block");
@@ -149,10 +148,6 @@ function showFilePopUp(fileKind) {
         $("#eFileHeadline").css("display", "block");
         $("#createNewEmptyFile").css("display", "block");
         $(".addNewFile").css("display", "none");
-        //$(".testselect").css("display", "block");
-        //$(".addNewFile").css("display", "none");
-        //$("#createNewEmptyFile").css("display", "block");
-        //$('#uploadedfile').attr('type', 'text');
     }
 }
 
@@ -195,8 +190,6 @@ function closeAddFile() {
 }
 
 function closePreview() {
-    /*$(".previewWindow").css("display","none");
-    $(".previewWindowContainer").css("display", "none");*/
     $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
 }
@@ -258,8 +251,6 @@ function validateDummyFile() {
 
     var errors = [];
     var name = document.getElementById("newEmptyFile").value;
-
-    // Trim name
     name = name.trim();
 
     // Get filename
@@ -436,13 +427,13 @@ function filePreviewClose(){
 document.addEventListener('keydown', function (event) {
     var fileview = document.querySelector(".fileView");
     if (event.key === 'Escape') {
-      $(".fileViewContainer").hide();
-      $(".fileViewWindow").hide();
-      while(fileview.firstChild){
-        fileview.removeChild(fileview.firstChild);
+        $(".fileViewContainer").hide();
+        $(".fileViewWindow").hide();
+        while (fileview.firstChild) {
+            fileview.removeChild(fileview.firstChild);
         }
     }
-  })
+});
 
 //---------------------------------------------------------------------------------------------
 //sortAndFilterTogether <- callback function sort and filter files by its kind and search input
