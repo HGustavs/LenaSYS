@@ -55,7 +55,11 @@ function focusTheRightBox() {
   } 
   else if (inputPage === 4) {
     if (document.getElementById("writeOver1").checked) {
-      document.getElementById("writeOver2").focus();
+      if(document.getElementById("writeOver2").checked) {
+        document.getElementById("transaction").focus();
+      } else{
+        document.getElementById("writeOver2").focus();
+      }
     } else {
       document.getElementById("writeOver1").focus();
     }
@@ -244,10 +248,18 @@ window.onclick = function(event) {
 }
 
 //---------------------------------------------------------------------------------------------------
-// When user click outside modal, return to right field
+// When clicking writeOver1 focus
 //--------------------------------------------------------------------------------------------------- 
 var writeOver1 = document.getElementById('writeOver1');
 writeOver1.onclick = function() {
+  focusTheRightBox();
+}
+
+//---------------------------------------------------------------------------------------------------
+// When clicking writeOver1 focus
+//--------------------------------------------------------------------------------------------------- 
+var writeOver2 = document.getElementById('writeOver2');
+writeOver2.onclick = function() {
   focusTheRightBox();
 }
 
