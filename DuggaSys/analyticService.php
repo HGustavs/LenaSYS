@@ -665,26 +665,40 @@ function userLogInformation($pdo){
 function pageInformation(){
     $dugga= $GLOBALS['log_db']->query('
 		SELECT
-			cid AS courseid,
-			COUNT(*) AS pageLoads,
-			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
+			refer,
+			substr(
+				refer, 
+				INSTR(refer, "courseid=")+9, 
+				INSTR(refer, "&coursename=")-18 - INSTR(refer, "courseid=")+9
+			) courseid,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM userHistory WHERE refer LIKE "%showDugga%") AS percentage,
+			COUNT(*) AS pageLoads
 		FROM 
-			duggaLoadLogEntries
+			userHistory
+		WHERE 
+			refer LIKE "%showDugga%"
 		GROUP BY 
-			courseid
+			courseid;
 		ORDER BY 
 			percentage DESC;
 	')->fetchAll(PDO::FETCH_ASSOC);
 	
 	$codeviewer = $GLOBALS['log_db']->query('
 		SELECT
-			courseid,
-			COUNT(*) AS pageLoads,
-			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
+			refer,
+			substr(
+				refer, 
+				INSTR(refer, "courseid=")+9, 
+				INSTR(refer, "&coursename=")-18 - INSTR(refer, "courseid=")+9
+			) courseid,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM userHistory WHERE refer LIKE "%codeviewer%") AS percentage,
+			COUNT(*) AS pageLoads
 		FROM 
-			exampleLoadLogEntries
+			userHistory
+		WHERE 
+			refer LIKE "%codeviewer%"
 		GROUP BY 
-			courseid
+			courseid;
 		ORDER BY 
 			percentage DESC;
 	')->fetchAll(PDO::FETCH_ASSOC);
