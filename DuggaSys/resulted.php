@@ -218,6 +218,17 @@ pdoConnect();
 		</div>
 	</div>
 
+	<!-- This popup is for alerts about LadExport -->
+	<div id="gradeExportPopUp" style="display: none;">
+		<div class="loginBoxheader">
+			<h3>Alert</h3>
+			<div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
+		</div>
+		<!-- The message should go into this p tag -->
+		<p id="exportPopUpMessage"></p>
+		<input type="button" id="gradeExportPopUpButton" value="Ok" class="submit-button" onclick="closeWindows();">
+	</div>
+
 
 </body>
 </html>

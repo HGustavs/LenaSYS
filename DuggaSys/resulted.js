@@ -691,7 +691,9 @@ function returnedExportedGrades(gradeData){
 	// If it fails, then log the error.
 	try {
 		if (typeof gradeData[0] === 'undefined') {
-			console.log("There are no unexported grades");
+			// Show the "gradeExportPopUp" div and insert the message.
+			document.getElementById("gradeExportPopUp").style.display = "block";
+			document.getElementById("exportPopUpMessage").innerHTML = "There are no unexported grades";
 		} else {
 			console.log(gradeData[0]);
 			if (typeof gradeData[0].gradeLastExported !== 'undefined') {
