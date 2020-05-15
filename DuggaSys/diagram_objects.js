@@ -1846,16 +1846,6 @@ function Symbol(kindOfSymbol) {
             ctx.setLineDash([8*zoomValue, 8*zoomValue]);
         }
 
-        // Variables for UML line breakpoints
-        this.breakpointStartX = 0;
-        this.breakpointStartY = 0;
-        this.breakpointEndX = 0;
-        this.breakpointEndY = 0;
-        this.middleBreakPointX = 0;
-        this.middleBreakPointY = 0;
-        this.startLineDirection = "";
-        this.endLineDirection = "";
-
         // Calculating the mid point between start and end
         if (x2 > x1) {
             middleBreakPointX = x1 + Math.abs(x2 - x1) / 2;
