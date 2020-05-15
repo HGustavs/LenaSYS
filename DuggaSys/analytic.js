@@ -863,7 +863,7 @@ function loadUserInformation(){
             $.each(data, function(i, row) {
                 user = row.username;
                 if (!users.hasOwnProperty(user)) {
-                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "Test"]];
+                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "EventDescription"]];
 				}
 				if(row.eventType != "") {
 					$.ajax({
