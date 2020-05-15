@@ -452,6 +452,14 @@ function getObjectPropertyKeys(object) {
     return Object.keys(object).filter(key => !isFunction(object[key]));
 }
 
+function getAsciiCharsInRange(start, end) {
+    const chars = [];
+    for(let i = start; i <= end; i++) {
+        chars.push(String.fromCharCode(i));
+    }
+    return chars;
+}
+
 //------------------------------------------------
 // Local storage compressing functions end
 //------------------------------------------------
