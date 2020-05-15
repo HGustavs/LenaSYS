@@ -118,7 +118,9 @@ function Save() {
         c[i] = c[i].replace(/"/g,"");
         d[i] = diagram[i].id;
     }
-    var obj = {diagram:diagram, points:points, diagramNames:c, diagramID:d};
+    previousStates[diagramNumber] = {diagram:diagram, points:points, diagramNames:c, diagramID:d};
+    previousStates.length = diagramNumber+1;
+    var obj = {diagram:diagram, points:points, diagramNames:c, diagramID:d, prevStates:previousStates};
     a = JSON.stringify(obj, null, "\t");
     localStorage.setItem("Settings", JSON.stringify(settings));
     localStorage.setItem("diagramID", JSON.stringify(d));
@@ -131,13 +133,14 @@ function Save() {
 
 function SaveState() {
     Save();
-    localStorage.setItem("diagram" + diagramNumber, a);
-    for (var key in localStorage) {
+    localStorage.setItem("diagram", a);
+    // change this to remove excess 
+    /*for (var key in localStorage) {
         if (key.indexOf("diagram") != -1) {
             var tmp = key.match(/\d+$/);
             if (tmp > diagramNumber) localStorage.removeItem(key);
         }
-    }
+    }*/
 }
 
 //---------------------------------------------
@@ -345,7 +348,11 @@ function Load() {
     // Implement a JSON.parse() that will unmarshall a b c, so we can add
     // them to their respecive array so it can redraw the desired canvas.
     var dia = JSON.parse(a);
-    b = dia;
+    b = dia.prevStates[diagramNumber];
+    console.log(b.diagram);
+    console.log(diagram);
+    
+    
     for (var i = 0; i < b.diagram.length; i++) {
         if (b.diagramNames[i] == "Symbol") {
             b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);

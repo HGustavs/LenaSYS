@@ -40,6 +40,8 @@ AJAXService("get", {}, "DIAGRAM");
 
 var diagram = [];
 
+var previousStates = [];
+
 var settings = {
     serialNumbers: {
         Attribute: 0,
@@ -3127,7 +3129,7 @@ function undoDiagram(event) {
     if (diagramNumber > 0) {
         diagramNumber--;
     }
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
+    var tmpDiagram = localStorage.getItem("diagram");
     localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 
