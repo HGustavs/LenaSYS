@@ -456,17 +456,17 @@ function getObjectPropertyKeys(object) {
     return Object.keys(object).filter(key => !isFunction(object[key]));
 }
 
-function getObjectAndChildObjectsPropertyKeys(object) {
-    const objects = Object.keys(object).reduce((result, key) => {
+function getChildrenObjectsPropertyKeys(object) {
+    const keys = Object.keys(object).reduce((result, key) => {
         if(isObject(object[key])) {
-            result = [...result, ...getObjectPropertyKeys(object[key])];
+            result = [...result, ...getObjectPropertyKeys(object[key]), ...getChildrenObjectsPropertyKeys(object[key])];
         } else if(Array.isArray(object[key])) {
-            result = [...result, ...getObjectAndChildObjectsPropertyKeys(object[key])];
+            result = [...result, ...getChildrenObjectsPropertyKeys(object[key])];
         }
         return result;
     }, []);
 
-    return [...new Set(objects)]
+    return [...new Set(keys)]
 }
 
 function getAsciiCharsInRange(start, end) {
@@ -478,7 +478,7 @@ function getAsciiCharsInRange(start, end) {
 }
 
 function generatePropertyKeysMap() {
-    const objects = [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path()];
+    const objects = [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, diagramNames:null, diagramID:null, text: null, isSelected: null}];
     const map = new Map();
     const delimiterChar = '~';
     const asciiChars = [
@@ -489,9 +489,9 @@ function generatePropertyKeysMap() {
     let asciiIndex = 0;
     
     objects.forEach(object => {
-        const keys = getObjectPropertyKeys(object);
+        const keys = [...getObjectPropertyKeys(object), ...getChildrenObjectsPropertyKeys(object)];
         keys.forEach(key => {
-            if(typeof map.get(key) === "undefined" && key.length > 1) {
+            if(typeof map.get(key) === "undefined" && key.length > 2) {
                 map.set(key, delimiterChar+asciiChars[asciiIndex]);
                 asciiIndex++;
             }
