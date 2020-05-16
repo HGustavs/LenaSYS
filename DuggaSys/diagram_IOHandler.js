@@ -8,6 +8,7 @@ var a;
 var c;
 var b;
 var ac = [];
+const propertyKeyMap  = generatePropertyKeysMap();
 
 //--------------------------------------------------------------------------------------------------
 // downloadmode: download/load/export canvas (not fully implemented, see row 373-378 in diagram.php)
@@ -501,7 +502,6 @@ function generatePropertyKeysMap() {
 }
 
 function compressStringifiedObject(stringifiedObject) {
-    const propertyKeyMap = generatePropertyKeysMap();
     let currentString = stringifiedObject;
     for(const [key, value] of propertyKeyMap.entries()) {
         currentString = replaceAll(currentString, `"${key}"`, value);
@@ -510,7 +510,6 @@ function compressStringifiedObject(stringifiedObject) {
 }
 
 function decompressStringifiedObject(stringifiedObject) {
-    const propertyKeyMap = generatePropertyKeysMap();
     let currentString = stringifiedObject;
     for(const [key, value] of propertyKeyMap.entries()) {
         currentString = replaceAll(currentString, value, `"${key}"`);
