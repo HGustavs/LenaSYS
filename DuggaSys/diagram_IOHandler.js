@@ -345,7 +345,7 @@ function getUpload() {
 function Load() {
     // Implement a JSON.parse() that will unmarshall a b c, so we can add
     // them to their respecive array so it can redraw the desired canvas.
-    var dia = JSON.parse(a);
+    var dia = JSON.parse(decompressStringifiedObject(a));
     b = dia;
     for (var i = 0; i < b.diagram.length; i++) {
         if (b.diagramNames[i] == "Symbol") {
@@ -564,7 +564,7 @@ function replaceAll(str, find, replace) {
 //----------------------------------------------------------------------------------------------------------------------
 
 function escapeRegExp(str) {
-    return str.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+    return str.replace(/[-[\]{}()*+?.,\\^$|#\\s]/g, '\\$&');
 }
 
 //------------------------------------------------
