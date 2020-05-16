@@ -1680,7 +1680,6 @@ function retrieveAnnouncementAuthor(){
       if($("#userid").length > 0) {
           var parsed_data = JSON.parse(this.response);
           document.getElementById("userid").value = parsed_data.uid;
-          $("#recipient").append("<option value="+parsed_data.uid+" selected hidden></option>");
 
       }
     }

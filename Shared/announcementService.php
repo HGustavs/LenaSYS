@@ -8,6 +8,7 @@ session_start();
 
 	
 if(isset($_POST['secondannouncementid']) && isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && isset($_POST['recipients']) && isset($_POST['createBtn'])){
+	array_push($_POST['recipients'], $_POST['uid']);
 	foreach ($_POST['recipients'] as $recipient) {
 		$secondannouncementid = $_POST['secondannouncementid'];
 		$uid = $_POST['uid'];
