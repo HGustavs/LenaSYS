@@ -120,7 +120,7 @@ function Save() {
         d[i] = diagram[i].id;
     }
     var obj = {diagram:diagram, points:points, diagramNames:c, diagramID:d};
-    a = JSON.stringify(obj, null, "\t");
+    a = JSON.stringify(obj);
     localStorage.setItem("Settings", JSON.stringify(settings));
     localStorage.setItem("diagramID", JSON.stringify(d));
     console.log("State is saved");
