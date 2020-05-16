@@ -8,7 +8,7 @@ var a;
 var c;
 var b;
 var ac = [];
-const propertyKeyMap  = generatePropertyKeysMap(2);
+const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, diagramNames:null, diagramID:null, text: null, isSelected: null}]);
 
 //--------------------------------------------------------------------------------------------------
 // downloadmode: download/load/export canvas (not fully implemented, see row 373-378 in diagram.php)
@@ -132,7 +132,7 @@ function Save() {
 
 function SaveState() {
     Save();
-    localStorage.setItem("diagram" + diagramNumber, a);
+    localStorage.setItem("diagram" + diagramNumber, compressStringifiedObject(a));
     for (var key in localStorage) {
         if (key.indexOf("diagram") != -1) {
             var tmp = key.match(/\d+$/);
@@ -179,7 +179,7 @@ function loadDiagram() {
 
     //local storage and hash
     if (checkLocalStorage != "" && checkLocalStorage != null) {
-        var localDiagram = JSON.parse(localStorage.getItem("diagram" + diagramNumber));
+        var localDiagram = JSON.parse(decompressStringifiedObject(localStorage.getItem("diagram" + diagramNumber)));
     }
     var localHexHash = localStorage.getItem('localhash');
     var diagramToString = "";
@@ -251,7 +251,7 @@ function hashFunction() {
                 d[i] = diagram[i].id;
             }
             a = JSON.stringify({diagram:diagram, points:points, diagramNames:c, diagramID:d});
-            localStorage.setItem('localdiagram', a);
+            localStorage.setItem('localdiagram', compressStringifiedObject(a));
             return hexHash;
         }
     }
@@ -505,8 +505,7 @@ function getAsciiCharsInRange(start, end) {
 //                       Used to compress used space in local storage by using short representation in local storage.
 //-------------------------------------------------------------------------------------------------------------------
 
-function generatePropertyKeysMap(minLength = 2) {
-    const objects = [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, diagramNames:null, diagramID:null, text: null, isSelected: null}];
+function generatePropertyKeysMap(minLength = 2, objects = []) {
     const map = new Map();
     const delimiterChar = '~';
     const asciiChars = [
