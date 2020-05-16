@@ -8,7 +8,7 @@ var a;
 var c;
 var b;
 var ac = [];
-const propertyKeyMap  = generatePropertyKeysMap();
+const propertyKeyMap  = generatePropertyKeysMap(2);
 
 //--------------------------------------------------------------------------------------------------
 // downloadmode: download/load/export canvas (not fully implemented, see row 373-378 in diagram.php)
@@ -445,17 +445,35 @@ function afterPrint(){
 // Local storage compressing functions start
 //------------------------------------------------
 
+//--------------------------------------------------------
+// isFunction: Returns true if passed value is a function.
+//--------------------------------------------------------
+
 function isFunction(f) {
     return f && {}.toString.call(f) === "[object Function]";
 }
+
+//------------------------------------------------------------
+// isObject: Returns true if passed value is a regular object.
+//------------------------------------------------------------
 
 function isObject(o) {
     return Object.prototype.toString.call(o) === '[object Object]'
 }
 
+//---------------------------------------------------------------------------------------------------
+// getObjectPropertyKeys: Returns all property keys in passed object whose values are not a function.
+//                        This does not return children object properties.
+//---------------------------------------------------------------------------------------------------
+
 function getObjectPropertyKeys(object) {
     return Object.keys(object).filter(key => !isFunction(object[key]));
 }
+
+//---------------------------------------------------------------------------------------------------------
+// getChildrenObjectsPropertyKeys: Returns all property keys of possible children objects in passed object.
+//                                 Also looks for objects inside of arrays.
+//---------------------------------------------------------------------------------------------------------
 
 function getChildrenObjectsPropertyKeys(object) {
     const keys = Object.keys(object).reduce((result, key) => {
@@ -470,6 +488,10 @@ function getChildrenObjectsPropertyKeys(object) {
     return [...new Set(keys)]
 }
 
+//-------------------------------------------------------------------------------------------------------------------
+// getAsciiCharsInRange: Returns an array containing all characters within the passed start and end ascii code range.
+//-------------------------------------------------------------------------------------------------------------------
+
 function getAsciiCharsInRange(start, end) {
     const chars = [];
     for(let i = start; i <= end; i++) {
@@ -478,7 +500,12 @@ function getAsciiCharsInRange(start, end) {
     return chars;
 }
 
-function generatePropertyKeysMap() {
+//-------------------------------------------------------------------------------------------------------------------
+// getAsciiCharsInRange: Returns a map mapping object property keys to a short serach char + unique char string.
+//                       Used to compress used space in local storage by using short representation in local storage.
+//-------------------------------------------------------------------------------------------------------------------
+
+function generatePropertyKeysMap(minLength = 2) {
     const objects = [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, diagramNames:null, diagramID:null, text: null, isSelected: null}];
     const map = new Map();
     const delimiterChar = '~';
@@ -492,7 +519,7 @@ function generatePropertyKeysMap() {
     objects.forEach(object => {
         const keys = [...getObjectPropertyKeys(object), ...getChildrenObjectsPropertyKeys(object)];
         keys.forEach(key => {
-            if(typeof map.get(key) === "undefined" && key.length > 2) {
+            if(typeof map.get(key) === "undefined" && key.length >= minLength) {
                 map.set(key, delimiterChar+asciiChars[asciiIndex]);
                 asciiIndex++;
             }
@@ -500,6 +527,10 @@ function generatePropertyKeysMap() {
     })
     return map;
 }
+
+//---------------------------------------------------------------------------------------------------------------------------
+// compressStringifiedObject: Compresses passed stringified object properties with the help of a generated property keys map.
+//---------------------------------------------------------------------------------------------------------------------------
 
 function compressStringifiedObject(stringifiedObject) {
     let currentString = stringifiedObject;
@@ -509,6 +540,10 @@ function compressStringifiedObject(stringifiedObject) {
     return currentString;
 }
 
+//-------------------------------------------------------------------------------------------------------------------------------
+// decompressStringifiedObject: Decompresses passed stringified object properties with the help of a generated property keys map.
+//-------------------------------------------------------------------------------------------------------------------------------
+
 function decompressStringifiedObject(stringifiedObject) {
     let currentString = stringifiedObject;
     for(const [key, value] of propertyKeyMap.entries()) {
@@ -516,6 +551,10 @@ function decompressStringifiedObject(stringifiedObject) {
     }
     return currentString;
 }
+
+//------------------------------------------------------------------------------------------------------------------
+// replaceAll: Replaces all parts of passed string that matches the passed find value with the passed replace value.
+//------------------------------------------------------------------------------------------------------------------
 
 function replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
