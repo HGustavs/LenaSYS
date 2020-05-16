@@ -556,7 +556,15 @@ function decompressStringifiedObject(stringifiedObject) {
 //------------------------------------------------------------------------------------------------------------------
 
 function replaceAll(str, find, replace) {
-    return str.replace(new RegExp(find, 'g'), replace);
+    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+// escapeRegExp: Escapes important characters in a regulear expression to prevent the replaceAll function giving errors.
+//----------------------------------------------------------------------------------------------------------------------
+
+function escapeRegExp(str) {
+    return str.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
 }
 
 //------------------------------------------------
