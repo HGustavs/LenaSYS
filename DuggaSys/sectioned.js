@@ -1659,7 +1659,6 @@ $(window).load(function () {
   });
 
   retrieveAnnouncementAuthor();
-  retrieveCourseProfile();
   retrieveAnnouncementsCards();
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
@@ -1680,6 +1679,7 @@ function retrieveAnnouncementAuthor(){
       if($("#userid").length > 0) {
           var parsed_data = JSON.parse(this.response);
           document.getElementById("userid").value = parsed_data.uid;
+          retrieveCourseProfile(parsed_data.uid);
 
       }
     }
@@ -1689,7 +1689,7 @@ function retrieveAnnouncementAuthor(){
 
 }
 //retrieve course profile
-function retrieveCourseProfile(){
+function retrieveCourseProfile(userid){
   var cid = '';
   var versid = '';
   $("#cid").change(function(){
@@ -1725,11 +1725,11 @@ function retrieveCourseProfile(){
       $("#recipient").prop("disabled", false);
       $.ajax({
         url: "../Shared/retrieveuser_course.php",
-        data: {cid: cid, versid:versid},
+        data: {cid: cid, versid:versid, remove_student:userid},
         type: "POST",
         success: function(data){
           var item = JSON.parse(data);
-          $("#recipient").find('*').not(':nth-child(1)').not(':nth-child(2)').remove();
+          $("#recipient").find('*').not(':first').remove();
           $.each(item.users_course, function(index,item) {        
             $("#recipient").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
           });
