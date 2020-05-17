@@ -21,7 +21,7 @@ pdoConnect();
     </div>
     <div id="courseidAndVersid">
       <div>
-        <label for="cid">Course</label><br>
+        <label for="cid"><b>Course</b></label><br>
         <select id="cid" name="cid">
           <option selected disabled>ID</option>
           <?php
@@ -32,14 +32,16 @@ pdoConnect();
         </select>
       </div>
       <div>
-        <label for="versid">Version</label><br>
+        <label for="versid"><b>Version</b></label><br>
         <select id="versid" name="versid" disabled>
           <option selected disabled>ID</option>
         </select>
       </div>
     </div>
     <div id="recipientBox">
-      <label for="recipient">Recipients</label><br>
+      <label for="recipient"><b>Recipients</b></label>
+      <label class="selectAll"><input type="checkbox"> <b>select all</b></label>
+      <br>
       <select id="recipient" name="recipients[]" multiple disabled>
         <option disabled>Select</option>
       </select>
