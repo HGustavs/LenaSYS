@@ -915,3 +915,57 @@ function courseDiskUsage($pdo) {
 		print_r(json_encode($course));
 	}
 }
+//------------------------------------------------------------------------------------------------
+// EventTypes - Contains constants for log event types
+//------------------------------------------------------------------------------------------------
+
+if (isset($_POST['resolveEventName']) && $_POST['resolveEventName'] == "success"){
+    resolveEventName();
+}
+
+function resolveEventName() {
+	$ev = $_POST['ev'];
+	$input = $ev;
+	$EventTypesClass = new ReflectionClass ( 'EventTypes' );
+	$constants = $EventTypesClass->getConstants();
+
+	$constName = null;
+	foreach ( $constants as $name => $value )
+	{
+		if ( $value == $input )
+		{
+			$constName = $name;
+			break;
+		}
+	}
+
+	$result = $constName;
+	echo json_encode($result);
+}
+
+abstract class EventTypes {
+	const DuggaRead = 1;
+	const DuggaWrite = 2;
+	const LoginSuccess = 3;
+	const LoginFail = 4;
+	const ServiceClientStart = 5;
+	const ServiceServerStart = 6;
+	const ServiceServerEnd = 7;
+	const ServiceClientEnd = 8;
+	const Logout = 9;
+	const pageLoad = 10;
+  	const PageNotFound = 11;
+  	const RequestNewPW = 12;
+	const CheckSecQuestion = 13;
+  	const SectionItems = 14;
+	const AddFile = 15;
+	const EditCourseVers = 16;
+	const AddCourseVers = 17;
+  	const AddCourse = 18;
+	const EditCourse = 19;
+    const ResetPW = 20;
+    const DuggaFileupload = 21;
+	const DownloadAllCourseVers = 22;
+	const EditFile = 23; 
+	const MarkedDugga = 24;
+}

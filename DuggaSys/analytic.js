@@ -897,11 +897,11 @@ function loadUserInformation(){
 				}
 				if(row.eventType != "") {
 					$.ajax({
-						url:"../Shared/basic.php", 
+						url:"analyticService.php", 
 						type: "POST", 
 						dataType: 'json',
 						   data: {
-							test: "success",
+							resolveEventName: "success",
 							ev: row.eventType
 						},success:function(data){
 							event = data;
