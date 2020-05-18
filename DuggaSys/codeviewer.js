@@ -3764,6 +3764,7 @@ function resizeBoxes(parent, templateId)
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				alignBoxesWidthTemplate8(boxValArray, 3, 2, 1);
 				document.querySelector(boxValArray['box2']['id']).style.left = " ";
+				document.querySelector(boxValArray['box3']['id']).style.top = "";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
