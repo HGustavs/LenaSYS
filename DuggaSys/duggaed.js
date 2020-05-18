@@ -24,8 +24,8 @@ function setup() {
 	var filt = "";
 
 	filt += `<td id='testSearchContainer' class='navButt'>`
-    filt += `<input id='duggaSearch' readonly onmouseover = 'duggaSearchMouseOver()' type='text' name='search' placeholder='Search..'`;
-	filt += `onkeyup='searchterm=document.getElementById("duggaSearch").value;searchKeyUp(event);duggaTable.renderTable();'onsearch='searchterm=document.getElementById("duggaSearch").value; searchKeyUp(event); duggaTable.renderTable();document.getElementById("searchinputMobile").value=document.getElementById("duggaSearch").value;'/>`;
+    filt += `<form autocomplete='off' style='display:contents'><input id='duggaSearch' readonly onmouseover = 'duggaSearchMouseOver()' type='text' name='search' placeholder='Search..'`;
+	filt += `onkeyup='searchterm=document.getElementById("duggaSearch").value;searchKeyUp(event);duggaTable.renderTable();'onsearch='searchterm=document.getElementById("duggaSearch").value; searchKeyUp(event); duggaTable.renderTable();document.getElementById("searchinputMobile").value=document.getElementById("duggaSearch").value;'/></form>`;
 	filt += `<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>`
 	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>`
 	filt += `</button>`
