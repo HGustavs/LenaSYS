@@ -21,12 +21,16 @@ pdoConnect();
     </div>
     <div id="courseidAndVersid">
       <div>
-        <label for="cid"><b>Course</b></label><br>
+        <label for="cid"><b>Published course</b></label><br>
         <select id="cid" name="cid">
           <option selected disabled>ID</option>
           <?php
           foreach ($pdo->query('SELECT * FROM course ORDER BY coursename ASC') as $course) {
-            echo "<option value='".$course['cid']."'>".$course['coursename']."</option>";
+            $visibility  = $course['visibility'];
+            if ($visibility == 1 || $visibility == 2) {
+              echo "<option value='".$course['cid']."'>".$course['coursename']."</option>";
+              
+            }
           }
           ?>
         </select>
