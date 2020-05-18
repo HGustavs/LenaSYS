@@ -24,14 +24,15 @@ function setup() {
 	var filt = "";
 
 	filt += `<td id='testSearchContainer' class='navButt'>`
-	filt += `<input id='duggaSearch' type='text' name='search' placeholder='Search..'`;
+    filt += `<input id='duggaSearch' readonly onmouseover = 'duggaSearchMouseOver()' type='text' name='search' placeholder='Search..'`;
 	filt += `onkeyup='searchterm=document.getElementById("duggaSearch").value;searchKeyUp(event);duggaTable.renderTable();'onsearch='searchterm=document.getElementById("duggaSearch").value; searchKeyUp(event); duggaTable.renderTable();document.getElementById("searchinputMobile").value=document.getElementById("duggaSearch").value;'/>`;
 	filt += `<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>`
 	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>`
 	filt += `</button>`
 	filt += `</td>`
 	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
-	filt += `</button></td>`;
+    filt += `</button></td>`;
+    filt += `<script> function duggaSearchMouseOver() {var obj = document.getElementById("duggaSearch"); if(obj != null){obj.removeAttribute('readonly');}}</script>`;
 
 	$("#menuHook").before(filt);
 
@@ -942,6 +943,23 @@ $(document).on("touchend", function (e) {
 	mouseUp(e);
 	TouchFABUp(e);
 });
+
+$(document).ready(function () {
+    var duggaSearch = document.getElementById("duggaSearch");
+    console.log("11");
+    console.log(duggaSearch);
+    if (duggaSearch) {
+        console.log("22");
+        duggaSearch.addEventListener("mouseover", duggaSearchMouseOver);
+    }
+});
+
+function duggaSearchMouseOver() {
+    var obj = document.getElementById("duggaSearch");
+    if (obj != null) {
+        obj.removeAttribute('readonly');
+    }
+}
 
 //----------------------------------------------------------------------------------
 // mouseDown: make sure mousedown is only handled in one single place regardless if touch or mouse
