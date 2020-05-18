@@ -8,6 +8,7 @@ var a;
 var c;
 var b;
 var ac = [];
+const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, diagramNames:null, diagramID:null, text: null, isSelected: null}]);
 
 //--------------------------------------------------------------------------------------------------
 // downloadmode: download/load/export canvas (not fully implemented, see row 373-378 in diagram.php)
@@ -119,7 +120,7 @@ function Save() {
         d[i] = diagram[i].id;
     }
     var obj = {diagram:diagram, points:points, diagramNames:c, diagramID:d};
-    a = JSON.stringify(obj, null, "\t");
+    a = JSON.stringify(obj);
     localStorage.setItem("Settings", JSON.stringify(settings));
     localStorage.setItem("diagramID", JSON.stringify(d));
     console.log("State is saved");
@@ -131,7 +132,7 @@ function Save() {
 
 function SaveState() {
     Save();
-    localStorage.setItem("diagram" + diagramNumber, a);
+    localStorage.setItem("diagram" + diagramNumber, compressStringifiedObject(a));
     for (var key in localStorage) {
         if (key.indexOf("diagram") != -1) {
             var tmp = key.match(/\d+$/);
@@ -178,7 +179,7 @@ function loadDiagram() {
 
     //local storage and hash
     if (checkLocalStorage != "" && checkLocalStorage != null) {
-        var localDiagram = JSON.parse(localStorage.getItem("diagram" + diagramNumber));
+        var localDiagram = JSON.parse(decompressStringifiedObject(localStorage.getItem("diagram" + diagramNumber)));
     }
     var localHexHash = localStorage.getItem('localhash');
     var diagramToString = "";
@@ -199,7 +200,7 @@ function loadDiagram() {
             b = JSON.parse(JSON.stringify(localDiagram));
             for (var i = 0; i < b.diagram.length; i++) {
                 if (b.diagramNames[i] == "Symbol") {
-                    b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+                    b.diagram[i] = Object.assign(new Symbol(b.diagram[i].symbolkind), b.diagram[i]);
                 } else if (b.diagramNames[i] == "Path") {
                     b.diagram[i] = Object.assign(new Path, b.diagram[i]);
                 }
@@ -210,9 +211,6 @@ function loadDiagram() {
                 diagram[i].setID(JSON.parse(diagramID)[i]);
             }
             // Points fix
-            for (var i = 0; i < b.points.length; i++) {
-                b.points[i] = Object.assign(new Path, b.points[i]);
-            }
             points.length = b.points.length;
             for (var i = 0; i < b.points.length; i++) {
                 points[i] = b.points[i];
@@ -250,7 +248,7 @@ function hashFunction() {
                 d[i] = diagram[i].id;
             }
             a = JSON.stringify({diagram:diagram, points:points, diagramNames:c, diagramID:d});
-            localStorage.setItem('localdiagram', a);
+            localStorage.setItem('localdiagram', compressStringifiedObject(a));
             return hexHash;
         }
     }
@@ -298,7 +296,7 @@ function LoadFile() {
     //diagram fix
     for (var i = 0; i < b.diagram.length; i++) {
         if (b.diagramNames[i] == "Symbol") {
-            b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+            b.diagram[i] = Object.assign(new Symbol(b.diagram[i].symbolkind), b.diagram[i]);
         } else if (b.diagramNames[i] == "Path") {
             b.diagram[i] = Object.assign(new Path, b.diagram[i]);
         }
@@ -344,11 +342,11 @@ function getUpload() {
 function Load() {
     // Implement a JSON.parse() that will unmarshall a b c, so we can add
     // them to their respecive array so it can redraw the desired canvas.
-    var dia = JSON.parse(a);
+    var dia = JSON.parse(decompressStringifiedObject(a));
     b = dia;
     for (var i = 0; i < b.diagram.length; i++) {
         if (b.diagramNames[i] == "Symbol") {
-            b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+            b.diagram[i] = Object.assign(new Symbol(b.diagram[i].symbolkind), b.diagram[i]);
         } else if (b.diagramNames[i] == "Path") {
             b.diagram[i] = Object.assign(new Path, b.diagram[i]);
         }
@@ -439,3 +437,133 @@ function afterPrint(){
     ctx.scale(1,1);
     updateGraphics();
 }
+
+//------------------------------------------------
+// Local storage compressing functions start
+//------------------------------------------------
+
+//--------------------------------------------------------
+// isFunction: Returns true if passed value is a function.
+//--------------------------------------------------------
+
+function isFunction(f) {
+    return f && {}.toString.call(f) === "[object Function]";
+}
+
+//------------------------------------------------------------
+// isObject: Returns true if passed value is a regular object.
+//------------------------------------------------------------
+
+function isObject(o) {
+    return Object.prototype.toString.call(o) === '[object Object]'
+}
+
+//---------------------------------------------------------------------------------------------------
+// getObjectPropertyKeys: Returns all property keys in passed object whose values are not a function.
+//                        This does not return children object properties.
+//---------------------------------------------------------------------------------------------------
+
+function getObjectPropertyKeys(object) {
+    return Object.keys(object).filter(key => !isFunction(object[key]));
+}
+
+//---------------------------------------------------------------------------------------------------------
+// getChildrenObjectsPropertyKeys: Returns all property keys of possible children objects in passed object.
+//                                 Also looks for objects inside of arrays.
+//---------------------------------------------------------------------------------------------------------
+
+function getChildrenObjectsPropertyKeys(object) {
+    const keys = Object.keys(object).reduce((result, key) => {
+        if(isObject(object[key])) {
+            result = [...result, ...getObjectPropertyKeys(object[key]), ...getChildrenObjectsPropertyKeys(object[key])];
+        } else if(Array.isArray(object[key])) {
+            result = [...result, ...getChildrenObjectsPropertyKeys(object[key])];
+        }
+        return result;
+    }, []);
+
+    return [...new Set(keys)]
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// getAsciiCharsInRange: Returns an array containing all characters within the passed start and end ascii code range.
+//-------------------------------------------------------------------------------------------------------------------
+
+function getAsciiCharsInRange(start, end) {
+    const chars = [];
+    for(let i = start; i <= end; i++) {
+        chars.push(String.fromCharCode(i));
+    }
+    return chars;
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// getAsciiCharsInRange: Returns a map mapping object property keys to a short serach char + unique char string.
+//                       Used to compress used space in local storage by using short representation in local storage.
+//-------------------------------------------------------------------------------------------------------------------
+
+function generatePropertyKeysMap(minLength = 2, objects = []) {
+    const map = new Map();
+    const delimiterChar = '~';
+    const asciiChars = [
+        ...getAsciiCharsInRange(65, 90),
+        ...getAsciiCharsInRange(97, 122),
+        ...getAsciiCharsInRange(33, 64)
+    ];
+    let asciiIndex = 0;
+    
+    objects.forEach(object => {
+        const keys = [...getObjectPropertyKeys(object), ...getChildrenObjectsPropertyKeys(object)];
+        keys.forEach(key => {
+            if(typeof map.get(key) === "undefined" && key.length >= minLength) {
+                map.set(key, delimiterChar+asciiChars[asciiIndex]);
+                asciiIndex++;
+            }
+        });
+    })
+    return map;
+}
+
+//---------------------------------------------------------------------------------------------------------------------------
+// compressStringifiedObject: Compresses passed stringified object properties with the help of a generated property keys map.
+//---------------------------------------------------------------------------------------------------------------------------
+
+function compressStringifiedObject(stringifiedObject) {
+    let currentString = stringifiedObject;
+    for(const [key, value] of propertyKeyMap.entries()) {
+        currentString = replaceAll(currentString, `"${key}"`, value);
+    }
+    return currentString;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------
+// decompressStringifiedObject: Decompresses passed stringified object properties with the help of a generated property keys map.
+//-------------------------------------------------------------------------------------------------------------------------------
+
+function decompressStringifiedObject(stringifiedObject) {
+    let currentString = stringifiedObject;
+    for(const [key, value] of propertyKeyMap.entries()) {
+        currentString = replaceAll(currentString, value, `"${key}"`);
+    }
+    return currentString;
+}
+
+//------------------------------------------------------------------------------------------------------------------
+// replaceAll: Replaces all parts of passed string that matches the passed find value with the passed replace value.
+//------------------------------------------------------------------------------------------------------------------
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+// escapeRegExp: Escapes important characters in a regulear expression to prevent the replaceAll function giving errors.
+//----------------------------------------------------------------------------------------------------------------------
+
+function escapeRegExp(str) {
+    return str.replace(/[-[\]{}()*+?.,\\^$|#]/g, '\\$&');
+}
+
+//------------------------------------------------
+// Local storage compressing functions end
+//------------------------------------------------

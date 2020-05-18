@@ -1157,9 +1157,9 @@ points.drawPoints = function() {
     ctx.lineWidth = 2 * zoomValue;
     for (var i = 0; i < this.length; i++) {
         var point = this[i];
-        if (!point.isSelected) {
+        if (!point.isSelected && !point=="") {
             drawCross(point);
-        } else {
+        } else if(!point==""){
             ctx.save();
             ctx.fillStyle = crossFillStyle;
             ctx.strokeStyle = crossStrokeStyle2;
@@ -4356,7 +4356,6 @@ function mouseupevt(ev) {
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
-        erAttributeA.object_type = "";
         diagram.push(erAttributeA);
         //selecting the newly created attribute and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
@@ -4376,8 +4375,6 @@ function mouseupevt(ev) {
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
-        erEnityA.length = [];
-        erEnityA.object_type = "";
         diagram.push(erEnityA);
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
@@ -4399,13 +4396,11 @@ function mouseupevt(ev) {
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine  && md == mouseState.boxSelectOrCreateMode) {
             erLineA = new Symbol(symbolKind.line); // Lines
             erLineA.name = "Line" + diagram.length;
-            erLineA.object_type = "";
             erLineA.isCardinalityPossible = !([diagram[lineStartObj], hoveredObject].some(symbol => symbol.symbolkind === symbolKind.erAttribute)); //No connected objects are attributes
             erLineA.topLeft = p1;
             erLineA.bottomRight = p2;
 
             if(erLineA.isCardinalityPossible) {
-                erLineA.cardinality.value = "";
                 erLineA.cardinality.parentPointIndexes = {
                     topLeft: hoveredObject.topLeft,
                     bottomRight: hoveredObject.bottomRight
@@ -4491,11 +4486,8 @@ function mouseupevt(ev) {
             umlLineA = new Symbol(symbolKind.umlLine); //UML Lines
             umlLineA.name = "Line" + diagram.length;
             umlLineA.topLeft = p1;
-            umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
             umlLineA.targeted = true;
-            umlLineA.cardinality.value = "";
-            umlLineA.cardinality.valueUML = "";
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
                 points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
@@ -4940,7 +4932,6 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
             erAttributeA.topLeft = p1;
             erAttributeA.bottomRight = p2;
             erAttributeA.centerPoint = p3;
-            erAttributeA.object_type = "";
             diagram.push(erAttributeA);
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
@@ -4958,8 +4949,6 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
             erEnityA.topLeft = p1;
             erEnityA.bottomRight = p2;
             erEnityA.centerPoint = p3;
-            erEnityA.arity = [];
-            erEnityA.object_type = "";
             diagram.push(erEnityA);
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
@@ -4976,7 +4965,6 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
                 erLineA = new Symbol(symbolKind.line);
                 erLineA.name = "Line" + diagram.length;
                 erLineA.topLeft = p1;
-                erLineA.object_type = "";
                 erLineA.bottomRight = p2;
                 diagram.unshift(erLineA);
                 lastSelectedObject = diagram.length -1;
@@ -4989,7 +4977,6 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
             umlLineA = new Symbol(symbolKind.umlLine);
             umlLineA.name = "Line" + diagram.length;
             umlLineA.topLeft = p1;
-            umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
