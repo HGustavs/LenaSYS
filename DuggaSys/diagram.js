@@ -2528,11 +2528,15 @@ function eraseObject(object) {
 
 function eraseSelectedObject(event) {
     event.stopPropagation();
+    var objectDeleted = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if (selected_objects[i].figureType != "Free") {
             eraseObject(selected_objects[i]);
-            SaveState();
+            objectDeleted = true;
         }
+    }
+    if(objectDeleted){
+        SaveState();
     }
     selected_objects = [];
     lastSelectedObject = -1;
