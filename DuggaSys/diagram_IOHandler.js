@@ -9,6 +9,7 @@ var c;
 var b;
 var ac = [];
 const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, diagramNames:null, diagramID:null, text: null, isSelected: null}]);
+const changes = [];
 
 //--------------------------------------------------------------------------------------------------
 // downloadmode: download/load/export canvas (not fully implemented, see row 373-378 in diagram.php)
@@ -110,6 +111,20 @@ function loadStoredFolders(f) {
 //---------------------------------------------
 
 function Save() {
+    const localStorageDiagram = localStorage.getItem("diagram" + diagramNumber);
+    
+    if (localStorageDiagram != "" && localStorageDiagram != null) {
+        const diagramObject = JSON.parse(decompressStringifiedObject(localStorage.getItem("diagram" + diagramNumber)));
+        const diagramChanges = getObjectChanges(diagramObject.diagram, diagram);
+        const pointsChanges = getObjectChanges(diagramObject.points, points);
+        changes.push({
+            "id": changes.length + 1,
+            "diagram": diagramChanges,
+            "points": pointsChanges
+        });
+    }
+
+
     diagramNumber++;
     localStorage.setItem("diagramNumber", diagramNumber);
     c = [];
