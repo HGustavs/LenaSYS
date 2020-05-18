@@ -130,15 +130,17 @@ function endsWith($haystack,$needle,$case=true)
 function swizzleArray(&$filepost) {
 
     $filearray = array();
-    $filecount = count($filepost['name']);
-    if ($filepost !== null) $filekeys = array_keys($filepost);
+	$filecount = is_array($filepost['name']);
+
+	if ($filepost !== null) $filekeys = array_keys($filepost);
+	
 
     for ($i=0; $i<$filecount; $i++) {
         foreach ($filekeys as $key) {
-            $filearray[$i][$key] = $filepost[$key][$i];
+			$filearray[$i][$key] = $filepost[$key][$i];
         }
-    }
-
+	}
+	
     return $filearray;
 }
 
