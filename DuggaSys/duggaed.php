@@ -93,7 +93,6 @@ pdoConnect();
               <div class='flexwrapper'><span>Result release:</span><span><input class='textinput' type='date' id='release' value=''  /><select style='width:55px;' id='releaset'></select><select style='width:55px;' id='releasem'></select></span></div>
         		</div>
         		<div style='padding:5px;display:flex;justify-content:space-between'>
-        			<input id='closeDugga' class='submit-button' type='button' value='Cancel' onclick='closeWindows();' />
         			<input id='saveDugga' class='submit-button' type='button' value='Save' onclick='updateDugga();' />
         		</div>
         </div>
