@@ -2456,7 +2456,8 @@ function eraseObject(object) {
 function eraseSelectedObject(event) {
     event.stopPropagation();
     for(var i = 0; i < selected_objects.length; i++) {
-        if (selected_objects[i].figureType != "Free") {
+        if (selected_objects[i].figureType != "Free" || 
+        (selected_objects[i].figureType == "Free" && selected_objects.length > 1)) {
             eraseObject(selected_objects[i]);
         }
     }
