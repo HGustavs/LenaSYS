@@ -142,6 +142,8 @@
 									$term = 2;
 								} else if ($array[0] === "V") {
 									$term = 1;
+								}else if ($array[0] === "S") {
+									$term = 3;
 								}
 	
 								echo "<td class='coursePage' style='display: inline-block;'>";
