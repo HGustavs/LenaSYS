@@ -128,7 +128,7 @@ function generalStats($dbCon) {
 		WHERE eventType = '.EventTypes::ServiceServerStart.'
 		GROUP BY browser
 		ORDER BY percentage DESC LIMIT 1
-		')->fetchAll(PDO::FETCH_ASSOC);
+    ')->fetchAll(PDO::FETCH_ASSOC);
 	
     $topOS = $GLOBALS['log_db']->query('
         SELECT
@@ -154,7 +154,7 @@ function generalStats($dbCon) {
         FROM duggaLoadLogEntries 
         GROUP BY quizid 
         ORDER BY COUNT(*) DESC LIMIT 1;
-      ')->fetchAll(PDO::FETCH_ASSOC);
+    ')->fetchAll(PDO::FETCH_ASSOC);
 
     $topViewedExample = $GLOBALS['log_db']->query('
         SELECT 
@@ -163,7 +163,7 @@ function generalStats($dbCon) {
         FROM exampleLoadLogEntries 
         GROUP BY exampleid 
         ORDER BY COUNT(*) DESC LIMIT 1;
-      ')->fetchAll(PDO::FETCH_ASSOC);
+    ')->fetchAll(PDO::FETCH_ASSOC);
 
 	$fastestService = $GLOBALS['log_db']->query('
 	SELECT DISTINCT
