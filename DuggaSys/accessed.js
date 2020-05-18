@@ -963,7 +963,7 @@ function compare(a, b) {
 				var tempB = a;
 		}
 	
-		if(col=="firstname"||col=="lastname"||col=="class"||col=="examiner"){
+		if(col=="firstname"||col=="lastname"||col=="class"||col=="examiner"||col=="access"){
 				tempA = JSON.parse(tempA);
 				tempB = JSON.parse(tempB);
 				if(col=="firstname"){
