@@ -5037,6 +5037,9 @@ function doubleclick() {
             freedrawObject.segments.splice(clickedSegmentId, 0, {kind:kind.path, pa:clickedSegment.pa, pb:newPoint});
             freedrawObject.segments.splice(clickedSegmentId+1, 0, {kind:kind.path, pa:newPoint, pb:clickedSegment.pb});
         }
+        else {
+            loadAppearanceForm(); 
+        }
     }
     else if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         loadAppearanceForm();
@@ -5066,7 +5069,7 @@ function pointOnLine(pointX, pointY, segment) {
     let pointB = {x:points[segment.pb].x, y:points[segment.pb].y};
 
     if (distance(pointA, pointBetween) + distance(pointB, pointBetween) 
-    <= distance(pointA, pointB) + 0.1) {
+    <= distance(pointA, pointB) + 0.6) {
         return true;
     }
 }
