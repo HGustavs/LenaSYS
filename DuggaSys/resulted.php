@@ -50,7 +50,7 @@ pdoConnect();
 	<div id="content">
 	
 	<div id="resultedLegendContainer" >
-		<div id="legendBtn" onclick="showLegend();"> ? </div>
+		<div id="legendBtn"> ? </div>
 		<ul class="legendList">
 			<li class="legendListItem"><img src="../Shared/icons/Uh.png"><img src="../Shared/icons/G.png"> Pass</li>
 			<li class="legendListItem"><img src="../Shared/icons/U.png"><img src="../Shared/icons/Gc.png"> Fail</li>

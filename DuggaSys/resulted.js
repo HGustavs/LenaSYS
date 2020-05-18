@@ -1793,22 +1793,21 @@ function hideSSN(ssn){
 	return hiddenSSN;
 }
 
-//Shows and hides element describing the icons and colours
-function showLegend(){
-	var legendBox = $('#resultedLegendContainer');
-	if (legendIsHidden == false){
 
-		legendBox.css("right", "-323px");
-		legendIsHidden = true;
-	}
-	else if (legendIsHidden == true){
-		legendBox.css("right", "0px");
-		legendIsHidden = false;
-	}
-	else{
-		//alert(legendIsHidden);
-	}
-}
+// Function that makes it possible to click on the div to close and open it 
+document.addEventListener('mouseup', function(e) {
+    var legendDiv = document.getElementById('resultedLegendContainer');
+    var legendBtn = document.getElementById('legendBtn');
+    if (legendDiv.contains(e.target) || legendBtn.contains(e.target)) {
+        if (legendIsHidden == true) {
+            legendDiv.style.right = "0px";
+            legendIsHidden = false;
+        } else {
+            legendDiv.style.right = "-323px";
+            legendIsHidden = true;
+        }
+    }
+  });
 
 function compare(firstCell, secoundCell) {
 	let col = myTable.getSortcolumn(); // Get column name
