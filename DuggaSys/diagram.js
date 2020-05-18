@@ -2461,6 +2461,9 @@ function eraseSelectedObject(event) {
             eraseObject(selected_objects[i]);
         }
     }
+    if (selected_objects.length <= 1 && selected_objects[0].figureType == "Free") {
+        deleteFreedrawObject();
+    }
     selected_objects = [];
     lastSelectedObject = -1;
     createRulerLinesObjectPoints();
