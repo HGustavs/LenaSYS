@@ -548,6 +548,7 @@ function deleteFreedrawObject() {
             // If a point isn't hovered, delete object
             if (point.distance > 10 / zoomValue){
                 eraseObject(point.attachedSymbol);
+                SaveState();
                 return;
             }
             // Freedraw objects need at least 3 points
@@ -556,7 +557,8 @@ function deleteFreedrawObject() {
             }
             // Remove hovered point
             else {
-                removeFreedrawPoint(point.attachedSymbol, pointId); 
+                removeFreedrawPoint(point.attachedSymbol, pointId);
+                SaveState(); 
             }
         }
     }
@@ -617,7 +619,6 @@ function keyDownHandler(e) {
     if ((key == keyMap.deleteKey || key == keyMap.backspaceKey)) {
         deleteFreedrawObject();
         eraseSelectedObject(event);
-        SaveState();
     }  
     //Check if enter is pressed when "focused" on an item in the dropdown menu
     if(key == keyMap.enterKey) {
@@ -2457,14 +2458,21 @@ function eraseObject(object) {
 
 function eraseSelectedObject(event) {
     event.stopPropagation();
+    var objectDeleted = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if (selected_objects[i].figureType != "Free" || 
         (selected_objects[i].figureType == "Free" && selected_objects.length > 1)) {
             eraseObject(selected_objects[i]);
+            objectDeleted = true;
         }
     }
+
     if (selected_objects.length <= 1 && selected_objects[0].figureType == "Free") {
         deleteFreedrawObject();
+        objectDeleted = true;
+    }
+    if(objectDeleted){
+        SaveState();
     }
     selected_objects = [];
     lastSelectedObject = -1;
