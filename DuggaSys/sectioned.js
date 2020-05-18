@@ -1759,11 +1759,23 @@ function validateCreateAnnouncementForm(){
   $("#announcementForm").submit(function(e){
     var announcementTitle = ($("#announcementTitle").val()).trim();
     var announcementMsg = ($("#announcementMsg").val()).trim();
+    var coursename = $("#cid").val();
+    var versid = $("#versid").val();
+    var recipients = $("#recipient").val();
     if (announcementTitle == null || announcementTitle == '') {  
         $("#announcementTitle").addClass('errorCreateAnnouncement');
         e.preventDefault();
     }else if (announcementMsg == null || announcementMsg == '') {  
         $("#announcementMsg").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (coursename == null || coursename == '') {  
+        $("#cid").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (versid == null || versid == '') {  
+        $("#versid").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (recipients == null || recipients == '') {  
+        $("#recipient").addClass('errorCreateAnnouncement');
         e.preventDefault();
     }
     $(".errorCreateAnnouncement").css({
