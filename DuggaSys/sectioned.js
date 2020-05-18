@@ -565,9 +565,9 @@ function returnedGroups(data) {
 
 function returnedSection(data) {
   retdata = data;
-  
-  var getData = data;
-  localStorage.setItem("sectionData", JSON.stringify(getData));
+  //data variable is put in localStorage which is then used in Codeviewer
+  //to get the right order when going backward and forward in code examples
+  localStorage.setItem("sectionData", JSON.stringify(data));
   
   if (data['debug'] != "NONE!") alert(data['debug']);
 
