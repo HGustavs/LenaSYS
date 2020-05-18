@@ -315,19 +315,19 @@ function Symbol(kindOfSymbol) {
                 //Height of text + padding on attributes textfield
                 if(this.properties['sizeOftext'] == 'Tiny'){
                     textHeight = 14;
-                    attrHeight = (this.attributes.length*textHeight) +35;
+                    attrHeight = (this.attributes.length*textHeight) + 30;
                 }
                 else if (this.properties['sizeOftext'] == 'Small'){
                     textHeight = 20;
-                    attrHeight = (this.attributes.length*textHeight) +35;
+                    attrHeight = (this.attributes.length*textHeight) + 45;
                 }
                 else if (this.properties['sizeOftext'] == 'Medium'){
                     textHeight = 30;
-                    attrHeight = (this.attributes.length*textHeight)+50;
+                    attrHeight = (this.attributes.length*textHeight) + 60;
                 }
                 else if (this.properties['sizeOftext'] == 'Large'){
                     textHeight = 50;
-                    attrHeight = (this.attributes.length*textHeight)+100;
+                    attrHeight = (this.attributes.length*textHeight) + 100;
                 } 
             }
             if(this.operations.length > 0) {
