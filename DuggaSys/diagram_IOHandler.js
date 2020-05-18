@@ -201,6 +201,7 @@ function loadDiagram() {
     if(localDiagramChanges !== null) {
         localDiagramChanges = JSON.parse(localDiagramChanges);
         changes = localDiagramChanges;
+        buildDiagramFromChanges(changes)
     }
 
     // Only retrieve settings if there are any saved
@@ -520,6 +521,29 @@ function getObjectChanges(base, object) {
     compareObjects(base, object);
 
     return changes;
+}
+
+function buildDiagramFromChanges() {
+    const object = {
+        diagram: [],
+        points: []
+    }
+
+    for(const change of changes) {
+        for(const [key, value] of Object.entries(change.diagram)) {
+            switch(value.type) {
+                case '+':
+                case 'u':
+                    //Add or update value
+                    break;
+                case '-':
+                    //Delete property or array element 
+                    break; 
+            }
+        }
+    }
+
+    return object;
 }
 
 //--------------------------------------------------------
