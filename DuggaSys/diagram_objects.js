@@ -348,16 +348,30 @@ function Symbol(kindOfSymbol) {
             }
             this.minHeight = attrHeight + opHeight;
             
-            //Finding the longest string
+            //Finding the longest and widest string
             var longestStr = "";
-            //Check if any attribute is the longest
+            let widestStr = "";
+            let widestValue = 0;
+            //Check if any attribute is the longest and widest
             for (var i = 0; i < this.attributes.length; i++) {
+                let tempWidth = this.attributes[i].text;
+                tempWidth = ctx.measureText(tempWidth).width;
+                if (tempWidth > widestValue) {
+                    widestStr = this.attributes[i].text;
+                    widestValue = ctx.measureText(widestStr).width;
+                }
                 if (this.attributes[i].text.length > longestStr.length) {
                     longestStr = this.attributes[i].text;
                 }
             }
-            //check if any operation is the longest
+            //check if any operation is the longest and widest
             for (var i = 0; i < this.operations.length; i++) {
+                let tempWidth = this.operations[i].text;
+                tempWidth = ctx.measureText(tempWidth).width;
+                if (tempWidth > widestValue) {
+                    widestStr = this.operations[i].text;
+                    widestValue = ctx.measureText(widestStr).width;
+                }
                 if (this.operations[i].text.length > longestStr.length) {
                     longestStr = this.operations[i].text;
                 }
@@ -366,7 +380,13 @@ function Symbol(kindOfSymbol) {
             if(this.name.length > longestStr.length){
                 longestStr = this.name;
             }
-
+            //check if name is the widest
+            let tempWidth = this.name;
+            tempWidth = ctx.measureText(tempWidth).width;
+            if (tempWidth > widestValue) {
+                widestStr = this.name;
+                widestValue = ctx.measureText(widestStr).width;
+            }
             if(!this.UMLCustomResize) {
                 for(var i = 0; i < this.operations.length; i++) {
                     if(this.operations[i].text.length > longestStr.length)
@@ -377,31 +397,12 @@ function Symbol(kindOfSymbol) {
                         longestStr = this.attributes[i].text;
                 }
             }
-            //Finding the widest string
-            var widestStr = 0;
-            var calcWidth;
-            for (var i = 0; i < this.attributes.length; i++) {
-                calcWidth = this.attributes[i].text;
-                calcWidth = ctx.measureText(calcWidth).width;
-                if (calcWidth > widestStr) {
-                    widestStr = calcWidth;
-                }
-            }
-            for (var i = 0; i < this.operations.length; i++) {
-                calcWidth = this.operations[i].text;
-                calcWidth = ctx.measureText(calcWidth).width;
-                if (calcWidth > widestStr) {
-                    widestStr = calcWidth;
-                }
-            }
-            calcWidth = this.name;
-            calcWidth = ctx.measureText(calcWidth).width;
-            if (calcWidth > widestStr) {
-                 widestStr = calcWidth;
-            }
+
+            console.log(widestStr);
+            
             ctx.font = "14px Arial";
-            this.minWidth = widestStr + 25;
-            //console.log(this.minWidth);
+            this.minWidth = ctx.measureText(widestStr).width;
+            console.log(this.minWidth);
             if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
                 // If the height is less than the minimum, push out the
                 // point that the user is dragging
