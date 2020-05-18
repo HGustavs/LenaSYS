@@ -175,12 +175,12 @@ function loadGeneralStats() {
 		if(data.cpu != undefined){
 			var chartData = [];
 			chartData.push({
-				label: 'CPU Load ('+data.cpu.totalPercent+'%)',
+				label: 'CPU Load (' + (+data.cpu.totalPercent).toFixed(1) + '%)',
 				value: data.cpu.totalPercent
 			});
 	
 			chartData.push({
-				label: 'CPU Free ('+data.cpu.freePercent+'%)',
+				label: 'CPU Free (' + (+data.cpu.freePercent).toFixed(1) +'%)',
 				value: data.cpu.freePercent
 			});
 			drawPieChart(chartData, 'CPU Usage on the Server', true);	
