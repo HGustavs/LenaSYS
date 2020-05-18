@@ -2659,14 +2659,14 @@ function developerMode(event) {
 function setModeOnRefresh() {
     const tempToolbarState = localStorage.getItem("toolbarState");
     const tempDevmodeState = localStorage.getItem("developerState");
+    console.log("toolbarstate i local: "+tempToolbarState);
+    console.log("developerstate i local: "+tempDevmodeState);
     if(tempToolbarState != null) {
         targetMode = tempToolbarState;
         developerModeActive = tempDevmodeState;
-        console.log("dm: "+developerModeActive);
     } else {
         targetMode = currentMode.er;
-        developerModeActive = false;
-       
+        developerModeActive = false;  
     }
     switchMode();
     //här
@@ -3307,8 +3307,6 @@ function setOrientationIcon(element, check) {
 function switchMode() {
     closeModeSwitchDialog();
     toolbarState = targetMode;
-    console.log("efter switch: "+toolbarState);
-    console.log("dev: "+developerModeActive);
     localStorage.setItem("toolbarState", toolbarState);
     localStorage.setItem("developerState", developerModeActive);
     if(toolbarState != currentMode.dev) previousToolbarState = toolbarState;
@@ -3349,11 +3347,9 @@ function switchToolbar() {
 function editToolbarMenus(){
     setCheckbox($(".drop-down-option:contains('ER mode')"), toolbarState == currentMode.er);
     setCheckbox($(".drop-down-option:contains('UML mode')"), toolbarState == currentMode.uml);
-    console.log("edittoolbar: "+toolbarState);
-    console.log("edittoolbar: "+developerModeActive);
-    setCheckbox($(".drop-down-option:contains('Developer mode')"), (toolbarState == currentMode.dev) || developerModeActive);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), (toolbarState == currentMode.dev) || developerModeActive == true);
     setCheckbox($(".drop-down-option:contains('Display All Tools')"), (toolbarState == currentMode.dev));
-    if(developerModeActive){
+    if(developerModeActive == true){
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     } else {
         $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
