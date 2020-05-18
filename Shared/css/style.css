@@ -1227,7 +1227,7 @@ div .navButt:hover {
         color:white;
         margin-top: 50px;
         background:#927b9e;
-        padding: 5px;
+        padding: 4px;
         font-weight: bold;
         
     }
@@ -1251,6 +1251,16 @@ div .navButt:hover {
     .box{
         overflow: hidden;
     }
+    .maximizebtn, .minimizebtn, .resetbtn{
+        display: none;
+    }
+    .buttomenu2{
+        height: 35px;
+    }
+    .box{
+        margin-top: 30px !important;
+    }
+    
     
 }
 
