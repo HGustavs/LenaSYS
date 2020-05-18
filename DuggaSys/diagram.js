@@ -487,7 +487,8 @@ window.addEventListener('blur', resetButtonsPressed);
 function init() {
     initializeCanvas();
     canvasSize(); 
-    loadDiagram(); 
+    loadDiagram();
+    loadKeyBinds(); 
     setModeOnRefresh(); 
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
@@ -2238,6 +2239,7 @@ function openShortcutsDialog() {
 
 function closeShortcutsDialog() {
     $("#edit-shortcuts").css("display", "none");
+    saveKeyBinds();
 }
 
 //----------------------------------------------------
