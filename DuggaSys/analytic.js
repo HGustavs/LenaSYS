@@ -1076,7 +1076,7 @@ function drawBarChart(data, format = null) {
 		ctx.scale(1, -1);
 		ctx.fillStyle = "white";
 		
-		if(format = "bytes") {
+		if(format == "bytes") {
 			ctx.fillText(humanFileSize(data[i].value), x + barWidth / 2, -data[i].value * barHeightMultiplier);
 		} else {
 			ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
