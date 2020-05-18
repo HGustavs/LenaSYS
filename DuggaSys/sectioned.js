@@ -266,6 +266,7 @@ document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
     $("#editCourseVersion").css("display", "none");
     $("#newCourseVersion").css("display", "none");
+    $("#userFeedbackDialog").css("display", "none");
   }
 })
 
