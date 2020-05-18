@@ -9,7 +9,7 @@ var c;
 var b;
 var ac = [];
 const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, diagramNames:null, diagramID:null, text: null, isSelected: null}]);
-const changes = [];
+let changes = [];
 
 //--------------------------------------------------------------------------------------------------
 // downloadmode: download/load/export canvas (not fully implemented, see row 373-378 in diagram.php)
@@ -124,6 +124,7 @@ function Save() {
         });
     }
 
+    localStorage.setItem("diagramChanges", JSON.stringify(changes));
 
     diagramNumber++;
     localStorage.setItem("diagramNumber", diagramNumber);
@@ -196,6 +197,12 @@ function loadKeyBinds(){
 //---------------------------------------------
 
 function loadDiagram() {
+    let localDiagramChanges = localStorage.getItem("diagramChanges");
+    if(localDiagramChanges !== null) {
+        localDiagramChanges = JSON.parse(localDiagramChanges);
+        changes = localDiagramChanges;
+    }
+
     // Only retrieve settings if there are any saved
     if(JSON.parse(localStorage.getItem("Settings"))){
         settings = JSON.parse(localStorage.getItem("Settings"));
@@ -490,7 +497,7 @@ function getObjectChanges(base, object) {
 
         for(const [key, value] of Object.entries(object)) {
             if(!isFunction(value)) {
-                const currentPath = Array.isArray(object) ? path + `[${key}]` : path === '' ? key : `${path}.${key}`;
+                const currentPath = path === "" ? key : `${path}.${key}`;
                 if(base[key] === undefined) {
                     changes[currentPath] = {
                         "type": "+",
