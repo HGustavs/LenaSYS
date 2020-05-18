@@ -5819,6 +5819,8 @@ only screen and (max-device-width: 320px) {
 
 .fab-btn-list2 {
   position: absolute;
+  padding: 18px 0px 0px;
+  margin: 0px 0px 0px -3px;
   left: auto;
   width: 100%;
   list-style: none;
