@@ -534,7 +534,7 @@ function buildDiagramFromChanges() {
             switch(value.type) {
                 case '+':
                 case 'u':
-                    //Add or update value
+                    setNestedPropertyValue(object.diagram, key, value.data);
                     break;
                 case '-':
                     //Delete property or array element 
@@ -544,6 +544,20 @@ function buildDiagramFromChanges() {
     }
 
     return object;
+}
+
+function setNestedPropertyValue(object, property, value) {
+    if(property.indexOf(".") === -1) {
+        object[property] = value;
+    } else {
+        const properties = property.split(".");
+        const topLevelProperty = properties.shift();
+        const remainingProperties = properties.join(".");
+        if(object[topLevelProperty] === null) {
+            object[topLevelProperty] = {};
+        }
+        setNestedPropertyValue(object[topLevelProperty], remainingProperties, value);
+    }
 }
 
 //--------------------------------------------------------
