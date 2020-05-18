@@ -197,6 +197,9 @@
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick='disableShortcuts(event);'>Disable keyboard shortcuts</span>
                     </div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option" onclick='resetShortcuts(event);'>Reset keyboard shortcuts</span>
+                    </div>
                 </div>
             </div>
             <div class="menu-drop-down" tabindex="0">
