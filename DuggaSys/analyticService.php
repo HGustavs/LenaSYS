@@ -141,9 +141,9 @@ function generalStats($dbCon) {
 	')->fetchAll(PDO::FETCH_ASSOC);
     
     $topViewedDugga = $GLOBALS['log_db']->query('
-		SELECT type, COUNT(*) as hits
+		SELECT quizid, COUNT(*) as hits
 		FROM duggaLoadLogEntries 
-		GROUP BY type 
+		GROUP BY quizid 
 		ORDER BY COUNT(*) DESC LIMIT 1;
 	')->fetchAll(PDO::FETCH_ASSOC);
 
@@ -188,7 +188,7 @@ function generalStats($dbCon) {
 	$generalStats['stats']['topPage'] = $topPage[0]['refer'];
 	$generalStats['stats']['topPageHits'] = $topPage[0]['hits'];
  
-    $generalStats['stats']['topViewedDugga'] = $topViewedDugga[0]['type'];
+    $generalStats['stats']['topViewedDugga'] = $topViewedDugga[0]['quizid'];
 	$generalStats['stats']['topViewedDuggaHits'] = $topViewedDugga[0]['hits'];
 
 	$generalStats['stats']['topBrowser'] = $topBrowser[0]['browser'];
