@@ -217,9 +217,25 @@ function loadGeneralStats() {
 				value: data.ram.freePercent
 			});
 			drawPieChart(chartData, 'RAM Usage on the Server', true);
-		}		
+		}
+			
+		// CPU Usage
+		if(data.cpu != undefined){
+			var chartData = [];
+			chartData.push({
+				label: 'CPU Load (' + (+data.cpu.totalPercent).toFixed(1) + '%)',
+				value: data.cpu.totalPercent
+			});
+	
+			chartData.push({
+				label: 'CPU Free (' + (+data.cpu.freePercent).toFixed(1) +'%)',
+				value: data.cpu.freePercent
+			});
+			drawPieChart(chartData, 'CPU Usage on the Server', true);	
+		}
 	});
 }
+
 function loadCurrentlyOnline() {
 	loadAnalytics("onlineUsers", function(data) {
 		localStorage.setItem('analyticsPage', 'onlineUsers');
