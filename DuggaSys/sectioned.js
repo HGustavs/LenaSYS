@@ -602,7 +602,7 @@ function returnedSection(data) {
 
     var str = "";
 
-    if (data['writeaccess']) {
+    if (data['writeaccess'] || data['studentteacher']) {
       // Build dropdowns
       var bstr = "";
       for (var i = 0; i < retdata['versions'].length; i++) {
@@ -635,20 +635,6 @@ function returnedSection(data) {
       document.getElementById("FABStatic2").style.display = "None";
     }
 
-    if (data['studentteacher']) {
-      // Show FAB / Menu
-      document.getElementById("FABStatic").style.display = "Block";
-      document.querySelector("td.results.menuButton").style.display = "none";
-      document.querySelector("td.tests.menuButton").style.display = "none";
-      document.querySelector("td.access.menuButton").style.display = "none";
-      document.querySelector(".course-dropdown-div").style.display = "none";
-      document.querySelector("td.editVers").style.display = "none";
-      document.querySelector("td.newVers").style.display = "none";
-      document.querySelector("td.coursePage").style.display = "none";
-
-      // Show addElement Button
-      document.getElementById("addElement").style.display = "Block";
-    }
 
     // hide som elements if to narrow
     var hiddenInline = "";
