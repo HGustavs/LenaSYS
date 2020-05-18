@@ -540,11 +540,12 @@ function loadFileInformation() {
             },
             success: function(data) {
                 var files = {};
+                var fileSizes = [];
                 $.each(data, function(i, row) {
                     var description = row.description.split(" ");
                     var version = description[0];
                     var file =  row.filename;
- 
+					fileSizes.push(row.filesize);
                     if(row.eventType == 15){
                         var action = "Created"
                     }
@@ -568,15 +569,17 @@ function loadFileInformation() {
                 });
  
                 $('#analytic-info > select.file-select').remove();
-                var fileSelect = $('<select class="file-select"></select>');
+				var fileSelect = $('<select class="file-select"></select>');
+				var i = 0;
                 for (var file in files) {
                     if (files.hasOwnProperty(file)) {
 						if(localStorage.getItem('analyticsLastFile') == file) {
-							fileSelect.append('<option value="' + file + '" selected>' + file + '</option>');
+							fileSelect.append('<option value="' + file + '" selected>' + file + ' (' + humanFileSize(fileSizes[i]) + ')</option>');
 						} else {
-							fileSelect.append('<option value="' + file + '">' + file + '</option>')
+							fileSelect.append('<option value="' + file + '">' + file + ' (' + humanFileSize(fileSizes[i]) + ')</option>')
 						}
-                    }
+					}
+					i++;
                 }
                 fileSelect.change(function() {
 					deleteTable();
@@ -1082,7 +1085,7 @@ function drawBarChart(data, format = null) {
 		ctx.scale(1, -1);
 		ctx.fillStyle = "white";
 		
-		if(format == "bytes") {
+		if(format = "bytes") {
 			ctx.fillText(humanFileSize(data[i].value), x + barWidth / 2, -data[i].value * barHeightMultiplier);
 		} else {
 			ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
