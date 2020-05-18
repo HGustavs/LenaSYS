@@ -343,19 +343,19 @@ function Symbol(kindOfSymbol) {
                 //Height of text + padding on attributes textfield
                 if(this.properties['sizeOftext'] == 'Tiny'){
                     textHeight = 14;
-                    attrHeight = (this.attributes.length*textHeight) +35;
+                    attrHeight = (this.attributes.length*textHeight) + 30;
                 }
                 else if (this.properties['sizeOftext'] == 'Small'){
                     textHeight = 20;
-                    attrHeight = (this.attributes.length*textHeight) +35;
+                    attrHeight = (this.attributes.length*textHeight) + 45;
                 }
                 else if (this.properties['sizeOftext'] == 'Medium'){
                     textHeight = 30;
-                    attrHeight = (this.attributes.length*textHeight)+50;
+                    attrHeight = (this.attributes.length*textHeight) + 60;
                 }
                 else if (this.properties['sizeOftext'] == 'Large'){
                     textHeight = 50;
-                    attrHeight = (this.attributes.length*textHeight)+100;
+                    attrHeight = (this.attributes.length*textHeight) + 100;
                 } 
             }
             if(this.operations.length > 0) {
@@ -376,16 +376,30 @@ function Symbol(kindOfSymbol) {
             }
             this.minHeight = attrHeight + opHeight;
             
-            //Finding the longest string
+            //Finding the longest and widest string
             var longestStr = "";
-            //Check if any attribute is the longest
+            let widestStr = "";
+            let widestValue = 0;
+            //Check if any attribute is the longest and widest
             for (var i = 0; i < this.attributes.length; i++) {
+                let tempWidth = this.attributes[i].text;
+                tempWidth = ctx.measureText(tempWidth).width;
+                if (tempWidth > widestValue) {
+                    widestStr = this.attributes[i].text;
+                    widestValue = ctx.measureText(widestStr).width;
+                }
                 if (this.attributes[i].text.length > longestStr.length) {
                     longestStr = this.attributes[i].text;
                 }
             }
-            //check if any operation is the longest
+            //check if any operation is the longest and widest
             for (var i = 0; i < this.operations.length; i++) {
+                let tempWidth = this.operations[i].text;
+                tempWidth = ctx.measureText(tempWidth).width;
+                if (tempWidth > widestValue) {
+                    widestStr = this.operations[i].text;
+                    widestValue = ctx.measureText(widestStr).width;
+                }
                 if (this.operations[i].text.length > longestStr.length) {
                     longestStr = this.operations[i].text;
                 }
@@ -394,7 +408,13 @@ function Symbol(kindOfSymbol) {
             if(this.name.length > longestStr.length){
                 longestStr = this.name;
             }
-
+            //check if name is the widest
+            let tempWidth = this.name;
+            tempWidth = ctx.measureText(tempWidth).width;
+            if (tempWidth > widestValue) {
+                widestStr = this.name;
+                widestValue = ctx.measureText(widestStr).width;
+            }
             if(!this.UMLCustomResize) {
                 for(var i = 0; i < this.operations.length; i++) {
                     if(this.operations[i].text.length > longestStr.length)
@@ -405,9 +425,24 @@ function Symbol(kindOfSymbol) {
                         longestStr = this.attributes[i].text;
                 }
             }
-            ctx.font = "14px Arial";
-            this.minWidth = ctx.measureText(longestStr).width + 15;
-            //console.log(this.minWidth);
+            //Determine size of UML text
+            let umlTextSize;
+            switch (this.properties['sizeOftext']) {
+                case 'Tiny':
+                    umlTextSize = 14;
+                    break;
+                case 'Small':
+                    umlTextSize = 20;
+                    break;
+                case 'Medium':
+                    umlTextSize = 30;
+                    break;
+              case 'Large':
+                    umlTextSize = 50;
+            }
+            ctx.font = umlTextSize + "px Arial";
+            this.minWidth = ctx.measureText(widestStr).width + umlTextSize;
+            // console.log(this.minWidth);
             if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
                 // If the height is less than the minimum, push out the
                 // point that the user is dragging
