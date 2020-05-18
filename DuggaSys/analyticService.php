@@ -410,6 +410,7 @@ function passwordGuessing(){
 			uid AS userName,
 			remoteAddress AS remoteAddress,
 			userAgent AS userAgent,
+			description as guestID,
 			COUNT(*) AS tries
 		FROM userLogEntries
 		WHERE eventType = '.EventTypes::LoginFail.'
