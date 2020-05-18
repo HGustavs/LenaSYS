@@ -458,7 +458,12 @@ function getObjectChanges(base, object) {
     const changes = {};
 
     const compareObjects = (base, object, path = "") => {
-
+        for(const key of Object.keys(base)) {
+            const currentPath = path === "" ? key : `${path}.${key}`;
+            if(object[key] === undefined) {
+                changes[currentPath] = {"type": "-"};
+            }
+        }
     };
 
     compareObjects(base, object);
