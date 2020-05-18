@@ -454,6 +454,18 @@ function afterPrint(){
 // Local storage compressing functions start
 //------------------------------------------------
 
+function getObjectChanges(base, object) {
+    const changes = {};
+
+    const compareObjects = (base, object, path = "") => {
+
+    };
+
+    compareObjects(base, object);
+
+    return changes;
+}
+
 //--------------------------------------------------------
 // isFunction: Returns true if passed value is a function.
 //--------------------------------------------------------
