@@ -461,7 +461,7 @@ function serviceUsage($start, $end, $interval){
 //------------------------------------------------------------------------------------------------
 
 function fileInformation($pdo){
-    $query = $pdo->prepare("SELECT filename FROM fileLink");
+    $query = $pdo->prepare("SELECT filename, filesize FROM fileLink");
     if(!$query->execute()) {
     } else {
         $rows = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -472,7 +472,8 @@ function fileInformation($pdo){
                                 "timestamp"     =>  "",
                                 "eventType"     =>  "",    
                                 "description"   =>  "",
-                                "filename"      =>  $value['filename']
+                                "filename"      =>  $value['filename'],
+                                "filesize"     	=>  $value['filesize']
                             ];
         }
     }
@@ -483,7 +484,8 @@ function fileInformation($pdo){
             timestamp AS timestamp,
             eventType AS eventType,
             description AS description,
-            substr(description,    instr(description, " ") + 1) AS filename
+			substr(description,    instr(description, " ") + 1) AS filename,
+			"" AS filesize 
         FROM userLogEntries
         WHERE eventType = '.EventTypes::AddFile.' OR eventType = '.EventTypes::EditFile.'
         ORDER BY timestamp;
