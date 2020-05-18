@@ -3678,7 +3678,7 @@ function mousemoveevt(ev) {
                     //When CreateLine-button is selected the cursor is "pointer".
                     canvas.style.cursor = "pointer";
                     //If objects are hovered while button is selected, the cursor remains the same (pointer).
-                } else if (hoveredObject && !hoveredObject.isLocked) {
+                } else if (hoveredObject && !hoveredObject.isLocked && !hoveredObject.isLayerLocked) {
                     if (hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
                         canvas.style.cursor = "pointer";
                     } else {
@@ -3823,7 +3823,7 @@ function mousemoveevt(ev) {
                 uimode = "Moved";
                 $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
                 for (var i = 0; i < diagram.length; i++) {
-                    if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
+                    if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked && !diagram[i].isLayerLocked) {
                         if(snapToGrid) {
                             // Set mouse start so it's snaped to grid.
                             startMouseCoordinateX = Math.round(startMouseCoordinateX / gridSize) * gridSize;
