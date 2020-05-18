@@ -537,7 +537,7 @@ function loadFileInformation() {
                 $.each(data, function(i, row) {
                     var description = row.description.split(" ");
                     var version = description[0];
-                    var file =  description[1];
+                    var file =  row.filename;
  
                     if(row.eventType == 15){
                         var action = "Created"

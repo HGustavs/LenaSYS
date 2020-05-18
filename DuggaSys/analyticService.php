@@ -49,7 +49,7 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 				serviceCrashes();
 				break;
 			case 'fileInformation':
-				fileInformation();
+				fileInformation($pdo);
 				break;
 			case 'duggaInformation':
                 duggaInformation($pdo);
@@ -447,18 +447,43 @@ function serviceUsage($start, $end, $interval){
 // Retrieves file information		
 //------------------------------------------------------------------------------------------------
 
-function fileInformation(){
-	$result = $GLOBALS['log_db']->query('
-		SELECT
-			uid AS userName,
-			timestamp AS timestamp,
-			eventType AS eventType,
-			description AS description
-		FROM userLogEntries
-		WHERE eventType = '.EventTypes::AddFile.' OR eventType = '.EventTypes::EditFile.'
-		ORDER BY timestamp;
-	')->fetchAll(PDO::FETCH_ASSOC);
-	echo json_encode($result);
+function fileInformation($pdo){
+    $query = $pdo->prepare("SELECT filename FROM fileLink");
+    if(!$query->execute()) {
+    } else {
+        $rows = $query->fetchAll(PDO::FETCH_ASSOC);
+        $files = [];
+        foreach($rows as $key => $value) {
+            $files[$key] =  [  
+                                "username"      =>  "",
+                                "timestamp"     =>  "",
+                                "eventType"     =>  "",    
+                                "description"   =>  "",
+                                "filename"      =>  $value['filename']
+                            ];
+        }
+    }
+ 
+    $result = $GLOBALS['log_db']->query('
+        SELECT
+            username,
+            timestamp AS timestamp,
+            eventType AS eventType,
+            description AS description,
+            substr(description,    instr(description, " ") + 1) AS filename
+        FROM userLogEntries
+        WHERE eventType = '.EventTypes::AddFile.' OR eventType = '.EventTypes::EditFile.'
+        ORDER BY timestamp;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+ 
+    foreach($result as $value) {
+        $key = array_search($value['filename'], array_column($files, 'filename'));
+        if($key === FALSE) {
+            unset($files[$key]);
+        }
+    }
+   
+    echo json_encode(array_merge($files,$result));
 }
 
 //------------------------------------------------------------------------------------------------
