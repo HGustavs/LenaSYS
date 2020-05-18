@@ -139,6 +139,13 @@ function generalStats($dbCon) {
 		GROUP BY operatingSystem
 		ORDER BY percentage DESC
 	')->fetchAll(PDO::FETCH_ASSOC);
+    
+    $topViewedDugga = $GLOBALS['log_db']->query('
+		SELECT type, COUNT(*) as hits
+		FROM duggaLoadLogEntries 
+		GROUP BY type 
+		ORDER BY COUNT(*) DESC LIMIT 1;
+	')->fetchAll(PDO::FETCH_ASSOC);
 
 	$fastestService = $GLOBALS['log_db']->query('
 	SELECT DISTINCT
@@ -180,6 +187,9 @@ function generalStats($dbCon) {
 
 	$generalStats['stats']['topPage'] = $topPage[0]['refer'];
 	$generalStats['stats']['topPageHits'] = $topPage[0]['hits'];
+ 
+    $generalStats['stats']['topViewedDugga'] = $topViewedDugga[0]['type'];
+	$generalStats['stats']['topViewedDuggaHits'] = $topViewedDugga[0]['hits'];
 
 	$generalStats['stats']['topBrowser'] = $topBrowser[0]['browser'];
 	$generalStats['stats']['topOS'] = $topOS[0]['operatingSystem'];

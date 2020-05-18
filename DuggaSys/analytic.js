@@ -164,6 +164,12 @@ function loadGeneralStats() {
 			'Slowest Service: ' + data['stats']['slowestService'],
 			data['stats']['slowestServiceSpeed'] + " ms"
 		]);
+     
+        // Top viewed Dugga
+		tableData.push([
+			'Top Dugga: ' + data['stats']['topViewedDugga'],
+			'Hits: ' + data['stats']['topViewedDuggaHits']
+		]);
 
 		$('#analytic-info').append(renderTable(tableData));
 		
