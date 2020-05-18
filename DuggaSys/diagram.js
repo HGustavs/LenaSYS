@@ -2627,10 +2627,14 @@ function resetSerialNumbers(){
 
 var previousToolbarState = currentMode.er;
 var developerModeActive = false;                 // used to repressent a switch for whenever the developerMode is enabled or not.
+var pageRefreshed = false;                       // Used to prevent value of developerModeActive to invert when it shouldn't
 function developerMode(event) {
-    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    resetToolButtonsPressed();
-    developerModeActive = !developerModeActive;
+    // Ignore these if page is refreshed
+    if(!pageRefreshed) {
+        developerModeActive = !developerModeActive;
+        event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+        resetToolButtonsPressed();
+    }
 
     if (developerModeActive) {
         targetMode = currentMode.dev;
@@ -2654,15 +2658,18 @@ function developerMode(event) {
 
 function setModeOnRefresh() {
     const tempToolbarState = localStorage.getItem("toolbarState");
+    const tempDevmodeState = localStorage.getItem("developerState");
     if(tempToolbarState != null) {
         targetMode = tempToolbarState;
+        developerModeActive = tempDevmodeState;
+        console.log("dm: "+developerModeActive);
     } else {
         targetMode = currentMode.er;
+        developerModeActive = false;
+       
     }
     switchMode();
-    if(toolbarState != currentMode.dev){
-        hideCrosses();
-    }
+    //här
 }
 
 function setPaperSizeOnRefresh() {
@@ -3300,7 +3307,10 @@ function setOrientationIcon(element, check) {
 function switchMode() {
     closeModeSwitchDialog();
     toolbarState = targetMode;
+    console.log("efter switch: "+toolbarState);
+    console.log("dev: "+developerModeActive);
     localStorage.setItem("toolbarState", toolbarState);
+    localStorage.setItem("developerState", developerModeActive);
     if(toolbarState != currentMode.dev) previousToolbarState = toolbarState;
     switchToolbar();
     editToolbarMenus();
@@ -3339,6 +3349,8 @@ function switchToolbar() {
 function editToolbarMenus(){
     setCheckbox($(".drop-down-option:contains('ER mode')"), toolbarState == currentMode.er);
     setCheckbox($(".drop-down-option:contains('UML mode')"), toolbarState == currentMode.uml);
+    console.log("edittoolbar: "+toolbarState);
+    console.log("edittoolbar: "+developerModeActive);
     setCheckbox($(".drop-down-option:contains('Developer mode')"), (toolbarState == currentMode.dev) || developerModeActive);
     setCheckbox($(".drop-down-option:contains('Display All Tools')"), (toolbarState == currentMode.dev));
     if(developerModeActive){
