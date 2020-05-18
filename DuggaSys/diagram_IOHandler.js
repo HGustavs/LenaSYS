@@ -529,19 +529,23 @@ function buildDiagramFromChanges() {
         points: []
     }
 
-    for(const change of changes) {
-        for(const [key, value] of Object.entries(change.diagram)) {
+    const iterateChange = (change, type = "diagram") => {
+        for(const [key, value] of Object.entries(change[type])) {
             switch(value.type) {
                 case '+':
                 case 'u':
-                    setNestedPropertyValue(object.diagram, key, value.data);
+                    setNestedPropertyValue(object[type], key, value.data);
                     break;
                 case '-':
-                    //This will only work for first level (inside diagram array). Could need to support whole property path and deletion of property in object.
-                    object.diagram.splice(key, 1);
+                    object[type].splice(key, 1);
                     break; 
             }
         }
+    };
+
+    for(const change of changes) {
+        iterateChange(change, "diagram");
+        iterateChange(change, "points");
     }
 
     return object;
