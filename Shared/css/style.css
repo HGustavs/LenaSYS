@@ -1224,8 +1224,12 @@ div .navButt:hover {
         display: block;
         height: 25px;
         text-align: center;
-        color:black;
+        color:white;
         margin-top: 50px;
+        background:#927b9e;
+        padding: 5px;
+        font-weight: bold;
+        
     }
 
     #burgerMenu {
