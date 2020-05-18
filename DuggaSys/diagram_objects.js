@@ -399,9 +399,23 @@ function Symbol(kindOfSymbol) {
             }
 
             console.log(widestStr);
-            
-            ctx.font = "14px Arial";
-            this.minWidth = ctx.measureText(widestStr).width;
+            //Determine size of UML text
+            let umlTextSize;
+            switch (this.properties['sizeOftext']) {
+                case 'Tiny':
+                    umlTextSize = 14;
+                    break;
+                case 'Small':
+                    umlTextSize = 20;
+                    break;
+                case 'Medium':
+                    umlTextSize = 30;
+                    break;
+              case 'Large':
+                    umlTextSize = 50;
+            }
+            ctx.font = umlTextSize + "px Arial";
+            this.minWidth = ctx.measureText(widestStr).width + umlTextSize;
             console.log(this.minWidth);
             if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
                 // If the height is less than the minimum, push out the
