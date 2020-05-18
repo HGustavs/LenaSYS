@@ -214,7 +214,6 @@ pdoConnect();
               </div>
             </div>
             <div id='buttonVariantDiv' style='display:flex;justify-content:space-between'>
-              <input id='closeVariant' class='submit-button' type='button' value='Close' onclick='closeWindows();'>
               <div style='display:flex;justify-content:flex-end'>
                   <input id='submitVariant' class='submit-button' type='button' value='Create' onclick='createVariant();'>
                   <input id='saveVariant' class='submit-button' type='button' value='Update' onclick='updateVariant("0");'>
