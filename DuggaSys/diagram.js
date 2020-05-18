@@ -2627,16 +2627,12 @@ function resetSerialNumbers(){
 
 var previousToolbarState = currentMode.er;
 var developerModeActive = false;                 // used to repressent a switch for whenever the developerMode is enabled or not.
-var pageRefreshed = false;                       // Used to prevent value of developerModeActive to invert when it shouldn't
 function developerMode(event) {
-    // Ignore these if page is refreshed
-    if(!pageRefreshed) {
-        developerModeActive = !developerModeActive;
-        event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-        resetToolButtonsPressed();
-    }
-
-    if (developerModeActive) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+    developerModeActive = !developerModeActive;
+    resetToolButtonsPressed();
+    
+    if (developerModeActive == true) {
         targetMode = currentMode.dev;
         // Enable developer features (crosses/origo)
         showCrosses();
@@ -2646,9 +2642,21 @@ function developerMode(event) {
         targetMode = previousToolbarState;
         hideCrosses();
     }
-    switchMode();
+
+//    switchMode();
     reWrite();
     updateGraphics();
+    console.log(developerModeActive + " = devmodeactive ");
+    console.log(toolbarState + " = toolbarstate ");
+    console.log(previousToolbarState + " = prevtoolbar");
+    console.log(targetMode + " = targetmode ");
+
+    /*
+    -!developermode är inte detsamam som if(dev)...dev = false
+    -Developermodeactive ändrar inte värde första gången man trycker
+    -Ändrade så switchmode() anropas när man trycker på developer mode
+    -Developer mode måste anropas efter refresh... men hur
+    */
 }
 
 //------------------------------------------------------------------------------
@@ -2659,8 +2667,7 @@ function developerMode(event) {
 function setModeOnRefresh() {
     const tempToolbarState = localStorage.getItem("toolbarState");
     const tempDevmodeState = localStorage.getItem("developerState");
-    console.log("toolbarstate i local: "+tempToolbarState);
-    console.log("developerstate i local: "+tempDevmodeState);
+    
     if(tempToolbarState != null) {
         targetMode = tempToolbarState;
         developerModeActive = tempDevmodeState;
@@ -3304,12 +3311,21 @@ function setOrientationIcon(element, check) {
 // switchMode: called when pressing "Accept" button after mode switch, and as trigger when jumping in/out from developer mode
 //----------------------------------------------------------------------
 
-function switchMode() {
+function switchMode(devMode) {
     closeModeSwitchDialog();
-    toolbarState = targetMode;
+    if(devMode == true) {
+        developerMode(event);
+    } else {
+        toolbarState = targetMode;
+    }
+
     localStorage.setItem("toolbarState", toolbarState);
     localStorage.setItem("developerState", developerModeActive);
-    if(toolbarState != currentMode.dev) previousToolbarState = toolbarState;
+
+    if(toolbarState != currentMode.dev) {
+        previousToolbarState = toolbarState;
+    }
+
     switchToolbar();
     editToolbarMenus();
 }
