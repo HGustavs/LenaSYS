@@ -397,8 +397,6 @@ function Symbol(kindOfSymbol) {
                         longestStr = this.attributes[i].text;
                 }
             }
-
-            console.log(widestStr);
             //Determine size of UML text
             let umlTextSize;
             switch (this.properties['sizeOftext']) {
@@ -416,7 +414,7 @@ function Symbol(kindOfSymbol) {
             }
             ctx.font = umlTextSize + "px Arial";
             this.minWidth = ctx.measureText(widestStr).width + umlTextSize;
-            console.log(this.minWidth);
+            // console.log(this.minWidth);
             if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
                 // If the height is less than the minimum, push out the
                 // point that the user is dragging
