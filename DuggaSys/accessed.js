@@ -400,7 +400,7 @@ function renderCell(col, celldata, cellid) {
 		var className = obj.class;
 		if (className == null || className === "null") {
 			className = "";
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div style='color:#808080'> None"+className+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(className, filez['classes'], "class", "class") + "</div>";
+			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'> None"+className+"</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(className, filez['classes'], "class", "class") + "</div>";
 		}
 		else{
 			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div>"+className+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(className, filez['classes'], "class", "class") + "</div>";
@@ -412,7 +412,13 @@ function renderCell(col, celldata, cellid) {
 				examinerName = filez['teachers'][i].name;
 			}
 		}
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(examinerName, filez['teachers'], "name", "uid") + "</div>";
+		if (obj.examiner == null || obj.examiner === "null") {
+			examinerName = "";
+			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'> None</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(examinerName, filez['teachers'], "name", "uid") + "</div>";
+		}
+		else{
+			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(examinerName, filez['teachers'], "name", "uid") + "</div>";
+		}
 	} else if (col == "vers") {
 		var versname = "";
 		for (var i = 0; i < filez['courses'].length; i++) {
