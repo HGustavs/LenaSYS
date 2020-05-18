@@ -466,19 +466,21 @@ function getObjectChanges(base, object) {
         }
 
         for(const [key, value] of Object.entries(object)) {
-            const currentPath = Array.isArray(object) ? path + `[${key}]` : path === '' ? key : `${path}.${key}`;
-            if(base[key] === undefined) {
-                changes[currentPath] = {
-                    "type": "+",
-                    "data": value
-                };
-            } else if(value !== base[key]) {
-                if(typeof value === "object" && typeof base[key] === "object") {
-                    compareObjects(base[key], value, currentPath);
-                } else {
+            if(!isFunction(value)) {
+                const currentPath = Array.isArray(object) ? path + `[${key}]` : path === '' ? key : `${path}.${key}`;
+                if(base[key] === undefined) {
                     changes[currentPath] = {
-                        "type": "0",
+                        "type": "+",
                         "data": value
+                    };
+                } else if(value !== base[key]) {
+                    if(typeof value === "object" && typeof base[key] === "object") {
+                        compareObjects(base[key], value, currentPath);
+                    } else {
+                        changes[currentPath] = {
+                            "type": "0",
+                            "data": value
+                        }
                     }
                 }
             }
