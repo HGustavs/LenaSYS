@@ -454,6 +454,14 @@ function afterPrint(){
 // Local storage compressing functions start
 //------------------------------------------------
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+// getObjectChanges: Returns an object with all changes, comparing passed base object with passed new object.
+//                   The property key will be the path to the changed property.
+//                   - Char (u) as type means property value has been updated compared to same property in base object (data property with additions exists).
+//                   - Char (+) as value means the property the key points to was added (data property with additions exists).
+//                   - Char (-) as value means the property the key points to was deleted (no data property).
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function getObjectChanges(base, object) {
     const changes = {};
 
@@ -478,7 +486,7 @@ function getObjectChanges(base, object) {
                         compareObjects(base[key], value, currentPath);
                     } else {
                         changes[currentPath] = {
-                            "type": "0",
+                            "type": "u",
                             "data": value
                         }
                     }
