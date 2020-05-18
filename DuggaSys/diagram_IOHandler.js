@@ -537,7 +537,8 @@ function buildDiagramFromChanges() {
                     setNestedPropertyValue(object.diagram, key, value.data);
                     break;
                 case '-':
-                    //Delete property or array element 
+                    //This will only work for first level (inside diagram array). Could need to support whole property path and deletion of property in object.
+                    object.diagram.splice(key, 1);
                     break; 
             }
         }
