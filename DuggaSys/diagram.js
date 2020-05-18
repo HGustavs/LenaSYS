@@ -3806,7 +3806,6 @@ function mousemoveevt(ev) {
                 // for locking proportions of object when resizing it
                 if(shiftIsClicked) {
                     var object;
-                    obejct.minWidth = ctx.measureText(longestStr).width + 15
                     // the movement change we wan't to make
                     var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
                     // find the object that has the point we want to move
