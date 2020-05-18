@@ -20,6 +20,7 @@ function Symbol(kindOfSymbol) {
     this.bottomRight = null;            // Bottom right point index
     this.group = 0;                     // What group this symbol belongs to
     this.isLocked = false;
+    this.isLayerLocked = false;
     this.isLockHovered = false;         // Checks if the lock itself is hovered on the symbol
     this.pointsAtSamePosition = false;
     this.isHovered = false;
@@ -1301,99 +1302,98 @@ function Symbol(kindOfSymbol) {
     //       ctx.setLineDash(segments);
     //--------------------------------------------------------------------
     this.draw = function () {
-        if(showLayer.indexOf(this.properties.setLayer) !== -1){
-            this.isLocked = false;
-            ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
-            this.properties['textSize'] = this.getFontsize();
-            ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
+        if(showLayer.indexOf(this.properties.setLayer) == -1){
+            this.isLayerLocked = true;
+            return;
+        }
+        this.isLayerLocked = false;
+        ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
+        this.properties['textSize'] = this.getFontsize();
+        ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
 
-            var x1 = pixelsToCanvas(points[this.topLeft].x).x;
-            var y1 = pixelsToCanvas(0, points[this.topLeft].y).y;
-            var x2 = pixelsToCanvas(points[this.bottomRight].x).x;
-            var y2 = pixelsToCanvas(0, points[this.bottomRight].y).y;
+        var x1 = pixelsToCanvas(points[this.topLeft].x).x;
+        var y1 = pixelsToCanvas(0, points[this.topLeft].y).y;
+        var x2 = pixelsToCanvas(points[this.bottomRight].x).x;
+        var y2 = pixelsToCanvas(0, points[this.bottomRight].y).y;
 
-            if (this.isLocked) {
-                drawLock(this);
-                if (this.isHovered || this.isLockHovered) {
-                    drawLockedTooltip(this);
-                }
-            }
-            if (this.group != 0){
-                drawGroup(this);
-            }
-
-            ctx.save();
-
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
-
-            if (this.symbolkind == symbolKind.uml) {
-                this.drawUML(x1, y1, x2, y2);
-            }
-
-            else if (this.symbolkind == symbolKind.erAttribute) {
-                this.drawERAttribute(x1, y1, x2, y2);
-            }
-
-            else if (this.symbolkind == symbolKind.erEntity) {
-                this.drawEntity(x1, y1, x2, y2);
-            }
-
-            else if (this.symbolkind == symbolKind.line) {
-                this.drawLine(x1, y1, x2, y2);
-            }
-
-            else if (this.symbolkind == symbolKind.erRelation) {
-                this.drawRelation(x1, y1, x2, y2);
-            }
-
-            else if (this.symbolkind == symbolKind.text) {
-                this.drawText(x1, y1, x2, y2);
-            }
-
-            else if (this.symbolkind == symbolKind.umlLine) {
-                this.drawUMLLine(x1, y1, x2, y2);
-            }
-
-            ctx.restore();
-            ctx.setLineDash([]);
-
-            //Highlighting points when targeted, makes it easier to resize
-            if (this.targeted && this.symbolkind != symbolKind.text) {
-                ctx.beginPath();
-                ctx.arc(x1,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
-                ctx.fillStyle = '#F82';
-                ctx.fill();
-
-                ctx.beginPath();
-                ctx.arc(x2,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
-                ctx.fillStyle = '#F82';
-                ctx.fill();
-                if (this.symbolkind != symbolKind.line && this.symbolkind != symbolKind.umlLine) {
-                    ctx.beginPath();
-                    ctx.arc(x1,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
-                    ctx.fillStyle = '#F82';
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.arc(x2,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
-                    ctx.fillStyle = '#F82';
-                    ctx.fill();
-                    //Draw highlighted point to UML-class middledivider
-                    if(this.symbolkind == symbolKind.uml){
-                        var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
-                        var midx = pixelsToCanvas(points[this.middleDivider].x, 0).x;
-                        ctx.beginPath();
-                        ctx.arc(midx, midy ,5 * diagram.getZoomValue(),0,2*Math.PI,false);
-                        ctx.fillStyle = '#F82';
-                        ctx.fill();
-                    }
-                }
+        if (this.isLocked) {
+            drawLock(this);
+            if (this.isHovered || this.isLockHovered) {
+                drawLockedTooltip(this);
             }
         }
-        else{
-            this.isLocked = true;
+        if (this.group != 0){
+            drawGroup(this);
+        }
+
+        ctx.save();
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
+
+        if (this.symbolkind == symbolKind.uml) {
+            this.drawUML(x1, y1, x2, y2);
+        }
+
+        else if (this.symbolkind == symbolKind.erAttribute) {
+            this.drawERAttribute(x1, y1, x2, y2);
+        }
+
+        else if (this.symbolkind == symbolKind.erEntity) {
+            this.drawEntity(x1, y1, x2, y2);
+        }
+
+        else if (this.symbolkind == symbolKind.line) {
+            this.drawLine(x1, y1, x2, y2);
+        }
+
+        else if (this.symbolkind == symbolKind.erRelation) {
+            this.drawRelation(x1, y1, x2, y2);
+        }
+
+        else if (this.symbolkind == symbolKind.text) {
+            this.drawText(x1, y1, x2, y2);
+        }
+
+        else if (this.symbolkind == symbolKind.umlLine) {
+            this.drawUMLLine(x1, y1, x2, y2);
+        }
+
+        ctx.restore();
+        ctx.setLineDash([]);
+
+        //Highlighting points when targeted, makes it easier to resize
+        if (this.targeted && this.symbolkind != symbolKind.text) {
+            ctx.beginPath();
+            ctx.arc(x1,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+            ctx.fillStyle = '#F82';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(x2,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+            ctx.fillStyle = '#F82';
+            ctx.fill();
+            if (this.symbolkind != symbolKind.line && this.symbolkind != symbolKind.umlLine) {
+                ctx.beginPath();
+                ctx.arc(x1,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+                ctx.fillStyle = '#F82';
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(x2,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+                ctx.fillStyle = '#F82';
+                ctx.fill();
+                //Draw highlighted point to UML-class middledivider
+                if(this.symbolkind == symbolKind.uml){
+                    var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
+                    var midx = pixelsToCanvas(points[this.middleDivider].x, 0).x;
+                    ctx.beginPath();
+                    ctx.arc(midx, midy ,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+                    ctx.fillStyle = '#F82';
+                    ctx.fill();
+                }
+            }
         }
     }
 
