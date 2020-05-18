@@ -445,11 +445,11 @@ function createVersion() {
   var param = {};
   //param.courseid = querystring['courseid'];
   param.cid = querystring['courseid'];
-  param.versid = document.getElementById("versid").value;
+  param.versid = document.getElementById("cversid").value;
   param.versname = document.getElementById("versname").value;
   param.motd = document.getElementById("vmotd").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = querystring["courseid"];
+  param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#makeactive").is(':checked');
   param.startdate = getDateFormat(new Date($("#startdate").val()));
@@ -468,7 +468,7 @@ function createVersion() {
       AJAXService("NEWVRS", param, "COURSE");
     }
     $("#newCourseVersion").css("display", "none");
-    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("versid").value );
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("cversid").value );
   }
 }
 
@@ -485,7 +485,7 @@ function updateVersion() {
   param.versid = document.getElementById("eversid").value;
   param.versname = document.getElementById("eversname").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = querystring["courseid"];
+  param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#emakeactive").is(':checked');
   param.startdate = $("#estartdate").val();
@@ -693,6 +693,7 @@ function returnedSection(data) {
           str += " class='lo' ";
         }
         str += " >";
+  
 
         var hideState = "";
         if (parseInt(item['visible']) === 0) hideState = " hidden"
@@ -702,6 +703,9 @@ function returnedSection(data) {
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment
         var itemKind = parseInt(item['kind']);
 
+        if(itemKind === 2 || itemKind == 5){
+          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+        }
         if (itemKind === 3 || itemKind === 4) {
 
           // Styling for quiz row e.g. add a tab spacer
@@ -1121,6 +1125,7 @@ function ignoreMOTD(){
 
 function resetMOTDCookieForCurrentCourse(){
   var c_string = getCookie('MOTD');
+  if (c_string != ('') && c_string != null){
   c_array = c_string.split(',');
   for(let i = 0; i<c_array.length;i+=2){
     if(c_array[i] == versnme && c_array[i+1] == versnr){
@@ -1128,6 +1133,7 @@ function resetMOTDCookieForCurrentCourse(){
     }
   }
   document.cookie = 'MOTD=' + c_array;
+}
   showMOTD();
 }
 
@@ -1678,7 +1684,9 @@ function retrieveAnnouncementAuthor(){
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       if($("#userid").length > 0) {
-          document.getElementById("userid").value = this.responseText;
+          var parsed_data = JSON.parse(this.response);
+          document.getElementById("userid").value = parsed_data.uid;
+
       }
     }
   };
@@ -1722,7 +1730,13 @@ function retrieveAnnouncementsCards(){
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("announcementCards").innerHTML = this.responseText;
+      var parsed_data = JSON.parse(this.response);
+      document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+      var unread_announcements = parsed_data.nRows;
+      if(unread_announcements > 0){
+        $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
+        $("#announcementnotificationcount").html(parsed_data.nRows);
+      }
       accessAdminAction();
       readLessOrMore();
       showLessOrMoreAnnouncements();
@@ -1902,6 +1916,15 @@ function showLessOrMoreAnnouncements(){
   });
 
 }
+function updateReadStatus(announcementid, cid, versid){
+  $.ajax({
+    url: "../Shared/updateviewedAnnouncementCards.php",
+    data: {announcementid : announcementid, cid : cid, versid : versid},
+    type: "POST",
+    success: function(data){
+    }
+  });
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
@@ -2002,7 +2025,7 @@ function validateCourseID(courseid, dialogid) {
   var Code = /^[0-9]{3,6}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
-  var val = document.getElementById("versid").value;
+  var val = document.getElementById("cversid").value;
 
   if (code.value.match(Code)) {
     code.style.borderColor = "#383";
@@ -2176,7 +2199,7 @@ function validateForm(formid) {
    //Validates new course version form
   if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
-    var versId = document.getElementById("versid").value;
+    var versId = document.getElementById("cversid").value;
 
     //If fields empty
     if (versName == null || versName == "", versId == null || versId == "") {
