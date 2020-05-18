@@ -524,7 +524,7 @@ function getObjectChanges(base, object) {
 }
 
 function buildDiagramFromChanges() {
-    const object = {
+    const built = {
         diagram: [],
         points: []
     }
@@ -534,10 +534,10 @@ function buildDiagramFromChanges() {
             switch(value.type) {
                 case '+':
                 case 'u':
-                    setNestedPropertyValue(object[type], key, value.data);
+                    setNestedPropertyValue(built[type], key, value.data);
                     break;
                 case '-':
-                    object[type].splice(key, 1);
+                    built[type].splice(key, 1);
                     break; 
             }
         }
@@ -548,7 +548,18 @@ function buildDiagramFromChanges() {
         iterateChange(change, "points");
     }
 
-    return object;
+    for(let i = 0; i < built.diagram.length; i++) {
+        const object = built.diagram[i];
+        if(object.kind === kind.symbol) {
+            diagram[i] = Object.assign(new Symbol(object.symbolkind), object);
+        } else if(object.kind === kind.path) {
+            diagram[i] = Object.assign(new Path(), object);
+        }
+    }
+
+    for(let i = 0; i < built.points.length; i++) {
+        points[i] = built.points[i];
+    }
 }
 
 function setNestedPropertyValue(object, property, value) {
