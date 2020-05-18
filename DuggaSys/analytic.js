@@ -152,6 +152,12 @@ function loadGeneralStats() {
 			'Top OS',
 			data['stats']['topOS']
 		]);
+     
+        // Number of service crashes
+		tableData.push([
+			'Service crashes',
+			data['stats']['serviceCrashes']
+		]);
 
 		// Fastest Service
 		tableData.push([

@@ -139,6 +139,13 @@ function generalStats($dbCon) {
 		GROUP BY operatingSystem
 		ORDER BY percentage DESC
 	')->fetchAll(PDO::FETCH_ASSOC);
+ 
+ 	$serviceCrashes = $log_db->query('
+		SELECT 
+            COUNT(*) as serviceCrashes
+		FROM serviceLogEntries
+		WHERE uuid NOT IN (SELECT DISTINCT uuid FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerEnd.');
+	')->fetchAll(PDO::FETCH_ASSOC);
 
 	$fastestService = $GLOBALS['log_db']->query('
 	SELECT DISTINCT
@@ -183,6 +190,8 @@ function generalStats($dbCon) {
 
 	$generalStats['stats']['topBrowser'] = $topBrowser[0]['browser'];
 	$generalStats['stats']['topOS'] = $topOS[0]['operatingSystem'];
+ 
+    $generalStats['stats']['serviceCrashes'] = $serviceCrashes[0]['serviceCrashes'];
 
 	$generalStats['stats']['fastestService'] = $fastestService[0]['service'];
 	$generalStats['stats']['fastestServiceSpeed'] = round($fastestService[0]['avgDuration'], 2);
