@@ -1070,6 +1070,7 @@ function Symbol(kindOfSymbol) {
     // move: Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
+        if(this.properties["isComment"] && hideComment) return; //Don't move hidden comments
         if (this.isLocked) return;
         if (this.symbolkind != symbolKind.line) {
             points[this.topLeft].x += movex;
