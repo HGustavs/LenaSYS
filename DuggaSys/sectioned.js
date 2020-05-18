@@ -635,6 +635,28 @@ function returnedSection(data) {
       document.getElementById("FABStatic2").style.display = "None";
     }
 
+    if (data['readaccess']) {
+      // Build dropdowns
+      var bstr = "";
+      for (var i = 0; i < retdata['versions'].length; i++) {
+        var item = retdata['versions'][i];
+        if (retdata['courseid'] == item['cid']) {
+          bstr += "<option value='" + item['vers'] + "'";
+          if (retdata['coursevers'] == item['vers']) {
+            bstr += " selected";
+          }
+          bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
+        }
+        // save vers, versname and motd from table vers as global variables.
+        versnme = versionname;
+        if (querystring['coursevers'] == item['vers']) motd = item['motd'];
+        if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
+      }
+
+      bstr = "<option value='None'>None</option>" + bstr;
+      document.getElementById("copyvers").innerHTML = bstr;
+    }
+
     if (data['studentteacher']) {
       // Show FAB / Menu
       document.getElementById("FABStatic").style.display = "Block";
@@ -649,6 +671,7 @@ function returnedSection(data) {
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
     }
+
 
     // hide som elements if to narrow
     var hiddenInline = "";
@@ -1090,6 +1113,8 @@ function returnedSection(data) {
 
   // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
   replaceDefualtLink();
+  
+
 
   addClasses();
   showMOTD();
