@@ -944,23 +944,6 @@ $(document).on("touchend", function (e) {
 	TouchFABUp(e);
 });
 
-$(document).ready(function () {
-    var duggaSearch = document.getElementById("duggaSearch");
-    console.log("11");
-    console.log(duggaSearch);
-    if (duggaSearch) {
-        console.log("22");
-        duggaSearch.addEventListener("mouseover", duggaSearchMouseOver);
-    }
-});
-
-function duggaSearchMouseOver() {
-    var obj = document.getElementById("duggaSearch");
-    if (obj != null) {
-        obj.removeAttribute('readonly');
-    }
-}
-
 //----------------------------------------------------------------------------------
 // mouseDown: make sure mousedown is only handled in one single place regardless if touch or mouse
 //----------------------------------------------------------------------------------
