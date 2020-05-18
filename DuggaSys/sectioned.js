@@ -209,15 +209,20 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   //------------------------------------------------------------------------------
   //checks if feedback is enabled and enables input box for feedbackquestion choice.
   //------------------------------------------------------------------------------
-
-  $("#editSection").css("display", "flex");
-  if(feedbackenabled == 1){
-    $( "#fdbck" ).prop( "checked", true );
-    $("#inputwrapper-FeedbackQuestion").css("display","block");
-    $("#fdbckque").val(feedbackquestion);
+  if(kind == 3){
+    $('#inputwrapper-Feedback').css("display","block");
+    if(feedbackenabled == 1){
+      $( "#fdbck" ).prop( "checked", true );
+      $("#inputwrapper-FeedbackQuestion").css("display","block");
+      $("#fdbckque").val(feedbackquestion);
+    }else{
+      $( "#fdbck" ).prop( "checked", false );
+      $("#inputwrapper-FeedbackQuestion").css("display","none");
+    }
   }else{
-    $( "#fdbck" ).prop( "checked", false );
     $("#inputwrapper-FeedbackQuestion").css("display","none");
+    $('#inputwrapper-Feedback').css("display","none");
+    $( "#fdbck" ).prop( "checked", false );
   }
 }
 
@@ -378,11 +383,11 @@ function prepareItem() {
 
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
+    param.feedbackquestion = $("#fdbckque").val();
   } else{
     param.feedback = 0;
+    param.feedbackquestion = null;
   }
-
-  param.feedbackquestion = $("#fdbckque").val();
 
   if(param.comments == "TOP"){
     param.pos = "-1";
