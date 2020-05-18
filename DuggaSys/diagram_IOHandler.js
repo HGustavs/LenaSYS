@@ -472,6 +472,15 @@ function getObjectChanges(base, object) {
                     "type": "+",
                     "data": value
                 };
+            } else if(value !== base[key]) {
+                if(typeof value === "object" && typeof base[key] === "object") {
+                    compareObjects(base[key], value, currentPath);
+                } else {
+                    changes[currentPath] = {
+                        "type": "0",
+                        "data": value
+                    }
+                }
             }
         }
     };
