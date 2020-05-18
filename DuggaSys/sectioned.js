@@ -449,7 +449,7 @@ function createVersion() {
   param.versname = document.getElementById("versname").value;
   param.motd = document.getElementById("vmotd").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = querystring["courseid"];
+  param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#makeactive").is(':checked');
   param.startdate = getDateFormat(new Date($("#startdate").val()));
@@ -485,7 +485,7 @@ function updateVersion() {
   param.versid = document.getElementById("eversid").value;
   param.versname = document.getElementById("eversname").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = querystring["courseid"];
+  param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#emakeactive").is(':checked');
   param.startdate = $("#estartdate").val();
@@ -716,6 +716,7 @@ function returnedSection(data) {
           str += " class='lo' ";
         }
         str += " >";
+  
 
         var hideState = "";
         if (parseInt(item['visible']) === 0) hideState = " hidden"
@@ -725,6 +726,9 @@ function returnedSection(data) {
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment
         var itemKind = parseInt(item['kind']);
 
+        if(itemKind === 2 || itemKind == 5){
+          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+        }
         if (itemKind === 3 || itemKind === 4) {
 
           // Styling for quiz row e.g. add a tab spacer
@@ -1146,6 +1150,7 @@ function ignoreMOTD(){
 
 function resetMOTDCookieForCurrentCourse(){
   var c_string = getCookie('MOTD');
+  if (c_string != ('') && c_string != null){
   c_array = c_string.split(',');
   for(let i = 0; i<c_array.length;i+=2){
     if(c_array[i] == versnme && c_array[i+1] == versnr){
@@ -1153,6 +1158,7 @@ function resetMOTDCookieForCurrentCourse(){
     }
   }
   document.cookie = 'MOTD=' + c_array;
+}
   showMOTD();
 }
 
@@ -1703,7 +1709,9 @@ function retrieveAnnouncementAuthor(){
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       if($("#userid").length > 0) {
-          document.getElementById("userid").value = this.responseText;
+          var parsed_data = JSON.parse(this.response);
+          document.getElementById("userid").value = parsed_data.uid;
+
       }
     }
   };
@@ -1747,7 +1755,13 @@ function retrieveAnnouncementsCards(){
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("announcementCards").innerHTML = this.responseText;
+      var parsed_data = JSON.parse(this.response);
+      document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+      var unread_announcements = parsed_data.nRows;
+      if(unread_announcements > 0){
+        $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
+        $("#announcementnotificationcount").html(parsed_data.nRows);
+      }
       accessAdminAction();
       readLessOrMore();
       showLessOrMoreAnnouncements();
@@ -1927,6 +1941,15 @@ function showLessOrMoreAnnouncements(){
   });
 
 }
+function updateReadStatus(announcementid, cid, versid){
+  $.ajax({
+    url: "../Shared/updateviewedAnnouncementCards.php",
+    data: {announcementid : announcementid, cid : cid, versid : versid},
+    type: "POST",
+    success: function(data){
+    }
+  });
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
@@ -1990,7 +2013,7 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 /*Validates all versionnames*/
 function validateVersionName(versionName, dialogid) {
   //Regex for 2 capital letters, 2 numbers
-  var Name = /^HT\d{2}$|^VT\d{2}$/;
+  var Name = /^HT\d{2}$|^VT\d{2}$|^ST\d{2}$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
 

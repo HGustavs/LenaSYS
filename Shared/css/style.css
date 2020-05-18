@@ -340,6 +340,19 @@ p {
   margin-left: 25px;
   display:none;
 }
+/*Announcement icon and notification*/
+#announcement #announcementnotificationcount{
+  position: relative;
+  right: 20px;
+  bottom: 6px;
+  background-color: var(--color-red);
+  font-size: 10px;
+  padding: 3px;
+  font-weight: bold;
+  font-family: 'Varela', sans-serif;
+  border-radius: 100px 100px 100px 100px;
+
+}
 /*Announcement box*/
 #announcementBoxOverlay{
   position: relative; 
@@ -390,6 +403,7 @@ p {
   width: 800px;
   border:  2px solid #f2f2f2;
   font-family: 'Varela', sans-serif;
+  box-sizing: border-box;
 }
 .announcementForm input[type=text],
 .announcementForm textarea{
@@ -402,6 +416,7 @@ p {
   font-size: 16px;
   background: #f1f1f1;
   border-radius: 0;
+  box-sizing: border-box;
 }
 .announcementForm textarea{
   height: 150px;
@@ -477,6 +492,7 @@ p {
 /*retrieve announcement*/
 #displayAnnouncements .announcementCard {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  box-sizing: border-box;
   transition: 0.3s;
   border-radius: 5px;
   float: left;
@@ -484,6 +500,7 @@ p {
   margin: 0 20px 20px 0;
   padding: 20px;
   font-family: 'Varela', sans-serif;
+  cursor: pointer;
 
 }
 .announcementCard:after {
@@ -539,8 +556,9 @@ p {
 
 }
 .displayAnnounceTime,
-.displayAuthor{
-  color: #ddd;
+.displayAuthor,
+.editMark{
+  color: #b3b3b3;
 }
 .displayAuthor{
   float: right;
@@ -776,8 +794,8 @@ p {
 /*Vertical line for end tabs for "1 tab + end"*/
 #Sectionlist .tabs4 .spacerRight {
   height: 19px;
-  width: 22px;
-  margin: 0px 0px 12px 45px;
+  width: 19px;
+  margin: 0px 0px 11px 47px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
@@ -785,8 +803,8 @@ p {
 /*Vertical line for end tabs for "2 tabs + end"*/
 #Sectionlist .tabs5 .spacerRight {
   height: 19px;
-  width: 22px;
-  margin: 0px 0px 12px 77px;
+  width: 19px;
+  margin: 0px 0px 11px 79px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
@@ -794,8 +812,8 @@ p {
 /*Vertical line for end tabs for "3 tabs + end"*/
 #Sectionlist .tabs6 .spacerRight {
   height: 19px;
-  width: 22px;
-  margin: 0px 0px 12px 109px;
+  width: 19px;
+  margin: 0px 0px 11px 111px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
@@ -826,7 +844,7 @@ p {
   padding: 6px;
   text-align: center;
   color: var(--color-text-header);
-  font-size: 24px;
+  font-size: 20px;
   background-color: var(--color-primary);
 }
 .glow {

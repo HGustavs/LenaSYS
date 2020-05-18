@@ -13,13 +13,16 @@ if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && is
 	$versid = $_POST['versid'];
 	$title = $_POST['announcementTitle'];
 	$message = $_POST['announcementMsg'];
-	$query = $pdo->prepare("INSERT INTO announcement(uid, cid, versid, title, message) VALUES (:uid, :cid, :versid, :title, :message);");
+	$read_status = 1;
+
+	$query = $pdo->prepare("INSERT INTO announcement(uid, cid, versid, title, message, read_status) VALUES (:uid, :cid, :versid, :title, :message, :read_status);");
 
 	$query->bindParam(':uid', $uid);
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':versid', $versid);
 	$query->bindParam(':title', $title);
 	$query->bindParam(':message', $message);
+	$query->bindParam(':read_status', $read_status);
 
 	$query->execute(); 
 
@@ -48,15 +51,19 @@ if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && is
 	$versid = $_POST['versid'];
 	$updateTitle = $_POST['announcementTitle'];
 	$updateMessage = $_POST['announcementMsg'];
+	$read_status = 1;
+	$edited = "YES";
 
-	$update = 'UPDATE announcement SET title=:title, message=:message WHERE announcementid=:announcementid AND uid=:uid AND cid=:cid AND versid=:versid';
+	$update = 'UPDATE announcement SET title=:title, message=:message, read_status=:read_status, edited=:edited, announceTime=now() WHERE announcementid=:announcementid AND uid=:uid AND cid=:cid AND versid=:versid';
 	$stmt = $pdo->prepare($update);
 	$stmt->bindParam(':announcementid', $updateannouncementid);   
 	$stmt->bindParam(':uid', $uid);
 	$stmt->bindParam(':cid', $cid);
 	$stmt->bindParam(':versid', $versid);
 	$stmt->bindParam(':title', $updateTitle);   
-	$stmt->bindParam(':message', $updateMessage);   
+	$stmt->bindParam(':message', $updateMessage);
+	$stmt->bindParam(':read_status', $read_status);
+	$stmt->bindParam(':edited', $edited);        
 
 	$stmt->execute();
 	$_SESSION["announcementupdated"] = "Announcement is updated!";
