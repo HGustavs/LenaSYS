@@ -642,7 +642,7 @@ CREATE TABLE timesheet(
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 /* userDuggaFeedback table used for user feedback on duggor */
-CREATE TABLE userDuggaFeedback(
+CREATE TABLE userduggafeedback(
 	ufid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	username						VARCHAR(80) DEFAULT null,
 	cid						INT UNSIGNED NOT NULL,
