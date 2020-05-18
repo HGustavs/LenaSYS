@@ -38,11 +38,8 @@ function setup() {
     window.onscroll = function () {
 
 	};
-	
-	if (typeof localStorage.getItem("lastExpDate") != undefined) {
-		document.getElementById('lastExportedDate').innerHTML = localStorage.getItem("lastExpDate");
-	}
 
+	AJAXService("getunexported", { getType: "ONLYDATE" }, "GEXPORT");
     AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
@@ -700,7 +697,14 @@ function returnedExportedGrades(gradeData){
 		} else {
 			if (typeof gradeData[0].gradeLastExported !== 'undefined') {
 				document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
-				ladexport(gradeData);
+				document.getElementById('lastExportedDate').innerHTML = gradeData[0].gradeLastExported;
+
+				// Checks if gardeData has more values than just gradeLastExported.
+				// If it has, then call ladExport again.
+				// This is to avoid a call loop.
+				if (typeof gradeData[0].uid !== 'undefined') {
+					ladexport(gradeData);
+				}
 			}
 		}
 	} catch (error) {
@@ -1684,19 +1688,8 @@ function ladexport(gradeData = "NONE") {
 	document.getElementById("resultlistarea").value = expo;
 	document.getElementById("resultlistpopover").style.display = "flex";
 
-	var today = new Date();
-	var dd = addZero(today.getDate());
-	var mm = addZero(today.getMonth() + 1); //January is 0!
-	var yyyy = today.getFullYear();
-	var time = addZero(today.getHours()) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds());
-
-	today = yyyy + '-' + mm + '-' + dd;
-
-	 var gradeLastExported = today + " " + time;
-	 lastExpDate.innerHTML =  gradeLastExported;
-	 document.getElementById('lastExportedDate').innerHTML = gradeLastExported;
-
-	 localStorage.setItem('lastExpDate', gradeLastExported);
+	// Remove the date that's in the last exported date span to avoid confusion.
+	document.getElementById("lastExpDate").innerHTML = "";
 
 	 // Check if "gradeData" is the default value
 	 // If it's not, then loop through and update the specific grades that have been exported.
@@ -1709,6 +1702,9 @@ function ladexport(gradeData = "NONE") {
 	 } else {
 		AJAXService("updateunexported", {}, "GEXPORT");
 	 }
+
+	 // Get the lastExportedDate from the database.
+	 AJAXService("getunexported", { getType: "ONLYDATE" }, "GEXPORT");
 	}
 }
 
