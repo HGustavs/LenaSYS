@@ -128,31 +128,42 @@ function generalStats($dbCon) {
 		WHERE eventType = '.EventTypes::ServiceServerStart.'
 		GROUP BY browser
 		ORDER BY percentage DESC LIMIT 1
-		')->fetchAll(PDO::FETCH_ASSOC);
+    ')->fetchAll(PDO::FETCH_ASSOC);
 	
-	$topOS = $GLOBALS['log_db']->query('
-		SELECT
-			operatingSystem,
-			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerStart.') AS percentage
-		FROM serviceLogEntries
-		WHERE eventType = '.EventTypes::ServiceServerStart.'
-		GROUP BY operatingSystem
-		ORDER BY percentage DESC
-	')->fetchAll(PDO::FETCH_ASSOC);
-    
+    $topOS = $GLOBALS['log_db']->query('
+        SELECT
+            operatingSystem,
+            COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerStart.') AS percentage
+        FROM serviceLogEntries
+        WHERE eventType = '.EventTypes::ServiceServerStart.'
+        GROUP BY operatingSystem
+        ORDER BY percentage DESC
+    ')->fetchAll(PDO::FETCH_ASSOC);
+
+    $serviceCrashes = $log_db->query('
+        SELECT 
+             COUNT(*) as serviceCrashes
+        FROM serviceLogEntries
+        WHERE uuid NOT IN (SELECT DISTINCT uuid FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerEnd.');
+    ')->fetchAll(PDO::FETCH_ASSOC);
+
     $topViewedDugga = $GLOBALS['log_db']->query('
-		SELECT quizid, COUNT(*) as hits
-		FROM duggaLoadLogEntries 
-		GROUP BY quizid 
-		ORDER BY COUNT(*) DESC LIMIT 1;
-	')->fetchAll(PDO::FETCH_ASSOC);
- 
-     $topViewedExample = $GLOBALS['log_db']->query('
-		SELECT exampleid, COUNT(*) as hits
-		FROM exampleLoadLogEntries 
-		GROUP BY exampleid 
-		ORDER BY COUNT(*) DESC LIMIT 1;
-	')->fetchAll(PDO::FETCH_ASSOC);
+        SELECT 
+             quizid, 
+             COUNT(*) as hits
+        FROM duggaLoadLogEntries 
+        GROUP BY quizid 
+        ORDER BY COUNT(*) DESC LIMIT 1;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+
+    $topViewedExample = $GLOBALS['log_db']->query('
+        SELECT 
+             exampleid, 
+             COUNT(*) as hits
+        FROM exampleLoadLogEntries 
+        GROUP BY exampleid 
+        ORDER BY COUNT(*) DESC LIMIT 1;
+    ')->fetchAll(PDO::FETCH_ASSOC);
 
 	$fastestService = $GLOBALS['log_db']->query('
 	SELECT DISTINCT
@@ -203,6 +214,8 @@ function generalStats($dbCon) {
 
 	$generalStats['stats']['topBrowser'] = $topBrowser[0]['browser'];
 	$generalStats['stats']['topOS'] = $topOS[0]['operatingSystem'];
+ 
+    $generalStats['stats']['serviceCrashes'] = $serviceCrashes[0]['serviceCrashes'];
 
 	$generalStats['stats']['fastestService'] = $fastestService[0]['service'];
 	$generalStats['stats']['fastestServiceSpeed'] = round($fastestService[0]['avgDuration'], 2);
