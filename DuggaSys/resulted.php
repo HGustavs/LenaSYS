@@ -92,6 +92,13 @@ pdoConnect();
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
 		<div class="resultedFormsFlex">
+			<label>Typ</label>
+			<select id="exportType">
+				<option value="restricted">Ej exported</option>
+				<option value="all">Allt</option>
+			</select>
+		</div>
+		<div class="resultedFormsFlex">
       <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
 	  <span id="lastExportedDate"></span>
 	  </div>
@@ -210,6 +217,17 @@ pdoConnect();
 				<input class='cursorPointer' type='button' value='Close' onclick='closeLadexport();' style=' width:100px; float: right;'>
 			</span>
 		</div>
+	</div>
+
+	<!-- This popup is for alerts about LadExport -->
+	<div id="gradeExportPopUp" style="display: none;">
+		<div class="loginBoxheader">
+			<h3>Alert</h3>
+			<div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
+		</div>
+		<!-- The message should go into this p tag -->
+		<p id="exportPopUpMessage"></p>
+		<input type="button" id="gradeExportPopUpButton" value="Ok" class="submit-button" onclick="closeWindows();">
 	</div>
 
 

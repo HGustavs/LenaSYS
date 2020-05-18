@@ -39,9 +39,9 @@ $coursevers=getOP('coursevers');
 $qvariant=getOP("qvariant");
 $quizId=getOP("quizId");
 $teacher = getOP('teacher');
-$gradeLastExported=getOP('gradeLastExported');
 $responsetext=getOP('resptext');
 $responsefile=getOP('respfile');
+$exportType = getOP('exportType');
 $access = false;
 
 $duggaid = getOP('duggaid');
@@ -111,9 +111,21 @@ if($requestType == "mail" && checklogin() && (hasAccess($_SESSION['uid'], $cid, 
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 
 	// Check if opt == updateunexported
-	if ($opt === getunexported_service_name) {
-		$statement = $pdo->prepare("	UPDATE userAnswer SET gradeLastExported = :gradeLastExported");
-		$statement->bindParam(':gradeLastExported', $gradeLastExported);
+	if ($opt === updateunexported_service_name) {
+		$statement = "";
+
+		// Checks if the export was only unexported or if it exported everything
+		// If it only exported the unexported then update the specific grades.
+		// If it exported everything, them update everything.
+		if ($exportType === "restricted") {
+			$statement = $pdo->prepare("UPDATE userAnswer SET gradeLastExported = CURRENT_TIMESTAMP WHERE uid = :luid AND moment = :moment");
+			$statement->bindParam(":luid", $luid);
+			$statement->bindParam(":moment", $listentry);
+			$statement->execute();
+			return;
+		} else {
+			$statement = $pdo->prepare("UPDATE userAnswer SET gradeLastExported = CURRENT_TIMESTAMP");
+		}
 		
 		if ($statement === false) {
 			// Failed to prepare query, log and return an error message
@@ -157,7 +169,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		where marked is null or gradeLastExported is null or marked > gradeLastExported';
 
 		*/
-		$statement = $pdo->prepare("SELECT * FROM userAnswer");
+		$statement = $pdo->prepare("SELECT * FROM userAnswer WHERE gradeLastExported IS NULL OR marked IS NOT NULL AND gradeLastExported IS NOT NULL AND marked > gradeLastExported");
 		
 		if ($statement === false) {
 			// Failed to prepare query, log and return an error message
