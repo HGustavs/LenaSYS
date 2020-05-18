@@ -103,6 +103,7 @@ function returnedDugga(data)
 			});
 		}
 	}		
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 //----------------------------------------------------------------------------------
 // getCheckedBoxes: checks if all questions are answered and alerts each of them
