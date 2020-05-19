@@ -382,15 +382,31 @@ function submitSelectedFiles(e) {
   const fileLineBreakers = ["-= Global Files =-", "-= Local Files =-", "-= Course Local Files =-"];
   const selectHolder = document.getElementById('selectHolder');
   const length = selectHolder.children.length;
-  
+  let filename = "";
+  let isThreeOfTheSame = true;
+
   for (let i = 0; i < length; i++) {
     const element = selectHolder.children[i];
     const text = element.options[element.selectedIndex].text;
 
+    // We still need to check so its actually .php, .md & another file
+    // with the same name and a different extension
+    if (length == 4 && i == 0) {
+      filename = text.substring(0, text.lastIndexOf("."));
+      console.log(filename);
+      
+    } else {
+      temp_filename = text.substring(0, text.lastIndexOf("."));
+      isThreeOfThreeOfTheSame = (filename == temp_filename);
+    }
+ 
     if (!fileLineBreakers.includes(text)) {
       console.log("Item "+i+": " + text);
     }
   }
+
+  if (isThreeOfTheSame)
+      console.log("We need 1 + 1/2 layout");
 
   e.preventDefault();
   return false;
@@ -634,7 +650,7 @@ function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
 
-  console.log(data);
+  // console.log(data);
 
   var now = new Date();
   var startdate = new Date(retdata['startdate']);
