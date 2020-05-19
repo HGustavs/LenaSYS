@@ -246,7 +246,7 @@ if($demo){
 			$param="NONE!";
 	}
 	foreach ($variants as $variant) {
-		if($variant["vid"] == $savedvariant || $quizfile == "kryss"){
+		if($variant["vid"] == $savedvariant){
 				$param=html_entity_decode($variant['param']);
 		}
 	}
