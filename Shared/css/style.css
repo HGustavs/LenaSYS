@@ -7006,6 +7006,14 @@ textarea#filecont {
     margin-right: 0px;
   }
 }
+
+@media only screen and (max-width: 339px) {
+  .navheader .course-dropdown{
+    height: 20px;
+    width: 120px;
+  }
+}
+
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
   width: 100%;
