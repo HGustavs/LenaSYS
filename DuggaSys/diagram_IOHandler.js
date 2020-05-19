@@ -127,7 +127,7 @@ function Save() {
     }
     localStorage.setItem("diagramChanges", JSON.stringify(diagramChanges));
 
-    
+    return;
     keyBinds = keyMap;
     localStorage.setItem("Settings", JSON.stringify(settings));
     console.log("State is saved");
@@ -205,21 +205,14 @@ function loadDiagram() {
     if(JSON.parse(localStorage.getItem("Settings"))){
         settings = JSON.parse(localStorage.getItem("Settings"));
     }
-    diagramNumber = localStorage.getItem("diagramNumber");
-    diagramID = localStorage.getItem("diagramID");
-    var checkLocalStorage = localStorage.getItem("diagram" + diagramNumber);
 
-    //local storage and hash
-    if (checkLocalStorage != "" && checkLocalStorage != null) {
-        var localDiagram = JSON.parse(decompressStringifiedObject(localStorage.getItem("diagram" + diagramNumber)));
-    }
     var localHexHash = localStorage.getItem('localhash');
     var diagramToString = "";
     var hash = 0;
     for(var i = 0; i < diagram.length; i++) {
         diagramToString += JSON.stringify(diagram[i]);
     }
-    if (diagram.length != 0) {
+    if(diagram.length !== 0) {
         for (var i = 0; i < diagramToString.length; i++) {
             var char = diagramToString.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
@@ -227,26 +220,9 @@ function loadDiagram() {
         }
         var hexHash = hash.toString(16);
     }
-    if (typeof localHexHash !== "undefined" && typeof localDiagram !== "undefined") {
+    if (typeof localHexHash !== "undefined") {
         if (localHexHash != hexHash) {
-            b = JSON.parse(JSON.stringify(localDiagram));
-            for (var i = 0; i < b.diagram.length; i++) {
-                if (b.diagramNames[i] == "Symbol") {
-                    b.diagram[i] = Object.assign(new Symbol(b.diagram[i].symbolkind), b.diagram[i]);
-                } else if (b.diagramNames[i] == "Path") {
-                    b.diagram[i] = Object.assign(new Path, b.diagram[i]);
-                }
-            }
-            diagram.length = b.diagram.length;
-            for (var i = 0; i < b.diagram.length; i++) {
-                diagram[i] = b.diagram[i];
-                diagram[i].setID(JSON.parse(diagramID)[i]);
-            }
-            // Points fix
-            points.length = b.points.length;
-            for (var i = 0; i < b.points.length; i++) {
-                points[i] = b.points[i];
-            }
+            //Parse diagram from local storage and write to diagram and points arrays
         }
     }
     deselectObjects();
@@ -275,13 +251,6 @@ function hashFunction() {
         var hexHash = hash.toString(16);
         if (currentHash != hexHash) {
             localStorage.setItem('localhash', hexHash);
-            for (var i = 0; i < diagram.length; i++) {
-                c[i] = diagram[i].constructor.name;
-                c[i] = c[i].replace(/"/g,"");
-                d[i] = diagram[i].id;
-            }
-            a = JSON.stringify({diagram:diagram, points:points, diagramNames:c, diagramID:d});
-            localStorage.setItem('localdiagram', compressStringifiedObject(a));
             return hexHash;
         }
     }
@@ -313,11 +282,7 @@ function hashCurrent() {
 //----------------------------------------------------------------------
 
 function removeLocalStorage() {
-    for (var i = 0; i < localStorage.length; i++) {
-        localStorage.removeItem("diagram" + i);
-    }
-    diagramNumber = 0;
-    localStorage.setItem("diagramNumber", 0);
+
 }
 
 //-------------------------------------------------------------------------------
@@ -341,30 +306,8 @@ function getUpload() {
 }
 
 function Load() {
-    return
-    // Implement a JSON.parse() that will unmarshall a b c, so we can add
-    // them to their respecive array so it can redraw the desired canvas.
-    var dia = JSON.parse(decompressStringifiedObject(a));
-    b = dia;
-    for (var i = 0; i < b.diagram.length; i++) {
-        if (b.diagramNames[i] == "Symbol") {
-            b.diagram[i] = Object.assign(new Symbol(b.diagram[i].symbolkind), b.diagram[i]);
-        } else if (b.diagramNames[i] == "Path") {
-            b.diagram[i] = Object.assign(new Path, b.diagram[i]);
-        }
-    }
-    diagram.length = b.diagram.length;
-    for (var i = 0; i < b.diagram.length; i++) {
-        diagram[i] = b.diagram[i];
-    }
-
-    points.length = b.points.length;
-    for (var i = 0; i < b.points.length; i++) {
-        points[i] = b.points[i];
-    }
-
+    return;
     console.log("State is loaded");
-
     updateGraphics();
 }
 
@@ -486,15 +429,15 @@ function getObjectChanges(base, object) {
                 if(base[key] === undefined) {
                     changes[currentPath] = {
                         "type": "+",
-                        "data": value
+                        "data": JSON.parse(JSON.stringify(value))
                     };
                 } else if(value !== base[key]) {
-                    if(typeof value === "object" && typeof base[key] === "object") {
+                    if(isObject(value) && isObject(base[key])) {
                         compareObjects(base[key], value, currentPath);
                     } else {
                         changes[currentPath] = {
                             "type": "u",
-                            "data": value
+                            "data": JSON.parse(JSON.stringify(value))
                         }
                     }
                 }
@@ -544,7 +487,7 @@ function setNestedPropertyValue(object, property, value) {
         const properties = property.split(".");
         const topLevelProperty = properties.shift();
         const remainingProperties = properties.join(".");
-        if(object[topLevelProperty] === null) {
+        if(object[topLevelProperty] === null || object[topLevelProperty] === undefined) {
             object[topLevelProperty] = {};
         }
         setNestedPropertyValue(object[topLevelProperty], remainingProperties, value);
