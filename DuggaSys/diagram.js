@@ -2673,20 +2673,20 @@ var previousToolbarState = currentMode.er;
 var developerModeActive = false;                 // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    resetToolButtonsPressed();
     developerModeActive = !developerModeActive;
-
-    if (developerModeActive) {
+    resetToolButtonsPressed();
+    
+    if (developerModeActive == true) {
         targetMode = currentMode.dev;
         // Enable developer features (crosses/origo)
         showCrosses();
         drawOrigo();
     } else {
         // Revert to previous state and hide developer features
-        targetMode = previousToolbarState;
+        toolbarState = previousToolbarState;
         hideCrosses();
     }
-    switchMode();
+
     reWrite();
     updateGraphics();
 }
@@ -2698,15 +2698,17 @@ function developerMode(event) {
 
 function setModeOnRefresh() {
     const tempToolbarState = localStorage.getItem("toolbarState");
+    const tempDevmodeState = localStorage.getItem("developerState");
+    
     if(tempToolbarState != null) {
         targetMode = tempToolbarState;
+        
     } else {
         targetMode = currentMode.er;
     }
+
+    developerModeActive = (tempDevmodeState == "true"); // Converts from string to boolean
     switchMode();
-    if(toolbarState != currentMode.dev){
-        hideCrosses();
-    }
 }
 
 function setPaperSizeOnRefresh() {
@@ -3342,13 +3344,32 @@ function setOrientationIcon(element, check) {
 // switchMode: called when pressing "Accept" button after mode switch, and as trigger when jumping in/out from developer mode
 //----------------------------------------------------------------------
 
-function switchMode() {
+function switchMode(devMode) {
+    // Close popup that appears when switching between UML/ER (when dev is off)
     closeModeSwitchDialog();
-    toolbarState = targetMode;
+    
+    // Toggle in/out from dev mode or switch to selected mode
+    if(devMode == true) {
+        developerMode(event);
+    } else {
+        toolbarState = targetMode;
+        if(!developerModeActive) hideCrosses();
+    }
+
+    // Save current settings in case page is refreshed
     localStorage.setItem("toolbarState", toolbarState);
-    if(toolbarState != currentMode.dev) previousToolbarState = toolbarState;
+    localStorage.setItem("developerState", developerModeActive);
+
+    // Used to restore to previous mode after exiting developer mode
+    if(toolbarState != currentMode.dev) {
+        previousToolbarState = toolbarState;
+    }
+
+    // Toggle menus + toolbar
     switchToolbar();
     editToolbarMenus();
+    reWrite();
+    updateGraphics();
 }
 
 //----------------------------------------------------------------------
@@ -3384,9 +3405,9 @@ function switchToolbar() {
 function editToolbarMenus(){
     setCheckbox($(".drop-down-option:contains('ER mode')"), toolbarState == currentMode.er);
     setCheckbox($(".drop-down-option:contains('UML mode')"), toolbarState == currentMode.uml);
-    setCheckbox($(".drop-down-option:contains('Developer mode')"), (toolbarState == currentMode.dev) || developerModeActive);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), (toolbarState == currentMode.dev) || developerModeActive == true);
     setCheckbox($(".drop-down-option:contains('Display All Tools')"), (toolbarState == currentMode.dev));
-    if(developerModeActive){
+    if(developerModeActive == true){
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     } else {
         $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
