@@ -938,15 +938,17 @@ function loadUserInformation(){
 				eventNumber = row.eventType;
 				event = eventNames[eventNumber];
 				if(row.eventType != "") {
-					users[user].push([
-						row.uid,
-						row.username,
-						row.eventType,
-						row.description,
-						row.timestamp,
-						event
-					]);
-					updateState(users);		
+					if(event != 'AddFile' && event != 'EditFile'){
+						users[user].push([
+							row.uid,
+							row.username,
+							row.eventType,
+							row.description,
+							row.timestamp,
+							event
+						]);
+						updateState(users);	
+					}
 				}
             });
 		});
