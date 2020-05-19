@@ -266,7 +266,7 @@ function loadPasswordGuessing() {
 		$('#pageTitle').text("Password Guessing");
 		$('#analytic-info').append("<p class='analyticsDesc'>Potential brute force attacks.</p>");
 
-		var tableData = [["Username", "Remote address", "User agent", "Tries"]];
+		var tableData = [["Username", "Remote address", "User agent", "Guest ID", "Tries"]];
 		for (var i = 0; i < data.length; i++) {
 			tableData.push([
 				data[i].userName,
