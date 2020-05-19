@@ -1225,6 +1225,11 @@ div .navButt:hover {
   vertical-align: middle;
   text-align: center;
 }
+@media only screen and (max-width: 342px) {
+  #loginbutton {
+    width: 35px;
+  }
+}
 
 #div2 {
   position: absolute;
