@@ -213,7 +213,7 @@ function generalStats($dbCon) {
            timestamp,
            eventType,
            description AS description,
-            substr(description,    instr(description, ",") + 1) AS filename
+		   substr(description, instr(description, " ") + 1) AS filename
        FROM userLogEntries
        WHERE eventType = '.EventTypes::EditFile.'
         ORDER BY timestamp DESC LIMIT 1;

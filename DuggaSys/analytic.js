@@ -189,10 +189,10 @@ function loadGeneralStats() {
             'Created: ' + data['stats']['newestFileTimestamp']
     	]);
 
-		// Most recent edited file
+		// Most recently edited file
         tableData.push([
-            'Most recent edited file: ' + data['stats']['recentlyEditedFile'],
-            'Edited: ' + data['stats']['recentlyEditedFileTimestamp']
+			'Most recently edited file: ' + data['stats']['recentlyEditedFile'],
+            'Edited: ' + new Date(data['stats']['recentlyEditedFileTimestamp'].replace(' ', 'T') + "Z").toLocaleString()
     	]);
 		$('#analytic-info').append(renderTable(tableData));
 		
