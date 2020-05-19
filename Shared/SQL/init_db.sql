@@ -75,6 +75,9 @@ CREATE TABLE user_course(
 	`groups` 				varchar(256),
 	examiner 				integer,
 	teacher					VARCHAR(30),
+	passed 					INT UNSIGNED NOT NULL DEFAULT 0,
+    failed 					INT UNSIGNED NOT NULL DEFAULT 0,
+    pending 				INT UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (uid, cid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
