@@ -1678,9 +1678,10 @@ function retrieveAnnouncementAuthor(){
     if (this.readyState == 4 && this.status == 200) {
       if($("#userid").length > 0) {
           var parsed_data = JSON.parse(this.response);
-          document.getElementById("userid").value = parsed_data.uid;
-          retrieveCourseProfile(parsed_data.uid);
-
+          if(($("#announcementForm").length) > 0){
+            document.getElementById("userid").value = parsed_data.uid;
+            retrieveCourseProfile(parsed_data.uid);
+          }
       }
     }
   };
@@ -1688,6 +1689,7 @@ function retrieveAnnouncementAuthor(){
   xmlhttp.send();
 
 }
+
 //retrieve course profile
 function retrieveCourseProfile(userid){
   $(".selectAll input").attr("disabled", true);
@@ -1754,6 +1756,7 @@ function getStudents(cid, userid){
     $("#recipient").prop("disabled", true);
   }
 }
+
 //validate create announcement form
 function validateCreateAnnouncementForm(){
   $("#announcementForm").submit(function(e){
@@ -2036,7 +2039,6 @@ function replaceDefualtLink(){
     }
   }
 }
-
 
 // Adds classes to <a> element depending on if they are external / internal
 function addClasses() {
