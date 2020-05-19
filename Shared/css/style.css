@@ -817,8 +817,8 @@ p {
 /*Vertical line for end tabs for "1 tab + end"*/
 #Sectionlist .tabs4 .spacerRight {
   height: 19px;
-  width: 22px;
-  margin: 0px 0px 12px 45px;
+  width: 19px;
+  margin: 0px 0px 11px 47px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
@@ -826,8 +826,8 @@ p {
 /*Vertical line for end tabs for "2 tabs + end"*/
 #Sectionlist .tabs5 .spacerRight {
   height: 19px;
-  width: 22px;
-  margin: 0px 0px 12px 77px;
+  width: 19px;
+  margin: 0px 0px 11px 79px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
@@ -835,8 +835,8 @@ p {
 /*Vertical line for end tabs for "3 tabs + end"*/
 #Sectionlist .tabs6 .spacerRight {
   height: 19px;
-  width: 22px;
-  margin: 0px 0px 12px 109px;
+  width: 19px;
+  margin: 0px 0px 11px 111px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
@@ -867,7 +867,7 @@ p {
   padding: 6px;
   text-align: center;
   color: var(--color-text-header);
-  font-size: 24px;
+  font-size: 20px;
   background-color: var(--color-primary);
 }
 .glow {
@@ -4153,6 +4153,7 @@ rect[class*="activitymarker"]:hover {
 }
 
 #servermsgcontainer{
+  box-shadow:1px 1px 6px grey;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -5841,6 +5842,8 @@ only screen and (max-device-width: 320px) {
 
 .fab-btn-list2 {
   position: absolute;
+  padding: 18px 0px 0px;
+  margin: 0px 0px 0px -3px;
   left: auto;
   width: 100%;
   list-style: none;
@@ -7010,10 +7013,7 @@ textarea#filecont {
   width: 100%;
 }
 #motdArea{
-  /*border: 1px;
-  border-radius: 2px;
-  border-style: solid;
-  border-color: #614875;*/
+  box-shadow: 1px 1px 6px grey;
   border-collapse:collapse;
   background-color: #FECC56;
   justify-content: center;
