@@ -94,12 +94,21 @@ function returned(data)
 		}
 	}
 
+	//Adds examplename from sectionData to codeExamples.
+	for(i = 0; i < codeExamples.length; i++){
+		for(j = 0; j < codeExamples.length; j++)
+			if(codeExamples[i]['link'] == sectionData['codeexamples'][j + 1]['exampleid']){
+				codeExamples[i]['examplename'] = sectionData['codeexamples'][j + 1]['examplename'];
+				break;
+			}
+	}
+
 	//Checks current example name with all the examples in codeExamples[] to find a match
 	//and determine current position.
 	console.log(retData);
 	console.log(sectionData);
 	for(i = 0; i < codeExamples.length; i++){
-		if(retData["sectionname"] == codeExamples[i]["entryname"]){
+		if(retData['examplename'] == codeExamples[i]['examplename'] && retData['sectionname'] == codeExamples[i]['entryname']){
 			currentPos = i;
 		}
 	}
@@ -131,7 +140,13 @@ function returned(data)
 		if(j < 5){
 			retData['before'][j][1] = codeExamples[currentPos - 1 - j]['entryname'];
 			retData['before'][j][0] = (String)(codeExamples[currentPos - 1 - j]['link']);
-			retData['exampleno'] = (currentPos)
+			for(k = 0; k < codeExamples.length; k++){
+				if(retData['before'][j][0] == codeExamples[k]['link']){
+					retData['before'][j][2] = codeExamples[k]['examplename'];
+					break
+				}
+			}
+			retData['exampleno'] = currentPos
 			j++
 		}else{
 			break
@@ -162,7 +177,7 @@ console.log(codeExamples);
 			document.querySelector("#beforebutton").style.opacity = "0.4";
 			document.querySelector("#beforebutton").style.pointerEvents = "none";
 		}
-		if (retData['exampleno'] == 15 || retData['after'].length == 0) {
+		if (retData['exampleno'] == codeExamples.length - 1 || retData['after'].length == 0) {
 			document.querySelector("#afterbutton").style.opacity = "0.4";
 			document.querySelector("#afterbutton").style.pointerEvents = "none";
 		}
