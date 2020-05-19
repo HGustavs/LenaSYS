@@ -649,6 +649,13 @@ p {
 }
 
 /*End of show all the announcments*/
+.selectAll{
+  float: right;
+}
+.selectAll input{
+  position: relative;
+  top: 2px;
+}
 
 /*End of announcement box*/
 

@@ -1701,8 +1701,8 @@ function retrieveAnnouncementAuthor(){
 }
 //retrieve course profile
 function retrieveCourseProfile(userid){
+  $(".selectAll input").attr("disabled", true);
   var cid = '';
-  var versid = '';
   $("#cid").change(function(){
     cid = $("#cid").val();
     if (($("#cid").val()) != '') {
@@ -1729,43 +1729,64 @@ function retrieveCourseProfile(userid){
     }
 
   });
-
-  $("#versid").change(function(){
-    versid = $("#versid").val();
-    if (($("#versid").val()) != '') { 
-      $("#recipient").prop("disabled", false);
-      $.ajax({
-        url: "../Shared/retrieveuser_course.php",
-        data: {cid: cid, versid:versid, remove_student:userid},
-        type: "POST",
-        success: function(data){
-          var item = JSON.parse(data);
-          $("#recipient").find('*').not(':first').remove();
-          $.each(item.users_course, function(index,item) {        
-            $("#recipient").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
-          });
-
-        },
-        error:function(){
-          console.log("*******Error user_course*******");
-        }
-      });
-    }else{
-      $("#recipient").prop("disabled", true);
-    }
-  });
+  if (($("#versid option").length) <= 2) {
+    $("#versid").click(function(){
+      getStudents(cid, userid);
+    });
+  }else if(($("#versid option").length) > 2){
+    $("#versid").change(function(){
+      getStudents(cid, userid);
+    });
+  }
 }
-
+function getStudents(cid, userid){
+   var versid = '';
+   versid = $("#versid").val();
+   if (($("#versid").val()) != '') { 
+    $("#recipient").prop("disabled", false);
+    $.ajax({
+      url: "../Shared/retrieveuser_course.php",
+      data: {cid: cid, versid:versid, remove_student:userid},
+      type: "POST",
+      success: function(data){
+        var item = JSON.parse(data);
+        $("#recipient").find('*').not(':first').remove();
+        $.each(item.users_course, function(index,item) {        
+          $("#recipient").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+        });
+        $(".selectAll input").attr("disabled", false);
+        selectallRecipients();
+      },
+      error:function(){
+        console.log("*******Error user_course*******");
+      }
+    });
+  }else{
+    $("#recipient").prop("disabled", true);
+  }
+}
 //validate create announcement form
 function validateCreateAnnouncementForm(){
   $("#announcementForm").submit(function(e){
     var announcementTitle = ($("#announcementTitle").val()).trim();
     var announcementMsg = ($("#announcementMsg").val()).trim();
+    var coursename = $("#cid").val();
+    var versid = $("#versid").val();
+    var recipients = $("#recipient").val();
     if (announcementTitle == null || announcementTitle == '') {  
         $("#announcementTitle").addClass('errorCreateAnnouncement');
         e.preventDefault();
     }else if (announcementMsg == null || announcementMsg == '') {  
         $("#announcementMsg").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (coursename == null || coursename == '') {  
+        $("#cid").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (versid == null || versid == '') {  
+        $("#versid").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (recipients == null || recipients == '') {  
+        $("#recipient").addClass('errorCreateAnnouncement');
         e.preventDefault();
     }
     $(".errorCreateAnnouncement").css({
@@ -1999,6 +2020,16 @@ function updateReadStatus(announcementid, cid, versid){
     }
   });
 
+}
+function selectallRecipients(){
+   $(".selectAll input").change(function() {
+      if(this.checked) {
+        $("#recipient option").not(":first").prop("selected", true);
+        $("#recipient option").not(":first").attr("selected","selected");
+      }else{
+        $("#recipient option").attr("selected", false);
+      }
+  });
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {
