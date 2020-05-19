@@ -6340,3 +6340,14 @@ function getOrigoOffsetX() {
 function getOrigoOffsetY() {
     return origoOffsetY;
 }
+
+/*Toggles between showing and not showing menu in mobileview*/
+function menuCollapse(){
+
+    var menu= document.getElementById('dropdown');
+    if (menu.style.visibility === 'hidden') {
+      menu.style.visibility = 'visible';
+    } else {
+      menu.style.visibility = 'hidden';
+    }
+  }

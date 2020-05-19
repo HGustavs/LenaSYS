@@ -82,6 +82,16 @@
     <div id="diagram-header">
         <div id=diagram-toolbar-switcher>DEV: All</div>
         <div id="diagram-toolbar-container">
+        <div class="Hamburger" onclick="menuCollapse()">
+					<svg viewBox="0 0 100 80" width="40" height="40">
+  <rect width="50" height="10"></rect>
+  <rect y="20" width="50" height="10"></rect>
+  <rect y="40" width="50" height="10"></rect>
+</svg>
+
+				</div>
+
+				<div id="dropdown">
             <div class="menu-drop-down" tabindex="0">
                 <span class="drop-down-label">File</span>
                 <div class="drop-down">
@@ -421,6 +431,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         <div id="errorBox">
             <span id="errorMSG"></span>

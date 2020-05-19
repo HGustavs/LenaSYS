@@ -95,6 +95,21 @@
 /* --------------================################================-------------- *
  *                                   Generics                                   *
  * --------------================################================-------------- */
+ /*mobileview for diagram-menu*/
+ @media only screen and (max-width: 600px) {
+  .Hamburger{display:block !important;
+       z-index:500;
+         
+    position: absolute;
+      right:35%;}
+  #dropdown{display:flex !important;
+  flex-direction: column !important;
+  background-color: white;
+  top:20%;
+  z-index: 500;
+  width:500px;
+  visibility: hidden;	
+  }
 /*Styling for printing*/
 @media print {
 	@page { margin: 0; }
@@ -102,7 +117,10 @@
 	#appearance,.loginBoxContainer importDiagram{
 	visibility: hidden;
 	}
-	
+  
+  #dropdown{visibility:visible;
+            flex-direction: row;}
+  .Hamburger{display:none;}
 	#canvasDiv{
 	position: absolute;
 	visibility: visible;
