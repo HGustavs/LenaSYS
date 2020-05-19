@@ -4,7 +4,8 @@
 }
 
 #canvas-area {
-    height: 300px;
+    height: auto;
+    padding-left: 2%;
 }
 
 #home{
