@@ -1145,14 +1145,14 @@ function drawCross(point) {
     let crossSize = 4 * zoomValue;
     for(let i = 0; i < diagram.length; i++){
         if(diagram[i].isLayerLocked == false && diagram[i].symbolkind != 4 && diagram[i].symbolkind != 7){
-            if(point.x == Math.round(points[diagram[i].topLeft].x)){
+            if(Math.round(point.x) == Math.round(points[diagram[i].topLeft].x)){
                 checkForLayer = true
             }
-            else if (point.x == Math.round(points[diagram[i].centerPoint].x)){
+            else if (Math.round(point.x) == Math.round(points[diagram[i].centerPoint].x)){
                 checkForLayer = true
             }
             
-            else if (point.x == Math.round(points[diagram[i].bottomRight].x)){
+            else if (Math.round(point.x) == Math.round(points[diagram[i].bottomRight].x)){
                 checkForLayer = true
             }
         }
