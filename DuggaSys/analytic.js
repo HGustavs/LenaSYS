@@ -954,7 +954,7 @@ function loadUserInformation(){
 		});
 	}
 	
-	function apa(users){
+	function updatefileEvents(users){
 		var event;
 		var users = {};
 		var user;
@@ -1063,7 +1063,7 @@ function loadUserInformation(){
 					updateUserLogInformation();
 					break;
 				case "fileEvents":
-					apa();
+					updatefileEvents();
 					break;
             }
         });
