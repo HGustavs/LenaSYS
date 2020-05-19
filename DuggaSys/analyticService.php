@@ -841,6 +841,11 @@ function pageInformation(){
 				INSTR(refer, "courseid=")+9, 
 				INSTR(refer, "&coursename=")-18 - INSTR(refer, "courseid=")+9
 			) courseid,
+			substr(
+				refer, 
+				INSTR(refer, "cid=")+4,
+				INSTR(refer, "&coursevers=")-43
+			) cid,
 			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM userHistory WHERE refer LIKE "%showDugga%") AS percentage,
 			COUNT(*) AS pageLoads
 		FROM 
@@ -848,7 +853,7 @@ function pageInformation(){
 		WHERE 
 			refer LIKE "%showDugga%"
 		GROUP BY 
-			courseid;
+			cid
 		ORDER BY 
 			percentage DESC;
 	')->fetchAll(PDO::FETCH_ASSOC);
