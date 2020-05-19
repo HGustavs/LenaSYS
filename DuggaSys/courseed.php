@@ -153,7 +153,7 @@ else{
     			<div class='inputwrapper'><span style='font-style:italic;color:rgba(0,0,0,0.6)'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
 				
     		</div>
-			<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 non-nordic symbols</p>
+			<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>
     		<div style='padding:5px;'>
     			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
     		</div>
