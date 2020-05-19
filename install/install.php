@@ -118,6 +118,7 @@
     </div>
   </div> 
 
+  <!-- Header showing the showModalButton-->
   <div id="header">
     <h1>LenaSYS Installer</h1>
     <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
@@ -264,10 +265,9 @@
         <polygon points="50,30 130,75 50,120" />
       </svg>
     </div>
-
-    <!-- Empty footer to show a nice border at bottom -->
   </form>
-  
+
+  <!-- Empty footer to show a nice border at bottom -->
   <div id="inputFooter"></div>
 
   <!-- Install Section -->
@@ -373,6 +373,7 @@
       echo "<div id='installationProgressWrap'>";
         $isPermissionsSat = isPermissionsSat($putFileHere);
         $isAllCredentialsFilled = isAllCredentialsFilled();
+        global $errors;
 
         //---------------------------------------------------------------------------------------------------
         // Check permissions.
@@ -489,6 +490,7 @@
           # Split the sql file at semi-colons to send each query separated.
           $initQueryArray = explode(";", $initQuery);
           $initSuccess = false;
+          $completeQuery = null;
           try {
             if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
               $connection->beginTransaction();
@@ -674,7 +676,6 @@
     //---------------------------------------------------------------------------------------------------
     // updateProgressBar(): Wrapper-function for the js-function to update progressbar.
     //---------------------------------------------------------------------------------------------------
-
     function updateProgressBar($cSteps, $tSteps){
       echo "
         <script>
@@ -689,6 +690,7 @@
     // Function that checks if all credentials are filled out (on the first page).
     //---------------------------------------------------------------------------------------------------
     function isAllCredentialsFilled(){
+      global $errors;
       $isAllCredentialsFilled = true;
       $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
       foreach ($fields AS $fieldname) {
@@ -704,6 +706,7 @@
     // Function that deletes a user from database
     //---------------------------------------------------------------------------------------------------
     function deleteUser($connection, $username){
+      global $errors;
       try {
         $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
         echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
@@ -718,6 +721,7 @@
     // Function that deletes a user from database
     //---------------------------------------------------------------------------------------------------
     function deleteDatabase($connection, $databaseName){
+      global $errors;
       try {
         $connection->query("DROP DATABASE {$databaseName}");
         echo "<span id='successText' />Successfully removed old database, {$databaseName}.</span><br>";

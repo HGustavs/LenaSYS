@@ -11,39 +11,68 @@
 // Function Symbol() handles the CREATE-functions in the diagram.
 //--------------------------------------------------------------------
 function Symbol(kindOfSymbol) {
-    this.kind = kind.symbol;        // Diagram object kind is always 2 for symbols
-    this.name = "New Class";        // New Class default name in new class
+    this.kind = kind.symbol;
+    this.name = "New Class";
     this.id = globalObjectID++;
     this.targeted = false;
-    this.symbolkind = kindOfSymbol; // Symbol kind (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
-    this.operations = [];           // Operations array
-    this.attributes = [];           // Attributes array
-    this.textLines = [];            // Free text array
-    this.topLeft;                   // Top Left Point
-    this.bottomRight;               // Bottom Right Point
-    this.middleDivider;             // Middle divider Point
-    this.centerPoint;               // centerPoint
-    this.cardinality = {};          //Stores value for UML and ER lines, valueUML for UML lines and parentPointIndexes for ER lines
-    this.lineDirection = "First";
-    this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
-    this.minWidth;
-    this.minHeight;
-    this.group = 0;                 // What group this symbol belongs to
-    this.isLocked = false;          // If the symbol is locked
-    this.isLockHovered = false;     // Checks if the lock itself is hovered on the symbol
-    this.isOval = false;
-    this.isAttribute = false;
-    this.isRelation = false;
-    this.isLine = false;
-    this.isRecursiveLine = false;
+    this.symbolkind = kindOfSymbol;     // Symbol kind (1 UML class, 2 ER Attribute, 3 ER Entity, 4 Lines, 5 ER Relation, 6 Text, 7 UML line)
+    this.topLeft = null;                // Top left point index
+    this.bottomRight = null;            // Bottom right point index
+    this.group = 0;                     // What group this symbol belongs to
+    this.isLocked = false;
+    this.isLayerLocked = false;
+    this.isLockHovered = false;         // Checks if the lock itself is hovered on the symbol
     this.pointsAtSamePosition = false;
-    this.UMLCustomResize = false;
-
+    this.isHovered = false;
+    
     // Connector arrays - for connecting and sorting relationships between diagram objects
+    // They are not used for line, UML line and text objects but still created to prevent errors with other functions
     this.connectorTop = [];
     this.connectorBottom = [];
     this.connectorLeft = [];
     this.connectorRight = [];
+
+    //-----------------------------------------------------------------------------------------------
+    // isAnyOfSymbolKinds: Returns true if this symbol is any of the symbolKinds in the passed array.
+    //                     Also possible to pass a single symbolKind without an array.
+    //-----------------------------------------------------------------------------------------------
+
+    this.isAnyOfSymbolKinds = function(types = []) {
+        if(!Array.isArray(types) && Number.isInteger(types)) {
+            return this.symbolkind === types;
+        }
+        return types.some(type => this.symbolkind === type);
+    }
+
+    if(!this.isAnyOfSymbolKinds([symbolKind.line, symbolKind.umlLine])) {
+        this.centerPoint = null; // Center point index, not used for line and UML line
+    }
+
+    switch(this.symbolkind) {
+        case symbolKind.uml:
+            this.operations = [];
+            this.attributes = [];
+            this.middleDivider = null;
+            this.UMLCustomResize = false;
+            this.minWidth = null;
+            this.minHeight = null;
+            break;
+        case symbolKind.line:
+            this.cardinality = {value: "", parentPointIndexes: null};
+            this.isCardinalityPossible = false;
+            break;
+        case symbolKind.text:
+            this.textLines = [];
+            break;
+        case symbolKind.umlLine:
+            this.cardinality = {value: "", valueUML: ""};
+            this.lineDirection = "First";
+            this.isRecursiveLine = false;
+            this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
+            break;
+        default:
+            break;
+    }
 
     // Variables for UML line breakpoints
     var breakpointStartX = 0;     // X Coordinate for start breakpoint
@@ -272,7 +301,7 @@ function Symbol(kindOfSymbol) {
         var hw = (points[this.bottomRight].x - x1) * 0.5;
         var hh = (points[this.bottomRight].y - y1) * 0.5;
         var textHeight;
-        if (this.symbolkind == symbolKind.erAttribute || this.symbolkind == symbolKind.erEntity) {
+        if (this.isAnyOfSymbolKinds([symbolKind.erAttribute, symbolKind.erEntity])) {
             if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width) {
                 // If the width is less than the minimum, push out the
                 // point that the user is dragging
@@ -315,19 +344,19 @@ function Symbol(kindOfSymbol) {
                 //Height of text + padding on attributes textfield
                 if(this.properties['sizeOftext'] == 'Tiny'){
                     textHeight = 14;
-                    attrHeight = (this.attributes.length*textHeight) +35;
+                    attrHeight = (this.attributes.length*textHeight) + 30;
                 }
                 else if (this.properties['sizeOftext'] == 'Small'){
                     textHeight = 20;
-                    attrHeight = (this.attributes.length*textHeight) +35;
+                    attrHeight = (this.attributes.length*textHeight) + 45;
                 }
                 else if (this.properties['sizeOftext'] == 'Medium'){
                     textHeight = 30;
-                    attrHeight = (this.attributes.length*textHeight)+50;
+                    attrHeight = (this.attributes.length*textHeight) + 60;
                 }
                 else if (this.properties['sizeOftext'] == 'Large'){
                     textHeight = 50;
-                    attrHeight = (this.attributes.length*textHeight)+100;
+                    attrHeight = (this.attributes.length*textHeight) + 100;
                 } 
             }
             if(this.operations.length > 0) {
@@ -348,16 +377,30 @@ function Symbol(kindOfSymbol) {
             }
             this.minHeight = attrHeight + opHeight;
             
-            //Finding the longest string
+            //Finding the longest and widest string
             var longestStr = "";
-            //Check if any attribute is the longest
+            let widestStr = "";
+            let widestValue = 0;
+            //Check if any attribute is the longest and widest
             for (var i = 0; i < this.attributes.length; i++) {
+                let tempWidth = this.attributes[i].text;
+                tempWidth = ctx.measureText(tempWidth).width;
+                if (tempWidth > widestValue) {
+                    widestStr = this.attributes[i].text;
+                    widestValue = ctx.measureText(widestStr).width;
+                }
                 if (this.attributes[i].text.length > longestStr.length) {
                     longestStr = this.attributes[i].text;
                 }
             }
-            //check if any operation is the longest
+            //check if any operation is the longest and widest
             for (var i = 0; i < this.operations.length; i++) {
+                let tempWidth = this.operations[i].text;
+                tempWidth = ctx.measureText(tempWidth).width;
+                if (tempWidth > widestValue) {
+                    widestStr = this.operations[i].text;
+                    widestValue = ctx.measureText(widestStr).width;
+                }
                 if (this.operations[i].text.length > longestStr.length) {
                     longestStr = this.operations[i].text;
                 }
@@ -366,7 +409,13 @@ function Symbol(kindOfSymbol) {
             if(this.name.length > longestStr.length){
                 longestStr = this.name;
             }
-
+            //check if name is the widest
+            let tempWidth = this.name;
+            tempWidth = ctx.measureText(tempWidth).width;
+            if (tempWidth > widestValue) {
+                widestStr = this.name;
+                widestValue = ctx.measureText(widestStr).width;
+            }
             if(!this.UMLCustomResize) {
                 for(var i = 0; i < this.operations.length; i++) {
                     if(this.operations[i].text.length > longestStr.length)
@@ -377,9 +426,24 @@ function Symbol(kindOfSymbol) {
                         longestStr = this.attributes[i].text;
                 }
             }
-            ctx.font = "14px Arial";
-            this.minWidth = ctx.measureText(longestStr).width + 15;
-            //console.log(this.minWidth);
+            //Determine size of UML text
+            let umlTextSize;
+            switch (this.properties['sizeOftext']) {
+                case 'Tiny':
+                    umlTextSize = 14;
+                    break;
+                case 'Small':
+                    umlTextSize = 20;
+                    break;
+                case 'Medium':
+                    umlTextSize = 30;
+                    break;
+              case 'Large':
+                    umlTextSize = 50;
+            }
+            ctx.font = umlTextSize + "px Arial";
+            this.minWidth = ctx.measureText(widestStr).width + umlTextSize;
+            // console.log(this.minWidth);
             if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
                 // If the height is less than the minimum, push out the
                 // point that the user is dragging
@@ -1042,6 +1106,7 @@ function Symbol(kindOfSymbol) {
     // move: Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
+        if(this.properties["isComment"] && hideComment) return; //Don't move hidden comments
         if (this.isLocked) return;
         if (this.symbolkind != symbolKind.line) {
             points[this.topLeft].x += movex;
@@ -1051,7 +1116,7 @@ function Symbol(kindOfSymbol) {
             if (this.symbolkind == symbolKind.uml) {
                 points[this.middleDivider].x += movex;
                 points[this.middleDivider].y += movey;
-            } else if (this.symbolkind == symbolKind.erAttribute || this.symbolkind == symbolKind.erRelation || this.symbolkind == symbolKind.erEntity || this.symbolkind == symbolKind.text) {
+            } else if (this.isAnyOfSymbolKinds([symbolKind.erAttribute, symbolKind.erRelation, symbolKind.erEntity, symbolKind.text])) {
                 points[this.centerPoint].x += movex;
                 points[this.centerPoint].y += movey;
             }
@@ -1097,11 +1162,13 @@ function Symbol(kindOfSymbol) {
     //             IMP!: Should not be moved back on canvas after this function is run.
     //--------------------------------------------------------------------
     this.movePoints = function () {
-        if (this.symbolkind == symbolKind.line || this.symbolkind == symbolKind.umlLine) return;
+        if(this.isLineType()) return;
         points[this.topLeft] = waldoPoint;
         points[this.bottomRight] = waldoPoint;
         points[this.centerPoint] = waldoPoint;
-        points[this.middleDivider] = waldoPoint;
+        if(this.symbolkind === symbolKind.uml) {
+            points[this.middleDivider] = waldoPoint;
+        }
     }
 
     //--------------------------------------------------------------------
@@ -1235,90 +1302,98 @@ function Symbol(kindOfSymbol) {
     //       ctx.setLineDash(segments);
     //--------------------------------------------------------------------
     this.draw = function () {
-        if(showLayer.indexOf(this.properties.setLayer) !== -1){
-            this.isLocked = false;
-            ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
-            this.properties['textSize'] = this.getFontsize();
-            ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
+        if(showLayer.indexOf(this.properties.setLayer) == -1){
+            this.isLayerLocked = true;
+            return;
+        }
+        this.isLayerLocked = false;
+        ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
+        this.properties['textSize'] = this.getFontsize();
+        ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
 
-            var x1 = pixelsToCanvas(points[this.topLeft].x).x;
-            var y1 = pixelsToCanvas(0, points[this.topLeft].y).y;
-            var x2 = pixelsToCanvas(points[this.bottomRight].x).x;
-            var y2 = pixelsToCanvas(0, points[this.bottomRight].y).y;
+        var x1 = pixelsToCanvas(points[this.topLeft].x).x;
+        var y1 = pixelsToCanvas(0, points[this.topLeft].y).y;
+        var x2 = pixelsToCanvas(points[this.bottomRight].x).x;
+        var y2 = pixelsToCanvas(0, points[this.bottomRight].y).y;
 
-            if (this.isLocked) {
-                drawLock(this);
-                if (this.isHovered || this.isLockHovered) {
-                    drawLockedTooltip(this);
-                }
-            }
-            if (this.group != 0){
-                drawGroup(this);
-            }
-
-            ctx.save();
-
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
-
-            if (this.symbolkind == symbolKind.uml) {
-                this.drawUML(x1, y1, x2, y2);
-            }
-
-            else if (this.symbolkind == symbolKind.erAttribute) {
-                this.drawERAttribute(x1, y1, x2, y2);
-            }
-
-            else if (this.symbolkind == symbolKind.erEntity) {
-                this.drawEntity(x1, y1, x2, y2);
-            }
-
-            else if (this.symbolkind == symbolKind.line) {
-                this.drawLine(x1, y1, x2, y2);
-            }
-
-            else if (this.symbolkind == symbolKind.erRelation) {
-                this.drawRelation(x1, y1, x2, y2);
-            }
-
-            else if (this.symbolkind == symbolKind.text) {
-                this.drawText(x1, y1, x2, y2);
-            }
-
-            else if (this.symbolkind == symbolKind.umlLine) {
-                this.drawUMLLine(x1, y1, x2, y2);
-            }
-
-            ctx.restore();
-            ctx.setLineDash([]);
-
-            //Highlighting points when targeted, makes it easier to resize
-            if (this.targeted && this.symbolkind != symbolKind.text) {
-                ctx.beginPath();
-                ctx.arc(x1,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
-                ctx.fillStyle = '#F82';
-                ctx.fill();
-
-                ctx.beginPath();
-                ctx.arc(x2,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
-                ctx.fillStyle = '#F82';
-                ctx.fill();
-                if (this.symbolkind != symbolKind.line && this.symbolkind != symbolKind.umlLine) {
-                    ctx.beginPath();
-                    ctx.arc(x1,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
-                    ctx.fillStyle = '#F82';
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.arc(x2,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
-                    ctx.fillStyle = '#F82';
-                    ctx.fill();
-                }
+        if (this.isLocked) {
+            drawLock(this);
+            if (this.isHovered || this.isLockHovered) {
+                drawLockedTooltip(this);
             }
         }
-        else{
-            this.isLocked = true;
+        if (this.group != 0){
+            drawGroup(this);
+        }
+
+        ctx.save();
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
+
+        if (this.symbolkind == symbolKind.uml) {
+            this.drawUML(x1, y1, x2, y2);
+        }
+
+        else if (this.symbolkind == symbolKind.erAttribute) {
+            this.drawERAttribute(x1, y1, x2, y2);
+        }
+
+        else if (this.symbolkind == symbolKind.erEntity) {
+            this.drawEntity(x1, y1, x2, y2);
+        }
+
+        else if (this.symbolkind == symbolKind.line) {
+            this.drawLine(x1, y1, x2, y2);
+        }
+
+        else if (this.symbolkind == symbolKind.erRelation) {
+            this.drawRelation(x1, y1, x2, y2);
+        }
+
+        else if (this.symbolkind == symbolKind.text) {
+            this.drawText(x1, y1, x2, y2);
+        }
+
+        else if (this.symbolkind == symbolKind.umlLine) {
+            this.drawUMLLine(x1, y1, x2, y2);
+        }
+
+        ctx.restore();
+        ctx.setLineDash([]);
+
+        //Highlighting points when targeted, makes it easier to resize
+        if (this.targeted && this.symbolkind != symbolKind.text) {
+            ctx.beginPath();
+            ctx.arc(x1,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+            ctx.fillStyle = '#F82';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(x2,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+            ctx.fillStyle = '#F82';
+            ctx.fill();
+            if (this.symbolkind != symbolKind.line && this.symbolkind != symbolKind.umlLine) {
+                ctx.beginPath();
+                ctx.arc(x1,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+                ctx.fillStyle = '#F82';
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(x2,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+                ctx.fillStyle = '#F82';
+                ctx.fill();
+                //Draw highlighted point to UML-class middledivider
+                if(this.symbolkind == symbolKind.uml){
+                    var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
+                    var midx = pixelsToCanvas(points[this.middleDivider].x, 0).x;
+                    ctx.beginPath();
+                    ctx.arc(midx, midy ,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+                    ctx.fillStyle = '#F82';
+                    ctx.fill();
+                }
+            }
         }
     }
 
@@ -1403,7 +1478,6 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2) {
-		this.isAttribute = true;
 		//if on two or more pages turn redish
         if(!checkSamePage(x1,y1,x2,y2)){
 			ctx.strokeStyle = '#DC143C';
@@ -1518,13 +1592,13 @@ function Symbol(kindOfSymbol) {
                 dbly = diagram[i].corners().bl.y;
 
                 // Stores the midpoints for each corner of the relation in an array
-                if (diagram[i].isRelation) {
+                if (diagram[i].isAnyOfSymbolKinds(symbolKind.erRelation)) {
                     var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
                     var relationMiddleY = ((dbly - dtly) / 2) + dtly;
                     relationMidPoints.push(relationMiddleX, relationMiddleY);
                 }
                 // Setting the line types to normal if they are forced and the connected entity is strong.
-                if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
+                if (diagram[i].isAnyOfSymbolKinds(symbolKind.line) && diagram[i].properties['key_type'] != 'Normal') {
 
                     // Looping through the midpoints for relation entities.
                     for (let j = 0; j < relationMidPoints.length; j++) {
@@ -1575,7 +1649,7 @@ function Symbol(kindOfSymbol) {
                 dbly = diagram[i].corners().bl.y;
 
                 // Stores the midpoints for the relations in an array.
-                if (diagram[i].isRelation) {
+                if (diagram[i].isAnyOfSymbolKinds(symbolKind.erRelation)) {
                     var relationMiddleX = ((dtrx - dtlx) / 2) + dtlx;
                     var relationMiddleY = ((dbly - dtly) / 2) + dtly;
                     relationMidPoints.push(relationMiddleX, relationMiddleY);
@@ -1584,14 +1658,14 @@ function Symbol(kindOfSymbol) {
                 }
 
                 // Stores the midpoints for the attributes in an array
-                if (diagram[i].isAttribute) {
+                if (diagram[i].isAnyOfSymbolKinds(symbolKind.erAttribute)) {
                     var attributeMiddleX = ((dtrx - dtlx) / 2) + dtlx;
                     var attributeMiddleY = ((dbly - dtly) / 2) + dtly;
                     attributeMidPoint.push(attributeMiddleX, attributeMiddleY);
                 }
 
                 // Setting the line types to forced if they are normal and the connected entity is weak.
-                if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Forced') {
+                if (diagram[i].isAnyOfSymbolKinds(symbolKind.line) && diagram[i].properties['key_type'] != 'Forced') {
                     // Looping through the midpoints (top and bot) for relations.
                     for (let j = 0; j < relationMidXPoints.length; j++) {
                         for (let c = 0; c < relationMidXPoints.length; c++) {
@@ -1735,7 +1809,6 @@ function Symbol(kindOfSymbol) {
     // drawLine: Draws line between er objects
     //---------------------------------------------------------------
     this.drawLine = function(x1, y1, x2, y2) {
-        this.isLine = true;
         //Checks if there is cardinality set on this object
         if(this.isCardinalityPossible && this.cardinality.value != "" && this.cardinality.value != null) {
             //Updates x and y position
@@ -1810,16 +1883,6 @@ function Symbol(kindOfSymbol) {
         if (this.properties['key_type'] == "Implementation" || this.properties['key_type'] == "Dependency") {
             ctx.setLineDash([8*zoomValue, 8*zoomValue]);
         }
-
-        // Variables for UML line breakpoints
-        this.breakpointStartX = 0;
-        this.breakpointStartY = 0;
-        this.breakpointEndX = 0;
-        this.breakpointEndY = 0;
-        this.middleBreakPointX = 0;
-        this.middleBreakPointY = 0;
-        this.startLineDirection = "";
-        this.endLineDirection = "";
 
         // Calculating the mid point between start and end
         if (x2 > x1) {
@@ -2134,7 +2197,6 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawRelation = function(x1, y1, x2, y2, midx, midy) {
-        this.isRelation = true;
         var midx = pixelsToCanvas(points[this.centerPoint].x).x;
         var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
 		
@@ -2733,7 +2795,6 @@ function drawGroup(symbol) {
 // drawOval: Draws an oval, is used for drawing erattributes
 //--------------------------------------------------------------------
 this.drawOval = function (x1, y1, x2, y2) {
-    this.isOval = true;
     var middleX = x1 + ((x2 - x1) * 0.5);
     var middleY = y1 + ((y2 - y1) * 0.5);
 
@@ -2812,6 +2873,11 @@ function Path() {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
     };
+    this.minX = null;
+    this.maxX = null;
+    this.minY = null;
+    this.maxY = null;
+    this.id = null;
 
     //--------------------------------------------------------------------
     // setID: Assigns a global id to a symbol
