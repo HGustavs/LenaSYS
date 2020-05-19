@@ -1281,8 +1281,6 @@ diagram.draw = function() {
 
 diagram.adjustPoints = function() {
     for (var i = 0 ; i < this.length; i++) {
-        console.log(this);
-        
         this[i].adjust();
     }
 }
@@ -3205,9 +3203,8 @@ function undoDiagram(event) {
     if (diagramNumber > 0) {
         diagramNumber--;
     }
-    var tmpDiagram = localStorage.getItem("diagram");
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
     localStorage.setItem("diagramNumber", diagramNumber);
-    console.log(tmpDiagram);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 
     selected_objects = diagram.filter(object => object.targeted);

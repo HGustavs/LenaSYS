@@ -105,6 +105,20 @@ function loadStoredFolders(f) {
     document.getElementById('showStoredFolders').style.display = "block";
 }
 
+
+function getChangesInDiagram(oldDiagram) {
+    // Compare old to new diagram, return difference.
+    let temp = localStorage.getItem("diagram" + diagramNumber);
+    let old = JSON.parse(decompressStringifiedObject(temp));
+    const difference = [];
+    for (let i = 0; diagram.length > i; i++) {
+        let keys = diagram[i].entries();
+        for (let y = 0; keys.length; y++){
+            diagram[i]
+        }
+    }
+}
+
 //---------------------------------------------
 // Save: saves objects in canvas to JSON format in localstorage
 //---------------------------------------------
@@ -125,6 +139,8 @@ function Save() {
     localStorage.setItem("Settings", JSON.stringify(settings));
     localStorage.setItem("diagramID", JSON.stringify(d));
     console.log("State is saved");
+
+
 }
 
 //---------------------------------------------
