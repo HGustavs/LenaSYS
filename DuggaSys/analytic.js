@@ -670,6 +670,7 @@ function loadPageInformation() {
 		var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
 
         for (var i = 0; i < data['percentage'][page].length; i++) {
+			console.log(data['percentage'][page][i]);
 			numberOfCourses = parseInt(data['percentage'][page].length);
 			courseID.push([
                 data['percentage'][page][i].courseid
@@ -713,6 +714,7 @@ function loadPageInformation() {
 
         var chartData = [];
         for (var i = 0; i < data['percentage'][page].length; i++) {
+			
             chartData.push({
                 label: "courseid:" + " " + data['percentage'][page][i].courseid,
                 value: data['percentage'][page][i].percentage
@@ -924,6 +926,7 @@ function loadUserInformation(){
 		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
 		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
 		'EditFile','MarkedDugga'];
+
         loadAnalytics("userLogInformation", function(data) {
             $.each(data, function(i, row) {
                 user = row.username;
@@ -959,16 +962,42 @@ function loadUserInformation(){
 				}
             }
         }
+		
         userSelect.change(function() {
 			deleteTable();
 			$('#analytic-info').append(selectPage);
-			$('#analytic-info').append(renderTable(users[$(this).val()]));
+			
+			var events = [];
+			if(users[$(this).val()][0][5] == "EventDescription") {
+				for(var i = 1; i < users[$(this).val()].length; i++) {
+					if(events[users[$(this).val()][i][5]] == null) {
+						events[users[$(this).val()][i][5]] = 1; // Set the starting value
+					} else {
+						events[users[$(this).val()][i][5]] = events[users[$(this).val()][i][5]] + 1; // Increments the values
+					}
+				}
+			}
 
+			if(Object.keys(events).length > 0) {
+				userNumEvents = [["Event", "Times Preformed"]];
+				for (var key in events) {
+					if(Number.isInteger(events[key]))
+					userNumEvents.push([
+						key,
+						events[key]
+					]);
+					deleteTable();
+					$('#analytic-info').append(renderTable(userNumEvents));
+				}
+			}
+			
+			$('#analytic-info').append(renderTable(users[$(this).val()]));
+			
 			try {
 				localStorage.setItem('analyticsLastUser', $(this).val());
 			} catch(err) { }
 
-        });
+		});
         $('#analytic-info').append(userSelect);
 		userSelect.change();
 		pageSelect();
@@ -1099,7 +1128,7 @@ function drawBarChart(data, format = null) {
 		ctx.scale(1, -1);
 		ctx.fillStyle = "white";
 		
-		if(format = "bytes") {
+		if(format == "bytes") {
 			ctx.fillText(humanFileSize(data[i].value), x + barWidth / 2, -data[i].value * barHeightMultiplier);
 		} else {
 			ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
