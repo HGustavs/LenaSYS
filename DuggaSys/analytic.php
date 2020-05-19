@@ -72,8 +72,4 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 	<div id="analytic-info"></div>
 	<div id="canvas-area"></div>
 </div>
-	<!-- content END -->
-	
-<?php
-	include '../Shared/navheader.php';
-?>
+<!-- content END -->
