@@ -23,7 +23,37 @@
     <script src="diagram_objects.js"></script>
     <script src="diagram_IOHandler.js"></script>
 
-    <!--this script fix so that the drop down menus close after you have clicked on something on them.-->
+    <!--this script fix so that the drop down menus close after you have clicked on something on them.--><
+    <style>
+    /*mobileview for diagram-menu*/
+ @media only screen and (max-width: 600px) {
+  .Hamburger{display:block !important;
+       z-index:500;
+    position: absolute;
+      right:35%;}
+      
+  #dropdown{display:flex !important;
+  flex-direction: column !important;
+  background-color: white;
+  top:20%;
+  z-index: 500;
+  width:500px;
+  visibility: hidden;	
+  }
+
+  #dropdown{visibility:visible;
+            flex-direction: row;}
+  .Hamburger{display:none;}
+	#canvasDiv{
+	position: absolute;
+	visibility: visible;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	}
+}
+    </style>
     <script>
         $(document).ready(function() {
             $(".menu-drop-down").hover(function() {
