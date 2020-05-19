@@ -1337,7 +1337,9 @@ function rowFilter(row) {
 		return false;
 	if(!filterList["showStudents"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != 0)
 		return false;
+	// Filters to display only rows where Duggas that have been submitted after deadline and/or duggas that are pending and needs to be graded
 	if (filterList["passedDeadline"] || filterList["onlyPending"] ){
+	// Filters to display only rows where Duggas that have been submitted after deadline AND duggas that are pending and needs to be graded
 		if (filterList["passedDeadline"] && filterList["onlyPending"] ) {
 			var rowPending = false;
 			for (var colname in row) {
@@ -1353,6 +1355,7 @@ function rowFilter(row) {
 				return false;
 			}
 		}
+		// Filters to display only rows where duggas are pending and needs to be graded
 		else if (filterList["onlyPending"]) {
 			var rowPending = false;
 			for (var colname in row) {
@@ -1365,6 +1368,7 @@ function rowFilter(row) {
 				return false;
 			}
 		}
+		// Filters to display only rows where Duggas that have been submitted after deadline
 		else if (filterList["passedDeadline"]) {
 			var rowPending = false;
 			for (var colname in row) {
