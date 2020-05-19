@@ -161,9 +161,10 @@ function addSingleUser() {
 }
 
 function verifyUserInputForm(input) {
-	// Verify SSN using validateSSN function
 	var errorString = '';
-	if(verifyString = validateSSN(input[0])) {	// Returns null if there is no error
+
+	// Verify SSN using validateSSN function
+	if(verifyString = validateSSN(input[0])) {		// Returns null if there is no error
 		alert(verifyString);
 		return false;
 	}
@@ -180,21 +181,9 @@ function verifyUserInputForm(input) {
 		return false;
 	}
 
-	// Verify Email <= 256 characters, contains '@' and <= 80 characters before '@'
-	if (input[3].length > 256) {
-		alert('Input exceeded max length for Email (256)');
-		return false;
-	}
-	if (input[3] && input[3].indexOf('@') == -1) {
-		alert('Email input must contain "@"');
-		return false;
-	}
-	if (input[3] && input[3].indexOf('@') >= 80) {
-		alert('Email input too large to create a valid username\nMax allowed characters before "@" is 80');
-		return false;
-	}
-	if (input[3] && input[3].indexOf('@') == 0) {
-		alert('Email input must contain at least 1 character before "@" to create a username');
+	// Verify email
+	if(verifyString = validateEmail(input[3])) {	// Returns null if there is no error
+		alert(verifyString);
 		return false;
 	}
 
@@ -255,6 +244,31 @@ function validateSSN(ssn)
 	return null;	// The provided SSN is correct!
 }
 
+//---------------------------------------------------------------------------------------------------
+// validateEmail(email)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+function validateEmail(email)
+{
+	const length = email.length;
+	const delimiter = email.indexOf('@');	// Delimiter of the @ in an email
+
+	if((length-delimiter) > 255)			// Domain part of email can't exceed 255 charachters
+		return 'Email error! Domain part is too long (maximum 255)';
+
+	if(email.indexOf('..') > 0)				// Consecutive . are not allowed
+		return 'Email error! Consecutive "." are not allowed';
+
+	const formatTest = /[A-z0-9]{1,64}@[A-z0-9]{1,}[.]{1}[A-z0-9]{2,}/;		// Expected format
+	if(!formatTest.test(email))
+		return 'Email error! Format is invalid';
+
+	if(email.lastIndexOf('@')!==delimiter)	// Only one @ allowed to separate local and domain parts
+		return 'Email error! Only one "@" is allowed';
+
+	return null;	// The provided email is correct!
+}
+
 //-------------------------------------------------------------
 // updateErrorMessage()
 // Updates the error message shown inside the "Add user" window
@@ -262,12 +276,19 @@ function validateSSN(ssn)
 function updateErrorMessage()
 {
 	var errorMsg = '';
-	var testString = '';
+	var validationError = '';
 
-	if(testString = validateSSN(document.getElementById('addSsn').value))	// Check SSN for errors if input has been given
-		errorMsg += testString;
+	validationError = validateSSN(document.getElementById('addSsn').value);		// Check SSN for errors if input has been given
+	if(validationError && document.getElementById('addSsn').value.length > 0)
+		errorMsg += validationError;
 
-	document.getElementById('addErrorMessage').innerHTML = errorMsg + ' ';	// Updates label
+	if(errorMsg.length > 0) errorMsg += '\n';									// Adds a new line if previous errors has been found
+
+	validationError = validateEmail(document.getElementById('addEmail').value);	// Check email for errors if input has been given
+	if(validationError && document.getElementById('addEmail').value.length > 0)
+		errorMsg += validationError;
+
+	document.getElementById('addErrorMessage').innerHTML = errorMsg + ' ';		// Updates label
 }
 
 var inputVerified;
