@@ -183,6 +183,12 @@ function loadGeneralStats() {
 			'Hits: ' + data['stats']['topViewedDuggaHits']
 		]);
 
+		// Newest file
+        tableData.push([
+            'Newest file: ' + data['stats']['newestFile'],
+            'Created: ' + data['stats']['newestFileTimestamp']
+    	]);
+
 		$('#analytic-info').append(renderTable(tableData));
 		
 		// Disk usage
