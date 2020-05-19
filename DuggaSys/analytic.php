@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+// Show analytics if user is superuser, otherwise redirect them to courseed.
+if(!isset($_SESSION["superuser"]) || $_SESSION["superuser"] != 1) {
+	header('Location: courseed.php');
+}
+
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
@@ -55,10 +61,7 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 	$noup="NONE";
 	$loginvar="ANALYTIC";
 	setcookie("loginvar", $loginvar);
-	include '../Shared/navheader.php';
-	
-	// Show analytics if user is superuser.
-	if(isset($_SESSION["superuser"]) && $_SESSION["superuser"] == 1){
+	include '../Shared/navheader.php';	
 ?>
 <div class="header">
   <h1 id="pageTitle"></h1>
@@ -72,9 +75,5 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 	<!-- content END -->
 	
 <?php
-	}	else {
-		header('Location: courseed.php');
-	}
-
 	include '../Shared/navheader.php';
 ?>
