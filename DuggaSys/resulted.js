@@ -1337,16 +1337,45 @@ function rowFilter(row) {
 		return false;
 	if(!filterList["showStudents"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != 0)
 		return false;
-	if (filterList["onlyPending"]) {
-		var rowPending = false;
-		for (var colname in row) {
-			if (colname != "FnameLname" && row[colname]["needMarking"] == true) {
-				rowPending = true;
-				break;
+	if (filterList["passedDeadline"] || filterList["onlyPending"] ){
+		if (filterList["passedDeadline"] && filterList["onlyPending"] ) {
+			var rowPending = false;
+			for (var colname in row) {
+				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] > row[colname]["deadline"] ) {
+					rowPending = true;
+					break;
+				} else if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] < row[colname]["deadline"] ) {
+					rowPending = true;
+					break;
+				}
+			}
+			if (!rowPending) {
+				return false;
 			}
 		}
-		if (!rowPending) {
-			return false;
+		else if (filterList["onlyPending"]) {
+			var rowPending = false;
+			for (var colname in row) {
+				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] < row[colname]["deadline"]) {
+					rowPending = true;
+					break;
+				}
+			}
+			if (!rowPending) {
+				return false;
+			}
+		}
+		else if (filterList["passedDeadline"]) {
+			var rowPending = false;
+			for (var colname in row) {
+				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] > row[colname]["deadline"] ) {
+					rowPending = true;
+					break;
+				}
+			}
+			if (!rowPending) {
+				return false;
+			}
 		}
 	}
 	var teacherDropdown = document.getElementById("teacherDropdown").value;
