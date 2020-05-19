@@ -1789,7 +1789,7 @@ function validateCreateAnnouncementForm(){
   $("#announcementForm").submit(function(e){
     var announcementTitle = ($("#announcementTitle").val()).trim();
     var announcementMsg = ($("#announcementMsg").val()).trim();
-    var coursename = $("#cid").val();
+    var cid = $("#cid").val();
     var versid = $("#versid").val();
     var recipients = $("#recipient").val();
     if (announcementTitle == null || announcementTitle == '') {  
@@ -1798,7 +1798,7 @@ function validateCreateAnnouncementForm(){
     }else if (announcementMsg == null || announcementMsg == '') {  
         $("#announcementMsg").addClass('errorCreateAnnouncement');
         e.preventDefault();
-    }else if (coursename == null || coursename == '') {  
+    }else if (cid == null || cid == '') {  
         $("#cid").addClass('errorCreateAnnouncement');
         e.preventDefault();
     }else if (versid == null || versid == '') {  
