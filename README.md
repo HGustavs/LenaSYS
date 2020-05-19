@@ -28,7 +28,7 @@ What the installer will do is help you create a new user in the MySQL database a
 * In the first field you will need to provide the desired username to be used in the database.
 * A password for this user will be needed for identification when logging in to the database later. This will need to be filled in the next field.
 * Provide the name of the database you want to use. You can use an existing database here and choose later if you want to write over it. If you dont want to write over you will need to provide a unique name.
-* For hostname you will need to provide the name of the host the database is located on (standard is localhost).
+* For hostname you will need to provide the name of the host the database is located on (standard is localhost/127.0.0.1).
 
 ## 4. Database credentials for installer
 <img src="Shared/Documentation/Install/Install_2.png" width="512">
@@ -39,7 +39,8 @@ What the installer will do is help you create a new user in the MySQL database a
 <img src="Shared/Documentation/Install/Install_3.png" width="512">
 
 * The last step is to fill the three boxes. The upper box should be checked if a new database with the provided name should be created (this will only initialize a new database for the site and create empty tables to hold information).
-* If the created database should be filled with some test data (this includes some courses, users, etc.). This can be used to easily test the new installation of the system. The demo-page which can be included consist of all currently available duggas.
+* If the created database should be filled with some test data (this includes some courses, users, etc.). This can be used to easily test the new installation of the system. 
+* The demo-page which can be included consist of all currently available duggas.
 
 ## 6. Database overwrite
 <img src="Shared/Documentation/Install/Install_4.png" width="512">
