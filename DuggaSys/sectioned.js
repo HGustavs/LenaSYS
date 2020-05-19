@@ -1759,11 +1759,24 @@ function validateCreateAnnouncementForm(){
   $("#announcementForm").submit(function(e){
     var announcementTitle = ($("#announcementTitle").val()).trim();
     var announcementMsg = ($("#announcementMsg").val()).trim();
+    var cid = ($("#cid").val()).trim();
+    var versid = ($("#versid").val()).trim();
+    var recipients = ($("#recipient").val()).trim();
+
     if (announcementTitle == null || announcementTitle == '') {  
         $("#announcementTitle").addClass('errorCreateAnnouncement');
         e.preventDefault();
     }else if (announcementMsg == null || announcementMsg == '') {  
         $("#announcementMsg").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (cid == null || cid == '') {  
+        $("#cid").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (versid == null || versid == '') {  
+        $("#versid").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (recipients == null || recipients == '') {  
+        $("#recipients").addClass('errorCreateAnnouncement');
         e.preventDefault();
     }
     $(".errorCreateAnnouncement").css({
