@@ -6,13 +6,13 @@ pdoConnect();
 
 $css = array(
 	'style.css',
-	'jquery-ui-1.10.4.min.css',
+	'jquery-ui-1.12.1.min.css',
 	'analytics.css',
 );
 
 $js = array(
-	'jquery-ui-1.10.4.min.js'
 	'jquery-3.5.1.min.js',
+	'jquery-ui-1.12.1.min.js'
 );
 
 // refreshes session cookies, thereby extending the time before users sees the alert or get logged out
