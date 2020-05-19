@@ -537,7 +537,7 @@ header {
 }
 
 header td {
-  white-space: nowrap;
+   /* white-space: nowrap; */
 }
 
 #scoreElement {
@@ -1366,7 +1366,7 @@ input.submit-button:disabled {
   position: absolute;
   left: 0;
   top: 100%;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   z-index: 10;
   border-radius: 5px;
   background: #614875;
@@ -1622,7 +1622,7 @@ span.arrow {
   color:#fff;
   font-style: italic;
   font-size: 12px;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 .feedback-list caption {
@@ -1772,7 +1772,7 @@ span.arrow {
   line-height: 1;
   color: #f00;
   text-align: center;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   vertical-align: middle;
   background-color: #fff;
   border-radius: 10px;
@@ -2101,7 +2101,7 @@ span.arrow {
   min-width: 140px;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 .U, .Uc, .Uh, .G, .Gc, .Gh, .VG, .VGc, .VGh  {
@@ -2150,7 +2150,7 @@ span.arrow {
   line-height: 12px;
   color: #f00;
   text-align: center;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   vertical-align: middle;
   background-color: #fff;
   border-radius: 10px;
@@ -2267,7 +2267,7 @@ span.arrow {
 	color:#472;
 	padding-left:20px;
 	padding-right:10px;
-	white-space: nowrap;
+	/* white-space: nowrap; */
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
@@ -2387,7 +2387,7 @@ table {
 /* } */
 
 .nowrap {
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 .ellipsis {
