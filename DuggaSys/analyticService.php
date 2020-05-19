@@ -195,6 +195,17 @@ function generalStats($dbCon) {
 	FROM serviceLogEntries ORDER BY avgDuration DESC LIMIT 1;
 	')->fetchAll(PDO::FETCH_ASSOC);
 	
+	$newestFile = $GLOBALS['log_db']->query('
+       SELECT
+           username,
+           timestamp,
+           eventType,
+           description AS description,
+            substr(description,    instr(description, ",") + 1) AS filename
+       FROM userLogEntries
+       WHERE eventType = '.EventTypes::AddFile.'
+        ORDER BY timestamp DESC LIMIT 1;
+   ')->fetchAll(PDO::FETCH_ASSOC);
 
 	$generalStats = [];
 	$generalStats['stats']['loginFails'] = $LoginFail[0];
@@ -205,6 +216,9 @@ function generalStats($dbCon) {
 
 	$generalStats['stats']['topPage'] = $topPage[0]['refer'];
 	$generalStats['stats']['topPageHits'] = $topPage[0]['hits'];
+
+	$generalStats['stats']['newestFile'] = $newestFile[0]['filename'];
+    $generalStats['stats']['newestFileTimestamp'] = $newestFile[0]['timestamp'];
  
     $generalStats['stats']['topViewedDugga'] = $topViewedDugga[0]['quizid'];
 	$generalStats['stats']['topViewedDuggaHits'] = $topViewedDugga[0]['hits'];
