@@ -7,13 +7,19 @@ University of Skövde Code Viewer and Course Organization System
 
 Make sure you have a working install of apache2 and other needed packages. Look at the wiki page for this at [Configuring web server for LenaSYS installation](https://github.com/HGustavs/LenaSYS/wiki/Configuring-web-server-for-LenaSYS-installation) for further information.
 
-To install a fresh copy of LenaSYS on your system an installes has been created called 'install.php'.
+To install a fresh copy of LenaSYS on your system an installer has been created called 'install.php'.
 This installer is located in the LenaSYS directory.
-What the installer will do is to help you create a new user in the MySQL database and a new database and fill it with some test data (if desired) to help you get started. It will also guide you through the steps necessary to link LenaSYS to this newly created database and get it running.
+What the installer will do is help you create a new user in the MySQL database and a new database and fill it with some test data (if desired) to help you get started.
 
 **1. To start the installation, put the LenaSYS directory at the place you want the system located.**
 
 **2. When the the directory is in the right place, go to the installer from a web browser of your choosing.**
+
+**3. Set permissions for Apache.**
+
+<img src="Shared/Documentation/Install/Install_warning.png" width="512">
+
+* The first thing you will have to do is set permissions for Apache. Notice that this popup will only show for Linux and Mac (Darwin) based systems. No * permissions are by default needed for Windows.
 
 **3. Database credentials used by the system**
 
@@ -33,12 +39,14 @@ What the installer will do is to help you create a new user in the MySQL databas
 <img src="Shared/Documentation/Install/Install_3.png" width="512">
 
 * The last step is to fill the three boxes. The upper box should be checked if a new database with the provided name should be created (this will only initialize a new database for the site and create empty tables to hold information).
-* If the created database should be filled with some test data (this includes some courses, users, etc.). This can be used to easily test the new installation of the system.
+* If the created database should be filled with some test data (this includes some courses, users, etc.). This can be used to easily test the new installation of the system. The demo-page which can be included consist of all currently available duggas.
 
 ## 6. Database overwrite
 <img src="Shared/Documentation/Install/Install_4.png" width="512">
 
 * The box should be checked if you provided an existing database or/and user and wish to overwrite this. (**WARNING! THIS WILL DESTROY ALL PREVIOUS INFORMATION IN THIS DATABASE**).
+
+* There is also an option to run the installer as an transaction. If something goes wrong this can be unticked to find the exact SQL-query that's causing trouble.
 
 ## 7. Installation start
 <img src="Shared/Documentation/Install/Install_5.png" width="512">
