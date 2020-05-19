@@ -126,20 +126,9 @@ function Save() {
 
     localStorage.setItem("diagramChanges", JSON.stringify(changes));
 
-    diagramNumber++;
-    localStorage.setItem("diagramNumber", diagramNumber);
-    c = [];
-    d = [];
+    
     keyBinds = keyMap;
-    for (var i = 0; i < diagram.length; i++) {
-        c[i] = diagram[i].constructor.name;
-        c[i] = c[i].replace(/"/g,"");
-        d[i] = diagram[i].id;
-    }
-    var obj = {diagram:diagram, points:points, diagramNames:c, diagramID:d};
-    a = JSON.stringify(obj);
     localStorage.setItem("Settings", JSON.stringify(settings));
-    localStorage.setItem("diagramID", JSON.stringify(d));
     console.log("State is saved");
 }
 
@@ -149,6 +138,8 @@ function Save() {
 
 function SaveState() {
     Save();
+
+    return;
     localStorage.setItem("diagram" + diagramNumber, compressStringifiedObject(a));
     for (var key in localStorage) {
         if (key.indexOf("diagram") != -1) {
@@ -203,6 +194,8 @@ function loadDiagram() {
         changes = localDiagramChanges;
         buildDiagramFromChanges(changes)
     }
+
+    return;
 
     // Only retrieve settings if there are any saved
     if(JSON.parse(localStorage.getItem("Settings"))){
@@ -263,6 +256,7 @@ function loadDiagram() {
 //------------------------------------------------------------------------------
 
 function hashFunction() {
+    return;
     var diagramToString = "";
     var hash = 0;
     for (var i = 0; i < diagram.length; i++) {
@@ -296,6 +290,7 @@ function hashFunction() {
 //--------------------------------------------------------------------------------
 
 function hashCurrent() {
+    return;
     var hash = 0;
     var diagramToString = "";
     for (var i = 0; i < diagram.length; i++) {
@@ -321,38 +316,6 @@ function removeLocalStorage() {
     localStorage.setItem("diagramNumber", 0);
 }
 
-//----------------------------------------------------------------------
-// LoadFile: Loads JSON file into canvas
-//----------------------------------------------------------------------
-
-function LoadFile() {
-    var pp = JSON.parse(a);
-    b = pp;
-    //diagram fix
-    for (var i = 0; i < b.diagram.length; i++) {
-        if (b.diagramNames[i] == "Symbol") {
-            b.diagram[i] = Object.assign(new Symbol(b.diagram[i].symbolkind), b.diagram[i]);
-        } else if (b.diagramNames[i] == "Path") {
-            b.diagram[i] = Object.assign(new Path, b.diagram[i]);
-        }
-    }
-    diagram.length = b.diagram.length;
-    for (var i = 0; i < b.diagram.length; i++) {
-        diagram[i] = b.diagram[i];
-    }
-    // Points fix
-    for (var i = 0; i < b.points.length; i++) {
-        b.points[i] = Object.assign(new Path, b.points[i]);
-    }
-    points.length = b.points.length;
-    for (var i = 0; i< b.points.length; i++ ) {
-        points[i] = b.points[i];
-    }
-    console.log("State is loaded");
-    //Redrawn old state.
-    updateGraphics();
-}
-
 //-------------------------------------------------------------------------------
 // getUpload: this function adds eventlisteners to the buttons when html body is loaded
 //-------------------------------------------------------------------------------
@@ -369,12 +332,12 @@ function getUpload() {
         reader.readAsText(file, "UTF-8");
         reader.onload = function (evt) {
             a = evt.currentTarget.result;
-            // LoadFile();
         }
     }
 }
 
 function Load() {
+    return
     // Implement a JSON.parse() that will unmarshall a b c, so we can add
     // them to their respecive array so it can redraw the desired canvas.
     var dia = JSON.parse(decompressStringifiedObject(a));
@@ -397,7 +360,7 @@ function Load() {
     }
 
     console.log("State is loaded");
-    //Redrawn old state.
+
     updateGraphics();
 }
 
