@@ -2639,24 +2639,12 @@ function developerMode(event) {
         drawOrigo();
     } else {
         // Revert to previous state and hide developer features
-        targetMode = previousToolbarState;
+        toolbarState = previousToolbarState;
         hideCrosses();
     }
 
-//    switchMode();
     reWrite();
     updateGraphics();
-    console.log(developerModeActive + " = devmodeactive ");
-    console.log(toolbarState + " = toolbarstate ");
-    console.log(previousToolbarState + " = prevtoolbar");
-    console.log(targetMode + " = targetmode ");
-
-    /*
-    -!developermode är inte detsamam som if(dev)...dev = false
-    -Developermodeactive ändrar inte värde första gången man trycker
-    -Ändrade så switchmode() anropas när man trycker på developer mode
-    -Developer mode måste anropas efter refresh... men hur
-    */
 }
 
 //------------------------------------------------------------------------------
@@ -2670,13 +2658,13 @@ function setModeOnRefresh() {
     
     if(tempToolbarState != null) {
         targetMode = tempToolbarState;
-        developerModeActive = tempDevmodeState;
+        
     } else {
         targetMode = currentMode.er;
-        developerModeActive = false;  
     }
+
+    developerModeActive = (tempDevmodeState == "true"); // Converts from string to boolean
     switchMode();
-    //här
 }
 
 function setPaperSizeOnRefresh() {
@@ -3312,22 +3300,31 @@ function setOrientationIcon(element, check) {
 //----------------------------------------------------------------------
 
 function switchMode(devMode) {
+    // Close popup that appears when switching between UML/ER (when dev is off)
     closeModeSwitchDialog();
+    
+    // Toggle in/out from dev mode or switch to selected mode
     if(devMode == true) {
         developerMode(event);
     } else {
         toolbarState = targetMode;
+        if(!developerModeActive) hideCrosses();
     }
 
+    // Save current settings in case page is refreshed
     localStorage.setItem("toolbarState", toolbarState);
     localStorage.setItem("developerState", developerModeActive);
 
+    // Used to restore to previous mode after exiting developer mode
     if(toolbarState != currentMode.dev) {
         previousToolbarState = toolbarState;
     }
 
+    // Toggle menus + toolbar
     switchToolbar();
     editToolbarMenus();
+    reWrite();
+    updateGraphics();
 }
 
 //----------------------------------------------------------------------
