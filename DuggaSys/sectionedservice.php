@@ -187,7 +187,15 @@ if($gradesys=="UNK") $gradesys=0;
 
 					// Insert a new code example and update variables accordingly.
 					if($link==-1) {
-
+						$queryz2 = $pdo->prepare("SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1");
+						if(!$queryz2->execute()) {
+							$error=$queryz2->errorInfo();
+							$debug="Error reading entries".$error[2];
+						}
+						foreach($queryz2->fetchAll() as $row) {
+							$sname=$row['exampleid'] + 1;
+						}
+							$sname = $sectname . $sname;
 							$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
 
 							$query2->bindParam(':cid', $courseid);
