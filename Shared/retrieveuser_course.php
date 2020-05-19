@@ -30,10 +30,16 @@ if (isset($cid)) {
 		}
 		
 	}
-	foreach ($users_course as $key => $value) {
+	foreach ($finished_students as $key => $value) {
 		$student_teacher = $value['uid'];
 		if ($student_teacher == $remove_student) {
-			unset($users_course[$key]);
+			unset($finished_students[$key]);
+		}
+	}
+	foreach ($non_finished_students as $key => $value) {
+		$student_teacher = $value['uid'];
+		if ($student_teacher == $remove_student) {
+			unset($non_finished_students[$key]);
 		}
 	}
 	echo json_encode(["finished_students" => $finished_students, "non_finished_students" => $non_finished_students]);
