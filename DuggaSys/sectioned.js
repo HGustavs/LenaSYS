@@ -1287,8 +1287,39 @@ function drawPieChart() {
   str += "<text x='185' y='231' font-family='Arial' font-size='12px' fill='black'>N/A: (" + Math.round(notSubmittedPCT * 100) + "%)</text>";
 
   document.getElementById("pieChartSVG").innerHTML = str;
+  var passed = Math.round(passedPCT * 100);
+  var failed = Math.round(failedPCT * 100);
+  var pending = Math.round((notGradedPCT + 0.25) * 100);
+  courseCompletion(passed, failed, pending);
 }
 
+function courseCompletion(passed, failed, pending){
+  var cid = retdata['courseid'];
+  var coursevers = retdata['coursevers'];
+  var uid, uname = $("#userName").html();
+
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname:uname},
+    type: "GET",
+    success: function(data){
+      var parsed_data = JSON.parse(data);
+      uid = parsed_data.uid;
+      $.ajax({
+        url: "../Shared/retrieveuser_course.php",
+        data: {uid:uid, cid:cid, vers:coursevers, passed:passed, failed:failed, pending:pending},
+        type: "POST",
+        success: function(data){
+        }
+      });
+    },
+    error:function(){
+      console.log("*******Error*******");
+    }
+  });
+
+
+}
 //----------------------------------------------------------------------------------
 // fixDeadlineInfoBoxesText: Makes an on-screen table containing deadlines
 //----------------------------------------------------------------------------------
