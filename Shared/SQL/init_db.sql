@@ -490,16 +490,19 @@ CREATE TABLE `groups` (
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 CREATE TABLE announcement(
     announcementid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    secondannouncementid INT UNSIGNED NOT NULL,
     uid INT UNSIGNED NOT NULL,
+    recipient INT UNSIGNED NOT NULL,
     cid INT UNSIGNED NOT NULL,
-    versid VARCHAR(8),
+    versid VARCHAR(8) NOT NULL,
     title TINYTEXT NOT NULL,
     message TEXT NOT NULL,
     announceTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    read_status INT(1) NOT NULL,
+    read_status TINYINT(1) NOT NULL DEFAULT "1",
     edited VARCHAR(3) NOT NULL DEFAULT "NO",
-    PRIMARY KEY(announcementid, uid, cid),
+    PRIMARY KEY(announcementid, secondannouncementid, uid, cid, versid),
     FOREIGN KEY (uid) REFERENCES user (uid),
+    FOREIGN KEY (recipient) REFERENCES user (uid),
     FOREIGN KEY (cid) REFERENCES course (cid)
     
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;

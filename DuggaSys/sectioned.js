@@ -1670,7 +1670,6 @@ $(window).load(function () {
   });
 
   retrieveAnnouncementAuthor();
-  retrieveCourseProfile();
   retrieveAnnouncementsCards();
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
@@ -1691,6 +1690,7 @@ function retrieveAnnouncementAuthor(){
       if($("#userid").length > 0) {
           var parsed_data = JSON.parse(this.response);
           document.getElementById("userid").value = parsed_data.uid;
+          retrieveCourseProfile(parsed_data.uid);
 
       }
     }
@@ -1700,14 +1700,62 @@ function retrieveAnnouncementAuthor(){
 
 }
 //retrieve course profile
-function retrieveCourseProfile(){
-  var currentLocation = $(location).attr('href');
-  var url = new URL(currentLocation);
-  var cid = url.searchParams.get("courseid");
-  var versid = url.searchParams.get("coursevers");
-  $("#courseid").val(cid);
-  $("#versid").val(versid);
+function retrieveCourseProfile(userid){
+  var cid = '';
+  var versid = '';
+  $("#cid").change(function(){
+    cid = $("#cid").val();
+    if (($("#cid").val()) != '') {
+      $("#versid").prop("disabled", false);
+      $.ajax({
+        url: "../Shared/retrievevers.php",
+        data: {cid: cid},
+        type: "POST",
+        success: function(data){
+          var item = JSON.parse(data);
+          $("#versid").find('*').not(':first').remove();
+          $.each(item.versids, function(index,item) {        
+              $("#versid").append("<option value="+item.versid+">"+item.versid+"</option>");
+          });
+          
+        },
+        error:function(){
+          console.log("*******Error*******");
+        }
+      });
+
+    }else{
+      $("#versid").prop("disabled", true);
+    }
+
+  });
+
+  $("#versid").change(function(){
+    versid = $("#versid").val();
+    if (($("#versid").val()) != '') { 
+      $("#recipient").prop("disabled", false);
+      $.ajax({
+        url: "../Shared/retrieveuser_course.php",
+        data: {cid: cid, versid:versid, remove_student:userid},
+        type: "POST",
+        success: function(data){
+          var item = JSON.parse(data);
+          $("#recipient").find('*').not(':first').remove();
+          $.each(item.users_course, function(index,item) {        
+            $("#recipient").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+          });
+
+        },
+        error:function(){
+          console.log("*******Error user_course*******");
+        }
+      });
+    }else{
+      $("#recipient").prop("disabled", true);
+    }
+  });
 }
+
 //validate create announcement form
 function validateCreateAnnouncementForm(){
   $("#announcementForm").submit(function(e){
@@ -1731,53 +1779,58 @@ function retrieveAnnouncementsCards(){
   var url = new URL(currentLocation);
   var cid = url.searchParams.get("courseid");
   var versid = url.searchParams.get("coursevers");
+  var uname = $("#userName").html();
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname:uname},
+    type: "GET",
+    success: function(data){
+      var parsed_data = JSON.parse(data);
+      var uid = parsed_data.uid;
+     var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var parsed_data = JSON.parse(this.response);
+          document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+          var unread_announcements = parsed_data.nRows;
+          if(unread_announcements > 0){
+            $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
+            $("#announcementnotificationcount").html(parsed_data.nRows);
+          }
+          accessAdminAction();
+          readLessOrMore();
+          showLessOrMoreAnnouncements();
+          scrollToTheAnnnouncementForm();
+          $(".deleteBtn").click(function(){
+            sessionStorage.setItem('closeUpdateForm', true);
 
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      var parsed_data = JSON.parse(this.response);
-      document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
-      var unread_announcements = parsed_data.nRows;
-      if(unread_announcements > 0){
-        $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
-        $("#announcementnotificationcount").html(parsed_data.nRows);
-      }
-      accessAdminAction();
-      readLessOrMore();
-      showLessOrMoreAnnouncements();
-      scrollToTheAnnnouncementForm();
-      $(".deleteBtn").click(function(){
-        sessionStorage.setItem('closeUpdateForm', true);
+          });
 
-      });
-
+        }
+      };
+      xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid+"&recipient="+uid,true);
+      xmlhttp.send();
     }
-  };
-  xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid,true);
-  xmlhttp.send();
+  });
 }
 //update anouncement form
-function updateannouncementForm(updateannouncementid, tempFuction){
+function updateannouncementForm(updateannouncementid, cid, versid, tempFuction){
   var xmlhttp = new XMLHttpRequest();
+  
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-        tempFuction(this, updateannouncementid);
+        tempFuction(this, updateannouncementid, cid, versid);
     }
   };
   xmlhttp.open("GET","../Shared/updateAnnouncement.php?updateannouncementid="+updateannouncementid,true);
   xmlhttp.send();
 
 }
-function handleResponse(xhttp, updateannouncementid){
-  var parser, xmlDoc, responseTitle, responseMessage, title, message;
-  parser=new DOMParser();
-  xmlDoc=parser.parseFromString(xhttp.responseText,"text/xml");
-  responseTitle = xmlDoc.getElementById("responseTitle");
-  responseMessage = xmlDoc.getElementById("responseMessage");
-
-  title = responseTitle.childNodes[0].nodeValue;
-  message = responseMessage.childNodes[0].nodeValue;
-
+function handleResponse(xhttp, updateannouncementid, cid, versid){
+  var title, message;
+  var parsed_data = JSON.parse(xhttp.response);
+  title = parsed_data.title;
+  message = parsed_data.message;
   if($("#announcementForm").is(":hidden")){
     $("#announcementForm").show();
   }
@@ -1787,7 +1840,13 @@ function handleResponse(xhttp, updateannouncementid){
   $("#announcementMsg").html(message);
   $(".createBtn").html("Update");
   $(".createBtn").attr("name", "updateBtn");
-  $("#announcementForm .announcementFormcontainer hr").after('<input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'">');
+  $("#courseidAndVersid").remove();
+  $("#recipientBox").remove();
+
+  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'"></div>');
+  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="cid" id="cid" value="'+cid+'"></div>');
+  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="versid" id="versid" value="'+versid+'"></div>');
+
 
 }
 
@@ -1922,13 +1981,24 @@ function showLessOrMoreAnnouncements(){
 
 }
 function updateReadStatus(announcementid, cid, versid){
+  var uname = $("#userName").html();
   $.ajax({
-    url: "../Shared/updateviewedAnnouncementCards.php",
-    data: {announcementid : announcementid, cid : cid, versid : versid},
-    type: "POST",
+    url: "../Shared/retrieveUserid.php",
+    data: {uname: uname},
+    type: "GET",
     success: function(data){
+      var parsed_data = JSON.parse(data);
+      var uid = parsed_data.uid;
+      $.ajax({
+        url: "../Shared/updateviewedAnnouncementCards.php",
+        data: {announcementid : announcementid, uid : uid, cid : cid, versid : versid},
+        type: "POST",
+        success: function(data){
+        }
+      });
     }
   });
+
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {

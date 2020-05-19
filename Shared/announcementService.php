@@ -7,26 +7,31 @@ session_start();
 
 
 	
-if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && isset($_POST['createBtn'])){
-	$uid = $_POST['uid'];
-	$cid = $_POST['cid'];
-	$versid = $_POST['versid'];
-	$title = $_POST['announcementTitle'];
-	$message = $_POST['announcementMsg'];
-	$read_status = 1;
+if(isset($_POST['secondannouncementid']) && isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && isset($_POST['recipients']) && isset($_POST['createBtn'])){
+	array_push($_POST['recipients'], $_POST['uid']);
+	foreach ($_POST['recipients'] as $recipient) {
+		$secondannouncementid = $_POST['secondannouncementid'];
+		$uid = $_POST['uid'];
+		$cid = $_POST['cid'];
+		$versid = $_POST['versid'];
+		$title = $_POST['announcementTitle'];
+		$message = $_POST['announcementMsg'];
 
-	$query = $pdo->prepare("INSERT INTO announcement(uid, cid, versid, title, message, read_status) VALUES (:uid, :cid, :versid, :title, :message, :read_status);");
+		$query = $pdo->prepare("INSERT INTO announcement(secondannouncementid, uid, cid, versid, title, message, recipient) VALUES (:secondannouncementid, :uid, :cid, :versid, :title, :message, :recipient);");
 
-	$query->bindParam(':uid', $uid);
-	$query->bindParam(':cid', $cid);
-	$query->bindParam(':versid', $versid);
-	$query->bindParam(':title', $title);
-	$query->bindParam(':message', $message);
-	$query->bindParam(':read_status', $read_status);
+		$query->bindParam(':secondannouncementid', $secondannouncementid);
+		$query->bindParam(':uid', $uid);
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':versid', $versid);
+		$query->bindParam(':title', $title);
+		$query->bindParam(':message', $message);
+		$query->bindParam(':recipient', $recipient);
 
-	$query->execute(); 
+		$query->execute(); 
 
+	}
 	$_SESSION["announcementcreated"] = "New announcement is created!";
+		
 
 }else if(isset($_GET['deleteannouncementid'])){
 	$deleteannouncementid = $_GET['deleteannouncementid'];
@@ -34,10 +39,10 @@ if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && is
 	$cid = $_GET['courseid'];
 	$versid = $_GET['coursevers'];
 
-	$delete = "DELETE FROM announcement WHERE announcementid=:announcementid AND uid=:uid AND cid=:cid AND versid=:versid";
+	$delete = "DELETE FROM announcement WHERE secondannouncementid=:secondannouncementid AND uid=:uid AND cid=:cid AND versid=:versid";
 	
 	$stmt = $pdo->prepare($delete);
-	$stmt->bindParam(':announcementid', $deleteannouncementid);
+	$stmt->bindParam(':secondannouncementid', $deleteannouncementid);
 	$stmt->bindParam(':uid', $uid);   
 	$stmt->bindParam(':cid', $cid);   
 	$stmt->bindParam(':versid', $versid);   
@@ -54,9 +59,9 @@ if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && is
 	$read_status = 1;
 	$edited = "YES";
 
-	$update = 'UPDATE announcement SET title=:title, message=:message, read_status=:read_status, edited=:edited, announceTime=now() WHERE announcementid=:announcementid AND uid=:uid AND cid=:cid AND versid=:versid';
+	$update = 'UPDATE announcement SET title=:title, message=:message, read_status=:read_status, edited=:edited, announceTime=now() WHERE secondannouncementid=:secondannouncementid AND uid=:uid AND cid=:cid AND versid=:versid';
 	$stmt = $pdo->prepare($update);
-	$stmt->bindParam(':announcementid', $updateannouncementid);   
+	$stmt->bindParam(':secondannouncementid', $updateannouncementid);   
 	$stmt->bindParam(':uid', $uid);
 	$stmt->bindParam(':cid', $cid);
 	$stmt->bindParam(':versid', $versid);
@@ -68,7 +73,6 @@ if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && is
 	$stmt->execute();
 	$_SESSION["announcementupdated"] = "Announcement is updated!";
 }
-header("Location: ../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."");
-
+header('Location: ' . $_SERVER['HTTP_REFERER']);
 
 ?>
