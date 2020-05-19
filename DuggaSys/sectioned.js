@@ -1852,6 +1852,23 @@ function validateCreateAnnouncementForm(){
     });   
   });
 }
+function validateUpdateAnnouncementForm(){
+  $("#announcementForm").submit(function(e){
+    var announcementTitle = ($("#announcementTitle").val()).trim();
+    var announcementMsg = ($("#announcementMsg").val()).trim();
+
+    if (announcementTitle == null || announcementTitle == '') {  
+      $("#announcementTitle").addClass('errorCreateAnnouncement');
+      e.preventDefault();
+    }else if (announcementMsg == null || announcementMsg == '') {  
+      $("#announcementMsg").addClass('errorCreateAnnouncement');
+      e.preventDefault();
+    }
+    $(".errorCreateAnnouncement").css({
+      'border':'1px solid red'
+    });  
+  });
+}
 //retrive announcements
 function retrieveAnnouncementsCards(){
   var currentLocation = $(location).attr('href');
@@ -1919,6 +1936,7 @@ function handleResponse(xhttp, updateannouncementid, cid, versid){
   $("#announcementMsg").html(message);
   $(".createBtn").html("Update");
   $(".createBtn").attr("name", "updateBtn");
+  $(".createBtn").attr("onclick", "validateUpdateAnnouncementForm()");
   $("#courseidAndVersid").remove();
   $("#recipientBox").remove();
 
@@ -2103,7 +2121,7 @@ function selectallRecipients(){
     if(this.checked) {
       $("#nonfinishedStudents option").prop("selected", true);
       $("#nonfinishedStudents option").attr("selected","selected");
-      $(".selectFinished input, .selectFinished input").prop("checked", false);
+      $(".selectAll input, .selectFinished input").prop("checked", false);
       $("#finishedStudents option").attr("selected", false);
     }else{
       $("#recipient option").attr("selected", false);
