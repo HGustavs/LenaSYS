@@ -2024,9 +2024,30 @@ function selectallRecipients(){
       if(this.checked) {
         $("#recipient option").not(":first").prop("selected", true);
         $("#recipient option").not(":first").attr("selected","selected");
+        $(".selectFinished input, .selectNonFinished input").prop("checked", false);
       }else{
         $("#recipient option").attr("selected", false);
       }
+  });
+   $(".selectFinished input").change(function() {
+    if(this.checked) {
+      $("#finishedStudents option").prop("selected", true);
+      $("#finishedStudents option").attr("selected","selected");
+      $(".selectAll input, .selectNonFinished input").prop("checked", false);
+      $("#nonfinishedStudents option").attr("selected", false);
+    }else{
+      $("#recipient option").attr("selected", false);
+    }
+  });
+   $(".selectNonFinished input").change(function() {
+    if(this.checked) {
+      $("#nonfinishedStudents option").prop("selected", true);
+      $("#nonfinishedStudents option").attr("selected","selected");
+      $(".selectFinished input, .selectFinished input").prop("checked", false);
+      $("#finishedStudents option").attr("selected", false);
+    }else{
+      $("#recipient option").attr("selected", false);
+    }
   });
 }
 // Checks if <a> link is external
