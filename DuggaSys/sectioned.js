@@ -1771,6 +1771,7 @@ function getStudents(cid, userid){
       data: {cid: cid, versid:versid, remove_student:userid},
       type: "POST",
       success: function(data){
+        console.log("user_course data: " + data);
         var item = JSON.parse(data);
         $("#recipient").find('*').not(':first').remove();
         $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'></optgroup>");
