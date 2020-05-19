@@ -144,7 +144,7 @@
 
 			<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
 				<input id='addElement'  type='button' value='+' style="top:-493px" class='submit-button-newitem' title='New Item' >
-				<ol class='fab-btn-list2' style='margin: 0; padding: 0; display: none;'  reversed id='fabBtnList2'>
+				<ol class='fab-btn-list2' style='display: none;'  reversed id='fabBtnList2'>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
