@@ -537,7 +537,7 @@ function buildDiagramFromChanges() {
                     setNestedPropertyValue(built[type], key, value.data);
                     break;
                 case '-':
-                    built[type].splice(key, 1);
+                    deleteNestedProperty(built[type], key);
                     break; 
             }
         }
@@ -573,6 +573,21 @@ function setNestedPropertyValue(object, property, value) {
             object[topLevelProperty] = {};
         }
         setNestedPropertyValue(object[topLevelProperty], remainingProperties, value);
+    }
+}
+
+function deleteNestedProperty(object, property) {
+    if(property.indexOf(".") === -1) {
+        if(Array.isArray(object)) {
+            object.splice(property, 1);
+        } else if(isObject(object)) {
+            delete object[property];
+        }
+    } else {
+        const properties = property.split(".");
+        const topLevelProperty = properties.shift();
+        const remainingProperties = properties.join(".");
+        deleteNestedProperty(object[topLevelProperty], remainingProperties);
     }
 }
 
