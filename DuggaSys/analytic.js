@@ -272,6 +272,7 @@ function loadPasswordGuessing() {
 				data[i].userName,
 				data[i].remoteAddress,
 				data[i].userAgent,
+				data[i].guestID,
 				data[i].tries
 			]);
 		}
