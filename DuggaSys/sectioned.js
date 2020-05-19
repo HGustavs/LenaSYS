@@ -1740,10 +1740,16 @@ function getStudents(cid, userid){
       data: {cid: cid, versid:versid, remove_student:userid},
       type: "POST",
       success: function(data){
+        console.log("user_course data: " + data);
         var item = JSON.parse(data);
         $("#recipient").find('*').not(':first').remove();
-        $.each(item.users_course, function(index,item) {        
-          $("#recipient").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'></optgroup>");
+        $.each(item.finished_students, function(index,item) {        
+          $("#finishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+        });
+        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'></optgroup>");
+        $.each(item.non_finished_students, function(index,item) {        
+          $("#nonfinishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
         });
         $(".selectAll input").attr("disabled", false);
         selectallRecipients();
