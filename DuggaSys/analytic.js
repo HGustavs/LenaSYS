@@ -775,6 +775,7 @@ function loadUserInformation(){
 		.append('<option value="showDugga" selected>showDugga</option>')
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="events">events</option>')
+		.append('<option value="fileEvents">fileEvents</option>')
         .appendTo($('#analytic-info'));
  
  
@@ -937,19 +938,55 @@ function loadUserInformation(){
 				eventNumber = row.eventType;
 				event = eventNames[eventNumber];
 				if(row.eventType != "") {
-					users[user].push([
-						row.uid,
-						row.username,
-						row.eventType,
-						row.description,
-						row.timestamp,
-						event
-					]);
-					updateState(users);		
+					if(event != 'AddFile' && event != 'EditFile'){
+						users[user].push([
+							row.uid,
+							row.username,
+							row.eventType,
+							row.description,
+							row.timestamp,
+							event
+						]);
+						updateState(users);	
+					}
 				}
             });
 		});
-    } 
+	}
+	
+	function updatefileEvents(users){
+		var event;
+		var users = {};
+		var user;
+		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
+		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
+		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
+		'EditFile','MarkedDugga'];
+
+        loadAnalytics("userLogInformation", function(data) {
+            $.each(data, function(i, row) {
+                user = row.username;
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "EventDescription"]];
+				}
+				eventNumber = row.eventType;
+				event = eventNames[eventNumber];
+				if(row.eventType != "") {
+					if(event == 'AddFile' || event == 'EditFile'){
+						users[user].push([
+							row.uid,
+							row.username,
+							row.eventType,
+							row.description,
+							row.timestamp,
+							event
+						]);
+						updateState(users);	
+					}
+				}
+            });
+		});
+	}
    
     function updateState(users){
         $('#analytic-info > select.file-select').remove();
@@ -1002,8 +1039,7 @@ function loadUserInformation(){
         $('#analytic-info').append(userSelect);
 		userSelect.change();
 		pageSelect();
-	}
-	
+	}	
 	function pageSelect(){
 		if(firstLoad === true){
 			updateSectionedInformation();
@@ -1025,6 +1061,9 @@ function loadUserInformation(){
 					break;
 				case "events":
 					updateUserLogInformation();
+					break;
+				case "fileEvents":
+					updatefileEvents();
 					break;
             }
         });
