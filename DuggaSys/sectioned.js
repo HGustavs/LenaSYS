@@ -1317,8 +1317,39 @@ function drawPieChart() {
   str += "<text x='185' y='231' font-family='Arial' font-size='12px' fill='black'>N/A: (" + Math.round(notSubmittedPCT * 100) + "%)</text>";
 
   document.getElementById("pieChartSVG").innerHTML = str;
+  var passed = Math.round(passedPCT * 100);
+  var failed = Math.round(failedPCT * 100);
+  var pending = Math.round((notGradedPCT + 0.25) * 100);
+  courseCompletion(passed, failed, pending);
 }
 
+function courseCompletion(passed, failed, pending){
+  var cid = retdata['courseid'];
+  var coursevers = retdata['coursevers'];
+  var uid, uname = $("#userName").html();
+
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname:uname},
+    type: "GET",
+    success: function(data){
+      var parsed_data = JSON.parse(data);
+      uid = parsed_data.uid;
+      $.ajax({
+        url: "../Shared/retrieveuser_course.php",
+        data: {uid:uid, cid:cid, vers:coursevers, passed:passed, failed:failed, pending:pending},
+        type: "POST",
+        success: function(data){
+        }
+      });
+    },
+    error:function(){
+      console.log("*******Error*******");
+    }
+  });
+
+
+}
 //----------------------------------------------------------------------------------
 // fixDeadlineInfoBoxesText: Makes an on-screen table containing deadlines
 //----------------------------------------------------------------------------------
@@ -1708,9 +1739,10 @@ function retrieveAnnouncementAuthor(){
     if (this.readyState == 4 && this.status == 200) {
       if($("#userid").length > 0) {
           var parsed_data = JSON.parse(this.response);
-          document.getElementById("userid").value = parsed_data.uid;
-          retrieveCourseProfile(parsed_data.uid);
-
+          if(($("#announcementForm").length) > 0){
+            document.getElementById("userid").value = parsed_data.uid;
+            retrieveCourseProfile(parsed_data.uid);
+          }
       }
     }
   };
@@ -1718,9 +1750,10 @@ function retrieveAnnouncementAuthor(){
   xmlhttp.send();
 
 }
+
 //retrieve course profile
 function retrieveCourseProfile(userid){
-  $(".selectAll input").attr("disabled", true);
+  $(".selectLabels label input").attr("disabled", true);
   var cid = '';
   $("#cid").change(function(){
     cid = $("#cid").val();
@@ -1770,10 +1803,15 @@ function getStudents(cid, userid){
       success: function(data){
         var item = JSON.parse(data);
         $("#recipient").find('*').not(':first').remove();
-        $.each(item.users_course, function(index,item) {        
-          $("#recipient").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'></optgroup>");
+        $.each(item.finished_students, function(index,item) {        
+          $("#finishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
         });
-        $(".selectAll input").attr("disabled", false);
+        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'></optgroup>");
+        $.each(item.non_finished_students, function(index,item) {        
+          $("#nonfinishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+        });
+        $(".selectLabels label input").attr("disabled", false);
         selectallRecipients();
       },
       error:function(){
@@ -1784,6 +1822,7 @@ function getStudents(cid, userid){
     $("#recipient").prop("disabled", true);
   }
 }
+
 //validate create announcement form
 function validateCreateAnnouncementForm(){
   $("#announcementForm").submit(function(e){
@@ -2045,9 +2084,30 @@ function selectallRecipients(){
       if(this.checked) {
         $("#recipient option").not(":first").prop("selected", true);
         $("#recipient option").not(":first").attr("selected","selected");
+        $(".selectFinished input, .selectNonFinished input").prop("checked", false);
       }else{
         $("#recipient option").attr("selected", false);
       }
+  });
+   $(".selectFinished input").change(function() {
+    if(this.checked) {
+      $("#finishedStudents option").prop("selected", true);
+      $("#finishedStudents option").attr("selected","selected");
+      $(".selectAll input, .selectNonFinished input").prop("checked", false);
+      $("#nonfinishedStudents option").attr("selected", false);
+    }else{
+      $("#recipient option").attr("selected", false);
+    }
+  });
+   $(".selectNonFinished input").change(function() {
+    if(this.checked) {
+      $("#nonfinishedStudents option").prop("selected", true);
+      $("#nonfinishedStudents option").attr("selected","selected");
+      $(".selectFinished input, .selectFinished input").prop("checked", false);
+      $("#finishedStudents option").attr("selected", false);
+    }else{
+      $("#recipient option").attr("selected", false);
+    }
   });
 }
 // Checks if <a> link is external
@@ -2066,7 +2126,6 @@ function replaceDefualtLink(){
     }
   }
 }
-
 
 // Adds classes to <a> element depending on if they are external / internal
 function addClasses() {

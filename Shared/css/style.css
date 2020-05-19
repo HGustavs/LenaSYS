@@ -649,10 +649,10 @@ p {
 }
 
 /*End of show all the announcments*/
-.selectAll{
+.selectLabels label{
   float: right;
 }
-.selectAll input{
+.selectLabels label input{
   position: relative;
   top: 2px;
 }
