@@ -364,6 +364,23 @@ function Load() {
     updateGraphics();
 }
 
+function overwriteDiagram(newDiagram) {
+    for(let i = 0; i < newDiagram.length; i++) {
+        const object = newDiagram[i];
+        if(object.kind === kind.symbol) {
+            diagram[i] = Object.assign(new Symbol(object.symbolkind), JSON.parse(JSON.stringify(object)));
+        } else if(object.kind === kind.path) {
+            diagram[i] = Object.assign(new Path(), JSON.parse(JSON.stringify(object)));
+        }
+    }
+}
+
+function overwritePoints(newPoints) {
+    for(let i = 0; i < newPoints.length; i++) {
+        points[i] = Object.assign({}, newPoints[i]);
+    }
+}
+
 //----------------------------------------------------------------------
 // ExportSVG: export canvas to SVG file
 //----------------------------------------------------------------------
