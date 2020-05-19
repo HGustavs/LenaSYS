@@ -171,7 +171,7 @@
 					echo "<td id='testSearchContainer' class='navButt'>";
 
 					if ($requestedService == "fileed.php")
-						echo   "<form autocomplete='off'><input id='searchinput' readonly type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search' placeholder='Search..' onkeyup='searchterm=this.value;sortAndFilterTogether();myTable.reRender();' style=margin-top:13px /></form>";
+						echo   "<form autocomplete='off'><input id='searchinput' readonly type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search' placeholder='Search..' onkeyup='searchterm=this.value;sortAndFilterTogether();myTable.reRender();'/></form>";
 					else
 						echo   "<form autocomplete='off' display:'none'><input id='searchinput' readonly onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/></form>";
 
