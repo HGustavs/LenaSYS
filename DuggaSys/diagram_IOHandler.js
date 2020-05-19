@@ -9,7 +9,7 @@ var c;
 var b;
 var ac = [];
 const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, diagramNames:null, diagramID:null, text: null, isSelected: null}]);
-let changes = [];
+let diagramChanges = [];
 
 //--------------------------------------------------------------------------------------------------
 // downloadmode: download/load/export canvas (not fully implemented, see row 373-378 in diagram.php)
@@ -111,20 +111,21 @@ function loadStoredFolders(f) {
 //---------------------------------------------
 
 function Save() {
-    const localStorageDiagram = localStorage.getItem("diagram" + diagramNumber);
+    const builtDiagram = buildDiagramFromChanges();
+
+    const objectChanges = {
+        diagram: getObjectChanges(builtDiagram.diagram, diagram),
+        points: getObjectChanges(builtDiagram.points, points)
+    };
     
-    if (localStorageDiagram != "" && localStorageDiagram != null) {
-        const diagramObject = JSON.parse(decompressStringifiedObject(localStorage.getItem("diagram" + diagramNumber)));
-        const diagramChanges = getObjectChanges(diagramObject.diagram, diagram);
-        const pointsChanges = getObjectChanges(diagramObject.points, points);
-        changes.push({
-            "id": changes.length + 1,
-            "diagram": diagramChanges,
-            "points": pointsChanges
+    if(diagramChanges !== null) {
+        diagramChanges.push({
+            "id": diagramChanges.length + 1,
+            "diagram": objectChanges.diagram,
+            "points": objectChanges.points
         });
     }
-
-    localStorage.setItem("diagramChanges", JSON.stringify(changes));
+    localStorage.setItem("diagramChanges", JSON.stringify(diagramChanges));
 
     
     keyBinds = keyMap;
@@ -188,11 +189,14 @@ function loadKeyBinds(){
 //---------------------------------------------
 
 function loadDiagram() {
-    let localDiagramChanges = localStorage.getItem("diagramChanges");
-    if(localDiagramChanges !== null) {
-        localDiagramChanges = JSON.parse(localDiagramChanges);
-        changes = localDiagramChanges;
-        buildDiagramFromChanges(changes)
+    const localStorageDiagramChanges = localStorage.getItem("diagramChanges");
+
+    if(localStorageDiagramChanges !== null) {
+        diagramChanges = JSON.parse(localStorageDiagramChanges);
+        const built = buildDiagramFromChanges(diagramChanges);
+
+        overwriteDiagram(built.diagram);
+        overwritePoints(built.points);
     }
 
     return;
@@ -509,6 +513,8 @@ function buildDiagramFromChanges() {
         points: []
     }
 
+    if(diagramChanges === null || typeof diagramChanges === "undefined") return built;
+
     const iterateChange = (change, type = "diagram") => {
         for(const [key, value] of Object.entries(change[type])) {
             switch(value.type) {
@@ -523,23 +529,12 @@ function buildDiagramFromChanges() {
         }
     };
 
-    for(const change of changes) {
+    for(const change of diagramChanges) {
         iterateChange(change, "diagram");
         iterateChange(change, "points");
     }
 
-    for(let i = 0; i < built.diagram.length; i++) {
-        const object = built.diagram[i];
-        if(object.kind === kind.symbol) {
-            diagram[i] = Object.assign(new Symbol(object.symbolkind), object);
-        } else if(object.kind === kind.path) {
-            diagram[i] = Object.assign(new Path(), object);
-        }
-    }
-
-    for(let i = 0; i < built.points.length; i++) {
-        points[i] = built.points[i];
-    }
+    return built;
 }
 
 function setNestedPropertyValue(object, property, value) {
