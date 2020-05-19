@@ -5926,6 +5926,7 @@ function activeLocalStorage(){
 // fixWriteToLayer: Use for fixing issue related to copy viewing layer
 //----------------------------------------------------------------------------------------
 function fixWriteToLayer(){
+
     const update = document.getElementById("layerActive");
     const spans = update.getElementsByTagName('span')
     const active = localStorage.getItem("writeToActiveLayers");
@@ -5981,6 +5982,7 @@ function setlayer(object){
     toggleBackgroundLayer(toggleview, true)
     writeToLayer = fixID;                                   // Sets value to draw elements to
     let fixColor = fixID.replace('Layer_','');
+
     settings.properties.strokeColor = colorArray[fixColor-1]; // Sets object border-color depending on layer
 }
 //----------------------------------------------------------------------------------------
@@ -6014,7 +6016,9 @@ function getcorrectlayer(){
 // deleteLayerView: Deletes selected elements in view layers drop-down menu
 //----------------------------------------------------------------------------------------
 function deleteLayerView(){
-    const parentNode = document.getElementById("viewLayer");
+
+    let parentNode = document.getElementById("viewLayer");
+    let spans = parentNode.getElementsByTagName('span');
     let deleteArray = []
 
     //Loops through Diagram and adds any object that exist with a layer that are targeted for deletion 
@@ -6038,6 +6042,11 @@ function deleteLayerView(){
     fixviewLayer();
     fixActiveLayer()
     SaveState()
+    if(spans.length < 1){
+        createLayer();
+        toggleActiveBackgroundLayer(document.getElementById("Layer_1_Active"));
+        setlayer(spans[0]);
+    }
 }
 //----------------------------------------------------------------------------------------
 // deleteLayerView: Deletes selected elements in layerActive drop-down menu
@@ -6047,26 +6056,31 @@ function deleteLayerActive(){
     const spans = parentNode.getElementsByTagName('span');
     let saveIndex;                                  // used for deleteing corresponding layer in view layer drop-down
     let deleteArray = []
-    for(let i = 0; i < spans.length;i++){
-        if(spans[i].classList.contains("isActive")){
-            let deleteLayer = spans[i].parentNode;
-            saveIndex = spans[i].id.replace('_Active','');
-            deleteLayer.parentNode.removeChild(deleteLayer);
+    if(spans.length > 1){
+        for(let i = 0; i < spans.length;i++){
+            if(spans[i].classList.contains("isActive")){
+                let deleteLayer = spans[i].parentNode;
+                saveIndex = spans[i].id.replace('_Active','');
+                deleteLayer.parentNode.removeChild(deleteLayer);
+            }
         }
-    }
-    for(let i = 0;i < diagram.length;i++){
-        if(saveIndex.indexOf(diagram[i].properties.setLayer) !== -1){
-            deleteArray.push(diagram[i]);
+        for(let i = 0;i < diagram.length;i++){
+            if(saveIndex.indexOf(diagram[i].properties.setLayer) !== -1){
+                deleteArray.push(diagram[i]);
+            }
         }
+        for(let i = 0; i < deleteArray.length;i++){
+            diagram.deleteObject(deleteArray[i]);
+        }
+        const elem = document.getElementById(saveIndex);
+        elem.parentNode.removeChild(elem);
+        fixviewLayer();
+        fixActiveLayer()
+        SaveState()
+        setlayer(spans[0]);
+        toggleActiveBackgroundLayer(spans[0])
     }
-    for(let i = 0; i < deleteArray.length;i++){
-        diagram.deleteObject(deleteArray[i]);
-    }
-    const elem = document.getElementById(saveIndex);
-    elem.parentNode.removeChild(elem);
-    fixviewLayer();
-    fixActiveLayer()
-    SaveState() 
+
 }
 //----------------------------------------------------------------------------------------
 // fixviewLayer: Corrects viewlayer after layers been deleted.
@@ -6093,6 +6107,7 @@ function fixviewLayer(){
 function fixActiveLayer(){
     const parentNode = document.getElementById("layerActive");
     const spans = parentNode.getElementsByTagName('span');
+    let checkforActive = false;
 
     localStorage.setItem('layerItems', spans.length);
     for(let i = 1; i <= spans.length;i++){
