@@ -3,7 +3,8 @@ var analytics = {
 	chartType: null,
 	chartData: null
 };
-
+var usedDates =[];
+ var numberOfDates = 0;
 //------------------------------------------------------------------------------------------------
 // Document ready callback		
 //------------------------------------------------------------------------------------------------
@@ -399,61 +400,111 @@ function loadServiceUsage() {
                 console.log(data);
 				resetAnalyticsChart();
 				var services = {};
-				$.each(data, function(i, row) {
-                  
-					/*if (!services.hasOwnProperty(row.service)) {
-						services[row.service] = [];
-					}
-					
-                   services[row.service].push({
-                        X: row.dateTime,
-                        Y: row.hits
-					});*/
-                    if(selectInterval.val()=="hourly"){
-                 
-                     console.log(services[row.service]);
-                       if (!services.hasOwnProperty(row.service)) {
-						services[row.service] = [];
-					}
-					
-                   services[row.service].push({
-                        X: row.dateTime,
-                        Y: row.hits
-					});
-                       }
-                 
-                    else if(selectInterval.val()=="daily"){
-                     var loop=0;
-                     var day;
-                     for (day = dateFrom; day <= dateTo; day.setDate(day.getDate() + 1)) {
+               
+               
+               /*function test(services){
+                  $.each(data, function(i, row) {
+                     if (!services.hasOwnProperty(row.service)) {
+                         services[row.service] = [];
+                      }
+
+                         services[row.service].push({
+                             X: row.dateTime,
+                             Y: row.hits
+                         });
+
+                  });
+                return services;
+               }
+               
+               console.log(test(services));
+               
+                for (day = dateFrom; day <= dateTo; day.setDate(day.getDate() + 1)) {
                           date1 = day.getFullYear()+ "-" +("0" + (day.getMonth() + 1)).slice(-2)+ "-" +("0" + day.getDate()).slice(-2);
                           loop++;
-                          if(date1 == row.dateTime){
-                              if (!services.hasOwnProperty(row.service)) {
-                                  services[row.service] = [];
-                              }
-                              services[row.service].push({
-                                  X: row.dateTime,
-                                  Y: row.hits
-                              });
-
-                          }
-                          else{
-                              if (!services.hasOwnProperty(row.service)) {
-                                  services[row.service] = [];
-                              }
+                          
                               services[row.service].push({
                                   X: date1,
                                   Y: "0"
                               });
-                          }
-                     }
-                     day.setDate(day.getDate() - loop);
+                  
+                }
+                day.setDate(day.getDate() - loop);
+               */
+               $.each(data, function(i, row) {
+                 
+                    if(selectInterval.val()=="daily"){
+                     var loop=0;
+                     var day;
+
+                     numberOfDates++;
+                     test(data, i, row, numberOfDates);
+                     console.log(services["courseedservice.php"]);
                      
                     }
                     
 				});
+               
+               function test(allDates,i,row, numberOfDates){
+                console.log(allDates,i,row);
+                
+                 var loop=0;
+                 var day;
+                
+                
+                
+                
+                 for (day = dateFrom; day <= dateTo; day.setDate(day.getDate() + 1)) {
+                          date1 = day.getFullYear()+ "-" +("0" + (day.getMonth() + 1)).slice(-2)+ "-" +("0" + day.getDate()).slice(-2);
+                          
+                          loop++;
+                         if (!services.hasOwnProperty(row.service)) {
+                                  services[row.service] = [];
+                              }
+                          if(date1 == row.dateTime){
+                              services[row.service].push({
+                                  X: row.dateTime,
+                                  Y: row.hits
+                              });
+                          
+                           if(row.service=="codeviewerService.php"){
+                           usedDates.push(date1);
+                          }
 
+                          }
+                          /*else{
+                              services[row.service].push({
+                                  X: date1,
+                                  Y: "0"
+                              });
+                          }*/
+                      
+                     }
+                console.log(usedDates);
+                day.setDate(day.getDate() - loop);
+                if(numberOfDates == allDates.length){
+                  for (day = dateFrom; day <= dateTo; day.setDate(day.getDate() + 1)) {
+                          date2 = day.getFullYear()+ "-" +("0" + (day.getMonth() + 1)).slice(-2)+ "-" +("0" + day.getDate()).slice(-2);
+                       
+                          if(!usedDates.includes(date2)){
+                            services[row.service].push({
+                                      X: date2,
+                                      Y: "0"
+                                  });
+                           console.log(Object.values(services[row.service]));
+                           
+                          }
+                       }
+                     
+                day.setDate(day.getDate() - loop);
+                console.log(Object.values(allDates));
+             
+                }
+                
+               }
+               
+
+                
 				$('#analytic-info > select.service-select').remove();
 				var serviceSelect = $('<select class="service-select"></select>');
 				for (var service in services) {
@@ -464,6 +515,8 @@ function loadServiceUsage() {
 				serviceSelect.change(function() {
                     resetAnalyticsChart();
 					drawLineChart(services[$(this).val()]);
+                 console.log($(this).val());
+                 
                  
 				});
 				$('#analytic-info').append(serviceSelect);
