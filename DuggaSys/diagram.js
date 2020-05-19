@@ -1141,13 +1141,30 @@ function markLastMouseCoordinates() {
 // drawCross: Draws a cross at point position
 //--------------------------------------------------------------------
 function drawCross(point) {
+    let checkForLayer = false;
     let crossSize = 4 * zoomValue;
-    ctx.beginPath();
-    ctx.moveTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y - crossSize);
-    ctx.lineTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y + crossSize);
-    ctx.moveTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y - crossSize);
-    ctx.lineTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y + crossSize);
-    ctx.stroke();
+    for(let i = 0; i < diagram.length; i++){
+        if(diagram[i].isLayerLocked == false && diagram[i].symbolkind != 4 && diagram[i].symbolkind != 7){
+            if(Math.round(point.x) == Math.round(points[diagram[i].topLeft].x)){
+                checkForLayer = true
+            }
+            else if (Math.round(point.x) == Math.round(points[diagram[i].centerPoint].x)){
+                checkForLayer = true
+            }
+            
+            else if (Math.round(point.x) == Math.round(points[diagram[i].bottomRight].x)){
+                checkForLayer = true
+            }
+        }
+    }
+    if(checkForLayer == true){
+        ctx.beginPath();
+        ctx.moveTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y - crossSize);
+        ctx.lineTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y + crossSize);
+        ctx.moveTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y - crossSize);
+        ctx.lineTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y + crossSize);
+        ctx.stroke();
+    }
 }
 
 //--------------------------------------------------------------------
