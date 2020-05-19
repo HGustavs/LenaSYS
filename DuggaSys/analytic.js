@@ -775,6 +775,7 @@ function loadUserInformation(){
 		.append('<option value="showDugga" selected>showDugga</option>')
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="events">events</option>')
+		.append('<option value="fileEvents">fileEvents</option>')
         .appendTo($('#analytic-info'));
  
  
@@ -949,7 +950,29 @@ function loadUserInformation(){
 				}
             });
 		});
-    } 
+	}
+	
+	function apa(users){
+		var users = {};
+		var user;
+        loadAnalytics("userLogInformation", function(data) {
+            $.each(data, function(i, row) {
+                user = row.username;
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "EventType", "Description"]];
+				}
+				if(row.eventType != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						row.eventType,
+						row.description,
+					]);
+					updateState(users);		
+				}
+            });
+		});
+	}
    
     function updateState(users){
         $('#analytic-info > select.file-select').remove();
@@ -1002,8 +1025,7 @@ function loadUserInformation(){
         $('#analytic-info').append(userSelect);
 		userSelect.change();
 		pageSelect();
-	}
-	
+	}	
 	function pageSelect(){
 		if(firstLoad === true){
 			updateSectionedInformation();
@@ -1025,6 +1047,9 @@ function loadUserInformation(){
 					break;
 				case "events":
 					updateUserLogInformation();
+					break;
+				case "fileEvents":
+					apa();
 					break;
             }
         });
