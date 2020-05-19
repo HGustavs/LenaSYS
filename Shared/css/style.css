@@ -3129,6 +3129,7 @@ padding: 10px;
 #resultedFormContainer {
   display: flex;
   flex-direction: column;
+  margin-left: 10px;
 }
 
 #ladexportContainer {
@@ -4952,6 +4953,7 @@ only screen and (max-device-width: 320px) {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  margin-left: 10px;
 }
 
 .titles h1 {
