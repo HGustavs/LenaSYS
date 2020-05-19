@@ -44,7 +44,9 @@ pdoConnect();
     </div>
     <div id="recipientBox">
       <label for="recipient"><b>Recipients</b></label>
-      <label class="selectAll"><input type="checkbox"> <b>select all</b></label>
+      <span class="selectLabels"><label class="selectAll"><input type="checkbox"> <b>all</b></label>
+      <label class="selectFinished"><input type="checkbox"> <b>finished</b></label>
+      <label class="selectNonFinished"><input type="checkbox"> <b>non-finished</b></label></span>
       <br>
       <select id="recipient" name="recipients[]" multiple disabled>
         <option disabled>Select</option>

@@ -1692,7 +1692,7 @@ function retrieveAnnouncementAuthor(){
 
 //retrieve course profile
 function retrieveCourseProfile(userid){
-  $(".selectAll input").attr("disabled", true);
+  $(".selectLabels label input").attr("disabled", true);
   var cid = '';
   $("#cid").change(function(){
     cid = $("#cid").val();
@@ -1751,7 +1751,7 @@ function getStudents(cid, userid){
         $.each(item.non_finished_students, function(index,item) {        
           $("#nonfinishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
         });
-        $(".selectAll input").attr("disabled", false);
+        $(".selectLabels label input").attr("disabled", false);
         selectallRecipients();
       },
       error:function(){
