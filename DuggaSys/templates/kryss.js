@@ -55,8 +55,6 @@ function quiz(parameters) {
 				}
 			}
 		}
-
-		app += "<button class='submit' style='margin:15px;' onclick='checkQuizAnswer();'>Check answers</button>";
 		
 		$("#output").html(app);
 	}
@@ -115,11 +113,6 @@ function getCheckedBoxes(){
 		});
 		return answers; // returnerar de värden på de checkboxes som är i-bockade.
 
-	}
-	function checkQuizAnswer(){
-		for(var t = 1;t <= idunique; t++){
-			alert("question "+t+ ": "+$("input[type='radio'][name='answers"+t+"']:checked").attr('id'));
-		}
 	}
 
 function saveClick()
