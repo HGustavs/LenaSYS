@@ -126,9 +126,6 @@ function Save() {
         });
     }
     localStorage.setItem("diagramChanges", JSON.stringify(diagramChanges));
-
-    return;
-    keyBinds = keyMap;
     localStorage.setItem("Settings", JSON.stringify(settings));
     console.log("State is saved");
 }
@@ -139,15 +136,6 @@ function Save() {
 
 function SaveState() {
     Save();
-
-    return;
-    localStorage.setItem("diagram" + diagramNumber, compressStringifiedObject(a));
-    for (var key in localStorage) {
-        if (key.indexOf("diagram") != -1) {
-            var tmp = key.match(/\d+$/);
-            if (tmp > diagramNumber) localStorage.removeItem(key);
-        }
-    }
 }
 
 //---------------------------------------------
@@ -199,29 +187,16 @@ function loadDiagram() {
         overwritePoints(built.points);
     }
 
-    return;
-
     // Only retrieve settings if there are any saved
     if(JSON.parse(localStorage.getItem("Settings"))){
         settings = JSON.parse(localStorage.getItem("Settings"));
     }
 
-    var localHexHash = localStorage.getItem('localhash');
-    var diagramToString = "";
-    var hash = 0;
-    for(var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i]);
-    }
-    if(diagram.length !== 0) {
-        for (var i = 0; i < diagramToString.length; i++) {
-            var char = diagramToString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;         // Convert to 32bit integer
-        }
-        var hexHash = hash.toString(16);
-    }
+    const localHexHash = localStorage.getItem("localhash");
+    const hexHash = getDiagramHash(getStringifiedDiagram());
+
     if (typeof localHexHash !== "undefined") {
-        if (localHexHash != hexHash) {
+        if (localHexHash !== hexHash) {
             //Parse diagram from local storage and write to diagram and points arrays
         }
     }
@@ -236,23 +211,10 @@ function loadDiagram() {
 //------------------------------------------------------------------------------
 
 function hashFunction() {
-    return;
-    var diagramToString = "";
-    var hash = 0;
-    for (var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i])
-    }
-    if (diagram.length != 0) {
-        for (var i = 0; i < diagramToString.length; i++) {
-            var char = diagramToString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;         // Convert to 32bit integer
-        }
-        var hexHash = hash.toString(16);
-        if (currentHash != hexHash) {
-            localStorage.setItem('localhash', hexHash);
-            return hexHash;
-        }
+    const hexHash = getDiagramHash(getStringifiedDiagram());
+    if (currentHash !== hexHash) {
+        localStorage.setItem("localhash", hexHash);
+        return hexHash;
     }
 }
 
@@ -263,18 +225,25 @@ function hashFunction() {
 //--------------------------------------------------------------------------------
 
 function hashCurrent() {
-    return;
-    var hash = 0;
-    var diagramToString = "";
-    for (var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i])
+    currentHash = getDiagramHash(getStringifiedDiagram());
+}
+
+function getStringifiedDiagram() {
+    let str = "";
+    for(let i = 0; i < diagram.length; i++) {
+        str += JSON.stringify(diagram[i]);
     }
-    for (var i = 0; i < diagramToString.length; i++) {
-        var char = diagramToString.charCodeAt(i);
+    return str;
+}
+
+function getDiagramHash(stringifiedDiagram) {
+    let hash = 0;
+    for(let i = 0; i < stringifiedDiagram.length; i++) {
+        const char = stringifiedDiagram.charCodeAt(i);
         hash = ((hash << 5) - hash) + char;
-        hash = hash & hash;         // Convert to 32bit integer
+        hash = hash & hash;
     }
-    currentHash = hash.toString(16);
+    return hash.toString(16); // Convert to 32-bit integer
 }
 
 //----------------------------------------------------------------------
