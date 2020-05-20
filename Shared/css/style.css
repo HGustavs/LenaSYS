@@ -6196,6 +6196,11 @@ only screen and (max-device-width: 320px) {
 .markdownPart {
   height: 100%;
 }
+@media only screen and (max-height: 650px) {
+    .markdownPart {
+        height: 85%;
+    }
+}
 
 .markdown {
   border: solid var(--color-border-4);
@@ -6245,6 +6250,10 @@ only screen and (max-device-width: 320px) {
   line-height: 30px;
   text-align: center;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+.markdown-buttons{
+    position: relative;
+    bottom: 15px;
 }
 
 legend {
