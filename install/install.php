@@ -410,7 +410,7 @@
 
           # Connect to database with root access.
           try {
-            $connection = new PDO("pgsql:host=$serverName", $rootUser, $rootPwd);
+            $connection = new PDO("pgsql:host=$serverName; user=$rootUser; password=$rootPwd");
             $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
           } catch (PDOException $e) {
@@ -425,15 +425,6 @@
           ob_flush();
 
 
-          # If checked, delete user
-          if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
-            deleteUser($connection, $username);
-            $completedSteps++;
-            updateProgressBar($completedSteps, $totalSteps);
-            flush();
-            ob_flush();
-          }
-
           # If checked, delete database
           if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
             deleteDatabase($connection, $databaseName);
@@ -442,6 +433,16 @@
             flush();
             ob_flush();
           }
+
+          # If checked, delete user
+          if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
+            deleteUser($connection, $username, $databaseName);
+            $completedSteps++;
+            updateProgressBar($completedSteps, $totalSteps);
+            flush();
+            ob_flush();
+          }
+
 
           # Create new database
           try {
@@ -462,9 +463,25 @@
             $connection->query("GRANT ALL PRIVILEGES ON DATABASE {$databaseName} TO {$username}");
             echo "<span id='successText' />Successfully created user {$username}.</span><br>";
           } catch (PDOException $e) {
-            echo "{$e}";
             $errors++;
             echo "<span id='failText' />Could not create user with name {$username}, maybe it already exists...</span><br>";
+          }
+          $completedSteps++;
+          updateProgressBar($completedSteps, $totalSteps);
+          flush();
+          ob_flush();
+
+          # Connect to installed database
+          try {
+            $dbLowerCase = strtolower($databaseName);
+            $connection = new PDO("pgsql:host=$serverName; user=$username; password=$password; dbname=$dbLowerCase");
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
+          } catch (PDOException $e) {
+            $errors++;
+            exit ("<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>
+            You may have entered a invalid password or an invalid user.<br>
+            <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
           }
           $completedSteps++;
           updateProgressBar($completedSteps, $totalSteps);
@@ -705,15 +722,15 @@
     //---------------------------------------------------------------------------------------------------
     // Function that deletes a user from database
     //---------------------------------------------------------------------------------------------------
-    function deleteUser($connection, $username){
+    function deleteUser($connection, $username, $databaseName){
       global $errors;
       try {
         $connection->query("DROP USER {$username}");
         echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
       } catch (PDOException $e) {
+      echo"{$e}";
       $errors++;
-      echo "<span id='failText' />User with name {$username}
-      does not already exist. Will only make a new one (not write over).</span><br>";
+      echo "<span id='failText' />User with name {$username} doesn't exist. Nothing to remove.</span><br>";
       }
     } 
 
