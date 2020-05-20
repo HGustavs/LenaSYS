@@ -294,6 +294,7 @@ function Symbol(kindOfSymbol) {
     this.setQuadrant = function (kind, quadrant) {
         var connector = 0;
         kind.manualLine = true; 
+
         //Find correct connector to manipulate
         if(kind.connectorRight.length > 0){
             for(i = 0 ; kind.connectorRight.length > i ; i++){
@@ -336,20 +337,19 @@ function Symbol(kindOfSymbol) {
                     var xk = points[kind.connectorBottom[connector].to].x;
                     var yk = points[kind.connectorBottom[connector].to].y;
                     var bb = kind.getquadrant(xk, yk);
-                    console.log(bb);
                 }
             }
         }
 
         //Manually set quadrant if we know line-side is manually set
         if(kind.manualSide == "Top"){
-            bb = 0;
+            var bb = 0;
         } else if(kind.manualSide == "Right"){
-            bb = 1;
+            var bb = 1;
         } else if(kind.manualSide == "Bottom"){
-            bb = 2;
-        } else if(kind.manualSide == "Right"){
-            bb = 3;
+            var bb = 2;
+        } else if(kind.manualSide == "Left"){
+            var bb = 3;
         }
 
         //Swap connector to appropriate side
@@ -1952,7 +1952,7 @@ function Symbol(kindOfSymbol) {
         }
         //Manually set which side of object line should be at
         var connectedObjects = this.getConnectedObjects();
-        if(event.target.id == "linePlacementObject1"){
+        if(event.target.id == "LinePlacement1"){
             if(this.properties['key_type'] == "Automatic1"){
                 connectedObjects[0].manualLine = false;
                 connectedObjects[0].manualSide = "Automatic";
@@ -1970,7 +1970,7 @@ function Symbol(kindOfSymbol) {
                 this.setQuadrant(connectedObjects[0], "Left"); 
             }
         }
-        else if(event.target.id == "linePlacementObject2"){
+        else if(event.target.id == "LinePlacement2"){
             if(this.properties['key_type'] == "Automatic2"){
                 connectedObjects[1].manualLine = false;
                 connectedObjects[1].manualSide = "Automatic";
@@ -2162,6 +2162,45 @@ function Symbol(kindOfSymbol) {
         }
         ctx.lineTo(x2, y2);
         ctx.stroke();
+
+        //Manually set which side of object line should be at
+        var connectedObjects = this.getConnectedObjects();
+        if(event.target.id == "LinePlacement1"){
+            if(this.properties['key_type'] == "Automatic1"){
+                connectedObjects[0].manualLine = false;
+                connectedObjects[0].manualSide = "Automatic";
+            }
+            else if (this.properties['key_type'] == "Top1") {
+                this.setQuadrant(connectedObjects[0], "Top");
+            }
+            else if(this.properties['key_type'] == "Right1"){
+                this.setQuadrant(connectedObjects[0], "Right");
+            }
+            else if(this.properties['key_type'] == "Bottom1"){
+                this.setQuadrant(connectedObjects[0], "Bottom");
+            }
+            else if(this.properties['key_type'] == "Left1"){
+                this.setQuadrant(connectedObjects[0], "Left"); 
+            }
+        }
+        else if(event.target.id == "LinePlacement2"){
+            if(this.properties['key_type'] == "Automatic2"){
+                connectedObjects[1].manualLine = false;
+                connectedObjects[1].manualSide = "Automatic";
+            }
+            else if (this.properties['key_type'] == "Top2") {
+                this.setQuadrant(connectedObjects[1], "Top");
+            }
+            else if(this.properties['key_type'] == "Right2"){
+                this.setQuadrant(connectedObjects[1], "Right");
+            }
+            else if(this.properties['key_type'] == "Bottom2"){
+                this.setQuadrant(connectedObjects[1], "Bottom");
+            }
+            else if(this.properties['key_type'] == "Left2"){
+                this.setQuadrant(connectedObjects[1], "Left");
+            }
+        }
 
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
     }

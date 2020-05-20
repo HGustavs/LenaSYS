@@ -543,23 +543,25 @@
                             <option value="Forced">Forced</option>
                             <option value="Derived">Derived</option>
                         </select>
-                        <label for="typeLine">Line placement:</label>
-                        <label for="typeLine" id="lineObject1">Object 1:</label>
-                        <select id="linePlacementObject1" data-access="properties.key_type">
-                            <option value="Automatic1" selected>Automatic</option>
-                            <option value="Top1">Top</option>
-                            <option value="Right1">Right</option>
-                            <option value="Bottom1">Bottom</option>
-                            <option value="Left1">Left</option>
-                        </select>
-                        <label for="typeLine" id="lineObject2">Object 2:</label>
-                        <select id="linePlacementObject2" data-access="properties.key_type">
-                            <option value="Automatic2" selected>Automatic</option>
-                            <option value="Top2">Top</option>
-                            <option value="Right2">Right</option>
-                            <option value="Bottom2">Bottom</option>
-                            <option value="Left2">Left</option>
-                        </select>
+                        <div class="form-group" data-types="4,7">
+                            <label for="LinePlacement">Line placement:</label>
+                            <label for="LinePlacement1" id="lineObject1">Object 1:</label>
+                            <select id="LinePlacement1" data-access="properties.key_type">
+                                <option value="Automatic1" selected>Automatic</option>
+                                <option value="Top1">Top</option>
+                                <option value="Right1">Right</option>
+                                <option value="Bottom1">Bottom</option>
+                                <option value="Left1">Left</option>
+                            </select>
+                            <label for="LinePlacement2" id="lineObject2">Object 2:</label>
+                            <select id="LinePlacement2" data-access="properties.key_type">
+                                <option value="Automatic2" selected>Automatic</option>
+                                <option value="Top2">Top</option>
+                                <option value="Right2">Right</option>
+                                <option value="Bottom2">Bottom</option>
+                                <option value="Left2">Left</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group" data-types="7">
                         <label for="typeLineUML">UML line type:</label>

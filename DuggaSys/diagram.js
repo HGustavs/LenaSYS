@@ -5422,7 +5422,6 @@ function loadAppearanceForm() {
                     erCardinalityVisible = true;
                 }
                 const connectedObjectsArray = object.getConnectedObjects();
-               
                 document.getElementById("lineObject1").innerHTML = connectedObjectsArray[0].name;
                 document.getElementById("lineObject2").innerHTML = connectedObjectsArray[1].name;
             }
@@ -5430,6 +5429,9 @@ function loadAppearanceForm() {
         } else if(object.symbolkind === symbolKind.umlLine) {
             setLineDirectionElementUML(object, indexes[symbolKind.umlLine]);
             document.getElementById("typeLineUML").focus();
+            const connectedObjectsArray = object.getConnectedObjects();
+            document.getElementById("lineObject1").innerHTML = connectedObjectsArray[0].name;
+            document.getElementById("lineObject2").innerHTML = connectedObjectsArray[1].name;
         } else if(object.symbolkind === symbolKind.text) {
             indexes[symbolKind.text].current++;
             setTextareaElement(freeTextElement, object.textLines, indexes[symbolKind.text]);
