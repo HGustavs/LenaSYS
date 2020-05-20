@@ -510,7 +510,6 @@
             if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
               $connection->beginTransaction();
             }
-            # Currently connected to postgres 
             $connection->query("SET CLIENT_ENCODING TO 'UTF8';");
             $queryBlock = '';
             $blockStarted = false;
@@ -716,10 +715,6 @@
       }
       return $isAllCredentialsFilled;
     }
-
-    
-
-
 
     //---------------------------------------------------------------------------------------------------
     // Function that deletes a user from database
