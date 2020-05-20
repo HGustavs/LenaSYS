@@ -681,8 +681,18 @@ p {
 .feedbackHeader{
   background-color: #ddd;
 }
+.feedbackHeader h2{
+  font-size: 20px;
+  font-weight: bold;
+}
 .feedback_card{
-  margin: 8px 0 15px 0;
+  margin: 10px 0 20px 0;
+}
+.feedback_card div:nth-child(2){
+  margin-top: -10px;
+}
+.feedback_card div:nth-child(3){
+  margin-top: -5px;
 }
 .feedback_card img{
   width: 25px;
@@ -702,6 +712,13 @@ p {
 }
 .markedFail{
   color: #ff0000;
+}
+.creator{
+  margin-left: 325px;
+}
+.feedback_card_footer{
+  color: #9474a4;
+  font-weight: bold;
 }
 /*End of recent feedback from the teacher*/
 #Sectionlist {
