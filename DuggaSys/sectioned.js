@@ -2155,10 +2155,13 @@ function multiSelect(){
 //start of recent feedback from the teacher
 function toggleFeedbacks(){
   if ($("#feedback").length > 0) {
-    $("header").after("<div id='feedbackOverlay'><div class='feedbackHeader'><h2>Recent Feedbacks</h2></div><div class='feedbackContainer'></div></div>");
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><h2>Recent Feedbacks</h2></div><div class='feedbackContent'></div></div></div>");
 
   }
-  
+
+  $("#feedback").click(function(){
+    $("#feedbackOverlay").toggle();
+  });
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {

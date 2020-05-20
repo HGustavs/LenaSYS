@@ -658,7 +658,29 @@ p {
 }
 /*End of announcement box*/
 /*Start of recent feedback from the teacher*/
+ #feedbackOverlay{
+  position: relative;
+  padding: 10px;
+  top: 50px;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  overflow-x: auto;
+  box-sizing: border-box;
+  font-family: 'Varela', sans-serif;
+}
+.feedbackHeader,
+.feedbackContent{
+  padding: 10px 15px 5px 15px;
+}
+#feedbackOverlay .feedbackContainer{
+  background-color: #fff;
+  border: 2px solid #ddd;
 
+}
+.feedbackHeader{
+  background-color: #ddd;
+}
 
 /*End of recent feedback from the teacher*/
 #Sectionlist {
