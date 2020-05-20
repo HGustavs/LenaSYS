@@ -410,7 +410,7 @@
 
           # Connect to database with root access.
           try {
-            $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
+            $connection = new PDO("pgsql:host=$serverName", $rootUser, $rootPwd);
             $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
           } catch (PDOException $e) {
@@ -446,10 +446,10 @@
           # Create new database
           try {
             $connection->query("CREATE DATABASE {$databaseName}");
-            echo "<span id='successText' />Database with name {$databaseName} created successfully.</span><br>";
+            echo "<span id='successText' />Database with name {$databaseName} created asda successfully.</span><br>";
           } catch (PDOException $e) {
             $errors++;
-            echo "<span id='failText' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
+            echo "<span id='failText' />Database with name {$databaseName} could not be created.  asdad Maybe it already exists...</span><br>";
           }
           $completedSteps++;
           updateProgressBar($completedSteps, $totalSteps);
@@ -458,12 +458,11 @@
 
           # Create new user and grant privileges to created database.
           try {
-            $connection->query("FLUSH PRIVILEGES");
-            $connection->query("CREATE USER '{$username}'@'{$serverName}' IDENTIFIED BY '{$password}'");
-            $connection->query("GRANT ALL PRIVILEGES ON *.* TO '{$username}'@'{$serverName}'");
-            $connection->query("FLUSH PRIVILEGES");
+            $connection->query("CREATE USER {$username} WITH PASSWORD '{$password}'");
+            $connection->query("GRANT ALL PRIVILEGES ON DATABASE {$databaseName} TO {$username}");
             echo "<span id='successText' />Successfully created user {$username}.</span><br>";
           } catch (PDOException $e) {
+            echo "{$e}";
             $errors++;
             echo "<span id='failText' />Could not create user with name {$username}, maybe it already exists...</span><br>";
           }
@@ -708,7 +707,7 @@
     function deleteUser($connection, $username){
       global $errors;
       try {
-        $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
+        $connection->query("dropuser --if-exists {$username}");
         echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
       } catch (PDOException $e) {
       $errors++;
