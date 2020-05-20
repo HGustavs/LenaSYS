@@ -197,7 +197,7 @@
           Enter MySQL root user. <br>
           <input title="Enter MySQL root user." class="page2input" type="text" name="mysqlRoot" placeholder="Root" value="postgres"/> <br>
           Enter password for MySQL root user. <br>
-          <input title="Enter password for MySQL root user." class="page2input" type="password" name="rootPwd" value="galvaniseradapa" placeholder="Root Password" /> <br>
+          <input title="Enter password for MySQL root user." class="page2input" type="password" name="rootPwd" placeholder="Root Password" /> <br>
           <span class="enterAllFields" id="enterFields2">Please fill all fields before continuing.</span>
       </div>
       <div class="inputContent" id="td3" valign=top>

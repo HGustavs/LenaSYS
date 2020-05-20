@@ -16,7 +16,7 @@ CREATE TABLE lenasys_user(
 	totalHp					NUMERIC(4, 1),
 	securityquestion		VARCHAR(256) DEFAULT NULL,
 	securityquestionanswer	VARCHAR(256) DEFAULT NULL,
-	requestedpasswordchange	SMALLINT  NOT NULL DEFAULT 0,
+	requestedpasswordchange	SMALLINT NOT NULL DEFAULT 0,
 	PRIMARY KEY (uid)
 );
 
@@ -36,47 +36,47 @@ INSERT INTO lenasys_user(username,password,newpassword,creator,ssn) values ('Tes
 -- alter table course alter column hp add default 7.5; */ 
 
 CREATE TABLE course(
-	cid						INT  NOT NULL AUTO_INCREMENT,
+	cid						SERIAL,
 	coursecode				VARCHAR(45) NULL UNIQUE,
 	coursename				VARCHAR(80) NULL,
-	created					DATETIME,
-	creator					INT  NOT NULL,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	creator					INT NOT NULL,
 	visibility				SMALLINT  NOT NULL DEFAULT 0,
-	updated					TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	updated					TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	activeversion			VARCHAR(8),
 	activeedversion 		VARCHAR(8),
-	capacity				INT(5),
-	hp						DECIMAL(4,1) NOT NULL DEFAULT 7.5,
+	capacity				INT, -- (5)*/
+	hp						NUMERIC(4,1) NOT NULL DEFAULT 7.5,
 	courseHttpPage			VARCHAR(2000),
 	PRIMARY KEY (cid),
 	FOREIGN KEY (creator) REFERENCES lenasys_user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+);
 
 -- This table represents a many-to-many relation between courses, to illustrate pre-requirements for courses. */
 CREATE TABLE course_req(
-	cid						INT  NOT NULL,
-	req_cid					INT  NOT NULL,
+	cid						INT NOT NULL,
+	req_cid					INT NOT NULL,
 	PRIMARY KEY (cid, req_cid),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (req_cid) REFERENCES course(cid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+);
 
 
- --This table represents a many-to-many relation between users and courses. That is,
- -- tuple in this table joins a lenasys_user with a course.
+ -- This table represents a many-to-many relation between users and courses. That is, */
+ -- tuple in this table joins a lenasys_user with a course. */
  
 CREATE TABLE user_course(
 	uid						INT  NOT NULL,
 	cid						INT  NOT NULL,
-	result 					DECIMAL(2,1) DEFAULT 0.0,
-	modified 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	result 					NUMERIC(2,1) DEFAULT 0.0,
+	modified 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- ON UPDATE CURRENT_TIMESTAMP */
 	creator 				INTEGER,
 	access					VARCHAR(10) NOT NULL,
 	period					INTEGER DEFAULT 1,
 	term					CHAR(5) DEFAULT 'VT16',
 	vers					VARCHAR(8),
 	vershistory				TEXT,
-	`groups` 				varchar(256),
+	groups 					varchar(256),
 	examiner 				integer,
 	teacher					VARCHAR(30),
 	passed 					INT  NOT NULL DEFAULT 0,
@@ -85,93 +85,93 @@ CREATE TABLE user_course(
 	PRIMARY KEY (uid, cid),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+);
 
 CREATE TABLE listentries (
-	lid 					INT  NOT NULL AUTO_INCREMENT,
+	lid 					SERIAL,
 	cid 					INT  NOT NULL,
 	entryname 				VARCHAR(64),
 	link 					VARCHAR(200),
 	kind 					INT ,
 	pos 					INT,
 	creator 				INT  NOT NULL,
-	ts						TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE current_timestamp,
+	ts						TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- ON UPDATE current_timestamp, */
 	code_id 				INTEGER  NULL DEFAULT NULL,
-	visible 				SMALLINT(1)  NOT NULL DEFAULT 0,
+	visible 				SMALLINT  NOT NULL DEFAULT 0,
 	vers					VARCHAR(8),
 	comments				VARCHAR(512),
 	moment					INT ,
-	gradesystem 			SMALLINT(1),
+	gradesystem 			SMALLINT,
 	highscoremode			INT DEFAULT 0,
-	rowcolor				SMALLINT(1),
+	rowcolor				SMALLINT,
 	groupID					INT DEFAULT NULL,
 	groupKind 				VARCHAR(16) DEFAULT NULL,
 	tabs					SMALLINT,
-	feedbackenabled			SMALLINT(1)  NOT NULL DEFAULT 0,
+	feedbackenabled			SMALLINT  NOT NULL DEFAULT 0,
 	feedbackquestion		VARCHAR(512),
     PRIMARY KEY (lid),
 	FOREIGN KEY (creator) REFERENCES lenasys_user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid)REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 -- Quiz tables 
 CREATE TABLE quiz (
-	id						INT(11) NOT NULL AUTO_INCREMENT,
+	id						SERIAL,
 	cid 					INTEGER  NOT NULL,
-	autograde 				SMALLINT(1) NOT NULL DEFAULT 0, -- bool 
-	gradesystem 			SMALLINT(1) NOT NULL DEFAULT 2, -- 1:U-G-VG & 2:U-G & 3:U-3-5 
+	autograde 				SMALLINT NOT NULL DEFAULT 0, -- bool */
+	gradesystem 			SMALLINT NOT NULL DEFAULT 2, -- 1:U-G-VG & 2:U-G & 3:U-3-5 */
 	qname 					VARCHAR(255) NOT NULL DEFAULT '',
 	quizFile 				VARCHAR(255) NOT NULL DEFAULT 'default',
-	qrelease 				DATETIME,
-	deadline 				DATETIME,
+	qrelease 				TIMESTAMP WITHOUT TIME ZONE,
+	deadline 				TIMESTAMP WITHOUT TIME ZONE,
 	modified 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	creator 				INTEGER,
 	vers					VARCHAR(8),
     qstart					DATE,
 	jsondeadline			VARCHAR(2048),
-	`group` 				SMALLINT(1) DEFAULT 0,
+	`group` 				SMALLINT DEFAULT 0,
 	PRIMARY KEY (id),
 	FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 
- -- A quiz tuple has a one-to-many relation with a tuple from thea variant table.
- -- An entry in the variant table is used to add questions to quiz tests.
+ -- A quiz tuple has a one-to-many relation with a tuple from thea variant table. */
+ -- An entry in the variant table is used to add questions to quiz tests. */
 
 CREATE TABLE variant(
-	vid						INT(11) NOT NULL AUTO_INCREMENT,
-	quizID					INT(11),
+	vid						SERIAL,
+	quizID					INT, -- (11)*/
 	param					VARCHAR(8126),
 	variantanswer			VARCHAR(8126),
 	modified 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	creator 				INTEGER,
-	disabled				SMALLINT(1) DEFAULT 0,
+	disabled				SMALLINT DEFAULT 0,
 	PRIMARY KEY 	(vid),
 	FOREIGN KEY (quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 CREATE TABLE userAnswer (
-	aid						INT(11) NOT NULL AUTO_INCREMENT,
+	aid						SERIAL,
 	cid						INT  NOT NULL,
-	quiz 					INT(11),
+	quiz 					INT, -- (11)*/
 	variant					INT,
 	moment					INT  NOT NULL,
-	grade 					SMALLINT(2),
+	grade 					SMALLINT, -- (2)*/
 	uid 					INT  NOT NULL,
 	useranswer				TEXT,
 	submitted 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        -- timestamp when last graded/marked
+        -- timestamp when last graded/marked */
 	marked					TIMESTAMP NULL,
 	vers					VARCHAR(8),
 	creator 				INTEGER,
 	score					INT DEFAULT NULL,
-	timeUsed 				INT(11) DEFAULT NULL,
-	totalTimeUsed 			INT(11) DEFAULT '0',
-	stepsUsed 				INT(11) DEFAULT NULL,
-	totalStepsUsed			INT(11) DEFAULT '0',
+	timeUsed 				INT DEFAULT NULL, -- (11)*/
+	totalTimeUsed 			INT DEFAULT '0', -- (11)*/
+	stepsUsed 				INT DEFAULT NULL, -- (11)*/
+	totalStepsUsed			INT DEFAULT '0', -- (11)*/
 	feedback 				TEXT,
-	timesGraded				INT(11) NOT NULL DEFAULT '0',
+	timesGraded				INT NOT NULL DEFAULT '0', -- (11)*/
 	gradeExpire 			TIMESTAMP NULL DEFAULT NULL,
-        -- used in conjunction with `marked` to determine if a grade has been changed since it was last exported
+        -- used in conjunction with `marked` to determine if a grade has been changed since it was last exported */
         gradeLastExported   timestamp null default null,
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
@@ -179,10 +179,10 @@ CREATE TABLE userAnswer (
 	FOREIGN KEY (quiz) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid),
 	FOREIGN KEY (variant) REFERENCES variant(vid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 
--- This view pulls the top 10 fastest quiz finishing students and lists them
+-- This view pulls the top 10 fastest quiz finishing students and lists them */
 
 DROP VIEW IF EXISTS highscore_quiz_time;
 CREATE VIEW highscore_quiz_time AS
@@ -192,52 +192,52 @@ CREATE VIEW highscore_quiz_time AS
 -- Fix for database coursename: alter table vers alter column coursename VARCHAR(80); */
 
 CREATE TABLE vers(
-	cid						INT  NOT NULL AUTO_INCREMENT,
+	cid						SERIAL,
 	vers					VARCHAR(8),
 	versname				VARCHAR(45) NOT NULL,
 	coursecode				VARCHAR(45) NOT NULL,
 	coursename				VARCHAR(80) NOT NULL,
 	coursenamealt			VARCHAR(45) NOT NULL,
-	startdate     			DATETIME,
-	enddate       			DATETIME,
+	startdate     			TIMESTAMP WITHOUT TIME ZONE,
+	enddate       			TIMESTAMP WITHOUT TIME ZONE,
 	updated					TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	motd					VARCHAR(50),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	PRIMARY KEY (cid,vers)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 CREATE TABLE fileLink(
-	fileid					INT(11) NOT NULL AUTO_INCREMENT,
+	fileid					SERIAL,
 	filename				VARCHAR(128) NOT NULL,
 	kind					INTEGER,
 	cid						INT  NOT NULL,
 	isGlobal				BOOLEAN DEFAULT 0,
-	filesize				INT(11) NOT NULL DEFAULT 0,
-	uploaddate				DATETIME NOT NULL DEFAULT NOW(),
+	filesize				INT NOT NULL DEFAULT 0, -- (11)*/
+	uploaddate				TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
     filesiz 				INT,
     vers 					VARCHAR(8),
 	PRIMARY KEY (fileid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 
--- An entry in this table allow file locations to be related to specific courses.
--- For example, if an instructor wants to give students a link to a file that
--- they should be able to download from the course page.
+-- An entry in this table allow file locations to be related to specific courses. */
+-- For example, if an instructor wants to give students a link to a file that */
+-- they should be able to download from the course page. */
 
 CREATE TABLE template(
 	templateid				INTEGER  NOT NULL,
 	stylesheet 				VARCHAR(39) NOT NULL,
 	numbox					INTEGER NOT NULL,
 	PRIMARY KEY(templateid, stylesheet)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 
--- Code Example contains a list of the code examples for a version of a course in the database
--- Version of sections and examples corresponds roughly to year or semester that the course was given. 
+-- Code Example contains a list of the code examples for a version of a course in the database */
+-- Version of sections and examples corresponds roughly to year or semester that the course was given.  */
 
 CREATE TABLE codeexample(
-	exampleid				INTEGER  NOT NULL AUTO_INCREMENT,
+	exampleid				SERIAL,
 	cid						INT  NOT NULL,
 	examplename				VARCHAR(64),
 	sectionname				VARCHAR(64),
@@ -245,7 +245,7 @@ CREATE TABLE codeexample(
 	afterid					INTEGER,
 	runlink		 			VARCHAR(256),
 	cversion				INTEGER,
-	public 					SMALLINT(1)  NOT NULL DEFAULT 0,
+	public 					SMALLINT  NOT NULL DEFAULT 0,
 	updated 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	uid						INT  NOT NULL,
 	templateid				INT  NOT NULL DEFAULT '0',
@@ -253,28 +253,28 @@ CREATE TABLE codeexample(
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
 	FOREIGN KEY (templateid) REFERENCES template (templateid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 -- Table structure for sequence, holding the sequence order of a specific example sequence */
 CREATE TABLE sequence (
-	seqid 					INT(10)  NOT NULL,
-	cid 					INT(10)  NOT NULL,
+	seqid 					INT  NOT NULL, -- (10)*/
+	cid 					INT  NOT NULL, -- (10)*/
 	exampleseq 				text NOT NULL,
 	PRIMARY KEY (cid,seqid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 -- improw contains a list of the important rows for a certain example */
 CREATE TABLE wordlist(
-	wordlistid				INTEGER  NOT NULL AUTO_INCREMENT,
+	wordlistid				SERIAL,
 	wordlistname			VARCHAR(24),
 	updated 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	uid						INT  NOT NULL,
 	PRIMARY KEY (wordlistid),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 
--- Delete and update all foreign keys before deleting a wordlist
+-- Delete and update all foreign keys before deleting a wordlist */
 
 DELIMITER //
 CREATE TRIGGER checkwordlists BEFORE DELETE ON wordlist
@@ -288,7 +288,7 @@ BEGIN
  DELIMITER ;
 
 CREATE TABLE word(
-	wordid					INTEGER  NOT NULL AUTO_INCREMENT,
+	wordid					SERIAL,
 	wordlistid				INTEGER  NOT NULL,
 	word 					VARCHAR(64),
 	label					VARCHAR(256),
@@ -297,9 +297,9 @@ CREATE TABLE word(
 	PRIMARY KEY (wordid, wordlistid),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
 	FOREIGN KEY (wordlistid) REFERENCES wordlist(wordlistid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) ;
 
--- boxes with information in a certain example 
+-- boxes with information in a certain example  */
 CREATE TABLE box(
 	boxid					INTEGER  NOT NULL,
 	exampleid 				INTEGER  NOT NULL,
@@ -312,11 +312,11 @@ CREATE TABLE box(
 	fontsize				INT NOT NULL DEFAULT '9',
 	PRIMARY KEY (boxid, exampleid),
 	FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
--- improw contains a list of the important rows for a certain example 
+-- improw contains a list of the important rows for a certain example  */
 CREATE TABLE improw(
-	impid					INTEGER  NOT NULL AUTO_INCREMENT,
+	impid					SERIAL,
 	boxid					INTEGER  NOT NULL,
 	exampleid				INTEGER  NOT NULL,
 	istart					INTEGER,
@@ -327,11 +327,11 @@ CREATE TABLE improw(
 	PRIMARY KEY (impid, exampleid, boxid),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
 	FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
--- Wordlist contains a list of important words for a certain code example 
+-- Wordlist contains a list of important words for a certain code example */ 
 CREATE TABLE impwordlist(
-	wordid					INTEGER  NOT NULL AUTO_INCREMENT,
+	wordid					SERIAL,
 	exampleid				INTEGER  NOT NULL,
 	word 					VARCHAR(64),
 	label					VARCHAR(256),
@@ -340,10 +340,10 @@ CREATE TABLE impwordlist(
 	PRIMARY KEY (wordid),
 	FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 CREATE TABLE submission(
-	subid					INTEGER  NOT NULL AUTO_INCREMENT,
+	subid					SERIAL,
 	uid						INTEGER,
 	cid						INTEGER,
 	vers					VARCHAR(8),
@@ -358,10 +358,10 @@ CREATE TABLE submission(
 	segment					INTEGER,
 	updtime					TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (subid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 CREATE TABLE eventlog(
-	eid 					BIGINT  NOT NULL AUTO_INCREMENT,
+	eid 					SERIAL
 	type 					SMALLINT DEFAULT 0,
 	ts 						TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	address 				VARCHAR(45),
@@ -369,89 +369,89 @@ CREATE TABLE eventlog(
 	lenasys_user 					VARCHAR(128),
 	eventtext				TEXT NOT NULL,
 	PRIMARY KEY (eid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 CREATE TABLE playereditor_playbacks(
 	id						VARCHAR(32) NOT NULL,
 	type					SMALLINT(1) NOT NULL,
 	path	 				VARCHAR(256) NOT NULL,
 	PRIMARY KEY (id, type)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 CREATE TABLE class (
 	class 					VARCHAR(10) NOT NULL,
 	responsible				INT  NOT null,
 	classname 				VARCHAR(100) DEFAULT NULL,
-	regcode 				INT(8) DEFAULT NULL,
+	regcode 				INT DEFAULT NULL, -- (8)*/
 	classcode 				VARCHAR(8) DEFAULT NULL,
-	hp 						DECIMAL(10,1) DEFAULT NULL,
-	tempo 					INT(3) DEFAULT NULL,
-	hpProgress 	DECIMAL(3,1),
+	hp 						NUMERIC(10,1) DEFAULT NULL,
+	tempo 					INT DEFAULT NULL, -- (3)*/
+	hpProgress 				NUMERIC(3,1),
 	PRIMARY KEY (class,responsible),
 	FOREIGN KEY (responsible) REFERENCES lenasys_user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 
--- this table stores the different subparts of each course.
+-- this table stores the different subparts of each course. */
 
 CREATE TABLE subparts(
 	partname				VARCHAR(50),
 	cid 					INT  NOT NULL,
-	parthp 					DECIMAL(3,1) DEFAULT NULL,
+	parthp 					NUMERIC(3,1) DEFAULT NULL,
 	difgrade				VARCHAR(10),
 	PRIMARY KEY (partname,cid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 
--- this table is weak reslation to lenasys_user and partcourse.
+-- this table is weak reslation to lenasys_user and partcourse. */
 
 CREATE TABLE partresult (
     cid 					INT  NOT NULL,
 	uid						INT  NOT NULL,
 	partname				VARCHAR(50),
 	grade 					VARCHAR(1) DEFAULT NULL,
-	hp						DECIMAL(3,1) REFERENCES subparts (parthp),
+	hp						NUMERIC(3,1) REFERENCES subparts (parthp),
 	PRIMARY KEY (partname, cid, uid),
 	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 
---this table many to many relation between class and course.
+--this table many to many relation between class and course. */
 
 CREATE TABLE programcourse (
 	class 					VARCHAR(10) NOT NULL,
 	cid 					INT  NOT NULL,
-	period 					INT(1) ,
+	period 					INT ,-- (1)*/
 	term 					VARCHAR(10),
 	PRIMARY KEY (cid, class),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (class) REFERENCES class (class)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 
--- This table seems to be intended to store student results from program courses.
+-- This table seems to be intended to store student results from program courses. */
 
 CREATE TABLE studentresultat (
-	sid 					INTEGER(9) NOT NULL AUTO_INCREMENT,
+	sid 					SERIAL,
 	pnr 					VARCHAR(11) DEFAULT NULL,
 	anmkod 					VARCHAR(6) DEFAULT NULL,
 	kurskod 				VARCHAR(6) NOT NULL,
 	termin 					VARCHAR(5) DEFAULT NULL,
-	resultat 				DECIMAL(3,1) DEFAULT NULL,
+	resultat 				NUMERIC(3,1) DEFAULT NULL,
 	avbrott 				DATE DEFAULT NULL,
 	PRIMARY KEY (sid),
 	KEY anmkod (anmkod),
 	KEY pnr (pnr),
 	KEY kurskod (kurskod)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 
---This table is used by the duggasys system to generate certificates.
+--This table is used by the duggasys system to generate certificates. */
 
---Todo: This table has a number of references, such as to course, list etc., this implementation does not
---create foreign key constraints for those references so it will need to be revisited and refactored later.
+--Todo: This table has a number of references, such as to course, list etc., this implementation does not */
+--create foreign key constraints for those references so it will need to be revisited and refactored later. */
 
 CREATE TABLE list (
 	listnr 					INT,
@@ -460,21 +460,21 @@ CREATE TABLE list (
 	responsible 			VARCHAR(40),
 	responsibledate 		DATE,
 	course 					INT,
-	listid 					INT AUTO_INCREMENT,
+	listid 					SERIAL,
 	PRIMARY KEY (listid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=INNODB;
+);
 
 -- This table holds configuration for the entire LenaSYS server 
 CREATE TABLE settings (
-  sid int(11) NOT NULL AUTO_INCREMENT,
+  sid SERIAL,
   motd varchar(4096) DEFAULT NULL,
   readonly SMALLINT(4) DEFAULT '0',
   PRIMARY KEY (`sid`)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=INNODB;
+);
 
 
 CREATE TABLE user_push_registration (
-	id						INT NOT NULL AUTO_INCREMENT,
+	id						SERIAL,
 	uid 					INT  NOT NULL,
 	endpoint				VARCHAR(500) NOT NULL,
 	added					TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -485,47 +485,49 @@ CREATE TABLE user_push_registration (
 	PRIMARY KEY	(id),
 	KEY (endpoint),
 	FOREIGN KEY (uid) REFERENCES lenasys_user(uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
--- Usergroup and user_usergroup relation 
+-- Usergroup and user_usergroup relation */
 CREATE TABLE `groups` (
-    groupID INTEGER  NOT NULL AUTO_INCREMENT,
+    groupID SERIAL,
     groupKind VARCHAR(4) NOT NULL,
     groupVal VARCHAR(8) NOT NULL,
     groupInt INTEGER NOT NULL,
     PRIMARY KEY (groupID)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
+
 CREATE TABLE announcement(
-    announcementid INT  NOT NULL AUTO_INCREMENT,
-    secondannouncementid INT  NOT NULL,
-    uid INT  NOT NULL,
-    recipient INT  NOT NULL,
-    cid INT  NOT NULL,
-    versid VARCHAR(8) NOT NULL,
-    title TEXT NOT NULL,
-    message TEXT NOT NULL,
-    announceTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    read_status SMALLINT(1) NOT NULL DEFAULT '1',
-    edited VARCHAR(3) NOT NULL DEFAULT 'NO',
+    announcementid 			SERIAL,
+    secondannouncementid 	INT  NOT NULL,
+    uid 					INT  NOT NULL,
+    recipient 				INT  NOT NULL,
+    cid 					INT  NOT NULL,
+    versid 					VARCHAR(8) NOT NULL,
+    title 					TEXT NOT NULL,
+    message 				TEXT NOT NULL,
+    announceTime 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    read_status 			SMALLINT NOT NULL DEFAULT '1',
+    edited 					VARCHAR(3) NOT NULL DEFAULT 'NO',
     PRIMARY KEY(announcementid, secondannouncementid, uid, cid, versid),
     FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
     FOREIGN KEY (recipient) REFERENCES lenasys_user (uid),
     FOREIGN KEY (cid) REFERENCES course (cid)
     
-)CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
+
 CREATE TABLE ANNOUNCEMENTLOG(
-	ID INT  NOT NULL AUTO_INCREMENT,
-    ANNOUNCEMENTID INT  NOT NULL,
-    UID INT  NOT NULL,
-    CID INT  NOT NULL,
-    VERSID VARCHAR(8) NOT NULL,
-    TITLE TEXT NOT NULL,
-    MESSAGE TEXT NOT NULL,
-    ANNOUNCETIME TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    LOGACTION VARCHAR(20) NOT NULL,
+	ID 					SERIAL,
+    ANNOUNCEMENTID 		INT  NOT NULL,
+    UID 				INT  NOT NULL,
+    CID 				INT  NOT NULL,
+    VERSID 				VARCHAR(8) NOT NULL,
+    TITLE 				TEXT NOT NULL,
+    MESSAGE 			TEXT NOT NULL,
+    ANNOUNCETIME 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    LOGACTION 			VARCHAR(20) NOT NULL,
     PRIMARY KEY(ID)
     
-)CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 DELIMITER //
  
@@ -592,28 +594,28 @@ INSERT INTO `groups`(groupKind,groupVal,groupInt) VALUES ('Vi','VII',7);
 INSERT INTO `groups`(groupKind,groupVal,groupInt) VALUES ('Vi','VIII',8);
 
 CREATE TABLE user_group (
-  groupID int(10)  NOT NULL,
-  userID int(10)  NOT NULL,
+  groupID 				int  NOT NULL, -- (10)*/
+  userID 				int  NOT NULL, -- (10)*/
   KEY groupID (groupID),
   KEY userID (userID),
   CONSTRAINT user_group_ibfk_1 FOREIGN KEY (groupID) REFERENCES `groups` (groupID),
   CONSTRAINT user_group_ibfk_2 FOREIGN KEY (userID) REFERENCES lenasys_user (uid)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
---table used for checking participation. i.e participation is 0 = not participated, 1 = participated.
+--table used for checking participation. i.e participation is 0 = not participated, 1 = participated. */
 CREATE TABLE user_participant (
-  id						INT NOT NULL AUTO_INCREMENT,
+  id						SERIAL,
   uid						INT  NOT NULL,
   lid 						INT  NOT NULL,
-  participation 			SMALLINT(1) ,
+  participation 			SMALLINT ,
   comments      			VARCHAR(512),
   PRIMARY KEY (id),
   FOREIGN KEY (lid) REFERENCES listentries (lid),
   FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 
--- Opponents table used to save opponents for seminars 
+-- Opponents table used to save opponents for seminars  */
 CREATE TABLE opponents (
 	presenter				INT  NOT NULL,
 	lid 					INT  NOT NULL,
@@ -624,7 +626,7 @@ CREATE TABLE opponents (
 	FOREIGN KEY (lid) REFERENCES listentries(lid),
 	FOREIGN KEY (opponent1) REFERENCES lenasys_user(uid),
 	FOREIGN KEY (opponent2) REFERENCES lenasys_user(uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 CREATE TABLE options (
 	label					varchar(128),
@@ -633,46 +635,46 @@ CREATE TABLE options (
 );
 
 
--- Timesheet table used for timesheet duggas 
+-- Timesheet table used for timesheet duggas  */
 CREATE TABLE timesheet(
-	tid 					INT  NOT NULL AUTO_INCREMENT,
+	tid 					SERIAL,
 	uid						INT  NOT NULL,
 	cid						INT  NOT NULL,
 	vers					VARCHAR(8) NOT NULL,
-	did						INT(11) NOT NULL,
-	moment				INT  NOT NULL,
+	did						INT NOT NULL, -- (11)*/
+	moment					INT  NOT NULL,
 	day						DATE NOT NULL,
 	week					SMALLINT,
 	type					VARCHAR(20),
-	reference			VARCHAR(10),
-	comment				TEXT,
+	reference				VARCHAR(10),
+	comment					TEXT,
 	PRIMARY KEY (tid),
 	FOREIGN KEY (uid) REFERENCES lenasys_user(uid),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (did) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
--- userDuggaFeedback table used for lenasys_user feedback on duggor 
+-- userDuggaFeedback table used for lenasys_user feedback on duggor  */
 CREATE TABLE userduggafeedback(
-	ufid 					INT  NOT NULL AUTO_INCREMENT,
+	ufid 					SERIAL,
 	username				VARCHAR(80) DEFAULT null,
 	cid						INT  NOT NULL,
 	lid						INT  NOT NULL,
-	score					INT(11) NOT NULL,
+	score					INT NOT NULL, -- (11)*/
 	entryname				varchar(68),
 	PRIMARY KEY (ufid),
 	FOREIGN KEY (username) REFERENCES lenasys_user(username),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (lid) REFERENCES listentries(lid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+);
 
 
-	--This view eases the process of determining how many hp a student with a specific uid
-	--in a specific course cid has finished. See the example below.
+	--This view eases the process of determining how many hp a student with a specific uid */
+	--in a specific course cid has finished. See the example below. */
 
-	--Example, get total hp finished by lenasys_user with uid 2 in course with cid 1:
-		--SQL code: select hp from studentresult where lenasys_user = 2 and course_id = 1;
+	--Example, get total hp finished by lenasys_user with uid 2 in course with cid 1: */
+		--SQL code: select hp from studentresult where lenasys_user = 2 and course_id = 1; */
 
 
 CREATE VIEW studentresultCourse AS
@@ -682,14 +684,14 @@ CREATE VIEW studentresultCourse AS
 		AND subparts.parthp = partresult.hp
 	WHERE partresult.grade != 'u';
 
--- updatesd info in lenasys_user table 
+-- updatesd info in lenasys_user table  */
 UPDATE lenasys_user SET firstname='Toddler', lastname='Kong' WHERE username='Toddler';
 UPDATE lenasys_user SET firstname='Johan', lastname='Grimling' WHERE username='Grimling';
 UPDATE lenasys_user SET ssn='810101-5567' WHERE username='Grimling';
 UPDATE lenasys_user SET ssn='444444-5447' WHERE username='Toddler';
 UPDATE lenasys_user SET superuser=1 WHERE username='Toddler';
 
--- Templates for codeexamples 
+-- Templates for codeexamples  */
 
 INSERT INTO template(templateid, stylesheet, numbox) VALUES (0, 'template0.css',0);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,'template1.css',2);
@@ -703,7 +705,7 @@ INSERT INTO template (templateid,stylesheet,numbox) VALUES (8,'template8.css',3)
 INSERT INTO template (templateid,stylesheet,numbox) VALUES (9,'template9.css',5);
 INSERT INTO template (templateid,stylesheet,numbox) VALUES (10,'template10.css',1);
 
--- Programming languages that decide highlighting 
+-- Programming languages that decide highlighting  */
 
 INSERT INTO wordlist(wordlistname,uid) VALUES ('JS',1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ('PHP',1);
@@ -713,7 +715,7 @@ INSERT INTO wordlist(wordlistname,uid) VALUES ('Java',1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ('SR',1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ('SQL',1);
 
--- Wordlist for different programming languages 
+-- Wordlist for different programming languages  */
 
 INSERT INTO word(wordlistid, word,label,uid) VALUES (1,'for','A',1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (1,'function','B',1);
