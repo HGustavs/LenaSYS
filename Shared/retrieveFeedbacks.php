@@ -14,19 +14,27 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'"') as $useran
   $marked = $useranswer['marked'];
   $feedback = $useranswer['feedback'];
 
+  $htmlCode .="<div class='feedback_card'>";
   if ($grade == 2) {
-  	 $htmlCode .="<div class='feedback_card'><span><img src='../Shared/icons/complete.svg'></span><span><b>".$moment."</b></span></div>";
-  	 $htmlCode .="<div><p>Dugga marked as pass: ".$marked."</p></div>";
+  	 $htmlCode .="<div><span><img src='../Shared/icons/complete.svg'></span>";
+  	 foreach ($pdo->query('SELECT entryname FROM listentries WHERE lid="'.$moment.'"') as $listentries) {
+  	 	$entryname = $listentries['entryname'];
+  	 	$htmlCode .="<span class='entryname'><b>".$entryname."</b></span></div>";
+  	 	
+  	 }
+  	 $htmlCode .="<div class='markedPass'><p>Dugga marked as pass: ".$marked."</p></div>";
   }else if($grade == 1){
-  	 $htmlCode .="<div><span><img src='../Shared/icons/uncomplete.svg'></span><span><b>".$moment."</b></span></div>";
-  	 $htmlCode .="<div><p>Dugga marked as fail: ".$marked."</p></div>";
+  	 $htmlCode .="<div><span><img src='../Shared/icons/uncomplete.svg'></span>";
+  	 foreach ($pdo->query('SELECT entryname FROM listentries WHERE lid="'.$moment.'"') as $listentries) {
+  	 	$entryname = $listentries['entryname'];
+  	 	$htmlCode .="<span class='entryname'><b>".$entryname."</b></span></div>";
+  	 	
+  	 }
+  	 $htmlCode .="<div class='markedFail'><p>Dugga marked as fail: ".$marked."</p></div>";
   }
-  $htmlCode .="<div><p>".$feedback."</p></div>";
-
-  //$gradedAnswer[] = array("aid" => $aid, "uid" => $uid, "moment" => $moment, "grade" => $grade, "marked" => $marked, "feedback" => $feedback,);
+  $htmlCode .="<div><p>".$feedback."</p></div></div>";
 
 }
-//echo json_encode(["gradedAnswer"=> $gradedAnswer]);
 echo json_encode(["gradedAnswer" => $htmlCode]);
 
 ?>

@@ -681,7 +681,28 @@ p {
 .feedbackHeader{
   background-color: #ddd;
 }
-
+.feedback_card{
+  margin: 8px 0 15px 0;
+}
+.feedback_card img{
+  width: 25px;
+  height: 26px;
+  display:inline-block;
+  vertical-align: middle;
+}
+.entryname{
+  margin-left: 5px;
+  margin-top: 3px;
+  font-size: 16px;
+  display:inline-block;
+  vertical-align: middle;
+}
+.markedPass{
+  color: #008000;
+}
+.markedFail{
+  color: #ff0000;
+}
 /*End of recent feedback from the teacher*/
 #Sectionlist {
   margin: 10px;
