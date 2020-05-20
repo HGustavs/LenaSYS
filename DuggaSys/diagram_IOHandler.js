@@ -477,6 +477,9 @@ function buildDiagramFromChanges() {
         iterateChange(change, "diagram");
         iterateChange(change, "points");
 
+        deleteQueue.sort((a, b) => a.key < b.key ? 1 : -1).forEach(position => {
+            deleteNestedProperty(position.object, position.key);
+        });
         deleteQueue = [];
     }
 
