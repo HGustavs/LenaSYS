@@ -74,7 +74,7 @@
 
 					echo "<table width='100%'>";
 					echo "<tr>";
-					echo "<td align='center'>";
+					echo "<td align='left'>";
 					echo "<input class='submit-button' type='button' value='Save' onclick='saveClick();' style='width:160px;height:48px;line-height:48px;' />";
 					echo "<input class='submit-button' type='button' value='Reset' onclick='reset();' style='width:160px;height:48px;line-height:48px;' />";
 					echo "</td>";
