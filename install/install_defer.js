@@ -16,6 +16,8 @@ var submitButton = document.getElementById('submitInput');
 var inputPage = 1;
 var previousInputPage = 0;
 var showHideButton = document.getElementById('showHideInstallation');
+var writeOver1 = document.getElementById('writeOver1');
+var writeOver2 = document.getElementById('writeOver2');
 
 //---------------------------------------------------------------------------------------------------
 // On-click function for show/hide-button
@@ -29,8 +31,10 @@ if (showHideButton !== null){
 //---------------------------------------------------------------------------------------------------
 // On-click function for the permission-button
 //---------------------------------------------------------------------------------------------------    
-btn.onclick = function () {
-  modal.style.display = "block";
+if(btn !== null){
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -55,7 +59,11 @@ function focusTheRightBox() {
   } 
   else if (inputPage === 4) {
     if (document.getElementById("writeOver1").checked) {
-      document.getElementById("writeOver2").focus();
+      if(document.getElementById("writeOver2").checked) {
+        document.getElementById("transaction").focus();
+      } else{
+        document.getElementById("writeOver2").focus();
+      }
     } else {
       document.getElementById("writeOver1").focus();
     }
@@ -64,53 +72,58 @@ function focusTheRightBox() {
 
 //---------------------------------------------------------------------------------------------------
 // leftArrow
-//---------------------------------------------------------------------------------------------------    
-leftArrow.onclick = function() {
-  previousInputPage = inputPage;
-  if(inputPage > 1) inputPage--;
-  updateInputPage();
-  focusTheRightBox();
-};
+//---------------------------------------------------------------------------------------------------   
+if(leftArrow !== null){
+  leftArrow.onclick = function() {
+    previousInputPage = inputPage;
+    if(inputPage > 1) inputPage--;
+    updateInputPage();
+    focusTheRightBox();
+  };
+}
 
 //---------------------------------------------------------------------------------------------------
 // rightArrow
 //---------------------------------------------------------------------------------------------------   
-rightArrow.onclick = function() {
-  /* Only continue if all fields on current page are filled out */
-  if (inputPage === 1 || inputPage === 2) {
-    var fields = document.getElementsByClassName("page" + inputPage + "input");
-    var found = false; /* Is an empty field found? */
-    for (var i = 0; i < fields.length; i++) {
-      if (fields[i].value === ''){
-        if (inputPage === 2 && fields[1]) {
-          found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
-        }else {
-          found = true;  /* Empty field found */
+if(rightArrow !== null){
+  rightArrow.onclick = function() {
+    /* Only continue if all fields on current page are filled out */
+    if (inputPage === 1 || inputPage === 2) {
+      var fields = document.getElementsByClassName("page" + inputPage + "input");
+      var found = false; /* Is an empty field found? */
+      for (var i = 0; i < fields.length; i++) {
+        if (fields[i].value === ''){
+          if (inputPage === 2 && fields[1]) {
+            found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
+          }else {
+            found = true;  /* Empty field found */
+          }
+          /* Set background of text field to light red */
+          fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
         }
-        /* Set background of text field to light red */
-        fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
       }
-    }
-    if (!found){
-      /* If no empty field was found - proceed and reset values of text fields and hide warning text */
-      document.getElementById("enterFields" + inputPage).style.display = "none";
+      if (!found){
+        /* If no empty field was found - proceed and reset values of text fields and hide warning text */
+        document.getElementById("enterFields" + inputPage).style.display = "none";
+        previousInputPage = inputPage;
+        if (inputPage < 5) inputPage++;
+        for (var i = 0; i < fields.length; i++) {
+          fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
+        }
+        updateInputPage();
+      } else {
+        /* Show the warning text if empty field was found */
+        document.getElementById("enterFields" + inputPage).style.display = "inline-block";
+      }
+    } else {
+      /* Only page 1 and 2 has text fields so the rest have no rules */
       previousInputPage = inputPage;
       if (inputPage < 5) inputPage++;
-      for (var i = 0; i < fields.length; i++) {
-        fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
-      }
       updateInputPage();
-    } else {
-      /* Show the warning text if empty field was found */
-      document.getElementById("enterFields" + inputPage).style.display = "inline-block";
     }
-  } else {
-    /* Only page 1 and 2 has text fields so the rest have no rules */
-    previousInputPage = inputPage;
-    if (inputPage < 5) inputPage++;
-    updateInputPage();
-  }
-};
+  };
+}
+
 
 //---------------------------------------------------------------------------------------------------
 // Remove default behaviour (click submit button) when pressing enter
@@ -243,12 +256,36 @@ window.onclick = function(event) {
   }
 }
 
+if(postInstallModalClose !== null){
+  postInstallModalClose.onclick = function() {
+    postInstallModal.style.display = 'none';
+  }
+}
+
+if(postInstallModalClose !== null){
+  window.onclick = function(event) {
+    if (event.target == postInstallModal) {
+      postInstallModal.style.display = 'none';
+    }
+  }
+}
+
 //---------------------------------------------------------------------------------------------------
-// When user click outside modal, return to right field
+// When clicking writeOver1 focus focusRightBox()
 //--------------------------------------------------------------------------------------------------- 
-var writeOver1 = document.getElementById('writeOver1');
-writeOver1.onclick = function() {
-  focusTheRightBox();
+if(writeOver1 !== null){
+  writeOver1.onclick = function() {
+    focusTheRightBox();
+  }
+}
+
+//---------------------------------------------------------------------------------------------------
+// When clicking writeOver2 focusRightBox()
+//--------------------------------------------------------------------------------------------------- 
+if(writeOver2 !== null){
+  writeOver2.onclick = function() {
+    focusTheRightBox();
+  }
 }
 
 //---------------------------------------------------------------------------------------------------

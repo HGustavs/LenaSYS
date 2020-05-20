@@ -75,6 +75,9 @@ CREATE TABLE user_course(
 	`groups` 				varchar(256),
 	examiner 				integer,
 	teacher					VARCHAR(30),
+	passed 					INT UNSIGNED NOT NULL DEFAULT 0,
+    failed 					INT UNSIGNED NOT NULL DEFAULT 0,
+    pending 				INT UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (uid, cid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
@@ -490,14 +493,19 @@ CREATE TABLE `groups` (
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 CREATE TABLE announcement(
     announcementid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    secondannouncementid INT UNSIGNED NOT NULL,
     uid INT UNSIGNED NOT NULL,
+    recipient INT UNSIGNED NOT NULL,
     cid INT UNSIGNED NOT NULL,
-    versid VARCHAR(8),
+    versid VARCHAR(8) NOT NULL,
     title TINYTEXT NOT NULL,
     message TEXT NOT NULL,
-    announceTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY(announcementid, uid, cid),
+    announceTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    read_status TINYINT(1) NOT NULL DEFAULT "1",
+    edited VARCHAR(3) NOT NULL DEFAULT "NO",
+    PRIMARY KEY(announcementid, secondannouncementid, uid, cid, versid),
     FOREIGN KEY (uid) REFERENCES user (uid),
+    FOREIGN KEY (recipient) REFERENCES user (uid),
     FOREIGN KEY (cid) REFERENCES course (cid)
     
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
@@ -642,7 +650,7 @@ CREATE TABLE timesheet(
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 /* userDuggaFeedback table used for user feedback on duggor */
-CREATE TABLE userDuggaFeedback(
+CREATE TABLE userduggafeedback(
 	ufid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	username						VARCHAR(80) DEFAULT null,
 	cid						INT UNSIGNED NOT NULL,
