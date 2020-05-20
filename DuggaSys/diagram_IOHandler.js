@@ -348,7 +348,7 @@ function afterPrint(){
 }
 
 //------------------------------------------------
-// Local storage compressing functions start
+// Saving only diagram changes functions start
 //------------------------------------------------
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -362,7 +362,10 @@ function afterPrint(){
 function getObjectChanges(base, object) {
     const changes = {};
 
+    //Compares two objects recrusivly to also compare child objects and arrays
     const compareObjects = (base, object, path = "") => {
+
+        //Go through base object to find deleted properties
         for(const key of Object.keys(base)) {
             const currentPath = path === "" ? key : `${path}.${key}`;
             if(object[key] === undefined) {
@@ -370,6 +373,7 @@ function getObjectChanges(base, object) {
             }
         }
 
+        //Go through new object to find additions or updates
         for(const [key, value] of Object.entries(object)) {
             if(!isFunction(value)) {
                 const currentPath = path === "" ? key : `${path}.${key}`;
@@ -380,7 +384,7 @@ function getObjectChanges(base, object) {
                     };
                 } else if(value !== base[key]) {
                     if((isObject(value) || Array.isArray(value)) && (isObject(base[key]) || Array.isArray(base[key]))) {
-                        compareObjects(base[key], value, currentPath);
+                        compareObjects(base[key], value, currentPath); //Recursive
                     } else {
                         changes[currentPath] = {
                             "type": "u",
@@ -397,6 +401,10 @@ function getObjectChanges(base, object) {
     return changes;
 }
 
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+// buildDiagramFromChanges: Builds the diagram by iterating through the diagramChanges object, adding, updating and deleting properties as they come.
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+
 function buildDiagramFromChanges() {
     const built = {
         diagram: [],
@@ -405,8 +413,9 @@ function buildDiagramFromChanges() {
 
     if(diagramChanges === null || typeof diagramChanges === "undefined") return built;
 
-    let deleteQueue = [];
+    let deleteQueue = []; //Queue of objects to delete to make it possible to sort by index before deletion
 
+    //Iterates through one change for one type (diagram/points), sets correct values and pushes deletions to deleteQueue
     const iterateChange = (change, type = "diagram") => {
         for(const [key, value] of Object.entries(change[type])) {
             if(value.type === '+' || value.type === 'u') {
@@ -428,6 +437,7 @@ function buildDiagramFromChanges() {
             iterateChange(change, "points");
         }
 
+        //Sorts the deleteQueue to always have higher indexes first to prevent index from being wrong when deleting later properties.
         deleteQueue.sort((a, b) => a.key < b.key ? 1 : -1).forEach(position => {
             deleteNestedProperty(position.object, position.key);
         });
@@ -436,6 +446,10 @@ function buildDiagramFromChanges() {
 
     return built;
 }
+
+//----------------------------------------------------------------------------------------------------------------------------------
+// setNestedPropertyValue: Recursive function creating uncreated passed properties in passed object and sets values when applicable.
+//----------------------------------------------------------------------------------------------------------------------------------
 
 function setNestedPropertyValue(object, property, value) {
     if(property.indexOf(".") === -1) {
@@ -450,6 +464,10 @@ function setNestedPropertyValue(object, property, value) {
         setNestedPropertyValue(object[topLevelProperty], remainingProperties, value);
     }
 }
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+// setNestedPropertyValue: Recursive function finding the last property in the passed property hierarchy and deletes it from passed object.
+//-----------------------------------------------------------------------------------------------------------------------------------------
 
 function deleteNestedProperty(object, property) {
     if(property.indexOf(".") === -1) {
@@ -466,6 +484,10 @@ function deleteNestedProperty(object, property) {
     }
 }
 
+//------------------------------------------------
+// Saving only diagram changes functions end
+//------------------------------------------------
+
 //--------------------------------------------------------
 // isFunction: Returns true if passed value is a function.
 //--------------------------------------------------------
@@ -481,6 +503,10 @@ function isFunction(f) {
 function isObject(o) {
     return Object.prototype.toString.call(o) === '[object Object]'
 }
+
+//------------------------------------------------
+// Local storage compressing functions start
+//------------------------------------------------
 
 //---------------------------------------------------------------------------------------------------
 // getObjectPropertyKeys: Returns all property keys in passed object whose values are not a function.
