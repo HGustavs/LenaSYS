@@ -164,7 +164,7 @@ var answeredSplit = allanswers.split(",");
 		}
 	}
 
-	var yoloswag = "Answered: " + theanswers;
+	var yoloswag = "Correct answers: " + theanswers;
 $("#output").html(checkifcorrect+"</br>"+yoloswag);
 }
 function closeFacit(){
