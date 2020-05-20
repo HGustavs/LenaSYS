@@ -564,6 +564,7 @@ $array = array(
 		"files" => $files,
 		"userfeedback" => $userfeedback,
 		"feedbackquestion" => $feedbackquestion,
+		"variant" => $savedvariant,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
