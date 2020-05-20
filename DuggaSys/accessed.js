@@ -543,7 +543,7 @@ function renderColumnFilter(col, status, colname) {
     if (colname == "User")
         return str;
     if (status) {
-        str = "<div class='checkbox-dugga'>";
+		str = "<div class='checkbox-dugga'>";
         str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel' for='" + colname + "'>" + colname + "</label>";
         str += "</div>"
     } else {

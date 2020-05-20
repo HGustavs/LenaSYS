@@ -209,7 +209,7 @@
 					echo   "<span id='filterButton'>";
 					echo     "<img class='navButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-					echo       "<div id='filterOptions'></div>";
+					echo       "<div id='filterOptions'></div>"; 
 					echo       "<div id='columnfilter'></div>";
 					echo       "<div id='customfilter'></div>";                
 					echo     "</div>";
@@ -246,24 +246,26 @@
 					echo "<span id='exampleSection'>Example Section : </span>";
 					echo "<span id='exampleName'> Example Name</span>";
 					echo "</td>";
-				}else{
-						echo "<td id='select' style='display:none;' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
-						echo   "<span>";
-				    echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-					  echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-  					echo     "<div id='filterOptions'></div>";
-						echo     "</div>";
-	          echo   "</span>";
-						echo "</td>";
-  					echo "<td id='sort' style='display:none' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
-						echo   "<span>";
-  					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
-  			    echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
-  					echo     "</div>";
-  					echo   "</span>";
-						echo "</td>";
-						echo "</td>";
-            echo "<td id='menuHook' class='navSpacer' >";
+				}
+				else{
+					
+					echo "<td id='select' style='display:none;' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
+					echo   "<span>";
+					echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
+					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+					echo     "<div id='filterOptions'></div>";
+					echo     "</div>";
+					echo   "</span>";
+					echo "</td>";
+					echo "<td id='sort' style='display:none' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
+					echo   "<span>";
+					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+					echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
+					echo     "</div>";
+					echo   "</span>";
+					echo "</td>";
+					echo "</td>";
+					echo "<td id='menuHook' class='navSpacer' >";
 			}
 	
 			if(checklogin()) {
