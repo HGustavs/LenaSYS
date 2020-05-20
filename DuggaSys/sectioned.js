@@ -2162,6 +2162,7 @@ function toggleFeedbacks(){
   $("#feedback").click(function(){
     $("#feedbackOverlay").toggle();
   });
+
   var uname = $("#userName").html();
   $.ajax({
     url: "../Shared/retrieveUserid.php",
@@ -2176,9 +2177,12 @@ function toggleFeedbacks(){
         data: {uid: uid},
         type: "POST",
         success: function(data){
-         
           console.log("Returned from retrieveFeedbacks: " + data);
-
+          var parsed_data = JSON.parse(data);
+          $(".feedbackContent").html(parsed_data.gradedAnswer);
+        },
+        error:function(){
+          console.log("Couldn't return feedback data");
         }
 
       });
