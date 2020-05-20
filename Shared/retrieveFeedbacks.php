@@ -46,7 +46,7 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'"') as $useran
   	 }
   	 $htmlCode .="<div class='markedFail'><p>Dugga marked as fail: ".$markedDate."</p></div>";
   }
-  $htmlCode .="<div><p>\"".$feedback." "."\"</p></div></div>";
+  $htmlCode .="<div><p class='feedbackComment'>\"".$feedback." "."\"</p></div></div>";
 
 }
 echo json_encode(["gradedAnswer" => $htmlCode]);

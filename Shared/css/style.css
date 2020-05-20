@@ -582,7 +582,7 @@ p {
 #displayAnnouncements .announcementCard .displayAnnouncementMsg{
   margin-bottom: 40px;
 }
-.announcementMsgParagraph .more-text{
+.more-text{
   display: none;
 }
 #displayAnnouncements #btnContainer .btn {

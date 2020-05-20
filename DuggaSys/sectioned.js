@@ -1902,7 +1902,8 @@ function retrieveAnnouncementsCards(){
             $("#announcementnotificationcount").html(parsed_data.nRows);
           }
           accessAdminAction();
-          readLessOrMore();
+          var paragraph = "announcementMsgParagraph";
+          readLessOrMore(paragraph);
           showLessOrMoreAnnouncements();
           scrollToTheAnnnouncementForm();
           $(".deleteBtn").click(function(){
@@ -2040,10 +2041,10 @@ function closeActionLogDisplay(){
   $(".closeActionLogDisplay").parent().remove();
 }
 //read less or more announcement card
-function readLessOrMore(){
-    var maxLength = 60;
+function readLessOrMore(paragraph){
+    var maxLength = 70;
 
-    $(".announcementMsgParagraph").each(function(){
+    $("."+paragraph).each(function(){
 
       var myStr = $(this).text();
 
@@ -2062,10 +2063,12 @@ function readLessOrMore(){
     $(".read-more").click(function(){
       $(this).siblings(".more-text").contents().unwrap();
       $(this).remove();
-      
-      for (i = 0; i < announcementCard.length; i++) {
-        announcementCard[i].style.width = "100%";
-      }
+      if(paragraph == 'announcementMsgParagraph'){
+        for (i = 0; i < announcementCard.length; i++) {
+          announcementCard[i].style.width = "100%";
+        }
+      } 
+     
     });
 }
 
@@ -2180,6 +2183,8 @@ function toggleFeedbacks(){
           console.log("Returned from retrieveFeedbacks: " + data);
           var parsed_data = JSON.parse(data);
           $(".feedbackContent").html(parsed_data.gradedAnswer);
+          var feedbackComment = 'feedbackComment';
+          readLessOrMore(feedbackComment);
         },
         error:function(){
           console.log("Couldn't return feedback data");
