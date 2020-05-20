@@ -3215,6 +3215,7 @@ padding: 10px;
   transition: right 0.3s, top 0.3s;
 }
 
+/* designs the "?" button, making it visible to the left of resultEd.php */
 #legendBtn{
   height: 31px;
   width: 36px;
@@ -3234,6 +3235,7 @@ padding: 10px;
   user-select: none;
 }
 
+/* designing the actual legend, such as distance between each description, color and so on... */
 .legendList{
   width: 280px;
   float: right;
@@ -3256,16 +3258,18 @@ padding: 10px;
 .legendList div{
   display: inline-block;
 }
-
+/* all items using legendListItem uses this method */
 .legendListItem span:first-of-type{
   font-weight: bold;
 }
+
 
 .legendListItem img{
   width: 24px;
   height: 24px;
 }
 
+/* all items in the legend follow this */
 .legendListItem div:first-of-type{
   width: 24px;
   height: 14px;
