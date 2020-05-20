@@ -209,12 +209,12 @@ function getDiagramHash(stringifiedDiagram) {
     return hash.toString(16); // Convert to 32-bit integer
 }
 
-//----------------------------------------------------------------------
-// removeLocalStorage: this function is running when you click the button clear diagram
-//----------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+// resetDiagramChangesLocalStorage: This function executes when diagram is cleared. Used to reset diagram changes in local storage.
+//--------------------------------------------------------------------------------------------------------------------
 
-function removeLocalStorage() {
-
+function resetDiagramChangesLocalStorage() {
+    localStorage.setItem("diagramChanges", "[]");
 }
 
 //-------------------------------------------------------------------------------
