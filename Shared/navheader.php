@@ -94,13 +94,13 @@
               echo "      <img id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
 							echo "    </div>";
 							echo "</td>";
-							
+					if(checklogin() && (isSuperUser($_SESSION['uid']) )) {			
 							echo "<td class='newVers' style='display: inline-block;margin-right:16px;'>";
 							echo "    <div class='newVers menuButton'>";
               echo "      <img id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
 							echo "    </div>";
 							echo "</td>";						
-					
+					}
 							echo "<td class='results' style='display: inline-block;'>";
 							echo "    <div class='results menuButton'>";
 							echo "    <a id='resultsBTN' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
