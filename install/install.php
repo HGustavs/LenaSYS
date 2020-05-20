@@ -408,21 +408,33 @@
           $rootPwd = $_POST["rootPwd"];
           $connection = null;
 
+          function
+
           # Connect to database with root access.
-          try {
-            $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
-            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
-          } catch (PDOException $e) {
-            $errors++;
-            exit ("<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>
-            You may have entered a invalid password or an invalid user.<br>
-            <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
+
+          connectToRootDatabase($serverName, $rootUser, $rootPwd);
+
+          function connectRootToDatabase($serverName, $rootUser, $rootPwd){
+            global $connection;
+            global $errors;
+            global $completedSteps;
+            global $totalSteps;
+            try {
+              global $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
+              global $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+              echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
+            } catch (PDOException $e) {
+              global $errors++;
+              exit ("<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>
+              You may have entered a invalid password or an invalid user.<br>
+              <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
+            }
+            $completedSteps++;
+            updateProgressBar($completedSteps, $totalSteps);
+            flush();
+            ob_flush();
           }
-          $completedSteps++;
-          updateProgressBar($completedSteps, $totalSteps);
-          flush();
-          ob_flush();
+
 
 
           # If checked, delete user
