@@ -494,8 +494,8 @@
             if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
               $connection->beginTransaction();
             }
-            $connection->query("SET NAMES utf8");
-            $connection->query("USE {$databaseName}");
+            # Currently connected to postgres 
+            $connection->query("SET CLIENT_ENCODING TO 'UTF8';");
             $queryBlock = '';
             $blockStarted = false;
             foreach ($initQueryArray AS $query) {
@@ -519,6 +519,7 @@
               echo "<span id='successText' />Initialization of database complete. </span><br>";
             }
           } catch (PDOException $e) {
+            echo"$e";
             $errors++;
             if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
               $connection->rollback();
