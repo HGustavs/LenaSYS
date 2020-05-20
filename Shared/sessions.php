@@ -399,6 +399,34 @@ function isSuperUser($userId)
         }
 }
 
+//------------------------------------------------------
+//isStudentUser
+//-------------------------------------------------------
+//Returns superuser status of user
+//@param in $userId user ID of the user to ook up
+//@return true false. True id studentuser false if not
+//-------------------------------------------------------
+function isStudentUser($userId)
+{
+        global $pdo;
+
+        if($pdo == null) {
+                pdoConnect();
+        }
+
+        $query = $pdo->prepare('SELECT count(uid) AS count FROM user WHERE (uid=:uid AND superuser=0) OR (uid=:uid AND superuser IS NULL)');
+        $query->bindParam(':uid', $userId);
+        $query->execute();
+        $result = $query->fetch();
+
+        if ($result["count"] == 1) {
+                return true;
+        }else{
+                return false;
+        }
+}
+
+
 //------------------------------------------------------------------------------------------------
 // getAccessType
 //------------------------------------------------------------------------------------------------
