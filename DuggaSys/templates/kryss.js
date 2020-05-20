@@ -19,6 +19,7 @@ Example seed
 -------------==============######## Documentation End ###########==============-------------
 */
 var idunique = 0;
+var variant = "UNK";
 function quiz(parameters) {
 	if(parameters != undefined) {
 		console.log("pram:" + parameters);
@@ -84,6 +85,7 @@ function setup()
 
 function returnedDugga(data)
 {	
+	variant = data['variant'];
 	if(querystring['highscoremode'] == 1) {
 		Timer.startTimer();
 	} else if (querystring['highscoremode'] == 2) {
