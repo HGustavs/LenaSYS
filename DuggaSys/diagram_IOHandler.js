@@ -117,14 +117,18 @@ function Save() {
         diagram: getObjectChanges(builtDiagram.diagram, diagram),
         points: getObjectChanges(builtDiagram.points, points)
     };
-    
-    if(diagramChanges !== null) {
+
+    if(Object.keys(objectChanges.diagram).length > 0 && Object.keys(objectChanges.points).length > 0) {
         diagramChanges.push({
-            "id": diagramChanges.length + 1,
             "diagram": objectChanges.diagram,
             "points": objectChanges.points
         });
+    } else if(Object.keys(objectChanges.diagram).length > 0 && Object.keys(objectChanges.points).length === 0) {
+        diagramChanges.push({"diagram": objectChanges.diagram});
+    } else if(Object.keys(objectChanges.diagram).length === 0 && Object.keys(objectChanges.points).length > 0) {
+        diagramChanges.push({"points": objectChanges.points});
     }
+
     localStorage.setItem("diagramChanges", JSON.stringify(diagramChanges));
     localStorage.setItem("Settings", JSON.stringify(settings));
     console.log("State is saved");
@@ -177,16 +181,6 @@ function loadKeyBinds(){
 //---------------------------------------------
 
 function loadDiagram() {
-    const localStorageDiagramChanges = localStorage.getItem("diagramChanges");
-
-    if(localStorageDiagramChanges !== null) {
-        diagramChanges = JSON.parse(localStorageDiagramChanges);
-        const built = buildDiagramFromChanges(diagramChanges);
-
-        overwriteDiagram(built.diagram);
-        overwritePoints(built.points);
-    }
-
     // Only retrieve settings if there are any saved
     if(JSON.parse(localStorage.getItem("Settings"))){
         settings = JSON.parse(localStorage.getItem("Settings"));
@@ -195,9 +189,15 @@ function loadDiagram() {
     const localHexHash = localStorage.getItem("localhash");
     const hexHash = getDiagramHash(getStringifiedDiagram());
 
-    if (typeof localHexHash !== "undefined") {
-        if (localHexHash !== hexHash) {
-            //Parse diagram from local storage and write to diagram and points arrays
+    if (localHexHash !== hexHash) {
+        const localStorageDiagramChanges = localStorage.getItem("diagramChanges");
+
+        if(localStorageDiagramChanges !== null) {
+            diagramChanges = JSON.parse(localStorageDiagramChanges);
+            const built = buildDiagramFromChanges(diagramChanges);
+    
+            overwriteDiagram(built.diagram);
+            overwritePoints(built.points);
         }
     }
     deselectObjects();
@@ -442,9 +442,14 @@ function buildDiagramFromChanges() {
         }
     };
 
+    
     for(const change of diagramChanges) {
-        iterateChange(change, "diagram");
-        iterateChange(change, "points");
+        if(typeof change["diagram"] !== "undefined") {
+            iterateChange(change, "diagram");
+        }
+        if(typeof change["points"] !== "undefined") {
+            iterateChange(change, "points");
+        }
 
         deleteQueue.sort((a, b) => a.key < b.key ? 1 : -1).forEach(position => {
             deleteNestedProperty(position.object, position.key);
