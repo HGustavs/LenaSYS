@@ -443,7 +443,6 @@
             ob_flush();
           }
 
-
           # Create new database
           try {
             $connection->query("CREATE DATABASE {$databaseName}");
@@ -536,7 +535,6 @@
               echo "<span id='successText' />Initialization of database complete. </span><br>";
             }
           } catch (PDOException $e) {
-            echo"$e";
             $errors++;
             if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
               $connection->rollback();
@@ -719,12 +717,19 @@
       return $isAllCredentialsFilled;
     }
 
+    
+
+
+
     //---------------------------------------------------------------------------------------------------
     // Function that deletes a user from database
     //---------------------------------------------------------------------------------------------------
     function deleteUser($connection, $username, $databaseName){
       global $errors;
       try {
+        $connection->query("REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM {$username}");
+        $connection->query("REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM {$username}");
+        $connection->query("REVOKE ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public FROM {$username}");
         $connection->query("DROP USER {$username}");
         echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
       } catch (PDOException $e) {
@@ -734,7 +739,7 @@
     } 
 
     //---------------------------------------------------------------------------------------------------
-    // Function that deletes a user from database
+    // Function that deletes a database
     //---------------------------------------------------------------------------------------------------
     function deleteDatabase($connection, $databaseName){
       global $errors;
