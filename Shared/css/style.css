@@ -3658,9 +3658,8 @@ padding: 10px;
 
 .dropdown-list-container {
   padding: 8px;
-  width: 300px;
-  max-height: calc(100vh - 100px);
-  height: auto;
+  width: 400px;
+  
   font-size: 12px;
   overflow-y: auto;
   display: none;
@@ -7089,5 +7088,10 @@ textarea#filecont {
   left: 0px;
   float: left;
   
+}
+
+#columnfilter{
+  
+  float: left;
 }
 
