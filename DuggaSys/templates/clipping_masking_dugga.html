@@ -24,19 +24,13 @@
     </div>
 
     <div id="drawingArea">
-      
-          <div class='loginBoxheader'>
-                <h3>Rityta</h3>
-          </div>
+          <div class='loginBoxheader'><h3>Rityta</h3></div>
           <canvas id='a'></canvas>
-            
     </div>
 
     <div id="toolbox" >
       <div style="flex-grow: 1">
-        <div class='loginBoxheader'>
-            <h3>Ritverktyg</h3>
-        </div>
+        <div class='loginBoxheader'><h3>Ritverktyg</h3></div>
      	  <div style="display:flex;justify-content:center;">
             <select id="ops" name="function" >
               <optgroup label="Misc.">    
@@ -67,21 +61,22 @@
               </optgroup>
             </select>			
             
-            <input id="addOpButton" class='submit-button' type='button' value='Add Op.' onclick="newbutton();" />
-        </div>
+                <input id="addOpButton" class='submit-button' type='button' value='Add Op.' onclick="newbutton();" />
+            </div>
     		<div id="opTableContainer" style="min-height:300px;background-color:#FFF; overflow-y:scroll;">
-            <table id="opTable" style="width:100%;">
-                <caption>Operations</caption>
-                <thead>
-                    <tr><th>Op#</th>
-                        <th>Operation</th>
-                        <th colspan="3">Modify</th>
-                    </tr>
-                </thead>
-                <tbody id="operationList" ></tbody>
-            </table>			
+                <table id="opTable" style="width:100%;">
+                    <caption>Operations</caption>
+                    <thead>
+                        <tr>
+                            <th>Op#</th>
+                            <th>Operation</th>
+                            <th colspan="3">Modify</th>
+                        </tr>
+                    </thead>
+                    <tbody id="operationList" ></tbody>
+                </table>			
     		</div>
-    </div>
+        </div>
     </div>
 </div>
 
