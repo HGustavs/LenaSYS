@@ -712,7 +712,7 @@ function loadPageInformation() {
 					for (var i = 0; i < courseName.length; i++){
 						tablePercentage.push([
 							courseID[i],
-							coursePercentage[i],
+							Number(coursePercentage[i]).toFixed(2),
 							courseName[i]
 						]);
 					}
