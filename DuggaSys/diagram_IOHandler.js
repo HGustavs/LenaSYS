@@ -87,13 +87,13 @@ function SaveState() {
             "diagram": objectChanges.diagram,
             "points": objectChanges.points
         });
-        diagramChanges.actions.push("p");
+        diagramChanges.actions.push("+");
     } else if(Object.keys(objectChanges.diagram).length > 0 && Object.keys(objectChanges.points).length === 0) {
         diagramChanges.changes.push({"diagram": objectChanges.diagram});
-        diagramChanges.actions.push("p");
+        diagramChanges.actions.push("+");
     } else if(Object.keys(objectChanges.diagram).length === 0 && Object.keys(objectChanges.points).length > 0) {
         diagramChanges.changes.push({"points": objectChanges.points});
-        diagramChanges.actions.push("p");
+        diagramChanges.actions.push("+");
     }
 
     localStorage.setItem("diagramChanges", compressStringifiedObject(JSON.stringify(diagramChanges)));
@@ -435,11 +435,7 @@ function buildDiagramFromChanges() {
         }
     };
 
-    const numberOfChanges = diagramChanges.actions.reduce((result, action) => {
-        if(action === "p" || action === "r") result++;
-        if(action === "u") result--;
-        return result
-    }, 0);
+    const numberOfChanges = getValueOccurancesInArray(diagramChanges.actions, '+') + getValueOccurancesInArray(diagramChanges.actions, 'r') - getValueOccurancesInArray(diagramChanges.actions, 'u');
 
     for(let i = 0; i < numberOfChanges; i++) {
         const change = diagramChanges.changes[i];

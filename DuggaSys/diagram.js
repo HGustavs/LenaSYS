@@ -3173,8 +3173,8 @@ function distribute(event, axis) {
 function undoDiagram(event) {
     event.stopPropagation();  
 
-    const numberOfRedosAndAdditions = diagramChanges.actions.reduce((result, action) => result + (action !== 'u'), 0);
-    const numberOfUndos = diagramChanges.actions.reduce((result, action) => result + (action === 'u'), 0);
+    const numberOfRedosAndAdditions = getValueOccurancesInArray(diagramChanges.actions, '+') + getValueOccurancesInArray(diagramChanges.actions, 'r');
+    const numberOfUndos = getValueOccurancesInArray(diagramChanges.actions, 'u');
 
     if(numberOfUndos < numberOfRedosAndAdditions) {
         diagramChanges.actions.push("u");
@@ -3195,8 +3195,8 @@ function undoDiagram(event) {
 function redoDiagram(event) {
     event.stopPropagation();
 
-    const numberOfRedos = diagramChanges.actions.reduce((result, action) => result + (action === 'r'), 0);
-    const numberOfUndos = diagramChanges.actions.reduce((result, action) => result + (action === 'u'), 0);
+    const numberOfRedos = getValueOccurancesInArray(diagramChanges.actions, 'r');
+    const numberOfUndos = getValueOccurancesInArray(diagramChanges.actions, 'u');
 
     if(numberOfUndos > numberOfRedos) {
         diagramChanges.actions.push("r");
@@ -3208,6 +3208,14 @@ function redoDiagram(event) {
     cloneTempArray = [];
     hoveredObject = undefined;
     createRulerLinesObjectPoints();
+}
+
+//--------------------------------------------------------------------------------------------
+// getValueOccurancesInArray: Returns the number of times passed value occurs in passed array.
+//--------------------------------------------------------------------------------------------
+
+function getValueOccurancesInArray(array, find) {
+    return array.reduce((result, value) => result + (value === find), 0);
 }
 
 //----------------------------------------------------------------------
