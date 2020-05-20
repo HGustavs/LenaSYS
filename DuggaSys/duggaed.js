@@ -109,8 +109,10 @@ function selectDugga(qid) {
 	$("#releasem").html(makeoptions(quiz['qrelease'].substr(14,2),marro,marrv));
 
 	$("#editDugga").css("display", "flex");
-	/* Validates name as soon as a dugga is selected.*/
-	validateDuggaName();
+	/* Validates name as soon as a dugga is selected, but only if dugga already exists (new duggas will not be validated here).*/
+	if(qid != "UNK"){
+		validateDuggaName();
+	}
 }
 
 
@@ -707,6 +709,7 @@ function renderCell(col, celldata, cellid) {
 		case "qstart":		// DUGGA-TABLE - Startdate
 		case "deadline":	// DUGGA-TABLE - Deadline
 		case "qrelease":	// DUGGA-TABLE - Result date
+		case "modified":  // DUGGA-TABLE - Last Modified
 			if(!celldata) {	// if null - return string "N/A"
 				retString = "N/A";
 			} else if(celldata.length > 10){		// when there is time included - return date without seconds (i.e. last three charachters)

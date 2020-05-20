@@ -1496,6 +1496,41 @@ div .navButt:hover {
   border-radius: 2px;
 }
 
+#gradeExportPopUp {
+  display: block;
+  padding: 4px;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
+  width: 350px;
+  min-height: 100px;
+  z-index: 9000;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  margin-left: -178px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+#gradeExportPopUpButton {
+  background-color: var(--color-primary);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border: 0px;
+  width: 110px;
+  height: 30px;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  margin-left: 115px;
+  font-size: 14px;
+  transition: 1s background-color;
+}
+
+#gradeExportPopUpButton:hover {
+  background-color: var(--color-primary-hover);
+  border-radius: 2px;
+}
+
 #editSection {
   /*top: 50%;
   left: 50%;
@@ -3038,7 +3073,6 @@ padding: 10px;
 }
 .access-dropdown-selected {
   background-color:var(--color-accent);
-  color:var(--color-primary);
 }
 #reset-pw{
   width:70%; 
@@ -3109,6 +3143,7 @@ padding: 10px;
 #resultedFormContainer {
   display: flex;
   flex-direction: column;
+  margin-left: 10px;
 }
 
 #ladexportContainer {
@@ -4932,6 +4967,7 @@ only screen and (max-device-width: 320px) {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  margin-left: 10px;
 }
 
 .titles h1 {
@@ -5316,7 +5352,14 @@ only screen and (max-device-width: 320px) {
   width: 195px;
   color: initial;
 }
-
+/*Styling for add & edit in dugga editor on dates.*/
+.flexwrapper #qstart, .flexwrapper #deadline, 
+.flexwrapper #deadline1, .flexwrapper #deadline2, 
+.flexwrapper #deadline3, .flexwrapper #release {
+  width:155px;
+  font-family:"Roboto";
+  color:#6f6f6f;
+}
 /* Collapsible */
 .collapsible {
 
