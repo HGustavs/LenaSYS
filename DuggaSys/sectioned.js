@@ -666,6 +666,26 @@ function returnedSection(data) {
     }
 
     if (data['studentteacher']) {
+      // Build dropdowns
+      var bstr = "";
+      for (var i = 0; i < retdata['versions'].length; i++) {
+        var item = retdata['versions'][i];
+        if (retdata['courseid'] == item['cid']) {
+          bstr += "<option value='" + item['vers'] + "'";
+          if (retdata['coursevers'] == item['vers']) {
+            bstr += " selected";
+          }
+          bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
+        }
+        // save vers, versname and motd from table vers as global variables.
+        versnme = versionname;
+        if (querystring['coursevers'] == item['vers']) motd = item['motd'];
+        if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
+      }
+
+      document.getElementById("courseDropdownTop").innerHTML = bstr;
+      bstr = "<option value='None'>None</option>" + bstr;
+      document.getElementById("copyvers").innerHTML = bstr;
       // Show FAB / Menu
       document.getElementById("FABStatic").style.display = "Block";
       // Show addElement Button
