@@ -42,6 +42,9 @@ var exampleid;
 var cvers;
 var template7maximizebuttonpressed = false;
 var template8maximizebuttonpressed = false;
+var sectionData; // Variable that stores all the data that is sent from Section, which contains the ordering of the code examples.
+var codeExamples = []; // Array that contains all code examples in the same order that was assigned in Section before pressing one of the examples.
+var currentPos; // Variable for the current position that determines where in the list of code examples you are.
 
 
 /********************************************************************************
@@ -80,6 +83,77 @@ function returnedError(error) {
 function returned(data) 
 {
 	retData = data;
+
+	//Stores the data that was sent from Section, which contains the ordering of the examples.
+	sectionData = JSON.parse(localStorage.getItem("sectionData"));
+
+	//Creates a list of all the code examples sorted after the example ordering in Section.
+	for(i = 1; i < sectionData['entries'].length; i++){
+		if(sectionData['entries'][i]["kind"] == 2){
+			codeExamples.push(sectionData['entries'][i]);
+		}
+	}
+
+	//Adds examplename from sectionData to codeExamples.
+	for(i = 0; i < codeExamples.length; i++){
+		for(j = 0; j < codeExamples.length; j++)
+			if(codeExamples[i]['link'] == sectionData['codeexamples'][j + 1]['exampleid']){
+				codeExamples[i]['examplename'] = sectionData['codeexamples'][j + 1]['examplename'];
+				break;
+			}
+	}
+
+	//Checks current example name with all the examples in codeExamples[] to find a match
+	//and determine current position.
+	console.log(retData);
+	console.log(sectionData);
+	for(i = 0; i < codeExamples.length; i++){
+		if(retData['examplename'] == codeExamples[i]['examplename'] && retData['sectionname'] == codeExamples[i]['entryname']){
+			currentPos = i;
+		}
+	}
+
+	//Fixes the five next code examples in retData to match the order that was assigned in Section.
+	var j = 0;
+	for(i = currentPos + 1; i < codeExamples.length; i++){
+		if(j < 5){
+			
+			retData['after'][j][1] = codeExamples[currentPos + 1 + j]['entryname'];
+			retData['after'][j][0] = (String)(codeExamples[currentPos + 1 + j]['link']);
+			for(k = 1; k < sectionData['codeexamples'].length; k++){
+				if(retData['after'][j][0] == sectionData['codeexamples'][k]['exampleid']){
+					retData['after'][j][2] = sectionData['codeexamples'][k]['examplename'];
+					break;
+				}
+			}
+			
+			retData['exampleno'] = currentPos
+			j++
+		}else{
+			break
+		}
+	}
+
+	//Fixes the five code examples before the current one in retData to match the order that was assigned in Section.
+	j = 0;
+	for(i = currentPos - 1; i >= 0; i--){
+		if(j < 5){
+			retData['before'][j][1] = codeExamples[currentPos - 1 - j]['entryname'];
+			retData['before'][j][0] = (String)(codeExamples[currentPos - 1 - j]['link']);
+			for(k = 0; k < codeExamples.length; k++){
+				if(retData['before'][j][0] == codeExamples[k]['link']){
+					retData['before'][j][2] = codeExamples[k]['examplename'];
+					break
+				}
+			}
+			retData['exampleno'] = currentPos
+			j++
+		}else{
+			break
+		}
+	}
+console.log(currentPos);
+console.log(codeExamples);
 	
 	if (retData['deleted']) {
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
@@ -97,11 +171,11 @@ function returned(data)
 	//If there are no examples this disables being able to jump through (the non-existsing) examples
 
 	if (retData['before'].length != 0 && retData['after'].length != 0) {
-		if (retData['exampleno'] == retData['before'][0][0] || retData['before'].length == 0) {
+		if (retData['exampleno'] == 0 || retData['before'].length == 0) {
 			document.querySelector("#beforebutton").style.opacity = "0.4";
 			document.querySelector("#beforebutton").style.pointerEvents = "none";
 		}
-		if (retData['exampleno'] == retData['after'][0][0] || retData['after'].length == 0) {
+		if (retData['exampleno'] == codeExamples.length - 1 || retData['after'].length == 0) {
 			document.querySelector("#afterbutton").style.opacity = "0.4";
 			document.querySelector("#afterbutton").style.pointerEvents = "none";
 		}
