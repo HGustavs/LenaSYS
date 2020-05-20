@@ -190,10 +190,19 @@ function loadGeneralStats() {
     	]);
 
 		// Most recently edited file
-        tableData.push([
-            'Most recently edited file: ' + data['stats']['recentlyEditedFile'],
-            'Edited: ' + new Date(data['stats']['recentlyEditedFileTimestamp'].replace(' ', 'T') + "Z").toLocaleString()
-    	]);
+		var fileToTable = 'Most recently edited file: ' + data['stats']['recentlyEditedFile'];
+		if(data['stats']['recentlyEditedFileTimestamp'] != null){
+			tableData.push([
+				fileToTable,
+				'Edited: ' + new Date(data['stats']['recentlyEditedFileTimestamp'].replace(' ', 'T') + "Z").toLocaleString()
+			]);
+		} else{
+			tableData.push([
+				fileToTable,
+				'Edited: ' + data['stats']['recentlyEditedFileTimestamp']
+			]);
+		}
+		
 		$('#analytic-info').append(renderTable(tableData));
 		
 		// Disk usage
