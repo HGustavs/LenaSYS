@@ -1723,6 +1723,7 @@ $(window).load(function () {
   retrieveAnnouncementsCards();
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
+  multiSelect();
 });
 
 
@@ -2140,20 +2141,21 @@ function selectRecipients(){
       $("#recipient option").addClass("discardOptionBg");
     }
   });
-  $('#recipient option').click(function() {
-    var clicks = $(this).data('clicks');
-    if (clicks) {
-      $(this).attr("selected", false);
-      $(this).removeClass("setOptionBg");
-      $(this).addClass("discardOptionBg");
-    } else {
-      $(this).attr("selected", "selected");   
-      $(this).removeClass("discardOptionBg");
-      $(this).addClass("setOptionBg");
-    }
-     $(this).data("clicks", !clicks);
-  });
 
+}
+function multiSelect(){
+  $("#recipient").mousedown(function(e){
+    e.preventDefault();
+    
+    var select = this;
+    var scroll = select.scrollTop;
+    
+    e.target.selected = !e.target.selected;
+    
+    setTimeout(function(){select.scrollTop = scroll;}, 0);
+    
+    $(select).focus();
+  }).mousemove(function(e){e.preventDefault()});
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {
