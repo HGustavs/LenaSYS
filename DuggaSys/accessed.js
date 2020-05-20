@@ -624,7 +624,7 @@ function rowFilter(row) {
 
 							// Support ÅÄÖ
 							searchterm = searchterm.replace(/\u00E5/, '&aring;');
-							searchterm = searchterm.replace(/\u00E5/, '&auml;');
+							searchterm = searchterm.replace(/\u00E4/, '&auml;');
 							searchterm = searchterm.replace(/\u00F6/, '&ouml;');
 
 							if (caseIgnoreRow.indexOf(searchterm) != -1) return true;
