@@ -7081,6 +7081,9 @@ textarea#filecont {
     height: 20px;
     width: 120px;
   }
+  .navName{
+    width: 0px;
+  }
 }
 
 #motdContent{
