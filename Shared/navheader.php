@@ -18,9 +18,9 @@
 				$_SESSION['coursename'] = getOPG('coursename');
 			else if (isset($_GET['coursename']))
 				$_SESSION['coursename'] = getOPG('coursename');
-			else
+			else 
 				$_SESSION['coursename'] = "UNK";
-
+				
 			if (isset($_GET['coursevers']))
 				$_SESSION['coursevers'] = getOPG('coursevers');
 			else if (isset($_GET['cvers']))
@@ -100,7 +100,7 @@
 					
 							echo "<td class='results' style='display: inline-block;'>";
 							echo "    <div class='results menuButton'>";
-							echo "    <a id='resultsBTN' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
+							echo "    <a id='resultsBTN' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
 							echo "      <img id='versionPlus' class='navButt' src='../Shared/icons/marking_icon.svg'>";
 							echo "    </a>";
 							echo "    </div>";
@@ -108,7 +108,7 @@
 						
 							echo "<td class='tests' style='display: inline-block;'>";
 							echo "    <div class='tests menuButton'>";
-							echo "      <a id='testsBTN' title='Show tests' value='Tests' href='duggaed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
+							echo "      <a id='testsBTN' title='Show tests' value='Tests' href='duggaed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
 							echo "        <img id='testsBTN' class='navButt' src='../Shared/icons/test_icon.svg'>";
 							echo "      </a>";
 							echo "    </div>";
@@ -116,7 +116,7 @@
 						
 							echo "<td class='files' style='display: inline-block;'>";
 							echo "    <div class='files menuButton'>";
-              echo "      <a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
+              echo "      <a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
               echo "        <img class='navButt' src='../Shared/icons/files_icon.svg'>";
 							echo "      </a>";
 							echo "    </div>";
