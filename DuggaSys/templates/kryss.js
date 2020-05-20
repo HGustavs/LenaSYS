@@ -152,7 +152,7 @@ theanswers= data['param'];
 var checkifcorrect ="Answered: ";
 
 
-var theanswerSplit = theanswers.split(",");
+var theanswerSplit = theanswers.split(" ");
 var answeredSplit = allanswers.split(",");
 
 	for(var i = 0;i < answeredSplit.length;i++){
