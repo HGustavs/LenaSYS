@@ -946,11 +946,21 @@ function pageInformation(){
 	$resulted = $GLOBALS['log_db']->query('
 		SELECT
 			refer,
+			substr(
+				refer, 
+				INSTR(refer, "courseid=")+9, 
+				INSTR(refer, "&coursevers=")-18 - INSTR(refer, "courseid=")+9
+			) courseid,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM userHistory WHERE refer LIKE "%resulted%") AS percentage,
 			COUNT(*) AS pageLoads
 		FROM 
 			userHistory
 		WHERE 
 			refer LIKE "%resulted%"
+		GROUP BY 
+			courseid;
+		ORDER BY 
+			percentage DESC;
 	')->fetchAll(PDO::FETCH_ASSOC);
 
 	$analytic = $GLOBALS['log_db']->query('
@@ -974,13 +984,23 @@ function pageInformation(){
 	')->fetchAll(PDO::FETCH_ASSOC);
 
 	$duggaed = $GLOBALS['log_db']->query('
-	SELECT
-		refer,
-		COUNT(*) AS pageLoads
-	FROM 
-		userHistory
-	WHERE 
-		refer LIKE "%duggaed%"
+		SELECT
+			refer,
+			substr(
+				refer, 
+				INSTR(refer, "courseid=")+9, 
+				INSTR(refer, "&coursevers=")-18 - INSTR(refer, "courseid=")+9
+			) courseid,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM userHistory WHERE refer LIKE "%duggaed%") AS percentage,
+			COUNT(*) AS pageLoads
+		FROM 
+			userHistory
+		WHERE 
+			refer LIKE "%duggaed%"
+		GROUP BY 
+			courseid;
+		ORDER BY 
+			percentage DESC;
 	')->fetchAll(PDO::FETCH_ASSOC);
 
 	$accessed = $GLOBALS['log_db']->query('
@@ -1021,6 +1041,13 @@ function pageInformation(){
 	$result['percentage']['codeviewer'] = $codeviewer;
 	$result['percentage']['sectioned'] = $sectioned;
 	$result['percentage']['courseed'] = $courseed;
+	$result['percentage']['fileed'] = $fileed;
+	$result['percentage']['resulted'] = $resulted;
+	$result['percentage']['analytic'] = $analytic;
+	$result['percentage']['contribution'] = $contribution;
+	$result['percentage']['duggaed'] = $duggaed;
+	$result['percentage']['accessed'] = $accessed;
+	$result['percentage']['profile'] = $profile;
 
 	echo json_encode($result);
 }

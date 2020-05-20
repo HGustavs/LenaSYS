@@ -651,10 +651,18 @@ function loadPageInformation() {
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="sectioned">sectioned</option>')
 		.append('<option value="courseed">courseed</option>')
+		.append('<option value="fileed">fileed</option>')
+		.append('<option value="resulted">resulted</option>')
+		.append('<option value="analytic">analytic</option>')
+		.append('<option value="contribution">contribution</option>')
+		.append('<option value="duggaed">duggaed</option>')
+		.append('<option value="accessed">accessed</option>') 
+		.append('<option value="profile">profile</option>')
         .appendTo($('#analytic-info'));
    
     function updatePageHitInformation(pages, page){
         loadAnalytics("pageInformation", function(data) {
+			console.log(data);
 
 			var tableData = [["Page", "Hits"]];
 			for(var i = 0; i < pages.length; i++){
@@ -766,7 +774,29 @@ function loadPageInformation() {
 					break;
 				case "courseed":
 					updatePageHitInformation(pages, pages[3]);
+					break; 
+				case "fileed":
+					updatePageHitInformation(pages, pages[4]);
 					break;
+				case "resulted":
+					updatePageHitInformation(pages, pages[5]);
+					break;
+				case "analytic":
+					updatePageHitInformation(pages, pages[6]);
+					break;
+				case "contribution":
+					updatePageHitInformation(pages, pages[7]);
+					break;
+				case "duggaed":
+					updatePageHitInformation(pages, pages[8]);
+					break;
+				case "accessed":
+					updatePageHitInformation(pages, pages[9]);
+					break;
+				case "profile":
+					updatePageHitInformation(pages, pages[10]);
+					break;
+				
             }
         });
     }
