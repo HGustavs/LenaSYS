@@ -1291,6 +1291,7 @@ function drawPieChart(data, title = null, multirow = false) {
 			rectSpacing += w.width + 30;
 			labelCount = 0;
 			i--;
+			last -= (Math.PI*2*(data[i].value/total));
 		}
 	}
 }
