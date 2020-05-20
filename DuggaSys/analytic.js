@@ -189,6 +189,11 @@ function loadGeneralStats() {
             'Created: ' + data['stats']['newestFileTimestamp']
     	]);
 
+		// Most recently edited file
+        tableData.push([
+            'Most recently edited file: ' + data['stats']['recentlyEditedFile'],
+            'Edited: ' + new Date(data['stats']['recentlyEditedFileTimestamp'].replace(' ', 'T') + "Z").toLocaleString()
+    	]);
 		$('#analytic-info').append(renderTable(tableData));
 		
 		// Disk usage
