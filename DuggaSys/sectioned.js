@@ -1730,6 +1730,7 @@ $(window).load(function () {
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
   multiSelect();
+  toggleFeedbacks();
 });
 
 
@@ -2150,6 +2151,14 @@ function multiSelect(){
     
     $(select).focus();
   }).mousemove(function(e){e.preventDefault()});
+}
+//start of recent feedback from the teacher
+function toggleFeedbacks(){
+  if ($("#feedback").length > 0) {
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackHeader'><h2>Recent Feedbacks</h2></div><div class='feedbackContainer'></div></div>");
+
+  }
+  
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {
