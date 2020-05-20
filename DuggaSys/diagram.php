@@ -546,19 +546,19 @@
                         <label for="typeLine">Line placement:</label>
                         <label for="typeLine" id="lineObject1">Object 1:</label>
                         <select id="linePlacementObject1" data-access="properties.key_type">
-                            <option value="Automatic" selected>Automatic</option>
-                            <option value="Top">Top</option>
-                            <option value="Right">Right</option>
-                            <option value="Bottom">Bottom</option>
-                            <option value="Left">Left</option>
+                            <option value="Automatic1" selected>Automatic</option>
+                            <option value="Top1">Top</option>
+                            <option value="Right1">Right</option>
+                            <option value="Bottom1">Bottom</option>
+                            <option value="Left1">Left</option>
                         </select>
                         <label for="typeLine" id="lineObject2">Object 2:</label>
                         <select id="linePlacementObject2" data-access="properties.key_type">
-                            <option value="Automatic" selected>Automatic</option>
-                            <option value="Top">Top</option>
-                            <option value="Right">Right</option>
-                            <option value="Bottom">Bottom</option>
-                            <option value="Left">Left</option>
+                            <option value="Automatic2" selected>Automatic</option>
+                            <option value="Top2">Top</option>
+                            <option value="Right2">Right</option>
+                            <option value="Bottom2">Bottom</option>
+                            <option value="Left2">Left</option>
                         </select>
                     </div>
                     <div class="form-group" data-types="7">

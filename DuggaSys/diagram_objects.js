@@ -24,6 +24,7 @@ function Symbol(kindOfSymbol) {
     this.isLockHovered = false;         // Checks if the lock itself is hovered on the symbol
     this.pointsAtSamePosition = false;
     this.isHovered = false;
+    this.manualLine = false;
     
     // Connector arrays - for connecting and sorting relationships between diagram objects
     // They are not used for line, UML line and text objects but still created to prevent errors with other functions
@@ -294,8 +295,8 @@ function Symbol(kindOfSymbol) {
         //Find correct connector to manipulate
         if(kind.connectorRight.length > 0){
             for(i = 0 ; kind.connectorRight.length > i ; i++){
-                if((kind.connectorRight[i].from == this.bottomRight || kind.connectorRight[i].from == this.topLeft) 
-                && (kind.connectorRight[i].to == this.topLeft || kind.connectorRight[i].from == this.bottomRight)){
+                if((kind.connectorRight[i].from == this.bottomRight && kind.connectorRight[i].to == this.topLeft) 
+                || (kind.connectorRight[i].from == this.topLeft && kind.connectorRight[i].to == this.bottomRight)){
                     connector = i;
                 }
             }
@@ -305,8 +306,8 @@ function Symbol(kindOfSymbol) {
         }
         if(kind.connectorLeft.length > 0){
             for(i = 0 ; kind.connectorLeft.length > i ; i++){
-                if((kind.connectorLeft[i].from == this.bottomRight || kind.connectorLeft[i].from == this.topLeft) 
-                && (kind.connectorLeft[i].to == this.topLeft || kind.connectorLeft[i].from == this.bottomRight)){
+                if((kind.connectorLeft[i].from == this.bottomRight && kind.connectorLeft[i].to == this.topLeft) 
+                || (kind.connectorLeft[i].from == this.topLeft && kind.connectorLeft[i].to == this.bottomRight)){
                     connector = i;
                 }
             }
@@ -316,8 +317,8 @@ function Symbol(kindOfSymbol) {
         }
         if(kind.connectorTop.length > 0){
             for(i = 0 ; kind.connectorTop.length > i ; i++){
-                if((kind.connectorTop[i].from == this.bottomRight || kind.connectorTop[i].from == this.topLeft) 
-                && (kind.connectorTop[i].to == this.topLeft || kind.connectorTop[i].from == this.bottomRight)){
+                if((kind.connectorTop[i].from == this.bottomRight && kind.connectorTop[i].to == this.topLeft) 
+                || (kind.connectorTop[i].from == this.topLeft && kind.connectorTop[i].to == this.bottomRight)){
                     connector = i;
                 }
             }
@@ -327,8 +328,8 @@ function Symbol(kindOfSymbol) {
         }
         if(kind.connectorBottom.length > 0){
             for(i = 0 ; kind.connectorBottom.length > i ; i++){
-                if((kind.connectorBottom[i].from == this.bottomRight || kind.connectorBottom[i].from == this.topLeft) 
-                && (kind.connectorBottom[i].to == this.topLeft || kind.connectorBottom[i].from == this.bottomRight)){
+                if((kind.connectorBottom[i].from == this.bottomRight && kind.connectorBottom[i].to == this.topLeft) 
+                || (kind.connectorBottom[i].from == this.topLeft && kind.connectorBottom[i].to == this.bottomRight)){
                     connector = i;
                 }
             }
@@ -1934,47 +1935,45 @@ function Symbol(kindOfSymbol) {
         //Manually set which side of object line should be at
         var connectedObjects = this.getConnectedObjects();
         if(event.target.id == "linePlacementObject1"){
-            if(this.properties['key_type'] == "Automatic"){
-                lineLocked = false; 
-                console.log(connectedObjects[0]);
+            if(this.properties['key_type'] == "Automatic1"){
+                connectedObjects[0].manualLine = false; 
             }
-            else if (this.properties['key_type'] == "Top") {
+            else if (this.properties['key_type'] == "Top1") {
                 this.setQuadrant(connectedObjects[0], "Top");
-                lineLocked = true; 
+                connectedObjects[0].manualLine = true; 
             }
-            else if(this.properties['key_type'] == "Right"){
+            else if(this.properties['key_type'] == "Right1"){
                 this.setQuadrant(connectedObjects[0], "Right");
-                lineLocked = true; 
+                connectedObjects[0].manualLine = true; 
             }
-            else if(this.properties['key_type'] == "Bottom"){
+            else if(this.properties['key_type'] == "Bottom1"){
                 this.setQuadrant(connectedObjects[0], "Bottom");
-                lineLocked = true; 
+                connectedObjects[0].manualLine = true; 
             }
-            else if(this.properties['key_type'] == "Left"){
+            else if(this.properties['key_type'] == "Left1"){
                 this.setQuadrant(connectedObjects[0], "Left");
-                lineLocked = true; 
+                connectedObjects[0].manualLine = true;  
             }
         }
         else if(event.target.id == "linePlacementObject2"){
-            if(this.properties['key_type'] == "Automatic"){
-                lineLocked = false; 
-                console.log(connectedObjects[1]);
+            if(this.properties['key_type'] == "Automatic2"){
+                connectedObjects[1].manualLine = false;  
             }
-            else if (this.properties['key_type'] == "Top") {
+            else if (this.properties['key_type'] == "Top2") {
                 this.setQuadrant(connectedObjects[1], "Top");
-                lineLocked = true; 
+                connectedObjects[1].manualLine = true; 
             }
-            else if(this.properties['key_type'] == "Right"){
+            else if(this.properties['key_type'] == "Right2"){
                 this.setQuadrant(connectedObjects[1], "Right");
-                lineLocked = true; 
+                connectedObjects[1].manualLine = true; 
             }
-            else if(this.properties['key_type'] == "Bottom"){
+            else if(this.properties['key_type'] == "Bottom2"){
                 this.setQuadrant(connectedObjects[1], "Bottom");
-                lineLocked = true; 
+                connectedObjects[1].manualLine = true; 
             }
-            else if(this.properties['key_type'] == "Left"){
+            else if(this.properties['key_type'] == "Left2"){
                 this.setQuadrant(connectedObjects[1], "Left");
-                lineLocked = true; 
+                connectedObjects[1].manualLine = true; 
             }
         }
 

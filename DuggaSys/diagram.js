@@ -1496,7 +1496,9 @@ diagram.sortConnectors = function() {
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
-            if(diagram[i].quadrants(diagram[i].symbolkind)) /*break*/;
+            if(diagram[i].manualLine == false){
+                if(diagram[i].quadrants(diagram[i].symbolkind)) /*break*/;
+            }
         }
     }
 }
@@ -2334,9 +2336,6 @@ window.addEventListener('resize', canvasSize);
 
 function updateGraphics() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if(lineLocked == false){
-        diagram.updateQuadrants();
-    }
     drawGrid();
     drawOrigoLine();
     if(developerModeActive) drawOrigo();
@@ -2346,9 +2345,7 @@ function updateGraphics() {
         markLastMouseCoordinates(); 
     }
     diagram.sortConnectors();
-    if(lineLocked == false){
-        diagram.updateQuadrants();
-    }
+    diagram.updateQuadrants();
     diagram.draw();
     points.drawPoints();
     drawVirtualPaper();
