@@ -2157,23 +2157,14 @@ function multiSelect(){
 }
 //start of recent feedback from the teacher
 function toggleFeedbacks(){
-  if ($("#feedback").length > 0) {
-    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><h2>Recent Feedbacks</h2></div><div class='feedbackContent'></div></div></div>");
-
-  }
-
-  $("#feedback").click(function(){
-    $("#feedbackOverlay").toggle();
-  });
-
-  var uname = $("#userName").html();
+  let uid, uname = $("#userName").html();
   $.ajax({
     url: "../Shared/retrieveUserid.php",
     data: {uname:uname},
     type: "GET",
     success: function(data){
-      var parsed_uid = JSON.parse(data);
-      var uid = parsed_uid.uid;
+      let parsed_uid = JSON.parse(data);
+      uid = parsed_uid.uid;
       console.log("UID in feedback: " + uid);
       $.ajax({
         url: "../Shared/retrieveFeedbacks.php",
@@ -2183,9 +2174,9 @@ function toggleFeedbacks(){
           console.log("Returned from retrieveFeedbacks: " + data);
           var parsed_data = JSON.parse(data);
           $(".feedbackContent").html(parsed_data.gradedAnswer);
-          var feedbackComment = 'feedbackComment';
+          let feedbackComment = 'feedbackComment';
           readLessOrMore(feedbackComment);
-          var unseen_feedbacks = parsed_data.unreadFeedbackNotification;
+          let unseen_feedbacks = parsed_data.unreadFeedbackNotification;
           if(unseen_feedbacks > 0){
             $("#feedback img").after("<span id='feedbacknotificationcounter'>0</span>");
             $("#feedbacknotificationcounter").html(unseen_feedbacks);
@@ -2199,6 +2190,24 @@ function toggleFeedbacks(){
 
     }
 
+  });
+
+  if ($("#feedback").length > 0) {
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><h2>Recent Feedbacks</h2></div><div class='feedbackContent'></div></div></div>");
+
+  }
+
+  $("#feedback").click(function(){
+    $("#feedbackOverlay").toggle();
+     var viewed = "YES";
+     $.ajax({
+        url: "../Shared/retrieveFeedbacks.php",
+        data: {uid: uid, viewed:viewed},
+        type: "POST",
+        success: function(){
+          $("#feedbacknotificationcounter").remove();
+        }
+      });
   });
 
 }

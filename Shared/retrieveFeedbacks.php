@@ -71,6 +71,16 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY mar
     $htmlCode .= "</div></div>";
   }
 }
+if(isset($_POST['uid']) && isset($_POST['viewed'])){
+  $uid = $_POST['uid'];
+  $seen_status = 1;
+  $update_seen_feedback_status = 'UPDATE useranswer SET seen_status=:seen_status WHERE uid=:uid';
+  $stmt = $pdo->prepare($update_seen_feedback_status); 
+  $stmt->bindParam(':uid', $uid);
+  $stmt->bindParam(':seen_status', $seen_status);     
+
+  $stmt->execute();
+}
 //count un-seen feedbacks
 $unreadFeedbackNotification = $pdo->query('SELECT COUNT(*) FROM useranswer WHERE uid ="'.$uid.'" AND seen_status = "0"')->fetchColumn(); 
 
