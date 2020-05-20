@@ -6194,12 +6194,7 @@ only screen and (max-device-width: 320px) {
 }
 
 .markdownPart {
-  height: 100%;
-}
-@media only screen and (max-height: 650px) {
-    .markdownPart {
-        height: 85%;
-    }
+  height: 90%;
 }
 
 .markdown {
@@ -6253,7 +6248,7 @@ only screen and (max-device-width: 320px) {
 }
 .markdown-buttons{
     position: relative;
-    bottom: 15px;
+    bottom: 10px;
 }
 
 legend {
