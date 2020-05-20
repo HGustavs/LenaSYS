@@ -130,8 +130,8 @@
     <div id="inputWrapper">
       <!-- Headings for each input-slide -->
       <div class="inputHeading" valign=top>
-        <div class="inputFirst" id="th1"><h2>New/Existing MySQL user and DB</h2></div>
-        <div class="inputNotFirst" id="th2"><h2>MySQL Root Login</h2></div>
+        <div class="inputFirst" id="th1"><h2>New/Existing PostgreSQL user and DB</h2></div>
+        <div class="inputNotFirst" id="th2"><h2>PostgreSQL Root Login</h2></div>
         <div class="inputNotFirst" id="th3"><h2>Test Data</h2></div>
         <div class="inputNotFirst" id="th4"><h2>Write over?</h2></div>
         <div class="inputNotFirst" id="th5"><h2>Submit</h2></div>
@@ -171,14 +171,14 @@
         * td1 will be shown at start, the others (td2 - 5) will be shown by clicking arrows.
         */
         echo '<div class="inputContent" id="td1">';
-        echo '<p id="infoText"><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
+        echo '<p id="infoText"><b>To start installation please enter a new (or existing) PostgreSQL user. This could, for example, be your student login.
           Next enter a password for this user (new or existing).<br>
           After this enter a database to use. This could also be either an existing or a new database.<br>
           Finally enter the host. Is installation is running from webserver localhost should be used.</b></p><hr>';
-        echo 'Enter new MySQL user. <br>';
-        echo '<input title="Enter new MySQL user." class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
-        echo 'Enter password for MySQL user. <br>';
-        echo '<input title="Enter password for MySQL user." class="page1input" type="password" name="password" placeholder="Password" value="'.$dbPassword.'"/> <br>';
+        echo 'Enter new PostgreSQL user. <br>';
+        echo '<input title="Enter new PostgreSQL user." class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
+        echo 'Enter password for PostgreSQL user. <br>';
+        echo '<input title="Enter password for PostgreSQL user." class="page1input" type="password" name="password" placeholder="Password" value="'.$dbPassword.'"/> <br>';
         echo 'Enter new database name. <br>';
         echo '<input title="Enter new database name." class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
         echo 'Enter hostname (e.g localhost). <br>';
@@ -194,10 +194,10 @@
       <div class="inputContent" id="td2" valign=top>
           <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
               Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
-          Enter MySQL root user. <br>
-          <input title="Enter MySQL root user." class="page2input" type="text" name="mysqlRoot" placeholder="Root" value="postgres"/> <br>
-          Enter password for MySQL root user. <br>
-          <input title="Enter password for MySQL root user." class="page2input" type="password" name="rootPwd" placeholder="Root Password" /> <br>
+          Enter PostgreSQL root user. <br>
+          <input title="Enter PostgreSQL root user." class="page2input" type="text" name="postgresRoot" placeholder="Root" value="postgres"/> <br>
+          Enter password for PostgreSQL root user. <br>
+          <input title="Enter password for PostgreSQL root user." class="page2input" type="password" name="rootPwd" placeholder="Root Password" /> <br>
           <span class="enterAllFields" id="enterFields2">Please fill all fields before continuing.</span>
       </div>
       <div class="inputContent" id="td3" valign=top>
@@ -404,13 +404,13 @@
           $password = $_POST["password"];
           $databaseName = $_POST["DBName"];
           $serverName = $_POST["hostname"];
-          $rootUser = $_POST["mysqlRoot"];
+          $rootUser = $_POST["postgresRoot"];
           $rootPwd = $_POST["rootPwd"];
           $connection = null;
 
           # Connect to database with root access.
           try {
-            $connection = new PDO("pgsql:host=$serverName", $rootUser, $rootPwd);
+            $connection = new PDO("pgsql:host=$serverName; user=$rootUser; password=$rootPwd");
             $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
           } catch (PDOException $e) {
@@ -425,15 +425,6 @@
           ob_flush();
 
 
-          # If checked, delete user
-          if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
-            deleteUser($connection, $username);
-            $completedSteps++;
-            updateProgressBar($completedSteps, $totalSteps);
-            flush();
-            ob_flush();
-          }
-
           # If checked, delete database
           if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
             deleteDatabase($connection, $databaseName);
@@ -443,13 +434,22 @@
             ob_flush();
           }
 
+          # If checked, delete user
+          if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
+            deleteUser($connection, $username, $databaseName);
+            $completedSteps++;
+            updateProgressBar($completedSteps, $totalSteps);
+            flush();
+            ob_flush();
+          }
+
           # Create new database
           try {
             $connection->query("CREATE DATABASE {$databaseName}");
-            echo "<span id='successText' />Database with name {$databaseName} created asda successfully.</span><br>";
+            echo "<span id='successText' />Database with name {$databaseName} created successfully.</span><br>";
           } catch (PDOException $e) {
             $errors++;
-            echo "<span id='failText' />Database with name {$databaseName} could not be created.  asdad Maybe it already exists...</span><br>";
+            echo "<span id='failText' />Database with name {$databaseName} could not be created. Maybe it already exists.</span><br>";
           }
           $completedSteps++;
           updateProgressBar($completedSteps, $totalSteps);
@@ -462,9 +462,25 @@
             $connection->query("GRANT ALL PRIVILEGES ON DATABASE {$databaseName} TO {$username}");
             echo "<span id='successText' />Successfully created user {$username}.</span><br>";
           } catch (PDOException $e) {
-            echo "{$e}";
             $errors++;
             echo "<span id='failText' />Could not create user with name {$username}, maybe it already exists...</span><br>";
+          }
+          $completedSteps++;
+          updateProgressBar($completedSteps, $totalSteps);
+          flush();
+          ob_flush();
+
+          # Connect to installed database
+          try {
+            $dbLowerCase = strtolower($databaseName);
+            $connection = new PDO("pgsql:host=$serverName; user=$username; password=$password; dbname=$dbLowerCase");
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
+          } catch (PDOException $e) {
+            $errors++;
+            exit ("<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>
+            You may have entered a invalid password or an invalid user.<br>
+            <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
           }
           $completedSteps++;
           updateProgressBar($completedSteps, $totalSteps);
@@ -494,7 +510,6 @@
             if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
               $connection->beginTransaction();
             }
-            # Currently connected to postgres 
             $connection->query("SET CLIENT_ENCODING TO 'UTF8';");
             $queryBlock = '';
             $blockStarted = false;
@@ -519,7 +534,6 @@
               echo "<span id='successText' />Initialization of database complete. </span><br>";
             }
           } catch (PDOException $e) {
-            echo"$e";
             $errors++;
             if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
               $connection->rollback();
@@ -692,7 +706,7 @@
     function isAllCredentialsFilled(){
       global $errors;
       $isAllCredentialsFilled = true;
-      $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
+      $fields = array("newUser", "password", "DBName", "hostname", "postgresRoot", "rootPwd");
       foreach ($fields AS $fieldname) {
         if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname]) && !$_POST[$fieldname] === "rootPwd") {
           $isAllCredentialsFilled = false;
@@ -705,20 +719,22 @@
     //---------------------------------------------------------------------------------------------------
     // Function that deletes a user from database
     //---------------------------------------------------------------------------------------------------
-    function deleteUser($connection, $username){
+    function deleteUser($connection, $username, $databaseName){
       global $errors;
       try {
-        $connection->query("dropuser --if-exists {$username}");
+        $connection->query("REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM {$username}");
+        $connection->query("REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM {$username}");
+        $connection->query("REVOKE ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public FROM {$username}");
+        $connection->query("DROP USER {$username}");
         echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
       } catch (PDOException $e) {
       $errors++;
-      echo "<span id='failText' />User with name {$username}
-      does not already exist. Will only make a new one (not write over).</span><br>";
+      echo "<span id='failText' />User with name {$username} doesn't exist. Nothing to remove.</span><br>";
       }
     } 
 
     //---------------------------------------------------------------------------------------------------
-    // Function that deletes a user from database
+    // Function that deletes a database
     //---------------------------------------------------------------------------------------------------
     function deleteDatabase($connection, $databaseName){
       global $errors;
