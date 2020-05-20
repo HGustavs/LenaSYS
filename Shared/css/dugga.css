@@ -561,20 +561,20 @@ svg text {
 #clippingInfoBox2 {
 	min-width:120px;
 	width:400px;
-	margin:0 4px 0 4px;
+	margin:0 4px 5px 4px;
 	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 #toolbox{
-	min-width:340px;
 	width:395px;
-	margin:0 4px 0 4px;
+	margin:0 4px 5px 4px;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 #drawingArea{
-	margin:0 4px 0 4px;
+	min-width:120px;
+	margin:0 4px 5px 4px;
 	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 #drawingArea #a{
@@ -588,6 +588,17 @@ svg text {
 	}
 	.clippingContainer {
 		flex-wrap: wrap;
+	}
+}
+@media screen and (max-width: 394px){
+	#drawingArea #a{
+		width: 320px;
+	}
+	#clippingInfoBox2 {
+		width:320px;	
+	}
+	#toolbox{
+		width:320px;
 	}
 }
 
