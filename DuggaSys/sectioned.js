@@ -2104,12 +2104,8 @@ function selectRecipients(){
         $("#recipient option").not(":first").prop("selected", true);
         $("#recipient option").not(":first").attr("selected","selected");
         $(".selectFinished input, .selectNonFinished input").prop("checked", false);
-        $("#recipient option").removeClass("discardOptionBg");
-        $("#recipient option").addClass("setOptionBg");
       }else{
         $("#recipient option").attr("selected", false);
-        $("#recipient option").removeClass("setOptionBg");
-        $("#recipient option").addClass("discardOptionBg");
       }
   });
   $(".selectFinished input").change(function() {
@@ -2118,12 +2114,8 @@ function selectRecipients(){
       $("#finishedStudents option").attr("selected","selected");
       $(".selectAll input, .selectNonFinished input").prop("checked", false);
       $("#nonfinishedStudents option").attr("selected", false);
-      $("#finishedStudents option").removeClass("discardOptionBg");
-      $("#finishedStudents option").addClass("setOptionBg");
     }else{
       $("#recipient option").attr("selected", false);
-      $("#recipient option").removeClass("setOptionBg");
-      $("#recipient option").addClass("discardOptionBg");
     }
   });
   $(".selectNonFinished input").change(function() {
@@ -2132,13 +2124,9 @@ function selectRecipients(){
       $("#nonfinishedStudents option").attr("selected","selected");
       $(".selectAll input, .selectFinished input").prop("checked", false);
       $("#finishedStudents option").attr("selected", false);
-      $("#nonfinishedStudents option").removeClass("discardOptionBg");
-      $("#nonfinishedStudents option").addClass("setOptionBg");
 
     }else{
       $("#recipient option").attr("selected", false);
-      $("#recipient option").removeClass("setOptionBg");
-      $("#recipient option").addClass("discardOptionBg");
     }
   });
 
