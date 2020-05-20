@@ -207,8 +207,15 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			// Success, log and return results as JSON.
 			// get all rows with fields indexed only by the same names as
 			// they were addressed by in the query
+
 			$resultRows = $statement->fetchAll(PDO::FETCH_ASSOC);
-			echo json_encode($resultRows);
+
+			if (empty($resultRows) && $getType !== "ONLYDATE") {
+				echo $resultRows;
+			} else {
+				echo $resultRows;
+			}
+			
 			// log success and exit
 			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' completed successfully';
 			logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php", $userid, $info);
