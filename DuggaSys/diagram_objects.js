@@ -24,7 +24,8 @@ function Symbol(kindOfSymbol) {
     this.isLockHovered = false;         // Checks if the lock itself is hovered on the symbol
     this.pointsAtSamePosition = false;
     this.isHovered = false;
-    this.manualLine = false;
+    this.manualLine = false;    //Used to check if user has manually selected a side for line
+    this.manualSide = "Automatic";     //What side line user has manually selected (automatic if none has been chosen)
     
     // Connector arrays - for connecting and sorting relationships between diagram objects
     // They are not used for line, UML line and text objects but still created to prevent errors with other functions
@@ -292,54 +293,68 @@ function Symbol(kindOfSymbol) {
 
     this.setQuadrant = function (kind, quadrant) {
         var connector = 0;
+        kind.manualLine = true; 
         //Find correct connector to manipulate
         if(kind.connectorRight.length > 0){
             for(i = 0 ; kind.connectorRight.length > i ; i++){
                 if((kind.connectorRight[i].from == this.bottomRight && kind.connectorRight[i].to == this.topLeft) 
                 || (kind.connectorRight[i].from == this.topLeft && kind.connectorRight[i].to == this.bottomRight)){
                     connector = i;
+                    var xk = points[kind.connectorRight[connector].to].x;
+                    var yk = points[kind.connectorRight[connector].to].y;
+                    var bb = kind.getquadrant(xk, yk);
                 }
             }
-            var xk = points[kind.connectorRight[connector].to].x;
-            var yk = points[kind.connectorRight[connector].to].y;
-            var bb = kind.getquadrant(xk, yk);
         }
-        if(kind.connectorLeft.length > 0){
+        else if(kind.connectorLeft.length > 0){
             for(i = 0 ; kind.connectorLeft.length > i ; i++){
                 if((kind.connectorLeft[i].from == this.bottomRight && kind.connectorLeft[i].to == this.topLeft) 
                 || (kind.connectorLeft[i].from == this.topLeft && kind.connectorLeft[i].to == this.bottomRight)){
                     connector = i;
+                    var xk = points[kind.connectorLeft[connector].to].x;
+                    var yk = points[kind.connectorLeft[connector].to].y;
+                    var bb = kind.getquadrant(xk, yk);
                 }
             }
-            var xk = points[kind.connectorLeft[connector].to].x;
-            var yk = points[kind.connectorLeft[connector].to].y;
-            var bb = kind.getquadrant(xk, yk);
         }
-        if(kind.connectorTop.length > 0){
+        else if(kind.connectorTop.length > 0){
             for(i = 0 ; kind.connectorTop.length > i ; i++){
                 if((kind.connectorTop[i].from == this.bottomRight && kind.connectorTop[i].to == this.topLeft) 
                 || (kind.connectorTop[i].from == this.topLeft && kind.connectorTop[i].to == this.bottomRight)){
                     connector = i;
+                    var xk = points[kind.connectorTop[connector].to].x;
+                    var yk = points[kind.connectorTop[connector].to].y;
+                    var bb = kind.getquadrant(xk, yk);
                 }
             }
-            var xk = points[kind.connectorTop[connector].to].x;
-            var yk = points[kind.connectorTop[connector].to].y;
-            var bb = kind.getquadrant(xk, yk);
         }
-        if(kind.connectorBottom.length > 0){
+        else if(kind.connectorBottom.length > 0){
             for(i = 0 ; kind.connectorBottom.length > i ; i++){
                 if((kind.connectorBottom[i].from == this.bottomRight && kind.connectorBottom[i].to == this.topLeft) 
                 || (kind.connectorBottom[i].from == this.topLeft && kind.connectorBottom[i].to == this.bottomRight)){
                     connector = i;
+                    var xk = points[kind.connectorBottom[connector].to].x;
+                    var yk = points[kind.connectorBottom[connector].to].y;
+                    var bb = kind.getquadrant(xk, yk);
+                    console.log(bb);
                 }
             }
-            var xk = points[kind.connectorBottom[connector].to].x;
-            var yk = points[kind.connectorBottom[connector].to].y;
-            var bb = kind.getquadrant(xk, yk);
+        }
+
+        //Manually set quadrant if we know line-side is manually set
+        if(kind.manualSide == "Top"){
+            bb = 0;
+        } else if(kind.manualSide == "Right"){
+            bb = 1;
+        } else if(kind.manualSide == "Bottom"){
+            bb = 2;
+        } else if(kind.manualSide == "Right"){
+            bb = 3;
         }
 
         //Swap connector to appropriate side
         if(quadrant=="Top"){
+            kind.manualSide = "Top";
             if(bb == 1){
                 conn = kind.connectorRight.splice(connector, 1);
                 kind.connectorTop.push(conn[0]);
@@ -351,6 +366,7 @@ function Symbol(kindOfSymbol) {
                 kind.connectorTop.push(conn[0]);
             }
         } else if(quadrant=="Right"){
+            kind.manualSide = "Right";
             if(bb == 0){
                 conn = kind.connectorTop.splice(connector, 1);
                 kind.connectorRight.push(conn[0]);
@@ -362,6 +378,7 @@ function Symbol(kindOfSymbol) {
                 kind.connectorRight.push(conn[0]);
             }
         } else if(quadrant=="Bottom"){
+            kind.manualSide = "Bottom";
             if(bb == 0){
                 conn = kind.connectorTop.splice(connector, 1);
                 kind.connectorBottom.push(conn[0]);
@@ -373,6 +390,7 @@ function Symbol(kindOfSymbol) {
                 kind.connectorBottom.push(conn[0]);
             } 
         } else if(quadrant=="Left"){
+            kind.manualSide = "Left";
             if(bb == 0){
                 conn = kind.connectorTop.splice(connector, 1);
                 kind.connectorLeft.push(conn[0]);
@@ -383,7 +401,7 @@ function Symbol(kindOfSymbol) {
                 conn = kind.connectorBottom.splice(connector, 1);
                 kind.connectorLeft.push(conn[0]);
             } 
-        }            
+        }         
     }
 
     //--------------------------------------------------------------------
@@ -1936,44 +1954,38 @@ function Symbol(kindOfSymbol) {
         var connectedObjects = this.getConnectedObjects();
         if(event.target.id == "linePlacementObject1"){
             if(this.properties['key_type'] == "Automatic1"){
-                connectedObjects[0].manualLine = false; 
+                connectedObjects[0].manualLine = false;
+                connectedObjects[0].manualSide = "Automatic";
             }
             else if (this.properties['key_type'] == "Top1") {
                 this.setQuadrant(connectedObjects[0], "Top");
-                connectedObjects[0].manualLine = true; 
             }
             else if(this.properties['key_type'] == "Right1"){
                 this.setQuadrant(connectedObjects[0], "Right");
-                connectedObjects[0].manualLine = true; 
             }
             else if(this.properties['key_type'] == "Bottom1"){
                 this.setQuadrant(connectedObjects[0], "Bottom");
-                connectedObjects[0].manualLine = true; 
             }
             else if(this.properties['key_type'] == "Left1"){
-                this.setQuadrant(connectedObjects[0], "Left");
-                connectedObjects[0].manualLine = true;  
+                this.setQuadrant(connectedObjects[0], "Left"); 
             }
         }
         else if(event.target.id == "linePlacementObject2"){
             if(this.properties['key_type'] == "Automatic2"){
-                connectedObjects[1].manualLine = false;  
+                connectedObjects[1].manualLine = false;
+                connectedObjects[1].manualSide = "Automatic";
             }
             else if (this.properties['key_type'] == "Top2") {
                 this.setQuadrant(connectedObjects[1], "Top");
-                connectedObjects[1].manualLine = true; 
             }
             else if(this.properties['key_type'] == "Right2"){
                 this.setQuadrant(connectedObjects[1], "Right");
-                connectedObjects[1].manualLine = true; 
             }
             else if(this.properties['key_type'] == "Bottom2"){
                 this.setQuadrant(connectedObjects[1], "Bottom");
-                connectedObjects[1].manualLine = true; 
             }
             else if(this.properties['key_type'] == "Left2"){
                 this.setQuadrant(connectedObjects[1], "Left");
-                connectedObjects[1].manualLine = true; 
             }
         }
 
