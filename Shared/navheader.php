@@ -179,7 +179,15 @@
 						echo   "<form autocomplete='off' display:'none'><input id='searchinput' readonly onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/></form>";
 
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black;'>"; //Dropdown menu for when hovering the search bar
-					echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
+					if($requestedService=="accessed.php"){
+						echo    "<p aria-live='polite'><b>Keywords:</b> Username, first/lastname, date <br> <b>Ex:</b> Webug13h, 2020-02-29 13:37</p>";
+					}
+					if($requestedService=="resulted.php"){
+						echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
+					}
+					if($requestedService=="fileed.php"){
+						echo    "<p aria-live='polite'><b>Keywords:</b> File name, File type <br> <b>Ex:</b> html, example1</p>";
+					}
 					echo	"</div>";
 					echo   "<div class='tooltipbackground'><div class='tooltipsearchbar'>";
 					echo 	"<input id='tooltipsearchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
