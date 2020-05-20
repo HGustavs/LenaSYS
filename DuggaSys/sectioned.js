@@ -2162,6 +2162,31 @@ function toggleFeedbacks(){
   $("#feedback").click(function(){
     $("#feedbackOverlay").toggle();
   });
+  var uname = $("#userName").html();
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname:uname},
+    type: "GET",
+    success: function(data){
+      var parsed_uid = JSON.parse(data);
+      var uid = parsed_uid.uid;
+      console.log("UID in feedback: " + uid);
+      $.ajax({
+        url: "../Shared/retrieveFeedbacks.php",
+        data: {uid: uid},
+        type: "POST",
+        success: function(data){
+         
+          console.log("Returned from retrieveFeedbacks: " + data);
+
+        }
+
+      });
+
+    }
+
+  });
+
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {
