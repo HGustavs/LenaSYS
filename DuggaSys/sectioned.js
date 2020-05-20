@@ -575,6 +575,10 @@ function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
 
+  //data variable is put in localStorage which is then used in Codeviewer
+	//to get the right order when going backward and forward in code examples
+	localStorage.setItem("sectionData", JSON.stringify(data));
+
   var now = new Date();
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
