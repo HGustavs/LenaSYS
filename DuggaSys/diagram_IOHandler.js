@@ -4,6 +4,31 @@
 
 ************************************************************************/
 
+class UndoRedoStack {
+    constructor(stack, current) {
+        this.stack = stack;
+        this.current = current;
+    }
+
+    push() {
+        this.current++;
+        this.stack.splice(this.current);
+        this.stack.push(this.current);
+    }
+
+    undo() {
+        if(this.current >= 0) {
+            this.current--;
+        }
+    }
+
+    redo() {
+        if(typeof this.stack[this.current + 1] !== "undefined") {
+            this.current++;
+        }
+    }
+}
+
 const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, isSelected: null}]);
 let diagramChanges = {
     actions: [],
