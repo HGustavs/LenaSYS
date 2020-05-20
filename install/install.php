@@ -728,7 +728,6 @@
         $connection->query("DROP USER {$username}");
         echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
       } catch (PDOException $e) {
-      echo"{$e}";
       $errors++;
       echo "<span id='failText' />User with name {$username} doesn't exist. Nothing to remove.</span><br>";
       }
