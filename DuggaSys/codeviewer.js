@@ -105,8 +105,6 @@ function returned(data)
 
 	//Checks current example name with all the examples in codeExamples[] to find a match
 	//and determine current position.
-	console.log(retData);
-	console.log(sectionData);
 	for(i = 0; i < codeExamples.length; i++){
 		if(retData['examplename'] == codeExamples[i]['examplename'] && retData['sectionname'] == codeExamples[i]['entryname']){
 			currentPos = i;
@@ -152,8 +150,6 @@ function returned(data)
 			break
 		}
 	}
-console.log(currentPos);
-console.log(codeExamples);
 	
 	if (retData['deleted']) {
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
