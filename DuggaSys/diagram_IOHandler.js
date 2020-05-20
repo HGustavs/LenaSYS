@@ -4,10 +4,6 @@
 
 ************************************************************************/
 
-var a;
-var c;
-var b;
-var ac = [];
 const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, diagramNames:null, diagramID:null, text: null, isSelected: null}]);
 let diagramChanges = [];
 
@@ -21,7 +17,7 @@ function downloadMode(el) {
     download = selectBox.options[selectBox.selectedIndex].value;
 
     if (download == "Save") {
-        Save();
+        SaveState();
     }
     if (download == "Load") {
         Load();
@@ -110,7 +106,7 @@ function loadStoredFolders(f) {
 // Save: saves objects in canvas to JSON format in localstorage
 //---------------------------------------------
 
-function Save() {
+function SaveState() {
     const builtDiagram = buildDiagramFromChanges();
 
     const objectChanges = {
@@ -135,20 +131,12 @@ function Save() {
 }
 
 //---------------------------------------------
-// SaveState: saves the current state of the canvas to localstorage
-//---------------------------------------------
-
-function SaveState() {
-    Save();
-}
-
-//---------------------------------------------
 // SaveFile: used to export diagram as JSON
 //---------------------------------------------
 
 function SaveFile(el) {
-    Save();
-    var data = "text/json;charset=utf-8," + encodeURIComponent(a);
+    SaveState();
+    const data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(diagramChanges));
     el.setAttribute("class", 'icon-download');
     el.setAttribute("href", "data:" + data);
     el.setAttribute("download", "diagram.txt");
@@ -160,7 +148,8 @@ function SaveFile(el) {
 //---------------------------------------------
 
 function LoadImport(fileContent) {
-    a = fileContent;
+    localStorage.setItem("diagramChanges", fileContent)
+    diagramChanges = JSON.parse(fileContent);
     Load();
     fixExampleLayer()
 }
@@ -269,13 +258,15 @@ function getUpload() {
         var file = document.getElementById('fileids').files[0];
         reader.readAsText(file, "UTF-8");
         reader.onload = function (evt) {
-            a = evt.currentTarget.result;
+            //  = evt.currentTarget.result;
         }
     }
 }
 
 function Load() {
-    return;
+    const built = buildDiagramFromChanges(diagramChanges);
+    overwriteDiagram(built.diagram);
+    overwritePoints(built.points);
     console.log("State is loaded");
     updateGraphics();
 }
@@ -442,7 +433,6 @@ function buildDiagramFromChanges() {
         }
     };
 
-    
     for(const change of diagramChanges) {
         if(typeof change["diagram"] !== "undefined") {
             iterateChange(change, "diagram");

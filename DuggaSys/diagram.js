@@ -185,7 +185,6 @@ var classTemplate = {
   height: 7 * gridSize
 };
 var minimumDivisor = 4;                 // Is used when dividing templates for minimum selection before activating dragging mode values
-var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
 var globalappearanceMenuOpen = false;   // True if global appearance menu is open 
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
