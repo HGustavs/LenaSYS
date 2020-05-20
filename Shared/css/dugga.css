@@ -553,13 +553,21 @@ svg text {
 }
 #clippingInfoBox {
 	min-width:170px;
-	width:300px;
+	width:395px;
 	margin:0 4px 0 4px;
 }
 #clippingInfoBox2 {
 	min-width:120px;
 	width:400px;
 	margin:0 4px 0 4px;
+}
+#toolbox{
+	min-width:340px;
+	width:340px;
+	margin:0 4px 0 4px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
 }
  @media only screen and (max-width: 1360px) {
 	#clippingInfoBox {
