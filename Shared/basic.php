@@ -1,14 +1,16 @@
 <?php
 
-$refer = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-if (!strstr(strtolower($refer), 'service')) { // only echo from non-service files
-	ini_set('display_errors', 1);
-	ini_set('display_startup_errors', 1);
-}
 error_reporting(E_ALL);
 
 function customErrorHandler($errno, $errstr, $errfile, $errline) {
+	$refer = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+	// if this is a service, file don't return anything. This solution is not good, as this should not be nessesary, errors should instead be resolved.
+	if (strstr(strtolower($refer), 'service')) { 
+		return;
+	}
+
     switch ($errno) {
 		case E_USER_ERROR:
 			echo '<script> alert("
@@ -29,7 +31,7 @@ function customErrorHandler($errno, $errstr, $errfile, $errline) {
 			break;
 
 		default:
-			//echo '<script> alert("Unknown error type: ['.$errno.'] '.$errstr.'\n error on line '.$errline.' in file '.$errfile.'"); </script>';
+			echo '<script> alert("Unknown error type: ['.$errno.'] '.$errstr.'\n error on line '.$errline.' in file '.$errfile.'"); </script>';
 			break;
     }
 }
@@ -393,7 +395,7 @@ abstract class EventTypes {
     const DuggaFileupload = 21;
 	const DownloadAllCourseVers = 22;
 	const EditFile = 23; 
-    const MarkedDugga = 24;
+	const MarkedDugga = 24;
 }
 
 //------------------------------------------------------------------------------------------------
