@@ -4,7 +4,7 @@
 
 ************************************************************************/
 
-const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, diagramNames:null, diagramID:null, text: null, isSelected: null}]);
+const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, text: null, isSelected: null}]);
 let diagramChanges = [];
 
 //---------------------------------------------
@@ -90,7 +90,7 @@ function SaveState() {
         diagramChanges.push({"points": objectChanges.points});
     }
 
-    localStorage.setItem("diagramChanges", JSON.stringify(diagramChanges));
+    localStorage.setItem("diagramChanges", compressStringifiedObject(JSON.stringify(diagramChanges)));
     localStorage.setItem("Settings", JSON.stringify(settings));
     console.log("State is saved");
 }
@@ -148,7 +148,7 @@ function loadDiagram() {
         const localStorageDiagramChanges = localStorage.getItem("diagramChanges");
 
         if(localStorageDiagramChanges !== null) {
-            diagramChanges = JSON.parse(localStorageDiagramChanges);
+            diagramChanges = JSON.parse(decompressStringifiedObject(localStorageDiagramChanges));
             const built = buildDiagramFromChanges(diagramChanges);
     
             overwriteDiagram(built.diagram);
