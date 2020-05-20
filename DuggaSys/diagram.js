@@ -5419,6 +5419,10 @@ function loadAppearanceForm() {
                 if(setErCardinalityElementDisplayStatus(object, erCardinalityVisible)) {
                     erCardinalityVisible = true;
                 }
+                const connectedObjectsArray = object.getConnectedObjects();
+               
+                document.getElementById("lineObject1").innerHTML = connectedObjectsArray[0].name;
+                document.getElementById("lineObject2").innerHTML = connectedObjectsArray[1].name;
             }
             document.getElementById("typeLine").focus();
         } else if(object.symbolkind === symbolKind.umlLine) {

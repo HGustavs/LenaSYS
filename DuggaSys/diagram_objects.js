@@ -1835,6 +1835,20 @@ function Symbol(kindOfSymbol) {
             ctx.lineWidth = this.properties['lineWidth'] * 1.5 * diagram.getZoomValue();
             ctx.setLineDash([5, 4]);
         }
+
+        if (this.properties['key_type'] == "Top") {
+            console.log("Top");
+        }
+        else if(this.properties['key_type'] == "Right"){
+            console.log("Right");
+        }
+        else if(this.properties['key_type'] == "Bottom"){
+            console.log("Bottom");
+        }
+        else if(this.properties['key_type'] == "Left"){
+            console.log("Left");
+        }
+
         checkLineIntersection(x1,y1,x2,y2);
         ctx.beginPath();
         ctx.moveTo(x1, y1);

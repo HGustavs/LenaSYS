@@ -543,6 +543,23 @@
                             <option value="Forced">Forced</option>
                             <option value="Derived">Derived</option>
                         </select>
+                        <label for="typeLine">Line placement:</label>
+                        <label for="typeLine" id="lineObject1">Object 1:</label>
+                        <select id="linePlacement" data-access="properties.key_type">
+                            <option value="Automatic" selected>Automatic</option>
+                            <option value="Top">Top</option>
+                            <option value="Right">Right</option>
+                            <option value="Bottom">Bottom</option>
+                            <option value="Left">Left</option>
+                        </select>
+                        <label for="typeLine" id="lineObject2">Object 2:</label>
+                        <select id="linePlacement" data-access="properties.key_type">
+                            <option value="Automatic" selected>Automatic</option>
+                            <option value="Top">Top</option>
+                            <option value="Right">Right</option>
+                            <option value="Bottom">Bottom</option>
+                            <option value="Left">Left</option>
+                        </select>
                     </div>
                     <div class="form-group" data-types="7">
                         <label for="typeLineUML">UML line type:</label>
