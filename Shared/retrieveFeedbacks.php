@@ -13,13 +13,13 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'"') as $useran
   $grade = $useranswer['grade'];
   $marked = $useranswer['marked'];
   $unfiltered_feedback = $useranswer['feedback'];
-  $first_feedback;
+  $recent_feedback;
   if(strpos($unfiltered_feedback, '||') !== false){
-    $first_feedback = strstr($unfiltered_feedback, '||', true);
+    $recent_feedback = substr(strrchr($unfiltered_feedback, '||'), 1);
   }else{
-    $first_feedback = $unfiltered_feedback;
+    $recent_feedback = $unfiltered_feedback;
   }
-  $remove_date = strstr($first_feedback, '%%');
+  $remove_date = strstr($recent_feedback, '%%');
   $feedback = str_replace('%%', "\n", $remove_date);
 
   $htmlCode .="<div class='feedback_card'>";
