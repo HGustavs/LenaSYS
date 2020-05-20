@@ -324,7 +324,7 @@ function overwriteDiagram(newDiagram) {
 
 function overwritePoints(newPoints) {
     for(let i = 0; i < newPoints.length; i++) {
-        points[i] = Object.assign({}, newPoints[i]);
+        points[i] = JSON.parse(JSON.stringify(newPoints[i]));
     }
 }
 
@@ -432,13 +432,13 @@ function getObjectChanges(base, object) {
                         "data": JSON.parse(JSON.stringify(value))
                     };
                 } else if(value !== base[key]) {
-                    if(isObject(value) && isObject(base[key])) {
+                    if((isObject(value) || Array.isArray(value)) && (isObject(base[key]) || Array.isArray(base[key]))) {
                         compareObjects(base[key], value, currentPath);
                     } else {
                         changes[currentPath] = {
                             "type": "u",
                             "data": JSON.parse(JSON.stringify(value))
-                        }
+                        };
                     }
                 }
             }
@@ -458,16 +458,17 @@ function buildDiagramFromChanges() {
 
     if(diagramChanges === null || typeof diagramChanges === "undefined") return built;
 
+    let deleteQueue = [];
+
     const iterateChange = (change, type = "diagram") => {
         for(const [key, value] of Object.entries(change[type])) {
-            switch(value.type) {
-                case '+':
-                case 'u':
-                    setNestedPropertyValue(built[type], key, value.data);
-                    break;
-                case '-':
-                    deleteNestedProperty(built[type], key);
-                    break; 
+            if(value.type === '+' || value.type === 'u') {
+                setNestedPropertyValue(built[type], key, value.data);
+            } else if(value.type === '-') {
+                deleteQueue.push({
+                    "object": built[type],
+                    "key": key
+                });
             }
         }
     };
@@ -475,6 +476,8 @@ function buildDiagramFromChanges() {
     for(const change of diagramChanges) {
         iterateChange(change, "diagram");
         iterateChange(change, "points");
+
+        deleteQueue = [];
     }
 
     return built;
