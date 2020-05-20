@@ -31,6 +31,7 @@ var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
 var legendIsHidden = true;
+var permGradeData;
 
 function setup() {
     //Benchmarking function
@@ -180,6 +181,7 @@ function process() {
 	dstr += makeCustomFilter("onlyPending", "Only pending");
 	dstr += makeCustomFilter("minimode", "Mini mode");
 	dstr += makeCustomFilter("passedDeadline", "Late submissions");
+	dstr += makeCustomFilter("notExported", "Not Exported");
 
 	document.getElementById("customfilter").innerHTML = dstr;
 	var dstr = "";
@@ -684,6 +686,7 @@ function returnedResults(data) {
 // Success return function for LadExport lastGraded
 //----------------------------------------
 function returnedExportedGrades(gradeData){
+	permGradeData = gradeData;
 	// Tries to write out the last exported date.
 	// Also checks if the object is undefined.
 	// If it's undefined then show the popup.
@@ -1119,8 +1122,74 @@ function renderCell(col, celldata, cellid) {
 					}
 				return str;
 				}
+				
+		}	
+	}	if (filterList["notExported"]) {
+			if (filterGrade === "none" || celldata.grade === filterGrade) {
+				// color based on pass,fail,pending,assigned,unassigned
+				AJAXService("getunexported", {}, "GEXPORT");
+				str = "<div style='padding:12px;' class='resultTableCell ";
+				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > gradeData.gradeLastExported) {
+					str += "dugga-pending-late-submission";
+				} else {
+					str += "dugga-empty";
+				}
+					
+				str += "'>";
+				// Creation of grading buttons
+				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+					str += "<div class='gradeContainer resultTableText'>";
+					if (celldata.grade === null) {
+						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+					} else if (celldata.grade === -1) {
+						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+					} else {
+						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+					}
+					str += "<img id='korf' class='fist";
+					if ((celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) || celldata.quizfile == null) { // Always shows fist. Should be re-evaluated
+						str += " grading-hidden";
+					}
+					str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
+					str += "/>";
+					//Print times graded
+					str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
+					if (celldata.timesGraded !== 0) {
+						str += '(' + celldata.timesGraded + ')';
+					}
+					str += "</div>";
+					str += "</div>";
+
+					// Print submitted time and change color to red if passed deadline
+					str += "<div class='text-center resultTableText'";
+					for (var p = 0; p < moments.length; p++) {
+						if (moments[p].link == celldata.quizId) {
+							if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+									str += " style='color:red;'";
+								}
+								break;
+							}
+						}
+					str += ">";
+
+					if (celldata.submitted.getTime() !== timeZero.getTime()) {
+						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+					}
+						
+					for (var p = 0; p < moments.length; p++) {
+						if (moments[p].link == celldata.quizId) {
+							if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+								str += "<img src='../Shared/icons/warningTriangle.svg' style='width:12px;height:12px;' title='Late submission'>";
+							}
+							break;
+						}
+					}
+					str += "</div>";
+				}
+
+			return str;
+			}
 		}
-	}
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
 	if (col == "FnameLname") {
