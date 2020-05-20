@@ -5007,7 +5007,6 @@ only screen and (max-device-width: 320px) {
 /* Title for the subpages of the section-editor */
 
 .titles {
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
   margin-left: 10px;
