@@ -146,7 +146,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 					if ($duggafile !== 'contribution') {
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
-						echo "<td align='center'>";
+						echo "<td align='left'>";
 						echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
 						echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 						echo "</td>";

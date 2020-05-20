@@ -47,18 +47,19 @@
 				echo "</td>";
 			} else if($requestedService == "analytic.php") {
 				echo '<td class="navButt" id="home" title="Back"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img src="../Shared/icons/Up.svg"></a></td>';
-				echo '<td class="navButt" id="GeneralStats" title="General Stats"><a onclick="loadGeneralStats()"><i class="fas fa-stream faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="CurrentlyOnline" title="Currently Online"><a onclick="loadCurrentlyOnline()"><i class="fas fa-users faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="PasswordGuessing" title="Password guessing"><a onclick="loadPasswordGuessing()"><i class="fas fa-key faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="OSPercentage" title="OS Percentage"><a onclick="loadOsPercentage()"><i class="fas fa-laptop faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Browserpercentage" title="Browser percentage"><a onclick="loadBrowserPercentage()"><i class="fa fa-chrome faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Serviceusage" title="Service usage"><a onclick="loadServiceUsage()"><i class="fas fa-chart-line faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Servicespeed" title="Service speed"><a onclick="loadServiceAvgDuration()"><i class="fas fa-tachometer-alt faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Servicecrashes" title="Service crashes"><a onclick="loadServiceCrashes()"><i class="fas fa-car-crash faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Fileinformation" title="File information"><a onclick="loadFileInformation()"><i class="fas fa-file-pdf faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Pageinformation" title="Page information"><a onclick="loadPageInformation()"><i class="fas fa-globe-europe faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="Userinformation" title="User information"><a onclick="loadUserInformation()"><i class="fas fa-user faNavheader"></i></a></td>';
-				echo '<td class="navButt" id="CourseDiskUsage" title="Course Disk Usage"><a onclick="loadCourseDiskUsage()"><i class="fas fa-hdd faNavheader"></i></a></td>';
+                echo '<td class="vl"></td>';
+				echo '<td class="navButt analytic-navbutton" id="GeneralStats"><a onclick="loadGeneralStats()"><i class="fas fa-stream"></i></a><span class="navcomment">General Stats</span></td>';
+				echo '<td class="navButt analytic-navbutton" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline()"><i class="fas fa-users"></i></a><span class="navcomment">Currently Online</span></td>';
+				echo '<td class="navButt analytic-navbutton" id="PasswordGuessing"><a onclick="loadPasswordGuessing()"><i class="fas fa-key"></i></a><span class="navcomment">Password Guessing</span></td>';
+				echo '<td class="navButt analytic-navbutton" id="OSPercentage"><a onclick="loadOsPercentage()"><i class="fas fa-laptop"></i></a><span class="navcomment">OS Percentage</span></td>';
+				echo '<td class="navButt analytic-navbutton" id="Browserpercentage"><a onclick="loadBrowserPercentage()"><i class="fa fa-chrome"></i></a><span class="navcomment">Browser percentage</span></td>';
+				echo '<td class="navButt analytic-navbutton" id="Serviceusage"><a onclick="loadServiceUsage()"><i class="fas fa-chart-line"></i></a><span class="navcomment">Service usage</span></td>';
+				echo '<td class="navButt analytic-navbutton" id="Servicespeed"><a onclick="loadServiceAvgDuration()"><i class="fas fa-tachometer-alt"></i></a><span class="navcomment">Service speed</span></td>';
+				echo '<td class="navButt analytic-navbutton" id="Servicecrashes"><a onclick="loadServiceCrashes()"><i class="fas fa-car-crash"></i></a><span class="navcomment">Service crashes</span></td>';
+				echo '<td class="navButt analytic-navbutton" id="Fileinformation"><a onclick="loadFileInformation()"><i class="fas fa-file-pdf"></i></a><span class="navcomment">File information</span></td>';
+				echo '<td class="navButt analytic-navbutton" id="Pageinformation"><a onclick="loadPageInformation()"><i class="fas fa-globe-europe"></i></a><span class="navcomment">Page information</span></td>';
+				echo '<td class="navButt analytic-navbutton" id="Userinformation"><a onclick="loadUserInformation()"><i class="fas fa-user"></i></a><span class="navcomment">User information</span></td>';
+				echo '<td class="navButt analytic-navbutton" id="CourseDiskUsage"><a onclick="loadCourseDiskUsage()"><i class="fas fa-hdd"></i></a><span class="navcomment">Course disk usage</span></td>';
 			}
 
 			if($noup!='NONE') {
@@ -67,7 +68,9 @@
 			if($noup=='COURSE'){
 					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-  				echo "<td class='navButt' id='announcement' title='Announcement'><img src='../Shared/icons/announcement_icon.svg'></td>";
+			}if ($noup == 'COURSE' && checkLogin()) {
+					echo "<td class='navButt' id='announcement' title='Announcement'><img src='../Shared/icons/announcement_icon.svg'></td>";
+
 			}else if($noup=='SECTION'){
 					echo "<a id='upIcon' href='";
 					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
@@ -142,6 +145,8 @@
 									$term = 2;
 								} else if ($array[0] === "V") {
 									$term = 1;
+								}else if ($array[0] === "S") {
+									$term = 3;
 								}
 	
 								echo "<td class='coursePage' style='display: inline-block;'>";
@@ -169,9 +174,9 @@
 					echo "<td id='testSearchContainer' class='navButt'>";
 
 					if ($requestedService == "fileed.php")
-						echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();sortAndFilterTogether();'/>";
+						echo   "<form autocomplete='off'><input id='searchinput' readonly type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search' placeholder='Search..' onkeyup='searchterm=this.value;sortAndFilterTogether();myTable.reRender();'/></form>";
 					else
-						echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/>";
+						echo   "<form autocomplete='off' display:'none'><input id='searchinput' readonly onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/></form>";
 
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black;'>"; //Dropdown menu for when hovering the search bar
 					echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
@@ -427,6 +432,19 @@ function mouseOutAnnouncement() {
    }
 }
 /*Shadow hover effect for sort button END -------------*/
+
+var searchinput = document.getElementById("searchinput");
+if(searchinput){
+	searchinput.addEventListener("mouseover", mouseOverSearchInput);
+}
+
+function mouseOverSearchInput() {
+   var obj = document.getElementById("searchinput");
+   if(obj != null)
+   {
+	obj.removeAttribute('readonly');
+   }
+}
 
 </script>
 <script type="text/javascript">

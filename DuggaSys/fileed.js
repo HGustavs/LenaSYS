@@ -32,23 +32,7 @@ var editor;
 var filedata;
 
 function setup() {
-    /*
-    var filt = "";
-    // Add search bar to nav
-    filt += `<td id='searchBar' class='navButt'>`;
-    filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
-    filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
-    filt += `<button id='searchbutton' class='switchContent'`;
-    filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
-    filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
-    filt += `</button></td>`;
-
-    $("#menuHook").before(filt);
-    */
-    
-    AJAXService("GET", {
-        cid: querystring['courseid']
-    }, "FILE");
+    AJAXService("GET", { cid: querystring['courseid'] }, "FILE");
 }
 
 window.onresize = function () {
@@ -59,6 +43,7 @@ $(document).on('click', '.last', function (e) {
     e.stopPropagation();
 });
 
+/*
 $(function () {
     $("#release").datepicker({
         dateFormat: "yy-mm-dd"
@@ -67,6 +52,7 @@ $(function () {
         dateFormat: "yy-mm-dd"
     });
 });
+*/
 
 //----------------------------------------------------------------------------
 // Renderer
@@ -115,7 +101,6 @@ function returnedFile(data) {
         hasCounterColumn: true
     });
 
-
     myTable.renderTable();
     if (querystring['confirmation'] != undefined) {
         $(".confirmationWindow").css("display", "block");
@@ -163,10 +148,6 @@ function showFilePopUp(fileKind) {
         $("#eFileHeadline").css("display", "block");
         $("#createNewEmptyFile").css("display", "block");
         $(".addNewFile").css("display", "none");
-        //$(".testselect").css("display", "block");
-        //$(".addNewFile").css("display", "none");
-        //$("#createNewEmptyFile").css("display", "block");
-        //$('#uploadedfile').attr('type', 'text');
     }
 }
 
@@ -209,8 +190,6 @@ function closeAddFile() {
 }
 
 function closePreview() {
-    /*$(".previewWindow").css("display","none");
-    $(".previewWindowContainer").css("display", "none");*/
     $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
 }
@@ -272,8 +251,6 @@ function validateDummyFile() {
 
     var errors = [];
     var name = document.getElementById("newEmptyFile").value;
-
-    // Trim name
     name = name.trim();
 
     // Get filename
@@ -450,20 +427,19 @@ function filePreviewClose(){
 document.addEventListener('keydown', function (event) {
     var fileview = document.querySelector(".fileView");
     if (event.key === 'Escape') {
-      $(".fileViewContainer").hide();
-      $(".fileViewWindow").hide();
-      while(fileview.firstChild){
-        fileview.removeChild(fileview.firstChild);
+        $(".fileViewContainer").hide();
+        $(".fileViewWindow").hide();
+        while (fileview.firstChild) {
+            fileview.removeChild(fileview.firstChild);
         }
     }
-  })
+});
 
 //---------------------------------------------------------------------------------------------
 //sortAndFilterTogether <- callback function sort and filter files by its kind and search input
 //---------------------------------------------------------------------------------------------
 function sortAndFilterTogether(){
-  filterFilesByKind(sortFilter.kind);
-
+    filterFilesByKind(sortFilter.kind);
 }
 var sortFilter = {
     fileKind : "",
@@ -731,14 +707,15 @@ function deleteFile(fileid, filename, filekind) {
     };
 
     if (confirm("Do you really want to delete the file/link: " + filename)) {
-        AJAXService("DELFILE", tempData
-        , "FILE");
+        AJAXService("DELFILE", tempData, "FILE");
     }
 }
 
+/*
 function createQuickItem() {
     //showFilePopUp('MFILE');
 }
+*/
 
 /*****************************************************************
   loadFile(), editFile(), cancelEditFile() and closeEditFile()
@@ -768,7 +745,6 @@ function loadFile(fileUrl, fileNamez, fileKind) {
 }
 
 function returnFile(data) {
-   
     document.getElementById("filecont").innerHTML = data;
     updateAce(data);
     $(".fileName").html(fileName);
@@ -820,13 +796,6 @@ function saveTextToFile() {
     $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
     
-}
-
-function validatePreviewForm() {
-    if (document.getElementById("cID").value == "Toddler") {
-        return false;
-    }
-    return true;
 }
 
 function setfileCarotPosition() {
