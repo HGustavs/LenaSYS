@@ -7,26 +7,6 @@
 const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, diagramNames:null, diagramID:null, text: null, isSelected: null}]);
 let diagramChanges = [];
 
-//--------------------------------------------------------------------------------------------------
-// downloadmode: download/load/export canvas (not fully implemented, see row 373-378 in diagram.php)
-//--------------------------------------------------------------------------------------------------
-
-function downloadMode(el) {
-    var canvas = document.getElementById("content");
-    var selectBox = document.getElementById("download");
-    download = selectBox.options[selectBox.selectedIndex].value;
-
-    if (download == "Save") {
-        SaveState();
-    }
-    if (download == "Load") {
-        Load();
-    }
-    if (download == "Export") {
-        SaveFile(el);
-    }
-}
-
 //---------------------------------------------
 // saveToServer: saves folders/projects created in IOhandler to server
 //---------------------------------------------
@@ -64,15 +44,7 @@ function redirect(doc) {
 //---------------------------------------------
 
 function redirectas(doc,folder) {
-        location.href="diagram.php?id="+doc.value+"&folder="+folder;
-}
-
-//---------------------------------------------
-// newProject: toggles the content visible to create a new project/canvas in existing folder
-//---------------------------------------------
-
-function newProject() {
-    document.getElementById('newProject').style.display = "block";
+    location.href="diagram.php?id="+doc.value+"&folder="+folder;
 }
 
 //---------------------------------------------
@@ -94,17 +66,10 @@ function loadStored() {
     document.getElementById('showStored').style.display = "block";
 }
 
-//---------------------------------------------
-// loadStored: Shows all stored folders, used when loading existing canvas
-//---------------------------------------------
-
-function loadStoredFolders(f) {
-    document.getElementById('showStoredFolders').style.display = "block";
-}
-
-//---------------------------------------------
-// Save: saves objects in canvas to JSON format in localstorage
-//---------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------
+// SaveState: Builds the diagram from previous changes and compares the built diagram with the current diagram.
+//            Found changes are pushed to diagramChanges. Current diagramChanges and settings are pushed to local storage.
+//------------------------------------------------------------------------------------------------------------------------
 
 function SaveState() {
     const builtDiagram = buildDiagramFromChanges();
@@ -165,9 +130,10 @@ function loadKeyBinds(){
         drawKeyMap(keyMap, $("#shortcuts-wrap").get(0));
     }
 }
-//---------------------------------------------
-// loadDiagram: retrive an old diagram if it exist.
-//---------------------------------------------
+//----------------------------------------------------------------------------------------------
+// loadDiagram: Builds diagram from object containing changes and overwrites diagram and points.
+//              Only does this if the local hash is not equal to current diagram hash.
+//----------------------------------------------------------------------------------------------
 
 function loadDiagram() {
     // Only retrieve settings if there are any saved
@@ -217,6 +183,10 @@ function hashCurrent() {
     currentHash = getDiagramHash(getStringifiedDiagram());
 }
 
+//-------------------------------------------------------------------------------
+// getStringifiedDiagram: Stringifies all diagram objects and puts them together.
+//-------------------------------------------------------------------------------
+
 function getStringifiedDiagram() {
     let str = "";
     for(let i = 0; i < diagram.length; i++) {
@@ -224,6 +194,10 @@ function getStringifiedDiagram() {
     }
     return str;
 }
+
+//-------------------------------------------------------
+// getDiagramHash: Creates a hash based on passed string.
+//-------------------------------------------------------
 
 function getDiagramHash(stringifiedDiagram) {
     let hash = 0;
@@ -263,6 +237,11 @@ function getUpload() {
     }
 }
 
+//---------------------------------------------------------------------------------------
+// Load: Builds the diagram from diagram changes objects and replaces diagram and points.
+//       Used when importing files. No interaction with local storage or hashing.
+//---------------------------------------------------------------------------------------
+
 function Load() {
     const built = buildDiagramFromChanges(diagramChanges);
     overwriteDiagram(built.diagram);
@@ -270,6 +249,10 @@ function Load() {
     console.log("State is loaded");
     updateGraphics();
 }
+
+//-----------------------------------------------------------------------------
+// overwriteDiagram: Overwrites used diagram array to passed new diagram array.
+//-----------------------------------------------------------------------------
 
 function overwriteDiagram(newDiagram) {
     for(let i = 0; i < newDiagram.length; i++) {
@@ -281,6 +264,10 @@ function overwriteDiagram(newDiagram) {
         }
     }
 }
+
+//--------------------------------------------------------------------------
+// overwritePoints: Overwrites used points array to passed new points array.
+//--------------------------------------------------------------------------
 
 function overwritePoints(newPoints) {
     for(let i = 0; i < newPoints.length; i++) {

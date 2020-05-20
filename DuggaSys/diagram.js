@@ -2706,16 +2706,6 @@ function hideCrosses() {
     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
 }
 
-//----------------------------------------------------------------------
-// removeLocalStorage: this function is running when you click the button clear diagram
-//----------------------------------------------------------------------
-
-function removeLocalStorage() {
-    for (var i = 0; i < localStorage.length; i++) {
-        localStorage.removeItem("localdiagram");
-    }
-}
-
 //----------------------------------------------------------------------------------------------------------------
 // This function allows us to choose how many decimals (precision argument) that a value will be rounded down to.
 //----------------------------------------------------------------------------------------------------------------
