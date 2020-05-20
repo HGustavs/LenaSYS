@@ -2127,6 +2127,15 @@ function selectRecipients(){
       $("#recipient option").attr("selected", false);
     }
   });
+  $('#recipient option').click(function() {
+    var clicks = $(this).data('clicks');
+    if (clicks) {
+     $(this).attr("selected", "selected");
+   } else {
+     $(this).attr("selected", false);
+   }
+   $(this).data("clicks", !clicks);
+  });
 
 }
 // Checks if <a> link is external
