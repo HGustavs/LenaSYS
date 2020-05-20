@@ -656,16 +656,6 @@ p {
   position: relative;
   top: 2px;
 }
-
-/* Newly implemented fields in announcement form*/
-.discardOptionBg{
-  background-color: transparent;
-  color: #000;
-}
-.setOptionBg{
-  background-color: #775886;
-  color: #fff;
-}
 /*End of announcement box*/
 
 #Sectionlist {
