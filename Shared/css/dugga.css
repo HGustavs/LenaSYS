@@ -554,6 +554,7 @@ svg text {
 #clippingInfoBox {
 	min-width:170px;
 	width:395px;
+	height: 459px;
 	margin:0 4px 0 4px;
 	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
@@ -565,7 +566,7 @@ svg text {
 }
 #toolbox{
 	min-width:340px;
-	width:340px;
+	width:395px;
 	margin:0 4px 0 4px;
 	display: flex;
 	flex-direction: column;
@@ -579,6 +580,7 @@ svg text {
 #drawingArea #a{
 	background-color:#FFFFFF; 
 	display:block;
+	width: 395px;
 }
  @media only screen and (max-width: 1360px) {
 	#clippingInfoBox {
