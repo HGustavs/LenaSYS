@@ -187,8 +187,6 @@ var classTemplate = {
 var minimumDivisor = 4;                 // Is used when dividing templates for minimum selection before activating dragging mode values
 var selected_objects = [];              // Is used to store multiple selected objects
 var globalappearanceMenuOpen = false;   // True if global appearance menu is open 
-var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
-var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
 var symbolStartKind;                    // Is used to store which kind of object you start on
 var symbolEndKind;                      // Is used to store which kind of object you end on
@@ -3173,14 +3171,16 @@ function distribute(event, axis) {
 //----------------------------------------------------------------------
 
 function undoDiagram(event) {
-    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (diagramNumber > 0) {
-        diagramNumber--;
+    event.stopPropagation();  
+
+    const numberOfRedosAndAdditions = diagramChanges.actions.reduce((result, action) => result + (action !== 'u'), 0);
+    const numberOfUndos = diagramChanges.actions.reduce((result, action) => result + (action === 'u'), 0);
+
+    if(numberOfUndos < numberOfRedosAndAdditions) {
+        diagramChanges.actions.push("u");
+        localStorage.setItem("diagramChanges", JSON.stringify(diagramChanges));
+        Load();
     }
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
-    localStorage.setItem("diagramNumber", diagramNumber);
-    console.log(tmpDiagram);
-    if (tmpDiagram != null) LoadImport(tmpDiagram);
 
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
@@ -3193,15 +3193,16 @@ function undoDiagram(event) {
 //----------------------------------------------------------------------
 
 function redoDiagram(event) {
-    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    diagramNumber = localStorage.getItem("diagramNumber");
-    diagramNumber++;
-    if(!localStorage.getItem("diagram" + diagramNumber)){
-        diagramNumber--;
+    event.stopPropagation();
+
+    const numberOfRedos = diagramChanges.actions.reduce((result, action) => result + (action === 'r'), 0);
+    const numberOfUndos = diagramChanges.actions.reduce((result, action) => result + (action === 'u'), 0);
+
+    if(numberOfUndos > numberOfRedos) {
+        diagramChanges.actions.push("r");
+        localStorage.setItem("diagramChanges", JSON.stringify(diagramChanges));
+        Load();
     }
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
-    localStorage.setItem("diagramNumber", diagramNumber);
-    if (tmpDiagram != null) LoadImport(tmpDiagram);
 
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
@@ -5180,8 +5181,8 @@ function toggleApperanceElement(show = false) {
         appearanceElement.style.display = "none";
 
         if(globalappearanceMenuOpen) {
-            const diagram = localStorage.getItem("diagram" + diagramNumber);
-            if (diagram != null) LoadImport(diagram);
+            //const diagram = localStorage.getItem("diagram" + diagramNumber);
+            //if (diagram != null) LoadImport(diagram);
         }
 
         appearanceMenuOpen = false;

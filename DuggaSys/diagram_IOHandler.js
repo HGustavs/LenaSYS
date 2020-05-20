@@ -6,7 +6,7 @@
 
 const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, isSelected: null}]);
 let diagramChanges = {
-    stepsTaken: [],
+    actions: [],
     changes: []
 };
 
@@ -87,13 +87,13 @@ function SaveState() {
             "diagram": objectChanges.diagram,
             "points": objectChanges.points
         });
-        diagramChanges.stepsTaken.push(diagramChanges.changes.length - 1);
+        diagramChanges.actions.push("p");
     } else if(Object.keys(objectChanges.diagram).length > 0 && Object.keys(objectChanges.points).length === 0) {
         diagramChanges.changes.push({"diagram": objectChanges.diagram});
-        diagramChanges.stepsTaken.push(diagramChanges.changes.length - 1);
+        diagramChanges.actions.push("p");
     } else if(Object.keys(objectChanges.diagram).length === 0 && Object.keys(objectChanges.points).length > 0) {
         diagramChanges.changes.push({"points": objectChanges.points});
-        diagramChanges.stepsTaken.push(diagramChanges.changes.length - 1);
+        diagramChanges.actions.push("p");
     }
 
     localStorage.setItem("diagramChanges", compressStringifiedObject(JSON.stringify(diagramChanges)));
@@ -218,7 +218,7 @@ function getDiagramHash(stringifiedDiagram) {
 //--------------------------------------------------------------------------------------------------------------------
 
 function resetDiagramChangesLocalStorage() {
-    localStorage.setItem("diagramChanges", "{'stepsTaken':[],'changes':[]}");
+    localStorage.setItem("diagramChanges", "{'actions':[],changes':[]}");
 }
 
 //-------------------------------------------------------------------------------
@@ -259,6 +259,7 @@ function Load() {
 //-----------------------------------------------------------------------------
 
 function overwriteDiagram(newDiagram) {
+    diagram.length = newDiagram.length;
     for(let i = 0; i < newDiagram.length; i++) {
         const object = newDiagram[i];
         if(object.kind === kind.symbol) {
@@ -274,6 +275,7 @@ function overwriteDiagram(newDiagram) {
 //--------------------------------------------------------------------------
 
 function overwritePoints(newPoints) {
+    points.length = newPoints.length;
     for(let i = 0; i < newPoints.length; i++) {
         points[i] = JSON.parse(JSON.stringify(newPoints[i]));
     }
@@ -433,8 +435,13 @@ function buildDiagramFromChanges() {
         }
     };
 
-    //Only build to last step taken in stepsTaken array, to support undo and redo
-    for(let i = 0; i < diagramChanges.stepsTaken[diagramChanges.stepsTaken.length - 1] + 1; i++) {
+    const numberOfChanges = diagramChanges.actions.reduce((result, action) => {
+        if(action === "p" || action === "r") result++;
+        if(action === "u") result--;
+        return result
+    }, 0);
+
+    for(let i = 0; i < numberOfChanges; i++) {
         const change = diagramChanges.changes[i];
         if(typeof change["diagram"] !== "undefined") {
             iterateChange(change, "diagram");
