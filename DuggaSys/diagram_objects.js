@@ -2661,7 +2661,7 @@ function drawLineJump(positionX, positionY, mOfLine1, mOfLine2){
 	var angelOfIntersection = Math.atan((mOfLine1 - mOfLine2)/(1+mOfLine1*mOfLine2));
 	if(angelOfIntersection > 0){
 		ctx.beginPath();
-		ctx.arc(positionX,positionY,5,angelOfIntersection+(0.5*Math.PI),angelOfIntersection+(1.5*Math.PI));
+		ctx.arc(positionX,positionY,5*zoomValue,angelOfIntersection+(0.5*Math.PI),angelOfIntersection+(1.5*Math.PI));
 		ctx.closePath();
 		ctx.stroke();
  }
