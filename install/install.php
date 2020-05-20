@@ -195,9 +195,9 @@
           <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
               Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
           Enter MySQL root user. <br>
-          <input title="Enter MySQL root user." class="page2input" type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
+          <input title="Enter MySQL root user." class="page2input" type="text" name="mysqlRoot" placeholder="Root" value="postgres"/> <br>
           Enter password for MySQL root user. <br>
-          <input title="Enter password for MySQL root user." class="page2input" type="password" name="rootPwd" placeholder="Root Password" /> <br>
+          <input title="Enter password for MySQL root user." class="page2input" type="password" name="rootPwd" value="galvaniseradapa" placeholder="Root Password" /> <br>
           <span class="enterAllFields" id="enterFields2">Please fill all fields before continuing.</span>
       </div>
       <div class="inputContent" id="td3" valign=top>
@@ -477,7 +477,7 @@
           # This loop will find comments in the sql file and remove these.
           # Comments are removed because some comments included semi-colons which wont work.
           while(true) {
-            $startPos = strpos($initQuery, "/*");
+            $startPos = strpos($initQuery, "--");
             $endPos = strpos($initQuery, "*/");
             if ($startPos === false || $endPos === false) {
               break;

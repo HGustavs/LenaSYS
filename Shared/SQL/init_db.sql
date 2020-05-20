@@ -1,22 +1,39 @@
-CREATE TABLE films (
-    code        char(5) CONSTRAINT firstkey PRIMARY KEY,
-    title       varchar(40) NOT NULL,
-    did         integer NOT NULL,
-    date_prod   date,
-    kind        varchar(10),
-    len         interval hour to minute
+CREATE TABLE lenasys_user(
+	uid						SERIAL,
+	username				VARCHAR(80) NOT NULL UNIQUE,
+	firstname				VARCHAR(50) NULL,
+	lastname				VARCHAR(50) NULL,
+	ssn						VARCHAR(20) NULL UNIQUE,
+	password				VARCHAR(225) NOT NULL,
+	lastupdated				TIMESTAMP,
+	addedtime  				TIMESTAMP WITHOUT TIME ZONE,
+	lastvisit				TIMESTAMP WITHOUT TIME ZONE,
+	newpassword				SMALLINT NULL,
+	creator					INT  NULL,
+	superuser				SMALLINT NULL,
+	email					VARCHAR(256) DEFAULT NULL,
+	class 					VARCHAR(10) DEFAULT NULL,
+	totalHp					NUMERIC(4, 1),
+	securityquestion		VARCHAR(256) DEFAULT NULL,
+	securityquestionanswer	VARCHAR(256) DEFAULT NULL,
+	requestedpasswordchange	SMALLINT  NOT NULL DEFAULT 0,
+	PRIMARY KEY (uid)
 );
 
-INSERT INTO user(username,password,newpassword,creator,superuser) values ('Grimling','$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m',0,1,1);
-INSERT INTO user(username,password,newpassword,creator) values ('Toddler','$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q',0,1); -- Password is Kong 
-INSERT INTO user(username,password,newpassword,creator,ssn) values ('Tester', '$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q',1,1,'111111-1111'); -- Password is Kong 
+-- class 					VARCHAR(10) DEFAULT NULL  REFERENCES class (class), */
+-- add references at end */
+-- https://stackoverflow.com/questions/35103606/postgresql-error-relation-products-does-not-exist */
+
+INSERT INTO lenasys_user(username, password, newpassword, creator, superuser) values ('Grimling','$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m', 0, 1, 1);
+INSERT INTO lenasys_user(username,password,newpassword,creator) values ('Toddler','$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q',0,1); 
+INSERT INTO lenasys_user(username,password,newpassword,creator,ssn) values ('Tester', '$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q',1,1,'111111-1111'); 
+
+-- Password is Kong  */
+-- Password is Kong  */
+-- Course table contains the most essential information relating to study courses in the database. */
 
 
-
--- Course table contains the most essential information relating to study courses in the database.
-
-
--- alter table course alter column hp add default 7.5; */
+-- alter table course alter column hp add default 7.5; */ 
 
 CREATE TABLE course(
 	cid						INT  NOT NULL AUTO_INCREMENT,
@@ -32,7 +49,7 @@ CREATE TABLE course(
 	hp						DECIMAL(4,1) NOT NULL DEFAULT 7.5,
 	courseHttpPage			VARCHAR(2000),
 	PRIMARY KEY (cid),
-	FOREIGN KEY (creator) REFERENCES user (uid)
+	FOREIGN KEY (creator) REFERENCES lenasys_user (uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- This table represents a many-to-many relation between courses, to illustrate pre-requirements for courses. */
@@ -46,7 +63,7 @@ CREATE TABLE course_req(
 
 
  --This table represents a many-to-many relation between users and courses. That is,
- -- tuple in this table joins a user with a course.
+ -- tuple in this table joins a lenasys_user with a course.
  
 CREATE TABLE user_course(
 	uid						INT  NOT NULL,
@@ -66,7 +83,7 @@ CREATE TABLE user_course(
     failed 					INT  NOT NULL DEFAULT 0,
     pending 				INT  NOT NULL DEFAULT 0,
 	PRIMARY KEY (uid, cid),
-	FOREIGN KEY (uid) REFERENCES user (uid),
+	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -93,7 +110,7 @@ CREATE TABLE listentries (
 	feedbackenabled			SMALLINT(1)  NOT NULL DEFAULT 0,
 	feedbackquestion		VARCHAR(512),
     PRIMARY KEY (lid),
-	FOREIGN KEY (creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid)REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
+	FOREIGN KEY (creator) REFERENCES lenasys_user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid)REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 -- Quiz tables 
@@ -158,7 +175,7 @@ CREATE TABLE userAnswer (
         gradeLastExported   timestamp null default null,
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
-	FOREIGN KEY (uid) REFERENCES user(uid),
+	FOREIGN KEY (uid) REFERENCES lenasys_user(uid),
 	FOREIGN KEY (quiz) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid),
 	FOREIGN KEY (variant) REFERENCES variant(vid)
@@ -234,7 +251,7 @@ CREATE TABLE codeexample(
 	templateid				INT  NOT NULL DEFAULT '0',
 	PRIMARY KEY (exampleid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
-	FOREIGN KEY (uid) REFERENCES user (uid),
+	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
 	FOREIGN KEY (templateid) REFERENCES template (templateid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
@@ -253,7 +270,7 @@ CREATE TABLE wordlist(
 	updated 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	uid						INT  NOT NULL,
 	PRIMARY KEY (wordlistid),
-	FOREIGN KEY (uid) REFERENCES user (uid)
+	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 
@@ -278,7 +295,7 @@ CREATE TABLE word(
 	updated 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	uid						INT  NOT NULL,
 	PRIMARY KEY (wordid, wordlistid),
-	FOREIGN KEY (uid) REFERENCES user (uid),
+	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
 	FOREIGN KEY (wordlistid) REFERENCES wordlist(wordlistid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
@@ -308,7 +325,7 @@ CREATE TABLE improw(
 	updated					TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	uid						INT  NOT NULL,
 	PRIMARY KEY (impid, exampleid, boxid),
-	FOREIGN KEY (uid) REFERENCES user (uid),
+	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
 	FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
@@ -322,7 +339,7 @@ CREATE TABLE impwordlist(
 	uid						INTEGER  NOT NULL,
 	PRIMARY KEY (wordid),
 	FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
-	FOREIGN KEY (uid) REFERENCES user (uid)
+	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE submission(
@@ -349,7 +366,7 @@ CREATE TABLE eventlog(
 	ts 						TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	address 				VARCHAR(45),
 	raddress 				VARCHAR(45),
-	user 					VARCHAR(128),
+	lenasys_user 					VARCHAR(128),
 	eventtext				TEXT NOT NULL,
 	PRIMARY KEY (eid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
@@ -371,7 +388,7 @@ CREATE TABLE class (
 	tempo 					INT(3) DEFAULT NULL,
 	hpProgress 	DECIMAL(3,1),
 	PRIMARY KEY (class,responsible),
-	FOREIGN KEY (responsible) REFERENCES user (uid)
+	FOREIGN KEY (responsible) REFERENCES lenasys_user (uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 
@@ -387,7 +404,7 @@ CREATE TABLE subparts(
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 
--- this table is weak reslation to user and partcourse.
+-- this table is weak reslation to lenasys_user and partcourse.
 
 CREATE TABLE partresult (
     cid 					INT  NOT NULL,
@@ -397,7 +414,7 @@ CREATE TABLE partresult (
 	hp						DECIMAL(3,1) REFERENCES subparts (parthp),
 	PRIMARY KEY (partname, cid, uid),
 	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
-	FOREIGN KEY (uid) REFERENCES user (uid)
+	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 
@@ -467,7 +484,7 @@ CREATE TABLE user_push_registration (
 	daysOfUnsent			INT NOT NULL DEFAULT '0',
 	PRIMARY KEY	(id),
 	KEY (endpoint),
-	FOREIGN KEY (uid) REFERENCES user(uid)
+	FOREIGN KEY (uid) REFERENCES lenasys_user(uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 -- Usergroup and user_usergroup relation 
@@ -491,8 +508,8 @@ CREATE TABLE announcement(
     read_status SMALLINT(1) NOT NULL DEFAULT '1',
     edited VARCHAR(3) NOT NULL DEFAULT 'NO',
     PRIMARY KEY(announcementid, secondannouncementid, uid, cid, versid),
-    FOREIGN KEY (uid) REFERENCES user (uid),
-    FOREIGN KEY (recipient) REFERENCES user (uid),
+    FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
+    FOREIGN KEY (recipient) REFERENCES lenasys_user (uid),
     FOREIGN KEY (cid) REFERENCES course (cid)
     
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
@@ -580,7 +597,7 @@ CREATE TABLE user_group (
   KEY groupID (groupID),
   KEY userID (userID),
   CONSTRAINT user_group_ibfk_1 FOREIGN KEY (groupID) REFERENCES `groups` (groupID),
-  CONSTRAINT user_group_ibfk_2 FOREIGN KEY (userID) REFERENCES user (uid)
+  CONSTRAINT user_group_ibfk_2 FOREIGN KEY (userID) REFERENCES lenasys_user (uid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --table used for checking participation. i.e participation is 0 = not participated, 1 = participated.
@@ -592,7 +609,7 @@ CREATE TABLE user_participant (
   comments      			VARCHAR(512),
   PRIMARY KEY (id),
   FOREIGN KEY (lid) REFERENCES listentries (lid),
-  FOREIGN KEY (uid) REFERENCES user (uid)
+  FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 
@@ -603,10 +620,10 @@ CREATE TABLE opponents (
 	opponent1				INT  DEFAULT NULL,
 	opponent2				INT  DEFAULT NULL,
 	PRIMARY KEY (presenter, lid),
-	FOREIGN KEY (presenter) REFERENCES user(uid),
+	FOREIGN KEY (presenter) REFERENCES lenasys_user(uid),
 	FOREIGN KEY (lid) REFERENCES listentries(lid),
-	FOREIGN KEY (opponent1) REFERENCES user(uid),
-	FOREIGN KEY (opponent2) REFERENCES user(uid)
+	FOREIGN KEY (opponent1) REFERENCES lenasys_user(uid),
+	FOREIGN KEY (opponent2) REFERENCES lenasys_user(uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE options (
@@ -630,13 +647,13 @@ CREATE TABLE timesheet(
 	reference			VARCHAR(10),
 	comment				TEXT,
 	PRIMARY KEY (tid),
-	FOREIGN KEY (uid) REFERENCES user(uid),
+	FOREIGN KEY (uid) REFERENCES lenasys_user(uid),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (did) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
--- userDuggaFeedback table used for user feedback on duggor 
+-- userDuggaFeedback table used for lenasys_user feedback on duggor 
 CREATE TABLE userduggafeedback(
 	ufid 					INT  NOT NULL AUTO_INCREMENT,
 	username				VARCHAR(80) DEFAULT null,
@@ -645,7 +662,7 @@ CREATE TABLE userduggafeedback(
 	score					INT(11) NOT NULL,
 	entryname				varchar(68),
 	PRIMARY KEY (ufid),
-	FOREIGN KEY (username) REFERENCES user(username),
+	FOREIGN KEY (username) REFERENCES lenasys_user(username),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (lid) REFERENCES listentries(lid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
@@ -654,8 +671,8 @@ CREATE TABLE userduggafeedback(
 	--This view eases the process of determining how many hp a student with a specific uid
 	--in a specific course cid has finished. See the example below.
 
-	--Example, get total hp finished by user with uid 2 in course with cid 1:
-		--SQL code: select hp from studentresult where user = 2 and course_id = 1;
+	--Example, get total hp finished by lenasys_user with uid 2 in course with cid 1:
+		--SQL code: select hp from studentresult where lenasys_user = 2 and course_id = 1;
 
 
 CREATE VIEW studentresultCourse AS
@@ -665,12 +682,12 @@ CREATE VIEW studentresultCourse AS
 		AND subparts.parthp = partresult.hp
 	WHERE partresult.grade != 'u';
 
--- updatesd info in user table 
-UPDATE user SET firstname='Toddler', lastname='Kong' WHERE username='Toddler';
-UPDATE user SET firstname='Johan', lastname='Grimling' WHERE username='Grimling';
-UPDATE user SET ssn='810101-5567' WHERE username='Grimling';
-UPDATE user SET ssn='444444-5447' WHERE username='Toddler';
-UPDATE user SET superuser=1 WHERE username='Toddler';
+-- updatesd info in lenasys_user table 
+UPDATE lenasys_user SET firstname='Toddler', lastname='Kong' WHERE username='Toddler';
+UPDATE lenasys_user SET firstname='Johan', lastname='Grimling' WHERE username='Grimling';
+UPDATE lenasys_user SET ssn='810101-5567' WHERE username='Grimling';
+UPDATE lenasys_user SET ssn='444444-5447' WHERE username='Toddler';
+UPDATE lenasys_user SET superuser=1 WHERE username='Toddler';
 
 -- Templates for codeexamples 
 
