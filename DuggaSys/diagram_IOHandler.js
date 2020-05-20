@@ -4,8 +4,11 @@
 
 ************************************************************************/
 
-const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, text: null, isSelected: null}]);
-let diagramChanges = [];
+const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, isSelected: null}]);
+let diagramChanges = {
+    stepsTaken: [],
+    changes: []
+};
 
 //---------------------------------------------
 // saveToServer: saves folders/projects created in IOhandler to server
@@ -80,14 +83,17 @@ function SaveState() {
     };
 
     if(Object.keys(objectChanges.diagram).length > 0 && Object.keys(objectChanges.points).length > 0) {
-        diagramChanges.push({
+        diagramChanges.changes.push({
             "diagram": objectChanges.diagram,
             "points": objectChanges.points
         });
+        diagramChanges.stepsTaken.push(diagramChanges.changes.length - 1);
     } else if(Object.keys(objectChanges.diagram).length > 0 && Object.keys(objectChanges.points).length === 0) {
-        diagramChanges.push({"diagram": objectChanges.diagram});
+        diagramChanges.changes.push({"diagram": objectChanges.diagram});
+        diagramChanges.stepsTaken.push(diagramChanges.changes.length - 1);
     } else if(Object.keys(objectChanges.diagram).length === 0 && Object.keys(objectChanges.points).length > 0) {
-        diagramChanges.push({"points": objectChanges.points});
+        diagramChanges.changes.push({"points": objectChanges.points});
+        diagramChanges.stepsTaken.push(diagramChanges.changes.length - 1);
     }
 
     localStorage.setItem("diagramChanges", compressStringifiedObject(JSON.stringify(diagramChanges)));
@@ -149,15 +155,13 @@ function loadDiagram() {
 
         if(localStorageDiagramChanges !== null) {
             diagramChanges = JSON.parse(decompressStringifiedObject(localStorageDiagramChanges));
-            const built = buildDiagramFromChanges(diagramChanges);
-    
+            const built = buildDiagramFromChanges();
             overwriteDiagram(built.diagram);
             overwritePoints(built.points);
         }
     }
     deselectObjects();
     updateGraphics();
-    SaveState();
 }
 
 //------------------------------------------------------------------------------
@@ -214,7 +218,7 @@ function getDiagramHash(stringifiedDiagram) {
 //--------------------------------------------------------------------------------------------------------------------
 
 function resetDiagramChangesLocalStorage() {
-    localStorage.setItem("diagramChanges", "[]");
+    localStorage.setItem("diagramChanges", "{'stepsTaken':[],'changes':[]}");
 }
 
 //-------------------------------------------------------------------------------
@@ -243,7 +247,7 @@ function getUpload() {
 //---------------------------------------------------------------------------------------
 
 function Load() {
-    const built = buildDiagramFromChanges(diagramChanges);
+    const built = buildDiagramFromChanges();
     overwriteDiagram(built.diagram);
     overwritePoints(built.points);
     console.log("State is loaded");
@@ -411,7 +415,7 @@ function buildDiagramFromChanges() {
         points: []
     }
 
-    if(diagramChanges === null || typeof diagramChanges === "undefined") return built;
+    if(diagramChanges.changes === null || typeof diagramChanges.changes === "undefined") return built;
 
     let deleteQueue = []; //Queue of objects to delete to make it possible to sort by index before deletion
 
@@ -429,7 +433,9 @@ function buildDiagramFromChanges() {
         }
     };
 
-    for(const change of diagramChanges) {
+    //Only build to last step taken in stepsTaken array, to support undo and redo
+    for(let i = 0; i < diagramChanges.stepsTaken[diagramChanges.stepsTaken.length - 1] + 1; i++) {
+        const change = diagramChanges.changes[i];
         if(typeof change["diagram"] !== "undefined") {
             iterateChange(change, "diagram");
         }
