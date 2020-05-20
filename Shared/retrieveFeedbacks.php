@@ -12,7 +12,15 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'"') as $useran
   $moment = $useranswer['moment'];
   $grade = $useranswer['grade'];
   $marked = $useranswer['marked'];
-  $feedback = $useranswer['feedback'];
+  $unfiltered_feedback = $useranswer['feedback'];
+  $first_feedback;
+  if(strpos($unfiltered_feedback, '||') !== false){
+    $first_feedback = strstr($unfiltered_feedback, '||', true);
+  }else{
+    $first_feedback = $unfiltered_feedback;
+  }
+  $remove_date = strstr($first_feedback, '%%');
+  $feedback = str_replace('%%', "\n", $remove_date);
 
   $htmlCode .="<div class='feedback_card'>";
   if ($grade == 2) {
