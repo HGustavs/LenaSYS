@@ -160,6 +160,7 @@ var lastDiagramEdit = localStorage.getItem('lastEdit');          // the last dat
 var refreshTimer = setRefreshTime();              //  set how often the diagram should be refreshed.
 var refresh_lock = false;           // used to set if the digram should stop refreshing or not.
 var moved = false;                  //used to check if object has moved
+var lineLocked = false;
 var connectLooseLineObj = {         //Contains values for use when connecting loose lines to objects
     lineIsSelected: false,
     selectedLine: null,
@@ -2333,7 +2334,9 @@ window.addEventListener('resize', canvasSize);
 
 function updateGraphics() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    diagram.updateQuadrants();
+    if(lineLocked == false){
+        diagram.updateQuadrants();
+    }
     drawGrid();
     drawOrigoLine();
     if(developerModeActive) drawOrigo();
@@ -2343,7 +2346,9 @@ function updateGraphics() {
         markLastMouseCoordinates(); 
     }
     diagram.sortConnectors();
-    diagram.updateQuadrants();
+    if(lineLocked == false){
+        diagram.updateQuadrants();
+    }
     diagram.draw();
     points.drawPoints();
     drawVirtualPaper();
