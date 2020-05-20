@@ -144,11 +144,10 @@ function showFacit(param, uanswer, danswer)
 {
 	AJAXService("GETVARIANTANSWER",{ setanswer:uanswer},"VARIANTPDUGGA");
 	var splited = uanswer.split(" ");
-	allanswers =  splited[3];
+	allanswers =  splited[4];
 }
 
 function returnedanswersDugga(data){
-
 theanswers= data['param'];
 var checkifcorrect ="Answered: ";
 
@@ -159,9 +158,9 @@ var answeredSplit = allanswers.split(",");
 	for(var i = 0;i < answeredSplit.length;i++){
 		if(theanswerSplit[i] == answeredSplit[i]){
 	
-			checkifcorrect += "<span style ='color:green'>"+answeredSplit[i] + ',</span>';
+			checkifcorrect += "<span style ='color:green'>"+answeredSplit[i] + ' </span>';
 		}else{
-			checkifcorrect +=  "<span style ='color:red'>"+answeredSplit[i] + ',</span>';
+			checkifcorrect +=  "<span style ='color:red'>"+answeredSplit[i] + ' </span>';
 		}
 	}
 
