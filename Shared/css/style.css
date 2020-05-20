@@ -7138,6 +7138,9 @@ textarea#filecont {
     justify-content: center;
     flex-flow:wrap;
 }
+#hamburger{
+  display:none;
+}
 #selectdir{
   width: 120px;
   position: relative;

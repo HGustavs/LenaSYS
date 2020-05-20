@@ -60,6 +60,8 @@
 				echo '<td class="navButt analytic-navbutton" id="Pageinformation"><a onclick="loadPageInformation()"><i class="fas fa-globe-europe"></i></a><span class="navcomment">Page information</span></td>';
 				echo '<td class="navButt analytic-navbutton" id="Userinformation"><a onclick="loadUserInformation()"><i class="fas fa-user"></i></a><span class="navcomment">User information</span></td>';
 				echo '<td class="navButt analytic-navbutton" id="CourseDiskUsage"><a onclick="loadCourseDiskUsage()"><i class="fas fa-hdd"></i></a><span class="navcomment">Course disk usage</span></td>';
+				
+				echo "<td class='navButt analytic-navbutton' id='hamburger'><img style='height:30px' src='../Shared/icons/hamburger_menu.svg'></td>";
 			}
 
 			if($noup!='NONE') {
