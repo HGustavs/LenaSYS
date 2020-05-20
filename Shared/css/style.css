@@ -341,7 +341,8 @@ p {
   display:none;
 }
 /*Announcement icon and notification*/
-#announcement #announcementnotificationcount{
+#announcement #announcementnotificationcount,
+#feedbacknotificationcounter{
   position: relative;
   right: 20px;
   bottom: 6px;

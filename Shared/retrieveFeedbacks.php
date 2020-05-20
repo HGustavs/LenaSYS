@@ -71,6 +71,9 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY mar
     $htmlCode .= "</div></div>";
   }
 }
-echo json_encode(["gradedAnswer" => $htmlCode]);
+//count un-seen feedbacks
+$unreadFeedbackNotification = $pdo->query('SELECT COUNT(*) FROM useranswer WHERE uid ="'.$uid.'" AND seen_status = "0"')->fetchColumn(); 
+
+echo json_encode(["gradedAnswer" => $htmlCode, "unreadFeedbackNotification" => $unreadFeedbackNotification]);
 
 ?>

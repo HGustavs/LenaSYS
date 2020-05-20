@@ -2185,6 +2185,11 @@ function toggleFeedbacks(){
           $(".feedbackContent").html(parsed_data.gradedAnswer);
           var feedbackComment = 'feedbackComment';
           readLessOrMore(feedbackComment);
+          var unseen_feedbacks = parsed_data.unreadFeedbackNotification;
+          if(unseen_feedbacks > 0){
+            $("#feedback img").after("<span id='feedbacknotificationcounter'>0</span>");
+            $("#feedbacknotificationcounter").html(unseen_feedbacks);
+          }
         },
         error:function(){
           console.log("Couldn't return feedback data");

@@ -72,7 +72,7 @@
 					echo "<td class='navButt' id='announcement' title='Announcement'><img src='../Shared/icons/announcement_icon.svg'></td>";
 
 			}if ($noup == 'COURSE' && checkLogin() && (isStudentUser($_SESSION['uid']))) {
-					echo "<td class='navButt' id='feedback' title='Recent Feedback' style='border:2px solid #fff;'></td>";
+					echo "<td class='navButt' id='feedback' title='Recent Feedback'><img src='../Shared/icons/announcement_icon.svg'></td>";
 
 			}else if($noup=='SECTION'){
 					echo "<a id='upIcon' href='";
