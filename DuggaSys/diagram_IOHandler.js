@@ -31,7 +31,7 @@ class UndoRedoStack {
 
 const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, isSelected: null}]);
 let diagramChanges = {
-    actions: [],
+    indexes: new UndoRedoStack([], -1),
     changes: []
 };
 
@@ -112,16 +112,16 @@ function SaveState() {
             "diagram": objectChanges.diagram,
             "points": objectChanges.points
         });
-        diagramChanges.actions.push("+");
+        diagramChanges.indexes.push();
     } else if(Object.keys(objectChanges.diagram).length > 0 && Object.keys(objectChanges.points).length === 0) {
         diagramChanges.changes.push({"diagram": objectChanges.diagram});
-        diagramChanges.actions.push("+");
+        diagramChanges.indexes.push();
     } else if(Object.keys(objectChanges.diagram).length === 0 && Object.keys(objectChanges.points).length > 0) {
         diagramChanges.changes.push({"points": objectChanges.points});
-        diagramChanges.actions.push("+");
+        diagramChanges.indexes.push();
     }
 
-    localStorage.setItem("diagramChanges", compressStringifiedObject(JSON.stringify(diagramChanges)));
+    saveDiagramChangesToLocalStorage(diagramChanges);
     localStorage.setItem("Settings", JSON.stringify(settings));
     console.log("State is saved");
 }
@@ -139,12 +139,20 @@ function SaveFile(el) {
     updateGraphics();
 }
 
+//----------------------------------------------------------------------------------------------------------------
+// saveDiagramChangesToLocalStorage: Stringifies diagramChanges object, compresses it and pushes to local storage.
+//----------------------------------------------------------------------------------------------------------------
+
+function saveDiagramChangesToLocalStorage(value = diagramChanges) {
+    localStorage.setItem("diagramChanges", compressStringifiedObject(JSON.stringify(value)));
+}
+
 //---------------------------------------------
 // LoadImport: used when importing diagram(JSON) from computer
 //---------------------------------------------
 
 function LoadImport(fileContent) {
-    localStorage.setItem("diagramChanges", fileContent)
+    saveDiagramChangesToLocalStorage(fileContent);
     diagramChanges = JSON.parse(fileContent);
     Load();
     fixExampleLayer()
@@ -180,6 +188,7 @@ function loadDiagram() {
 
         if(localStorageDiagramChanges !== null) {
             diagramChanges = JSON.parse(decompressStringifiedObject(localStorageDiagramChanges));
+            diagramChanges.indexes = new UndoRedoStack(diagramChanges.indexes.stack, diagramChanges.indexes.current);
             const built = buildDiagramFromChanges();
             overwriteDiagram(built.diagram);
             overwritePoints(built.points);
@@ -236,14 +245,6 @@ function getDiagramHash(stringifiedDiagram) {
         hash = hash & hash;
     }
     return hash.toString(16); // Convert to 32-bit integer
-}
-
-//--------------------------------------------------------------------------------------------------------------------
-// resetDiagramChangesLocalStorage: This function executes when diagram is cleared. Used to reset diagram changes in local storage.
-//--------------------------------------------------------------------------------------------------------------------
-
-function resetDiagramChangesLocalStorage() {
-    localStorage.setItem("diagramChanges", "{'actions':[],changes':[]}");
 }
 
 //-------------------------------------------------------------------------------
@@ -460,9 +461,7 @@ function buildDiagramFromChanges() {
         }
     };
 
-    const numberOfChanges = getValueOccurancesInArray(diagramChanges.actions, '+') + getValueOccurancesInArray(diagramChanges.actions, 'r') - getValueOccurancesInArray(diagramChanges.actions, 'u');
-
-    for(let i = 0; i < numberOfChanges; i++) {
+    for(let i = 0; i < diagramChanges.indexes.current + 1; i++) {
         const change = diagramChanges.changes[i];
         if(typeof change["diagram"] !== "undefined") {
             iterateChange(change, "diagram");

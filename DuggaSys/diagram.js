@@ -3173,14 +3173,9 @@ function distribute(event, axis) {
 function undoDiagram(event) {
     event.stopPropagation();  
 
-    const numberOfRedosAndAdditions = getValueOccurancesInArray(diagramChanges.actions, '+') + getValueOccurancesInArray(diagramChanges.actions, 'r');
-    const numberOfUndos = getValueOccurancesInArray(diagramChanges.actions, 'u');
-
-    if(numberOfUndos < numberOfRedosAndAdditions) {
-        diagramChanges.actions.push("u");
-        localStorage.setItem("diagramChanges", JSON.stringify(diagramChanges));
-        Load();
-    }
+    diagramChanges.indexes.undo();
+    saveDiagramChangesToLocalStorage();
+    Load();
 
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
@@ -3195,14 +3190,9 @@ function undoDiagram(event) {
 function redoDiagram(event) {
     event.stopPropagation();
 
-    const numberOfRedos = getValueOccurancesInArray(diagramChanges.actions, 'r');
-    const numberOfUndos = getValueOccurancesInArray(diagramChanges.actions, 'u');
-
-    if(numberOfUndos > numberOfRedos) {
-        diagramChanges.actions.push("r");
-        localStorage.setItem("diagramChanges", JSON.stringify(diagramChanges));
-        Load();
-    }
+    diagramChanges.indexes.redo();
+    saveDiagramChangesToLocalStorage();
+    Load();
 
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
