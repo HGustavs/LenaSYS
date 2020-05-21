@@ -139,7 +139,7 @@ function SaveState() {
         diagramChanges.indexes.push();
     }
 
-    saveDiagramChangesToLocalStorage(diagramChanges);
+    saveDiagramChangesToLocalStorage();
     localStorage.setItem("Settings", JSON.stringify(settings));
     console.log("State is saved");
 }
@@ -161,8 +161,8 @@ function SaveFile(el) {
 // saveDiagramChangesToLocalStorage: Stringifies diagramChanges object, compresses it and pushes to local storage.
 //----------------------------------------------------------------------------------------------------------------
 
-function saveDiagramChangesToLocalStorage(value = diagramChanges) {
-    localStorage.setItem("diagramChanges", compressStringifiedObject(JSON.stringify(value)));
+function saveDiagramChangesToLocalStorage(value = JSON.stringify(diagramChanges)) {
+    localStorage.setItem("diagramChanges", compressStringifiedObject(value));
 }
 
 //-----------------------------------------------------------------------------------------
@@ -170,7 +170,7 @@ function saveDiagramChangesToLocalStorage(value = diagramChanges) {
 //-----------------------------------------------------------------------------------------
 
 function resetDiagramChanges() {
-    saveDiagramChangesToLocalStorage(null);
+    saveDiagramChangesToLocalStorage("null");
     diagramChanges = {
         indexes: new UndoRedoStack([], -1),
         changes: []
@@ -306,6 +306,7 @@ function Load() {
     const built = buildDiagramFromChanges();
     overwriteDiagram(built.diagram);
     overwritePoints(built.points);
+    diagramChanges.indexes = new UndoRedoStack(diagramChanges.indexes.stack, diagramChanges.indexes.current);
     console.log("State is loaded");
     updateGraphics();
 }
