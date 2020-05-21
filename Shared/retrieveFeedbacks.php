@@ -53,7 +53,7 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY mar
     if($feedback == null || $feedback == ''){
        $htmlCode .="<div><p class='feedbackComment'>No comments.........</p></div>";
     }else{
-      $htmlCode .="<div ><p class='feedbackComment'>\"".$feedback." "."\"</p></div>";
+      $htmlCode .="<div><p class='feedbackComment'>\"".$feedback." "."\"</p></div>";
 
     }
     $htmlCode .="<div class='feedback_card_footer'>";
@@ -67,7 +67,8 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY mar
       $versname = $vers['versname'];
       $coucode = $coursecode." ".$versname;
     }
-    $htmlCode .="<div><span>".$coucode." - ".$versid."</span><span class='creator'>- ".$creator."</span></div>";
+    $htmlCode .="<div>- ".$creator."</div>";
+    $htmlCode .= "<div>".$coucode." - ".$versid."</div>";
     $htmlCode .= "</div></div>";
   }
 }
@@ -82,7 +83,7 @@ if(isset($_POST['uid']) && isset($_POST['viewed'])){
   $stmt->execute();
 }
 //count un-seen feedbacks
-$unreadFeedbackNotification = $pdo->query('SELECT COUNT(*) FROM useranswer WHERE uid ="'.$uid.'" AND seen_status = "0"')->fetchColumn(); 
+$unreadFeedbackNotification = $pdo->query('SELECT COUNT(*) FROM useranswer WHERE uid ="'.$uid.'" AND seen_status = "0" AND grade IS NOT NULL')->fetchColumn(); 
 
 echo json_encode(["gradedAnswer" => $htmlCode, "unreadFeedbackNotification" => $unreadFeedbackNotification]);
 

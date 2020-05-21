@@ -2165,13 +2165,11 @@ function toggleFeedbacks(){
     success: function(data){
       let parsed_uid = JSON.parse(data);
       uid = parsed_uid.uid;
-      console.log("UID in feedback: " + uid);
       $.ajax({
         url: "../Shared/retrieveFeedbacks.php",
         data: {uid: uid},
         type: "POST",
         success: function(data){
-          console.log("Returned from retrieveFeedbacks: " + data);
           var parsed_data = JSON.parse(data);
           $(".feedbackContent").html(parsed_data.gradedAnswer);
           let feedbackComment = 'feedbackComment';
@@ -2199,8 +2197,9 @@ function toggleFeedbacks(){
 
   $("#feedback").click(function(){
     $("#feedbackOverlay").toggle();
-     var viewed = "YES";
-     $.ajax({
+     if ($("#feedbacknotificationcounter").length > 0) {
+      var viewed = "YES";
+      $.ajax({
         url: "../Shared/retrieveFeedbacks.php",
         data: {uid: uid, viewed:viewed},
         type: "POST",
@@ -2208,6 +2207,7 @@ function toggleFeedbacks(){
           $("#feedbacknotificationcounter").remove();
         }
       });
+     }
   });
 
 }

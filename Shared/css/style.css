@@ -714,12 +714,13 @@ p {
 .markedFail{
   color: #ff0000;
 }
-.creator{
-  margin-left: 325px;
-}
 .feedback_card_footer{
   color: #9474a4;
+}
+.feedback_card_footer div:first-child{
+  margin-bottom: 10px;
   font-weight: bold;
+
 }
 /*End of recent feedback from the teacher*/
 #Sectionlist {
