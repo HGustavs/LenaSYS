@@ -27,6 +27,10 @@ class UndoRedoStack {
             this.current++;
         }
     }
+
+    getCurrentPositionsFromLast() {
+        return (this.stack.length - 1) - this.current;
+    }
 }
 
 const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, isSelected: null}]);
@@ -107,17 +111,22 @@ function SaveState() {
         points: getObjectChanges(builtDiagram.points, points)
     };
 
-    if(Object.keys(objectChanges.diagram).length > 0 && Object.keys(objectChanges.points).length > 0) {
-        diagramChanges.changes.push({
-            "diagram": objectChanges.diagram,
-            "points": objectChanges.points
-        });
-        diagramChanges.indexes.push();
-    } else if(Object.keys(objectChanges.diagram).length > 0 && Object.keys(objectChanges.points).length === 0) {
-        diagramChanges.changes.push({"diagram": objectChanges.diagram});
-        diagramChanges.indexes.push();
-    } else if(Object.keys(objectChanges.diagram).length === 0 && Object.keys(objectChanges.points).length > 0) {
-        diagramChanges.changes.push({"points": objectChanges.points});
+    //A push will always happen when any change was made to either diagram or points
+    if(Object.keys(objectChanges.diagram).length > 0 || Object.keys(objectChanges.points).length > 0) {
+        const positionFromLast = diagramChanges.indexes.getCurrentPositionsFromLast();
+        if(positionFromLast > 0) {
+            //Remove everything from index to end of changes array if not at last position and push will happen
+            diagramChanges.changes.splice(-positionFromLast);
+        }
+
+        const changeObject = {};
+        if(Object.keys(objectChanges.diagram).length > 0) {
+            changeObject.diagram = objectChanges.diagram;
+        }
+        if(Object.keys(objectChanges.points).length > 0) {
+            changeObject.points = objectChanges.points;
+        }
+        diagramChanges.changes.push(changeObject);
         diagramChanges.indexes.push();
     }
 
