@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Europe/Stockholm");
 include_once ("../Shared/database.php");
 pdoConnect();
 
@@ -22,7 +23,7 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY mar
   $date = new DateTime($marked);
   $dateTime = $date->format('d Y H:i:s');
   $markedDate = $dayName. " ".$monthName." ".$dateTime;
-  //$htmlCode .= "<div>""</div>";
+  $seen_status = $useranswer['seen_status'];
   if(strpos($unfiltered_feedback, '||') !== false){
     $recent_feedback = substr(strrchr($unfiltered_feedback, '||'), 1);
   }else{
@@ -31,7 +32,13 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY mar
   $remove_date = strstr($recent_feedback, '%%');
   $feedback = str_replace('%%', "\n", $remove_date);
 
-  $htmlCode .="<div class='feedback_card'>";
+  if($seen_status == 0){
+    $htmlCode .="<div class='feedback_card nonviewedFeedbacks'>";
+
+  }elseif ($seen_status == 1) {
+    $htmlCode .="<div class='feedback_card viewedFeedbacks'>";
+    
+  }
   if($grade != null  || $grade != 0){
     if ($grade == 2) {
     	 $htmlCode .="<div><span><img src='../Shared/icons/complete.svg'></span>";

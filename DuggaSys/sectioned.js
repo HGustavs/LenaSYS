@@ -2170,19 +2170,21 @@ function toggleFeedbacks(){
         data: {uid: uid},
         type: "POST",
         success: function(data){
-          var parsed_data = JSON.parse(data);
-          var gradedAnswer = parsed_data.gradedAnswer;
+          let parsed_data = JSON.parse(data);
+          let gradedAnswer = parsed_data.gradedAnswer;
           $(".feedbackContent").html(gradedAnswer);
+          if ($(".nonviewedFeedbacks").length == 0) {
+             $(".feedbackContent").append("<p><span class='noFeedbacks'>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks'>View old feedbacks</span></p>");
 
-          if ($(".feedback_card").html() == '' || $(".feedback_card").html() == null) {
-             $(".feedbackContent").append("<p class='noFeedbacks'>There are no recent feedbacks.</p>");
           }
+          $(".viewedFeedbacks").remove();
           let feedbackComment = 'feedbackComment';
           readLessOrMore(feedbackComment);
           let unseen_feedbacks = parsed_data.unreadFeedbackNotification;
           if(unseen_feedbacks > 0){
             $("#feedback img").after("<span id='feedbacknotificationcounter'>0</span>");
             $("#feedbacknotificationcounter").html(unseen_feedbacks);
+
           }
         },
         error:function(){
