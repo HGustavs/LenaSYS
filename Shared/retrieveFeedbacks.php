@@ -6,7 +6,7 @@ pdoConnect();
 $uid = $_POST['uid'];
 $gradedAnswer =array();
 $htmlCode='';
-
+$todayDate = date("Y-m-d H:i:s");
 foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY marked DESC') as $useranswer){
   $creatorid = $useranswer['creator'];
   $aid = $useranswer['aid'];
@@ -31,14 +31,16 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY mar
   }
   $remove_date = strstr($recent_feedback, '%%');
   $feedback = str_replace('%%', "\n", $remove_date);
+  $feedbackAvailableDate= date('Y-m-d H:i:s', strtotime($marked. ' + 7 days'));
+  if($feedbackAvailableDate > $todayDate){
+    $htmlCode .="<div class='feedback_card recentFeedbacks'>";
 
-  if($seen_status == 0){
-    $htmlCode .="<div class='feedback_card nonviewedFeedbacks'>";
-
-  }elseif ($seen_status == 1) {
-    $htmlCode .="<div class='feedback_card viewedFeedbacks'>";
+  }elseif ($feedbackAvailableDate < $todayDate) {
+    $htmlCode .="<div class='feedback_card oldFeedbacks'>";
     
   }
+
+  //$htmlCode .= "<div>Marked date: ".$marked."<br>Feedback available date: ".$feedbackAvailableDate."<br>Today's date: ".$todayDate."</div>";
   if($grade != null  || $grade != 0){
     if ($grade == 2) {
     	 $htmlCode .="<div><span><img src='../Shared/icons/complete.svg'></span>";

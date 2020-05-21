@@ -2173,11 +2173,11 @@ function toggleFeedbacks(){
           let parsed_data = JSON.parse(data);
           let gradedAnswer = parsed_data.gradedAnswer;
           $(".feedbackContent").html(gradedAnswer);
-          if ($(".nonviewedFeedbacks").length == 0) {
+          if ($(".recentFeedbacks").length == 0) {
              $(".feedbackContent").append("<p><span class='noFeedbacks'>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks'>View old feedbacks</span></p>");
 
           }
-          $(".viewedFeedbacks").remove();
+          $(".oldFeedbacks").remove();
           let feedbackComment = 'feedbackComment';
           readLessOrMore(feedbackComment);
           let unseen_feedbacks = parsed_data.unreadFeedbackNotification;
