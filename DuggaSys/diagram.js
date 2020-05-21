@@ -677,8 +677,8 @@ function keyDownHandler(e) {
                 SaveState();
             }
         }
-        else if (key == keyMap.zKey && ctrlIsClicked) undoDiagram(event);
-        else if (key == keyMap.yKey && ctrlIsClicked) redoDiagram(event);
+        else if (key == keyMap.zKey && ctrlIsClicked) undoDiagram();
+        else if (key == keyMap.yKey && ctrlIsClicked) redoDiagram();
         else if (key == keyMap.aKey && ctrlIsClicked) {
             e.preventDefault();
             selected_objects = [];
@@ -3170,9 +3170,7 @@ function distribute(event, axis) {
 // undoDiagram: removes the last object that was drawn
 //----------------------------------------------------------------------
 
-function undoDiagram(event) {
-    event.stopPropagation();  
-
+function undoDiagram() {
     diagramChanges.indexes.undo();
     saveDiagramChangesToLocalStorage();
     Load();
@@ -3188,8 +3186,6 @@ function undoDiagram(event) {
 //----------------------------------------------------------------------
 
 function redoDiagram(event) {
-    event.stopPropagation();
-
     diagramChanges.indexes.redo();
     saveDiagramChangesToLocalStorage();
     Load();

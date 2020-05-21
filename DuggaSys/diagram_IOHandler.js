@@ -4,6 +4,12 @@
 
 ************************************************************************/
 
+//--------------------------------------------------------------------------------------------
+// UndoRedoStack: Class representing a stack holding the stack and current index in the stack.
+//                Is used when undoing and redoing to always render the right state. 
+//                Stack indexes is equal to indexes in diagramChanges.changes array.
+//--------------------------------------------------------------------------------------------
+
 class UndoRedoStack {
     constructor(stack, current) {
         this.stack = stack;
@@ -115,6 +121,9 @@ function SaveState() {
     if(Object.keys(objectChanges.diagram).length > 0 || Object.keys(objectChanges.points).length > 0) {
         const positionFromLast = diagramChanges.indexes.getCurrentPositionsFromLast();
         if(positionFromLast > 0) {
+            if(!confirm(`You are ${positionFromLast} state(s) behind the latest save.\nDo you really want to invalidate them and continue working from here?`)) {
+                return;
+            }
             //Remove everything from index to end of changes array if not at last position and push will happen
             diagramChanges.changes.splice(-positionFromLast);
         }
