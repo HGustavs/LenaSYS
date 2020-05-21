@@ -547,7 +547,6 @@ svg text {
  *                      	     Clipping Masking Dugga				       							 *
  * --------------================################================-------------- */
  .clippingLayout{
-	margin:0 4px 0 4px;
 	display: flex; 
 	flex-wrap: wrap; 
 	justify-content: center;
@@ -600,14 +599,6 @@ svg text {
 	}
 	#toolbox{
 		width:320px;
-	}
-}
-@media screen and (min-width: 1361px){
-	.clippingLayout{
-		justify-content: space-evenly;
-		margin:0 4px 0 4px;
-		display: flex; 
-		flex-wrap: wrap;
 	}
 }
 
