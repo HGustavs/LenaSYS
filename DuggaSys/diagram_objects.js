@@ -24,6 +24,11 @@ function Symbol(kindOfSymbol) {
     this.isLockHovered = false;         // Checks if the lock itself is hovered on the symbol
     this.pointsAtSamePosition = false;
     this.isHovered = false;
+    this.umlSubline = {
+        subLineOne: [],
+        subLineTwo: [],
+        subLineThree: []
+    };
     
     // Connector arrays - for connecting and sorting relationships between diagram objects
     // They are not used for line, UML line and text objects but still created to prevent errors with other functions
@@ -1982,21 +1987,55 @@ function Symbol(kindOfSymbol) {
             }
         }
 
+
+
         if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
             ctx.lineTo(breakpointStartX, middleBreakPointY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(breakpointEndX, middleBreakPointY);
+
+            this.umlSubline.subLineOne.startX = x1;
+            this.umlSubline.subLineOne.startY = y1;
+            this.umlSubline.subLineOne.endX = breakpointStartX;
+            this.umlSubline.subLineOne.endY = middleBreakPointY;
+
+            this.umlSubline.subLineTwo.startX = breakpointStartX;
+            this.umlSubline.subLineTwo.startY = middleBreakPointY;
+            this.umlSubline.subLineTwo.endX = breakpointEndX;   //sets start point and end point for every subline in uml relationship. There always three sublines
+            this.umlSubline.subLineTwo.endY = middleBreakPointY;
+
+            this.umlSubline.subLineThree.startX = breakpointEndX;
+            this.umlSubline.subLineThree.startY = middleBreakPointY;
+            this.umlSubline.subLineThree.endX = x2;
+            this.umlSubline.subLineThree.endY = y2;
+
+            
         } else if((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(middleBreakPointX, breakpointStartY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(middleBreakPointX, breakpointEndY);
+
+            this.umlSubline.subLineOne.startX = x1;
+            this.umlSubline.subLineOne.startY = y1;
+            this.umlSubline.subLineOne.endX = middleBreakPointX;
+            this.umlSubline.subLineOne.endY = breakpointStartY;
+
+            this.umlSubline.subLineTwo.startX = middleBreakPointX;
+            this.umlSubline.subLineTwo.startY = breakpointStartY;
+            this.umlSubline.subLineTwo.endX = middleBreakPointX;    //sets start point and end point for every subline in uml relationship. There always three sublines
+            this.umlSubline.subLineTwo.endY = breakpointEndY;
+
+            this.umlSubline.subLineThree.startX = middleBreakPointX;
+            this.umlSubline.subLineThree.startY = breakpointEndY;
+            this.umlSubline.subLineThree.endX = x2;
+            this.umlSubline.subLineThree.endY = y2;
+
         }  else if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(breakpointStartX, breakpointEndY);
         }  else if((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
             ctx.lineTo(breakpointEndX, breakpointStartY);
         }
 
-        // Draw to end breakpoint based on direction
         if (endLineDirection == "left") {
             ctx.lineTo(breakpointEndX, y2);
         } else if (endLineDirection == "right") {
@@ -2008,7 +2047,6 @@ function Symbol(kindOfSymbol) {
         }
         ctx.lineTo(x2, y2);
         ctx.stroke();
-
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
     }
 
