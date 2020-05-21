@@ -2220,7 +2220,8 @@ function toggleFeedbacks(){
 function viewOldFeedbacks(){
   $(".noFeedbacks").remove();
   $(".oldFeedbacks").show();
-
+  $(".feedbackContent").append('<div id="loadMore"><span>Load More</span><div>');
+  
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {

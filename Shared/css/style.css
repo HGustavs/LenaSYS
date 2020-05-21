@@ -750,6 +750,17 @@ p {
   box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
   transition: all 0.4s ease 0s;
 }
+/*Load more feedbacks*/
+#loadMore{
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+#loadMore span{
+ cursor: pointer;
+ text-decoration: underline;
+ color: var(--color-logo-background);
+}
+
 /*End of recent feedback from the teacher*/
 #Sectionlist {
   margin: 10px;
