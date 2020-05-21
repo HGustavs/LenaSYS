@@ -757,10 +757,11 @@ p {
 }
 #loadMore span{
  cursor: pointer;
- text-decoration: underline;
- color: var(--color-logo-background);
+ color: #ffa500;
 }
-
+#loadMore span:hover{
+ text-decoration: underline;
+}
 /*End of recent feedback from the teacher*/
 #Sectionlist {
   margin: 10px;
