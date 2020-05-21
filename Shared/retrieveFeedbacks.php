@@ -32,10 +32,10 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY mar
   $remove_date = strstr($recent_feedback, '%%');
   $feedback = str_replace('%%', "\n", $remove_date);
   $feedbackAvailableDate= date('Y-m-d H:i:s', strtotime($marked. ' + 7 days'));
-  if($feedbackAvailableDate > $todayDate){
+  if($feedbackAvailableDate > $todayDate && $grade != null){
     $htmlCode .="<div class='feedback_card recentFeedbacks'>";
 
-  }elseif ($feedbackAvailableDate < $todayDate) {
+  }elseif ($feedbackAvailableDate < $todayDate && $grade != null) {
     $htmlCode .="<div class='feedback_card oldFeedbacks'>";
     
   }

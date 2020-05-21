@@ -2220,12 +2220,12 @@ function toggleFeedbacks(){
 function viewOldFeedbacks(){
   $(".noFeedbacks").remove();
   $(".feedbackContent").append('<div id="loadMore"><span>Load More</span><div>');
-  $(".feedback_card").slice(0, 1).show();
+  $(".feedback_card").slice(0, 5).show();
   $("#loadMore").on('click', function (e) {
     e.preventDefault();
-    $(".feedback_card:hidden").slice(0, 1).slideDown();
+    $(".feedback_card:hidden").slice(0, 5).slideDown();
     if ($(".feedback_card:hidden").length == 0) {
-      $("#load").fadeOut('slow');
+      $("#loadMore").hide();
     }
     $('html,body').animate({
       scrollTop: $(this).offset().top
