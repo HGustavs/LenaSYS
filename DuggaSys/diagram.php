@@ -119,7 +119,7 @@
                         <span class="drop-down-option" onclick="printDiagram();">Print Diagram</span>
                     </div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick='clearCanvas(); saveDiagramChangesToLocalStorage("");'>Clear Diagram</span>
+                        <span class="drop-down-option" onclick='clearCanvas(); resetDiagramChanges();'>Clear Diagram</span>
                         <i class="hot-key">Ctrl + A, Delete</i>
                     </div>
                 </div>

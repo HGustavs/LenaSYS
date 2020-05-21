@@ -165,6 +165,18 @@ function saveDiagramChangesToLocalStorage(value = diagramChanges) {
     localStorage.setItem("diagramChanges", compressStringifiedObject(JSON.stringify(value)));
 }
 
+//-----------------------------------------------------------------------------------------
+// resetDiagramChanges: Resets diagram changes in local storage and the object in the code.
+//-----------------------------------------------------------------------------------------
+
+function resetDiagramChanges() {
+    saveDiagramChangesToLocalStorage(null);
+    diagramChanges = {
+        indexes: new UndoRedoStack([], -1),
+        changes: []
+    };
+}
+
 //---------------------------------------------
 // LoadImport: used when importing diagram(JSON) from computer
 //---------------------------------------------
