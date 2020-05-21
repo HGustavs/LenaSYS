@@ -714,8 +714,12 @@ p {
 .markedFail{
   color: #ff0000;
 }
-.feedback_card_footer{
+.feedback_card_footer,
+.noFeedbacks{
   color: #9474a4;
+}
+.noFeedbacks{
+  margin-bottom: 25px;
 }
 .feedback_card_footer div:first-child{
   margin-bottom: 10px;

@@ -2171,7 +2171,12 @@ function toggleFeedbacks(){
         type: "POST",
         success: function(data){
           var parsed_data = JSON.parse(data);
-          $(".feedbackContent").html(parsed_data.gradedAnswer);
+          var gradedAnswer = parsed_data.gradedAnswer;
+          $(".feedbackContent").html(gradedAnswer);
+
+          if ($(".feedback_card").html() == '' || $(".feedback_card").html() == null) {
+             $(".feedbackContent").append("<p class='noFeedbacks'>There are no recent feedbacks.</p>");
+          }
           let feedbackComment = 'feedbackComment';
           readLessOrMore(feedbackComment);
           let unseen_feedbacks = parsed_data.unreadFeedbackNotification;

@@ -69,8 +69,9 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY mar
     }
     $htmlCode .="<div>- ".$creator."</div>";
     $htmlCode .= "<div>".$coucode." - ".$versid."</div>";
-    $htmlCode .= "</div></div>";
+    $htmlCode .= "</div>";
   }
+  $htmlCode .= "</div>";
 }
 if(isset($_POST['uid']) && isset($_POST['viewed'])){
   $uid = $_POST['uid'];
