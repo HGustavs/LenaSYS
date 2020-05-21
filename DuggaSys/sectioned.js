@@ -2218,6 +2218,7 @@ function toggleFeedbacks(){
   });
 }
 function viewOldFeedbacks(){
+  $(".feedbackHeader h2").html("Old Feedbacks");
   $(".noFeedbacks").remove();
   $(".feedbackContent").append('<div id="loadMore"><span>Load More</span><div>');
   $(".feedback_card").slice(0, 5).show();

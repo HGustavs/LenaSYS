@@ -661,6 +661,7 @@ p {
 /*Start of recent feedback from the teacher*/
  #feedbackOverlay{
   position: relative;
+  display: none;
   padding: 10px;
   top: 50px;
   width: 100%;
