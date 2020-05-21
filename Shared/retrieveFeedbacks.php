@@ -76,7 +76,7 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY mar
 if(isset($_POST['uid']) && isset($_POST['viewed'])){
   $uid = $_POST['uid'];
   $seen_status = 1;
-  $update_seen_feedback_status = 'UPDATE useranswer SET seen_status=:seen_status WHERE uid=:uid';
+  $update_seen_feedback_status = 'UPDATE useranswer SET seen_status=:seen_status WHERE uid=:uid AND grade IS NOT NULL';
   $stmt = $pdo->prepare($update_seen_feedback_status); 
   $stmt->bindParam(':uid', $uid);
   $stmt->bindParam(':seen_status', $seen_status);     
