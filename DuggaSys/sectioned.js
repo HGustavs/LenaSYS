@@ -2174,10 +2174,10 @@ function toggleFeedbacks(){
           let gradedAnswer = parsed_data.gradedAnswer;
           $(".feedbackContent").html(gradedAnswer);
           if ($(".recentFeedbacks").length == 0) {
-             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks'>View old feedbacks</span></p>");
+             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedbacks</span></p>");
 
           }
-          $(".oldFeedbacks").remove();
+          $(".oldFeedbacks").hide();                  
           let feedbackComment = 'feedbackComment';
           readLessOrMore(feedbackComment);
           let unseen_feedbacks = parsed_data.unreadFeedbackNotification;
@@ -2216,6 +2216,10 @@ function toggleFeedbacks(){
       });
      }
   });
+}
+function viewOldFeedbacks(){
+  $(".noFeedbacks").remove();
+  $(".oldFeedbacks").show();
 
 }
 // Checks if <a> link is external
