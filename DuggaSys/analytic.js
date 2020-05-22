@@ -934,11 +934,14 @@ function loadUserInformation(){
             updateState(users);
         });
     } 
- 
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for events
+//------------------------------------------------------------------------------------------------
     function updateUserLogInformation(users){
 		var event;
 		var users = {};
 		var user;
+		//Array containing all different eventTypes
 		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
 		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
 		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
@@ -968,11 +971,14 @@ function loadUserInformation(){
             });
 		});
 	}
-	
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for fileEvents
+//------------------------------------------------------------------------------------------------
 	function updatefileEvents(users){
 		var event;
 		var users = {};
 		var user;
+		//Array containing all different eventTypes
 		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
 		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
 		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
@@ -1002,11 +1008,14 @@ function loadUserInformation(){
             });
 		});
 	}
-
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for loginFail
+//------------------------------------------------------------------------------------------------
 	function updateloginFail(users){
 		var event;
 		var users = {};
 		var user;
+		//Array containing all different eventTypes
 		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
 		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
 		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
