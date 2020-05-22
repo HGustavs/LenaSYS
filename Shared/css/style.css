@@ -5670,6 +5670,18 @@ only screen and (max-device-width: 320px) {
   overflow: hidden;
 }
 
+#diagram-page-wrapper.fullscreen .ruler {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  background-color: #ffffff;
+  margin: 0;
+  border: 1px solid #000000;
+}
+
 .ruler.hidden {
   display: none;
 }
@@ -5680,11 +5692,19 @@ only screen and (max-device-width: 320px) {
   border-right: 1px solid #000000;
 }
 
+#diagram-page-wrapper.fullscreen #ruler-x {
+  margin-left: var(--ruler-size);
+}
+
 #ruler-y {
   width: var(--ruler-size);
   margin-top: var(--ruler-size);
   margin-bottom: var(--canvas-margin);
   border-bottom: 1px solid #000000;
+}
+
+#diagram-page-wrapper.fullscreen #ruler-y {
+  margin-top: var(--ruler-size);
 }
 
 .ruler-lines {
