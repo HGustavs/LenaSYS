@@ -11,6 +11,7 @@ var accessFilter = "WRST";
 var trueTeacher;
 var examinerName;
 var activeDropdown;
+var activeArrow;
 var shouldReRender = false;
 
 //----------------------------------------------------------------------------
@@ -853,10 +854,12 @@ document.addEventListener('click', function(e){
 		return;
 	if(e.target.classList.contains('access-dropdown') || e.target.parentElement.classList.contains('access-dropdown')){
 		var dropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content');
+		var arrow = e.target.closest('.access-dropdown').querySelector('img');
 		if(activeDropdown === undefined){
 			if(window.getComputedStyle(dropdown, null).getPropertyValue("display") === "none"){
 				dropdown.style.display = "block";
 				activeDropdown = dropdown;
+				activeArrow = arrow;
 			}else{
 				dropdown.style.display = "none";
 				activeDropdown = undefined;
@@ -877,12 +880,17 @@ document.addEventListener('click', function(e){
 					}
 				}
 			}
+			closeArrow(activeArrow);
+			activeArrow = e.target.closest('.access-dropdown').querySelector('img');
 		}
 	}else{
 		if(activeDropdown){
 			activeDropdown.style.display = "none";
 		}
 		activeDropdown = undefined;
+		if(activeArrow)
+			closeArrow(activeArrow);
+		activeArrow = undefined;
 	}
 });
 
@@ -1041,4 +1049,22 @@ function compare(a, b) {
 				return 0;
 		}	
 	
+}
+
+function openArrow(element){
+	var child = $(element).children(".access-dropdown");
+	var arrow = $(child).children("img");
+	$(arrow).css({
+		"-webkit-transform": "rotate(180deg)",
+		"-moz-transform": "rotate(180deg)",
+		"transform": "rotate(180deg)"
+	});
+}
+
+function closeArrow(arrowElement){
+	$(arrowElement).css({
+		"-webkit-transform": "rotate(0deg)",
+		"-moz-transform": "rotate(0deg)",
+		"transform": "rotate(0deg)"
+	});
 }

@@ -2699,6 +2699,7 @@ div.submit-button:disabled {
   position: relative;
   margin-left: 7px;
   top: 3px;
+  transition: transform 0.2s linear;
 }
 
 .sortableHeading {

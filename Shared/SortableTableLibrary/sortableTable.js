@@ -447,9 +447,12 @@ function SortableTable(param) {
 							sumContent[columnOrder[columnOrderIdx]] += sumFunc(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], row);
 						}
 
-						var cellid = "r" + i + DELIMITER + this.tableid + DELIMITER + columnOrder[columnOrderIdx];	
-						str += "<td style='white-space:nowrap;' id='" + cellid + "' onclick='clickedInternal(event,this);' class='" + this.tableid + "-" + columnOrder[columnOrderIdx] + "'>" + renderCell(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], cellid) + "</td>";
-
+						var cellid = "r" + i + DELIMITER + this.tableid + DELIMITER + columnOrder[columnOrderIdx];
+						if(this.tableid == "accessTable" && (columnOrder[columnOrderIdx] == "class" || columnOrder[columnOrderIdx] == "examiner" || columnOrder[columnOrderIdx] == "vers" || columnOrder[columnOrderIdx] == "access" || columnOrder[columnOrderIdx] == "groups")){
+							str += "<td style='white-space:nowrap;' id='" + cellid + "' onclick='clickedInternal(event,this); openArrow(this);' class='" + this.tableid + "-" + columnOrder[columnOrderIdx] + "'>" + renderCell(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], cellid) + "</td>";
+						}else{
+							str += "<td style='white-space:nowrap;' id='" + cellid + "' onclick='clickedInternal(event,this);' class='" + this.tableid + "-" + columnOrder[columnOrderIdx] + "'>" + renderCell(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], cellid) + "</td>";
+						}	
 
 						//Prints student name to mvh
 						if (columnOrderIdx < 1) {
