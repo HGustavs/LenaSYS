@@ -4410,26 +4410,24 @@ ul.hamburgerList button.menuButton {
   padding: 0px 0px 0px 0px;
 }
 
-.container {
+.hamContainer {
   display: inline-block;
   cursor: pointer;
   margin-top: 4px;
 }
 
-.bar1,
-.bar2,
-.bar3 {
-  width: 17px;
-  height: 3px;
+.bar1,.bar2,.bar3 {
+  width: 26px;
+  height: 5px;
   background-color: var(--color-background);
   margin: 3px 0;
   transition: 0.4s;
 }
 
 .change .bar1 {
-  -webkit-transform: rotate(-45deg) translate(-5px, 4px);
-  transform: rotate(-45deg) translate(-5px, 4px);
-  width: 20px;
+  -webkit-transform: rotate(-45deg) translate(-8px, 4px);
+  transform: rotate(-45deg) translate(-8px, 4px);
+  width: 26px;
 }
 
 .change .bar2 {
@@ -4437,9 +4435,9 @@ ul.hamburgerList button.menuButton {
 }
 
 .change .bar3 {
-  -webkit-transform: rotate(45deg) translate(-6px, -2px);
-  transform: rotate(45deg) translate(-4px, -4px);
-  width: 20px;
+  -webkit-transform: rotate(45deg) translate(-7px, -3px);
+  transform: rotate(45deg) translate(-7px, -3px);
+  width: 26px;
 }
 
 /* moment date and course version */
