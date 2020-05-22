@@ -219,12 +219,35 @@ function generalStats($dbCon) {
         ORDER BY timestamp DESC LIMIT 1;
    ')->fetchAll(PDO::FETCH_ASSOC);
 
+   $query = $dbCon->prepare("SELECT coursename FROM course");
+   if($query->execute()) {
+	   $rows = $query->fetchAll(PDO::FETCH_ASSOC);
+	   $courseSize = [];
+	   foreach($rows as $row => $values) {
+		   $courseSize[$row] = [
+						   			"coursename"	=> $values['coursename'],
+						   			"size" 			=> GetDirectorySize(getcwd() . "/submissions/" . $values['cid'] . "/" . $values['activeversion']),
+						   			"sizeReadable" 	=> convertBytesToHumanreadable(GetDirectorySize(getcwd() . "/submissions/" . $values['cid'] . "/" . $values['activeversion']))
+							   ];
+	   }
+   
+	   // Sort by size
+	   usort($courseSize, function($a, $b) {
+		   return $b['size'] <=> $a['size'];
+	   });
+
+	   $biggestCourse = $courseSize[0];
+   }
+
 	$generalStats = [];
 	$generalStats['stats']['loginFails'] = $LoginFail[0];
 	$generalStats['stats']['numOnline'] = count($activeUsers);
 
  	$generalStats['stats']['lenasysSize'] = convertBytesToHumanreadable(GetDirectorySize(str_replace("DuggaSys", "", getcwd())));
 	$generalStats['stats']['userSubmissionSize'] = convertBytesToHumanreadable(GetDirectorySize(getcwd() . "/submissions"));
+
+	$generalStats['stats']['biggestCourseName'] = $biggestCourse['coursename'];
+	$generalStats['stats']['biggestCourseSize'] = $biggestCourse['sizeReadable'];
 
 	$generalStats['stats']['topPage'] = $topPage[0]['refer'];
 	$generalStats['stats']['topPageHits'] = $topPage[0]['hits'];
