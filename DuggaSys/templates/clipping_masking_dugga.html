@@ -15,28 +15,21 @@
 <div class="clippingLayout">
     <div id='clippingInfoBox2'>
       
-          <div class='loginBoxheader'>
-                <h3>Målbild</h3>
-          </div>
+          <div class='loginBoxheader'><h3>Målbild</h3></div>
                 <p style="margin-left: 4px;">Rita följande:</p>
           <img id="target-img" src="" style="width:100%;">
             
     </div>
 
-    <div style="margin:0 4px 0 4px;">
-      
-          <div class='loginBoxheader'>
-                <h3>Rityta</h3>
-          </div>
-          <canvas id='a' style='background-color:#FFFFFF; border:2px solid black; display:block;'></canvas>
-            
+    <div id="drawingArea">
+          <div class='loginBoxheader'><h3>Rityta</h3></div>
+          <p style="margin-left: 4px;">Mitt verk:</p>
+          <canvas id='a'></canvas>
     </div>
 
-    <div id="toolbox" style="min-width:340px;width:340px;margin:0 4px 0 4px;display: flex;flex-direction: column;justify-content: flex-start;">
+    <div id="toolbox" >
       <div style="flex-grow: 1">
-        <div class='loginBoxheader'>
-            <h3>Ritverktyg</h3>
-        </div>
+        <div class='loginBoxheader'><h3>Ritverktyg</h3></div>
      	  <div style="display:flex;justify-content:center;">
             <select id="ops" name="function" >
               <optgroup label="Misc.">    
@@ -67,21 +60,22 @@
               </optgroup>
             </select>			
             
-            <input id="addOpButton" class='submit-button' type='button' value='Add Op.' onclick="newbutton();" />
-        </div>
+                <input id="addOpButton" class='submit-button' type='button' value='Add Op.' onclick="newbutton();" />
+            </div>
     		<div id="opTableContainer" style="min-height:300px;background-color:#FFF; overflow-y:scroll;">
-            <table id="opTable" style="width:100%;">
-                <caption>Operations</caption>
-                <thead>
-                    <tr><th>Op#</th>
-                        <th>Operation</th>
-                        <th colspan="3">Modify</th>
-                    </tr>
-                </thead>
-                <tbody id="operationList" ></tbody>
-            </table>			
+                <table id="opTable" style="width:100%;">
+                    <caption>Operations</caption>
+                    <thead>
+                        <tr>
+                            <th>Op#</th>
+                            <th>Operation</th>
+                            <th colspan="3">Modify</th>
+                        </tr>
+                    </thead>
+                    <tbody id="operationList" ></tbody>
+                </table>			
     		</div>
-    </div>
+        </div>
     </div>
 </div>
 
