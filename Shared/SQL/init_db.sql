@@ -442,7 +442,7 @@ CREATE TABLE studentresultat (
 	resultat 				NUMERIC(3,1) DEFAULT NULL,
 	avbrott 				DATE DEFAULT NULL,
 	PRIMARY KEY (sid)
-	-- These seem to be used for compatabillity with other databases in postgres, usage here seems redundant
+	--These seem to be used for compatabillity with other databases in postgres, usage here seems redundant */
 	--KEY anmkod (anmkod), */
 	--KEY pnr (pnr), */
 	--KEY kurskod (kurskod) */
@@ -464,12 +464,9 @@ CREATE TABLE list (
 	listid 					SERIAL,
 	PRIMARY KEY (listid)
 );
---#######################*/
---Tables work untill here*/
---#######################*/
---#######################*/
 
--- This table holds configuration for the entire LenaSYS server 
+
+-- This table holds configuration for the entire LenaSYS server */
 CREATE TABLE settings (
   	sid 					SERIAL,
   	motd 					TEXT DEFAULT NULL,
@@ -481,16 +478,16 @@ CREATE TABLE settings (
 CREATE TABLE user_push_registration (
 	id						SERIAL,
 	uid 					INT  NOT NULL,
-	endpoint				VARCHAR(500) NOT NULL,
+	endpoint				VARCHAR(500) NOT NULL UNIQUE,
 	added					TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	keyAuth					VARCHAR(50) NOT NULL,
 	keyValue				VARCHAR(100) NOT NULL,
 	lastSent				DATE DEFAULT NULL,
 	daysOfUnsent			INT NOT NULL DEFAULT '0',
-	PRIMARY KEY	(id),
-	--KEY (endpoint), usage seems redudant, see above */ 
+	PRIMARY KEY	(id), 
 	FOREIGN KEY (uid) REFERENCES lenasys_user(uid)
 );
+	--KEY (endpoint), usage seems redudant, see above */
 
 -- Usergroup and user_usergroup relation */
 CREATE TABLE "groups" (
@@ -616,7 +613,7 @@ CREATE TABLE user_participant (
   uid						INT  NOT NULL,
   lid 						INT  NOT NULL,
   participation 			SMALLINT ,
-  comments      			VARCHAR(512),
+  comments      			TEXT,
   PRIMARY KEY (id),
   FOREIGN KEY (lid) REFERENCES listentries (lid),
   FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
@@ -631,7 +628,7 @@ CREATE TABLE opponents (
 	opponent2				INT  DEFAULT NULL,
 	PRIMARY KEY (presenter, lid),
 	FOREIGN KEY (presenter) REFERENCES lenasys_user(uid),
-	FOREIGN KEY (lid) REFERENCES listentries(lid),
+	FOREIGN KEY (lid) 		REFERENCES listentries(lid),
 	FOREIGN KEY (opponent1) REFERENCES lenasys_user(uid),
 	FOREIGN KEY (opponent2) REFERENCES lenasys_user(uid)
 );
