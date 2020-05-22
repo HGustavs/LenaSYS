@@ -790,6 +790,7 @@ function loadUserInformation(){
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="events">events</option>')
 		.append('<option value="fileEvents">fileEvents</option>')
+		.append('<option value="loginFail">loginFail</option>')
         .appendTo($('#analytic-info'));
  
  
@@ -1001,6 +1002,8 @@ function loadUserInformation(){
             });
 		});
 	}
+
+
    
     function updateState(users){
         $('#analytic-info > select.file-select').remove();
@@ -1078,6 +1081,9 @@ function loadUserInformation(){
 					break;
 				case "fileEvents":
 					updatefileEvents();
+					break;
+				case "loginFail":
+					updateloginFail();
 					break;
             }
         });
