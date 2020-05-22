@@ -539,9 +539,11 @@
               $connection->rollback();
               echo "<span id='failText' />Failed initialization and rollbacking transaction because of query (in init_db.sql): </span><br>";
               echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
+              echo "<div class='errorCodeBox'><code>{$e}</code></div><br><br>";
             } else{
               echo "<span id='failText' />Failed initialization of database because of query (in init_db.sql): </span><br>";
               echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
+              echo "<div class='errorCodeBox'><code>{$e}</code></div><br><br>";
             }
           }
           $completedSteps++;
