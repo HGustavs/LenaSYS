@@ -6,7 +6,7 @@ $studentid = 21;
 $duggaFeedback = '';
 
 
-foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$studentid.'"') as $useranswer){
+foreach ($pdo->query('SELECT * FROM userAnswer WHERE uid="'.$studentid.'"') as $useranswer){
 
 	 $aid = $useranswer['aid'];
 	 $grade = $useranswer['grade'];
