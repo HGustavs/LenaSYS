@@ -468,10 +468,11 @@ CREATE TABLE list (
 --Tables work untill here*/
 --#######################*/
 --#######################*/
+
 -- This table holds configuration for the entire LenaSYS server 
 CREATE TABLE settings (
   	sid 					SERIAL,
-  	motd 					varchar(4096) DEFAULT NULL,
+  	motd 					TEXT DEFAULT NULL,
   	readonly 				SMALLINT NOT NULL DEFAULT 0 ,
   	PRIMARY KEY (sid)
 );
@@ -600,10 +601,13 @@ INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','VIII',8);
 CREATE TABLE user_group (
   groupID 				int  NOT NULL, -- (10)*/
   userID 				int  NOT NULL, -- (10)*/
-  KEY groupID (groupID),
-  KEY userID (userID),
-  CONSTRAINT user_group_ibfk_1 FOREIGN KEY (groupID) REFERENCES "groups" (groupID),
-  CONSTRAINT user_group_ibfk_2 FOREIGN KEY (userID) REFERENCES lenasys_user (uid)
+  --KEY groupID (groupID), */
+  --KEY userID (userID), */
+  PRIMARY KEY(groupID,userID),
+  --CONSTRAINT user_group_ibfk_1 */ 
+  FOREIGN KEY (groupID) REFERENCES "groups" (groupID),
+  --CONSTRAINT user_group_ibfk_2 */ 
+  FOREIGN KEY (userID) REFERENCES lenasys_user (uid)
 );
 
 --table used for checking participation. i.e participation is 0 = not participated, 1 = participated. */
