@@ -39,7 +39,7 @@ foreach ($pdo->query('SELECT userAnswer.aid, userAnswer.moment, userAnswer.grade
   }
   $remove_date = strstr($recent_feedback, '%%');
   $feedback = str_replace('%%', "\n", $remove_date);
-  $feedbackAvailableDate= date('Y-m-d H:i:s', strtotime($marked. ' + 5 minutes'));
+  $feedbackAvailableDate= date('Y-m-d H:i:s', strtotime($marked. ' + 7 days'));
   if($feedbackAvailableDate > $todayDate && $grade != null){
     $duggaFeedback .="<div class='feedback_card recentFeedbacks'>";
 
