@@ -21,7 +21,10 @@ foreach ($pdo->query('SELECT userAnswer.aid, userAnswer.moment, userAnswer.grade
   $monthName = date('M', strtotime($marked));
   $date = new DateTime($marked);
   $dateTime = $date->format('d Y H:i:s');
+  $day = $date->format('d');
+  $hourMinute = $date->format('h:i A');
   $markedDate = $dayName. " ".$monthName." ".$dateTime;
+  $markedDateMobile = $monthName." ".$day." at ".$hourMinute;
   $seen_status = $useranswer['seen_status'];
   $entryname = $useranswer['entryname'];
   $firstname = $useranswer['firstname'];
@@ -29,7 +32,7 @@ foreach ($pdo->query('SELECT userAnswer.aid, userAnswer.moment, userAnswer.grade
   $creator = $firstname." ".$lastname;
   $coursecode = $useranswer['coursecode'];
   $versname = $useranswer['versname'];
- 
+
   if(strpos($unfiltered_feedback, '||') !== false){
     $recent_feedback = substr(strrchr($unfiltered_feedback, '||'), 1);
 
@@ -51,12 +54,14 @@ foreach ($pdo->query('SELECT userAnswer.aid, userAnswer.moment, userAnswer.grade
     if ($grade == 2) {
     	 $duggaFeedback .="<div class='listentries'><span><img src='../Shared/icons/complete.svg'></span>";
     	 $duggaFeedback .="<span class='entryname'><b>".$entryname."</b></span></div>";
-    	 $duggaFeedback .="<div class='markedDate markedPass'><p>Dugga marked as pass: ".$markedDate."</p></div>";
+    	 $duggaFeedback .="<div class='markedDate markedPassMobile'><p>Pass: ".$markedDateMobile."</p></div>";
+       $duggaFeedback .="<div class='markedDate markedPass'><p>Dugga marked as pass: ".$markedDate."</p></div>";
 
     }else if($grade == 1){
     	 $duggaFeedback .="<div class='listentries'><span><img src='../Shared/icons/uncomplete.svg'></span>";
     	 $duggaFeedback .="<span class='entryname'><b>".$entryname."</b></span></div>";
-    	 $duggaFeedback .="<div class='markedDate markedFail'><p>Dugga marked as fail: ".$markedDate."</p></div>";
+    	 $duggaFeedback .="<div class='markedDate markedFailMobile'><p>Fail: ".$markedDateMobile."</p></div>";
+       $duggaFeedback .="<div class='markedDate markedFail '><p>Dugga marked as fail: ".$markedDate."</p></div>";
     }
     if($feedback == null || $feedback == ''){
        $duggaFeedback .="<div class='feedbackCommentWrapper'><p class='feedbackComment'>No comments.........</p></div>";
