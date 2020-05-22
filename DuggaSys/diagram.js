@@ -545,7 +545,6 @@ function deleteFreedrawObject() {
             // If a point isn't hovered, delete object
             if (point.distance > 10 / zoomValue){
                 eraseObject(point.attachedSymbol);
-                SaveState();
                 return;
             }
             // Freedraw objects need at least 3 points
@@ -2478,11 +2477,10 @@ function eraseSelectedObject(event) {
             eraseObject(selected_objects[i]);
             objectDeleted = true;
         }
-    }
-
-    if (selected_objects.length <= 1 && selected_objects[0].figureType == "Free") {
-        deleteFreedrawObject();
-        objectDeleted = true;
+        if (selected_objects.length <= 1 && selected_objects[0].figureType == "Free") {
+            deleteFreedrawObject();
+            objectDeleted = true;
+        }
     }
     if(objectDeleted){
         SaveState();
