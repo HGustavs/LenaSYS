@@ -4,19 +4,18 @@ include_once ("../Shared/database.php");
 pdoConnect();
 
 $uid = $_POST['uid'];
-$gradedAnswer =array();
-$htmlCode='';
+$duggaFeedback;
 $todayDate = date("Y-m-d H:i:s");
-foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY marked DESC') as $useranswer){
-  $creatorid = $useranswer['creator'];
+foreach ($pdo->query('SELECT useranswer.aid, useranswer.moment, useranswer.grade, useranswer.marked, useranswer.feedback, useranswer.seen_status, listentries.entryname, user.firstname, user.lastname, vers.coursecode, vers.versname, useranswer.vers AS useranswerVersid, useranswer.cid AS useranswerCid, useranswer.uid AS studentid, useranswer.creator AS markedAuthorid FROM useranswer, listentries, user, vers WHERE useranswer.moment=listentries.lid AND useranswer.creator=user.uid AND useranswer.cid=vers.cid AND useranswer.vers=vers.vers AND useranswer.uid="'.$uid.'" ORDER BY marked DESC') as $useranswer){
+  $markedAuthorid = $useranswer['markedAuthorid'];
   $aid = $useranswer['aid'];
-  $uid = $useranswer['uid'];
+  $studentid = $useranswer['studentid'];
   $moment = $useranswer['moment'];
   $grade = $useranswer['grade'];
   $marked = $useranswer['marked'];
   $unfiltered_feedback = $useranswer['feedback'];
-  $cid = $useranswer['cid'];
-  $versid = $useranswer['vers'];
+  $cid = $useranswer['useranswerCid'];
+  $versid = $useranswer['useranswerVersid'];
   $recent_feedback;
   $dayName = date('D', strtotime($marked));
   $monthName = date('M', strtotime($marked));
@@ -24,63 +23,56 @@ foreach ($pdo->query('SELECT * FROM useranswer WHERE uid="'.$uid.'" ORDER BY mar
   $dateTime = $date->format('d Y H:i:s');
   $markedDate = $dayName. " ".$monthName." ".$dateTime;
   $seen_status = $useranswer['seen_status'];
+  $entryname = $useranswer['entryname'];
+  $firstname = $useranswer['firstname'];
+  $lastname = $useranswer['lastname'];
+  $creator = $firstname." ".$lastname;
+  $coursecode = $useranswer['coursecode'];
+  $versname = $useranswer['versname'];
+ 
   if(strpos($unfiltered_feedback, '||') !== false){
     $recent_feedback = substr(strrchr($unfiltered_feedback, '||'), 1);
+
   }else{
     $recent_feedback = $unfiltered_feedback;
+
   }
   $remove_date = strstr($recent_feedback, '%%');
   $feedback = str_replace('%%', "\n", $remove_date);
   $feedbackAvailableDate= date('Y-m-d H:i:s', strtotime($marked. ' + 7 days'));
   if($feedbackAvailableDate > $todayDate && $grade != null){
-    $htmlCode .="<div class='feedback_card recentFeedbacks'>";
+    $duggaFeedback .="<div class='feedback_card recentFeedbacks'>";
 
   }elseif ($feedbackAvailableDate < $todayDate && $grade != null) {
-    $htmlCode .="<div class='feedback_card oldFeedbacks'>";
+    $duggaFeedback .="<div class='feedback_card oldFeedbacks'>";
     
   }
-
-  //$htmlCode .= "<div>Marked date: ".$marked."<br>Feedback available date: ".$feedbackAvailableDate."<br>Today's date: ".$todayDate."</div>";
   if($grade != null  || $grade != 0){
     if ($grade == 2) {
-    	 $htmlCode .="<div><span><img src='../Shared/icons/complete.svg'></span>";
-    	 foreach ($pdo->query('SELECT entryname FROM listentries WHERE lid="'.$moment.'"') as $listentries) {
-    	 	$entryname = $listentries['entryname'];
-    	 	$htmlCode .="<span class='entryname'><b>".$entryname."</b></span></div>";
-    	 	
-    	 }
-    	 $htmlCode .="<div class='markedPass'><p>Dugga marked as pass: ".$markedDate."</p></div>";
+    	 $duggaFeedback .="<div class='listentries'><span><img src='../Shared/icons/complete.svg'></span>";
+    	 $duggaFeedback .="<span class='entryname'><b>".$entryname."</b></span></div>";
+    	 $duggaFeedback .="<div class='markedDate markedPass'><p>Dugga marked as pass: ".$markedDate."</p></div>";
+
     }else if($grade == 1){
-    	 $htmlCode .="<div><span><img src='../Shared/icons/uncomplete.svg'></span>";
-    	 foreach ($pdo->query('SELECT entryname FROM listentries WHERE lid="'.$moment.'"') as $listentries) {
-    	 	$entryname = $listentries['entryname'];
-    	 	$htmlCode .="<span class='entryname'><b>".$entryname."</b></span></div>";
-    	 	
-    	 }
-    	 $htmlCode .="<div class='markedFail'><p>Dugga marked as fail: ".$markedDate."</p></div>";
+    	 $duggaFeedback .="<div class='listentries'><span><img src='../Shared/icons/uncomplete.svg'></span>";
+    	 $duggaFeedback .="<span class='entryname'><b>".$entryname."</b></span></div>";
+    	 $duggaFeedback .="<div class='markedDate markedFail'><p>Dugga marked as fail: ".$markedDate."</p></div>";
     }
     if($feedback == null || $feedback == ''){
-       $htmlCode .="<div><p class='feedbackComment'>No comments.........</p></div>";
+       $duggaFeedback .="<div class='feedbackCommentWrapper'><p class='feedbackComment'>No comments.........</p></div>";
+
     }else{
-      $htmlCode .="<div><p class='feedbackComment'>\"".$feedback." "."\"</p></div>";
+      $duggaFeedback .="<div class='feedbackCommentWrapper'><p class='feedbackComment'>\"".$feedback." "."\"</p></div>";
 
     }
-    $htmlCode .="<div class='feedback_card_footer'>";
-    foreach ($pdo->query('SELECT firstname, lastname FROM user WHERE uid="'.$creatorid.'"') as $user) {
-      $firstname = $user['firstname'];
-      $lastname = $user['lastname'];
-      $creator = $firstname." ".$lastname;
-    }
-    foreach ($pdo->query('SELECT * FROM vers WHERE cid="'.$cid.'" AND vers="'.$versid.'"') as $vers) {
-      $coursecode = $vers['coursecode'];
-      $versname = $vers['versname'];
-      $coucode = $coursecode." ".$versname;
-    }
-    $htmlCode .="<div>- ".$creator."</div>";
-    $htmlCode .= "<div>".$coucode." - ".$versid."</div>";
-    $htmlCode .= "</div>";
+    $duggaFeedback .="<div class='feedback_card_footer'>";
+    $duggaFeedback .="<div>- ".$creator."</div>";
+    $duggaFeedback .= "<div>".$coursecode." ".$versname." - ".$versid."</div>";
+    $duggaFeedback .= "</div>";
+
   }
-  $htmlCode .= "</div>";
+  $duggaFeedback .= "</div>";
+
 }
 if(isset($_POST['uid']) && isset($_POST['viewed'])){
   $uid = $_POST['uid'];
@@ -91,10 +83,11 @@ if(isset($_POST['uid']) && isset($_POST['viewed'])){
   $stmt->bindParam(':seen_status', $seen_status);     
 
   $stmt->execute();
+
 }
 //count un-seen feedbacks
 $unreadFeedbackNotification = $pdo->query('SELECT COUNT(*) FROM useranswer WHERE uid ="'.$uid.'" AND seen_status = "0" AND grade IS NOT NULL')->fetchColumn(); 
 
-echo json_encode(["gradedAnswer" => $htmlCode, "unreadFeedbackNotification" => $unreadFeedbackNotification]);
+echo json_encode(["duggaFeedback" => $duggaFeedback, "unreadFeedbackNotification" => $unreadFeedbackNotification]);
 
 ?>

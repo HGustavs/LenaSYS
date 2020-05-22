@@ -2171,8 +2171,8 @@ function toggleFeedbacks(){
         type: "POST",
         success: function(data){
           let parsed_data = JSON.parse(data);
-          let gradedAnswer = parsed_data.gradedAnswer;
-          $(".feedbackContent").html(gradedAnswer);
+          let duggaFeedback = parsed_data.duggaFeedback;
+          $(".feedbackContent").html(duggaFeedback);
           if ($(".recentFeedbacks").length == 0) {
              $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedbacks</span></p>");
 

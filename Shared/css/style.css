@@ -690,13 +690,11 @@ p {
 .feedback_card{
   margin: 10px 0 20px 0;
 }
-.feedback_card div:nth-child(2){
+.feedback_card .feedbackCommentWrapper,
+.feedback_card .markedDate{
   margin-top: -10px;
 }
-.feedback_card div:nth-child(3){
-  margin-top: -5px;
-}
-.feedback_card img{
+.listentries img{
   width: 25px;
   height: 26px;
   display:inline-block;
@@ -720,7 +718,6 @@ p {
   color: #9474a4;
 }
 .feedback_card_footer div:first-child{
-  margin-bottom: 10px;
   font-weight: bold;
 
 }
