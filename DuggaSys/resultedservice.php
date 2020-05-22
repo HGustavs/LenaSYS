@@ -207,8 +207,21 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			// Success, log and return results as JSON.
 			// get all rows with fields indexed only by the same names as
 			// they were addressed by in the query
-			$resultRows = $statement->fetchAll(PDO::FETCH_ASSOC);
-			echo json_encode($resultRows);
+
+			$resultRows = $statement->fetchAll();
+			$resultRows = json_encode($resultRows);
+
+			// Check if the returned array has anything in it.
+			// If it does, then constinue as usual and forward the data to the next step.
+			// If it doesn't and the SELECT is not only asking for date,
+			// then forward the data anyway.
+			// Otherwise, don't forward any data.
+			if ($resultRows !== "[]") {
+				echo $resultRows;
+			} else if ($resultRows === "[]" && $getType !== "ONLYDATE") {
+				echo $resultRows;
+			}
+
 			// log success and exit
 			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' completed successfully';
 			logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php", $userid, $info);
