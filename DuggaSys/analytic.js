@@ -822,6 +822,7 @@ function loadUserInformation(){
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="events">events</option>')
 		.append('<option value="fileEvents">fileEvents</option>')
+		.append('<option value="loginFail">loginFail</option>')
         .appendTo($('#analytic-info'));
  
  
@@ -965,11 +966,14 @@ function loadUserInformation(){
             updateState(users);
         });
     } 
- 
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for events
+//------------------------------------------------------------------------------------------------
     function updateUserLogInformation(users){
 		var event;
 		var users = {};
 		var user;
+		//Array containing all different eventTypes
 		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
 		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
 		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
@@ -984,7 +988,7 @@ function loadUserInformation(){
 				eventNumber = row.eventType;
 				event = eventNames[eventNumber];
 				if(row.eventType != "") {
-					if(event != 'AddFile' && event != 'EditFile'){
+					if(event != 'AddFile' && event != 'EditFile' && event != 'LoginFail'){
 						users[user].push([
 							row.uid,
 							row.username,
@@ -999,11 +1003,14 @@ function loadUserInformation(){
             });
 		});
 	}
-	
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for fileEvents
+//------------------------------------------------------------------------------------------------
 	function updatefileEvents(users){
 		var event;
 		var users = {};
 		var user;
+		//Array containing all different eventTypes
 		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
 		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
 		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
@@ -1033,6 +1040,44 @@ function loadUserInformation(){
             });
 		});
 	}
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for loginFail
+//------------------------------------------------------------------------------------------------
+	function updateloginFail(users){
+		var event;
+		var users = {};
+		var user;
+		//Array containing all different eventTypes
+		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
+		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
+		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
+		'EditFile','MarkedDugga'];
+
+        loadAnalytics("userLogInformation", function(data) {
+            $.each(data, function(i, row) {
+                user = row.username;
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "EventDescription"]];
+				}
+				eventNumber = row.eventType;
+				event = eventNames[eventNumber];
+				if(row.eventType != "") {
+					if(event == 'LoginFail'){
+						users[user].push([
+							row.uid,
+							row.username,
+							row.eventType,
+							row.description,
+							row.timestamp,
+							event
+						]);
+						updateState(users);	
+					}
+				}
+            });
+		});
+	}
+
    
     function updateState(users){
         $('#analytic-info > select.file-select').remove();
@@ -1110,6 +1155,9 @@ function loadUserInformation(){
 					break;
 				case "fileEvents":
 					updatefileEvents();
+					break;
+				case "loginFail":
+					updateloginFail();
 					break;
             }
         });
