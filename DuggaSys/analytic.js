@@ -1263,6 +1263,10 @@ function drawPieChart(data, title = null, multirow = false) {
 		ctx.fillText(title, radius * 2 + 30, 25);
 	}
 
+	var labelCount = 0;
+	var textSpacing = 50;
+	var rectSpacing = 30;
+
 	for (var i = 0; i < data.length; i++) {
 		ctx.fillStyle = getRandomColor(i);
 		ctx.beginPath();
@@ -1272,10 +1276,23 @@ function drawPieChart(data, title = null, multirow = false) {
 		ctx.fill();
 		last += (Math.PI*2*(data[i].value/total));
 
-		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 40, 12, 12);
+		if(labelCount < 4){
+			ctx.fillRect(radius * 2 + rectSpacing , labelCount * textAreaHeight + 40, 12, 12);
+		}
 		ctx.fillStyle = "black";
 		ctx.font = fontSize + "px Arial";
-		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight + 20);
+		if(labelCount < 4){
+			ctx.fillText(data[i].label, radius * 2 + textSpacing , labelCount * textAreaHeight + textAreaHeight + 20);
+			labelCount++;
+		}
+		else{
+			var w = ctx.measureText(data[i - 4].label);
+			textSpacing += w.width + 30;
+			rectSpacing += w.width + 30;
+			labelCount = 0;
+			i--;
+			last -= (Math.PI*2*(data[i].value/total));
+		}
 	}
 }
 
