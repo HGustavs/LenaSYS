@@ -2166,7 +2166,6 @@ function toggleFeedbacks(){
     success: function(data){
       parsed_uid = JSON.parse(data);
       studentid = parsed_uid.uid;
-      console.log("studentid: " + studentid);
       $.ajax({
         url: "../Shared/retrieveFeedbacks.php",
         data: {studentid: studentid},
@@ -2175,7 +2174,6 @@ function toggleFeedbacks(){
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         success: function(data){
-          console.log("Returened feedback data: " + data);
           duggaFeedback = data.duggaFeedback;
           $(".feedbackContent").html(duggaFeedback);
           if ($(".recentFeedbacks").length == 0) {
