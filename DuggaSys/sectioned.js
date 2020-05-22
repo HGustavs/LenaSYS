@@ -1724,24 +1724,6 @@ $(window).load(function () {
   $(".createBtn").click(function(){
     sessionStorage.setItem('closeUpdateForm', true);
   });
-  $("#feedback").click(function(){
-    $("#feedbackOverlay").toggle();
-     /*if ($("#feedbacknotificationcounter").length > 0) {
-      var viewed = "YES";
-      $.ajax({
-        url: "../Shared/retrieveFeedbacks.php",
-        data: {studentid: studentid, viewed:viewed},
-        type: "POST",
-        success: function(){
-          $("#feedbacknotificationcounter").remove();
-        }
-      });
-     }*/
-  });
-  if ($("#feedback").length > 0) {
-    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><h2>Recent Feedbacks</h2></div><div class='feedbackContent'></div></div></div>");
-
-  }
 
   retrieveAnnouncementAuthor();
   retrieveAnnouncementsCards();
@@ -2177,6 +2159,10 @@ function multiSelect(){
 function toggleFeedbacks(){
   let uname = $("#userName").html();
   let studentid, parsed_data, parsed_uid, duggaFeedback, feedbackComment, unseen_feedbacks;
+  if ($("#feedback").length > 0) {
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><h2>Recent Feedbacks</h2></div><div class='feedbackContent'></div></div></div>");
+
+  }
   $.ajax({
     url: "../Shared/retrieveUserid.php",
     data: {uname:uname},
@@ -2185,19 +2171,15 @@ function toggleFeedbacks(){
       parsed_uid = JSON.parse(data);
       studentid = parsed_uid.uid;
       console.log("studentid: " + studentid);
-      $.ajax({
-        url: "../Shared/testFeedback.php",
+      /*$.ajax({
+        url: "../Shared/retrieveFeedbacks.php",
         data: {studentid: studentid},
         type: "POST",
-        async: true,
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         success: function(data){
-          console.log("duggaFeedback: " + JSON.stringify(data));
-          duggaFeedback = data.duggaFeedback;
+          console.log("duggaFeedback: " + data);
+          parsed_data = JSON.parse(data);
+          duggaFeedback = parsed_data.duggaFeedback;
           $(".feedbackContent").html(duggaFeedback);
-
-          /*
           if ($(".recentFeedbacks").length == 0) {
              $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedbacks</span></p>");
 
@@ -2210,18 +2192,47 @@ function toggleFeedbacks(){
             $("#feedback img").after("<span id='feedbacknotificationcounter'>0</span>");
             $("#feedbacknotificationcounter").html(unseen_feedbacks);
 
-          }*/
+          }
         },
-        error: function(jqXHR, textStatus, errorThrown) {
-           console.log("duggaFeedback erro:" + textStatus, errorThrown);
+        error:function(){
+          console.log("Couldn't return feedback data");
         }
 
-      });
+      });*/
 
+      let xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log("This response: " + this.response);
+          parsed_data = JSON.parse(this.response);
+          duggaFeedback = parsed_data.duggaFeedback;
+          $(".feedbackContent").html(duggaFeedback);
+          //document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+         
+
+        }
+      };
+      xmlhttp.open("GET","../Shared/testFeedback.php?studentid="+studentid,true);
+      xmlhttp.send();
+      console.log("Studentid after send: " + studentid);
     }
 
   });
 
+  $("#feedback").click(function(){
+    $("#feedbackOverlay").toggle();
+     /*if ($("#feedbacknotificationcounter").length > 0) {
+      var viewed = "YES";
+      $.ajax({
+        url: "../Shared/retrieveFeedbacks.php",
+        data: {studentid: studentid, viewed:viewed},
+        type: "POST",
+        success: function(){
+          $("#feedbacknotificationcounter").remove();
+        }
+      });
+     }*/
+  });
 }
 function viewOldFeedbacks(){
   $(".feedbackHeader h2").html("Old Feedbacks");
