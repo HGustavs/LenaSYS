@@ -786,6 +786,7 @@
           $errors++;
           echo "<span id='failText' />Failed to fill database with data because of query in {$file}.sql (Skipped the rest of this file):</span><br>";
           echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
+          echo "<div class='errorCodeBox'><code>{$e}</code></div><br><br>";
         }
       }
       $completedSteps++;

@@ -582,14 +582,14 @@ INSERT INTO subparts (partname,cid,parthp,difgrade) VALUES ('salstentamen',312,5
 INSERT INTO subparts (partname,cid,parthp,difgrade) VALUES ('salstentamen',319,30,'u-3-4-5');
 
 /* Student results/Credits */
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (305,200,'salstentamen',5,7.5);
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (307,200,'salstentamen',5,5);
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (308,200,'salstentamen',5,7.5);
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (309,200,'salstentamen',5,7.5);
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (312,200,'salstentamen',5,7.5);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (305,200,'salstentamen',5,7.5);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (307,200,'salstentamen',5,5);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (308,200,'salstentamen',5,7.5);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (309,200,'salstentamen',5,7.5);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (312,200,'salstentamen',5,7.5);
 
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (305,201,'salstentamen',4,7.5);
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (307,201,'salstentamen',5,5);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (305,201,'salstentamen',4,7.5);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (307,201,'salstentamen',5,5);
 INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (308,201,'salstentamen','u',7.5);
 INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (309,201,'salstentamen','u',7.5);
 INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (312,201,'salstentamen',3,7.5);

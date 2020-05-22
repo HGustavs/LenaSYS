@@ -396,10 +396,10 @@ CREATE TABLE class (
 
 CREATE TABLE subparts(
 	partname			  VARCHAR(50),
-	cid 					  INT  NOT NULL UNIQUE,
-	parthp 					NUMERIC(3,1) DEFAULT NULL UNIQUE,
+	cid 					  INT  NOT NULL,
+	parthp 					NUMERIC(3,1) DEFAULT NULL,
 	difgrade				VARCHAR(10),
-	PRIMARY KEY (partname,cid),
+	PRIMARY KEY (partname, cid, parthp),
 	FOREIGN KEY (cid) REFERENCES course (cid)
 );
 
@@ -411,9 +411,9 @@ CREATE TABLE partresult (
 	uid						INT  NOT NULL,
 	partname				VARCHAR(50),
 	grade 					VARCHAR(1) DEFAULT NULL,
-	hp						NUMERIC(3,1) REFERENCES subparts (parthp),
+	parthp						NUMERIC(3,1),
 	PRIMARY KEY (partname, cid, uid),
-	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
+	FOREIGN KEY (partname,cid, parthp) REFERENCES subparts (partname, cid, parthp),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
 );
 
@@ -683,10 +683,10 @@ CREATE TABLE userduggafeedback(
 
 
 CREATE VIEW studentresultCourse AS
-	SELECT partresult.uid AS username, partresult.cid, partresult.hp FROM partresult
+	SELECT partresult.uid AS username, partresult.cid, partresult.parthp FROM partresult
 	INNER JOIN subparts ON partresult.partname = subparts.partname
 		AND subparts.cid = partresult.cid
-		AND subparts.parthp = partresult.hp
+		AND subparts.parthp = partresult.parthp
 	WHERE partresult.grade != 'u';
 
 -- updatesd info in lenasys_user table  */
