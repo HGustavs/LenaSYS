@@ -1729,6 +1729,7 @@ $(window).load(function () {
   retrieveAnnouncementsCards();
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
+  multiSelect();
 });
 
 
@@ -1818,7 +1819,7 @@ function getStudents(cid, userid){
           $("#nonfinishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
         });
         $(".selectLabels label input").attr("disabled", false);
-        selectallRecipients();
+        selectRecipients();
       },
       error:function(){
         console.log("*******Error user_course*******");
@@ -1856,6 +1857,23 @@ function validateCreateAnnouncementForm(){
     $(".errorCreateAnnouncement").css({
       'border':'1px solid red'
     });   
+  });
+}
+function validateUpdateAnnouncementForm(){
+  $("#announcementForm").submit(function(e){
+    var announcementTitle = ($("#announcementTitle").val()).trim();
+    var announcementMsg = ($("#announcementMsg").val()).trim();
+
+    if (announcementTitle == null || announcementTitle == '') {  
+      $("#announcementTitle").addClass('errorCreateAnnouncement');
+      e.preventDefault();
+    }else if (announcementMsg == null || announcementMsg == '') {  
+      $("#announcementMsg").addClass('errorCreateAnnouncement');
+      e.preventDefault();
+    }
+    $(".errorCreateAnnouncement").css({
+      'border':'1px solid red'
+    });  
   });
 }
 //retrive announcements
@@ -1925,6 +1943,7 @@ function handleResponse(xhttp, updateannouncementid, cid, versid){
   $("#announcementMsg").html(message);
   $(".createBtn").html("Update");
   $(".createBtn").attr("name", "updateBtn");
+  $(".createBtn").attr("onclick", "validateUpdateAnnouncementForm()");
   $("#courseidAndVersid").remove();
   $("#recipientBox").remove();
 
@@ -2085,7 +2104,7 @@ function updateReadStatus(announcementid, cid, versid){
   });
 
 }
-function selectallRecipients(){
+function selectRecipients(){
    $(".selectAll input").change(function() {
       if(this.checked) {
         $("#recipient option").not(":first").prop("selected", true);
@@ -2095,7 +2114,7 @@ function selectallRecipients(){
         $("#recipient option").attr("selected", false);
       }
   });
-   $(".selectFinished input").change(function() {
+  $(".selectFinished input").change(function() {
     if(this.checked) {
       $("#finishedStudents option").prop("selected", true);
       $("#finishedStudents option").attr("selected","selected");
@@ -2105,16 +2124,32 @@ function selectallRecipients(){
       $("#recipient option").attr("selected", false);
     }
   });
-   $(".selectNonFinished input").change(function() {
+  $(".selectNonFinished input").change(function() {
     if(this.checked) {
       $("#nonfinishedStudents option").prop("selected", true);
       $("#nonfinishedStudents option").attr("selected","selected");
-      $(".selectFinished input, .selectFinished input").prop("checked", false);
+      $(".selectAll input, .selectFinished input").prop("checked", false);
       $("#finishedStudents option").attr("selected", false);
+
     }else{
       $("#recipient option").attr("selected", false);
     }
   });
+
+}
+function multiSelect(){
+  $("#recipient").mousedown(function(e){
+    e.preventDefault();
+    
+    var select = this;
+    var scroll = select.scrollTop;
+    
+    e.target.selected = !e.target.selected;
+    
+    setTimeout(function(){select.scrollTop = scroll;}, 0);
+    
+    $(select).focus();
+  }).mousemove(function(e){e.preventDefault()});
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {
