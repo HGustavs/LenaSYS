@@ -646,23 +646,22 @@ function loadPageInformation() {
 	
 	var firstLoad = true;
  
-    var selectPage = $("<select></select>")
-        .append('<option value="showDugga" selected>showDugga</option>')
-		.append('<option value="codeviewer">codeviewer</option>')
-		.append('<option value="sectioned">sectioned</option>')
-		.append('<option value="courseed">courseed</option>')
-		.append('<option value="fileed">fileed</option>')
-		.append('<option value="resulted">resulted</option>')
+	var selectPage = $("<select></select>")
+		.append('<option value="accessed">accessed</option>') 
 		.append('<option value="analytic">analytic</option>')
+		.append('<option value="codeviewer">codeviewer</option>')
+		.append('<option value="courseed">courseed</option>')
 		.append('<option value="contribution">contribution</option>')
 		.append('<option value="duggaed">duggaed</option>')
-		.append('<option value="accessed">accessed</option>') 
+		.append('<option value="fileed">fileed</option>')
 		.append('<option value="profile">profile</option>')
+		.append('<option value="resulted">resulted</option>')
+        .append('<option value="showDugga" selected>showDugga</option>')
+		.append('<option value="sectioned">sectioned</option>')
         .appendTo($('#analytic-info'));
    
     function updatePageHitInformation(pages, page){
         loadAnalytics("pageInformation", function(data) {
-			console.log(data);
 
 			var tableData = [["Page", "Hits"]];
 			for(var i = 0; i < pages.length; i++){
@@ -693,7 +692,6 @@ function loadPageInformation() {
 		var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
 
         for (var i = 0; i < data['percentage'][page].length; i++) {
-			console.log(data['percentage'][page][i]);
 			numberOfCourses = parseInt(data['percentage'][page].length);
 			courseID.push([
                 data['percentage'][page][i].courseid
