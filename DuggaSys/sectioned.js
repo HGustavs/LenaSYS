@@ -2213,7 +2213,7 @@ function toggleFeedbacks(){
           }*/
         },
         error: function(jqXHR, textStatus, errorThrown) {
-           console.log("duggaFeedback error:" + textStatus, errorThrown);
+           console.log("duggaFeedback erro:" + textStatus, errorThrown);
         }
 
       });
