@@ -130,15 +130,17 @@ function endsWith($haystack,$needle,$case=true)
 function swizzleArray(&$filepost) {
 
     $filearray = array();
-    $filecount = count($filepost['name']);
-    if ($filepost !== null) $filekeys = array_keys($filepost);
+	$filecount = is_array($filepost['name']);
+
+	if ($filepost !== null) $filekeys = array_keys($filepost);
+	
 
     for ($i=0; $i<$filecount; $i++) {
         foreach ($filekeys as $key) {
-            $filearray[$i][$key] = $filepost[$key][$i];
+			$filearray[$i][$key] = $filepost[$key][$i];
         }
-    }
-
+	}
+	
     return $filearray;
 }
 
@@ -154,7 +156,7 @@ if(!file_exists ('../../log')) {
 //---------------------------------------------------------------------------------------------------------------
 // IF MAKING CHANGES TO SQLite tables, increment this value!
 //---------------------------------------------------------------------------------------------------------------
-$dbVersion = 5;
+$dbVersion = 6;
 //---------------------------------------------------------------------------------------------------------------
 
 try {
@@ -220,6 +222,7 @@ $sql = '
 		userid INTEGER(10),
 		username VARCHAR(50),
 		IP TEXT,
+		URLParams VARCHAR(255),
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
 ';
@@ -231,7 +234,7 @@ $log_db->exec($sql);
 
 $refer = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 if (!strstr(strtolower($refer), 'service')) {
-	$query = $log_db->prepare('INSERT INTO userHistory (refer, userid, username, IP) VALUES (:refer, :userid, :username, :IP)');
+	$query = $log_db->prepare('INSERT INTO userHistory (refer, userid, username, IP, URLParams) VALUES (:refer, :userid, :username, :IP, :ReferParams)');
 
 	$query->bindParam(':refer', $refer);
 
@@ -260,9 +263,33 @@ if (!strstr(strtolower($refer), 'service')) {
 		$IP.=" ".$_SERVER['HTTP_X_FORWARDED_FOR'];
 	}
 
+	$url_components = parse_url($refer); 
+	if(isset($url_components['query'])) {
+		parse_str($url_components['query'], $params); 
+
+		// Make sure that we always have Course ID and Course Vers as the first rows
+		$course = [];
+		if(isset($params['courseid'])) {
+			$course['cid'] = $params['courseid'];
+		} else if(isset($params['cid'])) {
+			$course['cid'] = $params['cid'];
+		}
+
+		if(isset($params['coursevers'])) {
+			$course['cvers'] = $params['coursevers'];
+		} else if(isset($params['cvers'])) {
+			$course['cvers']= $params['cvers'];
+		}
+
+		$urlParams = json_encode(array_merge($course, $params));
+	} else {
+		$urlParams = "{}";
+	}
+
 	$query->bindParam(':userid', $userid);
 	$query->bindParam(':username', $username);
 	$query->bindParam(':IP', $IP);
+	$query->bindParam(':ReferParams', $urlParams);
 
 	if($username != "00") {
 		$query->execute();

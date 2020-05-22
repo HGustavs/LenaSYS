@@ -183,6 +183,26 @@ function loadGeneralStats() {
 			'Hits: ' + data['stats']['topViewedDuggaHits']
 		]);
 
+		// Newest file
+        tableData.push([
+            'Newest file: ' + data['stats']['newestFile'],
+            'Created: ' + data['stats']['newestFileTimestamp']
+    	]);
+
+		// Most recently edited file
+		var fileToTable = 'Most recently edited file: ' + data['stats']['recentlyEditedFile'];
+		if(data['stats']['recentlyEditedFileTimestamp'] != null){
+			tableData.push([
+				fileToTable,
+				'Edited: ' + new Date(data['stats']['recentlyEditedFileTimestamp'].replace(' ', 'T') + "Z").toLocaleString()
+			]);
+		} else{
+			tableData.push([
+				fileToTable,
+				'Edited: ' + data['stats']['recentlyEditedFileTimestamp']
+			]);
+		}
+		
 		$('#analytic-info').append(renderTable(tableData));
 		
 		// Disk usage
@@ -266,12 +286,13 @@ function loadPasswordGuessing() {
 		$('#pageTitle').text("Password Guessing");
 		$('#analytic-info').append("<p class='analyticsDesc'>Potential brute force attacks.</p>");
 
-		var tableData = [["Username", "Remote address", "User agent", "Tries"]];
+		var tableData = [["Username", "Remote address", "User agent", "Guest ID", "Tries"]];
 		for (var i = 0; i < data.length; i++) {
 			tableData.push([
 				data[i].userName,
 				data[i].remoteAddress,
 				data[i].userAgent,
+				data[i].guestID,
 				data[i].tries
 			]);
 		}
@@ -664,6 +685,7 @@ function loadPageInformation() {
 		var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
 
         for (var i = 0; i < data['percentage'][page].length; i++) {
+			console.log(data['percentage'][page][i]);
 			numberOfCourses = parseInt(data['percentage'][page].length);
 			
 			var cid = data['percentage'][page][i].refer.match('.+?cid=([0-9]+)');
@@ -696,7 +718,7 @@ function loadPageInformation() {
 					for (var i = 0; i < courseName.length; i++){
 						tablePercentage.push([
 							courseID[i],
-							coursePercentage[i],
+							Number(coursePercentage[i]).toFixed(2),
 							courseName[i]
 						]);
 					}
@@ -714,6 +736,7 @@ function loadPageInformation() {
 
         var chartData = [];
         for (var i = 0; i < data['percentage'][page].length; i++) {
+			
             chartData.push({
                 label: "courseid:" + " " + data['percentage'][page][i].courseid,
                 value: data['percentage'][page][i].percentage
@@ -773,6 +796,7 @@ function loadUserInformation(){
 		.append('<option value="showDugga" selected>showDugga</option>')
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="events">events</option>')
+		.append('<option value="fileEvents">fileEvents</option>')
         .appendTo($('#analytic-info'));
  
  
@@ -925,6 +949,7 @@ function loadUserInformation(){
 		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
 		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
 		'EditFile','MarkedDugga'];
+
         loadAnalytics("userLogInformation", function(data) {
             $.each(data, function(i, row) {
                 user = row.username;
@@ -934,19 +959,55 @@ function loadUserInformation(){
 				eventNumber = row.eventType;
 				event = eventNames[eventNumber];
 				if(row.eventType != "") {
-					users[user].push([
-						row.uid,
-						row.username,
-						row.eventType,
-						row.description,
-						row.timestamp,
-						event
-					]);
-					updateState(users);		
+					if(event != 'AddFile' && event != 'EditFile'){
+						users[user].push([
+							row.uid,
+							row.username,
+							row.eventType,
+							row.description,
+							row.timestamp,
+							event
+						]);
+						updateState(users);	
+					}
 				}
             });
 		});
-    } 
+	}
+	
+	function updatefileEvents(users){
+		var event;
+		var users = {};
+		var user;
+		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
+		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
+		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
+		'EditFile','MarkedDugga'];
+
+        loadAnalytics("userLogInformation", function(data) {
+            $.each(data, function(i, row) {
+                user = row.username;
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "EventDescription"]];
+				}
+				eventNumber = row.eventType;
+				event = eventNames[eventNumber];
+				if(row.eventType != "") {
+					if(event == 'AddFile' || event == 'EditFile'){
+						users[user].push([
+							row.uid,
+							row.username,
+							row.eventType,
+							row.description,
+							row.timestamp,
+							event
+						]);
+						updateState(users);	
+					}
+				}
+            });
+		});
+	}
    
     function updateState(users){
         $('#analytic-info > select.file-select').remove();
@@ -960,21 +1021,46 @@ function loadUserInformation(){
 				}
             }
         }
+		
         userSelect.change(function() {
 			deleteTable();
 			$('#analytic-info').append(selectPage);
-			$('#analytic-info').append(renderTable(users[$(this).val()]));
+			
+			var events = [];
+			if(users[$(this).val()][0][5] == "EventDescription") {
+				for(var i = 1; i < users[$(this).val()].length; i++) {
+					if(events[users[$(this).val()][i][5]] == null) {
+						events[users[$(this).val()][i][5]] = 1; // Set the starting value
+					} else {
+						events[users[$(this).val()][i][5]] = events[users[$(this).val()][i][5]] + 1; // Increments the values
+					}
+				}
+			}
 
+			if(Object.keys(events).length > 0) {
+				userNumEvents = [["Event", "Times Preformed"]];
+				for (var key in events) {
+					if(Number.isInteger(events[key]))
+					userNumEvents.push([
+						key,
+						events[key]
+					]);
+					deleteTable();
+					$('#analytic-info').append(renderTable(userNumEvents));
+				}
+			}
+			
+			$('#analytic-info').append(renderTable(users[$(this).val()]));
+			
 			try {
 				localStorage.setItem('analyticsLastUser', $(this).val());
 			} catch(err) { }
 
-        });
+		});
         $('#analytic-info').append(userSelect);
 		userSelect.change();
 		pageSelect();
-	}
-	
+	}	
 	function pageSelect(){
 		if(firstLoad === true){
 			updateSectionedInformation();
@@ -996,6 +1082,9 @@ function loadUserInformation(){
 					break;
 				case "events":
 					updateUserLogInformation();
+					break;
+				case "fileEvents":
+					updatefileEvents();
 					break;
             }
         });
@@ -1100,7 +1189,7 @@ function drawBarChart(data, format = null) {
 		ctx.scale(1, -1);
 		ctx.fillStyle = "white";
 		
-		if(format = "bytes") {
+		if(format == "bytes") {
 			ctx.fillText(humanFileSize(data[i].value), x + barWidth / 2, -data[i].value * barHeightMultiplier);
 		} else {
 			ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
@@ -1181,6 +1270,10 @@ function drawPieChart(data, title = null, multirow = false) {
 		ctx.fillText(title, radius * 2 + 30, 25);
 	}
 
+	var labelCount = 0;
+	var textSpacing = 50;
+	var rectSpacing = 30;
+
 	for (var i = 0; i < data.length; i++) {
 		ctx.fillStyle = getRandomColor(i);
 		ctx.beginPath();
@@ -1190,10 +1283,23 @@ function drawPieChart(data, title = null, multirow = false) {
 		ctx.fill();
 		last += (Math.PI*2*(data[i].value/total));
 
-		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 40, 12, 12);
+		if(labelCount < 4){
+			ctx.fillRect(radius * 2 + rectSpacing , labelCount * textAreaHeight + 40, 12, 12);
+		}
 		ctx.fillStyle = "black";
 		ctx.font = fontSize + "px Arial";
-		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight + 20);
+		if(labelCount < 4){
+			ctx.fillText(data[i].label, radius * 2 + textSpacing , labelCount * textAreaHeight + textAreaHeight + 20);
+			labelCount++;
+		}
+		else{
+			var w = ctx.measureText(data[i - 4].label);
+			textSpacing += w.width + 30;
+			rectSpacing += w.width + 30;
+			labelCount = 0;
+			i--;
+			last -= (Math.PI*2*(data[i].value/total));
+		}
 	}
 }
 

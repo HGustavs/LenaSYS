@@ -209,15 +209,20 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   //------------------------------------------------------------------------------
   //checks if feedback is enabled and enables input box for feedbackquestion choice.
   //------------------------------------------------------------------------------
-
-  $("#editSection").css("display", "flex");
-  if(feedbackenabled == 1){
-    $( "#fdbck" ).prop( "checked", true );
-    $("#inputwrapper-FeedbackQuestion").css("display","block");
-    $("#fdbckque").val(feedbackquestion);
+  if(kind == 3){
+    $('#inputwrapper-Feedback').css("display","block");
+    if(feedbackenabled == 1){
+      $( "#fdbck" ).prop( "checked", true );
+      $("#inputwrapper-FeedbackQuestion").css("display","block");
+      $("#fdbckque").val(feedbackquestion);
+    }else{
+      $( "#fdbck" ).prop( "checked", false );
+      $("#inputwrapper-FeedbackQuestion").css("display","none");
+    }
   }else{
-    $( "#fdbck" ).prop( "checked", false );
     $("#inputwrapper-FeedbackQuestion").css("display","none");
+    $('#inputwrapper-Feedback').css("display","none");
+    $( "#fdbck" ).prop( "checked", false );
   }
 }
 
@@ -251,8 +256,10 @@ function changedType(kind) {
 //----------------------------------------------------------------------------------
 
 function showEditVersion() {
+  var tempMotd = motd;
+	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
   $("#eversname").val(versnme);
-  $("#eMOTD").val(motd);
+  $("#eMOTD").val(tempMotd);
   $("#eversid").val(querystring['coursevers']);
   let sdate = retdata['startdate'];
   let edate = retdata['enddate'];
@@ -266,6 +273,7 @@ document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
     $("#editCourseVersion").css("display", "none");
     $("#newCourseVersion").css("display", "none");
+    $("#userFeedbackDialog").css("display", "none");
   }
 })
 
@@ -378,11 +386,11 @@ function prepareItem() {
 
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
+    param.feedbackquestion = $("#fdbckque").val();
   } else{
     param.feedback = 0;
+    param.feedbackquestion = null;
   }
-
-  param.feedbackquestion = $("#fdbckque").val();
 
   if(param.comments == "TOP"){
     param.pos = "-1";
@@ -445,11 +453,11 @@ function createVersion() {
   var param = {};
   //param.courseid = querystring['courseid'];
   param.cid = querystring['courseid'];
-  param.versid = document.getElementById("versid").value;
+  param.versid = document.getElementById("cversid").value;
   param.versname = document.getElementById("versname").value;
   param.motd = document.getElementById("vmotd").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = querystring["courseid"];
+  param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#makeactive").is(':checked');
   param.startdate = getDateFormat(new Date($("#startdate").val()));
@@ -468,7 +476,7 @@ function createVersion() {
       AJAXService("NEWVRS", param, "COURSE");
     }
     $("#newCourseVersion").css("display", "none");
-    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("versid").value );
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("cversid").value );
   }
 }
 
@@ -485,7 +493,7 @@ function updateVersion() {
   param.versid = document.getElementById("eversid").value;
   param.versname = document.getElementById("eversname").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = querystring["courseid"];
+  param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#emakeactive").is(':checked');
   param.startdate = $("#estartdate").val();
@@ -495,7 +503,7 @@ function updateVersion() {
   AJAXService("UPDATEVRS", param, "SECTION");
 
   $("#editCourseVersion").css("display", "none");
-  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("versid").value );
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("eversid").value );
 }
 
 //queryString for coursename is added
@@ -567,6 +575,10 @@ function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
 
+  //data variable is put in localStorage which is then used in Codeviewer
+	//to get the right order when going backward and forward in code examples
+	localStorage.setItem("sectionData", JSON.stringify(data));
+
   var now = new Date();
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
@@ -635,20 +647,35 @@ function returnedSection(data) {
       document.getElementById("FABStatic2").style.display = "None";
     }
 
+    if (data['readaccess']) {
+      // Build dropdowns
+      var bstr = "";
+      for (var i = 0; i < retdata['versions'].length; i++) {
+        var item = retdata['versions'][i];
+        if (retdata['courseid'] == item['cid']) {
+          bstr += "<option value='" + item['vers'] + "'";
+          if (retdata['coursevers'] == item['vers']) {
+            bstr += " selected";
+          }
+          bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
+        }
+        // save vers, versname and motd from table vers as global variables.
+        versnme = versionname;
+        if (querystring['coursevers'] == item['vers']) motd = item['motd'];
+        if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
+      }
+
+      bstr = "<option value='None'>None</option>" + bstr;
+      document.getElementById("copyvers").innerHTML = bstr;
+    }
+
     if (data['studentteacher']) {
       // Show FAB / Menu
       document.getElementById("FABStatic").style.display = "Block";
-      document.querySelector("td.results.menuButton").style.display = "none";
-      document.querySelector("td.tests.menuButton").style.display = "none";
-      document.querySelector("td.access.menuButton").style.display = "none";
-      document.querySelector(".course-dropdown-div").style.display = "none";
-      document.querySelector("td.editVers").style.display = "none";
-      document.querySelector("td.newVers").style.display = "none";
-      document.querySelector("td.coursePage").style.display = "none";
-
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
     }
+
 
     // hide som elements if to narrow
     var hiddenInline = "";
@@ -693,14 +720,23 @@ function returnedSection(data) {
           str += " class='lo' ";
         }
         str += " >";
+  
 
         var hideState = "";
         if (parseInt(item['visible']) === 0) hideState = " hidden"
         else if (parseInt(item['visible']) === 3) hideState = " deleted"
         else if (parseInt(item['visible']) === 2) hideState = " login";
 
-        // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment
+        // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment || 7 Message
         var itemKind = parseInt(item['kind']);
+
+        if(itemKind === 2 || itemKind == 5){
+          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+        }
+
+        if(itemKind === 6 || itemKind == 7){
+          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+        }
 
         if (itemKind === 3 || itemKind === 4) {
 
@@ -1090,6 +1126,8 @@ function returnedSection(data) {
 
   // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
   replaceDefualtLink();
+  
+
 
   addClasses();
   showMOTD();
@@ -1121,6 +1159,7 @@ function ignoreMOTD(){
 
 function resetMOTDCookieForCurrentCourse(){
   var c_string = getCookie('MOTD');
+  if (c_string != ('') && c_string != null){
   c_array = c_string.split(',');
   for(let i = 0; i<c_array.length;i+=2){
     if(c_array[i] == versnme && c_array[i+1] == versnr){
@@ -1128,6 +1167,7 @@ function resetMOTDCookieForCurrentCourse(){
     }
   }
   document.cookie = 'MOTD=' + c_array;
+}
   showMOTD();
 }
 
@@ -1287,8 +1327,39 @@ function drawPieChart() {
   str += "<text x='185' y='231' font-family='Arial' font-size='12px' fill='black'>N/A: (" + Math.round(notSubmittedPCT * 100) + "%)</text>";
 
   document.getElementById("pieChartSVG").innerHTML = str;
+  var passed = Math.round(passedPCT * 100);
+  var failed = Math.round(failedPCT * 100);
+  var pending = Math.round((notGradedPCT + 0.25) * 100);
+  courseCompletion(passed, failed, pending);
 }
 
+function courseCompletion(passed, failed, pending){
+  var cid = retdata['courseid'];
+  var coursevers = retdata['coursevers'];
+  var uid, uname = $("#userName").html();
+
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname:uname},
+    type: "GET",
+    success: function(data){
+      var parsed_data = JSON.parse(data);
+      uid = parsed_data.uid;
+      $.ajax({
+        url: "../Shared/retrieveuser_course.php",
+        data: {uid:uid, cid:cid, vers:coursevers, passed:passed, failed:failed, pending:pending},
+        type: "POST",
+        success: function(data){
+        }
+      });
+    },
+    error:function(){
+      console.log("*******Error*******");
+    }
+  });
+
+
+}
 //----------------------------------------------------------------------------------
 // fixDeadlineInfoBoxesText: Makes an on-screen table containing deadlines
 //----------------------------------------------------------------------------------
@@ -1659,7 +1730,6 @@ $(window).load(function () {
   });
 
   retrieveAnnouncementAuthor();
-  retrieveCourseProfile();
   retrieveAnnouncementsCards();
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
@@ -1678,7 +1748,11 @@ function retrieveAnnouncementAuthor(){
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       if($("#userid").length > 0) {
-          document.getElementById("userid").value = this.responseText;
+          var parsed_data = JSON.parse(this.response);
+          if(($("#announcementForm").length) > 0){
+            document.getElementById("userid").value = parsed_data.uid;
+            retrieveCourseProfile(parsed_data.uid);
+          }
       }
     }
   };
@@ -1686,25 +1760,101 @@ function retrieveAnnouncementAuthor(){
   xmlhttp.send();
 
 }
+
 //retrieve course profile
-function retrieveCourseProfile(){
-  var currentLocation = $(location).attr('href');
-  var url = new URL(currentLocation);
-  var cid = url.searchParams.get("courseid");
-  var versid = url.searchParams.get("coursevers");
-  $("#courseid").val(cid);
-  $("#versid").val(versid);
+function retrieveCourseProfile(userid){
+  $(".selectLabels label input").attr("disabled", true);
+  var cid = '';
+  $("#cid").change(function(){
+    cid = $("#cid").val();
+    if (($("#cid").val()) != '') {
+      $("#versid").prop("disabled", false);
+      $.ajax({
+        url: "../Shared/retrievevers.php",
+        data: {cid: cid},
+        type: "POST",
+        success: function(data){
+          var item = JSON.parse(data);
+          $("#versid").find('*').not(':first').remove();
+          $.each(item.versids, function(index,item) {        
+              $("#versid").append("<option value="+item.versid+">"+item.versid+"</option>");
+          });
+          
+        },
+        error:function(){
+          console.log("*******Error*******");
+        }
+      });
+
+    }else{
+      $("#versid").prop("disabled", true);
+    }
+
+  });
+  if (($("#versid option").length) <= 2) {
+    $("#versid").click(function(){
+      getStudents(cid, userid);
+    });
+  }else if(($("#versid option").length) > 2){
+    $("#versid").change(function(){
+      getStudents(cid, userid);
+    });
+  }
 }
+function getStudents(cid, userid){
+   var versid = '';
+   versid = $("#versid").val();
+   if (($("#versid").val()) != '') { 
+    $("#recipient").prop("disabled", false);
+    $.ajax({
+      url: "../Shared/retrieveuser_course.php",
+      data: {cid: cid, versid:versid, remove_student:userid},
+      type: "POST",
+      success: function(data){
+        var item = JSON.parse(data);
+        $("#recipient").find('*').not(':first').remove();
+        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'></optgroup>");
+        $.each(item.finished_students, function(index,item) {        
+          $("#finishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+        });
+        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'></optgroup>");
+        $.each(item.non_finished_students, function(index,item) {        
+          $("#nonfinishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+        });
+        $(".selectLabels label input").attr("disabled", false);
+        selectallRecipients();
+      },
+      error:function(){
+        console.log("*******Error user_course*******");
+      }
+    });
+  }else{
+    $("#recipient").prop("disabled", true);
+  }
+}
+
 //validate create announcement form
 function validateCreateAnnouncementForm(){
   $("#announcementForm").submit(function(e){
     var announcementTitle = ($("#announcementTitle").val()).trim();
     var announcementMsg = ($("#announcementMsg").val()).trim();
+    var cid = $("#cid").val();
+    var versid = $("#versid").val();
+    var recipients = $("#recipient").val();
     if (announcementTitle == null || announcementTitle == '') {  
         $("#announcementTitle").addClass('errorCreateAnnouncement');
         e.preventDefault();
     }else if (announcementMsg == null || announcementMsg == '') {  
         $("#announcementMsg").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (cid == null || cid == '') {  
+        $("#cid").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (versid == null || versid == '') {  
+        $("#versid").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (recipients == null || recipients == '') {  
+        $("#recipient").addClass('errorCreateAnnouncement');
         e.preventDefault();
     }
     $(".errorCreateAnnouncement").css({
@@ -1718,47 +1868,58 @@ function retrieveAnnouncementsCards(){
   var url = new URL(currentLocation);
   var cid = url.searchParams.get("courseid");
   var versid = url.searchParams.get("coursevers");
+  var uname = $("#userName").html();
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname:uname},
+    type: "GET",
+    success: function(data){
+      var parsed_data = JSON.parse(data);
+      var uid = parsed_data.uid;
+     var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var parsed_data = JSON.parse(this.response);
+          document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+          var unread_announcements = parsed_data.nRows;
+          if(unread_announcements > 0){
+            $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
+            $("#announcementnotificationcount").html(parsed_data.nRows);
+          }
+          accessAdminAction();
+          readLessOrMore();
+          showLessOrMoreAnnouncements();
+          scrollToTheAnnnouncementForm();
+          $(".deleteBtn").click(function(){
+            sessionStorage.setItem('closeUpdateForm', true);
 
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("announcementCards").innerHTML = this.responseText;
-      accessAdminAction();
-      readLessOrMore();
-      showLessOrMoreAnnouncements();
-      scrollToTheAnnnouncementForm();
-      $(".deleteBtn").click(function(){
-        sessionStorage.setItem('closeUpdateForm', true);
+          });
 
-      });
-
+        }
+      };
+      xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid+"&recipient="+uid,true);
+      xmlhttp.send();
     }
-  };
-  xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid,true);
-  xmlhttp.send();
+  });
 }
 //update anouncement form
-function updateannouncementForm(updateannouncementid, tempFuction){
+function updateannouncementForm(updateannouncementid, cid, versid, tempFuction){
   var xmlhttp = new XMLHttpRequest();
+  
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-        tempFuction(this, updateannouncementid);
+        tempFuction(this, updateannouncementid, cid, versid);
     }
   };
   xmlhttp.open("GET","../Shared/updateAnnouncement.php?updateannouncementid="+updateannouncementid,true);
   xmlhttp.send();
 
 }
-function handleResponse(xhttp, updateannouncementid){
-  var parser, xmlDoc, responseTitle, responseMessage, title, message;
-  parser=new DOMParser();
-  xmlDoc=parser.parseFromString(xhttp.responseText,"text/xml");
-  responseTitle = xmlDoc.getElementById("responseTitle");
-  responseMessage = xmlDoc.getElementById("responseMessage");
-
-  title = responseTitle.childNodes[0].nodeValue;
-  message = responseMessage.childNodes[0].nodeValue;
-
+function handleResponse(xhttp, updateannouncementid, cid, versid){
+  var title, message;
+  var parsed_data = JSON.parse(xhttp.response);
+  title = parsed_data.title;
+  message = parsed_data.message;
   if($("#announcementForm").is(":hidden")){
     $("#announcementForm").show();
   }
@@ -1768,7 +1929,13 @@ function handleResponse(xhttp, updateannouncementid){
   $("#announcementMsg").html(message);
   $(".createBtn").html("Update");
   $(".createBtn").attr("name", "updateBtn");
-  $("#announcementForm .announcementFormcontainer hr").after('<input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'">');
+  $("#courseidAndVersid").remove();
+  $("#recipientBox").remove();
+
+  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'"></div>');
+  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="cid" id="cid" value="'+cid+'"></div>');
+  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="versid" id="versid" value="'+versid+'"></div>');
+
 
 }
 
@@ -1902,6 +2069,57 @@ function showLessOrMoreAnnouncements(){
   });
 
 }
+function updateReadStatus(announcementid, cid, versid){
+  var uname = $("#userName").html();
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname: uname},
+    type: "GET",
+    success: function(data){
+      var parsed_data = JSON.parse(data);
+      var uid = parsed_data.uid;
+      $.ajax({
+        url: "../Shared/updateviewedAnnouncementCards.php",
+        data: {announcementid : announcementid, uid : uid, cid : cid, versid : versid},
+        type: "POST",
+        success: function(data){
+        }
+      });
+    }
+  });
+
+}
+function selectallRecipients(){
+   $(".selectAll input").change(function() {
+      if(this.checked) {
+        $("#recipient option").not(":first").prop("selected", true);
+        $("#recipient option").not(":first").attr("selected","selected");
+        $(".selectFinished input, .selectNonFinished input").prop("checked", false);
+      }else{
+        $("#recipient option").attr("selected", false);
+      }
+  });
+   $(".selectFinished input").change(function() {
+    if(this.checked) {
+      $("#finishedStudents option").prop("selected", true);
+      $("#finishedStudents option").attr("selected","selected");
+      $(".selectAll input, .selectNonFinished input").prop("checked", false);
+      $("#nonfinishedStudents option").attr("selected", false);
+    }else{
+      $("#recipient option").attr("selected", false);
+    }
+  });
+   $(".selectNonFinished input").change(function() {
+    if(this.checked) {
+      $("#nonfinishedStudents option").prop("selected", true);
+      $("#nonfinishedStudents option").attr("selected","selected");
+      $(".selectFinished input, .selectFinished input").prop("checked", false);
+      $("#finishedStudents option").attr("selected", false);
+    }else{
+      $("#recipient option").attr("selected", false);
+    }
+  });
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
@@ -1918,7 +2136,6 @@ function replaceDefualtLink(){
     }
   }
 }
-
 
 // Adds classes to <a> element depending on if they are external / internal
 function addClasses() {
@@ -1965,7 +2182,7 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 /*Validates all versionnames*/
 function validateVersionName(versionName, dialogid) {
   //Regex for 2 capital letters, 2 numbers
-  var Name = /^HT\d{2}$|^VT\d{2}$/;
+  var Name = /^HT\d{2}$|^VT\d{2}$|^ST\d{2}$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
 
@@ -2002,7 +2219,7 @@ function validateCourseID(courseid, dialogid) {
   var Code = /^[0-9]{3,6}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
-  var val = document.getElementById("versid").value;
+  var val = document.getElementById("cversid").value;
 
   if (code.value.match(Code)) {
     code.style.borderColor = "#383";
@@ -2031,7 +2248,7 @@ function validateCourseID(courseid, dialogid) {
 
 function validateMOTD(motd, dialogid){
   var emotd = document.getElementById(motd);
-  var Emotd = /(^$)|(^[-a-zA-Z0-9_ !,.]*$)/;
+  var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
   var EmotdRange = /^.{0,50}$/;
   var x4 = document.getElementById(dialogid);
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
@@ -2176,7 +2393,7 @@ function validateForm(formid) {
    //Validates new course version form
   if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
-    var versId = document.getElementById("versid").value;
+    var versId = document.getElementById("cversid").value;
 
     //If fields empty
     if (versName == null || versName == "", versId == null || versId == "") {
