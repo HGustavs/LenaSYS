@@ -5612,7 +5612,7 @@ only screen and (max-device-width: 320px) {
   overflow: hidden;
 }
 
-#diagram-content.rulers-active {
+#diagram-page-wrapper.rulers-active #diagram-content {
   width: calc(100vw - var(--diagram-sidebar-width) - var(--ruler-size));
 }
 
@@ -5623,7 +5623,7 @@ only screen and (max-device-width: 320px) {
   height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--canvas-margin));
 }
 
-#diagram-content.rulers-active #diagram-canvas-container {
+#diagram-page-wrapper.rulers-active #diagram-canvas-container {
   height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--ruler-size) - var(--canvas-margin));
 }
 

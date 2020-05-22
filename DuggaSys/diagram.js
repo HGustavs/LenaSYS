@@ -3520,8 +3520,6 @@ function scrollZoom(event) {
 function toggleFullscreen(){
     const header = document.querySelector("header");
     const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
-    var diagramHeader = document.getElementById("diagram-header");
-    var diagramContainer = document.getElementById("diagram-container")
 
     if(!fullscreen){
         diagramPageWrapper.classList.add("fullscreen");
@@ -6321,13 +6319,14 @@ function getSelectedObjectsPoints() {
 //------------------------------------------------------------------------------------------------
 
 function toggleRulers() {
-    const diagramContent = document.getElementById("diagram-content");
+    const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
     const rulers = document.querySelectorAll(".ruler");
+    
     if(isRulersActive) {
-        diagramContent.classList.remove("rulers-active");
+        diagramPageWrapper.classList.remove("rulers-active");
         rulers.forEach(ruler => ruler.classList.add("hidden"));
     } else {
-        diagramContent.classList.add("rulers-active");
+        diagramPageWrapper.classList.add("rulers-active");
         rulers.forEach(ruler => ruler.classList.remove("hidden"));
     }
     isRulersActive = !isRulersActive;
