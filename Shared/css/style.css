@@ -661,7 +661,7 @@ p {
 /*Start of recent feedback from the teacher*/
  #feedbackOverlay{
   position: relative;
-  display: none;
+  /*display: none;*/
   padding: 10px;
   top: 50px;
   width: 100%;
@@ -686,6 +686,18 @@ p {
 .feedbackHeader h2{
   font-size: 20px;
   font-weight: bold;
+}
+.feedbackHeader{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+.feedbackHeader span img{
+  height: 20px;
+  width: 24px;
+  cursor: pointer;
+
 }
 .feedback_card{
   margin: 10px 0 20px 0;
@@ -726,7 +738,8 @@ p {
   flex-direction: row;
   justify-content: space-between;
 }
-.noFeedbacks span:first-child{
+.noFeedbacks span:first-child,
+.feedbackHeader span:last-child{
   align-self: center;
 }
 .viewOldFeedbacks{

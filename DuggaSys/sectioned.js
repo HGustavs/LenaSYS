@@ -2201,7 +2201,7 @@ function toggleFeedbacks(){
   });
 
   if ($("#feedback").length > 0) {
-    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><h2>Recent Feedbacks</h2></div><div class='feedbackContent'></div></div></div>");
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><span><h2>Recent Feedbacks</h2></span><span><img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span></div><div class='feedbackContent'></div></div></div>");
 
   }
 
