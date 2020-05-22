@@ -5472,6 +5472,11 @@ only screen and (max-device-width: 320px) {
   border-bottom: 1px solid #000000;
 }
 
+#diagram-page-wrapper.rulers-active #diagram-header {
+  top: var(--ruler-size);
+  left: var(--ruler-size);
+}
+
 #diagram-toolbar-switcher {
   font-size: 11px;
   color: #c0c0c0;
@@ -5506,6 +5511,11 @@ only screen and (max-device-width: 320px) {
   background-color: #ffffff;
   border-right: 1px solid #000000;
   border-bottom: 1px solid #000000;
+}
+
+#diagram-page-wrapper.rulers-active #diagram-tools-container {
+  top: var(--ruler-size);
+  left: var(--ruler-size);
 }
 
 .diagram-sidebar-section {
