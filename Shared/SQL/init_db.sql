@@ -209,13 +209,13 @@ CREATE TABLE vers(
 CREATE TABLE fileLink(
 	fileid					SERIAL,
 	filename				VARCHAR(128) NOT NULL,
-	kind					INTEGER,
-	cid						INT  NOT NULL,
+	kind						INTEGER,
+	cid							INT  NOT NULL,
 	isGlobal				BOOLEAN NOT NULL DEFAULT FALSE,
 	filesize				INT NOT NULL DEFAULT 0, -- (11)*/
-	uploaddate				TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
-    filesiz 				INT,
-    vers 					VARCHAR(8),
+	uploaddate			TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
+  filesiz 				INT,
+  vers 						VARCHAR(8),
 	PRIMARY KEY (fileid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
 );
