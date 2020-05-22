@@ -38,11 +38,8 @@ function setup() {
     window.onscroll = function () {
 
 	};
-	
-	if (typeof localStorage.getItem("lastExpDate") != undefined) {
-		document.getElementById('lastExportedDate').innerHTML = localStorage.getItem("lastExpDate");
-	}
 
+	AJAXService("getunexported", { getType: "ONLYDATE" }, "GEXPORT");
     AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
@@ -688,10 +685,27 @@ function returnedResults(data) {
 //----------------------------------------
 function returnedExportedGrades(gradeData){
 	// Tries to write out the last exported date.
-	// If it fails, then log the error.
+	// Also checks if the object is undefined.
+	// If it's undefined then show the popup.
+	// If it's not, try to write out the gradeLastExported value.
+	// If this fails, then log the error.
 	try {
-		if (typeof gradeData[0].gradeLastExported !== 'undefined' && typeof gradeData[0] === 'object') {
-			document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
+		if (typeof gradeData[0] === 'undefined') {
+			// Show the "gradeExportPopUp" div and insert the message.
+			document.getElementById("gradeExportPopUp").style.display = "block";
+			document.getElementById("exportPopUpMessage").innerHTML = "There are no unexported grades";
+		} else {
+			if (typeof gradeData[0].gradeLastExported !== 'undefined') {
+				document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
+				document.getElementById('lastExportedDate').innerHTML = gradeData[0].gradeLastExported;
+
+				// Checks if gardeData has more values than just gradeLastExported.
+				// If it has, then call ladExport again.
+				// This is to avoid a call loop.
+				if (typeof gradeData[0].uid !== 'undefined') {
+					ladexport(gradeData);
+				}
+			}
 		}
 	} catch (error) {
 		console.log(error);
@@ -1323,16 +1337,45 @@ function rowFilter(row) {
 		return false;
 	if(!filterList["showStudents"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != 0)
 		return false;
-	if (filterList["onlyPending"]) {
-		var rowPending = false;
-		for (var colname in row) {
-			if (colname != "FnameLname" && row[colname]["needMarking"] == true) {
-				rowPending = true;
-				break;
+	if (filterList["passedDeadline"] || filterList["onlyPending"] ){
+		if (filterList["passedDeadline"] && filterList["onlyPending"] ) {
+			var rowPending = false;
+			for (var colname in row) {
+				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] > row[colname]["deadline"] ) {
+					rowPending = true;
+					break;
+				} else if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] < row[colname]["deadline"] ) {
+					rowPending = true;
+					break;
+				}
+			}
+			if (!rowPending) {
+				return false;
 			}
 		}
-		if (!rowPending) {
-			return false;
+		else if (filterList["onlyPending"]) {
+			var rowPending = false;
+			for (var colname in row) {
+				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] < row[colname]["deadline"]) {
+					rowPending = true;
+					break;
+				}
+			}
+			if (!rowPending) {
+				return false;
+			}
+		}
+		else if (filterList["passedDeadline"]) {
+			var rowPending = false;
+			for (var colname in row) {
+				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] > row[colname]["deadline"] ) {
+					rowPending = true;
+					break;
+				}
+			}
+			if (!rowPending) {
+				return false;
+			}
 		}
 	}
 	var teacherDropdown = document.getElementById("teacherDropdown").value;
@@ -1559,7 +1602,7 @@ function onToggleFilter(colId) {
 
 }
 
-function exportCell(format, cell, colname) {
+function exportCell(format, cell, colname, gradeData = "NONE") {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
@@ -1580,14 +1623,36 @@ function exportCell(format, cell, colname) {
 					str = "-";
 				} else {
 					if (cell.gradeSystem === 1 || cell.gradeSystem === 2) {
-						if (cell.grade === 1) {
-							str = "U";
-						} else if (cell.grade === 2) {
-							str = "G";
-						} else if (cell.grade === 3) {
-							str = "VG";
+						// Checks if there data in "gradeData".
+						// If there is, then loop through the array and write out the correct grade.
+						// If there is not, then write out the grades as usual.
+						if (gradeData !== "NONE") {
+							for (var i = 0; i < gradeData.length; i++) {
+								if (cell.uid == gradeData[i].uid && cell.lid == gradeData[i].moment) {
+									if (cell.grade === 1) {
+										str = "U";
+									} else if (cell.grade === 2) {
+										str = "G";
+									} else if (cell.grade === 3) {
+										str = "VG";
+									} else {
+										str = "-";
+									}
+									return str;
+								} else {
+									str = "-";
+								}
+							}
 						} else {
-							str = "-";
+							if (cell.grade === 1) {
+								str = "U";
+							} else if (cell.grade === 2) {
+								str = "G";
+							} else if (cell.grade === 3) {
+								str = "VG";
+							} else {
+								str = "-";
+							}
 						}
 					} else {
 						str = "UNK";
@@ -1627,34 +1692,49 @@ function exportColumnHeading(format, heading, colname) {
 //----------------------------------------
 
 //Function for exporting grades to ladoc
-function ladexport() {
+function ladexport(gradeData = "NONE") {
+	// Checks if the exportType is restricted.
+	// If it is, then ask for data from the database.
+	// If not, then continue as normal.
+	if (document.getElementById("exportType").value === "restricted" && gradeData === "NONE") {
+		AJAXService("getunexported", {}, "GEXPORT");
+	} else {
 	let expo = "";
 
 	expo += document.getElementById("ladselect").value + "\n";
 	expo += document.getElementById("ladgradescale").value + "\n";
 	expo += document.getElementById("laddate").value + "\n";
-	expo += myTable.export("csv", ";");
+	// Checks if there's data in gradeData.
+	// If there's data in gradeData, then write out the grades depending on the data.
+	// If there's not, then just write out all the grades.
+	if (gradeData !== "NONE") {
+		expo += myTable.export("csv", ";", gradeData);
+	} else {
+		expo += myTable.export("csv", ";");
+	}
 
-	//alert(expo);
 	document.getElementById("resultlistheader").innerHTML = "Results for: " + document.getElementById("ladselect").value;
 	document.getElementById("resultlistarea").value = expo;
 	document.getElementById("resultlistpopover").style.display = "flex";
 
-	var today = new Date();
-	var dd = addZero(today.getDate());
-	var mm = addZero(today.getMonth() + 1); //January is 0!
-	var yyyy = today.getFullYear();
-	var time = addZero(today.getHours()) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds());
+	// Remove the date that's in the last exported date span to avoid confusion.
+	document.getElementById("lastExpDate").innerHTML = "";
 
-	today = yyyy + '-' + mm + '-' + dd;
+	 // Check if "gradeData" is the default value
+	 // If it's not, then loop through and update the specific grades that have been exported.
+	 // If it is, then just update everything.
+	 if (gradeData !== "NONE") {
+		for (var i = 0; i < gradeData.length; i++) {
+			console.log(gradeData[i].uid + " " + gradeData[i].moment);
+			AJAXService("updateunexported", { exportType: "restricted", luid: gradeData[i].uid, moment: gradeData[i].moment }, "GEXPORT");
+		}
+	 } else {
+		AJAXService("updateunexported", {}, "GEXPORT");
+	 }
 
-	 var gradeLastExported = today + " " + time;
-	 lastExpDate.innerHTML =  gradeLastExported;
-	 document.getElementById('lastExportedDate').innerHTML = gradeLastExported;
-
-	 localStorage.setItem('lastExpDate', gradeLastExported);
-
-	AJAXService("getunexported", {}, "GEXPORT");
+	 // Get the lastExportedDate from the database.
+	 AJAXService("getunexported", { getType: "ONLYDATE" }, "GEXPORT");
+	}
 }
 
 function copyLadexport() {
@@ -1684,11 +1764,6 @@ function copyLadexport() {
 	 setInterval(function(){
 		lastExpDate.style.color  = '#000';
 	 }, 5000);
-
-	AJAXService("updateunexported", {
-		gradeLastExported: gradeLastExported,
-	}, "GEXPORT");
-
 }
 
 function addZero(i) {
@@ -1743,22 +1818,21 @@ function hideSSN(ssn){
 	return hiddenSSN;
 }
 
-//Shows and hides element describing the icons and colours
-function showLegend(){
-	var legendBox = $('#resultedLegendContainer');
-	if (legendIsHidden == false){
 
-		legendBox.css("right", "-323px");
-		legendIsHidden = true;
-	}
-	else if (legendIsHidden == true){
-		legendBox.css("right", "0px");
-		legendIsHidden = false;
-	}
-	else{
-		//alert(legendIsHidden);
-	}
-}
+// Function that makes it possible to click on the div to close and open it 
+document.addEventListener('mouseup', function(e) {
+    var legendDiv = document.getElementById('resultedLegendContainer');
+    var legendBtn = document.getElementById('legendBtn');
+    if (legendDiv.contains(e.target) || legendBtn.contains(e.target)) {
+        if (legendIsHidden == true) {
+            legendDiv.style.right = "0px";
+            legendIsHidden = false;
+        } else {
+            legendDiv.style.right = "-323px";
+            legendIsHidden = true;
+        }
+    }
+  });
 
 function compare(firstCell, secoundCell) {
 	let col = myTable.getSortcolumn(); // Get column name

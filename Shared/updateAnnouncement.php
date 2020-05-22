@@ -2,15 +2,13 @@
 include_once ("../Shared/database.php");
 pdoConnect();
 
-$updateannouncementid = intval($_GET['updateannouncementid']);
+$updateannouncementid = $_GET['updateannouncementid'];
 
-foreach ($pdo->query('SELECT * FROM announcement WHERE announcementid="'.$updateannouncementid.'"') as $announcement){
+foreach ($pdo->query('SELECT * FROM announcement WHERE secondannouncementid="'.$updateannouncementid.'"') as $announcement){
   $title = $announcement['title'];
   $message = $announcement['message'];
 
-  echo "<xml><div id='responseTitle'>".$title."</div>";
-  echo "<div id='responseMessage'>".$message."</div></xml>";
-
 }
+echo json_encode(["title"=> $title, "message" => $message]);
 
 ?>

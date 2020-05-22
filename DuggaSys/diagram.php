@@ -197,13 +197,16 @@
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick='disableShortcuts(event);'>Disable keyboard shortcuts</span>
                     </div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option" onclick='resetShortcuts(event);'>Reset keyboard shortcuts</span>
+                    </div>
                 </div>
             </div>
             <div class="menu-drop-down" tabindex="0">
                 <span class="drop-down-label">View</span>
                 <div class="drop-down">
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick='developerMode(event);'>Developer mode</span>
+                        <span class="drop-down-option" onclick='switchMode(true);'>Developer mode</span>
                         <i class="hot-key hot-key-tick">Shift + D</i>
                     </div>
                     <div class="drop-down-item" tabindex="0">
@@ -715,7 +718,7 @@
             </div>
             <div class='mode-wrap'>
                 <div id="modeSwitchButton1" class="importButtonWrap">
-                    <button id="modeSwitchButtonAccept" type="button" class="buttonStyleDialog" onclick="switchMode();">Accept</button>
+                    <button id="modeSwitchButtonAccept" type="button" class="buttonStyleDialog" onclick="switchMode(false);">Accept</button>
                 </div>
                 <div id="modeSwitchButton2" class="importButtonWrap">
                     <button id="modeSwitchButtonCancel" type="button" class="buttonStyleDialog" onclick="closeModeSwitchDialog();">Cancel</button>

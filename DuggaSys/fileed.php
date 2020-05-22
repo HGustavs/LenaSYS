@@ -10,7 +10,6 @@ pdoConnect();
 
 $cid = getOPG('courseid');
 
-echo("<script>console.log('PHP: " . $cid . "');</script>");
 $query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
 $query->bindParam(':cid', $cid);
 $query->execute();
@@ -303,7 +302,7 @@ $codeLinkQuery->execute();
                 </div>
 
                 <div class="markdownPrev">
-                    <fieldset id="markPrevSet" style="overflow:scroll;">
+                    <fieldset id="markPrevSet">
                         <legend id="markPrev">Markdown preview</legend>
                         <div class="markTextPrev">
                             <div class="prevSpan">

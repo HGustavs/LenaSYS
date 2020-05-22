@@ -299,8 +299,9 @@ strong {font-weight: bold;}
 	-webkit-border-radius:15px;
 	border-radius: 20px;
 	border:1px solid #fff;
-	text-align: center;
-	display: inline-block;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
 	margin-right: 5px;
 }
 
@@ -545,6 +546,11 @@ svg text {
   /* --------------================################================-------------- *
  *                      	     Clipping Masking Dugga				       							 *
  * --------------================################================-------------- */
+ .clippingLayout{
+	display: flex; 
+	flex-wrap: wrap; 
+	justify-content: center;
+}
 #clippingInfoBox {
 	min-width:170px;
 	width:300px;
@@ -552,14 +558,11 @@ svg text {
 }
 #clippingInfoBox2 {
 	min-width:120px;
-	width:300px;
+	width:400px;
 	margin:0 4px 0 4px;
 }
  @media only screen and (max-width: 1360px) {
 	#clippingInfoBox {
-		width:100%;
-	}
-	#clippingInfoBox2 {
 		width:100%;
 	}
 	.clippingContainer {

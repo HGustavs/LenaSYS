@@ -340,6 +340,19 @@ p {
   margin-left: 25px;
   display:none;
 }
+/*Announcement icon and notification*/
+#announcement #announcementnotificationcount{
+  position: relative;
+  right: 20px;
+  bottom: 6px;
+  background-color: var(--color-red);
+  font-size: 10px;
+  padding: 3px;
+  font-weight: bold;
+  font-family: 'Varela', sans-serif;
+  border-radius: 100px 100px 100px 100px;
+
+}
 /*Announcement box*/
 #announcementBoxOverlay{
   position: relative; 
@@ -390,7 +403,24 @@ p {
   width: 800px;
   border:  2px solid #f2f2f2;
   font-family: 'Varela', sans-serif;
+  box-sizing: border-box;
 }
+.announcementForm #courseidAndVersid{
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+
+}
+.announcementForm #courseidAndVersid div{
+  width: 50%;
+}
+.announcementForm #courseidAndVersid div:last-child{
+  margin-left: 5px;
+}
+.announcementForm #courseidAndVersid #recipientBox{
+  height: 150px;
+}
+.announcementForm select,
 .announcementForm input[type=text],
 .announcementForm textarea{
   width: 100%;
@@ -402,6 +432,7 @@ p {
   font-size: 16px;
   background: #f1f1f1;
   border-radius: 0;
+  box-sizing: border-box;
 }
 .announcementForm textarea{
   height: 150px;
@@ -477,6 +508,7 @@ p {
 /*retrieve announcement*/
 #displayAnnouncements .announcementCard {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  box-sizing: border-box;
   transition: 0.3s;
   border-radius: 5px;
   float: left;
@@ -484,6 +516,7 @@ p {
   margin: 0 20px 20px 0;
   padding: 20px;
   font-family: 'Varela', sans-serif;
+  cursor: pointer;
 
 }
 .announcementCard:after {
@@ -539,8 +572,9 @@ p {
 
 }
 .displayAnnounceTime,
-.displayAuthor{
-  color: #ddd;
+.displayAuthor,
+.editMark{
+  color: #b3b3b3;
 }
 .displayAuthor{
   float: right;
@@ -615,6 +649,13 @@ p {
 }
 
 /*End of show all the announcments*/
+.selectLabels label{
+  float: right;
+}
+.selectLabels label input{
+  position: relative;
+  top: 2px;
+}
 
 /*End of announcement box*/
 
@@ -776,8 +817,8 @@ p {
 /*Vertical line for end tabs for "1 tab + end"*/
 #Sectionlist .tabs4 .spacerRight {
   height: 19px;
-  width: 22px;
-  margin: 0px 0px 12px 45px;
+  width: 19px;
+  margin: 0px 0px 11px 47px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
@@ -785,8 +826,8 @@ p {
 /*Vertical line for end tabs for "2 tabs + end"*/
 #Sectionlist .tabs5 .spacerRight {
   height: 19px;
-  width: 22px;
-  margin: 0px 0px 12px 77px;
+  width: 19px;
+  margin: 0px 0px 11px 79px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
@@ -794,8 +835,8 @@ p {
 /*Vertical line for end tabs for "3 tabs + end"*/
 #Sectionlist .tabs6 .spacerRight {
   height: 19px;
-  width: 22px;
-  margin: 0px 0px 12px 109px;
+  width: 19px;
+  margin: 0px 0px 11px 111px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
@@ -826,7 +867,7 @@ p {
   padding: 6px;
   text-align: center;
   color: var(--color-text-header);
-  font-size: 24px;
+  font-size: 20px;
   background-color: var(--color-primary);
 }
 .glow {
@@ -1496,6 +1537,41 @@ div .navButt:hover {
   border-radius: 2px;
 }
 
+#gradeExportPopUp {
+  display: block;
+  padding: 4px;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
+  width: 350px;
+  min-height: 100px;
+  z-index: 9000;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  margin-left: -178px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+#gradeExportPopUpButton {
+  background-color: var(--color-primary);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border: 0px;
+  width: 110px;
+  height: 30px;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  margin-left: 115px;
+  font-size: 14px;
+  transition: 1s background-color;
+}
+
+#gradeExportPopUpButton:hover {
+  background-color: var(--color-primary-hover);
+  border-radius: 2px;
+}
+
 #editSection {
   /*top: 50%;
   left: 50%;
@@ -1965,7 +2041,7 @@ input {
   color: rgb(0, 0, 0);
   text-decoration: none;
   display: inline-block;
-  width: 100%;
+  width: 252px;
   padding: 8px 0px 8px 8px;
 }
 
@@ -3038,7 +3114,6 @@ padding: 10px;
 }
 .access-dropdown-selected {
   background-color:var(--color-accent);
-  color:var(--color-primary);
 }
 #reset-pw{
   width:70%; 
@@ -3109,6 +3184,7 @@ padding: 10px;
 #resultedFormContainer {
   display: flex;
   flex-direction: column;
+  margin-left: 10px;
 }
 
 #ladexportContainer {
@@ -4035,7 +4111,8 @@ rect[class*="activitymarker"]:hover {
 }
 #searchBar,
 #testSearchContainer {
-  padding-left: 20px;
+  padding-left: 0px;
+  padding-right: 5px;
 }
 
 #searchBar,
@@ -4126,6 +4203,7 @@ rect[class*="activitymarker"]:hover {
 }
 
 #servermsgcontainer{
+  box-shadow:1px 1px 6px grey;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -4932,6 +5010,7 @@ only screen and (max-device-width: 320px) {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  margin-left: 10px;
 }
 
 .titles h1 {
@@ -5316,7 +5395,14 @@ only screen and (max-device-width: 320px) {
   width: 195px;
   color: initial;
 }
-
+/*Styling for add & edit in dugga editor on dates.*/
+.flexwrapper #qstart, .flexwrapper #deadline, 
+.flexwrapper #deadline1, .flexwrapper #deadline2, 
+.flexwrapper #deadline3, .flexwrapper #release {
+  width:155px;
+  font-family:"Roboto";
+  color:#6f6f6f;
+}
 /* Collapsible */
 .collapsible {
 
@@ -5404,6 +5490,10 @@ only screen and (max-device-width: 320px) {
   height: calc(100vh - var(--header-height) - var(--diagram-header-height));
   width: 100%;
   display: flex;
+}
+
+#diagram-container * {
+  box-sizing: border-box;
 }
 
 #diagram-sidebar-container {
@@ -5520,10 +5610,6 @@ only screen and (max-device-width: 320px) {
   flex-direction: column;
   width: calc(100vw - var(--diagram-sidebar-width));
   overflow: hidden;
-}
-
-#diagram-content * {
-  box-sizing: border-box;
 }
 
 #diagram-content.rulers-active {
@@ -5814,6 +5900,8 @@ only screen and (max-device-width: 320px) {
 
 .fab-btn-list2 {
   position: absolute;
+  padding: 18px 0px 0px;
+  margin: 0px 0px 0px -3px;
   left: auto;
   width: 100%;
   list-style: none;
@@ -6983,10 +7071,7 @@ textarea#filecont {
   width: 100%;
 }
 #motdArea{
-  /*border: 1px;
-  border-radius: 2px;
-  border-style: solid;
-  border-color: #614875;*/
+  box-shadow: 1px 1px 6px grey;
   border-collapse:collapse;
   background-color: #FECC56;
   justify-content: center;

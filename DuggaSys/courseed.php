@@ -142,16 +142,18 @@ else{
 
 
 	<!-- Edit Server Settings START -->
-	<div id='editSettings' class='loginBoxContainer' style='display:none;'>
+	<div id='editSettings' onmouseover="validateMOTD('motd','dialog5');" class='loginBoxContainer' style='display:none;' >
     <div class='loginBox' style='width:464px;'>
     		<div class='loginBoxheader'>
     			<h3>Edit Server Settings</h3>
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
     		</div>
     		<div style='padding:5px;'>
-    			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
+    			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog5')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
     			<div class='inputwrapper'><span style='font-style:italic;color:rgba(0,0,0,0.6)'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
+				
     		</div>
+			<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>
     		<div style='padding:5px;'>
     			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
     		</div>

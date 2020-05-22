@@ -207,6 +207,18 @@ function generalStats($dbCon) {
         ORDER BY timestamp DESC LIMIT 1;
    ')->fetchAll(PDO::FETCH_ASSOC);
 
+   $recentlyEditedFile = $GLOBALS['log_db']->query('
+       SELECT
+           username,
+           timestamp,
+           eventType,
+           description AS description,
+            substr(description, instr(description, " ") + 1) AS filename
+       FROM userLogEntries
+       WHERE eventType = '.EventTypes::EditFile.'
+        ORDER BY timestamp DESC LIMIT 1;
+   ')->fetchAll(PDO::FETCH_ASSOC);
+
 	$generalStats = [];
 	$generalStats['stats']['loginFails'] = $LoginFail[0];
 	$generalStats['stats']['numOnline'] = count($activeUsers);
@@ -218,7 +230,10 @@ function generalStats($dbCon) {
 	$generalStats['stats']['topPageHits'] = $topPage[0]['hits'];
 
 	$generalStats['stats']['newestFile'] = $newestFile[0]['filename'];
-    $generalStats['stats']['newestFileTimestamp'] = $newestFile[0]['timestamp'];
+	$generalStats['stats']['newestFileTimestamp'] = $newestFile[0]['timestamp'];
+	
+	$generalStats['stats']['recentlyEditedFile'] = $recentlyEditedFile[0]['filename'];
+	$generalStats['stats']['recentlyEditedFileTimestamp'] = $recentlyEditedFile[0]['timestamp'];
  
     $generalStats['stats']['topViewedDugga'] = $topViewedDugga[0]['quizid'];
 	$generalStats['stats']['topViewedDuggaHits'] = $topViewedDugga[0]['hits'];
@@ -851,11 +866,7 @@ function pageInformation(){
     $dugga= $GLOBALS['log_db']->query('
 		SELECT
 			refer,
-			substr(
-				refer, 
-				INSTR(refer, "courseid=")+9, 
-				INSTR(refer, "&coursename=")-18 - INSTR(refer, "courseid=")+9
-			) courseid,
+			json_extract(URLParams, "$.cid") AS courseid,
 			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM userHistory WHERE refer LIKE "%showDugga%") AS percentage,
 			COUNT(*) AS pageLoads
 		FROM 
@@ -863,7 +874,7 @@ function pageInformation(){
 		WHERE 
 			refer LIKE "%showDugga%"
 		GROUP BY 
-			courseid;
+			courseid
 		ORDER BY 
 			percentage DESC;
 	')->fetchAll(PDO::FETCH_ASSOC);
@@ -871,11 +882,7 @@ function pageInformation(){
 	$codeviewer = $GLOBALS['log_db']->query('
 		SELECT
 			refer,
-			substr(
-				refer, 
-				INSTR(refer, "courseid=")+9, 
-				INSTR(refer, "&coursename=")-18 - INSTR(refer, "courseid=")+9
-			) courseid,
+			json_extract(URLParams, "$.cid") AS courseid,
 			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM userHistory WHERE refer LIKE "%codeviewer%") AS percentage,
 			COUNT(*) AS pageLoads
 		FROM 
@@ -883,7 +890,7 @@ function pageInformation(){
 		WHERE 
 			refer LIKE "%codeviewer%"
 		GROUP BY 
-			courseid;
+			courseid
 		ORDER BY 
 			percentage DESC;
 	')->fetchAll(PDO::FETCH_ASSOC);
@@ -891,11 +898,7 @@ function pageInformation(){
 	$sectioned = $GLOBALS['log_db']->query('
 		SELECT
 			refer,
-			substr(
-				refer, 
-				INSTR(refer, "courseid=")+9, 
-				INSTR(refer, "&coursename=")-18 - INSTR(refer, "courseid=")+9
-			) courseid,
+			json_extract(URLParams, "$.cid") AS courseid,
 			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM userHistory WHERE refer LIKE "%sectioned%") AS percentage,
 			COUNT(*) AS pageLoads
 		FROM 
@@ -903,7 +906,7 @@ function pageInformation(){
 		WHERE 
 			refer LIKE "%sectioned%"
 		GROUP BY 
-			courseid;
+			courseid
 		ORDER BY 
 			percentage DESC;
 	')->fetchAll(PDO::FETCH_ASSOC);

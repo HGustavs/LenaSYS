@@ -189,6 +189,20 @@ function loadGeneralStats() {
             'Created: ' + data['stats']['newestFileTimestamp']
     	]);
 
+		// Most recently edited file
+		var fileToTable = 'Most recently edited file: ' + data['stats']['recentlyEditedFile'];
+		if(data['stats']['recentlyEditedFileTimestamp'] != null){
+			tableData.push([
+				fileToTable,
+				'Edited: ' + new Date(data['stats']['recentlyEditedFileTimestamp'].replace(' ', 'T') + "Z").toLocaleString()
+			]);
+		} else{
+			tableData.push([
+				fileToTable,
+				'Edited: ' + data['stats']['recentlyEditedFileTimestamp']
+			]);
+		}
+		
 		$('#analytic-info').append(renderTable(tableData));
 		
 		// Disk usage
@@ -673,6 +687,12 @@ function loadPageInformation() {
         for (var i = 0; i < data['percentage'][page].length; i++) {
 			console.log(data['percentage'][page][i]);
 			numberOfCourses = parseInt(data['percentage'][page].length);
+			
+			var cid = data['percentage'][page][i].refer.match('.+?cid=([0-9]+)');
+			if(cid != null) {
+				data['percentage'][page][i].courseid = cid[1];
+			}
+			
 			courseID.push([
                 data['percentage'][page][i].courseid
 			]);
@@ -698,10 +718,11 @@ function loadPageInformation() {
 					for (var i = 0; i < courseName.length; i++){
 						tablePercentage.push([
 							courseID[i],
-							coursePercentage[i],
+							Number(coursePercentage[i]).toFixed(2),
 							courseName[i]
 						]);
 					}
+
 					if(loopCounter == numberOfCourses){
 						if(courseName.length !== 0){
 							$('#analytic-info').append(renderTable(tablePercentage));
@@ -1249,6 +1270,10 @@ function drawPieChart(data, title = null, multirow = false) {
 		ctx.fillText(title, radius * 2 + 30, 25);
 	}
 
+	var labelCount = 0;
+	var textSpacing = 50;
+	var rectSpacing = 30;
+
 	for (var i = 0; i < data.length; i++) {
 		ctx.fillStyle = getRandomColor(i);
 		ctx.beginPath();
@@ -1258,10 +1283,23 @@ function drawPieChart(data, title = null, multirow = false) {
 		ctx.fill();
 		last += (Math.PI*2*(data[i].value/total));
 
-		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 40, 12, 12);
+		if(labelCount < 4){
+			ctx.fillRect(radius * 2 + rectSpacing , labelCount * textAreaHeight + 40, 12, 12);
+		}
 		ctx.fillStyle = "black";
 		ctx.font = fontSize + "px Arial";
-		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight + 20);
+		if(labelCount < 4){
+			ctx.fillText(data[i].label, radius * 2 + textSpacing , labelCount * textAreaHeight + textAreaHeight + 20);
+			labelCount++;
+		}
+		else{
+			var w = ctx.measureText(data[i - 4].label);
+			textSpacing += w.width + 30;
+			rectSpacing += w.width + 30;
+			labelCount = 0;
+			i--;
+			last -= (Math.PI*2*(data[i].value/total));
+		}
 	}
 }
 

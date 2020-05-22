@@ -658,3 +658,7 @@ function goMofo(txt)
 {
     $(".feedback-content").slideToggle("slow");
 }
+function toggleInstructions()
+{
+    $(".instructions-content").slideToggle("slow");
+}

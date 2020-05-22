@@ -68,7 +68,9 @@
 			if($noup=='COURSE'){
 					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-  				echo "<td class='navButt' id='announcement' title='Announcement'><img src='../Shared/icons/announcement_icon.svg'></td>";
+			}if ($noup == 'COURSE' && checkLogin()) {
+					echo "<td class='navButt' id='announcement' title='Announcement'><img src='../Shared/icons/announcement_icon.svg'></td>";
+
 			}else if($noup=='SECTION'){
 					echo "<a id='upIcon' href='";
 					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
@@ -143,6 +145,8 @@
 									$term = 2;
 								} else if ($array[0] === "V") {
 									$term = 1;
+								}else if ($array[0] === "S") {
+									$term = 3;
 								}
 	
 								echo "<td class='coursePage' style='display: inline-block;'>";
@@ -170,9 +174,9 @@
 					echo "<td id='testSearchContainer' class='navButt'>";
 
 					if ($requestedService == "fileed.php")
-						echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();sortAndFilterTogether();'/>";
+						echo   "<form autocomplete='off'><input id='searchinput' readonly type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search' placeholder='Search..' onkeyup='searchterm=this.value;sortAndFilterTogether();myTable.reRender();'/></form>";
 					else
-						echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/>";
+						echo   "<form autocomplete='off' display:'none'><input id='searchinput' readonly onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/></form>";
 
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black;'>"; //Dropdown menu for when hovering the search bar
 					echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
@@ -428,6 +432,19 @@ function mouseOutAnnouncement() {
    }
 }
 /*Shadow hover effect for sort button END -------------*/
+
+var searchinput = document.getElementById("searchinput");
+if(searchinput){
+	searchinput.addEventListener("mouseover", mouseOverSearchInput);
+}
+
+function mouseOverSearchInput() {
+   var obj = document.getElementById("searchinput");
+   if(obj != null)
+   {
+	obj.removeAttribute('readonly');
+   }
+}
 
 </script>
 <script type="text/javascript">

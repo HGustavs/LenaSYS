@@ -122,7 +122,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	tempCoursename = tempCoursename.replace(/&auml;/g, "ä");
 	tempCoursename = tempCoursename.replace(/&Ouml;/g, "Ö");
 	tempCoursename = tempCoursename.replace(/&ouml;/g, "ö");
-
+	
 	// Set Name
 	$("#coursename").val(tempCoursename);
 	// Set Cid
@@ -254,8 +254,12 @@ function editSettings(){
 	const readOnlyCheckbox = document.getElementById("readonly");
 	const popupContainer = document.getElementById("editSettings");
 
+	var tempMotd = motd;
+	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
+	
 	if(motd !== "UNK") {
-		messageElement.value = motd;
+		
+		messageElement.value = tempMotd;
 	} 
 
 	if(readonly === 1) {
@@ -277,10 +281,13 @@ function updateSettings() {
 	} else {
 		readonly = 0;
 	}
-
-	popupContainer.style.display = "none";
-
-	AJAXService("SETTINGS", {motd: messageElement.value, readonly: readonly}, "COURSE");
+	if (window.bool9 === true) {
+		alert('Version updated');
+		popupContainer.style.display = "none";
+		AJAXService("SETTINGS", {motd: messageElement.value, readonly: readonly}, "COURSE");
+	  } else {
+		alert("You have entered incorrect information");
+	  }
 }
 
 function createVersion(){
@@ -440,7 +447,7 @@ function returnedCourse(data)
 
 	motd = data["motd"];
 	readonly = parseInt(data["readonly"]);
-
+	
 	if(motd!=="UNK"){
 		document.getElementById("servermsg").innerHTML=data["motd"];
 		document.getElementById("servermsgcontainer").style.display="flex";
@@ -569,6 +576,24 @@ function validateForm(formid) {
 		}
 	}
 }
+function validateMOTD(motd, dialogid){
+	var emotd = document.getElementById(motd);
+	var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
+	var EmotdRange = /^.{0,100}$/;
+	var x4 = document.getElementById(dialogid);
+	if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
+	  emotd.style.borderColor = "#383";
+	  emotd.style.borderWidth = "2px";
+	  x4.style.display = "none";
+	  window.bool9 = true;
+	} else {
+	  emotd.style.borderColor = "#E54";
+	  x4.style.display = "block";
+	  emotd.style.borderWidth = "2px";
+	  window.bool9 = false;
+	}
+  
+  }
 
 /*Change the value of MOTDbutton when the screen width is less than 275 px*/ 
 function MOTDbtnValueX(x) {

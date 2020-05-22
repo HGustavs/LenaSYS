@@ -422,7 +422,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filereceive.php", $use
 if (!$error) {
     echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }*/
-echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "&errortype=".$errortype."&errorvar=".urlencode($errorvar)."' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id;
+echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id;
 ?>
 <html>
 <head>
