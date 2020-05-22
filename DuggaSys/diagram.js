@@ -3537,9 +3537,9 @@ function toggleFullscreen(){
     canvasSize();        
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// setIsRulersActiveOnRefresh: Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
-//------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------
+// setIsFullscreenActiveOnRefresh: Gets the fullscreen value from localStorage to decide if full screen mode should be active or not.
+//-----------------------------------------------------------------------------------------------------------------------------------
 
 function setIsFullscreenActiveOnRefresh() {
     const tempIsFullscreenActive = localStorage.getItem("isFullscreenActive");
