@@ -2224,6 +2224,9 @@ function viewOldFeedbacks(){
   $(".feedbackHeader h2").html("Old Feedbacks");
   $(".noFeedbacks").remove();
   $(".feedbackContent").append('<div id="loadMore"><span>Load More</span><div>');
+  if ($(".feedback_card").length <= 5) {
+     $("#loadMore").hide();
+  }
   $(".feedback_card").slice(0, 5).show();
   $("#loadMore").on('click', function (e) {
     e.preventDefault();

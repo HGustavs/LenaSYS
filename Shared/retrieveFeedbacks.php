@@ -24,7 +24,7 @@ foreach ($pdo->query('SELECT userAnswer.aid, userAnswer.moment, userAnswer.grade
   $day = $date->format('d');
   $hourMinute = $date->format('h:i A');
   $markedDate = $dayName. " ".$monthName." ".$dateTime;
-  $markedDateMobile = $monthName." ".$day." at ".$hourMinute;
+  $markedDateMobile = $monthName." ".$day." at ".strtolower($hourMinute);
   $seen_status = $useranswer['seen_status'];
   $entryname = $useranswer['entryname'];
   $firstname = $useranswer['firstname'];
