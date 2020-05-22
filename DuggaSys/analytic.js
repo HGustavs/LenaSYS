@@ -953,7 +953,7 @@ function loadUserInformation(){
 				eventNumber = row.eventType;
 				event = eventNames[eventNumber];
 				if(row.eventType != "") {
-					if(event != 'AddFile' && event != 'EditFile'){
+					if(event != 'AddFile' && event != 'EditFile' && event != 'LoginFail'){
 						users[user].push([
 							row.uid,
 							row.username,
