@@ -1308,6 +1308,49 @@ div .navButt:hover {
     }
 }
 
+/*MEDIA QUERIES FOR HAMBURGER MENU IN ANALYTICS.PHP*/
+@media only screen and (max-width: 700px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2, .PF2{display:none;}
+  .UI2{display:block;}
+    .UI{
+      display: none;
+    }
+}
+@media only screen and (max-width: 600px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2{display:none;}
+  .PF2{display:block;}
+    .PF{
+      display: none;
+    }
+}
+@media only screen and (max-width: 550px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2{display:none;}
+  .FF2{display:block;}
+    .FF{
+      display: none;
+    }
+}
+@media only screen and (max-width: 500px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2{display:none;}
+  .SC2, .SS2{display:block;}
+    .SC, .SS{
+      display: none;
+    }
+}
+@media only screen and (max-width: 450px) {
+  .GS2, .CO2, .PG2, .OP2{display:none;}
+  .SS2, .BP2{display:block;}
+    .SU, .BP{
+      display: none;
+    }
+}
+@media only screen and (max-width: 400px) {
+  .GS2, .CO2{display:none;}
+  .OP2, .PG2{display:block;}
+    .OP, .PG{
+      display: none;
+    }
+}
 
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
