@@ -646,11 +646,19 @@ function loadPageInformation() {
 	
 	var firstLoad = true;
  
-    var selectPage = $("<select></select>")
-        .append('<option value="showDugga" selected>showDugga</option>')
+	var selectPage = $("<select></select>")
+		.append('<option value="accessed">accessed</option>') 
+		.append('<option value="analytic">analytic</option>')
 		.append('<option value="codeviewer">codeviewer</option>')
-		.append('<option value="sectioned">sectioned</option>')
 		.append('<option value="courseed">courseed</option>')
+		.append('<option value="contribution">contribution</option>')
+		.append('<option value="duggaed">duggaed</option>')
+		.append('<option value="diagram">diagram</option>')
+		.append('<option value="fileed">fileed</option>')
+		.append('<option value="profile">profile</option>')
+		.append('<option value="resulted">resulted</option>')
+        .append('<option value="showDugga" selected>showDugga</option>')
+		.append('<option value="sectioned">sectioned</option>')
         .appendTo($('#analytic-info'));
    
     function updatePageHitInformation(pages, page){
@@ -685,7 +693,6 @@ function loadPageInformation() {
 		var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
 
         for (var i = 0; i < data['percentage'][page].length; i++) {
-			console.log(data['percentage'][page][i]);
 			numberOfCourses = parseInt(data['percentage'][page].length);
 			courseID.push([
                 data['percentage'][page][i].courseid
@@ -747,7 +754,7 @@ function loadPageInformation() {
  
     function updateState(){
 		// Add additonal pages here
-		var pages = ["dugga", "codeviewer", "sectioned", "courseed", "fileed", "resulted", "analytic", "contribution", "duggaed", "accessed", "profile"];
+		var pages = ["dugga", "codeviewer", "sectioned", "courseed", "fileed", "resulted", "analytic", "contribution", "duggaed", "accessed", "profile", "diagram"];
 
 		if(firstLoad === true){
 			updatePageHitInformation(pages, pages[0]);
@@ -766,7 +773,32 @@ function loadPageInformation() {
 					break;
 				case "courseed":
 					updatePageHitInformation(pages, pages[3]);
+					break; 
+				case "fileed":
+					updatePageHitInformation(pages, pages[4]);
 					break;
+				case "resulted":
+					updatePageHitInformation(pages, pages[5]);
+					break;
+				case "analytic":
+					updatePageHitInformation(pages, pages[6]);
+					break;
+				case "contribution":
+					updatePageHitInformation(pages, pages[7]);
+					break;
+				case "duggaed":
+					updatePageHitInformation(pages, pages[8]);
+					break;
+				case "accessed":
+					updatePageHitInformation(pages, pages[9]);
+					break;
+				case "profile":
+					updatePageHitInformation(pages, pages[10]);
+					break;
+				case "diagram":
+					updatePageHitInformation(pages, pages[11]);
+					break;
+				
             }
         });
     }
