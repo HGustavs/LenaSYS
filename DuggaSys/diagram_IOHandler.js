@@ -304,9 +304,10 @@ function getUpload() {
 
 function Load() {
     const built = buildDiagramFromChanges();
+    diagramChanges.indexes = new UndoRedoStack(diagramChanges.indexes.stack, diagramChanges.indexes.current);
     overwriteDiagram(built.diagram);
     overwritePoints(built.points);
-    diagramChanges.indexes = new UndoRedoStack(diagramChanges.indexes.stack, diagramChanges.indexes.current);
+
     console.log("State is loaded");
     updateGraphics();
 }
@@ -493,7 +494,7 @@ function buildDiagramFromChanges() {
     };
 
     for(let i = 0; i < diagramChanges.indexes.current + 1; i++) {
-        const change = diagramChanges.changes[i];
+        const change = JSON.parse(JSON.stringify(diagramChanges.changes[i]));
         if(typeof change["diagram"] !== "undefined") {
             iterateChange(change, "diagram");
         }

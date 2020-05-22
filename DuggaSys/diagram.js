@@ -3185,7 +3185,7 @@ function undoDiagram() {
 // redoDiagram: restores the last object that was removed
 //----------------------------------------------------------------------
 
-function redoDiagram(event) {
+function redoDiagram() {
     diagramChanges.indexes.redo();
     saveDiagramChangesToLocalStorage();
     Load();
