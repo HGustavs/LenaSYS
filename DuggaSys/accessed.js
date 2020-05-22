@@ -610,6 +610,7 @@ function updateCellCallback(rowno, colno, column, tableid) {
 
 function rowFilter(row) {
 	var obj = JSON.parse(row["access"]);
+	var searchtermArray;
 	if (accessFilter.indexOf(obj.access) > -1) {
 		if (searchterm == "") {
 			return true;
@@ -621,14 +622,18 @@ function rowFilter(row) {
 							// Search case insensitive
 							searchterm = searchterm.toLocaleLowerCase();
 							caseIgnoreRow = row[property].toLocaleLowerCase();
-
+							
 							// Support ÅÄÖ
 							searchterm = searchterm.replace(/\u00E5/, '&aring;');
 							searchterm = searchterm.replace(/\u00E5/, '&auml;');
 							searchterm = searchterm.replace(/\u00F6/, '&ouml;');
-
-							if (caseIgnoreRow.indexOf(searchterm) != -1) return true;
 							
+							searchtermArray = searchterm.split(" ");
+							if (searchterm.indexOf(" ") >= 0) {
+								if (row["firstname"].toLocaleLowerCase().indexOf(searchtermArray[0]) != -1 && row["lastname"].toLocaleLowerCase().indexOf(searchtermArray[1]) != -1) return true;
+							} else {
+								if (caseIgnoreRow.indexOf(searchterm) != -1) return true;
+							}
 						}
 					}
 				}
