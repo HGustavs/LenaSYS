@@ -312,8 +312,11 @@ $codeLinkQuery->execute();
                         </div>
                     </fieldset>
                 </div>
-                <button class="save-close-button-md" type="submit" onclick="saveMarkdown()">Save</button>
-                <button class="save-close-button-md" onclick="cancelPreview()">Close</button>
+               
+                <button class="save-button-md" type="submit" onclick="saveMarkdown()">Save</button>
+                <button class="close-button-md" onclick="cancelPreview()">Close</button>
+           
+
             </div>
             <div class="editFilePart">
                 <div class="editFileWindow">
