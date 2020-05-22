@@ -578,7 +578,7 @@ INSERT INTO subparts (partname,cid,parthp,difgrade) VALUES ('salstentamen',305,7
 INSERT INTO subparts (partname,cid,parthp,difgrade) VALUES ('salstentamen',307,5.0,'u-3-4-5');
 INSERT INTO subparts (partname,cid,parthp,difgrade) VALUES ('salstentamen',308,7.5,'u-3-4-5');
 INSERT INTO subparts (partname,cid,parthp,difgrade) VALUES ('salstentamen',309,7.5,'u-3-4-5');
-INSERT INTO subparts (partname,cid,parthp,difgrade) VALUES ('salstentamen',312,5,'u-3-4-5');
+INSERT INTO subparts (partname,cid,parthp,difgrade) VALUES ('salstentamen',312,7.5,'u-3-4-5');
 INSERT INTO subparts (partname,cid,parthp,difgrade) VALUES ('salstentamen',319,30,'u-3-4-5');
 
 /* Student results/Credits */

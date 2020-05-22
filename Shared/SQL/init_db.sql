@@ -412,7 +412,7 @@ CREATE TABLE partresult (
 	partname				VARCHAR(50),
 	grade 					VARCHAR(1) DEFAULT NULL,
 	parthp						NUMERIC(3,1),
-	PRIMARY KEY (partname, cid, uid),
+	PRIMARY KEY (partname, cid, parthp, uid),
 	FOREIGN KEY (partname,cid, parthp) REFERENCES subparts (partname, cid, parthp),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
 );
