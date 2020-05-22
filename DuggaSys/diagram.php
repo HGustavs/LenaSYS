@@ -79,6 +79,7 @@
         $exampleDiagramFilePaths = glob('templates/example-diagram/*.txt');
     ?>
 
+    <div id="diagram-page-wrapper">
     <div id="diagram-header">
         <div id=diagram-toolbar-switcher>DEV: All</div>
         <div id="diagram-toolbar-container">
@@ -501,6 +502,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- The Appearance menu. Default state is display: none; -->

@@ -490,6 +490,7 @@ function init() {
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
     setIsRulersActiveOnRefresh();
+    setIsFullscreenActiveOnRefresh();
     setHideCommentOnRefresh();
     initAppearanceForm();
     setPaperSize(event, paperSize);
@@ -3518,24 +3519,34 @@ function scrollZoom(event) {
 //-----------------------
 
 function toggleFullscreen(){
-    var header = document.querySelector("header");
-    var diagramHeader = document.getElementById("diagram-header");
-    var diagramContainer = document.getElementById("diagram-container")
+    const header = document.querySelector("header");
+    const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
 
     if(!fullscreen){
-        diagramHeader.classList.add("fullscreen");
-        diagramContainer.classList.add("fullscreen");
+        diagramPageWrapper.classList.add("fullscreen");
         header.style.display = "none";
         $("#fullscreenDialog").css("display", "flex");
     } else {
-        diagramHeader.classList.remove("fullscreen", "toolbar");
-        diagramContainer.classList.remove("fullscreen", "toolbar");
+        diagramPageWrapper.classList.remove("fullscreen", "toolbar");
         header.style.display = "inline-block";
         toolbarDisplayed = false;
     }
     fullscreen = !fullscreen;
     setCheckbox($(".drop-down-option:contains('Fullscreen')"), fullscreen);
+    localStorage.setItem("isFullscreenActive", fullscreen);
     canvasSize();        
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------
+// setIsFullscreenActiveOnRefresh: Gets the fullscreen value from localStorage to decide if full screen mode should be active or not.
+//-----------------------------------------------------------------------------------------------------------------------------------
+
+function setIsFullscreenActiveOnRefresh() {
+    const tempIsFullscreenActive = localStorage.getItem("isFullscreenActive");
+    if(tempIsFullscreenActive !== null) {
+        fullscreen = !(tempIsFullscreenActive === "true");
+        toggleFullscreen();
+    }
 }
 
 //-----------------------
@@ -3551,16 +3562,13 @@ function closeFullscreenDialog(){
 //-----------------------
 
 function toggleToolbar(){
-    var diagramHeader = document.getElementById("diagram-header");
-    var diagramContainer = document.getElementById("diagram-container");
+    const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
 
     if(!toolbarDisplayed){
-        diagramHeader.classList.add("toolbar");
-        diagramContainer.classList.add("toolbar");
+        diagramPageWrapper.classList.add("toolbar");
         toolbarDisplayed = true;
     } else {
-        diagramHeader.classList.remove("toolbar");
-        diagramContainer.classList.remove("toolbar");
+        diagramPageWrapper.classList.remove("toolbar");
         toolbarDisplayed = false;
     }
 }
@@ -6325,13 +6333,14 @@ function getSelectedObjectsPoints() {
 //------------------------------------------------------------------------------------------------
 
 function toggleRulers() {
-    const diagramContent = document.getElementById("diagram-content");
+    const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
     const rulers = document.querySelectorAll(".ruler");
+
     if(isRulersActive) {
-        diagramContent.classList.remove("rulers-active");
+        diagramPageWrapper.classList.remove("rulers-active");
         rulers.forEach(ruler => ruler.classList.add("hidden"));
     } else {
-        diagramContent.classList.add("rulers-active");
+        diagramPageWrapper.classList.add("rulers-active");
         rulers.forEach(ruler => ruler.classList.remove("hidden"));
     }
     isRulersActive = !isRulersActive;
