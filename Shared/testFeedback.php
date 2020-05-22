@@ -2,7 +2,7 @@
 include_once ("../Shared/database.php");
 pdoConnect();
 
-$studentid = 21;
+$studentid = $_POST['studentid'];
 $duggaFeedback = '';
 
 
