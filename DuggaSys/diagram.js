@@ -490,6 +490,7 @@ function init() {
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
     setIsRulersActiveOnRefresh();
+    setIsFullscreenActiveOnRefresh();
     setHideCommentOnRefresh();
     initAppearanceForm();
     setPaperSize(event, paperSize);
@@ -3532,7 +3533,20 @@ function toggleFullscreen(){
     }
     fullscreen = !fullscreen;
     setCheckbox($(".drop-down-option:contains('Fullscreen')"), fullscreen);
+    localStorage.setItem("isFullscreenActive", fullscreen);
     canvasSize();        
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+// setIsRulersActiveOnRefresh: Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
+//------------------------------------------------------------------------------------------------------------------------
+
+function setIsFullscreenActiveOnRefresh() {
+    const tempIsFullscreenActive = localStorage.getItem("isFullscreenActive");
+    if(tempIsFullscreenActive !== null) {
+        fullscreen = !(tempIsFullscreenActive === "true");
+        toggleFullscreen();
+    }
 }
 
 //-----------------------
@@ -6321,7 +6335,7 @@ function getSelectedObjectsPoints() {
 function toggleRulers() {
     const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
     const rulers = document.querySelectorAll(".ruler");
-    
+
     if(isRulersActive) {
         diagramPageWrapper.classList.remove("rulers-active");
         rulers.forEach(ruler => ruler.classList.add("hidden"));
