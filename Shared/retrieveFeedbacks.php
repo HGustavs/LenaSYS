@@ -40,14 +40,15 @@ foreach ($pdo->query('SELECT useranswer.aid, useranswer.moment, useranswer.grade
   $remove_date = strstr($recent_feedback, '%%');
   $feedback = str_replace('%%', "\n", $remove_date);
   $feedbackAvailableDate= date('Y-m-d H:i:s', strtotime($marked. ' + 1 minute'));
-  if($feedbackAvailableDate > $todayDate && $grade != null){
+  /*if($feedbackAvailableDate > $todayDate && $grade != null){
     $duggaFeedback .="<div class='feedback_card recentFeedbacks'>";
 
   }elseif ($feedbackAvailableDate < $todayDate && $grade != null) {
     $duggaFeedback .="<div class='feedback_card oldFeedbacks'>";
     
-  }
-  if($grade != null  || $grade != 0){
+  }*/
+  $duggaFeedback .="<div class='feedback_card'>".$entryname." ".$markedDate." ".$feedback." ".$creator." ".$coursecode." ".$versname."-".$versid."</div>";
+  /*if($grade != null  || $grade != 0){
     if ($grade == 2) {
     	 $duggaFeedback .="<div class='listentries'><span><img src='../Shared/icons/complete.svg'></span>";
     	 $duggaFeedback .="<span class='entryname'><b>".$entryname."</b></span></div>";
@@ -73,7 +74,7 @@ foreach ($pdo->query('SELECT useranswer.aid, useranswer.moment, useranswer.grade
   }
   $duggaFeedback .= "</div>";
 
-}
+}*/
 if(isset($_POST['studentid']) && isset($_POST['viewed'])){
   $studentid = $_POST['studentid'];
   $seen_status = 1;
