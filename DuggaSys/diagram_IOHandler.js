@@ -4,31 +4,46 @@
 
 ************************************************************************/
 
-var a;
-var c;
-var b;
-var ac = [];
-const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, diagramNames:null, diagramID:null, text: null, isSelected: null}]);
+//--------------------------------------------------------------------------------------------
+// UndoRedoStack: Class representing a stack holding the stack and current index in the stack.
+//                Is used when undoing and redoing to always render the right state. 
+//                Stack indexes is equal to indexes in diagramChanges.changes array.
+//--------------------------------------------------------------------------------------------
 
-//--------------------------------------------------------------------------------------------------
-// downloadmode: download/load/export canvas (not fully implemented, see row 373-378 in diagram.php)
-//--------------------------------------------------------------------------------------------------
-
-function downloadMode(el) {
-    var canvas = document.getElementById("content");
-    var selectBox = document.getElementById("download");
-    download = selectBox.options[selectBox.selectedIndex].value;
-
-    if (download == "Save") {
-        Save();
+class UndoRedoStack {
+    constructor(stack, current) {
+        this.stack = stack;
+        this.current = current;
     }
-    if (download == "Load") {
-        Load();
+
+    push() {
+        this.current++;
+        this.stack.splice(this.current);
+        this.stack.push(this.current);
     }
-    if (download == "Export") {
-        SaveFile(el);
+
+    undo() {
+        if(this.current >= 0) {
+            this.current--;
+        }
+    }
+
+    redo() {
+        if(typeof this.stack[this.current + 1] !== "undefined") {
+            this.current++;
+        }
+    }
+
+    getCurrentPositionsFromLast() {
+        return (this.stack.length - 1) - this.current;
     }
 }
+
+const propertyKeyMap  = generatePropertyKeysMap(2, [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path(), {diagram:null, points:null, isSelected: null}]);
+let diagramChanges = {
+    indexes: new UndoRedoStack([], -1),
+    changes: []
+};
 
 //---------------------------------------------
 // saveToServer: saves folders/projects created in IOhandler to server
@@ -67,15 +82,7 @@ function redirect(doc) {
 //---------------------------------------------
 
 function redirectas(doc,folder) {
-        location.href="diagram.php?id="+doc.value+"&folder="+folder;
-}
-
-//---------------------------------------------
-// newProject: toggles the content visible to create a new project/canvas in existing folder
-//---------------------------------------------
-
-function newProject() {
-    document.getElementById('newProject').style.display = "block";
+    location.href="diagram.php?id="+doc.value+"&folder="+folder;
 }
 
 //---------------------------------------------
@@ -97,49 +104,44 @@ function loadStored() {
     document.getElementById('showStored').style.display = "block";
 }
 
-//---------------------------------------------
-// loadStored: Shows all stored folders, used when loading existing canvas
-//---------------------------------------------
-
-function loadStoredFolders(f) {
-    document.getElementById('showStoredFolders').style.display = "block";
-}
-
-//---------------------------------------------
-// Save: saves objects in canvas to JSON format in localstorage
-//---------------------------------------------
-
-function Save() {
-    diagramNumber++;
-    localStorage.setItem("diagramNumber", diagramNumber);
-    c = [];
-    d = [];
-    keyBinds = keyMap;
-    for (var i = 0; i < diagram.length; i++) {
-        c[i] = diagram[i].constructor.name;
-        c[i] = c[i].replace(/"/g,"");
-        d[i] = diagram[i].id;
-    }
-    var obj = {diagram:diagram, points:points, diagramNames:c, diagramID:d};
-    a = JSON.stringify(obj);
-    localStorage.setItem("Settings", JSON.stringify(settings));
-    localStorage.setItem("diagramID", JSON.stringify(d));
-    console.log("State is saved");
-}
-
-//---------------------------------------------
-// SaveState: saves the current state of the canvas to localstorage
-//---------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------
+// SaveState: Builds the diagram from previous changes and compares the built diagram with the current diagram.
+//            Found changes are pushed to diagramChanges. Current diagramChanges and settings are pushed to local storage.
+//------------------------------------------------------------------------------------------------------------------------
 
 function SaveState() {
-    Save();
-    localStorage.setItem("diagram" + diagramNumber, compressStringifiedObject(a));
-    for (var key in localStorage) {
-        if (key.indexOf("diagram") != -1) {
-            var tmp = key.match(/\d+$/);
-            if (tmp > diagramNumber) localStorage.removeItem(key);
+    const builtDiagram = buildDiagramFromChanges();
+
+    const objectChanges = {
+        diagram: getObjectChanges(builtDiagram.diagram, diagram),
+        points: getObjectChanges(builtDiagram.points, points)
+    };
+
+    //A push will always happen when any change was made to either diagram or points
+    if(Object.keys(objectChanges.diagram).length > 0 || Object.keys(objectChanges.points).length > 0) {
+        const positionFromLast = diagramChanges.indexes.getCurrentPositionsFromLast();
+        if(positionFromLast > 0) {
+            if(!confirm(`You are ${positionFromLast} state(s) behind the latest save.\nDo you really want to invalidate them and continue working from here?`)) {
+                return;
+            }
+            //Remove everything from index to end of changes array if not at last position and push will happen
+            diagramChanges.changes.splice(-positionFromLast);
         }
+
+        const changeObject = {};
+        if(Object.keys(objectChanges.diagram).length > 0) {
+            changeObject.diagram = objectChanges.diagram;
+        }
+        if(Object.keys(objectChanges.points).length > 0) {
+            changeObject.points = objectChanges.points;
+        }
+        diagramChanges.changes.push(changeObject);
+        diagramChanges.indexes.push();
     }
+
+    saveDiagramChangesToLocalStorage();
+    localStorage.setItem("Settings", JSON.stringify(settings));
+    console.log("State is saved");
 }
 
 //---------------------------------------------
@@ -147,12 +149,32 @@ function SaveState() {
 //---------------------------------------------
 
 function SaveFile(el) {
-    Save();
-    var data = "text/json;charset=utf-8," + encodeURIComponent(a);
+    SaveState();
+    const data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(diagramChanges));
     el.setAttribute("class", 'icon-download');
     el.setAttribute("href", "data:" + data);
     el.setAttribute("download", "diagram.txt");
     updateGraphics();
+}
+
+//----------------------------------------------------------------------------------------------------------------
+// saveDiagramChangesToLocalStorage: Stringifies diagramChanges object, compresses it and pushes to local storage.
+//----------------------------------------------------------------------------------------------------------------
+
+function saveDiagramChangesToLocalStorage(value = JSON.stringify(diagramChanges)) {
+    localStorage.setItem("diagramChanges", compressStringifiedObject(value));
+}
+
+//-----------------------------------------------------------------------------------------
+// resetDiagramChanges: Resets diagram changes in local storage and the object in the code.
+//-----------------------------------------------------------------------------------------
+
+function resetDiagramChanges() {
+    saveDiagramChangesToLocalStorage("null");
+    diagramChanges = {
+        indexes: new UndoRedoStack([], -1),
+        changes: []
+    };
 }
 
 //---------------------------------------------
@@ -160,7 +182,8 @@ function SaveFile(el) {
 //---------------------------------------------
 
 function LoadImport(fileContent) {
-    a = fileContent;
+    saveDiagramChangesToLocalStorage(fileContent);
+    diagramChanges = JSON.parse(fileContent);
     Load();
     fixExampleLayer()
 }
@@ -176,62 +199,33 @@ function loadKeyBinds(){
         drawKeyMap(keyMap, $("#shortcuts-wrap").get(0));
     }
 }
-//---------------------------------------------
-// loadDiagram: retrive an old diagram if it exist.
-//---------------------------------------------
+//----------------------------------------------------------------------------------------------
+// loadDiagram: Builds diagram from object containing changes and overwrites diagram and points.
+//              Only does this if the local hash is not equal to current diagram hash.
+//----------------------------------------------------------------------------------------------
 
 function loadDiagram() {
     // Only retrieve settings if there are any saved
     if(JSON.parse(localStorage.getItem("Settings"))){
         settings = JSON.parse(localStorage.getItem("Settings"));
     }
-    diagramNumber = localStorage.getItem("diagramNumber");
-    diagramID = localStorage.getItem("diagramID");
-    var checkLocalStorage = localStorage.getItem("diagram" + diagramNumber);
 
-    //local storage and hash
-    if (checkLocalStorage != "" && checkLocalStorage != null) {
-        var localDiagram = JSON.parse(decompressStringifiedObject(localStorage.getItem("diagram" + diagramNumber)));
-    }
-    var localHexHash = localStorage.getItem('localhash');
-    var diagramToString = "";
-    var hash = 0;
-    for(var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i]);
-    }
-    if (diagram.length != 0) {
-        for (var i = 0; i < diagramToString.length; i++) {
-            var char = diagramToString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;         // Convert to 32bit integer
-        }
-        var hexHash = hash.toString(16);
-    }
-    if (typeof localHexHash !== "undefined" && typeof localDiagram !== "undefined") {
-        if (localHexHash != hexHash) {
-            b = JSON.parse(JSON.stringify(localDiagram));
-            for (var i = 0; i < b.diagram.length; i++) {
-                if (b.diagramNames[i] == "Symbol") {
-                    b.diagram[i] = Object.assign(new Symbol(b.diagram[i].symbolkind), b.diagram[i]);
-                } else if (b.diagramNames[i] == "Path") {
-                    b.diagram[i] = Object.assign(new Path, b.diagram[i]);
-                }
-            }
-            diagram.length = b.diagram.length;
-            for (var i = 0; i < b.diagram.length; i++) {
-                diagram[i] = b.diagram[i];
-                diagram[i].setID(JSON.parse(diagramID)[i]);
-            }
-            // Points fix
-            points.length = b.points.length;
-            for (var i = 0; i < b.points.length; i++) {
-                points[i] = b.points[i];
-            }
+    const localHexHash = localStorage.getItem("localhash");
+    const hexHash = getDiagramHash(getStringifiedDiagram());
+
+    if (localHexHash !== hexHash) {
+        const localStorageDiagramChanges = localStorage.getItem("diagramChanges");
+
+        if(localStorageDiagramChanges !== null) {
+            diagramChanges = JSON.parse(decompressStringifiedObject(localStorageDiagramChanges));
+            diagramChanges.indexes = new UndoRedoStack(diagramChanges.indexes.stack, diagramChanges.indexes.current);
+            const built = buildDiagramFromChanges();
+            overwriteDiagram(built.diagram);
+            overwritePoints(built.points);
         }
     }
     deselectObjects();
     updateGraphics();
-    SaveState();
 }
 
 //------------------------------------------------------------------------------
@@ -240,29 +234,10 @@ function loadDiagram() {
 //------------------------------------------------------------------------------
 
 function hashFunction() {
-    var diagramToString = "";
-    var hash = 0;
-    for (var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i])
-    }
-    if (diagram.length != 0) {
-        for (var i = 0; i < diagramToString.length; i++) {
-            var char = diagramToString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;         // Convert to 32bit integer
-        }
-        var hexHash = hash.toString(16);
-        if (currentHash != hexHash) {
-            localStorage.setItem('localhash', hexHash);
-            for (var i = 0; i < diagram.length; i++) {
-                c[i] = diagram[i].constructor.name;
-                c[i] = c[i].replace(/"/g,"");
-                d[i] = diagram[i].id;
-            }
-            a = JSON.stringify({diagram:diagram, points:points, diagramNames:c, diagramID:d});
-            localStorage.setItem('localdiagram', compressStringifiedObject(a));
-            return hexHash;
-        }
+    const hexHash = getDiagramHash(getStringifiedDiagram());
+    if (currentHash !== hexHash) {
+        localStorage.setItem("localhash", hexHash);
+        return hexHash;
     }
 }
 
@@ -273,61 +248,33 @@ function hashFunction() {
 //--------------------------------------------------------------------------------
 
 function hashCurrent() {
-    var hash = 0;
-    var diagramToString = "";
-    for (var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i])
+    currentHash = getDiagramHash(getStringifiedDiagram());
+}
+
+//-------------------------------------------------------------------------------
+// getStringifiedDiagram: Stringifies all diagram objects and puts them together.
+//-------------------------------------------------------------------------------
+
+function getStringifiedDiagram() {
+    let str = "";
+    for(let i = 0; i < diagram.length; i++) {
+        str += JSON.stringify(diagram[i]);
     }
-    for (var i = 0; i < diagramToString.length; i++) {
-        var char = diagramToString.charCodeAt(i);
+    return str;
+}
+
+//-------------------------------------------------------
+// getDiagramHash: Creates a hash based on passed string.
+//-------------------------------------------------------
+
+function getDiagramHash(stringifiedDiagram) {
+    let hash = 0;
+    for(let i = 0; i < stringifiedDiagram.length; i++) {
+        const char = stringifiedDiagram.charCodeAt(i);
         hash = ((hash << 5) - hash) + char;
-        hash = hash & hash;         // Convert to 32bit integer
+        hash = hash & hash;
     }
-    currentHash = hash.toString(16);
-}
-
-//----------------------------------------------------------------------
-// removeLocalStorage: this function is running when you click the button clear diagram
-//----------------------------------------------------------------------
-
-function removeLocalStorage() {
-    for (var i = 0; i < localStorage.length; i++) {
-        localStorage.removeItem("diagram" + i);
-    }
-    diagramNumber = 0;
-    localStorage.setItem("diagramNumber", 0);
-}
-
-//----------------------------------------------------------------------
-// LoadFile: Loads JSON file into canvas
-//----------------------------------------------------------------------
-
-function LoadFile() {
-    var pp = JSON.parse(a);
-    b = pp;
-    //diagram fix
-    for (var i = 0; i < b.diagram.length; i++) {
-        if (b.diagramNames[i] == "Symbol") {
-            b.diagram[i] = Object.assign(new Symbol(b.diagram[i].symbolkind), b.diagram[i]);
-        } else if (b.diagramNames[i] == "Path") {
-            b.diagram[i] = Object.assign(new Path, b.diagram[i]);
-        }
-    }
-    diagram.length = b.diagram.length;
-    for (var i = 0; i < b.diagram.length; i++) {
-        diagram[i] = b.diagram[i];
-    }
-    // Points fix
-    for (var i = 0; i < b.points.length; i++) {
-        b.points[i] = Object.assign(new Path, b.points[i]);
-    }
-    points.length = b.points.length;
-    for (var i = 0; i< b.points.length; i++ ) {
-        points[i] = b.points[i];
-    }
-    console.log("State is loaded");
-    //Redrawn old state.
-    updateGraphics();
+    return hash.toString(16); // Convert to 32-bit integer
 }
 
 //-------------------------------------------------------------------------------
@@ -345,37 +292,51 @@ function getUpload() {
         var file = document.getElementById('fileids').files[0];
         reader.readAsText(file, "UTF-8");
         reader.onload = function (evt) {
-            a = evt.currentTarget.result;
-            // LoadFile();
+            //  = evt.currentTarget.result;
         }
     }
 }
 
-function Load() {
-    // Implement a JSON.parse() that will unmarshall a b c, so we can add
-    // them to their respecive array so it can redraw the desired canvas.
-    var dia = JSON.parse(decompressStringifiedObject(a));
-    b = dia;
-    for (var i = 0; i < b.diagram.length; i++) {
-        if (b.diagramNames[i] == "Symbol") {
-            b.diagram[i] = Object.assign(new Symbol(b.diagram[i].symbolkind), b.diagram[i]);
-        } else if (b.diagramNames[i] == "Path") {
-            b.diagram[i] = Object.assign(new Path, b.diagram[i]);
-        }
-    }
-    diagram.length = b.diagram.length;
-    for (var i = 0; i < b.diagram.length; i++) {
-        diagram[i] = b.diagram[i];
-    }
+//---------------------------------------------------------------------------------------
+// Load: Builds the diagram from diagram changes objects and replaces diagram and points.
+//       Used when importing files. No interaction with local storage or hashing.
+//---------------------------------------------------------------------------------------
 
-    points.length = b.points.length;
-    for (var i = 0; i < b.points.length; i++) {
-        points[i] = b.points[i];
-    }
+function Load() {
+    const built = buildDiagramFromChanges();
+    diagramChanges.indexes = new UndoRedoStack(diagramChanges.indexes.stack, diagramChanges.indexes.current);
+    overwriteDiagram(built.diagram);
+    overwritePoints(built.points);
 
     console.log("State is loaded");
-    //Redrawn old state.
     updateGraphics();
+}
+
+//-----------------------------------------------------------------------------
+// overwriteDiagram: Overwrites used diagram array to passed new diagram array.
+//-----------------------------------------------------------------------------
+
+function overwriteDiagram(newDiagram) {
+    diagram.length = newDiagram.length;
+    for(let i = 0; i < newDiagram.length; i++) {
+        const object = newDiagram[i];
+        if(object.kind === kind.symbol) {
+            diagram[i] = Object.assign(new Symbol(object.symbolkind), JSON.parse(JSON.stringify(object)));
+        } else if(object.kind === kind.path) {
+            diagram[i] = Object.assign(new Path(), JSON.parse(JSON.stringify(object)));
+        }
+    }
+}
+
+//--------------------------------------------------------------------------
+// overwritePoints: Overwrites used points array to passed new points array.
+//--------------------------------------------------------------------------
+
+function overwritePoints(newPoints) {
+    points.length = newPoints.length;
+    for(let i = 0; i < newPoints.length; i++) {
+        points[i] = JSON.parse(JSON.stringify(newPoints[i]));
+    }
 }
 
 //----------------------------------------------------------------------
@@ -451,7 +412,145 @@ function afterPrint(){
 }
 
 //------------------------------------------------
-// Local storage compressing functions start
+// Saving only diagram changes functions start
+//------------------------------------------------
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+// getObjectChanges: Returns an object with all changes, comparing passed base object with passed new object.
+//                   The property key will be the path to the changed property.
+//                   - Char (u) as type means property value has been updated compared to same property in base object (data property with additions exists).
+//                   - Char (+) as value means the property the key points to was added (data property with additions exists).
+//                   - Char (-) as value means the property the key points to was deleted (no data property).
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function getObjectChanges(base, object) {
+    const changes = {};
+
+    //Compares two objects recrusivly to also compare child objects and arrays
+    const compareObjects = (base, object, path = "") => {
+
+        //Go through base object to find deleted properties
+        for(const key of Object.keys(base)) {
+            const currentPath = path === "" ? key : `${path}.${key}`;
+            if(object[key] === undefined) {
+                changes[currentPath] = {"type": "-"};
+            }
+        }
+
+        //Go through new object to find additions or updates
+        for(const [key, value] of Object.entries(object)) {
+            if(!isFunction(value)) {
+                const currentPath = path === "" ? key : `${path}.${key}`;
+                if(base[key] === undefined) {
+                    changes[currentPath] = {
+                        "type": "+",
+                        "data": JSON.parse(JSON.stringify(value))
+                    };
+                } else if(value !== base[key]) {
+                    if((isObject(value) || Array.isArray(value)) && (isObject(base[key]) || Array.isArray(base[key]))) {
+                        compareObjects(base[key], value, currentPath); //Recursive
+                    } else {
+                        changes[currentPath] = {
+                            "type": "u",
+                            "data": JSON.parse(JSON.stringify(value))
+                        };
+                    }
+                }
+            }
+        }
+    };
+
+    compareObjects(base, object);
+
+    return changes;
+}
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+// buildDiagramFromChanges: Builds the diagram by iterating through the diagramChanges object, adding, updating and deleting properties as they come.
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+
+function buildDiagramFromChanges() {
+    const built = {
+        diagram: [],
+        points: []
+    }
+
+    if(diagramChanges.changes === null || typeof diagramChanges.changes === "undefined") return built;
+
+    let deleteQueue = []; //Queue of objects to delete to make it possible to sort by index before deletion
+
+    //Iterates through one change for one type (diagram/points), sets correct values and pushes deletions to deleteQueue
+    const iterateChange = (change, type = "diagram") => {
+        for(const [key, value] of Object.entries(change[type])) {
+            if(value.type === '+' || value.type === 'u') {
+                setNestedPropertyValue(built[type], key, value.data);
+            } else if(value.type === '-') {
+                deleteQueue.push({
+                    "object": built[type],
+                    "key": key
+                });
+            }
+        }
+    };
+
+    for(let i = 0; i < diagramChanges.indexes.current + 1; i++) {
+        const change = JSON.parse(JSON.stringify(diagramChanges.changes[i]));
+        if(typeof change["diagram"] !== "undefined") {
+            iterateChange(change, "diagram");
+        }
+        if(typeof change["points"] !== "undefined") {
+            iterateChange(change, "points");
+        }
+
+        //Sorts the deleteQueue to always have higher indexes first to prevent index from being wrong when deleting later properties.
+        deleteQueue.sort((a, b) => a.key < b.key ? 1 : -1).forEach(position => {
+            deleteNestedProperty(position.object, position.key);
+        });
+        deleteQueue = [];
+    }
+
+    return built;
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------
+// setNestedPropertyValue: Recursive function creating uncreated passed properties in passed object and sets values when applicable.
+//----------------------------------------------------------------------------------------------------------------------------------
+
+function setNestedPropertyValue(object, property, value) {
+    if(property.indexOf(".") === -1) {
+        object[property] = value;
+    } else {
+        const properties = property.split(".");
+        const topLevelProperty = properties.shift();
+        const remainingProperties = properties.join(".");
+        if(object[topLevelProperty] === null || object[topLevelProperty] === undefined) {
+            object[topLevelProperty] = {};
+        }
+        setNestedPropertyValue(object[topLevelProperty], remainingProperties, value);
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+// setNestedPropertyValue: Recursive function finding the last property in the passed property hierarchy and deletes it from passed object.
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+function deleteNestedProperty(object, property) {
+    if(property.indexOf(".") === -1) {
+        if(Array.isArray(object)) {
+            object.splice(property, 1);
+        } else if(isObject(object)) {
+            delete object[property];
+        }
+    } else {
+        const properties = property.split(".");
+        const topLevelProperty = properties.shift();
+        const remainingProperties = properties.join(".");
+        deleteNestedProperty(object[topLevelProperty], remainingProperties);
+    }
+}
+
+//------------------------------------------------
+// Saving only diagram changes functions end
 //------------------------------------------------
 
 //--------------------------------------------------------
@@ -469,6 +568,10 @@ function isFunction(f) {
 function isObject(o) {
     return Object.prototype.toString.call(o) === '[object Object]'
 }
+
+//------------------------------------------------
+// Local storage compressing functions start
+//------------------------------------------------
 
 //---------------------------------------------------------------------------------------------------
 // getObjectPropertyKeys: Returns all property keys in passed object whose values are not a function.

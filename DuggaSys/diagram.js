@@ -185,11 +185,8 @@ var classTemplate = {
   height: 7 * gridSize
 };
 var minimumDivisor = 4;                 // Is used when dividing templates for minimum selection before activating dragging mode values
-var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
 var globalappearanceMenuOpen = false;   // True if global appearance menu is open 
-var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
-var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
 var symbolStartKind;                    // Is used to store which kind of object you start on
 var symbolEndKind;                      // Is used to store which kind of object you end on
@@ -681,8 +678,8 @@ function keyDownHandler(e) {
                 SaveState();
             }
         }
-        else if (key == keyMap.zKey && ctrlIsClicked) undoDiagram(event);
-        else if (key == keyMap.yKey && ctrlIsClicked) redoDiagram(event);
+        else if (key == keyMap.zKey && ctrlIsClicked) undoDiagram();
+        else if (key == keyMap.yKey && ctrlIsClicked) redoDiagram();
         else if (key == keyMap.aKey && ctrlIsClicked) {
             e.preventDefault();
             selected_objects = [];
@@ -1312,7 +1309,6 @@ diagram.deleteObject = function(object) {
     }
     if(diagram.length == 0){
         resetSerialNumbers();
-        removeLocalStorage();
     }
 }
 
@@ -2738,16 +2734,6 @@ function hideCrosses() {
     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
 }
 
-//----------------------------------------------------------------------
-// removeLocalStorage: this function is running when you click the button clear diagram
-//----------------------------------------------------------------------
-
-function removeLocalStorage() {
-    for (var i = 0; i < localStorage.length; i++) {
-        localStorage.removeItem("localdiagram");
-    }
-}
-
 //----------------------------------------------------------------------------------------------------------------
 // This function allows us to choose how many decimals (precision argument) that a value will be rounded down to.
 //----------------------------------------------------------------------------------------------------------------
@@ -3215,15 +3201,10 @@ function distribute(event, axis) {
 // undoDiagram: removes the last object that was drawn
 //----------------------------------------------------------------------
 
-function undoDiagram(event) {
-    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (diagramNumber > 0) {
-        diagramNumber--;
-    }
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
-    localStorage.setItem("diagramNumber", diagramNumber);
-    console.log(tmpDiagram);
-    if (tmpDiagram != null) LoadImport(tmpDiagram);
+function undoDiagram() {
+    diagramChanges.indexes.undo();
+    saveDiagramChangesToLocalStorage();
+    Load();
 
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
@@ -3235,21 +3216,23 @@ function undoDiagram(event) {
 // redoDiagram: restores the last object that was removed
 //----------------------------------------------------------------------
 
-function redoDiagram(event) {
-    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    diagramNumber = localStorage.getItem("diagramNumber");
-    diagramNumber++;
-    if(!localStorage.getItem("diagram" + diagramNumber)){
-        diagramNumber--;
-    }
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
-    localStorage.setItem("diagramNumber", diagramNumber);
-    if (tmpDiagram != null) LoadImport(tmpDiagram);
+function redoDiagram() {
+    diagramChanges.indexes.redo();
+    saveDiagramChangesToLocalStorage();
+    Load();
 
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
     hoveredObject = undefined;
     createRulerLinesObjectPoints();
+}
+
+//--------------------------------------------------------------------------------------------
+// getValueOccurancesInArray: Returns the number of times passed value occurs in passed array.
+//--------------------------------------------------------------------------------------------
+
+function getValueOccurancesInArray(array, find) {
+    return array.reduce((result, value) => result + (value === find), 0);
 }
 
 //----------------------------------------------------------------------
@@ -5241,8 +5224,8 @@ function toggleApperanceElement(show = false) {
         appearanceElement.style.display = "none";
 
         if(globalappearanceMenuOpen) {
-            const diagram = localStorage.getItem("diagram" + diagramNumber);
-            if (diagram != null) LoadImport(diagram);
+            //const diagram = localStorage.getItem("diagram" + diagramNumber);
+            //if (diagram != null) LoadImport(diagram);
         }
 
         appearanceMenuOpen = false;

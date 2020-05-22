@@ -119,7 +119,7 @@
                         <span class="drop-down-option" onclick="printDiagram();">Print Diagram</span>
                     </div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
+                        <span class="drop-down-option" onclick='clearCanvas(); resetDiagramChanges();'>Clear Diagram</span>
                         <i class="hot-key">Ctrl + A, Delete</i>
                     </div>
                 </div>
@@ -128,11 +128,11 @@
                 <span class="drop-down-label">Edit</span>
                 <div class="drop-down">
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick='undoDiagram(event)'>Undo</span>
+                        <span class="drop-down-option" onclick='undoDiagram()'>Undo</span>
                         <i class="hot-key">Ctrl + Z</i>
                     </div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick='redoDiagram(event)'>Redo</span>
+                        <span class="drop-down-option" onclick='redoDiagram()'>Redo</span>
                         <i class="hot-key">Ctrl + Y</i>
                     </div>
                     <div class="drop-down-divider">
@@ -456,10 +456,10 @@
                 <div class="diagram-sidebar-section">
                     <div class="diagram-sidebar-label">Undo/Redo</div>
                     <div id="diagram-undo-redo-container">
-                        <button id="undoButton" onclick="undoDiagram(event)" class="diagram-tools-button diagram-tools-button-small" data="Undo (Ctrl + Z)">
+                        <button id="undoButton" onclick="undoDiagram()" class="diagram-tools-button diagram-tools-button-small" data="Undo (Ctrl + Z)">
                             <img class="invert-color" src="../Shared/icons/undo.svg">
                         </button>
-                        <button id="redoButton" onclick="redoDiagram(event)" class="diagram-tools-button diagram-tools-button-small" data="Redo (Ctrl + Y)">
+                        <button id="redoButton" onclick="redoDiagram()" class="diagram-tools-button diagram-tools-button-small" data="Redo (Ctrl + Y)">
                             <img class="invert-color" src="../Shared/icons/redo.svg">
                         </button>
                     </div>
