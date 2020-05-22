@@ -129,6 +129,12 @@ function loadGeneralStats() {
 			data['stats']['userSubmissionSize']
 		]);
 
+		// Biggest Course
+		tableData.push([
+			'Biggest Course on Disk: ' + data['stats']['biggestCourseName'],
+			data['stats']['biggestCourseSize']
+		]);
+
 		// Total number of users
 		tableData.push([
 			'Total Users',
