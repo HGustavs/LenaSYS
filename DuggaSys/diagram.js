@@ -3815,10 +3815,10 @@ function mousemoveevt(ev) {
                     var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
                     var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
                     //Don't move points if box is minumum size
-                    if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+                    if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || 5 > change > -5){
                         sel.point.x = currentMouseCoordinateX;
                     }
-                    if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+                    if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || 5 > change > -5){
                         sel.point.y = currentMouseCoordinateY;
                     }
                     //Handles loose lines
@@ -3862,10 +3862,10 @@ function mousemoveevt(ev) {
                 var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
                 var change = ((currentMouseCoordinateX - sel.point.x.x) - (currentMouseCoordinateY - sel.point.y.y)) / 2;
                 //Don't move points if box is minumum size
-                if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+                if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || 5 > change > -5){
                     sel.point.x.x = currentMouseCoordinateX;
                 }
-                if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+                if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || 5 > change > -5){
                     sel.point.y.y = currentMouseCoordinateY;
                 }
             }
