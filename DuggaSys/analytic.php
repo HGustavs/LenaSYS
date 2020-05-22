@@ -63,7 +63,6 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 	setcookie("loginvar", $loginvar);
 	include '../Shared/navheader.php';	
 ?>
-<div class='hamburgerDropdown'>
 	<ol class='hamburgerList'>
 		<li class="navButt analytic-navbutton" id="GeneralStats"><a onclick="loadGeneralStats()"><i class="fas fa-stream"></i></a><span class="navcomment">General Stats</span></li>
 		<li class="navButt analytic-navbutton" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline()"><i class="fas fa-users"></i></a><span class="navcomment">Currently Online</span></li>
@@ -78,7 +77,6 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 		<li class="navButt analytic-navbutton" id="Userinformation"><a onclick="loadUserInformation()"><i class="fas fa-user"></i></a><span class="navcomment">User information</span></li>
 		<li class="navButt analytic-navbutton" id="CourseDiskUsage"><a onclick="loadCourseDiskUsage()"><i class="fas fa-hdd"></i></a><span class="navcomment">Course disk usage</span></li>
 	</ol>
-</div>
 
 <div class="header">
   <h1 id="pageTitle"></h1>
