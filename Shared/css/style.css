@@ -5637,6 +5637,11 @@ only screen and (max-device-width: 320px) {
   margin: 0;
 }
 
+#diagram-page-wrapper.fullscreen.rulers-active #diagram-canvas-container {
+  top: var(--ruler-size);
+  left: var(--ruler-size);
+}
+
 #diagram-canvas {
   border: 1px solid #000000;
   width: 100%;
