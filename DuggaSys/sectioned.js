@@ -2206,13 +2206,14 @@ function toggleFeedbacks(){
           console.log("This response: " + this.response);
           parsed_data = JSON.parse(this.response);
           duggaFeedback = parsed_data.duggaFeedback;
+          console.log(duggaFeedback);
           $(".feedbackContent").html(duggaFeedback);
           //document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
          
 
         }
       };
-      xmlhttp.open("GET","../Shared/testFeedback.php?studentid="+studentid,true);
+      xmlhttp.open("GET","../Shared/retrieveFeedbacks.php?studentid="+studentid,true);
       xmlhttp.send();
       console.log("Studentid after send: " + studentid);
     }
