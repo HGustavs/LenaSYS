@@ -3518,18 +3518,17 @@ function scrollZoom(event) {
 //-----------------------
 
 function toggleFullscreen(){
-    var header = document.querySelector("header");
+    const header = document.querySelector("header");
+    const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
     var diagramHeader = document.getElementById("diagram-header");
     var diagramContainer = document.getElementById("diagram-container")
 
     if(!fullscreen){
-        diagramHeader.classList.add("fullscreen");
-        diagramContainer.classList.add("fullscreen");
+        diagramPageWrapper.classList.add("fullscreen");
         header.style.display = "none";
         $("#fullscreenDialog").css("display", "flex");
     } else {
-        diagramHeader.classList.remove("fullscreen", "toolbar");
-        diagramContainer.classList.remove("fullscreen", "toolbar");
+        diagramPageWrapper.classList.remove("fullscreen", "toolbar");
         header.style.display = "inline-block";
         toolbarDisplayed = false;
     }
@@ -3551,16 +3550,13 @@ function closeFullscreenDialog(){
 //-----------------------
 
 function toggleToolbar(){
-    var diagramHeader = document.getElementById("diagram-header");
-    var diagramContainer = document.getElementById("diagram-container");
+    const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
 
     if(!toolbarDisplayed){
-        diagramHeader.classList.add("toolbar");
-        diagramContainer.classList.add("toolbar");
+        diagramPageWrapper.classList.add("toolbar");
         toolbarDisplayed = true;
     } else {
-        diagramHeader.classList.remove("toolbar");
-        diagramContainer.classList.remove("toolbar");
+        diagramPageWrapper.classList.remove("toolbar");
         toolbarDisplayed = false;
     }
 }

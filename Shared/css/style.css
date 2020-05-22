@@ -5446,7 +5446,7 @@ only screen and (max-device-width: 320px) {
 
 /* Diagram */
 
-#diagram-header, #diagram-container {
+#diagram-page-wrapper {
   --header-height: 50px;
   --diagram-header-height: 36px;
   --ruler-size: 38px;
@@ -5462,7 +5462,7 @@ only screen and (max-device-width: 320px) {
   font-size: 14px;
 }
 
-#diagram-header.fullscreen.toolbar {
+#diagram-page-wrapper.fullscreen.toolbar #diagram-header {
   margin-top: 0;
   position: relative;
   z-index: 2;
@@ -5500,7 +5500,7 @@ only screen and (max-device-width: 320px) {
   width: var(--diagram-sidebar-width);
 }
 
-#diagram-container.fullscreen.toolbar #diagram-tools-container {
+#diagram-page-wrapper.fullscreen.toolbar #diagram-tools-container {
   position: relative;
   z-index: 2;
   background-color: #ffffff;
@@ -5627,7 +5627,7 @@ only screen and (max-device-width: 320px) {
   height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--ruler-size) - var(--canvas-margin));
 }
 
-#diagram-container.fullscreen #diagram-canvas-container {
+#diagram-page-wrapper.fullscreen #diagram-canvas-container {
   position: absolute;
   top: 0;
   right: 0;
@@ -5643,7 +5643,7 @@ only screen and (max-device-width: 320px) {
   height: 100%;
 }
 
-#diagram-container.fullscreen #diagram-canvas {
+#diagram-page-wrapper.fullscreen #diagram-canvas {
   border: none;
 }
 
