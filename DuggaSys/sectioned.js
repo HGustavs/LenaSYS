@@ -1891,7 +1891,7 @@ function retrieveAnnouncementsCards(){
     success: function(data){
       var parsed_data = JSON.parse(data);
       var uid = parsed_data.uid;
-     var xmlhttp = new XMLHttpRequest();
+      var xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           var parsed_data = JSON.parse(this.response);
@@ -2159,6 +2159,10 @@ function multiSelect(){
 function toggleFeedbacks(){
   let uname = $("#userName").html();
   let studentid, parsed_data, parsed_uid, duggaFeedback, feedbackComment, unseen_feedbacks;
+  if ($("#feedback").length > 0) {
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><h2>Recent Feedbacks</h2></div><div class='feedbackContent'></div></div></div>");
+
+  }
   $.ajax({
     url: "../Shared/retrieveUserid.php",
     data: {uname:uname},
@@ -2166,7 +2170,8 @@ function toggleFeedbacks(){
     success: function(data){
       parsed_uid = JSON.parse(data);
       studentid = parsed_uid.uid;
-      $.ajax({
+      console.log("studentid: " + studentid);
+      /*$.ajax({
         url: "../Shared/retrieveFeedbacks.php",
         data: {studentid: studentid},
         type: "POST",
@@ -2193,20 +2198,31 @@ function toggleFeedbacks(){
           console.log("Couldn't return feedback data");
         }
 
-      });
+      });*/
 
+      let xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log("This response: " + this.response);
+          parsed_data = JSON.parse(this.response);
+          duggaFeedback = parsed_data.duggaFeedback;
+          console.log(duggaFeedback);
+          $(".feedbackContent").html(duggaFeedback);
+          //document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+         
+
+        }
+      };
+      xmlhttp.open("GET","../Shared/retrieveFeedbacks.php?studentid="+studentid,true);
+      xmlhttp.send();
+      console.log("Studentid after send: " + studentid);
     }
 
   });
 
-  if ($("#feedback").length > 0) {
-    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><h2>Recent Feedbacks</h2></div><div class='feedbackContent'></div></div></div>");
-
-  }
-
   $("#feedback").click(function(){
     $("#feedbackOverlay").toggle();
-     if ($("#feedbacknotificationcounter").length > 0) {
+     /*if ($("#feedbacknotificationcounter").length > 0) {
       var viewed = "YES";
       $.ajax({
         url: "../Shared/retrieveFeedbacks.php",
@@ -2216,7 +2232,7 @@ function toggleFeedbacks(){
           $("#feedbacknotificationcounter").remove();
         }
       });
-     }
+     }*/
   });
 }
 function viewOldFeedbacks(){
