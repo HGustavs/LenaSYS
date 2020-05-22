@@ -78,6 +78,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'resolveCourseID':
 				resolveCourseID($pdo);
 				break;
+			case 'courseInformation':
+                courseInformation($pdo);
+                break;
 		}
 	} else {
 		echo 'N/A';
@@ -1057,4 +1060,56 @@ function courseDiskUsage($pdo) {
 	
 		print_r(json_encode($course));
 	}
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves class information      
+//------------------------------------------------------------------------------------------------
+function courseInformation($pdo){
+	$query = $pdo->prepare("SELECT username, class FROM user");
+	
+    if($query->execute()) {
+        $rows = $query->fetchAll(PDO::FETCH_ASSOC);
+        $users = [];
+        foreach($rows as $row => $values) {
+            $users[$row] = [
+                            "username"  => $values['username'],
+                            "class"     => $values['class']
+            ];
+		}
+        
+	} 
+
+	$query = $pdo->prepare("SELECT cid, class FROM programcourse");
+
+    if($query->execute()) {
+        $rows = $query->fetchAll(PDO::FETCH_ASSOC);
+        $programcourses = [];
+        foreach($rows as $row => $values) {
+            $programcourses[$row] = [
+                            "cid"  => $values['cid'],
+                            "class"     => $values['class']
+            ];
+		}
+        
+	} 
+
+	$query = $pdo->prepare("SELECT cid, coursename FROM course");
+
+	if($query->execute()) {
+        $rows = $query->fetchAll(PDO::FETCH_ASSOC);
+        $courses = [];
+        foreach($rows as $row => $values) {
+            $courses[$row] = [
+                            "cid"  => $values['cid'],
+                            "coursename"     => $values['coursename']
+            ];
+		}
+        
+	} 
+
+	$result['users'] = $users;
+	$result['programcourses'] = $programcourses;
+	$result['courses'] = $courses;
+	echo json_encode($result);
 }

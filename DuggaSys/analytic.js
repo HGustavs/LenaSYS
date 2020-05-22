@@ -790,6 +790,7 @@ function loadUserInformation(){
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="events">events</option>')
 		.append('<option value="fileEvents">fileEvents</option>')
+		.append('<option value="course">course</option>')
         .appendTo($('#analytic-info'));
  
  
@@ -1001,6 +1002,39 @@ function loadUserInformation(){
             });
 		});
 	}
+
+	function updateCourseInformation(){
+		var users = {};
+		
+        loadAnalytics("courseInformation", function(data) {
+            console.log(data)
+            $.each(data.users, function(i, row) {
+				var userClass = row.class;
+				var user = row.username;
+               
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["courseid", "coursename"]];
+				}
+				
+				$.each(data.programcourses, function(i, row) {
+					var cid = row.cid;
+
+					if(userClass === row.class){
+						$.each(data.courses, function(i, row) {
+							if(cid === row.cid){
+								users[user].push([
+									cid,
+									row.coursename
+								]);
+							}
+						});
+					}
+				});
+			});
+			updateState(users);
+			
+        });
+    }
    
     function updateState(users){
         $('#analytic-info > select.file-select').remove();
@@ -1079,6 +1113,9 @@ function loadUserInformation(){
 				case "fileEvents":
 					updatefileEvents();
 					break;
+				case "course":
+                    updateCourseInformation();
+                    break;
             }
         });
     }
