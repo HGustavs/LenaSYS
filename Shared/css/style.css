@@ -1301,8 +1301,6 @@ div .navButt:hover {
     .box{
         margin-top: 30px !important;
     }
-    
-    
 }
 
 
@@ -7138,8 +7136,10 @@ textarea#filecont {
     justify-content: center;
     flex-flow:wrap;
 }
-#hamburger{
-  display:none;
+@media only screen and (min-width: 801px) {
+  #hamburger{
+    display:none;
+  }
 }
 #selectdir{
   width: 120px;
