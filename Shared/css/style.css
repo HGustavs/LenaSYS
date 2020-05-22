@@ -699,6 +699,10 @@ p {
   cursor: pointer;
 
 }
+.feedbackHeader span:last-child{
+  display: none;
+
+}
 .feedback_card{
   margin: 10px 0 20px 0;
 }
@@ -1477,6 +1481,17 @@ div .navButt:hover {
 
   }.logoutBox  .logoutboxTr input[type="button"]:last-child{
     margin-left: 10px;
+  }
+  .viewOldFeedbacks{
+    display: none;
+
+  }
+  .feedbackHeader span:last-child{
+    display: block;
+  }
+  .feedbackHeader h2,
+  .feedbackContent{
+    font-size: .8em;
   }
 }
 .overlay {
