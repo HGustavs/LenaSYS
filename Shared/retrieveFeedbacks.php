@@ -6,7 +6,7 @@ pdoConnect();
 $studentid = $_POST['studentid'];
 $duggaFeedback;
 $todayDate = date("Y-m-d H:i:s");
-foreach ($pdo->query('SELECT userAnswer.aid, userAnswer.moment, userAnswer.grade, userAnswer.marked, userAnswer.feedback, userAnswer.seen_status, listentries.entryname, user.firstname, user.lastname, vers.coursecode, vers.versname, userAnswer.vers AS useranswerVersid, userAnswer.cid AS useranswerCid, userAnswer.uid AS studentid, userAnswer.creator AS markedAuthorid FROM useranswer, listentries, user, vers WHERE userAnswer.moment=listentries.lid AND userAnswer.creator=user.uid AND userAnswer.cid=vers.cid AND userAnswer.vers=vers.vers AND userAnswer.uid="'.$studentid.'" ORDER BY marked DESC') as $useranswer){
+foreach ($pdo->query('SELECT userAnswer.aid, userAnswer.moment, userAnswer.grade, userAnswer.marked, userAnswer.feedback, userAnswer.seen_status, listentries.entryname, user.firstname, user.lastname, vers.coursecode, vers.versname, userAnswer.vers AS useranswerVersid, userAnswer.cid AS useranswerCid, userAnswer.uid AS studentid, userAnswer.creator AS markedAuthorid FROM userAnswer, listentries, user, vers WHERE userAnswer.moment=listentries.lid AND userAnswer.creator=user.uid AND userAnswer.cid=vers.cid AND userAnswer.vers=vers.vers AND userAnswer.uid="'.$studentid.'" ORDER BY marked DESC') as $useranswer){
   $markedAuthorid = $useranswer['markedAuthorid'];
   $aid = $useranswer['aid'];
   $studentid = $useranswer['studentid'];
