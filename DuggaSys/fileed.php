@@ -17,6 +17,17 @@ $query->execute();
 $codeLinkQuery = $pdo->prepare( "SELECT filename, fileid, cid FROM fileLink");
 $codeLinkQuery->execute();
 
+$css = array(
+	'style.css',
+	'jquery-ui-1.10.4.min.css',
+	'markdown.css',
+);
+
+$js = array(
+	'jquery-1.11.0.min.js',
+	'jquery-ui-1.10.4.min.js'
+);
+
 ?>
 
 
@@ -28,16 +39,34 @@ $codeLinkQuery->execute();
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
     <title>File editor</title>
-    <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-    <link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet">
-    <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-    <script src="../Shared/js/jquery-1.11.0.min.js"></script>
-    <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-    <script src="../Shared/dugga.js"></script>
-    <script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
-    <script src="fileed.js"></script>
-    <script src="../Shared/markdown.js"></script>
-    <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+    
+	<?php
+		foreach($css as $filename) {
+			$filemtime = filemtime('../Shared/css/' . $filename);
+			echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'/>";
+		}
+	
+		foreach($js as $filename) {
+			$filemtime = filemtime('../Shared/js/' . $filename);
+			echo "<script type='text/javascript' src='../Shared/js/$filename?$filemtime'/></script>";
+		}
+
+		$filemtime = filemtime('../Shared/dugga.js');
+		echo "<script type='text/javascript' src='../Shared/dugga.js?$filemtime'></script>";
+				
+		$filemtime = filemtime('../Shared/markdown.js');
+		echo "<script type='text/javascript' src='../Shared/markdown.js?$filemtime'></script>";
+    
+		$filemtime = filemtime('../Shared/SortableTableLibrary/sortableTable.js');
+		echo "<script type='text/javascript' src='../Shared/SortableTableLibrary/sortableTable.js?$filemtime'></script>";
+    
+        $filemtime = filemtime('fileed.js');
+		echo "<script type='text/javascript' src='fileed.js?$filemtime'></script>";
+    
+        $filemtime = filemtime('ace.js');
+		echo "<script type='text/javascript' src='ace.js?$filemtime'></script>";
+	?>
+    
 </head>
 <body onload="setup();">
     <?php
