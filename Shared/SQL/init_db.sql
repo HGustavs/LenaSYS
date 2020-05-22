@@ -395,11 +395,11 @@ CREATE TABLE class (
 -- this table stores the different subparts of each course. */
 
 CREATE TABLE subparts(
-	partname				VARCHAR(50) UNIQUE,
-	cid 					INT  NOT NULL UNIQUE,
-	parthp 					NUMERIC(3,1) DEFAULT NULL UNIQUE,
+	partname			  VARCHAR(50),
+	cid 					  INT  NOT NULL,
+	parthp 					NUMERIC(3,1) DEFAULT NULL,
 	difgrade				VARCHAR(10),
-	PRIMARY KEY (partname,cid),
+	PRIMARY KEY (partname, cid, parthp),
 	FOREIGN KEY (cid) REFERENCES course (cid)
 );
 
@@ -407,13 +407,13 @@ CREATE TABLE subparts(
 -- this table is weak reslation to lenasys_user and partcourse. */
 
 CREATE TABLE partresult (
-    cid 					INT  NOT NULL,
+  cid 					INT  NOT NULL,
 	uid						INT  NOT NULL,
 	partname				VARCHAR(50),
 	grade 					VARCHAR(1) DEFAULT NULL,
-	hp						NUMERIC(3,1) REFERENCES subparts (parthp),
-	PRIMARY KEY (partname, cid, uid),
-	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
+	parthp						NUMERIC(3,1),
+	PRIMARY KEY (partname, cid, parthp, uid),
+	FOREIGN KEY (partname,cid, parthp) REFERENCES subparts (partname, cid, parthp),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
 );
 
@@ -490,7 +490,7 @@ CREATE TABLE user_push_registration (
 	--KEY (endpoint), usage seems redudant, see above */
 
 -- Usergroup and user_usergroup relation */
-CREATE TABLE "groups" (
+CREATE TABLE lenasys_groups (
     groupID SERIAL,
     groupKind VARCHAR(4) NOT NULL,
     groupVal VARCHAR(8) NOT NULL,
@@ -568,32 +568,32 @@ END;
 DELIMITER ;
 
 
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','1',1);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','2',2);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','3',3);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','4',4);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','5',5);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','6',6);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','7',7);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','8',8);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','1',1);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','2',2);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','3',3);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','4',4);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','5',5);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','6',6);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','7',7);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','8',8);
 
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','A',1);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','B',2);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','C',3);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','D',4);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','E',5);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','F',6);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','G',7);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','H',8);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','A',1);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','B',2);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','C',3);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','D',4);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','E',5);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','F',6);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','G',7);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','H',8);
 
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','I',1);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','II',2);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','III',3);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','IV',4);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','V',5);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','VI',6);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','VII',7);
-INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','VIII',8);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','I',1);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','II',2);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','III',3);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','IV',4);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','V',5);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','VI',6);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','VII',7);
+INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','VIII',8);
 
 CREATE TABLE user_group (
   groupID 				int  NOT NULL, -- (10)*/
@@ -602,7 +602,7 @@ CREATE TABLE user_group (
   --KEY userID (userID), */
   PRIMARY KEY(groupID,userID),
   --CONSTRAINT user_group_ibfk_1 */ 
-  FOREIGN KEY (groupID) REFERENCES "groups" (groupID),
+  FOREIGN KEY (groupID) REFERENCES lenasys_groups (groupID),
   --CONSTRAINT user_group_ibfk_2 */ 
   FOREIGN KEY (userID) REFERENCES lenasys_user (uid)
 );
@@ -683,10 +683,10 @@ CREATE TABLE userduggafeedback(
 
 
 CREATE VIEW studentresultCourse AS
-	SELECT partresult.uid AS username, partresult.cid, partresult.hp FROM partresult
+	SELECT partresult.uid AS username, partresult.cid, partresult.parthp FROM partresult
 	INNER JOIN subparts ON partresult.partname = subparts.partname
 		AND subparts.cid = partresult.cid
-		AND subparts.parthp = partresult.hp
+		AND subparts.parthp = partresult.parthp
 	WHERE partresult.grade != 'u';
 
 -- updatesd info in lenasys_user table  */
