@@ -590,14 +590,14 @@ INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (312,200,'salstent
 
 INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (305,201,'salstentamen',4,7.5);
 INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (307,201,'salstentamen',5,5);
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (308,201,'salstentamen','u',7.5);
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (309,201,'salstentamen','u',7.5);
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (312,201,'salstentamen',3,7.5);
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (319,201,'salstentamen','u',30);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (308,201,'salstentamen','u',7.5);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (309,201,'salstentamen','u',7.5);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (312,201,'salstentamen',3,7.5);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (319,201,'salstentamen','u',30);
 
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (305,202,'salstentamen',4,7.5);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (305,202,'salstentamen',4,7.5);
 
-INSERT INTO partresult (cid,uid,partname,grade,hp) VALUES (305,203,'salstentamen',4,7.5);
+INSERT INTO partresult (cid,uid,partname,grade,parthp) VALUES (305,203,'salstentamen',4,7.5);
 
 /* Insert into list */
 INSERT INTO list (listnr,listeriesid,responsible,course) VALUES ('23415',2001,'Christina Sjogren',2);
