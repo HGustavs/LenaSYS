@@ -3,10 +3,10 @@ date_default_timezone_set("Europe/Stockholm");
 include_once ("../Shared/database.php");
 pdoConnect();
 
-$uid = $_POST['uid'];
+$studentid = $_POST['studentid'];
 $duggaFeedback;
 $todayDate = date("Y-m-d H:i:s");
-foreach ($pdo->query('SELECT useranswer.aid, useranswer.moment, useranswer.grade, useranswer.marked, useranswer.feedback, useranswer.seen_status, listentries.entryname, user.firstname, user.lastname, vers.coursecode, vers.versname, useranswer.vers AS useranswerVersid, useranswer.cid AS useranswerCid, useranswer.uid AS studentid, useranswer.creator AS markedAuthorid FROM useranswer, listentries, user, vers WHERE useranswer.moment=listentries.lid AND useranswer.creator=user.uid AND useranswer.cid=vers.cid AND useranswer.vers=vers.vers AND useranswer.uid="'.$uid.'" ORDER BY marked DESC') as $useranswer){
+foreach ($pdo->query('SELECT useranswer.aid, useranswer.moment, useranswer.grade, useranswer.marked, useranswer.feedback, useranswer.seen_status, listentries.entryname, user.firstname, user.lastname, vers.coursecode, vers.versname, useranswer.vers AS useranswerVersid, useranswer.cid AS useranswerCid, useranswer.uid AS studentid, useranswer.creator AS markedAuthorid FROM useranswer, listentries, user, vers WHERE useranswer.moment=listentries.lid AND useranswer.creator=user.uid AND useranswer.cid=vers.cid AND useranswer.vers=vers.vers AND useranswer.uid="'.$studentid.'" ORDER BY marked DESC') as $useranswer){
   $markedAuthorid = $useranswer['markedAuthorid'];
   $aid = $useranswer['aid'];
   $studentid = $useranswer['studentid'];
@@ -39,7 +39,7 @@ foreach ($pdo->query('SELECT useranswer.aid, useranswer.moment, useranswer.grade
   }
   $remove_date = strstr($recent_feedback, '%%');
   $feedback = str_replace('%%', "\n", $remove_date);
-  $feedbackAvailableDate= date('Y-m-d H:i:s', strtotime($marked. ' + 7 days'));
+  $feedbackAvailableDate= date('Y-m-d H:i:s', strtotime($marked. ' + 1 minute'));
   if($feedbackAvailableDate > $todayDate && $grade != null){
     $duggaFeedback .="<div class='feedback_card recentFeedbacks'>";
 
@@ -74,19 +74,19 @@ foreach ($pdo->query('SELECT useranswer.aid, useranswer.moment, useranswer.grade
   $duggaFeedback .= "</div>";
 
 }
-if(isset($_POST['uid']) && isset($_POST['viewed'])){
-  $uid = $_POST['uid'];
+if(isset($_POST['studentid']) && isset($_POST['viewed'])){
+  $studentid = $_POST['studentid'];
   $seen_status = 1;
   $update_seen_feedback_status = 'UPDATE useranswer SET seen_status=:seen_status WHERE uid=:uid AND grade IS NOT NULL';
   $stmt = $pdo->prepare($update_seen_feedback_status); 
-  $stmt->bindParam(':uid', $uid);
+  $stmt->bindParam(':uid', $studentid);
   $stmt->bindParam(':seen_status', $seen_status);     
 
   $stmt->execute();
 
 }
 //count un-seen feedbacks
-$unreadFeedbackNotification = $pdo->query('SELECT COUNT(*) FROM useranswer WHERE uid ="'.$uid.'" AND seen_status = "0" AND grade IS NOT NULL')->fetchColumn(); 
+$unreadFeedbackNotification = $pdo->query('SELECT COUNT(*) FROM useranswer WHERE (grade IS NOT NULL) AND seen_status = "0" AND uid ="'.$studentid.'"')->fetchColumn(); 
 
 echo json_encode(["duggaFeedback" => $duggaFeedback, "unreadFeedbackNotification" => $unreadFeedbackNotification]);
 

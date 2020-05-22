@@ -2157,30 +2157,32 @@ function multiSelect(){
 }
 //start of recent feedback from the teacher
 function toggleFeedbacks(){
-  let uid, uname = $("#userName").html();
+  let uname = $("#userName").html();
+  let studentid, parsed_data, parsed_uid, duggaFeedback, feedbackComment, unseen_feedbacks;
   $.ajax({
     url: "../Shared/retrieveUserid.php",
     data: {uname:uname},
     type: "GET",
     success: function(data){
-      let parsed_uid = JSON.parse(data);
-      uid = parsed_uid.uid;
+      parsed_uid = JSON.parse(data);
+      studentid = parsed_uid.uid;
       $.ajax({
         url: "../Shared/retrieveFeedbacks.php",
-        data: {uid: uid},
+        data: {studentid: studentid},
         type: "POST",
         success: function(data){
-          let parsed_data = JSON.parse(data);
-          let duggaFeedback = parsed_data.duggaFeedback;
+          console.log("duggaFeedback: " + data);
+          parsed_data = JSON.parse(data);
+          duggaFeedback = parsed_data.duggaFeedback;
           $(".feedbackContent").html(duggaFeedback);
           if ($(".recentFeedbacks").length == 0) {
              $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedbacks</span></p>");
 
           }
           $(".oldFeedbacks").hide();                  
-          let feedbackComment = 'feedbackComment';
+          feedbackComment = 'feedbackComment';
           readLessOrMore(feedbackComment);
-          let unseen_feedbacks = parsed_data.unreadFeedbackNotification;
+          unseen_feedbacks = parsed_data.unreadFeedbackNotification;
           if(unseen_feedbacks > 0){
             $("#feedback img").after("<span id='feedbacknotificationcounter'>0</span>");
             $("#feedbacknotificationcounter").html(unseen_feedbacks);
@@ -2208,7 +2210,7 @@ function toggleFeedbacks(){
       var viewed = "YES";
       $.ajax({
         url: "../Shared/retrieveFeedbacks.php",
-        data: {uid: uid, viewed:viewed},
+        data: {studentid: studentid, viewed:viewed},
         type: "POST",
         success: function(){
           $("#feedbacknotificationcounter").remove();
