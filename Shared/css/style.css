@@ -7139,6 +7139,14 @@ textarea#filecont {
 
 .hamburgerList{
   list-style: none;
+  position: absolute;
+  padding: 18px 0px 0px 0px;
+}
+.hamburgerList li{
+  background-color:grey;
+}
+.hamburgerList li a{
+  font-size: 24px;
 }
 
 @media only screen and (min-width: 801px) {

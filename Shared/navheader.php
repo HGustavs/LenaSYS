@@ -61,7 +61,22 @@
 				echo '<td class="navButt analytic-navbutton" id="Userinformation"><a onclick="loadUserInformation()"><i class="fas fa-user"></i></a><span class="navcomment">User information</span></td>';
 				echo '<td class="navButt analytic-navbutton" id="CourseDiskUsage"><a onclick="loadCourseDiskUsage()"><i class="fas fa-hdd"></i></a><span class="navcomment">Course disk usage</span></td>';
 				
-				echo "<td class='navButt analytic-navbutton' id='hamburger'><img style='height:30px' src='../Shared/icons/hamburger_menu.svg'></td>";
+				echo '<td class="navButt analytic-navbutton" id="hamburger"><img style="height:30px" src="../Shared/icons/hamburger_menu.svg">';
+				echo '<ol class="hamburgerList">';
+				echo '<li class="navButt analytic-navbutton" id="GeneralStats"><a onclick="loadGeneralStats()"><i class="fas fa-stream"></i></a><span class="navcomment">General Stats</span></li>';
+				echo '<li class="navButt analytic-navbutton" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline()"><i class="fas fa-users"></i></a><span class="navcomment">Currently Online</span></li>';
+				echo '<li class="navButt analytic-navbutton" id="PasswordGuessing"><a onclick="loadPasswordGuessing()"><i class="fas fa-key"></i></a><span class="navcomment">Password Guessing</span></li>';
+				echo '<li class="navButt analytic-navbutton" id="OSPercentage"><a onclick="loadOsPercentage()"><i class="fas fa-laptop"></i></a><span class="navcomment">OS Percentage</span></li>';
+				echo '<li class="navButt analytic-navbutton" id="Browserpercentage"><a onclick="loadBrowserPercentage()"><i class="fa fa-chrome"></i></a><span class="navcomment">Browser percentage</span></li>';
+				echo '<li class="navButt analytic-navbutton" id="Serviceusage"><a onclick="loadServiceUsage()"><i class="fas fa-chart-line"></i></a><span class="navcomment">Service usage</span></li>';
+				echo '<li class="navButt analytic-navbutton" id="Servicespeed"><a onclick="loadServiceAvgDuration()"><i class="fas fa-tachometer-alt"></i></a><span class="navcomment">Service speed</span></li>';
+				echo '<li class="navButt analytic-navbutton" id="Servicecrashes"><a onclick="loadServiceCrashes()"><i class="fas fa-car-crash"></i></a><span class="navcomment">Service crashes</span></li>';
+				echo '<li class="navButt analytic-navbutton" id="Fileinformation"><a onclick="loadFileInformation()"><i class="fas fa-file-pdf"></i></a><span class="navcomment">File information</span></li>';
+				echo '<li class="navButt analytic-navbutton" id="Pageinformation"><a onclick="loadPageInformation()"><i class="fas fa-globe-europe"></i></a><span class="navcomment">Page information</span></li>';
+				echo '<li class="navButt analytic-navbutton" id="Userinformation"><a onclick="loadUserInformation()"><i class="fas fa-user"></i></a><span class="navcomment">User information</span></li>';
+				echo '<li class="navButt analytic-navbutton" id="CourseDiskUsage"><a onclick="loadCourseDiskUsage()"><i class="fas fa-hdd"></i></a><span class="navcomment">Course disk usage</span></li>';
+				echo '</ol>';
+				echo '</td>';
 			}
 
 			if($noup!='NONE') {
