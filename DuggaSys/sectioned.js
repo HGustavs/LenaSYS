@@ -2170,10 +2170,11 @@ function toggleFeedbacks(){
         url: "../Shared/retrieveFeedbacks.php",
         data: {studentid: studentid},
         type: "POST",
+        async: true,
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         success: function(data){
-          console.log("duggaFeedback: " + data);
-          parsed_data = JSON.parse(data);
-          duggaFeedback = parsed_data.duggaFeedback;
+          duggaFeedback = data.duggaFeedback;
           $(".feedbackContent").html(duggaFeedback);
           if ($(".recentFeedbacks").length == 0) {
              $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedbacks</span></p>");
