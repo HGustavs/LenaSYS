@@ -1023,6 +1023,16 @@ function pageInformation(){
 		refer LIKE "%profile%"
 	')->fetchAll(PDO::FETCH_ASSOC);
 
+	$diagram = $GLOBALS['log_db']->query('
+	SELECT
+		refer,
+		COUNT(*) AS pageLoads
+	FROM 
+		userHistory
+	WHERE 
+		refer LIKE "%diagram%"
+	')->fetchAll(PDO::FETCH_ASSOC);
+
 	$result = [];
 	$result['hits']['dugga'] = $dugga[0];
 	$result['hits']['codeviewer'] = $codeviewer[0];
@@ -1034,7 +1044,8 @@ function pageInformation(){
 	$result['hits']['contribution'] = $contribution[0];
 	$result['hits']['duggaed'] = $duggaed[0];   
 	$result['hits']['accessed'] = $accessed[0];
-	$result['hits']['profile'] = $profile[0];   
+	$result['hits']['profile'] = $profile[0];
+	$result['hits']['diagram'] = $diagram[0];   
 
 
 	$result['percentage']['dugga'] = $dugga;
@@ -1048,6 +1059,7 @@ function pageInformation(){
 	$result['percentage']['duggaed'] = $duggaed;
 	$result['percentage']['accessed'] = $accessed;
 	$result['percentage']['profile'] = $profile;
+	$result['percentage']['diagram'] = $diagram;
 
 	echo json_encode($result);
 }

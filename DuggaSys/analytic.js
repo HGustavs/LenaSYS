@@ -653,6 +653,7 @@ function loadPageInformation() {
 		.append('<option value="courseed">courseed</option>')
 		.append('<option value="contribution">contribution</option>')
 		.append('<option value="duggaed">duggaed</option>')
+		.append('<option value="diagram">diagram</option>')
 		.append('<option value="fileed">fileed</option>')
 		.append('<option value="profile">profile</option>')
 		.append('<option value="resulted">resulted</option>')
@@ -753,7 +754,7 @@ function loadPageInformation() {
  
     function updateState(){
 		// Add additonal pages here
-		var pages = ["dugga", "codeviewer", "sectioned", "courseed", "fileed", "resulted", "analytic", "contribution", "duggaed", "accessed", "profile"];
+		var pages = ["dugga", "codeviewer", "sectioned", "courseed", "fileed", "resulted", "analytic", "contribution", "duggaed", "accessed", "profile", "diagram"];
 
 		if(firstLoad === true){
 			updatePageHitInformation(pages, pages[0]);
@@ -793,6 +794,9 @@ function loadPageInformation() {
 					break;
 				case "profile":
 					updatePageHitInformation(pages, pages[10]);
+					break;
+				case "diagram":
+					updatePageHitInformation(pages, pages[11]);
 					break;
 				
             }
