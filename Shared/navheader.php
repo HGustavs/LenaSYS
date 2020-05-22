@@ -62,7 +62,7 @@
 				echo '<td class="navButt analytic-navbutton" id="CourseDiskUsage"><a onclick="loadCourseDiskUsage()"><i class="fas fa-hdd"></i></a><span class="navcomment">Course disk usage</span></td>';
 				
 				echo '<td class="navButt analytic-navbutton" id="hamburger"><img style="height:30px" src="../Shared/icons/hamburger_menu.svg">';
-				echo '<ol class="hamburgerList">';
+				echo '<ol class="hamburgerList" id="hamburgerList">';
 				echo '<li class="navButt analytic-navbutton" id="GeneralStats"><a onclick="loadGeneralStats()"><i class="fas fa-stream"></i></a><span class="navcomment">General Stats</span></li>';
 				echo '<li class="navButt analytic-navbutton" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline()"><i class="fas fa-users"></i></a><span class="navcomment">Currently Online</span></li>';
 				echo '<li class="navButt analytic-navbutton" id="PasswordGuessing"><a onclick="loadPasswordGuessing()"><i class="fas fa-key"></i></a><span class="navcomment">Password Guessing</span></li>';
@@ -462,7 +462,11 @@ function mouseOverSearchInput() {
 	obj.removeAttribute('readonly');
    }
 }
-
+$(document).ready(function(){
+$("#hamburger").click(function(){
+  $("#hamburgerList").slideToggle();
+});
+});
 </script>
 <script type="text/javascript">
 	(function(proxied) {

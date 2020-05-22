@@ -7137,14 +7137,22 @@ textarea#filecont {
     flex-flow:wrap;
 }
 
+/*HAMBURGER LIST IN ANALYTICS ------------*/
 .hamburgerList{
   list-style: none;
   position: absolute;
-  padding: 18px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  right: 3px;
+  display: none;
 }
+
 .hamburgerList li{
-  background-color:grey;
+  background-color:#493150;
+  box-shadow: 1px 1px 4px #3a3a3a;
+  border-radius: 35%;
+  -webkit-border-radius: 35%;
 }
+
 .hamburgerList li a{
   font-size: 24px;
 }
@@ -7154,6 +7162,8 @@ textarea#filecont {
     display:none;
   }
 }
+
+
 #selectdir{
   width: 120px;
   position: relative;
