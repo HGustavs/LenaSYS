@@ -513,7 +513,7 @@
                         <img src="../Shared/icons/SkipF.svg">
                     </button>
                 </div>
-                <div id="diagram-timeline" onmouseover='timelineMouseOver(event);' onclick='timelineClick(event);'></div>
+                <div id="diagram-timeline" onmouseover='timelineMouseOver(event);' onmouseleave='timelineMouseLeave();' onclick='timelineClick(event);'></div>
                 <div class="diagram-timeline-controls" style="border-left:1px solid #000000;">
                     <button class="diagram-tools-button diagram-tools-button-small" onclick='toggleFullscreen();'>
                         <img src="../Shared/icons/fullscreen.svg">

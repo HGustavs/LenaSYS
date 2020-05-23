@@ -6396,6 +6396,11 @@ function timelineMouseOver(e) {
     });
 }
 
+function timelineMouseLeave() {
+    const timelineParts = document.querySelectorAll(".diagram-timeline-part");
+    timelineParts.forEach(part => part.classList.remove("plus", "minus"));
+}
+
 function getElementIndexInParent(element) {
     return [...element.parentNode.childNodes].indexOf(element);
 }
