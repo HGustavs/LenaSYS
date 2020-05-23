@@ -514,6 +514,11 @@
                     </button>
                 </div>
                 <div id="diagram-timeline">
+                    <div class="diagram-timeline-part done"></div>
+                    <div class="diagram-timeline-part done"></div>
+                    <div class="diagram-timeline-part done"></div>
+                    <div class="diagram-timeline-part done"></div>
+                    <div class="diagram-timeline-part"></div>
                     <div class="diagram-timeline-part"></div>
                     <div class="diagram-timeline-part"></div>
                     <div class="diagram-timeline-part"></div>
