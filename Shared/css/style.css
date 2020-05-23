@@ -5870,10 +5870,20 @@ only screen and (max-device-width: 320px) {
 }
 
 #diagram-timeline {
+  display: flex;
   flex-grow: 1;
   border-right: 1px solid #000000;
   border-left: 1px solid #000000;
 }
+
+.diagram-timeline-part {
+  background-color: aquamarine;
+  width: 50px;
+  height: 100%;
+  flex-grow: 1;
+}
+
+
 
 
 /* --------------================################================-------------- *
