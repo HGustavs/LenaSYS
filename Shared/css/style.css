@@ -5733,6 +5733,10 @@ only screen and (max-device-width: 320px) {
   margin-top: var(--ruler-size);
 }
 
+#diagram-page-wrapper.timeline-active #ruler-y {
+  height: calc(100% - var(--ruler-size) - var(--timeline-height) - var(--canvas-margin));
+}
+
 .ruler-lines {
   display: flex;
   align-items: flex-end;
