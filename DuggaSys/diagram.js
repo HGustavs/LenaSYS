@@ -493,6 +493,7 @@ function init() {
     setIsFullscreenActiveOnRefresh();
     setHideCommentOnRefresh();
     initAppearanceForm();
+    initTimeline();
     setPaperSize(event, paperSize);
     updateGraphics(); 
 }
@@ -6364,6 +6365,14 @@ function setIsRulersActiveOnRefresh() {
 //------------------------------------------------
 // Diagram timeline functions
 //------------------------------------------------
+
+function initTimeline() {
+    const timelineElement = document.getElementById("diagram-timeline");
+
+    timelineElement.addEventListener("mouseover", timelineMouseOver);
+    timelineElement.addEventListener("mouseleave", timelineMouseLeave);
+    timelineElement.addEventListener("click", timelineClick);
+}
 
 function updateTimeline() {
     const timelineElement = document.getElementById("diagram-timeline");
