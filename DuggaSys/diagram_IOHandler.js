@@ -139,6 +139,7 @@ function SaveState() {
         diagramChanges.indexes.push();
     }
 
+    updateTimeline();
     saveDiagramChangesToLocalStorage();
     localStorage.setItem("Settings", JSON.stringify(settings));
     console.log("State is saved");
@@ -224,6 +225,7 @@ function loadDiagram() {
             overwritePoints(built.points);
         }
     }
+    updateTimeline();
     deselectObjects();
     updateGraphics();
 }
@@ -307,6 +309,7 @@ function Load() {
     diagramChanges.indexes = new UndoRedoStack(diagramChanges.indexes.stack, diagramChanges.indexes.current);
     overwriteDiagram(built.diagram);
     overwritePoints(built.points);
+    updateTimeline();
 
     console.log("State is loaded");
     updateGraphics();

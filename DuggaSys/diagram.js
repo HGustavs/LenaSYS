@@ -6361,6 +6361,24 @@ function setIsRulersActiveOnRefresh() {
     }
 }
 
+//------------------------------------------------
+// Diagram timeline functions
+//------------------------------------------------
+
+function updateTimeline() {
+    const timelineElement = document.getElementById("diagram-timeline");
+
+    timelineElement.innerHTML = "";
+    for(let i = 0; i < diagramChanges.indexes.stack.length; i++) {
+        const part = document.createElement("div");
+        part.classList.add("diagram-timeline-part");
+        if(i <= diagramChanges.indexes.current) {
+            part.classList.add("done");    
+        }
+        timelineElement.appendChild(part);
+    }
+}
+
 function getOrigoOffsetX() {
     return origoOffsetX;
 }

@@ -513,16 +513,7 @@
                         <img src="../Shared/icons/SkipF.svg">
                     </button>
                 </div>
-                <div id="diagram-timeline">
-                    <div class="diagram-timeline-part done"></div>
-                    <div class="diagram-timeline-part done"></div>
-                    <div class="diagram-timeline-part done"></div>
-                    <div class="diagram-timeline-part done"></div>
-                    <div class="diagram-timeline-part"></div>
-                    <div class="diagram-timeline-part"></div>
-                    <div class="diagram-timeline-part"></div>
-                    <div class="diagram-timeline-part"></div>
-                </div>
+                <div id="diagram-timeline"></div>
                 <div class="diagram-timeline-controls">
                     <button class="diagram-tools-button diagram-tools-button-small" onclick='toggleFullscreen();'>
                         <img src="../Shared/icons/fullscreen.svg">
