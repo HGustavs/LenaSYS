@@ -5886,11 +5886,11 @@ only screen and (max-device-width: 320px) {
 }
 
 .diagram-timeline-part.plus {
-  background-color: green;
+  background-color: #4ca64c;
 }
 
 .diagram-timeline-part.minus {
-  background-color: red;
+  background-color: #ff4c4c;
 }
 
 .diagram-timeline-part:not(:last-child) {

@@ -501,15 +501,15 @@
                     <span id="zoomV"></span>
                 </div>
             </div>
-            <div id="diagram-timeline-container" style="border-right:1px solid #000000;">
-                <div class="diagram-timeline-controls">
-                    <button class="diagram-tools-button diagram-tools-button-small">
+            <div id="diagram-timeline-container">
+                <div class="diagram-timeline-controls" style="border-right:1px solid #000000;">
+                    <button class="diagram-tools-button diagram-tools-button-small" onclick="undoDiagram();">
                         <img src="../Shared/icons/SkipB.svg">
                     </button>
                     <button class="diagram-tools-button diagram-tools-button-small">
                         <img src="../Shared/icons/Play.svg">
                     </button>
-                    <button class="diagram-tools-button diagram-tools-button-small">
+                    <button class="diagram-tools-button diagram-tools-button-small" onclick="redoDiagram();">
                         <img src="../Shared/icons/SkipF.svg">
                     </button>
                 </div>
