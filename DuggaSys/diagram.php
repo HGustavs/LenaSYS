@@ -509,7 +509,7 @@
                     <button class="diagram-tools-button diagram-tools-button-small" onclick="undoDiagram();">
                         <img src="../Shared/icons/SkipB.svg">
                     </button>
-                    <button class="diagram-tools-button diagram-tools-button-small">
+                    <button class="diagram-tools-button diagram-tools-button-small" onclick="playTimeline(this);">
                         <img src="../Shared/icons/Play.svg">
                     </button>
                     <button class="diagram-tools-button diagram-tools-button-small" onclick="redoDiagram();">

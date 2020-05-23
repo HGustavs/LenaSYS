@@ -124,6 +124,7 @@ var fullscreen = false;             // Used to toggle fullscreen
 var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
 var isRulersActive = false;         //Show/hide rulers
 var isTimelineActive = true;        //Show/hide timeline
+var timelineAnimation = null;       //Used to set and clear interval auto animating diagram states
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -6440,6 +6441,25 @@ function toggleTimeline() {
     setCheckbox($(".drop-down-option:contains('Timeline')"), isTimelineActive);
     localStorage.setItem("isTimelineActive", isTimelineActive);
     canvasSize();
+}
+
+function playTimeline(playButton) {
+    const img = playButton.querySelector("img");
+    const srcSplitted = img.src.split("/");
+    const srcName = srcSplitted[srcSplitted.length - 1];
+
+    if(srcName === "Play.svg") {
+        img.src = "../Shared/icons/Pause.svg";
+        timelineAnimation = setInterval(() => {
+            if(diagramChanges.indexes.current === diagramChanges.indexes.stack.length - 1) {
+                diagramChanges.indexes.current = -1;
+            }
+            redoDiagram();
+        }, 1000);
+    } else {
+        img.src = "../Shared/icons/Play.svg";
+        clearInterval(timelineAnimation);
+    }
 }
 
 function getElementIndexInParent(element) {
