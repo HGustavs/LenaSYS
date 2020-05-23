@@ -5881,20 +5881,20 @@ only screen and (max-device-width: 320px) {
   cursor: pointer;
 }
 
-#diagram-timeline:hover .diagram-timeline-part {
+.diagram-timeline-part.included {
   background-color: var(--color-primary);
 }
 
-.diagram-timeline-part:hover ~ .diagram-timeline-part {
-  background-color: #ffffff !important;
+.diagram-timeline-part.plus {
+  background-color: green;
 }
 
-.diagram-timeline-part.done {
-  background-color: var(--color-primary);
+.diagram-timeline-part.minus {
+  background-color: red;
 }
 
 .diagram-timeline-part:not(:last-child) {
-  border-right: 2px solid var(--color-primary-light);
+  border-right: 1px solid var(--color-primary-light);
 }
 
 

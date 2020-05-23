@@ -6373,14 +6373,27 @@ function updateTimeline() {
         const part = document.createElement("div");
         part.classList.add("diagram-timeline-part");
         if(i <= diagramChanges.indexes.current) {
-            part.classList.add("done");    
+            part.classList.add("included");    
         }
         timelineElement.appendChild(part);
     }
 }
 
-function timelineHover(e) {
-    const elementIndex = getElementIndexInParent(e.target);
+function timelineMouseOver(e) {
+    const hoveredPartIndex = getElementIndexInParent(e.target);
+    const timelineParts = document.querySelectorAll(".diagram-timeline-part");
+
+    timelineParts.forEach((part, i) => {
+        part.classList.remove("plus", "minus");
+
+        //When hovered part is after current iteration part and current iteration part is not already a shown state, current iteration part should be marked green
+        //When hovered part is before current iteration part and current iteration part is a shown state, current iteration part should be marked red
+        if(hoveredPartIndex >= i && !part.classList.contains("included")) {
+            part.classList.add("plus");
+        } else if(hoveredPartIndex < i && part.classList.contains("included")) {
+            part.classList.add("minus");
+        }
+    });
 }
 
 function getElementIndexInParent(element) {
