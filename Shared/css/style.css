@@ -5708,7 +5708,8 @@ only screen and (max-device-width: 320px) {
   border: 1px solid #000000;
 }
 
-.ruler.hidden {
+.ruler.hidden,
+#diagram-timeline-container.hidden {
   display: none;
 }
 

@@ -123,6 +123,7 @@ var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
 var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
 var isRulersActive = false;         //Show/hide rulers
+var isTimelineActive = true;        //Show/hide timeline
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -6368,6 +6369,12 @@ function setIsRulersActiveOnRefresh() {
 
 function initTimeline() {
     const timelineElement = document.getElementById("diagram-timeline");
+    const tempIsTimelineActive = localStorage.getItem("isTimelineActive");
+
+    if(tempIsTimelineActive !== null) {
+        isTimelineActive = !(tempIsTimelineActive === "true");
+        toggleTimeline();
+    }
 
     timelineElement.addEventListener("mouseover", timelineMouseOver);
     timelineElement.addEventListener("mouseleave", timelineMouseLeave);
@@ -6415,6 +6422,24 @@ function timelineClick(e) {
     diagramChanges.indexes.current = clickedPartIndex;
     saveDiagramChangesToLocalStorage();
     Load();
+}
+
+function toggleTimeline() {
+    const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
+    const timelineContainer = document.getElementById("diagram-timeline-container");
+
+    isTimelineActive = !isTimelineActive;
+
+    if(isTimelineActive) {
+        diagramPageWrapper.classList.add("timeline-active");
+        timelineContainer.classList.remove("hidden");
+    } else {
+        diagramPageWrapper.classList.remove("timeline-active");
+        timelineContainer.classList.add("hidden");
+    }
+    setCheckbox($(".drop-down-option:contains('Timeline')"), isTimelineActive);
+    localStorage.setItem("isTimelineActive", isTimelineActive);
+    canvasSize();
 }
 
 function getElementIndexInParent(element) {
