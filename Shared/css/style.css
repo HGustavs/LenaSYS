@@ -5638,6 +5638,15 @@ only screen and (max-device-width: 320px) {
   height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--ruler-size) - var(--canvas-margin));
 }
 
+#diagram-page-wrapper.timeline-active #diagram-canvas-container {
+  height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--timeline-height) - var(--canvas-margin));
+  margin-bottom: 0;
+}
+
+#diagram-page-wrapper.rulers-active.timeline-active #diagram-canvas-container {
+  height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--timeline-height) - var(--ruler-size) - var(--canvas-margin));
+}
+
 #diagram-page-wrapper.fullscreen #diagram-canvas-container {
   position: absolute;
   top: 0;
@@ -5839,7 +5848,7 @@ only screen and (max-device-width: 320px) {
 
 #diagram-timeline-container {
   height: var(--timeline-height);
-  width: 100%;
+  width: calc(100% - var(--canvas-margin));
   background-color: green;
 }
 
