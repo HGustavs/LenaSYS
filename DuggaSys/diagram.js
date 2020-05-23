@@ -6401,6 +6401,13 @@ function timelineMouseLeave() {
     timelineParts.forEach(part => part.classList.remove("plus", "minus"));
 }
 
+function timelineClick(e) {
+    const clickedPartIndex = getElementIndexInParent(e.target);
+    diagramChanges.indexes.current = clickedPartIndex;
+    saveDiagramChangesToLocalStorage();
+    Load();
+}
+
 function getElementIndexInParent(element) {
     return [...element.parentNode.childNodes].indexOf(element);
 }
