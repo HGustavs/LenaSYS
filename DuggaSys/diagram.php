@@ -79,7 +79,7 @@
         $exampleDiagramFilePaths = glob('templates/example-diagram/*.txt');
     ?>
 
-    <div id="diagram-page-wrapper">
+    <div id="diagram-page-wrapper" class="timeline-active">
     <div id="diagram-header">
         <div id=diagram-toolbar-switcher>DEV: All</div>
         <div id="diagram-toolbar-container">
@@ -500,6 +500,9 @@
                     </span>
                     <span id="zoomV"></span>
                 </div>
+            </div>
+            <div id="diagram-timeline-container">
+
             </div>
         </div>
     </div>

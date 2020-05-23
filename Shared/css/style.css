@@ -5452,6 +5452,7 @@ only screen and (max-device-width: 320px) {
   --ruler-size: 38px;
   --diagram-sidebar-width: 60px;
   --canvas-margin: 8px;
+  --timeline-height: 24px;
 }
 
 #diagram-header {
@@ -5683,6 +5684,7 @@ only screen and (max-device-width: 320px) {
   border-left: 1px solid #000000;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 #diagram-page-wrapper.fullscreen .ruler {
@@ -5819,7 +5821,6 @@ only screen and (max-device-width: 320px) {
   right: 0;
 }
 
-
 #ruler-x .ruler-extra-lines .mouse-line {
   width: 4px;
 }
@@ -5835,6 +5836,13 @@ only screen and (max-device-width: 320px) {
 #ruler-y .ruler-extra-lines .point-line {
   height: 3px;
 }
+
+#diagram-timeline-container {
+  height: var(--timeline-height);
+  width: 100%;
+  background-color: green;
+}
+
 
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *
