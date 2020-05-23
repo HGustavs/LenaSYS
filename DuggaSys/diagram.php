@@ -502,7 +502,17 @@
                 </div>
             </div>
             <div id="diagram-timeline-container">
-
+                <div class="diagram-timeline-controls">
+                    <button class="diagram-tools-button diagram-tools-button-small">
+                        <img src="../Shared/icons/SkipB.svg">
+                    </button>
+                    <button class="diagram-tools-button diagram-tools-button-small">
+                        <img src="../Shared/icons/Play.svg">
+                    </button>
+                    <button class="diagram-tools-button diagram-tools-button-small">
+                        <img src="../Shared/icons/SkipF.svg">
+                    </button>
+                </div>
             </div>
         </div>
     </div>

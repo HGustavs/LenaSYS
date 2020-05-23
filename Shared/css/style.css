@@ -5452,7 +5452,7 @@ only screen and (max-device-width: 320px) {
   --ruler-size: 38px;
   --diagram-sidebar-width: 60px;
   --canvas-margin: 8px;
-  --timeline-height: 24px;
+  --timeline-height: 28px;
 }
 
 #diagram-header {
@@ -5853,7 +5853,15 @@ only screen and (max-device-width: 320px) {
 #diagram-timeline-container {
   height: var(--timeline-height);
   width: calc(100% - var(--canvas-margin));
-  background-color: green;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  border-left: 1px solid #000000;
+}
+
+.diagram-timeline-controls {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 
