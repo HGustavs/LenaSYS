@@ -5851,6 +5851,7 @@ only screen and (max-device-width: 320px) {
 }
 
 #diagram-timeline-container {
+  display: flex;
   height: var(--timeline-height);
   width: calc(100% - var(--canvas-margin));
   border-right: 1px solid #000000;
@@ -5859,9 +5860,19 @@ only screen and (max-device-width: 320px) {
 }
 
 .diagram-timeline-controls {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   height: 100%;
+}
+
+.diagram-timeline-controls > .diagram-tools-button {
+  margin: 0 2px;
+}
+
+#diagram-timeline {
+  flex-grow: 1;
+  border-right: 1px solid #000000;
+  border-left: 1px solid #000000;
 }
 
 

@@ -513,6 +513,12 @@
                         <img src="../Shared/icons/SkipF.svg">
                     </button>
                 </div>
+                <div id="diagram-timeline"></div>
+                <div class="diagram-timeline-controls">
+                    <button class="diagram-tools-button diagram-tools-button-small">
+                        <img src="../Shared/icons/fullscreen.svg">
+                    </button>
+                </div>
             </div>
         </div>
     </div>
