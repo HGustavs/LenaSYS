@@ -6379,6 +6379,14 @@ function updateTimeline() {
     }
 }
 
+function timelineHover(e) {
+    const elementIndex = getElementIndexInParent(e.target);
+}
+
+function getElementIndexInParent(element) {
+    return [...element.parentNode.childNodes].indexOf(element);
+}
+
 function getOrigoOffsetX() {
     return origoOffsetX;
 }

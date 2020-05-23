@@ -501,7 +501,7 @@
                     <span id="zoomV"></span>
                 </div>
             </div>
-            <div id="diagram-timeline-container">
+            <div id="diagram-timeline-container" style="border-right:1px solid #000000;">
                 <div class="diagram-timeline-controls">
                     <button class="diagram-tools-button diagram-tools-button-small">
                         <img src="../Shared/icons/SkipB.svg">
@@ -513,8 +513,8 @@
                         <img src="../Shared/icons/SkipF.svg">
                     </button>
                 </div>
-                <div id="diagram-timeline"></div>
-                <div class="diagram-timeline-controls">
+                <div id="diagram-timeline" onmouseover='timelineHover(event);' onclick='timelineClick(event);'></div>
+                <div class="diagram-timeline-controls" style="border-left:1px solid #000000;">
                     <button class="diagram-tools-button diagram-tools-button-small" onclick='toggleFullscreen();'>
                         <img src="../Shared/icons/fullscreen.svg">
                     </button>

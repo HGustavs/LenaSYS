@@ -5872,8 +5872,6 @@ only screen and (max-device-width: 320px) {
 #diagram-timeline {
   display: flex;
   flex-grow: 1;
-  border-right: 2px solid #000000;
-  border-left: 2px solid #000000;
 }
 
 .diagram-timeline-part {
