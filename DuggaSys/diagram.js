@@ -6174,7 +6174,6 @@ function fixExampleLayer(){
         diagram[i].properties.setLayer = writeToLayer;
     }
     updateGraphics();
-    //SaveState(); // This save breaks the undo functionality right now
 }
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
@@ -6370,6 +6369,11 @@ function setIsRulersActiveOnRefresh() {
 // Diagram timeline functions
 //------------------------------------------------
 
+//-----------------------------------------------------------------------------------------------------------
+// initTimeline: Initializes the timeline. Adds eventlisteners to timeline element.
+//               Loads active status from local storage to decide if they should be active or not on refresh.
+//-----------------------------------------------------------------------------------------------------------
+
 function initTimeline() {
     const timelineElement = document.getElementById("diagram-timeline");
     const tempIsTimelineActive = localStorage.getItem("isTimelineActive");
@@ -6384,6 +6388,10 @@ function initTimeline() {
     timelineElement.addEventListener("click", timelineClick);
 }
 
+//-------------------------------------------------------------------------------------------------
+// updateTimeline: Empties the timeline and regenerates parts based on current diagram state index.
+//-------------------------------------------------------------------------------------------------
+
 function updateTimeline() {
     const timelineElement = document.getElementById("diagram-timeline");
 
@@ -6397,6 +6405,11 @@ function updateTimeline() {
         timelineElement.appendChild(part);
     }
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+// timelineMouseOver: Executes when moving the mouse over the timeline element.
+//                    Gets the index of the hovered part in the timeline to show correct styling on parts before and after hovered part.
+//--------------------------------------------------------------------------------------------------------------------------------------
 
 function timelineMouseOver(e) {
     const hoveredPartIndex = getElementIndexInParent(e.target);
@@ -6415,10 +6428,18 @@ function timelineMouseOver(e) {
     });
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------
+// timelineMouseLeave: Executes when mouse leaves the timeline element. Removes special classes from all parts to restore to normal.
+//----------------------------------------------------------------------------------------------------------------------------------
+
 function timelineMouseLeave() {
     const timelineParts = document.querySelectorAll(".diagram-timeline-part");
     timelineParts.forEach(part => part.classList.remove("plus", "minus"));
 }
+
+//------------------------------------------------------------------------------------------------------------------
+// timelineClick: Executes when clicking on the timeline element. Loads state based on clicked timeline parts index.
+//------------------------------------------------------------------------------------------------------------------
 
 function timelineClick(e) {
     const clickedPartIndex = getElementIndexInParent(e.target);
@@ -6426,6 +6447,10 @@ function timelineClick(e) {
     saveDiagramChangesToLocalStorage();
     Load();
 }
+
+//----------------------------------------------------------------------------------------------------------
+// toggleTimeline: Toggles the timeline element. Sets the correct value in local storage and menu-item tick.
+//----------------------------------------------------------------------------------------------------------
 
 function toggleTimeline() {
     const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
@@ -6444,6 +6469,13 @@ function toggleTimeline() {
     localStorage.setItem("isTimelineActive", isTimelineActive);
     canvasSize();
 }
+
+//----------------------------------------------------------------------------------------------------------------------------------
+// playTimeline: Executes when clicking on the timeline play/pause button or when changing speed in the speed slider.
+//               Sets or clears animation interval depending on play/pause. Resets timeline if current index is the last available.
+//               Passed boolean is only true when function is called from changing value in speed slider. 
+//               This is used to only update speed text when speed was changed and never toggle play/pause icon when changing speed.
+//----------------------------------------------------------------------------------------------------------------------------------
 
 function playTimeline(isSpeedChanged = false) {
     const playButton = document.getElementById("diagram-timeline-play-button");
@@ -6477,11 +6509,19 @@ function playTimeline(isSpeedChanged = false) {
     }
 }
 
+//-------------------------------------------------------------------------------------------------------------
+// resetTimeline: Resets the timeline and diagram state to show an empty diagram and no colored timeline parts.
+//-------------------------------------------------------------------------------------------------------------
+
 function resetTimeline() {
     diagramChanges.indexes.current = -1;
     saveDiagramChangesToLocalStorage();
     Load();
 }
+
+//------------------------------------------------------------------------------------------------------------------------------
+// toggleTimelineControls: Toggles the extra timeline controls with an animation. Toggles the icon for the clicked button (+/-).
+//------------------------------------------------------------------------------------------------------------------------------
 
 function toggleTimelineControls() {
     const plusButton = document.getElementById("diagram-timline-plus-button")
@@ -6498,6 +6538,10 @@ function toggleTimelineControls() {
         width: "toggle"
     }, 300);
 }
+
+//---------------------------------------------------------------------------------------------------------------------------------------------
+// getElementIndexInParent: Returns the index the the passed element has in parent element. Used to get index of clicked/hovered timeline part.
+//---------------------------------------------------------------------------------------------------------------------------------------------
 
 function getElementIndexInParent(element) {
     return [...element.parentNode.childNodes].indexOf(element);
