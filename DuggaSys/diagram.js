@@ -6445,22 +6445,34 @@ function toggleTimeline() {
     canvasSize();
 }
 
-function playTimeline(playButton) {
+function playTimeline(isSpeedChanged = false) {
+    const playButton = document.getElementById("diagram-timeline-play-button");
+    const speedRange = document.getElementById("diagram-timeline-speed-range")
+    const speed = parseFloat(speedRange.value) || 1.0;
     const img = playButton.querySelector("img");
-    const srcSplitted = img.src.split("/");
-    const srcName = srcSplitted[srcSplitted.length - 1];
 
-    if(srcName === "Play.svg") {
-        img.src = "../Shared/icons/pause.svg";
+    if(isSpeedChanged) {
+        const speedTextElement = document.getElementById("diagram-timeline-speed");
+        speedTextElement.innerHTML = `<b>Speed:</b> ${speed}s`;
+        clearInterval(timelineAnimation);
+    } else {
+        playButton.classList.toggle("paused");
+        if(playButton.classList.contains("paused")) {
+            img.src = "../Shared/icons/Play.svg";
+        } else {
+            img.src = "../Shared/icons/pause.svg";
+        }
+    }
+
+    if(!playButton.classList.contains("paused")) {
         timelineAnimation = setInterval(() => {
             if(diagramChanges.indexes.current === diagramChanges.indexes.stack.length - 1) {
                 resetTimeline();
             } else {
                 redoDiagram();
             }
-        }, 1000);
+        }, speed * 1000);
     } else {
-        img.src = "../Shared/icons/Play.svg";
         clearInterval(timelineAnimation);
     }
 }
@@ -6471,15 +6483,15 @@ function resetTimeline() {
     Load();
 }
 
-function toggleTimelineControls(plusButton) {
+function toggleTimelineControls() {
+    const plusButton = document.getElementById("diagram-timline-plus-button")
     const img = plusButton.querySelector("img");
-    const srcSplitted = img.src.split("/");
-    const srcName = srcSplitted[srcSplitted.length - 1];
 
-    if(srcName === "Plus.svg") {
-        img.src = "../Shared/icons/Minus.svg";
-    } else {
+    plusButton.classList.toggle("closed");
+    if(plusButton.classList.contains("closed")) {
         img.src = "../Shared/icons/Plus.svg";
+    } else {
+        img.src = "../Shared/icons/Minus.svg";
     }
 
     $("#diagram-timeline-controls-toggleable").animate({

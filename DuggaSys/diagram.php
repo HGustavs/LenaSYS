@@ -506,10 +506,10 @@
             </div>
             <div id="diagram-timeline-container">
                 <div class="diagram-timeline-controls" style="border-right:1px solid #000000;">
-                    <button class="diagram-tools-button diagram-tools-button-small" onclick="playTimeline(this);">
+                    <button id="diagram-timeline-play-button" class="diagram-tools-button diagram-tools-button-small paused" onclick="playTimeline();">
                         <img src="../Shared/icons/Play.svg">
                     </button>
-                    <button class="diagram-tools-button diagram-tools-button-small" onclick="toggleTimelineControls(this);">
+                    <button id="diagram-timline-plus-button" class="diagram-tools-button diagram-tools-button-small closed" onclick="toggleTimelineControls();">
                         <img src="../Shared/icons/Plus.svg">
                     </button>
                     <div id="diagram-timeline-controls-toggleable" style="display:none;">
@@ -525,7 +525,7 @@
                         <button class="diagram-tools-button diagram-tools-button-small" onclick='toggleFullscreen();'>
                             <img src="../Shared/icons/fullscreen.svg">
                         </button>
-                        <input type="range" id="diagram-timeline-speed-range" class="zoomSlider" min="0.1" max="5" value="1" step="0.1">
+                        <input type="range" id="diagram-timeline-speed-range" class="zoomSlider" min="0.1" max="3" value="1" step="0.1" oninput="playTimeline(true);">
                         <div id="diagram-timeline-speed"><b>Speed:</b> 1s</div>
                     </div>
                 </div>
