@@ -122,6 +122,7 @@ function SaveState() {
         const positionFromLast = diagramChanges.indexes.getCurrentPositionsFromLast();
         if(positionFromLast > 0) {
             if(!confirm(`You are ${positionFromLast} state(s) behind the latest save.\nDo you really want to invalidate them and continue working from here?`)) {
+                Load();
                 return;
             }
             //Remove everything from index to end of changes array if not at last position and push will happen
