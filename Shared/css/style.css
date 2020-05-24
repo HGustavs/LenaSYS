@@ -5934,6 +5934,8 @@ only screen and (max-device-width: 320px) {
 }
 
 #diagram-timeline-speed {
+  flex-shrink: 0;
+  width: 64px;
   margin: 0 4px;
   font-size: 12px;
   white-space: nowrap;
