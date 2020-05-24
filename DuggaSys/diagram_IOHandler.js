@@ -171,11 +171,12 @@ function saveDiagramChangesToLocalStorage(value = JSON.stringify(diagramChanges)
 //-----------------------------------------------------------------------------------------
 
 function resetDiagramChanges() {
-    saveDiagramChangesToLocalStorage("null");
     diagramChanges = {
         indexes: new UndoRedoStack([], -1),
         changes: []
     };
+    saveDiagramChangesToLocalStorage();
+    updateTimeline();
 }
 
 //---------------------------------------------
