@@ -6471,7 +6471,17 @@ function resetTimeline() {
     Load();
 }
 
-function toggleTimelineControls() {
+function toggleTimelineControls(plusButton) {
+    const img = plusButton.querySelector("img");
+    const srcSplitted = img.src.split("/");
+    const srcName = srcSplitted[srcSplitted.length - 1];
+
+    if(srcName === "Plus.svg") {
+        img.src = "../Shared/icons/Minus.svg";
+    } else {
+        img.src = "../Shared/icons/Plus.svg";
+    }
+
     $("#diagram-timeline-controls-toggleable").animate({
         width: "toggle"
     }, 300);

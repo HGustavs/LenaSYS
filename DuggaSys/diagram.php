@@ -509,7 +509,7 @@
                     <button class="diagram-tools-button diagram-tools-button-small" onclick="playTimeline(this);">
                         <img src="../Shared/icons/Play.svg">
                     </button>
-                    <button class="diagram-tools-button diagram-tools-button-small" onclick="toggleTimelineControls();">
+                    <button class="diagram-tools-button diagram-tools-button-small" onclick="toggleTimelineControls(this);">
                         <img src="../Shared/icons/Plus.svg">
                     </button>
                     <div id="diagram-timeline-controls-toggleable" style="display:none;">
