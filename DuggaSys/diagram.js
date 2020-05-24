@@ -2637,6 +2637,9 @@ function gridToSVG(width, height) {
 //------------------------------------------------------------------------------
 
 function clearCanvas() {
+    if(!confirm(`The diagram contains ${diagramChanges.indexes.stack.length} state(s).\nDo you really want to clear the diagram?`)) {
+        return;
+    }
     while (diagram.length > 0) {
         diagram[diagram.length - 1].erase();
         diagram.pop();
@@ -2646,7 +2649,6 @@ function clearCanvas() {
     }
     resetSerialNumbers();
     updateGraphics();
-    SaveState();
 }
 
 //--------------------------------------------------------------------------
