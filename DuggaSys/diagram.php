@@ -515,6 +515,9 @@
                     <button class="diagram-tools-button diagram-tools-button-small" onclick="redoDiagram();">
                         <img src="../Shared/icons/SkipF.svg">
                     </button>
+                    <button class="diagram-tools-button diagram-tools-button-small" onclick="resetTimeline();">
+                        <img src="../Shared/icons/ResetButton.svg">
+                    </button>
                 </div>
                 <div id="diagram-timeline"></div>
                 <div class="diagram-timeline-controls" style="border-left:1px solid #000000;">

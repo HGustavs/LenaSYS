@@ -6464,6 +6464,12 @@ function playTimeline(playButton) {
     }
 }
 
+function resetTimeline() {
+    diagramChanges.indexes.current = -1;
+    saveDiagramChangesToLocalStorage();
+    Load();
+}
+
 function getElementIndexInParent(element) {
     return [...element.parentNode.childNodes].indexOf(element);
 }
