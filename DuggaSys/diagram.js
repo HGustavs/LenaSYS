@@ -6454,9 +6454,10 @@ function playTimeline(playButton) {
         img.src = "../Shared/icons/pause.svg";
         timelineAnimation = setInterval(() => {
             if(diagramChanges.indexes.current === diagramChanges.indexes.stack.length - 1) {
-                diagramChanges.indexes.current = -1;
+                resetTimeline();
+            } else {
+                redoDiagram();
             }
-            redoDiagram();
         }, 1000);
     } else {
         img.src = "../Shared/icons/Play.svg";
