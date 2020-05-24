@@ -6471,6 +6471,12 @@ function resetTimeline() {
     Load();
 }
 
+function toggleTimelineControls() {
+    $("#diagram-timeline-controls-toggleable").animate({
+        width: "toggle"
+    }, 300);
+}
+
 function getElementIndexInParent(element) {
     return [...element.parentNode.childNodes].indexOf(element);
 }

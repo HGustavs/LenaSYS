@@ -5890,7 +5890,7 @@ only screen and (max-device-width: 320px) {
   height: 100%;
 }
 
-.diagram-timeline-controls > .diagram-tools-button {
+.diagram-timeline-controls .diagram-tools-button {
   margin: 0 2px;
 }
 
@@ -5922,6 +5922,12 @@ only screen and (max-device-width: 320px) {
   border-right: 1px solid var(--color-primary-light);
 }
 
+#diagram-timeline-controls-toggleable {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  border-left: 1px solid #000000;
+}
 
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *

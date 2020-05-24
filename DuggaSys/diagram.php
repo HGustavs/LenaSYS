@@ -506,25 +506,28 @@
             </div>
             <div id="diagram-timeline-container">
                 <div class="diagram-timeline-controls" style="border-right:1px solid #000000;">
-                    <button class="diagram-tools-button diagram-tools-button-small" onclick="undoDiagram();">
-                        <img src="../Shared/icons/SkipB.svg">
-                    </button>
                     <button class="diagram-tools-button diagram-tools-button-small" onclick="playTimeline(this);">
                         <img src="../Shared/icons/Play.svg">
                     </button>
-                    <button class="diagram-tools-button diagram-tools-button-small" onclick="redoDiagram();">
-                        <img src="../Shared/icons/SkipF.svg">
+                    <button class="diagram-tools-button diagram-tools-button-small" onclick="toggleTimelineControls();">
+                        <img src="../Shared/icons/Plus.svg">
                     </button>
-                    <button class="diagram-tools-button diagram-tools-button-small" onclick="resetTimeline();">
-                        <img src="../Shared/icons/ResetButton.svg">
-                    </button>
+                    <div id="diagram-timeline-controls-toggleable" style="display:none;">
+                        <button class="diagram-tools-button diagram-tools-button-small" onclick="undoDiagram();">
+                            <img src="../Shared/icons/SkipB.svg">
+                        </button>
+                        <button class="diagram-tools-button diagram-tools-button-small" onclick="redoDiagram();">
+                            <img src="../Shared/icons/SkipF.svg">
+                        </button>
+                        <button class="diagram-tools-button diagram-tools-button-small" onclick="resetTimeline();">
+                            <img src="../Shared/icons/ResetButton.svg">
+                        </button>
+                        <button class="diagram-tools-button diagram-tools-button-small" onclick='toggleFullscreen();'>
+                            <img src="../Shared/icons/fullscreen.svg">
+                        </button>
+                    </div>
                 </div>
                 <div id="diagram-timeline"></div>
-                <div class="diagram-timeline-controls" style="border-left:1px solid #000000;">
-                    <button class="diagram-tools-button diagram-tools-button-small" onclick='toggleFullscreen();'>
-                        <img src="../Shared/icons/fullscreen.svg">
-                    </button>
-                </div>
             </div>
         </div>
     </div>
