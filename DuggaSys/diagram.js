@@ -6451,7 +6451,7 @@ function playTimeline(playButton) {
     const srcName = srcSplitted[srcSplitted.length - 1];
 
     if(srcName === "Play.svg") {
-        img.src = "../Shared/icons/Pause.svg";
+        img.src = "../Shared/icons/pause.svg";
         timelineAnimation = setInterval(() => {
             if(diagramChanges.indexes.current === diagramChanges.indexes.stack.length - 1) {
                 diagramChanges.indexes.current = -1;
