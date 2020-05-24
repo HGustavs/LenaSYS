@@ -525,6 +525,8 @@
                         <button class="diagram-tools-button diagram-tools-button-small" onclick='toggleFullscreen();'>
                             <img src="../Shared/icons/fullscreen.svg">
                         </button>
+                        <input type="range" id="diagram-timeline-speed-range" class="zoomSlider" min="0.1" max="5" value="1" step="0.1">
+                        <div id="diagram-timeline-speed"><b>Speed:</b> 1s</div>
                     </div>
                 </div>
                 <div id="diagram-timeline"></div>

@@ -5929,6 +5929,16 @@ only screen and (max-device-width: 320px) {
   border-left: 1px solid #000000;
 }
 
+#diagram-timeline-speed-range {
+  padding: 0;
+}
+
+#diagram-timeline-speed {
+  margin: 0 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *
  * --------------================################================-------------- */
