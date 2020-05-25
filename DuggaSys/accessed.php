@@ -80,31 +80,31 @@
 
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style='width:464px;'>
-      		<div class='loginBoxheader'>
-      			<h3>Add user</h3>
-      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
-      		</div>
-      		<div style='padding:5px;'>
-      			<input type='hidden' id='uid' value='Toddler' />
-      			<div class='inputwrapper'><span>SSN:</span><input placeholder="990102-5578" class='textinput' type='text' id='addSsn' onchange="updateErrorMessage()" onkeyup="updateErrorMessage()"/></div>
-      			<div class='inputwrapper'><span>First Name:</span><input placeholder="Greger" class='textinput' type='text' id='addFirstname'/></div>
-      			<div class='inputwrapper'><span>Last Name:</span><input placeholder="Gregersson" class='textinput' type='text' id='addLastname'/></div>
-      			<div class='inputwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></div>
-      			<div class='inputwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></div>
-      			<div class='inputwrapper'><span>PID:</span><input placeholder="WEBUG" class='textinput' id='addPid'></div>
-      			<div class='inputwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></div>
-      			<div class='inputwrapper'><span>Email:</span><input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="updateErrorMessage()" onkeyup="updateErrorMessage()"></div>
-      		</div>
+		<div class='loginBox' style='width:464px;'>
+			<div class='loginBoxheader'>
+				<h3>Add user</h3>
+				<div class='cursorPointer' onclick='closeWindows();'>x</div>
+			</div>
+			<div style='padding:5px;'>
+				<input type='hidden' id='uid' value='Toddler' />
+				<div class='inputwrapper'><span>SSN:</span><input placeholder="990102-5578" class='textinput' type='text' id='addSsn' onchange="updateErrorMessage()" onkeyup="updateErrorMessage()"/></div>
+				<div class='inputwrapper'><span>First Name:</span><input placeholder="Greger" class='textinput' type='text' id='addFirstname'/></div>
+				<div class='inputwrapper'><span>Last Name:</span><input placeholder="Gregersson" class='textinput' type='text' id='addLastname'/></div>
+				<div class='inputwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></div>
+				<div class='inputwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></div>
+				<div class='inputwrapper'><span>PID:</span><input placeholder="WEBUG" class='textinput' id='addPid'></div>
+				<div class='inputwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></div>
+				<div class='inputwrapper'><span>Email:</span><input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="updateErrorMessage()" onkeyup="updateErrorMessage()"></div>
+			</div>
 			<div style='padding:5px;'>
 				<div class='accessTableAddUserWarning'>
 					<label id='addErrorMessage'> </label>
 				</div>
 			</div>  
 			<div style='padding:5px;'>
-      			<input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
-      		</div>
-      </div>
+				<input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
+			</div>
+		</div>
 	</div>
 
 	<div id='createClass' class='loginBoxContainer' style='display:none;'>

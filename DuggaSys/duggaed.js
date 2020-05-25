@@ -203,7 +203,7 @@ function validateDuggaName() {
 // VARIANT FUNCTIONS start
 function newVariant() {
 	document.getElementById('variantSearch').value = '';
-  document.getElementById('filelink').value = '';
+	document.getElementById('filelink').value = '';
 	document.getElementById('filelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
 	document.getElementById('extraparam').placeholder = 'Extra dugga parameters in valid JSON';
@@ -224,7 +224,7 @@ function newVariant() {
 function createVariant() {
 	var qid = $("#did").val();
 	var answer = $("#variantanswerText").val();
-  var parameter = $("#variantparameterText").val();
+	var parameter = $("#variantparameterText").val();
 	AJAXService("ADDVARI", { cid: querystring['courseid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
