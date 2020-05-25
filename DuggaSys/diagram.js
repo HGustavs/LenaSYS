@@ -6412,6 +6412,7 @@ class Guideline {
     constructor(axis, position) {
         this.axis = axis;
         this.position = position;
+        this.moveStartPosition = 0;
         this.isLocked = false;
         this.container = document.getElementById("diagram-guideline-container");
         this.element = null;
@@ -6422,14 +6423,18 @@ class Guideline {
         this.element = document.createElement("div");
         this.element.classList.add("guideline");
 
-        const position = this.position.toString().includes("%") ? this.position : `${this.position}px`;
-
         if(this.axis === 'x') {
             this.element.classList.add("guideline-x");
-            this.element.style.top = position;
+            if(this.position === undefined) {
+                this.position = this.container.clientHeight / 2;
+            }
+            this.element.style.top = `${this.position}px`;
         } else if(this.axis === 'y') {
             this.element.classList.add("guideline-y");
-            this.element.style.left = position;
+            if(this.position === undefined) {
+                this.position = this.container.clientWidth / 2;
+            }
+            this.element.style.left = `${this.position}px`;
         }
 
         this.container.appendChild(this.element);
@@ -6455,10 +6460,10 @@ class Guideline {
         this.container.parentElement.parentElement.classList.add("noselect")
 
         if(this.axis === 'x') {
-            this.position = e.clientY;
+            this.moveStartPosition = e.clientY;
             this.container.style.cursor = "row-resize";
         } else if(this.axis === 'y') {
-            this.position = e.clientX;
+            this.moveStartPosition = e.clientX;
             this.container.style.cursor = "col-resize";
         }
 
@@ -6469,13 +6474,15 @@ class Guideline {
     mouseMove(e) {
         if(this.element.classList.contains("moving")) {
             if(this.axis === 'x') {
-                const movePosition = this.position - e.clientY;
-                this.position = e.clientY;
-                this.element.style.top = `${this.element.offsetTop - movePosition}px`;
+                const movePosition = this.moveStartPosition - e.clientY;
+                this.moveStartPosition = e.clientY;
+                this.position = this.element.offsetTop - movePosition;
+                this.element.style.top = `${this.position}px`;
             } else if(this.axis === 'y') {
-                const movePosition = this.position - e.clientX;
-                this.position = e.clientX;
-                this.element.style.left = `${this.element.offsetLeft - movePosition}px`;
+                const movePosition = this.moveStartPosition - e.clientX;
+                this.moveStartPosition = e.clientX;
+                this.position = this.element.offsetLeft - movePosition;
+                this.element.style.left = `${this.position}px`;
             }
         }
     }

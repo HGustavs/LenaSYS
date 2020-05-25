@@ -295,10 +295,10 @@
                         <span class="drop-down-option">Guidelines</span>
                         <div class="side-drop-down">
                             <div class="drop-down-item" tabindex="0">
-                                <span class="drop-down-option" onclick="addGuideline(new Guideline('x', '50%'));">Create horizontal guideline</span>
+                                <span class="drop-down-option" onclick="addGuideline(new Guideline('x'));">Create horizontal guideline</span>
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <span class="drop-down-option" onclick="addGuideline(new Guideline('y', '50%'));">Create vertical guideline</span>
+                                <span class="drop-down-option" onclick="addGuideline(new Guideline('y'));">Create vertical guideline</span>
                             </div>
                             <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick="">Lock guidelines</span>
