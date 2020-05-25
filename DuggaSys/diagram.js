@@ -4049,12 +4049,16 @@ function mousemoveevt(ev) {
 function mousedownevt(ev) {
     // Returns out of funtion if on mobile device
     // This is beacause touch events also trigger mouse events
-    if (isMobile){
+    if (isMobile) {
         return;
     }
     
     mousemoveevt(event);    // Trigger the move event function to update mouse coordinates and avoid creating objects in objects
-    if(ev.button == leftMouseClick){
+    if(ev.button == leftMouseClick) {
+        //Do not want to be able to select or create symbols when timeline animation is active
+        if(timelineAnimation !== null) {
+            return;
+        } 
         canvasLeftClick = true;
     } else if(ev.button == rightMouseClick) {
         canvasRightClick = true;
@@ -6396,7 +6400,9 @@ function updateTimeline() {
     const timelineElement = document.getElementById("diagram-timeline");
 
     timelineElement.innerHTML = "";
-    for(let i = 0; i < diagramChanges.indexes.stack.length; i++) {
+
+    //Start at -1 to also include one part for original empty diagram
+    for(let i = -1; i < diagramChanges.indexes.stack.length; i++) {
         const part = document.createElement("div");
         part.classList.add("diagram-timeline-part");
         if(i <= diagramChanges.indexes.current) {
@@ -6442,7 +6448,7 @@ function timelineMouseLeave() {
 //------------------------------------------------------------------------------------------------------------------
 
 function timelineClick(e) {
-    const clickedPartIndex = getElementIndexInParent(e.target);
+    const clickedPartIndex = getElementIndexInParent(e.target) - 1; // -1 to take part representing original empty diagram into consideration
     diagramChanges.indexes.current = clickedPartIndex;
     saveDiagramChangesToLocalStorage();
     Load();
@@ -6506,6 +6512,7 @@ function playTimeline(isSpeedChanged = false) {
         }, speed * 1000);
     } else {
         clearInterval(timelineAnimation);
+        timelineAnimation = null;
     }
 }
 
