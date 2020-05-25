@@ -701,7 +701,7 @@ function returnedExportedGrades(gradeData){
 				document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
 				document.getElementById('lastExportedDate').innerHTML = gradeData[0].gradeLastExported;
 
-				if (filterList["notExported"] === true) {
+				if (filterList["notExported"]) {
 					rerenderData = gradeData[0].gradeLastExported;
 					myTable.renderTable();
 				}
@@ -1129,9 +1129,7 @@ function renderCell(col, celldata, cellid) {
 				
 		}	
 	} if (filterList["notExported"]) {
-			if (rerenderData === "NONE") {
-				AJAXService("getunexported", { getType: "ONLYDATE"}, "GEXPORT");
-			} else {
+		rerenderData = document.getElementById("lastExportedDate").textContent;
 				// First column (Fname/Lname/SSN)
 				if (col == "FnameLname") {
 					str = "<div class='resultTableCell resultTableNormal'>";
@@ -1144,7 +1142,9 @@ function renderCell(col, celldata, cellid) {
 				if (filterGrade === "none" || celldata.grade === filterGrade) {
 					// color based on pass,fail,pending,assigned,unassigned
 					str = "<div style='padding:12px;' class='resultTableCell ";
-					if (celldata.marked > rerenderData.gradeLastExported) {
+					celldata.marked = new Date(celldata.marked);
+					celldata.marked = celldata.marked.getFullYear() + "-" + addZero(celldata.marked.getMonth() + 1) + "-" + addZero(celldata.marked.getDate()) + " " + addZero(celldata.marked.getHours()) + ":" + addZero(celldata.marked.getMinutes()) + ":" + addZero(celldata.marked.getSeconds());
+					if (celldata.marked > rerenderData) {
 						str += "dugga-assigned";
 					} else {
 						str += "dugga-empty";
@@ -1152,7 +1152,7 @@ function renderCell(col, celldata, cellid) {
 						
 					str += "'>";
 					// Creation of grading buttons
-					if (celldata.marked > rerenderData.gradeLastExported) {
+					if (celldata.marked > rerenderData) {
 						str += "<div class='gradeContainer resultTableText'>";
 						if (celldata.grade === null) {
 							str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
@@ -1202,13 +1202,13 @@ function renderCell(col, celldata, cellid) {
 						str += "</div>";
 					}
 
-					if (celldata.marked < rerenderData.gradeLastExported) {
+					if (celldata.marked < rerenderData) {
 						str += "</div>";
 					}
 
 				return str;
 				}
-			}
+			
 	}
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
