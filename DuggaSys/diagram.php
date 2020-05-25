@@ -301,7 +301,10 @@
                                 <span class="drop-down-option" onclick="addGuideline(new Guideline('y'));">Create vertical guideline</span>
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <span class="drop-down-option" onclick="">Lock guidelines</span>
+                                <span class="drop-down-option" onclick="lockOrUnlockGuidelines(true);">Lock guidelines</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="lockOrUnlockGuidelines(false);">Unlock guidelines</span>
                             </div>
                             <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick="deleteGuidelines();">Delete guidelines</span>

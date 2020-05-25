@@ -6384,7 +6384,7 @@ function initGuidelines() {
     if(tempGuidelines !== null) {
         tempGuidelines = JSON.parse(tempGuidelines);
         for(let i = 0; i < tempGuidelines.length; i++) {
-            guidelines[i] = new Guideline(tempGuidelines[i].axis, tempGuidelines[i].position);
+            guidelines[i] = new Guideline(tempGuidelines[i].axis, tempGuidelines[i].position, tempGuidelines[i].isLocked);
         }
     }
 }
@@ -6408,12 +6408,23 @@ function deleteGuidelines() {
     saveGuidelinesToLocalStorage();
 }
 
+function lockOrUnlockGuidelines(isLocked = true) {
+    guidelines.forEach(guideline => {
+        if(isLocked) {
+            guideline.lock();
+        } else {
+            guideline.unlock();
+        }
+    });
+    saveGuidelinesToLocalStorage();
+}
+
 class Guideline {
-    constructor(axis, position) {
+    constructor(axis, position, isLocked = false) {
         this.axis = axis;
         this.position = position;
         this.moveStartPosition = 0;
-        this.isLocked = false;
+        this.isLocked = isLocked;
         this.container = document.getElementById("diagram-guideline-container");
         this.element = null;
         this.createGuideline();
@@ -6437,6 +6448,12 @@ class Guideline {
             this.element.style.left = `${this.position}px`;
         }
 
+        if(this.isLocked) {
+            this.lock();
+        } else {
+            this.unlock();
+        }
+
         this.container.appendChild(this.element);
 
         this.element.addEventListener("mouseover", () => this.mouseOver());
@@ -6444,7 +6461,6 @@ class Guideline {
     }
 
     mouseOver() {
-        if(this.isLocked) return;
         if(this.axis === 'x') {
             this.element.style.cursor = "row-resize";
         } else if(this.axis === 'y') {
@@ -6453,8 +6469,6 @@ class Guideline {
     }
 
     mouseDown(e) {
-        if(this.isLocked) return;
-
         this.element.classList.add("moving");
         this.container.style.pointerEvents = "all";
         this.container.parentElement.parentElement.classList.add("noselect")
@@ -6518,10 +6532,21 @@ class Guideline {
         saveGuidelinesToLocalStorage();
     }
 
+    lock() {
+        this.isLocked = true;
+        this.element.style.pointerEvents = "none";
+    }
+
+    unlock() {
+        this.isLocked = false;
+        this.element.style.pointerEvents = "all";
+    }
+
     exportToLocalStorage() {
         return {
             axis: this.axis,
-            position: this.position
+            position: this.position,
+            isLocked: this.isLocked
         };
     }
 }
