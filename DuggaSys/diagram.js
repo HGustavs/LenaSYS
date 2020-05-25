@@ -123,6 +123,8 @@ var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
 var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
 var isRulersActive = false;         //Show/hide rulers
+var isTimelineActive = true;        //Show/hide timeline
+var timelineAnimation = null;       //Used to set and clear interval auto animating diagram states
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -493,6 +495,7 @@ function init() {
     setIsFullscreenActiveOnRefresh();
     setHideCommentOnRefresh();
     initAppearanceForm();
+    initTimeline();
     setPaperSize(event, paperSize);
     updateGraphics(); 
 }
@@ -2634,6 +2637,9 @@ function gridToSVG(width, height) {
 //------------------------------------------------------------------------------
 
 function clearCanvas() {
+    if(!confirm(`The diagram contains ${diagramChanges.indexes.stack.length} state(s).\nDo you really want to clear the diagram?`)) {
+        return;
+    }
     while (diagram.length > 0) {
         diagram[diagram.length - 1].erase();
         diagram.pop();
@@ -2643,7 +2649,6 @@ function clearCanvas() {
     }
     resetSerialNumbers();
     updateGraphics();
-    SaveState();
 }
 
 //--------------------------------------------------------------------------
@@ -4044,12 +4049,16 @@ function mousemoveevt(ev) {
 function mousedownevt(ev) {
     // Returns out of funtion if on mobile device
     // This is beacause touch events also trigger mouse events
-    if (isMobile){
+    if (isMobile) {
         return;
     }
     
     mousemoveevt(event);    // Trigger the move event function to update mouse coordinates and avoid creating objects in objects
-    if(ev.button == leftMouseClick){
+    if(ev.button == leftMouseClick) {
+        //Do not want to be able to select or create symbols when timeline animation is active
+        if(timelineAnimation !== null) {
+            return;
+        } 
         canvasLeftClick = true;
     } else if(ev.button == rightMouseClick) {
         canvasRightClick = true;
@@ -6169,7 +6178,6 @@ function fixExampleLayer(){
         diagram[i].properties.setLayer = writeToLayer;
     }
     updateGraphics();
-    //SaveState(); // This save breaks the undo functionality right now
 }
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
@@ -6359,6 +6367,191 @@ function setIsRulersActiveOnRefresh() {
         isRulersActive = !(tempIsRulerActive === "true");
         toggleRulers();
     }
+}
+
+//------------------------------------------------
+// Diagram timeline functions
+//------------------------------------------------
+
+//-----------------------------------------------------------------------------------------------------------
+// initTimeline: Initializes the timeline. Adds eventlisteners to timeline element.
+//               Loads active status from local storage to decide if they should be active or not on refresh.
+//-----------------------------------------------------------------------------------------------------------
+
+function initTimeline() {
+    const timelineElement = document.getElementById("diagram-timeline");
+    const tempIsTimelineActive = localStorage.getItem("isTimelineActive");
+
+    if(tempIsTimelineActive !== null) {
+        isTimelineActive = !(tempIsTimelineActive === "true");
+        toggleTimeline();
+    }
+
+    timelineElement.addEventListener("mouseover", timelineMouseOver);
+    timelineElement.addEventListener("mouseleave", timelineMouseLeave);
+    timelineElement.addEventListener("click", timelineClick);
+}
+
+//-------------------------------------------------------------------------------------------------
+// updateTimeline: Empties the timeline and regenerates parts based on current diagram state index.
+//-------------------------------------------------------------------------------------------------
+
+function updateTimeline() {
+    const timelineElement = document.getElementById("diagram-timeline");
+
+    timelineElement.innerHTML = "";
+
+    //Start at -1 to also include one part for original empty diagram
+    for(let i = -1; i < diagramChanges.indexes.stack.length; i++) {
+        const part = document.createElement("div");
+        part.classList.add("diagram-timeline-part");
+        if(i <= diagramChanges.indexes.current) {
+            part.classList.add("included");    
+        }
+        timelineElement.appendChild(part);
+    }
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+// timelineMouseOver: Executes when moving the mouse over the timeline element.
+//                    Gets the index of the hovered part in the timeline to show correct styling on parts before and after hovered part.
+//--------------------------------------------------------------------------------------------------------------------------------------
+
+function timelineMouseOver(e) {
+    const hoveredPartIndex = getElementIndexInParent(e.target);
+    const timelineParts = document.querySelectorAll(".diagram-timeline-part");
+
+    timelineParts.forEach((part, i) => {
+        part.classList.remove("plus", "minus");
+
+        //When hovered part is after current iteration part and current iteration part is not already a shown state, current iteration part should be marked green
+        //When hovered part is before current iteration part and current iteration part is a shown state, current iteration part should be marked red
+        if(hoveredPartIndex >= i && !part.classList.contains("included")) {
+            part.classList.add("plus");
+        } else if(hoveredPartIndex < i && part.classList.contains("included")) {
+            part.classList.add("minus");
+        }
+    });
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------
+// timelineMouseLeave: Executes when mouse leaves the timeline element. Removes special classes from all parts to restore to normal.
+//----------------------------------------------------------------------------------------------------------------------------------
+
+function timelineMouseLeave() {
+    const timelineParts = document.querySelectorAll(".diagram-timeline-part");
+    timelineParts.forEach(part => part.classList.remove("plus", "minus"));
+}
+
+//------------------------------------------------------------------------------------------------------------------
+// timelineClick: Executes when clicking on the timeline element. Loads state based on clicked timeline parts index.
+//------------------------------------------------------------------------------------------------------------------
+
+function timelineClick(e) {
+    const clickedPartIndex = getElementIndexInParent(e.target) - 1; // -1 to take part representing original empty diagram into consideration
+    diagramChanges.indexes.current = clickedPartIndex;
+    saveDiagramChangesToLocalStorage();
+    Load();
+}
+
+//----------------------------------------------------------------------------------------------------------
+// toggleTimeline: Toggles the timeline element. Sets the correct value in local storage and menu-item tick.
+//----------------------------------------------------------------------------------------------------------
+
+function toggleTimeline() {
+    const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
+    const timelineContainer = document.getElementById("diagram-timeline-container");
+
+    isTimelineActive = !isTimelineActive;
+
+    if(isTimelineActive) {
+        diagramPageWrapper.classList.add("timeline-active");
+        timelineContainer.classList.remove("hidden");
+    } else {
+        diagramPageWrapper.classList.remove("timeline-active");
+        timelineContainer.classList.add("hidden");
+    }
+    setCheckbox($(".drop-down-option:contains('Timeline')"), isTimelineActive);
+    localStorage.setItem("isTimelineActive", isTimelineActive);
+    canvasSize();
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------
+// playTimeline: Executes when clicking on the timeline play/pause button or when changing speed in the speed slider.
+//               Sets or clears animation interval depending on play/pause. Resets timeline if current index is the last available.
+//               Passed boolean is only true when function is called from changing value in speed slider. 
+//               This is used to only update speed text when speed was changed and never toggle play/pause icon when changing speed.
+//----------------------------------------------------------------------------------------------------------------------------------
+
+function playTimeline(isSpeedChanged = false) {
+    const playButton = document.getElementById("diagram-timeline-play-button");
+    const speedRange = document.getElementById("diagram-timeline-speed-range")
+    const speed = parseFloat(speedRange.value) || 1.0;
+    const img = playButton.querySelector("img");
+
+    if(isSpeedChanged) {
+        const speedTextElement = document.getElementById("diagram-timeline-speed");
+        speedTextElement.innerHTML = `<b>Speed:</b> ${speed}s`;
+        clearInterval(timelineAnimation);
+    } else {
+        playButton.classList.toggle("paused");
+        if(playButton.classList.contains("paused")) {
+            img.src = "../Shared/icons/Play.svg";
+        } else {
+            img.src = "../Shared/icons/pause.svg";
+        }
+    }
+
+    if(!playButton.classList.contains("paused")) {
+        timelineAnimation = setInterval(() => {
+            if(diagramChanges.indexes.current === diagramChanges.indexes.stack.length - 1) {
+                resetTimeline();
+            } else {
+                redoDiagram();
+            }
+        }, speed * 1000);
+    } else {
+        clearInterval(timelineAnimation);
+        timelineAnimation = null;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------
+// resetTimeline: Resets the timeline and diagram state to show an empty diagram and no colored timeline parts.
+//-------------------------------------------------------------------------------------------------------------
+
+function resetTimeline() {
+    diagramChanges.indexes.current = -1;
+    saveDiagramChangesToLocalStorage();
+    Load();
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// toggleTimelineControls: Toggles the extra timeline controls with an animation. Toggles the icon for the clicked button (+/-).
+//------------------------------------------------------------------------------------------------------------------------------
+
+function toggleTimelineControls() {
+    const plusButton = document.getElementById("diagram-timline-plus-button")
+    const img = plusButton.querySelector("img");
+
+    plusButton.classList.toggle("closed");
+    if(plusButton.classList.contains("closed")) {
+        img.src = "../Shared/icons/Plus.svg";
+    } else {
+        img.src = "../Shared/icons/Minus.svg";
+    }
+
+    $("#diagram-timeline-controls-toggleable").animate({
+        width: "toggle"
+    }, 300);
+}
+
+//---------------------------------------------------------------------------------------------------------------------------------------------
+// getElementIndexInParent: Returns the index the the passed element has in parent element. Used to get index of clicked/hovered timeline part.
+//---------------------------------------------------------------------------------------------------------------------------------------------
+
+function getElementIndexInParent(element) {
+    return [...element.parentNode.childNodes].indexOf(element);
 }
 
 function getOrigoOffsetX() {

@@ -79,7 +79,7 @@
         $exampleDiagramFilePaths = glob('templates/example-diagram/*.txt');
     ?>
 
-    <div id="diagram-page-wrapper">
+    <div id="diagram-page-wrapper" class="timeline-active">
     <div id="diagram-header">
         <div id=diagram-toolbar-switcher>DEV: All</div>
         <div id="diagram-toolbar-container">
@@ -296,6 +296,9 @@
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="toggleRulers();">Rulers</span>        
                     </div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option" onclick="toggleTimeline();">Timeline</span>        
+                    </div>
                 </div>
             </div>
             <div class="menu-drop-down" tabindex="0">
@@ -500,6 +503,33 @@
                     </span>
                     <span id="zoomV"></span>
                 </div>
+            </div>
+            <div id="diagram-timeline-container">
+                <div class="diagram-timeline-controls" style="border-right:1px solid #000000;">
+                    <button id="diagram-timeline-play-button" class="diagram-tools-button diagram-tools-button-small paused" onclick="playTimeline();">
+                        <img src="../Shared/icons/Play.svg">
+                    </button>
+                    <button id="diagram-timline-plus-button" class="diagram-tools-button diagram-tools-button-small closed" onclick="toggleTimelineControls();">
+                        <img src="../Shared/icons/Plus.svg">
+                    </button>
+                    <div id="diagram-timeline-controls-toggleable" style="display:none;">
+                        <button class="diagram-tools-button diagram-tools-button-small" onclick="undoDiagram();">
+                            <img src="../Shared/icons/SkipB.svg">
+                        </button>
+                        <button class="diagram-tools-button diagram-tools-button-small" onclick="redoDiagram();">
+                            <img src="../Shared/icons/SkipF.svg">
+                        </button>
+                        <button class="diagram-tools-button diagram-tools-button-small" onclick="resetTimeline();">
+                            <img src="../Shared/icons/ResetButton.svg">
+                        </button>
+                        <button class="diagram-tools-button diagram-tools-button-small" onclick='toggleFullscreen();'>
+                            <img src="../Shared/icons/fullscreen.svg">
+                        </button>
+                        <input type="range" id="diagram-timeline-speed-range" class="zoomSlider" min="0.1" max="3" value="1" step="0.1" oninput="playTimeline(true);">
+                        <div id="diagram-timeline-speed"><b>Speed:</b> 1s</div>
+                    </div>
+                </div>
+                <div id="diagram-timeline"></div>
             </div>
         </div>
     </div>
