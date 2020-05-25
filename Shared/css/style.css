@@ -7177,6 +7177,7 @@ textarea#filecont {
 }
 
 #columnfilter{
+  border-right: 1px solid #a6a6a6;
   float: left;
   width: 50%;
   overflow: hidden;
@@ -7186,10 +7187,11 @@ textarea#filecont {
 }
 #sortLeft{
   float: left;
-  width:50%;
+  width:49%;
   overflow: hidden;
 }
 #sortRight{
+  border-left: 1px solid #a6a6a6;
   width:50%;
   overflow: hidden;
 }
