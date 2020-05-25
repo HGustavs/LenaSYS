@@ -304,7 +304,7 @@
                                 <span class="drop-down-option" onclick="">Lock guidelines</span>
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <span class="drop-down-option" onclick="">Delete guidelines</span>
+                                <span class="drop-down-option" onclick="deleteGuidelines();">Delete guidelines</span>
                             </div>
                         </div>
                     </div>

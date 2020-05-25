@@ -6371,7 +6371,7 @@ function setIsRulersActiveOnRefresh() {
 }
 
 function createGuideline(axis = 'x', position = 0) {
-    const container = document.getElementById("diagram-guidelines-container")
+    const container = document.getElementById("diagram-guidelines-container");
     const guideline = document.createElement("div");
     let startPosition = 0;
 
@@ -6438,6 +6438,11 @@ function createGuideline(axis = 'x', position = 0) {
     guideline.addEventListener("mousedown", mouseDownHandler);
 
     container.appendChild(guideline);
+}
+
+function deleteGuidelines() {
+    const guidelines = document.querySelectorAll(".guideline");
+    guidelines.forEach(guideline => guideline.remove());
 }
 
 //------------------------------------------------
