@@ -1,7 +1,7 @@
 
 /* user contains the users of the system and related information */
 
-CREATE TABLE user(
+CREATE TABLE lenasys_user(
 		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		username			VARCHAR(80) NOT NULL UNIQUE,
 		firstname			VARCHAR(50) NULL,
@@ -25,9 +25,9 @@ CREATE TABLE user(
 
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO user(username,password,newpassword,creator,superuser) values ("Grimling","$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m",0,1,1);
-INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1); /* Password is Kong */
-INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1,"111111-1111"); /* Password is Kong */
+INSERT INTO lenasys_user(username,password,newpassword,creator,superuser) values ("Grimling","$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m",0,1,1);
+INSERT INTO lenasys_user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1); /* Password is Kong */
+INSERT INTO lenasys_user(username,password,newpassword,creator,ssn) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1,"111111-1111"); /* Password is Kong */
 
 
 /**
@@ -50,5 +50,5 @@ CREATE TABLE course(
 		hp							DECIMAL(4,1) NOT NULL DEFAULT 7.5,
 		courseHttpPage	VARCHAR(2000),
 		PRIMARY KEY(cid),
-		FOREIGN KEY (creator) REFERENCES user (uid)
+		FOREIGN KEY (creator) REFERENCES lenasys_user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
