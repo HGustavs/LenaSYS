@@ -21,7 +21,7 @@ if(isset($_SESSION['uid'])){
 }
 
 // Gets username based on uid, USED FOR LOGGING
-$query = $pdo->prepare( "SELECT username FROM lenasys_user WHERE uid = :uid");
+$query = $pdo->prepare( 'SELECT username FROM "user" WHERE uid = :uid');
 $query->bindParam(':uid', $userid);
 $query-> execute();
 
@@ -111,7 +111,7 @@ if($gradesys=="UNK") $gradesys=0;
 		    $isSuperUserVar=isSuperUser($userid);
 		    $ha = $haswrite || $isSuperUserVar;
 		    if(strcmp($opt,"GRP")===0) {
-		        $query = $pdo->prepare("SELECT lenasys_user.uid,lenasys_user.username,lenasys_user.firstname,lenasys_user.lastname,lenasys_user.email,user_course.groups FROM lenasys_user,user_course WHERE lenasys_user.uid=user_course.uid AND cid=:cid AND vers=:vers");
+		        $query = $pdo->prepare('SELECT "user".uid,"user".username,"user".firstname,"user".lastname,"user".email,user_course.groups FROM "user",user_course WHERE "user".uid=user_course.uid AND cid=:cid AND vers=:vers');
 		        $query->bindParam(':cid', $courseid);
 		        $query->bindParam(':vers', $coursevers);
 		        /*

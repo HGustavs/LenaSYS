@@ -63,26 +63,26 @@ if(checklogin() && $hasAccess) {
 
 		// User Table Updates
 		if($prop=="firstname"){
-				$query = $pdo->prepare("UPDATE lenasys_user SET firstname=:firstname WHERE uid=:uid;");
+				$query = $pdo->prepare('UPDATE "user" SET firstname=:firstname WHERE uid=:uid;');
 				$query->bindParam(':firstname', $val);
 		}else if($prop=="lastname"){
-				$query = $pdo->prepare("UPDATE lenasys_user SET lastname=:lastname WHERE uid=:uid;");
+				$query = $pdo->prepare('UPDATE "user" SET lastname=:lastname WHERE uid=:uid;');
 				$query->bindParam(':lastname', $val);
 		}else if($prop=="ssn"){
-				$query = $pdo->prepare("UPDATE lenasys_user SET ssn=:ssn WHERE uid=:uid;");
+				$query = $pdo->prepare('UPDATE "user" SET ssn=:ssn WHERE uid=:uid;');
 				$query->bindParam(':ssn', $val);
 		}else if($prop=="username"){
-				$query = $pdo->prepare("UPDATE lenasys_user SET username=:username WHERE uid=:uid;");
+				$query = $pdo->prepare('UPDATE "user" SET username=:username WHERE uid=:uid;');
 				$query->bindParam(':username', $val);
 		}else if($prop=="class"){
-				$query = $pdo->prepare("UPDATE lenasys_user SET class=:class WHERE uid=:uid;");
+				$query = $pdo->prepare('UPDATE "user" SET class=:class WHERE uid=:uid;');
 				$query->bindParam(':class', $val);
 		}
 
 		// User_Course Table Updates
 		if($prop=="examiner"){
 				$query = $pdo->prepare("UPDATE user_course SET examiner=:examiner WHERE uid=:uid AND cid=:cid;");
-				//Saves if the user changes examiner to none.
+				//Saves if the "user" changes examiner to none.
 				if($val == "None"){
 					$val = NULL;
 				}
@@ -141,7 +141,7 @@ if(checklogin() && $hasAccess) {
 			$debug = "Not able to create the specified class.";
 		}
 	}else if(strcmp($opt,"CHPWD")==0){
-		$query = $pdo->prepare("UPDATE lenasys_user set password=:pwd, requestedpasswordchange=0 where uid=:uid;");
+		$query = $pdo->prepare('UPDATE "user" set password=:pwd, requestedpasswordchange=0 where uid=:uid;');
 		$query->bindParam(':uid', $uid);
 		$query->bindParam(':pwd', standardPasswordHash($pw));
 
@@ -160,7 +160,7 @@ if(checklogin() && $hasAccess) {
 					
             if (count($user) == 1&&strcmp($user[0],"")!==0) {
                 // See if we have added with username or SSN
-                $userquery = $pdo->prepare("SELECT uid FROM lenasys_user WHERE username=:usernameorssn1 or ssn=:usernameorssn2");
+                $userquery = $pdo->prepare('SELECT uid FROM "user" WHERE username=:usernameorssn1 or ssn=:usernameorssn2');
                 $userquery->bindParam(':usernameorssn1', $user[0]);
                 $userquery->bindParam(':usernameorssn2', $user[0]);
 
@@ -178,7 +178,7 @@ if(checklogin() && $hasAccess) {
             } else if (count($user) > 1){
               $ssn = $user[0];
               // Check if user has an account
-              $userquery = $pdo->prepare("SELECT uid FROM lenasys_user WHERE ssn=:ssn");
+              $userquery = $pdo->prepare('SELECT uid FROM "user" WHERE ssn=:ssn');
               $userquery->bindParam(':ssn', $ssn);
 
               if ($userquery->execute() && $userquery->rowCount() <= 0) {
@@ -219,7 +219,7 @@ if(checklogin() && $hasAccess) {
 
 									if($user[0]!="PNR"){
 											$rnd=standardPasswordHash(makeRandomString(9));
-											$querystring='INSERT INTO lenasys_user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,:password,now(),:className);';
+											$querystring='INSERT INTO "user" (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,:password,now(),:className);';
 											$stmt = $pdo->prepare($querystring);
 											$stmt->bindParam(':username', $username);
 											$stmt->bindParam(':email', $saveemail);
@@ -294,7 +294,7 @@ $submissions=array();
 
 if(checklogin() && $hasAccess) {
 	
-	$query = $pdo->prepare("SELECT lenasys_user.uid as uid,username,access,firstname,lastname,ssn,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM lenasys_user, user_course WHERE cid=:cid AND lenasys_user.uid=user_course.uid");
+	$query = $pdo->prepare('SELECT "user".uid as uid,username,access,firstname,lastname,ssn,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM "user", user_course WHERE cid=:cid AND "user".uid=user_course.uid');
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -326,7 +326,7 @@ if(checklogin() && $hasAccess) {
 		array_push($entries, $entry);
 	}
 
-	$query = $pdo->prepare("SELECT lenasys_user.firstname,lenasys_user.uid, lenasys_user.lastname FROM lenasys_user, user_course WHERE user_course.access = 'W' AND lenasys_user.uid=user_course.uid GROUP by lenasys_user.firstname,lenasys_user.lastname, lenasys_user.uid ORDER BY lenasys_user.firstname, lenasys_user.lastname;");
+	$query = $pdo->prepare('SELECT "user".firstname,"user".uid, "user".lastname FROM "user", user_course WHERE user_course.access = "W" AND "user".uid=user_course.uid GROUP by "user".firstname,"user".lastname, "user".uid ORDER BY "user".firstname, "user".lastname;');
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();

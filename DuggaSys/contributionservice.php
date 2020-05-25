@@ -105,7 +105,7 @@ if(strcmp($opt,"get")==0) {
   if($userGroups != "UNK"){
     // Because a user could(probably shouldn't) be part of multiple groups we build
     // the query as a string before to dynamically add "like" + group[i] before executing it.
-    $queryString = "SELECT lenasys_user.username FROM lenasys_user INNER JOIN user_course ON lenasys_user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers AND ";
+    $queryString = 'SELECT "user".username FROM "user" INNER JOIN user_course ON "user".uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers AND ';
     for ($i=0; $i < sizeof($userGroups); $i++) {
       if($i != 0){
         // if we're not the first like we need to add an or.
@@ -138,7 +138,7 @@ if(strcmp($opt,"get")==0) {
     }
   }
   // Get amount of students in course vers.
-  $stmt = $pdo->prepare("SELECT lenasys_user.username FROM lenasys_user INNER JOIN user_course ON lenasys_user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers");
+  $stmt = $pdo->prepare('SELECT "user".username FROM "user" INNER JOIN user_course ON "user".uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers');
   $stmt->bindParam(":cid",$cid);
   $stmt->bindParam(":vers",$vers);
   $courseMembers = array();
