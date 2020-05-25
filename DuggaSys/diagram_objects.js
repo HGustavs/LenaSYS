@@ -2017,7 +2017,9 @@ function Symbol(kindOfSymbol) {
         }
         ctx.lineTo(x2, y2);
         ctx.stroke();
-        checkUMLLineIntersection()
+        checkUMLLineIntersection(this.umlSubline.subLineOne.startX,this.umlSubline.subLineOne.startY,this.umlSubline.subLineOne.endX,this.umlSubline.subLineOne.endY)
+        checkUMLLineIntersection(this.umlSubline.subLineTwo.startX,this.umlSubline.subLineTwo.startY,this.umlSubline.subLineTwo.endX,this.umlSubline.subLineTwo.endY)
+        checkUMLLineIntersection(this.umlSubline.subLineThree.startX,this.umlSubline.subLineThree.startY,this.umlSubline.subLineThree.endX,this.umlSubline.subLineThree.endY)
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
     }
 
@@ -2699,65 +2701,76 @@ function checkLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY) {
 }
 
 function checkUMLLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY) {
+
     var	lines = diagram.getObjectsByType(symbolKind.umlLine);
     var results = [];
     var getSubline;
 	for (var i = 0; i < lines.length; i++) {
-        for(var j = 0; j < 3; j++)
-        if(j == 0){
-            getSubline = lines[0].umlSubline.subLineOne;
-        }
-        else if (j == 1){
-            getSubline = lines[0].umlSubline.subLineTwo;
-        }
-        else {
-            getSubline = lines[0].umlSubline.subLineThree;
-        }
-		var	line2StartX = getSubline.startX;
-		var	line2StartY = getSubline.startY;
-		var	line2EndX =	getSubline.endX;
-		var	line2EndY =	getSubline.endY;
-		
-		if(!(line1StartX	==	line2StartX	&&	line1StartY	==	line2StartY	&&	line1EndX	==	line2EndX	&&	line1EndY	==	line2EndY	)){
-		// if the lines intersect, the result contains the x and y of the intersection (treating the lines as infinite) and booleans for whether line segment 1 or line segment 2 contain the point
-			var denominator, a, b, numerator1, numerator2, result = {
-				x: null,
-				y: null,
-				onLine1: false,
-				onLine2: false
-			};
-			
-			denominator = ((line2EndY - line2StartY) * (line1EndX - line1StartX)) - ((line2EndX - line2StartX) * (line1EndY - line1StartY));
-			if (denominator == 0) {
-				return result;
-			}
-			a = line1StartY - line2StartY;
-			b = line1StartX - line2StartX;
-			numerator1 = ((line2EndX - line2StartX) * a) - ((line2EndY - line2StartY) * b);
-			numerator2 = ((line1EndX - line1StartX) * a) - ((line1EndY - line1StartY) * b);
-			a = numerator1 / denominator;
-			b = numerator2 / denominator;
 
-			// if we cast these lines infinitely in both directions, they intersect here:
-			result.x = line1StartX + (a * (line1EndX - line1StartX));
-			result.y = line1StartY + (a * (line1EndY - line1StartY));
+        for(var j = 0; j < 3; j++){
+            if(j == 0){
+                getSubline = lines[i].umlSubline.subLineOne;
 
-			// if line1 is a segment and line2 is infinite, they intersect if:
-			if (a > 0 && a < 1) {
-				result.onLine1 = true;
-			}
-			// if line2 is a segment and line1 is infinite, they intersect if:
-			if (b > 0 && b < 1) {
-				result.onLine2 = true;
-			}
-			// if line1 and line2 are segments, they intersect if both of the above are true
-			if(result.onLine1 == true	&&	result.onLine2	==	true){
-				var m1 = (line1EndY - line1StartY) / (line1EndX-line1StartX);
-				var m2 = (line2EndY - line2StartY) / (line2EndX-line2StartX);
-				drawLineJump(result.x,result.y, m1, m2);
-			}
-		}
-	}
+            }
+            else if (j == 1){
+                getSubline = lines[i].umlSubline.subLineTwo;
+
+            }
+            else {
+                getSubline = lines[i].umlSubline.subLineThree;
+
+            }
+            var	line2StartX = getSubline.startX;
+            var	line2StartY = getSubline.startY;
+            var	line2EndX =	getSubline.endX;
+            var	line2EndY =	getSubline.endY;
+            
+            if(!(line1StartX	==	line2StartX	&&	line1StartY	==	line2StartY	&&	line1EndX	==	line2EndX	&&	line1EndY	==	line2EndY	)){
+                var denominator, a, b, numerator1, numerator2, result = {
+                    x: null,
+                    y: null,
+                    onLine1: false,
+                    onLine2: false
+                };
+                denominator = ((line2EndY - line2StartY) * (line1EndX - line1StartX)) - ((line2EndX - line2StartX) * (line1EndY - line1StartY));
+
+                a = line1StartY - line2StartY;
+                b = line1StartX - line2StartX;
+                numerator1 = ((line2EndX - line2StartX) * a) - ((line2EndY - line2StartY) * b);
+                numerator2 = ((line1EndX - line1StartX) * a) - ((line1EndY - line1StartY) * b);
+                a = numerator1 / denominator;
+                b = numerator2 / denominator;
+            
+                // if we cast these lines infinitely in both directions, they intersect here:
+                result.x = line1StartX + (a * (line1EndX - line1StartX));
+                result.y = line1StartY + (a * (line1EndY - line1StartY));
+                    /*
+                    // it is worth noting that this should be the same as:
+                    x = line2StartX + (b * (line2EndX - line2StartX));
+                    y = line2StartX + (b * (line2EndY - line2StartY));
+                    */
+                // if line1 is a segment and line2 is infinite, they intersect if:
+                if (a > 0 && a < 1) {
+                    result.onLine1 = true;
+                }
+                // if line2 is a segment and line1 is infinite, they intersect if:
+                if (b > 0 && b < 1) {
+                    result.onLine2 = true;
+                }
+                // if line1 and line2 are segments, they intersect if both of the above are true
+                
+                
+            
+                // if line1 and line2 are segments, they intersect if both of the above are true
+                if(result.onLine1 == true	&&	result.onLine2	==	true){
+                    var m1 = (line1EndY - line1StartY) / (line1EndX-line1StartX);
+                    var m2 = (line2EndY - line2StartY) / (line2EndX-line2StartX);
+                    
+                    drawLineJump(result.x,result.y, m1, m2);
+                }
+            }
+       }
+    }
 }
 
 //------------------------------------------------
