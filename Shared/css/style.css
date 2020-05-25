@@ -7091,7 +7091,19 @@ textarea#filecont {
 }
 
 #columnfilter{
-  
   float: left;
+  width: 50%;
+  overflow: hidden;
 }
-
+#customfilter{
+  overflow: hidden;
+}
+#sortLeft{
+  float: left;
+  width:50%;
+  overflow: hidden;
+}
+#sortRight{
+  width:50%;
+  overflow: hidden;
+}
