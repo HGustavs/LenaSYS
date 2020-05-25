@@ -650,11 +650,7 @@ function drawSCubic(x1, y1, x2, y2, x3, y3, x4, y4, lcolor, guideLines, selected
 
 function init(quizGoal, studentPreviousAnswer) 
 {
-	if(quizGoal != undefined){
-		goal = quizGoal.split(",");
-	}else{
-		return
-	}
+	goal = quizGoal.split(",");
 	startx = parseInt(goal.shift());
 	starty = parseInt(goal.shift());
 	var oplist = document.getElementById('operations');
