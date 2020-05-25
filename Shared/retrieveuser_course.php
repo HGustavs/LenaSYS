@@ -14,14 +14,14 @@ if (isset($cid)) {
 		$uid = $user_course['uid'];
 		$passed = intval($user_course['passed']);
 		if ($passed >= 100) {
-			foreach ($pdo->query('SELECT * FROM user WHERE uid="'.$uid.'" ORDER BY firstname ASC') AS $user) {
+			foreach ($pdo->query('SELECT * FROM lenasys_user WHERE uid="'.$uid.'" ORDER BY firstname ASC') AS $user) {
 				$username = $user['username'];
 				$firstname = $user['firstname'];
 				$lastname = $user['lastname'];
 				$finished_students[] = array("uid" => $uid, "username" => $username, "firstname"=>$firstname, "lastname" => $lastname);
 			}
 		}elseif ($passed < 100) {
-			foreach ($pdo->query('SELECT * FROM user WHERE uid="'.$uid.'" ORDER BY firstname ASC') AS $user) {
+			foreach ($pdo->query('SELECT * FROM lenasys_user WHERE uid="'.$uid.'" ORDER BY firstname ASC') AS $user) {
 				$username = $user['username'];
 				$firstname = $user['firstname'];
 				$lastname = $user['lastname'];
