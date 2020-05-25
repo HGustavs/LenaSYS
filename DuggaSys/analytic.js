@@ -822,14 +822,15 @@ function loadUserInformation(){
 	var firstLoad = true;
 	
 	var selectPage = $("<select></select>")
-        .append('<option value="sectioned" selected>sectioned</option>')
+    .append('<option value="sectioned" selected>sectioned</option>')
 		.append('<option value="courseed">courseed</option>')
 		.append('<option value="showDugga" selected>showDugga</option>')
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="events">events</option>')
 		.append('<option value="fileEvents">fileEvents</option>')
+		.append('<option value="course">course</option>')
 		.append('<option value="loginFail">loginFail</option>')
-        .appendTo($('#analytic-info'));
+    .appendTo($('#analytic-info'));
  
  
     function updateSectionedInformation(){
@@ -1046,6 +1047,40 @@ function loadUserInformation(){
             });
 		});
 	}
+
+	function updateCourseInformation(){
+		var users = {};
+		
+        loadAnalytics("courseInformation", function(data) {
+            console.log(data)
+            $.each(data.users, function(i, row) {
+				var userClass = row.class;
+				var user = row.username;
+               
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["courseid", "coursename"]];
+				}
+				
+				$.each(data.programcourses, function(i, row) {
+					var cid = row.cid;
+
+					if(userClass === row.class){
+						$.each(data.courses, function(i, row) {
+							if(cid === row.cid){
+								users[user].push([
+									cid,
+									row.coursename
+								]);
+							}
+						});
+					}
+				});
+			});
+			updateState(users);
+			
+        });
+  }
+
 //------------------------------------------------------------------------------------------------
 // Retrieves the data and makes the table for loginFail
 //------------------------------------------------------------------------------------------------
@@ -1080,7 +1115,7 @@ function loadUserInformation(){
 						updateState(users);	
 					}
 				}
-            });
+       });
 		});
 	}
 
@@ -1162,7 +1197,10 @@ function loadUserInformation(){
 				case "fileEvents":
 					updatefileEvents();
 					break;
-				case "loginFail":
+        case "course":
+          updateCourseInformation();
+          break;
+        case "loginFail":
 					updateloginFail();
 					break;
             }
