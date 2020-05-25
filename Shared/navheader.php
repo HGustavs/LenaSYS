@@ -61,8 +61,8 @@
 				echo '<td class="navButt analytic-navbutton UI" id="Userinformation"><a onclick="loadUserInformation()"><i class="fas fa-user"></i></a><span class="navcomment">User information</span></td>';
 				echo '<td class="navButt analytic-navbutton CD" id="CourseDiskUsage"><a onclick="loadCourseDiskUsage()"><i class="fas fa-hdd"></i></a><span class="navcomment">Course disk usage</span></td>';
 				
-				echo '<td class="navButt analytic-navbutton" id="hamburger"><div class="hamContainer" onclick="hamburgerToggle(this)"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div></div>';
-				echo '<ol class="hamburgerList" id="hamburgerList">';
+				echo '<td class="navButt analytic-navbutton" id="hamburger"><div class="hamContainer" id="ham" onclick="hamburgerToggle()"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div></div>';
+				echo '<ol class="hamburgerList" id="hamburgerList" onclick="hamburgerToggle()">';
 				echo '<li class="navButt analytic-navbutton GS2" id="GeneralStats"><a onclick="loadGeneralStats()" data-tooltip="General Stats"><i class="fas fa-stream"></i></a></li>';
 				echo '<li class="navButt analytic-navbutton CO2" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline()" data-tooltip="Currently Online"><i class="fas fa-users"></i></a></li>';
 				echo '<li class="navButt analytic-navbutton PG2" id="PasswordGuessing"><a onclick="loadPasswordGuessing()" data-tooltip="Password Guessing"><i class="fas fa-key"></i></a></li>';
@@ -478,7 +478,8 @@ $("#hamburger").click(function(){
 });
 
 /*Toggle the hamburger menu into an X*/
-function hamburgerToggle(x) {
+function hamburgerToggle() {
+  var x= document.getElementById("ham")
   x.classList.toggle("change");
 }
 
