@@ -2025,7 +2025,10 @@ function Symbol(kindOfSymbol) {
         checkUMLLineIntersection(this.umlSubline.subLineThree.startX,this.umlSubline.subLineThree.startY,this.umlSubline.subLineThree.endX,this.umlSubline.subLineThree.endY)
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
     }
-    //This function is used to store UML-sublines when there's three sub lines used
+    //---------------------------------------------------------------
+    // setSubLines: used to save three sublines for UML lines
+    // setTwoSublines: used for when there only two uml sublines
+    //---------------------------------------------------------------
     this.setSubLines = function(x1,y1,breakpointStartX,middleBreakPointX,breakpointEndX,breakpointStartY,middleBreakPointY,breakpointEndY,x2,y2,side){
         if(side){
             this.umlSubline.subLineOne.startX = x1;
@@ -2060,7 +2063,7 @@ function Symbol(kindOfSymbol) {
             this.umlSubline.subLineThree.endY = y2;
         }
     }
-    //This function is used to store UML-sublines when there's only two lines used
+
     this.setTwoSublines = function(x1,y1,breakpointX, breakpointY,x2,y2){
         this.umlSubline.subLineThree.startX = null ;
         this.umlSubline.subLineThree.startY = null ;
