@@ -1376,7 +1376,7 @@ function getCookie(cname) {
 }
 
 // EventListner for when ESC is pressed do a closeWindows()
-$(window).load(function() {
+$(window).on('load', function() {
 	//There is an issue with using this code, it generates errors that stop execution
       $(window).keyup(function(event){
       	if(event.keyCode == 27) {
