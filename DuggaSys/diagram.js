@@ -6372,12 +6372,34 @@ function setIsRulersActiveOnRefresh() {
 function createGuideline(axis = 'x') {
     const container = document.getElementById("diagram-guidelines-container")
     const guideline = document.createElement("div");
+
     guideline.classList.add("guideline");
     if(axis === 'x') {
         guideline.classList.add("guideline-x");
     } else if(axis === 'y') {
         guideline.classList.add("guideline-y");
     }
+
+    function mouseDownHandler(e) {
+        e.preventDefault();
+        guideline.classList.add("moving");
+
+        document.addEventListener("mousemove", mouseMoveHandler);
+        document.addEventListener("mouseup", mouseUpHandler);
+    }
+
+    function mouseMoveHandler(e) {
+        
+    }
+
+    function mouseUpHandler(e) {
+        guideline.classList.remove("moving");
+        document.removeEventListener("mousemove", mouseMoveHandler);
+        document.removeEventListener("mouseup", mouseUpHandler);
+    }
+
+    guideline.addEventListener("mousedown", mouseDownHandler);
+
     container.appendChild(guideline);
 }
 
