@@ -6387,6 +6387,7 @@ function createGuideline(axis = 'x', position = 0) {
     function mouseDownHandler(e) {
         guideline.classList.add("moving");
         container.style.pointerEvents = "all";
+        container.parentElement.parentElement.classList.add("noselect")
 
         if(axis === 'x') {
             startPosition = e.clientY;
@@ -6418,6 +6419,7 @@ function createGuideline(axis = 'x', position = 0) {
         guideline.classList.remove("moving");
         container.style.pointerEvents = "none";
         container.style.cursor = "default";
+        container.parentElement.parentElement.classList.remove("noselect");
 
         if(axis === 'x') {
             if(guideline.offsetTop < 0 || guideline.offsetTop > container.offsetHeight) {
