@@ -158,7 +158,7 @@ var answeredSplit = allanswers.split(",");
 	}
 
 	var yoloswag = "Answered: " + theanswers;
-$("#output").html(checkifcorrect+"</br>"+yoloswag);
+$("#output").append(checkifcorrect+"</br>"+yoloswag);
 }
 function closeFacit(){
 
