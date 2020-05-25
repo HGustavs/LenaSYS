@@ -6457,15 +6457,24 @@ class Guideline {
         this.container.appendChild(this.element);
 
         this.element.addEventListener("mouseover", () => this.mouseOver());
+        this.element.addEventListener("mouseleave", () => this.mouseLeave());
         this.element.addEventListener("mousedown", e => this.mouseDown(e));
     }
 
     mouseOver() {
+        if(md !== mouseState.empty) {
+            this.container.parentElement.parentElement.classList.add("noselect");
+            return;
+        }
         if(this.axis === 'x') {
             this.element.style.cursor = "row-resize";
         } else if(this.axis === 'y') {
             this.element.style.cursor = "col-resize";
         }
+    }
+
+    mouseLeave() {
+        this.container.parentElement.parentElement.classList.remove("noselect");
     }
 
     mouseDown(e) {
