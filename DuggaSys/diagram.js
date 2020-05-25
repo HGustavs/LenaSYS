@@ -2359,6 +2359,7 @@ function resetViewToOrigin(event){
     origoOffsetY = 0;
     updateGraphics();
     SaveState();
+    createRulers();
 }
 
 //---------------------------------------------------------------------------------
