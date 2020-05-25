@@ -6370,15 +6370,21 @@ function setIsRulersActiveOnRefresh() {
     }
 }
 
-function createGuideline(axis = 'x') {
+function createGuideline(axis = 'x', isFromRuler = false) {
     const container = document.getElementById("diagram-guidelines-container")
     const guideline = document.createElement("div");
 
     guideline.classList.add("guideline");
     if(axis === 'x') {
         guideline.classList.add("guideline-x");
+        if(!isFromRuler) {
+            guideline.style.top = "50%";
+        }
     } else if(axis === 'y') {
         guideline.classList.add("guideline-y");
+        if(!isFromRuler) {
+            guideline.style.left = "50%";
+        }
     }
 
     function mouseDownHandler(e) {
@@ -6390,7 +6396,9 @@ function createGuideline(axis = 'x') {
     }
 
     function mouseMoveHandler(e) {
-        
+        if(guideline.classList.contains("moving")) {
+
+        }
     }
 
     function mouseUpHandler(e) {

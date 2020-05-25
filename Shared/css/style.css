@@ -5943,10 +5943,10 @@ only screen and (max-device-width: 320px) {
 
 #diagram-guidelines-container {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  left: 1px;
   pointer-events: none;
 }
 
