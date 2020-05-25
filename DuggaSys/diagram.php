@@ -295,10 +295,10 @@
                         <span class="drop-down-option">Guidelines</span>
                         <div class="side-drop-down">
                             <div class="drop-down-item" tabindex="0">
-                                <span class="drop-down-option" onclick="">Create horizontal guideline</span>
+                                <span class="drop-down-option" onclick="createGuideline('x');">Create horizontal guideline</span>
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <span class="drop-down-option" onclick="">Create vertical guideline</span>
+                                <span class="drop-down-option" onclick="createGuideline('y');">Create vertical guideline</span>
                             </div>
                             <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick="">Lock guidelines</span>
@@ -521,10 +521,7 @@
                     </span>
                     <span id="zoomV"></span>
                 </div>
-                <div id="diagram-guidelines">
-                    <div class="guideline guideline-y"></div>
-                    <div class="guideline guideline-x"></div>
-                </div>
+                <div id="diagram-guidelines-container"></div>
             </div>
             <div id="diagram-timeline-container">
                 <div class="diagram-timeline-controls" style="border-right:1px solid #000000;">
