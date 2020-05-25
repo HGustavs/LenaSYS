@@ -6114,6 +6114,7 @@ only screen and (max-device-width: 320px) {
 .fixedScroll{
   position: fixed;
   right: 165px;
+  cursor: pointer;
   bottom: 25px;
 }
  
@@ -6148,6 +6149,11 @@ only screen and (max-device-width: 320px) {
 .fixedScroll:hover .tooltiptextScroll {
   visibility: visible;
 }
+
+.fixedScroll:hover .arrow{
+  opacity: 1;
+}
+
 
 /* --------------================################================-------------- *
  *                               Markdown preview                              *

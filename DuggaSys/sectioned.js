@@ -2553,3 +2553,12 @@ function showFeedbackquestion(){
     $("#inputwrapper-FeedbackQuestion").css("display","none");
   }
 }
+
+//------------------------------------------------------------------------------
+// Scroll to top of page function 
+//------------------------------------------------------------------------------
+$(document).ready(function(){
+  $("#scrollUp").on('click', function(event) {
+    window.scrollTo(0, 0);
+  });
+});
