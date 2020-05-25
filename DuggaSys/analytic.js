@@ -812,6 +812,9 @@ function loadPageInformation() {
     updateState();
 }
 
+var hasCounter;
+var rowCount;
+
 function loadUserInformation(){
 	localStorage.setItem('analyticsPage', 'userInformation');
 	resetAnalyticsChart();
@@ -833,6 +836,7 @@ function loadUserInformation(){
  
  
     function updateSectionedInformation(){
+		hasCounter = true;
         loadAnalytics("sectionedInformation", function(data) {
             var users = {};
             $.each(data, function(i, row) {
@@ -890,6 +894,7 @@ function loadUserInformation(){
 	}
 	
 	function updateCourseedInformation(){
+		hasCounter = true;
         loadAnalytics("courseedInformation", function(data) {
 			var users = {};
             $.each(data, function(i, row) {
@@ -925,6 +930,7 @@ function loadUserInformation(){
     }
  
     function updateCodeviewerInformation(){
+		hasCounter = true;
 		var users = {};
         loadAnalytics("codeviewerInformation", function(data) {
             $.each(data, function(i, row) {
@@ -950,6 +956,7 @@ function loadUserInformation(){
 	
 
     function updateDuggaInformation(){
+		hasCounter = true;
 		var users = {};
         loadAnalytics("duggaInformation", function(data) {
             $.each(data, function(i, row) {
@@ -1383,6 +1390,7 @@ function drawPieChart(data, title = null, multirow = false) {
 }
 
 function renderTable(data) {
+	rowCount = 0;
 	if (!$.isArray(data)) return;
 
 	var str = '<table class="list rows">';
@@ -1401,11 +1409,21 @@ function renderTable(data) {
 			$.each(row, function(j, col) {
 				str += "<td>" + col + "</td>";
 			});
-			str += "</tr>"
+			str += "</tr>";
+			rowCount++;
 		});
 	}
 	str += "</tbody></table>";
+	if(hasCounter == true){
+		updateCounter(rowCount);
+	}
 	return str;
+}
+
+function updateCounter(count)
+{
+	$('#analytic-info').append("<p> This page has been loaded " + count + " times by this user!");
+	hasCounter = false;
 }
 
 function drawLineChart(data) {
