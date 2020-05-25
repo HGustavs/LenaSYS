@@ -496,6 +496,7 @@ function init() {
     setHideCommentOnRefresh();
     initAppearanceForm();
     initTimeline();
+    initGuidelines();
     setPaperSize(event, paperSize);
     updateGraphics(); 
 }
@@ -6373,6 +6374,17 @@ function setIsRulersActiveOnRefresh() {
 let guidelines = [];
 let isGuidelinesLocked = false;
 
+function initGuidelines() {
+    let tempGuidelines = localStorage.getItem("guidelines");
+
+    if(tempGuidelines !== null) {
+        tempGuidelines = JSON.parse(tempGuidelines);
+        for(let i = 0; i < tempGuidelines.length; i++) {
+            guidelines[i] = new Guideline(tempGuidelines[i].axis, tempGuidelines[i].position);
+        }
+    }
+}
+
 function saveGuidelinesLocalStorage() {
     const localStorageGuidelines = guidelines.reduce((result, guideline) => {
         return [...result, guideline.exportToLocalStorage()];
@@ -6406,12 +6418,14 @@ class Guideline {
         this.element = document.createElement("div");
         this.element.classList.add("guideline");
 
+        const position = this.position.toString().includes("%") ? this.position : `${this.position}px`;
+
         if(this.axis === 'x') {
             this.element.classList.add("guideline-x");
-            this.element.style.top = this.position;
+            this.element.style.top = position;
         } else if(this.axis === 'y') {
             this.element.classList.add("guideline-y");
-            this.element.style.left = this.position;
+            this.element.style.left = position;
         }
 
         this.container.appendChild(this.element);
