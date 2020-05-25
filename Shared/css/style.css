@@ -437,7 +437,6 @@ p {
 }
 .announcementForm textarea{
   height: 150px;
-
 }
 .announcementForm input[type=text]:focus,
 .announcementForm textarea:focus {
@@ -566,6 +565,9 @@ p {
 .closeActionLogDisplay:focus{
   color: #cc0000;
   cursor: pointer;
+}
+#displayAnnouncements .announcementCard .announcementMsgParagraph{
+  white-space: pre-wrap;
 }
 #displayAnnouncements .announcementCard .courseversion{
  color: #9474a4;
