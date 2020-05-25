@@ -2367,16 +2367,15 @@ function minimizeBoxes(boxid) {
 	//for template 2
 	if (templateid == 2 && isMobile == false) {
 		if (boxid == 1) {
-			$(boxValArray['box' + 2]['id']).height("100%");
-
-			$(boxValArray['box' + boxid]['id']).height("10%");
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "100%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height ="10%";
 			alignBoxesHeight2boxes(boxValArray, 1, 2);
 		}
 
 		if (boxid == 2) {
-			$(boxValArray['box' + 1]['id']).height("100%");
+			document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
 
-			$(boxValArray['box' + boxid]['id']).height("10%");
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "10%";
 			alignBoxesHeight2boxes(boxValArray, 2, 1);
 		}
 	}
