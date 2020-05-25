@@ -1080,7 +1080,8 @@ function loadUserInformation(){
 						updateState(users);	
 					}
 				}
-            });
+			});
+			updateState(users);	
 		});
 	}
 
