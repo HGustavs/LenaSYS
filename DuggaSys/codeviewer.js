@@ -2318,12 +2318,12 @@ function minimizeBoxes(boxid) {
 	if(isMobile){
 		if(templateid == 1){
 			if(boxid == 1) {
-				$(boxValArray['box' + 1]['id']).height("10%");
-				$(boxValArray['box' + 2]['id']).height("90%");
+				document.querySelector(boxValArray['box' + 1]['id']).style.height = "10%";
+				document.querySelector(boxValArray['box' + 2]['id']).style.height = "90%";
 			}	 
 			if(boxid == 2) {
-				$(boxValArray['box' + 1]['id']).height("90%");
-				$(boxValArray['box' + 2]['id']).height("10%");
+				document.querySelector(boxValArray['box' + 1]['id']).style.height = "90%";
+				document.querySelector(boxValArray['box' + 2]['id']).style.height = "10%";
 			}
 		}
 	}
@@ -2331,12 +2331,12 @@ function minimizeBoxes(boxid) {
 	if(isMobile){
 		if(templateid == 2){
 			if(boxid == 1) {
-				$(boxValArray['box' + 1]['id']).height("10%");
-				$(boxValArray['box' + 2]['id']).height("90%");
+				document.querySelector(boxValArray['box' + 1]['id']).style.height = "10%";
+				document.querySelector(boxValArray['box' + 2]['id']).style.height = "90%";
 			}	 
 			if(boxid == 2) {
-				$(boxValArray['box' + 1]['id']).height("90%");
-				$(boxValArray['box' + 2]['id']).height("10%");
+				document.querySelector(boxValArray['box' + 1]['id']).style.height = "90%";
+				document.querySelector(boxValArray['box' + 2]['id']).style.height = "10%";
 			}
 		}
 	}
@@ -2345,8 +2345,8 @@ function minimizeBoxes(boxid) {
 	if (templateid == 1 && isMobile == false) {
         
 		if (boxid == 1) {
-			$(boxValArray['box' + 2]['id']).width("100%");
-			$(boxValArray['box' + boxid]['id']).width("0%");
+			document.querySelector(boxValArray['box' + 2]['id']).style.width = "100%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.width = "0%";
 			alignBoxesWidth(boxValArray, 1, 2);
             thisBox2.classList.remove('hidden');
             setTimeout(function () {
@@ -2355,8 +2355,8 @@ function minimizeBoxes(boxid) {
 		}
 
 		if (boxid == 2) {
-			$(boxValArray['box' + 1]['id']).width("100%");
-			$(boxValArray['box' + boxid]['id']).width("0%");
+			document.querySelector(boxValArray['box' + 1]['id']).style.width = "100%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.width = "0%";
 			alignBoxesWidth(boxValArray, 1, 2);
             thisBox1.classList.remove('hidden');
             setTimeout(function () {
