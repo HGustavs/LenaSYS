@@ -573,10 +573,17 @@ END;
  
 DELIMITER ;
 
+<<<<<<< Updated upstream
 --Function for updating timestamps, used by triggers */
 DELIMITER //
 
 CREATE OR REPLACE FUNCTION update_timeStamp()
+=======
+--Functions for updating timestamps, used by triggers. One for each variable name */
+DELIMITER //
+
+CREATE OR REPLACE FUNCTION update_modified()
+>>>>>>> Stashed changes
 RETURNS TRIGGER AS $$
 
 BEGIN
@@ -586,6 +593,7 @@ END;
 
 DELIMITER;
 
+<<<<<<< Updated upstream
 --Triggers for each table that needs a updated timestamp for whenever they are modified */
 CREATE TRIGGER update_wordlist_timestamp BEFORE UPDATE ON wordlist FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
 CREATE TRIGGER update_user_course_timestamp BEFORE UPDATE ON user_course FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
@@ -597,6 +605,45 @@ CREATE TRIGGER update_codeexample_timestamp BEFORE UPDATE ON codeexample FOR EAC
 CREATE TRIGGER update_word_timestamp BEFORE UPDATE ON word FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
 CREATE TRIGGER update_improw_timestamp BEFORE UPDATE ON improw FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
 CREATE TRIGGER update_impwordlist_timestamp BEFORE UPDATE ON impwordlist FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
+=======
+DELIMITER //
+
+CREATE OR REPLACE FUNCTION update_ts()
+RETURNS TRIGGER AS $$
+
+BEGIN
+NEW.ts = NOW();
+RETURN NEW;
+END;
+
+DELIMITER;
+
+DELIMITER //
+
+CREATE OR REPLACE FUNCTION update_updated()
+RETURNS TRIGGER AS $$
+
+BEGIN
+NEW.updated = NOW();
+RETURN NEW;
+END;
+
+DELIMITER;
+
+
+--Triggers for each table that needs a updated timestamp for whenever they are modified */
+CREATE TRIGGER update_wordlist_timestamp BEFORE UPDATE ON wordlist FOR EACH ROW EXECUTE PROCEDURE update_modified();
+CREATE TRIGGER update_user_course_timestamp BEFORE UPDATE ON user_course FOR EACH ROW EXECUTE PROCEDURE update_modified();
+CREATE TRIGGER update_listentries_timestamp BEFORE UPDATE ON listentries FOR EACH ROW EXECUTE PROCEDURE update_ts();
+CREATE TRIGGER update_quiz_timestamp BEFORE UPDATE ON quiz FOR EACH ROW EXECUTE PROCEDURE update_modified();
+CREATE TRIGGER update_variant_timestamp BEFORE UPDATE ON variant FOR EACH ROW EXECUTE PROCEDURE update_modified();
+CREATE TRIGGER update_vers_timestamp BEFORE UPDATE ON vers FOR EACH ROW EXECUTE PROCEDURE update_updated();
+CREATE TRIGGER update_codeexample_timestamp BEFORE UPDATE ON codeexample FOR EACH ROW EXECUTE PROCEDURE update_updated();
+CREATE TRIGGER update_word_timestamp BEFORE UPDATE ON word FOR EACH ROW EXECUTE PROCEDURE update_updated();
+CREATE TRIGGER update_improw_timestamp BEFORE UPDATE ON improw FOR EACH ROW EXECUTE PROCEDURE update_updated();
+CREATE TRIGGER update_impwordlist_timestamp BEFORE UPDATE ON impwordlist FOR EACH ROW EXECUTE PROCEDURE update_UPDATED();
+
+>>>>>>> Stashed changes
 
 INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','1',1);
 INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','2',2);
