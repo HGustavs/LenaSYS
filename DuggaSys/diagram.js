@@ -6370,79 +6370,102 @@ function setIsRulersActiveOnRefresh() {
     }
 }
 
-function createGuideline(axis = 'x', position = 0) {
-    const container = document.getElementById("diagram-guidelines-container");
-    const guideline = document.createElement("div");
-    let startPosition = 0;
+let guidelines = [];
 
-    guideline.classList.add("guideline");
-    if(axis === 'x') {
-        guideline.classList.add("guideline-x");
-        guideline.style.top = position;
-    } else if(axis === 'y') {
-        guideline.classList.add("guideline-y");
-        guideline.style.left = position;
-    }
-
-    function mouseDownHandler(e) {
-        guideline.classList.add("moving");
-        container.style.pointerEvents = "all";
-        container.parentElement.parentElement.classList.add("noselect")
-
-        if(axis === 'x') {
-            startPosition = e.clientY;
-            container.style.cursor = "row-resize";
-        } else if(axis === 'y') {
-            startPosition = e.clientX;
-            container.style.cursor = "col-resize";
-        }
-
-        document.addEventListener("mousemove", mouseMoveHandler);
-        document.addEventListener("mouseup", mouseUpHandler);
-    }
-
-    function mouseMoveHandler(e) {
-        if(guideline.classList.contains("moving")) {
-            if(axis === 'x') {
-                const movePosition = startPosition - e.clientY;
-                startPosition = e.clientY;
-                guideline.style.top = `${guideline.offsetTop - movePosition}px`;
-            } else if(axis === 'y') {
-                const movePosition = startPosition - e.clientX;
-                startPosition = e.clientX;
-                guideline.style.left = `${guideline.offsetLeft - movePosition}px`;
-            }
-        }
-    }
-
-    function mouseUpHandler() {
-        guideline.classList.remove("moving");
-        container.style.pointerEvents = "none";
-        container.style.cursor = "default";
-        container.parentElement.parentElement.classList.remove("noselect");
-
-        if(axis === 'x') {
-            if(guideline.offsetTop < 0 || guideline.offsetTop > container.offsetHeight) {
-                guideline.remove();
-            }
-        } else if(axis === 'y') {
-            if(guideline.offsetLeft < 0 || guideline.offsetLeft > container.offsetWidth) {
-                guideline.remove();
-            }
-        }
-
-        document.removeEventListener("mousemove", mouseMoveHandler);
-        document.removeEventListener("mouseup", mouseUpHandler);
-    }
-
-    guideline.addEventListener("mousedown", mouseDownHandler);
-
-    container.appendChild(guideline);
+function addGuideline(guideline) {
+    guidelines.push(guideline);
 }
 
 function deleteGuidelines() {
-    const guidelines = document.querySelectorAll(".guideline");
-    guidelines.forEach(guideline => guideline.remove());
+    guidelines.forEach(guideline => {
+        guideline.element.remove();
+    });
+    guidelines.splice(0, guidelines.length);
+}
+
+class Guideline {
+    constructor(axis, position) {
+        this.axis = axis;
+        this.position = position;
+        this.container = document.getElementById("diagram-guideline-container");
+        this.element = null;
+        this.createGuideline();
+    }
+
+    createGuideline() {
+        this.element = document.createElement("div");
+        this.element.classList.add("guideline");
+
+        if(this.axis === 'x') {
+            this.element.classList.add("guideline-x");
+            this.element.style.top = this.position;
+        } else if(this.axis === 'y') {
+            this.element.classList.add("guideline-y");
+            this.element.style.left = this.position;
+        }
+
+        this.container.appendChild(this.element);
+
+        this.element.addEventListener("mousedown", e => this.mouseDown(e));
+    }
+
+    mouseDown(e) {
+        this.element.classList.add("moving");
+        this.container.style.pointerEvents = "all";
+        this.container.parentElement.parentElement.classList.add("noselect")
+
+        if(this.axis === 'x') {
+            this.position = e.clientY;
+            this.container.style.cursor = "row-resize";
+        } else if(this.axis === 'y') {
+            this.position = e.clientX;
+            this.container.style.cursor = "col-resize";
+        }
+
+        document.addEventListener("mousemove", e => this.mouseMove(e));
+        document.addEventListener("mouseup", () => this.mouseUp());
+    }
+
+    mouseMove(e) {
+        if(this.element.classList.contains("moving")) {
+            if(this.axis === 'x') {
+                const movePosition = this.position - e.clientY;
+                this.position = e.clientY;
+                this.element.style.top = `${this.element.offsetTop - movePosition}px`;
+            } else if(this.axis === 'y') {
+                const movePosition = this.position - e.clientX;
+                this.position = e.clientX;
+                this.element.style.left = `${this.element.offsetLeft - movePosition}px`;
+            }
+        }
+    }
+
+    mouseUp() {
+        this.element.classList.remove("moving");
+        this.container.style.pointerEvents = "none";
+        this.container.style.cursor = "default";
+        this.container.parentElement.parentElement.classList.remove("noselect");
+
+        if(this.axis === 'x') {
+            if(this.element.offsetTop < 0 || this.element.offsetTop > this.container.offsetHeight) {
+                this.remove();
+            }
+        } else if(this.axis === 'y') {
+            if(this.element.offsetLeft < 0 || this.element.offsetLeft > this.container.offsetWidth) {
+                this.remove();
+            }
+        }
+
+        document.removeEventListener("mousemove", this.mouseMove);
+        document.removeEventListener("mouseup", this.mouseUp);
+    }
+
+    remove() {
+        this.element.remove();
+
+        const index = guidelines.findIndex(guideline => Object.is(this, guideline));
+        guidelines.splice(index, 1);
+    }
 }
 
 //------------------------------------------------

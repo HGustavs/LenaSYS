@@ -5943,7 +5943,7 @@ only screen and (max-device-width: 320px) {
   white-space: nowrap;
 }
 
-#diagram-guidelines-container {
+#diagram-guideline-container {
   position: absolute;
   top: 1px;
   right: 1px;
