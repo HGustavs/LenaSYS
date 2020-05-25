@@ -129,6 +129,12 @@ function loadGeneralStats() {
 			data['stats']['userSubmissionSize']
 		]);
 
+		// Biggest Course
+		tableData.push([
+			'Biggest Course on Disk: ' + data['stats']['biggestCourseName'],
+			data['stats']['biggestCourseSize']
+		]);
+
 		// Total number of users
 		tableData.push([
 			'Total Users',
@@ -646,11 +652,19 @@ function loadPageInformation() {
 	
 	var firstLoad = true;
  
-    var selectPage = $("<select></select>")
-        .append('<option value="showDugga" selected>showDugga</option>')
+	var selectPage = $("<select></select>")
+		.append('<option value="accessed">accessed</option>') 
+		.append('<option value="analytic">analytic</option>')
 		.append('<option value="codeviewer">codeviewer</option>')
-		.append('<option value="sectioned">sectioned</option>')
 		.append('<option value="courseed">courseed</option>')
+		.append('<option value="contribution">contribution</option>')
+		.append('<option value="duggaed">duggaed</option>')
+		.append('<option value="diagram">diagram</option>')
+		.append('<option value="fileed">fileed</option>')
+		.append('<option value="profile">profile</option>')
+		.append('<option value="resulted">resulted</option>')
+        .append('<option value="showDugga" selected>showDugga</option>')
+		.append('<option value="sectioned">sectioned</option>')
         .appendTo($('#analytic-info'));
    
     function updatePageHitInformation(pages, page){
@@ -685,7 +699,6 @@ function loadPageInformation() {
 		var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
 
         for (var i = 0; i < data['percentage'][page].length; i++) {
-			console.log(data['percentage'][page][i]);
 			numberOfCourses = parseInt(data['percentage'][page].length);
 			courseID.push([
                 data['percentage'][page][i].courseid
@@ -747,7 +760,7 @@ function loadPageInformation() {
  
     function updateState(){
 		// Add additonal pages here
-		var pages = ["dugga", "codeviewer", "sectioned", "courseed", "fileed", "resulted", "analytic", "contribution", "duggaed", "accessed", "profile"];
+		var pages = ["dugga", "codeviewer", "sectioned", "courseed", "fileed", "resulted", "analytic", "contribution", "duggaed", "accessed", "profile", "diagram"];
 
 		if(firstLoad === true){
 			updatePageHitInformation(pages, pages[0]);
@@ -766,7 +779,32 @@ function loadPageInformation() {
 					break;
 				case "courseed":
 					updatePageHitInformation(pages, pages[3]);
+					break; 
+				case "fileed":
+					updatePageHitInformation(pages, pages[4]);
 					break;
+				case "resulted":
+					updatePageHitInformation(pages, pages[5]);
+					break;
+				case "analytic":
+					updatePageHitInformation(pages, pages[6]);
+					break;
+				case "contribution":
+					updatePageHitInformation(pages, pages[7]);
+					break;
+				case "duggaed":
+					updatePageHitInformation(pages, pages[8]);
+					break;
+				case "accessed":
+					updatePageHitInformation(pages, pages[9]);
+					break;
+				case "profile":
+					updatePageHitInformation(pages, pages[10]);
+					break;
+				case "diagram":
+					updatePageHitInformation(pages, pages[11]);
+					break;
+				
             }
         });
     }
@@ -784,14 +822,15 @@ function loadUserInformation(){
 	var firstLoad = true;
 	
 	var selectPage = $("<select></select>")
-        .append('<option value="sectioned" selected>sectioned</option>')
+    .append('<option value="sectioned" selected>sectioned</option>')
 		.append('<option value="courseed">courseed</option>')
 		.append('<option value="showDugga" selected>showDugga</option>')
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="events">events</option>')
 		.append('<option value="fileEvents">fileEvents</option>')
 		.append('<option value="course">course</option>')
-        .appendTo($('#analytic-info'));
+		.append('<option value="loginFail">loginFail</option>')
+    .appendTo($('#analytic-info'));
  
  
     function updateSectionedInformation(){
@@ -934,11 +973,14 @@ function loadUserInformation(){
             updateState(users);
         });
     } 
- 
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for events
+//------------------------------------------------------------------------------------------------
     function updateUserLogInformation(users){
 		var event;
 		var users = {};
 		var user;
+		//Array containing all different eventTypes
 		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
 		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
 		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
@@ -953,7 +995,7 @@ function loadUserInformation(){
 				eventNumber = row.eventType;
 				event = eventNames[eventNumber];
 				if(row.eventType != "") {
-					if(event != 'AddFile' && event != 'EditFile'){
+					if(event != 'AddFile' && event != 'EditFile' && event != 'LoginFail'){
 						users[user].push([
 							row.uid,
 							row.username,
@@ -968,11 +1010,14 @@ function loadUserInformation(){
             });
 		});
 	}
-	
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for fileEvents
+//------------------------------------------------------------------------------------------------
 	function updatefileEvents(users){
 		var event;
 		var users = {};
 		var user;
+		//Array containing all different eventTypes
 		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
 		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
 		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
@@ -1034,7 +1079,46 @@ function loadUserInformation(){
 			updateState(users);
 			
         });
-    }
+  }
+
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for loginFail
+//------------------------------------------------------------------------------------------------
+	function updateloginFail(users){
+		var event;
+		var users = {};
+		var user;
+		//Array containing all different eventTypes
+		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
+		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
+		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
+		'EditFile','MarkedDugga'];
+
+        loadAnalytics("userLogInformation", function(data) {
+            $.each(data, function(i, row) {
+                user = row.username;
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "EventDescription"]];
+				}
+				eventNumber = row.eventType;
+				event = eventNames[eventNumber];
+				if(row.eventType != "") {
+					if(event == 'LoginFail'){
+						users[user].push([
+							row.uid,
+							row.username,
+							row.eventType,
+							row.description,
+							row.timestamp,
+							event
+						]);
+						updateState(users);	
+					}
+				}
+       });
+		});
+	}
+
    
     function updateState(users){
         $('#analytic-info > select.file-select').remove();
@@ -1113,9 +1197,12 @@ function loadUserInformation(){
 				case "fileEvents":
 					updatefileEvents();
 					break;
-				case "course":
-                    updateCourseInformation();
-                    break;
+        case "course":
+          updateCourseInformation();
+          break;
+        case "loginFail":
+					updateloginFail();
+					break;
             }
         });
     }
@@ -1300,6 +1387,10 @@ function drawPieChart(data, title = null, multirow = false) {
 		ctx.fillText(title, radius * 2 + 30, 25);
 	}
 
+	var labelCount = 0;
+	var textSpacing = 50;
+	var rectSpacing = 30;
+
 	for (var i = 0; i < data.length; i++) {
 		ctx.fillStyle = getRandomColor(i);
 		ctx.beginPath();
@@ -1309,10 +1400,23 @@ function drawPieChart(data, title = null, multirow = false) {
 		ctx.fill();
 		last += (Math.PI*2*(data[i].value/total));
 
-		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 40, 12, 12);
+		if(labelCount < 4){
+			ctx.fillRect(radius * 2 + rectSpacing , labelCount * textAreaHeight + 40, 12, 12);
+		}
 		ctx.fillStyle = "black";
 		ctx.font = fontSize + "px Arial";
-		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight + 20);
+		if(labelCount < 4){
+			ctx.fillText(data[i].label, radius * 2 + textSpacing , labelCount * textAreaHeight + textAreaHeight + 20);
+			labelCount++;
+		}
+		else{
+			var w = ctx.measureText(data[i - 4].label);
+			textSpacing += w.width + 30;
+			rectSpacing += w.width + 30;
+			labelCount = 0;
+			i--;
+			last -= (Math.PI*2*(data[i].value/total));
+		}
 	}
 }
 
