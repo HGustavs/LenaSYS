@@ -5724,6 +5724,7 @@ only screen and (max-device-width: 320px) {
   height: var(--ruler-size);
   margin-right: var(--canvas-margin);
   border-right: 1px solid #000000;
+  cursor: row-resize;
 }
 
 #diagram-page-wrapper.fullscreen #ruler-x {
@@ -5735,6 +5736,7 @@ only screen and (max-device-width: 320px) {
   margin-top: var(--ruler-size);
   margin-bottom: var(--canvas-margin);
   border-bottom: 1px solid #000000;
+  cursor: col-resize;
 }
 
 #diagram-page-wrapper.fullscreen #ruler-y {

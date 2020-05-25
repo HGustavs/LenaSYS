@@ -491,7 +491,7 @@ function init() {
     setModeOnRefresh(); 
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
-    setIsRulersActiveOnRefresh();
+    initRulers();
     setIsFullscreenActiveOnRefresh();
     setHideCommentOnRefresh();
     initAppearanceForm();
@@ -6364,15 +6364,43 @@ function toggleRulers() {
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-// setIsRulersActiveOnRefresh: Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
+// initRulers Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
 //------------------------------------------------------------------------------------------------------------------------
 
-function setIsRulersActiveOnRefresh() {
+function initRulers() {
     const tempIsRulerActive = localStorage.getItem("isRulersActive");
     if(tempIsRulerActive !== null) {
         isRulersActive = !(tempIsRulerActive === "true");
         toggleRulers();
     }
+
+    const rulerX = document.getElementById("ruler-x");
+    const rulerY = document.getElementById("ruler-y");
+    const diagramCanvasContainer = document.getElementById("diagram-canvas-container");
+    let mouseDownRulerX = false;
+    let mouseDownRulerY = false;
+
+    function mouseUpHandler() {
+        if(mouseDownRulerX) {
+            addGuideline(new Guideline('x', 0, false));
+        }
+        if(mouseDownRulerY) {
+            addGuideline(new Guideline('y', 0, false));
+        }
+        diagramCanvasContainer.removeEventListener("mouseup", mouseUpHandler);
+    }
+
+    rulerX.addEventListener("mousedown", () => {
+        mouseDownRulerX = true;
+        diagramCanvasContainer.addEventListener("mouseup", mouseUpHandler);
+    });
+    rulerX.addEventListener("mouseup", () => mouseDownRulerX = false);
+
+    rulerY.addEventListener("mousedown", () => {
+        mouseDownRulerY = true;
+        diagramCanvasContainer.addEventListener("mouseup", mouseUpHandler);
+    });
+    rulerY.addEventListener("mouseup", () => mouseDownRulerY = false);
 }
 
 let guidelines = [];
