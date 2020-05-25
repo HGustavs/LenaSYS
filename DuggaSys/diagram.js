@@ -6381,7 +6381,8 @@ function initRulers() {
     let mouseDownRulerX = false;
     let mouseDownRulerY = false;
 
-    function mouseOverHandler() {      
+    function mouseOverHandler() {
+        document.body.classList.add("noselect");
         if(mouseDownRulerX) {
             const guideline = addGuideline(new Guideline('x', 0, false));
             guideline.mouseDownHandler({clientX: 0});
@@ -6396,6 +6397,7 @@ function initRulers() {
     function mouseUpHandler() {
         mouseDownRulerX = false;
         mouseDownRulerY = false;
+        document.body.classList.add("noselect");
         document.removeEventListener("mouseup", mouseUpHandler);
     }
 
