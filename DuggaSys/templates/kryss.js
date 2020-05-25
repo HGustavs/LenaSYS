@@ -133,6 +133,7 @@ var allanswers = "";
 var theanswers ="";
 function showFacit(param, uanswer, danswer)
 {
+	quiz(param);
 	AJAXService("GETVARIANTANSWER",{ setanswer:uanswer},"VARIANTPDUGGA");
 	var splited = uanswer.split(" ");
 	allanswers =  splited[3];
