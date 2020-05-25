@@ -1851,6 +1851,7 @@ function Symbol(kindOfSymbol) {
     // drawUMLLine: Draws uml line between uml objects
     //---------------------------------------------------------------
     this.drawUMLLine = function(x1, y1, x2, y2) {
+
         this.properties['strokeColor'] = '#000000';
         this.properties['lineWidth'] = 2;
 
@@ -2002,8 +2003,10 @@ function Symbol(kindOfSymbol) {
 
         }  else if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(breakpointStartX, breakpointEndY);
+            this.setTwoSublines(x1,y1,breakpointStartX,breakpointEndY,x2,y2)
         }  else if((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
             ctx.lineTo(breakpointEndX, breakpointStartY);
+            this.setTwoSublines(x1,y1,breakpointEndX, breakpointStartY,x2,y2);
         }
 
         if (endLineDirection == "left") {
@@ -2022,7 +2025,7 @@ function Symbol(kindOfSymbol) {
         checkUMLLineIntersection(this.umlSubline.subLineThree.startX,this.umlSubline.subLineThree.startY,this.umlSubline.subLineThree.endX,this.umlSubline.subLineThree.endY)
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
     }
-
+    //This function is used to store UML-sublines when there's three sub lines used
     this.setSubLines = function(x1,y1,breakpointStartX,middleBreakPointX,breakpointEndX,breakpointStartY,middleBreakPointY,breakpointEndY,x2,y2,side){
         if(side){
             this.umlSubline.subLineOne.startX = x1;
@@ -2056,6 +2059,24 @@ function Symbol(kindOfSymbol) {
             this.umlSubline.subLineThree.endX = x2;
             this.umlSubline.subLineThree.endY = y2;
         }
+    }
+    //This function is used to store UML-sublines when there's only two lines used
+    this.setTwoSublines = function(x1,y1,breakpointX, breakpointY,x2,y2){
+        this.umlSubline.subLineThree.startX = null ;
+        this.umlSubline.subLineThree.startY = null ;
+        this.umlSubline.subLineThree.endX = null ;
+        this.umlSubline.subLineThree.endY = null ;
+
+        this.umlSubline.subLineOne.startX = x1;
+        this.umlSubline.subLineOne.startY = y1;
+        this.umlSubline.subLineOne.endX = breakpointX;
+        this.umlSubline.subLineOne.endY = breakpointY;
+
+        this.umlSubline.subLineTwo.startX = breakpointX;
+        this.umlSubline.subLineTwo.startY = breakpointY;
+        this.umlSubline.subLineTwo.endX = x2;   
+        this.umlSubline.subLineTwo.endY = y2;
+        
     }
 
     //---------------------------------------------------------------
@@ -2756,7 +2777,7 @@ function checkUMLLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY
                 // if line1 and line2 are segments, they intersect if both of the above are true
                 
                 
-                console.log(result)
+
                 // if line1 and line2 are segments, they intersect if both of the above are true
                 if(result.onLine1 == true	&&	result.onLine2	==	true){
                     var m1 = (line1EndY - line1StartY) / (line1EndX-line1StartX);
@@ -2775,7 +2796,6 @@ function checkUMLLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY
 function drawLineJump(positionX, positionY, mOfLine1, mOfLine2){
    
     var angelOfIntersection = Math.atan((mOfLine1 - mOfLine2)/(1+mOfLine1*mOfLine2));
-    console.log(positionX, positionY,angelOfIntersection);
 	if(angelOfIntersection > 0){
 		ctx.beginPath();
 		ctx.arc(positionX,positionY,5*zoomValue,angelOfIntersection+(0.5*Math.PI),angelOfIntersection+(1.5*Math.PI));
@@ -2785,7 +2805,6 @@ function drawLineJump(positionX, positionY, mOfLine1, mOfLine2){
 }
 function drawUmlJump(positionX, positionY){
     var angelOfIntersection = 90;
-    console.log(positionX, positionY,angelOfIntersection);
 	if(angelOfIntersection > 0){
 		ctx.beginPath();
 		ctx.arc(positionX,positionY,5*zoomValue,startAngle = 1 * Math.PI, endAngle = 2 * Math.PI);
