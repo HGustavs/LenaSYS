@@ -31,6 +31,7 @@ var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
 var legendIsHidden = true;
+var rerenderData = "NONE";
 
 function setup() {
     //Benchmarking function
@@ -180,6 +181,7 @@ function process() {
 	dstr += makeCustomFilter("onlyPending", "Only pending");
 	dstr += makeCustomFilter("minimode", "Mini mode");
 	dstr += makeCustomFilter("passedDeadline", "Late submissions");
+	dstr += makeCustomFilter("notExported", "Not Exported");
 
 	document.getElementById("customfilter").innerHTML = dstr;
 	var dstr = "";
@@ -699,6 +701,11 @@ function returnedExportedGrades(gradeData){
 				document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
 				document.getElementById('lastExportedDate').innerHTML = gradeData[0].gradeLastExported;
 
+				if (filterList["notExported"]) {
+					rerenderData = gradeData[0].gradeLastExported;
+					myTable.renderTable();
+				}
+
 				// Checks if gardeData has more values than just gradeLastExported.
 				// If it has, then call ladExport again.
 				// This is to avoid a call loop.
@@ -1178,6 +1185,90 @@ function renderCell(col, celldata, cellid) {
 			return str;
 			}
 	}
+} if (filterList["notExported"]) {
+	if (rerenderData === "NONE") {
+		AJAXService("getunexported", { getType: "ONLYDATE" }, "GEXPORT");
+	} else {
+			// First column (Fname/Lname/SSN)
+			if (col == "FnameLname") {
+				str = "<div class='resultTableCell resultTableNormal'>";
+				str += "<div class='resultTableText'>";
+				str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
+				str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
+				str += "</div>";
+				return str;
+			}
+			if (filterGrade === "none" || celldata.grade === filterGrade) {
+				// color based on pass,fail,pending,assigned,unassigned
+				str = "<div style='padding:12px;' class='resultTableCell ";
+				celldata.marked = new Date(celldata.marked);
+				celldata.marked = celldata.marked.getFullYear() + "-" + addZero(celldata.marked.getMonth() + 1) + "-" + addZero(celldata.marked.getDate()) + " " + addZero(celldata.marked.getHours()) + ":" + addZero(celldata.marked.getMinutes()) + ":" + addZero(celldata.marked.getSeconds());
+				if (celldata.kind != 4 && celldata.marked > rerenderData) {
+					str += "dugga-assigned";
+				} else {
+					str += "dugga-empty";
+				}
+					
+				str += "'>";
+				// Creation of grading buttons
+				if (celldata.kind != 4 && celldata.marked > rerenderData) {
+					str += "<div class='gradeContainer resultTableText'>";
+					if (celldata.grade === null) {
+						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+					} else if (celldata.grade === -1) {
+						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+					} else {
+						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+					}
+					str += "<img id='korf' class='fist";
+					if ((celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) || celldata.quizfile == null) { // Always shows fist. Should be re-evaluated
+						str += " grading-hidden";
+					}
+					str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
+					str += "/>";
+					//Print times graded
+					str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
+					if (celldata.timesGraded !== 0) {
+						str += '(' + celldata.timesGraded + ')';
+					}
+					str += "</div>";
+					str += "</div>";
+
+					// Print submitted time and change color to red if passed deadline
+					str += "<div class='text-center resultTableText'";
+					for (var p = 0; p < moments.length; p++) {
+						if (moments[p].link == celldata.quizId) {
+							if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+									str += " style='color:red;'";
+								}
+								break;
+							}
+						}
+					str += ">";
+
+					if (celldata.submitted.getTime() !== timeZero.getTime()) {
+						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+					}
+						
+					for (var p = 0; p < moments.length; p++) {
+						if (moments[p].link == celldata.quizId) {
+							if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+								str += "<img src='../Shared/icons/warningTriangle.svg' style='width:12px;height:12px;' title='Late submission'>";
+							}
+							break;
+						}
+					}
+					str += "</div>";
+				}
+
+				if (celldata.marked < rerenderData) {
+					str += "</div>";
+				}
+
+			return str;
+			}
+	}
+		
 }
 		// Creation of grading buttons
 		if (celldata.ishere === true || celldata.kind == 4) {
@@ -1394,6 +1485,19 @@ function rowFilter(row) {
 			if (!rowPending) {
 				return false;
 			}
+		}
+	}	if (filterList["notExported"]) {
+		var rowPending = false;
+		for (var colname in row) {
+			row[colname]["marked"] = new Date(row[colname]["marked"]);
+			row[colname]["marked"] = row[colname]["marked"].getFullYear() + "-" + addZero(row[colname]["marked"].getMonth() + 1) + "-" + addZero(row[colname]["marked"].getDate()) + " " + addZero(row[colname]["marked"].getHours()) + ":" + addZero(row[colname]["marked"].getMinutes()) + ":" + addZero(row[colname]["marked"].getSeconds());
+			if (colname != "FnameLname" && row[colname]["needMarking"] == false && row[colname]["marked"] > document.getElementById("lastExportedDate").textContent ) {
+				rowPending = true;
+				break;
+			}
+		}
+		if (!rowPending) {
+			return false;
 		}
 	}
 	var teacherDropdown = document.getElementById("teacherDropdown").value;
