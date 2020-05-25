@@ -21,25 +21,33 @@ pdoConnect();
     </div>
     <div id="courseidAndVersid">
       <div>
-        <label for="cid">Course</label><br>
+        <label for="cid"><b>Published course</b></label><br>
         <select id="cid" name="cid">
           <option selected disabled>ID</option>
           <?php
           foreach ($pdo->query('SELECT * FROM course ORDER BY coursename ASC') as $course) {
-            echo "<option value='".$course['cid']."'>".$course['coursename']."</option>";
+            $visibility  = $course['visibility'];
+            if ($visibility == 1 || $visibility == 2) {
+              echo "<option value='".$course['cid']."'>".$course['coursename']."</option>";
+              
+            }
           }
           ?>
         </select>
       </div>
       <div>
-        <label for="versid">Version</label><br>
+        <label for="versid"><b>Version</b></label><br>
         <select id="versid" name="versid" disabled>
           <option selected disabled>ID</option>
         </select>
       </div>
     </div>
     <div id="recipientBox">
-      <label for="recipient">Recipients</label><br>
+      <label for="recipient"><b>Recipients</b></label>
+      <span class="selectLabels"><label class="selectAll"><input type="checkbox"> <b>all</b></label>
+      <label class="selectFinished"><input type="checkbox"> <b>finished</b></label>
+      <label class="selectNonFinished"><input type="checkbox"> <b>non-finished</b></label></span>
+      <br>
       <select id="recipient" name="recipients[]" multiple disabled>
         <option disabled>Select</option>
       </select>

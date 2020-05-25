@@ -24,13 +24,13 @@ function setup() {
 	var filt = "";
 
 	filt += `<td id='testSearchContainer' class='navButt'>`
-    filt += `<form autocomplete='off' style='display:contents'><input id='duggaSearch' readonly onmouseover = 'duggaSearchMouseOver()' type='text' name='search' placeholder='Search..'`;
+    filt += `<form autocomplete='off' style='display:contents'><input id='duggaSearch' readonly style='margin-top:4px;' onmouseover = 'duggaSearchMouseOver()' type='text' name='search' placeholder='Search..'`;
 	filt += `onkeyup='searchterm=document.getElementById("duggaSearch").value;searchKeyUp(event);duggaTable.renderTable();'onsearch='searchterm=document.getElementById("duggaSearch").value; searchKeyUp(event); duggaTable.renderTable();document.getElementById("searchinputMobile").value=document.getElementById("duggaSearch").value;'/></form>`;
 	filt += `<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>`
-	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>`
+    filt += `<img id='lookingGlassSVG' style='height:18px;margin-bottom:6px;' src='../Shared/icons/LookingGlass.svg'>`
 	filt += `</button>`
 	filt += `</td>`
-	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
+    filt += `<img id='lookingGlassSVG' style='height:18px;margin-bottom:6px;' src='../Shared/icons/LookingGlass.svg'/>`;
     filt += `</button></td>`;
     filt += `<script> function duggaSearchMouseOver() {var obj = document.getElementById("duggaSearch"); if(obj != null){obj.removeAttribute('readonly');}}</script>`;
 
@@ -110,8 +110,10 @@ function selectDugga(qid) {
 	$("#releasem").html(makeoptions(quiz['qrelease'].substr(14,2),marro,marrv));
 
 	$("#editDugga").css("display", "flex");
-	/* Validates name as soon as a dugga is selected.*/
-	validateDuggaName();
+	/* Validates name as soon as a dugga is selected, but only if dugga already exists (new duggas will not be validated here).*/
+	if(qid != "UNK"){
+		validateDuggaName();
+	}
 }
 
 
@@ -708,6 +710,7 @@ function renderCell(col, celldata, cellid) {
 		case "qstart":		// DUGGA-TABLE - Startdate
 		case "deadline":	// DUGGA-TABLE - Deadline
 		case "qrelease":	// DUGGA-TABLE - Result date
+		case "modified":  // DUGGA-TABLE - Last Modified
 			if(!celldata) {	// if null - return string "N/A"
 				retString = "N/A";
 			} else if(celldata.length > 10){		// when there is time included - return date without seconds (i.e. last three charachters)

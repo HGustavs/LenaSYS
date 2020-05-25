@@ -148,7 +148,7 @@ Testing Link:
 			$query->bindParam(':exampleid', $exampleid);
 			$query-> execute();
 			$row = $query -> fetch(PDO::FETCH_ASSOC);
-			$public=$row['public'];	// Gets the info if the course are in public mode.
+			$public = $row['public'] ?? false;	// Gets the info if the course are in public mode.
 			$noup="SECTION"; 	// Is called for in Shared/navheader.php, used to call for generic Home/Backbuttons
 			$codeviewer = true;	// Is used in navheader.php@line52: Makes it possible to view the content in the code example. If codeviewer is allocated "false" then one of the error message is gong to be presented.
 			$codeviewerkind=false;	// Is used in navheader.php@line61/62: This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes, the user have the rights. Codeviewerkind is in use in navheader.php to make the settings button visible.

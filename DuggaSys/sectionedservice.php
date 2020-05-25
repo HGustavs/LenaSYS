@@ -68,6 +68,10 @@ $unmarked = 0;
 $groups=array();
 $grplst=array();
 
+if($feedbackenabled != 1){
+	$feedbackenabled = 0;
+}
+
 if($gradesys=="UNK") $gradesys=0;
 
 		$today = date("Y-m-d H:i:s");

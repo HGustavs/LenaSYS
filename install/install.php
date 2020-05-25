@@ -104,6 +104,8 @@
             var isPermissionsSat = <?php echo json_encode($isPermissionsSat); ?>;
             var modal = document.getElementById('warning'); // Get the modal
             var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
+            var postInstallModal = null;
+            var postInstallModalClose = null;
 
             setPermissionModalText(owner, filePath, operatingSystem);
 
@@ -116,6 +118,7 @@
     </div>
   </div> 
 
+  <!-- Header showing the showModalButton-->
   <div id="header">
     <h1>LenaSYS Installer</h1>
     <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
@@ -244,7 +247,7 @@
         <p id="infoText"><b>If all fields are filled out correctly the only thing remaining is to smack the 'Install' button below.
           Progress of installation will be shown. If any errors occurs please try again and check that your data is correct.
           If you still get errors please read installation guidelines on LenaSYS github page or in 'README.md'. </b></p><hr>
-        <input title="Install LenaSYS!" id="submitInput" class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
+        <input title="Install LenaSYS!" id="submitInput" class="button" type="submit" name="submitButton" value="Install!"/>
       </div>
     </div>
 
@@ -262,10 +265,9 @@
         <polygon points="50,30 130,75 50,120" />
       </svg>
     </div>
-
-    <!-- Empty footer to show a nice border at bottom -->
   </form>
-  
+
+  <!-- Empty footer to show a nice border at bottom -->
   <div id="inputFooter"></div>
 
   <!-- Install Section -->
@@ -308,22 +310,12 @@
       echo "
         <script>
           var postInstallModal = document.getElementById('warning'); // Get the modal
-          var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
+          var postInstallModalClose = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
 
           document.getElementById('dialogText').innerHTML = '<div><h1>!!!WARNING!!!</h1><br>' +
             '<h2>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
             '<p>If you don\'t follow these instructions nothing will work. G4-2020 will not take any ' +
             'responsibility for your failing system.</p>';
-
-          span.onclick = function() {
-            postInstallModal.style.display = 'none';
-          }
-
-          window.onclick = function(event) {
-            if (event.target == postInstallModal) {
-              postInstallModal.style.display = 'none';
-            }
-          }
         </script>
       ";
       
@@ -381,6 +373,7 @@
       echo "<div id='installationProgressWrap'>";
         $isPermissionsSat = isPermissionsSat($putFileHere);
         $isAllCredentialsFilled = isAllCredentialsFilled();
+        global $errors;
 
         //---------------------------------------------------------------------------------------------------
         // Check permissions.
@@ -497,6 +490,7 @@
           # Split the sql file at semi-colons to send each query separated.
           $initQueryArray = explode(";", $initQuery);
           $initSuccess = false;
+          $completeQuery = null;
           try {
             if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
               $connection->beginTransaction();
@@ -682,7 +676,6 @@
     //---------------------------------------------------------------------------------------------------
     // updateProgressBar(): Wrapper-function for the js-function to update progressbar.
     //---------------------------------------------------------------------------------------------------
-
     function updateProgressBar($cSteps, $tSteps){
       echo "
         <script>
@@ -697,6 +690,7 @@
     // Function that checks if all credentials are filled out (on the first page).
     //---------------------------------------------------------------------------------------------------
     function isAllCredentialsFilled(){
+      global $errors;
       $isAllCredentialsFilled = true;
       $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
       foreach ($fields AS $fieldname) {
@@ -712,6 +706,7 @@
     // Function that deletes a user from database
     //---------------------------------------------------------------------------------------------------
     function deleteUser($connection, $username){
+      global $errors;
       try {
         $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
         echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
@@ -726,6 +721,7 @@
     // Function that deletes a user from database
     //---------------------------------------------------------------------------------------------------
     function deleteDatabase($connection, $databaseName){
+      global $errors;
       try {
         $connection->query("DROP DATABASE {$databaseName}");
         echo "<span id='successText' />Successfully removed old database, {$databaseName}.</span><br>";

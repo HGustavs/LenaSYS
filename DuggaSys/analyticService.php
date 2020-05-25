@@ -49,7 +49,7 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 				serviceCrashes();
 				break;
 			case 'fileInformation':
-				fileInformation();
+				fileInformation($pdo);
 				break;
 			case 'duggaInformation':
                 duggaInformation($pdo);
@@ -128,17 +128,84 @@ function generalStats($dbCon) {
 		WHERE eventType = '.EventTypes::ServiceServerStart.'
 		GROUP BY browser
 		ORDER BY percentage DESC LIMIT 1
-		')->fetchAll(PDO::FETCH_ASSOC);
+    ')->fetchAll(PDO::FETCH_ASSOC);
 	
-	$topOS = $GLOBALS['log_db']->query('
-		SELECT
-			operatingSystem,
-			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerStart.') AS percentage
-		FROM serviceLogEntries
-		WHERE eventType = '.EventTypes::ServiceServerStart.'
-		GROUP BY operatingSystem
-		ORDER BY percentage DESC
+    $topOS = $GLOBALS['log_db']->query('
+        SELECT
+            operatingSystem,
+            COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerStart.') AS percentage
+        FROM serviceLogEntries
+        WHERE eventType = '.EventTypes::ServiceServerStart.'
+        GROUP BY operatingSystem
+        ORDER BY percentage DESC
+    ')->fetchAll(PDO::FETCH_ASSOC);
+
+    $serviceCrashes = $log_db->query('
+        SELECT 
+             COUNT(*) as serviceCrashes
+        FROM serviceLogEntries
+        WHERE uuid NOT IN (SELECT DISTINCT uuid FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerEnd.');
+    ')->fetchAll(PDO::FETCH_ASSOC);
+
+    $topViewedDugga = $GLOBALS['log_db']->query('
+        SELECT 
+             quizid, 
+             COUNT(*) as hits
+        FROM duggaLoadLogEntries 
+        GROUP BY quizid 
+        ORDER BY COUNT(*) DESC LIMIT 1;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+
+    $topViewedExample = $GLOBALS['log_db']->query('
+        SELECT 
+             exampleid, 
+             COUNT(*) as hits
+        FROM exampleLoadLogEntries 
+        GROUP BY exampleid 
+        ORDER BY COUNT(*) DESC LIMIT 1;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+
+	$fastestService = $GLOBALS['log_db']->query('
+	SELECT DISTINCT
+		service,
+		(
+			SELECT AVG(duration) FROM (
+				SELECT s1.service AS subService, (s2.timestamp - s1.timestamp) AS duration
+				FROM serviceLogEntries s1
+				JOIN serviceLogEntries s2 ON s1.uuid=s2.uuid AND s2.eventType='.EventTypes::ServiceServerEnd.'
+				WHERE s1.eventType='.EventTypes::ServiceServerStart.'
+			)
+			WHERE service=subService
+		) AS avgDuration
+	FROM serviceLogEntries ORDER BY avgDuration ASC LIMIT 1;
 	')->fetchAll(PDO::FETCH_ASSOC);
+
+	$slowestService = $GLOBALS['log_db']->query('
+	SELECT DISTINCT
+		service,
+		(
+			SELECT AVG(duration) FROM (
+				SELECT s1.service AS subService, (s2.timestamp - s1.timestamp) AS duration
+				FROM serviceLogEntries s1
+				JOIN serviceLogEntries s2 ON s1.uuid=s2.uuid AND s2.eventType='.EventTypes::ServiceServerEnd.'
+				WHERE s1.eventType='.EventTypes::ServiceServerStart.'
+			)
+			WHERE service=subService
+		) AS avgDuration
+	FROM serviceLogEntries ORDER BY avgDuration DESC LIMIT 1;
+	')->fetchAll(PDO::FETCH_ASSOC);
+	
+	$newestFile = $GLOBALS['log_db']->query('
+       SELECT
+           username,
+           timestamp,
+           eventType,
+           description AS description,
+            substr(description,    instr(description, ",") + 1) AS filename
+       FROM userLogEntries
+       WHERE eventType = '.EventTypes::AddFile.'
+        ORDER BY timestamp DESC LIMIT 1;
+   ')->fetchAll(PDO::FETCH_ASSOC);
 
 	$generalStats = [];
 	$generalStats['stats']['loginFails'] = $LoginFail[0];
@@ -150,8 +217,25 @@ function generalStats($dbCon) {
 	$generalStats['stats']['topPage'] = $topPage[0]['refer'];
 	$generalStats['stats']['topPageHits'] = $topPage[0]['hits'];
 
+	$generalStats['stats']['newestFile'] = $newestFile[0]['filename'];
+    $generalStats['stats']['newestFileTimestamp'] = $newestFile[0]['timestamp'];
+ 
+    $generalStats['stats']['topViewedDugga'] = $topViewedDugga[0]['quizid'];
+	$generalStats['stats']['topViewedDuggaHits'] = $topViewedDugga[0]['hits'];
+ 
+    $generalStats['stats']['topViewedExample'] = $topViewedExample[0]['exampleid'];
+	$generalStats['stats']['topViewedExampleHits'] = $topViewedExample[0]['hits'];
+
 	$generalStats['stats']['topBrowser'] = $topBrowser[0]['browser'];
 	$generalStats['stats']['topOS'] = $topOS[0]['operatingSystem'];
+ 
+    $generalStats['stats']['serviceCrashes'] = $serviceCrashes[0]['serviceCrashes'];
+
+	$generalStats['stats']['fastestService'] = $fastestService[0]['service'];
+	$generalStats['stats']['fastestServiceSpeed'] = round($fastestService[0]['avgDuration'], 2);
+
+	$generalStats['stats']['slowestService'] = $slowestService[0]['service'];
+	$generalStats['stats']['slowestServiceSpeed'] = round($slowestService[0]['avgDuration'], 2);
 
 
 	$query = $dbCon->prepare("SELECT count(*) as numUsers FROM user");
@@ -195,6 +279,13 @@ function generalStats($dbCon) {
 		$generalStats['ram']['total'] = convertBytesToHumanreadable($memUsage["total"]);
 		$generalStats['ram']['freePercent'] = 100 - getServerMemoryUsage(true);
 		$generalStats['ram']['totalPercent'] = getServerMemoryUsage(true);
+	}
+
+	// Get CPU Load if Linux or Windows, Mac OSX does not have any functions that can properly return this data.
+	if (!stristr(PHP_OS, "Darwin")) {
+		$cpuLoad = getServerLoad();
+		$generalStats['cpu']['freePercent'] = 100 - $cpuLoad;
+		$generalStats['cpu']['totalPercent'] = $cpuLoad;
 	}
 	
 	echo json_encode($generalStats);
@@ -309,6 +400,72 @@ function getServerMemoryUsage($getPercentage=true) {
 	}
 }
 
+// Calculate server load for Linux
+function getServerLoadLinux()
+{
+	if (is_readable("/proc/stat")) {
+		$stats = @file_get_contents("/proc/stat");
+
+		if ($stats !== false) {
+			// Remove double spaces to make it easier to extract values with explode()
+			$stats = preg_replace("/[[:blank:]]+/", " ", $stats);
+
+			// Separate lines
+			$stats = str_replace(array("\r\n", "\n\r", "\r"), "\n", $stats);
+			$stats = explode("\n", $stats);
+
+			// Separate values and find line for main CPU load
+			foreach ($stats as $statLine) {
+				$statLineData = explode(" ", trim($statLine));
+
+				if ((count($statLineData) >= 5) && ($statLineData[0] == "cpu")) {
+					return array(
+						$statLineData[1],
+						$statLineData[2],
+						$statLineData[3],
+						$statLineData[4],
+					);
+				}
+			}
+		}
+	}
+	return null;
+}
+
+// Returns CPU usage for Linux and Windows
+function getServerLoad()
+{
+	$load = null;
+
+	if (stristr(PHP_OS, "win")) {
+		$cmd = "wmic cpu get loadpercentage /all";
+		@exec($cmd, $output);
+
+		if ($output) {
+			foreach ($output as $line) {
+				if ($line && preg_match("/^[0-9]+\$/", $line)) {
+					$load = $line;
+					break;
+				}
+			}
+		}
+	} else {
+		if (is_readable("/proc/stat")) {
+			$statData1 = getServerLoadLinux();
+
+			if (!is_null($statData1)){
+			// Sum up the 4 values for User, Nice, System and Idle and calculate
+			// the percentage of idle time (which is part of the 4 values!)
+			$cpuTime = $statData1[0] + $statData1[1] + $statData1[2] + $statData1[3];
+
+			// Invert percentage to get CPU time, not idle time
+			$load = 100 - ($statData1[3] * 100 / $cpuTime);
+			}
+		}
+	}
+	return $load;
+}
+
 //------------------------------------------------------------------------------------------------
 // Retrieves average duration for services in the log		
 //------------------------------------------------------------------------------------------------
@@ -340,6 +497,7 @@ function passwordGuessing(){
 			uid AS userName,
 			remoteAddress AS remoteAddress,
 			userAgent AS userAgent,
+			description as guestID,
 			COUNT(*) AS tries
 		FROM userLogEntries
 		WHERE eventType = '.EventTypes::LoginFail.'
@@ -390,18 +548,45 @@ function serviceUsage($start, $end, $interval){
 // Retrieves file information		
 //------------------------------------------------------------------------------------------------
 
-function fileInformation(){
-	$result = $GLOBALS['log_db']->query('
-		SELECT
-			uid AS userName,
-			timestamp AS timestamp,
-			eventType AS eventType,
-			description AS description
-		FROM userLogEntries
-		WHERE eventType = '.EventTypes::AddFile.' OR eventType = '.EventTypes::EditFile.'
-		ORDER BY timestamp;
-	')->fetchAll(PDO::FETCH_ASSOC);
-	echo json_encode($result);
+function fileInformation($pdo){
+    $query = $pdo->prepare("SELECT filename, filesize FROM fileLink");
+    if(!$query->execute()) {
+    } else {
+        $rows = $query->fetchAll(PDO::FETCH_ASSOC);
+        $files = [];
+        foreach($rows as $key => $value) {
+            $files[$key] =  [  
+                                "username"      =>  "",
+                                "timestamp"     =>  "",
+                                "eventType"     =>  "",    
+                                "description"   =>  "",
+                                "filename"      =>  $value['filename'],
+                                "filesize"     	=>  $value['filesize']
+                            ];
+        }
+    }
+ 
+    $result = $GLOBALS['log_db']->query('
+        SELECT
+            username,
+            timestamp AS timestamp,
+            eventType AS eventType,
+            description AS description,
+			substr(description,    instr(description, " ") + 1) AS filename,
+			"" AS filesize 
+        FROM userLogEntries
+        WHERE eventType = '.EventTypes::AddFile.' OR eventType = '.EventTypes::EditFile.'
+        ORDER BY timestamp;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+ 
+    foreach($result as $value) {
+        $key = array_search($value['filename'], array_column($files, 'filename'));
+        if($key === FALSE) {
+            unset($files[$key]);
+        }
+    }
+   
+    echo json_encode(array_merge($files,$result));
 }
 
 //------------------------------------------------------------------------------------------------
@@ -665,26 +850,40 @@ function userLogInformation($pdo){
 function pageInformation(){
     $dugga= $GLOBALS['log_db']->query('
 		SELECT
-			cid AS courseid,
-			COUNT(*) AS pageLoads,
-			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
+			refer,
+			substr(
+				refer, 
+				INSTR(refer, "courseid=")+9, 
+				INSTR(refer, "&coursename=")-18 - INSTR(refer, "courseid=")+9
+			) courseid,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM userHistory WHERE refer LIKE "%showDugga%") AS percentage,
+			COUNT(*) AS pageLoads
 		FROM 
-			duggaLoadLogEntries
+			userHistory
+		WHERE 
+			refer LIKE "%showDugga%"
 		GROUP BY 
-			courseid
+			courseid;
 		ORDER BY 
 			percentage DESC;
 	')->fetchAll(PDO::FETCH_ASSOC);
 	
 	$codeviewer = $GLOBALS['log_db']->query('
 		SELECT
-			courseid,
-			COUNT(*) AS pageLoads,
-			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
+			refer,
+			substr(
+				refer, 
+				INSTR(refer, "courseid=")+9, 
+				INSTR(refer, "&coursename=")-18 - INSTR(refer, "courseid=")+9
+			) courseid,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM userHistory WHERE refer LIKE "%codeviewer%") AS percentage,
+			COUNT(*) AS pageLoads
 		FROM 
-			exampleLoadLogEntries
+			userHistory
+		WHERE 
+			refer LIKE "%codeviewer%"
 		GROUP BY 
-			courseid
+			courseid;
 		ORDER BY 
 			percentage DESC;
 	')->fetchAll(PDO::FETCH_ASSOC);

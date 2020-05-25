@@ -4,17 +4,15 @@
 				<div id="feedbackTable" style="margin-top: -3px;"></div>	
 		</div>
 </div>
-<div id="container" class="clippingContainer" style="display:flex; justify-content:flex-start;">
-    <div id='clippingInfoBox'>
-      
-          <div class='loginBoxheader'>
-                <h3>Transformations-dugga</h3>
-          </div>
-                <p style="margin-left: 4px;">Klipping-duggan går ut på att producera den bild som ni ser med hjälp av de olika operationerna som finns tillgängliga, Fylla färg/mönster, klippa mönster och restore.</p>
-                <p style="margin-left: 4px;">Lägg till operationer genom att välja en operation och tryck på "Add Op.". Ni kan byta ordning på operationerna med pilarna upp och ner för respektive operation. Ta bort en operation genom att klicka på "X" för önskad operation. Genom att klicka på en befintlig operation så kan man ändra dess innehåll.</p>
-                <p style="margin-left: 4px;">Lycka till och glöm inte att spara duggan! En gul lampa betyder att duggan är inlämnad.</p>
-            
+<div class='instructions-container'>
+    <div class='instructions-button' onclick='toggleInstructions()'><h3>Instructions</h3></div>
+    <div class="instructions-content">
+        <p style="margin-left: 4px;">Klipping-duggan går ut på att producera den bild som ni ser med hjälp av de olika operationerna som finns tillgängliga, Fylla färg/mönster, klippa mönster och restore.</p>
+        <p style="margin-left: 4px;">Lägg till operationer genom att välja en operation och tryck på "Add Op.". Ni kan byta ordning på operationerna med pilarna upp och ner för respektive operation. Ta bort en operation genom att klicka på "X" för önskad operation. Genom att klicka på en befintlig operation så kan man ändra dess innehåll.</p>
+        <p style="margin-left: 4px;">Lycka till och glöm inte att spara duggan! En gul lampa betyder att duggan är inlämnad.</p>
     </div>
+</div>
+<div class="clippingLayout">
     <div id='clippingInfoBox2'>
       
           <div class='loginBoxheader'>
@@ -85,7 +83,6 @@
     		</div>
     </div>
     </div>
-  </div>
 </div>
 
 <div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">

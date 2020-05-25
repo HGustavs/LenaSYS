@@ -75,6 +75,9 @@ CREATE TABLE user_course(
 	`groups` 				varchar(256),
 	examiner 				integer,
 	teacher					VARCHAR(30),
+	passed 					INT UNSIGNED NOT NULL DEFAULT 0,
+    failed 					INT UNSIGNED NOT NULL DEFAULT 0,
+    pending 				INT UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (uid, cid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
@@ -647,7 +650,7 @@ CREATE TABLE timesheet(
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 /* userDuggaFeedback table used for user feedback on duggor */
-CREATE TABLE userDuggaFeedback(
+CREATE TABLE userduggafeedback(
 	ufid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	username						VARCHAR(80) DEFAULT null,
 	cid						INT UNSIGNED NOT NULL,

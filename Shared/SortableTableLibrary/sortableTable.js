@@ -774,7 +774,7 @@ function SortableTable(param) {
 		*/ 
 }
 
-	this.export = function (format, del) {
+	this.export = function (format, del, gradeData = "NONE") {
 		var str = "";
 
 		if (del === "undefined" || del === null) {
@@ -805,7 +805,7 @@ function SortableTable(param) {
 				if (columnfilter[columnOrderIdx] !== null) {
 					if (rendcnt !== 0)
 						str += del;
-					str += exportCell(format, row[colname], colname);
+					str += exportCell(format, row[colname], colname, gradeData);
 					rendcnt++;
 				}
 			}
