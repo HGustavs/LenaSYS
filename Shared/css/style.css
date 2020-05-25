@@ -98,11 +98,11 @@
 /*Styling for printing*/
 @media print {
 	@page { margin: 0; }
-	body { margin: 1.6cm; }	
+	body { margin: 1.6cm; }
 	#buttonDiv,#appearance,.loginBoxContainer importDiagram{
 	visibility: hidden;
 	}
-	
+
 	#canvasDiv{
 	position: absolute;
 	visibility: visible;
@@ -346,7 +346,7 @@ p {
 }
 
 .validationDialog {
-  font-size: 11px; 
+  font-size: 11px;
   border: 0px;
   margin-left: 25px;
   display:none;
@@ -354,19 +354,19 @@ p {
 /*Announcement box*/
 #announcementBoxOverlay,
 #fullAnnnouncementOverlay{
-  position: fixed; 
+  position: fixed;
   display: none;
   background-color:  #f2f2f2;
   border: 2px solid #bdbdbd;
   padding: 10px;
-  z-index: 1004; 
+  z-index: 1004;
   left: 0;
   top: 50px;
-  width: 100%; 
-  height: 100%; 
+  width: 100%;
+  height: 100%;
   overflow: auto;
   overflow-x: auto;
-  
+
 
 }
 #announcementBox{
@@ -374,7 +374,7 @@ p {
 }
 #fullAnnouncement{
   padding: 10px 15px 160px 10px;
-  
+
 }
 #announcementBox button{
   background-color: #fff;
@@ -416,7 +416,7 @@ p {
 }
 .fa-user{
   margin-right:5px;
-  
+
 }
 #announcementBox table tr:nth-child(3n+1):not(:first-child){
   border-top: 1px solid var(--color-text-primary);
@@ -485,7 +485,7 @@ p {
 }
 
 /*End of show all the announcments*/
-.modal input[type=text], 
+.modal input[type=text],
 .modal textarea {
   width: 100%;
   padding: 12px 20px;
@@ -532,23 +532,23 @@ p {
   padding: 16px;
 }
 .modal {
-  position: fixed; 
-  z-index: 1005; 
+  position: fixed;
+  z-index: 1005;
   left: 0;
   top: 0;
-  width: 100%; 
-  height: 100%; 
-  overflow: auto; 
-  background-color: rgb(0,0,0); 
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
   padding-top: 60px;
 }
 
 .modal-content {
   background-color: #fefefe;
-  margin: 5% auto 15% auto; 
+  margin: 5% auto 15% auto;
   border: 1px solid #888;
-  width: 80%; 
+  width: 80%;
 }
 .animate {
   -webkit-animation: animatezoom 0.6s;
@@ -556,12 +556,12 @@ p {
 }
 
 @-webkit-keyframes animatezoom {
-  from {-webkit-transform: scale(0)} 
+  from {-webkit-transform: scale(0)}
   to {-webkit-transform: scale(1)}
 }
-  
+
 @keyframes animatezoom {
-  from {transform: scale(0)} 
+  from {transform: scale(0)}
   to {transform: scale(1)}
 }
 
@@ -1092,7 +1092,7 @@ div .navButt:hover {
     .box{
         overflow: hidden;
     }
-    
+
 }
 
 }
@@ -2169,7 +2169,7 @@ input.submit-button {
   margin: 8px 2px 4px 2px;
   font-size: 14px;
   transition: 0.1s background-color;
-  
+
   -webkit-appearance: none
 }
 
@@ -2300,13 +2300,13 @@ input.hide-moments-button {
 .testselect {
   position: relative;
   clear:both;
-  width:150px;  
+  width:150px;
   padding: 3px 0 3px 0;
   height: 30px;
   line-height: 30px;
   left: 90px;
   display: none;
-  
+
 }
 
 .fileUploadInfo {
@@ -2442,7 +2442,7 @@ div.submit-button:disabled {
 }
 
 .diagramAction:focus{
-  outline:0; 
+  outline:0;
 }
 
 .diagramAction:active{
@@ -2934,11 +2934,11 @@ span.arrow {
 #feedbackTable .feedback-list th {
 	background: var(--color-background-3);
   color:var(--color-text-label);
-  
+
 }
 #feedbackTable .feedback-list, #feedbackTable .feedback-list td {
 	border-color: var(--color-background-3);
-	
+
 }
 
 @media print {
@@ -3198,7 +3198,7 @@ padding: 10px;
 }
 
 #reset-pw{
-  width:70%; 
+  width:70%;
   margin-left:20px;
   background-color: rgb(254, 204, 86); color: #614875;
 
@@ -3356,7 +3356,7 @@ padding: 10px;
   line-height: 30px;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  
+
 
 }
 
@@ -4063,7 +4063,7 @@ rect[class*="activitymarker"]:hover {
 .tooltipsearchbar input#tooltipsearchinput{
   width: 250px;
 }
-#searchbar button#searchbutton, 
+#searchbar button#searchbutton,
 #searchbar button#searchbuttonicon{
   padding: 8px 20px 5px 20px;
   background:#76578e;
@@ -5478,7 +5478,7 @@ only screen and (max-device-width: 320px) {
   .fixed-action-button2{
     display:none !important;
   }
-  
+
 }
 
 #Courselist div.fixed-action-button a:hover {
@@ -5780,7 +5780,7 @@ only screen and (max-device-width: 320px) {
 
 .fileView iframe{
   height: 90%;
-} 
+}
 
 @media only screen and (max-width: 745px) {
   .fileView img {
@@ -5792,7 +5792,7 @@ only screen and (max-device-width: 320px) {
   }
   .fileView iframe{
     height: 80%;
-  } 
+  }
 }
 
 @media only screen and (max-width: 601px) {
@@ -6708,10 +6708,10 @@ textarea#filecont {
   align-items: center;
   background-color: var(--color-accent);
   z-index: 1000;
-  
-  
+
+
   position: relative;
-  
+
   margin-top: -16px;
   margin-bottom: 7px;
   max-width: auto;
@@ -6724,7 +6724,7 @@ textarea#filecont {
   display: flex;
   justify-content: space-around;
   position: relative;
-  
+
 }
 .motdBoxheader h3 {
   font-size: 20px;
@@ -6778,13 +6778,12 @@ textarea#filecont {
   left: -35px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  
+
 }
 
 #spankind {
   position: relative;
   left: 0px;
   float: left;
-  
-}
 
+}
