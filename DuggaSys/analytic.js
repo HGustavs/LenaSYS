@@ -814,6 +814,7 @@ function loadPageInformation() {
 
 var hasCounter;
 var rowCount;
+var nameCount;
 
 function loadUserInformation(){
 	localStorage.setItem('analyticsPage', 'userInformation');
@@ -1099,6 +1100,9 @@ function loadUserInformation(){
             if (users.hasOwnProperty(user)) {
 				if(localStorage.getItem('analyticsLastUser') == user) {
 					userSelect.append('<option value="' + user + '" selected>' + user + '</option>');
+					if(hasCounter = true){
+						nameCount = user;
+					}
 				} else {
 					userSelect.append('<option value="' + user + '">' + user + '</option>');
 				}
@@ -1415,14 +1419,14 @@ function renderTable(data) {
 	}
 	str += "</tbody></table>";
 	if(hasCounter == true){
-		updateCounter(rowCount);
+		updateCounter(rowCount, nameCount);
 	}
 	return str;
 }
 
-function updateCounter(count)
+function updateCounter(count, user)
 {
-	$('#analytic-info').append("<p> This page has been loaded " + count + " times by this user!");
+	$('#analytic-info').append("<p> This page has been loaded " + count + " times by " + user + "! </p>");
 	hasCounter = false;
 }
 
