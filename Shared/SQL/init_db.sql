@@ -1,4 +1,4 @@
-CREATE TABLE lenasys_user(
+CREATE TABLE "user"(
 	uid						SERIAL,
 	username				VARCHAR(80) NOT NULL UNIQUE,
 	firstname				VARCHAR(50) NULL,
@@ -24,9 +24,9 @@ CREATE TABLE lenasys_user(
 -- add references at end */
 -- https://stackoverflow.com/questions/35103606/postgresql-error-relation-products-does-not-exist */
 
-INSERT INTO lenasys_user(username, password, newpassword, creator, superuser) values ('Grimling','$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m', 0, 1, 1);
-INSERT INTO lenasys_user(username,password,newpassword,creator) values ('Toddler','$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q',0,1); 
-INSERT INTO lenasys_user(username,password,newpassword,creator,ssn) values ('Tester', '$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q',1,1,'111111-1111'); 
+INSERT INTO "user"(username, password, newpassword, creator, superuser) values ('Grimling','$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m', 0, 1, 1);
+INSERT INTO "user"(username,password,newpassword,creator) values ('Toddler','$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q',0,1); 
+INSERT INTO "user"(username,password,newpassword,creator,ssn) values ('Tester', '$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q',1,1,'111111-1111'); 
 
 -- Password is Kong  */
 -- Password is Kong  */
@@ -49,7 +49,7 @@ CREATE TABLE course(
 	hp						NUMERIC(4,1) NOT NULL DEFAULT 7.5,
 	courseHttpPage			VARCHAR(2000),
 	PRIMARY KEY (cid),
-	FOREIGN KEY (creator) REFERENCES lenasys_user (uid)
+	FOREIGN KEY (creator) REFERENCES "user" (uid)
 );
 
 -- This table represents a many-to-many relation between courses, to illustrate pre-requirements for courses. */
@@ -63,7 +63,7 @@ CREATE TABLE course_req(
 
 
  -- This table represents a many-to-many relation between users and courses. That is, */
- -- tuple in this table joins a lenasys_user with a course. */
+ -- tuple in this table joins a "user" with a course. */
  
 CREATE TABLE user_course(
 	uid						INT  NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE user_course(
     failed 					INT  NOT NULL DEFAULT 0,
     pending 				INT  NOT NULL DEFAULT 0,
 	PRIMARY KEY (uid, cid),
-	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
+	FOREIGN KEY (uid) REFERENCES "user" (uid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
 );
 
@@ -110,7 +110,7 @@ CREATE TABLE listentries (
 	feedbackenabled			SMALLINT  NOT NULL DEFAULT 0,
 	feedbackquestion		VARCHAR(512),
     PRIMARY KEY (lid),
-	FOREIGN KEY (creator) REFERENCES lenasys_user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid)REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
+	FOREIGN KEY (creator) REFERENCES "user"(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid)REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Quiz tables */
@@ -175,7 +175,7 @@ CREATE TABLE userAnswer (
         gradeLastExported   timestamp null default null,
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
-	FOREIGN KEY (uid) REFERENCES lenasys_user(uid),
+	FOREIGN KEY (uid) REFERENCES "user"(uid),
 	FOREIGN KEY (quiz) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid),
 	FOREIGN KEY (variant) REFERENCES variant(vid)
@@ -251,7 +251,7 @@ CREATE TABLE codeexample(
 	templateid				INTEGER  NOT NULL DEFAULT '0',
 	PRIMARY KEY (exampleid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
-	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
+	FOREIGN KEY (uid) REFERENCES "user" (uid),
 	FOREIGN KEY (templateid) REFERENCES template (templateid)
 );
 
@@ -270,7 +270,7 @@ CREATE TABLE wordlist(
 	updated 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP , -- ON UPDATE CURRENT_TIMESTAMP, */
 	uid						INT  NOT NULL,
 	PRIMARY KEY (wordlistid),
-	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
+	FOREIGN KEY (uid) REFERENCES "user" (uid)
 );
 
 
@@ -295,7 +295,7 @@ CREATE TABLE word(
 	updated 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP , -- ON UPDATE CURRENT_TIMESTAMP, */
 	uid						INT  NOT NULL,
 	PRIMARY KEY (wordid, wordlistid),
-	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
+	FOREIGN KEY (uid) REFERENCES "user" (uid),
 	FOREIGN KEY (wordlistid) REFERENCES wordlist(wordlistid)
 ) ;
 
@@ -325,7 +325,7 @@ CREATE TABLE improw(
 	updated					TIMESTAMP DEFAULT CURRENT_TIMESTAMP , -- ON UPDATE CURRENT_TIMESTAMP, */
 	uid						INT  NOT NULL,
 	PRIMARY KEY (impid, exampleid, boxid),
-	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
+	FOREIGN KEY (uid) REFERENCES "user" (uid),
 	FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
 );
 
@@ -339,7 +339,7 @@ CREATE TABLE impwordlist(
 	uid						INTEGER  NOT NULL,
 	PRIMARY KEY (wordid),
 	FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
-	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
+	FOREIGN KEY (uid) REFERENCES "user" (uid)
 );
 
 CREATE TABLE submission(
@@ -366,7 +366,7 @@ CREATE TABLE eventlog(
 	ts 						TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	address 				VARCHAR(45),
 	raddress 				VARCHAR(45),
-	lenasys_user 			VARCHAR(128),
+	"user" 			VARCHAR(128),
 	eventtext				TEXT NOT NULL,
 	PRIMARY KEY (eid)
 );
@@ -388,7 +388,7 @@ CREATE TABLE class (
 	tempo 					INT DEFAULT NULL, -- (3)*/
 	hpProgress 				NUMERIC(3,1),
 	PRIMARY KEY (class,responsible),
-	FOREIGN KEY (responsible) REFERENCES lenasys_user (uid)
+	FOREIGN KEY (responsible) REFERENCES "user" (uid)
 );
 
 
@@ -404,7 +404,7 @@ CREATE TABLE subparts(
 );
 
 
--- this table is weak reslation to lenasys_user and partcourse. */
+-- this table is weak reslation to "user" and partcourse. */
 
 CREATE TABLE partresult (
   cid 					INT  NOT NULL,
@@ -414,7 +414,7 @@ CREATE TABLE partresult (
 	parthp						NUMERIC(3,1),
 	PRIMARY KEY (partname, cid, parthp, uid),
 	FOREIGN KEY (partname,cid, parthp) REFERENCES subparts (partname, cid, parthp),
-	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
+	FOREIGN KEY (uid) REFERENCES "user" (uid)
 );
 
 
@@ -485,12 +485,12 @@ CREATE TABLE user_push_registration (
 	lastSent				DATE DEFAULT NULL,
 	daysOfUnsent			INT NOT NULL DEFAULT '0',
 	PRIMARY KEY	(id), 
-	FOREIGN KEY (uid) REFERENCES lenasys_user(uid)
+	FOREIGN KEY (uid) REFERENCES "user"(uid)
 );
 	--KEY (endpoint), usage seems redudant, see above */
 
 -- Usergroup and user_usergroup relation */
-CREATE TABLE lenasys_groups (
+CREATE TABLE "groups" (
     groupID SERIAL,
     groupKind VARCHAR(4) NOT NULL,
     groupVal VARCHAR(8) NOT NULL,
@@ -511,8 +511,8 @@ CREATE TABLE announcement(
     read_status 			SMALLINT NOT NULL DEFAULT '1',
     edited 					VARCHAR(3) NOT NULL DEFAULT 'NO',
     PRIMARY KEY(announcementid, secondannouncementid, uid, cid, versid),
-    FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
-    FOREIGN KEY (recipient) REFERENCES lenasys_user (uid),
+    FOREIGN KEY (uid) REFERENCES "user" (uid),
+    FOREIGN KEY (recipient) REFERENCES "user" (uid),
     FOREIGN KEY (cid) REFERENCES course (cid)
     
 );
@@ -568,32 +568,32 @@ END;
 DELIMITER ;
 
 
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','1',1);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','2',2);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','3',3);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','4',4);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','5',5);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','6',6);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','7',7);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','8',8);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','1',1);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','2',2);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','3',3);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','4',4);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','5',5);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','6',6);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','7',7);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('No','8',8);
 
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','A',1);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','B',2);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','C',3);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','D',4);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','E',5);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','F',6);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','G',7);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Le','H',8);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','A',1);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','B',2);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','C',3);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','D',4);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','E',5);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','F',6);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','G',7);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Le','H',8);
 
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','I',1);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','II',2);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','III',3);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','IV',4);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','V',5);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','VI',6);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','VII',7);
-INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('Vi','VIII',8);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','I',1);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','II',2);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','III',3);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','IV',4);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','V',5);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','VI',6);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','VII',7);
+INSERT INTO "groups"(groupKind,groupVal,groupInt) VALUES ('Vi','VIII',8);
 
 CREATE TABLE user_group (
   groupID 				int  NOT NULL, -- (10)*/
@@ -602,9 +602,9 @@ CREATE TABLE user_group (
   --KEY userID (userID), */
   PRIMARY KEY(groupID,userID),
   --CONSTRAINT user_group_ibfk_1 */ 
-  FOREIGN KEY (groupID) REFERENCES lenasys_groups (groupID),
+  FOREIGN KEY (groupID) REFERENCES "groups" (groupID),
   --CONSTRAINT user_group_ibfk_2 */ 
-  FOREIGN KEY (userID) REFERENCES lenasys_user (uid)
+  FOREIGN KEY (userID) REFERENCES "user" (uid)
 );
 
 --table used for checking participation. i.e participation is 0 = not participated, 1 = participated. */
@@ -616,7 +616,7 @@ CREATE TABLE user_participant (
   comments      			TEXT,
   PRIMARY KEY (id),
   FOREIGN KEY (lid) REFERENCES listentries (lid),
-  FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
+  FOREIGN KEY (uid) REFERENCES "user" (uid)
 );
 
 
@@ -627,10 +627,10 @@ CREATE TABLE opponents (
 	opponent1				INT  DEFAULT NULL,
 	opponent2				INT  DEFAULT NULL,
 	PRIMARY KEY (presenter, lid),
-	FOREIGN KEY (presenter) REFERENCES lenasys_user(uid),
+	FOREIGN KEY (presenter) REFERENCES "user"(uid),
 	FOREIGN KEY (lid) 		REFERENCES listentries(lid),
-	FOREIGN KEY (opponent1) REFERENCES lenasys_user(uid),
-	FOREIGN KEY (opponent2) REFERENCES lenasys_user(uid)
+	FOREIGN KEY (opponent1) REFERENCES "user"(uid),
+	FOREIGN KEY (opponent2) REFERENCES "user"(uid)
 );
 
 CREATE TABLE options (
@@ -654,13 +654,13 @@ CREATE TABLE timesheet(
 	reference				VARCHAR(10),
 	comment					TEXT,
 	PRIMARY KEY (tid),
-	FOREIGN KEY (uid) REFERENCES lenasys_user(uid),
+	FOREIGN KEY (uid) REFERENCES "user"(uid),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (did) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid)
 );
 
--- userDuggaFeedback table used for lenasys_user feedback on duggor  */
+-- userDuggaFeedback table used for "user" feedback on duggor  */
 CREATE TABLE userduggafeedback(
 	ufid 					SERIAL,
 	username				VARCHAR(80) DEFAULT null,
@@ -669,7 +669,7 @@ CREATE TABLE userduggafeedback(
 	score					INT NOT NULL, -- (11)*/
 	entryname				varchar(68),
 	PRIMARY KEY (ufid),
-	FOREIGN KEY (username) REFERENCES lenasys_user(username),
+	FOREIGN KEY (username) REFERENCES "user"(username),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (lid) REFERENCES listentries(lid)
 );
@@ -678,8 +678,8 @@ CREATE TABLE userduggafeedback(
 	--This view eases the process of determining how many hp a student with a specific uid */
 	--in a specific course cid has finished. See the example below. */
 
-	--Example, get total hp finished by lenasys_user with uid 2 in course with cid 1: */
-		--SQL code: select hp from studentresult where lenasys_user = 2 and course_id = 1; */
+	--Example, get total hp finished by "user" with uid 2 in course with cid 1: */
+		--SQL code: select hp from studentresult where "user" = 2 and course_id = 1; */
 
 
 CREATE VIEW studentresultCourse AS
@@ -689,12 +689,12 @@ CREATE VIEW studentresultCourse AS
 		AND subparts.parthp = partresult.parthp
 	WHERE partresult.grade != 'u';
 
--- updatesd info in lenasys_user table  */
-UPDATE lenasys_user SET firstname='Toddler', lastname='Kong' WHERE username='Toddler';
-UPDATE lenasys_user SET firstname='Johan', lastname='Grimling' WHERE username='Grimling';
-UPDATE lenasys_user SET ssn='810101-5567' WHERE username='Grimling';
-UPDATE lenasys_user SET ssn='444444-5447' WHERE username='Toddler';
-UPDATE lenasys_user SET superuser=1 WHERE username='Toddler';
+-- updatesd info in "user" table  */
+UPDATE "user" SET firstname='Toddler', lastname='Kong' WHERE username='Toddler';
+UPDATE "user" SET firstname='Johan', lastname='Grimling' WHERE username='Grimling';
+UPDATE "user" SET ssn='810101-5567' WHERE username='Grimling';
+UPDATE "user" SET ssn='444444-5447' WHERE username='Toddler';
+UPDATE "user" SET superuser=1 WHERE username='Toddler';
 
 -- Templates for codeexamples  */
 

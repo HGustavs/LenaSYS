@@ -266,13 +266,8 @@ function login($username, $password, $savelogin)
     if($pdo == null) {
         pdoConnect();
     }
-
-    if(MYSQL_VERSION<"8.0"){
-        $query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,securityquestion,password(:pwd) as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
-        $query->bindParam(':pwd', $password);
-    }else{
-        $query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,securityquestion,NULL as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
-    }
+    
+    $query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,securityquestion,NULL as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
     $query->bindParam(':username', $username);
 
     if(!$query->execute()){
