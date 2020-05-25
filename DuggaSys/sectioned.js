@@ -2563,6 +2563,7 @@ $(document).ready(function(){
   });
 });
 
+/*Show the up-arrow when user has scrolled down 200 pixels on the page*/
 window.onscroll = function() {scrollToTop()};
 function scrollToTop() {
   var scroll = document.getElementById("fixedScroll");
