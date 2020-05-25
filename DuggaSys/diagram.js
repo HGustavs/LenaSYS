@@ -3757,7 +3757,7 @@ function mousemoveevt(ev) {
                     // the movement change we wan't to make
                     var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
                     // find the object that has the point we want to move
-                    for (var i = 0; i < diagram.length; i++) {
+                    /*for (var i = 0; i < diagram.length; i++) {
                         if (points[diagram[i].bottomRight] == sel.point || points[diagram[i].topLeft] == sel.point) {
                             object = diagram[i];
                             // the objects current width and height
@@ -3793,7 +3793,7 @@ function mousemoveevt(ev) {
                                 }
                             }
                         }
-                    }
+                    }*/
                     // apply resize
                     sel.point.x += change;
                     sel.point.y += change;
@@ -3847,15 +3847,43 @@ function mousemoveevt(ev) {
                 }
             // this is for the other two points that doesn't really exist: bottomLeft and topRight
             } else {
-                var yDiff = points[sel.attachedSymbol.bottomRight].y - points[sel.attachedSymbol.topLeft].y;
-                var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
-                var change = ((currentMouseCoordinateX - sel.point.x.x) - (currentMouseCoordinateY - sel.point.y.y)) / 2;
-                //Don't move points if box is minumum size
-                if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || 5 > change > -5){
-                    sel.point.x.x = currentMouseCoordinateX;
-                }
-                if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || 5 > change > -5){
-                    sel.point.y.y = currentMouseCoordinateY;
+                if (shiftIsClicked) {
+                    var changeX = currentMouseCoordinateX - sel.point.x.x;
+                    var changeY = currentMouseCoordinateY - sel.point.y.y;
+                    var newChangeX = 0;
+                    var newChangeY = 0;
+                    
+                    if (Math.sign(changeX) == -1) {
+                        newChangeX = -(Math.abs(changeX) + Math.abs(changeY)) / 4;
+                    }
+                    else if (Math.sign(changeX) == 1) {
+                        newChangeX = (Math.abs(changeX) + Math.abs(changeY)) / 4;
+                    }
+
+                    if (Math.sign(changeY) == -1) {
+                        newChangeY = -(Math.abs(changeX) + Math.abs(changeY)) / 4;
+                    }
+                    else if (Math.sign(changeY) == 1) {
+                        newChangeY = (Math.abs(changeX) + Math.abs(changeY)) / 4;
+                    }
+                    
+                    console.log(newChangeX, newChangeY);
+                    
+                    sel.point.x.x += newChangeX;
+                    sel.point.y.y += newChangeY;
+                } else {
+                    console.log("hej");
+                    
+                    var yDiff = points[sel.attachedSymbol.bottomRight].y - points[sel.attachedSymbol.topLeft].y;
+                    var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
+                    var change = ((currentMouseCoordinateX - sel.point.x.x) - (currentMouseCoordinateY - sel.point.y.y)) / 2;
+                    //Don't move points if box is minumum size
+                    if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || 5 > change > -5){
+                        sel.point.x.x = currentMouseCoordinateX;
+                    }
+                    if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || 5 > change > -5){
+                        sel.point.y.y = currentMouseCoordinateY;
+                    }
                 }
             }
             updateGraphics();
