@@ -521,6 +521,10 @@
                     </span>
                     <span id="zoomV"></span>
                 </div>
+                <div id="diagram-guidelines">
+                    <div class="guideline guideline-y"></div>
+                    <div class="guideline guideline-x"></div>
+                </div>
             </div>
             <div id="diagram-timeline-container">
                 <div class="diagram-timeline-controls" style="border-right:1px solid #000000;">

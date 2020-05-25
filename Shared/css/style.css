@@ -5941,6 +5941,33 @@ only screen and (max-device-width: 320px) {
   white-space: nowrap;
 }
 
+#diagram-guidelines {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.guideline {
+  position: absolute;
+  pointer-events: all;
+  background-color: cyan;
+}
+
+.guideline-x {
+  height: 2px;
+  width: 100%;
+  cursor: row-resize;
+}
+
+.guideline-y {
+  height: 100%;
+  width: 2px;
+  cursor: col-resize;
+}
+
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *
  * --------------================################================-------------- */
