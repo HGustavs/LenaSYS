@@ -192,7 +192,7 @@ function loadGeneralStats() {
 		// Newest file
         tableData.push([
             'Newest file: ' + data['stats']['newestFile'],
-            'Created: ' + data['stats']['newestFileTimestamp']
+            'Created: ' + new Date(data['stats']['newestFileTimestamp'].replace(' ', 'T') + "Z").toLocaleString()
     	]);
 
 		// Most recently edited file
