@@ -2562,3 +2562,13 @@ $(document).ready(function(){
     window.scrollTo(0, 0);
   });
 });
+
+window.onscroll = function() {scrollToTop()};
+function scrollToTop() {
+  var scroll = document.getElementById("fixedScroll");
+  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+    scroll.style.display = "block";
+  } else {
+    scroll.style.display = "none";
+  }
+}

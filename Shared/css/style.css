@@ -6116,6 +6116,7 @@ only screen and (max-device-width: 320px) {
   right: 165px;
   cursor: pointer;
   bottom: 25px;
+  display: none;
 }
  
 .arrow {
