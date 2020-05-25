@@ -126,6 +126,17 @@ function getCheckedBoxes(){
 
 function saveClick()
 {
+	Timer.stopTimer();
+
+	timeUsed = Timer.score;
+	stepsUsed = ClickCounter.score;
+
+	if (querystring['highscoremode'] == 1) {	
+		score = Timer.score;
+	} else if (querystring['highscoremode'] == 2) {
+		score = ClickCounter.score;
+	}
+
 var answer ="";
 	for(var t = 1;t <= idunique; t++){
 	answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
