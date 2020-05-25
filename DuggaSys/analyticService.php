@@ -180,7 +180,7 @@ function generalStats($dbCon) {
 			)
 			WHERE service=subService
 		) AS avgDuration
-	FROM serviceLogEntries ORDER BY avgDuration ASC LIMIT 1;
+	FROM serviceLogEntries WHERE avgDuration IS NOT NULL ORDER BY avgDuration ASC LIMIT 1;
 	')->fetchAll(PDO::FETCH_ASSOC);
 
 	$slowestService = $GLOBALS['log_db']->query('
@@ -195,7 +195,7 @@ function generalStats($dbCon) {
 			)
 			WHERE service=subService
 		) AS avgDuration
-	FROM serviceLogEntries ORDER BY avgDuration DESC LIMIT 1;
+	FROM serviceLogEntries WHERE avgDuration IS NOT NULL ORDER BY avgDuration DESC LIMIT 1;
 	')->fetchAll(PDO::FETCH_ASSOC);
 	
 	$newestFile = $GLOBALS['log_db']->query('
