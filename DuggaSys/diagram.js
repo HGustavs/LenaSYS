@@ -6373,15 +6373,23 @@ function setIsRulersActiveOnRefresh() {
 let guidelines = [];
 let isGuidelinesLocked = false;
 
+function saveGuidelinesLocalStorage() {
+    const localStorageGuidelines = guidelines.reduce((result, guideline) => {
+        return [...result, guideline.exportToLocalStorage()];
+    }, []);
+
+    localStorage.setItem("guidelines", JSON.stringify(localStorageGuidelines));
+}
+
 function addGuideline(guideline) {
     guidelines.push(guideline);
+    saveGuidelinesLocalStorage();
 }
 
 function deleteGuidelines() {
-    guidelines.forEach(guideline => {
-        guideline.element.remove();
-    });
+    guidelines.forEach(guideline => guideline.element.remove());
     guidelines.splice(0, guidelines.length);
+    saveGuidelinesLocalStorage();
 }
 
 class Guideline {
@@ -6472,6 +6480,8 @@ class Guideline {
 
         document.removeEventListener("mousemove", this.mouseMove);
         document.removeEventListener("mouseup", this.mouseUp);
+
+        saveGuidelinesLocalStorage();
     }
 
     remove() {
@@ -6479,6 +6489,15 @@ class Guideline {
 
         const index = guidelines.findIndex(guideline => Object.is(this, guideline));
         guidelines.splice(index, 1);
+
+        saveGuidelinesLocalStorage();
+    }
+
+    exportToLocalStorage() {
+        return {
+            axis: this.axis,
+            position: this.position
+        };
     }
 }
 
