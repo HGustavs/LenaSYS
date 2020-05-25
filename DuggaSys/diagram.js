@@ -6363,9 +6363,10 @@ function toggleRulers() {
     canvasSize();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// initRulers Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
-//------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
+// initRulers: Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
+//             Also adds eventlistners to rulers making it possible to create guidelines by dragging from them.
+//-------------------------------------------------------------------------------------------------------------
 
 function initRulers() {
     const tempIsRulerActive = localStorage.getItem("isRulersActive");
@@ -6380,25 +6381,27 @@ function initRulers() {
     let mouseDownRulerX = false;
     let mouseDownRulerY = false;
 
-    function mouseUpHandler() {
+    function mouseOverHandler() {      
         if(mouseDownRulerX) {
-            addGuideline(new Guideline('x', 0, false));
-        }
+            const guideline = addGuideline(new Guideline('x', 0, false));
+            guideline.mouseDownHandler({clientX: 0});
+        } 
         if(mouseDownRulerY) {
-            addGuideline(new Guideline('y', 0, false));
+            const guideline = addGuideline(new Guideline('y', 0, false));
+            guideline.mouseDownHandler({clientY: 0});
         }
-        diagramCanvasContainer.removeEventListener("mouseup", mouseUpHandler);
+        diagramCanvasContainer.removeEventListener("mouseover", mouseOverHandler);
     }
 
     rulerX.addEventListener("mousedown", () => {
         mouseDownRulerX = true;
-        diagramCanvasContainer.addEventListener("mouseup", mouseUpHandler);
+        diagramCanvasContainer.addEventListener("mouseover", mouseOverHandler);
     });
     rulerX.addEventListener("mouseup", () => mouseDownRulerX = false);
 
     rulerY.addEventListener("mousedown", () => {
         mouseDownRulerY = true;
-        diagramCanvasContainer.addEventListener("mouseup", mouseUpHandler);
+        diagramCanvasContainer.addEventListener("mouseover", mouseOverHandler);
     });
     rulerY.addEventListener("mouseup", () => mouseDownRulerY = false);
 }
@@ -6428,6 +6431,7 @@ function saveGuidelinesToLocalStorage() {
 function addGuideline(guideline) {
     guidelines.push(guideline);
     saveGuidelinesToLocalStorage();
+    return guideline;
 }
 
 function deleteGuidelines() {
