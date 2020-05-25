@@ -6393,17 +6393,23 @@ function initRulers() {
         diagramCanvasContainer.removeEventListener("mouseover", mouseOverHandler);
     }
 
+    function mouseUpHandler() {
+        mouseDownRulerX = false;
+        mouseDownRulerY = false;
+        document.removeEventListener("mouseup", mouseUpHandler);
+    }
+
     rulerX.addEventListener("mousedown", () => {
         mouseDownRulerX = true;
         diagramCanvasContainer.addEventListener("mouseover", mouseOverHandler);
+        document.addEventListener("mouseup", mouseUpHandler);
     });
-    rulerX.addEventListener("mouseup", () => mouseDownRulerX = false);
 
     rulerY.addEventListener("mousedown", () => {
         mouseDownRulerY = true;
         diagramCanvasContainer.addEventListener("mouseover", mouseOverHandler);
+        document.addEventListener("mouseup", mouseUpHandler);
     });
-    rulerY.addEventListener("mouseup", () => mouseDownRulerY = false);
 }
 
 let guidelines = [];
