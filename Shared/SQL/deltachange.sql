@@ -24,7 +24,7 @@ alter table user_course add column examiner integer;
 
 /* Usergroup and user_usergroup relation */
 
-CREATE TABLE groups (
+CREATE TABLE "groups" (
   groupID INTEGER unsigned NOT NULL AUTO_INCREMENT,
   groupKind VARCHAR(4) NOT NULL,
 	groupVal VARCHAR(8) NOT NULL,
@@ -63,8 +63,8 @@ INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VIII",8);
 /*
 Error reading user entriesUnknown column 'requestedpasswordchange' in 'field list'
 */
-ALTER TABLE `user` ADD COLUMN securityquestion VARCHAR(256) DEFAULT NULL;
-ALTER TABLE `user` ADD COLUMN requestedpasswordchange	TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE "user" ADD COLUMN securityquestion VARCHAR(256) DEFAULT NULL;
+ALTER TABLE "user" ADD COLUMN requestedpasswordchange	TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
 
 /*
 Error retreiving userAnswers. (row 394) 0 row(s) were found. Error code: Unknown column 'timesGraded' in 'field list'

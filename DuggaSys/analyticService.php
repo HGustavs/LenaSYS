@@ -682,7 +682,7 @@ function duggaInformation($pdo) {
 //------------------------------------------------------------------------------------------------
  
 function codeviewerInformation($pdo){
-	$query = $pdo->prepare("SELECT username, uid FROM user");
+	$query = $pdo->prepare('SELECT username, uid FROM "user"');
 	if(!$query->execute()) {
 	} else {
 		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -724,7 +724,7 @@ function codeviewerInformation($pdo){
 //------------------------------------------------------------------------------------------------
  
 function sectionedInformation($pdo) {
-	$query = $pdo->prepare("SELECT username, uid FROM user");
+	$query = $pdo->prepare('SELECT username, uid FROM "user"');
 	if(!$query->execute()) {
 	} else {
 		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -765,7 +765,7 @@ function sectionedInformation($pdo) {
 //------------------------------------------------------------------------------------------------
  
 function courseedInformation($pdo){
-	$query = $pdo->prepare("SELECT username, uid FROM user");
+	$query = $pdo->prepare('SELECT username, uid FROM "user"');
 	if(!$query->execute()) {
 	} else {
 		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -806,7 +806,7 @@ function courseedInformation($pdo){
 //------------------------------------------------------------------------------------------------
  
 function userLogInformation($pdo){
-	$query = $pdo->prepare("SELECT username, uid FROM user");
+	$query = $pdo->prepare('SELECT username, uid FROM "user"');
 	if(!$query->execute()) {
 	} else {
 		$rows = $query->fetchAll(PDO::FETCH_ASSOC);

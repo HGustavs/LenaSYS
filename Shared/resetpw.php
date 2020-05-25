@@ -35,7 +35,7 @@ if($opt=="GETQUESTION"){
   
   // Retriving uid from database is used for logging 
 			// Gets uid based on username
-			$query = $pdo->prepare( "SELECT uid FROM user WHERE username = :username");
+			$query = $pdo->prepare( 'SELECT uid FROM "user" WHERE username = :username');
 			$query->bindParam(':username', $username);
 			$query-> execute();
 

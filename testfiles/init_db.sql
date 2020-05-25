@@ -1,7 +1,7 @@
 
 /* user contains the users of the system and related information */
 
-CREATE TABLE user(
+CREATE TABLE "user"(
 		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		username			VARCHAR(80) NOT NULL UNIQUE,
 		firstname			VARCHAR(50) NULL,
@@ -50,5 +50,5 @@ CREATE TABLE course(
 		hp							DECIMAL(4,1) NOT NULL DEFAULT 7.5,
 		courseHttpPage	VARCHAR(2000),
 		PRIMARY KEY(cid),
-		FOREIGN KEY (creator) REFERENCES user (uid)
+		FOREIGN KEY (creator) REFERENCES "user" (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;

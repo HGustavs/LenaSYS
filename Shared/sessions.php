@@ -99,8 +99,9 @@ function getQuestion($username)
         pdoConnect();
       }
       //Gets info for the user whose username has been input
-      $query = $pdo->prepare("SELECT uid,username,superuser,securityquestion,requestedpasswordchange FROM user WHERE username=:username LIMIT 1");
 
+
+      $query = $pdo->prepare('SELECT uid,username,superuser,securityquestion,requestedpasswordchange FROM "user" WHERE username=:username LIMIT 1');
       $query->bindParam(':username', $username);
 
       $query->execute();
@@ -159,7 +160,7 @@ function checkAnswer($username, $securityquestionanswer)
                 pdoConnect();
         }
         //Gets info for the user whose username has been input
-        $query = $pdo->prepare("SELECT uid,username,securityquestionanswer FROM user WHERE username=:username LIMIT 1");
+        $query = $pdo->prepare('SELECT uid,username,securityquestionanswer FROM "user" WHERE username=:username LIMIT 1');
 
         $query->bindParam(':username', $username);
         $query->execute();
@@ -173,7 +174,7 @@ function checkAnswer($username, $securityquestionanswer)
                   if (standardPasswordNeedsRehash($row['securityquestionanswer'])) {
                   // The php password is not up to date, update it to be even safer (the cost may have changed, or another algoritm than bcrypt is used)
                     $row['securityquestionanswer'] = standardPasswordHash($securityquestionanswer);
-                    $query = $pdo->prepare("UPDATE user SET securityquestionanswer = :sqa WHERE uid=:uid");
+                    $query = $pdo->prepare('UPDATE "user" SET securityquestionanswer = :sqa WHERE uid=:uid');
                     $query->bindParam(':uid', $row['uid']);
                     $query->bindParam(':sqa', $row['securityquestionanswer']);
                     $query->execute();
@@ -202,7 +203,7 @@ function requestChange($username)
         pdoConnect();
     }
 
-    $query = $pdo->prepare("UPDATE user set requestedpasswordchange=1 where username=:username;");
+    $query = $pdo->prepare('UPDATE "user" set requestedpasswordchange=1 where username=:username;');
     $query->bindParam(':username', $username);
 
     if(!$query->execute()) {
@@ -266,13 +267,14 @@ function login($username, $password, $savelogin)
     if($pdo == null) {
         pdoConnect();
     }
-
-    if(MYSQL_VERSION<"8.0"){
-        $query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,securityquestion,password(:pwd) as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
+    
+    /*if(MYSQL_VERSION<"8.0"){
+        $query = $pdo->prepare('SELECT uid,username,password,superuser,lastname,firstname,securityquestion,password(:pwd) as mysql_pwd_input FROM "user" WHERE username=:username LIMIT 1');
         $query->bindParam(':pwd', $password);
-    }else{
-        $query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,securityquestion,NULL as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
-    }
+    }else{*/
+        $query = $pdo->prepare('SELECT uid,username,password,superuser,lastname,firstname,securityquestion,NULL as mysql_pwd_input FROM "user" WHERE username=:username LIMIT 1');
+    //}
+    
     $query->bindParam(':username', $username);
 
     if(!$query->execute()){
@@ -288,7 +290,7 @@ function login($username, $password, $savelogin)
             $newpassword=standardPasswordHash($password);
             if($newpassword!="UNK"){
                 $row['password'] = $newpassword;
-                $query = $pdo->prepare("UPDATE user SET password = :pwd WHERE uid=:uid");
+                $query = $pdo->prepare('UPDATE "user" SET password = :pwd WHERE uid=:uid');
                 $query->bindParam(':uid', $row['uid']);
                 $query->bindParam(':pwd', $row['password']);
                 $query->execute();
@@ -298,7 +300,7 @@ function login($username, $password, $savelogin)
             if (standardPasswordNeedsRehash($row['password'])) {
                 // The php password is not up to date, update it to be even safer (the cost may have changed, or another algoritm than bcrypt is used)
                 $row['password'] = standardPasswordHash($password);
-                $query = $pdo->prepare("UPDATE user SET password = :pwd WHERE uid=:uid");
+                $query = $pdo->prepare('UPDATE "user" SET password = :pwd WHERE uid=:uid');
                 $query->bindParam(':uid', $row['uid']);
                 $query->bindParam(':pwd', $row['password']);
                 $query->execute();
@@ -387,7 +389,7 @@ function isSuperUser($userId)
                 pdoConnect();
         }
 
-        $query = $pdo->prepare('SELECT count(uid) AS count FROM user WHERE uid=:1 AND superuser=1');
+        $query = $pdo->prepare('SELECT count(uid) AS count FROM "user" WHERE uid=:1 AND superuser=1');
         $query->bindParam(':1', $userId);
         $query->execute();
         $result = $query->fetch();

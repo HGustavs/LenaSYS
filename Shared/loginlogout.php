@@ -62,7 +62,7 @@ if($opt=="REFRESH"){
 
 			//LOGGING STARTS HERE ->
 			// Gets uid based on username
-			$query = $pdo->prepare( "SELECT uid FROM user WHERE username = :username");
+			$query = $pdo->prepare( 'SELECT uid FROM "user" WHERE username = :username');
 			$query->bindParam(':username', $username);
 			$query-> execute();
 
