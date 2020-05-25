@@ -289,11 +289,11 @@
                     </div>
                     <div class="drop-down-divider"></div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option">Rulers</span>
+                        <span class="drop-down-option" onclick="toggleRulers();">Rulers active</span>
+                    </div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option">Guidelines</span>
                         <div class="side-drop-down">
-                            <div class="drop-down-item" tabindex="0">
-                                <span class="drop-down-option" onclick="toggleRulers();">Toggle rulers</span>
-                            </div>
                             <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick="">Create horizontal guideline</span>
                             </div>
