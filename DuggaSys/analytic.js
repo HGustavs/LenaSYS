@@ -816,6 +816,7 @@ var hasCounter;
 var rowCount;
 var nameCount;
 var pageCount;
+var counterFirstLoad = true;
 
 function loadUserInformation(){
 	localStorage.setItem('analyticsPage', 'userInformation');
@@ -1421,9 +1422,10 @@ function renderTable(data) {
 		});
 	}
 	str += "</tbody></table>";
-	if(hasCounter == true){
+	if(hasCounter == true && counterFirstLoad == false){
 		updateCounter(rowCount, nameCount, pageCount);
 	}
+	counterFirstLoad = false;
 	return str;
 }
 
