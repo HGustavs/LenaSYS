@@ -6427,6 +6427,14 @@ class Guideline {
         this.isLocked = isLocked;
         this.container = document.getElementById("diagram-guideline-container");
         this.element = null;
+
+        //Used to be able to access same reference to class functions
+        this.mouseOverHandler = e => this.mouseOver(e);
+        this.mouseLeaveHandler = e => this.mouseLeave(e);
+        this.mouseDownHandler = e => this.mouseDown(e);
+        this.mouseMoveHandler = e => this.mouseMove(e);
+        this.mouseUpHandler = e => this.mouseUp(e);
+
         this.createGuideline();
     }
 
@@ -6456,16 +6464,20 @@ class Guideline {
 
         this.container.appendChild(this.element);
 
-        this.element.addEventListener("mouseover", () => this.mouseOver());
-        this.element.addEventListener("mouseleave", () => this.mouseLeave());
-        this.element.addEventListener("mousedown", e => this.mouseDown(e));
+        this.element.addEventListener("mouseover", this.mouseOverHandler);
+        this.element.addEventListener("mouseleave", this.mouseLeaveHandler);
+        this.element.addEventListener("mousedown", this.mouseDownHandler);
     }
 
     mouseOver() {
+        this.element.style.cursor = "default";
+
         if(md !== mouseState.empty) {
+            this.lock();
             this.container.parentElement.parentElement.classList.add("noselect");
             return;
         }
+        
         if(this.axis === 'x') {
             this.element.style.cursor = "row-resize";
         } else if(this.axis === 'y') {
@@ -6474,6 +6486,7 @@ class Guideline {
     }
 
     mouseLeave() {
+        this.unlock();
         this.container.parentElement.parentElement.classList.remove("noselect");
     }
 
@@ -6490,8 +6503,8 @@ class Guideline {
             this.container.style.cursor = "col-resize";
         }
 
-        document.addEventListener("mousemove", e => this.mouseMove(e));
-        document.addEventListener("mouseup", () => this.mouseUp());
+        document.addEventListener("mousemove", this.mouseMoveHandler);
+        document.addEventListener("mouseup", this.mouseUpHandler);
     }
 
     mouseMove(e) {
@@ -6526,8 +6539,8 @@ class Guideline {
             }
         }
 
-        document.removeEventListener("mousemove", this.mouseMove);
-        document.removeEventListener("mouseup", this.mouseUp);
+        document.removeEventListener("mousemove", this.mouseMoveHandler);
+        document.removeEventListener("mouseup", this.mouseUpHandler);
 
         saveGuidelinesToLocalStorage();
     }
