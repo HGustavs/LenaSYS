@@ -1993,42 +1993,12 @@ function Symbol(kindOfSymbol) {
             ctx.lineTo(breakpointStartX, middleBreakPointY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(breakpointEndX, middleBreakPointY);
-
-            this.umlSubline.subLineOne.startX = x1;
-            this.umlSubline.subLineOne.startY = y1;
-            this.umlSubline.subLineOne.endX = breakpointStartX;
-            this.umlSubline.subLineOne.endY = middleBreakPointY;
-
-            this.umlSubline.subLineTwo.startX = breakpointStartX;
-            this.umlSubline.subLineTwo.startY = middleBreakPointY;
-            this.umlSubline.subLineTwo.endX = breakpointEndX;   //sets start point and end point for every subline in uml relationship. There always three sublines
-            this.umlSubline.subLineTwo.endY = middleBreakPointY;
-
-            this.umlSubline.subLineThree.startX = breakpointEndX;
-            this.umlSubline.subLineThree.startY = middleBreakPointY;
-            this.umlSubline.subLineThree.endX = x2;
-            this.umlSubline.subLineThree.endY = y2;
-
-            
+            this.setSubLines(x1,y1,breakpointStartX,middleBreakPointX,breakpointEndX,breakpointStartY,middleBreakPointY,breakpointEndY,x2,y2,true);
         } else if((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(middleBreakPointX, breakpointStartY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(middleBreakPointX, breakpointEndY);
-
-            this.umlSubline.subLineOne.startX = x1;
-            this.umlSubline.subLineOne.startY = y1;
-            this.umlSubline.subLineOne.endX = middleBreakPointX;
-            this.umlSubline.subLineOne.endY = breakpointStartY;
-
-            this.umlSubline.subLineTwo.startX = middleBreakPointX;
-            this.umlSubline.subLineTwo.startY = breakpointStartY;
-            this.umlSubline.subLineTwo.endX = middleBreakPointX;    //sets start point and end point for every subline in uml relationship. There always three sublines
-            this.umlSubline.subLineTwo.endY = breakpointEndY;
-
-            this.umlSubline.subLineThree.startX = middleBreakPointX;
-            this.umlSubline.subLineThree.startY = breakpointEndY;
-            this.umlSubline.subLineThree.endX = x2;
-            this.umlSubline.subLineThree.endY = y2;
+            this.setSubLines(x1,y1,breakpointStartX,middleBreakPointX,breakpointEndX,breakpointStartY,middleBreakPointY,breakpointEndY,x2,y2,false)
 
         }  else if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(breakpointStartX, breakpointEndY);
@@ -2048,6 +2018,41 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x2, y2);
         ctx.stroke();
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
+    }
+
+    this.setSubLines = function(x1,y1,breakpointStartX,middleBreakPointX,breakpointEndX,breakpointStartY,middleBreakPointY,breakpointEndY,x2,y2,side){
+        if(side){
+            this.umlSubline.subLineOne.startX = x1;
+            this.umlSubline.subLineOne.startY = y1;
+            this.umlSubline.subLineOne.endX = breakpointStartX;
+            this.umlSubline.subLineOne.endY = middleBreakPointY;
+
+            this.umlSubline.subLineTwo.startX = breakpointStartX;
+            this.umlSubline.subLineTwo.startY = middleBreakPointY;
+            this.umlSubline.subLineTwo.endX = breakpointEndX;   
+            this.umlSubline.subLineTwo.endY = middleBreakPointY;
+
+            this.umlSubline.subLineThree.startX = breakpointEndX;
+            this.umlSubline.subLineThree.startY = middleBreakPointY;
+            this.umlSubline.subLineThree.endX = x2;
+            this.umlSubline.subLineThree.endY = y2;
+        }
+        else{
+            this.umlSubline.subLineOne.startX = x1;
+            this.umlSubline.subLineOne.startY = y1;
+            this.umlSubline.subLineOne.endX = middleBreakPointX;
+            this.umlSubline.subLineOne.endY = breakpointStartY;
+    
+            this.umlSubline.subLineTwo.startX = middleBreakPointX;
+            this.umlSubline.subLineTwo.startY = breakpointStartY;
+            this.umlSubline.subLineTwo.endX = middleBreakPointX;   
+            this.umlSubline.subLineTwo.endY = breakpointEndY;
+    
+            this.umlSubline.subLineThree.startX = middleBreakPointX;
+            this.umlSubline.subLineThree.startY = breakpointEndY;
+            this.umlSubline.subLineThree.endX = x2;
+            this.umlSubline.subLineThree.endY = y2;
+        }
     }
 
     //---------------------------------------------------------------
