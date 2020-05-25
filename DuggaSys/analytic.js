@@ -815,6 +815,7 @@ function loadPageInformation() {
 var hasCounter;
 var rowCount;
 var nameCount;
+var pageCount;
 
 function loadUserInformation(){
 	localStorage.setItem('analyticsPage', 'userInformation');
@@ -1100,9 +1101,7 @@ function loadUserInformation(){
             if (users.hasOwnProperty(user)) {
 				if(localStorage.getItem('analyticsLastUser') == user) {
 					userSelect.append('<option value="' + user + '" selected>' + user + '</option>');
-					if(hasCounter = true){
-						nameCount = user;
-					}
+					nameCount = user;
 				} else {
 					userSelect.append('<option value="' + user + '">' + user + '</option>');
 				}
@@ -1156,16 +1155,20 @@ function loadUserInformation(){
         selectPage.change(function(){
             switch(selectPage.val()){
                 case "sectioned":
-                    updateSectionedInformation();
+					updateSectionedInformation();
+					pageCount = "sectioned.php";
                     break;
                 case "courseed":
-                    updateCourseedInformation();
+					updateCourseedInformation();
+					pageCount = "courseed.php";
 					break;
 				case "showDugga":
 					updateDuggaInformation();
+					pageCount = "showdugga.php";
 					break;
 				case "codeviewer":
 					updateCodeviewerInformation();
+					pageCount = "codeviewer.php";
 					break;
 				case "events":
 					updateUserLogInformation();
@@ -1419,14 +1422,14 @@ function renderTable(data) {
 	}
 	str += "</tbody></table>";
 	if(hasCounter == true){
-		updateCounter(rowCount, nameCount);
+		updateCounter(rowCount, nameCount, pageCount);
 	}
 	return str;
 }
 
-function updateCounter(count, user)
+function updateCounter(count, user, page)
 {
-	$('#analytic-info').append("<p> This page has been loaded " + count + " times by " + user + "! </p>");
+	$('#analytic-info').append("<p>" + page + " has been loaded " + count + " times by " + user + "! </p>");
 	hasCounter = false;
 }
 
