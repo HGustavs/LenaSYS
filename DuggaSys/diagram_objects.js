@@ -2725,24 +2725,19 @@ function checkLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY) {
 }
 
 function checkUMLLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY) {
-
     var	lines = diagram.getObjectsByType(symbolKind.umlLine);
     var results = [];
     var getSubline;
 	for (var i = 0; i < lines.length; i++) {
-
         for(var j = 0; j < 3; j++){
             if(j == 0){
                 getSubline = lines[i].umlSubline.subLineOne;
-
             }
             else if (j == 1){
                 getSubline = lines[i].umlSubline.subLineTwo;
-
             }
             else {
                 getSubline = lines[i].umlSubline.subLineThree;
-
             }
             var	line2StartX = getSubline.startX;
             var	line2StartY = getSubline.startY;
@@ -2813,7 +2808,7 @@ function drawUmlJump(positionX, positionY){
 		ctx.arc(positionX,positionY,5*zoomValue,startAngle = 1 * Math.PI, endAngle = 2 * Math.PI);
 		ctx.closePath();
 		ctx.stroke();
- }
+    }
 }
 
 //---------------------------------------------------------------------
