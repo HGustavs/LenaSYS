@@ -643,11 +643,17 @@ svg text {
     overflow:hidden; 
     text-align:center;
 }
- @media only screen and (max-width: 800px) {
-	#htmlCssTable > tbody,
-	#htmlCssTable > tbody > tr, 
-	#htmlCssTable > tbody > tr > td {
-		display: block;
+ @media screen and (min-width:200px){
+	#htmlCssTable{
+		display: flex; 
+		flex-wrap: wrap; 
+		justify-content: center;
+	}
+	#target-col, #input-col, #preview-col, #validation-col{
+		margin: 5px;
+	}
+	#input-col{
+		width: 200px;
 	}
  }
 
