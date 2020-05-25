@@ -1231,6 +1231,11 @@ div .navButt:hover {
   vertical-align: middle;
   text-align: center;
 }
+@media only screen and (max-width: 342px) {
+  #loginbutton {
+    width: 35px;
+  }
+}
 
 #div2 {
   position: absolute;
@@ -7043,7 +7048,7 @@ textarea#filecont {
   display: none;
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 453px) {
 
   header #versionPlus{
     display: none;
@@ -7057,6 +7062,10 @@ textarea#filecont {
     display: none;
   }
 
+  header #accessBTN img{
+    width: 20px;
+  }
+
   .navheader {
     height: 20px;
     margin-bottom: 10px;
@@ -7067,6 +7076,17 @@ textarea#filecont {
     margin-right: 0px;
   }
 }
+
+@media only screen and (max-width: 339px) {
+  .navheader .course-dropdown{
+    height: 20px;
+    width: 120px;
+  }
+  .navName{
+    width: 0px;
+  }
+}
+
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
   width: 100%;
