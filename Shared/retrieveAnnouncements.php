@@ -48,7 +48,7 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 		$retrievedAnnouncementCard .= "<div><span class='editMark'>&#128394; Edited</span></div>";
 		
 	}
-	foreach ($pdo->query('SELECT * FROM user WHERE uid="'.$uid.'"') AS $author){
+	foreach ($pdo->query('SELECT * FROM lenasys_user WHERE uid="'.$uid.'"') AS $author){
 		$firstname = $author['firstname'];
 		$lastname = $author['lastname'];
 		$retrievedAnnouncementCard .= "<div><span class='displayAnnounceTime' title='Announce time'>&#9716; ".$announceTime."</span><span class='displayAuthor' title='Announce author'>By ".ucfirst(strtolower($firstname))." ".ucfirst(strtolower($lastname))."</span></div></div>";
