@@ -1495,7 +1495,7 @@ diagram.sortConnectors = function() {
 
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
+        if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml || diagram[i].symbolkind == symbolKind.line || diagram[i].symbolkind == symbolKind.umlLine) {
             if(!diagram[i].manualLine){
                 if(diagram[i].quadrants(diagram[i].symbolkind)) /*break*/;
             }
@@ -5423,7 +5423,7 @@ function loadAppearanceForm() {
                 }
                 const connectedObjectsArray = object.getConnectedObjects();
                 document.getElementById("lineObject1").innerHTML = connectedObjectsArray[0].name;
-                document.getElementById("lineObject2").innerHTML = connectedObjectsArray[1].name;
+                document.getElementById("lineObject2").innerHTML = connectedObjectsArray[1].name; 
             }
             document.getElementById("typeLine").focus();
         } else if(object.symbolkind === symbolKind.umlLine) {
@@ -5431,7 +5431,12 @@ function loadAppearanceForm() {
             document.getElementById("typeLineUML").focus();
             const connectedObjectsArray = object.getConnectedObjects();
             document.getElementById("lineObject1").innerHTML = connectedObjectsArray[0].name;
-            document.getElementById("lineObject2").innerHTML = connectedObjectsArray[1].name;
+            if(object.isRecursiveLine){
+                document.getElementById("LinePlacement1").style.display = "none";
+                document.getElementById("lineObject2").style.display = "none";
+            } else{
+                document.getElementById("lineObject2").innerHTML = connectedObjectsArray[1].name;
+            }
         } else if(object.symbolkind === symbolKind.text) {
             indexes[symbolKind.text].current++;
             setTextareaElement(freeTextElement, object.textLines, indexes[symbolKind.text]);
