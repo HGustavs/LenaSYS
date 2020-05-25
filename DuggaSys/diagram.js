@@ -4049,7 +4049,7 @@ function mousemoveevt(ev) {
 function mousedownevt(ev) {
     // Returns out of funtion if on mobile device
     // This is beacause touch events also trigger mouse events
-    if (isMobile){
+    if (isMobile || timelineAnimation !== null) {
         return;
     }
     
@@ -6506,6 +6506,7 @@ function playTimeline(isSpeedChanged = false) {
         }, speed * 1000);
     } else {
         clearInterval(timelineAnimation);
+        timelineAnimation = null;
     }
 }
 
