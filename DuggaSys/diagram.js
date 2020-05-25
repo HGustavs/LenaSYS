@@ -4049,12 +4049,16 @@ function mousemoveevt(ev) {
 function mousedownevt(ev) {
     // Returns out of funtion if on mobile device
     // This is beacause touch events also trigger mouse events
-    if (isMobile || timelineAnimation !== null) {
+    if (isMobile) {
         return;
     }
     
     mousemoveevt(event);    // Trigger the move event function to update mouse coordinates and avoid creating objects in objects
-    if(ev.button == leftMouseClick){
+    if(ev.button == leftMouseClick) {
+        //Do not want to be able to select or create symbols when timeline animation is active
+        if(timelineAnimation !== null) {
+            return;
+        } 
         canvasLeftClick = true;
     } else if(ev.button == rightMouseClick) {
         canvasRightClick = true;
