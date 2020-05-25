@@ -479,7 +479,7 @@ for ($i = 0; $i < $userCount; $i++) {
 					$content="Not a text-submit or URL";
 			}
 		
- 			$uQuery = $pdo->prepare("SELECT username FROM lenasys_user WHERE uid=:uid;");
+ 			$uQuery = $pdo->prepare('SELECT username FROM "user" WHERE uid=:uid;');
 			$uQuery->bindParam(':uid', $row['uid'], PDO::PARAM_INT);
 			$uQuery->execute();
 			$uRow = $uQuery->fetch();

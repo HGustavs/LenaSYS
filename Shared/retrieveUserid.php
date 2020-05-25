@@ -4,7 +4,7 @@ pdoConnect();
 
 $uname = strval($_GET['uname']);
 
-foreach ($pdo->query('SELECT * FROM lenasys_user WHERE username="'.$uname.'"') AS $row){
+foreach ($pdo->query('SELECT * FROM "user" WHERE username="'.$uname.'"') AS $row){
 	$uid = $row['uid'];
 
 }

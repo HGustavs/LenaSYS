@@ -86,7 +86,7 @@ if($requestType == "mail" && checklogin() && (hasAccess($_SESSION['uid'], $cid, 
 
 	for($i = 0; $i < $lenghtOfVisibleUserIDs; $i++) {
 		$studentID = $visibleUserIDs[$i];
-		$mailQuery = $pdo->prepare("SELECT lenasys_user.email FROM lenasys_user INNER JOIN user_course ON lenasys_user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND lenasys_user.username =:studentid");
+		$mailQuery = $pdo->prepare('SELECT "user".email FROM "user" INNER JOIN user_course ON "user".uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND "user".username =:studentid');
 
 		$mailQuery->bindParam(':studentid', $studentID);
 		$mailQuery->bindParam(':cid', $courseid);
@@ -636,7 +636,7 @@ if(strcmp($opt,"CHGR")!==0){
 
 		}
 		*/
-		$query = $pdo->prepare("SELECT user_course.cid AS cid,lenasys_user.uid AS uid,username,firstname,lastname,ssn,class,user_course.access,user_course.examiner FROM lenasys_user,user_course WHERE lenasys_user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;");
+		$query = $pdo->prepare('SELECT user_course.cid AS cid,"user".uid AS uid,username,firstname,lastname,ssn,class,user_course.access,user_course.examiner FROM "user",user_course WHERE "user".uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;');
 		//		$query = $pdo->prepare("select user_course.cid as cid,user.uid as uid,username,firstname,lastname,ssn,access from user,user_course where user.uid=user_course.uid and user_course.cid=:cid;");
 		$query->bindParam(':coursevers', $vers);
 		$query->bindParam(':cid', $cid);
@@ -888,12 +888,12 @@ if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
 
 $teachers=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("
-    SELECT lenasys_user.uid, lenasys_user.firstname, lenasys_user.lastname, lenasys_user.username
+	$query = $pdo->prepare('
+    SELECT "user".uid, "user".firstname, "user".lastname, "user".username
 		FROM user_course 
-		INNER JOIN lenasys_user ON user_course.examiner = lenasys_user.uid
+		INNER JOIN "user" ON user_course.examiner = "user".uid
 		WHERE user_course.cid=:cid AND user_course.vers=:cvers;
-  ");
+  ');
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':cvers', $vers);
 	if(!$query->execute()){
