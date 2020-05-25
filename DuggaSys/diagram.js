@@ -6352,7 +6352,7 @@ function toggleRulers() {
         rulers.forEach(ruler => ruler.classList.remove("hidden"));
     }
     isRulersActive = !isRulersActive;
-    setCheckbox($(".drop-down-option:contains('Rulers')"), isRulersActive);
+    setCheckbox($(".drop-down-option:contains('Toggle rulers')"), isRulersActive);
     localStorage.setItem("isRulersActive", isRulersActive);
     canvasSize();
 }

@@ -287,15 +287,22 @@
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick='toggleComments(event);'>Hide Comments</span>                       
                     </div>
-                    <div class="drop-down-divider">
+                    <div class="drop-down-divider"></div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option">Rulers</span>
+                        <div class="side-drop-down">
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="toggleRulers();">Toggle rulers</span>
+                            </div>
+
+                        </div>
                     </div>
+                    <div class="drop-down-divider"></div>
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="toggleFullscreen();">Fullscreen</span>
                         <i class="hot-key hot-key-tick">Shift + F11</i>           
                     </div>
-                    <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="toggleRulers();">Rulers</span>        
-                    </div>
+                    <div class="drop-down-divider"></div>
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="toggleTimeline();">Timeline</span>        
                     </div>
