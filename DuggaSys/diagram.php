@@ -294,7 +294,18 @@
                             <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick="toggleRulers();">Toggle rulers</span>
                             </div>
-
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="">Create horizontal guideline</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="">Create vertical guideline</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="">Lock guidelines</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="">Delete guidelines</span>
+                            </div>
                         </div>
                     </div>
                     <div class="drop-down-divider"></div>
