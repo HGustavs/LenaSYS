@@ -6345,15 +6345,19 @@ function getSelectedObjectsPoints() {
 function toggleRulers() {
     const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
     const rulers = document.querySelectorAll(".ruler");
+    const guidelineContainer = document.getElementById("diagram-guideline-container");
+
+    isRulersActive = !isRulersActive;
 
     if(isRulersActive) {
-        diagramPageWrapper.classList.remove("rulers-active");
-        rulers.forEach(ruler => ruler.classList.add("hidden"));
-    } else {
         diagramPageWrapper.classList.add("rulers-active");
         rulers.forEach(ruler => ruler.classList.remove("hidden"));
+        guidelineContainer.classList.remove("hidden");
+    } else {
+        diagramPageWrapper.classList.remove("rulers-active");
+        rulers.forEach(ruler => ruler.classList.add("hidden"));
+        guidelineContainer.classList.add("hidden");
     }
-    isRulersActive = !isRulersActive;
     setCheckbox($(".drop-down-option:contains('Rulers')"), isRulersActive);
     localStorage.setItem("isRulersActive", isRulersActive);
     canvasSize();
@@ -6385,7 +6389,7 @@ function initGuidelines() {
     }
 }
 
-function saveGuidelinesLocalStorage() {
+function saveGuidelinesToLocalStorage() {
     const localStorageGuidelines = guidelines.reduce((result, guideline) => {
         return [...result, guideline.exportToLocalStorage()];
     }, []);
@@ -6395,13 +6399,13 @@ function saveGuidelinesLocalStorage() {
 
 function addGuideline(guideline) {
     guidelines.push(guideline);
-    saveGuidelinesLocalStorage();
+    saveGuidelinesToLocalStorage();
 }
 
 function deleteGuidelines() {
     guidelines.forEach(guideline => guideline.element.remove());
     guidelines.splice(0, guidelines.length);
-    saveGuidelinesLocalStorage();
+    saveGuidelinesToLocalStorage();
 }
 
 class Guideline {
@@ -6495,7 +6499,7 @@ class Guideline {
         document.removeEventListener("mousemove", this.mouseMove);
         document.removeEventListener("mouseup", this.mouseUp);
 
-        saveGuidelinesLocalStorage();
+        saveGuidelinesToLocalStorage();
     }
 
     remove() {
@@ -6504,7 +6508,7 @@ class Guideline {
         const index = guidelines.findIndex(guideline => Object.is(this, guideline));
         guidelines.splice(index, 1);
 
-        saveGuidelinesLocalStorage();
+        saveGuidelinesToLocalStorage();
     }
 
     exportToLocalStorage() {

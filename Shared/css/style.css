@@ -5715,7 +5715,8 @@ only screen and (max-device-width: 320px) {
 }
 
 .ruler.hidden,
-#diagram-timeline-container.hidden {
+#diagram-timeline-container.hidden,
+#diagram-guideline-container.hidden {
   display: none;
 }
 
