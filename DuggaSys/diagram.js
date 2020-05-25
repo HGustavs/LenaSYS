@@ -6370,26 +6370,30 @@ function setIsRulersActiveOnRefresh() {
     }
 }
 
-function createGuideline(axis = 'x', isFromRuler = false) {
+function createGuideline(axis = 'x', position = 0) {
     const container = document.getElementById("diagram-guidelines-container")
     const guideline = document.createElement("div");
 
     guideline.classList.add("guideline");
     if(axis === 'x') {
         guideline.classList.add("guideline-x");
-        if(!isFromRuler) {
-            guideline.style.top = "50%";
-        }
+        guideline.style.top = position;
     } else if(axis === 'y') {
         guideline.classList.add("guideline-y");
-        if(!isFromRuler) {
-            guideline.style.left = "50%";
-        }
+        guideline.style.left = position;
     }
 
+    let startPosition = 0;
+    let movePosition = 0;
+
     function mouseDownHandler(e) {
-        e.preventDefault();
         guideline.classList.add("moving");
+
+        if(axis === 'x') {
+            startPosition = e.clientY;
+        } else if(axis === 'y') {
+            startPosition = e.clientX;
+        }
 
         document.addEventListener("mousemove", mouseMoveHandler);
         document.addEventListener("mouseup", mouseUpHandler);
@@ -6397,7 +6401,17 @@ function createGuideline(axis = 'x', isFromRuler = false) {
 
     function mouseMoveHandler(e) {
         if(guideline.classList.contains("moving")) {
-
+            if(axis === 'x') {
+                movePosition = startPosition - e.clientY;
+                startPosition = e.clientY;
+                guideline.style.top = `${guideline.offsetTop - movePosition}px`;
+                container.style.cursor = "row-resize";
+            } else if(axis === 'y') {
+                movePosition = startPosition - e.clientX;
+                startPosition = e.clientX;
+                guideline.style.left = `${guideline.offsetLeft - movePosition}px`;
+                container.style.cursor = "column-resize";
+            }
         }
     }
 
