@@ -714,6 +714,8 @@ function returnedExportedGrades(gradeData){
 				}
 			}
 		}
+
+		myTable.renderTable();
 	} catch (error) {
 		console.log(error);
 	}
@@ -1129,7 +1131,9 @@ function renderCell(col, celldata, cellid) {
 				
 		}	
 	} if (filterList["notExported"]) {
-		rerenderData = document.getElementById("lastExportedDate").textContent;
+		if (rerenderData === "NONE") {
+			AJAXService("getunexported", { getType: "ONLYDATE" }, "GEXPORT");
+		} else {
 				// First column (Fname/Lname/SSN)
 				if (col == "FnameLname") {
 					str = "<div class='resultTableCell resultTableNormal'>";
@@ -1208,6 +1212,7 @@ function renderCell(col, celldata, cellid) {
 
 				return str;
 				}
+		}
 			
 	}
 	// Render normal mode
@@ -1465,6 +1470,19 @@ function rowFilter(row) {
 			if (!rowPending) {
 				return false;
 			}
+		}
+	} if (filterList["notExported"]) {
+		var rowPending = false;
+		for (var colname in row) {
+			row[colname]["marked"] = new Date(row[colname]["marked"]);
+			row[colname]["marked"] = row[colname]["marked"].getFullYear() + "-" + addZero(row[colname]["marked"].getMonth() + 1) + "-" + addZero(row[colname]["marked"].getDate()) + " " + addZero(row[colname]["marked"].getHours()) + ":" + addZero(row[colname]["marked"].getMinutes()) + ":" + addZero(row[colname]["marked"].getSeconds());
+			if (colname != "FnameLname" && row[colname]["needMarking"] == false && row[colname]["marked"] > document.getElementById("lastExportedDate").textContent ) {
+				rowPending = true;
+				break;
+			}
+		}
+		if (!rowPending) {
+			return false;
 		}
 	}
 	var teacherDropdown = document.getElementById("teacherDropdown").value;
