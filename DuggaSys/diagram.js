@@ -6375,12 +6375,14 @@ function initRulers() {
         toggleRulers();
     }
 
+    //Code below here makes it possible to drag out new guidelines from a ruler
     const rulerX = document.getElementById("ruler-x");
     const rulerY = document.getElementById("ruler-y");
     const diagramCanvasContainer = document.getElementById("diagram-canvas-container");
     let mouseDownRulerX = false;
     let mouseDownRulerY = false;
 
+    //Event handler for when the mouse reaches over the canvas container after mouse down on ruler
     function mouseOverHandler() {
         document.body.classList.add("noselect");
         if(mouseDownRulerX) {
@@ -6394,6 +6396,7 @@ function initRulers() {
         diagramCanvasContainer.removeEventListener("mouseover", mouseOverHandler);
     }
 
+    //Event handler for mouse up anywhere on the screen after mouse down on ruler
     function mouseUpHandler() {
         mouseDownRulerX = false;
         mouseDownRulerY = false;
@@ -6414,8 +6417,11 @@ function initRulers() {
     });
 }
 
-let guidelines = [];
-let isGuidelinesLocked = false;
+let guidelines = []; //Stores all active guideline objects
+
+//-------------------------------------------------------------------------------------------------------------------------------------------
+// initGuidelines: Gets all guideline objects from local storage and creates instances of the Guideline class based on values in each object.
+//-------------------------------------------------------------------------------------------------------------------------------------------
 
 function initGuidelines() {
     let tempGuidelines = localStorage.getItem("guidelines");
@@ -6428,6 +6434,10 @@ function initGuidelines() {
     }
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+// saveGuidelinesToLocalStorage: Gets all required properties from each guideline object, stringifies the whole new array and saves it in localstorage. 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+
 function saveGuidelinesToLocalStorage() {
     const localStorageGuidelines = guidelines.reduce((result, guideline) => {
         return [...result, guideline.exportToLocalStorage()];
@@ -6436,17 +6446,29 @@ function saveGuidelinesToLocalStorage() {
     localStorage.setItem("guidelines", JSON.stringify(localStorageGuidelines));
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------------------
+// addGuideline: Adds passed guideline instance to the array of guideline objects, saves guidelines to local storage and returns the guideline instance.
+//------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function addGuideline(guideline) {
     guidelines.push(guideline);
     saveGuidelinesToLocalStorage();
     return guideline;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+// deleteGuidelines: Deletes all guideline HTML-elements and empties the array of guideline objects and saves the emptied array to local storage.
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+
 function deleteGuidelines() {
     guidelines.forEach(guideline => guideline.element.remove());
     guidelines.splice(0, guidelines.length);
     saveGuidelinesToLocalStorage();
 }
+
+//---------------------------------------------------------------------------------------------------------------------
+// lockOrUnlockGuidelines: Locks all active guidelines if passing true. Unlocks all active guidelines if passing false.
+//---------------------------------------------------------------------------------------------------------------------
 
 function lockOrUnlockGuidelines(isLocked = true) {
     guidelines.forEach(guideline => {
