@@ -6371,6 +6371,7 @@ function setIsRulersActiveOnRefresh() {
 }
 
 let guidelines = [];
+let isGuidelinesLocked = false;
 
 function addGuideline(guideline) {
     guidelines.push(guideline);
@@ -6387,6 +6388,7 @@ class Guideline {
     constructor(axis, position) {
         this.axis = axis;
         this.position = position;
+        this.isLocked = false;
         this.container = document.getElementById("diagram-guideline-container");
         this.element = null;
         this.createGuideline();
@@ -6406,10 +6408,22 @@ class Guideline {
 
         this.container.appendChild(this.element);
 
+        this.element.addEventListener("mouseover", () => this.mouseOver());
         this.element.addEventListener("mousedown", e => this.mouseDown(e));
     }
 
+    mouseOver() {
+        if(this.isLocked) return;
+        if(this.axis === 'x') {
+            this.element.style.cursor = "row-resize";
+        } else if(this.axis === 'y') {
+            this.element.style.cursor = "col-resize";
+        }
+    }
+
     mouseDown(e) {
+        if(this.isLocked) return;
+
         this.element.classList.add("moving");
         this.container.style.pointerEvents = "all";
         this.container.parentElement.parentElement.classList.add("noselect")

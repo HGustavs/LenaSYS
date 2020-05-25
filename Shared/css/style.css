@@ -5962,13 +5962,11 @@ only screen and (max-device-width: 320px) {
 .guideline-x {
   height: 3px;
   width: 100%;
-  cursor: row-resize;
 }
 
 .guideline-y {
   height: 100%;
   width: 3px;
-  cursor: col-resize;
 }
 
 /* --------------================################================-------------- *
