@@ -6373,6 +6373,7 @@ function setIsRulersActiveOnRefresh() {
 function createGuideline(axis = 'x', position = 0) {
     const container = document.getElementById("diagram-guidelines-container")
     const guideline = document.createElement("div");
+    let startPosition = 0;
 
     guideline.classList.add("guideline");
     if(axis === 'x') {
@@ -6382,9 +6383,6 @@ function createGuideline(axis = 'x', position = 0) {
         guideline.classList.add("guideline-y");
         guideline.style.left = position;
     }
-
-    let startPosition = 0;
-    let movePosition = 0;
 
     function mouseDownHandler(e) {
         guideline.classList.add("moving");
@@ -6405,11 +6403,11 @@ function createGuideline(axis = 'x', position = 0) {
     function mouseMoveHandler(e) {
         if(guideline.classList.contains("moving")) {
             if(axis === 'x') {
-                movePosition = startPosition - e.clientY;
+                const movePosition = startPosition - e.clientY;
                 startPosition = e.clientY;
                 guideline.style.top = `${guideline.offsetTop - movePosition}px`;
             } else if(axis === 'y') {
-                movePosition = startPosition - e.clientX;
+                const movePosition = startPosition - e.clientX;
                 startPosition = e.clientX;
                 guideline.style.left = `${guideline.offsetLeft - movePosition}px`;
             }
@@ -6420,6 +6418,16 @@ function createGuideline(axis = 'x', position = 0) {
         guideline.classList.remove("moving");
         container.style.pointerEvents = "none";
         container.style.cursor = "default";
+
+        if(axis === 'x') {
+            if(guideline.offsetTop < 0 || guideline.offsetTop > container.offsetHeight) {
+                guideline.remove();
+            }
+        } else if(axis === 'y') {
+            if(guideline.offsetLeft < 0 || guideline.offsetLeft > container.offsetWidth) {
+                guideline.remove();
+            }
+        }
 
         document.removeEventListener("mousemove", mouseMoveHandler);
         document.removeEventListener("mouseup", mouseUpHandler);

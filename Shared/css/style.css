@@ -5950,6 +5950,7 @@ only screen and (max-device-width: 320px) {
   bottom: 1px;
   left: 1px;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .guideline {
