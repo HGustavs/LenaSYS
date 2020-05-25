@@ -6121,6 +6121,7 @@ only screen and (max-device-width: 320px) {
   border: solid black;
   border-width: 0 6px 6px 0;
   display: inline-block;
+  opacity: 0.5;
   padding: 6px;
 }
  
@@ -6131,11 +6132,13 @@ only screen and (max-device-width: 320px) {
  
 .tooltiptextScroll {
   visibility: hidden;
-  width: 100px;
+  width: 70px;
   background-color: black;
   color: #fff;
   text-align: center;
   border-radius: 6px;
+  font-size: 12px;
+  opacity: 0.3;
   bottom: 56px;
   right: 140px;
   position: fixed;
@@ -6144,6 +6147,7 @@ only screen and (max-device-width: 320px) {
  
 .fixedScroll:hover .tooltiptextScroll {
   visibility: visible;
+}
 
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
