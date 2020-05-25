@@ -523,7 +523,7 @@ function serviceAvgDuration() {
 				)
 				WHERE service=subService
 			) AS avgDuration
-		FROM serviceLogEntries;
+		FROM serviceLogEntries WHERE avgDuration IS NOT NULL;
 	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
