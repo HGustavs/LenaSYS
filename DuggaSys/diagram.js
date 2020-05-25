@@ -6396,7 +6396,9 @@ function updateTimeline() {
     const timelineElement = document.getElementById("diagram-timeline");
 
     timelineElement.innerHTML = "";
-    for(let i = 0; i < diagramChanges.indexes.stack.length; i++) {
+
+    //Start at -1 to also include one part for original empty diagram
+    for(let i = -1; i < diagramChanges.indexes.stack.length; i++) {
         const part = document.createElement("div");
         part.classList.add("diagram-timeline-part");
         if(i <= diagramChanges.indexes.current) {
@@ -6442,7 +6444,7 @@ function timelineMouseLeave() {
 //------------------------------------------------------------------------------------------------------------------
 
 function timelineClick(e) {
-    const clickedPartIndex = getElementIndexInParent(e.target);
+    const clickedPartIndex = getElementIndexInParent(e.target) - 1; // -1 to take part representing original empty diagram into consideration
     diagramChanges.indexes.current = clickedPartIndex;
     saveDiagramChangesToLocalStorage();
     Load();
