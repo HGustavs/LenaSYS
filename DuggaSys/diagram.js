@@ -6388,11 +6388,14 @@ function createGuideline(axis = 'x', position = 0) {
 
     function mouseDownHandler(e) {
         guideline.classList.add("moving");
+        container.style.pointerEvents = "all";
 
         if(axis === 'x') {
             startPosition = e.clientY;
+            container.style.cursor = "row-resize";
         } else if(axis === 'y') {
             startPosition = e.clientX;
+            container.style.cursor = "col-resize";
         }
 
         document.addEventListener("mousemove", mouseMoveHandler);
@@ -6405,18 +6408,19 @@ function createGuideline(axis = 'x', position = 0) {
                 movePosition = startPosition - e.clientY;
                 startPosition = e.clientY;
                 guideline.style.top = `${guideline.offsetTop - movePosition}px`;
-                container.style.cursor = "row-resize";
             } else if(axis === 'y') {
                 movePosition = startPosition - e.clientX;
                 startPosition = e.clientX;
                 guideline.style.left = `${guideline.offsetLeft - movePosition}px`;
-                container.style.cursor = "column-resize";
             }
         }
     }
 
-    function mouseUpHandler(e) {
+    function mouseUpHandler() {
         guideline.classList.remove("moving");
+        container.style.pointerEvents = "none";
+        container.style.cursor = "default";
+
         document.removeEventListener("mousemove", mouseMoveHandler);
         document.removeEventListener("mouseup", mouseUpHandler);
     }
