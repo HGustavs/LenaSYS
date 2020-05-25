@@ -5824,6 +5824,7 @@ only screen and (max-device-width: 320px) {
 .ruler-extra-lines .mouse-line,
 .ruler-extra-lines .point-line {
   position: absolute;
+  pointer-events: none;
 }
 
 .ruler-extra-lines .mouse-line {
