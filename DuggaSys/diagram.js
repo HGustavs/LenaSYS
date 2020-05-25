@@ -1495,10 +1495,10 @@ diagram.sortConnectors = function() {
 
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml || diagram[i].symbolkind == symbolKind.line || diagram[i].symbolkind == symbolKind.umlLine) {
-            if(!diagram[i].manualLine){
-                if(diagram[i].quadrants(diagram[i].symbolkind)) /*break*/;
-            }
+        if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
+            
+                if(diagram[i].quadrants(diagram[i].symbolkind, diagram[i].getConnectedLines())) /*break*/;
+            
         }
     }
 }
