@@ -656,7 +656,6 @@ p {
   position: relative;
   top: 2px;
 }
-
 /*End of announcement box*/
 
 #Sectionlist {
@@ -1231,6 +1230,11 @@ div .navButt:hover {
   width: 50px;
   vertical-align: middle;
   text-align: center;
+}
+@media only screen and (max-width: 342px) {
+  #loginbutton {
+    width: 35px;
+  }
 }
 
 #div2 {
@@ -4904,41 +4908,43 @@ only screen and (max-device-width: 530px) {
     display: none;
   }
 
-  /*
+  
 
   #searchBarMobile,
   #searchbuttonMobile {
     width: 24px;
-    height: 22px;
+    height: 26px;
     margin-top: 10px;
   }
 
   #searchBarMobile {
     padding-left: 5px;
     display: inline-flex;
-    height: 22px;
+    height: 26px;
     border-radius: 5px;
     float: left;
   }
 
   #searchinputMobile {
-    border: 1px solid var(--color-border);
     border-radius: 0;
-    font-size: 14px;
+    border: 2px solid var(--color-border-2);
+    font-size: 16px;
+    padding-left: 5px;
   }
 
   #searchbuttonMobile {
     margin: 0;
   }
 
-  */
+  
 
   #tooltip-mobile {
-    border: 1px solid var(--color-border);
+    border: 2px solid var(--color-border-2);
     font-size: 17px;
     padding: 0px 5px;
     border-right-width: 0px;
     width: 100px;
+    border-radius: 4px 0px 0px 4px;
   }
 
 /*
@@ -7086,7 +7092,7 @@ textarea#filecont {
   display: none;
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 453px) {
 
   header #versionPlus{
     display: none;
@@ -7100,6 +7106,10 @@ textarea#filecont {
     display: none;
   }
 
+  header #accessBTN img{
+    width: 20px;
+  }
+
   .navheader {
     height: 20px;
     margin-bottom: 10px;
@@ -7110,6 +7120,17 @@ textarea#filecont {
     margin-right: 0px;
   }
 }
+
+@media only screen and (max-width: 339px) {
+  .navheader .course-dropdown{
+    height: 20px;
+    width: 120px;
+  }
+  .navName{
+    width: 0px;
+  }
+}
+
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
   width: 100%;

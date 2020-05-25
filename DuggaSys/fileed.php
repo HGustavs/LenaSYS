@@ -50,6 +50,13 @@ $codeLinkQuery->execute();
 	<!-- content START -->
     <div id="content">
         <div id='searchBarMobile' style='margin-bottom:15px;'>
+        <div id='tooltip-mobile' class="tooltip-searchbar">
+					<div class="tooltip-searchbar-box">
+                            <b>Keywords:</b> File name, File type <br> 
+                            <b>Ex:</b> html, example1
+					</div>
+					<span>?</span>
+				</div>
             <input id='searchinputMobile' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);fileLink.reRender();document.getElementById("searchinput").value=document.getElementById("searchinputMobile").value;'/>
 
             <button id='searchbuttonMobile' class='switchContent' onclick='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);fileLink.reRender();' type='button'>
