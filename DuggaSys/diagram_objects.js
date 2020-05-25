@@ -2744,11 +2744,7 @@ function checkUMLLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY
                 // if we cast these lines infinitely in both directions, they intersect here:
                 result.x = line1StartX + (a * (line1EndX - line1StartX));
                 result.y = line1StartY + (a * (line1EndY - line1StartY));
-                    /*
-                    // it is worth noting that this should be the same as:
-                    x = line2StartX + (b * (line2EndX - line2StartX));
-                    y = line2StartX + (b * (line2EndY - line2StartY));
-                    */
+
                 // if line1 is a segment and line2 is infinite, they intersect if:
                 if (a > 0 && a < 1) {
                     result.onLine1 = true;
@@ -2760,13 +2756,13 @@ function checkUMLLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY
                 // if line1 and line2 are segments, they intersect if both of the above are true
                 
                 
-            
+                console.log(result)
                 // if line1 and line2 are segments, they intersect if both of the above are true
                 if(result.onLine1 == true	&&	result.onLine2	==	true){
                     var m1 = (line1EndY - line1StartY) / (line1EndX-line1StartX);
                     var m2 = (line2EndY - line2StartY) / (line2EndX-line2StartX);
                     
-                    drawLineJump(result.x,result.y, m1, m2);
+                    drawUmlJump(result.x,result.y);
                 }
             }
        }
@@ -2777,10 +2773,22 @@ function checkUMLLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY
 //The function responceble to draw the line jump
 //-----------------------------------------------
 function drawLineJump(positionX, positionY, mOfLine1, mOfLine2){
-	var angelOfIntersection = Math.atan((mOfLine1 - mOfLine2)/(1+mOfLine1*mOfLine2));
+   
+    var angelOfIntersection = Math.atan((mOfLine1 - mOfLine2)/(1+mOfLine1*mOfLine2));
+    console.log(positionX, positionY,angelOfIntersection);
 	if(angelOfIntersection > 0){
 		ctx.beginPath();
 		ctx.arc(positionX,positionY,5*zoomValue,angelOfIntersection+(0.5*Math.PI),angelOfIntersection+(1.5*Math.PI));
+		ctx.closePath();
+		ctx.stroke();
+    }
+}
+function drawUmlJump(positionX, positionY){
+    var angelOfIntersection = 90;
+    console.log(positionX, positionY,angelOfIntersection);
+	if(angelOfIntersection > 0){
+		ctx.beginPath();
+		ctx.arc(positionX,positionY,5*zoomValue,startAngle = 1 * Math.PI, endAngle = 2 * Math.PI);
 		ctx.closePath();
 		ctx.stroke();
  }
