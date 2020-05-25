@@ -61,15 +61,13 @@ CREATE TABLE course_req(
 	FOREIGN KEY (req_cid) REFERENCES course(cid)
 );
 
-
  -- This table represents a many-to-many relation between users and courses. That is, */
  -- tuple in this table joins a lenasys_user with a course. */
- 
 CREATE TABLE user_course(
 	uid						INT  NOT NULL,
 	cid						INT  NOT NULL,
 	result 					NUMERIC(2,1) DEFAULT 0.0,
-	modified 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- ON UPDATE CURRENT_TIMESTAMP */
+	modified 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	creator 				INTEGER,
 	access					VARCHAR(10) NOT NULL,
 	period					INTEGER DEFAULT 1,
@@ -87,6 +85,7 @@ CREATE TABLE user_course(
 	FOREIGN KEY (cid) REFERENCES course (cid)
 );
 
+
 CREATE TABLE listentries (
 	lid 					SERIAL,
 	cid 					INT  NOT NULL,
@@ -95,7 +94,7 @@ CREATE TABLE listentries (
 	kind 					INT ,
 	pos 					INT,
 	creator 				INT  NOT NULL,
-	ts						TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- ON UPDATE current_timestamp, */
+	modified				TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	code_id 				INTEGER  NULL DEFAULT NULL,
 	visible 				SMALLINT  NOT NULL DEFAULT 0,
 	vers					VARCHAR(8),
@@ -113,6 +112,7 @@ CREATE TABLE listentries (
 	FOREIGN KEY (creator) REFERENCES lenasys_user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid)REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+
 -- Quiz tables */
 CREATE TABLE quiz (
 	id						SERIAL,
@@ -123,7 +123,7 @@ CREATE TABLE quiz (
 	quizFile 				VARCHAR(255) NOT NULL DEFAULT 'default',
 	qrelease 				TIMESTAMP WITHOUT TIME ZONE,
 	deadline 				TIMESTAMP WITHOUT TIME ZONE,
-	modified 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- ON UPDATE CURRENT_TIMESTAMP, */
+	modified 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	creator 				INTEGER,
 	vers					VARCHAR(8),
     qstart					DATE,
@@ -142,12 +142,13 @@ CREATE TABLE variant(
 	quizID					INT, -- (11)*/
 	param					VARCHAR(8126),
 	variantanswer			VARCHAR(8126),
-	modified 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- ON UPDATE CURRENT_TIMESTAMP, */
+	modified 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	creator 				INTEGER,
 	disabled				SMALLINT DEFAULT 0,
 	PRIMARY KEY 			(vid),
 	FOREIGN KEY (quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
 
 CREATE TABLE userAnswer (
 	aid						SERIAL,
@@ -200,11 +201,12 @@ CREATE TABLE vers(
 	coursenamealt			VARCHAR(45) NOT NULL,
 	startdate     			TIMESTAMP WITHOUT TIME ZONE,
 	enddate       			TIMESTAMP WITHOUT TIME ZONE,
-	updated					TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- ON UPDATE CURRENT_TIMESTAMP, */
+	modified				TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	motd					VARCHAR(50),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	PRIMARY KEY (cid,vers)
 );
+
 
 CREATE TABLE fileLink(
 	fileid					SERIAL,
@@ -246,7 +248,7 @@ CREATE TABLE codeexample(
 	runlink		 			VARCHAR(256),
 	cversion				INTEGER,
 	public 					SMALLINT  NOT NULL DEFAULT 0,
-	updated 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP , -- ON UPDATE CURRENT_TIMESTAMP, */
+	modified 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
 	uid						INT  NOT NULL,
 	templateid				INTEGER  NOT NULL DEFAULT '0',
 	PRIMARY KEY (exampleid),
@@ -254,6 +256,7 @@ CREATE TABLE codeexample(
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
 	FOREIGN KEY (templateid) REFERENCES template (templateid)
 );
+
 
 -- Table structure for sequence, holding the sequence order of a specific example sequence */
 CREATE TABLE sequence (
@@ -267,7 +270,7 @@ CREATE TABLE sequence (
 CREATE TABLE wordlist(
 	wordlistid				SERIAL,
 	wordlistname			VARCHAR(24),
-	updated 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP , -- ON UPDATE CURRENT_TIMESTAMP, */
+	modified 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
 	uid						INT  NOT NULL,
 	PRIMARY KEY (wordlistid),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
@@ -292,12 +295,13 @@ CREATE TABLE word(
 	wordlistid				INTEGER  NOT NULL,
 	word 					VARCHAR(64),
 	label					VARCHAR(256),
-	updated 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP , -- ON UPDATE CURRENT_TIMESTAMP, */
+	modified 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
 	uid						INT  NOT NULL,
 	PRIMARY KEY (wordid, wordlistid),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
 	FOREIGN KEY (wordlistid) REFERENCES wordlist(wordlistid)
 ) ;
+
 
 -- boxes with information in a certain example  */
 CREATE TABLE box(
@@ -322,12 +326,13 @@ CREATE TABLE improw(
 	istart					INTEGER,
 	iend					INTEGER,
 	irowdesc				VARCHAR(1024),
-	updated					TIMESTAMP DEFAULT CURRENT_TIMESTAMP , -- ON UPDATE CURRENT_TIMESTAMP, */
+	modified				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
 	uid						INT  NOT NULL,
 	PRIMARY KEY (impid, exampleid, boxid),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid),
 	FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
 );
+
 
 -- Wordlist contains a list of important words for a certain code example */ 
 CREATE TABLE impwordlist(
@@ -335,12 +340,13 @@ CREATE TABLE impwordlist(
 	exampleid				INTEGER  NOT NULL,
 	word 					VARCHAR(64),
 	label					VARCHAR(256),
-	UPDATED 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP , -- ON UPDATE CURRENT_TIMESTAMP, */
+	modified 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
 	uid						INTEGER  NOT NULL,
 	PRIMARY KEY (wordid),
 	FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 	FOREIGN KEY (uid) REFERENCES lenasys_user (uid)
 );
+
 
 CREATE TABLE submission(
 	subid					SERIAL,
@@ -567,6 +573,30 @@ END;
  
 DELIMITER ;
 
+--Function for updating timestamps, used by triggers */
+DELIMITER //
+
+CREATE OR REPLACE FUNCTION update_timeStamp()
+RETURNS TRIGGER AS $$
+
+BEGIN
+NEW.modified = NOW();
+RETURN NEW;
+END;
+
+DELIMITER;
+
+--Triggers for each table that needs a updated timestamp for whenever they are modified */
+CREATE TRIGGER update_wordlist_timestamp BEFORE UPDATE ON wordlist FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
+CREATE TRIGGER update_user_course_timestamp BEFORE UPDATE ON user_course FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
+CREATE TRIGGER update_listentries_timestamp BEFORE UPDATE ON listentries FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
+CREATE TRIGGER update_quiz_timestamp BEFORE UPDATE ON quiz FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
+CREATE TRIGGER update_variant_timestamp BEFORE UPDATE ON variant FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
+CREATE TRIGGER update_vers_timestamp BEFORE UPDATE ON vers FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
+CREATE TRIGGER update_codeexample_timestamp BEFORE UPDATE ON codeexample FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
+CREATE TRIGGER update_word_timestamp BEFORE UPDATE ON word FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
+CREATE TRIGGER update_improw_timestamp BEFORE UPDATE ON improw FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
+CREATE TRIGGER update_impwordlist_timestamp BEFORE UPDATE ON impwordlist FOR EACH ROW EXECUTE PROCEDURE update_timeStamp();
 
 INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','1',1);
 INSERT INTO lenasys_groups(groupKind,groupVal,groupInt) VALUES ('No','2',2);
