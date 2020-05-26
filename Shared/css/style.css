@@ -7223,6 +7223,7 @@ textarea#filecont {
 
 .hamburgerList li a{
   font-size: 24px;
+  line-height: 50px;
 }
 
 @media only screen and (min-width: 801px) {
