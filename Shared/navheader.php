@@ -473,7 +473,7 @@ function mouseOverSearchInput() {
 
 
 /*Toggle the hamburger list containing the icons to appear*/
-$('#ham').click(function(){	
+$('#hamburger').click(function(){	
 	var isAnimating = $("#hamburgerList").is(':animated');
 	if(isAnimating == false){
 		$('#hamburgerList').slideToggle(500, function(){
