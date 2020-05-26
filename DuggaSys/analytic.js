@@ -812,6 +812,12 @@ function loadPageInformation() {
     updateState();
 }
 
+var hasCounter;
+var rowCount;
+var nameCount;
+var pageCount;
+var counterFirstLoad = true;
+
 function loadUserInformation(){
 	localStorage.setItem('analyticsPage', 'userInformation');
 	resetAnalyticsChart();
@@ -834,6 +840,7 @@ function loadUserInformation(){
  
  
     function updateSectionedInformation(){
+		hasCounter = true;
         loadAnalytics("sectionedInformation", function(data) {
             var users = {};
             $.each(data, function(i, row) {
@@ -891,6 +898,7 @@ function loadUserInformation(){
 	}
 	
 	function updateCourseedInformation(){
+		hasCounter = true;
         loadAnalytics("courseedInformation", function(data) {
 			var users = {};
             $.each(data, function(i, row) {
@@ -926,6 +934,7 @@ function loadUserInformation(){
     }
  
     function updateCodeviewerInformation(){
+		hasCounter = true;
 		var users = {};
         loadAnalytics("codeviewerInformation", function(data) {
             $.each(data, function(i, row) {
@@ -951,6 +960,7 @@ function loadUserInformation(){
 	
 
     function updateDuggaInformation(){
+		hasCounter = true;
 		var users = {};
         loadAnalytics("duggaInformation", function(data) {
             $.each(data, function(i, row) {
@@ -1134,6 +1144,7 @@ function loadUserInformation(){
             if (users.hasOwnProperty(user)) {
 				if(localStorage.getItem('analyticsLastUser') == user) {
 					userSelect.append('<option value="' + user + '" selected>' + user + '</option>');
+					nameCount = user;
 				} else {
 					userSelect.append('<option value="' + user + '">' + user + '</option>');
 				}
@@ -1187,16 +1198,20 @@ function loadUserInformation(){
         selectPage.change(function(){
             switch(selectPage.val()){
                 case "sectioned":
-                    updateSectionedInformation();
+					updateSectionedInformation();
+					pageCount = "sectioned.php";
                     break;
                 case "courseed":
-                    updateCourseedInformation();
+					updateCourseedInformation();
+					pageCount = "courseed.php";
 					break;
 				case "showDugga":
 					updateDuggaInformation();
+					pageCount = "showdugga.php";
 					break;
 				case "codeviewer":
 					updateCodeviewerInformation();
+					pageCount = "codeviewer.php";
 					break;
 				case "events":
 					updateUserLogInformation();
@@ -1428,6 +1443,7 @@ function drawPieChart(data, title = null, multirow = false) {
 }
 
 function renderTable(data) {
+	rowCount = 0;
 	if (!$.isArray(data)) return;
 
 	var str = '<table class="list rows">';
@@ -1446,11 +1462,22 @@ function renderTable(data) {
 			$.each(row, function(j, col) {
 				str += "<td>" + col + "</td>";
 			});
-			str += "</tr>"
+			str += "</tr>";
+			rowCount++;
 		});
 	}
 	str += "</tbody></table>";
+	if(hasCounter == true && counterFirstLoad == false){
+		updateCounter(rowCount, nameCount, pageCount);
+	}
+	counterFirstLoad = false;
 	return str;
+}
+
+function updateCounter(count, user, page)
+{
+	$('#analytic-info').append("<p>" + page + " has been loaded " + count + " times by " + user + "! </p>");
+	hasCounter = false;
 }
 
 function drawLineChart(data) {
