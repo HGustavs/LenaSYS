@@ -1627,7 +1627,15 @@ function Symbol(kindOfSymbol) {
     }
 
     // This function is run when an entity is set to weak. Sets the lines to be forced if possible.
-    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2) {
+    this.setLinesConnectedToRelationsToForced = function() {
+        const connectedLines = this.getConnectedLines();
+        connectedLines.forEach(line => {
+            const connectedObjects = line.getConnectedObjects();
+            const isConnectedToRelation = connectedObjects.some(object => object.symbolkind === symbolKind.erRelation);
+        });
+        
+        return;
+
         var relationMidPoints = [];
         var relationMidYPoints = [];
         var relationMidXPoints = [];
@@ -1763,7 +1771,7 @@ function Symbol(kindOfSymbol) {
 		
         if (this.properties['key_type'] == "Weak") {
             this.drawWeakEntity(x1, y1, x2, y2);
-            setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
+            this.setLinesConnectedToRelationsToForced();
         } else {
             removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2);
 		}
