@@ -425,7 +425,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 		$cvisibility=false;
 		if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-				if($isSuperUserVar||$row['visibility']==1||($row['visibility']==2&&($hasread||$haswrite))||($row['visibility']==0&&$haswrite)) $cvisibility=true;
+				if($isSuperUserVar||$row['visibility']==1||($row['visibility']==2&&($hasread||$haswrite))||($row['visibility']==0&&($haswrite==true||$studentTeacher==true))) $cvisibility=true;
 		}
 
 		$ha = (checklogin() && ($haswrite || $isSuperUserVar));
@@ -555,7 +555,7 @@ if($gradesys=="UNK") $gradesys=0;
 			}
 
 			foreach($query->fetchAll() as $row) {
-				if($isSuperUserVar||$row['visible']==1||($row['visible']==2&&($hasread||$haswrite))||($row['visible']==0&&$haswrite==true)){
+				if($isSuperUserVar||$row['visible']==1||($row['visible']==2&&($hasread||$haswrite))||($row['visible']==0&&($haswrite==true||$studentTeacher==true))){
 						array_push(
 							$entries,
 							array(
