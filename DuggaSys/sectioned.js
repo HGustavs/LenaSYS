@@ -339,8 +339,8 @@ function createFABItem(kind, itemtitle) {
   if (kind == 2) {
     openCodeDialog();
   } else if (kind >= 0 && kind <= 7) {
-    // selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", "undefined", "undefined", "undefined",0 , null);
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "undefined", "undefined", "undefined", "undefined", "undefined", "undefined", 1, "Hello World")
+    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment, "undefined", "undefined",0 , null);
+
     newItem();
   }
 }
@@ -471,11 +471,8 @@ function prepareItem() {
     param.feedback = 1;
     param.feedbackquestion = $("#fdbckque").val();
   } else{
-    // param.feedback = 0;
-    // param.feedbackquestion = null;
-
-    param.feedback = 1;
-    param.feedbackquestion = "Do you like eggs?";
+    param.feedback = 0;
+    param.feedbackquestion = null;
   }
 
   if(param.comments == "TOP"){
@@ -484,9 +481,6 @@ function prepareItem() {
   else{
     param.pos = "100";
   }
-
-  console.log(param);
-  
 
   return param;
 }
