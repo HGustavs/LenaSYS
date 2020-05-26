@@ -6056,10 +6056,10 @@ function getcorrectlayer(){
 //----------------------------------------------------------------------------------------
 function deleteLayerView(){
 
-    let parentNode = document.getElementById("viewLayer");
-    let spans = parentNode.getElementsByTagName('span');
+    let parentNodes = document.getElementById("viewLayer");
+    let spans = parentNodes.getElementsByTagName('span');
     let deleteArray = []
-
+    showLayer = removeDuplicatesInArray(showLayer);
     //Loops through Diagram and adds any object that exist with a layer that are targeted for deletion 
     for(let i = 0;i < diagram.length;i++){
         if(showLayer.indexOf(diagram[i].properties.setLayer) !== -1){
@@ -6095,12 +6095,14 @@ function deleteLayerActive(){
     const spans = parentNode.getElementsByTagName('span');
     let saveIndex;                                  // used for deleteing corresponding layer in view layer drop-down
     let deleteArray = []
+    showLayer = removeDuplicatesInArray(showLayer);
     if(spans.length > 1){
         for(let i = 0; i < spans.length;i++){
             if(spans[i].classList.contains("isActive")){
                 let deleteLayer = spans[i].parentNode;
                 saveIndex = spans[i].id.replace('_Active','');
                 deleteLayer.parentNode.removeChild(deleteLayer);
+                showLayer.splice(saveIndex);
             }
         }
         for(let i = 0;i < diagram.length;i++){
@@ -6112,14 +6114,22 @@ function deleteLayerActive(){
             diagram.deleteObject(deleteArray[i]);
         }
         const elem = document.getElementById(saveIndex);
-        elem.parentNode.removeChild(elem);
+        const elemParent = elem.parentNode;
+        elemParent.parentNode.removeChild(elemParent);
         fixviewLayer();
         fixActiveLayer()
         SaveState()
         setlayer(spans[0]);
         toggleActiveBackgroundLayer(spans[0])
     }
+}
 
+function removeDuplicatesInArray(Array){
+    let uniquelayer = [];
+    $.each(Array, function(i, el){
+        if($.inArray(el, uniquelayer) === -1) uniquelayer.push(el);
+    });
+    return uniquelayer;
 }
 //----------------------------------------------------------------------------------------
 // fixviewLayer: Corrects viewlayer after layers been deleted.
@@ -6138,6 +6148,13 @@ function fixviewLayer(){
             }
         }
         correctSpan.id = "Layer_" + i;
+    }
+    for(let i = 0; i < spans.length; i++){
+        if(spans[i].classList.contains("isActive")){
+            if(!showLayer.includes(spans[i].id)){
+                showLayer.push(spans[i].id);
+            }
+        }
     }
 }
 //----------------------------------------------------------------------------------------
@@ -6158,6 +6175,15 @@ function fixActiveLayer(){
             }
         }
         correctSpan.id = "Layer_" + i +"_Active";
+    }
+    if ($(".isActive").length == 0){                //used for activating layer_1 if there no active layers
+        showLayer = ["Layer_1"]
+        writeToLayer = ["Layer_1"]
+        
+        let sendingToStorage = JSON.stringify(showLayer);
+        localStorage.setItem("activeLayers", sendingToStorage);
+        localStorage.setItem("writeToActiveLayers", "Layer_1_Active");
+        toggleActiveBackgroundLayer(document.getElementById("Layer_1_Active"));
     }
 }
 //----------------------------------------------------------------------------------------
