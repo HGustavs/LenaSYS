@@ -1051,7 +1051,7 @@ function loadUserInformation(){
 							row.username,
 							row.eventType,
 							row.description,
-							new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString(),
+							row.timestamp,
 							event
 						]);
 						updateState(users);
