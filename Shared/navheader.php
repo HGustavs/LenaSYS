@@ -470,17 +470,26 @@ function mouseOverSearchInput() {
 	obj.removeAttribute('readonly');
    }
 }
-/*Toggle hamburger list*/
-$(document).ready(function(){
-$("#hamburger").click(function(){
-  $("#hamburgerList").slideToggle();
-});
-});
+
+
+$('#ham').click(function(){
+    // Give the element the class "inactive" when it's 
+	
+	var isAnimating = $("#hamburgerList").is(':animated');
+	console.log(isAnimating);
+	if(isAnimating == false){
+		$('#hamburgerList').slideToggle(500, function(){
+		});
+	}
+})
 
 /*Toggle the hamburger menu into an X*/
 function hamburgerToggle() {
-  var x= document.getElementById("ham")
-  x.classList.toggle("change");
+	var isAnimating = $("#hamburgerList").is(':animated');
+	if(isAnimating == false){
+		var x= document.getElementById("ham")
+		x.classList.toggle("change");
+	}
 }
 
 </script>
