@@ -745,8 +745,8 @@ function updateAndCloseGroupDropdown(checkboxes){
 	var str = "", readStr = "<span>";
 	for (i = 0; i < checkboxes.childNodes.length; i++) {
 		if (checkboxes.childNodes[i].childNodes[0].checked) {
-			str += checkboxes.childNodes[i].childNodes[0].value + " ";
-			readStr += checkboxes.childNodes[i].childNodes[0].value.substr(3) + " ";
+			str += checkboxes.childNodes[i].childNodes[0].value;
+			readStr += checkboxes.childNodes[i].childNodes[0].value.substr(3);
 		}
 	}
 	if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
