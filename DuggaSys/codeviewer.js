@@ -2405,7 +2405,7 @@ function minimizeBoxes(boxid)
 	}
 
     //for template 5
-    if(templateid == 5 && isMobile == false){
+    if(templateid == 5){
         if(boxid == 1 || boxid == 3){
 			document.querySelector(boxValArray['box' + (boxid + 1)]['id']).style.width = "100%";
 			document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
