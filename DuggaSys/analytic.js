@@ -830,6 +830,7 @@ function loadUserInformation(){
 	var selectPage = $("<select></select>")
     .append('<option value="sectioned" selected>sectioned</option>')
 		.append('<option value="courseed">courseed</option>')
+        .append('<option value="fileed">fileed</option>')
 		.append('<option value="showDugga" selected>showDugga</option>')
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="events">events</option>')
@@ -1135,6 +1136,45 @@ function loadUserInformation(){
 			updateState(users);	
 		});
 	}
+ 
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for fileed
+//------------------------------------------------------------------------------------------------
+ 	function updateFileedInformation(){
+		hasCounter = true;
+        loadAnalytics("fileedInformation", function(data) {
+			var users = {};
+            $.each(data, function(i, row) {
+				var user = row.username;
+				var pageParts;
+				var pageLoad;
+
+				//Retrives the page 
+				if(row.refer.includes("/DuggaSys/")){
+					pageParts = row.refer.split("/DuggaSys/");
+					pageLoad = pageParts[1];
+
+					if(pageLoad.includes("?")){
+						pageParts = pageParts[1].split("?");
+						pageLoad = pageParts[0];
+					}
+				}
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Event", "Timestamp"]];
+				}
+				if(pageLoad != undefined) {
+					users[user].push([
+						row.uid,
+						row.username,
+						pageLoad,
+						row.timestamp
+					]);
+				}
+            });
+            updateState(users);
+        });
+    }
 
    
     function updateState(users){
@@ -1197,6 +1237,10 @@ function loadUserInformation(){
 		} 
         selectPage.change(function(){
             switch(selectPage.val()){
+                /*case "resulted":
+					updateCourseedInformation();
+					pageCount = "resulted.php";
+					break;*/
                 case "sectioned":
 					updateSectionedInformation();
 					pageCount = "sectioned.php";
@@ -1204,6 +1248,10 @@ function loadUserInformation(){
                 case "courseed":
 					updateCourseedInformation();
 					pageCount = "courseed.php";
+					break;
+                case "fileed":
+					updateFileedInformation();
+					pageCount = "fileed.php";
 					break;
 				case "showDugga":
 					updateDuggaInformation();
@@ -1219,10 +1267,10 @@ function loadUserInformation(){
 				case "fileEvents":
 					updatefileEvents();
 					break;
-        case "course":
-          updateCourseInformation();
-          break;
-        case "loginFail":
+                case "course":
+                    updateCourseInformation();
+                    break;
+                case "loginFail":
 					updateloginFail();
 					break;
             }
