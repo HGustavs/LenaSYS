@@ -599,21 +599,6 @@ function saveDuggaResult(citstr)
 }
 
 //----------------------------------------------------------------------------------
-// savequizResult: Saves the result of a quiz
-//----------------------------------------------------------------------------------
-
-function savequizResult(citstr, variant)
-{
-	citstr= variant+" "+citstr;
-	citstr=querystring['moment']+" "+citstr;
-	citstr=querystring['coursevers']+" "+citstr;
-	citstr=querystring['cid']+" "+citstr;
-	AJAXService("SAVDU",{answer:citstr},"PDUGGA");
-	alert('inlämnat');
-}
-
-
-//----------------------------------------------------------------------------------
 // changeURL: Patch-in for changeURL from project 2014 code
 //----------------------------------------------------------------------------------
 
