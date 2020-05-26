@@ -840,6 +840,7 @@ function loadUserInformation(){
 		.append('<option value="fileEvents">fileEvents</option>')
 		.append('<option value="course">course</option>')
 		.append('<option value="loginFail">loginFail</option>')
+         .append('<option value="profile">profile</option>')
     .appendTo($('#analytic-info'));
  
  
@@ -1218,6 +1219,43 @@ function loadUserInformation(){
             updateState(users);
         });
     }
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for profile
+//------------------------------------------------------------------------------------------------
+ 	function updateProfileInformation(){
+		hasCounter = true;
+        loadAnalytics("profileInformation", function(data) {
+			var users = {};
+            $.each(data, function(i, row) {
+				var user = row.username;
+				var pageParts;
+				var pageLoad;
+
+				//Retrives the page 
+				if(row.refer.includes("/DuggaSys/")){
+					pageParts = row.refer.split("/DuggaSys/");
+					pageLoad = pageParts[1];
+
+					if(pageLoad.includes("?")){
+						pageParts = pageParts[1].split("?");
+						pageLoad = pageParts[0];
+					}
+				}
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Timestamp"]];
+				}
+				if(pageLoad != undefined) {
+					users[user].push([
+						row.uid,
+						row.username,
+						row.timestamp
+					]);
+				}
+            });
+            updateState(users);
+        });
+    }
 
    
     function updateState(users){
@@ -1295,6 +1333,10 @@ function loadUserInformation(){
                 case "fileed":
 					updateFileedInformation();
 					pageCount = "fileed.php";
+					break;
+                case "profile":
+					updateProfileInformation();
+					pageCount = "profile.php";
 					break;
 				case "showDugga":
 					updateDuggaInformation();
