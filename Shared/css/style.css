@@ -5426,6 +5426,7 @@ only screen and (max-device-width: 320px) {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .collapsible > .object-types > .square div {
