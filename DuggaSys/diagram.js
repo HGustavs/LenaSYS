@@ -6517,12 +6517,12 @@ class Guideline {
         if(this.axis === 'x') {
             this.element.classList.add("guideline-x");
             if(this.position === undefined) {
-                this.position = this.container.clientHeight / 2;
+                this.position = canvasToPixels(0, this.container.clientHeight / 2).y;
             }
         } else if(this.axis === 'y') {
             this.element.classList.add("guideline-y");
             if(this.position === undefined) {
-                this.position = this.container.clientWidth / 2;
+                this.position = canvasToPixels(this.container.clientWidth / 2, 0).x;
             }
         }
 
