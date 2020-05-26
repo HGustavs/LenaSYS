@@ -5966,6 +5966,7 @@ function fixWriteToLayer(){
     const update = document.getElementById("layerActive");
     const spans = update.getElementsByTagName('span')
     const active = localStorage.getItem("writeToActiveLayers");
+    console.log(active);
 
     for(let i = 0; i < spans.length; i++){                      // re-draws layerActive
         spans[i].id = spans[i].id+"_Active";
@@ -6069,6 +6070,7 @@ function deleteLayerView(){
     }
     // deletes elements from drop-down menus
     for(let i = 0; i < showLayer.length; i++){
+        console.log(showLayer);
         let deleteLayer = document.getElementById(showLayer[i]).parentNode;
         deleteLayer.parentNode.removeChild(deleteLayer);
         deleteLayer = document.getElementById(showLayer[i]+"_Active").parentNode;
@@ -6098,6 +6100,7 @@ function deleteLayerActive(){
                 let deleteLayer = spans[i].parentNode;
                 saveIndex = spans[i].id.replace('_Active','');
                 deleteLayer.parentNode.removeChild(deleteLayer);
+                showLayer.splice(saveIndex);
             }
         }
         for(let i = 0;i < diagram.length;i++){
@@ -6109,7 +6112,8 @@ function deleteLayerActive(){
             diagram.deleteObject(deleteArray[i]);
         }
         const elem = document.getElementById(saveIndex);
-        elem.parentNode.removeChild(elem);
+        const elemParent = elem.parentNode;
+        elemParent.parentNode.removeChild(elemParent);
         fixviewLayer();
         fixActiveLayer()
         SaveState()
@@ -6136,6 +6140,12 @@ function fixviewLayer(){
         }
         correctSpan.id = "Layer_" + i;
     }
+    for(let i = 0; i < spans.length; i++){
+        if(spans[i].classList.contains("isActive")){
+            showLayer.push(spans[i].id);
+        }
+    }
+    console.log(showLayer)
 }
 //----------------------------------------------------------------------------------------
 // fixviewLayer: Corrects layeractive after layers been deleted.
