@@ -1496,9 +1496,7 @@ diagram.sortConnectors = function() {
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
-            
-                if(diagram[i].quadrants(diagram[i].symbolkind, diagram[i].getConnectedLines())) /*break*/;
-            
+            if(diagram[i].quadrants(diagram[i].symbolkind, diagram[i].getConnectedLines())) /*break*/;
         }
     }
 }
@@ -5422,8 +5420,15 @@ function loadAppearanceForm() {
                     erCardinalityVisible = true;
                 }
                 const connectedObjectsArray = object.getConnectedObjects();
-                document.getElementById("lineObject1").innerHTML = connectedObjectsArray[0].name;
-                document.getElementById("lineObject2").innerHTML = connectedObjectsArray[1].name; 
+                if(object.getConnectedObjects().length == 2){
+                    document.getElementById("lineObject1").innerHTML = connectedObjectsArray[0].name;
+                    document.getElementById("lineObject2").innerHTML = connectedObjectsArray[1].name;
+                } else{
+                    document.getElementById("LinePlacement1").style.display = "none";
+                    document.getElementById("LinePlacement2").style.display = "none";
+                    document.getElementById("lineObject1").style.display = "none";
+                    document.getElementById("lineObject2").style.display = "none";
+                }
             }
             document.getElementById("typeLine").focus();
         } else if(object.symbolkind === symbolKind.umlLine) {
@@ -5432,7 +5437,7 @@ function loadAppearanceForm() {
             const connectedObjectsArray = object.getConnectedObjects();
             document.getElementById("lineObject1").innerHTML = connectedObjectsArray[0].name;
             if(object.isRecursiveLine){
-                document.getElementById("LinePlacement1").style.display = "none";
+                document.getElementById("LinePlacement2").style.display = "none";
                 document.getElementById("lineObject2").style.display = "none";
             } else{
                 document.getElementById("lineObject2").innerHTML = connectedObjectsArray[1].name;
