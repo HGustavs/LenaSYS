@@ -1235,6 +1235,7 @@ function loadUserInformation(){
         }
 		
         userSelect.change(function() {
+			$('#counter').remove();
 			deleteTable();
 			$('#analytic-info').append(selectPage);
 
@@ -1568,7 +1569,7 @@ function renderTable(data) {
 
 function updateCounter(count, user, page)
 {
-	$('#analytic-info').append("<p>" + page + " has been loaded " + count + " times by " + user + "! </p>");
+	$('#analytic-info').append("<p id ='counter'>" + page + " has been loaded " + count + " times by " + user + "! </p>");
 	hasCounter = false;
 }
 
