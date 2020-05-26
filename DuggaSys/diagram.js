@@ -5966,7 +5966,6 @@ function fixWriteToLayer(){
     const update = document.getElementById("layerActive");
     const spans = update.getElementsByTagName('span')
     const active = localStorage.getItem("writeToActiveLayers");
-    console.log(active);
 
     for(let i = 0; i < spans.length; i++){                      // re-draws layerActive
         spans[i].id = spans[i].id+"_Active";
@@ -6054,10 +6053,10 @@ function getcorrectlayer(){
 //----------------------------------------------------------------------------------------
 function deleteLayerView(){
 
-    let parentNode = document.getElementById("viewLayer");
-    let spans = parentNode.getElementsByTagName('span');
+    let parentNodes = document.getElementById("viewLayer");
+    let spans = parentNodes.getElementsByTagName('span');
     let deleteArray = []
-
+    showLayer = removeDuplicatesInArray(showLayer);
     //Loops through Diagram and adds any object that exist with a layer that are targeted for deletion 
     for(let i = 0;i < diagram.length;i++){
         if(showLayer.indexOf(diagram[i].properties.setLayer) !== -1){
@@ -6070,7 +6069,7 @@ function deleteLayerView(){
     }
     // deletes elements from drop-down menus
     for(let i = 0; i < showLayer.length; i++){
-        console.log(showLayer);
+        console.log(showLayer)
         let deleteLayer = document.getElementById(showLayer[i]).parentNode;
         deleteLayer.parentNode.removeChild(deleteLayer);
         deleteLayer = document.getElementById(showLayer[i]+"_Active").parentNode;
@@ -6094,6 +6093,7 @@ function deleteLayerActive(){
     const spans = parentNode.getElementsByTagName('span');
     let saveIndex;                                  // used for deleteing corresponding layer in view layer drop-down
     let deleteArray = []
+    showLayer = removeDuplicatesInArray(showLayer);
     if(spans.length > 1){
         for(let i = 0; i < spans.length;i++){
             if(spans[i].classList.contains("isActive")){
@@ -6120,7 +6120,14 @@ function deleteLayerActive(){
         setlayer(spans[0]);
         toggleActiveBackgroundLayer(spans[0])
     }
+}
 
+function removeDuplicatesInArray(Array){
+    let uniquelayer = [];
+    $.each(Array, function(i, el){
+        if($.inArray(el, uniquelayer) === -1) uniquelayer.push(el);
+    });
+    return uniquelayer;
 }
 //----------------------------------------------------------------------------------------
 // fixviewLayer: Corrects viewlayer after layers been deleted.
@@ -6142,10 +6149,12 @@ function fixviewLayer(){
     }
     for(let i = 0; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
-            showLayer.push(spans[i].id);
+            if(!showLayer.includes(spans[i].id)){
+                showLayer.push(spans[i].id);
+                console.log(showLayer);
+            }
         }
     }
-    console.log(showLayer)
 }
 //----------------------------------------------------------------------------------------
 // fixviewLayer: Corrects layeractive after layers been deleted.
@@ -6165,6 +6174,15 @@ function fixActiveLayer(){
             }
         }
         correctSpan.id = "Layer_" + i +"_Active";
+    }
+    if ($(".isActive").length == 0){                //used for activating layer_1 if there no active layers
+        showLayer = ["Layer_1"]
+        writeToLayer = ["Layer_1"]
+        
+        let sendingToStorage = JSON.stringify(showLayer);
+        localStorage.setItem("activeLayers", sendingToStorage);
+        localStorage.setItem("writeToActiveLayers", "Layer_1_Active");
+        toggleActiveBackgroundLayer(document.getElementById("Layer_1_Active"));
     }
 }
 //----------------------------------------------------------------------------------------
