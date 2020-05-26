@@ -1017,20 +1017,22 @@ function loadUserInformation(){
 		var event;
 		var users = {};
 		var user;
+		var empty = true;
 		//Array containing all different eventTypes
 		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
 		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
 		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
 		'EditFile','MarkedDugga'];
 
-        loadAnalytics("userLogInformation", function(data) {
-            $.each(data, function(i, row) {
-                user = row.username;
-                if (!users.hasOwnProperty(user)) {
-                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "EventDescription"]];
+		loadAnalytics("userLogInformation", function(data) {
+			$.each(data, function(i, row) {
+				user = row.username;
+				if (!users.hasOwnProperty(user)) {
+					users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "EventDescription"]];
 				}
 				eventNumber = row.eventType;
 				event = eventNames[eventNumber];
+				
 				if(row.eventType != "") {
 					if(event == 'AddFile' || event == 'EditFile'){
 						users[user].push([
@@ -1041,10 +1043,14 @@ function loadUserInformation(){
 							row.timestamp,
 							event
 						]);
-						updateState(users);	
+						updateState(users);
+						empty = false;
 					}
 				}
-            });
+			});
+			if(empty == true){
+				updateState(users);
+			}
 		});
 	}
 
