@@ -6491,17 +6491,21 @@ function updateGuidelines() {
     guidelines.forEach(guideline => guideline.update());
 }
 
+//-------------------------------------------------------------------------------------------------
+// Guideline: A class with all properties and functionality necessary to handle a single guideline.
+//-------------------------------------------------------------------------------------------------
+
 class Guideline {
     constructor(axis, position, isLocked = false, isRecreated = false) {
         this.axis = axis;
-        this.position = position;
-        this.moveStartPosition = 0;
+        this.position = position;       //Guideline position expressed as canvas offset from origo to actual coordinates
+        this.moveStartPosition = 0;     //Used to store position on mouse down
         this.isLocked = isLocked;
-        this.isRecreated = isRecreated;
+        this.isRecreated = isRecreated; //Used to only convert from canvas to pixels when creating new guideline, not when recreating from local storage
         this.container = document.getElementById("diagram-guideline-container");
         this.element = null;
 
-        //Used to be able to access same reference to class functions
+        //Used to be able to access same reference to event handlers. To be able to remove eventlisteners.
         this.mouseOverHandler = e => this.mouseOver(e);
         this.mouseLeaveHandler = e => this.mouseLeave(e);
         this.mouseDownHandler = e => this.mouseDown(e);
@@ -6510,6 +6514,11 @@ class Guideline {
 
         this.createGuideline();
     }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // createGuideline: Creates a HTML-element working as a guideline and adds it to the guideline container.
+    //                  The correct canvas positions is calculated and used. Necessary eventlisteners are added to created guideline.
+    //-------------------------------------------------------------------------------------------------------------------------------
 
     createGuideline() {
         this.element = document.createElement("div");
@@ -6548,6 +6557,10 @@ class Guideline {
         this.element.addEventListener("mousedown", this.mouseDownHandler);
     }
 
+    //---------------------------------------------------------------------------------------------------------------------
+    // update: Converts stored canvas offset from origo guideline position to actual coordinates to position the guideline.
+    //---------------------------------------------------------------------------------------------------------------------
+
     update() {
         const position = pixelsToCanvas(this.position, this.position);
 
@@ -6557,6 +6570,11 @@ class Guideline {
             this.element.style.left = `${position.x}px`;
         }
     }
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+    // createGuideline: Executes when the mouse is over the guideline. Used to correct cursor depending on guideline type.
+    //                  Also prevents selections and cursor changes when moving diagram entities and the mouse goes over the guideline.
+    //---------------------------------------------------------------------------------------------------------------------------------
 
     mouseOver() {
         this.element.style.cursor = "default";
@@ -6574,10 +6592,19 @@ class Guideline {
         }
     }
 
+    //-----------------------------------------------------------
+    // mouseLeave: Executes when the mouse leaves the guideline.
+    //-----------------------------------------------------------
+
     mouseLeave() {
         this.unlock();
-        document.body.classList.add("noselect");
+        document.body.classList.remove("noselect");
     }
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    // mouseLeave: Executes when the mouse button is pressed down. Store mouse position to be used to for movement calculation.
+    //             Adds necessary eventlisteners to successfully move a guideline after mouse button is pressed.
+    //-------------------------------------------------------------------------------------------------------------------------
 
     mouseDown(e) {
         this.element.classList.add("moving");
@@ -6596,6 +6623,11 @@ class Guideline {
         document.addEventListener("mouseup", this.mouseUpHandler);
     }
 
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    // mouseMove: Executes when the mouse is moved after pressing the mouse button down on the guideline until mouse button is unpressed.
+    //            Used to calculate the position to move the guideline to.
+    //-----------------------------------------------------------------------------------------------------------------------------------
+
     mouseMove(e) {
         if(this.element.classList.contains("moving")) {
             if(this.axis === 'x') {
@@ -6612,11 +6644,17 @@ class Guideline {
         }
     }
 
+    //----------------------------------------------------------------------------------------------------------------------------------------------------
+    // mouseMove: Executes when the mouse button is upressed anywhere on on the page after being pressed on the guideline.
+    //            Used to reset everything. Removes mousemove and mouseup eventlistners temporarily on the whole document to prevent continuous execution.
+    //            Checks if the guideline was moved outside of the container, if so, it is be removed.
+    //----------------------------------------------------------------------------------------------------------------------------------------------------
+
     mouseUp() {
         this.element.classList.remove("moving");
         this.container.style.pointerEvents = "none";
         this.container.style.cursor = "default";
-        document.body.classList.add("noselect");
+        document.body.classList.remove("noselect");
 
         if(this.axis === 'x') {
             if(this.element.offsetTop < 0 || this.element.offsetTop > this.container.offsetHeight) {
@@ -6634,6 +6672,10 @@ class Guideline {
         saveGuidelinesToLocalStorage();
     }
 
+    //---------------------------------------------------------------------------------------------------------------------------
+    // remove: Removes the guideline HTML-element from the DOM. Removes the guideline from the global array of guideline objects.
+    //---------------------------------------------------------------------------------------------------------------------------
+
     remove() {
         this.element.remove();
 
@@ -6643,15 +6685,28 @@ class Guideline {
         saveGuidelinesToLocalStorage();
     }
 
+    //------------------------------------------------------------------------------
+    // lock: Locks the guideline and makes sure it cannot be detected on mouse over.
+    //------------------------------------------------------------------------------
+
     lock() {
         this.isLocked = true;
         this.element.style.pointerEvents = "none";
     }
 
+    //-------------------------------------------------------------------------------
+    // unlock: Unlocks the guideline and makes sure it can be detected on mouse over.
+    //-------------------------------------------------------------------------------
+
     unlock() {
         this.isLocked = false;
         this.element.style.pointerEvents = "all";
     }
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    // exportToLocalStorage: Returns an object containing all necessary properties to recreate the guideline as a new instance.
+    //                       Used to store only necessary properties in local storage.
+    //-------------------------------------------------------------------------------------------------------------------------
 
     exportToLocalStorage() {
         return {
