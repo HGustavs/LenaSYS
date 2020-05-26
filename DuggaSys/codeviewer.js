@@ -2300,7 +2300,8 @@ function Play(event) {
 	}
 }
 
-function minimizeBoxes(boxid) {
+function minimizeBoxes(boxid) 
+{
 	thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
 	thisBox1 = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
 	thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
