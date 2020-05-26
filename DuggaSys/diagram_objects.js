@@ -284,7 +284,7 @@ function Symbol(kindOfSymbol) {
             }
         }
         
-        // Fixes lines when thes same entity connects to a relation twice     
+        // Fixes lines when thes same entity connects to a relation twice    
        if (kind == symbolKind.erRelation){
             if (this.connectorTop.length >= 2){
                 var topLines = [];
@@ -293,7 +293,7 @@ function Symbol(kindOfSymbol) {
                     topLines.push(connectedLines.find(element => (element.bottomRight == this.connectorTop[i].from || element.topLeft == this.connectorTop[i].from)));
                     connectedObjectsTop.push(topLines[i].getConnectedObjects().find(element => (element != this)));
                     for(j = 0 ; j < connectedObjectsTop.length ; j++){
-                        if(connectedObjectsTop[i] == connectedObjectsTop[j] && i != j && topLines[i].manualSide1 == "Automatic" || topLines[i].manualSide2 == "Automatic"){
+                        if(connectedObjectsTop[i] == connectedObjectsTop[j] && i != j){
                             changed = true;
                             conn = this.connectorTop.splice(0, 2);
                             this.connectorLeft.push(conn[1]);
@@ -309,7 +309,7 @@ function Symbol(kindOfSymbol) {
                     bottomLines.push(connectedLines.find(element => (element.bottomRight == this.connectorBottom[i].from || element.topLeft == this.connectorBottom[i].from)));
                     connectedObjectsBottom.push(bottomLines[i].getConnectedObjects().find(element => (element != this)));
                     for(j = 0 ; j < connectedObjectsBottom.length ; j++){
-                        if(connectedObjectsBottom[i] == connectedObjectsBottom[j] && i != j && bottomLines[i].manualSide1 == "Automatic" || bottomLines[i].manualSide2 == "Automatic"){
+                        if(connectedObjectsBottom[i] == connectedObjectsBottom[j] && i != j){
                             changed = true;
                             conn = this.connectorBottom.splice(0, 2);
                             this.connectorLeft.push(conn[1]);
@@ -325,7 +325,7 @@ function Symbol(kindOfSymbol) {
                     leftLines.push(connectedLines.find(element => (element.bottomRight == this.connectorLeft[i].from || element.topLeft == this.connectorLeft[i].from)));
                     connectedObjectsLeft.push(leftLines[i].getConnectedObjects().find(element => (element != this)));
                     for(j = 0 ; j < connectedObjectsLeft.length ; j++){
-                        if(connectedObjectsLeft[i] == connectedObjectsLeft[j] && i != j && leftLines[i].manualSide1 == "Automatic" || leftLines[i].manualSide2 == "Automatic"){
+                        if(connectedObjectsLeft[i] == connectedObjectsLeft[j] && i != j){
                             changed = true;
                             conn = this.connectorLeft.splice(0, 2);
                             this.connectorBottom.push(conn[1]);
@@ -341,7 +341,7 @@ function Symbol(kindOfSymbol) {
                     rightLines.push(connectedLines.find(element => (element.bottomRight == this.connectorRight[i].from || element.topLeft == this.connectorRight[i].from)));
                     connectedObjectsRight.push(rightLines[i].getConnectedObjects().find(element => (element != this)));
                     for(j = 0 ; j < connectedObjectsRight.length ; j++){
-                        if(connectedObjectsRight[i] == connectedObjectsRight[j] && i != j && rightLines[i].manualSide1 == "Automatic" || rightLines[i].manualSide2 == "Automatic"){
+                        if(connectedObjectsRight[i] == connectedObjectsRight[j] && i != j){
                             changed = true;
                             conn = this.connectorRight.splice(0, 2);
                             this.connectorBottom.push(conn[1]);
@@ -351,6 +351,7 @@ function Symbol(kindOfSymbol) {
                 }
             }
         }
+        
         return changed;
     }
 
