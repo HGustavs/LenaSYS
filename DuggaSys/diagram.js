@@ -6431,7 +6431,7 @@ function initGuidelines() {
     if(tempGuidelines !== null) {
         tempGuidelines = JSON.parse(tempGuidelines);
         for(let i = 0; i < tempGuidelines.length; i++) {
-            guidelines[i] = new Guideline(tempGuidelines[i].axis, tempGuidelines[i].position, tempGuidelines[i].isLocked);
+            guidelines[i] = new Guideline(tempGuidelines[i].axis, tempGuidelines[i].position, tempGuidelines[i].isLocked, true);
         }
     }
 }
@@ -6492,11 +6492,12 @@ function updateGuidelines() {
 }
 
 class Guideline {
-    constructor(axis, position, isLocked = false) {
+    constructor(axis, position, isLocked = false, isRecreated = false) {
         this.axis = axis;
         this.position = position;
         this.moveStartPosition = 0;
         this.isLocked = isLocked;
+        this.isRecreated = isRecreated;
         this.container = document.getElementById("diagram-guideline-container");
         this.element = null;
 
@@ -6516,16 +6517,20 @@ class Guideline {
 
         if(this.axis === 'x') {
             this.element.classList.add("guideline-x");
-            if(this.position === undefined) {
-                this.position = this.container.clientHeight / 2;
+            if(!this.isRecreated) {
+                if(this.position === undefined) {
+                    this.position = this.container.clientHeight / 2;
+                }
+                this.position = canvasToPixels(0, this.position).y;
             }
-            this.position = canvasToPixels(0, this.position).y;
         } else if(this.axis === 'y') {
             this.element.classList.add("guideline-y");
-            if(this.position === undefined) {
-                this.position = this.container.clientWidth / 2;
+            if(!this.isRecreated) {
+                if(this.position === undefined) {
+                    this.position = this.container.clientWidth / 2;
+                }
+                this.position = canvasToPixels(this.position, 0).x;
             }
-            this.position = canvasToPixels(this.position, 0).x;
         }
 
         if(this.isLocked) {
