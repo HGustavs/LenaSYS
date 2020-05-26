@@ -6598,7 +6598,6 @@ class Guideline {
 
     mouseLeave() {
         this.unlock();
-        document.body.classList.remove("noselect");
     }
 
     //-------------------------------------------------------------------------------------------------------------------------
