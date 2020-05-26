@@ -836,19 +836,53 @@ function loadUserInformation(){
 
 	var firstLoad = true;
 	
-	var selectPage = $("<select></select>")
-    .append('<option value="sectioned" selected>sectioned</option>')
+	var selectPage = $("<select id='userInformationPage'></select>")
+    .append('<option value="sectioned">sectioned</option>')
 		.append('<option value="courseed">courseed</option>')
-        .append('<option value="fileed">fileed</option>')
-        .append('<option value="resulted">resulted</option>')
-		.append('<option value="showDugga" selected>showDugga</option>')
+		.append('<option value="showDugga">showDugga</option>')
+    .append('<option value="fileed">fileed</option>')
+    .append('<option value="resulted">resulted</option>')
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="events">events</option>')
 		.append('<option value="fileEvents">fileEvents</option>')
 		.append('<option value="course">course</option>')
 		.append('<option value="loginFail">loginFail</option>')
     .appendTo($('#analytic-info'));
- 
+		
+	$("#userInformationPage").val(localStorage.getItem('userInformationPage'));
+	console.log(localStorage.getItem('userInformationPage'));
+	switch(localStorage.getItem('userInformationPage')){
+		case "courseed":
+			updateCourseedInformation();
+			pageCount = "courseed.php";
+			break;
+		case "showDugga":
+			updateDuggaInformation();
+			pageCount = "showdugga.php";
+			break;
+		case "codeviewer":
+			updateCodeviewerInformation();
+			pageCount = "codeviewer.php";
+			break;
+		case "events":
+			updateUserLogInformation();
+			break;
+		case "fileEvents":
+			updatefileEvents();
+			break;
+		case "course":
+			updateCourseInformation();
+			break;
+		case "loginFail":
+			updateloginFail();
+			break;
+		case "sectioned":
+		default:
+			updateSectionedInformation();
+			pageCount = "sectioned.php";
+			break;
+	}
+
  
     function updateSectionedInformation(){
 		hasCounter = true;
@@ -1279,13 +1313,11 @@ function loadUserInformation(){
         $('#analytic-info').append(userSelect);
 		userSelect.change();
 		pageSelect();
-	}	
+	}
+
 	function pageSelect(){
-		if(firstLoad === true){
-			updateSectionedInformation();
-			firstLoad = false;
-		} 
         selectPage.change(function(){
+			localStorage.setItem('userInformationPage', selectPage.val());
             switch(selectPage.val()){
                 case "resulted":
 					updateResultedInformation();
@@ -1317,16 +1349,16 @@ function loadUserInformation(){
 				case "fileEvents":
 					updatefileEvents();
 					break;
-                case "course":
-                    updateCourseInformation();
-                    break;
-                case "loginFail":
+				case "course":
+					updateCourseInformation();
+					break;
+				case "loginFail":
 					updateloginFail();
 					break;
             }
         });
-    }
- 
+	}
+
     pageSelect();
 }
 
@@ -1574,6 +1606,9 @@ function renderTable(data) {
 
 function updateCounter(count, user, page)
 {
+	if(page == undefined)
+		return;
+
 	$('#analytic-info').append("<p>" + page + " has been loaded " + count + " times by " + user + "! </p>");
 	hasCounter = false;
 }
