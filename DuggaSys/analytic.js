@@ -893,7 +893,7 @@ function loadUserInformation(){
 						pageLoad,
 						cid,
 						vers,
-						row.timestamp
+						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
 					]);
 				}
             });
