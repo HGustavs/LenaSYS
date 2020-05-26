@@ -831,6 +831,7 @@ function loadUserInformation(){
     .append('<option value="sectioned" selected>sectioned</option>')
 		.append('<option value="courseed">courseed</option>')
         .append('<option value="fileed">fileed</option>')
+        .append('<option value="resulted">resulted</option>')
 		.append('<option value="showDugga" selected>showDugga</option>')
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="events">events</option>')
@@ -1175,6 +1176,45 @@ function loadUserInformation(){
             updateState(users);
         });
     }
+ 
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for resulted
+//------------------------------------------------------------------------------------------------
+ 	function updateResultedInformation(){
+		hasCounter = true;
+        loadAnalytics("resultedInformation", function(data) {
+			var users = {};
+            $.each(data, function(i, row) {
+				var user = row.username;
+				var pageParts;
+				var pageLoad;
+
+				//Retrives the page 
+				if(row.refer.includes("/DuggaSys/")){
+					pageParts = row.refer.split("/DuggaSys/");
+					pageLoad = pageParts[1];
+
+					if(pageLoad.includes("?")){
+						pageParts = pageParts[1].split("?");
+						pageLoad = pageParts[0];
+					}
+				}
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Event", "Timestamp"]];
+				}
+				if(pageLoad != undefined) {
+					users[user].push([
+						row.uid,
+						row.username,
+						pageLoad,
+						row.timestamp
+					]);
+				}
+            });
+            updateState(users);
+        });
+    }
 
    
     function updateState(users){
@@ -1237,10 +1277,10 @@ function loadUserInformation(){
 		} 
         selectPage.change(function(){
             switch(selectPage.val()){
-                /*case "resulted":
-					updateCourseedInformation();
+                case "resulted":
+					updateResultedInformation();
 					pageCount = "resulted.php";
-					break;*/
+					break;
                 case "sectioned":
 					updateSectionedInformation();
 					pageCount = "sectioned.php";
