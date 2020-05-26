@@ -5416,7 +5416,7 @@ only screen and (max-device-width: 320px) {
   align-items: center;
 }
 
-.collapsible .object-types .square {
+.collapsible > .object-types > .square {
   width: 24px;
   height: 24px;
   margin-right: 8px;
@@ -5428,21 +5428,23 @@ only screen and (max-device-width: 320px) {
   cursor: pointer;
 }
 
-.collapsible .object-types .square div {
+.collapsible > .object-types > .square div {
   width: 80%;
   height: 80%;
   content:url("../icons/Minus.svg");
 }
 
-.collapsible.closed .object-types .square div {
+.collapsible.closed > .object-types > .square div {
   content:url("../icons/Plus.svg");
 }
 
-.collapsible .form-groups {
+.collapsible > .form-groups,
+.collapsible > .collapsible {
   display: block;
 }
 
-.collapsible.closed .form-groups {
+.collapsible.closed > .form-groups,
+.collapsible.closed > .collapsible {
   display: none;
 }
 
