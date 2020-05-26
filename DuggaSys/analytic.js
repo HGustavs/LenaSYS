@@ -602,7 +602,7 @@ function loadFileInformation() {
                     const splits = row.timestamp.split(' ', 2)
                     if(splits[0] >=  inputDateFrom.val() && splits[0] <= inputDateTo.val()){
                         files[file].push([
-                        row.userName,
+                        row.username,
                         action,
                         version,
                         file,
