@@ -976,7 +976,7 @@ function loadUserInformation(){
 						"showDugga.php",
 						row.cid,
 						row.quizid,
-						row.timestamp
+						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
 					]);
 				}
             });
