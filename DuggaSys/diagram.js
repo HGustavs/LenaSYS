@@ -6519,13 +6519,11 @@ class Guideline {
             if(this.position === undefined) {
                 this.position = this.container.clientHeight / 2;
             }
-            this.element.style.top = `${this.position}px`;
         } else if(this.axis === 'y') {
             this.element.classList.add("guideline-y");
             if(this.position === undefined) {
                 this.position = this.container.clientWidth / 2;
             }
-            this.element.style.left = `${this.position}px`;
         }
 
         if(this.isLocked) {
@@ -6533,6 +6531,8 @@ class Guideline {
         } else {
             this.unlock();
         }
+
+        this.update();
 
         this.container.appendChild(this.element);
 
@@ -6592,15 +6592,15 @@ class Guideline {
     mouseMove(e) {
         if(this.element.classList.contains("moving")) {
             if(this.axis === 'x') {
-                const movePosition = this.moveStartPosition - e.clientY;
+                const movePosition = this.element.offsetTop - (this.moveStartPosition - e.clientY);
                 this.moveStartPosition = e.clientY;
-                this.position = this.element.offsetTop - movePosition;
-                this.element.style.top = `${this.position}px`;
+                this.element.style.top = `${movePosition}px`;
+                this.position = canvasToPixels(0, movePosition).y;
             } else if(this.axis === 'y') {
-                const movePosition = this.moveStartPosition - e.clientX;
+                const movePosition = this.element.offsetLeft - (this.moveStartPosition - e.clientX);
                 this.moveStartPosition = e.clientX;
-                this.position = this.element.offsetLeft - movePosition;
-                this.element.style.left = `${this.position}px`;
+                this.element.style.left = `${movePosition}px`;
+                this.position = canvasToPixels(movePosition, 0).x;
             }
         }
     }
