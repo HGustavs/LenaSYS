@@ -1,11 +1,13 @@
 <?php
+    // Start session
+    session_start();
+    
     // Include basic application services!
     include_once "../Shared/sessions.php";
     include_once "../Shared/basic.php";
 
-    // Connect to database and start session
+    // Connect to database
     pdoConnect();
-    session_start();
 
 	$courseid = getOPG('courseid');
 	$coursevers = getOPG('coursevers');
