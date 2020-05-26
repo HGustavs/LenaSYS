@@ -2308,7 +2308,6 @@ function minimizeBoxes(boxid)
 	thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
 	thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
 	thisBox5 = document.querySelector('#box' + 5 + 'wrapper #boxtitlewrapper');
-	const isMobile = /Mobi/.test(window.navigator.userAgent);
 	var boxid = boxid;
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
@@ -2316,35 +2315,8 @@ function minimizeBoxes(boxid)
 
 	getLocalStorageProperties(boxValArray);
 
-	if(isMobile){
-		if(templateid == 1){
-			if(boxid == 1) {
-				document.querySelector(boxValArray['box' + 1]['id']).style.height = "10%";
-				document.querySelector(boxValArray['box' + 2]['id']).style.height = "90%";
-			}	 
-			if(boxid == 2) {
-				document.querySelector(boxValArray['box' + 1]['id']).style.height = "90%";
-				document.querySelector(boxValArray['box' + 2]['id']).style.height = "10%";
-			}
-		}
-	}
-
-	if(isMobile){
-		if(templateid == 2){
-			if(boxid == 1) {
-				document.querySelector(boxValArray['box' + 1]['id']).style.height = "10%";
-				document.querySelector(boxValArray['box' + 2]['id']).style.height = "90%";
-			}	 
-			if(boxid == 2) {
-				document.querySelector(boxValArray['box' + 1]['id']).style.height = "90%";
-				document.querySelector(boxValArray['box' + 2]['id']).style.height = "10%";
-			}
-		}
-	}
-	
 	//For template 1
-	if (templateid == 1 && isMobile == false) {
-        
+	if (templateid == 1) {
 		if (boxid == 1) {
 			document.querySelector(boxValArray['box' + 2]['id']).style.width = "100%";
 			document.querySelector(boxValArray['box' + boxid]['id']).style.width = "0%";
@@ -2354,7 +2326,6 @@ function minimizeBoxes(boxid)
                 thisBox2.classList.remove('visuallyhidden');
             }, 20);
 		}
-
 		if (boxid == 2) {
 			document.querySelector(boxValArray['box' + 1]['id']).style.width = "100%";
 			document.querySelector(boxValArray['box' + boxid]['id']).style.width = "0%";
@@ -2365,15 +2336,15 @@ function minimizeBoxes(boxid)
             }, 20);
 		}
 	}
+
 	//for template 2
-	if (templateid == 2 && isMobile == false) {
+	if (templateid == 2) {
 		if (boxid == 1) {
 			document.querySelector(boxValArray['box' + 2]['id']).style.height = "100%";
 			document.querySelector(boxValArray['box' + boxid]['id']).style.height ="10%";
 			alignBoxesHeight2boxes(boxValArray, 1, 2);
 		}
-
-		if (boxid == 2) {
+			if (boxid == 2) {
 			document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
 
 			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "10%";
@@ -2382,9 +2353,9 @@ function minimizeBoxes(boxid)
 	}
 
 	//for template 3
-	if (templateid == 3 && isMobile == false) {
+	if (templateid == 3) {
 		if(boxid == 1){
-			for (i = 1; i <= 3; i++) {
+			for (var i = 1; i <= 3; i++) {
 				document.querySelector(boxValArray['box' + i]['id']).style.height = "50%";
 				document.querySelector(boxValArray['box' + boxid]['id']).style.height = "10%";
 				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
@@ -2395,9 +2366,8 @@ function minimizeBoxes(boxid)
                 thisBox.classList.add('hidden');
                 thisBox.classList.add('visuallyhidden');
             }, 20);
-		}
-		else{
-			for (i = 1; i <= 3; i++) {
+		}else{
+			for (var i = 1; i <= 3; i++) {
 				document.querySelector(boxValArray['box' + i]['id']).style.height = "100%";
 				document.querySelector(boxValArray['box' + boxid]['id']).style.height = "10%";
 			}
@@ -2406,9 +2376,9 @@ function minimizeBoxes(boxid)
 	}
 
 	//for template 4
-	if (templateid == 4 && isMobile == false){
+	if (templateid == 4){
 		if(boxid == 3){
-			for(i = 1; i <= 3; i++){	
+			for(var i = 1; i <= 3; i++){	
 				document.querySelector(boxValArray['box' + i]['id']).style.height = "90%";
 				document.querySelector(boxValArray['box' + boxid]['id']).style.height = "10%";
 				document.querySelector(boxValArray['box' + i]['id']).style.width = "50%";
@@ -2418,9 +2388,8 @@ function minimizeBoxes(boxid)
 			thisBox2.classList.remove('hidden');
 			thisBox1.classList.remove('visuallyhidden');
 			thisBox2.classList.remove('visuallyhidden');
-		}
-		else{
-			for(i = 1; i <= 3; i++){
+		}else{
+			for(var i = 1; i <= 3; i++){
 				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
 				document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
 			}
@@ -2448,8 +2417,7 @@ function minimizeBoxes(boxid)
                 thisBox.classList.add('hidden');
                 thisBox.classList.add('visuallyhidden');
             }, 20);    
-        }
-        else{
+        }else{
             document.querySelector(boxValArray['box' + (boxid - 1)]['id']).style.width = "100%";
 			document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
             thisBox1.classList.remove('hidden');
@@ -2465,9 +2433,9 @@ function minimizeBoxes(boxid)
 	}
 
 	//for template 6
-	if(templateid == 6 && isMobile == false){
+	if(templateid == 6){
 		if(boxid == 1){
-			for(i = 1; i <= 4; i++){
+			for(var i = 1; i <= 4; i++){
 				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
 				document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
 			}
@@ -2493,9 +2461,9 @@ function minimizeBoxes(boxid)
 	}
 
 	//for template 7
-	if(templateid == 7 && isMobile == false){
+	if(templateid == 7){
 		if(boxid == 1){
-			for(i = 1; i <= 4; i++){	
+			for(var i = 1; i <= 4; i++){	
 				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
 				document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
 			}
@@ -2521,7 +2489,7 @@ function minimizeBoxes(boxid)
 	}
 
 	//for template 8
-	if(templateid == 8 && isMobile == false){
+	if(templateid == 8){
 		if(boxid == 1){
 			for(i = 1; i <= 3; i++){
 				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
@@ -2535,9 +2503,8 @@ function minimizeBoxes(boxid)
 				thisBox.classList.add('hidden');
 				thisBox.classList.add('visuallyhidden');
 			}, 20);	
-		}
-		else{
-			for(i = 1; i <= 3; i++){
+		}else{
+			for(var i = 1; i <= 3; i++){
 				document.querySelector(boxValArray['box' + i]['id']).style.height = "100%";
 				document.querySelector(boxValArray['box' + boxid]['id']).style.height = "10%";
 			}
@@ -2545,9 +2512,9 @@ function minimizeBoxes(boxid)
 	}
 
 	//for template 9
-	if(templateid == 9 && isMobile == false){
+	if(templateid == 9){
 		if(boxid == 1){
-			for(i = 1; i <= 5; i++){
+			for(var i = 1; i <= 5; i++){
 				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
 				document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
 			}
