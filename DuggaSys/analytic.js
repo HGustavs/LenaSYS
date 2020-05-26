@@ -952,7 +952,7 @@ function loadUserInformation(){
 						"codeviewer.php",
 						row.cid,
 						row.exampleid,
-						row.timestamp
+						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
 					]);
 				}
             });
