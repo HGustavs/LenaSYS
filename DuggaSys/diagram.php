@@ -610,7 +610,7 @@
                             <option value="Composition">Composition</option>
                         </select>
                     </div>
-                    <div class="form-group" data-types="2,3,5">
+                    <div class="form-group" data-types="2,3,5" data-advanced>
                         <label for="backgroundColor">Background color:</label>
                         <select id="backgroundColor" data-access="properties.fillColor"><?=$colors;?></select>
                     </div>
@@ -622,19 +622,19 @@
                         <label for="freeText">Text:</label>
                         <textarea id="freeText" data-access="textLines"></textarea>
                     </div>
-                    <div class="form-group" data-types="2,3,5,6">
+                    <div class="form-group" data-types="2,3,5,6" data-advanced>
                         <label for="fontFamily">Font family:</label>
                         <select id="fontFamily" data-access="properties.font"><?=$fonts?></select>
                     </div>
-                    <div class="form-group" data-types="2,3,5,6">
+                    <div class="form-group" data-types="2,3,5,6" data-advanced>
                         <label for="fontColor">Font color:</label>
                         <select id="fontColor" data-access="properties.fontColor"><?=$colors;?></select>
                     </div>
-                    <div class="form-group" data-types="2,3,5,6">
+                    <div class="form-group" data-types="2,3,5,6" data-advanced>
                         <label for="textSize">Text size:</label>
                         <select id="textSize" data-access="properties.sizeOftext"><?=$textSizes;?></select>
                     </div>
-                    <div class="form-group" data-types="2,3,5,0">
+                    <div class="form-group" data-types="2,3,5,0" data-advanced>
                         <label for="lineColor">Line color:</label>
                         <select id="lineColor" data-access="properties.strokeColor"><?=$colors;?></select>
                     </div>
@@ -642,7 +642,7 @@
                         <label for="objectLayer">Write to layer:</label>
                         <select id="objectLayer" data-access="properties.setLayer"></select>
                     </div>
-                    <div class="form-group" data-types="6">
+                    <div class="form-group" data-types="6" data-advanced>
                         <label for="textAlignment">Text alignment:</label>
                         <select id="textAlignment" data-access="properties.textAlign">
                             <option value="start">Left</option>
