@@ -491,11 +491,12 @@ function init() {
     setModeOnRefresh(); 
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
-    setIsRulersActiveOnRefresh();
+    initRulers();
     setIsFullscreenActiveOnRefresh();
     setHideCommentOnRefresh();
     initAppearanceForm();
     initTimeline();
+    initGuidelines();
     setPaperSize(event, paperSize);
     updateGraphics(); 
 }
@@ -2359,6 +2360,7 @@ function resetViewToOrigin(event){
     origoOffsetY = 0;
     updateGraphics();
     SaveState();
+    createRulers();
 }
 
 //---------------------------------------------------------------------------------
@@ -2647,6 +2649,7 @@ function clearCanvas() {
     for (var i = 0; i < points.length;) {
         points.pop();
     }
+    selected_objects = [];
     resetSerialNumbers();
     updateGraphics();
 }
@@ -6239,6 +6242,7 @@ function createRulers() {
     createRuler(document.querySelector("#ruler-x .ruler-lines"), canvas.width, origoOffsetX, "marginLeft");
     createRuler(document.querySelector("#ruler-y .ruler-lines"), canvas.height, origoOffsetY, "marginTop");
     createRulerLinesObjectPoints();
+    updateGuidelines();
 }
 
 //------------------------------------------------------------------------------
@@ -6343,29 +6347,372 @@ function getSelectedObjectsPoints() {
 function toggleRulers() {
     const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
     const rulers = document.querySelectorAll(".ruler");
+    const guidelineContainer = document.getElementById("diagram-guideline-container");
+
+    isRulersActive = !isRulersActive;
 
     if(isRulersActive) {
-        diagramPageWrapper.classList.remove("rulers-active");
-        rulers.forEach(ruler => ruler.classList.add("hidden"));
-    } else {
         diagramPageWrapper.classList.add("rulers-active");
         rulers.forEach(ruler => ruler.classList.remove("hidden"));
+        guidelineContainer.classList.remove("hidden");
+    } else {
+        diagramPageWrapper.classList.remove("rulers-active");
+        rulers.forEach(ruler => ruler.classList.add("hidden"));
+        guidelineContainer.classList.add("hidden");
     }
-    isRulersActive = !isRulersActive;
     setCheckbox($(".drop-down-option:contains('Rulers')"), isRulersActive);
     localStorage.setItem("isRulersActive", isRulersActive);
     canvasSize();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// setIsRulersActiveOnRefresh: Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
-//------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
+// initRulers: Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
+//             Also adds eventlistners to rulers making it possible to create guidelines by dragging from them.
+//-------------------------------------------------------------------------------------------------------------
 
-function setIsRulersActiveOnRefresh() {
+function initRulers() {
     const tempIsRulerActive = localStorage.getItem("isRulersActive");
     if(tempIsRulerActive !== null) {
         isRulersActive = !(tempIsRulerActive === "true");
         toggleRulers();
+    }
+
+    //Code below here makes it possible to drag out new guidelines from a ruler
+    const rulerX = document.getElementById("ruler-x");
+    const rulerY = document.getElementById("ruler-y");
+    const diagramCanvasContainer = document.getElementById("diagram-canvas-container");
+    let mouseDownRulerX = false;
+    let mouseDownRulerY = false;
+
+    //Event handler for when the mouse reaches over the canvas container after mouse down on ruler
+    function mouseOverHandler() {
+        document.body.classList.add("noselect");
+        if(mouseDownRulerX) {
+            const guideline = addGuideline(new Guideline('x', 0, false));
+            guideline.mouseDownHandler({clientX: 0});
+        } 
+        if(mouseDownRulerY) {
+            const guideline = addGuideline(new Guideline('y', 0, false));
+            guideline.mouseDownHandler({clientY: 0});
+        }
+        diagramCanvasContainer.removeEventListener("mouseover", mouseOverHandler);
+    }
+
+    //Event handler for mouse up anywhere on the screen after mouse down on ruler
+    function mouseUpHandler() {
+        mouseDownRulerX = false;
+        mouseDownRulerY = false;
+        document.body.classList.remove("noselect");
+        document.removeEventListener("mouseup", mouseUpHandler);
+    }
+
+    rulerX.addEventListener("mousedown", () => {
+        mouseDownRulerX = true;
+        diagramCanvasContainer.addEventListener("mouseover", mouseOverHandler);
+        document.addEventListener("mouseup", mouseUpHandler);
+    });
+
+    rulerY.addEventListener("mousedown", () => {
+        mouseDownRulerY = true;
+        diagramCanvasContainer.addEventListener("mouseover", mouseOverHandler);
+        document.addEventListener("mouseup", mouseUpHandler);
+    });
+}
+
+let guidelines = []; //Stores all active guideline objects
+
+//-------------------------------------------------------------------------------------------------------------------------------------------
+// initGuidelines: Gets all guideline objects from local storage and creates instances of the Guideline class based on values in each object.
+//-------------------------------------------------------------------------------------------------------------------------------------------
+
+function initGuidelines() {
+    let tempGuidelines = localStorage.getItem("guidelines");
+
+    if(tempGuidelines !== null) {
+        tempGuidelines = JSON.parse(tempGuidelines);
+        for(let i = 0; i < tempGuidelines.length; i++) {
+            guidelines[i] = new Guideline(tempGuidelines[i].axis, tempGuidelines[i].position, tempGuidelines[i].isLocked, true);
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+// saveGuidelinesToLocalStorage: Gets all required properties from each guideline object, stringifies the whole new array and saves it in localstorage. 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+function saveGuidelinesToLocalStorage() {
+    const localStorageGuidelines = guidelines.reduce((result, guideline) => {
+        return [...result, guideline.exportToLocalStorage()];
+    }, []);
+
+    localStorage.setItem("guidelines", JSON.stringify(localStorageGuidelines));
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------
+// addGuideline: Adds passed guideline instance to the array of guideline objects, saves guidelines to local storage and returns the guideline instance.
+//------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function addGuideline(guideline) {
+    guidelines.push(guideline);
+    saveGuidelinesToLocalStorage();
+    return guideline;
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+// deleteGuidelines: Deletes all guideline HTML-elements and empties the array of guideline objects and saves the emptied array to local storage.
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+
+function deleteGuidelines() {
+    guidelines.forEach(guideline => guideline.element.remove());
+    guidelines.splice(0, guidelines.length);
+    saveGuidelinesToLocalStorage();
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+// lockOrUnlockGuidelines: Locks all active guidelines if passing true. Unlocks all active guidelines if passing false.
+//---------------------------------------------------------------------------------------------------------------------
+
+function lockOrUnlockGuidelines(isLocked = true) {
+    guidelines.forEach(guideline => {
+        if(isLocked) {
+            guideline.lock();
+        } else {
+            guideline.unlock();
+        }
+    });
+    saveGuidelinesToLocalStorage();
+}
+
+//----------------------------------------------------------
+// updateGuidelines: Updates the position of all guidelines.
+//----------------------------------------------------------
+
+function updateGuidelines() {
+    guidelines.forEach(guideline => guideline.update());
+}
+
+//-------------------------------------------------------------------------------------------------
+// Guideline: A class with all properties and functionality necessary to handle a single guideline.
+//-------------------------------------------------------------------------------------------------
+
+class Guideline {
+    constructor(axis, position, isLocked = false, isRecreated = false) {
+        this.axis = axis;
+        this.position = position;       //Guideline position expressed as canvas offset from origo to actual coordinates
+        this.moveStartPosition = 0;     //Used to store position on mouse down
+        this.isLocked = isLocked;
+        this.isRecreated = isRecreated; //Used to only convert from canvas to pixels when creating new guideline, not when recreating from local storage
+        this.container = document.getElementById("diagram-guideline-container");
+        this.element = null;
+
+        //Used to be able to access same reference to event handlers. To be able to remove eventlisteners.
+        this.mouseOverHandler = e => this.mouseOver(e);
+        this.mouseLeaveHandler = e => this.mouseLeave(e);
+        this.mouseDownHandler = e => this.mouseDown(e);
+        this.mouseMoveHandler = e => this.mouseMove(e);
+        this.mouseUpHandler = e => this.mouseUp(e);
+
+        this.createGuideline();
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // createGuideline: Creates a HTML-element working as a guideline and adds it to the guideline container.
+    //                  The correct canvas positions is calculated and used. Necessary eventlisteners are added to created guideline.
+    //-------------------------------------------------------------------------------------------------------------------------------
+
+    createGuideline() {
+        this.element = document.createElement("div");
+        this.element.classList.add("guideline");
+
+        if(this.axis === 'x') {
+            this.element.classList.add("guideline-x");
+            if(!this.isRecreated) {
+                if(this.position === undefined) {
+                    this.position = this.container.clientHeight / 2;
+                }
+                this.position = canvasToPixels(0, this.position).y;
+            }
+        } else if(this.axis === 'y') {
+            this.element.classList.add("guideline-y");
+            if(!this.isRecreated) {
+                if(this.position === undefined) {
+                    this.position = this.container.clientWidth / 2;
+                }
+                this.position = canvasToPixels(this.position, 0).x;
+            }
+        }
+
+        if(this.isLocked) {
+            this.lock();
+        } else {
+            this.unlock();
+        }
+
+        this.update();
+
+        this.container.appendChild(this.element);
+
+        this.element.addEventListener("mouseover", this.mouseOverHandler);
+        this.element.addEventListener("mouseleave", this.mouseLeaveHandler);
+        this.element.addEventListener("mousedown", this.mouseDownHandler);
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------
+    // update: Converts stored canvas offset from origo guideline position to actual coordinates to position the guideline.
+    //---------------------------------------------------------------------------------------------------------------------
+
+    update() {
+        const position = pixelsToCanvas(this.position, this.position);
+
+        if(this.axis === 'x') {
+            this.element.style.top = `${position.y}px`;
+        } else if(this.axis === 'y') {
+            this.element.style.left = `${position.x}px`;
+        }
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+    // createGuideline: Executes when the mouse is over the guideline. Used to correct cursor depending on guideline type.
+    //                  Also prevents selections and cursor changes when moving diagram entities and the mouse goes over the guideline.
+    //---------------------------------------------------------------------------------------------------------------------------------
+
+    mouseOver() {
+        this.element.style.cursor = "default";
+
+        if(md !== mouseState.empty) {
+            this.lock();
+            document.body.classList.add("noselect");
+            return;
+        }
+        
+        if(this.axis === 'x') {
+            this.element.style.cursor = "row-resize";
+        } else if(this.axis === 'y') {
+            this.element.style.cursor = "col-resize";
+        }
+    }
+
+    //-----------------------------------------------------------
+    // mouseLeave: Executes when the mouse leaves the guideline.
+    //-----------------------------------------------------------
+
+    mouseLeave() {
+        this.unlock();
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    // mouseLeave: Executes when the mouse button is pressed down. Store mouse position to be used to for movement calculation.
+    //             Adds necessary eventlisteners to successfully move a guideline after mouse button is pressed.
+    //-------------------------------------------------------------------------------------------------------------------------
+
+    mouseDown(e) {
+        this.element.classList.add("moving");
+        this.container.style.pointerEvents = "all";
+        document.body.classList.add("noselect");
+
+        if(this.axis === 'x') {
+            this.moveStartPosition = e.clientY;
+            this.container.style.cursor = "row-resize";
+        } else if(this.axis === 'y') {
+            this.moveStartPosition = e.clientX;
+            this.container.style.cursor = "col-resize";
+        }
+
+        document.addEventListener("mousemove", this.mouseMoveHandler);
+        document.addEventListener("mouseup", this.mouseUpHandler);
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    // mouseMove: Executes when the mouse is moved after pressing the mouse button down on the guideline until mouse button is unpressed.
+    //            Used to calculate the position to move the guideline to.
+    //-----------------------------------------------------------------------------------------------------------------------------------
+
+    mouseMove(e) {
+        if(this.element.classList.contains("moving")) {
+            if(this.axis === 'x') {
+                const movePosition = this.element.offsetTop - (this.moveStartPosition - e.clientY);
+                this.moveStartPosition = e.clientY;
+                this.element.style.top = `${movePosition}px`;
+                this.position = canvasToPixels(0, movePosition).y;
+            } else if(this.axis === 'y') {
+                const movePosition = this.element.offsetLeft - (this.moveStartPosition - e.clientX);
+                this.moveStartPosition = e.clientX;
+                this.element.style.left = `${movePosition}px`;
+                this.position = canvasToPixels(movePosition, 0).x;
+            }
+        }
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------------------------------
+    // mouseMove: Executes when the mouse button is upressed anywhere on on the page after being pressed on the guideline.
+    //            Used to reset everything. Removes mousemove and mouseup eventlistners temporarily on the whole document to prevent continuous execution.
+    //            Checks if the guideline was moved outside of the container, if so, it is be removed.
+    //----------------------------------------------------------------------------------------------------------------------------------------------------
+
+    mouseUp() {
+        this.element.classList.remove("moving");
+        this.container.style.pointerEvents = "none";
+        this.container.style.cursor = "default";
+        document.body.classList.remove("noselect");
+
+        if(this.axis === 'x') {
+            if(this.element.offsetTop < 0 || this.element.offsetTop > this.container.offsetHeight) {
+                this.remove();
+            }
+        } else if(this.axis === 'y') {
+            if(this.element.offsetLeft < 0 || this.element.offsetLeft > this.container.offsetWidth) {
+                this.remove();
+            }
+        }
+
+        document.removeEventListener("mousemove", this.mouseMoveHandler);
+        document.removeEventListener("mouseup", this.mouseUpHandler);
+
+        saveGuidelinesToLocalStorage();
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------
+    // remove: Removes the guideline HTML-element from the DOM. Removes the guideline from the global array of guideline objects.
+    //---------------------------------------------------------------------------------------------------------------------------
+
+    remove() {
+        this.element.remove();
+
+        const index = guidelines.findIndex(guideline => Object.is(this, guideline));
+        guidelines.splice(index, 1);
+
+        saveGuidelinesToLocalStorage();
+    }
+
+    //------------------------------------------------------------------------------
+    // lock: Locks the guideline and makes sure it cannot be detected on mouse over.
+    //------------------------------------------------------------------------------
+
+    lock() {
+        this.isLocked = true;
+        this.element.style.pointerEvents = "none";
+    }
+
+    //-------------------------------------------------------------------------------
+    // unlock: Unlocks the guideline and makes sure it can be detected on mouse over.
+    //-------------------------------------------------------------------------------
+
+    unlock() {
+        this.isLocked = false;
+        this.element.style.pointerEvents = "all";
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    // exportToLocalStorage: Returns an object containing all necessary properties to recreate the guideline as a new instance.
+    //                       Used to store only necessary properties in local storage.
+    //-------------------------------------------------------------------------------------------------------------------------
+
+    exportToLocalStorage() {
+        return {
+            axis: this.axis,
+            position: this.position,
+            isLocked: this.isLocked
+        };
     }
 }
 

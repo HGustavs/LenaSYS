@@ -287,15 +287,36 @@
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick='toggleComments(event);'>Hide Comments</span>                       
                     </div>
-                    <div class="drop-down-divider">
+                    <div class="drop-down-divider"></div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option" onclick="toggleRulers();">Rulers active</span>
                     </div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option">Guidelines</span>
+                        <div class="side-drop-down">
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="addGuideline(new Guideline('x'));">Create horizontal guideline</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="addGuideline(new Guideline('y'));">Create vertical guideline</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="lockOrUnlockGuidelines(true);">Lock guidelines</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="lockOrUnlockGuidelines(false);">Unlock guidelines</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="deleteGuidelines();">Delete guidelines</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="drop-down-divider"></div>
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="toggleFullscreen();">Fullscreen</span>
                         <i class="hot-key hot-key-tick">Shift + F11</i>           
                     </div>
-                    <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="toggleRulers();">Rulers</span>        
-                    </div>
+                    <div class="drop-down-divider"></div>
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="toggleTimeline();">Timeline</span>        
                     </div>
@@ -503,6 +524,7 @@
                     </span>
                     <span id="zoomV"></span>
                 </div>
+                <div id="diagram-guideline-container"></div>
             </div>
             <div id="diagram-timeline-container">
                 <div class="diagram-timeline-controls" style="border-right:1px solid #000000;">
