@@ -929,7 +929,7 @@ function loadUserInformation(){
 						row.uid,
 						row.username,
 						pageLoad,
-						row.timestamp
+						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
 					]);
 				}
             });
