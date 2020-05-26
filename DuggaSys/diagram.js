@@ -6563,7 +6563,7 @@ class Guideline {
 
         if(md !== mouseState.empty) {
             this.lock();
-            this.container.parentElement.parentElement.classList.add("noselect");
+            document.body.classList.add("noselect");
             return;
         }
         
@@ -6576,13 +6576,13 @@ class Guideline {
 
     mouseLeave() {
         this.unlock();
-        this.container.parentElement.parentElement.classList.remove("noselect");
+        document.body.classList.add("noselect");
     }
 
     mouseDown(e) {
         this.element.classList.add("moving");
         this.container.style.pointerEvents = "all";
-        this.container.parentElement.parentElement.classList.add("noselect")
+        document.body.classList.add("noselect");
 
         if(this.axis === 'x') {
             this.moveStartPosition = e.clientY;
@@ -6616,7 +6616,7 @@ class Guideline {
         this.element.classList.remove("moving");
         this.container.style.pointerEvents = "none";
         this.container.style.cursor = "default";
-        this.container.parentElement.parentElement.classList.remove("noselect");
+        document.body.classList.add("noselect");
 
         if(this.axis === 'x') {
             if(this.element.offsetTop < 0 || this.element.offsetTop > this.container.offsetHeight) {
