@@ -1511,6 +1511,9 @@ function renderTable(data) {
 
 function updateCounter(count, user, page)
 {
+	if(page == undefined)
+		return;
+
 	$('#analytic-info').append("<p>" + page + " has been loaded " + count + " times by " + user + "! </p>");
 	hasCounter = false;
 }
