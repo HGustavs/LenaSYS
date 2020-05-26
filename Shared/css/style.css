@@ -1243,6 +1243,19 @@ div .navButt:hover {
     width:100%
 
 }
+.v1{
+
+  border-left: 4px solid white;
+  width:5px;
+  margin-left:2px;
+  margin-right:2px;
+  top:0px;
+  bottom:0px;
+  border-spacing: 2px;
+  position: absolute;
+  left:335px;
+  
+}
 
 @media only screen and (max-width: 800px) {
         #div2 {
