@@ -5,7 +5,7 @@ var analytics = {
 };
 
 //------------------------------------------------------------------------------------------------
-// Document ready callback		
+// Document ready callback
 //------------------------------------------------------------------------------------------------
 $(function() {
 	switch (analytics.chartType) {
@@ -24,7 +24,7 @@ $(function() {
 	switch(localStorage.getItem('analyticsPage')) {
 		case "onlineUsers":
 			loadCurrentlyOnline();
-			break;			
+			break;
 		case "passwordGuessing":
 			loadPasswordGuessing();
 			break;
@@ -63,7 +63,7 @@ $(function() {
 });
 
 //------------------------------------------------------------------------------------------------
-// Removes the chart data and clears the chart canvas	
+// Removes the chart data and clears the chart canvas
 //------------------------------------------------------------------------------------------------
 function resetAnalyticsChart() {
 	analytics.chartType = null;
@@ -91,7 +91,7 @@ function loadAnalytics(q, cb) {
 }
 
 //------------------------------------------------------------------------------------------------
-// Analytic loaders START	
+// Analytic loaders START
 //------------------------------------------------------------------------------------------------
 function loadGeneralStats() {
 	loadAnalytics("generalStats", function(data) {
@@ -140,7 +140,7 @@ function loadGeneralStats() {
 			'Top Page: ' + data['stats']['topPage'],
 			'Hits: ' + data['stats']['topPageHits']
     ]);
-    
+
 		// Top Browser
 		tableData.push([
 			'Top Browser',
@@ -152,7 +152,7 @@ function loadGeneralStats() {
 			'Top OS',
 			data['stats']['topOS']
 		]);
-     
+
         // Number of service crashes
 		tableData.push([
 			'Service crashes',
@@ -170,13 +170,13 @@ function loadGeneralStats() {
 			'Slowest Service: ' + data['stats']['slowestService'],
 			data['stats']['slowestServiceSpeed'] + " ms"
 		]);
-     
+
         // Top viewed Example
 		tableData.push([
 			'Top viewed Example: ' + data['stats']['topViewedExample'],
 			'Hits: ' + data['stats']['topViewedExampleHits']
 		]);
-      
+
         // Top viewed Dugga
 		tableData.push([
 			'Top viewed Dugga: ' + data['stats']['topViewedDugga'],
@@ -190,7 +190,7 @@ function loadGeneralStats() {
     	]);
 
 		$('#analytic-info').append(renderTable(tableData));
-		
+
 		// Disk usage
 		var chartData = [];
 		chartData.push({
@@ -202,7 +202,7 @@ function loadGeneralStats() {
 			label: 'Memory Available ('+data.disk.memFree+')',
 			value: data.disk.memFreePercent
 		});
-		
+
 		chartData.push({
 			label: 'Total Memory ('+data.disk.memTotal+')',
 			value: 0
@@ -217,14 +217,14 @@ function loadGeneralStats() {
 				label: 'Total RAM ('+data.ram.total+')',
 				value: data.ram.totalPercent
 			});
-	
+
 			chartData.push({
 				label: 'Free RAM ('+data.ram.free+')',
 				value: data.ram.freePercent
 			});
 			drawPieChart(chartData, 'RAM Usage on the Server', true);
 		}
-			
+
 		// CPU Usage
 		if(data.cpu != undefined){
 			var chartData = [];
@@ -232,12 +232,12 @@ function loadGeneralStats() {
 				label: 'CPU Load (' + (+data.cpu.totalPercent).toFixed(1) + '%)',
 				value: data.cpu.totalPercent
 			});
-	
+
 			chartData.push({
 				label: 'CPU Free (' + (+data.cpu.freePercent).toFixed(1) +'%)',
 				value: data.cpu.freePercent
 			});
-			drawPieChart(chartData, 'CPU Usage on the Server', true);	
+			drawPieChart(chartData, 'CPU Usage on the Server', true);
 		}
 	});
 }
@@ -252,7 +252,7 @@ function loadCurrentlyOnline() {
 		console.log(activeUsers);
 		for (var stat in activeUsers) {
 			if (activeUsers.hasOwnProperty(stat)) {
-				var date = new Date(activeUsers[stat].time.replace(' ', 'T') + "Z");			
+				var date = new Date(activeUsers[stat].time.replace(' ', 'T') + "Z");
 				tableData.push([
 					activeUsers[stat].username,
 					'<a href="' + activeUsers[stat].refer + '" target="_blank">' + activeUsers[stat].refer + '</a>',
@@ -262,7 +262,7 @@ function loadCurrentlyOnline() {
 		}
 
 		$('#analytic-info').append(renderTable(tableData));
-	
+
 	});
 }
 
@@ -536,7 +536,7 @@ function loadFileInformation() {
 	$('#pageTitle').text("File Information");
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>File information for created and edited files.</p>");
-	
+
 
     var inputDateFrom = $('<input type="text"></input>')
         .datepicker({
@@ -544,15 +544,15 @@ function loadFileInformation() {
         })
         .datepicker("setDate", "-1m")
         .appendTo($('#analytic-info'));
- 
+
     var inputDateTo = $('<input type="text"></input>')
         .datepicker({
             dateFormat: "yy-mm-dd"
         })
         .datepicker("setDate", "+1d")
         .appendTo($('#analytic-info'));
-	
- 
+
+
     function updateFileInformation() {
         $.ajax({
             url: "analyticService.php",
@@ -575,7 +575,7 @@ function loadFileInformation() {
                     else{
                         var action = "Edited"
                     }
- 
+
                     if (!files.hasOwnProperty(file)) {
                         files[file] = [["Username", "Action", "Version", "File", "Timestamp"]];
                     }
@@ -587,10 +587,10 @@ function loadFileInformation() {
                         version,
                         file,
                         row.timestamp
-                    ]);     
+                    ]);
                     }
                 });
- 
+
                 $('#analytic-info > select.file-select').remove();
 				var fileSelect = $('<select class="file-select"></select>');
 				var i = 0;
@@ -616,10 +616,10 @@ function loadFileInformation() {
             }
         });
     }
-   
+
     inputDateFrom.change(updateFileInformation);
     inputDateTo.change(updateFileInformation);
- 
+
     updateFileInformation();
 }
 
@@ -629,16 +629,16 @@ function loadPageInformation() {
 	$('#pageTitle').text("Page Information");
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>Page information.</p>");
-	
+
 	var firstLoad = true;
- 
+
     var selectPage = $("<select></select>")
         .append('<option value="showDugga" selected>showDugga</option>')
 		.append('<option value="codeviewer">codeviewer</option>')
 		.append('<option value="sectioned">sectioned</option>')
 		.append('<option value="courseed">courseed</option>')
         .appendTo($('#analytic-info'));
-   
+
     function updatePageHitInformation(pages, page){
         loadAnalytics("pageInformation", function(data) {
 
@@ -661,7 +661,7 @@ function loadPageInformation() {
             updatePieChartInformation(page, tableData, data);
         });
     }
- 
+
     function updatePieChartInformation(page, tableData, data){
 		var courseID = [];
 		var coursePercentage = [];
@@ -709,19 +709,19 @@ function loadPageInformation() {
 					}
 				}, error: function(){
 					console.log(" AJAX error");
-				}		
+				}
 			});
         }
 
         var chartData = [];
         for (var i = 0; i < data['percentage'][page].length; i++) {
-			
+
             chartData.push({
                 label: "courseid:" + " " + data['percentage'][page][i].courseid,
                 value: data['percentage'][page][i].percentage
             });
 		}
-		
+
         $('#analytic-info').append("<p>Page information.</p>");
         $('#analytic-info').append(selectPage);
 		$('#analytic-info').append(renderTable(tableData));
@@ -730,7 +730,7 @@ function loadPageInformation() {
 		}
         updateState();
     }
- 
+
     function updateState(){
 		// Add additonal pages here
 		var pages = ["dugga", "codeviewer", "sectioned", "courseed", "fileed", "resulted", "analytic", "contribution", "duggaed", "accessed", "profile"];
@@ -738,7 +738,7 @@ function loadPageInformation() {
 		if(firstLoad === true){
 			updatePageHitInformation(pages, pages[0]);
 			firstLoad = false;
-		} 
+		}
         selectPage.change(function(){
             switch(selectPage.val()){
                 case "showDugga":
@@ -756,7 +756,7 @@ function loadPageInformation() {
             }
         });
     }
- 
+
     updateState();
 }
 
@@ -768,7 +768,7 @@ function loadUserInformation(){
 	$('#analytic-info').append("<p>User information.</p>");
 
 	var firstLoad = true;
-	
+
 	var selectPage = $("<select></select>")
         .append('<option value="sectioned" selected>sectioned</option>')
 		.append('<option value="courseed">courseed</option>')
@@ -777,8 +777,8 @@ function loadUserInformation(){
 		.append('<option value="events">events</option>')
 		.append('<option value="fileEvents">fileEvents</option>')
         .appendTo($('#analytic-info'));
- 
- 
+
+
     function updateSectionedInformation(){
         loadAnalytics("sectionedInformation", function(data) {
             var users = {};
@@ -789,7 +789,7 @@ function loadUserInformation(){
 				var cid;
 				var vers;
 
-				//Retrives the page 
+				//Retrives the page
 				if(row.refer.includes("/DuggaSys/")){
 					pageParts = row.refer.split("/DuggaSys/");
 					pageLoad = pageParts[1];
@@ -835,7 +835,7 @@ function loadUserInformation(){
             updateState(users);
         });
 	}
-	
+
 	function updateCourseedInformation(){
         loadAnalytics("courseedInformation", function(data) {
 			var users = {};
@@ -844,7 +844,7 @@ function loadUserInformation(){
 				var pageParts;
 				var pageLoad;
 
-				//Retrives the page 
+				//Retrives the page
 				if(row.refer.includes("/DuggaSys/")){
 					pageParts = row.refer.split("/DuggaSys/");
 					pageLoad = pageParts[1];
@@ -870,13 +870,13 @@ function loadUserInformation(){
             updateState(users);
         });
     }
- 
+
     function updateCodeviewerInformation(){
 		var users = {};
         loadAnalytics("codeviewerInformation", function(data) {
             $.each(data, function(i, row) {
                 var user = row.username;
-               
+
                 if (!users.hasOwnProperty(user)) {
                     users[user] = [["Userid", "Username", "Page", "Courseid", "Exampleid", "Timestamp"]];
 				}
@@ -893,15 +893,15 @@ function loadUserInformation(){
             });
             updateState(users);
         });
-	} 
-	
+	}
+
 
     function updateDuggaInformation(){
 		var users = {};
         loadAnalytics("duggaInformation", function(data) {
             $.each(data, function(i, row) {
                 var user = row.username;
-               
+
                 if (!users.hasOwnProperty(user)) {
                     users[user] = [["Userid", "Username", "Page", "Courseid", "Duggaid", "Timestamp"]];
 				}
@@ -918,8 +918,8 @@ function loadUserInformation(){
             });
             updateState(users);
         });
-    } 
- 
+    }
+
     function updateUserLogInformation(users){
 		var event;
 		var users = {};
@@ -947,13 +947,13 @@ function loadUserInformation(){
 							row.timestamp,
 							event
 						]);
-						updateState(users);	
+						updateState(users);
 					}
 				}
             });
 		});
 	}
-	
+
 	function updatefileEvents(users){
 		var event;
 		var users = {};
@@ -981,13 +981,13 @@ function loadUserInformation(){
 							row.timestamp,
 							event
 						]);
-						updateState(users);	
+						updateState(users);
 					}
 				}
             });
 		});
 	}
-   
+
     function updateState(users){
         $('#analytic-info > select.file-select').remove();
         var userSelect = $('<select class="file-select"></select>');
@@ -1000,11 +1000,11 @@ function loadUserInformation(){
 				}
             }
         }
-		
+
         userSelect.change(function() {
 			deleteTable();
 			$('#analytic-info').append(selectPage);
-			
+
 			var events = [];
 			if(users[$(this).val()][0][5] == "EventDescription") {
 				for(var i = 1; i < users[$(this).val()].length; i++) {
@@ -1028,9 +1028,9 @@ function loadUserInformation(){
 					$('#analytic-info').append(renderTable(userNumEvents));
 				}
 			}
-			
+
 			$('#analytic-info').append(renderTable(users[$(this).val()]));
-			
+
 			try {
 				localStorage.setItem('analyticsLastUser', $(this).val());
 			} catch(err) { }
@@ -1039,12 +1039,12 @@ function loadUserInformation(){
         $('#analytic-info').append(userSelect);
 		userSelect.change();
 		pageSelect();
-	}	
+	}
 	function pageSelect(){
 		if(firstLoad === true){
 			updateSectionedInformation();
 			firstLoad = false;
-		} 
+		}
         selectPage.change(function(){
             switch(selectPage.val()){
                 case "sectioned":
@@ -1068,17 +1068,17 @@ function loadUserInformation(){
             }
         });
     }
- 
+
     pageSelect();
 }
 
 //------------------------------------------------------------------------------------------------
-// Analytic loaders END	
+// Analytic loaders END
 //------------------------------------------------------------------------------------------------
 
 
 //------------------------------------------------------------------------------------------------
-// Fits a canvas to its container	
+// Fits a canvas to its container
 //------------------------------------------------------------------------------------------------
 function fitCanvasToContainer(canvas, width = 100, height = 100) {
 	canvas.style.width = width + "%";
@@ -1097,7 +1097,7 @@ function clearCanvas(canvas) {
 }
 
 //------------------------------------------------------------------------------------------------
-// Deletes tables with the class name "rows" 
+// Deletes tables with the class name "rows"
 //------------------------------------------------------------------------------------------------
 function deleteTable() {
 	var table = document.getElementsByClassName("rows");
@@ -1147,7 +1147,7 @@ function drawBarChart(data, format = null) {
 
 	fitCanvasToContainer(canvas);
 	clearCanvas(canvas);
-	
+
 	var barWidth = 40;
 	var fontSize = 12;
 	ctx.font = fontSize + "px Arial";
@@ -1158,36 +1158,38 @@ function drawBarChart(data, format = null) {
 	barSpacing = barSpacing > 50 ? barSpacing : 50;
 	var textAreaHeight = fontSize * 2.2;
 	var barHeightMultiplier = (canvas.height - textAreaHeight) / chartDataMax(data);
-	
+
 	for (var i = 0; i < data.length; i++) {
 		var x = barSpacing + i * (barWidth + barSpacing);
-		
+
 		ctx.fillStyle = "#614875";
 		ctx.scale(1, -1);
 		ctx.fillRect(x, textAreaHeight, barWidth, data[i].value * barHeightMultiplier);
 		ctx.scale(1, -1);
 		ctx.fillStyle = "white";
-		
+
 		if(format == "bytes") {
 			ctx.fillText(humanFileSize(data[i].value), x + barWidth / 2, -data[i].value * barHeightMultiplier);
 		} else {
 			ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
 		}
-		
 		ctx.fillStyle = "black";
+		if(isDarkMode()){
+			ctx.fillStyle = "white";
+		}
 		ctx.fillText(data[i].label, x + barWidth / 2, -textAreaHeight / 2);
 	}
 }
 
 function humanFileSize(size) {
-	if (size < 1024) 
+	if (size < 1024)
 		return size + ' B'
     let i = Math.floor(Math.log(size) / Math.log(1024))
     let num = (size / Math.pow(1024, i))
     let round = Math.round(num)
 	num = round < 10 ? num.toFixed(2) : round < 100 ? num.toFixed(1) : round
-	
-    return `${num} ${'KMGTPEZY'[i-1]}B` 
+
+    return `${num} ${'KMGTPEZY'[i-1]}B`
 }
 
 //------------------------------------------------------------------------------------------------
@@ -1230,7 +1232,7 @@ function drawPieChart(data, title = null, multirow = false) {
 	} else {
 		fitCanvasToContainer(canvas);
 	}
-	
+
 	clearCanvas(canvas);
 
 	var total = 0;
@@ -1246,6 +1248,9 @@ function drawPieChart(data, title = null, multirow = false) {
 	// Add the title to the chart
 	if(title != null) {
 		ctx.font = "20px Arial";
+		if(isDarkMode()){
+			ctx.fillStyle = "white";
+		}
 		ctx.fillText(title, radius * 2 + 30, 25);
 	}
 
@@ -1260,6 +1265,9 @@ function drawPieChart(data, title = null, multirow = false) {
 
 		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 40, 12, 12);
 		ctx.fillStyle = "black";
+		if(isDarkMode()){
+			ctx.fillStyle = "white";
+		}
 		ctx.font = fontSize + "px Arial";
 		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight + 20);
 	}
@@ -1331,8 +1339,13 @@ function drawLineChart(data) {
 
 	ctx.lineWidth = 2;
 	ctx.strokeStyle = "#333";
+	if(isDarkMode()) {
+		ctx.strokeStyle = "#888"
+		ctx.fillStyle = "white"
+	}
 	ctx.font = "Arial 8pt";
-	ctx.textAlign = "center"
+	ctx.textAlign = "center";
+
 
 	// Draw L
 	ctx.beginPath();
@@ -1389,3 +1402,10 @@ function timeSince(date) {
     // pluralise and append suffix
     return a[0] + ' ' + a[1] + (a[0] === 1 ? '' : 's') + suffix;
   }
+
+	function isDarkMode() {
+	  return (
+	    window.matchMedia &&
+	    window.matchMedia("(prefers-color-scheme: dark)").matches
+	  );
+	}
