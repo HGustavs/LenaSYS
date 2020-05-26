@@ -598,15 +598,17 @@ function loadFileInformation() {
  
                     if (!files.hasOwnProperty(file)) {
                         files[file] = [["Username", "Action", "Version", "File", "Timestamp"]];
-                    }
-                    const splits = row.timestamp.split(' ', 2)
+					}
+					
+					const splits = row.timestamp.split(' ', 2)
+					timestamp = new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString();
                     if(splits[0] >=  inputDateFrom.val() && splits[0] <= inputDateTo.val()){
                         files[file].push([
                         row.username,
                         action,
                         version,
                         file,
-                        row.timestamp
+                        timestamp
                     ]);     
                     }
                 });
