@@ -363,20 +363,19 @@ if(strcmp($opt,"GETVARIANTANSWER")==0){
 	$first = $temp[0];
 	$second = $temp[1];
 	$thrid = $temp[2];
+	$variant = $temp[3];
 
-	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer,feedback FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.uid = :uid and userAnswer.cid = :cid and userAnswer.vers = :vers");
 	
-	$query->bindParam(':uid', $userid);
+	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer,feedback FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.cid = :cid and userAnswer.vers = :vers and variant.vid = :vid");
 	$query->bindParam(':cid', $first);
 	$query->bindParam(':vers', $second);
-	$result = $query->execute();
+	$query->bindParam(':vid', $variant);
+	$query->execute();
+	$result = $query->fetch();
 	
 	$setanswer="";
 	
-	foreach($query->fetchAll() as $row) {
-		$setanswer.=$row['variantanswer'].",";
-		$savedanswer.=$row['useranswer'].",";
-	}
+	$setanswer=$result['variantanswer'];
 	
 	makeLogEntry($userid,2,$pdo,$first);
 	$insertparam = true;
@@ -564,6 +563,7 @@ $array = array(
 		"files" => $files,
 		"userfeedback" => $userfeedback,
 		"feedbackquestion" => $feedbackquestion,
+		"variant" => $savedvariant,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 

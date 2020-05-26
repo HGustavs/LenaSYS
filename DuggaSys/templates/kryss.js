@@ -19,6 +19,7 @@ Example seed
 -------------==============######## Documentation End ###########==============-------------
 */
 var idunique = 0;
+var variant = "UNK";
 function quiz(parameters) {
 	if(parameters != undefined) {
 		console.log("pram:" + parameters);
@@ -82,6 +83,7 @@ function setup()
 
 function returnedDugga(data)
 {	
+	variant = data['variant'];
 	if(querystring['highscoremode'] == 1) {
 		Timer.startTimer();
 	} else if (querystring['highscoremode'] == 2) {
@@ -123,7 +125,7 @@ var answer ="";
 	}
 idunique = 0;
 		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-		savequizResult(answer);
+		savequizResult(answer, variant);
 }
 
 //----------------------------------------------------------------------------------
@@ -135,28 +137,27 @@ function showFacit(param, uanswer, danswer)
 {
 	AJAXService("GETVARIANTANSWER",{ setanswer:uanswer},"VARIANTPDUGGA");
 	var splited = uanswer.split(" ");
-	allanswers =  splited[3];
+	allanswers =  splited[4];
 }
 
 function returnedanswersDugga(data){
-
 theanswers= data['param'];
 var checkifcorrect ="Answered: ";
 
 
-var theanswerSplit = theanswers.split(",");
+var theanswerSplit = theanswers.split(" ");
 var answeredSplit = allanswers.split(",");
 
 	for(var i = 0;i < answeredSplit.length;i++){
 		if(theanswerSplit[i] == answeredSplit[i]){
 	
-			checkifcorrect += "<span style ='color:green'>"+answeredSplit[i] + ',</span>';
+			checkifcorrect += "<span style ='color:green'>"+answeredSplit[i] + ' </span>';
 		}else{
-			checkifcorrect +=  "<span style ='color:red'>"+answeredSplit[i] + ',</span>';
+			checkifcorrect +=  "<span style ='color:red'>"+answeredSplit[i] + ' </span>';
 		}
 	}
 
-	var yoloswag = "Answered: " + theanswers;
+	var yoloswag = "Correct answers: " + theanswers;
 $("#output").html(checkifcorrect+"</br>"+yoloswag);
 }
 function closeFacit(){
