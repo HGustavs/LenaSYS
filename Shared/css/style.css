@@ -1287,6 +1287,11 @@ div .navButt:hover {
     .burgerOption {
         padding: 15px 15px 15px 15px;
     }
+    .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2, .PF2, .UI2{display:none;}
+    
+    .CD{
+      display: none;
+    }
     .err{
     display: none;
     }
@@ -1305,10 +1310,51 @@ div .navButt:hover {
     .box{
         margin-top: 30px !important;
     }
-    
-    
 }
 
+/*MEDIA QUERIES FOR HAMBURGER MENU IN ANALYTICS.PHP*/
+@media only screen and (max-width: 700px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2, .PF2{display:none;}
+  .UI2{display:block;}
+    .UI{
+      display: none;
+    }
+}
+@media only screen and (max-width: 600px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2{display:none;}
+  .PF2{display:block;}
+    .PF{
+      display: none;
+    }
+}
+@media only screen and (max-width: 550px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2{display:none;}
+  .FF2{display:block;}
+    .FF{
+      display: none;
+    }
+}
+@media only screen and (max-width: 500px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2{display:none;}
+  .SC2, .SS2{display:block;}
+    .SC, .SS{
+      display: none;
+    }
+}
+@media only screen and (max-width: 450px) {
+  .GS2, .CO2, .PG2, .OP2{display:none;}
+  .SS2, .BP2{display:block;}
+    .SU, .BP{
+      display: none;
+    }
+}
+@media only screen and (max-width: 400px) {
+  .GS2, .CO2{display:none;}
+  .OP2, .PG2{display:block;}
+    .OP, .PG{
+      display: none;
+    }
+}
 
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
@@ -4368,26 +4414,24 @@ ul.hamburgerList button.menuButton {
   padding: 0px 0px 0px 0px;
 }
 
-.container {
+.hamContainer {
   display: inline-block;
   cursor: pointer;
   margin-top: 4px;
 }
 
-.bar1,
-.bar2,
-.bar3 {
-  width: 17px;
-  height: 3px;
+.bar1,.bar2,.bar3 {
+  width: 26px;
+  height: 5px;
   background-color: var(--color-background);
   margin: 3px 0;
   transition: 0.4s;
 }
 
 .change .bar1 {
-  -webkit-transform: rotate(-45deg) translate(-5px, 4px);
-  transform: rotate(-45deg) translate(-5px, 4px);
-  width: 20px;
+  -webkit-transform: rotate(-45deg) translate(-8px, 4px);
+  transform: rotate(-45deg) translate(-8px, 4px);
+  width: 26px;
 }
 
 .change .bar2 {
@@ -4395,9 +4439,9 @@ ul.hamburgerList button.menuButton {
 }
 
 .change .bar3 {
-  -webkit-transform: rotate(45deg) translate(-6px, -2px);
-  transform: rotate(45deg) translate(-4px, -4px);
-  width: 20px;
+  -webkit-transform: rotate(45deg) translate(-7px, -3px);
+  transform: rotate(45deg) translate(-7px, -3px);
+  width: 26px;
 }
 
 /* moment date and course version */
@@ -7206,6 +7250,36 @@ textarea#filecont {
     justify-content: center;
     flex-flow:wrap;
 }
+
+/*HAMBURGER LIST IN ANALYTICS ------------*/
+.hamburgerList{
+  list-style: none;
+  position: absolute;
+  padding: 0px 0px 0px 0px;
+  left: -4px;
+  top: 25px;
+  display: none;
+}
+
+.hamburgerList li{
+  background-color:#493150;
+  box-shadow: 1px 1px 4px #3a3a3a;
+  border-radius: 35%;
+  -webkit-border-radius: 35%;
+}
+
+.hamburgerList li a{
+  font-size: 24px;
+  line-height: 50px;
+}
+
+@media only screen and (min-width: 801px) {
+  #hamburger{
+    display:none;
+  }
+}
+
+
 #selectdir{
   width: 120px;
   position: relative;
