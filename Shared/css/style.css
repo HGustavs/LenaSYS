@@ -3764,9 +3764,8 @@ padding: 10px;
 
 .dropdown-list-container {
   padding: 8px;
-  width: 300px;
-  max-height: calc(100vh - 100px);
-  height: auto;
+  width: 400px;
+  
   font-size: 12px;
   overflow-y: auto;
   display: none;
@@ -7298,3 +7297,22 @@ textarea#filecont {
   
 }
 
+#columnfilter{
+  border-right: 1px solid #a6a6a6;
+  float: left;
+  width: 50%;
+  overflow: hidden;
+}
+#customfilter{
+  overflow: hidden;
+}
+#sortLeft{
+  float: left;
+  width:49%;
+  overflow: hidden;
+}
+#sortRight{
+  border-left: 1px solid #a6a6a6;
+  width:50%;
+  overflow: hidden;
+}
