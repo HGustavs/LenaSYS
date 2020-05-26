@@ -840,6 +840,7 @@ function loadUserInformation(){
 		.append('<option value="fileEvents">fileEvents</option>')
 		.append('<option value="course">course</option>')
 		.append('<option value="loginFail">loginFail</option>')
+		.append('<option value="calendar">Calendar Subscriptions</option>')
     .appendTo($('#analytic-info'));
 		
 	$("#userInformationPage").val(localStorage.getItem('userInformationPage'));
@@ -869,6 +870,10 @@ function loadUserInformation(){
 		case "loginFail":
 			updateloginFail();
 			break;
+		case "calendar":
+			updateCalendarInformation();
+			pageCount = "calendar.php";
+			break;
 		case "sectioned":
 		default:
 			updateSectionedInformation();
@@ -876,6 +881,30 @@ function loadUserInformation(){
 			break;
 	}
 
+ 
+    function updateCalendarInformation(){
+		hasCounter = true;
+        loadAnalytics("calendarInformation", function(data) {
+            var users = {};
+            $.each(data, function(i, row) {
+				var user = row.username;
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["User ID", "Username",  "Course ID", "Course Version", "Subscribed at"]];
+				}
+				if(row.courseid != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						row.courseid,
+						row.coursevers,
+						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
+					]);
+				}
+            });
+            updateState(users);
+        });
+	}
  
     function updateSectionedInformation(){
 		hasCounter = true;
@@ -1347,6 +1376,10 @@ function loadUserInformation(){
 					break;
 				case "loginFail":
 					updateloginFail();
+					break;
+				case "calendar":
+					updateCalendarInformation();
+					pageCount = "calendar.php";
 					break;
             }
         });
