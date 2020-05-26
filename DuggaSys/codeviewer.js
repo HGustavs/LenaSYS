@@ -2523,8 +2523,8 @@ function minimizeBoxes(boxid) {
 	if(templateid == 8 && isMobile == false){
 		if(boxid == 1){
 			for(i = 1; i <= 3; i++){
-				$(boxValArray['box' + i]['id']).width("100%");
-				$(boxValArray['box' + boxid]['id']).width("10%");	
+				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
 			}
 			thisBox2.classList.remove('hidden');
 			thisBox3.classList.remove('hidden');
@@ -2537,8 +2537,8 @@ function minimizeBoxes(boxid) {
 		}
 		else{
 			for(i = 1; i <= 3; i++){
-				$(boxValArray['box' + i]['id']).height("100%");
-				$(boxValArray['box' + boxid]['id']).height("10%");	
+				document.querySelector(boxValArray['box' + i]['id']).style.height = "100%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.height = "10%";
 			}
 		}
 	}
