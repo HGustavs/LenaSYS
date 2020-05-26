@@ -2649,6 +2649,7 @@ function clearCanvas() {
     for (var i = 0; i < points.length;) {
         points.pop();
     }
+    selected_objects = [];
     resetSerialNumbers();
     updateGraphics();
 }
@@ -6400,7 +6401,7 @@ function initRulers() {
     function mouseUpHandler() {
         mouseDownRulerX = false;
         mouseDownRulerY = false;
-        document.body.classList.add("noselect");
+        document.body.classList.remove("noselect");
         document.removeEventListener("mouseup", mouseUpHandler);
     }
 
