@@ -1619,9 +1619,13 @@ function Symbol(kindOfSymbol) {
 		
         if (this.properties['key_type'] == "Weak") {
             this.drawWeakEntity(x1, y1, x2, y2);
-            this.setLinesConnectedToRelationsToForced();
+
+            //The system should not force the line to be forced according to customer.
+            //There are many situations where this is unwanted functionality and it can force the diagram to be wrong.
+            //The function can be kept just in case and maybe it can be developed further in the future to always force the diagram to be correct.
+            //this.setLinesConnectedToRelationsToForced();
         } else {
-            this.setLinesConnectedToRelationsToNormal();
+            //this.setLinesConnectedToRelationsToNormal();
 		}
 
 		if(!checkSamePage(x1,y1,x2,y2)){
