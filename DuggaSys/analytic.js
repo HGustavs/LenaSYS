@@ -702,6 +702,12 @@ function loadPageInformation() {
 
         for (var i = 0; i < data['percentage'][page].length; i++) {
 			numberOfCourses = parseInt(data['percentage'][page].length);
+			
+			var cid = data['percentage'][page][i].refer.match('.+?cid=([0-9]+)');
+			if(cid != null) {
+				data['percentage'][page][i].courseid = cid[1];
+			}
+			
 			courseID.push([
                 data['percentage'][page][i].courseid
 			]);
@@ -731,6 +737,7 @@ function loadPageInformation() {
 							courseName[i]
 						]);
 					}
+
 					if(loopCounter == numberOfCourses){
 						if(courseName.length !== 0){
 							$('#analytic-info').append(renderTable(tablePercentage));
