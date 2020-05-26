@@ -865,6 +865,7 @@ document.addEventListener('click', function(e){
 				dropdown.style.display = "block";
 				activeDropdown = dropdown;
 				activeArrow = arrow;
+				openArrow(activeDropdown.parentElement.parentElement);
 			}else{
 				dropdown.style.display = "none";
 				activeDropdown = undefined;
@@ -879,6 +880,7 @@ document.addEventListener('click', function(e){
 						activeDropdown.style.display = "none";
 						e.target.closest('.access-dropdown').querySelector('.access-dropdown-content').style.display = "block";
 						activeDropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content')
+						openArrow(activeDropdown.parentElement.parentElement);
 					}else{
 						activeDropdown.style.display = "none";
 						activeDropdown = undefined;
