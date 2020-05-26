@@ -472,18 +472,16 @@ function mouseOverSearchInput() {
 }
 
 
-$('#ham').click(function(){
-    // Give the element the class "inactive" when it's 
-	
+/*Toggle the hamburger list containing the icons to appear*/
+$('#ham').click(function(){	
 	var isAnimating = $("#hamburgerList").is(':animated');
-	console.log(isAnimating);
 	if(isAnimating == false){
 		$('#hamburgerList').slideToggle(500, function(){
 		});
 	}
 })
 
-/*Toggle the hamburger menu into an X*/
+/*Toggle the hamburger menu "button" into an X and then back to normal*/
 function hamburgerToggle() {
 	var isAnimating = $("#hamburgerList").is(':animated');
 	if(isAnimating == false){
