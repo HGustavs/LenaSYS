@@ -444,11 +444,11 @@ function loadServiceUsage() {
 function loadCourseDiskUsage() {
 	loadAnalytics("courseDiskUsage", function(data) {
 		localStorage.setItem('analyticsPage', 'courseDiskUsage');
-		$('#pageTitle').text("Coruse Disk Usage");
+		$('#pageTitle').text("Course Disk Usage");
 		$('#analytic-info').append("<p class='analyticsDesc'>The disk usage per course</p>");
 
 		var tableData = [
-			["Corse Code", "Course", "Disk Usage"]
+			["Course Code", "Course", "Disk Usage"]
 		];
 		for (var i = 0; i < data.length; i++) {
 			tableData.push([

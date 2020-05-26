@@ -20,9 +20,9 @@
 	$title = $exampleName;
 
     $css = array(
+        'markdown.css',
         'codeviewer.css',
         'style.css',
-        'markdown.css',
         'jquery-ui-1.10.4.min.css'
     );
     
@@ -39,18 +39,6 @@
         <title><?php echo $title; ?></title>
 		
 		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
-        <!--
-        <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-        <link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
-        <link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
-        <link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet" />
-
-        <script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
-        <script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-        <script type="text/javascript" src="../Shared/dugga.js"></script>
-        <script type="text/javascript" src="../Shared/markdown.js"></script>
-        <script type="text/javascript" src="codeviewer.js"></script>
-		-->
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>

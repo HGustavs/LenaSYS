@@ -55,12 +55,8 @@
 }
 
 .vl {
-  border-left: 6px solid white;
-  height:50px;
+  border-left: 2px solid white;
   width:5px;
-  margin-left:2px;
-  margin-right:2px;
-  top: 0;
 }
 
 .navcomment{
@@ -72,7 +68,7 @@
   border-width:1px;
   padding:5px 5px;
   color:#FFF; 
-  top:110%; 
+  top:105%; 
   left:-25%;
     margin: auto auto;
   text-align: center;
@@ -95,11 +91,29 @@
 .analytic-navbutton:hover span.navcomment{
     visibility: visible;
     opacity: 1;
-    top:125%;
+    top:140%;
 }
 
 @media only screen and (min-width:830px){
     .analytic-navbutton{
         display:inline-block;
+    }
+}
+
+@media only screen and (max-width:760px){
+    .navheader td{
+        font-size:1rem;
+    }
+    .navcomment{
+        top:70%;
+    }
+    .analytic-navbutton:hover span.navcomment{
+        top:90%;
+    }
+    .navcomment::after{
+        left:27px;
+    }
+    #pageTitle{
+        font-size:2rem;
     }
 }
