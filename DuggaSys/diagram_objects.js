@@ -24,6 +24,11 @@ function Symbol(kindOfSymbol) {
     this.isLockHovered = false;         // Checks if the lock itself is hovered on the symbol
     this.pointsAtSamePosition = false;
     this.isHovered = false;
+    this.umlSubline = {
+        subLineOne: [],
+        subLineTwo: [],
+        subLineThree: []
+    };
     
     // Connector arrays - for connecting and sorting relationships between diagram objects
     // They are not used for line, UML line and text objects but still created to prevent errors with other functions
@@ -1846,6 +1851,7 @@ function Symbol(kindOfSymbol) {
     // drawUMLLine: Draws uml line between uml objects
     //---------------------------------------------------------------
     this.drawUMLLine = function(x1, y1, x2, y2) {
+
         this.properties['strokeColor'] = '#000000';
         this.properties['lineWidth'] = 2;
 
@@ -1982,21 +1988,27 @@ function Symbol(kindOfSymbol) {
             }
         }
 
+
+
         if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
             ctx.lineTo(breakpointStartX, middleBreakPointY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(breakpointEndX, middleBreakPointY);
+            this.setSubLines(x1,y1,breakpointStartX,middleBreakPointX,breakpointEndX,breakpointStartY,middleBreakPointY,breakpointEndY,x2,y2,true);
         } else if((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(middleBreakPointX, breakpointStartY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(middleBreakPointX, breakpointEndY);
+            this.setSubLines(x1,y1,breakpointStartX,middleBreakPointX,breakpointEndX,breakpointStartY,middleBreakPointY,breakpointEndY,x2,y2,false)
+
         }  else if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(breakpointStartX, breakpointEndY);
+            this.setTwoSublines(x1,y1,breakpointStartX,breakpointEndY,x2,y2)
         }  else if((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
             ctx.lineTo(breakpointEndX, breakpointStartY);
+            this.setTwoSublines(x1,y1,breakpointEndX, breakpointStartY,x2,y2);
         }
 
-        // Draw to end breakpoint based on direction
         if (endLineDirection == "left") {
             ctx.lineTo(breakpointEndX, y2);
         } else if (endLineDirection == "right") {
@@ -2008,8 +2020,66 @@ function Symbol(kindOfSymbol) {
         }
         ctx.lineTo(x2, y2);
         ctx.stroke();
-
+        checkUMLLineIntersection(this.umlSubline.subLineOne.startX,this.umlSubline.subLineOne.startY,this.umlSubline.subLineOne.endX,this.umlSubline.subLineOne.endY)
+        checkUMLLineIntersection(this.umlSubline.subLineTwo.startX,this.umlSubline.subLineTwo.startY,this.umlSubline.subLineTwo.endX,this.umlSubline.subLineTwo.endY)
+        checkUMLLineIntersection(this.umlSubline.subLineThree.startX,this.umlSubline.subLineThree.startY,this.umlSubline.subLineThree.endX,this.umlSubline.subLineThree.endY)
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
+    }
+    //---------------------------------------------------------------
+    // setSubLines: used to save three sublines for UML lines
+    // setTwoSublines: used for when there only two uml sublines
+    //---------------------------------------------------------------
+    this.setSubLines = function(x1,y1,breakpointStartX,middleBreakPointX,breakpointEndX,breakpointStartY,middleBreakPointY,breakpointEndY,x2,y2,side){
+        if(side){
+            this.umlSubline.subLineOne.startX = x1;
+            this.umlSubline.subLineOne.startY = y1;
+            this.umlSubline.subLineOne.endX = breakpointStartX;
+            this.umlSubline.subLineOne.endY = middleBreakPointY;
+
+            this.umlSubline.subLineTwo.startX = breakpointStartX;
+            this.umlSubline.subLineTwo.startY = middleBreakPointY;
+            this.umlSubline.subLineTwo.endX = breakpointEndX;   
+            this.umlSubline.subLineTwo.endY = middleBreakPointY;
+
+            this.umlSubline.subLineThree.startX = breakpointEndX;
+            this.umlSubline.subLineThree.startY = middleBreakPointY;
+            this.umlSubline.subLineThree.endX = x2;
+            this.umlSubline.subLineThree.endY = y2;
+        }
+        else{
+            this.umlSubline.subLineOne.startX = x1;
+            this.umlSubline.subLineOne.startY = y1;
+            this.umlSubline.subLineOne.endX = middleBreakPointX;
+            this.umlSubline.subLineOne.endY = breakpointStartY;
+    
+            this.umlSubline.subLineTwo.startX = middleBreakPointX;
+            this.umlSubline.subLineTwo.startY = breakpointStartY;
+            this.umlSubline.subLineTwo.endX = middleBreakPointX;   
+            this.umlSubline.subLineTwo.endY = breakpointEndY;
+    
+            this.umlSubline.subLineThree.startX = middleBreakPointX;
+            this.umlSubline.subLineThree.startY = breakpointEndY;
+            this.umlSubline.subLineThree.endX = x2;
+            this.umlSubline.subLineThree.endY = y2;
+        }
+    }
+
+    this.setTwoSublines = function(x1,y1,breakpointX, breakpointY,x2,y2){
+        this.umlSubline.subLineThree.startX = null ;
+        this.umlSubline.subLineThree.startY = null ;
+        this.umlSubline.subLineThree.endX = null ;
+        this.umlSubline.subLineThree.endY = null ;
+
+        this.umlSubline.subLineOne.startX = x1;
+        this.umlSubline.subLineOne.startY = y1;
+        this.umlSubline.subLineOne.endX = breakpointX;
+        this.umlSubline.subLineOne.endY = breakpointY;
+
+        this.umlSubline.subLineTwo.startX = breakpointX;
+        this.umlSubline.subLineTwo.startY = breakpointY;
+        this.umlSubline.subLineTwo.endX = x2;   
+        this.umlSubline.subLineTwo.endY = y2;
+        
     }
 
     //---------------------------------------------------------------
@@ -2654,17 +2724,91 @@ function checkLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY) {
 	}
 }
 
+function checkUMLLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY) {
+    var	lines = diagram.getObjectsByType(symbolKind.umlLine);
+    var results = [];
+    var getSubline;
+	for (var i = 0; i < lines.length; i++) {
+        for(var j = 0; j < 3; j++){
+            if(j == 0){
+                getSubline = lines[i].umlSubline.subLineOne;
+            }
+            else if (j == 1){
+                getSubline = lines[i].umlSubline.subLineTwo;
+            }
+            else {
+                getSubline = lines[i].umlSubline.subLineThree;
+            }
+            var	line2StartX = getSubline.startX;
+            var	line2StartY = getSubline.startY;
+            var	line2EndX =	getSubline.endX;
+            var	line2EndY =	getSubline.endY;
+            
+            if(!(line1StartX	==	line2StartX	&&	line1StartY	==	line2StartY	&&	line1EndX	==	line2EndX	&&	line1EndY	==	line2EndY	)){
+                var denominator, a, b, numerator1, numerator2, result = {
+                    x: null,
+                    y: null,
+                    onLine1: false,
+                    onLine2: false
+                };
+                denominator = ((line2EndY - line2StartY) * (line1EndX - line1StartX)) - ((line2EndX - line2StartX) * (line1EndY - line1StartY));
+
+                a = line1StartY - line2StartY;
+                b = line1StartX - line2StartX;
+                numerator1 = ((line2EndX - line2StartX) * a) - ((line2EndY - line2StartY) * b);
+                numerator2 = ((line1EndX - line1StartX) * a) - ((line1EndY - line1StartY) * b);
+                a = numerator1 / denominator;
+                b = numerator2 / denominator;
+            
+                // if we cast these lines infinitely in both directions, they intersect here:
+                result.x = line1StartX + (a * (line1EndX - line1StartX));
+                result.y = line1StartY + (a * (line1EndY - line1StartY));
+
+                // if line1 is a segment and line2 is infinite, they intersect if:
+                if (a > 0 && a < 1) {
+                    result.onLine1 = true;
+                }
+                // if line2 is a segment and line1 is infinite, they intersect if:
+                if (b > 0 && b < 1) {
+                    result.onLine2 = true;
+                }
+                // if line1 and line2 are segments, they intersect if both of the above are true
+                
+                
+
+                // if line1 and line2 are segments, they intersect if both of the above are true
+                if(result.onLine1 == true	&&	result.onLine2	==	true){
+                    var m1 = (line1EndY - line1StartY) / (line1EndX-line1StartX);
+                    var m2 = (line2EndY - line2StartY) / (line2EndX-line2StartX);
+                    
+                    drawUmlJump(result.x,result.y);
+                }
+            }
+       }
+    }
+}
+
 //------------------------------------------------
 //The function responceble to draw the line jump
 //-----------------------------------------------
 function drawLineJump(positionX, positionY, mOfLine1, mOfLine2){
-	var angelOfIntersection = Math.atan((mOfLine1 - mOfLine2)/(1+mOfLine1*mOfLine2));
+   
+    var angelOfIntersection = Math.atan((mOfLine1 - mOfLine2)/(1+mOfLine1*mOfLine2));
 	if(angelOfIntersection > 0){
 		ctx.beginPath();
 		ctx.arc(positionX,positionY,5*zoomValue,angelOfIntersection+(0.5*Math.PI),angelOfIntersection+(1.5*Math.PI));
 		ctx.closePath();
 		ctx.stroke();
- }
+    }
+}
+function drawUmlJump(positionX, positionY){
+    var angelOfIntersection = 90;
+	if(angelOfIntersection > 0){
+		ctx.beginPath();
+		ctx.arc(positionX,positionY,5*zoomValue,startAngle = 1 * Math.PI, endAngle = 2 * Math.PI);
+		ctx.closePath();
+		ctx.stroke();
+    }
 }
 
 //---------------------------------------------------------------------
