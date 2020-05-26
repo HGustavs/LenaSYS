@@ -2437,8 +2437,8 @@ function minimizeBoxes(boxid) {
     //for template 5
     if(templateid == 5 && isMobile == false){
         if(boxid == 1 || boxid == 3){
-            $(boxValArray['box' + (boxid + 1)]['id']).width("100%");
-            $(boxValArray['box' + boxid]['id']).width("10%");
+			document.querySelector(boxValArray['box' + (boxid + 1)]['id']).style.width = "100%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
             thisBox2.classList.remove('hidden');
             thisBox4.classList.remove('hidden');
             thisBox2.classList.remove('visuallyhidden');
@@ -2449,8 +2449,8 @@ function minimizeBoxes(boxid) {
             }, 20);    
         }
         else{
-            $(boxValArray['box' + (boxid - 1)]['id']).width("100%");
-            $(boxValArray['box' + boxid]['id']).width("10%");
+            document.querySelector(boxValArray['box' + (boxid - 1)]['id']).style.width = "100%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
             thisBox1.classList.remove('hidden');
             thisBox3.classList.remove('hidden');
             thisBox1.classList.remove('visuallyhidden');
