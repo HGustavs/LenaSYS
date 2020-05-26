@@ -1237,7 +1237,7 @@ function loadUserInformation(){
         userSelect.change(function() {
 			deleteTable();
 			$('#analytic-info').append(selectPage);
-			
+
 			var events = [];
 			if(users[$(this).val()][0][5] == "EventDescription") {
 				for(var i = 1; i < users[$(this).val()].length; i++) {
@@ -1268,6 +1268,7 @@ function loadUserInformation(){
 				localStorage.setItem('analyticsLastUser', $(this).val());
 			} catch(err) { }
 
+			selectPage.change();
 		});
         $('#analytic-info').append(userSelect);
 		userSelect.change();
