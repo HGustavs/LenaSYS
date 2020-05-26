@@ -6242,6 +6242,7 @@ function createRulers() {
     createRuler(document.querySelector("#ruler-x .ruler-lines"), canvas.width, origoOffsetX, "marginLeft");
     createRuler(document.querySelector("#ruler-y .ruler-lines"), canvas.height, origoOffsetY, "marginTop");
     createRulerLinesObjectPoints();
+    updateGuidelines();
 }
 
 //------------------------------------------------------------------------------
@@ -6482,6 +6483,14 @@ function lockOrUnlockGuidelines(isLocked = true) {
     saveGuidelinesToLocalStorage();
 }
 
+//----------------------------------------------------------
+// updateGuidelines: Updates the position of all guidelines.
+//----------------------------------------------------------
+
+function updateGuidelines() {
+    guidelines.forEach(guideline => guideline.update());
+}
+
 class Guideline {
     constructor(axis, position, isLocked = false) {
         this.axis = axis;
@@ -6530,6 +6539,16 @@ class Guideline {
         this.element.addEventListener("mouseover", this.mouseOverHandler);
         this.element.addEventListener("mouseleave", this.mouseLeaveHandler);
         this.element.addEventListener("mousedown", this.mouseDownHandler);
+    }
+
+    update() {
+        const position = pixelsToCanvas(this.position, this.position);
+
+        if(this.axis === 'x') {
+            this.element.style.top = `${position.y}px`;
+        } else if(this.axis === 'y') {
+            this.element.style.left = `${position.x}px`;
+        }
     }
 
     mouseOver() {
