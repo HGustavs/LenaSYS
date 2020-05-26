@@ -6150,7 +6150,6 @@ function fixviewLayer(){
         if(spans[i].classList.contains("isActive")){
             if(!showLayer.includes(spans[i].id)){
                 showLayer.push(spans[i].id);
-                console.log(showLayer);
             }
         }
     }
