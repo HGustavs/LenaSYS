@@ -5578,9 +5578,15 @@ function showFormGroups(typesToShow) {
     initAppearanceForm();
 
     collapsibleStructure.forEach((object, i) => {
-        const normalGroups = object.groups.filter(group => typeof group.dataset.advanced === "undefined");
         const advancedGroups = object.groups.filter(group => typeof group.dataset.advanced !== "undefined");
-        createCollapsible(normalGroups, object.types, i, advancedGroups);
+
+        //Create normal collapsible with no sub-collapsibles if there are only advanced properties or no advanced properties.
+        if(object.groups.length - advancedGroups.length === 0 || advancedGroups.length === 0) {
+            createCollapsible(object.groups, object.types, i);
+        } else {
+            const normalGroups = object.groups.filter(group => typeof group.dataset.advanced === "undefined");
+            createCollapsible(normalGroups, object.types, i, advancedGroups);
+        }
     });
 
     //Always put submit-button in the end of the form

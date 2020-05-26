@@ -642,7 +642,7 @@
                         <label for="objectLayer">Write to layer:</label>
                         <select id="objectLayer" data-access="properties.setLayer"></select>
                     </div>
-                    <div class="form-group" data-types="6" data-advanced>
+                    <div class="form-group" data-types="6">
                         <label for="textAlignment">Text alignment:</label>
                         <select id="textAlignment" data-access="properties.textAlign">
                             <option value="start">Left</option>
