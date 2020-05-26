@@ -1572,58 +1572,16 @@ function Symbol(kindOfSymbol) {
         }
     }
 
-    // This function is used in the drawEntity function and is run when ER entities are not in a weak state.
-    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) {
-        var relationMidPoints = [];
-
-        // Map input coordinates to canvas origo offset
-        x1 = canvasToPixels(x1).x;
-        x2 = canvasToPixels(x2).x;
-        y1 = canvasToPixels(0, y1).y;
-        y2 = canvasToPixels(0, y2).y;
-
-        // Need to find the connected entities in order to change lines between relations and entities to normal.
-        for(let i = 0; i < diagram.length; i++) {
-            if (diagram[i] != this && diagram[i].kind == kind.symbol) {
-                // Getting each (top) coordinate of the object
-                dtlx = diagram[i].corners().tl.x;
-                dtly = diagram[i].corners().tl.y;
-                dtrx = diagram[i].corners().tr.x;
-                dtry = diagram[i].corners().tr.y;
-                // Getting each (bottom) coordinate of the object
-                dbrx = diagram[i].corners().br.x;
-                dbry = diagram[i].corners().br.y;
-                dblx = diagram[i].corners().bl.x;
-                dbly = diagram[i].corners().bl.y;
-
-                // Stores the midpoints for each corner of the relation in an array
-                if (diagram[i].isAnyOfSymbolKinds(symbolKind.erRelation)) {
-                    var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
-                    var relationMiddleY = ((dbly - dtly) / 2) + dtly;
-                    relationMidPoints.push(relationMiddleX, relationMiddleY);
-                }
-                // Setting the line types to normal if they are forced and the connected entity is strong.
-                if (diagram[i].isAnyOfSymbolKinds(symbolKind.line) && diagram[i].properties['key_type'] != 'Normal') {
-
-                    // Looping through the midpoints for relation entities.
-                    for (let j = 0; j < relationMidPoints.length; j++) {
-                        // checking if the line is connected to any of the midpoints.
-                        if (dtlx == relationMidPoints[j] || dtrx == relationMidPoints[j] || dtly == relationMidPoints[j] || dbly == relationMidPoints[j]) {
-                            // Making sure that only the correct lines are set to normal
-                            if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
-                                diagram[i].properties['key_type'] = 'Normal';
-                            } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
-                                diagram[i].properties['key_type'] = 'Normal';
-                            }  else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
-                                diagram[i].properties['key_type'] = 'Normal';
-                            } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
-                                diagram[i].properties['key_type'] = 'Normal';
-                            }
-                        }
-                    }
-                }
+    //This function executes for entities when the entity key_type is not set to 'Weak'. All lines between this entity and a relation will be set to normal.
+    this.setLinesConnectedToRelationsToNormal = function() {
+        const connectedLines = this.getConnectedLines();
+        connectedLines.forEach(line => {
+            const connectedObjects = line.getConnectedObjects();
+            const isConnectedToRelation = connectedObjects.some(object => object.symbolkind === symbolKind.erRelation);
+            if(isConnectedToRelation) {
+                line.properties.key_type = "Normal";
             }
-        }
+        });
     }
 
     //This function executes for entities when the entity key_type is set to 'Weak'. All lines between this entity and a relation will be set to forced.
@@ -1663,7 +1621,7 @@ function Symbol(kindOfSymbol) {
             this.drawWeakEntity(x1, y1, x2, y2);
             this.setLinesConnectedToRelationsToForced();
         } else {
-            removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2);
+            this.setLinesConnectedToRelationsToNormal();
 		}
 
 		if(!checkSamePage(x1,y1,x2,y2)){
