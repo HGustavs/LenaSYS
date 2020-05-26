@@ -6069,7 +6069,6 @@ function deleteLayerView(){
     }
     // deletes elements from drop-down menus
     for(let i = 0; i < showLayer.length; i++){
-        console.log(showLayer)
         let deleteLayer = document.getElementById(showLayer[i]).parentNode;
         deleteLayer.parentNode.removeChild(deleteLayer);
         deleteLayer = document.getElementById(showLayer[i]+"_Active").parentNode;
