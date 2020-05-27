@@ -5575,12 +5575,9 @@ function showFormGroups(typesToShow, isGlobal = false) {
     allformGroups.forEach(group => group.style.display = "none");
     formGroupsToShow.forEach(group => group.style.display = "block");
 
-    const collapsibleStructure = null;
-    if(isGlobal) {
-        collapsibleStructure =  getCollapsibleStructure(formGroupsToShow, [0,1,2,3,4,5,6,7], "subtypes");
-    } else {
-        collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
-    }
+    const collapsibleStructure = (isGlobal) 
+                                    ? getCollapsibleStructure(formGroupsToShow, [0,1,2,3,4,5,6,7], "subtypes")
+                                    : getCollapsibleStructure(formGroupsToShow, typesToShow);
 
     initAppearanceForm();
 
