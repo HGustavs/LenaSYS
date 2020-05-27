@@ -690,27 +690,27 @@
                         <label for="lineThickness">Line thickness:</label>
                         <input type="range" id="lineThickness" min="1" max="4" value="2" data-access="properties.lineWidth">
                     </div>	
-                    <div class="form-group" data-types="-1">
+                    <div class="form-group" data-types="-1" data-subtypes="1,2,3,5">
                         <label for="backgroundColorGlobal">Background color:</label>
                         <select id="backgroundColorGlobal" data-access="properties.fillColor"><?=$colors;?></select>
                     </div>
-                    <div class="form-group" data-types="-1">
+                    <div class="form-group" data-types="-1" data-subtypes="1,2,3,5,6">
                         <label for="fontFamilyGlobal">Font family:</label>
                         <select id="fontFamilyGlobal" data-access="properties.font"><?=$fonts?></select>
                     </div>
-                    <div class="form-group" data-types="-1">
+                    <div class="form-group" data-types="-1" data-subtypes="1,2,3,5,6">
                         <label for="fontColorGlobal">Font color:</label>
                         <select id="fontColorGlobal" data-access="properties.fontColor"><?=$colors;?></select>
                     </div>
-                    <div class="form-group" data-types="-1">
+                    <div class="form-group" data-types="-1" data-subtypes="1,2,3,5,6">
                     <label for="textSizeGlobal">Text size:</label>
                     <select id="textSizeGlobal" data-access="properties.sizeOftext"><?=$textSizes;?></select>
                     </div>
-                    <div class="form-group" data-types="-1">
+                    <div class="form-group" data-types="-1" data-subtypes="0,1,2,3,4,5,7">
                         <label for="lineColorGlobal">Line color:</label>
                         <select id="lineColorGlobal" data-access="properties.strokeColor"><?=$colors;?></select>
                     </div>
-                    <div class="form-group" data-types="-1">
+                    <div class="form-group" data-types="-1" data-subtypes="0,1,2,3,4,5,7">
                         <label for="lineThicknessGlobal">Line thickness:</label>
                         <input type="range" id="lineThicknessGlobal" min="1" max="4" value="2" data-access="properties.lineWidth">
                     </div>	

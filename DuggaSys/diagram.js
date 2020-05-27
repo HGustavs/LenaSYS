@@ -5372,7 +5372,7 @@ function createCollapsible(formGroups, types, index, subCollapsibleGroups = [], 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 function loadGlobalAppearanceForm() {
-    showFormGroups([-1]);
+    showFormGroups([-1], true);
     globalappearanceMenuOpen = true;
     toggleApperanceElement(true);
     document.getElementById("lineThicknessGlobal").value = settings.properties.lineWidth;
@@ -5563,7 +5563,7 @@ function setErCardinalityElementDisplayStatus(object) {
 // showFormGroups: Resets the form to the state before previous creation to remove old collapsibles. Shows all form groups having the type in the passed array and groups them into new collapsibles.
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function showFormGroups(typesToShow) {
+function showFormGroups(typesToShow, isGlobal = false) {
     const form = document.getElementById("appearanceForm");
 
     //Replace appearance form with original to keep structure after collapsible addition changes it
@@ -5575,7 +5575,12 @@ function showFormGroups(typesToShow) {
     allformGroups.forEach(group => group.style.display = "none");
     formGroupsToShow.forEach(group => group.style.display = "block");
 
-    const collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
+    const collapsibleStructure = null;
+    if(isGlobal) {
+        collapsibleStructure =  getCollapsibleStructure(formGroupsToShow, [0,1,2,3,4,5,6,7], "subtypes");
+    } else {
+        collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
+    }
 
     initAppearanceForm();
 
@@ -5599,9 +5604,9 @@ function showFormGroups(typesToShow) {
 // getCollapsibleStructure: Generates an array of objects where each object represents a collapsible. Each object have information about which form-groups should be in the collapsible and which object types will be affected by the collapsible's content.
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function getCollapsibleStructure(formGroups, typesToShow) {
+function getCollapsibleStructure(formGroups, typesToShow, dataAttribute = "types") {
     return formGroups.reduce((result, group) => {
-        const groupTypes = group.dataset.types.split(",");
+        const groupTypes = group.dataset[dataAttribute].split(",");
         const types = groupTypes.filter(type => typesToShow.includes(parseInt(type)));
         const duplicateTypesIndex = result.findIndex(item => sameMembers(item.types, types));
         if(duplicateTypesIndex === -1) {
