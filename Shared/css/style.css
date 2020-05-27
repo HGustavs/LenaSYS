@@ -5034,6 +5034,7 @@ only screen and (max-device-width: 320px) {
   height: 30px;
   position: absolute;
   bottom: 4px;
+  z-index: 2;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -5239,6 +5240,7 @@ only screen and (max-device-width: 320px) {
   font-size: 14px;
   bottom: 4px;
   right: 4px;
+  z-index: 2;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
@@ -5365,7 +5367,7 @@ only screen and (max-device-width: 320px) {
   display: block;
 }
 
-#figureOpacity, #lineThicknessGlobal {
+#figureOpacity, #lineThickness, #lineThicknessGlobal {
   width: 100%;
   border: 0;
   margin: 0;
@@ -5414,7 +5416,7 @@ only screen and (max-device-width: 320px) {
   align-items: center;
 }
 
-.collapsible .object-types .square {
+.collapsible > .object-types > .square {
   width: 24px;
   height: 24px;
   margin-right: 8px;
@@ -5424,34 +5426,38 @@ only screen and (max-device-width: 320px) {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
-.collapsible .object-types .square div {
+.collapsible > .object-types > .square div {
   width: 80%;
   height: 80%;
   content:url("../icons/Minus.svg");
 }
 
-.collapsible.closed .object-types .square div {
+.collapsible.closed > .object-types > .square div {
   content:url("../icons/Plus.svg");
 }
 
-.collapsible .form-groups {
+.collapsible > .form-groups,
+.collapsible > .collapsible {
   display: block;
 }
 
-.collapsible.closed .form-groups {
+.collapsible.closed > .form-groups,
+.collapsible.closed > .collapsible {
   display: none;
 }
 
 /* Diagram */
 
-#diagram-header, #diagram-container {
+#diagram-page-wrapper {
   --header-height: 50px;
   --diagram-header-height: 36px;
   --ruler-size: 38px;
   --diagram-sidebar-width: 60px;
   --canvas-margin: 8px;
+  --timeline-height: 28px;
 }
 
 #diagram-header {
@@ -5462,7 +5468,7 @@ only screen and (max-device-width: 320px) {
   font-size: 14px;
 }
 
-#diagram-header.fullscreen.toolbar {
+#diagram-page-wrapper.fullscreen.toolbar #diagram-header {
   margin-top: 0;
   position: relative;
   z-index: 2;
@@ -5470,6 +5476,11 @@ only screen and (max-device-width: 320px) {
   width: fit-content;
   border-right: 1px solid #000000;
   border-bottom: 1px solid #000000;
+}
+
+#diagram-page-wrapper.rulers-active #diagram-header {
+  top: var(--ruler-size);
+  left: var(--ruler-size);
 }
 
 #diagram-toolbar-switcher {
@@ -5500,12 +5511,17 @@ only screen and (max-device-width: 320px) {
   width: var(--diagram-sidebar-width);
 }
 
-#diagram-container.fullscreen.toolbar #diagram-tools-container {
+#diagram-page-wrapper.fullscreen.toolbar #diagram-tools-container {
   position: relative;
   z-index: 2;
   background-color: #ffffff;
   border-right: 1px solid #000000;
   border-bottom: 1px solid #000000;
+}
+
+#diagram-page-wrapper.rulers-active #diagram-tools-container {
+  top: var(--ruler-size);
+  left: var(--ruler-size);
 }
 
 .diagram-sidebar-section {
@@ -5612,7 +5628,7 @@ only screen and (max-device-width: 320px) {
   overflow: hidden;
 }
 
-#diagram-content.rulers-active {
+#diagram-page-wrapper.rulers-active #diagram-content {
   width: calc(100vw - var(--diagram-sidebar-width) - var(--ruler-size));
 }
 
@@ -5623,18 +5639,36 @@ only screen and (max-device-width: 320px) {
   height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--canvas-margin));
 }
 
-#diagram-content.rulers-active #diagram-canvas-container {
+#diagram-page-wrapper.rulers-active #diagram-canvas-container {
   height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--ruler-size) - var(--canvas-margin));
 }
 
-#diagram-container.fullscreen #diagram-canvas-container {
+#diagram-page-wrapper.timeline-active #diagram-canvas-container {
+  height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--timeline-height) - var(--canvas-margin));
+  margin-bottom: 0;
+}
+
+#diagram-page-wrapper.rulers-active.timeline-active #diagram-canvas-container {
+  height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--timeline-height) - var(--ruler-size) - var(--canvas-margin));
+}
+
+#diagram-page-wrapper.fullscreen #diagram-canvas-container {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  height: unset;
+  height: unset !important;
   margin: 0;
+}
+
+#diagram-page-wrapper.fullscreen.rulers-active #diagram-canvas-container {
+  top: var(--ruler-size);
+  left: var(--ruler-size);
+}
+
+#diagram-page-wrapper.fullscreen.timeline-active #diagram-canvas-container {
+  bottom: var(--timeline-height);
 }
 
 #diagram-canvas {
@@ -5643,7 +5677,7 @@ only screen and (max-device-width: 320px) {
   height: 100%;
 }
 
-#diagram-container.fullscreen #diagram-canvas {
+#diagram-page-wrapper.fullscreen #diagram-canvas {
   border: none;
 }
 
@@ -5668,9 +5702,24 @@ only screen and (max-device-width: 320px) {
   border-left: 1px solid #000000;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
-.ruler.hidden {
+#diagram-page-wrapper.fullscreen .ruler {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  background-color: #ffffff;
+  margin: 0;
+  border: 1px solid #000000;
+}
+
+.ruler.hidden,
+#diagram-timeline-container.hidden,
+#diagram-guideline-container.hidden {
   display: none;
 }
 
@@ -5678,6 +5727,11 @@ only screen and (max-device-width: 320px) {
   height: var(--ruler-size);
   margin-right: var(--canvas-margin);
   border-right: 1px solid #000000;
+  cursor: row-resize;
+}
+
+#diagram-page-wrapper.fullscreen #ruler-x {
+  margin-left: var(--ruler-size);
 }
 
 #ruler-y {
@@ -5685,6 +5739,19 @@ only screen and (max-device-width: 320px) {
   margin-top: var(--ruler-size);
   margin-bottom: var(--canvas-margin);
   border-bottom: 1px solid #000000;
+  cursor: col-resize;
+}
+
+#diagram-page-wrapper.fullscreen #ruler-y {
+  margin-top: var(--ruler-size);
+}
+
+#diagram-page-wrapper.timeline-active #ruler-y {
+  height: calc(100% - var(--ruler-size) - var(--timeline-height) - var(--canvas-margin));
+}
+
+#diagram-page-wrapper.fullscreen.timeline-active #ruler-y {
+  height: calc(100% - var(--ruler-size) - var(--timeline-height));
 }
 
 .ruler-lines {
@@ -5760,6 +5827,7 @@ only screen and (max-device-width: 320px) {
 .ruler-extra-lines .mouse-line,
 .ruler-extra-lines .point-line {
   position: absolute;
+  pointer-events: none;
 }
 
 .ruler-extra-lines .mouse-line {
@@ -5784,7 +5852,6 @@ only screen and (max-device-width: 320px) {
   right: 0;
 }
 
-
 #ruler-x .ruler-extra-lines .mouse-line {
   width: 4px;
 }
@@ -5799,6 +5866,114 @@ only screen and (max-device-width: 320px) {
 
 #ruler-y .ruler-extra-lines .point-line {
   height: 3px;
+}
+
+#diagram-timeline-container {
+  display: flex;
+  height: var(--timeline-height);
+  width: calc(100% - var(--canvas-margin));
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  border-left: 1px solid #000000;
+  background-color: #ffffff;
+}
+
+#diagram-page-wrapper.fullscreen #diagram-timeline-container{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  border: 1px solid #000000;
+  width: 100%;
+}
+
+#diagram-page-wrapper.fullscreen.rulers-active #diagram-timeline-container{
+  width: calc(100% - var(--ruler-size));
+  left: var(--ruler-size);
+}
+
+.diagram-timeline-controls {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+
+.diagram-timeline-controls .diagram-tools-button {
+  margin: 0 2px;
+}
+
+#diagram-timeline {
+  display: flex;
+  flex-grow: 1;
+}
+
+.diagram-timeline-part {
+  background-color: #ffffff;
+  height: 100%;
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.diagram-timeline-part.included {
+  background-color: var(--color-primary);
+}
+
+.diagram-timeline-part.plus {
+  background-color: #4ca64c;
+}
+
+.diagram-timeline-part.minus {
+  background-color: #ff4c4c;
+}
+
+.diagram-timeline-part:not(:last-child) {
+  border-right: 1px solid var(--color-primary-light);
+}
+
+#diagram-timeline-controls-toggleable {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  border-left: 1px solid #000000;
+}
+
+#diagram-timeline-speed-range {
+  padding: 0;
+}
+
+#diagram-timeline-speed {
+  flex-shrink: 0;
+  width: 64px;
+  margin: 0 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+#diagram-guideline-container {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  left: 1px;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.guideline {
+  position: absolute;
+  pointer-events: all;
+  background-color: cyan;
+}
+
+.guideline-x {
+  height: 3px;
+  width: 100%;
+}
+
+.guideline-y {
+  height: 100%;
+  width: 3px;
 }
 
 /* --------------================################================-------------- *

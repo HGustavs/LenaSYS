@@ -123,6 +123,8 @@ var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
 var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
 var isRulersActive = false;         //Show/hide rulers
+var isTimelineActive = true;        //Show/hide timeline
+var timelineAnimation = null;       //Used to set and clear interval auto animating diagram states
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -186,11 +188,8 @@ var classTemplate = {
   height: 7 * gridSize
 };
 var minimumDivisor = 4;                 // Is used when dividing templates for minimum selection before activating dragging mode values
-var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
 var globalappearanceMenuOpen = false;   // True if global appearance menu is open 
-var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
-var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
 var symbolStartKind;                    // Is used to store which kind of object you start on
 var symbolEndKind;                      // Is used to store which kind of object you end on
@@ -198,6 +197,12 @@ var cloneTempArray = [];                // Is used to store all selected objects
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
 var toolbarState = currentMode.er;      // Set default toolbar state to ER.
 var hideComment = false;				//Used to se if the comment marked text should be hidden(true) or shown(false)
+
+const toolbarStateTypes = {
+    [currentMode.er]: [0,2,3,4,5,6],
+    [currentMode.uml]: [1,6,7],
+    [currentMode.dev]: [0,1,2,3,4,5,6,7]
+};
 
 // Default keyboard keys
 const defaultBackspaceKey = 8;
@@ -493,9 +498,12 @@ function init() {
     setModeOnRefresh(); 
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
-    setIsRulersActiveOnRefresh();
+    initRulers();
+    setIsFullscreenActiveOnRefresh();
     setHideCommentOnRefresh();
     initAppearanceForm();
+    initTimeline();
+    initGuidelines();
     setPaperSize(event, paperSize);
     updateGraphics(); 
 }
@@ -549,7 +557,6 @@ function deleteFreedrawObject() {
             // If a point isn't hovered, delete object
             if (point.distance > 10 / zoomValue){
                 eraseObject(point.attachedSymbol);
-                SaveState();
                 return;
             }
             // Freedraw objects need at least 3 points
@@ -682,8 +689,8 @@ function keyDownHandler(e) {
                 SaveState();
             }
         }
-        else if (key == keyMap.zKey && ctrlIsClicked) undoDiagram(event);
-        else if (key == keyMap.yKey && ctrlIsClicked) redoDiagram(event);
+        else if (key == keyMap.zKey && ctrlIsClicked) undoDiagram();
+        else if (key == keyMap.yKey && ctrlIsClicked) redoDiagram();
         else if (key == keyMap.aKey && ctrlIsClicked) {
             e.preventDefault();
             selected_objects = [];
@@ -1313,7 +1320,6 @@ diagram.deleteObject = function(object) {
     }
     if(diagram.length == 0){
         resetSerialNumbers();
-        removeLocalStorage();
     }
 }
 
@@ -2336,6 +2342,7 @@ function updateGraphics() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
     drawOrigoLine();
+    drawVirtualPaper();
     if(developerModeActive) drawOrigo();
 
     // Mark the last freedraw point on mobiles
@@ -2346,7 +2353,6 @@ function updateGraphics() {
     diagram.updateQuadrants();
     diagram.draw();
     points.drawPoints();
-    drawVirtualPaper();
     if(developerModeActive) drawCrosshair();
 }
 
@@ -2360,6 +2366,7 @@ function resetViewToOrigin(event){
     origoOffsetY = 0;
     updateGraphics();
     SaveState();
+    createRulers();
 }
 
 //---------------------------------------------------------------------------------
@@ -2482,11 +2489,10 @@ function eraseSelectedObject(event) {
             eraseObject(selected_objects[i]);
             objectDeleted = true;
         }
-    }
-
-    if (selected_objects.length <= 1 && selected_objects[0].figureType == "Free") {
-        deleteFreedrawObject();
-        objectDeleted = true;
+        if (selected_objects.length <= 1 && selected_objects[0].figureType == "Free") {
+            deleteFreedrawObject();
+            objectDeleted = true;
+        }
     }
     if(objectDeleted){
         SaveState();
@@ -2639,6 +2645,9 @@ function gridToSVG(width, height) {
 //------------------------------------------------------------------------------
 
 function clearCanvas() {
+    if(!confirm(`The diagram contains ${diagramChanges.indexes.stack.length} state(s).\nDo you really want to clear the diagram?`)) {
+        return;
+    }
     while (diagram.length > 0) {
         diagram[diagram.length - 1].erase();
         diagram.pop();
@@ -2646,9 +2655,9 @@ function clearCanvas() {
     for (var i = 0; i < points.length;) {
         points.pop();
     }
+    selected_objects = [];
     resetSerialNumbers();
     updateGraphics();
-    SaveState();
 }
 
 //--------------------------------------------------------------------------
@@ -2736,16 +2745,6 @@ function hideCrosses() {
     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
     crossFillStyle = "rgba(255, 102, 68, 0.0)";
     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-}
-
-//----------------------------------------------------------------------
-// removeLocalStorage: this function is running when you click the button clear diagram
-//----------------------------------------------------------------------
-
-function removeLocalStorage() {
-    for (var i = 0; i < localStorage.length; i++) {
-        localStorage.removeItem("localdiagram");
-    }
 }
 
 //----------------------------------------------------------------------------------------------------------------
@@ -3215,15 +3214,10 @@ function distribute(event, axis) {
 // undoDiagram: removes the last object that was drawn
 //----------------------------------------------------------------------
 
-function undoDiagram(event) {
-    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (diagramNumber > 0) {
-        diagramNumber--;
-    }
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
-    localStorage.setItem("diagramNumber", diagramNumber);
-    console.log(tmpDiagram);
-    if (tmpDiagram != null) LoadImport(tmpDiagram);
+function undoDiagram() {
+    diagramChanges.indexes.undo();
+    saveDiagramChangesToLocalStorage();
+    Load();
 
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
@@ -3235,21 +3229,23 @@ function undoDiagram(event) {
 // redoDiagram: restores the last object that was removed
 //----------------------------------------------------------------------
 
-function redoDiagram(event) {
-    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    diagramNumber = localStorage.getItem("diagramNumber");
-    diagramNumber++;
-    if(!localStorage.getItem("diagram" + diagramNumber)){
-        diagramNumber--;
-    }
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
-    localStorage.setItem("diagramNumber", diagramNumber);
-    if (tmpDiagram != null) LoadImport(tmpDiagram);
+function redoDiagram() {
+    diagramChanges.indexes.redo();
+    saveDiagramChangesToLocalStorage();
+    Load();
 
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
     hoveredObject = undefined;
     createRulerLinesObjectPoints();
+}
+
+//--------------------------------------------------------------------------------------------
+// getValueOccurancesInArray: Returns the number of times passed value occurs in passed array.
+//--------------------------------------------------------------------------------------------
+
+function getValueOccurancesInArray(array, find) {
+    return array.reduce((result, value) => result + (value === find), 0);
 }
 
 //----------------------------------------------------------------------
@@ -3537,24 +3533,34 @@ function scrollZoom(event) {
 //-----------------------
 
 function toggleFullscreen(){
-    var header = document.querySelector("header");
-    var diagramHeader = document.getElementById("diagram-header");
-    var diagramContainer = document.getElementById("diagram-container")
+    const header = document.querySelector("header");
+    const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
 
     if(!fullscreen){
-        diagramHeader.classList.add("fullscreen");
-        diagramContainer.classList.add("fullscreen");
+        diagramPageWrapper.classList.add("fullscreen");
         header.style.display = "none";
         $("#fullscreenDialog").css("display", "flex");
     } else {
-        diagramHeader.classList.remove("fullscreen", "toolbar");
-        diagramContainer.classList.remove("fullscreen", "toolbar");
+        diagramPageWrapper.classList.remove("fullscreen", "toolbar");
         header.style.display = "inline-block";
         toolbarDisplayed = false;
     }
     fullscreen = !fullscreen;
     setCheckbox($(".drop-down-option:contains('Fullscreen')"), fullscreen);
+    localStorage.setItem("isFullscreenActive", fullscreen);
     canvasSize();        
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------
+// setIsFullscreenActiveOnRefresh: Gets the fullscreen value from localStorage to decide if full screen mode should be active or not.
+//-----------------------------------------------------------------------------------------------------------------------------------
+
+function setIsFullscreenActiveOnRefresh() {
+    const tempIsFullscreenActive = localStorage.getItem("isFullscreenActive");
+    if(tempIsFullscreenActive !== null) {
+        fullscreen = !(tempIsFullscreenActive === "true");
+        toggleFullscreen();
+    }
 }
 
 //-----------------------
@@ -3570,16 +3576,13 @@ function closeFullscreenDialog(){
 //-----------------------
 
 function toggleToolbar(){
-    var diagramHeader = document.getElementById("diagram-header");
-    var diagramContainer = document.getElementById("diagram-container");
+    const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
 
     if(!toolbarDisplayed){
-        diagramHeader.classList.add("toolbar");
-        diagramContainer.classList.add("toolbar");
+        diagramPageWrapper.classList.add("toolbar");
         toolbarDisplayed = true;
     } else {
-        diagramHeader.classList.remove("toolbar");
-        diagramContainer.classList.remove("toolbar");
+        diagramPageWrapper.classList.remove("toolbar");
         toolbarDisplayed = false;
     }
 }
@@ -3815,10 +3818,10 @@ function mousemoveevt(ev) {
                     var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
                     var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
                     //Don't move points if box is minumum size
-                    if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+                    if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || 5 > change > -5){
                         sel.point.x = currentMouseCoordinateX;
                     }
-                    if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+                    if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || 5 > change > -5){
                         sel.point.y = currentMouseCoordinateY;
                     }
                     //Handles loose lines
@@ -3862,10 +3865,10 @@ function mousemoveevt(ev) {
                 var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
                 var change = ((currentMouseCoordinateX - sel.point.x.x) - (currentMouseCoordinateY - sel.point.y.y)) / 2;
                 //Don't move points if box is minumum size
-                if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+                if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || 5 > change > -5){
                     sel.point.x.x = currentMouseCoordinateX;
                 }
-                if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+                if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || 5 > change > -5){
                     sel.point.y.y = currentMouseCoordinateY;
                 }
             }
@@ -4055,12 +4058,16 @@ function mousemoveevt(ev) {
 function mousedownevt(ev) {
     // Returns out of funtion if on mobile device
     // This is beacause touch events also trigger mouse events
-    if (isMobile){
+    if (isMobile) {
         return;
     }
     
     mousemoveevt(event);    // Trigger the move event function to update mouse coordinates and avoid creating objects in objects
-    if(ev.button == leftMouseClick){
+    if(ev.button == leftMouseClick) {
+        //Do not want to be able to select or create symbols when timeline animation is active
+        if(timelineAnimation !== null) {
+            return;
+        } 
         canvasLeftClick = true;
     } else if(ev.button == rightMouseClick) {
         canvasRightClick = true;
@@ -5241,8 +5248,9 @@ function toggleApperanceElement(show = false) {
         appearanceElement.style.display = "none";
 
         if(globalappearanceMenuOpen) {
-            const diagram = localStorage.getItem("diagram" + diagramNumber);
-            if (diagram != null) LoadImport(diagram);
+            //Restore to previous state. Will revert if changes were made in global appearance but form not submitted (enter/button click)
+            Load();
+            settings = JSON.parse(localStorage.getItem("Settings"));
         }
 
         appearanceMenuOpen = false;
@@ -5316,14 +5324,15 @@ const symbolTypeMap = {
     "4": "ER line",
     "5": "Relation",
     "6": "Text",
-    "7": "UML line"
+    "7": "UML line",
+    "8": "Advanced"
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // createCollapsible: Creates a collapsible element containing the form-groups passed. Types is an array used to concatenate the title from. Index is used to to open the first created collapsible.
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function createCollapsible(formGroups, types, index) {
+function createCollapsible(formGroups, types, index, subCollapsibleGroups = [], appendTo = document.getElementById("appearanceForm")) {
     const collapsibleElement = document.createElement("div");
     const objectTypesElement = document.createElement("div");
     const iconContainer = document.createElement("div");
@@ -5357,7 +5366,11 @@ function createCollapsible(formGroups, types, index) {
 
     formGroups.forEach(group => formGroupContainer.appendChild(group));
 
-    document.getElementById("appearanceForm").appendChild(collapsibleElement);
+    appendTo.appendChild(collapsibleElement);
+
+    if(subCollapsibleGroups.length > 0) {
+        createCollapsible(subCollapsibleGroups, [8], -1, [], collapsibleElement);
+    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -5365,7 +5378,7 @@ function createCollapsible(formGroups, types, index) {
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 function loadGlobalAppearanceForm() {
-    showFormGroups([-1]);
+    showFormGroups([-1], true);
     globalappearanceMenuOpen = true;
     toggleApperanceElement(true);
     document.getElementById("lineThicknessGlobal").value = settings.properties.lineWidth;
@@ -5454,6 +5467,7 @@ function loadAppearanceForm() {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
         }
+        document.getElementById("lineThickness").value = object.properties.lineWidth;
         setSelections(object);
     });
 }
@@ -5573,22 +5587,39 @@ function setErCardinalityElementDisplayStatus(object) {
 // showFormGroups: Resets the form to the state before previous creation to remove old collapsibles. Shows all form groups having the type in the passed array and groups them into new collapsibles.
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function showFormGroups(typesToShow) {
+function showFormGroups(typesToShow, isGlobal = false) {
     const form = document.getElementById("appearanceForm");
 
     //Replace appearance form with original to keep structure after collapsible addition changes it
     form.parentNode.replaceChild(originalAppearanceForm, form);
 
     const allformGroups = document.querySelectorAll("#appearanceForm .form-group");
-    const formGroupsToShow = getGroupsByTypes(typesToShow);
+    let formGroupsToShow = getGroupsByTypes(typesToShow);
+
+    let collapsibleStructure = null;
+    if(isGlobal) {
+        formGroupsToShow = filterGlobalFormGroups(formGroupsToShow);
+        collapsibleStructure = getCollapsibleStructure(formGroupsToShow, toolbarStateTypes[toolbarState], "subtypes");
+    } else {
+        collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
+    }
 
     allformGroups.forEach(group => group.style.display = "none");
     formGroupsToShow.forEach(group => group.style.display = "block");
 
-    const collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
-
     initAppearanceForm();
-    collapsibleStructure.forEach((object, i) => createCollapsible(object.groups, object.types, i));
+
+    collapsibleStructure.forEach((object, i) => {
+        const advancedGroups = object.groups.filter(group => typeof group.dataset.advanced !== "undefined");
+
+        //Create normal collapsible with no sub-collapsibles if there are only advanced properties or no advanced properties.
+        if(object.groups.length - advancedGroups.length === 0 || advancedGroups.length === 0) {
+            createCollapsible(object.groups, object.types, i);
+        } else {
+            const normalGroups = object.groups.filter(group => typeof group.dataset.advanced === "undefined");
+            createCollapsible(normalGroups, object.types, i, advancedGroups);
+        }
+    });
 
     //Always put submit-button in the end of the form
     document.getElementById("appearanceForm").appendChild(document.getElementById("appearanceButtonContainer"));
@@ -5598,9 +5629,9 @@ function showFormGroups(typesToShow) {
 // getCollapsibleStructure: Generates an array of objects where each object represents a collapsible. Each object have information about which form-groups should be in the collapsible and which object types will be affected by the collapsible's content.
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function getCollapsibleStructure(formGroups, typesToShow) {
+function getCollapsibleStructure(formGroups, typesToShow, dataAttribute = "types") {
     return formGroups.reduce((result, group) => {
-        const groupTypes = group.dataset.types.split(",");
+        const groupTypes = group.dataset[dataAttribute].split(",");
         const types = groupTypes.filter(type => typesToShow.includes(parseInt(type)));
         const duplicateTypesIndex = result.findIndex(item => sameMembers(item.types, types));
         if(duplicateTypesIndex === -1) {
@@ -5661,7 +5692,7 @@ function getTextareaArray(element, index) {
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setGlobalSelections() {
-    const groups = getGroupsByTypes([-1]);
+    const groups = filterGlobalFormGroups(getGroupsByTypes([-1]));
     groups.forEach(group => {
         const select = group.querySelector("select");
         if(select !== null) {
@@ -5675,14 +5706,17 @@ function setGlobalSelections() {
 // setGlobalProperties: Used when the global appearance menu is submitted to set the global properties to the newly selected properties. Also updates each existing object in the diagram to the new properties.
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function setGlobalProperties() {
-    const groups = getGroupsByTypes([-1]);
+function setGlobalProperties(globalGroups) {
+    const groups = filterGlobalFormGroups(globalGroups);
     groups.forEach(group => {
         const element = group.querySelector("select, input:not([type='submit'])");
         if(element !== null) {
             const access = element.dataset.access.split(".");
             settings[access[0]][access[1]] = element.value;
-            diagram.forEach(object => object[access[0]][access[1]] = element.value);
+
+            diagram.getObjectsByTypes(toolbarStateTypes[toolbarState]).forEach(object => {
+                object[access[0]][access[1]] = element.value;
+            });
         }
     });
     updateGraphics();
@@ -5735,7 +5769,7 @@ function setSelectedObjectsProperties(element) {
                     object[access[0]] = getTextareaArray(element, textareaIndex);
                 }
                 textareaIndex++;
-            } else if(element.type === "range") {
+            } else if(element.id === "opacity") {
                 object[access[0]] = element.value / 100;
             } else if(access[0] === "cardinality") {
                 object[access[0]][access[1]] = element.value;
@@ -5808,9 +5842,9 @@ function initAppearanceForm() {
         elements.forEach(element => {
             if(element.id.includes("Global")) {
                 if(element.tagName === "SELECT") {
-                    element.addEventListener("change", setGlobalProperties);
+                    element.addEventListener("change", () => setGlobalProperties([group]));
                 } else if(element.tagName === "INPUT") {
-                    element.addEventListener("input", setGlobalProperties);
+                    element.addEventListener("input", () => setGlobalProperties([group]));
                 }
             } else if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
                 element.addEventListener("input", () => setSelectedObjectsProperties(element));
@@ -5846,12 +5880,23 @@ function getGroupsByTypes(typesToShow) {
     });
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------
+// filterGlobalFormGroups: Filters global form groups by active toolbarState to only return form groups that affects tools in toolbar.
+//------------------------------------------------------------------------------------------------------------------------------------
+
+function filterGlobalFormGroups(formGroupsToShow) {
+    return formGroupsToShow.filter(group => {
+        const subtypes = group.dataset.subtypes.split(",").map(Number);
+        return subtypes.some(subtype => toolbarStateTypes[toolbarState].includes(subtype));
+    });
+}
+
 //----------------------------------------------------------------------------------------
 // submitAppearanceForm: Submits appearance form, saving state and closes appearance menu.
 //----------------------------------------------------------------------------------------
 function submitAppearanceForm() {
     if(globalappearanceMenuOpen) {
-        setGlobalProperties();
+        setGlobalProperties(getGroupsByTypes([-1]));
     }
     SaveState();
     toggleApperanceElement();
@@ -5961,6 +6006,7 @@ function toggleBackgroundLayer (object, changeLayer){
         showLayer.splice(index, 1);
     }
     updateGraphics();
+    sortLayer();
 }
 //----------------------------------------------------------------------------------------
 // activeLocalStorage: Use for storeing layers in localStorage
@@ -6009,6 +6055,7 @@ function toggleActiveBackgroundLayer(object) {
     const checkActive = document.getElementById("layerActive");
     const spans = checkActive.getElementsByTagName('span')
     
+
     for (let i = 0 ; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
             spans[i].classList.remove("isActive");
@@ -6027,6 +6074,7 @@ function toggleActiveBackgroundLayer(object) {
         }
     }
     updateGraphics();
+    sortLayer();
 }
 //--------------------------------------------------------------------------------------------------
 // toggleActiveBackgroundLayer: Use then toggleing layerActive elements. sets layer being drawn to
@@ -6073,10 +6121,10 @@ function getcorrectlayer(){
 //----------------------------------------------------------------------------------------
 function deleteLayerView(){
 
-    let parentNode = document.getElementById("viewLayer");
-    let spans = parentNode.getElementsByTagName('span');
+    let parentNodes = document.getElementById("viewLayer");
+    let spans = parentNodes.getElementsByTagName('span');
     let deleteArray = []
-
+    showLayer = removeDuplicatesInArray(showLayer);
     //Loops through Diagram and adds any object that exist with a layer that are targeted for deletion 
     for(let i = 0;i < diagram.length;i++){
         if(showLayer.indexOf(diagram[i].properties.setLayer) !== -1){
@@ -6112,12 +6160,14 @@ function deleteLayerActive(){
     const spans = parentNode.getElementsByTagName('span');
     let saveIndex;                                  // used for deleteing corresponding layer in view layer drop-down
     let deleteArray = []
+    showLayer = removeDuplicatesInArray(showLayer);
     if(spans.length > 1){
         for(let i = 0; i < spans.length;i++){
             if(spans[i].classList.contains("isActive")){
                 let deleteLayer = spans[i].parentNode;
                 saveIndex = spans[i].id.replace('_Active','');
                 deleteLayer.parentNode.removeChild(deleteLayer);
+                showLayer.splice(saveIndex);
             }
         }
         for(let i = 0;i < diagram.length;i++){
@@ -6129,14 +6179,22 @@ function deleteLayerActive(){
             diagram.deleteObject(deleteArray[i]);
         }
         const elem = document.getElementById(saveIndex);
-        elem.parentNode.removeChild(elem);
+        const elemParent = elem.parentNode;
+        elemParent.parentNode.removeChild(elemParent);
         fixviewLayer();
         fixActiveLayer()
         SaveState()
         setlayer(spans[0]);
         toggleActiveBackgroundLayer(spans[0])
     }
+}
 
+function removeDuplicatesInArray(Array){
+    let uniquelayer = [];
+    $.each(Array, function(i, el){
+        if($.inArray(el, uniquelayer) === -1) uniquelayer.push(el);
+    });
+    return uniquelayer;
 }
 //----------------------------------------------------------------------------------------
 // fixviewLayer: Corrects viewlayer after layers been deleted.
@@ -6155,6 +6213,13 @@ function fixviewLayer(){
             }
         }
         correctSpan.id = "Layer_" + i;
+    }
+    for(let i = 0; i < spans.length; i++){
+        if(spans[i].classList.contains("isActive")){
+            if(!showLayer.includes(spans[i].id)){
+                showLayer.push(spans[i].id);
+            }
+        }
     }
 }
 //----------------------------------------------------------------------------------------
@@ -6175,6 +6240,15 @@ function fixActiveLayer(){
             }
         }
         correctSpan.id = "Layer_" + i +"_Active";
+    }
+    if ($(".isActive").length == 0){                //used for activating layer_1 if there no active layers
+        showLayer = ["Layer_1"]
+        writeToLayer = ["Layer_1"]
+        
+        let sendingToStorage = JSON.stringify(showLayer);
+        localStorage.setItem("activeLayers", sendingToStorage);
+        localStorage.setItem("writeToActiveLayers", "Layer_1_Active");
+        toggleActiveBackgroundLayer(document.getElementById("Layer_1_Active"));
     }
 }
 //----------------------------------------------------------------------------------------
@@ -6198,7 +6272,6 @@ function fixExampleLayer(){
         diagram[i].properties.setLayer = writeToLayer;
     }
     updateGraphics();
-    //SaveState(); // This save breaks the undo functionality right now
 }
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
@@ -6260,6 +6333,7 @@ function createRulers() {
     createRuler(document.querySelector("#ruler-x .ruler-lines"), canvas.width, origoOffsetX, "marginLeft");
     createRuler(document.querySelector("#ruler-y .ruler-lines"), canvas.height, origoOffsetY, "marginTop");
     createRulerLinesObjectPoints();
+    updateGuidelines();
 }
 
 //------------------------------------------------------------------------------
@@ -6362,31 +6436,560 @@ function getSelectedObjectsPoints() {
 //------------------------------------------------------------------------------------------------
 
 function toggleRulers() {
-    const diagramContent = document.getElementById("diagram-content");
+    const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
     const rulers = document.querySelectorAll(".ruler");
-    if(isRulersActive) {
-        diagramContent.classList.remove("rulers-active");
-        rulers.forEach(ruler => ruler.classList.add("hidden"));
-    } else {
-        diagramContent.classList.add("rulers-active");
-        rulers.forEach(ruler => ruler.classList.remove("hidden"));
-    }
+    const guidelineContainer = document.getElementById("diagram-guideline-container");
+
     isRulersActive = !isRulersActive;
+
+    if(isRulersActive) {
+        diagramPageWrapper.classList.add("rulers-active");
+        rulers.forEach(ruler => ruler.classList.remove("hidden"));
+        guidelineContainer.classList.remove("hidden");
+    } else {
+        diagramPageWrapper.classList.remove("rulers-active");
+        rulers.forEach(ruler => ruler.classList.add("hidden"));
+        guidelineContainer.classList.add("hidden");
+    }
     setCheckbox($(".drop-down-option:contains('Rulers')"), isRulersActive);
     localStorage.setItem("isRulersActive", isRulersActive);
     canvasSize();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// setIsRulersActiveOnRefresh: Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
-//------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
+// initRulers: Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
+//             Also adds eventlistners to rulers making it possible to create guidelines by dragging from them.
+//-------------------------------------------------------------------------------------------------------------
 
-function setIsRulersActiveOnRefresh() {
+function initRulers() {
     const tempIsRulerActive = localStorage.getItem("isRulersActive");
     if(tempIsRulerActive !== null) {
         isRulersActive = !(tempIsRulerActive === "true");
         toggleRulers();
     }
+
+    //Code below here makes it possible to drag out new guidelines from a ruler
+    const rulerX = document.getElementById("ruler-x");
+    const rulerY = document.getElementById("ruler-y");
+    const diagramCanvasContainer = document.getElementById("diagram-canvas-container");
+    let mouseDownRulerX = false;
+    let mouseDownRulerY = false;
+
+    //Event handler for when the mouse reaches over the canvas container after mouse down on ruler
+    function mouseOverHandler() {
+        document.body.classList.add("noselect");
+        if(mouseDownRulerX) {
+            const guideline = addGuideline(new Guideline('x', 0, false));
+            guideline.mouseDownHandler({clientX: 0});
+        } 
+        if(mouseDownRulerY) {
+            const guideline = addGuideline(new Guideline('y', 0, false));
+            guideline.mouseDownHandler({clientY: 0});
+        }
+        diagramCanvasContainer.removeEventListener("mouseover", mouseOverHandler);
+    }
+
+    //Event handler for mouse up anywhere on the screen after mouse down on ruler
+    function mouseUpHandler() {
+        mouseDownRulerX = false;
+        mouseDownRulerY = false;
+        document.body.classList.remove("noselect");
+        document.removeEventListener("mouseup", mouseUpHandler);
+    }
+
+    rulerX.addEventListener("mousedown", () => {
+        mouseDownRulerX = true;
+        diagramCanvasContainer.addEventListener("mouseover", mouseOverHandler);
+        document.addEventListener("mouseup", mouseUpHandler);
+    });
+
+    rulerY.addEventListener("mousedown", () => {
+        mouseDownRulerY = true;
+        diagramCanvasContainer.addEventListener("mouseover", mouseOverHandler);
+        document.addEventListener("mouseup", mouseUpHandler);
+    });
+}
+
+let guidelines = []; //Stores all active guideline objects
+
+//-------------------------------------------------------------------------------------------------------------------------------------------
+// initGuidelines: Gets all guideline objects from local storage and creates instances of the Guideline class based on values in each object.
+//-------------------------------------------------------------------------------------------------------------------------------------------
+
+function initGuidelines() {
+    let tempGuidelines = localStorage.getItem("guidelines");
+
+    if(tempGuidelines !== null) {
+        tempGuidelines = JSON.parse(tempGuidelines);
+        for(let i = 0; i < tempGuidelines.length; i++) {
+            guidelines[i] = new Guideline(tempGuidelines[i].axis, tempGuidelines[i].position, tempGuidelines[i].isLocked, true);
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+// saveGuidelinesToLocalStorage: Gets all required properties from each guideline object, stringifies the whole new array and saves it in localstorage. 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+function saveGuidelinesToLocalStorage() {
+    const localStorageGuidelines = guidelines.reduce((result, guideline) => {
+        return [...result, guideline.exportToLocalStorage()];
+    }, []);
+
+    localStorage.setItem("guidelines", JSON.stringify(localStorageGuidelines));
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------
+// addGuideline: Adds passed guideline instance to the array of guideline objects, saves guidelines to local storage and returns the guideline instance.
+//------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function addGuideline(guideline) {
+    guidelines.push(guideline);
+    saveGuidelinesToLocalStorage();
+    return guideline;
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+// deleteGuidelines: Deletes all guideline HTML-elements and empties the array of guideline objects and saves the emptied array to local storage.
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+
+function deleteGuidelines() {
+    guidelines.forEach(guideline => guideline.element.remove());
+    guidelines.splice(0, guidelines.length);
+    saveGuidelinesToLocalStorage();
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+// lockOrUnlockGuidelines: Locks all active guidelines if passing true. Unlocks all active guidelines if passing false.
+//---------------------------------------------------------------------------------------------------------------------
+
+function lockOrUnlockGuidelines(isLocked = true) {
+    guidelines.forEach(guideline => {
+        if(isLocked) {
+            guideline.lock();
+        } else {
+            guideline.unlock();
+        }
+    });
+    saveGuidelinesToLocalStorage();
+}
+
+//----------------------------------------------------------
+// updateGuidelines: Updates the position of all guidelines.
+//----------------------------------------------------------
+
+function updateGuidelines() {
+    guidelines.forEach(guideline => guideline.update());
+}
+
+//-------------------------------------------------------------------------------------------------
+// Guideline: A class with all properties and functionality necessary to handle a single guideline.
+//-------------------------------------------------------------------------------------------------
+
+class Guideline {
+    constructor(axis, position, isLocked = false, isRecreated = false) {
+        this.axis = axis;
+        this.position = position;       //Guideline position expressed as canvas offset from origo to actual coordinates
+        this.moveStartPosition = 0;     //Used to store position on mouse down
+        this.isLocked = isLocked;
+        this.isRecreated = isRecreated; //Used to only convert from canvas to pixels when creating new guideline, not when recreating from local storage
+        this.container = document.getElementById("diagram-guideline-container");
+        this.element = null;
+
+        //Used to be able to access same reference to event handlers. To be able to remove eventlisteners.
+        this.mouseOverHandler = e => this.mouseOver(e);
+        this.mouseLeaveHandler = e => this.mouseLeave(e);
+        this.mouseDownHandler = e => this.mouseDown(e);
+        this.mouseMoveHandler = e => this.mouseMove(e);
+        this.mouseUpHandler = e => this.mouseUp(e);
+
+        this.createGuideline();
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // createGuideline: Creates a HTML-element working as a guideline and adds it to the guideline container.
+    //                  The correct canvas positions is calculated and used. Necessary eventlisteners are added to created guideline.
+    //-------------------------------------------------------------------------------------------------------------------------------
+
+    createGuideline() {
+        this.element = document.createElement("div");
+        this.element.classList.add("guideline");
+
+        if(this.axis === 'x') {
+            this.element.classList.add("guideline-x");
+            if(!this.isRecreated) {
+                if(this.position === undefined) {
+                    this.position = this.container.clientHeight / 2;
+                }
+                this.position = canvasToPixels(0, this.position).y;
+            }
+        } else if(this.axis === 'y') {
+            this.element.classList.add("guideline-y");
+            if(!this.isRecreated) {
+                if(this.position === undefined) {
+                    this.position = this.container.clientWidth / 2;
+                }
+                this.position = canvasToPixels(this.position, 0).x;
+            }
+        }
+
+        if(this.isLocked) {
+            this.lock();
+        } else {
+            this.unlock();
+        }
+
+        this.update();
+
+        this.container.appendChild(this.element);
+
+        this.element.addEventListener("mouseover", this.mouseOverHandler);
+        this.element.addEventListener("mouseleave", this.mouseLeaveHandler);
+        this.element.addEventListener("mousedown", this.mouseDownHandler);
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------
+    // update: Converts stored canvas offset from origo guideline position to actual coordinates to position the guideline.
+    //---------------------------------------------------------------------------------------------------------------------
+
+    update() {
+        const position = pixelsToCanvas(this.position, this.position);
+
+        if(this.axis === 'x') {
+            this.element.style.top = `${position.y}px`;
+        } else if(this.axis === 'y') {
+            this.element.style.left = `${position.x}px`;
+        }
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+    // createGuideline: Executes when the mouse is over the guideline. Used to correct cursor depending on guideline type.
+    //                  Also prevents selections and cursor changes when moving diagram entities and the mouse goes over the guideline.
+    //---------------------------------------------------------------------------------------------------------------------------------
+
+    mouseOver() {
+        this.element.style.cursor = "default";
+
+        if(md !== mouseState.empty) {
+            this.lock();
+            document.body.classList.add("noselect");
+            return;
+        }
+        
+        if(this.axis === 'x') {
+            this.element.style.cursor = "row-resize";
+        } else if(this.axis === 'y') {
+            this.element.style.cursor = "col-resize";
+        }
+    }
+
+    //-----------------------------------------------------------
+    // mouseLeave: Executes when the mouse leaves the guideline.
+    //-----------------------------------------------------------
+
+    mouseLeave() {
+        this.unlock();
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    // mouseLeave: Executes when the mouse button is pressed down. Store mouse position to be used to for movement calculation.
+    //             Adds necessary eventlisteners to successfully move a guideline after mouse button is pressed.
+    //-------------------------------------------------------------------------------------------------------------------------
+
+    mouseDown(e) {
+        this.element.classList.add("moving");
+        this.container.style.pointerEvents = "all";
+        document.body.classList.add("noselect");
+
+        if(this.axis === 'x') {
+            this.moveStartPosition = e.clientY;
+            this.container.style.cursor = "row-resize";
+        } else if(this.axis === 'y') {
+            this.moveStartPosition = e.clientX;
+            this.container.style.cursor = "col-resize";
+        }
+
+        document.addEventListener("mousemove", this.mouseMoveHandler);
+        document.addEventListener("mouseup", this.mouseUpHandler);
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    // mouseMove: Executes when the mouse is moved after pressing the mouse button down on the guideline until mouse button is unpressed.
+    //            Used to calculate the position to move the guideline to.
+    //-----------------------------------------------------------------------------------------------------------------------------------
+
+    mouseMove(e) {
+        if(this.element.classList.contains("moving")) {
+            if(this.axis === 'x') {
+                const movePosition = this.element.offsetTop - (this.moveStartPosition - e.clientY);
+                this.moveStartPosition = e.clientY;
+                this.element.style.top = `${movePosition}px`;
+                this.position = canvasToPixels(0, movePosition).y;
+            } else if(this.axis === 'y') {
+                const movePosition = this.element.offsetLeft - (this.moveStartPosition - e.clientX);
+                this.moveStartPosition = e.clientX;
+                this.element.style.left = `${movePosition}px`;
+                this.position = canvasToPixels(movePosition, 0).x;
+            }
+        }
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------------------------------
+    // mouseMove: Executes when the mouse button is upressed anywhere on on the page after being pressed on the guideline.
+    //            Used to reset everything. Removes mousemove and mouseup eventlistners temporarily on the whole document to prevent continuous execution.
+    //            Checks if the guideline was moved outside of the container, if so, it is be removed.
+    //----------------------------------------------------------------------------------------------------------------------------------------------------
+
+    mouseUp() {
+        this.element.classList.remove("moving");
+        this.container.style.pointerEvents = "none";
+        this.container.style.cursor = "default";
+        document.body.classList.remove("noselect");
+
+        if(this.axis === 'x') {
+            if(this.element.offsetTop < 0 || this.element.offsetTop > this.container.offsetHeight) {
+                this.remove();
+            }
+        } else if(this.axis === 'y') {
+            if(this.element.offsetLeft < 0 || this.element.offsetLeft > this.container.offsetWidth) {
+                this.remove();
+            }
+        }
+
+        document.removeEventListener("mousemove", this.mouseMoveHandler);
+        document.removeEventListener("mouseup", this.mouseUpHandler);
+
+        saveGuidelinesToLocalStorage();
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------
+    // remove: Removes the guideline HTML-element from the DOM. Removes the guideline from the global array of guideline objects.
+    //---------------------------------------------------------------------------------------------------------------------------
+
+    remove() {
+        this.element.remove();
+
+        const index = guidelines.findIndex(guideline => Object.is(this, guideline));
+        guidelines.splice(index, 1);
+
+        saveGuidelinesToLocalStorage();
+    }
+
+    //------------------------------------------------------------------------------
+    // lock: Locks the guideline and makes sure it cannot be detected on mouse over.
+    //------------------------------------------------------------------------------
+
+    lock() {
+        this.isLocked = true;
+        this.element.style.pointerEvents = "none";
+    }
+
+    //-------------------------------------------------------------------------------
+    // unlock: Unlocks the guideline and makes sure it can be detected on mouse over.
+    //-------------------------------------------------------------------------------
+
+    unlock() {
+        this.isLocked = false;
+        this.element.style.pointerEvents = "all";
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    // exportToLocalStorage: Returns an object containing all necessary properties to recreate the guideline as a new instance.
+    //                       Used to store only necessary properties in local storage.
+    //-------------------------------------------------------------------------------------------------------------------------
+
+    exportToLocalStorage() {
+        return {
+            axis: this.axis,
+            position: this.position,
+            isLocked: this.isLocked
+        };
+    }
+}
+
+//------------------------------------------------
+// Diagram timeline functions
+//------------------------------------------------
+
+//-----------------------------------------------------------------------------------------------------------
+// initTimeline: Initializes the timeline. Adds eventlisteners to timeline element.
+//               Loads active status from local storage to decide if they should be active or not on refresh.
+//-----------------------------------------------------------------------------------------------------------
+
+function initTimeline() {
+    const timelineElement = document.getElementById("diagram-timeline");
+    const tempIsTimelineActive = localStorage.getItem("isTimelineActive");
+
+    if(tempIsTimelineActive !== null) {
+        isTimelineActive = !(tempIsTimelineActive === "true");
+        toggleTimeline();
+    }
+
+    timelineElement.addEventListener("mouseover", timelineMouseOver);
+    timelineElement.addEventListener("mouseleave", timelineMouseLeave);
+    timelineElement.addEventListener("click", timelineClick);
+}
+
+//-------------------------------------------------------------------------------------------------
+// updateTimeline: Empties the timeline and regenerates parts based on current diagram state index.
+//-------------------------------------------------------------------------------------------------
+
+function updateTimeline() {
+    const timelineElement = document.getElementById("diagram-timeline");
+
+    timelineElement.innerHTML = "";
+
+    //Start at -1 to also include one part for original empty diagram
+    for(let i = -1; i < diagramChanges.indexes.stack.length; i++) {
+        const part = document.createElement("div");
+        part.classList.add("diagram-timeline-part");
+        if(i <= diagramChanges.indexes.current) {
+            part.classList.add("included");    
+        }
+        timelineElement.appendChild(part);
+    }
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+// timelineMouseOver: Executes when moving the mouse over the timeline element.
+//                    Gets the index of the hovered part in the timeline to show correct styling on parts before and after hovered part.
+//--------------------------------------------------------------------------------------------------------------------------------------
+
+function timelineMouseOver(e) {
+    const hoveredPartIndex = getElementIndexInParent(e.target);
+    const timelineParts = document.querySelectorAll(".diagram-timeline-part");
+
+    timelineParts.forEach((part, i) => {
+        part.classList.remove("plus", "minus");
+
+        //When hovered part is after current iteration part and current iteration part is not already a shown state, current iteration part should be marked green
+        //When hovered part is before current iteration part and current iteration part is a shown state, current iteration part should be marked red
+        if(hoveredPartIndex >= i && !part.classList.contains("included")) {
+            part.classList.add("plus");
+        } else if(hoveredPartIndex < i && part.classList.contains("included")) {
+            part.classList.add("minus");
+        }
+    });
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------
+// timelineMouseLeave: Executes when mouse leaves the timeline element. Removes special classes from all parts to restore to normal.
+//----------------------------------------------------------------------------------------------------------------------------------
+
+function timelineMouseLeave() {
+    const timelineParts = document.querySelectorAll(".diagram-timeline-part");
+    timelineParts.forEach(part => part.classList.remove("plus", "minus"));
+}
+
+//------------------------------------------------------------------------------------------------------------------
+// timelineClick: Executes when clicking on the timeline element. Loads state based on clicked timeline parts index.
+//------------------------------------------------------------------------------------------------------------------
+
+function timelineClick(e) {
+    const clickedPartIndex = getElementIndexInParent(e.target) - 1; // -1 to take part representing original empty diagram into consideration
+    diagramChanges.indexes.current = clickedPartIndex;
+    saveDiagramChangesToLocalStorage();
+    Load();
+}
+
+//----------------------------------------------------------------------------------------------------------
+// toggleTimeline: Toggles the timeline element. Sets the correct value in local storage and menu-item tick.
+//----------------------------------------------------------------------------------------------------------
+
+function toggleTimeline() {
+    const diagramPageWrapper = document.getElementById("diagram-page-wrapper");
+    const timelineContainer = document.getElementById("diagram-timeline-container");
+
+    isTimelineActive = !isTimelineActive;
+
+    if(isTimelineActive) {
+        diagramPageWrapper.classList.add("timeline-active");
+        timelineContainer.classList.remove("hidden");
+    } else {
+        diagramPageWrapper.classList.remove("timeline-active");
+        timelineContainer.classList.add("hidden");
+    }
+    setCheckbox($(".drop-down-option:contains('Timeline')"), isTimelineActive);
+    localStorage.setItem("isTimelineActive", isTimelineActive);
+    canvasSize();
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------
+// playTimeline: Executes when clicking on the timeline play/pause button or when changing speed in the speed slider.
+//               Sets or clears animation interval depending on play/pause. Resets timeline if current index is the last available.
+//               Passed boolean is only true when function is called from changing value in speed slider. 
+//               This is used to only update speed text when speed was changed and never toggle play/pause icon when changing speed.
+//----------------------------------------------------------------------------------------------------------------------------------
+
+function playTimeline(isSpeedChanged = false) {
+    const playButton = document.getElementById("diagram-timeline-play-button");
+    const speedRange = document.getElementById("diagram-timeline-speed-range")
+    const speed = parseFloat(speedRange.value) || 1.0;
+    const img = playButton.querySelector("img");
+
+    if(isSpeedChanged) {
+        const speedTextElement = document.getElementById("diagram-timeline-speed");
+        speedTextElement.innerHTML = `<b>Speed:</b> ${speed}s`;
+        clearInterval(timelineAnimation);
+    } else {
+        playButton.classList.toggle("paused");
+        if(playButton.classList.contains("paused")) {
+            img.src = "../Shared/icons/Play.svg";
+        } else {
+            img.src = "../Shared/icons/pause.svg";
+        }
+    }
+
+    if(!playButton.classList.contains("paused")) {
+        timelineAnimation = setInterval(() => {
+            if(diagramChanges.indexes.current === diagramChanges.indexes.stack.length - 1) {
+                resetTimeline();
+            } else {
+                redoDiagram();
+            }
+        }, speed * 1000);
+    } else {
+        clearInterval(timelineAnimation);
+        timelineAnimation = null;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------
+// resetTimeline: Resets the timeline and diagram state to show an empty diagram and no colored timeline parts.
+//-------------------------------------------------------------------------------------------------------------
+
+function resetTimeline() {
+    diagramChanges.indexes.current = -1;
+    saveDiagramChangesToLocalStorage();
+    Load();
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// toggleTimelineControls: Toggles the extra timeline controls with an animation. Toggles the icon for the clicked button (+/-).
+//------------------------------------------------------------------------------------------------------------------------------
+
+function toggleTimelineControls() {
+    const plusButton = document.getElementById("diagram-timline-plus-button")
+    const img = plusButton.querySelector("img");
+
+    plusButton.classList.toggle("closed");
+    if(plusButton.classList.contains("closed")) {
+        img.src = "../Shared/icons/Plus.svg";
+    } else {
+        img.src = "../Shared/icons/Minus.svg";
+    }
+
+    $("#diagram-timeline-controls-toggleable").animate({
+        width: "toggle"
+    }, 300);
+}
+
+//---------------------------------------------------------------------------------------------------------------------------------------------
+// getElementIndexInParent: Returns the index the the passed element has in parent element. Used to get index of clicked/hovered timeline part.
+//---------------------------------------------------------------------------------------------------------------------------------------------
+
+function getElementIndexInParent(element) {
+    return [...element.parentNode.childNodes].indexOf(element);
 }
 
 function getOrigoOffsetX() {
@@ -6395,4 +6998,13 @@ function getOrigoOffsetX() {
 
 function getOrigoOffsetY() {
     return origoOffsetY;
+}
+//---------------------------------------------------------------------------------------------------------------------------------------------
+// sortLayer: Returns diagram in sorted order for isLayerLocked true first followed by all objects where isLayerLocked is false
+//---------------------------------------------------------------------------------------------------------------------------------------------
+function sortLayer(){
+    diagram.sort(diagramCompare);
+}
+function diagramCompare(a,b){
+    return (a.isLayerLocked === b.isLayerLocked)? 0 : a.isLayerLocked? -1 : 1;
 }
