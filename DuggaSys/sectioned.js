@@ -2148,7 +2148,7 @@ function toggleFeedbacks(){
           $(".feedbackContent").html(duggaFeedback);
           if ($(".recentFeedbacks").length == 0) {
              $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedbacks</span></p>");
-
+             $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'><img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
           }
           $(".oldFeedbacks").hide();                  
           feedbackComment = 'feedbackComment';
@@ -2171,7 +2171,7 @@ function toggleFeedbacks(){
   });
 
   if ($("#feedback").length > 0) {
-    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><h2>Recent Feedbacks</h2></div><div class='feedbackContent'></div></div></div>");
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><span><h2>Recent Feedbacks</h2></span></div><div class='feedbackContent'></div></div></div>");
 
   }
 
@@ -2194,6 +2194,9 @@ function viewOldFeedbacks(){
   $(".feedbackHeader h2").html("Old Feedbacks");
   $(".noFeedbacks").remove();
   $(".feedbackContent").append('<div id="loadMore"><span>Load More</span><div>');
+  if ($(".feedback_card").length <= 5) {
+     $("#loadMore").hide();
+  }
   $(".feedback_card").slice(0, 5).show();
   $("#loadMore").on('click', function (e) {
     e.preventDefault();
@@ -2205,6 +2208,9 @@ function viewOldFeedbacks(){
       scrollTop: $(this).offset().top
     }, 1500);
   }); 
+}
+function hideIconButton(){
+  $("#iconButton").hide();
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {

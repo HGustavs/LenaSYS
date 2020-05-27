@@ -687,6 +687,22 @@ p {
   font-size: 20px;
   font-weight: bold;
 }
+.feedbackHeader{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+.feedbackHeader span img{
+  height: 20px;
+  width: 24px;
+  cursor: pointer;
+
+}
+#iconButton{
+  display: none;
+
+}
 .feedback_card{
   margin: 10px 0 20px 0;
 }
@@ -707,11 +723,17 @@ p {
   display:inline-block;
   vertical-align: middle;
 }
-.markedPass{
+.markedPass,
+.markedPassMobile{
   color: #008000;
 }
-.markedFail{
+.markedFail,
+.markedFailMobile{
   color: #ff0000;
+}
+.markedFailMobile,
+.markedPassMobile{
+  display: none;
 }
 .feedback_card_footer,
 .noFeedbacks{
@@ -726,7 +748,8 @@ p {
   flex-direction: row;
   justify-content: space-between;
 }
-.noFeedbacks span:first-child{
+.noFeedbacks span:first-child,
+#iconButton{
   align-self: center;
 }
 .viewOldFeedbacks{
@@ -1515,6 +1538,33 @@ div .navButt:hover {
 
   }.logoutBox  .logoutboxTr input[type="button"]:last-child{
     margin-left: 10px;
+  }
+  .viewOldFeedbacks{
+    display: none;
+
+  }
+  #iconButton{
+    display: block;
+  }
+  .listentries img{
+    width: 20px;
+    height: 20.8‬px;
+  }
+  .entryname{
+    font-size: 1em;
+    margin-left: 3px;
+  }
+  .feedbackHeader h2,
+  .feedbackContent{
+    font-size: .8em;
+  }
+  .markedFailMobile,
+  .markedPassMobile{
+    display: block;
+  }
+  .markedFail,
+  .markedPass{
+    display: none;
   }
 }
 .overlay {
