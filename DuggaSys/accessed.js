@@ -162,7 +162,7 @@ function addSingleUser() {
 }
 
 function verifyUserInputForm(input) {
-	var errorString = '';
+	var verifyString = '';
 
 	// Verify SSN using validateSSN function
 	if(verifyString = validateSSN(input[0])) {		// Returns null if there is no error
@@ -170,9 +170,15 @@ function verifyUserInputForm(input) {
 		return false;
 	}
 
-	// Verify First/Last name <= 50 characters
-	if (input[1].length > 50 || input[2].length > 50) {
-		alert('Input exceeded max length for first or last name (50)');
+	// Verify first name
+	if(verifyString = validateName(input[1])) {		// Returns null if there is no error
+		alert(verifyString);
+		return false;
+	}
+
+	// Verify last name
+	if(verifyString = validateName(input[2])) {		// Returns null if there is no error
+		alert(verifyString);
 		return false;
 	}
 
@@ -259,6 +265,27 @@ function tooltipSSN()
 		ssnInputBox.style.backgroundColor = '#fff';
 	}
 }
+
+//---------------------------------------------------------------------------------------------------
+// validateName(name)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+function validateName(name)
+{
+	const length = name.length;
+	if(length < 2)	return 'Name is too short\nMinimum two characters';	// Too short
+	if(length > 50)	return 'Name is too long\nMaximum 50 characters';	// Too long
+
+	const formatTest = /^[a-zA-ZäöåÄÖÅ]+$/;		// Expected charachters
+	if(!formatTest.test(name))
+		return 'Name contains illegal charachters';
+
+	return null;	// The provided name is alright
+}
+
+function validateFirstName() { return validateName(document.getElementById('addFirstname').value); }
+function validateLastName() { return validateName(document.getElementById('addLastname').value); }
+
 
 //---------------------------------------------------------------------------------------------------
 // validateEmail(email)
