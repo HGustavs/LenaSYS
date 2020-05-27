@@ -1,3 +1,4 @@
+@media (prefers-color-scheme: dark){
 #div2{
 	background-color: #FFF;
 }
@@ -32,12 +33,17 @@
     font-style: italic;
 }
 
-
-.docucontentStyle h1 {
-    color: black;
+#content {
+    background-color: #2c2c2c;
+    margin: 5px 10px 15px 10px;
+		color: #fff;
 }
 
-.box{
+.docucontentStyle h1 {
+    color: white;
+}
+
+.box {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -48,18 +54,22 @@
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
-    background-color: #FFF;
-    color: #000;
+    background-color: #2c2c2c;
+    color: #FFF;
+}
+
+.box iframe {
+    background-color: white;
 }
 
 .docucontentStyle {
      background-color: #272822;
      color: white;
-    
+
 }
 .box1Style {
      background-color: #272822;
-     color: white;   
+     color: white;
 }
 .codeboxStyle {
     background-color: #272822;
@@ -116,11 +126,11 @@
 
 .codedropStyle {
     background-color: #614875;
-    border-color: rgb(0,0,0) transparent;	
+    border-color: rgb(0,0,0) transparent;
 }
 
 .docudropStyle {
-    background-color: #614875; 
+    background-color: #614875;
     background: rgb(0, 0, 0) transparent;
 }
 
@@ -138,7 +148,6 @@
 	padding: 4px;
 }
 
-
 .dropdownitemStyle {
     background: #614875;
     color: white;
@@ -147,7 +156,6 @@
 .dropdownitem:hover {
 	background-color: #7D5CA0;
 }
-
 
 .codeborder{
 	position: absolute;
@@ -158,10 +166,10 @@
 	padding: 0px !important;
 	background-color: #614875;
 	text-align: right;
-	
+
 	/* Width of .no and .impo */
 	width: 32px !important;
-	
+
 }
 
 .codeborder .no {
@@ -169,9 +177,8 @@
     padding-left: 4px;
     padding-right: 6px;
     width: 22px;
-    float: left; 
+    float: left;
 	background-color: #614875;
-    
 }
 
 .codeborder .impono {
@@ -182,19 +189,29 @@
     padding-right: 6px;
 }
 
+.header {
+    padding: 30px;
+    text-align: center;
+    background: #5A5757;
+    color: white;
+    font-size: 28px;
+    margin-top: 50px;
+}
+
 .normtextwrapper{
 	 /* Width of codeborder */
   	 margin-left: 32px;
 }
+
 .normtext {
     color: #fff;
-    background-color: #272822;
+    background-color: #2c2c2c;
     white-space:nowrap;
 }
 
 .impo {
     color: #fff;
-    background-color: #3C3C3C;
+    background-color: #270c27;
     white-space:nowrap;
     min-width: 660px;
 }
@@ -262,9 +279,13 @@
 }
 
 .normtext .impword {
-    color: #000;
-    background-color: #fff;
-    border: 1px solid #f44;
+    color: white;
+		background-color: #2c2c2c;
+}
+
+.normtext:hover {
+    background-color: rgba(98, 30, 98,0.3);
+		white-space: nowrap;
 }
 
 .impo .impword {
@@ -282,7 +303,7 @@
 .normtext .imphi {
     background-color: #5d5d5d;
     color: #fff;
-    
+
 }
 
 .impo .imphi {
@@ -326,6 +347,8 @@
 .descbox{
 	padding-top: 4px;
 	padding-left: 4px;
+	background-color: #2c2c2c;
+	color: #fff;
 }
 
 /* BOXMENU STYLING START */
@@ -335,7 +358,7 @@
 
 .buttomenu2Style .wordlistselect{
 	color: white;
-   
+
    background: url("../new icons/expand_button.svg") no-repeat 50px #5C5A5A;
    background-size:15px 15px;
    border: 1px solid #ccc;
@@ -343,7 +366,7 @@
 
 .buttomenu2Style .boxcontentselect{
    color: white;
-   
+
    background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
    background-size:15px 15px;
    border: 1px solid #ccc;
@@ -374,5 +397,42 @@
 	cursor:default !important;
 	color: white !important;
 }
+
+/* ========================
+	COLOR SCHEME FOR TABLES
+	======================*/
+
+.list {
+	  width: 100%;
+	  padding: 1px;
+	  border-bottom: 2px solid #614875;
+	  margin-top: 20px;
+   	font-size: 16px;
+}
+
+.list td {
+    border-left: 2px solid #614875;
+    border-right: 2px solid #614875;
+    padding: 0 8px 0 8px;
+}
+
+.list tbody tr:nth-child(odd) {
+  background-color: #271d2f;
+}
+
+.list tbody tr:nth-child(even) {
+  background-color: #34273f;
+}
+
+body {
+  font-family: 'Roboto', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  height: 100%;
+  background-color: #2c2c2c;
+	color: white;
+}
+
 }
 /* BOXMENU STYLING STOP */
