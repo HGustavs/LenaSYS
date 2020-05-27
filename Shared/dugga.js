@@ -1770,7 +1770,7 @@ function duggaFeedbackCheck(){
 
 function returnedFeed(data) {
 	if (data['userfeedback']== 1 ){
-		$("#feedbackbox").css("display","inline-block");
+		$("#feedbackbox").css("display","block");
 		$("#feedbackquestion").html(data['feedbackquestion']);
 	} 
 }
