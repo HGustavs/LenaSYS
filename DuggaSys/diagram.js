@@ -5242,7 +5242,9 @@ function toggleApperanceElement(show = false) {
         appearanceElement.style.display = "none";
 
         if(globalappearanceMenuOpen) {
+            //Restore to previous state. Will revert if changes were made in global appearance but form not submitted (enter/button click)
             Load();
+            settings = JSON.parse(localStorage.getItem("Settings"));
         }
 
         appearanceMenuOpen = false;
