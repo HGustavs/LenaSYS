@@ -462,7 +462,34 @@ function mouseOutAnnouncement() {
       images[0].src = '../Shared/icons/announcement_icon.svg';
    }
 }
-/*Shadow hover effect for sort button END -------------*/
+/*Shadow hover effect for announcement button END -------------*/
+
+/*Shadow hover effect for feedback button START ---------------*/
+var feedButton = document.getElementById("feedback");
+if(feedButton){
+	feedButton.addEventListener("mouseover", mouseOverFeedback);
+	feedButton.addEventListener("mouseout", mouseOutFeedback);
+}
+
+function mouseOverFeedback() {
+	var obj = document.getElementById("feedback");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/feedback_iconShadow.svg';
+   }
+}
+
+function mouseOutFeedback() {
+	var obj = document.getElementById("feedback");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/feedback_icon.svg';
+   }
+}
+
+/*Shadow hover effect for feedback button END ---------------*/
 
 var searchinput = document.getElementById("searchinput");
 if(searchinput){
