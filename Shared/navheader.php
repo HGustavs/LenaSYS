@@ -77,6 +77,7 @@
 				echo '<li class="navButt analytic-navbutton CD2" id="CourseDiskUsage"><a onclick="loadCourseDiskUsage(); hamburgerToggle();" data-tooltip="Course disk usage"><i class="fas fa-hdd"></i></a></li>';
 				echo '</ol>';
 				echo '</td>';
+
 			}
 
 			if($noup!='NONE') {
@@ -87,6 +88,9 @@
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}if ($noup == 'COURSE' && checkLogin()) {
 					echo "<td class='navButt' id='announcement' title='Announcement'><img src='../Shared/icons/announcement_icon.svg'></td>";
+
+			}if ($noup == 'COURSE' && checkLogin() && (isStudentUser($_SESSION['uid']))) {
+					echo "<td class='navButt' id='feedback' title='Recent Feedback'><img src='../Shared/icons/announcement_icon.svg'></td>";
 
 			}else if($noup=='SECTION'){
 					echo "<a id='upIcon' href='";

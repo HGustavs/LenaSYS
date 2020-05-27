@@ -1730,6 +1730,7 @@ $(window).load(function () {
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
   multiSelect();
+  toggleFeedbacks();
 });
 
 
@@ -1901,7 +1902,8 @@ function retrieveAnnouncementsCards(){
             $("#announcementnotificationcount").html(parsed_data.nRows);
           }
           accessAdminAction();
-          readLessOrMore();
+          var paragraph = "announcementMsgParagraph";
+          readLessOrMore(paragraph);
           showLessOrMoreAnnouncements();
           scrollToTheAnnnouncementForm();
           $(".deleteBtn").click(function(){
@@ -2039,10 +2041,10 @@ function closeActionLogDisplay(){
   $(".closeActionLogDisplay").parent().remove();
 }
 //read less or more announcement card
-function readLessOrMore(){
-    var maxLength = 60;
+function readLessOrMore(paragraph){
+    var maxLength = 70;
 
-    $(".announcementMsgParagraph").each(function(){
+    $("."+paragraph).each(function(){
 
       var myStr = $(this).text();
 
@@ -2061,10 +2063,12 @@ function readLessOrMore(){
     $(".read-more").click(function(){
       $(this).siblings(".more-text").contents().unwrap();
       $(this).remove();
-      
-      for (i = 0; i < announcementCard.length; i++) {
-        announcementCard[i].style.width = "100%";
-      }
+      if(paragraph == 'announcementMsgParagraph'){
+        for (i = 0; i < announcementCard.length; i++) {
+          announcementCard[i].style.width = "100%";
+        }
+      } 
+     
     });
 }
 
@@ -2150,6 +2154,87 @@ function multiSelect(){
     
     $(select).focus();
   }).mousemove(function(e){e.preventDefault()});
+}
+//start of recent feedback from the teacher
+function toggleFeedbacks(){
+  let uname = $("#userName").html();
+  let studentid, parsed_data, parsed_uid, duggaFeedback, feedbackComment, unseen_feedbacks;
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname:uname},
+    type: "GET",
+    success: function(data){
+      parsed_uid = JSON.parse(data);
+      studentid = parsed_uid.uid;
+      $.ajax({
+        url: "../Shared/retrieveFeedbacks.php",
+        data: {studentid: studentid},
+        type: "POST",
+        async: true,
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        success: function(data){
+          duggaFeedback = data.duggaFeedback;
+          $(".feedbackContent").html(duggaFeedback);
+          if ($(".recentFeedbacks").length == 0) {
+             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedbacks</span></p>");
+
+          }
+          $(".oldFeedbacks").hide();                  
+          feedbackComment = 'feedbackComment';
+          readLessOrMore(feedbackComment);
+          unseen_feedbacks = data.unreadFeedbackNotification;
+          if(unseen_feedbacks > 0){
+            $("#feedback img").after("<span id='feedbacknotificationcounter'>0</span>");
+            $("#feedbacknotificationcounter").html(unseen_feedbacks);
+
+          }
+        },
+        error:function(){
+          console.log("Couldn't return feedback data");
+        }
+
+      });
+
+    }
+
+  });
+
+  if ($("#feedback").length > 0) {
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><h2>Recent Feedbacks</h2></div><div class='feedbackContent'></div></div></div>");
+
+  }
+
+  $("#feedback").click(function(){
+    $("#feedbackOverlay").toggle();
+     if ($("#feedbacknotificationcounter").length > 0) {
+      var viewed = "YES";
+      $.ajax({
+        url: "../Shared/retrieveFeedbacks.php",
+        data: {studentid: studentid, viewed:viewed},
+        type: "POST",
+        success: function(){
+          $("#feedbacknotificationcounter").remove();
+        }
+      });
+     }
+  });
+}
+function viewOldFeedbacks(){
+  $(".feedbackHeader h2").html("Old Feedbacks");
+  $(".noFeedbacks").remove();
+  $(".feedbackContent").append('<div id="loadMore"><span>Load More</span><div>');
+  $(".feedback_card").slice(0, 5).show();
+  $("#loadMore").on('click', function (e) {
+    e.preventDefault();
+    $(".feedback_card:hidden").slice(0, 5).slideDown();
+    if ($(".feedback_card:hidden").length == 0) {
+      $("#loadMore").hide();
+    }
+    $('html,body').animate({
+      scrollTop: $(this).offset().top
+    }, 1500);
+  }); 
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {
