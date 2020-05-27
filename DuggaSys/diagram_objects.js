@@ -1860,7 +1860,7 @@ function Symbol(kindOfSymbol) {
             ctx.lineWidth = this.properties['lineWidth'] * 1.5 * diagram.getZoomValue();
             ctx.setLineDash([5, 4]);
         }
-        
+
         //Manually set which side of object line should be at
         var connectedObjects = this.getConnectedObjects();
         if(typeof event !== "undefined") {
@@ -2079,41 +2079,42 @@ function Symbol(kindOfSymbol) {
 
         //Manually set which side of object line should be at
         var connectedObjects = this.getConnectedObjects();
-        if(event.target.id == "LinePlacement1"){
-            if(this.properties['line_placement1'] == "Automatic1"){
-                this.manualSide1 = "Automatic";
+        if(typeof event !== "undefined") {
+            if(event.target.id == "LinePlacement1"){
+                if(this.properties['line_placement1'] == "Automatic1"){
+                    this.manualSide1 = "Automatic";
+                }
+                else if (this.properties['line_placement1'] == "Top1") {
+                    this.setQuadrant(connectedObjects[0], "Top", "side1");
+                }
+                else if(this.properties['line_placement1'] == "Right1"){
+                    this.setQuadrant(connectedObjects[0], "Right", "side1");
+                }
+                else if(this.properties['line_placement1'] == "Bottom1"){
+                    this.setQuadrant(connectedObjects[0], "Bottom", "side1");
+                }
+                else if(this.properties['line_placement1'] == "Left1"){
+                    this.setQuadrant(connectedObjects[0], "Left", "side1"); 
+                }
             }
-            else if (this.properties['line_placement1'] == "Top1") {
-                this.setQuadrant(connectedObjects[0], "Top", "side1");
-            }
-            else if(this.properties['line_placement1'] == "Right1"){
-                this.setQuadrant(connectedObjects[0], "Right", "side1");
-            }
-            else if(this.properties['line_placement1'] == "Bottom1"){
-                this.setQuadrant(connectedObjects[0], "Bottom", "side1");
-            }
-            else if(this.properties['line_placement1'] == "Left1"){
-                this.setQuadrant(connectedObjects[0], "Left", "side1"); 
+            else if(!this.isRecursiveLine && event.target.id == "LinePlacement2"){
+                if(this.properties['line_placement2'] == "Automatic2"){
+                    this.manualSide2 = "Automatic";
+                }
+                else if (this.properties['line_placement2'] == "Top2") {
+                    this.setQuadrant(connectedObjects[1], "Top", "side2");
+                }
+                else if(this.properties['line_placement2'] == "Right2"){
+                    this.setQuadrant(connectedObjects[1], "Right", "side2");
+                }
+                else if(this.properties['line_placement2'] == "Bottom2"){
+                    this.setQuadrant(connectedObjects[1], "Bottom", "side2");
+                }
+                else if(this.properties['line_placement2'] == "Left2"){
+                    this.setQuadrant(connectedObjects[1], "Left", "side2");
+                }
             }
         }
-        else if(!this.isRecursiveLine && event.target.id == "LinePlacement2"){
-            if(this.properties['line_placement2'] == "Automatic2"){
-                this.manualSide2 = "Automatic";
-            }
-            else if (this.properties['line_placement2'] == "Top2") {
-                this.setQuadrant(connectedObjects[1], "Top", "side2");
-            }
-            else if(this.properties['line_placement2'] == "Right2"){
-                this.setQuadrant(connectedObjects[1], "Right", "side2");
-            }
-            else if(this.properties['line_placement2'] == "Bottom2"){
-                this.setQuadrant(connectedObjects[1], "Bottom", "side2");
-            }
-            else if(this.properties['line_placement2'] == "Left2"){
-                this.setQuadrant(connectedObjects[1], "Left", "side2");
-            }
-        }
-
 
         checkUMLLineIntersection(this.umlSubline.subLineOne.startX,this.umlSubline.subLineOne.startY,this.umlSubline.subLineOne.endX,this.umlSubline.subLineOne.endY)
         checkUMLLineIntersection(this.umlSubline.subLineTwo.startX,this.umlSubline.subLineTwo.startY,this.umlSubline.subLineTwo.endX,this.umlSubline.subLineTwo.endY)
