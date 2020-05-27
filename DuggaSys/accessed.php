@@ -89,10 +89,14 @@
 				<input type='hidden' id='uid' value='Toddler' />
 				<div class='flexwrapper'>
 					<span>SSN:</span>
-					<div class="tooltipDugga"><span id="tooltipSSN" style="display: none;" class="tooltipDuggatext"> ssnTooltip </span></div>
+					<div class="tooltipDugga"><span id="tooltipSSN" style="display: none;" class="tooltipDuggatext">  </span></div>
 					<input placeholder="990102-5578" class='textinput' type='text' id='addSsn' onchange="tooltipSSN()" onkeyup="tooltipSSN()"/>
 				</div>
-				<div class='flexwrapper'><span>First Name:</span><input placeholder="Greger" class='textinput' type='text' id='addFirstname'/></div>
+				<div class='flexwrapper'>
+					<span>First Name:</span>
+					<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="Greger" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+				</div>
 				<div class='flexwrapper'><span>Last Name:</span><input placeholder="Gregersson" class='textinput' type='text' id='addLastname'/></div>
 				<div class='flexwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></div>
 				<div class='flexwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></div>
@@ -100,7 +104,7 @@
 				<div class='flexwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></div>
 				<div class='flexwrapper'>
 					<span>Email:</span>
-					<div class="tooltipDugga"><span id="tooltipEmail" style="display: none;" class="tooltipDuggatext"> emailTooltip </span></div>
+					<div class="tooltipDugga"><span id="tooltipEmail" style="display: none;" class="tooltipDuggatext">  </span></div>
 					<input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="tooltipEmail()" onkeyup="tooltipEmail()">
 				</div>
 			</div>

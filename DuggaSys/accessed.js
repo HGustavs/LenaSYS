@@ -286,6 +286,21 @@ function validateName(name)
 function validateFirstName() { return validateName(document.getElementById('addFirstname').value); }
 function validateLastName() { return validateName(document.getElementById('addLastname').value); }
 
+function tooltipFirst()
+{
+	var error = validateFirstName();
+	var fnameInputBox = document.getElementById('addFirstname');
+
+	if(error && document.getElementById('addFirstname').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipFirst').innerHTML = error;
+		$('#tooltipFirst').fadeIn();
+		fnameInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipFirst').fadeOut();
+		fnameInputBox.style.backgroundColor = '#fff';
+	}
+}
+
 
 //---------------------------------------------------------------------------------------------------
 // validateEmail(email)
