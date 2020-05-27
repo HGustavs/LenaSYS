@@ -104,12 +104,16 @@
 				</div>
 				<div class='flexwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></div>
 				<div class='flexwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></div>
-				<div class='flexwrapper'><span>PID:</span><input placeholder="WEBUG" class='textinput' id='addPid'></div>
+				<div class='flexwrapper'>
+					<span>PID:</span>
+					<div class="tooltipDugga"><span id="tooltipPID" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="WEBUG" class='textinput' id='addPid' onchange="tooltipPID()" onkeyup="tooltipPID()"/>
+				</div>
 				<div class='flexwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></div>
 				<div class='flexwrapper'>
 					<span>Email:</span>
 					<div class="tooltipDugga"><span id="tooltipEmail" style="display: none;" class="tooltipDuggatext">  </span></div>
-					<input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="tooltipEmail()" onkeyup="tooltipEmail()">
+					<input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="tooltipEmail()" onkeyup="tooltipEmail()"/>
 				</div>
 			</div>
 			<div style='padding:5px;'>

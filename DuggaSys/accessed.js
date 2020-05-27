@@ -322,11 +322,26 @@ function tooltipLast()
 //---------------------------------------------------------------------------------------------------
 function validatePID(pid)
 {
-	const length = name.length;
-	if(length < 1)	return 'PID is too short\nMinimum one character';	// Too short
-	if(length > 10)	return 'PID is too long\nMaximum 10 characters';	// Too long
+	const length = pid.length;
+	if(length < 2)	return 'PID is too short\nMinimum two characters';	// Too short
+	if(length > 10)	return 'PID is too long\nMaximum ten characters';	// Too long
 
 	return null;	// The provided PID is alright
+}
+
+function tooltipPID()
+{
+	var error = validatePID(document.getElementById('addPid').value);
+	var pidInputBox = document.getElementById('addPid');
+
+	if(error && document.getElementById('addPid').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipPID').innerHTML = error;
+		$('#tooltipPID').fadeIn();
+		pidInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipPID').fadeOut();
+		pidInputBox.style.backgroundColor = '#fff';
+	}
 }
 
 
