@@ -249,7 +249,6 @@ function tooltipSSN()
 {
 	var error = validateSSN(document.getElementById('addSsn').value);
 	var ssnInputBox = document.getElementById('addSsn');
-	console.log(error);
 
 	if(error && document.getElementById('addSsn').value.length > 0) {	// Error, fade in tooltip
 		document.getElementById('tooltipSSN').innerHTML = error;
@@ -284,6 +283,21 @@ function validateEmail(email)
 		return 'Email error! Only one "@" is allowed';
 
 	return null;	// The provided email is correct!
+}
+
+function tooltipEmail()
+{
+	var error = validateEmail(document.getElementById('addEmail').value);
+	var emailInputBox = document.getElementById('addEmail');
+
+	if(error && document.getElementById('addEmail').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipEmail').innerHTML = error;
+		$('#tooltipEmail').fadeIn();
+		emailInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipEmail').fadeOut();
+		emailInputBox.style.backgroundColor = '#fff';
+	}
 }
 
 //-------------------------------------------------------------

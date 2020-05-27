@@ -98,9 +98,10 @@
 				<div class='inputwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></div>
 				<div class='inputwrapper'><span>PID:</span><input placeholder="WEBUG" class='textinput' id='addPid'></div>
 				<div class='inputwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></div>
-				<div class='inputwrapper'>
+				<div class='flexwrapper'>
 					<span>Email:</span>
-					<input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="updateErrorMessage()" onkeyup="updateErrorMessage()">
+					<div class="tooltipDugga"><span id="tooltipEmail" style="display: none;" class="tooltipDuggatext"> emailTooltip </span></div>
+					<input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="tooltipEmail()" onkeyup="tooltipEmail()">
 				</div>
 			</div>
 			<div style='padding:5px;'>
