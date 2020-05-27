@@ -66,6 +66,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'sectionedInformation':
 				sectionedInformation($pdo);
 				break;
+			case 'calendarInformation':
+				calendarInformation($pdo);
+				break;
 			case 'courseedInformation':
 				courseedInformation($pdo);
 				break;
@@ -86,6 +89,15 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
                 break;
             case 'resultedInformation':
                 resultedInformation($pdo);
+                break;
+            case 'profileInformation':
+                profileInformation($pdo);
+                break;
+            case 'duggaedInformation':
+                duggaedInformation($pdo);
+                break;
+            case 'accessedInformation':
+                accessedInformation($pdo);
                 break;
 		}
 	} else {
@@ -779,9 +791,10 @@ function sectionedInformation($pdo) {
 		foreach($rows as $key => $value) {
 			$users[$key] =  [	
 								"uid" 			=>	$value['uid'],
-								"username"		=>	$value['username'],								
-								"refer"		=>	"",
-								"timestamp"	=>	""
+								"username"		=>	$value['username'],	
+								"courseid"		=>	"",
+								"coursevers"	=>	"",
+								"timestamp"		=>	""
 							];
 		}
 	}
@@ -790,10 +803,54 @@ function sectionedInformation($pdo) {
        SELECT
 		   userid AS uid,
 		   username,
-		   refer,
+		   json_extract(URLParams, "$.cid") AS courseid,
+		   json_extract(URLParams, "$.cvers") AS coursevers,
 		   timestamp 
 	   FROM userHistory
 	   WHERE refer LIKE "%sectioned%"
+	   ORDER BY timestamp;
+   ')->fetchAll(PDO::FETCH_ASSOC);
+
+	foreach($result as $value) {
+		$key = array_search($value['uid'], array_column($users, 'uid'));
+		if($key === TRUE) { 
+			unset($users[$key]);
+		}
+	}
+
+    echo json_encode(array_merge($users,$result));
+}
+ 
+//------------------------------------------------------------------------------------------------
+// Retrieves calendar log information      
+//------------------------------------------------------------------------------------------------
+ 
+function calendarInformation($pdo) {
+	$query = $pdo->prepare("SELECT username, uid FROM user");
+	if(!$query->execute()) {
+	} else {
+		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+		$users = [];
+		foreach($rows as $key => $value) {
+			$users[$key] =  [	
+								"uid" 			=>	$value['uid'],
+								"username"		=>	$value['username'],				
+								"courseid"		=>	"",
+								"coursevers"	=>	"",
+								"timestamp"		=>	""
+							];
+		}
+	}
+
+    $result = $GLOBALS['log_db']->query('
+       SELECT
+		   userid AS uid,
+		   username,
+		   json_extract(URLParams, "$.cid") AS courseid,
+		   json_extract(URLParams, "$.cvers") AS coursevers,
+		   timestamp 
+	   FROM userHistory
+	   WHERE refer LIKE "%calendar%"
 	   ORDER BY timestamp;
    ')->fetchAll(PDO::FETCH_ASSOC);
 
@@ -915,6 +972,123 @@ function resultedInformation($pdo){
 		   timestamp 
 	   FROM userHistory
 	   WHERE refer LIKE "%resulted%"
+	   ORDER BY timestamp;
+   ')->fetchAll(PDO::FETCH_ASSOC);
+
+	foreach($result as $value) {
+		$key = array_search($value['uid'], array_column($users, 'uid'));
+		if($key === TRUE) { 
+			unset($users[$key]);
+		} 
+	}
+
+    echo json_encode(array_merge($users,$result));
+}
+//------------------------------------------------------------------------------------------------
+// Retrieves profile log information      
+//------------------------------------------------------------------------------------------------
+function profileInformation($pdo){
+	$query = $pdo->prepare("SELECT username, uid FROM user");
+	if(!$query->execute()) {
+	} else {
+		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+		$users = [];
+		foreach($rows as $key => $value) {
+			$users[$key] =  [	
+                                "uid" 			=>	$value['uid'],
+								"username"		=>	$value['username'],								
+								"refer"		=>	"",
+								"timestamp"	=>	""
+							];
+		}
+	}
+
+    $result = $GLOBALS['log_db']->query('
+       SELECT
+		   userid AS uid,
+		   username,
+            refer,
+		   timestamp 
+	   FROM userHistory
+	   WHERE refer LIKE "%profile%"
+	   ORDER BY timestamp;
+   ')->fetchAll(PDO::FETCH_ASSOC);
+
+	foreach($result as $value) {
+		$key = array_search($value['uid'], array_column($users, 'uid'));
+		if($key === TRUE) { 
+			unset($users[$key]);
+		} 
+	}
+
+    echo json_encode(array_merge($users,$result));
+}
+//------------------------------------------------------------------------------------------------
+// Retrieves duggaed log information      
+//------------------------------------------------------------------------------------------------
+function duggaedInformation($pdo){
+	$query = $pdo->prepare("SELECT username, uid FROM user");
+	if(!$query->execute()) {
+	} else {
+		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+		$users = [];
+		foreach($rows as $key => $value) {
+			$users[$key] =  [	
+                                "uid" 			=>	$value['uid'],
+								"username"		=>	$value['username'],								
+								"refer"		=>	"",
+								"timestamp"	=>	""
+							];
+		}
+	}
+
+    $result = $GLOBALS['log_db']->query('
+       SELECT
+		   userid AS uid,
+		   username,
+            refer,
+		   timestamp 
+	   FROM userHistory
+	   WHERE refer LIKE "%duggaed%"
+	   ORDER BY timestamp;
+   ')->fetchAll(PDO::FETCH_ASSOC);
+
+	foreach($result as $value) {
+		$key = array_search($value['uid'], array_column($users, 'uid'));
+		if($key === TRUE) { 
+			unset($users[$key]);
+		} 
+	}
+
+    echo json_encode(array_merge($users,$result));
+}
+//------------------------------------------------------------------------------------------------
+// Retrieves accessed log information      
+//------------------------------------------------------------------------------------------------
+function accessedInformation($pdo){
+	$query = $pdo->prepare("SELECT username, uid FROM user");
+	if(!$query->execute()) {
+	} else {
+		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+		$users = [];
+		foreach($rows as $key => $value) {
+			$users[$key] =  [	
+                                "uid" 			=>	$value['uid'],
+								"username"		=>	$value['username'],								
+								"refer"		=>	"",
+								"timestamp"	=>	""
+							];
+		}
+	}
+
+    $result = $GLOBALS['log_db']->query('
+       SELECT
+		   userid AS uid,
+		   username,
+            refer,
+		   timestamp 
+	   FROM userHistory
+	   WHERE refer LIKE "%accessed%"
 	   ORDER BY timestamp;
    ')->fetchAll(PDO::FETCH_ASSOC);
 

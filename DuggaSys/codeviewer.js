@@ -778,7 +778,7 @@ function updateContent()
 				var exampleid = querystring['exampleid'];
 				var boxid = box[0];
 
-				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, boxcontent: boxcontent, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows}, "BOXCONTENT");				
+				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, boxcontent: boxcontent, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows, addedRows: addedRows}, "BOXCONTENT");				
 
 				addedRows = [];
 				removedRows = [];
