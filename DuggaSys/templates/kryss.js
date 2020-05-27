@@ -147,6 +147,7 @@ var allanswers = "";
 var theanswers ="";
 function showFacit(param, uanswer, danswer)
 {
+	quiz(param);
 	AJAXService("GETVARIANTANSWER",{ setanswer:uanswer},"VARIANTPDUGGA");
 	var splited = uanswer.split(" ");
 	allanswers =  splited[4];
@@ -169,8 +170,8 @@ var answeredSplit = allanswers.split(",");
 		}
 	}
 
-	var yoloswag = "Correct answers: " + theanswers;
-$("#output").html(checkifcorrect+"</br>"+yoloswag);
+var yoloswag = "Answered: " + theanswers;
+$("#output").append(checkifcorrect+"</br>"+yoloswag);
 }
 function closeFacit(){
 
