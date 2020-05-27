@@ -2336,6 +2336,7 @@ function updateGraphics() {
     diagram.updateQuadrants();
     drawGrid();
     drawOrigoLine();
+    drawVirtualPaper();
     if(developerModeActive) drawOrigo();
 
     // Mark the last freedraw point on mobiles
@@ -2346,7 +2347,6 @@ function updateGraphics() {
     diagram.updateQuadrants();
     diagram.draw();
     points.drawPoints();
-    drawVirtualPaper();
     if(developerModeActive) drawCrosshair();
 }
 
@@ -5963,6 +5963,7 @@ function toggleBackgroundLayer (object, changeLayer){
         showLayer.splice(index, 1);
     }
     updateGraphics();
+    sortLayer();
 }
 //----------------------------------------------------------------------------------------
 // activeLocalStorage: Use for storeing layers in localStorage
@@ -6011,6 +6012,7 @@ function toggleActiveBackgroundLayer(object) {
     const checkActive = document.getElementById("layerActive");
     const spans = checkActive.getElementsByTagName('span')
     
+
     for (let i = 0 ; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
             spans[i].classList.remove("isActive");
@@ -6029,6 +6031,7 @@ function toggleActiveBackgroundLayer(object) {
         }
     }
     updateGraphics();
+    sortLayer();
 }
 //--------------------------------------------------------------------------------------------------
 // toggleActiveBackgroundLayer: Use then toggleing layerActive elements. sets layer being drawn to
@@ -6952,4 +6955,13 @@ function getOrigoOffsetX() {
 
 function getOrigoOffsetY() {
     return origoOffsetY;
+}
+//---------------------------------------------------------------------------------------------------------------------------------------------
+// sortLayer: Returns diagram in sorted order for isLayerLocked true first followed by all objects where isLayerLocked is false
+//---------------------------------------------------------------------------------------------------------------------------------------------
+function sortLayer(){
+    diagram.sort(diagramCompare);
+}
+function diagramCompare(a,b){
+    return (a.isLayerLocked === b.isLayerLocked)? 0 : a.isLayerLocked? -1 : 1;
 }
