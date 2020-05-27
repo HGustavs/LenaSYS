@@ -182,9 +182,9 @@ function verifyUserInputForm(input) {
 		return false;
 	}
 
-	// Verify PID <= 10 characters
-	if (input[input.length - 2].length > 10) {
-		alert('Input exceeded max length for PID (10)');
+	// Verify PID
+	if(verifyString = validatePID(input[input.length - 2])) {	// Returns null if there is no error
+		alert(verifyString);
 		return false;
 	}
 
@@ -314,6 +314,19 @@ function tooltipLast()
 		$('#tooltipLast').fadeOut();
 		lnameInputBox.style.backgroundColor = '#fff';
 	}
+}
+
+//---------------------------------------------------------------------------------------------------
+// validatePID(pid)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+function validatePID(pid)
+{
+	const length = name.length;
+	if(length < 1)	return 'PID is too short\nMinimum one character';	// Too short
+	if(length > 10)	return 'PID is too long\nMaximum 10 characters';	// Too long
+
+	return null;	// The provided PID is alright
 }
 
 
