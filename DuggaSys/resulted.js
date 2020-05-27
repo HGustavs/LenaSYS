@@ -38,7 +38,7 @@ function setup() {
 
     };
 
-    AJAXService("GET", { cid: querystring['cid'], vers: querystring['coursevers'] }, "RESULT");
+    AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
 function process() {

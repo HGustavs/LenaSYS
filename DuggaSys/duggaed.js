@@ -36,7 +36,7 @@ function setup() {
 
   $("#menuHook").before(filt);
 
-  AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
+  AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
 
