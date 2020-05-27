@@ -1219,7 +1219,7 @@ function loadUserInformation(){
         });
     }
 
-   
+	var currentPage;
     function updateState(users){
         $('#analytic-info > select.file-select').remove();
         var userSelect = $('<select class="file-select"></select>');
@@ -1269,7 +1269,9 @@ function loadUserInformation(){
 				localStorage.setItem('analyticsLastUser', $(this).val());
 			} catch(err) { }
 
-			selectPage.change();
+			if(currentPage != "events" && currentPage != "fileEvents"){
+				selectPage.change();	
+			}
 		});
         $('#analytic-info').append(userSelect);
 		userSelect.change();
@@ -1281,6 +1283,7 @@ function loadUserInformation(){
 			firstLoad = false;
 		} 
         selectPage.change(function(){
+			currentPage = selectPage.val();
             switch(selectPage.val()){
                 case "resulted":
 					updateResultedInformation();
@@ -1318,7 +1321,7 @@ function loadUserInformation(){
                 case "loginFail":
 					updateloginFail();
 					break;
-            }
+			}
         });
     }
  
