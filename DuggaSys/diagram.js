@@ -59,7 +59,9 @@ var settings = {
         sizeOftext: 'Tiny',                           // Used to set size of text.
         textAlign: 'center',                          // Used to change alignment of free text.
         key_type: 'Normal',                           // Defult key type for a class.
-        isComment: false	                          // Used to se if text are comments and if they should be hidden.
+        isComment: false,                             // Used to se if text are comments and if they should be hidden.
+        line_placement1: "Automatic",                 //Used for manual line placement(lock to quadrant)
+        line_placement2: "Automatic"                  //Used for manual line placement(lock to quadrant)
     },
 };
 
