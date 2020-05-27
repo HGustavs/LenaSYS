@@ -162,6 +162,7 @@ var lastDiagramEdit = localStorage.getItem('lastEdit');          // the last dat
 var refreshTimer = setRefreshTime();              //  set how often the diagram should be refreshed.
 var refresh_lock = false;           // used to set if the digram should stop refreshing or not.
 var moved = false;                  //used to check if object has moved
+var lineLocked = false;
 var connectLooseLineObj = {         //Contains values for use when connecting loose lines to objects
     lineIsSelected: false,
     selectedLine: null,
@@ -1501,7 +1502,7 @@ diagram.sortConnectors = function() {
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
-            if(diagram[i].quadrants(diagram[i].symbolkind)) /*break*/;
+            if(diagram[i].quadrants(diagram[i].symbolkind, diagram[i].getConnectedLines())) /*break*/;
         }
     }
 }
@@ -2339,7 +2340,6 @@ window.addEventListener('resize', canvasSize);
 
 function updateGraphics() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    diagram.updateQuadrants();
     drawGrid();
     drawOrigoLine();
     drawVirtualPaper();
@@ -5432,11 +5432,29 @@ function loadAppearanceForm() {
                 if(setErCardinalityElementDisplayStatus(object, erCardinalityVisible)) {
                     erCardinalityVisible = true;
                 }
+                const connectedObjectsArray = object.getConnectedObjects();
+                if(object.getConnectedObjects().length == 2){
+                    document.getElementById("lineObject1").innerHTML = connectedObjectsArray[0].name;
+                    document.getElementById("lineObject2").innerHTML = connectedObjectsArray[1].name;
+                } else{
+                    document.getElementById("LinePlacement1").style.display = "none";
+                    document.getElementById("LinePlacement2").style.display = "none";
+                    document.getElementById("lineObject1").style.display = "none";
+                    document.getElementById("lineObject2").style.display = "none";
+                }
             }
             document.getElementById("typeLine").focus();
         } else if(object.symbolkind === symbolKind.umlLine) {
             setLineDirectionElementUML(object, indexes[symbolKind.umlLine]);
             document.getElementById("typeLineUML").focus();
+            const connectedObjectsArray = object.getConnectedObjects();
+            document.getElementById("lineObject1").innerHTML = connectedObjectsArray[0].name;
+            if(object.isRecursiveLine){
+                document.getElementById("LinePlacement2").style.display = "none";
+                document.getElementById("lineObject2").style.display = "none";
+            } else{
+                document.getElementById("lineObject2").innerHTML = connectedObjectsArray[1].name;
+            }
         } else if(object.symbolkind === symbolKind.text) {
             indexes[symbolKind.text].current++;
             setTextareaElement(freeTextElement, object.textLines, indexes[symbolKind.text]);
