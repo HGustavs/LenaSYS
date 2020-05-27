@@ -5674,7 +5674,7 @@ function getTextareaArray(element, index) {
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setGlobalSelections() {
-    const groups = getGroupsByTypes([-1]);
+    const groups = filterGlobalFormGroups(getGroupsByTypes([-1]));
     groups.forEach(group => {
         const select = group.querySelector("select");
         if(select !== null) {
@@ -5688,14 +5688,17 @@ function setGlobalSelections() {
 // setGlobalProperties: Used when the global appearance menu is submitted to set the global properties to the newly selected properties. Also updates each existing object in the diagram to the new properties.
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function setGlobalProperties(groups) {
-    
+function setGlobalProperties(globalGroups) {
+    const groups = filterGlobalFormGroups(globalGroups);
     groups.forEach(group => {
         const element = group.querySelector("select, input:not([type='submit'])");
         if(element !== null) {
             const access = element.dataset.access.split(".");
             settings[access[0]][access[1]] = element.value;
-            diagram.forEach(object => object[access[0]][access[1]] = element.value);
+
+            diagram.getObjectsByTypes(toolbarStateTypes[toolbarState]).forEach(object => {
+                object[access[0]][access[1]] = element.value;
+            });
         }
     });
     updateGraphics();
