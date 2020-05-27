@@ -707,6 +707,14 @@ svg text {
 	flex-wrap: wrap; 
 	justify-content: center;
 }
+#toolbox, #drawingarea, #clippingInfoBox2{
+	height: 462px;
+}
+#opTableContainer{
+	height:390px;
+	background-color:#FFF; 
+	overflow-y:scroll;
+}
 #clippingInfoBox {
 	min-width:170px;
 	width:395px;
