@@ -37,8 +37,8 @@
 			<div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
 				<div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
-								<b>Keywords:</b> username, date <br>
-								<b>Ex:</b> 2019-05-21
+							<b>Keywords:</b> username, date <br>
+						<b>Ex:</b> 2019-05-21
 					</div>
 					<span>?</span>
 				</div>
@@ -72,8 +72,10 @@
 			</div>
 			<div style='padding:5px;'>
 				<textarea id="import" ></textarea>
-				<input class='submit-button' type='button' value='Import' onclick='importUsers();' />
 			</div>
+      <div style='padding:5px;display:flex;justify-content: flex-end;'>
+        <input class='submit-button' type='button' value='Import' onclick='importUsers();' />
+      </div>
 		</div>
 	</div>
 	<!-- Import Users Dialog END -->
@@ -116,10 +118,10 @@
 					<input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="tooltipEmail()" onkeyup="tooltipEmail()"/>
 				</div>
 			</div>
-			<div style='padding:5px;'>
-				<input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
-			</div>
-		</div>
+			 <div style='padding:5px;display:flex;justify-content: flex-end;'>
+        <input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
+      </div>
+     </div>
 	</div>
 
 	<div id='createClass' class='loginBoxContainer' style='display:none;'>
