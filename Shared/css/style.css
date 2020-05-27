@@ -437,7 +437,8 @@ p {
 }
 .announcementForm textarea{
   height: 150px;
-
+  resize: none;
+  
 }
 .announcementForm input[type=text]:focus,
 .announcementForm textarea:focus {
