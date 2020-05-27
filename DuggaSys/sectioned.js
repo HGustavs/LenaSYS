@@ -609,7 +609,7 @@ function returnedSection(data) {
     document.getElementById("course-versname").innerHTML = versionname;
 
     var str = "";
-    // Build dropdown for readaccess, studentteacher and writeaccess users
+    // Build dropdown and showing FAB-buttons for studentteacher and writeaccess users
     if (data['studentteacher'] || data['writeaccess']) {
       // Build dropdowns
       var bstr = "";
