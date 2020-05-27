@@ -341,7 +341,8 @@ p {
   display:none;
 }
 /*Announcement icon and notification*/
-#announcement #announcementnotificationcount{
+#announcement #announcementnotificationcount,
+#feedbacknotificationcounter{
   position: relative;
   right: 20px;
   bottom: 6px;
@@ -582,7 +583,7 @@ p {
 #displayAnnouncements .announcementCard .displayAnnouncementMsg{
   margin-bottom: 40px;
 }
-.announcementMsgParagraph .more-text{
+.more-text{
   display: none;
 }
 #displayAnnouncements #btnContainer .btn {
@@ -656,9 +657,110 @@ p {
   position: relative;
   top: 2px;
 }
-
 /*End of announcement box*/
+/*Start of recent feedback from the teacher*/
+ #feedbackOverlay{
+  position: relative;
+  display: none;
+  padding: 10px;
+  top: 50px;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  overflow-x: auto;
+  box-sizing: border-box;
+  font-family: 'Varela', sans-serif;
+}
+.feedbackHeader,
+.feedbackContent{
+  padding: 10px 15px 5px 15px;
+}
+#feedbackOverlay .feedbackContainer{
+  background-color: #fff;
+  border: 2px solid #ddd;
 
+}
+.feedbackHeader{
+  background-color: #ddd;
+}
+.feedbackHeader h2{
+  font-size: 20px;
+  font-weight: bold;
+}
+.feedback_card{
+  margin: 10px 0 20px 0;
+}
+.feedback_card .feedbackCommentWrapper,
+.feedback_card .markedDate{
+  margin-top: -10px;
+}
+.listentries img{
+  width: 25px;
+  height: 26px;
+  display:inline-block;
+  vertical-align: middle;
+}
+.entryname{
+  margin-left: 5px;
+  margin-top: 3px;
+  font-size: 16px;
+  display:inline-block;
+  vertical-align: middle;
+}
+.markedPass{
+  color: #008000;
+}
+.markedFail{
+  color: #ff0000;
+}
+.feedback_card_footer,
+.noFeedbacks{
+  color: #9474a4;
+}
+.feedback_card_footer div:first-child{
+  font-weight: bold;
+
+}
+.noFeedbacks{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.noFeedbacks span:first-child{
+  align-self: center;
+}
+.viewOldFeedbacks{
+  color: #fff !important;
+  text-decoration: none;
+  background: var(--color-logo-background);
+  padding: 10px 20px 10px 20px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.viewOldFeedbacks:hover{
+  letter-spacing: 1px;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+  transition: all 0.4s ease 0s;
+}
+/*Load more feedbacks*/
+#loadMore{
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+#loadMore span{
+ cursor: pointer;
+ color: #ffa500;
+}
+#loadMore span:hover{
+ text-decoration: underline;
+}
+/*End of recent feedback from the teacher*/
 #Sectionlist {
   margin: 10px;
   background-color: var(--color-background);
@@ -1232,6 +1334,11 @@ div .navButt:hover {
   vertical-align: middle;
   text-align: center;
 }
+@media only screen and (max-width: 342px) {
+  #loginbutton {
+    width: 35px;
+  }
+}
 
 #div2 {
   position: absolute;
@@ -1296,6 +1403,11 @@ div .navButt:hover {
     .burgerOption {
         padding: 15px 15px 15px 15px;
     }
+    .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2, .PF2, .UI2{display:none;}
+    
+    .CD{
+      display: none;
+    }
     .err{
     display: none;
     }
@@ -1314,10 +1426,51 @@ div .navButt:hover {
     .box{
         margin-top: 30px !important;
     }
-    
-    
 }
 
+/*MEDIA QUERIES FOR HAMBURGER MENU IN ANALYTICS.PHP*/
+@media only screen and (max-width: 700px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2, .PF2{display:none;}
+  .UI2{display:block;}
+    .UI{
+      display: none;
+    }
+}
+@media only screen and (max-width: 600px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2{display:none;}
+  .PF2{display:block;}
+    .PF{
+      display: none;
+    }
+}
+@media only screen and (max-width: 550px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2{display:none;}
+  .FF2{display:block;}
+    .FF{
+      display: none;
+    }
+}
+@media only screen and (max-width: 500px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2{display:none;}
+  .SC2, .SS2{display:block;}
+    .SC, .SS{
+      display: none;
+    }
+}
+@media only screen and (max-width: 450px) {
+  .GS2, .CO2, .PG2, .OP2{display:none;}
+  .SS2, .BP2{display:block;}
+    .SU, .BP{
+      display: none;
+    }
+}
+@media only screen and (max-width: 400px) {
+  .GS2, .CO2{display:none;}
+  .OP2, .PG2{display:block;}
+    .OP, .PG{
+      display: none;
+    }
+}
 
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
@@ -3727,9 +3880,8 @@ padding: 10px;
 
 .dropdown-list-container {
   padding: 8px;
-  width: 300px;
-  max-height: calc(100vh - 100px);
-  height: auto;
+  width: 400px;
+  
   font-size: 12px;
   overflow-y: auto;
   display: none;
@@ -4377,26 +4529,24 @@ ul.hamburgerList button.menuButton {
   padding: 0px 0px 0px 0px;
 }
 
-.container {
+.hamContainer {
   display: inline-block;
   cursor: pointer;
   margin-top: 4px;
 }
 
-.bar1,
-.bar2,
-.bar3 {
-  width: 17px;
-  height: 3px;
+.bar1,.bar2,.bar3 {
+  width: 26px;
+  height: 5px;
   background-color: var(--color-background);
   margin: 3px 0;
   transition: 0.4s;
 }
 
 .change .bar1 {
-  -webkit-transform: rotate(-45deg) translate(-5px, 4px);
-  transform: rotate(-45deg) translate(-5px, 4px);
-  width: 20px;
+  -webkit-transform: rotate(-45deg) translate(-8px, 4px);
+  transform: rotate(-45deg) translate(-8px, 4px);
+  width: 26px;
 }
 
 .change .bar2 {
@@ -4404,9 +4554,9 @@ ul.hamburgerList button.menuButton {
 }
 
 .change .bar3 {
-  -webkit-transform: rotate(45deg) translate(-6px, -2px);
-  transform: rotate(45deg) translate(-4px, -4px);
-  width: 20px;
+  -webkit-transform: rotate(45deg) translate(-7px, -3px);
+  transform: rotate(45deg) translate(-7px, -3px);
+  width: 26px;
 }
 
 /* moment date and course version */
@@ -4873,41 +5023,43 @@ only screen and (max-device-width: 530px) {
     display: none;
   }
 
-  /*
+  
 
   #searchBarMobile,
   #searchbuttonMobile {
     width: 24px;
-    height: 22px;
+    height: 26px;
     margin-top: 10px;
   }
 
   #searchBarMobile {
     padding-left: 5px;
     display: inline-flex;
-    height: 22px;
+    height: 26px;
     border-radius: 5px;
     float: left;
   }
 
   #searchinputMobile {
-    border: 1px solid var(--color-border);
     border-radius: 0;
-    font-size: 14px;
+    border: 2px solid var(--color-border-2);
+    font-size: 16px;
+    padding-left: 5px;
   }
 
   #searchbuttonMobile {
     margin: 0;
   }
 
-  */
+  
 
   #tooltip-mobile {
-    border: 1px solid var(--color-border);
+    border: 2px solid var(--color-border-2);
     font-size: 17px;
     padding: 0px 5px;
     border-right-width: 0px;
     width: 100px;
+    border-radius: 4px 0px 0px 4px;
   }
 
 /*
@@ -6116,6 +6268,53 @@ only screen and (max-device-width: 320px) {
   color: white;
 }
 
+/*Scroll up arrow */
+ 
+.fixedScroll{
+  position: fixed;
+  right: 165px;
+  cursor: pointer;
+  bottom: 25px;
+  display: none;
+}
+ 
+.arrow {
+  border: solid black;
+  border-width: 0 6px 6px 0;
+  display: inline-block;
+  opacity: 0.5;
+  padding: 6px;
+}
+ 
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+ 
+.tooltiptextScroll {
+  visibility: hidden;
+  width: 70px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 12px;
+  opacity: 0.3;
+  bottom: 56px;
+  right: 140px;
+  position: fixed;
+  z-index: 1;
+}
+ 
+.fixedScroll:hover .tooltiptextScroll {
+  visibility: visible;
+}
+
+.fixedScroll:hover .arrow{
+  opacity: 1;
+}
+
+
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
@@ -7055,7 +7254,7 @@ textarea#filecont {
   display: none;
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 453px) {
 
   header #versionPlus{
     display: none;
@@ -7069,6 +7268,10 @@ textarea#filecont {
     display: none;
   }
 
+  header #accessBTN img{
+    width: 20px;
+  }
+
   .navheader {
     height: 20px;
     margin-bottom: 10px;
@@ -7079,6 +7282,17 @@ textarea#filecont {
     margin-right: 0px;
   }
 }
+
+@media only screen and (max-width: 339px) {
+  .navheader .course-dropdown{
+    height: 20px;
+    width: 120px;
+  }
+  .navName{
+    width: 0px;
+  }
+}
+
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
   width: 100%;
@@ -7151,6 +7365,36 @@ textarea#filecont {
     justify-content: center;
     flex-flow:wrap;
 }
+
+/*HAMBURGER LIST IN ANALYTICS ------------*/
+.hamburgerList{
+  list-style: none;
+  position: absolute;
+  padding: 0px 0px 0px 0px;
+  left: -4px;
+  top: 25px;
+  display: none;
+}
+
+.hamburgerList li{
+  background-color:#493150;
+  box-shadow: 1px 1px 4px #3a3a3a;
+  border-radius: 35%;
+  -webkit-border-radius: 35%;
+}
+
+.hamburgerList li a{
+  font-size: 24px;
+  line-height: 50px;
+}
+
+@media only screen and (min-width: 801px) {
+  #hamburger{
+    display:none;
+  }
+}
+
+
 #selectdir{
   width: 120px;
   position: relative;
@@ -7169,3 +7413,22 @@ textarea#filecont {
   
 }
 
+#columnfilter{
+  border-right: 1px solid #a6a6a6;
+  float: left;
+  width: 50%;
+  overflow: hidden;
+}
+#customfilter{
+  overflow: hidden;
+}
+#sortLeft{
+  float: left;
+  width:49%;
+  overflow: hidden;
+}
+#sortRight{
+  border-left: 1px solid #a6a6a6;
+  width:50%;
+  overflow: hidden;
+}
