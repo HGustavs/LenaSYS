@@ -76,6 +76,15 @@
 
 		<!-- FAB END -->
 
+		<!-- Scroll up START -->
+
+		<div class='fixedScroll' id='fixedScroll'>
+			<span class='tooltiptextScroll'>Back to top</span>
+			<i class='arrow up' id='scrollUp'></i>
+		</div>
+
+		<!-- Scroll up END -->
+
 		<!-- MOTD dropdown -->
 		<div id='motdArea' style='display: none;'>
 			<?php

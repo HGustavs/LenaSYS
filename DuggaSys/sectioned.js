@@ -1017,7 +1017,7 @@ function returnedSection(data) {
         }
 
         // trashcan
-        if (data['writeaccess']) {
+        if (data['writeaccess'] || data['studentteacher']) {
           str += "<td style='width:32px;' class='" + makeTextArray(itemKind, ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " " + hideState + "'>";
           str += "<img id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
           str += "</td>";
@@ -2636,5 +2636,25 @@ function showFeedbackquestion(){
     $("#inputwrapper-FeedbackQuestion").css("display","block");
   }else{
     $("#inputwrapper-FeedbackQuestion").css("display","none");
+  }
+}
+
+//------------------------------------------------------------------------------
+// Scroll to top of page function 
+//------------------------------------------------------------------------------
+$(document).ready(function(){
+  $("#scrollUp").on('click', function(event) {
+    window.scrollTo(0, 0);
+  });
+});
+
+/*Show the up-arrow when user has scrolled down 200 pixels on the page*/
+window.onscroll = function() {scrollToTop()};
+function scrollToTop() {
+  var scroll = document.getElementById("fixedScroll");
+  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+    scroll.style.display = "block";
+  } else {
+    scroll.style.display = "none";
   }
 }
