@@ -44,7 +44,7 @@
 		@media only screen and (max-width: 600px) {
 			.Hamburger{display:block !important;
 			     z-index:500;
-		         width:500px;
+		         width:100%;
 				position: absolute;
 			    left:250px;}
 			#dropdown{display:flex !important;
@@ -60,7 +60,12 @@
 			.Hamburger{
 				
 				display:none;
-			}
+            }
+            #dropdown{display:flex;
+            flex-direction: row;
+            width:100%;
+            padding-left:150px;
+        }
 	</style>
     
 </head>
