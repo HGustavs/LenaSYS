@@ -46,7 +46,8 @@
 			z-index: 500;
 			width: 100%;
 			position: absolute;
-			left: 250px;
+            left: 250px;
+            top:0;
 		}
 
 		#dropdown {
