@@ -1456,15 +1456,7 @@ function Symbol(kindOfSymbol) {
         }else {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
         }
-        if (this.properties['key_type'] == 'Primary key') {
-            var linelength = ctx.measureText(this.name).width;
-            ctx.beginPath(1);
-            ctx.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
-            ctx.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
-            ctx.lineTo(x1 + ((x2 - x1) * 0.5) + linelength, y1 + (0.85 * this.properties['textSize']) + 10);
-            ctx.strokeStyle = this.properties['strokeColor'];
-            ctx.stroke();
-        }
+
         // Change Alignment and Font
         ctx.textAlign = "start";
         ctx.textBaseline = "top";
