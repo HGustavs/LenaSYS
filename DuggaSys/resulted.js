@@ -222,9 +222,18 @@ function makeCustomFilter(filtername, labeltext) {
 	if (filterList[filtername] == null) {
 		filterList[filtername] = false;
 	}
+
+	// Checks if the notExported filter is enabled.
+	if (filterList[filtername] && filtername == "notExported") {
+
+		// Disables the notExported filter.
+		filterList[filtername] = false;
+		//Saves the checkbox values in localstorage.
+		localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
+	}
 	if (filterList[filtername] || filtername == "showStudents" || filtername == "showTeachers") { //Enables filter and saves it in local storage when opening resulted.php.
 		str += " checked";
-
+	
 		//Enables the showStudents and the showTeachers filters.
 		filterList[filtername] = true;
 		//Saves the checkbox values in localstorage.
@@ -240,6 +249,7 @@ function toggleFilter(filter) {
 	} else {
 		filterList[filter] = false;
 	}
+
 	localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
 	myTable.renderTable();
 }
@@ -1185,7 +1195,9 @@ function renderCell(col, celldata, cellid) {
 			return str;
 			}
 	}
-} if (filterList["notExported"]) {
+}	if (filterList["notExported"]) {
+	// If the rerenderData is it's default value, then get the last exported date from the database.
+	// If rerenderData does have data, then enable the filter.
 	if (rerenderData === "NONE") {
 		AJAXService("getunexported", { getType: "ONLYDATE" }, "GEXPORT");
 	} else {
@@ -1489,9 +1501,11 @@ function rowFilter(row) {
 	}	if (filterList["notExported"]) {
 		var rowPending = false;
 		for (var colname in row) {
+			// Takes the marked date and formats it to the right format,
+			// in order to compare the two dates.
 			row[colname]["marked"] = new Date(row[colname]["marked"]);
 			row[colname]["marked"] = row[colname]["marked"].getFullYear() + "-" + addZero(row[colname]["marked"].getMonth() + 1) + "-" + addZero(row[colname]["marked"].getDate()) + " " + addZero(row[colname]["marked"].getHours()) + ":" + addZero(row[colname]["marked"].getMinutes()) + ":" + addZero(row[colname]["marked"].getSeconds());
-			if (colname != "FnameLname" && row[colname]["needMarking"] == false && row[colname]["marked"] > document.getElementById("lastExportedDate").textContent ) {
+			if (colname != "FnameLname" && row[colname]["marked"] > document.getElementById("lastExportedDate").textContent) {
 				rowPending = true;
 				break;
 			}
