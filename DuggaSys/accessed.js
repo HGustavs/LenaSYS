@@ -360,12 +360,12 @@ function validateEmail(email)
 	if(email.indexOf('..') > 0)				// Consecutive . are not allowed
 		return 'Email error! Consecutive "." are not allowed';
 
+	if(email.lastIndexOf('@')!==delimiter)	// Only one @ allowed to separate local and domain parts
+		return 'Email error! Only one "@" is allowed';
+
 	const formatTest = /[A-z0-9]{1,64}@[A-z0-9]{1,}[.]{1}[A-z0-9]{2,}/;		// Expected format
 	if(!formatTest.test(email))
 		return 'Email error! Format is invalid';
-
-	if(email.lastIndexOf('@')!==delimiter)	// Only one @ allowed to separate local and domain parts
-		return 'Email error! Only one "@" is allowed';
 
 	return null;	// The provided email is correct!
 }
