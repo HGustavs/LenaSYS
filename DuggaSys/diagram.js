@@ -5242,8 +5242,7 @@ function toggleApperanceElement(show = false) {
         appearanceElement.style.display = "none";
 
         if(globalappearanceMenuOpen) {
-            //const diagram = localStorage.getItem("diagram" + diagramNumber);
-            //if (diagram != null) LoadImport(diagram);
+            Load();
         }
 
         appearanceMenuOpen = false;
@@ -5674,8 +5673,7 @@ function setGlobalSelections() {
 // setGlobalProperties: Used when the global appearance menu is submitted to set the global properties to the newly selected properties. Also updates each existing object in the diagram to the new properties.
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function setGlobalProperties() {
-    const groups = getGroupsByTypes([-1]);
+function setGlobalProperties(groups) {
     groups.forEach(group => {
         const element = group.querySelector("select, input:not([type='submit'])");
         if(element !== null) {
@@ -5807,9 +5805,9 @@ function initAppearanceForm() {
         elements.forEach(element => {
             if(element.id.includes("Global")) {
                 if(element.tagName === "SELECT") {
-                    element.addEventListener("change", setGlobalProperties);
+                    element.addEventListener("change", () => setGlobalProperties([group]));
                 } else if(element.tagName === "INPUT") {
-                    element.addEventListener("input", setGlobalProperties);
+                    element.addEventListener("input", () => setGlobalProperties([group]));
                 }
             } else if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
                 element.addEventListener("input", () => setSelectedObjectsProperties(element));
@@ -5850,7 +5848,7 @@ function getGroupsByTypes(typesToShow) {
 //----------------------------------------------------------------------------------------
 function submitAppearanceForm() {
     if(globalappearanceMenuOpen) {
-        setGlobalProperties();
+        setGlobalProperties(getGroupsByTypes([-1]));
     }
     SaveState();
     toggleApperanceElement();
