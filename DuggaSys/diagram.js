@@ -4245,7 +4245,7 @@ function getGroupsByType(type) {
         return types.includes(type.toString());
     });
 }
-		
+//collapses the menu when clicked on hamburger-symbol	
 function menuCollapse(){
 
     var menu= document.getElementById('dropdown');
