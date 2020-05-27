@@ -779,9 +779,10 @@ function sectionedInformation($pdo) {
 		foreach($rows as $key => $value) {
 			$users[$key] =  [	
 								"uid" 			=>	$value['uid'],
-								"username"		=>	$value['username'],								
-								"refer"		=>	"",
-								"timestamp"	=>	""
+								"username"		=>	$value['username'],	
+								"courseid"		=>	"",
+								"coursevers"	=>	"",
+								"timestamp"		=>	""
 							];
 		}
 	}
@@ -790,7 +791,8 @@ function sectionedInformation($pdo) {
        SELECT
 		   userid AS uid,
 		   username,
-		   refer,
+		   json_extract(URLParams, "$.cid") AS courseid,
+		   json_extract(URLParams, "$.cvers") AS coursevers,
 		   timestamp 
 	   FROM userHistory
 	   WHERE refer LIKE "%sectioned%"
