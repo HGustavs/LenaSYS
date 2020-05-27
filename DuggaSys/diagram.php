@@ -686,6 +686,10 @@
                         <label for="figureOpacity">Opacity:</label>
                         <input type="range" id="figureOpacity" data-access="opacity">
                     </div>
+                    <div class="form-group" data-types="0,1,2,3,4,5,7" data-advanced>
+                        <label for="lineThickness">Line thickness:</label>
+                        <input type="range" id="lineThickness" min="1" max="4" value="2" data-access="properties.lineWidth">
+                    </div>	
                     <div class="form-group" data-types="-1">
                         <label for="backgroundColorGlobal">Background color:</label>
                         <select id="backgroundColorGlobal" data-access="properties.fillColor"><?=$colors;?></select>

@@ -5443,6 +5443,7 @@ function loadAppearanceForm() {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
         }
+        document.getElementById("lineThickness").value = object.properties.lineWidth;
         setSelections(object);
     });
 }
@@ -5734,7 +5735,7 @@ function setSelectedObjectsProperties(element) {
                     object[access[0]] = getTextareaArray(element, textareaIndex);
                 }
                 textareaIndex++;
-            } else if(element.type === "range") {
+            } else if(element.id === "opacity") {
                 object[access[0]] = element.value / 100;
             } else if(access[0] === "cardinality") {
                 object[access[0]][access[1]] = element.value;

@@ -5367,7 +5367,7 @@ only screen and (max-device-width: 320px) {
   display: block;
 }
 
-#figureOpacity, #lineThicknessGlobal {
+#figureOpacity, #lineThickness, #lineThicknessGlobal {
   width: 100%;
   border: 0;
   margin: 0;
