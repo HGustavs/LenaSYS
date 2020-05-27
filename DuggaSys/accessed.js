@@ -767,6 +767,7 @@ function updateAndCloseGroupDropdown(checkboxes){
 			readStr += checkboxes.childNodes[i].childNodes[0].value.substr(3);
 		}
 	}
+	shouldReRender = true;
 	if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
 	// if user unpresses all checkboxes it the student will now belong to no group
 	else changeProperty(checkboxes.id.substr(3), "group", "None");
