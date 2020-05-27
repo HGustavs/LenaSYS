@@ -890,50 +890,18 @@ function loadUserInformation(){
             var users = {};
             $.each(data, function(i, row) {
 				var user = row.username;
-				var pageParts;
-				var pageLoad;
-				var cid;
-				var vers;
-
-				//Retrives the page 
-				if(row.refer.includes("/DuggaSys/")){
-					pageParts = row.refer.split("/DuggaSys/");
-					pageLoad = pageParts[1];
-
-					if(pageLoad.includes("?")){
-						pageParts = pageParts[1].split("?");
-						pageLoad = pageParts[0];
-					}
-				}
-
-				//Retrives the coursid
-				if(row.refer.includes("courseid=")){
-					pageParts = row.refer.split("courseid=");
-					pageParts = pageParts[1].split("&");
-					cid = pageParts[0];
-				}
-
-				//Retrives the course version
-				if(row.refer.includes("coursevers=")){
-					pageParts = row.refer.split("coursevers=");
-					vers = pageParts[1];
-
-					if(vers.includes("&")){
-						pageParts = pageParts[1].split("&");
-						vers = pageParts[0];
-					}
-				}
 
                 if (!users.hasOwnProperty(user)) {
                     users[user] = [["Userid", "Username", "Page", "Courseid", "Course Version", "Timestamp"]];
 				}
-				if(cid != undefined) {
+
+				if(row.courseid != "") {
 					users[user].push([
 						row.uid,
 						row.username,
-						pageLoad,
-						cid,
-						vers,
+						"sectioned.php",
+						row.courseid,
+						row.coursevers,
 						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
 					]);
 				}
@@ -948,28 +916,15 @@ function loadUserInformation(){
 			var users = {};
             $.each(data, function(i, row) {
 				var user = row.username;
-				var pageParts;
-				var pageLoad;
-
-				//Retrives the page 
-				if(row.refer.includes("/DuggaSys/")){
-					pageParts = row.refer.split("/DuggaSys/");
-					pageLoad = pageParts[1];
-
-					if(pageLoad.includes("?")){
-						pageParts = pageParts[1].split("?");
-						pageLoad = pageParts[0];
-					}
-				}
-
+		
                 if (!users.hasOwnProperty(user)) {
-                    users[user] = [["Userid", "Username", "Event", "Timestamp"]];
+                    users[user] = [["Userid", "Username", "Page", "Timestamp"]];
 				}
-				if(pageLoad != undefined) {
+				if(row.uid != undefined) {
 					users[user].push([
 						row.uid,
 						row.username,
-						pageLoad,
+						"courseed.php",
 						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
 					]);
 				}
