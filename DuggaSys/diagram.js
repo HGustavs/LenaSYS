@@ -4245,3 +4245,13 @@ function getGroupsByType(type) {
         return types.includes(type.toString());
     });
 }
+		
+function menuCollapse(){
+
+    var menu= document.getElementById('dropdown');
+    if (menu.style.visibility === 'hidden') {
+      menu.style.visibility = 'visible';
+    } else {
+      menu.style.visibility = 'hidden';
+    }
+  }

@@ -1,0 +1,705 @@
+{
+	"diagram": [
+		{
+			"kind": 2,
+			"name": "Customer",
+			"id": 0,
+			"targeted": false,
+			"symbolkind": 1,
+			"operations": [
+				{
+					"text": "+ drive()"
+				},
+				{
+					"text": "+ break()"
+				}
+			],
+			"attributes": [
+				{
+					"text": "- reg:String"
+				},
+				{
+					"text": "- color:Color"
+				}
+			],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": true,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [
+				{
+					"from": 15,
+					"to": 16
+				}
+			],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": 2,
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 0,
+			"bottomRight": 1,
+			"middleDivider": 2,
+			"centerPoint": 2,
+			"minHeight": 116,
+			"minWidth": 91.2412109375,
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Order",
+			"id": 1,
+			"targeted": false,
+			"symbolkind": 1,
+			"operations": [
+				{
+					"text": "+ calcSubTotal()"
+				},
+				{
+					"text": "+ calcTax()"
+				}
+			],
+			"attributes": [
+				{
+					"text": "- date:Date"
+				},
+				{
+					"text": "- status:String"
+				}
+			],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [
+				{
+					"from": 21,
+					"to": 22
+				}
+			],
+			"connectorLeft": [
+				{
+					"from": 16,
+					"to": 15
+				}
+			],
+			"connectorRight": [
+				{
+					"from": 17,
+					"to": 18
+				}
+			],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": 2,
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 3,
+			"bottomRight": 4,
+			"middleDivider": 5,
+			"centerPoint": 5,
+			"minHeight": 116,
+			"minWidth": 115.7685546875,
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "OrderDetail",
+			"id": 2,
+			"targeted": false,
+			"symbolkind": 1,
+			"operations": [
+				{
+					"text": "+ calcSubTotal()"
+				},
+				{
+					"text": "+ calcTax()"
+				}
+			],
+			"attributes": [
+				{
+					"text": "- quantity:int"
+				},
+				{
+					"text": "- taxStatus:String"
+				}
+			],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [
+				{
+					"from": 19,
+					"to": 20
+				}
+			],
+			"connectorLeft": [
+				{
+					"from": 18,
+					"to": 17
+				}
+			],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": 2,
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 6,
+			"bottomRight": 7,
+			"middleDivider": 8,
+			"centerPoint": 8,
+			"minHeight": 116,
+			"minWidth": 122.37890625,
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Paymeny",
+			"id": 3,
+			"targeted": false,
+			"symbolkind": 1,
+			"operations": [
+				{
+					"text": "+ test()"
+				}
+			],
+			"attributes": [
+				{
+					"text": "- amount:float"
+				}
+			],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [
+				{
+					"from": 22,
+					"to": 21
+				}
+			],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": 2,
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 9,
+			"bottomRight": 10,
+			"middleDivider": 11,
+			"centerPoint": 11,
+			"minHeight": 88,
+			"minWidth": 100.599609375,
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Item",
+			"id": 4,
+			"targeted": false,
+			"symbolkind": 1,
+			"operations": [
+				{
+					"text": "+ getPriceForQuantity()"
+				},
+				{
+					"text": "+ getTax()"
+				},
+				{
+					"text": "+ inStock()"
+				}
+			],
+			"attributes": [
+				{
+					"text": "- shippingWeight:float"
+				},
+				{
+					"text": "- description:String"
+				}
+			],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [
+				{
+					"from": 20,
+					"to": 19
+				}
+			],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": 2,
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 12,
+			"bottomRight": 13,
+			"middleDivider": 14,
+			"centerPoint": 14,
+			"minHeight": 130,
+			"minWidth": 160.8857421875,
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Line5",
+			"id": 5,
+			"targeted": false,
+			"symbolkind": 7,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {
+				"value": "1..1",
+				"valueUML": "0..*"
+			},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": 2,
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 15,
+			"object_type": "",
+			"bottomRight": 16,
+			"breakpointStartX": 0,
+			"breakpointStartY": 0,
+			"breakpointEndX": 0,
+			"breakpointEndY": 0,
+			"middleBreakPointX": 0,
+			"middleBreakPointY": 0,
+			"startLineDirection": "",
+			"endLineDirection": "",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Line6",
+			"id": 6,
+			"targeted": false,
+			"symbolkind": 7,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {
+				"value": "1..1",
+				"valueUML": "1..*"
+			},
+			"lineDirection": "Second",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": 2,
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Aggregation",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 17,
+			"object_type": "",
+			"bottomRight": 18,
+			"breakpointStartX": 0,
+			"breakpointStartY": 0,
+			"breakpointEndX": 0,
+			"breakpointEndY": 0,
+			"middleBreakPointX": 0,
+			"middleBreakPointY": 0,
+			"startLineDirection": "",
+			"endLineDirection": "",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Line7",
+			"id": 7,
+			"targeted": false,
+			"symbolkind": 7,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {
+				"value": "0..*",
+				"valueUML": "1..1"
+			},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": 2,
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 19,
+			"object_type": "",
+			"bottomRight": 20,
+			"breakpointStartX": 0,
+			"breakpointStartY": 0,
+			"breakpointEndX": 0,
+			"breakpointEndY": 0,
+			"middleBreakPointX": 0,
+			"middleBreakPointY": 0,
+			"startLineDirection": "",
+			"endLineDirection": "",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Line8",
+			"id": 8,
+			"targeted": false,
+			"symbolkind": 7,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {
+				"value": "1..1",
+				"valueUML": "1..*"
+			},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": 2,
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 21,
+			"object_type": "",
+			"bottomRight": 22,
+			"breakpointStartX": 0,
+			"breakpointStartY": 0,
+			"breakpointEndX": 0,
+			"breakpointEndY": 0,
+			"middleBreakPointX": 0,
+			"middleBreakPointY": 0,
+			"startLineDirection": "",
+			"endLineDirection": "",
+			"isHovered": false
+		}
+	],
+	"points": [
+		{
+			"x": 240,
+			"y": 80,
+			"isSelected": 0
+		},
+		{
+			"x": 352.685546875,
+			"y": 196,
+			"isSelected": 0
+		},
+		{
+			"x": 296.3427734375,
+			"y": 143,
+			"isSelected": 0
+		},
+		{
+			"x": 480,
+			"y": 80,
+			"isSelected": 0
+		},
+		{
+			"x": 595.7685546875,
+			"y": 196,
+			"isSelected": 0
+		},
+		{
+			"x": 537.88427734375,
+			"y": 143,
+			"isSelected": 0
+		},
+		{
+			"x": 720,
+			"y": 80,
+			"isSelected": 0
+		},
+		{
+			"x": 842.37890625,
+			"y": 196,
+			"isSelected": 0
+		},
+		{
+			"x": 781.189453125,
+			"y": 143,
+			"isSelected": 0
+		},
+		{
+			"x": 480,
+			"y": 320,
+			"isSelected": 0
+		},
+		{
+			"x": 596,
+			"y": 408,
+			"isSelected": 0
+		},
+		{
+			"x": 538,
+			"y": 369,
+			"isSelected": 0
+		},
+		{
+			"x": 688,
+			"y": 320,
+			"isSelected": 0
+		},
+		{
+			"x": 874,
+			"y": 450,
+			"isSelected": 0
+		},
+		{
+			"x": 781,
+			"y": 383,
+			"isSelected": 0
+		},
+		{
+			"x": 352.685546875,
+			"y": 138,
+			"isSelected": 0
+		},
+		{
+			"x": 480,
+			"y": 138,
+			"isSelected": 0
+		},
+		{
+			"x": 595.7685546875,
+			"y": 138,
+			"isSelected": 0
+		},
+		{
+			"x": 720,
+			"y": 138,
+			"isSelected": 0
+		},
+		{
+			"x": 781.189453125,
+			"y": 196,
+			"isSelected": 0
+		},
+		{
+			"x": 781,
+			"y": 320,
+			"isSelected": 0
+		},
+		{
+			"x": 537.88427734375,
+			"y": 196,
+			"isSelected": 0
+		},
+		{
+			"x": 538,
+			"y": 320,
+			"isSelected": 0
+		}
+	],
+	"diagramNames": [
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol"
+	],
+	"diagramID": [
+		0,
+		1,
+		2,
+		3,
+		4,
+		5,
+		6,
+		7,
+		8
+	]
+}

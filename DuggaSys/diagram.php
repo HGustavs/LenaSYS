@@ -39,6 +39,30 @@
             window.addEventListener('keypress', clickEnterOnDialogMenu);
         });
     </script>
+    <style>
+    
+		@media only screen and (max-width: 600px) {
+			.Hamburger{display:block !important;
+			     z-index:500;
+		         width:500px;
+				position: absolute;
+			    left:250px;}
+			#dropdown{display:flex !important;
+			flex-direction: column !important;
+			background-color: white;
+			top:20%;
+		  z-index: 500;
+			width:500px;
+			visibility: hidden;	
+			}
+}
+	
+			.Hamburger{
+				
+				display:none;
+			}
+	</style>
+    
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
@@ -120,7 +144,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <div id="dropdown">
                     <div class="menu-drop-down" tabindex="0">
                         <span class="drop-down-label">File</span>
                         <div class="drop-down">
@@ -360,6 +384,15 @@
                             </div>
                         </div>
                     </div>
+                   </div>
+                    <div class="Hamburger" onclick="menuCollapse()">
+					<svg viewBox="0 0 100 80" width="40" height="40">
+                    <rect width="50" height="10"></rect>
+                    <rect y="20" width="50" height="10"></rect>
+                    <rect y="40" width="50" height="10"></rect>
+                    </svg>
+
+				</div>
                 </div>
                 </br>
                 </br>

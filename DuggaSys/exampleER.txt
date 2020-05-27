@@ -1,0 +1,968 @@
+{
+	"diagram": [
+		{
+			"kind": 2,
+			"name": "Line14",
+			"id": 14,
+			"targeted": false,
+			"symbolkind": 4,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {
+				"value": "",
+				"parentPointIndexes": {
+					"topLeft": 18,
+					"bottomRight": 19
+				}
+			},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": true,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"object_type": "",
+			"isCardinalityPossible": true,
+			"topLeft": 31,
+			"bottomRight": 32,
+			"type": "idek",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Line13",
+			"id": 13,
+			"targeted": false,
+			"symbolkind": 4,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {
+				"value": "",
+				"parentPointIndexes": {
+					"topLeft": 0,
+					"bottomRight": 1
+				}
+			},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": true,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"object_type": "",
+			"isCardinalityPossible": true,
+			"topLeft": 30,
+			"bottomRight": 29,
+			"type": "idek",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Line12",
+			"id": 12,
+			"targeted": false,
+			"symbolkind": 4,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": true,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"object_type": "",
+			"isCardinalityPossible": false,
+			"topLeft": 28,
+			"bottomRight": 17,
+			"type": "idek",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Line11",
+			"id": 11,
+			"targeted": false,
+			"symbolkind": 4,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": true,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"object_type": "",
+			"isCardinalityPossible": false,
+			"topLeft": 27,
+			"bottomRight": 14,
+			"type": "idek",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Line10",
+			"id": 10,
+			"targeted": false,
+			"symbolkind": 4,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": true,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"object_type": "",
+			"isCardinalityPossible": false,
+			"topLeft": 26,
+			"bottomRight": 11,
+			"type": "idek",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Line9",
+			"id": 9,
+			"targeted": false,
+			"symbolkind": 4,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": true,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"object_type": "",
+			"isCardinalityPossible": false,
+			"topLeft": 25,
+			"bottomRight": 8,
+			"type": "idek",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Line8",
+			"id": 8,
+			"targeted": false,
+			"symbolkind": 4,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": true,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"object_type": "",
+			"isCardinalityPossible": false,
+			"topLeft": 5,
+			"bottomRight": 24,
+			"type": "idek",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Person",
+			"id": 0,
+			"targeted": false,
+			"symbolkind": 3,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [
+				{
+					"from": 26,
+					"to": 11
+				}
+			],
+			"connectorBottom": [
+				{
+					"from": 29,
+					"to": 30
+				}
+			],
+			"connectorLeft": [
+				{
+					"from": 24,
+					"to": 5
+				},
+				{
+					"from": 25,
+					"to": 8
+				}
+			],
+			"connectorRight": [
+				{
+					"from": 27,
+					"to": 14
+				},
+				{
+					"from": 28,
+					"to": 17
+				}
+			],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 0,
+			"bottomRight": 1,
+			"centerPoint": 2,
+			"length": [],
+			"object_type": "",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Stink",
+			"id": 1,
+			"targeted": false,
+			"symbolkind": 2,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": true,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [
+				{
+					"from": 5,
+					"to": 24
+				}
+			],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 3,
+			"bottomRight": 4,
+			"centerPoint": 5,
+			"object_type": "",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Smell",
+			"id": 2,
+			"targeted": false,
+			"symbolkind": 2,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": true,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [
+				{
+					"from": 8,
+					"to": 25
+				}
+			],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 6,
+			"bottomRight": 7,
+			"centerPoint": 8,
+			"object_type": "",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Verisimilitude",
+			"id": 3,
+			"targeted": false,
+			"symbolkind": 2,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": true,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [
+				{
+					"from": 11,
+					"to": 26
+				}
+			],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 9,
+			"bottomRight": 10,
+			"centerPoint": 11,
+			"object_type": "",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "SSN",
+			"id": 4,
+			"targeted": false,
+			"symbolkind": 2,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": true,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [
+				{
+					"from": 14,
+					"to": 27
+				}
+			],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 12,
+			"bottomRight": 13,
+			"centerPoint": 14,
+			"object_type": "",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Name",
+			"id": 5,
+			"targeted": false,
+			"symbolkind": 2,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": true,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [
+				{
+					"from": 17,
+					"to": 28
+				}
+			],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 15,
+			"bottomRight": 16,
+			"centerPoint": 17,
+			"object_type": "",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Pet",
+			"id": 6,
+			"targeted": false,
+			"symbolkind": 3,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [
+				{
+					"from": 32,
+					"to": 31
+				}
+			],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 18,
+			"bottomRight": 19,
+			"centerPoint": 20,
+			"length": [],
+			"object_type": "",
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Has",
+			"id": 7,
+			"targeted": false,
+			"symbolkind": 5,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": true,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [
+				{
+					"from": 30,
+					"to": 29
+				}
+			],
+			"connectorBottom": [
+				{
+					"from": 31,
+					"to": 32
+				}
+			],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": "2",
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 21,
+			"bottomRight": 22,
+			"centerPoint": 23,
+			"isHovered": false
+		}
+	],
+	"points": [
+		{
+			"x": 400,
+			"y": 240,
+			"isSelected": 0
+		},
+		{
+			"x": 512,
+			"y": 304,
+			"isSelected": 0
+		},
+		{
+			"x": 456,
+			"y": 272,
+			"isSelected": 0
+		},
+		{
+			"x": 208,
+			"y": 176,
+			"isSelected": 0
+		},
+		{
+			"x": 320,
+			"y": 240,
+			"isSelected": 0
+		},
+		{
+			"x": 264,
+			"y": 208,
+			"isSelected": 0
+		},
+		{
+			"x": 208,
+			"y": 320,
+			"isSelected": 0
+		},
+		{
+			"x": 320,
+			"y": 384,
+			"isSelected": 0
+		},
+		{
+			"x": 264,
+			"y": 352,
+			"isSelected": 0
+		},
+		{
+			"x": 400,
+			"y": 96,
+			"isSelected": 0
+		},
+		{
+			"x": 512,
+			"y": 160,
+			"isSelected": 0
+		},
+		{
+			"x": 456,
+			"y": 128,
+			"isSelected": 0
+		},
+		{
+			"x": 592,
+			"y": 176,
+			"isSelected": 0
+		},
+		{
+			"x": 704,
+			"y": 240,
+			"isSelected": 0
+		},
+		{
+			"x": 648,
+			"y": 208,
+			"isSelected": 0
+		},
+		{
+			"x": 592,
+			"y": 320,
+			"isSelected": 0
+		},
+		{
+			"x": 704,
+			"y": 384,
+			"isSelected": 0
+		},
+		{
+			"x": 648,
+			"y": 352,
+			"isSelected": 0
+		},
+		{
+			"x": 400,
+			"y": 480,
+			"isSelected": 0
+		},
+		{
+			"x": 512,
+			"y": 544,
+			"isSelected": 0
+		},
+		{
+			"x": 456,
+			"y": 512,
+			"isSelected": 0
+		},
+		{
+			"x": 400,
+			"y": 368,
+			"isSelected": 0
+		},
+		{
+			"x": 512,
+			"y": 432,
+			"isSelected": 0
+		},
+		{
+			"x": 456,
+			"y": 400,
+			"isSelected": 0
+		},
+		{
+			"x": 400,
+			"y": 261.3333333333333,
+			"isSelected": 0
+		},
+		{
+			"x": 400,
+			"y": 282.66666666666663,
+			"isSelected": 0
+		},
+		{
+			"x": 456,
+			"y": 240,
+			"isSelected": 0
+		},
+		{
+			"x": 512,
+			"y": 261.3333333333333,
+			"isSelected": 0
+		},
+		{
+			"x": 512,
+			"y": 282.66666666666663,
+			"isSelected": 0
+		},
+		{
+			"x": 456,
+			"y": 304,
+			"isSelected": 0
+		},
+		{
+			"x": 456,
+			"y": 368,
+			"isSelected": 0
+		},
+		{
+			"x": 456,
+			"y": 432,
+			"isSelected": 0
+		},
+		{
+			"x": 456,
+			"y": 480,
+			"isSelected": 0
+		}
+	],
+	"diagramNames": [
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol",
+		"Symbol"
+	],
+	"diagramID": [
+		14,
+		13,
+		12,
+		11,
+		10,
+		9,
+		8,
+		0,
+		1,
+		2,
+		3,
+		4,
+		5,
+		6,
+		7
+	]
+}

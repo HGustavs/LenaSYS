@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32.6 32" style="enable-background:new 0 0 32.6 32;" xml:space="preserve">
+<style type="text/css">
+	.st0{opacity:0.22;}
+	.st1{filter:url(#Adobe_OpacityMaskFilter);}
+	.st2{mask:url(#SVGID_1_);}
+	.st3{fill:#FFFFFF;}
+</style>
+<g id="home-icon_1_" class="st0">
+	<defs>
+		<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="7.1" y="8.7" width="25.5" height="22.2">
+			<feFlood  style="flood-color:white;flood-opacity:1" result="back"/>
+			<feBlend  in="SourceGraphic" in2="back" mode="normal"/>
+		</filter>
+	</defs>
+	<mask maskUnits="userSpaceOnUse" x="7.1" y="8.7" width="25.5" height="22.2" id="SVGID_1_">
+		<g class="st1">
+			<image style="overflow:visible;" width="30" height="27" xlink:href="9BA695FE.jpg"  transform="matrix(1 0 0 1 5 5.975)">
+			</image>
+		</g>
+	</mask>
+	<g class="st2">
+		<path d="M19.9,14.5l9.7,8v8.4h-7.1V26h-5.3v4.9h-7.1v-8.4L19.9,14.5z M19.9,12.3l10.8,9l1.9-1.8L19.9,8.7L7.1,19.6L9,21.4
+			L19.9,12.3z"/>
+	</g>
+</g>
+<path id="home-icon" class="st3" d="M16.5,11.1l9.7,8v8.4h-7.1v-4.9h-5.3v4.9H6.8v-8.4L16.5,11.1z M16.5,8.9l10.8,9l1.9-1.8
+	L16.5,5.3L3.7,16.2L5.6,18L16.5,8.9z"/>
+</svg>
