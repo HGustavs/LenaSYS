@@ -24,6 +24,7 @@ pdoConnect();
   <script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
   <script src="timer.js"></script>
   <script src="clickcounter.js"></script>
+  <script src="../Shared/markdown.js"></script>
 
 </head>
 <body onload="setup();">
