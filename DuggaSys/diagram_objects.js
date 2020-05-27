@@ -1411,7 +1411,7 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------------
     this.drawUML = function(x1, y1, x2, y2) {
         var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
-        ctx.font = "bold " + parseInt(this.properties['textSize']) + "px Arial";
+        ctx.font = `bold ${parseInt(this.properties['textSize'])}px ${this.properties['font']}`;
 
         // Clear Class Box
         ctx.fillStyle = this.properties['fillColor'];
@@ -1460,7 +1460,7 @@ function Symbol(kindOfSymbol) {
         // Change Alignment and Font
         ctx.textAlign = "start";
         ctx.textBaseline = "top";
-        ctx.font = parseInt(this.properties['textSize']) + "px Arial";
+        ctx.font = `${parseInt(this.properties['textSize'])}px ${this.properties['font']}`;
 
         for (var i = 0; i < this.attributes.length; i++) {
             ctx.fillText(this.attributes[i].text, x1 + (this.properties['textSize'] * 0.3), y1 + (this.properties['textSize'] * 1.7) + (this.properties['textSize'] * i));
