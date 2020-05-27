@@ -1269,7 +1269,7 @@ function loadUserInformation(){
 				localStorage.setItem('analyticsLastUser', $(this).val());
 			} catch(err) { }
 
-			if(currentPage != "events" && currentPage != "fileEvents"){
+			if(currentPage != "events" && currentPage != "fileEvents" && currentPage != "loginFail"){
 				selectPage.change();	
 			}
 		});
