@@ -93,39 +93,6 @@
 /* --------------================################================-------------- *
  *                                   Generics                                   *
  * --------------================################================-------------- */
- 
-    
- @media only screen and (max-width: 600px) {
-   .Hamburger{
-              display:block !important;
-              z-index:500;
-              width:100%;
-              position: absolute;
-              left:250px;
-              top:0;
-            }
-   #dropdown{
-             display:flex !important;
-             flex-direction: column !important;
-             background-color: white;
-             top:20%;
-             z-index: 500;
-             width:500px;
-             visibility: hidden;	
-   }
-}
-
-   .Hamburger{
-              display:none;
-             }
-
-   #dropdown{
-             display:flex;
-             flex-direction: row;
-             width:100%;
-             padding-left:150px;
-     }
-
 
 html,
 body {

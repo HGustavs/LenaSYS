@@ -39,7 +39,38 @@
             window.addEventListener('keypress', clickEnterOnDialogMenu);
         });
     </script>
-  
+ <style>
+	@media only screen and (max-width: 600px) {
+		.Hamburger {
+			display: block !important;
+			z-index: 500;
+			width: 100%;
+			position: absolute;
+			left: 250px;
+		}
+
+		#dropdown {
+			display: flex !important;
+			flex-direction: column !important;
+			background-color: white;
+			top: 20%;
+			z-index: 500;
+			width: 500px;
+			visibility: hidden;
+		}
+	}
+
+	.Hamburger {
+		display: none;
+	}
+
+	#dropdown {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		padding-left: 150px;
+	}
+</style>
     
 </head>
 <!-- Reads the content from the js-files -->
