@@ -197,6 +197,12 @@ var spacebarKeyPressed = false;         // True when entering MoveAround mode by
 var toolbarState = currentMode.er;      // Set default toolbar state to ER.
 var hideComment = false;				//Used to se if the comment marked text should be hidden(true) or shown(false)
 
+const toolbarStateTypes = {
+    [currentMode.er]: [0,2,3,4,5,6],
+    [currentMode.uml]: [1,6,7],
+    [currentMode.dev]: [0,1,2,3,4,5,6,7]
+};
+
 // Default keyboard keys
 const defaultBackspaceKey = 8;
 const defaultEnterKey = 13;
@@ -5570,14 +5576,18 @@ function showFormGroups(typesToShow, isGlobal = false) {
     form.parentNode.replaceChild(originalAppearanceForm, form);
 
     const allformGroups = document.querySelectorAll("#appearanceForm .form-group");
-    const formGroupsToShow = getGroupsByTypes(typesToShow);
+    let formGroupsToShow = getGroupsByTypes(typesToShow);
+
+    let collapsibleStructure = null;
+    if(isGlobal) {
+        formGroupsToShow = filterGlobalFormGroups(formGroupsToShow);
+        collapsibleStructure = getCollapsibleStructure(formGroupsToShow, toolbarStateTypes[toolbarState], "subtypes");
+    } else {
+        collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
+    }
 
     allformGroups.forEach(group => group.style.display = "none");
     formGroupsToShow.forEach(group => group.style.display = "block");
-
-    const collapsibleStructure = (isGlobal) 
-                                    ? getCollapsibleStructure(formGroupsToShow, [0,1,2,3,4,5,6,7], "subtypes")
-                                    : getCollapsibleStructure(formGroupsToShow, typesToShow);
 
     initAppearanceForm();
 
@@ -5664,7 +5674,7 @@ function getTextareaArray(element, index) {
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setGlobalSelections() {
-    const groups = getGroupsByTypes([-1]);
+    const groups = filterGlobalFormGroups(getGroupsByTypes([-1]));
     groups.forEach(group => {
         const select = group.querySelector("select");
         if(select !== null) {
@@ -5678,13 +5688,17 @@ function setGlobalSelections() {
 // setGlobalProperties: Used when the global appearance menu is submitted to set the global properties to the newly selected properties. Also updates each existing object in the diagram to the new properties.
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function setGlobalProperties(groups) {
+function setGlobalProperties(globalGroups) {
+    const groups = filterGlobalFormGroups(globalGroups);
     groups.forEach(group => {
         const element = group.querySelector("select, input:not([type='submit'])");
         if(element !== null) {
             const access = element.dataset.access.split(".");
             settings[access[0]][access[1]] = element.value;
-            diagram.forEach(object => object[access[0]][access[1]] = element.value);
+
+            diagram.getObjectsByTypes(toolbarStateTypes[toolbarState]).forEach(object => {
+                object[access[0]][access[1]] = element.value;
+            });
         }
     });
     updateGraphics();
@@ -5845,6 +5859,17 @@ function getGroupsByTypes(typesToShow) {
     return [...formGroups].filter(group => {
         const types = group.dataset.types.split(",");
         return typesToShow.some(type => types.includes(type.toString()));
+    });
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------
+// filterGlobalFormGroups: Filters global form groups by active toolbarState to only return form groups that affects tools in toolbar.
+//------------------------------------------------------------------------------------------------------------------------------------
+
+function filterGlobalFormGroups(formGroupsToShow) {
+    return formGroupsToShow.filter(group => {
+        const subtypes = group.dataset.subtypes.split(",").map(Number);
+        return subtypes.some(subtype => toolbarStateTypes[toolbarState].includes(subtype));
     });
 }
 
