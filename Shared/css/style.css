@@ -3119,9 +3119,15 @@ padding: 10px;
 #reset-pw{
   width:70%; 
   margin-left:20px;
-  background-color: rgb(254, 204, 86); color: #614875;
-
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
 }
+#reset-pw:hover{
+  background-color: var(--color-accent-hover);
+  transition: 0.2s;
+  filter: brightness(1.05);
+}
+
 
 .show{
   display:block;

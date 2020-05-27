@@ -991,7 +991,7 @@ function returnedSection(data) {
           // create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
             if (hasGracetimeExpired(deadline, dateTimeSubmitted)) {
-              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submission after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
             }
           }
         }
@@ -999,7 +999,7 @@ function returnedSection(data) {
         // Userfeedback
         if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
           str += "<td style='width:32px;'>";
-          str += "<img id='dorf' src='../Shared/icons/FistV.svg' title='feedback' onclick='showUserFeedBack(\"" + item['lid']  + "\",\"" + item['feedbackquestion']  + "\");'>";
+          str += "<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback' onclick='showUserFeedBack(\"" + item['lid']  + "\",\"" + item['feedbackquestion']  + "\");'>";
           str += "</td>";
         }
 
@@ -2482,7 +2482,7 @@ function createUserFeedbackTable(data){
     str +="<tr>";
     str += "<td>"+data.userfeedback[i].ufid+"</td>";
     if(data.userfeedback[i].username === null){
-      str += "<td>N/A</td>";
+      str += "<td>Anonymous</td>";
     }else{
       str += "<td>"+data.userfeedback[i].username+"</td>";
     }

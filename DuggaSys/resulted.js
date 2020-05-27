@@ -1819,7 +1819,7 @@ $(window).scroll(function() {
 	var scrolled = $(this).scrollLeft();
 	var legendBox = $('#resultedLegendContainer');
 	var $win = $(window);
-	if((scrolled + ladExportWidth) < resultTableWidth){
+	if((scrolled + ladExportWidth) <= resultTableWidth){
 		$('#resultedFormContainer').css({
 			'transform': 'translateX(' + scrolled +'px'+ ')'
 		});

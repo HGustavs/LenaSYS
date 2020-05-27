@@ -37,8 +37,8 @@
 			<div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
 				<div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
-								<b>Keywords:</b> username, date <br>
-								<b>Ex:</b> 2019-05-21
+							<b>Keywords:</b> username, date <br>
+						<b>Ex:</b> 2019-05-21
 					</div>
 					<span>?</span>
 				</div>
@@ -59,19 +59,21 @@
 
 	<!-- Import Users Dialog START -->
 	<div id='importUsers' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox'>
-      		<div class='loginBoxheader'>
-      			<h3>Import users</h3>
-      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
+		<div class='loginBox'>
+			<div class='loginBoxheader'>
+				<h3>Import users</h3>
+				<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
       		<div class='note'>
-                  <p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
-                  <p>SSN; Firstname; Lastname; Student email; Email; PID; Status &lt;linebreak&gt;</p>
-                  <p>Example:<br/>
-				  "18481724-5557";"Fritfjof";"Nilsson Piraten";"a48fripi@student.his.se";"booboo@mail.nu";"WEBUG";"Avklarad"</p>
+				<p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
+				<p>SSN; Firstname; Lastname; Student email; Email; PID; Status &lt;linebreak&gt;</p>
+				<p>Example:<br/>
+				"18481724-5557";"Fritfjof";"Nilsson Piraten";"a48fripi@student.his.se";"booboo@mail.nu";"WEBUG";"Avklarad"</p>
       		</div>
       		<div style='padding:5px;'>
       			<textarea id="import" ></textarea>
+			</div>
+			<div style='padding:5px;display:flex;justify-content: flex-end;'>
       			<input class='submit-button' type='button' value='Import' onclick='importUsers();' />
       		</div>
       </div>
@@ -101,7 +103,7 @@
 					<label id='addErrorMessage'> </label>
 				</div>
 			</div>  
-			<div style='padding:5px;'>
+			<div style='padding:5px;display:flex;justify-content: flex-end;'>
       			<input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
       		</div>
       </div>

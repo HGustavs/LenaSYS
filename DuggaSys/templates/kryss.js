@@ -19,6 +19,7 @@ Example seed
 -------------==============######## Documentation End ###########==============-------------
 */
 var idunique = 0;
+var variant = "UNK";
 function quiz(parameters) {
 	if(parameters != undefined) {
 		console.log("pram:" + parameters);
@@ -82,6 +83,7 @@ function setup()
 
 function returnedDugga(data)
 {	
+	variant = data['variant'];
 	if(querystring['highscoremode'] == 1) {
 		Timer.startTimer();
 	} else if (querystring['highscoremode'] == 2) {
@@ -117,13 +119,25 @@ function getCheckedBoxes(){
 
 function saveClick()
 {
+	Timer.stopTimer();
+
+	timeUsed = Timer.score;
+	stepsUsed = ClickCounter.score;
+
+	if (querystring['highscoremode'] == 1) {	
+		score = Timer.score;
+	} else if (querystring['highscoremode'] == 2) {
+		score = ClickCounter.score;
+	}
+
 var answer ="";
 	for(var t = 1;t <= idunique; t++){
 	answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
 	}
 idunique = 0;
 		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-		savequizResult(answer);
+		answer = variant + " " + answer;
+		saveDuggaResult(answer);
 }
 
 //----------------------------------------------------------------------------------
@@ -133,31 +147,31 @@ var allanswers = "";
 var theanswers ="";
 function showFacit(param, uanswer, danswer)
 {
+	quiz(param);
 	AJAXService("GETVARIANTANSWER",{ setanswer:uanswer},"VARIANTPDUGGA");
 	var splited = uanswer.split(" ");
-	allanswers =  splited[3];
+	allanswers =  splited[4];
 }
 
 function returnedanswersDugga(data){
-
 theanswers= data['param'];
 var checkifcorrect ="Answered: ";
 
 
-var theanswerSplit = theanswers.split(",");
+var theanswerSplit = theanswers.split(" ");
 var answeredSplit = allanswers.split(",");
 
 	for(var i = 0;i < answeredSplit.length;i++){
 		if(theanswerSplit[i] == answeredSplit[i]){
 	
-			checkifcorrect += "<span style ='color:green'>"+answeredSplit[i] + ',</span>';
+			checkifcorrect += "<span style ='color:green'>"+answeredSplit[i] + ' </span>';
 		}else{
-			checkifcorrect +=  "<span style ='color:red'>"+answeredSplit[i] + ',</span>';
+			checkifcorrect +=  "<span style ='color:red'>"+answeredSplit[i] + ' </span>';
 		}
 	}
 
-	var yoloswag = "Answered: " + theanswers;
-$("#output").html(checkifcorrect+"</br>"+yoloswag);
+var yoloswag = "Answered: " + theanswers;
+$("#output").append(checkifcorrect+"</br>"+yoloswag);
 }
 function closeFacit(){
 
