@@ -197,6 +197,12 @@ var spacebarKeyPressed = false;         // True when entering MoveAround mode by
 var toolbarState = currentMode.er;      // Set default toolbar state to ER.
 var hideComment = false;				//Used to se if the comment marked text should be hidden(true) or shown(false)
 
+const toolbarStateTypes = {
+    [currentMode.er]: [0,2,3,4,5,6],
+    [currentMode.uml]: [1,6,7],
+    [currentMode.dev]: [0,1,2,3,4,5,6,7]
+};
+
 // Default keyboard keys
 const defaultBackspaceKey = 8;
 const defaultEnterKey = 13;
@@ -5570,22 +5576,21 @@ function showFormGroups(typesToShow, isGlobal = false) {
     form.parentNode.replaceChild(originalAppearanceForm, form);
 
     const allformGroups = document.querySelectorAll("#appearanceForm .form-group");
-    const formGroupsToShow = getGroupsByTypes(typesToShow);
-
-    allformGroups.forEach(group => group.style.display = "none");
-    formGroupsToShow.forEach(group => group.style.display = "block");
+    let formGroupsToShow = getGroupsByTypes(typesToShow);
 
     let collapsibleStructure = null;
     if(isGlobal) {
-        const toolbarStateTypes = {
-            [currentMode.er]: [0,2,3,4,5,6],
-            [currentMode.uml]: [1,6,7],
-            [currentMode.dev]: [0,1,2,3,4,5,6,7]
-        };
+        formGroupsToShow = formGroupsToShow.filter(group => {
+            const subtypes = group.dataset.subtypes.split(",").map(Number);
+            return subtypes.some(subtype => toolbarStateTypes[toolbarState].includes(subtype));
+        });
         collapsibleStructure = getCollapsibleStructure(formGroupsToShow, toolbarStateTypes[toolbarState], "subtypes");
     } else {
         collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
     }
+
+    allformGroups.forEach(group => group.style.display = "none");
+    formGroupsToShow.forEach(group => group.style.display = "block");
 
     initAppearanceForm();
 
