@@ -5580,10 +5580,7 @@ function showFormGroups(typesToShow, isGlobal = false) {
 
     let collapsibleStructure = null;
     if(isGlobal) {
-        formGroupsToShow = formGroupsToShow.filter(group => {
-            const subtypes = group.dataset.subtypes.split(",").map(Number);
-            return subtypes.some(subtype => toolbarStateTypes[toolbarState].includes(subtype));
-        });
+        formGroupsToShow = filterGlobalFormGroups(formGroupsToShow);
         collapsibleStructure = getCollapsibleStructure(formGroupsToShow, toolbarStateTypes[toolbarState], "subtypes");
     } else {
         collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
@@ -5692,6 +5689,7 @@ function setGlobalSelections() {
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setGlobalProperties(groups) {
+    
     groups.forEach(group => {
         const element = group.querySelector("select, input:not([type='submit'])");
         if(element !== null) {
@@ -5858,6 +5856,17 @@ function getGroupsByTypes(typesToShow) {
     return [...formGroups].filter(group => {
         const types = group.dataset.types.split(",");
         return typesToShow.some(type => types.includes(type.toString()));
+    });
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------
+// filterGlobalFormGroups: Filters global form groups by active toolbarState to only return form groups that affects tools in toolbar.
+//------------------------------------------------------------------------------------------------------------------------------------
+
+function filterGlobalFormGroups(formGroupsToShow) {
+    return formGroupsToShow.filter(group => {
+        const subtypes = group.dataset.subtypes.split(",").map(Number);
+        return subtypes.some(subtype => toolbarStateTypes[toolbarState].includes(subtype));
     });
 }
 
