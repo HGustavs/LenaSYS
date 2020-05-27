@@ -240,9 +240,25 @@ function validateSSN(ssn)
 	if(ccd === 10) ccd = 0;		// If value is 10, remove the left digit... Leads to ccd = 0
 
 	if(ccd != ssn.substring(length-1))	// Compare calculated to given control digit
-		return 'SSN Error! Incorrect control digit (last digit). Expected: ' + ccd;
+		return 'SSN Error! Incorrect control digit.\nExpected: ' + ccd;
 
 	return null;	// The provided SSN is correct!
+}
+
+function tooltipSSN()
+{
+	var error = validateSSN(document.getElementById('addSsn').value);
+	var ssnInputBox = document.getElementById('addSsn');
+	console.log(error);
+
+	if(error && document.getElementById('addSsn').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipSSN').innerHTML = error;
+		$('#tooltipSSN').fadeIn();
+		ssnInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipSSN').fadeOut();
+		ssnInputBox.style.backgroundColor = '#fff';
+	}
 }
 
 //---------------------------------------------------------------------------------------------------
