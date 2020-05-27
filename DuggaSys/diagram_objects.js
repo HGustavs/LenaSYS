@@ -1411,13 +1411,10 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------------
     this.drawUML = function(x1, y1, x2, y2) {
         var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
-        this.properties['strokeColor'] = '#000000';
-        this.properties['fontColor'] = '#000000';
-        this.properties['lineWidth'] = 2;
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px Arial";
 
         // Clear Class Box
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = this.properties['fillColor'];
 		ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
 		
 		// Set border to redish if crossing line
