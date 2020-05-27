@@ -626,24 +626,22 @@ function returnedSection(data) {
         versnme = versionname;
         if (querystring['coursevers'] == item['vers']) motd = item['motd'];
         if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
-        
-        document.getElementById("courseDropdownTop").innerHTML = bstr;
-        bstr = "<option value='None'>None</option>" + bstr;
-        document.getElementById("copyvers").innerHTML = bstr;
-
-        // Show FAB / Menu
-        document.getElementById("FABStatic").style.display = "Block";
-        document.getElementById("FABStatic2").style.display = "Block";
-        // Show addElement Button
-        document.getElementById("addElement").style.display = "Block";
       }
 
-    }else {
+      document.getElementById("courseDropdownTop").innerHTML = bstr;
+      bstr = "<option value='None'>None</option>" + bstr;
+      document.getElementById("copyvers").innerHTML = bstr;
+
+      // Show FAB / Menu
+      document.getElementById("FABStatic").style.display = "Block";
+      document.getElementById("FABStatic2").style.display = "Block";
+      // Show addElement Button
+      document.getElementById("addElement").style.display = "Block";
+    } else {
       // Hide FAB / Menu
       document.getElementById("FABStatic").style.display = "None";
       document.getElementById("FABStatic2").style.display = "None";
     }
-    
 
     // hide som elements if to narrow
     var hiddenInline = "";
