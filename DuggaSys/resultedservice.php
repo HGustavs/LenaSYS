@@ -249,10 +249,10 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$usergroups = current(current($usergroups));
 			$usergroups = rtrim($usergroups);
 			
-			$query = $pdo->prepare("SELECT user_course.uid FROM user_course WHERE user_course.groups LIKE :group and user_course.cid = :cid");
-			$usergroups = "%{$usergroups}%";
+			$query = $pdo->prepare("SELECT user_course.uid FROM user_course, userAnswer WHERE user_course.groups = :group and user_course.cid = :cid and userAnswer.quiz = :quizId and user_course.uid = userAnswer.uid");
 			$query->bindParam(':group', $usergroups);
 			$query->bindParam(':cid', $cid);
+			$query->bindParam(':quizId', $quizId);
 			$query->execute();
 			$users = $query->fetchAll(PDO::FETCH_ASSOC);
 			
