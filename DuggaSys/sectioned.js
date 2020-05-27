@@ -609,8 +609,8 @@ function returnedSection(data) {
     document.getElementById("course-versname").innerHTML = versionname;
 
     var str = "";
-
-    if (data['readaccess'] || data['studentteacher'] || data['writeaccess']) {
+    // Build dropdown for readaccess, studentteacher and writeaccess users
+    if (data['studentteacher'] || data['writeaccess']) {
       // Build dropdowns
       var bstr = "";
       for (var i = 0; i < retdata['versions'].length; i++) {
@@ -626,27 +626,24 @@ function returnedSection(data) {
         versnme = versionname;
         if (querystring['coursevers'] == item['vers']) motd = item['motd'];
         if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
+        
+        document.getElementById("courseDropdownTop").innerHTML = bstr;
+        bstr = "<option value='None'>None</option>" + bstr;
+        document.getElementById("copyvers").innerHTML = bstr;
+
+        // Show FAB / Menu
+        document.getElementById("FABStatic").style.display = "Block";
+        document.getElementById("FABStatic2").style.display = "Block";
+        // Show addElement Button
+        document.getElementById("addElement").style.display = "Block";
       }
 
-    }
-
-    if (data['writeaccess'] || data['studentteacher']) {
-      
-      document.getElementById("courseDropdownTop").innerHTML = bstr;
-      bstr = "<option value='None'>None</option>" + bstr;
-      document.getElementById("copyvers").innerHTML = bstr;
-
-      // Show FAB / Menu
-      document.getElementById("FABStatic").style.display = "Block";
-      document.getElementById("FABStatic2").style.display = "Block";
-      // Show addElement Button
-      document.getElementById("addElement").style.display = "Block";
-    } else {
+    }else {
       // Hide FAB / Menu
       document.getElementById("FABStatic").style.display = "None";
       document.getElementById("FABStatic2").style.display = "None";
     }
-
+    
 
     // hide som elements if to narrow
     var hiddenInline = "";
