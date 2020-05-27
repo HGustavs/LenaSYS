@@ -86,7 +86,7 @@ if(isset($_POST['studentid']) && isset($_POST['viewed'])){
 
 }
 //count un-seen feedbacks
-$unreadFeedbackNotification = $pdo->query('SELECT COUNT(*) FROM userAnswer WHERE (grade IS NOT NULL) AND seen_status = "0" AND uid ="'.$studentid.'"')->fetchColumn(); 
+$unreadFeedbackNotification = $pdo->query('SELECT COUNT(*) FROM userAnswer WHERE (grade IS NOT NULL) AND seen_status = 0 AND uid ="'.$studentid.'"')->fetchColumn(); 
 
 echo json_encode(["duggaFeedback" => $duggaFeedback, "unreadFeedbackNotification" => $unreadFeedbackNotification]);
 
