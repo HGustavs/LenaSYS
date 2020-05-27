@@ -2336,6 +2336,7 @@ function updateGraphics() {
     diagram.updateQuadrants();
     drawGrid();
     drawOrigoLine();
+    drawVirtualPaper();
     if(developerModeActive) drawOrigo();
 
     // Mark the last freedraw point on mobiles
@@ -2346,7 +2347,6 @@ function updateGraphics() {
     diagram.updateQuadrants();
     diagram.draw();
     points.drawPoints();
-    drawVirtualPaper();
     if(developerModeActive) drawCrosshair();
 }
 
