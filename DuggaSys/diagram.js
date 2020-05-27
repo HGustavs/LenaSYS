@@ -5242,8 +5242,9 @@ function toggleApperanceElement(show = false) {
         appearanceElement.style.display = "none";
 
         if(globalappearanceMenuOpen) {
-            //const diagram = localStorage.getItem("diagram" + diagramNumber);
-            //if (diagram != null) LoadImport(diagram);
+            //Restore to previous state. Will revert if changes were made in global appearance but form not submitted (enter/button click)
+            Load();
+            settings = JSON.parse(localStorage.getItem("Settings"));
         }
 
         appearanceMenuOpen = false;
@@ -5371,7 +5372,7 @@ function createCollapsible(formGroups, types, index, subCollapsibleGroups = [], 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 function loadGlobalAppearanceForm() {
-    showFormGroups([-1]);
+    showFormGroups([-1], true);
     globalappearanceMenuOpen = true;
     toggleApperanceElement(true);
     document.getElementById("lineThicknessGlobal").value = settings.properties.lineWidth;
@@ -5442,6 +5443,7 @@ function loadAppearanceForm() {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
         }
+        document.getElementById("lineThickness").value = object.properties.lineWidth;
         setSelections(object);
     });
 }
@@ -5561,7 +5563,7 @@ function setErCardinalityElementDisplayStatus(object) {
 // showFormGroups: Resets the form to the state before previous creation to remove old collapsibles. Shows all form groups having the type in the passed array and groups them into new collapsibles.
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function showFormGroups(typesToShow) {
+function showFormGroups(typesToShow, isGlobal = false) {
     const form = document.getElementById("appearanceForm");
 
     //Replace appearance form with original to keep structure after collapsible addition changes it
@@ -5573,7 +5575,9 @@ function showFormGroups(typesToShow) {
     allformGroups.forEach(group => group.style.display = "none");
     formGroupsToShow.forEach(group => group.style.display = "block");
 
-    const collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
+    const collapsibleStructure = (isGlobal) 
+                                    ? getCollapsibleStructure(formGroupsToShow, [0,1,2,3,4,5,6,7], "subtypes")
+                                    : getCollapsibleStructure(formGroupsToShow, typesToShow);
 
     initAppearanceForm();
 
@@ -5597,9 +5601,9 @@ function showFormGroups(typesToShow) {
 // getCollapsibleStructure: Generates an array of objects where each object represents a collapsible. Each object have information about which form-groups should be in the collapsible and which object types will be affected by the collapsible's content.
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function getCollapsibleStructure(formGroups, typesToShow) {
+function getCollapsibleStructure(formGroups, typesToShow, dataAttribute = "types") {
     return formGroups.reduce((result, group) => {
-        const groupTypes = group.dataset.types.split(",");
+        const groupTypes = group.dataset[dataAttribute].split(",");
         const types = groupTypes.filter(type => typesToShow.includes(parseInt(type)));
         const duplicateTypesIndex = result.findIndex(item => sameMembers(item.types, types));
         if(duplicateTypesIndex === -1) {
@@ -5674,8 +5678,7 @@ function setGlobalSelections() {
 // setGlobalProperties: Used when the global appearance menu is submitted to set the global properties to the newly selected properties. Also updates each existing object in the diagram to the new properties.
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function setGlobalProperties() {
-    const groups = getGroupsByTypes([-1]);
+function setGlobalProperties(groups) {
     groups.forEach(group => {
         const element = group.querySelector("select, input:not([type='submit'])");
         if(element !== null) {
@@ -5734,7 +5737,7 @@ function setSelectedObjectsProperties(element) {
                     object[access[0]] = getTextareaArray(element, textareaIndex);
                 }
                 textareaIndex++;
-            } else if(element.type === "range") {
+            } else if(element.id === "opacity") {
                 object[access[0]] = element.value / 100;
             } else if(access[0] === "cardinality") {
                 object[access[0]][access[1]] = element.value;
@@ -5807,9 +5810,9 @@ function initAppearanceForm() {
         elements.forEach(element => {
             if(element.id.includes("Global")) {
                 if(element.tagName === "SELECT") {
-                    element.addEventListener("change", setGlobalProperties);
+                    element.addEventListener("change", () => setGlobalProperties([group]));
                 } else if(element.tagName === "INPUT") {
-                    element.addEventListener("input", setGlobalProperties);
+                    element.addEventListener("input", () => setGlobalProperties([group]));
                 }
             } else if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
                 element.addEventListener("input", () => setSelectedObjectsProperties(element));
@@ -5850,7 +5853,7 @@ function getGroupsByTypes(typesToShow) {
 //----------------------------------------------------------------------------------------
 function submitAppearanceForm() {
     if(globalappearanceMenuOpen) {
-        setGlobalProperties();
+        setGlobalProperties(getGroupsByTypes([-1]));
     }
     SaveState();
     toggleApperanceElement();

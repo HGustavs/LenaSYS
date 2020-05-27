@@ -1314,6 +1314,12 @@ function Symbol(kindOfSymbol) {
         this.isLayerLocked = false;
         ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
         this.properties['textSize'] = this.getFontsize();
+
+        // Makes sure that the stroke color can not be white
+        if (this.properties['strokeColor'] == '#ffffff') {
+            this.properties['strokeColor'] = '#000000';
+        }
+
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
 
         var x1 = pixelsToCanvas(points[this.topLeft].x).x;
@@ -1336,6 +1342,17 @@ function Symbol(kindOfSymbol) {
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
+
+        // Make sure that the font color is always able to be seen.
+        // Symbol and Font color should therefore not be the same
+        if (this.properties['fontColor'] === this.properties['fillColor']) {
+            if (this.properties['fillColor'] === '#000000') {
+                this.properties['fontColor'] = '#ffffff';
+            } else {
+                this.properties['fontColor'] = '#000000';
+            }
+        }
+
 
         if (this.symbolkind == symbolKind.uml) {
             this.drawUML(x1, y1, x2, y2);
@@ -1411,21 +1428,16 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------------
     this.drawUML = function(x1, y1, x2, y2) {
         var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
-        this.properties['strokeColor'] = '#000000';
-        this.properties['fontColor'] = '#000000';
-        this.properties['lineWidth'] = 2;
-        ctx.font = "bold " + parseInt(this.properties['textSize']) + "px Arial";
+        ctx.font = `bold ${parseInt(this.properties['textSize'])}px ${this.properties['font']}`;
 
         // Clear Class Box
-        ctx.fillStyle = '#ffffff';
-		ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
-		
-		// Set border to redish if crossing line
-		if(!checkSamePage(x1,y1,x2,y2)){
-			ctx.strokeStyle = '#DC143C';
-		}else{
-			ctx.strokeStyle = this.properties['strokeColor'];
-		}
+        ctx.fillStyle = this.properties['fillColor'];
+        ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+        
+        // Set border to redish if crossing line
+        if(!checkSamePage(x1,y1,x2,y2)){
+            ctx.strokeStyle = '#DC143C';
+        }
 
         // Box
         ctx.beginPath();
@@ -1459,19 +1471,11 @@ function Symbol(kindOfSymbol) {
         }else {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
         }
-        if (this.properties['key_type'] == 'Primary key') {
-            var linelength = ctx.measureText(this.name).width;
-            ctx.beginPath(1);
-            ctx.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
-            ctx.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
-            ctx.lineTo(x1 + ((x2 - x1) * 0.5) + linelength, y1 + (0.85 * this.properties['textSize']) + 10);
-            ctx.strokeStyle = this.properties['strokeColor'];
-            ctx.stroke();
-        }
+
         // Change Alignment and Font
         ctx.textAlign = "start";
         ctx.textBaseline = "top";
-        ctx.font = parseInt(this.properties['textSize']) + "px Arial";
+        ctx.font = `${parseInt(this.properties['textSize'])}px ${this.properties['font']}`;
 
         for (var i = 0; i < this.attributes.length; i++) {
             ctx.fillText(this.attributes[i].text, x1 + (this.properties['textSize'] * 0.3), y1 + (this.properties['textSize'] * 1.7) + (this.properties['textSize'] * i));
@@ -1483,12 +1487,10 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2) {
-		//if on two or more pages turn redish
+        // Set border to redish if crossing line
         if(!checkSamePage(x1,y1,x2,y2)){
-			ctx.strokeStyle = '#DC143C';
-		}else{
-			ctx.strokeStyle = this.properties['strokeColor'];
-		}
+            ctx.strokeStyle = '#DC143C';
+        }
 
         ctx.fillStyle = this.properties['fillColor'];
         // Drawing a multivalue attribute
@@ -1496,32 +1498,11 @@ function Symbol(kindOfSymbol) {
             drawOval(x1 - 7 * diagram.getZoomValue(), y1 - 7 * diagram.getZoomValue(), x2 + 7 * diagram.getZoomValue(), y2 + 7 * diagram.getZoomValue());
             ctx.stroke();
             drawOval(x1, y1, x2, y2);
-            // Makes sure that the stroke color can not be white
-            if (this.properties['strokeColor'] == '#ffffff') {
-                this.properties['strokeColor'] = '#000000';
-            }
-            // Make sure that the font color is always able to be seen.
-            // Symbol and Font color should therefore not be the same
-            if (this.properties['fontColor'] == this.properties['fillColor']) {
-                if (this.properties['fillColor'] == '#000000') {
-                    this.properties['fontColor'] = '#ffffff';
-                } else {
-                    this.properties['fontColor'] = '#000000';
-                }
-            }
+
         // Drawing a normal attribute
         } else {
             drawOval(x1, y1, x2, y2);
             ctx.fill();
-            // Make sure that the font color is always able to be seen.
-            // Symbol and Font color should therefore not be the same
-            if (this.properties['fontColor'] == this.properties['fillColor']) {
-                if (this.properties['fillColor'] == '#000000') {
-                    this.properties['fontColor'] = '#ffffff';
-                } else {
-                    this.properties['fontColor'] = '#000000';
-                }
-            }
         }
         ctx.clip();
 
@@ -1607,11 +1588,6 @@ function Symbol(kindOfSymbol) {
         ctx.closePath();
         ctx.lineWidth = (this.properties['lineWidth'] * 1.5) * diagram.getZoomValue();
         ctx.stroke();
-
-        // Makes sure that the stroke color can not be white
-        if (this.properties['strokeColor'] == '#ffffff') {
-            this.properties['strokeColor'] = '#000000';
-        }
     }
 
     this.drawEntity = function(x1, y1, x2, y2) {
@@ -1626,13 +1602,11 @@ function Symbol(kindOfSymbol) {
             //this.setLinesConnectedToRelationsToForced();
         } else {
             //this.setLinesConnectedToRelationsToNormal();
-		}
-
-		if(!checkSamePage(x1,y1,x2,y2)){
-			ctx.strokeStyle = '#DC143C';
-		}else{
-			ctx.strokeStyle = this.properties['strokeColor'];
-		}
+        }
+        
+        if(!checkSamePage(x1,y1,x2,y2)){
+            ctx.strokeStyle = '#DC143C';
+        }
 
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -1643,18 +1617,9 @@ function Symbol(kindOfSymbol) {
 		ctx.closePath();	
 		ctx.fill();
 
-		// Make sure that the font color is always able to be seen.
-        // Symbol and Font color should therefore not be the same
-        if (this.properties['fontColor'] == this.properties['fillColor']) {
-            if (this.properties['fillColor'] == '#000000') {
-                this.properties['fontColor'] = '#ffffff';
-            } else {
-                this.properties['fontColor'] = '#000000';
-            }
-		}
-
         ctx.clip();
         ctx.stroke();
+        
 		if(!checkSamePage(x1,y1,x2,y2)){
 			ctx.fillStyle = '#DC143C';
 		}else{
@@ -1711,10 +1676,6 @@ function Symbol(kindOfSymbol) {
     // drawUMLLine: Draws uml line between uml objects
     //---------------------------------------------------------------
     this.drawUMLLine = function(x1, y1, x2, y2) {
-
-        this.properties['strokeColor'] = '#000000';
-        this.properties['lineWidth'] = 2;
-
         //Checks if there is cardinality set on either first or second side of line
         if((this.cardinality.value != "" && this.cardinality.value != null) || (this.cardinality.valueUML != "" && this.cardinality.valueUML != null)) {
             ctx.fillStyle = '#000';
@@ -2110,32 +2071,16 @@ function Symbol(kindOfSymbol) {
       ctx.closePath();
       ctx.lineWidth = (this.properties['lineWidth'] * 1.5) * diagram.getZoomValue();
       ctx.stroke();
-
-      // Makes sure that the stroke color can not be white
-      if (this.properties['strokeColor'] == '#ffffff') {
-          this.properties['strokeColor'] = '#000000';
-      }
-      // Make sure that the font color is always able to be seen.
-      //Symbol and Font color should therefore not be the same
-      if (this.properties['fontColor'] == this.properties['fillColor']) {
-          if (this.properties['fillColor'] == '#000000') {
-              this.properties['fontColor'] = '#ffffff';
-          } else {
-              this.properties['fontColor'] = '#000000';
-          }
-      }
     }
 
     this.drawRelation = function(x1, y1, x2, y2, midx, midy) {
         var midx = pixelsToCanvas(points[this.centerPoint].x).x;
         var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
-		
-		// Set border to redish if crossing line
-		if(!checkSamePage(x1,y1,x2,y2)){
-			ctx.strokeStyle = '#DC143C';
-		}else{
-			ctx.strokeStyle = this.properties['strokeColor'];
-		}
+        
+        // Set border to redish if crossing line
+        if(!checkSamePage(x1,y1,x2,y2)){
+            ctx.strokeStyle = '#DC143C';
+        }
 
         if (this.properties['key_type'] == 'Weak') {
           this.drawWeakRelation(x1, y1, x2, y2, midx, midy);
@@ -2150,15 +2095,6 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(midx, y1);
         ctx.closePath();
         ctx.fill();
-        // Make sure that the font color is always able to be seen.
-        // Symbol and Font color should therefore not be the same
-        if (this.properties['fontColor'] == this.properties['fillColor']) {
-            if (this.properties['fillColor'] == '#000000') {
-                this.properties['fontColor'] = '#ffffff';
-            } else {
-                this.properties['fontColor'] = '#000000';
-            }
-        }
         ctx.clip();
 		ctx.stroke();
 		
