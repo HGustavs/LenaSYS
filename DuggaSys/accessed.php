@@ -80,7 +80,7 @@
 
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:464px;'>
+		<div class='loginBox' style='width:494px;'>
 			<div class='loginBoxheader'>
 				<h3>Add user</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
