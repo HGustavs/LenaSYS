@@ -5317,14 +5317,15 @@ const symbolTypeMap = {
     "4": "ER line",
     "5": "Relation",
     "6": "Text",
-    "7": "UML line"
+    "7": "UML line",
+    "8": "Advanced"
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // createCollapsible: Creates a collapsible element containing the form-groups passed. Types is an array used to concatenate the title from. Index is used to to open the first created collapsible.
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function createCollapsible(formGroups, types, index) {
+function createCollapsible(formGroups, types, index, subCollapsibleGroups = [], appendTo = document.getElementById("appearanceForm")) {
     const collapsibleElement = document.createElement("div");
     const objectTypesElement = document.createElement("div");
     const iconContainer = document.createElement("div");
@@ -5358,7 +5359,11 @@ function createCollapsible(formGroups, types, index) {
 
     formGroups.forEach(group => formGroupContainer.appendChild(group));
 
-    document.getElementById("appearanceForm").appendChild(collapsibleElement);
+    appendTo.appendChild(collapsibleElement);
+
+    if(subCollapsibleGroups.length > 0) {
+        createCollapsible(subCollapsibleGroups, [8], -1, [], collapsibleElement);
+    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -5571,7 +5576,18 @@ function showFormGroups(typesToShow) {
     const collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
 
     initAppearanceForm();
-    collapsibleStructure.forEach((object, i) => createCollapsible(object.groups, object.types, i));
+
+    collapsibleStructure.forEach((object, i) => {
+        const advancedGroups = object.groups.filter(group => typeof group.dataset.advanced !== "undefined");
+
+        //Create normal collapsible with no sub-collapsibles if there are only advanced properties or no advanced properties.
+        if(object.groups.length - advancedGroups.length === 0 || advancedGroups.length === 0) {
+            createCollapsible(object.groups, object.types, i);
+        } else {
+            const normalGroups = object.groups.filter(group => typeof group.dataset.advanced === "undefined");
+            createCollapsible(normalGroups, object.types, i, advancedGroups);
+        }
+    });
 
     //Always put submit-button in the end of the form
     document.getElementById("appearanceForm").appendChild(document.getElementById("appearanceButtonContainer"));
