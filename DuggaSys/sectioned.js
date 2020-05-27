@@ -609,8 +609,8 @@ function returnedSection(data) {
     document.getElementById("course-versname").innerHTML = versionname;
 
     var str = "";
-
-    if (data['writeaccess']) {
+    // Build dropdown and showing FAB-buttons for studentteacher and writeaccess users
+    if (data['studentteacher'] || data['writeaccess']) {
       // Build dropdowns
       var bstr = "";
       for (var i = 0; i < retdata['versions'].length; i++) {
@@ -642,36 +642,6 @@ function returnedSection(data) {
       document.getElementById("FABStatic").style.display = "None";
       document.getElementById("FABStatic2").style.display = "None";
     }
-
-    if (data['readaccess']) {
-      // Build dropdowns
-      var bstr = "";
-      for (var i = 0; i < retdata['versions'].length; i++) {
-        var item = retdata['versions'][i];
-        if (retdata['courseid'] == item['cid']) {
-          bstr += "<option value='" + item['vers'] + "'";
-          if (retdata['coursevers'] == item['vers']) {
-            bstr += " selected";
-          }
-          bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
-        }
-        // save vers, versname and motd from table vers as global variables.
-        versnme = versionname;
-        if (querystring['coursevers'] == item['vers']) motd = item['motd'];
-        if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
-      }
-
-      bstr = "<option value='None'>None</option>" + bstr;
-      document.getElementById("copyvers").innerHTML = bstr;
-    }
-
-    if (data['studentteacher']) {
-      // Show FAB / Menu
-      document.getElementById("FABStatic").style.display = "Block";
-      // Show addElement Button
-      document.getElementById("addElement").style.display = "Block";
-    }
-
 
     // hide som elements if to narrow
     var hiddenInline = "";
