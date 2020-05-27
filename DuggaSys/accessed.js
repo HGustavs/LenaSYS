@@ -301,6 +301,21 @@ function tooltipFirst()
 	}
 }
 
+function tooltipLast()
+{
+	var error = validateLastName();
+	var lnameInputBox = document.getElementById('addLastname');
+
+	if(error && document.getElementById('addLastname').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipLast').innerHTML = error;
+		$('#tooltipLast').fadeIn();
+		lnameInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipLast').fadeOut();
+		lnameInputBox.style.backgroundColor = '#fff';
+	}
+}
+
 
 //---------------------------------------------------------------------------------------------------
 // validateEmail(email)

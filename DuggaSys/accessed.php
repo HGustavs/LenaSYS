@@ -97,7 +97,11 @@
 					<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
 					<input placeholder="Greger" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
 				</div>
-				<div class='flexwrapper'><span>Last Name:</span><input placeholder="Gregersson" class='textinput' type='text' id='addLastname'/></div>
+				<div class='flexwrapper'>
+					<span>Last Name:</span>
+					<div class="tooltipDugga"><span id="tooltipLast" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="Gregersson" class='textinput' type='text' id='addLastname' onchange="tooltipLast()" onkeyup="tooltipLast()"/>
+				</div>
 				<div class='flexwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></div>
 				<div class='flexwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></div>
 				<div class='flexwrapper'><span>PID:</span><input placeholder="WEBUG" class='textinput' id='addPid'></div>
