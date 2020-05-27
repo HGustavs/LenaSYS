@@ -2482,7 +2482,7 @@ function createUserFeedbackTable(data){
     str +="<tr>";
     str += "<td>"+data.userfeedback[i].ufid+"</td>";
     if(data.userfeedback[i].username === null){
-      str += "<td>N/A</td>";
+      str += "<td>Anonymous</td>";
     }else{
       str += "<td>"+data.userfeedback[i].username+"</td>";
     }
