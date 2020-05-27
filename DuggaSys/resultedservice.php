@@ -59,6 +59,7 @@ $duggafeedback="";
 $duggaexpire="";
 $duggatimesgraded="";
 $duggagrade="";
+$duggamarked = "";
 $gradeupdated=false;
 $users = "";
 
@@ -365,7 +366,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							}
 						}
 						// Get gradeExpire and timesGraded in order to update the local arrays of resulted.js whenever a grade is updated.
-						$query = $pdo->prepare("SELECT gradeExpire, timesGraded FROM userAnswer WHERE uid=:luid AND moment=:moment AND cid=:cid AND vers=:vers LIMIT 1");
+						$query = $pdo->prepare("SELECT marked, gradeExpire, timesGraded FROM userAnswer WHERE uid=:luid AND moment=:moment AND cid=:cid AND vers=:vers LIMIT 1");
 						$query->bindParam(':cid', $cid);
 						$query->bindParam(':vers', $vers);
 						$query->bindParam(':moment', $listentry);
@@ -374,6 +375,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 								$duggaexpire = $row['gradeExpire'];
 								$duggatimesgraded = $row['timesGraded'];
+								$duggamarked = $row['marked'];
 							}
 						}
 					}
@@ -485,7 +487,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					}
 
 					// Get gradeExpire and timesGraded in order to update the local arrays of resulted.js whenever a grade is updated.
-					$query = $pdo->prepare("SELECT gradeExpire, timesGraded FROM userAnswer WHERE uid=:luid AND moment=:moment AND cid=:cid AND vers=:vers LIMIT 1");
+					$query = $pdo->prepare("SELECT marked, gradeExpire, timesGraded FROM userAnswer WHERE uid=:luid AND moment=:moment AND cid=:cid AND vers=:vers LIMIT 1");
 					$query->bindParam(':cid', $cid);
 					$query->bindParam(':vers', $vers);
 					$query->bindParam(':moment', $listentry);
@@ -494,6 +496,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 						if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 							$duggaexpire = $row['gradeExpire'];
 							$duggatimesgraded = $row['timesGraded'];
+							$duggamarked = $row['marked'];
 						}
 					}
 				}
@@ -967,6 +970,7 @@ if($users != "" && !strpos($usergroups, 'None') && $groupdugga != 0){
 			'duggaparam' => $duggaparam,
 			'duggaanswer' => $duggaanswer,
 			'duggaexpire' => $duggaexpire,
+			'duggamarked' => $duggamarked,
 			'duggatimesgraded' => $duggatimesgraded,
 			'useranswer' => $useranswer,
 			'duggastats' => $duggastats,
@@ -999,6 +1003,7 @@ if($users != "" && !strpos($usergroups, 'None') && $groupdugga != 0){
 		'duggaparam' => $duggaparam,
 		'duggaanswer' => $duggaanswer,
 		'duggaexpire' => $duggaexpire,
+		'duggamarked' => $duggamarked,
 		'duggatimesgraded' => $duggatimesgraded,
 		'useranswer' => $useranswer,
 		'duggastats' => $duggastats,

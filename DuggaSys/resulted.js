@@ -610,6 +610,7 @@ function returnedResults(data) {
 					studentObject.grade = parseInt(data[i].results);
 					studentObject.timesGraded = parseInt(data[i].duggatimesgraded);
 					studentObject.gradeExpire = data[i].duggaexpire;
+					studentObject.marked = data[i].duggamarked;
 					if (data[i].results > 0) {
 						studentObject.needMarking = false;
 					} else {
@@ -1499,6 +1500,7 @@ function rowFilter(row) {
 			}
 		}
 	}	if (filterList["notExported"]) {
+		
 		var rowPending = false;
 		for (var colname in row) {
 			// Takes the marked date and formats it to the right format,
