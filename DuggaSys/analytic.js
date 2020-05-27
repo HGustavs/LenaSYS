@@ -838,20 +838,20 @@ function loadUserInformation(){
 	var firstLoad = true;
 	
 	var selectPage = $("<select id='userInformationPage'></select>")
-        .append('<option value="sectioned">sectioned</option>')
-        .append('<option value="courseed">courseed</option>')
-        .append('<option value="showDugga">showDugga</option>')
-        .append('<option value="fileed">fileed</option>')
-        .append('<option value="resulted">resulted</option>')
-        .append('<option value="codeviewer">codeviewer</option>')
-        .append('<option value="profile">profile</option>')
-        .append('<option value="duggaed">duggaed</option>')
-        .append('<option value="accessed">accessed</option>')
-        .append('<option value="events">events</option>')
-        .append('<option value="fileEvents">fileEvents</option>')
-        .append('<option value="course">course</option>')
-        .append('<option value="loginFail">loginFail</option>')
-
+		.append('<option value="calendar">Calendar Subscriptions</option>')
+    .append('<option value="sectioned">sectioned</option>')
+    .append('<option value="courseed">courseed</option>')
+    .append('<option value="showDugga">showDugga</option>')
+    .append('<option value="fileed">fileed</option>')
+    .append('<option value="resulted">resulted</option>')
+    .append('<option value="codeviewer">codeviewer</option>')
+    .append('<option value="profile">profile</option>')
+    .append('<option value="duggaed">duggaed</option>')
+    .append('<option value="accessed">accessed</option>')
+    .append('<option value="events">events</option>')
+    .append('<option value="fileEvents">fileEvents</option>')
+    .append('<option value="course">course</option>')
+    .append('<option value="loginFail">loginFail</option>')
     .appendTo($('#analytic-info'));
 		
 	$("#userInformationPage").val(localStorage.getItem('userInformationPage'));
@@ -881,13 +881,41 @@ function loadUserInformation(){
 		case "loginFail":
 			updateloginFail();
 			break;
+		case "calendar":
+			updateCalendarInformation();
+			pageCount = "calendar.php";
+			break;
 		case "sectioned":
 		default:
 			updateSectionedInformation();
 			pageCount = "sectioned.php";
 			break;
 	}
-  
+ 
+    function updateCalendarInformation(){
+		hasCounter = true;
+        loadAnalytics("calendarInformation", function(data) {
+            var users = {};
+            $.each(data, function(i, row) {
+				var user = row.username;
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["User ID", "Username",  "Course ID", "Course Version", "Subscribed at"]];
+				}
+				if(row.courseid != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						row.courseid,
+						row.coursevers,
+						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
+					]);
+				}
+            });
+            updateState(users);
+        });
+	}
+ 
     function updateSectionedInformation(){
 		hasCounter = true;
         loadAnalytics("sectionedInformation", function(data) {
@@ -1438,6 +1466,10 @@ function loadUserInformation(){
 					break;
 				case "loginFail":
 					updateloginFail();
+					break;
+				case "calendar":
+					updateCalendarInformation();
+					pageCount = "calendar.php";
 					break;
             }
         });
