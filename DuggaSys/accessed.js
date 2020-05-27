@@ -878,26 +878,28 @@ document.addEventListener('click', function(e){
 	if(e.target.classList.contains('access-dropdown') || e.target.parentElement.classList.contains('access-dropdown')){
 		var dropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content');
 		var arrow = e.target.closest('.access-dropdown').querySelector('img');
-		if(activeDropdown === undefined){
-			if(window.getComputedStyle(dropdown, null).getPropertyValue("display") === "none"){
+		if(activeDropdown === undefined){ // no dropdown is set to be open (active)
+			if(window.getComputedStyle(dropdown, null).getPropertyValue("display") === "none"){ //clicked-dropdown content is hidden
 				dropdown.style.display = "block";
 				activeDropdown = dropdown;
 				activeArrow = arrow;
-			}else{
+				openArrow(activeDropdown.parentElement.parentElement);
+			}else{	//clicked-dropdown content is not hidden --- probably impossible ---
 				dropdown.style.display = "none";
 				activeDropdown = undefined;
 			}
-		}else{
+		}else{ //a dropdown is active
 			if(e.target != activeDropdown){
-				if(activeDropdown.style.display === "none"){
+				if(activeDropdown.style.display === "none"){  //active dropdown is hidden --- probably impossible ---
 					activeDropdown.style.display = "block";
 					activeDropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content');
-				}else{
-					if(activeDropdown != dropdown){
+				}else{ //active dropdown is visible
+					if(activeDropdown != dropdown){ //clicked new dropdown --> close old, open new
 						activeDropdown.style.display = "none";
 						e.target.closest('.access-dropdown').querySelector('.access-dropdown-content').style.display = "block";
 						activeDropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content')
-					}else{
+						openArrow(activeDropdown.parentElement.parentElement);
+					}else{ //clicked open (active) dropdown again --> close
 						activeDropdown.style.display = "none";
 						activeDropdown = undefined;
 					}
@@ -906,8 +908,8 @@ document.addEventListener('click', function(e){
 			closeArrow(activeArrow);
 			activeArrow = e.target.closest('.access-dropdown').querySelector('img');
 		}
-	}else{
-		if(activeDropdown){
+	}else{ // clicked somewhere else on the screen
+		if(activeDropdown){ // if dropdown is open --> close it
 			activeDropdown.style.display = "none";
 		}
 		activeDropdown = undefined;
