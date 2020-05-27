@@ -595,6 +595,7 @@ function renderCell(col, celldata, cellid) {
 		else{
 			str += "<div><div class='access-dropdown'><span>" + optstr + "</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
 		}
+    str += "<label><input type='radio' name='groupradio"+obj.uid+"' checked id='g" + obj.uid + "' value='' />None</label>";
 		for (var i = 0; i < filez['groups'].length; i++) {
 			var group = filez['groups'][i];
 			if (tgroups.indexOf((group.groupkind + "_" + group.groupval)) > -1) {
@@ -855,10 +856,11 @@ function updateAndCloseGroupDropdown(checkboxes){
 	var str = "", readStr = "<span>";
 	for (i = 0; i < checkboxes.childNodes.length; i++) {
 		if (checkboxes.childNodes[i].childNodes[0].checked) {
-			str += checkboxes.childNodes[i].childNodes[0].value + " ";
-			readStr += checkboxes.childNodes[i].childNodes[0].value.substr(3) + " ";
+			str += checkboxes.childNodes[i].childNodes[0].value;
+			readStr += checkboxes.childNodes[i].childNodes[0].value.substr(3);
 		}
 	}
+	shouldReRender = true;
 	if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
 	// if user unpresses all checkboxes it the student will now belong to no group
 	else changeProperty(checkboxes.id.substr(3), "group", "None");
