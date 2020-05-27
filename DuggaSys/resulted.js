@@ -902,6 +902,19 @@ function renderCell(col, celldata, cellid) {
 					str += "'>";
 				}
 
+			} if (filterList["notExported"]) {
+				if (rerenderData === "NONE") {
+					AJAXService("getunexported", { getType: "ONLYDATE" }, "GEXPORT");
+				} else {
+					str = "<div class='resultTableCell resultTableMini ";
+					// color based on pending
+					if (celldata.marked > rerenderData) {
+						str += "dugga-assigned ";
+					} else {
+						str += "dugga-empty-mini";
+					}
+					str += "'>";
+				}
 			}
 			return str;
 		}
