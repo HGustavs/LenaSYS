@@ -3116,13 +3116,13 @@ padding: 10px;
 .access-dropdown-selected {
   background-color:var(--color-accent);
 }
-#reset-pw{
+div.reset-pw{
   width:70%; 
   margin-left:20px;
   background-color: var(--color-accent);
   color: var(--color-text-primary);
 }
-#reset-pw:hover{
+div.reset-pw:hover{
   background-color: var(--color-accent-hover);
   transition: 0.2s;
   filter: brightness(1.05);
