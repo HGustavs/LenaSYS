@@ -162,7 +162,7 @@ function addSingleUser() {
 }
 
 function verifyUserInputForm(input) {
-	var errorString = '';
+	var verifyString = '';
 
 	// Verify SSN using validateSSN function
 	if(verifyString = validateSSN(input[0])) {		// Returns null if there is no error
@@ -170,15 +170,21 @@ function verifyUserInputForm(input) {
 		return false;
 	}
 
-	// Verify First/Last name <= 50 characters
-	if (input[1].length > 50 || input[2].length > 50) {
-		alert('Input exceeded max length for first or last name (50)');
+	// Verify first name
+	if(verifyString = validateName(input[1])) {		// Returns null if there is no error
+		alert(verifyString);
 		return false;
 	}
 
-	// Verify PID <= 10 characters
-	if (input[input.length - 2].length > 10) {
-		alert('Input exceeded max length for PID (10)');
+	// Verify last name
+	if(verifyString = validateName(input[2])) {		// Returns null if there is no error
+		alert(verifyString);
+		return false;
+	}
+
+	// Verify PID
+	if(verifyString = validatePID(input[input.length - 2])) {	// Returns null if there is no error
+		alert(verifyString);
 		return false;
 	}
 
@@ -240,10 +246,104 @@ function validateSSN(ssn)
 	if(ccd === 10) ccd = 0;		// If value is 10, remove the left digit... Leads to ccd = 0
 
 	if(ccd != ssn.substring(length-1))	// Compare calculated to given control digit
-		return 'SSN Error! Incorrect control digit (last digit). Expected: ' + ccd;
+		return 'SSN Error! Incorrect control digit.\nExpected: ' + ccd;
 
 	return null;	// The provided SSN is correct!
 }
+
+function tooltipSSN()
+{
+	var error = validateSSN(document.getElementById('addSsn').value);
+	var ssnInputBox = document.getElementById('addSsn');
+
+	if(error && document.getElementById('addSsn').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipSSN').innerHTML = error;
+		$('#tooltipSSN').fadeIn();
+		ssnInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipSSN').fadeOut();
+		ssnInputBox.style.backgroundColor = '#fff';
+	}
+}
+
+//---------------------------------------------------------------------------------------------------
+// validateName(name)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+function validateName(name)
+{
+	const length = name.length;
+	if(length < 2)	return 'Name is too short\nMinimum two characters';	// Too short
+	if(length > 50)	return 'Name is too long\nMaximum 50 characters';	// Too long
+
+	const formatTest = /^[a-zA-ZäöåÄÖÅ]+$/;		// Expected charachters
+	if(!formatTest.test(name))
+		return 'Name contains illegal charachters';
+
+	return null;	// The provided name is alright
+}
+
+function validateFirstName() { return validateName(document.getElementById('addFirstname').value); }
+function validateLastName() { return validateName(document.getElementById('addLastname').value); }
+
+function tooltipFirst()
+{
+	var error = validateFirstName();
+	var fnameInputBox = document.getElementById('addFirstname');
+
+	if(error && document.getElementById('addFirstname').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipFirst').innerHTML = error;
+		$('#tooltipFirst').fadeIn();
+		fnameInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipFirst').fadeOut();
+		fnameInputBox.style.backgroundColor = '#fff';
+	}
+}
+
+function tooltipLast()
+{
+	var error = validateLastName();
+	var lnameInputBox = document.getElementById('addLastname');
+
+	if(error && document.getElementById('addLastname').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipLast').innerHTML = error;
+		$('#tooltipLast').fadeIn();
+		lnameInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipLast').fadeOut();
+		lnameInputBox.style.backgroundColor = '#fff';
+	}
+}
+
+//---------------------------------------------------------------------------------------------------
+// validatePID(pid)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+function validatePID(pid)
+{
+	const length = pid.length;
+	if(length < 2)	return 'PID is too short\nMinimum two characters';	// Too short
+	if(length > 10)	return 'PID is too long\nMaximum ten characters';	// Too long
+
+	return null;	// The provided PID is alright
+}
+
+function tooltipPID()
+{
+	var error = validatePID(document.getElementById('addPid').value);
+	var pidInputBox = document.getElementById('addPid');
+
+	if(error && document.getElementById('addPid').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipPID').innerHTML = error;
+		$('#tooltipPID').fadeIn();
+		pidInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipPID').fadeOut();
+		pidInputBox.style.backgroundColor = '#fff';
+	}
+}
+
 
 //---------------------------------------------------------------------------------------------------
 // validateEmail(email)
@@ -260,36 +360,29 @@ function validateEmail(email)
 	if(email.indexOf('..') > 0)				// Consecutive . are not allowed
 		return 'Email error! Consecutive "." are not allowed';
 
+	if(email.lastIndexOf('@')!==delimiter)	// Only one @ allowed to separate local and domain parts
+		return 'Email error! Only one "@" is allowed';
+
 	const formatTest = /[A-z0-9]{1,64}@[A-z0-9]{1,}[.]{1}[A-z0-9]{2,}/;		// Expected format
 	if(!formatTest.test(email))
 		return 'Email error! Format is invalid';
 
-	if(email.lastIndexOf('@')!==delimiter)	// Only one @ allowed to separate local and domain parts
-		return 'Email error! Only one "@" is allowed';
-
 	return null;	// The provided email is correct!
 }
 
-//-------------------------------------------------------------
-// updateErrorMessage()
-// Updates the error message shown inside the "Add user" window
-//-------------------------------------------------------------
-function updateErrorMessage()
+function tooltipEmail()
 {
-	var errorMsg = '';
-	var validationError = '';
+	var error = validateEmail(document.getElementById('addEmail').value);
+	var emailInputBox = document.getElementById('addEmail');
 
-	validationError = validateSSN(document.getElementById('addSsn').value);		// Check SSN for errors if input has been given
-	if(validationError && document.getElementById('addSsn').value.length > 0)
-		errorMsg += validationError;
-
-	if(errorMsg.length > 0) errorMsg += '\n';									// Adds a new line if previous errors has been found
-
-	validationError = validateEmail(document.getElementById('addEmail').value);	// Check email for errors if input has been given
-	if(validationError && document.getElementById('addEmail').value.length > 0)
-		errorMsg += validationError;
-
-	document.getElementById('addErrorMessage').innerHTML = errorMsg + ' ';		// Updates label
+	if(error && document.getElementById('addEmail').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipEmail').innerHTML = error;
+		$('#tooltipEmail').fadeIn();
+		emailInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipEmail').fadeOut();
+		emailInputBox.style.backgroundColor = '#fff';
+	}
 }
 
 var inputVerified;

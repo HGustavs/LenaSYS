@@ -63,105 +63,120 @@
 			<div class='loginBoxheader'>
 				<h3>Import users</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
-      		</div>
-      		<div class='note'>
+			</div>
+			<div class='note'>
 				<p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
 				<p>SSN; Firstname; Lastname; Student email; Email; PID; Status &lt;linebreak&gt;</p>
 				<p>Example:<br/>
-				"18481724-5557";"Fritfjof";"Nilsson Piraten";"a48fripi@student.his.se";"booboo@mail.nu";"WEBUG";"Avklarad"</p>
-      		</div>
-      		<div style='padding:5px;'>
-      			<textarea id="import" ></textarea>
+					"18481724-5557";"Fritfjof";"Nilsson Piraten";"a48fripi@student.his.se";"booboo@mail.nu";"WEBUG";"Avklarad"</p>
 			</div>
-			<div style='padding:5px;display:flex;justify-content: flex-end;'>
-      			<input class='submit-button' type='button' value='Import' onclick='importUsers();' />
-      		</div>
+			<div style='padding:5px;'>
+				<textarea id="import" ></textarea>
+			</div>
+      <div style='padding:5px;display:flex;justify-content: flex-end;'>
+        <input class='submit-button' type='button' value='Import' onclick='importUsers();' />
       </div>
+		</div>
 	</div>
 	<!-- Import Users Dialog END -->
 
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style='width:464px;'>
-      		<div class='loginBoxheader'>
-      			<h3>Add user</h3>
-      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
-      		</div>
-      		<div style='padding:5px;'>
-      			<input type='hidden' id='uid' value='Toddler' />
-      			<div class='inputwrapper'><span>SSN:</span><input placeholder="990102-5578" class='textinput' type='text' id='addSsn' onchange="updateErrorMessage()" onkeyup="updateErrorMessage()"/></div>
-      			<div class='inputwrapper'><span>First Name:</span><input placeholder="Greger" class='textinput' type='text' id='addFirstname'/></div>
-      			<div class='inputwrapper'><span>Last Name:</span><input placeholder="Gregersson" class='textinput' type='text' id='addLastname'/></div>
-      			<div class='inputwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></div>
-      			<div class='inputwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></div>
-      			<div class='inputwrapper'><span>PID:</span><input placeholder="WEBUG" class='textinput' id='addPid'></div>
-      			<div class='inputwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></div>
-      			<div class='inputwrapper'><span>Email:</span><input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="updateErrorMessage()" onkeyup="updateErrorMessage()"></div>
-      		</div>
+		<div class='loginBox' style='width:494px;'>
+			<div class='loginBoxheader'>
+				<h3>Add user</h3>
+				<div class='cursorPointer' onclick='closeWindows();'>x</div>
+			</div>
 			<div style='padding:5px;'>
-				<div class='accessTableAddUserWarning'>
-					<label id='addErrorMessage'> </label>
+				<input type='hidden' id='uid' value='Toddler' />
+				<div class='flexwrapper'>
+					<span>SSN:</span>
+					<div class="tooltipDugga"><span id="tooltipSSN" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="990102-5578" class='textinput' type='text' id='addSsn' onchange="tooltipSSN()" onkeyup="tooltipSSN()"/>
 				</div>
-			</div>  
-			<div style='padding:5px;display:flex;justify-content: flex-end;'>
-      			<input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
-      		</div>
+				<div class='flexwrapper'>
+					<span>First Name:</span>
+					<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="Greger" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+				</div>
+				<div class='flexwrapper'>
+					<span>Last Name:</span>
+					<div class="tooltipDugga"><span id="tooltipLast" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="Gregersson" class='textinput' type='text' id='addLastname' onchange="tooltipLast()" onkeyup="tooltipLast()"/>
+				</div>
+				<div class='flexwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></div>
+				<div class='flexwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></div>
+				<div class='flexwrapper'>
+					<span>PID:</span>
+					<div class="tooltipDugga"><span id="tooltipPID" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="WEBUG" class='textinput' id='addPid' onchange="tooltipPID()" onkeyup="tooltipPID()"/>
+				</div>
+				<div class='flexwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></div>
+				<div class='flexwrapper'>
+					<span>Email:</span>
+					<div class="tooltipDugga"><span id="tooltipEmail" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="tooltipEmail()" onkeyup="tooltipEmail()"/>
+				</div>
+			</div>
+			 <div style='padding:5px;display:flex;justify-content: flex-end;'>
+        <input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
       </div>
+     </div>
 	</div>
 
 	<div id='createClass' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style='width:464px;'>
-      		<div class='loginBoxheader'>
-      			<h3>Add class</h3>
-      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
-      		</div>
-      		<div style='padding:5px;'>
-      		    <input type='hidden' id='uid' value='Toddler' />
-      		    <div class='inputwrapper'><span>Class:</span><input placeholder="WEBUG13h" class='textinput' type='text' id='addClass'/></div>
-      		    <div class='inputwrapper'><span>Responsible:</span><select class='textinput' id='addResponsible'></select></div>
-      		    <div class='inputwrapper'><span>Classname:</span><input placeholder="Webbutvecklare - programmering" class='textinput' type='text' id='addClassname'/></div>
-              <div class='inputwrapper'><span>Regcode:</span><input placeholder="199191" class='textinput' id='addRegcode'></div>
-		    			<div class='inputwrapper'><span>Classcode:</span><input placeholder="WEBUG" class='textinput' type='text' id='addClasscode'/></div>
-              <div class='inputwrapper'><span>Hp:</span><input placeholder="180.0" class='textinput' id='addHp'></div>
-		    			<div class='inputwrapper'><span>Tempo:</span><input placeholder="100" class='textinput' id='addTempo'></div>
-		    			<div class='inputwrapper'><span>HpProgress:</span><input placeholder="0.0" class='textinput' id='addHpProgress'></div>
-      		</div>
-      		<div style='padding:5px;'>
-      			<input class='submit-button' type='button' value='Add' onclick='addClass();' />
-            <div id='classErrorText' style='color:rgb(199, 80, 80); margin-top:10px; text-align:center;'></div>
-      		</div>
-      </div>
+		<div class='loginBox' style='width:464px;'>
+			<div class='loginBoxheader'>
+				<h3>Add class</h3>
+				<div class='cursorPointer' onclick='closeWindows();'>x</div>
+			</div>
+			<div style='padding:5px;'>
+				<input type='hidden' id='uid' value='Toddler' />
+				<div class='inputwrapper'><span>Class:</span><input placeholder="WEBUG13h" class='textinput' type='text' id='addClass'/></div>
+				<div class='inputwrapper'><span>Responsible:</span><select class='textinput' id='addResponsible'></select></div>
+				<div class='inputwrapper'><span>Classname:</span><input placeholder="Webbutvecklare - programmering" class='textinput' type='text' id='addClassname'/></div>
+				<div class='inputwrapper'><span>Regcode:</span><input placeholder="199191" class='textinput' id='addRegcode'></div>
+				<div class='inputwrapper'><span>Classcode:</span><input placeholder="WEBUG" class='textinput' type='text' id='addClasscode'/></div>
+				<div class='inputwrapper'><span>Hp:</span><input placeholder="180.0" class='textinput' id='addHp'></div>
+				<div class='inputwrapper'><span>Tempo:</span><input placeholder="100" class='textinput' id='addTempo'></div>
+				<div class='inputwrapper'><span>HpProgress:</span><input placeholder="0.0" class='textinput' id='addHpProgress'></div>
+			</div>
+			<div style='padding:5px;'>
+				<input class='submit-button' type='button' value='Add' onclick='addClass();' />
+				<div id='classErrorText' style='color:rgb(199, 80, 80); margin-top:10px; text-align:center;'></div>
+			</div>
+		</div>
 	</div>
 
 	<!-- Add User Dialog END -->
 	<!-- Edit User Dialog START -->
 	<div id='editUsers' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style='width:464px;'>
-      		<div class='loginBoxheader'>
-      			<h3>Edit Users</h3>
-      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
-      		</div>
+		<div class='loginBox' style='width:464px;'>
+			<div class='loginBoxheader'>
+				<h3>Edit Users</h3>
+				<div class='cursorPointer' onclick='closeWindows();'>x</div>
+			</div>
 
-      		<div style='padding:5px;'>
-      			<input type='hidden' id='uid' value='Toddler' />
-      			<div class='inputwrapper'><span>UserName:</span><input class='textinput' type='text' id='usrnme' value='User Name' /></div>
-      			<div class='inputwrapper'><span>SSN:</span><input class='textinput' type='text' id='ussn' value='SSN' /></div>
-      			<div class='inputwrapper'><span>First Name:</span><input class='textinput' type='text' id='firstname' value='First Name' /></div>
-      			<div class='inputwrapper'><span>Last Name:</span><input class='textinput' type='text' id='lastname' value='Last Name' /></div>
-      			<!--<div class='inputwrapper'><span>Teacher:</span><select  id='teacher' value='Teacher' ></select></div>-->
-      			<div class='inputwrapper'><span>Study program, Start year:</span><select id='class' value='Class'></select></div>
-      		</div>
-      		<div style='padding:5px;'>
-      			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateUser();' />
-      		</div>
-      </div>
+			<div style='padding:5px;'>
+				<input type='hidden' id='uid' value='Toddler' />
+				<div class='inputwrapper'><span>UserName:</span><input class='textinput' type='text' id='usrnme' value='User Name' /></div>
+				<div class='inputwrapper'><span>SSN:</span><input class='textinput' type='text' id='ussn' value='SSN' /></div>
+				<div class='inputwrapper'><span>First Name:</span><input class='textinput' type='text' id='firstname' value='First Name' /></div>
+				<div class='inputwrapper'><span>Last Name:</span><input class='textinput' type='text' id='lastname' value='Last Name' /></div>
+				<!--<div class='inputwrapper'><span>Teacher:</span><select  id='teacher' value='Teacher' ></select></div>-->
+				<div class='inputwrapper'><span>Study program, Start year:</span><select id='class' value='Class'></select></div>
+			</div>
+			<div style='padding:5px;'>
+				<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateUser();' />
+			</div>
+		</div>
 	</div>
 	<!-- Edit User Dialog END -->
 
 	<div class="fixed-action-button" id="fabButtonAcc">
-	    <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
-	    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
-	        <li onclick="showImportUsersPopup();" >
+		<a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
+		<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
+			<li onclick="showImportUsersPopup();" >
 							<a id="iFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Import user(s)'>
 									<img id="iFabBtnImg" class="fab-icon" src="../Shared/icons/importUser.svg">
 							</a>
@@ -171,7 +186,7 @@
 									<img id="cFabBtnImg" class="fab-icon" src="../Shared/icons/createUser.svg">
 							</a>
 					</li>
-	    </ol>
+		</ol>
 	</div>
 	<div id="editpopover" style="display:none;"></div>
 </body>
