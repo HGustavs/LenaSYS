@@ -105,11 +105,6 @@
 				</div>
 			</div>
 			<div style='padding:5px;'>
-				<div class='accessTableAddUserWarning'>
-					<label id='addErrorMessage'> </label>
-				</div>
-			</div>  
-			<div style='padding:5px;'>
 				<input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
 			</div>
 		</div>

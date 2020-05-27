@@ -300,28 +300,6 @@ function tooltipEmail()
 	}
 }
 
-//-------------------------------------------------------------
-// updateErrorMessage()
-// Updates the error message shown inside the "Add user" window
-//-------------------------------------------------------------
-function updateErrorMessage()
-{
-	var errorMsg = '';
-	var validationError = '';
-
-	validationError = validateSSN(document.getElementById('addSsn').value);		// Check SSN for errors if input has been given
-	if(validationError && document.getElementById('addSsn').value.length > 0)
-		errorMsg += validationError;
-
-	if(errorMsg.length > 0) errorMsg += '\n';									// Adds a new line if previous errors has been found
-
-	validationError = validateEmail(document.getElementById('addEmail').value);	// Check email for errors if input has been given
-	if(validationError && document.getElementById('addEmail').value.length > 0)
-		errorMsg += validationError;
-
-	document.getElementById('addErrorMessage').innerHTML = errorMsg + ' ';		// Updates label
-}
-
 var inputVerified;
 
 function addClass() {
