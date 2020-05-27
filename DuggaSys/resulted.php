@@ -97,10 +97,10 @@ pdoConnect();
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
 		<div class="resultedFormsFlex">
-			<label>Typ</label>
+			<label>Export...</label>
 			<select id="exportType">
-				<option value="restricted">Ej exported</option>
-				<option value="all">Allt</option>
+				<option value="restricted">Unexported</option>
+				<option value="all">All</option>
 			</select>
 		</div>
 		<div class="resultedFormsFlex">
