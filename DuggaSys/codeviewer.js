@@ -42,6 +42,9 @@ var exampleid;
 var cvers;
 var template7maximizebuttonpressed = false;
 var template8maximizebuttonpressed = false;
+var sectionData; // Variable that stores all the data that is sent from Section, which contains the ordering of the code examples.
+var codeExamples = []; // Array that contains all code examples in the same order that was assigned in Section before pressing one of the examples.
+var currentPos; // Variable for the current position that determines where in the list of code examples you are.
 
 
 /********************************************************************************
@@ -80,6 +83,73 @@ function returnedError(error) {
 function returned(data) 
 {
 	retData = data;
+
+	//Stores the data that was sent from Section, which contains the ordering of the examples.
+	sectionData = JSON.parse(localStorage.getItem("sectionData"));
+
+	//Creates a list of all the code examples sorted after the example ordering in Section.
+	for(i = 1; i < sectionData['entries'].length; i++){
+		if(sectionData['entries'][i]["kind"] == 2){
+			codeExamples.push(sectionData['entries'][i]);
+		}
+	}
+
+	//Adds examplename from sectionData to codeExamples.
+	for(i = 0; i < codeExamples.length; i++){
+		for(j = 0; j < codeExamples.length; j++)
+			if(codeExamples[i]['link'] == sectionData['codeexamples'][j + 1]['exampleid']){
+				codeExamples[i]['examplename'] = sectionData['codeexamples'][j + 1]['examplename'];
+				break;
+			}
+	}
+
+	//Checks current example name with all the examples in codeExamples[] to find a match
+	//and determine current position.
+	for(i = 0; i < codeExamples.length; i++){
+		if(retData['examplename'] == codeExamples[i]['examplename'] && retData['sectionname'] == codeExamples[i]['entryname']){
+			currentPos = i;
+		}
+	}
+
+	//Fixes the five next code examples in retData to match the order that was assigned in Section.
+	var j = 0;
+	for(i = currentPos + 1; i < codeExamples.length; i++){
+		if(j < 5){
+			
+			retData['after'][j][1] = codeExamples[currentPos + 1 + j]['entryname'];
+			retData['after'][j][0] = (String)(codeExamples[currentPos + 1 + j]['link']);
+			for(k = 1; k < sectionData['codeexamples'].length; k++){
+				if(retData['after'][j][0] == sectionData['codeexamples'][k]['exampleid']){
+					retData['after'][j][2] = sectionData['codeexamples'][k]['examplename'];
+					break;
+				}
+			}
+			
+			retData['exampleno'] = currentPos
+			j++
+		}else{
+			break
+		}
+	}
+
+	//Fixes the five code examples before the current one in retData to match the order that was assigned in Section.
+	j = 0;
+	for(i = currentPos - 1; i >= 0; i--){
+		if(j < 5){
+			retData['before'][j][1] = codeExamples[currentPos - 1 - j]['entryname'];
+			retData['before'][j][0] = (String)(codeExamples[currentPos - 1 - j]['link']);
+			for(k = 0; k < codeExamples.length; k++){
+				if(retData['before'][j][0] == codeExamples[k]['link']){
+					retData['before'][j][2] = codeExamples[k]['examplename'];
+					break
+				}
+			}
+			retData['exampleno'] = currentPos
+			j++
+		}else{
+			break
+		}
+	}
 	
 	if (retData['deleted']) {
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
@@ -97,11 +167,11 @@ function returned(data)
 	//If there are no examples this disables being able to jump through (the non-existsing) examples
 
 	if (retData['before'].length != 0 && retData['after'].length != 0) {
-		if (retData['exampleno'] == retData['before'][0][0] || retData['before'].length == 0) {
+		if (retData['exampleno'] == 0 || retData['before'].length == 0) {
 			document.querySelector("#beforebutton").style.opacity = "0.4";
 			document.querySelector("#beforebutton").style.pointerEvents = "none";
 		}
-		if (retData['exampleno'] == retData['after'][0][0] || retData['after'].length == 0) {
+		if (retData['exampleno'] == codeExamples.length - 1 || retData['after'].length == 0) {
 			document.querySelector("#afterbutton").style.opacity = "0.4";
 			document.querySelector("#afterbutton").style.pointerEvents = "none";
 		}
@@ -708,7 +778,7 @@ function updateContent()
 				var exampleid = querystring['exampleid'];
 				var boxid = box[0];
 
-				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, boxcontent: boxcontent, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows}, "BOXCONTENT");				
+				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, boxcontent: boxcontent, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows, addedRows: addedRows}, "BOXCONTENT");				
 
 				addedRows = [];
 				removedRows = [];
@@ -2230,14 +2300,14 @@ function Play(event) {
 	}
 }
 
-function minimizeBoxes(boxid) {
+function minimizeBoxes(boxid) 
+{
 	thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
 	thisBox1 = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
 	thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
 	thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
 	thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
 	thisBox5 = document.querySelector('#box' + 5 + 'wrapper #boxtitlewrapper');
-	const isMobile = /Mobi/.test(window.navigator.userAgent);
 	var boxid = boxid;
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
@@ -2245,48 +2315,20 @@ function minimizeBoxes(boxid) {
 
 	getLocalStorageProperties(boxValArray);
 
-	if(isMobile){
-		if(templateid == 1){
-			if(boxid == 1) {
-				$(boxValArray['box' + 1]['id']).height("10%");
-				$(boxValArray['box' + 2]['id']).height("90%");
-			}	 
-			if(boxid == 2) {
-				$(boxValArray['box' + 1]['id']).height("90%");
-				$(boxValArray['box' + 2]['id']).height("10%");
-			}
-		}
-	}
-
-	if(isMobile){
-		if(templateid == 2){
-			if(boxid == 1) {
-				$(boxValArray['box' + 1]['id']).height("10%");
-				$(boxValArray['box' + 2]['id']).height("90%");
-			}	 
-			if(boxid == 2) {
-				$(boxValArray['box' + 1]['id']).height("90%");
-				$(boxValArray['box' + 2]['id']).height("10%");
-			}
-		}
-	}
-	
 	//For template 1
-	if (templateid == 1 && isMobile == false) {
-        
+	if (templateid == 1) {
 		if (boxid == 1) {
-			$(boxValArray['box' + 2]['id']).width("100%");
-			$(boxValArray['box' + boxid]['id']).width("0%");
+			document.querySelector(boxValArray['box' + 2]['id']).style.width = "100%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.width = "0%";
 			alignBoxesWidth(boxValArray, 1, 2);
             thisBox2.classList.remove('hidden');
             setTimeout(function () {
                 thisBox2.classList.remove('visuallyhidden');
             }, 20);
 		}
-
 		if (boxid == 2) {
-			$(boxValArray['box' + 1]['id']).width("100%");
-			$(boxValArray['box' + boxid]['id']).width("0%");
+			document.querySelector(boxValArray['box' + 1]['id']).style.width = "100%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.width = "0%";
 			alignBoxesWidth(boxValArray, 1, 2);
             thisBox1.classList.remove('hidden');
             setTimeout(function () {
@@ -2294,65 +2336,62 @@ function minimizeBoxes(boxid) {
             }, 20);
 		}
 	}
-	//for template 2
-	if (templateid == 2 && isMobile == false) {
-		if (boxid == 1) {
-			$(boxValArray['box' + 2]['id']).height("100%");
 
-			$(boxValArray['box' + boxid]['id']).height("10%");
+	//for template 2
+	if (templateid == 2) {
+		if (boxid == 1) {
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "100%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height ="10%";
 			alignBoxesHeight2boxes(boxValArray, 1, 2);
 		}
+			if (boxid == 2) {
+			document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
 
-		if (boxid == 2) {
-			$(boxValArray['box' + 1]['id']).height("100%");
-
-			$(boxValArray['box' + boxid]['id']).height("10%");
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "10%";
 			alignBoxesHeight2boxes(boxValArray, 2, 1);
 		}
 	}
 
 	//for template 3
-	if (templateid == 3 && isMobile == false) {
+	if (templateid == 3) {
 		if(boxid == 1){
-			for (i = 1; i <= 3; i++) {
-				$(boxValArray['box' + i]['id']).height("50%");
-				$(boxValArray['box' + boxid]['id']).height("10%");
-				$(boxValArray['box' + i]['id']).width("100%");
-				$(boxValArray['box' + boxid]['id']).width("10%");
+			for (var i = 1; i <= 3; i++) {
+				document.querySelector(boxValArray['box' + i]['id']).style.height = "50%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.height = "10%";
+				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
 			}
 			thisBox.classList.remove('hidden');
             setTimeout(function () {
                 thisBox.classList.add('hidden');
                 thisBox.classList.add('visuallyhidden');
             }, 20);
-		}
-		else{
-			for (i = 1; i <= 3; i++) {
-				$(boxValArray['box' + i]['id']).height("100%");
-				$(boxValArray['box' + boxid]['id']).height("10%");
+		}else{
+			for (var i = 1; i <= 3; i++) {
+				document.querySelector(boxValArray['box' + i]['id']).style.height = "100%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.height = "10%";
 			}
 			thisBox.classList.remove('hidden');
 		}
 	}
 
 	//for template 4
-	if (templateid == 4 && isMobile == false){
+	if (templateid == 4){
 		if(boxid == 3){
-			for(i = 1; i <= 3; i++){
-				$(boxValArray['box' + i]['id']).height("90%");
-				$(boxValArray['box' + boxid]['id']).height("10%");
-				$(boxValArray['box' + i]['id']).width("50%");
-				$(boxValArray['box' + boxid]['id']).width("100%");	
+			for(var i = 1; i <= 3; i++){	
+				document.querySelector(boxValArray['box' + i]['id']).style.height = "90%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.height = "10%";
+				document.querySelector(boxValArray['box' + i]['id']).style.width = "50%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.width = "100%";
 			}
 			thisBox1.classList.remove('hidden');
 			thisBox2.classList.remove('hidden');
 			thisBox1.classList.remove('visuallyhidden');
 			thisBox2.classList.remove('visuallyhidden');
-		}
-		else{
-			for(i = 1; i <= 3; i++){
-				$(boxValArray['box' + i]['id']).width("100%");
-				$(boxValArray['box' + boxid]['id']).width("10%");
+		}else{
+			for(var i = 1; i <= 3; i++){
+				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
 			}
 			thisBox1.classList.remove('hidden');
 			thisBox2.classList.remove('hidden');
@@ -2366,10 +2405,10 @@ function minimizeBoxes(boxid) {
 	}
 
     //for template 5
-    if(templateid == 5 && isMobile == false){
+    if(templateid == 5){
         if(boxid == 1 || boxid == 3){
-            $(boxValArray['box' + (boxid + 1)]['id']).width("100%");
-            $(boxValArray['box' + boxid]['id']).width("10%");
+			document.querySelector(boxValArray['box' + (boxid + 1)]['id']).style.width = "100%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
             thisBox2.classList.remove('hidden');
             thisBox4.classList.remove('hidden');
             thisBox2.classList.remove('visuallyhidden');
@@ -2378,10 +2417,9 @@ function minimizeBoxes(boxid) {
                 thisBox.classList.add('hidden');
                 thisBox.classList.add('visuallyhidden');
             }, 20);    
-        }
-        else{
-            $(boxValArray['box' + (boxid - 1)]['id']).width("100%");
-            $(boxValArray['box' + boxid]['id']).width("10%");
+        }else{
+            document.querySelector(boxValArray['box' + (boxid - 1)]['id']).style.width = "100%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
             thisBox1.classList.remove('hidden');
             thisBox3.classList.remove('hidden');
             thisBox1.classList.remove('visuallyhidden');
@@ -2395,11 +2433,11 @@ function minimizeBoxes(boxid) {
 	}
 
 	//for template 6
-	if(templateid == 6 && isMobile == false){
+	if(templateid == 6){
 		if(boxid == 1){
-			for(i = 1; i <= 4; i++){
-				$(boxValArray['box' + i]['id']).width("100%");
-				$(boxValArray['box' + boxid]['id']).width("10%");	
+			for(var i = 1; i <= 4; i++){
+				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
 			}
             setTimeout(function () {
                 thisBox.classList.add('hidden');
@@ -2407,27 +2445,27 @@ function minimizeBoxes(boxid) {
             }, 20); 
 		}
 		if(boxid == 2){
-			$(boxValArray['box' + boxid]['id']).height("0%");
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "0%";
 			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 		}
 		if(boxid == 3){
-			$(boxValArray['box' + 2]['id']).height("50%");
-			$(boxValArray['box' + 4]['id']).height("50%");
-			$(boxValArray['box' + boxid]['id']).height("0%");
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
+			document.querySelector(boxValArray['box' + 4]['id']).style.height = "50%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "0%";
 			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 		}
 		if(boxid == 4){
-			$(boxValArray['box' + boxid]['id']).height("0%");
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "0%";
 			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 		}
 	}
 
 	//for template 7
-	if(templateid == 7 && isMobile == false){
+	if(templateid == 7){
 		if(boxid == 1){
-			for(i = 1; i <= 4; i++){
-				$(boxValArray['box' + i]['id']).width("100%");
-				$(boxValArray['box' + boxid]['id']).width("10%");	
+			for(var i = 1; i <= 4; i++){	
+				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
 			}
 			setTimeout(function () {
                 thisBox.classList.add('hidden');
@@ -2435,27 +2473,27 @@ function minimizeBoxes(boxid) {
             }, 20); 
 		}
 		if(boxid == 2){
-			$(boxValArray['box' + boxid]['id']).height("0%");
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "0%";
 			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 		}
 		if(boxid == 3){
-			$(boxValArray['box' + 2]['id']).height("50%");
-			$(boxValArray['box' + 4]['id']).height("50%");
-			$(boxValArray['box' + boxid]['id']).height("0%");
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
+			document.querySelector(boxValArray['box' + 4]['id']).style.height = "50%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "0%";
 			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 		}
 		if(boxid == 4){
-			$(boxValArray['box' + boxid]['id']).height("0%");
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "0%";
 			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 		}
 	}
 
 	//for template 8
-	if(templateid == 8 && isMobile == false){
+	if(templateid == 8){
 		if(boxid == 1){
 			for(i = 1; i <= 3; i++){
-				$(boxValArray['box' + i]['id']).width("100%");
-				$(boxValArray['box' + boxid]['id']).width("10%");	
+				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
 			}
 			thisBox2.classList.remove('hidden');
 			thisBox3.classList.remove('hidden');
@@ -2465,21 +2503,20 @@ function minimizeBoxes(boxid) {
 				thisBox.classList.add('hidden');
 				thisBox.classList.add('visuallyhidden');
 			}, 20);	
-		}
-		else{
-			for(i = 1; i <= 3; i++){
-				$(boxValArray['box' + i]['id']).height("100%");
-				$(boxValArray['box' + boxid]['id']).height("10%");	
+		}else{
+			for(var i = 1; i <= 3; i++){
+				document.querySelector(boxValArray['box' + i]['id']).style.height = "100%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.height = "10%";
 			}
 		}
 	}
 
 	//for template 9
-	if(templateid == 9 && isMobile == false){
+	if(templateid == 9){
 		if(boxid == 1){
-			for(i = 1; i <= 5; i++){
-				$(boxValArray['box' + i]['id']).width("100%");
-				$(boxValArray['box' + boxid]['id']).width("10%");	
+			for(var i = 1; i <= 5; i++){
+				document.querySelector(boxValArray['box' + i]['id']).style.width = "100%";
+				document.querySelector(boxValArray['box' + boxid]['id']).style.width = "10%";
 			}
 			setTimeout(function () {
                 thisBox.classList.add('hidden');
@@ -2487,23 +2524,23 @@ function minimizeBoxes(boxid) {
             }, 20); 
 		}
 		if(boxid == 2){
-			$(boxValArray['box' + boxid]['id']).height("0%");
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "0%";
 			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
 		}
 		if(boxid == 3){
-			$(boxValArray['box' + 2]['id']).height("33%");
-			$(boxValArray['box' + 4]['id']).height("33%");
-			$(boxValArray['box' + boxid]['id']).height("0%");
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "33%";
+			document.querySelector(boxValArray['box' + 4]['id']).style.height = "33%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "0%";
 			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
 		}
 		if(boxid == 4){
-			$(boxValArray['box' + 2]['id']).height("33%");
-			$(boxValArray['box' + 5]['id']).height("33%");
-			$(boxValArray['box' + boxid]['id']).height("0%");
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "33%";
+			document.querySelector(boxValArray['box' + 5]['id']).style.height = "33%";
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "0%";
 			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
 		}
 		if(boxid == 5){
-			$(boxValArray['box' + boxid]['id']).height("0%");
+			document.querySelector(boxValArray['box' + boxid]['id']).style.height = "0%";
 			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
 		}
 	}	

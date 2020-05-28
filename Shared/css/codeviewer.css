@@ -388,6 +388,7 @@
     background-color: rgba(186, 96, 255, 0.09);
     white-space:nowrap;
     min-width: 660px;
+    line-height: 15px;
 	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
 }
 

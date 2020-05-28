@@ -198,7 +198,7 @@ if ($storefile) {
             } else if($fileLocation == "MFILE"){
                 $movname = $currcvd . "/courses/" . $cid . "/" . $fileText;
                 $description="CourseLocal"." ".$fileText;
-                logUserEvent($userid, $username, EventTypes::AddFile, "CourseLocal"." , ".$fileText);
+                logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 $kindid = 3;
             } else if($fileLocation == "GFILE"){
                 $movname = $currcvd . "/courses/global/" . $fileText;
@@ -317,7 +317,7 @@ if ($storefile) {
                     
                     // Logging for course local files
                     $description="CourseLocal"." ".$fname;
-                    logUserEvent($userid, $username, EventTypes::AddFile, "CourseLocal"." , ".$fname);
+                    logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 } else {
                     $movname = $currcvd . "/courses/global/" . $fname;
 
