@@ -39,7 +39,7 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 	foreach ($pdo->query('SELECT * FROM vers WHERE cid="'.$cid.'" AND vers="'.$versid.'"') AS $vers){
 		$versid = $vers['vers'];
 		$versname = $vers['versname'];
-		$retrievedAnnouncementCard .= "<div class='courseversion'><b>".strtoupper($versname)." - ".$versid."</b></div>";
+		$retrievedAnnouncementCard .= "<div class='courseversion'><b>".strtoupper($course['coursecode'])." ".strtoupper($versname)." - ".$versid."</b></div>";
 	}
 	
 	$retrievedAnnouncementCard .= "<div class='displayAnnouncementMsg'><p class='announcementMsgParagraph'>".ucfirst(strtolower($message))."</p></div>";

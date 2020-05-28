@@ -64,6 +64,7 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 	setcookie("loginvar", $loginvar);
 	include '../Shared/navheader.php';
 ?>
+
 <div class="header">
   <h1 id="pageTitle"></h1>
 </div>
