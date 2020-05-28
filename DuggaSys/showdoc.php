@@ -11,7 +11,7 @@
 		$readfile = false;
 		// Connect to database and start session
 		pdoConnect();
-		$cid=getOPG('cid');
+		$cid=getOPG('courseid');
 		$fid=getOPG('fid');
 		$fname=getOPG('fname');
 		$coursevers=getOPG('coursevers');

@@ -35,7 +35,7 @@
               <input class="diagram-sidebar-buttons" id='buttonids' type='button' value='Upload Canvas' />
               <br>
               <br>
-              <input class="diagram-sidebar-buttons" type="button" name="answer" value="Example Canvas" onclick='loadExample()' />
+              <input class="diagram-sidebar-buttons" type="button" name="answer" value="Example Canvas"/>
           </div>
       </div>
 

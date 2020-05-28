@@ -575,6 +575,10 @@ function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
 
+  //data variable is put in localStorage which is then used in Codeviewer
+	//to get the right order when going backward and forward in code examples
+	localStorage.setItem("sectionData", JSON.stringify(data));
+
   var now = new Date();
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
@@ -609,8 +613,8 @@ function returnedSection(data) {
     document.getElementById("course-versname").innerHTML = versionname;
 
     var str = "";
-
-    if (data['writeaccess']) {
+    // Build dropdown and showing FAB-buttons for studentteacher and writeaccess users
+    if (data['studentteacher'] || data['writeaccess']) {
       // Build dropdowns
       var bstr = "";
       for (var i = 0; i < retdata['versions'].length; i++) {
@@ -642,36 +646,6 @@ function returnedSection(data) {
       document.getElementById("FABStatic").style.display = "None";
       document.getElementById("FABStatic2").style.display = "None";
     }
-
-    if (data['readaccess']) {
-      // Build dropdowns
-      var bstr = "";
-      for (var i = 0; i < retdata['versions'].length; i++) {
-        var item = retdata['versions'][i];
-        if (retdata['courseid'] == item['cid']) {
-          bstr += "<option value='" + item['vers'] + "'";
-          if (retdata['coursevers'] == item['vers']) {
-            bstr += " selected";
-          }
-          bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
-        }
-        // save vers, versname and motd from table vers as global variables.
-        versnme = versionname;
-        if (querystring['coursevers'] == item['vers']) motd = item['motd'];
-        if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
-      }
-
-      bstr = "<option value='None'>None</option>" + bstr;
-      document.getElementById("copyvers").innerHTML = bstr;
-    }
-
-    if (data['studentteacher']) {
-      // Show FAB / Menu
-      document.getElementById("FABStatic").style.display = "Block";
-      // Show addElement Button
-      document.getElementById("addElement").style.display = "Block";
-    }
-
 
     // hide som elements if to narrow
     var hiddenInline = "";
@@ -991,7 +965,7 @@ function returnedSection(data) {
           // create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
             if (hasGracetimeExpired(deadline, dateTimeSubmitted)) {
-              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submission after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
             }
           }
         }
@@ -999,7 +973,7 @@ function returnedSection(data) {
         // Userfeedback
         if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
           str += "<td style='width:32px;'>";
-          str += "<img id='dorf' src='../Shared/icons/FistV.svg' title='feedback' onclick='showUserFeedBack(\"" + item['lid']  + "\",\"" + item['feedbackquestion']  + "\");'>";
+          str += "<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback' onclick='showUserFeedBack(\"" + item['lid']  + "\",\"" + item['feedbackquestion']  + "\");'>";
           str += "</td>";
         }
 
@@ -1017,7 +991,7 @@ function returnedSection(data) {
         }
 
         // trashcan
-        if (data['writeaccess']) {
+        if (data['writeaccess'] || data['studentteacher']) {
           str += "<td style='width:32px;' class='" + makeTextArray(itemKind, ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " " + hideState + "'>";
           str += "<img id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
           str += "</td>";
@@ -1729,6 +1703,8 @@ $(window).load(function () {
   retrieveAnnouncementsCards();
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
+  multiSelect();
+  toggleFeedbacks();
 });
 
 
@@ -1818,7 +1794,7 @@ function getStudents(cid, userid){
           $("#nonfinishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
         });
         $(".selectLabels label input").attr("disabled", false);
-        selectallRecipients();
+        selectRecipients();
       },
       error:function(){
         console.log("*******Error user_course*******");
@@ -1858,6 +1834,23 @@ function validateCreateAnnouncementForm(){
     });   
   });
 }
+function validateUpdateAnnouncementForm(){
+  $("#announcementForm").submit(function(e){
+    var announcementTitle = ($("#announcementTitle").val()).trim();
+    var announcementMsg = ($("#announcementMsg").val()).trim();
+
+    if (announcementTitle == null || announcementTitle == '') {  
+      $("#announcementTitle").addClass('errorCreateAnnouncement');
+      e.preventDefault();
+    }else if (announcementMsg == null || announcementMsg == '') {  
+      $("#announcementMsg").addClass('errorCreateAnnouncement');
+      e.preventDefault();
+    }
+    $(".errorCreateAnnouncement").css({
+      'border':'1px solid red'
+    });  
+  });
+}
 //retrive announcements
 function retrieveAnnouncementsCards(){
   var currentLocation = $(location).attr('href');
@@ -1883,7 +1876,8 @@ function retrieveAnnouncementsCards(){
             $("#announcementnotificationcount").html(parsed_data.nRows);
           }
           accessAdminAction();
-          readLessOrMore();
+          var paragraph = "announcementMsgParagraph";
+          readLessOrMore(paragraph);
           showLessOrMoreAnnouncements();
           scrollToTheAnnnouncementForm();
           $(".deleteBtn").click(function(){
@@ -1925,6 +1919,7 @@ function handleResponse(xhttp, updateannouncementid, cid, versid){
   $("#announcementMsg").html(message);
   $(".createBtn").html("Update");
   $(".createBtn").attr("name", "updateBtn");
+  $(".createBtn").attr("onclick", "validateUpdateAnnouncementForm()");
   $("#courseidAndVersid").remove();
   $("#recipientBox").remove();
 
@@ -2020,10 +2015,10 @@ function closeActionLogDisplay(){
   $(".closeActionLogDisplay").parent().remove();
 }
 //read less or more announcement card
-function readLessOrMore(){
-    var maxLength = 60;
+function readLessOrMore(paragraph){
+    var maxLength = 70;
 
-    $(".announcementMsgParagraph").each(function(){
+    $("."+paragraph).each(function(){
 
       var myStr = $(this).text();
 
@@ -2042,10 +2037,12 @@ function readLessOrMore(){
     $(".read-more").click(function(){
       $(this).siblings(".more-text").contents().unwrap();
       $(this).remove();
-      
-      for (i = 0; i < announcementCard.length; i++) {
-        announcementCard[i].style.width = "100%";
-      }
+      if(paragraph == 'announcementMsgParagraph'){
+        for (i = 0; i < announcementCard.length; i++) {
+          announcementCard[i].style.width = "100%";
+        }
+      } 
+     
     });
 }
 
@@ -2085,7 +2082,7 @@ function updateReadStatus(announcementid, cid, versid){
   });
 
 }
-function selectallRecipients(){
+function selectRecipients(){
    $(".selectAll input").change(function() {
       if(this.checked) {
         $("#recipient option").not(":first").prop("selected", true);
@@ -2095,7 +2092,7 @@ function selectallRecipients(){
         $("#recipient option").attr("selected", false);
       }
   });
-   $(".selectFinished input").change(function() {
+  $(".selectFinished input").change(function() {
     if(this.checked) {
       $("#finishedStudents option").prop("selected", true);
       $("#finishedStudents option").attr("selected","selected");
@@ -2105,16 +2102,119 @@ function selectallRecipients(){
       $("#recipient option").attr("selected", false);
     }
   });
-   $(".selectNonFinished input").change(function() {
+  $(".selectNonFinished input").change(function() {
     if(this.checked) {
       $("#nonfinishedStudents option").prop("selected", true);
       $("#nonfinishedStudents option").attr("selected","selected");
-      $(".selectFinished input, .selectFinished input").prop("checked", false);
+      $(".selectAll input, .selectFinished input").prop("checked", false);
       $("#finishedStudents option").attr("selected", false);
+
     }else{
       $("#recipient option").attr("selected", false);
     }
   });
+
+}
+function multiSelect(){
+  $("#recipient").mousedown(function(e){
+    e.preventDefault();
+    
+    var select = this;
+    var scroll = select.scrollTop;
+    
+    e.target.selected = !e.target.selected;
+    
+    setTimeout(function(){select.scrollTop = scroll;}, 0);
+    
+    $(select).focus();
+  }).mousemove(function(e){e.preventDefault()});
+}
+//start of recent feedback from the teacher
+function toggleFeedbacks(){
+  let uname = $("#userName").html();
+  let studentid, parsed_data, parsed_uid, duggaFeedback, feedbackComment, unseen_feedbacks;
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname:uname},
+    type: "GET",
+    success: function(data){
+      parsed_uid = JSON.parse(data);
+      studentid = parsed_uid.uid;
+      $.ajax({
+        url: "../Shared/retrieveFeedbacks.php",
+        data: {studentid: studentid},
+        type: "POST",
+        async: true,
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        success: function(data){
+          duggaFeedback = data.duggaFeedback;
+          $(".feedbackContent").html(duggaFeedback);
+          if ($(".recentFeedbacks").length == 0) {
+             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedbacks</span></p>");
+             $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'><img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
+          }
+          $(".oldFeedbacks").hide();                  
+          feedbackComment = 'feedbackComment';
+          readLessOrMore(feedbackComment);
+          unseen_feedbacks = data.unreadFeedbackNotification;
+          if(unseen_feedbacks > 0){
+            $("#feedback img").after("<span id='feedbacknotificationcounter'>0</span>");
+            $("#feedbacknotificationcounter").html(unseen_feedbacks);
+
+          }
+        },
+        error:function(){
+          console.log("Couldn't return feedback data");
+        }
+
+      });
+
+    }
+
+  });
+
+  if ($("#feedback").length > 0) {
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><span><h2>Recent Feedbacks</h2></span></div><div class='feedbackContent'></div></div></div>");
+
+  }
+
+  $("#feedback").click(function(){
+    $("#feedbackOverlay").toggle();
+     if ($("#feedbacknotificationcounter").length > 0) {
+      var viewed = "YES";
+      $.ajax({
+        url: "../Shared/retrieveFeedbacks.php",
+        data: {studentid: studentid, viewed:viewed},
+        type: "POST",
+        success: function(){
+          $("#feedbacknotificationcounter").remove();
+        }
+      });
+     }
+  });
+}
+function viewOldFeedbacks(){
+  $(".feedbackHeader h2").html("Old Feedbacks");
+  $(".noFeedbacks").remove();
+  $(".feedbackContent").append('<div id="loadMore"><span>Load More</span><div>');
+  if ($(".feedback_card").length <= 5) {
+     $("#loadMore").hide();
+  }
+  $(".feedback_card").slice(0, 5).show();
+  $("#loadMore").on('click', function (e) {
+    e.preventDefault();
+    $(".feedback_card:hidden").slice(0, 5).slideDown();
+    if ($(".feedback_card:hidden").length == 0) {
+      $("#loadMore").hide();
+    }
+    $('html,body').animate({
+      scrollTop: $(this).offset().top
+    }, 1500);
+  }); 
+}
+function hideIconButton(){
+  $("#iconButton").hide();
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {
@@ -2482,7 +2582,7 @@ function createUserFeedbackTable(data){
     str +="<tr>";
     str += "<td>"+data.userfeedback[i].ufid+"</td>";
     if(data.userfeedback[i].username === null){
-      str += "<td>N/A</td>";
+      str += "<td>Anonymous</td>";
     }else{
       str += "<td>"+data.userfeedback[i].username+"</td>";
     }
@@ -2516,5 +2616,25 @@ function showFeedbackquestion(){
     $("#inputwrapper-FeedbackQuestion").css("display","block");
   }else{
     $("#inputwrapper-FeedbackQuestion").css("display","none");
+  }
+}
+
+//------------------------------------------------------------------------------
+// Scroll to top of page function 
+//------------------------------------------------------------------------------
+$(document).ready(function(){
+  $("#scrollUp").on('click', function(event) {
+    window.scrollTo(0, 0);
+  });
+});
+
+/*Show the up-arrow when user has scrolled down 200 pixels on the page*/
+window.onscroll = function() {scrollToTop()};
+function scrollToTop() {
+  var scroll = document.getElementById("fixedScroll");
+  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+    scroll.style.display = "block";
+  } else {
+    scroll.style.display = "none";
   }
 }

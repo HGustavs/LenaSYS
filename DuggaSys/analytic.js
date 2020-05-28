@@ -5,7 +5,7 @@ var analytics = {
 };
 
 //------------------------------------------------------------------------------------------------
-// Document ready callback		
+// Document ready callback
 //------------------------------------------------------------------------------------------------
 $(function() {
 	switch (analytics.chartType) {
@@ -24,7 +24,7 @@ $(function() {
 	switch(localStorage.getItem('analyticsPage')) {
 		case "onlineUsers":
 			loadCurrentlyOnline();
-			break;			
+			break;
 		case "passwordGuessing":
 			loadPasswordGuessing();
 			break;
@@ -63,7 +63,7 @@ $(function() {
 });
 
 //------------------------------------------------------------------------------------------------
-// Removes the chart data and clears the chart canvas	
+// Removes the chart data and clears the chart canvas
 //------------------------------------------------------------------------------------------------
 function resetAnalyticsChart() {
 	analytics.chartType = null;
@@ -91,7 +91,7 @@ function loadAnalytics(q, cb) {
 }
 
 //------------------------------------------------------------------------------------------------
-// Analytic loaders START	
+// Analytic loaders START
 //------------------------------------------------------------------------------------------------
 function loadGeneralStats() {
 	loadAnalytics("generalStats", function(data) {
@@ -129,6 +129,12 @@ function loadGeneralStats() {
 			data['stats']['userSubmissionSize']
 		]);
 
+		// Biggest Course
+		tableData.push([
+			'Biggest Course on Disk: ' + data['stats']['biggestCourseName'],
+			data['stats']['biggestCourseSize']
+		]);
+
 		// Total number of users
 		tableData.push([
 			'Total Users',
@@ -140,7 +146,7 @@ function loadGeneralStats() {
 			'Top Page: ' + data['stats']['topPage'],
 			'Hits: ' + data['stats']['topPageHits']
     ]);
-    
+
 		// Top Browser
 		tableData.push([
 			'Top Browser',
@@ -152,7 +158,7 @@ function loadGeneralStats() {
 			'Top OS',
 			data['stats']['topOS']
 		]);
-     
+
         // Number of service crashes
 		tableData.push([
 			'Service crashes',
@@ -170,13 +176,13 @@ function loadGeneralStats() {
 			'Slowest Service: ' + data['stats']['slowestService'],
 			data['stats']['slowestServiceSpeed'] + " ms"
 		]);
-     
+
         // Top viewed Example
 		tableData.push([
 			'Top viewed Example: ' + data['stats']['topViewedExample'],
 			'Hits: ' + data['stats']['topViewedExampleHits']
 		]);
-      
+
         // Top viewed Dugga
 		tableData.push([
 			'Top viewed Dugga: ' + data['stats']['topViewedDugga'],
@@ -186,11 +192,25 @@ function loadGeneralStats() {
 		// Newest file
         tableData.push([
             'Newest file: ' + data['stats']['newestFile'],
-            'Created: ' + data['stats']['newestFileTimestamp']
+            'Created: ' + new Date(data['stats']['newestFileTimestamp'].replace(' ', 'T') + "Z").toLocaleString()
     	]);
 
+		// Most recently edited file
+		var fileToTable = 'Most recently edited file: ' + data['stats']['recentlyEditedFile'];
+		if(data['stats']['recentlyEditedFileTimestamp'] != null){
+			tableData.push([
+				fileToTable,
+				'Edited: ' + new Date(data['stats']['recentlyEditedFileTimestamp'].replace(' ', 'T') + "Z").toLocaleString()
+			]);
+		} else{
+			tableData.push([
+				fileToTable,
+				'Edited: ' + data['stats']['recentlyEditedFileTimestamp']
+			]);
+		}
+
 		$('#analytic-info').append(renderTable(tableData));
-		
+
 		// Disk usage
 		var chartData = [];
 		chartData.push({
@@ -202,7 +222,7 @@ function loadGeneralStats() {
 			label: 'Memory Available ('+data.disk.memFree+')',
 			value: data.disk.memFreePercent
 		});
-		
+
 		chartData.push({
 			label: 'Total Memory ('+data.disk.memTotal+')',
 			value: 0
@@ -217,14 +237,14 @@ function loadGeneralStats() {
 				label: 'Total RAM ('+data.ram.total+')',
 				value: data.ram.totalPercent
 			});
-	
+
 			chartData.push({
 				label: 'Free RAM ('+data.ram.free+')',
 				value: data.ram.freePercent
 			});
 			drawPieChart(chartData, 'RAM Usage on the Server', true);
 		}
-			
+
 		// CPU Usage
 		if(data.cpu != undefined){
 			var chartData = [];
@@ -232,12 +252,12 @@ function loadGeneralStats() {
 				label: 'CPU Load (' + (+data.cpu.totalPercent).toFixed(1) + '%)',
 				value: data.cpu.totalPercent
 			});
-	
+
 			chartData.push({
 				label: 'CPU Free (' + (+data.cpu.freePercent).toFixed(1) +'%)',
 				value: data.cpu.freePercent
 			});
-			drawPieChart(chartData, 'CPU Usage on the Server', true);	
+			drawPieChart(chartData, 'CPU Usage on the Server', true);
 		}
 	});
 }
@@ -252,7 +272,7 @@ function loadCurrentlyOnline() {
 		console.log(activeUsers);
 		for (var stat in activeUsers) {
 			if (activeUsers.hasOwnProperty(stat)) {
-				var date = new Date(activeUsers[stat].time.replace(' ', 'T') + "Z");			
+				var date = new Date(activeUsers[stat].time.replace(' ', 'T') + "Z");
 				tableData.push([
 					activeUsers[stat].username,
 					'<a href="' + activeUsers[stat].refer + '" target="_blank">' + activeUsers[stat].refer + '</a>',
@@ -262,7 +282,7 @@ function loadCurrentlyOnline() {
 		}
 
 		$('#analytic-info').append(renderTable(tableData));
-	
+
 	});
 }
 
@@ -424,11 +444,11 @@ function loadServiceUsage() {
 function loadCourseDiskUsage() {
 	loadAnalytics("courseDiskUsage", function(data) {
 		localStorage.setItem('analyticsPage', 'courseDiskUsage');
-		$('#pageTitle').text("Coruse Disk Usage");
+		$('#pageTitle').text("Course Disk Usage");
 		$('#analytic-info').append("<p class='analyticsDesc'>The disk usage per course</p>");
 
 		var tableData = [
-			["Corse Code", "Course", "Disk Usage"]
+			["Course Code", "Course", "Disk Usage"]
 		];
 		for (var i = 0; i < data.length; i++) {
 			tableData.push([
@@ -536,7 +556,7 @@ function loadFileInformation() {
 	$('#pageTitle').text("File Information");
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>File information for created and edited files.</p>");
-	
+
 
     var inputDateFrom = $('<input type="text"></input>')
         .datepicker({
@@ -544,15 +564,15 @@ function loadFileInformation() {
         })
         .datepicker("setDate", "-1m")
         .appendTo($('#analytic-info'));
- 
+
     var inputDateTo = $('<input type="text"></input>')
         .datepicker({
             dateFormat: "yy-mm-dd"
         })
         .datepicker("setDate", "+1d")
         .appendTo($('#analytic-info'));
-	
- 
+
+
     function updateFileInformation() {
         $.ajax({
             url: "analyticService.php",
@@ -575,22 +595,24 @@ function loadFileInformation() {
                     else{
                         var action = "Edited"
                     }
- 
+
                     if (!files.hasOwnProperty(file)) {
                         files[file] = [["Username", "Action", "Version", "File", "Timestamp"]];
-                    }
-                    const splits = row.timestamp.split(' ', 2)
+					}
+
+					const splits = row.timestamp.split(' ', 2)
+					timestamp = new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString();
                     if(splits[0] >=  inputDateFrom.val() && splits[0] <= inputDateTo.val()){
                         files[file].push([
-                        row.userName,
+                        row.username,
                         action,
                         version,
                         file,
-                        row.timestamp
-                    ]);     
+                        timestamp
+                    ]);
                     }
                 });
- 
+
                 $('#analytic-info > select.file-select').remove();
 				var fileSelect = $('<select class="file-select"></select>');
 				var i = 0;
@@ -616,10 +638,10 @@ function loadFileInformation() {
             }
         });
     }
-   
+
     inputDateFrom.change(updateFileInformation);
     inputDateTo.change(updateFileInformation);
- 
+
     updateFileInformation();
 }
 
@@ -629,16 +651,25 @@ function loadPageInformation() {
 	$('#pageTitle').text("Page Information");
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>Page information.</p>");
-	
+
 	var firstLoad = true;
- 
-    var selectPage = $("<select></select>")
-        .append('<option value="showDugga" selected>showDugga</option>')
+
+	var selectPage = $("<select></select>")
+		.append('<option value="accessed">accessed</option>')
+		.append('<option value="analytic">analytic</option>')
 		.append('<option value="codeviewer">codeviewer</option>')
-		.append('<option value="sectioned">sectioned</option>')
 		.append('<option value="courseed">courseed</option>')
+		.append('<option value="contribution">contribution</option>')
+		.append('<option value="duggaed">duggaed</option>')
+		.append('<option value="diagram">diagram</option>')
+		.append('<option value="fileed">fileed</option>')
+		.append('<option value="profile">profile</option>')
+		.append('<option value="resulted">resulted</option>')
+        .append('<option value="showDugga" selected>showDugga</option>')
+        .append('<option value="accessed">profile</option>')
+		.append('<option value="sectioned">sectioned</option>')
         .appendTo($('#analytic-info'));
-   
+
     function updatePageHitInformation(pages, page){
         loadAnalytics("pageInformation", function(data) {
 
@@ -661,7 +692,7 @@ function loadPageInformation() {
             updatePieChartInformation(page, tableData, data);
         });
     }
- 
+
     function updatePieChartInformation(page, tableData, data){
 		var courseID = [];
 		var coursePercentage = [];
@@ -671,8 +702,13 @@ function loadPageInformation() {
 		var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
 
         for (var i = 0; i < data['percentage'][page].length; i++) {
-			console.log(data['percentage'][page][i]);
 			numberOfCourses = parseInt(data['percentage'][page].length);
+
+			var cid = data['percentage'][page][i].refer.match('.+?cid=([0-9]+)');
+			if(cid != null) {
+				data['percentage'][page][i].courseid = cid[1];
+			}
+
 			courseID.push([
                 data['percentage'][page][i].courseid
 			]);
@@ -698,10 +734,11 @@ function loadPageInformation() {
 					for (var i = 0; i < courseName.length; i++){
 						tablePercentage.push([
 							courseID[i],
-							coursePercentage[i],
+							Number(coursePercentage[i]).toFixed(2),
 							courseName[i]
 						]);
 					}
+
 					if(loopCounter == numberOfCourses){
 						if(courseName.length !== 0){
 							$('#analytic-info').append(renderTable(tablePercentage));
@@ -709,19 +746,19 @@ function loadPageInformation() {
 					}
 				}, error: function(){
 					console.log(" AJAX error");
-				}		
+				}
 			});
         }
 
         var chartData = [];
         for (var i = 0; i < data['percentage'][page].length; i++) {
-			
+
             chartData.push({
                 label: "courseid:" + " " + data['percentage'][page][i].courseid,
                 value: data['percentage'][page][i].percentage
             });
 		}
-		
+
         $('#analytic-info').append("<p>Page information.</p>");
         $('#analytic-info').append(selectPage);
 		$('#analytic-info').append(renderTable(tableData));
@@ -730,15 +767,15 @@ function loadPageInformation() {
 		}
         updateState();
     }
- 
+
     function updateState(){
 		// Add additonal pages here
-		var pages = ["dugga", "codeviewer", "sectioned", "courseed", "fileed", "resulted", "analytic", "contribution", "duggaed", "accessed", "profile"];
+		var pages = ["dugga", "codeviewer", "sectioned", "courseed", "fileed", "resulted", "analytic", "contribution", "duggaed", "accessed", "profile", "diagram"];
 
 		if(firstLoad === true){
 			updatePageHitInformation(pages, pages[0]);
 			firstLoad = false;
-		} 
+		}
         selectPage.change(function(){
             switch(selectPage.val()){
                 case "showDugga":
@@ -753,12 +790,43 @@ function loadPageInformation() {
 				case "courseed":
 					updatePageHitInformation(pages, pages[3]);
 					break;
+				case "fileed":
+					updatePageHitInformation(pages, pages[4]);
+					break;
+				case "resulted":
+					updatePageHitInformation(pages, pages[5]);
+					break;
+				case "analytic":
+					updatePageHitInformation(pages, pages[6]);
+					break;
+				case "contribution":
+					updatePageHitInformation(pages, pages[7]);
+					break;
+				case "duggaed":
+					updatePageHitInformation(pages, pages[8]);
+					break;
+				case "accessed":
+					updatePageHitInformation(pages, pages[9]);
+					break;
+				case "profile":
+					updatePageHitInformation(pages, pages[10]);
+					break;
+				case "diagram":
+					updatePageHitInformation(pages, pages[11]);
+					break;
+
             }
         });
     }
- 
+
     updateState();
 }
+
+var hasCounter;
+var rowCount;
+var nameCount;
+var pageCount;
+var counterFirstLoad = true;
 
 function loadUserInformation(){
 	localStorage.setItem('analyticsPage', 'userInformation');
@@ -768,26 +836,427 @@ function loadUserInformation(){
 	$('#analytic-info').append("<p>User information.</p>");
 
 	var firstLoad = true;
-	
-	var selectPage = $("<select></select>")
-        .append('<option value="sectioned" selected>sectioned</option>')
-		.append('<option value="courseed">courseed</option>')
-		.append('<option value="showDugga" selected>showDugga</option>')
-		.append('<option value="codeviewer">codeviewer</option>')
-		.append('<option value="events">events</option>')
-		.append('<option value="fileEvents">fileEvents</option>')
-        .appendTo($('#analytic-info'));
- 
+
+	var selectPage = $("<select id='userInformationPage'></select>")
+		.append('<option value="calendar">Calendar Subscriptions</option>')
+    .append('<option value="sectioned">sectioned</option>')
+    .append('<option value="courseed">courseed</option>')
+    .append('<option value="showDugga">showDugga</option>')
+    .append('<option value="fileed">fileed</option>')
+    .append('<option value="resulted">resulted</option>')
+    .append('<option value="codeviewer">codeviewer</option>')
+    .append('<option value="profile">profile</option>')
+    .append('<option value="duggaed">duggaed</option>')
+    .append('<option value="accessed">accessed</option>')
+    .append('<option value="events">events</option>')
+    .append('<option value="fileEvents">fileEvents</option>')
+    .append('<option value="course">course</option>')
+    .append('<option value="loginFail">loginFail</option>')
+    .appendTo($('#analytic-info'));
+
+	$("#userInformationPage").val(localStorage.getItem('userInformationPage'));
+	console.log(localStorage.getItem('userInformationPage'));
+	switch(localStorage.getItem('userInformationPage')){
+		case "courseed":
+			updateCourseedInformation();
+			pageCount = "courseed.php";
+			break;
+		case "showDugga":
+			updateDuggaInformation();
+			pageCount = "showdugga.php";
+			break;
+		case "codeviewer":
+			updateCodeviewerInformation();
+			pageCount = "codeviewer.php";
+			break;
+		case "events":
+			updateUserLogInformation();
+			break;
+		case "fileEvents":
+			updatefileEvents();
+			break;
+		case "course":
+			updateCourseInformation();
+			break;
+		case "loginFail":
+			updateloginFail();
+			break;
+		case "calendar":
+			updateCalendarInformation();
+			pageCount = "calendar.php";
+			break;
+		case "sectioned":
+		default:
+			updateSectionedInformation();
+			pageCount = "sectioned.php";
+			break;
+	}
+
+  function updateCalendarInformation(){
+    hasCounter = true;
+    loadAnalytics("calendarInformation", function(data) {
+      var users = {};
+      $.each(data, function(i, row) {
+				var user = row.username;
+        
+        if (!users.hasOwnProperty(user)) {
+          users[user] = [["User ID", "Username",  "Course ID", "Course Version", "Subscribed at"]];
+				}
+				if(row.courseid != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						row.courseid,
+						row.coursevers,
+						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
+					]);
+				}
+            });
+            updateState(users);
+        });
+	}
  
     function updateSectionedInformation(){
+		hasCounter = true;
         loadAnalytics("sectionedInformation", function(data) {
             var users = {};
             $.each(data, function(i, row) {
 				var user = row.username;
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Page", "Courseid", "Course Version", "Timestamp"]];
+				}
+
+				if(row.courseid != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						"sectioned.php",
+						row.courseid,
+						row.coursevers,
+						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
+					]);
+				}
+            });
+            updateState(users);
+        });
+	}
+
+	function updateCourseedInformation(){
+		hasCounter = true;
+    loadAnalytics("courseedInformation", function(data) {
+			var users = {};
+      $.each(data, function(i, row) {
+			  var user = row.username;
+        
+        if (!users.hasOwnProperty(user)) {
+          users[user] = [["Userid", "Username", "Page", "Timestamp"]];
+				}
+				if(row.uid != undefined) {
+					users[user].push([
+						row.uid,
+						row.username,
+						"courseed.php",
+						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
+					]);
+				}
+            });
+            updateState(users);
+        });
+    }
+
+    function updateCodeviewerInformation(){
+		hasCounter = true;
+		var users = {};
+        loadAnalytics("codeviewerInformation", function(data) {
+            $.each(data, function(i, row) {
+                var user = row.username;
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Page", "Courseid", "Exampleid", "Timestamp"]];
+				}
+				if(row.cid != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						"codeviewer.php",
+						row.cid,
+						row.exampleid,
+						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
+					]);
+				}
+            });
+            updateState(users);
+        });
+	}
+
+
+    function updateDuggaInformation(){
+		hasCounter = true;
+		var users = {};
+        loadAnalytics("duggaInformation", function(data) {
+            $.each(data, function(i, row) {
+                var user = row.username;
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Page", "Courseid", "Duggaid", "Timestamp"]];
+				}
+				if(row.cid != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						"showDugga.php",
+						row.cid,
+						row.quizid,
+						new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString()
+					]);
+				}
+            });
+            updateState(users);
+        });
+    }
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for events
+//------------------------------------------------------------------------------------------------
+    function updateUserLogInformation(users){
+		var event;
+		var users = {};
+		var user;
+		//Array containing all different eventTypes
+		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
+		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
+		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
+		'EditFile','MarkedDugga'];
+
+        loadAnalytics("userLogInformation", function(data) {
+            $.each(data, function(i, row) {
+                user = row.username;
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "EventDescription"]];
+				}
+				eventNumber = row.eventType;
+				event = eventNames[eventNumber];
+				if(row.eventType != "") {
+					if(event != 'AddFile' && event != 'EditFile' && event != 'LoginFail'){
+						users[user].push([
+							row.uid,
+							row.username,
+							row.eventType,
+							row.description,
+							new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString(),
+							event
+						]);
+						updateState(users);
+					}
+				}
+			});
+			updateState(users);
+		});
+	}
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for fileEvents
+//------------------------------------------------------------------------------------------------
+	function updatefileEvents(users){
+		var event;
+		var users = {};
+		var user;
+		var empty = true;
+		//Array containing all different eventTypes
+		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
+		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
+		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
+		'EditFile','MarkedDugga'];
+
+		loadAnalytics("userLogInformation", function(data) {
+			$.each(data, function(i, row) {
+				user = row.username;
+				if (!users.hasOwnProperty(user)) {
+					users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "EventDescription"]];
+				}
+				eventNumber = row.eventType;
+				event = eventNames[eventNumber];
+
+				if(row.eventType != "") {
+					if(event == 'AddFile' || event == 'EditFile'){
+						users[user].push([
+							row.uid,
+							row.username,
+							row.eventType,
+							row.description,
+							new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString(),
+							event
+						]);
+						updateState(users);
+						empty = false;
+					}
+				}
+			});
+			if(empty == true){
+				updateState(users);
+			}
+		});
+	}
+
+	function updateCourseInformation(){
+		var users = {};
+
+        loadAnalytics("courseInformation", function(data) {
+            console.log(data)
+            $.each(data.users, function(i, row) {
+				var userClass = row.class;
+				var user = row.username;
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["courseid", "coursename"]];
+				}
+
+				$.each(data.programcourses, function(i, row) {
+					var cid = row.cid;
+
+					if(userClass === row.class){
+						$.each(data.courses, function(i, row) {
+							if(cid === row.cid){
+								users[user].push([
+									cid,
+									row.coursename
+								]);
+							}
+						});
+					}
+				});
+			});
+			updateState(users);
+
+        });
+  }
+
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for loginFail
+//------------------------------------------------------------------------------------------------
+	function updateloginFail(users){
+		var event;
+		var users = {};
+		var user;
+		//Array containing all different eventTypes
+		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
+		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
+		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
+		'EditFile','MarkedDugga'];
+
+        loadAnalytics("userLogInformation", function(data) {
+            $.each(data, function(i, row) {
+                user = row.username;
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "EventDescription"]];
+				}
+				eventNumber = row.eventType;
+				event = eventNames[eventNumber];
+				if(row.eventType != "") {
+					if(event == 'LoginFail'){
+						users[user].push([
+							row.uid,
+							row.username,
+							row.eventType,
+							row.description,
+							new Date(row.timestamp.replace(' ', 'T') + "Z").toLocaleString(),
+							event
+						]);
+						updateState(users);
+					}
+				}
+			});
+			updateState(users);
+		});
+	}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for fileed
+//------------------------------------------------------------------------------------------------
+ 	function updateFileedInformation(){
+		hasCounter = true;
+        loadAnalytics("fileedInformation", function(data) {
+			var users = {};
+            $.each(data, function(i, row) {
+				var user = row.username;
 				var pageParts;
 				var pageLoad;
-				var cid;
-				var vers;
+
+				//Retrives the page
+				if(row.refer.includes("/DuggaSys/")){
+					pageParts = row.refer.split("/DuggaSys/");
+					pageLoad = pageParts[1];
+
+					if(pageLoad.includes("?")){
+						pageParts = pageParts[1].split("?");
+						pageLoad = pageParts[0];
+					}
+				}
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Event", "Timestamp"]];
+				}
+				if(pageLoad != undefined) {
+					users[user].push([
+						row.uid,
+						row.username,
+						pageLoad,
+						row.timestamp
+					]);
+				}
+            });
+            updateState(users);
+        });
+    }
+
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for resulted
+//------------------------------------------------------------------------------------------------
+ 	function updateResultedInformation(){
+		hasCounter = true;
+        loadAnalytics("resultedInformation", function(data) {
+			var users = {};
+            $.each(data, function(i, row) {
+				var user = row.username;
+				var pageParts;
+				var pageLoad;
+
+				//Retrives the page
+				if(row.refer.includes("/DuggaSys/")){
+					pageParts = row.refer.split("/DuggaSys/");
+					pageLoad = pageParts[1];
+
+					if(pageLoad.includes("?")){
+						pageParts = pageParts[1].split("?");
+						pageLoad = pageParts[0];
+					}
+				}
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Event", "Timestamp"]];
+				}
+				if(pageLoad != undefined) {
+					users[user].push([
+						row.uid,
+						row.username,
+						pageLoad,
+						row.timestamp
+					]);
+				}
+            });
+            updateState(users);
+        });
+    }
+//------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for profile
+//------------------------------------------------------------------------------------------------
+ 	function updateProfileInformation(){
+		hasCounter = true;
+        loadAnalytics("profileInformation", function(data) {
+			var users = {};
+            $.each(data, function(i, row) {
+				var user = row.username;
+				var pageParts;
+				var pageLoad;
 
 				//Retrives the page 
 				if(row.refer.includes("/DuggaSys/")){
@@ -800,44 +1269,26 @@ function loadUserInformation(){
 					}
 				}
 
-				//Retrives the coursid
-				if(row.refer.includes("courseid=")){
-					pageParts = row.refer.split("courseid=");
-					pageParts = pageParts[1].split("&");
-					cid = pageParts[0];
-				}
-
-				//Retrives the course version
-				if(row.refer.includes("coursevers=")){
-					pageParts = row.refer.split("coursevers=");
-					vers = pageParts[1];
-
-					if(vers.includes("&")){
-						pageParts = pageParts[1].split("&");
-						vers = pageParts[0];
-					}
-				}
-
                 if (!users.hasOwnProperty(user)) {
-                    users[user] = [["Userid", "Username", "Page", "Courseid", "Course Version", "Timestamp"]];
+                    users[user] = [["Userid", "Username", "Timestamp"]];
 				}
-				if(cid != undefined) {
+				if(pageLoad != undefined) {
 					users[user].push([
 						row.uid,
 						row.username,
-						pageLoad,
-						cid,
-						vers,
 						row.timestamp
 					]);
 				}
             });
             updateState(users);
         });
-	}
-	
-	function updateCourseedInformation(){
-        loadAnalytics("courseedInformation", function(data) {
+    }
+    //------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for duggaed
+//------------------------------------------------------------------------------------------------
+  	function updateDuggaedInformation(){
+		hasCounter = true;
+        loadAnalytics("duggaedInformation", function(data) {
 			var users = {};
             $.each(data, function(i, row) {
 				var user = row.username;
@@ -870,124 +1321,46 @@ function loadUserInformation(){
             updateState(users);
         });
     }
- 
-    function updateCodeviewerInformation(){
-		var users = {};
-        loadAnalytics("codeviewerInformation", function(data) {
+    //------------------------------------------------------------------------------------------------
+// Retrieves the data and makes the table for accessed
+//------------------------------------------------------------------------------------------------
+  	function updateAccessedInformation(){
+		hasCounter = true;
+        loadAnalytics("accessedInformation", function(data) {
+			var users = {};
             $.each(data, function(i, row) {
-                var user = row.username;
-               
-                if (!users.hasOwnProperty(user)) {
-                    users[user] = [["Userid", "Username", "Page", "Courseid", "Exampleid", "Timestamp"]];
+				var user = row.username;
+				var pageParts;
+				var pageLoad;
+
+				//Retrives the page 
+				if(row.refer.includes("/DuggaSys/")){
+					pageParts = row.refer.split("/DuggaSys/");
+					pageLoad = pageParts[1];
+
+					if(pageLoad.includes("?")){
+						pageParts = pageParts[1].split("?");
+						pageLoad = pageParts[0];
+					}
 				}
-				if(row.cid != "") {
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Event", "Timestamp"]];
+				}
+				if(pageLoad != undefined) {
 					users[user].push([
 						row.uid,
 						row.username,
-						"codeviewer.php",
-						row.cid,
-						row.exampleid,
+						pageLoad,
 						row.timestamp
 					]);
 				}
             });
             updateState(users);
         });
-	} 
-	
+    }
 
-    function updateDuggaInformation(){
-		var users = {};
-        loadAnalytics("duggaInformation", function(data) {
-            $.each(data, function(i, row) {
-                var user = row.username;
-               
-                if (!users.hasOwnProperty(user)) {
-                    users[user] = [["Userid", "Username", "Page", "Courseid", "Duggaid", "Timestamp"]];
-				}
-				if(row.cid != "") {
-					users[user].push([
-						row.uid,
-						row.username,
-						"showDugga.php",
-						row.cid,
-						row.quizid,
-						row.timestamp
-					]);
-				}
-            });
-            updateState(users);
-        });
-    } 
- 
-    function updateUserLogInformation(users){
-		var event;
-		var users = {};
-		var user;
-		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
-		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
-		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
-		'EditFile','MarkedDugga'];
 
-        loadAnalytics("userLogInformation", function(data) {
-            $.each(data, function(i, row) {
-                user = row.username;
-                if (!users.hasOwnProperty(user)) {
-                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "EventDescription"]];
-				}
-				eventNumber = row.eventType;
-				event = eventNames[eventNumber];
-				if(row.eventType != "") {
-					if(event != 'AddFile' && event != 'EditFile'){
-						users[user].push([
-							row.uid,
-							row.username,
-							row.eventType,
-							row.description,
-							row.timestamp,
-							event
-						]);
-						updateState(users);	
-					}
-				}
-            });
-		});
-	}
-	
-	function updatefileEvents(users){
-		var event;
-		var users = {};
-		var user;
-		eventNames = ['arrayStartOn0','DuggaRead','DuggaWrite','LoginSuccess','LoginFail','ServiceClientStart','ServiceServerStart',
-		'ServiceServerEnd','ServiceClientEnd','Logout','pageLoad','PageNotFound','RequestNewPW','CheckSecQuestion','SectionItems',
-		'AddFile','EditCourseVers','AddCourseVers','AddCourse','EditCourse','ResetPW','DuggaFileupload','DownloadAllCourseVers',
-		'EditFile','MarkedDugga'];
-
-        loadAnalytics("userLogInformation", function(data) {
-            $.each(data, function(i, row) {
-                user = row.username;
-                if (!users.hasOwnProperty(user)) {
-                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp", "EventDescription"]];
-				}
-				eventNumber = row.eventType;
-				event = eventNames[eventNumber];
-				if(row.eventType != "") {
-					if(event == 'AddFile' || event == 'EditFile'){
-						users[user].push([
-							row.uid,
-							row.username,
-							row.eventType,
-							row.description,
-							row.timestamp,
-							event
-						]);
-						updateState(users);	
-					}
-				}
-            });
-		});
-	}
-   
     function updateState(users){
         $('#analytic-info > select.file-select').remove();
         var userSelect = $('<select class="file-select"></select>');
@@ -995,16 +1368,17 @@ function loadUserInformation(){
             if (users.hasOwnProperty(user)) {
 				if(localStorage.getItem('analyticsLastUser') == user) {
 					userSelect.append('<option value="' + user + '" selected>' + user + '</option>');
+					nameCount = user;
 				} else {
 					userSelect.append('<option value="' + user + '">' + user + '</option>');
 				}
             }
         }
-		
+
         userSelect.change(function() {
 			deleteTable();
 			$('#analytic-info').append(selectPage);
-			
+
 			var events = [];
 			if(users[$(this).val()][0][5] == "EventDescription") {
 				for(var i = 1; i < users[$(this).val()].length; i++) {
@@ -1028,9 +1402,9 @@ function loadUserInformation(){
 					$('#analytic-info').append(renderTable(userNumEvents));
 				}
 			}
-			
+
 			$('#analytic-info').append(renderTable(users[$(this).val()]));
-			
+
 			try {
 				localStorage.setItem('analyticsLastUser', $(this).val());
 			} catch(err) { }
@@ -1039,25 +1413,47 @@ function loadUserInformation(){
         $('#analytic-info').append(userSelect);
 		userSelect.change();
 		pageSelect();
-	}	
+	}
+
 	function pageSelect(){
-		if(firstLoad === true){
-			updateSectionedInformation();
-			firstLoad = false;
-		} 
         selectPage.change(function(){
+			localStorage.setItem('userInformationPage', selectPage.val());
             switch(selectPage.val()){
+                case "resulted":
+					updateResultedInformation();
+					pageCount = "resulted.php";
+					break;
                 case "sectioned":
-                    updateSectionedInformation();
+					updateSectionedInformation();
+					pageCount = "sectioned.php";
                     break;
                 case "courseed":
-                    updateCourseedInformation();
+					updateCourseedInformation();
+					pageCount = "courseed.php";
+					break;
+                case "fileed":
+					updateFileedInformation();
+					pageCount = "fileed.php";
+					break;
+                case "profile":
+					updateProfileInformation();
+					pageCount = "profile.php";
+					break;
+                case "duggaed":
+					updateDuggaedInformation();
+					pageCount = "duggaed.php";
+					break;
+                case "accessed":
+					updateAccessedInformation();
+					pageCount = "accessed.php";
 					break;
 				case "showDugga":
 					updateDuggaInformation();
+					pageCount = "showdugga.php";
 					break;
 				case "codeviewer":
 					updateCodeviewerInformation();
+					pageCount = "codeviewer.php";
 					break;
 				case "events":
 					updateUserLogInformation();
@@ -1065,20 +1461,30 @@ function loadUserInformation(){
 				case "fileEvents":
 					updatefileEvents();
 					break;
+				case "course":
+					updateCourseInformation();
+					break;
+				case "loginFail":
+					updateloginFail();
+					break;
+				case "calendar":
+					updateCalendarInformation();
+					pageCount = "calendar.php";
+					break;
             }
         });
-    }
- 
+	}
+
     pageSelect();
 }
 
 //------------------------------------------------------------------------------------------------
-// Analytic loaders END	
+// Analytic loaders END
 //------------------------------------------------------------------------------------------------
 
 
 //------------------------------------------------------------------------------------------------
-// Fits a canvas to its container	
+// Fits a canvas to its container
 //------------------------------------------------------------------------------------------------
 function fitCanvasToContainer(canvas, width = 100, height = 100) {
 	canvas.style.width = width + "%";
@@ -1097,7 +1503,7 @@ function clearCanvas(canvas) {
 }
 
 //------------------------------------------------------------------------------------------------
-// Deletes tables with the class name "rows" 
+// Deletes tables with the class name "rows"
 //------------------------------------------------------------------------------------------------
 function deleteTable() {
 	var table = document.getElementsByClassName("rows");
@@ -1147,7 +1553,7 @@ function drawBarChart(data, format = null) {
 
 	fitCanvasToContainer(canvas);
 	clearCanvas(canvas);
-	
+
 	var barWidth = 40;
 	var fontSize = 12;
 	ctx.font = fontSize + "px Arial";
@@ -1158,36 +1564,38 @@ function drawBarChart(data, format = null) {
 	barSpacing = barSpacing > 50 ? barSpacing : 50;
 	var textAreaHeight = fontSize * 2.2;
 	var barHeightMultiplier = (canvas.height - textAreaHeight) / chartDataMax(data);
-	
+
 	for (var i = 0; i < data.length; i++) {
 		var x = barSpacing + i * (barWidth + barSpacing);
-		
+
 		ctx.fillStyle = "#614875";
 		ctx.scale(1, -1);
 		ctx.fillRect(x, textAreaHeight, barWidth, data[i].value * barHeightMultiplier);
 		ctx.scale(1, -1);
 		ctx.fillStyle = "white";
-		
+
 		if(format == "bytes") {
 			ctx.fillText(humanFileSize(data[i].value), x + barWidth / 2, -data[i].value * barHeightMultiplier);
 		} else {
 			ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
 		}
-		
 		ctx.fillStyle = "black";
+		if(isDarkMode()){
+			ctx.fillStyle = "white";
+		}
 		ctx.fillText(data[i].label, x + barWidth / 2, -textAreaHeight / 2);
 	}
 }
 
 function humanFileSize(size) {
-	if (size < 1024) 
+	if (size < 1024)
 		return size + ' B'
     let i = Math.floor(Math.log(size) / Math.log(1024))
     let num = (size / Math.pow(1024, i))
     let round = Math.round(num)
 	num = round < 10 ? num.toFixed(2) : round < 100 ? num.toFixed(1) : round
-	
-    return `${num} ${'KMGTPEZY'[i-1]}B` 
+
+    return `${num} ${'KMGTPEZY'[i-1]}B`
 }
 
 //------------------------------------------------------------------------------------------------
@@ -1230,7 +1638,7 @@ function drawPieChart(data, title = null, multirow = false) {
 	} else {
 		fitCanvasToContainer(canvas);
 	}
-	
+
 	clearCanvas(canvas);
 
 	var total = 0;
@@ -1246,8 +1654,15 @@ function drawPieChart(data, title = null, multirow = false) {
 	// Add the title to the chart
 	if(title != null) {
 		ctx.font = "20px Arial";
+		if(isDarkMode()){
+			ctx.fillStyle = "white";
+		}
 		ctx.fillText(title, radius * 2 + 30, 25);
 	}
+
+	var labelCount = 0;
+	var textSpacing = 50;
+	var rectSpacing = 30;
 
 	for (var i = 0; i < data.length; i++) {
 		ctx.fillStyle = getRandomColor(i);
@@ -1258,14 +1673,31 @@ function drawPieChart(data, title = null, multirow = false) {
 		ctx.fill();
 		last += (Math.PI*2*(data[i].value/total));
 
-		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 40, 12, 12);
+		if(labelCount < 4){
+			ctx.fillRect(radius * 2 + rectSpacing , labelCount * textAreaHeight + 40, 12, 12);
+		}
 		ctx.fillStyle = "black";
+		if(isDarkMode()){
+			ctx.fillStyle = "white";
+		}
 		ctx.font = fontSize + "px Arial";
-		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight + 20);
+		if(labelCount < 4){
+			ctx.fillText(data[i].label, radius * 2 + textSpacing , labelCount * textAreaHeight + textAreaHeight + 20);
+			labelCount++;
+		}
+		else{
+			var w = ctx.measureText(data[i - 4].label);
+			textSpacing += w.width + 30;
+			rectSpacing += w.width + 30;
+			labelCount = 0;
+			i--;
+			last -= (Math.PI*2*(data[i].value/total));
+		}
 	}
 }
 
 function renderTable(data) {
+	rowCount = 0;
 	if (!$.isArray(data)) return;
 
 	var str = '<table class="list rows">';
@@ -1284,11 +1716,25 @@ function renderTable(data) {
 			$.each(row, function(j, col) {
 				str += "<td>" + col + "</td>";
 			});
-			str += "</tr>"
+			str += "</tr>";
+			rowCount++;
 		});
 	}
 	str += "</tbody></table>";
+	if(hasCounter == true && counterFirstLoad == false){
+		updateCounter(rowCount, nameCount, pageCount);
+	}
+	counterFirstLoad = false;
 	return str;
+}
+
+function updateCounter(count, user, page)
+{
+	if(page == undefined)
+		return;
+
+	$('#analytic-info').append("<p>" + page + " has been loaded " + count + " times by " + user + "! </p>");
+	hasCounter = false;
 }
 
 function drawLineChart(data) {
@@ -1331,8 +1777,13 @@ function drawLineChart(data) {
 
 	ctx.lineWidth = 2;
 	ctx.strokeStyle = "#333";
+	if(isDarkMode()) {
+		ctx.strokeStyle = "#888"
+		ctx.fillStyle = "white"
+	}
 	ctx.font = "Arial 8pt";
-	ctx.textAlign = "center"
+	ctx.textAlign = "center";
+
 
 	// Draw L
 	ctx.beginPath();
@@ -1389,3 +1840,10 @@ function timeSince(date) {
     // pluralise and append suffix
     return a[0] + ' ' + a[1] + (a[0] === 1 ? '' : 's') + suffix;
   }
+
+	function isDarkMode() {
+	  return (
+	    window.matchMedia &&
+	    window.matchMedia("(prefers-color-scheme: dark)").matches
+	  );
+	}

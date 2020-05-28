@@ -24,6 +24,14 @@ function Symbol(kindOfSymbol) {
     this.isLockHovered = false;         // Checks if the lock itself is hovered on the symbol
     this.pointsAtSamePosition = false;
     this.isHovered = false;
+    this.manualSide1 = "Automatic";     //Contains information about if a line is manually set to a quadrant(Top, Right, Bottom, Left) or is automatic.(Line endpoint1)
+    this.manualSide2 = "Automatic";     //Contains information about if a line is manually set to a quadrant(Top, Right, Bottom, Left) or is automatic.(Line endpoint2)
+    this.umlSubline = {
+        subLineOne: [],
+        subLineTwo: [],
+        subLineThree: []
+    };
+
     
     // Connector arrays - for connecting and sorting relationships between diagram objects
     // They are not used for line, UML line and text objects but still created to prevent errors with other functions
@@ -96,7 +104,9 @@ function Symbol(kindOfSymbol) {
         'textAlign': settings.properties.textAlign,        // Used to change alignment of free text.
 		'key_type': settings.properties.key_type,          // Defult key type for a class.
         'isComment': settings.properties.isComment,        // Used to se if text are comments and if they should be hidden.
-        'setLayer': settings.properties.isLayer = writeToLayer            // Used to place Element in a layer
+        'setLayer': settings.properties.isLayer = writeToLayer,      // Used to place Element in a layer
+        'line_placement1': settings.properties.line_placement1,      //Used for manual line placement(lock to quadrant)
+        'line_placement2': settings.properties.line_placement2      //Used for manual line placement(lock to quadrant)
     };
 
     //--------------------------------------------------------------------
@@ -168,28 +178,34 @@ function Symbol(kindOfSymbol) {
     //--------------------------------------------------------------------
     // quadrants: Iterates over all relation ends and checks if any need to change quadrants
     //--------------------------------------------------------------------
-    this.quadrants = function (kind) {
+    this.quadrants = function (kind, connectedLines) {
         // Fix right connector box (1)
         var changed = false;
         var i = 0;
+
         while (i < this.connectorRight.length) {
             var xk = points[this.connectorRight[i].to].x;
             var yk = points[this.connectorRight[i].to].y;
             var bb = this.getquadrant(xk, yk);
-            if (bb == 3) {
-                changed = true;
-                conn = this.connectorRight.splice(i, 1);
-                this.connectorLeft.push(conn[0]);
-            } else if (bb == 0) {
-                changed = true;
-                conn = this.connectorRight.splice(i, 1);
-                this.connectorTop.push(conn[0]);
-            } else if (bb == 2) {
-                changed = true;
-                conn = this.connectorRight.splice(i, 1);
-                this.connectorBottom.push(conn[0]);
-            } else {
-                i++;
+            var tempLine = connectedLines.find(element => (element.bottomRight == this.connectorRight[i].from || element.topLeft == this.connectorRight[i].from));
+            if((tempLine.getConnectedObjects()[0] == this && tempLine.manualSide1 == "Automatic") || (tempLine.getConnectedObjects()[1] == this && tempLine.manualSide2 == "Automatic")){
+                if (bb == 3) {
+                    changed = true;
+                    conn = this.connectorRight.splice(i, 1);
+                    this.connectorLeft.push(conn[0]);
+                } else if (bb == 0) {
+                    changed = true;
+                    conn = this.connectorRight.splice(i, 1);
+                    this.connectorTop.push(conn[0]);
+                } else if (bb == 2) {
+                    changed = true;
+                    conn = this.connectorRight.splice(i, 1);
+                    this.connectorBottom.push(conn[0]);
+                } else {
+                    i++;
+                }
+            } else{
+                i++
             }
         }
         // Fix left connector box (3)
@@ -198,20 +214,25 @@ function Symbol(kindOfSymbol) {
             var xk = points[this.connectorLeft[i].to].x;
             var yk = points[this.connectorLeft[i].to].y;
             var bb = this.getquadrant(xk, yk);
-            if (bb == 1) {
-                changed = true;
-                conn = this.connectorLeft.splice(i, 1);
-                this.connectorRight.push(conn[0]);
-            } else if (bb == 0) {
-                changed = true;
-                conn = this.connectorLeft.splice(i, 1);
-                this.connectorTop.push(conn[0]);
-            } else if (bb == 2) {
-                changed = true;
-                conn = this.connectorLeft.splice(i, 1);
-                this.connectorBottom.push(conn[0]);
-            } else {
-                i++;
+            var tempLine = connectedLines.find(element => (element.bottomRight == this.connectorLeft[i].from || element.topLeft == this.connectorLeft[i].from));
+            if((tempLine.getConnectedObjects()[0] == this && tempLine.manualSide1 == "Automatic") || (tempLine.getConnectedObjects()[1] == this && tempLine.manualSide2 == "Automatic")){
+                if (bb == 1) {
+                    changed = true;
+                    conn = this.connectorLeft.splice(i, 1);
+                    this.connectorRight.push(conn[0]);
+                } else if (bb == 0) {
+                    changed = true;
+                    conn = this.connectorLeft.splice(i, 1);
+                    this.connectorTop.push(conn[0]);
+                } else if (bb == 2) {
+                    changed = true;
+                    conn = this.connectorLeft.splice(i, 1);
+                    this.connectorBottom.push(conn[0]);
+                } else {
+                    i++;
+                }
+            } else{
+                i++
             }
         }
         // Fix top connector box (0)
@@ -220,20 +241,25 @@ function Symbol(kindOfSymbol) {
             var xk = points[this.connectorTop[i].to].x;
             var yk = points[this.connectorTop[i].to].y;
             var bb = this.getquadrant(xk, yk);
-            if (bb == 1) {
-                changed = true;
-                conn = this.connectorTop.splice(i, 1);
-                this.connectorRight.push(conn[0]);
-            } else if (bb == 3) {
-                changed = true;
-                conn = this.connectorTop.splice(i, 1);
-                this.connectorLeft.push(conn[0]);
-            } else if (bb == 2) {
-                changed = true;
-                conn = this.connectorTop.splice(i, 1);
-                this.connectorBottom.push(conn[0]);
-            } else {
-                i++;
+            var tempLine = connectedLines.find(element => (element.bottomRight == this.connectorTop[i].from || element.topLeft == this.connectorTop[i].from));
+            if((tempLine.getConnectedObjects()[0] == this && tempLine.manualSide1 == "Automatic") || (tempLine.getConnectedObjects()[1] == this && tempLine.manualSide2 == "Automatic")){
+                if (bb == 1) {
+                    changed = true;
+                    conn = this.connectorTop.splice(i, 1);
+                    this.connectorRight.push(conn[0]);
+                } else if (bb == 3) {
+                    changed = true;
+                    conn = this.connectorTop.splice(i, 1);
+                    this.connectorLeft.push(conn[0]);
+                } else if (bb == 2) {
+                    changed = true;
+                    conn = this.connectorTop.splice(i, 1);
+                    this.connectorBottom.push(conn[0]);
+                } else {
+                    i++;
+                }
+            } else{
+                i++
             }
         }
         // Fix bottom connector box (2)
@@ -242,51 +268,225 @@ function Symbol(kindOfSymbol) {
             var xk = points[this.connectorBottom[i].to].x;
             var yk = points[this.connectorBottom[i].to].y;
             var bb = this.getquadrant(xk, yk);
-            if (bb == 1) {
-                changed = true;
-                conn = this.connectorBottom.splice(i, 1);
-                this.connectorRight.push(conn[0]);
-            } else if (bb == 3) {
-                changed = true;
-                conn = this.connectorBottom.splice(i, 1);
-                this.connectorLeft.push(conn[0]);
-            } else if (bb == 0) {
-                changed = true;
-                conn = this.connectorBottom.splice(i, 1);
-                this.connectorTop.push(conn[0]);
-            } else {
-                i++;
+            var tempLine = connectedLines.find(element => (element.bottomRight == this.connectorBottom[i].from || element.topLeft == this.connectorBottom[i].from));
+            if((tempLine.getConnectedObjects()[0] == this && tempLine.manualSide1 == "Automatic") || (tempLine.getConnectedObjects()[1] == this && tempLine.manualSide2 == "Automatic")){
+                if (bb == 1) {
+                    changed = true;
+                    conn = this.connectorBottom.splice(i, 1);
+                    this.connectorRight.push(conn[0]);
+                } else if (bb == 3) {
+                    changed = true;
+                    conn = this.connectorBottom.splice(i, 1);
+                    this.connectorLeft.push(conn[0]);
+                } else if (bb == 0) {
+                    changed = true;
+                    conn = this.connectorBottom.splice(i, 1);
+                    this.connectorTop.push(conn[0]);
+                } else {
+                    i++;
+                }
+            } else{
+                i++
             }
         }
-        // Fixes lines when thes same entity connects to a relation twice     
-        if (kind == symbolKind.erRelation){
-            if (this.connectorTop.length == 2){
-                changed = true;
-                conn = this.connectorTop.splice(0, 2);
-                this.connectorLeft.push(conn[1]);
-                this.connectorRight.push(conn[0]);
+        
+        // Fixes lines when thes same entity connects to a relation twice    
+       if (kind == symbolKind.erRelation){
+            if (this.connectorTop.length >= 2){
+                var topLines = [];
+                var connectedObjectsTop = [];
+                for(i = 0 ; i < this.connectorTop.length ; i++){
+                    topLines.push(connectedLines.find(element => (element.bottomRight == this.connectorTop[i].from || element.topLeft == this.connectorTop[i].from)));
+                    connectedObjectsTop.push(topLines[i].getConnectedObjects().find(element => (element != this)));
+                    for(j = 0 ; j < connectedObjectsTop.length ; j++){
+                        if(connectedObjectsTop[i] == connectedObjectsTop[j] && i != j){
+                            changed = true;
+                            conn = this.connectorTop.splice(0, 2);
+                            this.connectorLeft.push(conn[1]);
+                            this.connectorRight.push(conn[0]);
+                        }
+                    }
+                }
             }
-            else if (this.connectorBottom.length == 2){
-                changed = true;
-                conn = this.connectorBottom.splice(0, 2);
-                this.connectorLeft.push(conn[1]);
-                this.connectorRight.push(conn[0]);
+            if (this.connectorBottom.length >= 2){
+                var bottomLines = [];
+                var connectedObjectsBottom = [];
+                for(i = 0 ; i < this.connectorBottom.length ; i++){
+                    bottomLines.push(connectedLines.find(element => (element.bottomRight == this.connectorBottom[i].from || element.topLeft == this.connectorBottom[i].from)));
+                    connectedObjectsBottom.push(bottomLines[i].getConnectedObjects().find(element => (element != this)));
+                    for(j = 0 ; j < connectedObjectsBottom.length ; j++){
+                        if(connectedObjectsBottom[i] == connectedObjectsBottom[j] && i != j){
+                            changed = true;
+                            conn = this.connectorBottom.splice(0, 2);
+                            this.connectorLeft.push(conn[1]);
+                            this.connectorRight.push(conn[0]);
+                        }
+                    }
+                }
             }            
-            else if (this.connectorLeft.length == 2){
-                changed = true;
-                conn = this.connectorLeft.splice(0, 2);
-                this.connectorTop.push(conn[1]);
-                this.connectorBottom.push(conn[0]);
+            if (this.connectorLeft.length >= 2){
+                var leftLines = [];
+                var connectedObjectsLeft = [];
+                for(i = 0 ; i < this.connectorLeft.length ; i++){
+                    leftLines.push(connectedLines.find(element => (element.bottomRight == this.connectorLeft[i].from || element.topLeft == this.connectorLeft[i].from)));
+                    connectedObjectsLeft.push(leftLines[i].getConnectedObjects().find(element => (element != this)));
+                    for(j = 0 ; j < connectedObjectsLeft.length ; j++){
+                        if(connectedObjectsLeft[i] == connectedObjectsLeft[j] && i != j){
+                            changed = true;
+                            conn = this.connectorLeft.splice(0, 2);
+                            this.connectorBottom.push(conn[1]);
+                            this.connectorTop.push(conn[0]);
+                        }
+                    }
+                }
             }
-            else if (this.connectorRight.length == 2){
-                changed = true;
-                conn = this.connectorRight.splice(0, 2);
-                this.connectorTop.push(conn[0]);
-                this.connectorBottom.push(conn[1]);
+            if (this.connectorRight.length >= 2){
+                var rightLines = [];
+                var connectedObjectsRight = [];
+                for(i = 0 ; i < this.connectorRight.length ; i++){
+                    rightLines.push(connectedLines.find(element => (element.bottomRight == this.connectorRight[i].from || element.topLeft == this.connectorRight[i].from)));
+                    connectedObjectsRight.push(rightLines[i].getConnectedObjects().find(element => (element != this)));
+                    for(j = 0 ; j < connectedObjectsRight.length ; j++){
+                        if(connectedObjectsRight[i] == connectedObjectsRight[j] && i != j){
+                            changed = true;
+                            conn = this.connectorRight.splice(0, 2);
+                            this.connectorBottom.push(conn[1]);
+                            this.connectorTop.push(conn[0]);
+                        }
+                    }
+                }
+            }
+        }
+        
+        return changed;
+    }
+
+    this.setQuadrant = function (symbol, quadrant, side) {
+        var connector = 0;
+        var bb = 0;
+
+        //Find correct connector to manipulate
+        if(symbol.connectorRight.length > 0){
+            for(i = 0 ; symbol.connectorRight.length > i ; i++){
+                if((symbol.connectorRight[i].from == this.bottomRight && symbol.connectorRight[i].to == this.topLeft) 
+                || (symbol.connectorRight[i].from == this.topLeft && symbol.connectorRight[i].to == this.bottomRight)){
+                    connector = i;
+                    var xk = points[symbol.connectorRight[connector].to].x;
+                    var yk = points[symbol.connectorRight[connector].to].y;
+                    bb = symbol.getquadrant(xk, yk);
+                }
+            }
+        }
+        if(symbol.connectorLeft.length > 0){
+            for(i = 0 ; symbol.connectorLeft.length > i ; i++){
+                if((symbol.connectorLeft[i].from == this.bottomRight && symbol.connectorLeft[i].to == this.topLeft) 
+                || (symbol.connectorLeft[i].from == this.topLeft && symbol.connectorLeft[i].to == this.bottomRight)){
+                    connector = i;
+                    var xk = points[symbol.connectorLeft[connector].to].x;
+                    var yk = points[symbol.connectorLeft[connector].to].y;
+                    bb = symbol.getquadrant(xk, yk);
+                }
+            }
+        }
+        if(symbol.connectorTop.length > 0){
+            for(i = 0 ; symbol.connectorTop.length > i ; i++){
+                if((symbol.connectorTop[i].from == this.bottomRight && symbol.connectorTop[i].to == this.topLeft) 
+                || (symbol.connectorTop[i].from == this.topLeft && symbol.connectorTop[i].to == this.bottomRight)){
+                    connector = i;
+                    var xk = points[symbol.connectorTop[connector].to].x;
+                    var yk = points[symbol.connectorTop[connector].to].y;
+                    bb = symbol.getquadrant(xk, yk);
+                }
+            }
+        }
+        if(symbol.connectorBottom.length > 0){
+            for(i = 0 ; symbol.connectorBottom.length > i ; i++){
+                if((symbol.connectorBottom[i].from == this.bottomRight && symbol.connectorBottom[i].to == this.topLeft) 
+                || (symbol.connectorBottom[i].from == this.topLeft && symbol.connectorBottom[i].to == this.bottomRight)){
+                    connector = i;
+                    var xk = points[symbol.connectorBottom[connector].to].x;
+                    var yk = points[symbol.connectorBottom[connector].to].y;
+                    bb = symbol.getquadrant(xk, yk);
+                }
             }
         }
 
-        return changed;
+        //Manually set quadrant if we know line-side is manually set(This is needed since bb is otherwise calculated by symbol positioning)
+        if(side == "side1"){
+            if(this.manualSide1 == "Top"){
+                bb = 0;
+            } else if(this.manualSide1 == "Right"){
+                bb = 1;
+            } else if(this.manualSide1 == "Bottom"){
+                bb = 2;
+            } else if(this.manualSide1 == "Left"){
+                bb = 3;
+            }
+        } else if(side == "side2") {
+            if(this.manualSide2 == "Top"){
+                bb = 0;
+            } else if(this.manualSide2 == "Right"){
+                bb = 1;
+            } else if(this.manualSide2 == "Bottom"){
+                bb = 2;
+            } else if(this.manualSide2 == "Left"){
+                bb = 3;
+            }
+        }
+        
+        //Set manualside on line
+        if(side == "side1"){
+            this.manualSide1 = quadrant;
+        } else if(side == "side2") {
+            this.manualSide2 = quadrant;
+        }
+
+        //Swap connector to appropriate side
+        if(quadrant=="Top"){
+            if(bb == 1){
+                conn = symbol.connectorRight.splice(connector, 1);
+                symbol.connectorTop.push(conn[0]);
+            } else if(bb == 2){
+                conn = symbol.connectorBottom.splice(connector, 1);
+                symbol.connectorTop.push(conn[0]);
+            } else if(bb == 3){
+                conn = symbol.connectorLeft.splice(connector, 1);
+                symbol.connectorTop.push(conn[0]);
+            }
+        } else if(quadrant=="Right"){
+            if(bb == 0){
+                conn = symbol.connectorTop.splice(connector, 1);
+                symbol.connectorRight.push(conn[0]);
+            } else if(bb == 2){
+                conn = symbol.connectorBottom.splice(connector, 1);
+                symbol.connectorRight.push(conn[0]);
+            } else if(bb == 3){
+                conn = symbol.connectorLeft.splice(connector, 1);
+                symbol.connectorRight.push(conn[0]);
+            }
+        } else if(quadrant=="Bottom"){
+            if(bb == 0){
+                conn = symbol.connectorTop.splice(connector, 1);
+                symbol.connectorBottom.push(conn[0]);
+            } else if(bb == 1){
+                conn = symbol.connectorRight.splice(connector, 1);
+                symbol.connectorBottom.push(conn[0]);
+            } else if(bb == 3){
+                conn = symbol.connectorLeft.splice(connector, 1);
+                symbol.connectorBottom.push(conn[0]);
+            } 
+        } else if(quadrant=="Left"){
+            if(bb == 0){
+                conn = symbol.connectorTop.splice(connector, 1);
+                symbol.connectorLeft.push(conn[0]);
+            } else if(bb == 1){
+                conn = symbol.connectorRight.splice(connector, 1);
+                symbol.connectorLeft.push(conn[0]);
+            } else if(bb == 2){
+                conn = symbol.connectorBottom.splice(connector, 1);
+                symbol.connectorLeft.push(conn[0]);
+            } 
+        }         
     }
 
     //--------------------------------------------------------------------
@@ -1309,6 +1509,12 @@ function Symbol(kindOfSymbol) {
         this.isLayerLocked = false;
         ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
         this.properties['textSize'] = this.getFontsize();
+
+        // Makes sure that the stroke color can not be white
+        if (this.properties['strokeColor'] == '#ffffff') {
+            this.properties['strokeColor'] = '#000000';
+        }
+
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
 
         var x1 = pixelsToCanvas(points[this.topLeft].x).x;
@@ -1331,6 +1537,17 @@ function Symbol(kindOfSymbol) {
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
+
+        // Make sure that the font color is always able to be seen.
+        // Symbol and Font color should therefore not be the same
+        if (this.properties['fontColor'] === this.properties['fillColor']) {
+            if (this.properties['fillColor'] === '#000000') {
+                this.properties['fontColor'] = '#ffffff';
+            } else {
+                this.properties['fontColor'] = '#000000';
+            }
+        }
+
 
         if (this.symbolkind == symbolKind.uml) {
             this.drawUML(x1, y1, x2, y2);
@@ -1406,21 +1623,16 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------------
     this.drawUML = function(x1, y1, x2, y2) {
         var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
-        this.properties['strokeColor'] = '#000000';
-        this.properties['fontColor'] = '#000000';
-        this.properties['lineWidth'] = 2;
-        ctx.font = "bold " + parseInt(this.properties['textSize']) + "px Arial";
+        ctx.font = `bold ${parseInt(this.properties['textSize'])}px ${this.properties['font']}`;
 
         // Clear Class Box
-        ctx.fillStyle = '#ffffff';
-		ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
-		
-		// Set border to redish if crossing line
-		if(!checkSamePage(x1,y1,x2,y2)){
-			ctx.strokeStyle = '#DC143C';
-		}else{
-			ctx.strokeStyle = this.properties['strokeColor'];
-		}
+        ctx.fillStyle = this.properties['fillColor'];
+        ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+        
+        // Set border to redish if crossing line
+        if(!checkSamePage(x1,y1,x2,y2)){
+            ctx.strokeStyle = '#DC143C';
+        }
 
         // Box
         ctx.beginPath();
@@ -1454,19 +1666,11 @@ function Symbol(kindOfSymbol) {
         }else {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
         }
-        if (this.properties['key_type'] == 'Primary key') {
-            var linelength = ctx.measureText(this.name).width;
-            ctx.beginPath(1);
-            ctx.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
-            ctx.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
-            ctx.lineTo(x1 + ((x2 - x1) * 0.5) + linelength, y1 + (0.85 * this.properties['textSize']) + 10);
-            ctx.strokeStyle = this.properties['strokeColor'];
-            ctx.stroke();
-        }
+
         // Change Alignment and Font
         ctx.textAlign = "start";
         ctx.textBaseline = "top";
-        ctx.font = parseInt(this.properties['textSize']) + "px Arial";
+        ctx.font = `${parseInt(this.properties['textSize'])}px ${this.properties['font']}`;
 
         for (var i = 0; i < this.attributes.length; i++) {
             ctx.fillText(this.attributes[i].text, x1 + (this.properties['textSize'] * 0.3), y1 + (this.properties['textSize'] * 1.7) + (this.properties['textSize'] * i));
@@ -1478,12 +1682,10 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2) {
-		//if on two or more pages turn redish
+        // Set border to redish if crossing line
         if(!checkSamePage(x1,y1,x2,y2)){
-			ctx.strokeStyle = '#DC143C';
-		}else{
-			ctx.strokeStyle = this.properties['strokeColor'];
-		}
+            ctx.strokeStyle = '#DC143C';
+        }
 
         ctx.fillStyle = this.properties['fillColor'];
         // Drawing a multivalue attribute
@@ -1491,32 +1693,11 @@ function Symbol(kindOfSymbol) {
             drawOval(x1 - 7 * diagram.getZoomValue(), y1 - 7 * diagram.getZoomValue(), x2 + 7 * diagram.getZoomValue(), y2 + 7 * diagram.getZoomValue());
             ctx.stroke();
             drawOval(x1, y1, x2, y2);
-            // Makes sure that the stroke color can not be white
-            if (this.properties['strokeColor'] == '#ffffff') {
-                this.properties['strokeColor'] = '#000000';
-            }
-            // Make sure that the font color is always able to be seen.
-            // Symbol and Font color should therefore not be the same
-            if (this.properties['fontColor'] == this.properties['fillColor']) {
-                if (this.properties['fillColor'] == '#000000') {
-                    this.properties['fontColor'] = '#ffffff';
-                } else {
-                    this.properties['fontColor'] = '#000000';
-                }
-            }
+
         // Drawing a normal attribute
         } else {
             drawOval(x1, y1, x2, y2);
             ctx.fill();
-            // Make sure that the font color is always able to be seen.
-            // Symbol and Font color should therefore not be the same
-            if (this.properties['fontColor'] == this.properties['fillColor']) {
-                if (this.properties['fillColor'] == '#000000') {
-                    this.properties['fontColor'] = '#ffffff';
-                } else {
-                    this.properties['fontColor'] = '#000000';
-                }
-            }
         }
         ctx.clip();
 
@@ -1567,170 +1748,28 @@ function Symbol(kindOfSymbol) {
         }
     }
 
-    // This function is used in the drawEntity function and is run when ER entities are not in a weak state.
-    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) {
-        var relationMidPoints = [];
-
-        // Map input coordinates to canvas origo offset
-        x1 = canvasToPixels(x1).x;
-        x2 = canvasToPixels(x2).x;
-        y1 = canvasToPixels(0, y1).y;
-        y2 = canvasToPixels(0, y2).y;
-
-        // Need to find the connected entities in order to change lines between relations and entities to normal.
-        for(let i = 0; i < diagram.length; i++) {
-            if (diagram[i] != this && diagram[i].kind == kind.symbol) {
-                // Getting each (top) coordinate of the object
-                dtlx = diagram[i].corners().tl.x;
-                dtly = diagram[i].corners().tl.y;
-                dtrx = diagram[i].corners().tr.x;
-                dtry = diagram[i].corners().tr.y;
-                // Getting each (bottom) coordinate of the object
-                dbrx = diagram[i].corners().br.x;
-                dbry = diagram[i].corners().br.y;
-                dblx = diagram[i].corners().bl.x;
-                dbly = diagram[i].corners().bl.y;
-
-                // Stores the midpoints for each corner of the relation in an array
-                if (diagram[i].isAnyOfSymbolKinds(symbolKind.erRelation)) {
-                    var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
-                    var relationMiddleY = ((dbly - dtly) / 2) + dtly;
-                    relationMidPoints.push(relationMiddleX, relationMiddleY);
-                }
-                // Setting the line types to normal if they are forced and the connected entity is strong.
-                if (diagram[i].isAnyOfSymbolKinds(symbolKind.line) && diagram[i].properties['key_type'] != 'Normal') {
-
-                    // Looping through the midpoints for relation entities.
-                    for (let j = 0; j < relationMidPoints.length; j++) {
-                        // checking if the line is connected to any of the midpoints.
-                        if (dtlx == relationMidPoints[j] || dtrx == relationMidPoints[j] || dtly == relationMidPoints[j] || dbly == relationMidPoints[j]) {
-                            // Making sure that only the correct lines are set to normal
-                            if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
-                                diagram[i].properties['key_type'] = 'Normal';
-                            } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
-                                diagram[i].properties['key_type'] = 'Normal';
-                            }  else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
-                                diagram[i].properties['key_type'] = 'Normal';
-                            } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
-                                diagram[i].properties['key_type'] = 'Normal';
-                            }
-                        }
-                    }
-                }
+    //This function executes for entities when the entity key_type is not set to 'Weak'. All lines between this entity and a relation will be set to normal.
+    this.setLinesConnectedToRelationsToNormal = function() {
+        const connectedLines = this.getConnectedLines();
+        connectedLines.forEach(line => {
+            const connectedObjects = line.getConnectedObjects();
+            const isConnectedToRelation = connectedObjects.some(object => object.symbolkind === symbolKind.erRelation);
+            if(isConnectedToRelation) {
+                line.properties.key_type = "Normal";
             }
-        }
+        });
     }
 
-    // This function is run when an entity is set to weak. Sets the lines to be forced if possible.
-    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2) {
-        var relationMidPoints = [];
-        var relationMidYPoints = [];
-        var relationMidXPoints = [];
-        var attributeMidPoint = [];
-
-        // Map input coordinates to canvas origo offset
-        x1 = canvasToPixels(x1).x;
-        x2 = canvasToPixels(x2).x;
-        y1 = canvasToPixels(0, y1).y;
-        y2 = canvasToPixels(0, y2).y;
-
-        // Need to find the connected entities in order to change lines between relations and entities to forced.
-        for(let i = 0; i < diagram.length; i++) {
-            if (diagram[i] != this && diagram[i].kind == kind.symbol) {
-                // Getting each (top) coordinate of the object
-                dtlx = diagram[i].corners().tl.x;
-                dtly = diagram[i].corners().tl.y;
-                dtrx = diagram[i].corners().tr.x;
-                dtry = diagram[i].corners().tr.y;
-                // Getting each (bottom) coordinate of the object
-                dbrx = diagram[i].corners().br.x;
-                dbry = diagram[i].corners().br.y;
-                dblx = diagram[i].corners().bl.x;
-                dbly = diagram[i].corners().bl.y;
-
-                // Stores the midpoints for the relations in an array.
-                if (diagram[i].isAnyOfSymbolKinds(symbolKind.erRelation)) {
-                    var relationMiddleX = ((dtrx - dtlx) / 2) + dtlx;
-                    var relationMiddleY = ((dbly - dtly) / 2) + dtly;
-                    relationMidPoints.push(relationMiddleX, relationMiddleY);
-                    relationMidXPoints.push(relationMiddleX, dtly, dbly);
-                    relationMidYPoints.push(relationMiddleY, dtlx, dtrx);
-                }
-
-                // Stores the midpoints for the attributes in an array
-                if (diagram[i].isAnyOfSymbolKinds(symbolKind.erAttribute)) {
-                    var attributeMiddleX = ((dtrx - dtlx) / 2) + dtlx;
-                    var attributeMiddleY = ((dbly - dtly) / 2) + dtly;
-                    attributeMidPoint.push(attributeMiddleX, attributeMiddleY);
-                }
-
-                // Setting the line types to forced if they are normal and the connected entity is weak.
-                if (diagram[i].isAnyOfSymbolKinds(symbolKind.line) && diagram[i].properties['key_type'] != 'Forced') {
-                    // Looping through the midpoints (top and bot) for relations.
-                    for (let j = 0; j < relationMidXPoints.length; j++) {
-                        for (let c = 0; c < relationMidXPoints.length; c++) {
-                            // Checking if the line X coordinate is the same as the relations middle X coordinate
-                            if (dtlx == relationMidXPoints[j] || dtrx == relationMidXPoints[j]) {
-                                // Checking if the line Y coordinate is the same as the coordinate for the relation middle top Y or bottom Y
-                                if (dtly == relationMidXPoints[c] || dbly == relationMidXPoints[c]) {
-                                    // Going through the array even if empty since it otherwise requires that an attribute is connected to the entity in all cases
-
-                                    for (let y = 0; y <= attributeMidPoint.length; y++) {
-                                        for (let k = 0; k <= attributeMidPoint.length; k++) {
-                                            // Making sure that lines between relations and attributes aren't set to forced.
-                                            if ((dtlx == attributeMidPoint[y] || dtrx == attributeMidPoint[y]) || (dtly == attributeMidPoint[k] || dbly == attributeMidPoint[k])) {
-                                                diagram[i].properties['key_type'] = 'Normal';
-                                            } else {
-                                                // Checking the current object coordinates against the line coordinates.
-                                                if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
-                                                    diagram[i].properties['key_type'] = 'Forced';
-                                                } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
-                                                    diagram[i].properties['key_type'] = 'Forced';
-                                                } else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
-                                                    diagram[i].properties['key_type'] = 'Forced';
-                                                } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
-                                                    diagram[i].properties['key_type'] = 'Forced';
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    // Looping through the midpoints (left and right) for relations.
-                    for (let j = 0; j < relationMidYPoints.length; j++) {
-                        for (let c = 0; c < relationMidYPoints.length; c++) {
-                            // checking if the line Y coordinate is the same as the relations middle Y coordinate.
-                            if (dtly == relationMidYPoints[j] || dbly == relationMidYPoints[j]) {
-                                if (dtlx == relationMidYPoints[c] || dtrx == relationMidYPoints[c]) {
-                                    // Going through the array even if empty since it otherwise requires that an attribute is connected to the entity in all cases
-                                    for (let y = 0; y <= attributeMidPoint.length; y++) {
-                                        for (let k = 0; k <= attributeMidPoint.length; k++) {
-                                            // Making sure that lines between relations and attributes aren't set to forced.
-                                            if ((dtlx == attributeMidPoint[y] || dtrx == attributeMidPoint[y]) || (dtly == attributeMidPoint[k] || dbly == attributeMidPoint[k])) {
-                                                diagram[i].properties['key_type'] = 'Normal';
-                                            } else {
-                                                // Checking the current object coordinates against the line coordinates.
-                                                if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
-                                                    diagram[i].properties['key_type'] = 'Forced';
-                                                } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
-                                                    diagram[i].properties['key_type'] = 'Forced';
-                                                } else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
-                                                    diagram[i].properties['key_type'] = 'Forced';
-                                                } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
-                                                    diagram[i].properties['key_type'] = 'Forced';
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+    //This function executes for entities when the entity key_type is set to 'Weak'. All lines between this entity and a relation will be set to forced.
+    this.setLinesConnectedToRelationsToForced = function() {
+        const connectedLines = this.getConnectedLines();
+        connectedLines.forEach(line => {
+            const connectedObjects = line.getConnectedObjects();
+            const isConnectedToRelation = connectedObjects.some(object => object.symbolkind === symbolKind.erRelation);
+            if(isConnectedToRelation) {
+                line.properties.key_type = "Forced";
             }
-        }
+        });
     }
 
     // Used inside drawEntity when this.properties['key_type'] is set to Weak.
@@ -1744,13 +1783,6 @@ function Symbol(kindOfSymbol) {
         ctx.closePath();
         ctx.lineWidth = (this.properties['lineWidth'] * 1.5) * diagram.getZoomValue();
         ctx.stroke();
-
-        // Makes sure that the stroke color can not be white
-        if (this.properties['strokeColor'] == '#ffffff') {
-            this.properties['strokeColor'] = '#000000';
-        }
-        
-        
     }
 
     this.drawEntity = function(x1, y1, x2, y2) {
@@ -1758,16 +1790,18 @@ function Symbol(kindOfSymbol) {
 		
         if (this.properties['key_type'] == "Weak") {
             this.drawWeakEntity(x1, y1, x2, y2);
-            setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
-        } else {
-            removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2);
-		}
 
-		if(!checkSamePage(x1,y1,x2,y2)){
-			ctx.strokeStyle = '#DC143C';
-		}else{
-			ctx.strokeStyle = this.properties['strokeColor'];
-		}
+            //The system should not force the line to be forced according to customer.
+            //There are many situations where this is unwanted functionality and it can force the diagram to be wrong.
+            //The function can be kept just in case and maybe it can be developed further in the future to always force the diagram to be correct.
+            //this.setLinesConnectedToRelationsToForced();
+        } else {
+            //this.setLinesConnectedToRelationsToNormal();
+        }
+        
+        if(!checkSamePage(x1,y1,x2,y2)){
+            ctx.strokeStyle = '#DC143C';
+        }
 
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -1778,18 +1812,9 @@ function Symbol(kindOfSymbol) {
 		ctx.closePath();	
 		ctx.fill();
 
-		// Make sure that the font color is always able to be seen.
-        // Symbol and Font color should therefore not be the same
-        if (this.properties['fontColor'] == this.properties['fillColor']) {
-            if (this.properties['fillColor'] == '#000000') {
-                this.properties['fontColor'] = '#ffffff';
-            } else {
-                this.properties['fontColor'] = '#000000';
-            }
-		}
-
         ctx.clip();
         ctx.stroke();
+        
 		if(!checkSamePage(x1,y1,x2,y2)){
 			ctx.fillStyle = '#DC143C';
 		}else{
@@ -1835,6 +1860,46 @@ function Symbol(kindOfSymbol) {
             ctx.lineWidth = this.properties['lineWidth'] * 1.5 * diagram.getZoomValue();
             ctx.setLineDash([5, 4]);
         }
+
+        //Manually set which side of object line should be at
+        var connectedObjects = this.getConnectedObjects();
+        if(typeof event !== "undefined") {
+            if(event.target.id == "LinePlacement1"){
+                if(this.properties['line_placement1'] == "Automatic1"){
+                    this.manualSide1 = "Automatic";
+                }
+                else if (this.properties['line_placement1'] == "Top1") {
+                    this.setQuadrant(connectedObjects[0], "Top", "side1");
+                }
+                else if(this.properties['line_placement1'] == "Right1"){
+                    this.setQuadrant(connectedObjects[0], "Right", "side1");
+                }
+                else if(this.properties['line_placement1'] == "Bottom1"){
+                    this.setQuadrant(connectedObjects[0], "Bottom", "side1");
+                }
+                else if(this.properties['line_placement1'] == "Left1"){
+                    this.setQuadrant(connectedObjects[0], "Left", "side1"); 
+                }
+            }
+            else if(event.target.id == "LinePlacement2"){
+                if(this.properties['line_placement2'] == "Automatic2"){
+                    this.manualSide2 = "Automatic";
+                }
+                else if (this.properties['line_placement2'] == "Top2") {
+                    this.setQuadrant(connectedObjects[1], "Top", "side2");
+                }
+                else if(this.properties['line_placement2'] == "Right2"){
+                    this.setQuadrant(connectedObjects[1], "Right", "side2");
+                }
+                else if(this.properties['line_placement2'] == "Bottom2"){
+                    this.setQuadrant(connectedObjects[1], "Bottom", "side2");
+                }
+                else if(this.properties['line_placement2'] == "Left2"){
+                    this.setQuadrant(connectedObjects[1], "Left", "side2");
+                }
+            }
+        }
+
         checkLineIntersection(x1,y1,x2,y2);
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -1846,9 +1911,6 @@ function Symbol(kindOfSymbol) {
     // drawUMLLine: Draws uml line between uml objects
     //---------------------------------------------------------------
     this.drawUMLLine = function(x1, y1, x2, y2) {
-        this.properties['strokeColor'] = '#000000';
-        this.properties['lineWidth'] = 2;
-
         //Checks if there is cardinality set on either first or second side of line
         if((this.cardinality.value != "" && this.cardinality.value != null) || (this.cardinality.valueUML != "" && this.cardinality.valueUML != null)) {
             ctx.fillStyle = '#000';
@@ -1982,21 +2044,27 @@ function Symbol(kindOfSymbol) {
             }
         }
 
+
+
         if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
             ctx.lineTo(breakpointStartX, middleBreakPointY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(breakpointEndX, middleBreakPointY);
+            this.setSubLines(x1,y1,breakpointStartX,middleBreakPointX,breakpointEndX,breakpointStartY,middleBreakPointY,breakpointEndY,x2,y2,true);
         } else if((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(middleBreakPointX, breakpointStartY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(middleBreakPointX, breakpointEndY);
+            this.setSubLines(x1,y1,breakpointStartX,middleBreakPointX,breakpointEndX,breakpointStartY,middleBreakPointY,breakpointEndY,x2,y2,false)
+
         }  else if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(breakpointStartX, breakpointEndY);
+            this.setTwoSublines(x1,y1,breakpointStartX,breakpointEndY,x2,y2)
         }  else if((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
             ctx.lineTo(breakpointEndX, breakpointStartY);
+            this.setTwoSublines(x1,y1,breakpointEndX, breakpointStartY,x2,y2);
         }
 
-        // Draw to end breakpoint based on direction
         if (endLineDirection == "left") {
             ctx.lineTo(breakpointEndX, y2);
         } else if (endLineDirection == "right") {
@@ -2009,7 +2077,106 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x2, y2);
         ctx.stroke();
 
+        //Manually set which side of object line should be at
+        var connectedObjects = this.getConnectedObjects();
+        if(typeof event !== "undefined") {
+            if(event.target.id == "LinePlacement1"){
+                if(this.properties['line_placement1'] == "Automatic1"){
+                    this.manualSide1 = "Automatic";
+                }
+                else if (this.properties['line_placement1'] == "Top1") {
+                    this.setQuadrant(connectedObjects[0], "Top", "side1");
+                }
+                else if(this.properties['line_placement1'] == "Right1"){
+                    this.setQuadrant(connectedObjects[0], "Right", "side1");
+                }
+                else if(this.properties['line_placement1'] == "Bottom1"){
+                    this.setQuadrant(connectedObjects[0], "Bottom", "side1");
+                }
+                else if(this.properties['line_placement1'] == "Left1"){
+                    this.setQuadrant(connectedObjects[0], "Left", "side1"); 
+                }
+            }
+            else if(!this.isRecursiveLine && event.target.id == "LinePlacement2"){
+                if(this.properties['line_placement2'] == "Automatic2"){
+                    this.manualSide2 = "Automatic";
+                }
+                else if (this.properties['line_placement2'] == "Top2") {
+                    this.setQuadrant(connectedObjects[1], "Top", "side2");
+                }
+                else if(this.properties['line_placement2'] == "Right2"){
+                    this.setQuadrant(connectedObjects[1], "Right", "side2");
+                }
+                else if(this.properties['line_placement2'] == "Bottom2"){
+                    this.setQuadrant(connectedObjects[1], "Bottom", "side2");
+                }
+                else if(this.properties['line_placement2'] == "Left2"){
+                    this.setQuadrant(connectedObjects[1], "Left", "side2");
+                }
+            }
+        }
+
+        checkUMLLineIntersection(this.umlSubline.subLineOne.startX,this.umlSubline.subLineOne.startY,this.umlSubline.subLineOne.endX,this.umlSubline.subLineOne.endY)
+        checkUMLLineIntersection(this.umlSubline.subLineTwo.startX,this.umlSubline.subLineTwo.startY,this.umlSubline.subLineTwo.endX,this.umlSubline.subLineTwo.endY)
+        checkUMLLineIntersection(this.umlSubline.subLineThree.startX,this.umlSubline.subLineThree.startY,this.umlSubline.subLineThree.endX,this.umlSubline.subLineThree.endY)
+
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
+    }
+    //---------------------------------------------------------------
+    // setSubLines: used to save three sublines for UML lines
+    // setTwoSublines: used for when there only two uml sublines
+    //---------------------------------------------------------------
+    this.setSubLines = function(x1,y1,breakpointStartX,middleBreakPointX,breakpointEndX,breakpointStartY,middleBreakPointY,breakpointEndY,x2,y2,side){
+        if(side){
+            this.umlSubline.subLineOne.startX = x1;
+            this.umlSubline.subLineOne.startY = y1;
+            this.umlSubline.subLineOne.endX = breakpointStartX;
+            this.umlSubline.subLineOne.endY = middleBreakPointY;
+
+            this.umlSubline.subLineTwo.startX = breakpointStartX;
+            this.umlSubline.subLineTwo.startY = middleBreakPointY;
+            this.umlSubline.subLineTwo.endX = breakpointEndX;   
+            this.umlSubline.subLineTwo.endY = middleBreakPointY;
+
+            this.umlSubline.subLineThree.startX = breakpointEndX;
+            this.umlSubline.subLineThree.startY = middleBreakPointY;
+            this.umlSubline.subLineThree.endX = x2;
+            this.umlSubline.subLineThree.endY = y2;
+        }
+        else{
+            this.umlSubline.subLineOne.startX = x1;
+            this.umlSubline.subLineOne.startY = y1;
+            this.umlSubline.subLineOne.endX = middleBreakPointX;
+            this.umlSubline.subLineOne.endY = breakpointStartY;
+    
+            this.umlSubline.subLineTwo.startX = middleBreakPointX;
+            this.umlSubline.subLineTwo.startY = breakpointStartY;
+            this.umlSubline.subLineTwo.endX = middleBreakPointX;   
+            this.umlSubline.subLineTwo.endY = breakpointEndY;
+    
+            this.umlSubline.subLineThree.startX = middleBreakPointX;
+            this.umlSubline.subLineThree.startY = breakpointEndY;
+            this.umlSubline.subLineThree.endX = x2;
+            this.umlSubline.subLineThree.endY = y2;
+        }
+    }
+
+    this.setTwoSublines = function(x1,y1,breakpointX, breakpointY,x2,y2){
+        this.umlSubline.subLineThree.startX = null ;
+        this.umlSubline.subLineThree.startY = null ;
+        this.umlSubline.subLineThree.endX = null ;
+        this.umlSubline.subLineThree.endY = null ;
+
+        this.umlSubline.subLineOne.startX = x1;
+        this.umlSubline.subLineOne.startY = y1;
+        this.umlSubline.subLineOne.endX = breakpointX;
+        this.umlSubline.subLineOne.endY = breakpointY;
+
+        this.umlSubline.subLineTwo.startX = breakpointX;
+        this.umlSubline.subLineTwo.startY = breakpointY;
+        this.umlSubline.subLineTwo.endX = x2;   
+        this.umlSubline.subLineTwo.endY = y2;
+        
     }
 
     //---------------------------------------------------------------
@@ -2180,32 +2347,16 @@ function Symbol(kindOfSymbol) {
       ctx.closePath();
       ctx.lineWidth = (this.properties['lineWidth'] * 1.5) * diagram.getZoomValue();
       ctx.stroke();
-
-      // Makes sure that the stroke color can not be white
-      if (this.properties['strokeColor'] == '#ffffff') {
-          this.properties['strokeColor'] = '#000000';
-      }
-      // Make sure that the font color is always able to be seen.
-      //Symbol and Font color should therefore not be the same
-      if (this.properties['fontColor'] == this.properties['fillColor']) {
-          if (this.properties['fillColor'] == '#000000') {
-              this.properties['fontColor'] = '#ffffff';
-          } else {
-              this.properties['fontColor'] = '#000000';
-          }
-      }
     }
 
     this.drawRelation = function(x1, y1, x2, y2, midx, midy) {
         var midx = pixelsToCanvas(points[this.centerPoint].x).x;
         var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
-		
-		// Set border to redish if crossing line
-		if(!checkSamePage(x1,y1,x2,y2)){
-			ctx.strokeStyle = '#DC143C';
-		}else{
-			ctx.strokeStyle = this.properties['strokeColor'];
-		}
+        
+        // Set border to redish if crossing line
+        if(!checkSamePage(x1,y1,x2,y2)){
+            ctx.strokeStyle = '#DC143C';
+        }
 
         if (this.properties['key_type'] == 'Weak') {
           this.drawWeakRelation(x1, y1, x2, y2, midx, midy);
@@ -2220,15 +2371,6 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(midx, y1);
         ctx.closePath();
         ctx.fill();
-        // Make sure that the font color is always able to be seen.
-        // Symbol and Font color should therefore not be the same
-        if (this.properties['fontColor'] == this.properties['fillColor']) {
-            if (this.properties['fillColor'] == '#000000') {
-                this.properties['fontColor'] = '#ffffff';
-            } else {
-                this.properties['fontColor'] = '#000000';
-            }
-        }
         ctx.clip();
 		ctx.stroke();
 		
@@ -2654,17 +2796,91 @@ function checkLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY) {
 	}
 }
 
+function checkUMLLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY) {
+    var	lines = diagram.getObjectsByType(symbolKind.umlLine);
+    var results = [];
+    var getSubline;
+	for (var i = 0; i < lines.length; i++) {
+        for(var j = 0; j < 3; j++){
+            if(j == 0){
+                getSubline = lines[i].umlSubline.subLineOne;
+            }
+            else if (j == 1){
+                getSubline = lines[i].umlSubline.subLineTwo;
+            }
+            else {
+                getSubline = lines[i].umlSubline.subLineThree;
+            }
+            var	line2StartX = getSubline.startX;
+            var	line2StartY = getSubline.startY;
+            var	line2EndX =	getSubline.endX;
+            var	line2EndY =	getSubline.endY;
+            
+            if(!(line1StartX	==	line2StartX	&&	line1StartY	==	line2StartY	&&	line1EndX	==	line2EndX	&&	line1EndY	==	line2EndY	)){
+                var denominator, a, b, numerator1, numerator2, result = {
+                    x: null,
+                    y: null,
+                    onLine1: false,
+                    onLine2: false
+                };
+                denominator = ((line2EndY - line2StartY) * (line1EndX - line1StartX)) - ((line2EndX - line2StartX) * (line1EndY - line1StartY));
+
+                a = line1StartY - line2StartY;
+                b = line1StartX - line2StartX;
+                numerator1 = ((line2EndX - line2StartX) * a) - ((line2EndY - line2StartY) * b);
+                numerator2 = ((line1EndX - line1StartX) * a) - ((line1EndY - line1StartY) * b);
+                a = numerator1 / denominator;
+                b = numerator2 / denominator;
+            
+                // if we cast these lines infinitely in both directions, they intersect here:
+                result.x = line1StartX + (a * (line1EndX - line1StartX));
+                result.y = line1StartY + (a * (line1EndY - line1StartY));
+
+                // if line1 is a segment and line2 is infinite, they intersect if:
+                if (a > 0 && a < 1) {
+                    result.onLine1 = true;
+                }
+                // if line2 is a segment and line1 is infinite, they intersect if:
+                if (b > 0 && b < 1) {
+                    result.onLine2 = true;
+                }
+                // if line1 and line2 are segments, they intersect if both of the above are true
+                
+                
+
+                // if line1 and line2 are segments, they intersect if both of the above are true
+                if(result.onLine1 == true	&&	result.onLine2	==	true){
+                    var m1 = (line1EndY - line1StartY) / (line1EndX-line1StartX);
+                    var m2 = (line2EndY - line2StartY) / (line2EndX-line2StartX);
+                    
+                    drawUmlJump(result.x,result.y);
+                }
+            }
+       }
+    }
+}
+
 //------------------------------------------------
 //The function responceble to draw the line jump
 //-----------------------------------------------
 function drawLineJump(positionX, positionY, mOfLine1, mOfLine2){
-	var angelOfIntersection = Math.atan((mOfLine1 - mOfLine2)/(1+mOfLine1*mOfLine2));
+   
+    var angelOfIntersection = Math.atan((mOfLine1 - mOfLine2)/(1+mOfLine1*mOfLine2));
 	if(angelOfIntersection > 0){
 		ctx.beginPath();
-		ctx.arc(positionX,positionY,5,angelOfIntersection+(0.5*Math.PI),angelOfIntersection+(1.5*Math.PI));
+		ctx.arc(positionX,positionY,5*zoomValue,angelOfIntersection+(0.5*Math.PI),angelOfIntersection+(1.5*Math.PI));
 		ctx.closePath();
 		ctx.stroke();
- }
+    }
+}
+function drawUmlJump(positionX, positionY){
+    var angelOfIntersection = 90;
+	if(angelOfIntersection > 0){
+		ctx.beginPath();
+		ctx.arc(positionX,positionY,5*zoomValue,startAngle = 1 * Math.PI, endAngle = 2 * Math.PI);
+		ctx.closePath();
+		ctx.stroke();
+    }
 }
 
 //---------------------------------------------------------------------
@@ -3068,12 +3284,12 @@ function Path() {
                 var segb = points[this.segments[i].pb];
                 if(this.targeted) {
                     ctx.beginPath();
-                    ctx.arc(pixelsToCanvas(seg.x).x, pixelsToCanvas(0, seg.y).y, 5,0,2*Math.PI,false);
+                    ctx.arc(pixelsToCanvas(seg.x).x, pixelsToCanvas(0, seg.y).y, 5*zoomValue,0,2*Math.PI,false);
                     ctx.fillStyle = '#F82';
                     ctx.fill();
 
                     ctx.beginPath();
-                    ctx.arc(pixelsToCanvas(segb.x).x, pixelsToCanvas(0, segb.y).y, 5,0,2*Math.PI,false);
+                    ctx.arc(pixelsToCanvas(segb.x).x, pixelsToCanvas(0, segb.y).y, 5*zoomValue,0,2*Math.PI,false);
                     ctx.fillStyle = '#F82';
                     ctx.fill();
                 }

@@ -11,6 +11,7 @@ var accessFilter = "WRST";
 var trueTeacher;
 var examinerName;
 var activeDropdown;
+var activeArrow;
 var shouldReRender = false;
 
 //----------------------------------------------------------------------------
@@ -161,7 +162,7 @@ function addSingleUser() {
 }
 
 function verifyUserInputForm(input) {
-	var errorString = '';
+	var verifyString = '';
 
 	// Verify SSN using validateSSN function
 	if(verifyString = validateSSN(input[0])) {		// Returns null if there is no error
@@ -169,15 +170,21 @@ function verifyUserInputForm(input) {
 		return false;
 	}
 
-	// Verify First/Last name <= 50 characters
-	if (input[1].length > 50 || input[2].length > 50) {
-		alert('Input exceeded max length for first or last name (50)');
+	// Verify first name
+	if(verifyString = validateName(input[1])) {		// Returns null if there is no error
+		alert(verifyString);
 		return false;
 	}
 
-	// Verify PID <= 10 characters
-	if (input[input.length - 2].length > 10) {
-		alert('Input exceeded max length for PID (10)');
+	// Verify last name
+	if(verifyString = validateName(input[2])) {		// Returns null if there is no error
+		alert(verifyString);
+		return false;
+	}
+
+	// Verify PID
+	if(verifyString = validatePID(input[input.length - 2])) {	// Returns null if there is no error
+		alert(verifyString);
 		return false;
 	}
 
@@ -239,10 +246,104 @@ function validateSSN(ssn)
 	if(ccd === 10) ccd = 0;		// If value is 10, remove the left digit... Leads to ccd = 0
 
 	if(ccd != ssn.substring(length-1))	// Compare calculated to given control digit
-		return 'SSN Error! Incorrect control digit (last digit). Expected: ' + ccd;
+		return 'SSN Error! Incorrect control digit.\nExpected: ' + ccd;
 
 	return null;	// The provided SSN is correct!
 }
+
+function tooltipSSN()
+{
+	var error = validateSSN(document.getElementById('addSsn').value);
+	var ssnInputBox = document.getElementById('addSsn');
+
+	if(error && document.getElementById('addSsn').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipSSN').innerHTML = error;
+		$('#tooltipSSN').fadeIn();
+		ssnInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipSSN').fadeOut();
+		ssnInputBox.style.backgroundColor = '#fff';
+	}
+}
+
+//---------------------------------------------------------------------------------------------------
+// validateName(name)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+function validateName(name)
+{
+	const length = name.length;
+	if(length < 2)	return 'Name is too short\nMinimum two characters';	// Too short
+	if(length > 50)	return 'Name is too long\nMaximum 50 characters';	// Too long
+
+	const formatTest = /^[a-zA-ZäöåÄÖÅ]+$/;		// Expected charachters
+	if(!formatTest.test(name))
+		return 'Name contains illegal charachters';
+
+	return null;	// The provided name is alright
+}
+
+function validateFirstName() { return validateName(document.getElementById('addFirstname').value); }
+function validateLastName() { return validateName(document.getElementById('addLastname').value); }
+
+function tooltipFirst()
+{
+	var error = validateFirstName();
+	var fnameInputBox = document.getElementById('addFirstname');
+
+	if(error && document.getElementById('addFirstname').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipFirst').innerHTML = error;
+		$('#tooltipFirst').fadeIn();
+		fnameInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipFirst').fadeOut();
+		fnameInputBox.style.backgroundColor = '#fff';
+	}
+}
+
+function tooltipLast()
+{
+	var error = validateLastName();
+	var lnameInputBox = document.getElementById('addLastname');
+
+	if(error && document.getElementById('addLastname').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipLast').innerHTML = error;
+		$('#tooltipLast').fadeIn();
+		lnameInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipLast').fadeOut();
+		lnameInputBox.style.backgroundColor = '#fff';
+	}
+}
+
+//---------------------------------------------------------------------------------------------------
+// validatePID(pid)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+function validatePID(pid)
+{
+	const length = pid.length;
+	if(length < 2)	return 'PID is too short\nMinimum two characters';	// Too short
+	if(length > 10)	return 'PID is too long\nMaximum ten characters';	// Too long
+
+	return null;	// The provided PID is alright
+}
+
+function tooltipPID()
+{
+	var error = validatePID(document.getElementById('addPid').value);
+	var pidInputBox = document.getElementById('addPid');
+
+	if(error && document.getElementById('addPid').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipPID').innerHTML = error;
+		$('#tooltipPID').fadeIn();
+		pidInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipPID').fadeOut();
+		pidInputBox.style.backgroundColor = '#fff';
+	}
+}
+
 
 //---------------------------------------------------------------------------------------------------
 // validateEmail(email)
@@ -259,36 +360,29 @@ function validateEmail(email)
 	if(email.indexOf('..') > 0)				// Consecutive . are not allowed
 		return 'Email error! Consecutive "." are not allowed';
 
+	if(email.lastIndexOf('@')!==delimiter)	// Only one @ allowed to separate local and domain parts
+		return 'Email error! Only one "@" is allowed';
+
 	const formatTest = /[A-z0-9]{1,64}@[A-z0-9]{1,}[.]{1}[A-z0-9]{2,}/;		// Expected format
 	if(!formatTest.test(email))
 		return 'Email error! Format is invalid';
 
-	if(email.lastIndexOf('@')!==delimiter)	// Only one @ allowed to separate local and domain parts
-		return 'Email error! Only one "@" is allowed';
-
 	return null;	// The provided email is correct!
 }
 
-//-------------------------------------------------------------
-// updateErrorMessage()
-// Updates the error message shown inside the "Add user" window
-//-------------------------------------------------------------
-function updateErrorMessage()
+function tooltipEmail()
 {
-	var errorMsg = '';
-	var validationError = '';
+	var error = validateEmail(document.getElementById('addEmail').value);
+	var emailInputBox = document.getElementById('addEmail');
 
-	validationError = validateSSN(document.getElementById('addSsn').value);		// Check SSN for errors if input has been given
-	if(validationError && document.getElementById('addSsn').value.length > 0)
-		errorMsg += validationError;
-
-	if(errorMsg.length > 0) errorMsg += '\n';									// Adds a new line if previous errors has been found
-
-	validationError = validateEmail(document.getElementById('addEmail').value);	// Check email for errors if input has been given
-	if(validationError && document.getElementById('addEmail').value.length > 0)
-		errorMsg += validationError;
-
-	document.getElementById('addErrorMessage').innerHTML = errorMsg + ' ';		// Updates label
+	if(error && document.getElementById('addEmail').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipEmail').innerHTML = error;
+		$('#tooltipEmail').fadeIn();
+		emailInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipEmail').fadeOut();
+		emailInputBox.style.backgroundColor = '#fff';
+	}
 }
 
 var inputVerified;
@@ -421,8 +515,11 @@ function renderCell(col, celldata, cellid) {
 		var className = obj.class;
 		if (className == null || className === "null") {
 			className = "";
+			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'> None"+className+"</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(className, filez['classes'], "class", "class") + "</div>";
 		}
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+className+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(className, filez['classes'], "class", "class") + "</div>";
+		else{
+			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div>"+className+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(className, filez['classes'], "class", "class") + "</div>";
+		}
 	} else if (col == "examiner") {
 		var examinerName = "";
 		for(i = 0; i < filez['teachers'].length; i++){
@@ -430,7 +527,13 @@ function renderCell(col, celldata, cellid) {
 				examinerName = filez['teachers'][i].name;
 			}
 		}
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(examinerName, filez['teachers'], "name", "uid") + "</div>";
+		if (obj.examiner == null || obj.examiner === "null" || obj.examiner < 0) {
+			examinerName = "";
+			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'> None</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(examinerName, filez['teachers'], "name", "uid") + "</div>";
+		}
+		else{
+			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(examinerName, filez['teachers'], "name", "uid") + "</div>";
+		}
 	} else if (col == "vers") {
 		var versname = "";
 		for (var i = 0; i < filez['courses'].length; i++) {
@@ -439,8 +542,14 @@ function renderCell(col, celldata, cellid) {
 			}
 		}
 
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+versname+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(versname, filez['courses'], "versname", "vers") + "</select>";
-        for (var submission of filez['submissions']) {
+		if (obj.vers == null || obj.vers === "null") {
+			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'> None</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(versname, filez['courses'], "versname", "vers") + "</select>";
+		}
+
+		else{
+			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div>"+versname+"</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(versname, filez['courses'], "versname", "vers") + "</select>";
+		}
+		for (var submission of filez['submissions']) {
             if (obj.uid === submission.uid) {
                 str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>";
                 break;
@@ -460,9 +569,9 @@ function renderCell(col, celldata, cellid) {
 	} else if (col == "requestedpasswordchange") {
 		
 		if (parseFloat(obj.recent) < 1440) {
-			str = "<div class='submit-button' style='display:block;margin:auto;float:none;'";
+			str = "<div class='submit-button reset-pw new-user' style='display:block;margin:auto;float:none;'";
 		} else {
-			str = "<div class='submit-button' id='reset-pw' style='display:block;margin:auto;float:none;'";
+			str = "<div class='submit-button reset-pw' style='display:block;margin:auto;float:none;'";
 		}
 		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
 		str += "resetPw(\"" + obj.uid + "\",\"" + obj.username + "\"); return false;'>";
@@ -478,11 +587,15 @@ function renderCell(col, celldata, cellid) {
 			if (i > 0) optstr += " ";
 			optstr += tgroups[i].substr(1 + tgroups[i].indexOf("_"));
 		}
-		if(optstr.includes('None')){
-            optstr = "";
-        }
 		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
-		str += "<div><div class='access-dropdown'><span>" + optstr + "</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
+		if(optstr.includes('None') || optstr == "" || optstr == null){
+			optstr = "";
+			str += "<div><div class='access-dropdown'><span style='color:#808080'>None</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
+		}
+		else{
+			str += "<div><div class='access-dropdown'><span>" + optstr + "</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
+		}
+    str += "<label><input type='radio' name='groupradio"+obj.uid+"' checked id='g" + obj.uid + "' value='' />None</label>";
 		for (var i = 0; i < filez['groups'].length; i++) {
 			var group = filez['groups'][i];
 			if (tgroups.indexOf((group.groupkind + "_" + group.groupval)) > -1) {
@@ -564,7 +677,7 @@ function renderColumnFilter(col, status, colname) {
     if (colname == "User")
         return str;
     if (status) {
-        str = "<div class='checkbox-dugga'>";
+		str = "<div class='checkbox-dugga'>";
         str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel' for='" + colname + "'>" + colname + "</label>";
         str += "</div>"
     } else {
@@ -610,6 +723,7 @@ function updateCellCallback(rowno, colno, column, tableid) {
 
 function rowFilter(row) {
 	var obj = JSON.parse(row["access"]);
+	var searchtermArray;
 	if (accessFilter.indexOf(obj.access) > -1) {
 		if (searchterm == "") {
 			return true;
@@ -621,14 +735,18 @@ function rowFilter(row) {
 							// Search case insensitive
 							searchterm = searchterm.toLocaleLowerCase();
 							caseIgnoreRow = row[property].toLocaleLowerCase();
-
+							
 							// Support ÅÄÖ
 							searchterm = searchterm.replace(/\u00E5/, '&aring;');
-							searchterm = searchterm.replace(/\u00E5/, '&auml;');
+							searchterm = searchterm.replace(/\u00E4/, '&auml;');
 							searchterm = searchterm.replace(/\u00F6/, '&ouml;');
-
-							if (caseIgnoreRow.indexOf(searchterm) != -1) return true;
 							
+							searchtermArray = searchterm.split(" ");
+							if (searchterm.indexOf(" ") >= 0) {
+								if (row["firstname"].toLocaleLowerCase().indexOf(searchtermArray[0]) != -1 && row["lastname"].toLocaleLowerCase().indexOf(searchtermArray[1]) != -1) return true;
+							} else {
+								if (caseIgnoreRow.indexOf(searchterm) != -1) return true;
+							}
 						}
 					}
 				}
@@ -738,10 +856,11 @@ function updateAndCloseGroupDropdown(checkboxes){
 	var str = "", readStr = "<span>";
 	for (i = 0; i < checkboxes.childNodes.length; i++) {
 		if (checkboxes.childNodes[i].childNodes[0].checked) {
-			str += checkboxes.childNodes[i].childNodes[0].value + " ";
-			readStr += checkboxes.childNodes[i].childNodes[0].value.substr(3) + " ";
+			str += checkboxes.childNodes[i].childNodes[0].value;
+			readStr += checkboxes.childNodes[i].childNodes[0].value.substr(3);
 		}
 	}
+	shouldReRender = true;
 	if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
 	// if user unpresses all checkboxes it the student will now belong to no group
 	else changeProperty(checkboxes.id.substr(3), "group", "None");
@@ -853,36 +972,45 @@ document.addEventListener('click', function(e){
 		return;
 	if(e.target.classList.contains('access-dropdown') || e.target.parentElement.classList.contains('access-dropdown')){
 		var dropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content');
-		if(activeDropdown === undefined){
-			if(window.getComputedStyle(dropdown, null).getPropertyValue("display") === "none"){
+		var arrow = e.target.closest('.access-dropdown').querySelector('img');
+		if(activeDropdown === undefined){ // no dropdown is set to be open (active)
+			if(window.getComputedStyle(dropdown, null).getPropertyValue("display") === "none"){ //clicked-dropdown content is hidden
 				dropdown.style.display = "block";
 				activeDropdown = dropdown;
-			}else{
+				activeArrow = arrow;
+				openArrow(activeDropdown.parentElement.parentElement);
+			}else{	//clicked-dropdown content is not hidden --- probably impossible ---
 				dropdown.style.display = "none";
 				activeDropdown = undefined;
 			}
-		}else{
+		}else{ //a dropdown is active
 			if(e.target != activeDropdown){
-				if(activeDropdown.style.display === "none"){
+				if(activeDropdown.style.display === "none"){  //active dropdown is hidden --- probably impossible ---
 					activeDropdown.style.display = "block";
 					activeDropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content');
-				}else{
-					if(activeDropdown != dropdown){
+				}else{ //active dropdown is visible
+					if(activeDropdown != dropdown){ //clicked new dropdown --> close old, open new
 						activeDropdown.style.display = "none";
 						e.target.closest('.access-dropdown').querySelector('.access-dropdown-content').style.display = "block";
 						activeDropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content')
-					}else{
+						openArrow(activeDropdown.parentElement.parentElement);
+					}else{ //clicked open (active) dropdown again --> close
 						activeDropdown.style.display = "none";
 						activeDropdown = undefined;
 					}
 				}
 			}
+			closeArrow(activeArrow);
+			activeArrow = e.target.closest('.access-dropdown').querySelector('img');
 		}
-	}else{
-		if(activeDropdown){
+	}else{ // clicked somewhere else on the screen
+		if(activeDropdown){ // if dropdown is open --> close it
 			activeDropdown.style.display = "none";
 		}
 		activeDropdown = undefined;
+		if(activeArrow)
+			closeArrow(activeArrow);
+		activeArrow = undefined;
 	}
 });
 
@@ -1041,4 +1169,22 @@ function compare(a, b) {
 				return 0;
 		}	
 	
+}
+
+function openArrow(element){
+	var child = $(element).children(".access-dropdown");
+	var arrow = $(child).children("img");
+	$(arrow).css({
+		"-webkit-transform": "rotate(180deg)",
+		"-moz-transform": "rotate(180deg)",
+		"transform": "rotate(180deg)"
+	});
+}
+
+function closeArrow(arrowElement){
+	$(arrowElement).css({
+		"-webkit-transform": "rotate(0deg)",
+		"-moz-transform": "rotate(0deg)",
+		"transform": "rotate(0deg)"
+	});
 }

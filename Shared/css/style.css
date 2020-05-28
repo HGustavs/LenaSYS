@@ -341,7 +341,8 @@ p {
   display:none;
 }
 /*Announcement icon and notification*/
-#announcement #announcementnotificationcount{
+#announcement #announcementnotificationcount,
+#feedbacknotificationcounter{
   position: relative;
   right: 20px;
   bottom: 6px;
@@ -436,7 +437,8 @@ p {
 }
 .announcementForm textarea{
   height: 150px;
-
+  resize: none;
+  
 }
 .announcementForm input[type=text]:focus,
 .announcementForm textarea:focus {
@@ -582,7 +584,7 @@ p {
 #displayAnnouncements .announcementCard .displayAnnouncementMsg{
   margin-bottom: 40px;
 }
-.announcementMsgParagraph .more-text{
+.more-text{
   display: none;
 }
 #displayAnnouncements #btnContainer .btn {
@@ -656,9 +658,133 @@ p {
   position: relative;
   top: 2px;
 }
-
 /*End of announcement box*/
+/*Start of recent feedback from the teacher*/
+ #feedbackOverlay{
+  position: relative;
+  display: none;
+  padding: 10px;
+  top: 50px;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  overflow-x: auto;
+  box-sizing: border-box;
+  font-family: 'Varela', sans-serif;
+}
+.feedbackHeader,
+.feedbackContent{
+  padding: 10px 15px 5px 15px;
+}
+#feedbackOverlay .feedbackContainer{
+  background-color: #fff;
+  border: 2px solid #ddd;
 
+}
+.feedbackHeader{
+  background-color: #ddd;
+}
+.feedbackHeader h2{
+  font-size: 20px;
+  font-weight: bold;
+}
+.feedbackHeader{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+.feedbackHeader span img{
+  height: 20px;
+  width: 24px;
+  cursor: pointer;
+
+}
+#iconButton{
+  display: none;
+
+}
+.feedback_card{
+  margin: 10px 0 20px 0;
+}
+.feedback_card .feedbackCommentWrapper,
+.feedback_card .markedDate{
+  margin-top: -10px;
+}
+.listentries img{
+  width: 25px;
+  height: 26px;
+  display:inline-block;
+  vertical-align: middle;
+}
+.entryname{
+  margin-left: 5px;
+  margin-top: 2px;
+  font-size: 16px;
+  display:inline-block;
+  vertical-align: middle;
+}
+.markedPass,
+.markedPassMobile{
+  color: #008000;
+}
+.markedFail,
+.markedFailMobile{
+  color: #ff0000;
+}
+.markedFailMobile,
+.markedPassMobile{
+  display: none;
+}
+.feedback_card_footer,
+.noFeedbacks{
+  color: #9474a4;
+}
+.feedback_card_footer div:first-child{
+  font-weight: bold;
+
+}
+.noFeedbacks{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.noFeedbacks span:first-child,
+#iconButton{
+  align-self: center;
+}
+.viewOldFeedbacks{
+  color: #fff !important;
+  text-decoration: none;
+  background: var(--color-logo-background);
+  padding: 10px 20px 10px 20px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.viewOldFeedbacks:hover{
+  letter-spacing: 1px;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+  transition: all 0.4s ease 0s;
+}
+/*Load more feedbacks*/
+#loadMore{
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+#loadMore span{
+ cursor: pointer;
+ color: #ffa500;
+}
+#loadMore span:hover{
+ text-decoration: underline;
+}
+/*End of recent feedback from the teacher*/
 #Sectionlist {
   margin: 10px;
   background-color: var(--color-background);
@@ -1232,6 +1358,11 @@ div .navButt:hover {
   vertical-align: middle;
   text-align: center;
 }
+@media only screen and (max-width: 342px) {
+  #loginbutton {
+    width: 35px;
+  }
+}
 
 #div2 {
   position: absolute;
@@ -1283,6 +1414,11 @@ div .navButt:hover {
     .burgerOption {
         padding: 15px 15px 15px 15px;
     }
+    .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2, .PF2, .UI2{display:none;}
+    
+    .CD{
+      display: none;
+    }
     .err{
     display: none;
     }
@@ -1301,10 +1437,51 @@ div .navButt:hover {
     .box{
         margin-top: 30px !important;
     }
-    
-    
 }
 
+/*MEDIA QUERIES FOR HAMBURGER MENU IN ANALYTICS.PHP*/
+@media only screen and (max-width: 700px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2, .PF2{display:none;}
+  .UI2{display:block;}
+    .UI{
+      display: none;
+    }
+}
+@media only screen and (max-width: 600px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2{display:none;}
+  .PF2{display:block;}
+    .PF{
+      display: none;
+    }
+}
+@media only screen and (max-width: 550px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2{display:none;}
+  .FF2{display:block;}
+    .FF{
+      display: none;
+    }
+}
+@media only screen and (max-width: 500px) {
+  .GS2, .CO2, .PG2, .OP2, .BP2, .SU2{display:none;}
+  .SC2, .SS2{display:block;}
+    .SC, .SS{
+      display: none;
+    }
+}
+@media only screen and (max-width: 450px) {
+  .GS2, .CO2, .PG2, .OP2{display:none;}
+  .SS2, .BP2{display:block;}
+    .SU, .BP{
+      display: none;
+    }
+}
+@media only screen and (max-width: 400px) {
+  .GS2, .CO2{display:none;}
+  .OP2, .PG2{display:block;}
+    .OP, .PG{
+      display: none;
+    }
+}
 
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
@@ -1362,6 +1539,33 @@ div .navButt:hover {
 
   }.logoutBox  .logoutboxTr input[type="button"]:last-child{
     margin-left: 10px;
+  }
+  .viewOldFeedbacks{
+    display: none;
+
+  }
+  #iconButton{
+    display: block;
+  }
+  .listentries img{
+    width: 20px;
+    height: 20.8‬px;
+  }
+  .entryname{
+    font-size: 1em;
+    margin-left: 3px;
+  }
+  .feedbackHeader h2,
+  .feedbackContent{
+    font-size: .8em;
+  }
+  .markedFailMobile,
+  .markedPassMobile{
+    display: block;
+  }
+  .markedFail,
+  .markedPass{
+    display: none;
   }
 }
 .overlay {
@@ -2225,14 +2429,14 @@ input.submit-button.resetpw-button {
   margin: auto;
   display: block;
 }
-input.submit-button.new-user {
+div.submit-button.new-user {
   background-color: var(--color-new-user);
   color: var(--color-primary);
   float: none;
   margin: auto;
   display: block;
 }
-input.submit-button.new-user:hover {
+div.submit-button.new-user:hover {
     background-color: var(--color-new-user-hover);
 }
 
@@ -2699,6 +2903,7 @@ div.submit-button:disabled {
   position: relative;
   margin-left: 7px;
   top: 3px;
+  transition: transform 0.2s linear;
 }
 
 .sortableHeading {
@@ -3115,12 +3320,18 @@ padding: 10px;
 .access-dropdown-selected {
   background-color:var(--color-accent);
 }
-#reset-pw{
+div.reset-pw{
   width:70%; 
   margin-left:20px;
-  background-color: rgb(254, 204, 86); color: #614875;
-
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
 }
+div.reset-pw:hover{
+  background-color: var(--color-accent-hover);
+  transition: 0.2s;
+  filter: brightness(1.05);
+}
+
 
 .show{
   display:block;
@@ -3215,6 +3426,7 @@ padding: 10px;
   transition: right 0.3s, top 0.3s;
 }
 
+/* designs the "?" button, making it visible to the left of resultEd.php */
 #legendBtn{
   height: 31px;
   width: 36px;
@@ -3234,6 +3446,7 @@ padding: 10px;
   user-select: none;
 }
 
+/* designing the actual legend, such as distance between each description, color and so on... */
 .legendList{
   width: 280px;
   float: right;
@@ -3256,16 +3469,18 @@ padding: 10px;
 .legendList div{
   display: inline-block;
 }
-
+/* all items using legendListItem uses this method */
 .legendListItem span:first-of-type{
   font-weight: bold;
 }
+
 
 .legendListItem img{
   width: 24px;
   height: 24px;
 }
 
+/* all items in the legend follow this */
 .legendListItem div:first-of-type{
   width: 24px;
   height: 14px;
@@ -3714,9 +3929,8 @@ padding: 10px;
 
 .dropdown-list-container {
   padding: 8px;
-  width: 300px;
-  max-height: calc(100vh - 100px);
-  height: auto;
+  width: 400px;
+  
   font-size: 12px;
   overflow-y: auto;
   display: none;
@@ -4364,26 +4578,24 @@ ul.hamburgerList button.menuButton {
   padding: 0px 0px 0px 0px;
 }
 
-.container {
+.hamContainer {
   display: inline-block;
   cursor: pointer;
   margin-top: 4px;
 }
 
-.bar1,
-.bar2,
-.bar3 {
-  width: 17px;
-  height: 3px;
+.bar1,.bar2,.bar3 {
+  width: 26px;
+  height: 5px;
   background-color: var(--color-background);
   margin: 3px 0;
   transition: 0.4s;
 }
 
 .change .bar1 {
-  -webkit-transform: rotate(-45deg) translate(-5px, 4px);
-  transform: rotate(-45deg) translate(-5px, 4px);
-  width: 20px;
+  -webkit-transform: rotate(-45deg) translate(-8px, 4px);
+  transform: rotate(-45deg) translate(-8px, 4px);
+  width: 26px;
 }
 
 .change .bar2 {
@@ -4391,9 +4603,9 @@ ul.hamburgerList button.menuButton {
 }
 
 .change .bar3 {
-  -webkit-transform: rotate(45deg) translate(-6px, -2px);
-  transform: rotate(45deg) translate(-4px, -4px);
-  width: 20px;
+  -webkit-transform: rotate(45deg) translate(-7px, -3px);
+  transform: rotate(45deg) translate(-7px, -3px);
+  width: 26px;
 }
 
 /* moment date and course version */
@@ -4860,41 +5072,43 @@ only screen and (max-device-width: 530px) {
     display: none;
   }
 
-  /*
+  
 
   #searchBarMobile,
   #searchbuttonMobile {
     width: 24px;
-    height: 22px;
+    height: 26px;
     margin-top: 10px;
   }
 
   #searchBarMobile {
     padding-left: 5px;
     display: inline-flex;
-    height: 22px;
+    height: 26px;
     border-radius: 5px;
     float: left;
   }
 
   #searchinputMobile {
-    border: 1px solid var(--color-border);
     border-radius: 0;
-    font-size: 14px;
+    border: 2px solid var(--color-border-2);
+    font-size: 16px;
+    padding-left: 5px;
   }
 
   #searchbuttonMobile {
     margin: 0;
   }
 
-  */
+  
 
   #tooltip-mobile {
-    border: 1px solid var(--color-border);
+    border: 2px solid var(--color-border-2);
     font-size: 17px;
     padding: 0px 5px;
     border-right-width: 0px;
     width: 100px;
+    border-radius: 4px 0px 0px 4px;
   }
 
 /*
@@ -5007,7 +5221,6 @@ only screen and (max-device-width: 320px) {
 /* Title for the subpages of the section-editor */
 
 .titles {
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
   margin-left: 10px;
@@ -5034,6 +5247,7 @@ only screen and (max-device-width: 320px) {
   height: 30px;
   position: absolute;
   bottom: 4px;
+  z-index: 2;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -5239,6 +5453,7 @@ only screen and (max-device-width: 320px) {
   font-size: 14px;
   bottom: 4px;
   right: 4px;
+  z-index: 2;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
@@ -5365,7 +5580,7 @@ only screen and (max-device-width: 320px) {
   display: block;
 }
 
-#figureOpacity, #lineThicknessGlobal {
+#figureOpacity, #lineThickness, #lineThicknessGlobal {
   width: 100%;
   border: 0;
   margin: 0;
@@ -5414,7 +5629,7 @@ only screen and (max-device-width: 320px) {
   align-items: center;
 }
 
-.collapsible .object-types .square {
+.collapsible > .object-types > .square {
   width: 24px;
   height: 24px;
   margin-right: 8px;
@@ -5424,34 +5639,38 @@ only screen and (max-device-width: 320px) {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
-.collapsible .object-types .square div {
+.collapsible > .object-types > .square div {
   width: 80%;
   height: 80%;
   content:url("../icons/Minus.svg");
 }
 
-.collapsible.closed .object-types .square div {
+.collapsible.closed > .object-types > .square div {
   content:url("../icons/Plus.svg");
 }
 
-.collapsible .form-groups {
+.collapsible > .form-groups,
+.collapsible > .collapsible {
   display: block;
 }
 
-.collapsible.closed .form-groups {
+.collapsible.closed > .form-groups,
+.collapsible.closed > .collapsible {
   display: none;
 }
 
 /* Diagram */
 
-#diagram-header, #diagram-container {
+#diagram-page-wrapper {
   --header-height: 50px;
   --diagram-header-height: 36px;
   --ruler-size: 38px;
   --diagram-sidebar-width: 60px;
   --canvas-margin: 8px;
+  --timeline-height: 28px;
 }
 
 #diagram-header {
@@ -5462,7 +5681,7 @@ only screen and (max-device-width: 320px) {
   font-size: 14px;
 }
 
-#diagram-header.fullscreen.toolbar {
+#diagram-page-wrapper.fullscreen.toolbar #diagram-header {
   margin-top: 0;
   position: relative;
   z-index: 2;
@@ -5470,6 +5689,11 @@ only screen and (max-device-width: 320px) {
   width: fit-content;
   border-right: 1px solid #000000;
   border-bottom: 1px solid #000000;
+}
+
+#diagram-page-wrapper.rulers-active #diagram-header {
+  top: var(--ruler-size);
+  left: var(--ruler-size);
 }
 
 #diagram-toolbar-switcher {
@@ -5500,12 +5724,17 @@ only screen and (max-device-width: 320px) {
   width: var(--diagram-sidebar-width);
 }
 
-#diagram-container.fullscreen.toolbar #diagram-tools-container {
+#diagram-page-wrapper.fullscreen.toolbar #diagram-tools-container {
   position: relative;
   z-index: 2;
   background-color: #ffffff;
   border-right: 1px solid #000000;
   border-bottom: 1px solid #000000;
+}
+
+#diagram-page-wrapper.rulers-active #diagram-tools-container {
+  top: var(--ruler-size);
+  left: var(--ruler-size);
 }
 
 .diagram-sidebar-section {
@@ -5612,7 +5841,7 @@ only screen and (max-device-width: 320px) {
   overflow: hidden;
 }
 
-#diagram-content.rulers-active {
+#diagram-page-wrapper.rulers-active #diagram-content {
   width: calc(100vw - var(--diagram-sidebar-width) - var(--ruler-size));
 }
 
@@ -5623,18 +5852,36 @@ only screen and (max-device-width: 320px) {
   height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--canvas-margin));
 }
 
-#diagram-content.rulers-active #diagram-canvas-container {
+#diagram-page-wrapper.rulers-active #diagram-canvas-container {
   height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--ruler-size) - var(--canvas-margin));
 }
 
-#diagram-container.fullscreen #diagram-canvas-container {
+#diagram-page-wrapper.timeline-active #diagram-canvas-container {
+  height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--timeline-height) - var(--canvas-margin));
+  margin-bottom: 0;
+}
+
+#diagram-page-wrapper.rulers-active.timeline-active #diagram-canvas-container {
+  height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--timeline-height) - var(--ruler-size) - var(--canvas-margin));
+}
+
+#diagram-page-wrapper.fullscreen #diagram-canvas-container {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  height: unset;
+  height: unset !important;
   margin: 0;
+}
+
+#diagram-page-wrapper.fullscreen.rulers-active #diagram-canvas-container {
+  top: var(--ruler-size);
+  left: var(--ruler-size);
+}
+
+#diagram-page-wrapper.fullscreen.timeline-active #diagram-canvas-container {
+  bottom: var(--timeline-height);
 }
 
 #diagram-canvas {
@@ -5643,7 +5890,7 @@ only screen and (max-device-width: 320px) {
   height: 100%;
 }
 
-#diagram-container.fullscreen #diagram-canvas {
+#diagram-page-wrapper.fullscreen #diagram-canvas {
   border: none;
 }
 
@@ -5668,9 +5915,24 @@ only screen and (max-device-width: 320px) {
   border-left: 1px solid #000000;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
-.ruler.hidden {
+#diagram-page-wrapper.fullscreen .ruler {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  background-color: #ffffff;
+  margin: 0;
+  border: 1px solid #000000;
+}
+
+.ruler.hidden,
+#diagram-timeline-container.hidden,
+#diagram-guideline-container.hidden {
   display: none;
 }
 
@@ -5678,6 +5940,11 @@ only screen and (max-device-width: 320px) {
   height: var(--ruler-size);
   margin-right: var(--canvas-margin);
   border-right: 1px solid #000000;
+  cursor: row-resize;
+}
+
+#diagram-page-wrapper.fullscreen #ruler-x {
+  margin-left: var(--ruler-size);
 }
 
 #ruler-y {
@@ -5685,6 +5952,19 @@ only screen and (max-device-width: 320px) {
   margin-top: var(--ruler-size);
   margin-bottom: var(--canvas-margin);
   border-bottom: 1px solid #000000;
+  cursor: col-resize;
+}
+
+#diagram-page-wrapper.fullscreen #ruler-y {
+  margin-top: var(--ruler-size);
+}
+
+#diagram-page-wrapper.timeline-active #ruler-y {
+  height: calc(100% - var(--ruler-size) - var(--timeline-height) - var(--canvas-margin));
+}
+
+#diagram-page-wrapper.fullscreen.timeline-active #ruler-y {
+  height: calc(100% - var(--ruler-size) - var(--timeline-height));
 }
 
 .ruler-lines {
@@ -5760,6 +6040,7 @@ only screen and (max-device-width: 320px) {
 .ruler-extra-lines .mouse-line,
 .ruler-extra-lines .point-line {
   position: absolute;
+  pointer-events: none;
 }
 
 .ruler-extra-lines .mouse-line {
@@ -5784,7 +6065,6 @@ only screen and (max-device-width: 320px) {
   right: 0;
 }
 
-
 #ruler-x .ruler-extra-lines .mouse-line {
   width: 4px;
 }
@@ -5799,6 +6079,114 @@ only screen and (max-device-width: 320px) {
 
 #ruler-y .ruler-extra-lines .point-line {
   height: 3px;
+}
+
+#diagram-timeline-container {
+  display: flex;
+  height: var(--timeline-height);
+  width: calc(100% - var(--canvas-margin));
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  border-left: 1px solid #000000;
+  background-color: #ffffff;
+}
+
+#diagram-page-wrapper.fullscreen #diagram-timeline-container{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  border: 1px solid #000000;
+  width: 100%;
+}
+
+#diagram-page-wrapper.fullscreen.rulers-active #diagram-timeline-container{
+  width: calc(100% - var(--ruler-size));
+  left: var(--ruler-size);
+}
+
+.diagram-timeline-controls {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+
+.diagram-timeline-controls .diagram-tools-button {
+  margin: 0 2px;
+}
+
+#diagram-timeline {
+  display: flex;
+  flex-grow: 1;
+}
+
+.diagram-timeline-part {
+  background-color: #ffffff;
+  height: 100%;
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.diagram-timeline-part.included {
+  background-color: var(--color-primary);
+}
+
+.diagram-timeline-part.plus {
+  background-color: #4ca64c;
+}
+
+.diagram-timeline-part.minus {
+  background-color: #ff4c4c;
+}
+
+.diagram-timeline-part:not(:last-child) {
+  border-right: 1px solid var(--color-primary-light);
+}
+
+#diagram-timeline-controls-toggleable {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  border-left: 1px solid #000000;
+}
+
+#diagram-timeline-speed-range {
+  padding: 0;
+}
+
+#diagram-timeline-speed {
+  flex-shrink: 0;
+  width: 64px;
+  margin: 0 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+#diagram-guideline-container {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  left: 1px;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.guideline {
+  position: absolute;
+  pointer-events: all;
+  background-color: cyan;
+}
+
+.guideline-x {
+  height: 3px;
+  width: 100%;
+}
+
+.guideline-y {
+  height: 100%;
+  width: 3px;
 }
 
 /* --------------================################================-------------- *
@@ -6103,6 +6491,53 @@ only screen and (max-device-width: 320px) {
   color: white;
 }
 
+/*Scroll up arrow */
+ 
+.fixedScroll{
+  position: fixed;
+  right: 165px;
+  cursor: pointer;
+  bottom: 25px;
+  display: none;
+}
+ 
+.arrow {
+  border: solid black;
+  border-width: 0 6px 6px 0;
+  display: inline-block;
+  opacity: 0.5;
+  padding: 6px;
+}
+ 
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+ 
+.tooltiptextScroll {
+  visibility: hidden;
+  width: 70px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 12px;
+  opacity: 0.3;
+  bottom: 56px;
+  right: 140px;
+  position: fixed;
+  z-index: 1;
+}
+ 
+.fixedScroll:hover .tooltiptextScroll {
+  visibility: visible;
+}
+
+.fixedScroll:hover .arrow{
+  opacity: 1;
+}
+
+
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
@@ -6167,6 +6602,15 @@ only screen and (max-device-width: 320px) {
   .fileView{
     width: 75%;
   }
+
+    
+}
+@media only screen and (max-height: 600px) {
+        .markText{
+        height: 60% !important;
+    }
+
+    
 }
 
 @media only screen and (max-width: 441px) {
@@ -6195,6 +6639,7 @@ only screen and (max-device-width: 320px) {
 
 .markdownPart {
   height: 100%;
+    position: relative;
 }
 
 .markdown {
@@ -6228,7 +6673,7 @@ only screen and (max-device-width: 320px) {
   height: 100%;
 }
 
-.save-close-button-md {
+.close-button-md {
   border-radius: 4px;
   background-color: var(--color-primary);
   border: 0px;
@@ -6245,7 +6690,32 @@ only screen and (max-device-width: 320px) {
   line-height: 30px;
   text-align: center;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    position: absolute;
+    bottom: 45px;
+    right: 10px;
 }
+.save-button-md {
+  border-radius: 4px;
+  background-color: var(--color-primary);
+  border: 0px;
+  width: 110px;
+  height: 30px;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 2px;
+  margin-right: 3%;
+  font-size: 14px;
+  transition: 1s background-color;
+  float: right;
+  line-height: 30px;
+  text-align: center;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+        position: absolute;
+    bottom: 45px;
+    right: 150px;
+}
+
 
 legend {
   display: block;
@@ -6468,10 +6938,15 @@ textarea#mrkdwntxt {
     top: 686px;
   }
 
-  .save-close-button-md {
-    margin-top: 15px;
-  }
+
+    .save-button-md{
+    bottom: 25px; 
+    }
+    .close-button-md {
+    bottom: 25px;
+    }
 }
+
 
 /* Mode Switch */
 
@@ -7042,7 +7517,7 @@ textarea#filecont {
   display: none;
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 453px) {
 
   header #versionPlus{
     display: none;
@@ -7056,6 +7531,10 @@ textarea#filecont {
     display: none;
   }
 
+  header #accessBTN img{
+    width: 20px;
+  }
+
   .navheader {
     height: 20px;
     margin-bottom: 10px;
@@ -7066,6 +7545,17 @@ textarea#filecont {
     margin-right: 0px;
   }
 }
+
+@media only screen and (max-width: 339px) {
+  .navheader .course-dropdown{
+    height: 20px;
+    width: 120px;
+  }
+  .navName{
+    width: 0px;
+  }
+}
+
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
   width: 100%;
@@ -7138,6 +7628,36 @@ textarea#filecont {
     justify-content: center;
     flex-flow:wrap;
 }
+
+/*HAMBURGER LIST IN ANALYTICS ------------*/
+.hamburgerList{
+  list-style: none;
+  position: absolute;
+  padding: 0px 0px 0px 0px;
+  left: -4px;
+  top: 25px;
+  display: none;
+}
+
+.hamburgerList li{
+  background-color:#493150;
+  box-shadow: 1px 1px 4px #3a3a3a;
+  border-radius: 35%;
+  -webkit-border-radius: 35%;
+}
+
+.hamburgerList li a{
+  font-size: 24px;
+  line-height: 50px;
+}
+
+@media only screen and (min-width: 801px) {
+  #hamburger{
+    display:none;
+  }
+}
+
+
 #selectdir{
   width: 120px;
   position: relative;
@@ -7156,3 +7676,22 @@ textarea#filecont {
   
 }
 
+#columnfilter{
+  border-right: 1px solid #a6a6a6;
+  float: left;
+  width: 50%;
+  overflow: hidden;
+}
+#customfilter{
+  overflow: hidden;
+}
+#sortLeft{
+  float: left;
+  width:49%;
+  overflow: hidden;
+}
+#sortRight{
+  border-left: 1px solid #a6a6a6;
+  width:50%;
+  overflow: hidden;
+}

@@ -599,20 +599,6 @@ function saveDuggaResult(citstr)
 }
 
 //----------------------------------------------------------------------------------
-// savequizResult: Saves the result of a quiz
-//----------------------------------------------------------------------------------
-
-function savequizResult(citstr)
-{
-	citstr=querystring['moment']+" "+citstr;
-	citstr=querystring['coursevers']+" "+citstr;
-	citstr=querystring['cid']+" "+citstr;
-	AJAXService("SAVDU",{answer:citstr},"PDUGGA");
-	alert('inlämnat');
-}
-
-
-//----------------------------------------------------------------------------------
 // changeURL: Patch-in for changeURL from project 2014 code
 //----------------------------------------------------------------------------------
 
@@ -1784,7 +1770,7 @@ function duggaFeedbackCheck(){
 
 function returnedFeed(data) {
 	if (data['userfeedback']== 1 ){
-		$("#feedbackbox").css("display","inline-block");
+		$("#feedbackbox").css("display","block");
 		$("#feedbackquestion").html(data['feedbackquestion']);
 	} 
 }

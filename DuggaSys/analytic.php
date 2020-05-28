@@ -14,6 +14,7 @@ $css = array(
 	'style.css',
 	'jquery-ui-1.10.4.min.css',
 	'analytics.css',
+	'blackTheme.css'
 );
 
 $js = array(
@@ -41,7 +42,7 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 			$filemtime = filemtime('../Shared/css/' . $filename);
 			echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'/>";
 		}
-	
+
 		foreach($js as $filename) {
 			$filemtime = filemtime('../Shared/js/' . $filename);
 			echo "<script type='text/javascript' src='../Shared/js/$filename?$filemtime'/></script>";
@@ -49,7 +50,7 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 
 		$filemtime = filemtime('../Shared/dugga.js');
 		echo "<script type='text/javascript' src='../Shared/dugga.js?$filemtime'></script>";
-				
+
 		$filemtime = filemtime('analytic.js');
 		echo "<script type='text/javascript' src='analytic.js?$filemtime'></script>";
 	?>
@@ -61,8 +62,9 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 	$noup="NONE";
 	$loginvar="ANALYTIC";
 	setcookie("loginvar", $loginvar);
-	include '../Shared/navheader.php';	
+	include '../Shared/navheader.php';
 ?>
+
 <div class="header">
   <h1 id="pageTitle"></h1>
 </div>

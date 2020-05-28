@@ -79,6 +79,7 @@
         $exampleDiagramFilePaths = glob('templates/example-diagram/*.txt');
     ?>
 
+    <div id="diagram-page-wrapper" class="timeline-active">
     <div id="diagram-header">
         <div id=diagram-toolbar-switcher>DEV: All</div>
         <div id="diagram-toolbar-container">
@@ -119,7 +120,7 @@
                         <span class="drop-down-option" onclick="printDiagram();">Print Diagram</span>
                     </div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
+                        <span class="drop-down-option" onclick='clearCanvas(); resetDiagramChanges();'>Clear Diagram</span>
                         <i class="hot-key">Ctrl + A, Delete</i>
                     </div>
                 </div>
@@ -128,11 +129,11 @@
                 <span class="drop-down-label">Edit</span>
                 <div class="drop-down">
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick='undoDiagram(event)'>Undo</span>
+                        <span class="drop-down-option" onclick='undoDiagram()'>Undo</span>
                         <i class="hot-key">Ctrl + Z</i>
                     </div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick='redoDiagram(event)'>Redo</span>
+                        <span class="drop-down-option" onclick='redoDiagram()'>Redo</span>
                         <i class="hot-key">Ctrl + Y</i>
                     </div>
                     <div class="drop-down-divider">
@@ -286,14 +287,38 @@
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick='toggleComments(event);'>Hide Comments</span>                       
                     </div>
-                    <div class="drop-down-divider">
+                    <div class="drop-down-divider"></div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option" onclick="toggleRulers();">Rulers active</span>
                     </div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option">Guidelines</span>
+                        <div class="side-drop-down">
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="addGuideline(new Guideline('x'));">Create horizontal guideline</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="addGuideline(new Guideline('y'));">Create vertical guideline</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="lockOrUnlockGuidelines(true);">Lock guidelines</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="lockOrUnlockGuidelines(false);">Unlock guidelines</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="deleteGuidelines();">Delete guidelines</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="drop-down-divider"></div>
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="toggleFullscreen();">Fullscreen</span>
                         <i class="hot-key hot-key-tick">Shift + F11</i>           
                     </div>
+                    <div class="drop-down-divider"></div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="toggleRulers();">Rulers</span>        
+                        <span class="drop-down-option" onclick="toggleTimeline();">Timeline</span>        
                     </div>
                 </div>
             </div>
@@ -456,10 +481,10 @@
                 <div class="diagram-sidebar-section">
                     <div class="diagram-sidebar-label">Undo/Redo</div>
                     <div id="diagram-undo-redo-container">
-                        <button id="undoButton" onclick="undoDiagram(event)" class="diagram-tools-button diagram-tools-button-small" data="Undo (Ctrl + Z)">
+                        <button id="undoButton" onclick="undoDiagram()" class="diagram-tools-button diagram-tools-button-small" data="Undo (Ctrl + Z)">
                             <img class="invert-color" src="../Shared/icons/undo.svg">
                         </button>
-                        <button id="redoButton" onclick="redoDiagram(event)" class="diagram-tools-button diagram-tools-button-small" data="Redo (Ctrl + Y)">
+                        <button id="redoButton" onclick="redoDiagram()" class="diagram-tools-button diagram-tools-button-small" data="Redo (Ctrl + Y)">
                             <img class="invert-color" src="../Shared/icons/redo.svg">
                         </button>
                     </div>
@@ -499,8 +524,37 @@
                     </span>
                     <span id="zoomV"></span>
                 </div>
+                <div id="diagram-guideline-container"></div>
+            </div>
+            <div id="diagram-timeline-container">
+                <div class="diagram-timeline-controls" style="border-right:1px solid #000000;">
+                    <button id="diagram-timeline-play-button" class="diagram-tools-button diagram-tools-button-small paused" onclick="playTimeline();">
+                        <img src="../Shared/icons/Play.svg">
+                    </button>
+                    <button id="diagram-timline-plus-button" class="diagram-tools-button diagram-tools-button-small closed" onclick="toggleTimelineControls();">
+                        <img src="../Shared/icons/Plus.svg">
+                    </button>
+                    <div id="diagram-timeline-controls-toggleable" style="display:none;">
+                        <button class="diagram-tools-button diagram-tools-button-small" onclick="undoDiagram();">
+                            <img src="../Shared/icons/SkipB.svg">
+                        </button>
+                        <button class="diagram-tools-button diagram-tools-button-small" onclick="redoDiagram();">
+                            <img src="../Shared/icons/SkipF.svg">
+                        </button>
+                        <button class="diagram-tools-button diagram-tools-button-small" onclick="resetTimeline();">
+                            <img src="../Shared/icons/ResetButton.svg">
+                        </button>
+                        <button class="diagram-tools-button diagram-tools-button-small" onclick='toggleFullscreen();'>
+                            <img src="../Shared/icons/fullscreen.svg">
+                        </button>
+                        <input type="range" id="diagram-timeline-speed-range" class="zoomSlider" min="0.1" max="3" value="1" step="0.1" oninput="playTimeline(true);">
+                        <div id="diagram-timeline-speed"><b>Speed:</b> 1s</div>
+                    </div>
+                </div>
+                <div id="diagram-timeline"></div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- The Appearance menu. Default state is display: none; -->
@@ -543,6 +597,25 @@
                             <option value="Forced">Forced</option>
                             <option value="Derived">Derived</option>
                         </select>
+                        <div class="form-group" data-types="4,7">
+                            <label for="LinePlacement">Line placement:</label>
+                            <label for="LinePlacement1" id="lineObject1">Object 1:</label>
+                            <select id="LinePlacement1" data-access="properties.line_placement1">
+                                <option value="Automatic1" selected>Automatic</option>
+                                <option value="Top1">Top</option>
+                                <option value="Right1">Right</option>
+                                <option value="Bottom1">Bottom</option>
+                                <option value="Left1">Left</option>
+                            </select>
+                            <label for="LinePlacement2" id="lineObject2">Object 2:</label>
+                            <select id="LinePlacement2" data-access="properties.line_placement2">
+                                <option value="Automatic2" selected>Automatic</option>
+                                <option value="Top2">Top</option>
+                                <option value="Right2">Right</option>
+                                <option value="Bottom2">Bottom</option>
+                                <option value="Left2">Left</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group" data-types="7">
                         <label for="typeLineUML">UML line type:</label>
@@ -556,7 +629,7 @@
                             <option value="Composition">Composition</option>
                         </select>
                     </div>
-                    <div class="form-group" data-types="2,3,5">
+                    <div class="form-group" data-types="1,2,3,5" data-advanced>
                         <label for="backgroundColor">Background color:</label>
                         <select id="backgroundColor" data-access="properties.fillColor"><?=$colors;?></select>
                     </div>
@@ -568,19 +641,19 @@
                         <label for="freeText">Text:</label>
                         <textarea id="freeText" data-access="textLines"></textarea>
                     </div>
-                    <div class="form-group" data-types="2,3,5,6">
+                    <div class="form-group" data-types="1,2,3,5,6" data-advanced>
                         <label for="fontFamily">Font family:</label>
                         <select id="fontFamily" data-access="properties.font"><?=$fonts?></select>
                     </div>
-                    <div class="form-group" data-types="2,3,5,6">
+                    <div class="form-group" data-types="1,2,3,5,6" data-advanced>
                         <label for="fontColor">Font color:</label>
                         <select id="fontColor" data-access="properties.fontColor"><?=$colors;?></select>
                     </div>
-                    <div class="form-group" data-types="2,3,5,6">
+                    <div class="form-group" data-types="1,2,3,5,6" data-advanced>
                         <label for="textSize">Text size:</label>
                         <select id="textSize" data-access="properties.sizeOftext"><?=$textSizes;?></select>
                     </div>
-                    <div class="form-group" data-types="2,3,5,0">
+                    <div class="form-group" data-types="1,2,3,4,5,7,0" data-advanced>
                         <label for="lineColor">Line color:</label>
                         <select id="lineColor" data-access="properties.strokeColor"><?=$colors;?></select>
                     </div>
@@ -632,27 +705,31 @@
                         <label for="figureOpacity">Opacity:</label>
                         <input type="range" id="figureOpacity" data-access="opacity">
                     </div>
-                    <div class="form-group" data-types="-1">
+                    <div class="form-group" data-types="0,1,2,3,4,5,7" data-advanced>
+                        <label for="lineThickness">Line thickness:</label>
+                        <input type="range" id="lineThickness" min="1" max="4" value="2" data-access="properties.lineWidth">
+                    </div>	
+                    <div class="form-group" data-types="-1" data-subtypes="1,2,3,5">
                         <label for="backgroundColorGlobal">Background color:</label>
                         <select id="backgroundColorGlobal" data-access="properties.fillColor"><?=$colors;?></select>
                     </div>
-                    <div class="form-group" data-types="-1">
+                    <div class="form-group" data-types="-1" data-subtypes="1,2,3,5,6">
                         <label for="fontFamilyGlobal">Font family:</label>
                         <select id="fontFamilyGlobal" data-access="properties.font"><?=$fonts?></select>
                     </div>
-                    <div class="form-group" data-types="-1">
+                    <div class="form-group" data-types="-1" data-subtypes="1,2,3,5,6">
                         <label for="fontColorGlobal">Font color:</label>
                         <select id="fontColorGlobal" data-access="properties.fontColor"><?=$colors;?></select>
                     </div>
-                    <div class="form-group" data-types="-1">
+                    <div class="form-group" data-types="-1" data-subtypes="1,2,3,5,6">
                     <label for="textSizeGlobal">Text size:</label>
                     <select id="textSizeGlobal" data-access="properties.sizeOftext"><?=$textSizes;?></select>
                     </div>
-                    <div class="form-group" data-types="-1">
+                    <div class="form-group" data-types="-1" data-subtypes="0,1,2,3,4,5,7">
                         <label for="lineColorGlobal">Line color:</label>
                         <select id="lineColorGlobal" data-access="properties.strokeColor"><?=$colors;?></select>
                     </div>
-                    <div class="form-group" data-types="-1">
+                    <div class="form-group" data-types="-1" data-subtypes="0,1,2,3,4,5,7">
                         <label for="lineThicknessGlobal">Line thickness:</label>
                         <input type="range" id="lineThicknessGlobal" min="1" max="4" value="2" data-access="properties.lineWidth">
                     </div>	

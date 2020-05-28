@@ -169,6 +169,7 @@ CREATE TABLE userAnswer (
 	gradeExpire 			TIMESTAMP NULL DEFAULT NULL,
         -- used in conjunction with `marked` to determine if a grade has been changed since it was last exported
         gradeLastExported   timestamp null default null,
+	seen_status             TINYINT(1) NOT NULL DEFAULT 0,
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (uid) REFERENCES user(uid),
