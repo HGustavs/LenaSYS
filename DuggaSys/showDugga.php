@@ -181,7 +181,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 
 	<!-- LoginBox (receipt&Feedback-box ) Start! -->
 	<div id='receiptBox' class="loginBoxContainer" style="display:none">
-	  <div class="loginBox" style="max-width:400px;">
+	  <div class="loginBox" style="max-width:400px; overflow-y:visible;">
 			<div class='loginBoxheader'><h3>Kvitto och feedback - Duggasvar</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
 			<div id='feedbackbox'>
 				<span id='feedbackquestion'></span>

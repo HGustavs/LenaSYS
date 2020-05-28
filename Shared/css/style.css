@@ -2225,14 +2225,14 @@ input.submit-button.resetpw-button {
   margin: auto;
   display: block;
 }
-input.submit-button.new-user {
+div.submit-button.new-user {
   background-color: var(--color-new-user);
   color: var(--color-primary);
   float: none;
   margin: auto;
   display: block;
 }
-input.submit-button.new-user:hover {
+div.submit-button.new-user:hover {
     background-color: var(--color-new-user-hover);
 }
 
@@ -2699,6 +2699,7 @@ div.submit-button:disabled {
   position: relative;
   margin-left: 7px;
   top: 3px;
+  transition: transform 0.2s linear;
 }
 
 .sortableHeading {
@@ -3115,12 +3116,18 @@ padding: 10px;
 .access-dropdown-selected {
   background-color:var(--color-accent);
 }
-#reset-pw{
+div.reset-pw{
   width:70%; 
   margin-left:20px;
-  background-color: rgb(254, 204, 86); color: #614875;
-
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
 }
+div.reset-pw:hover{
+  background-color: var(--color-accent-hover);
+  transition: 0.2s;
+  filter: brightness(1.05);
+}
+
 
 .show{
   display:block;
@@ -3215,6 +3222,7 @@ padding: 10px;
   transition: right 0.3s, top 0.3s;
 }
 
+/* designs the "?" button, making it visible to the left of resultEd.php */
 #legendBtn{
   height: 31px;
   width: 36px;
@@ -3234,6 +3242,7 @@ padding: 10px;
   user-select: none;
 }
 
+/* designing the actual legend, such as distance between each description, color and so on... */
 .legendList{
   width: 280px;
   float: right;
@@ -3256,16 +3265,18 @@ padding: 10px;
 .legendList div{
   display: inline-block;
 }
-
+/* all items using legendListItem uses this method */
 .legendListItem span:first-of-type{
   font-weight: bold;
 }
+
 
 .legendListItem img{
   width: 24px;
   height: 24px;
 }
 
+/* all items in the legend follow this */
 .legendListItem div:first-of-type{
   width: 24px;
   height: 14px;
@@ -5007,7 +5018,6 @@ only screen and (max-device-width: 320px) {
 /* Title for the subpages of the section-editor */
 
 .titles {
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
   margin-left: 10px;
