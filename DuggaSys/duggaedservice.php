@@ -206,7 +206,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		$entry = array(
 			'variants' => $mass,
 			'did' => $row['id'],
-			'qname' => $row['qname'],
+			'qname' => html_entity_decode($row['qname']),
 			'autograde' => $row['autograde'],
 			'gradesystem' => $row['gradesystem'],
 			'quizFile' => $row['quizFile'],

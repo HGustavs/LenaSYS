@@ -75,6 +75,9 @@ CREATE TABLE user_course(
 	`groups` 				varchar(256),
 	examiner 				integer,
 	teacher					VARCHAR(30),
+	passed 					INT UNSIGNED NOT NULL DEFAULT 0,
+    failed 					INT UNSIGNED NOT NULL DEFAULT 0,
+    pending 				INT UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (uid, cid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
@@ -99,6 +102,9 @@ CREATE TABLE listentries (
 	rowcolor				TINYINT(1),
 	groupID					INT DEFAULT NULL,
 	groupKind 				VARCHAR(16) DEFAULT NULL,
+	tabs					TINYINT,
+	feedbackenabled			TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	feedbackquestion		VARCHAR(512),
     PRIMARY KEY (lid),
 	FOREIGN KEY (creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid)REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
@@ -163,6 +169,7 @@ CREATE TABLE userAnswer (
 	gradeExpire 			TIMESTAMP NULL DEFAULT NULL,
         -- used in conjunction with `marked` to determine if a grade has been changed since it was last exported
         gradeLastExported   timestamp null default null,
+	seen_status             TINYINT(1) NOT NULL DEFAULT 0,
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (uid) REFERENCES user(uid),
@@ -485,6 +492,74 @@ CREATE TABLE `groups` (
     groupInt INTEGER NOT NULL,
     PRIMARY KEY (groupID)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+CREATE TABLE announcement(
+    announcementid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    secondannouncementid INT UNSIGNED NOT NULL,
+    uid INT UNSIGNED NOT NULL,
+    recipient INT UNSIGNED NOT NULL,
+    cid INT UNSIGNED NOT NULL,
+    versid VARCHAR(8) NOT NULL,
+    title TINYTEXT NOT NULL,
+    message TEXT NOT NULL,
+    announceTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    read_status TINYINT(1) NOT NULL DEFAULT "1",
+    edited VARCHAR(3) NOT NULL DEFAULT "NO",
+    PRIMARY KEY(announcementid, secondannouncementid, uid, cid, versid),
+    FOREIGN KEY (uid) REFERENCES user (uid),
+    FOREIGN KEY (recipient) REFERENCES user (uid),
+    FOREIGN KEY (cid) REFERENCES course (cid)
+    
+)CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+CREATE TABLE ANNOUNCEMENTLOG(
+	ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    ANNOUNCEMENTID INT UNSIGNED NOT NULL,
+    UID INT UNSIGNED NOT NULL,
+    CID INT UNSIGNED NOT NULL,
+    VERSID VARCHAR(8) NOT NULL,
+    TITLE TINYTEXT NOT NULL,
+    MESSAGE TEXT NOT NULL,
+    ANNOUNCETIME TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    LOGACTION VARCHAR(20) NOT NULL,
+    PRIMARY KEY(ID)
+    
+)CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+
+DELIMITER //
+ 
+CREATE TRIGGER ANNOUNCEMENTINSERTLOG AFTER INSERT ON announcement
+FOR EACH ROW BEGIN 
+   INSERT INTO ANNOUNCEMENTLOG(ANNOUNCEMENTID, UID, CID, VERSID, TITLE, MESSAGE, LOGACTION) 
+      VALUES(NEW.announcementid, NEW.uid, NEW.cid, NEW.versid, NEW.title, NEW.message, "INS");
+END;
+ 
+//
+ 
+DELIMITER ;
+
+DELIMITER //
+ 
+CREATE TRIGGER ANNOUNCEMENTUPDATELOG AFTER INSERT ON announcement
+FOR EACH ROW BEGIN 
+   INSERT INTO ANNOUNCEMENTLOG(ANNOUNCEMENTID, UID, CID, VERSID, TITLE, MESSAGE, LOGACTION) 
+      VALUES(OLD.announcementid, OLD.uid, OLD.cid, OLD.versid, OLD.title, OLD.message, "UPD");
+END;
+ 
+//
+ 
+DELIMITER ;
+
+DELIMITER //
+ 
+CREATE TRIGGER ANNOUNCEMENTDELETELOG BEFORE INSERT ON announcement
+FOR EACH ROW BEGIN 
+   INSERT INTO ANNOUNCEMENTLOG(ANNOUNCEMENTID, UID, CID, VERSID, TITLE, MESSAGE, LOGACTION) 
+      VALUES(OLD.announcementid, OLD.uid, OLD.cid, OLD.versid, OLD.title, OLD.message, "DEL");
+END;
+ 
+//
+ 
+DELIMITER ;
+
 
 INSERT INTO `groups`(groupKind,groupVal,groupInt) VALUES ("No","1",1);
 INSERT INTO `groups`(groupKind,groupVal,groupInt) VALUES ("No","2",2);
@@ -573,6 +648,20 @@ CREATE TABLE timesheet(
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (did) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+
+/* userDuggaFeedback table used for user feedback on duggor */
+CREATE TABLE userduggafeedback(
+	ufid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	username						VARCHAR(80) DEFAULT null,
+	cid						INT UNSIGNED NOT NULL,
+	lid					INT UNSIGNED NOT NULL,
+	score						INT(11) NOT NULL,
+	entryname					varchar(68),
+	PRIMARY KEY (ufid),
+	FOREIGN KEY (username) REFERENCES user(username),
+	FOREIGN KEY (cid) REFERENCES course(cid),
+	FOREIGN KEY (lid) REFERENCES listentries(lid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 /*

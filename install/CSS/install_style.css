@@ -97,22 +97,6 @@ input[type="text"], input[type="password"] {
     min-width: 550px;
 }
 
-/* Whole area between header and footer */
-#contentWrapper {
-    height:400px; /* Must hold same height between input page shifting */
-}
-/* Wrapper will get taller on smaller screens to show all text. */
-@media screen and (max-width: 1384px) {
-    #contentWrapper {
-        height: 450px;
-    }
-}
-@media screen and (max-width: 800px) {
-    #contentWrapper {
-        height: 500px;
-    }
-}
-
 /* Heading with titles for current input page */
 .inputHeading {
     background-color: rgb(146, 124, 157); /* Light purple */
@@ -147,22 +131,11 @@ input[type="text"], input[type="password"] {
     width: 50%;
     margin: auto;
     text-align: center;
-    padding: 10px 0;
-    height: 400px;
+    padding: 10px 0;    
     background-color: rgb(240,240,240); /* Light gray */
     display: none;
 }
-/* This content should grow on smaller screens. */
-@media screen and (max-width: 1384px) {
-    .inputContent {
-        height: 450px;
-    }
-}
-@media screen and (max-width: 800px) {
-    .inputContent {
-        height: 500px;
-    }
-}
+
 
 /* Show the first input page at start */
 #td1 {
@@ -470,4 +443,9 @@ polygon {
 #goBackBtn:focus {
     opacity: 0.7;
     cursor: pointer;
+}
+
+.install-form{
+  position: relative;
+  margin-bottom: 5px;
 }

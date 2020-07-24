@@ -48,18 +48,43 @@ pdoConnect();
   ?>
   <!-- content START -->
 	<div id="content">
-		
+	
+	<!-- Legend content which includes icons that are used in the database of the resultEd. -->
+	<!-- Each icon has a description. legendBtn, legendList and legendListItem was created in style.css to build -->
+	<!-- design of the whole legend. The button "?" is an icon which sticks out in the right of the resultEd.php site. -->
+	
+	<div id="resultedLegendContainer" >
+	
+		<div id="legendBtn"> ? </div>
+		<ul class="legendList">
+			<li class="legendListItem"><img src="../Shared/icons/Uh.png"><img src="../Shared/icons/G.png"> Pass</li>
+			<li class="legendListItem"><img src="../Shared/icons/U.png"><img src="../Shared/icons/Gc.png"> Fail</li>
+			<li class="legendListItem"><img src="../Shared/icons/Uc.png"><img src="../Shared/icons/Gc.png"> Pending / not graded</li>
+			<li class="legendListItem"><img src="../Shared/icons/FistV.png"> Dugga stats</li>
+			<li class="legendListItem"><img src="../Shared/icons/warningTriangle.png"> Deadline passed</li>
+			<li class="legendListItem"><span> (9) </span><span> Grading changes</span></li>
+			<li class="legendListItem"><img src="../Shared/icons/not_announced_icon.svg"> Dugga not yet submitted</li>
+			<li class="legendListItem"><div class="dugga-moment"></div> Dugga moment</li>
+			<li class="legendListItem"><div class="dugga-pending-late-submission"></div> Dugga pending: Late submission</li>
+			<li class="legendListItem"><div class="dugga-pending"></div> Dugga pending: Submitted in time</li>
+			<li class="legendListItem"><div class="dugga-pass"></div> Dugga passed</li>
+			<li class="legendListItem"><div class="dugga-moment dugga-pass"></div> Moment passed</li>
+			<li class="legendListItem"><div class="dugga-moment dugga-fail"></div> Moment failed</li>
+			<li class="legendListItem"><div class="dugga-moment dugga-assigned"></div> Dugga assigned</li>
+			<li class="legendListItem"><span>Unassigned</span><span> No moment assigned</span></li>
+		</ul>
+	</div>
     <div id="resultedFormContainer">
 	<div class="titles" style="justify-content:flex-start;">
 			<h1>Edit student results</h1>
     </div>
       <div id="ladexportContainer">
       <div class="resultedFormsFlex">
-        <label>Delkurs</label>
+        <label>Subcourse</label>
         <select id="ladselect"></select>
       </div>
       <div class="resultedFormsFlex">
-        <label>Betygsskala</label>
+        <label>Grading scale</label>
         <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
         <select id="ladgradescale">
           <option value="U-G-VG" selected>U-G-VG</option>
@@ -68,9 +93,16 @@ pdoConnect();
         </select>
       </div>
       <div class="resultedFormsFlex">
-        <label>Betygsdatum</label>
+        <label>Date of grading</label>
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
+		<div class="resultedFormsFlex">
+			<label>Export...</label>
+			<select id="exportType">
+				<option value="restricted">Unexported</option>
+				<option value="all">All</option>
+			</select>
+		</div>
 		<div class="resultedFormsFlex">
       <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
 	  <span id="lastExportedDate"></span>
@@ -84,7 +116,7 @@ pdoConnect();
 				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
         <div class="resultedFormsFlex">
-				<label>Filtrera efter</label>
+				<label>Filter by...</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
 					<option value="Filter-none" selected>none</option>
 					<option value="Filter-G">G</option>
@@ -93,7 +125,7 @@ pdoConnect();
 				</select>
 				</div>
 				<div class="resultedFormsFlex">
-					<label>Examinator:</label>
+					<label>Examinator</label>
 					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
 				</div>
 			</div>
@@ -112,7 +144,7 @@ pdoConnect();
 			<h3 style='width:100%;' id='Nameof' onmouseover="hoverResult();"
 			onmouseout="hideHover();" >Show Results</h3>
 			<button id='gradeBtn' class='cursorPointer' onclick="toggleGradeBox();">
-				<img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px">
+				<img src="../Shared/icons/FistV.png" height="24px" width="24px">
 			</button>
 			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
@@ -190,6 +222,17 @@ pdoConnect();
 				<input class='cursorPointer' type='button' value='Close' onclick='closeLadexport();' style=' width:100px; float: right;'>
 			</span>
 		</div>
+	</div>
+
+	<!-- This popup is for alerts about LadExport -->
+	<div id="gradeExportPopUp" style="display: none;">
+		<div class="loginBoxheader">
+			<h3>Alert</h3>
+			<div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
+		</div>
+		<!-- The message should go into this p tag -->
+		<p id="exportPopUpMessage"></p>
+		<input type="button" id="gradeExportPopUpButton" value="Ok" class="submit-button" onclick="closeWindows();">
 	</div>
 
 

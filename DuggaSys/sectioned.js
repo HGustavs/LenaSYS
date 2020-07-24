@@ -116,7 +116,7 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, tabs, feedbackenabled, feedbackquestion) {
 
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
@@ -148,12 +148,12 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   } else {
      document.querySelector("#inputwrapper-deadline").style.display = "block";
   }
-
+  
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
   $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
-  $("#tabs").html(makeoptions(gradesys, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "end", "1 tab + end", "2 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
+  $("#tabs").html(makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
   $("#highscoremode").html(makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]));
   if(deadline !== undefined){
     $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
@@ -202,10 +202,28 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
   // Set Lid
   $("#lid").val(lid);
-  
+
   // Display Dialog
   $("#editSection").css("display", "flex");
 
+  //------------------------------------------------------------------------------
+  //checks if feedback is enabled and enables input box for feedbackquestion choice.
+  //------------------------------------------------------------------------------
+  if(kind == 3){
+    $('#inputwrapper-Feedback').css("display","block");
+    if(feedbackenabled == 1){
+      $( "#fdbck" ).prop( "checked", true );
+      $("#inputwrapper-FeedbackQuestion").css("display","block");
+      $("#fdbckque").val(feedbackquestion);
+    }else{
+      $( "#fdbck" ).prop( "checked", false );
+      $("#inputwrapper-FeedbackQuestion").css("display","none");
+    }
+  }else{
+    $("#inputwrapper-FeedbackQuestion").css("display","none");
+    $('#inputwrapper-Feedback').css("display","none");
+    $( "#fdbck" ).prop( "checked", false );
+  }
 }
 
 //----------------------------------------------------------------------------------
@@ -238,8 +256,10 @@ function changedType(kind) {
 //----------------------------------------------------------------------------------
 
 function showEditVersion() {
+  var tempMotd = motd;
+	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
   $("#eversname").val(versnme);
-  $("#eMOTD").val(motd);
+  $("#eMOTD").val(tempMotd);
   $("#eversid").val(querystring['coursevers']);
   let sdate = retdata['startdate'];
   let edate = retdata['enddate'];
@@ -253,6 +273,7 @@ document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
     $("#editCourseVersion").css("display", "none");
     $("#newCourseVersion").css("display", "none");
+    $("#userFeedbackDialog").css("display", "none");
   }
 })
 
@@ -315,7 +336,7 @@ function showCreateVersion() {
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment);
+    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", 0, null);
     newItem();
   }
 }
@@ -346,7 +367,7 @@ function prepareItem() {
   // Storing tabs in gradesys column!
   var kind = $("#type").val()
   if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 6 || kind == 7) {
-    param.gradesys = $("#tabs").val();
+    param.tabs = $("#tabs").val();
   } else {
     param.gradesys = $("#gradesys").val();
   }
@@ -357,17 +378,27 @@ function prepareItem() {
   param.highscoremode = $("#highscoremode").val();
   param.sectname = $("#sectionname").val();
   param.visibility = $("#visib").val();
+  param.tabs = $("#tabs").val();
   param.moment = $("#moment").val();
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
+
+  if ($('#fdbck').prop('checked')){
+    param.feedback = 1;
+    param.feedbackquestion = $("#fdbckque").val();
+  } else{
+    param.feedback = 0;
+    param.feedbackquestion = null;
+  }
+
   if(param.comments == "TOP"){
     param.pos = "-1";
   }
   else{
     param.pos = "100";
   }
-  
+
   return param;
 }
 
@@ -422,12 +453,12 @@ function createVersion() {
   var param = {};
   //param.courseid = querystring['courseid'];
   param.cid = querystring['courseid'];
-  param.versid = document.getElementById("versid").value;
+  param.versid = document.getElementById("cversid").value;
   param.versname = document.getElementById("versname").value;
   param.motd = document.getElementById("vmotd").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = document.getElementById("course-coursecode").innerHTML;
-  param.coursename = document.getElementById("course-coursename").innerHTML;
+  param.coursecode = retdata.coursecode;
+  param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#makeactive").is(':checked');
   param.startdate = getDateFormat(new Date($("#startdate").val()));
   param.enddate = getDateFormat(new Date($("#enddate").val()));
@@ -445,6 +476,7 @@ function createVersion() {
       AJAXService("NEWVRS", param, "COURSE");
     }
     $("#newCourseVersion").css("display", "none");
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("cversid").value );
   }
 }
 
@@ -461,8 +493,8 @@ function updateVersion() {
   param.versid = document.getElementById("eversid").value;
   param.versname = document.getElementById("eversname").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = document.getElementById("course-coursecode").innerHTML;
-  param.coursename = document.getElementById("course-coursename").innerHTML;
+  param.coursecode = retdata.coursecode;
+  param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#emakeactive").is(':checked');
   param.startdate = $("#estartdate").val();
   param.enddate = $("#eenddate").val();
@@ -471,6 +503,7 @@ function updateVersion() {
   AJAXService("UPDATEVRS", param, "SECTION");
 
   $("#editCourseVersion").css("display", "none");
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("eversid").value );
 }
 
 //queryString for coursename is added
@@ -491,7 +524,7 @@ function accessCourse() {
 function returnedCourse(data) {
   if (data['debug'] != "NONE!") alert(data['debug']);
   window.setTimeout(function () {
-    changeURL("sectioned.php?courseid=" + querystring["courseid"] +
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] +
       "&coursename=" + querystring["coursename"] + "&coursevers=" + newversid);
   }, 1000);
 }
@@ -542,6 +575,10 @@ function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
 
+  //data variable is put in localStorage which is then used in Codeviewer
+	//to get the right order when going backward and forward in code examples
+	localStorage.setItem("sectionData", JSON.stringify(data));
+
   var now = new Date();
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
@@ -574,10 +611,10 @@ function returnedSection(data) {
     document.getElementById("course-coursecode").innerHTML = retdata['coursecode'];
     document.getElementById("course-coursename").innerHTML = retdata['coursename'];
     document.getElementById("course-versname").innerHTML = versionname;
-    
-    var str = "";
 
-    if (data['writeaccess']) {
+    var str = "";
+    // Build dropdown and showing FAB-buttons for studentteacher and writeaccess users
+    if (data['studentteacher'] || data['writeaccess']) {
       // Build dropdowns
       var bstr = "";
       for (var i = 0; i < retdata['versions'].length; i++) {
@@ -608,21 +645,6 @@ function returnedSection(data) {
       // Hide FAB / Menu
       document.getElementById("FABStatic").style.display = "None";
       document.getElementById("FABStatic2").style.display = "None";
-    }
-
-    if (data['studentteacher']) {
-      // Show FAB / Menu
-      document.getElementById("FABStatic").style.display = "Block";
-      document.querySelector("td.results.menuButton").style.display = "none";
-      document.querySelector("td.tests.menuButton").style.display = "none";
-      document.querySelector("td.access.menuButton").style.display = "none";
-      document.querySelector(".course-dropdown-div").style.display = "none";
-      document.querySelector("td.editVers").style.display = "none";
-      document.querySelector("td.newVers").style.display = "none";
-      document.querySelector("td.coursePage").style.display = "none";
-
-      // Show addElement Button
-      document.getElementById("addElement").style.display = "Block";
     }
 
     // hide som elements if to narrow
@@ -656,7 +678,7 @@ function returnedSection(data) {
         else{
           str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
         }
-        
+
         menuState.idCounter++;
         // All are visible according to database
 
@@ -668,19 +690,28 @@ function returnedSection(data) {
           str += " class='lo' ";
         }
         str += " >";
+  
 
         var hideState = "";
         if (parseInt(item['visible']) === 0) hideState = " hidden"
         else if (parseInt(item['visible']) === 3) hideState = " deleted"
         else if (parseInt(item['visible']) === 2) hideState = " login";
 
-        // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment
+        // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment || 7 Message
         var itemKind = parseInt(item['kind']);
+
+        if(itemKind === 2 || itemKind == 5){
+          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+        }
+
+        if(itemKind === 6 || itemKind == 7){
+          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+        }
 
         if (itemKind === 3 || itemKind === 4) {
 
           // Styling for quiz row e.g. add a tab spacer
-          if (itemKind === 3) str += "<td style='width:32px;'><div class='spacerLeft'></div></td>";
+          if (itemKind === 3) str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
           var grady = -1;
           var status = "";
           var marked;
@@ -851,6 +882,7 @@ function returnedSection(data) {
           var param = {
             'exampleid': item['link'],
             'courseid': querystring['courseid'],
+            'coursename' : querystring['coursename'],
             'cvers': querystring['coursevers'],
             'lid': item['lid']
           };
@@ -933,9 +965,16 @@ function returnedSection(data) {
           // create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
             if (hasGracetimeExpired(deadline, dateTimeSubmitted)) {
-              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submission after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
             }
           }
+        }
+
+        // Userfeedback
+        if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
+          str += "<td style='width:32px;'>";
+          str += "<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback' onclick='showUserFeedBack(\"" + item['lid']  + "\",\"" + item['feedbackquestion']  + "\");'>";
+          str += "</td>";
         }
 
         // Cog Wheel
@@ -947,12 +986,12 @@ function returnedSection(data) {
           if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
           str += "><img id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline']]) + ");' />";
+          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + ");' />";
           str += "</td>";
         }
 
         // trashcan
-        if (data['writeaccess']) {
+        if (data['writeaccess'] || data['studentteacher']) {
           str += "<td style='width:32px;' class='" + makeTextArray(itemKind, ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " " + hideState + "'>";
           str += "<img id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
           str += "</td>";
@@ -1018,14 +1057,13 @@ function returnedSection(data) {
       }
     }
   } else {
-    
     str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'><span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML+= str;
     $("#newCourseVersion").css("display", "block");
 
-    
-   
+
+
 
   }
 
@@ -1039,15 +1077,15 @@ function returnedSection(data) {
 
   // Change title of the current page depending on which page the user is on.
   document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
-    
+
   // Sets a title on the course heading name
-  
- 
+
+
   if(versionname){
     document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
-  
-  
- 
+
+
+
 
   drawPieChart(); // Create the pie chart used in the statistics section.
   fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section
@@ -1058,24 +1096,26 @@ function returnedSection(data) {
 
   // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
   replaceDefualtLink();
+  
+
 
   addClasses();
   showMOTD();
-  } 
+  }
 }
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
-  if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){ 
+  if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){
     if(motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
-      document.getElementById("motdArea").style.display = "none"; 
+      document.getElementById("motdArea").style.display = "none";
     }else{
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
-      document.getElementById("FABStatic2").style.top = "623px";
+      document.getElementById("FABStatic2").style.top = "auto";
     }
   }
 }
-// Checks if the MOTD cookie already have the current vers and versname 
+// Checks if the MOTD cookie already have the current vers and versname
 function ignoreMOTD(){
   var c_string = getCookie('MOTD');
   c_array = c_string.split(',');
@@ -1089,6 +1129,7 @@ function ignoreMOTD(){
 
 function resetMOTDCookieForCurrentCourse(){
   var c_string = getCookie('MOTD');
+  if (c_string != ('') && c_string != null){
   c_array = c_string.split(',');
   for(let i = 0; i<c_array.length;i+=2){
     if(c_array[i] == versnme && c_array[i+1] == versnr){
@@ -1096,6 +1137,7 @@ function resetMOTDCookieForCurrentCourse(){
     }
   }
   document.cookie = 'MOTD=' + c_array;
+}
   showMOTD();
 }
 
@@ -1107,7 +1149,7 @@ function closeMOTD(){
     setMOTDCookie();
   }
   document.getElementById('motdArea').style.display='none';
-  document.getElementById("FABStatic2").style.top = "565px";
+  document.getElementById("FABStatic2").style.top = "auto";
 }
 // Adds the current versname and vers to the MOTD cookie
 function setMOTDCookie(){
@@ -1255,8 +1297,39 @@ function drawPieChart() {
   str += "<text x='185' y='231' font-family='Arial' font-size='12px' fill='black'>N/A: (" + Math.round(notSubmittedPCT * 100) + "%)</text>";
 
   document.getElementById("pieChartSVG").innerHTML = str;
+  var passed = Math.round(passedPCT * 100);
+  var failed = Math.round(failedPCT * 100);
+  var pending = Math.round((notGradedPCT + 0.25) * 100);
+  courseCompletion(passed, failed, pending);
 }
 
+function courseCompletion(passed, failed, pending){
+  var cid = retdata['courseid'];
+  var coursevers = retdata['coursevers'];
+  var uid, uname = $("#userName").html();
+
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname:uname},
+    type: "GET",
+    success: function(data){
+      var parsed_data = JSON.parse(data);
+      uid = parsed_data.uid;
+      $.ajax({
+        url: "../Shared/retrieveuser_course.php",
+        data: {uid:uid, cid:cid, vers:coursevers, passed:passed, failed:failed, pending:pending},
+        type: "POST",
+        success: function(data){
+        }
+      });
+    },
+    error:function(){
+      console.log("*******Error*******");
+    }
+  });
+
+
+}
 //----------------------------------------------------------------------------------
 // fixDeadlineInfoBoxesText: Makes an on-screen table containing deadlines
 //----------------------------------------------------------------------------------
@@ -1360,7 +1433,7 @@ function drawSwimlanes() {
   var tempNumb = 2;
 
   var str = "";
-  // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not. 
+  // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not.
   str += "<defs><linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextGrey'><stop offset='85%' stop-opacity='1' stop-color='#000000' /><stop offset='100%' stop-opacity='0'/> </linearGradient> <linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'><stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
   for (var i = 0; i < weekLength; i++) {
@@ -1405,7 +1478,7 @@ function drawSwimlanes() {
         if ((entry.submitted != null) && (entry.grade == undefined)) fillcol = "#FFEB3B"
         else if ((entry.submitted != null) && (entry.grade > 1)) fillcol = "#00E676"
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
-        
+
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = `url("#fadeTextGrey")`;
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
@@ -1417,7 +1490,7 @@ function drawSwimlanes() {
           duggalength = duggalength * -1;
         }
         var tempVariable = duggalength*daywidth;
-        
+
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <title> " + entry.text + " </title>" + entry.text + "</text>";
       }
@@ -1453,7 +1526,7 @@ $(document).mousedown(function (e) {
 $(document).mouseup(function (e) {
   mouseUp(e);
 
-  
+
 });
 
 $(document).ready(function(){
@@ -1503,11 +1576,10 @@ function mouseDown(e) {
 function mouseUp(e) {
   // if the target of the click isn't the container nor a descendant of the container or if we have clicked inside box and dragged it outside and released it
   if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) && $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
-    
+
     event.preventDefault();
-     
+
     closeWindows();
-    console.log(e.target);
     closeSelect();
     showSaveButton();
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
@@ -1590,14 +1662,560 @@ $(document).on('click', '.moment, .section, .statistics', function () {
 
 // Setup (when loaded rather than when ready)
 $(window).load(function () {
+  accessAdminAction();
   $(".messagebox").hover(function () {
     $("#testbutton").css("background-color", "red");
   });
   $(".messagebox").mouseout(function () {
     $("#testbutton").css("background-color", "#614875");
   });
+  $("#sectionList_arrowStatisticsOpen").click(function () {
+    $("#sectionList_arrowStatisticsOpen").hide();
+    $("#sectionList_arrowStatisticsClosed").show();
+    $("#statisticsList").show();
+    $("#statistics").hide();
+    $(".statisticsContent").show();
+    $("#courseList").css({
+      'display':'flex',
+      'flex-direction': 'column'
+    });
+    $(".statisticsContentBottom").show();
+  });
+  $("#sectionList_arrowStatisticsClosed").click(function () {
+    $("#sectionList_arrowStatisticsOpen").show();
+    $("#sectionList_arrowStatisticsClosed").hide();
+    $("#statisticsList").hide();
+
+  });
+  $("#announcement").click(function(){
+    sessionStorage.removeItem("closeUpdateForm");
+    $("#announcementBoxOverlay").toggle();
+    if($("#announcementForm").is(":hidden")){
+      $("#announcementForm").show();
+    }
+
+  });
+  $(".createBtn").click(function(){
+    sessionStorage.setItem('closeUpdateForm', true);
+  });
+
+  retrieveAnnouncementAuthor();
+  retrieveAnnouncementsCards();
+  displayListAndGrid();
+  displayAnnouncementBoxOverlay();
+  multiSelect();
+  toggleFeedbacks();
 });
 
+
+//show the full announcement
+function showAnnouncement(){
+  document.getElementById('fullAnnnouncementOverlay').style.display="block";
+}
+
+//retrieve the announcment author 
+function retrieveAnnouncementAuthor(){
+  var uname = $("#userName").html();
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      if($("#userid").length > 0) {
+          var parsed_data = JSON.parse(this.response);
+          if(($("#announcementForm").length) > 0){
+            document.getElementById("userid").value = parsed_data.uid;
+            retrieveCourseProfile(parsed_data.uid);
+          }
+      }
+    }
+  };
+  xmlhttp.open("GET","../Shared/retrieveUserid.php?uname="+uname,true);
+  xmlhttp.send();
+
+}
+
+//retrieve course profile
+function retrieveCourseProfile(userid){
+  $(".selectLabels label input").attr("disabled", true);
+  var cid = '';
+  $("#cid").change(function(){
+    cid = $("#cid").val();
+    if (($("#cid").val()) != '') {
+      $("#versid").prop("disabled", false);
+      $.ajax({
+        url: "../Shared/retrievevers.php",
+        data: {cid: cid},
+        type: "POST",
+        success: function(data){
+          var item = JSON.parse(data);
+          $("#versid").find('*').not(':first').remove();
+          $.each(item.versids, function(index,item) {        
+              $("#versid").append("<option value="+item.versid+">"+item.versid+"</option>");
+          });
+          
+        },
+        error:function(){
+          console.log("*******Error*******");
+        }
+      });
+
+    }else{
+      $("#versid").prop("disabled", true);
+    }
+
+  });
+  if (($("#versid option").length) <= 2) {
+    $("#versid").click(function(){
+      getStudents(cid, userid);
+    });
+  }else if(($("#versid option").length) > 2){
+    $("#versid").change(function(){
+      getStudents(cid, userid);
+    });
+  }
+}
+function getStudents(cid, userid){
+   var versid = '';
+   versid = $("#versid").val();
+   if (($("#versid").val()) != '') { 
+    $("#recipient").prop("disabled", false);
+    $.ajax({
+      url: "../Shared/retrieveuser_course.php",
+      data: {cid: cid, versid:versid, remove_student:userid},
+      type: "POST",
+      success: function(data){
+        var item = JSON.parse(data);
+        $("#recipient").find('*').not(':first').remove();
+        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'></optgroup>");
+        $.each(item.finished_students, function(index,item) {        
+          $("#finishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+        });
+        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'></optgroup>");
+        $.each(item.non_finished_students, function(index,item) {        
+          $("#nonfinishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+        });
+        $(".selectLabels label input").attr("disabled", false);
+        selectRecipients();
+      },
+      error:function(){
+        console.log("*******Error user_course*******");
+      }
+    });
+  }else{
+    $("#recipient").prop("disabled", true);
+  }
+}
+
+//validate create announcement form
+function validateCreateAnnouncementForm(){
+  $("#announcementForm").submit(function(e){
+    var announcementTitle = ($("#announcementTitle").val()).trim();
+    var announcementMsg = ($("#announcementMsg").val()).trim();
+    var cid = $("#cid").val();
+    var versid = $("#versid").val();
+    var recipients = $("#recipient").val();
+    if (announcementTitle == null || announcementTitle == '') {  
+        $("#announcementTitle").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (announcementMsg == null || announcementMsg == '') {  
+        $("#announcementMsg").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (cid == null || cid == '') {  
+        $("#cid").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (versid == null || versid == '') {  
+        $("#versid").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (recipients == null || recipients == '') {  
+        $("#recipient").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }
+    $(".errorCreateAnnouncement").css({
+      'border':'1px solid red'
+    });   
+  });
+}
+function validateUpdateAnnouncementForm(){
+  $("#announcementForm").submit(function(e){
+    var announcementTitle = ($("#announcementTitle").val()).trim();
+    var announcementMsg = ($("#announcementMsg").val()).trim();
+
+    if (announcementTitle == null || announcementTitle == '') {  
+      $("#announcementTitle").addClass('errorCreateAnnouncement');
+      e.preventDefault();
+    }else if (announcementMsg == null || announcementMsg == '') {  
+      $("#announcementMsg").addClass('errorCreateAnnouncement');
+      e.preventDefault();
+    }
+    $(".errorCreateAnnouncement").css({
+      'border':'1px solid red'
+    });  
+  });
+}
+//retrive announcements
+function retrieveAnnouncementsCards(){
+  var currentLocation = $(location).attr('href');
+  var url = new URL(currentLocation);
+  var cid = url.searchParams.get("courseid");
+  var versid = url.searchParams.get("coursevers");
+  var uname = $("#userName").html();
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname:uname},
+    type: "GET",
+    success: function(data){
+      var parsed_data = JSON.parse(data);
+      var uid = parsed_data.uid;
+     var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var parsed_data = JSON.parse(this.response);
+          document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+          var unread_announcements = parsed_data.nRows;
+          if(unread_announcements > 0){
+            $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
+            $("#announcementnotificationcount").html(parsed_data.nRows);
+          }
+          accessAdminAction();
+          var paragraph = "announcementMsgParagraph";
+          readLessOrMore(paragraph);
+          showLessOrMoreAnnouncements();
+          scrollToTheAnnnouncementForm();
+          $(".deleteBtn").click(function(){
+            sessionStorage.setItem('closeUpdateForm', true);
+
+          });
+
+        }
+      };
+      xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid+"&recipient="+uid,true);
+      xmlhttp.send();
+    }
+  });
+}
+//update anouncement form
+function updateannouncementForm(updateannouncementid, cid, versid, tempFuction){
+  var xmlhttp = new XMLHttpRequest();
+  
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        tempFuction(this, updateannouncementid, cid, versid);
+    }
+  };
+  xmlhttp.open("GET","../Shared/updateAnnouncement.php?updateannouncementid="+updateannouncementid,true);
+  xmlhttp.send();
+
+}
+function handleResponse(xhttp, updateannouncementid, cid, versid){
+  var title, message;
+  var parsed_data = JSON.parse(xhttp.response);
+  title = parsed_data.title;
+  message = parsed_data.message;
+  if($("#announcementForm").is(":hidden")){
+    $("#announcementForm").show();
+  }
+  $(".formTitle").html("Update announcement");
+  $(".formSubtitle").html("Please fill in this form to update the announcement.");
+  $("#announcementTitle").val(title);
+  $("#announcementMsg").html(message);
+  $(".createBtn").html("Update");
+  $(".createBtn").attr("name", "updateBtn");
+  $(".createBtn").attr("onclick", "validateUpdateAnnouncementForm()");
+  $("#courseidAndVersid").remove();
+  $("#recipientBox").remove();
+
+  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'"></div>');
+  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="cid" id="cid" value="'+cid+'"></div>');
+  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="versid" id="versid" value="'+versid+'"></div>');
+
+
+}
+
+//announcement card grid and list view
+function displayListAndGrid(){
+  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i class="fa fa-bars"></i> List</button>'+
+    '<button class="btn active gridBtn"><i class="fa fa-th-large"></i> Grid</button></div><br>');
+
+  var announcementCard = document.getElementsByClassName("announcementCard");
+  var i;
+
+  $(".listBtn").click(function(){
+    for (i = 0; i < announcementCard.length; i++) {
+      announcementCard[i].style.width = "100%";
+    }
+  });
+
+  $(".gridBtn").click(function(){
+    for (i = 0; i < announcementCard.length; i++) {
+      announcementCard[i].style.width = "48%";
+    }
+  });
+
+  var btnContainer = document.getElementById("btnContainer");
+  var btns = btnContainer.getElementsByClassName("btn");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function() {
+      var current = document.getElementsByClassName("active");
+      current[0].className = current[0].className.replace(" active", "");
+      this.className += " active";
+    });
+  }
+
+  $(window).resize(function() {
+    if (($(window).width()) < 1050) {
+      $(".gridBtn").removeClass("active");
+      $(".listBtn").addClass("active");
+    }else{
+      $(".listBtn").removeClass("active");
+      $(".gridBtn").addClass("active");
+    }
+  });
+}
+function accessAdminAction(){
+  var adminLoggedin = $("#adminLoggedin").val();
+  if(adminLoggedin == 'yes'){
+    $("#announcementForm").add();
+    $(".actionBtns").add();
+  }else{
+    $("#announcementForm").remove();
+    $(".actionBtns").remove();
+    if($("#announcementForm").is(":hidden") || ($("#announcementForm").length) == 0){
+      $("#displayAnnouncements").css("margin-top", "0px");
+    }else{
+      $("#displayAnnouncements").css("margin-top", "20px");
+    }
+  }
+}
+function displayAnnouncementForm(reload){
+  if ($("#updateannouncementid").length > 0) {
+    location.reload();
+    sessionStorage.setItem('closeUpdateForm', true);
+
+  }else{
+    $("#announcementForm").hide();
+    sessionStorage.removeItem("closeUpdateForm");
+
+  }
+
+}
+function displayAnnouncementBoxOverlay(){
+  var closeUpdateForm = sessionStorage.getItem("closeUpdateForm");
+  if(closeUpdateForm == 'true'){
+    $("#announcementBoxOverlay").show();
+  
+  }
+}
+function scrollToTheAnnnouncementForm(){
+  $(".editBtn").click(function() {
+    $('html,body').animate({
+        scrollTop: $("#announcementForm").offset().top},
+        'slow');
+  });
+}
+function closeActionLogDisplay(){
+  $(".closeActionLogDisplay").parent().remove();
+}
+//read less or more announcement card
+function readLessOrMore(paragraph){
+    var maxLength = 70;
+
+    $("."+paragraph).each(function(){
+
+      var myStr = $(this).text();
+
+      if($.trim(myStr).length > maxLength){
+        var newStr = myStr.substring(0, maxLength);
+        var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+        $(this).empty().html(newStr);
+        $(this).append(' <a href="javascript:void(0);" class="read-more">read more...</a>');
+        $(this).append('<span class="more-text">' + removedStr + '</span>');
+
+      }
+
+    });
+
+    var announcementCard = document.getElementsByClassName("announcementCard");
+    $(".read-more").click(function(){
+      $(this).siblings(".more-text").contents().unwrap();
+      $(this).remove();
+      if(paragraph == 'announcementMsgParagraph'){
+        for (i = 0; i < announcementCard.length; i++) {
+          announcementCard[i].style.width = "100%";
+        }
+      } 
+     
+    });
+}
+
+function showLessOrMoreAnnouncements(){
+  var announcementCardLength = $(".announcementCard").length;
+  if (announcementCardLength == 0) {
+      $("#announcementCards").append("<p style='color:#775886;'>No announcements yet</p>");
+  }else if(announcementCardLength > 6){
+      $(".announcementCard:gt(5)").hide();
+      $("#displayAnnouncements").append('<div class="showmoreBtnContainer"><button class="showAllAnnouncement">'+
+        '<span class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i></span>'+
+        '</button></div>');
+  }
+   $('.showAllAnnouncement').on('click', function() {
+    $('.announcementCard:gt(5)').toggle();
+    $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
+  });
+
+}
+function updateReadStatus(announcementid, cid, versid){
+  var uname = $("#userName").html();
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname: uname},
+    type: "GET",
+    success: function(data){
+      var parsed_data = JSON.parse(data);
+      var uid = parsed_data.uid;
+      $.ajax({
+        url: "../Shared/updateviewedAnnouncementCards.php",
+        data: {announcementid : announcementid, uid : uid, cid : cid, versid : versid},
+        type: "POST",
+        success: function(data){
+        }
+      });
+    }
+  });
+
+}
+function selectRecipients(){
+   $(".selectAll input").change(function() {
+      if(this.checked) {
+        $("#recipient option").not(":first").prop("selected", true);
+        $("#recipient option").not(":first").attr("selected","selected");
+        $(".selectFinished input, .selectNonFinished input").prop("checked", false);
+      }else{
+        $("#recipient option").attr("selected", false);
+      }
+  });
+  $(".selectFinished input").change(function() {
+    if(this.checked) {
+      $("#finishedStudents option").prop("selected", true);
+      $("#finishedStudents option").attr("selected","selected");
+      $(".selectAll input, .selectNonFinished input").prop("checked", false);
+      $("#nonfinishedStudents option").attr("selected", false);
+    }else{
+      $("#recipient option").attr("selected", false);
+    }
+  });
+  $(".selectNonFinished input").change(function() {
+    if(this.checked) {
+      $("#nonfinishedStudents option").prop("selected", true);
+      $("#nonfinishedStudents option").attr("selected","selected");
+      $(".selectAll input, .selectFinished input").prop("checked", false);
+      $("#finishedStudents option").attr("selected", false);
+
+    }else{
+      $("#recipient option").attr("selected", false);
+    }
+  });
+
+}
+function multiSelect(){
+  $("#recipient").mousedown(function(e){
+    e.preventDefault();
+    
+    var select = this;
+    var scroll = select.scrollTop;
+    
+    e.target.selected = !e.target.selected;
+    
+    setTimeout(function(){select.scrollTop = scroll;}, 0);
+    
+    $(select).focus();
+  }).mousemove(function(e){e.preventDefault()});
+}
+//start of recent feedback from the teacher
+function toggleFeedbacks(){
+  let uname = $("#userName").html();
+  let studentid, parsed_data, parsed_uid, duggaFeedback, feedbackComment, unseen_feedbacks;
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname:uname},
+    type: "GET",
+    success: function(data){
+      parsed_uid = JSON.parse(data);
+      studentid = parsed_uid.uid;
+      $.ajax({
+        url: "../Shared/retrieveFeedbacks.php",
+        data: {studentid: studentid},
+        type: "POST",
+        async: true,
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        success: function(data){
+          duggaFeedback = data.duggaFeedback;
+          $(".feedbackContent").html(duggaFeedback);
+          if ($(".recentFeedbacks").length == 0) {
+             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedbacks</span></p>");
+             $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'><img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
+          }
+          $(".oldFeedbacks").hide();                  
+          feedbackComment = 'feedbackComment';
+          readLessOrMore(feedbackComment);
+          unseen_feedbacks = data.unreadFeedbackNotification;
+          if(unseen_feedbacks > 0){
+            $("#feedback img").after("<span id='feedbacknotificationcounter'>0</span>");
+            $("#feedbacknotificationcounter").html(unseen_feedbacks);
+
+          }
+        },
+        error:function(){
+          console.log("Couldn't return feedback data");
+        }
+
+      });
+
+    }
+
+  });
+
+  if ($("#feedback").length > 0) {
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><span><h2>Recent Feedbacks</h2></span></div><div class='feedbackContent'></div></div></div>");
+
+  }
+
+  $("#feedback").click(function(){
+    $("#feedbackOverlay").toggle();
+     if ($("#feedbacknotificationcounter").length > 0) {
+      var viewed = "YES";
+      $.ajax({
+        url: "../Shared/retrieveFeedbacks.php",
+        data: {studentid: studentid, viewed:viewed},
+        type: "POST",
+        success: function(){
+          $("#feedbacknotificationcounter").remove();
+        }
+      });
+     }
+  });
+}
+function viewOldFeedbacks(){
+  $(".feedbackHeader h2").html("Old Feedbacks");
+  $(".noFeedbacks").remove();
+  $(".feedbackContent").append('<div id="loadMore"><span>Load More</span><div>');
+  if ($(".feedback_card").length <= 5) {
+     $("#loadMore").hide();
+  }
+  $(".feedback_card").slice(0, 5).show();
+  $("#loadMore").on('click', function (e) {
+    e.preventDefault();
+    $(".feedback_card:hidden").slice(0, 5).slideDown();
+    if ($(".feedback_card:hidden").length == 0) {
+      $("#loadMore").hide();
+    }
+    $('html,body').animate({
+      scrollTop: $(this).offset().top
+    }, 1500);
+  }); 
+}
+function hideIconButton(){
+  $("#iconButton").hide();
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
@@ -1608,18 +2226,17 @@ function replaceDefualtLink(){
   var links = document.getElementsByTagName('a');
 
   for(var i = 0; i < links.length; i++){
-    if((links[i].getAttribute('href')) == ("showdoc.php?exampleid=---===######===---&courseid=" + querystring['courseid'] + "&coursevers=" + 
+    if((links[i].getAttribute('href')) == ("showdoc.php?exampleid=---===######===---&courseid=" + querystring['courseid'] + "&coursevers=" +
     querystring['coursevers'] + "&fname=---===######===---")){
       links[i].href = "../errorpages/403.php";
     }
   }
 }
 
-
 // Adds classes to <a> element depending on if they are external / internal
 function addClasses() {
   var links = document.getElementsByTagName('a');
-  
+
   for (var i = 0; i < links.length; i++) {
     if ((links[i].innerHTML.toLowerCase().indexOf("example") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("exempel") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("examples") !== -1)) {
       links[i].classList.add("example-link");
@@ -1661,10 +2278,10 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 /*Validates all versionnames*/
 function validateVersionName(versionName, dialogid) {
   //Regex for 2 capital letters, 2 numbers
-  var Name = /^[A-Z]{2}\d{2}$/;
+  var Name = /^HT\d{2}$|^VT\d{2}$|^ST\d{2}$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
-  
+
   //if versionname is 2 capital letters, 2 numbers
   if (name.value.match(Name)) {
     name.style.borderColor = "#383";
@@ -1698,7 +2315,7 @@ function validateCourseID(courseid, dialogid) {
   var Code = /^[0-9]{3,6}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
-  var val = document.getElementById("versid").value;
+  var val = document.getElementById("cversid").value;
 
   if (code.value.match(Code)) {
     code.style.borderColor = "#383";
@@ -1727,7 +2344,7 @@ function validateCourseID(courseid, dialogid) {
 
 function validateMOTD(motd, dialogid){
   var emotd = document.getElementById(motd);
-  var Emotd = /(^$)|(^[-a-zA-Z0-9_ !,.]*$)/;
+  var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
   var EmotdRange = /^.{0,50}$/;
   var x4 = document.getElementById(dialogid);
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
@@ -1793,8 +2410,11 @@ function validateDate(startDate, endDate, dialogID) {
   }
 }
 
-/*Validates if deadline is between start and end date*/ 
+/*Validates if deadline is between start and end date*/
 function validateDate2(ddate, dialogid) {
+  var inputDeadline = document.getElementById("inputwrapper-deadline");
+  if (window.getComputedStyle(inputDeadline).display !== "none") {
+  
   var ddate = document.getElementById(ddate);
   var x = document.getElementById(dialogid);
   var deadline = new Date(ddate.value);
@@ -1817,9 +2437,32 @@ function validateDate2(ddate, dialogid) {
     window.bool8 = false;
 
     }
+  }
+  else{
+    window.bool8 = true;
+  }
 }
 
-/*Validates all forms*/ 
+function validateSectName(name, dialogid){
+  var emotd = document.getElementById(name);
+  var Emotd = /^[^"']+$/;
+  // var EmotdRange = /^.{0,50}$/;
+  var x4 = document.getElementById(dialogid);
+  if (emotd.value.match(Emotd)) {
+    emotd.style.borderColor = "#383";
+    emotd.style.borderWidth = "2px";
+    x4.style.display = "none";
+    window.bool10 = true;
+  } else {
+    emotd.style.borderColor = "#E54";
+    x4.style.display = "block";
+    emotd.style.borderWidth = "2px";
+    window.bool10 = false;
+  }
+
+}
+
+/*Validates all forms*/
 
 function validateForm(formid) {
 
@@ -1829,12 +2472,12 @@ function validateForm(formid) {
     var deadDate = document.getElementById("setDeadlineValue").value;
 
     //If fields empty
-    if (sName == null || sName == "", deadDate == null || deadDate == "") {
+    if (sName == null || sName == "") {
       alert("Fill in all fields");
 
     }
     // if all information is correct
-    if (window.bool7 === true && window.bool8 === true) {
+    if (window.bool8 === true && window.bool10 === true ) {
       alert('The item is now updated');
       updateItem();
       updateDeadline();
@@ -1846,7 +2489,7 @@ function validateForm(formid) {
    //Validates new course version form
   if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
-    var versId = document.getElementById("versid").value;
+    var versId = document.getElementById("cversid").value;
 
     //If fields empty
     if (versName == null || versName == "", versId == null || versId == "") {
@@ -1863,7 +2506,7 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
-  
+
   // validates edit course version form
   if (formid === 'editCourseVersion') {
     var eversName = document.getElementById("eversname").value;
@@ -1883,5 +2526,115 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
+}
+
+//------------------------------------------------------------------------------
+//displays dialogue box and the content
+//------------------------------------------------------------------------------
+function showUserFeedBack(lid,feedbackquestion) {
+	AJAXService("GETUF", { courseid: querystring['courseid'], moment: lid }, "USERFB");
+  $("#userFeedbackDialog").css("display", "flex");
+  $("#feedbacktablecontainer").html("");
+  $("#statscontainer").css("display", "none");
+  $("#duggaFeedbackQuestion").html(feedbackquestion);
+}
+
+//------------------------------------------------------------------------------
+//returns the feedbackdata and displays the feedback and statistics.
+//------------------------------------------------------------------------------
+function returnedUserFeedback(data){
+  if(data.userfeedback.length == 0){
+    $("#feedbacktablecontainer").html( "<p>No feedback available</p>" );
+  }else{
+    $("#statscontainer").css("display", "flex");
+    var averagerating = parseFloat(data.avgfeedbackscore);
+    var highestscore = 0;
+    var lowestscore = 10;
+    for(var i = 0; i<data.userfeedback.length; i++){
+      if(parseInt(data.userfeedback[i].score) > highestscore){
+        highestscore=data.userfeedback[i].score;
+        
+      }
+      if(parseInt(data.userfeedback[i].score) < lowestscore){
+        lowestscore=data.userfeedback[i].score;
+      }
+    }
+    $("#avg-feedback").html(averagerating.toFixed(2));
+    $("#median-feedback").html(highestscore+" / "+lowestscore);
+    $("#total-feedback").html(data.userfeedback.length);
+    $("#feedbacktablecontainer").html(createUserFeedbackTable(data));
+  }
   
+}
+//------------------------------------------------------------------------------
+//Creates a table with the Feedback data.
+//------------------------------------------------------------------------------
+function createUserFeedbackTable(data){
+  var str = "<table id='feedbacktable'  style='border-collapse: collapse' class='list'>";
+  str += "<thead><tr><th>Feedback ID</th>";
+  str += "<th>Username</th>";
+  str += "<th>Course ID</th>";
+  str += "<th>Dugga ID</th>";
+  str += "<th>Rating</th>";
+  str += "<th>Contact student</th></tr></thead><tbody style='background-color: var(--color-background)'>";
+
+  for(var i = 0; i < data.userfeedback.length; i++){
+    str +="<tr>";
+    str += "<td>"+data.userfeedback[i].ufid+"</td>";
+    if(data.userfeedback[i].username === null){
+      str += "<td>Anonymous</td>";
+    }else{
+      str += "<td>"+data.userfeedback[i].username+"</td>";
+    }
+    str += "<td>"+data.userfeedback[i].cid+"</td>";
+    str += "<td>"+data.userfeedback[i].lid+"</td>";
+    str += "<td style='font-weight: bold; font-size: 18px;'>"+data.userfeedback[i].score+"</td>";
+    if(data.userfeedback[i].username === null){
+      str += "<td style='width:1px;'><input class='inactive-button' type='button' value='Contact student'></td>";
+    }else{
+      str += "<td style='width:1px;'><input class='submit-button' type='button' value='Contact student' onclick='contactStudent(\"" + data.userfeedback[i].entryname + "\",\"" + data.userfeedback[i].username + "\")'></td>";
+    }
+    str += "</tr>";
+  }
+
+  str += "</tbody></table>";
+  return str;
+}
+
+//------------------------------------------------------------------------------
+//opens an email to the student
+//------------------------------------------------------------------------------
+function contactStudent(entryname,username){
+  
+  window.location = "mailto:" + username + "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga "+entryname;
+}
+//------------------------------------------------------------------------------
+//Displays the feedback question input on enable-button toggle. 
+//------------------------------------------------------------------------------
+function showFeedbackquestion(){
+  if($("#fdbck").prop('checked')){
+    $("#inputwrapper-FeedbackQuestion").css("display","block");
+  }else{
+    $("#inputwrapper-FeedbackQuestion").css("display","none");
+  }
+}
+
+//------------------------------------------------------------------------------
+// Scroll to top of page function 
+//------------------------------------------------------------------------------
+$(document).ready(function(){
+  $("#scrollUp").on('click', function(event) {
+    window.scrollTo(0, 0);
+  });
+});
+
+/*Show the up-arrow when user has scrolled down 200 pixels on the page*/
+window.onscroll = function() {scrollToTop()};
+function scrollToTop() {
+  var scroll = document.getElementById("fixedScroll");
+  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+    scroll.style.display = "block";
+  } else {
+    scroll.style.display = "none";
+  }
 }

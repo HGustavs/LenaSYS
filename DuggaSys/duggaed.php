@@ -15,6 +15,7 @@ pdoConnect();
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
   <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+  <link type="text/css" href="../Shared/css/dugga.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
@@ -23,6 +24,7 @@ pdoConnect();
   <script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
   <script src="timer.js"></script>
   <script src="clickcounter.js"></script>
+  <script src="../Shared/markdown.js"></script>
 
 </head>
 <body onload="setup();">
@@ -78,23 +80,22 @@ pdoConnect();
   	      			<div class="tooltipDugga">
   		      			<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
   		      		</div>
-  		      		<input class='textinput' type='text' id='name' value='New Dugga' onkeyup='validateDuggaName();' onchange='validateDuggaName();' />
+  		      		<input class='textinput' type='text' id='name' placeholder='New Dugga' onkeyup='validateDuggaName();' onchange='validateDuggaName();' />
   		      	</div>
         			<div class='flexwrapper'><span>Auto-grade:</span><select id='autograde'></select></div>
         			<div class='flexwrapper'><span>Grade System:</span><select id='gradesys'></select></div>
         			<div class='flexwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
-              <div class='flexwrapper'><span>Start Date:</span><span><input class='' type='date' id='qstart' value='' style='width:125px;font-family:"arial narrow";' /><select style='width:55px;' id='qstartt'></select><select style='width:55px;' id='qstartm'></select></span></div>
-              <div class='flexwrapper'><span>Deadline 1:</span><span><input class='' type='date' id='deadline' value='' style='width:125px;font-family:"arial narrow";' /><select style='width:55px;' id='deadlinet'></select><select style='width:55px;' id='deadlinem'></select></span></div>
+              <div class='flexwrapper'><span>Start Date:</span><span><input class='textinput' type='date' id='qstart' value=''  /><select style='width:55px;' id='qstartt'></select><select style='width:55px;' id='qstartm'></select></span></div>
+              <div class='flexwrapper'><span>Deadline 1:</span><span><input class='textinput' type='date' id='deadline' value=''  /><select style='width:55px;' id='deadlinet'></select><select style='width:55px;' id='deadlinem'></select></span></div>
   						<div class='flexwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
-              <div class='flexwrapper'><span>Deadline 2:</span><span><input class='' type='date' id='deadline2' value='' style='width:125px;font-family:"arial narrow";' /><select style='width:55px;' id='deadlinet2'></select><select style='width:55px;' id='deadlinem2'></select></span></div>
+              <div class='flexwrapper'><span>Deadline 2:</span><span><input class='textinput' type='date' id='deadline2' value=''  /><select style='width:55px;' id='deadlinet2'></select><select style='width:55px;' id='deadlinem2'></select></span></div>
   						<div class='flexwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
-              <div class='flexwrapper'><span>Deadline 3:</span><span><input class='' type='date' id='deadline3' value='' style='width:125px;font-family:"arial narrow";' /><select style='width:55px;' id='deadlinet3'></select><select style='width:55px;' id='deadlinem3'></select></span></div>
+              <div class='flexwrapper'><span>Deadline 3:</span><span><input class='textinput' type='date' id='deadline3' value=''  /><select style='width:55px;' id='deadlinet3'></select><select style='width:55px;' id='deadlinem3'></select></span></div>
   						<div class='flexwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
-              <div class='flexwrapper'><span>Result release:</span><span><input class='' type='date' id='release' value='' style='width:125px;font-family:"arial narrow";' /><select style='width:55px;' id='releaset'></select><select style='width:55px;' id='releasem'></select></span></div>
+              <div class='flexwrapper'><span>Result release:</span><span><input class='textinput' type='date' id='release' value=''  /><select style='width:55px;' id='releaset'></select><select style='width:55px;' id='releasem'></select></span></div>
         		</div>
-        		<div style='padding:5px;display:flex;justify-content:space-between'>
-        			<input id='closeDugga' class='submit-button' style='' type='button' value='Cancel' onclick='closeWindows();' />
-        			<input id='saveDugga' class='submit-button' style='' type='button' value='Save' onclick='updateDugga();' />
+        		<div style='padding:5px;display:flex;justify-content: flex-end'>
+        			<input id='saveDugga' class='submit-button' type='button' value='Save' onclick='updateDugga();' />
         		</div>
         </div>
   	</div>
@@ -214,13 +215,12 @@ pdoConnect();
                 </fieldset>
               </div>
             </div>
-            <div id='buttonVariantDiv' style='display:flex;justify-content:space-between'>
-              <input id='closeVariant' class='submit-button' style='' type='button' value='Close' onclick='closeWindows();'>
+            <div id='buttonVariantDiv' style='display:flex;justify-content: flex-end'>
               <div style='display:flex;justify-content:flex-end'>
-                  <input id='submitVariant' class='submit-button' style='' type='button' value='Create' onclick='createVariant();'>
-                  <input id='saveVariant' class='submit-button' style='' type='button' value='Update' onclick='updateVariant("0");'>
-                  <input id='disableVariant' class='submit-button disableEnable' style='' type='button' value='Disable' onclick='updateVariant("1");'>
-                  <input id='enableVariant' class='submit-button disableEnable' style='' type='button' value='Enable' onclick='updateVariant("0");'>
+                  <input id='submitVariant' class='submit-button' type='button' value='Create' onclick='createVariant();'>
+                  <input id='saveVariant' class='submit-button' type='button' value='Update' onclick='updateVariant("0");'>
+                  <input id='disableVariant' class='submit-button disableEnable' type='button' value='Disable' onclick='updateVariant("1");'>
+                  <input id='enableVariant' class='submit-button disableEnable' type='button' value='Enable' onclick='updateVariant("0");'>
                   <!--<input id='cancelVariant' class='submit-button' style='display:block; float:right;' type='button' value='Cancel' onclick='newVariant(); removeVariantTableHighlights();'>-->
               </div>
             </div>

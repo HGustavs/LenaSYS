@@ -447,9 +447,8 @@ function SortableTable(param) {
 							sumContent[columnOrder[columnOrderIdx]] += sumFunc(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], row);
 						}
 
-						var cellid = "r" + i + DELIMITER + this.tableid + DELIMITER + columnOrder[columnOrderIdx];	
-						str += "<td style='white-space:nowrap;' id='" + cellid + "' onclick='clickedInternal(event,this);' class='" + this.tableid + "-" + columnOrder[columnOrderIdx] + "'>" + renderCell(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], cellid) + "</td>";
-
+						var cellid = "r" + i + DELIMITER + this.tableid + DELIMITER + columnOrder[columnOrderIdx];
+						str += "<td style='white-space:nowrap;' id='" + cellid + "' onclick='clickedInternal(event,this);' class='" + this.tableid + "-" + columnOrder[columnOrderIdx] + "'>" + renderCell(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], cellid) + "</td>";	
 
 						//Prints student name to mvh
 						if (columnOrderIdx < 1) {
@@ -774,7 +773,7 @@ function SortableTable(param) {
 		*/ 
 }
 
-	this.export = function (format, del) {
+	this.export = function (format, del, gradeData = "NONE") {
 		var str = "";
 
 		if (del === "undefined" || del === null) {
@@ -805,7 +804,7 @@ function SortableTable(param) {
 				if (columnfilter[columnOrderIdx] !== null) {
 					if (rendcnt !== 0)
 						str += del;
-					str += exportCell(format, row[colname], colname);
+					str += exportCell(format, row[colname], colname, gradeData);
 					rendcnt++;
 				}
 			}

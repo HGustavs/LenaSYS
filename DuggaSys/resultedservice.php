@@ -39,9 +39,10 @@ $coursevers=getOP('coursevers');
 $qvariant=getOP("qvariant");
 $quizId=getOP("quizId");
 $teacher = getOP('teacher');
-$gradeLastExported=getOP('gradeLastExported');
 $responsetext=getOP('resptext');
 $responsefile=getOP('respfile');
+$exportType = getOP('exportType');
+$getType = getOP('getType');
 $access = false;
 
 $duggaid = getOP('duggaid');
@@ -111,9 +112,21 @@ if($requestType == "mail" && checklogin() && (hasAccess($_SESSION['uid'], $cid, 
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 
 	// Check if opt == updateunexported
-	if ($opt === getunexported_service_name) {
-		$statement = $pdo->prepare("	UPDATE userAnswer SET gradeLastExported = :gradeLastExported");
-		$statement->bindParam(':gradeLastExported', $gradeLastExported);
+	if ($opt === updateunexported_service_name) {
+		$statement = "";
+
+		// Checks if the export was only unexported or if it exported everything
+		// If it only exported the unexported then update the specific grades.
+		// If it exported everything, them update everything.
+		if ($exportType === "restricted") {
+			$statement = $pdo->prepare("UPDATE userAnswer SET gradeLastExported = CURRENT_TIMESTAMP WHERE uid = :luid AND moment = :moment");
+			$statement->bindParam(":luid", $luid);
+			$statement->bindParam(":moment", $listentry);
+			$statement->execute();
+			return;
+		} else {
+			$statement = $pdo->prepare("UPDATE userAnswer SET gradeLastExported = CURRENT_TIMESTAMP");
+		}
 		
 		if ($statement === false) {
 			// Failed to prepare query, log and return an error message
@@ -137,8 +150,11 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			// Success, log and return results as JSON.
 			// get all rows with fields indexed only by the same names as
 			// they were addressed by in the query
-			$resultRows = $statement->fetchAll(PDO::FETCH_ASSOC);
-			echo json_encode($resultRows);
+
+			// Commented this out because it wasn't neccesary and to solve a little problem.
+			/*$resultRows = $statement->fetchAll(PDO::FETCH_ASSOC);
+			echo json_encode($resultRows);*/
+
 			// log success and exit
 			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' completed successfully';
 			logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php", $userid, $info);
@@ -157,7 +173,17 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		where marked is null or gradeLastExported is null or marked > gradeLastExported';
 
 		*/
-		$statement = $pdo->prepare("SELECT * FROM userAnswer");
+		
+		$statement = "";
+
+		// Checks if the get type is "ONLYDATE".
+		// If it is, then only get the rows with the latest gradeLastExported.
+		// If it's not, then get the unexported grades.
+		if ($getType === "ONLYDATE") {
+			$statement = $pdo->prepare("SELECT gradeLastExported FROM userAnswer WHERE gradeLastExported = (SELECT MAX(gradeLastExported) FROM userAnswer)");
+		} else {
+			$statement = $pdo->prepare("SELECT * FROM userAnswer WHERE gradeLastExported IS NULL OR marked IS NOT NULL AND gradeLastExported IS NOT NULL AND marked > gradeLastExported");
+		}
 		
 		if ($statement === false) {
 			// Failed to prepare query, log and return an error message
@@ -181,8 +207,21 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			// Success, log and return results as JSON.
 			// get all rows with fields indexed only by the same names as
 			// they were addressed by in the query
-			$resultRows = $statement->fetchAll(PDO::FETCH_ASSOC);
-			echo json_encode($resultRows);
+
+			$resultRows = $statement->fetchAll();
+			$resultRows = json_encode($resultRows);
+
+			// Check if the returned array has anything in it.
+			// If it does, then constinue as usual and forward the data to the next step.
+			// If it doesn't and the SELECT is not only asking for date,
+			// then forward the data anyway.
+			// Otherwise, don't forward any data.
+			if ($resultRows !== "[]") {
+				echo $resultRows;
+			} else if ($resultRows === "[]" && $getType !== "ONLYDATE") {
+				echo $resultRows;
+			}
+
 			// log success and exit
 			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' completed successfully';
 			logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php", $userid, $info);
@@ -210,10 +249,10 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$usergroups = current(current($usergroups));
 			$usergroups = rtrim($usergroups);
 			
-			$query = $pdo->prepare("SELECT user_course.uid FROM user_course WHERE user_course.groups LIKE :group and user_course.cid = :cid");
-			$usergroups = "%{$usergroups}%";
+			$query = $pdo->prepare("SELECT user_course.uid FROM user_course, userAnswer WHERE user_course.groups = :group and user_course.cid = :cid and userAnswer.quiz = :quizId and user_course.uid = userAnswer.uid");
 			$query->bindParam(':group', $usergroups);
 			$query->bindParam(':cid', $cid);
+			$query->bindParam(':quizId', $quizId);
 			$query->execute();
 			$users = $query->fetchAll(PDO::FETCH_ASSOC);
 			
@@ -224,9 +263,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					if($ukind=="U"){
 						if ($mark == "UNK"){
 							$mark = null;
-							$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NULL,timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+							$query = $pdo->prepare("UPDATE userAnswer SET seen_status=0, grade=:mark,creator=:cuser,marked=NULL,timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
 						} else {
-							$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+							$query = $pdo->prepare("UPDATE userAnswer SET seen_status=0, grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
 						}
 						$query->bindParam(':mark', $mark);
 						$query->bindParam(':cuser', $userid);
@@ -247,7 +286,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							$lentries=$mark;
 						}
 						if ($newDuggaFeedback != "UNK"){
-								$query = $pdo->prepare('UPDATE userAnswer SET feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
+								$query = $pdo->prepare('UPDATE userAnswer SET seen_status=0, feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
 								$newDuggaFeedback = date("Y-m-d h:i") . "%%" . $newDuggaFeedback;
 								$query->bindParam(':newDuggaFeedback', $newDuggaFeedback);
 								$query->bindParam(':cid', $cid);
@@ -298,7 +337,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							$duggaid=$listentry;
 							$lentries=$mark;
 							if ($newDuggaFeedback != "UNK"){
-								$query = $pdo->prepare('UPDATE userAnswer SET feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
+								$query = $pdo->prepare('UPDATE userAnswer SET seen_status=0, feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
 								$newDuggaFeedback = date("Y-m-d h:i") . "%%" . $newDuggaFeedback;
 								$query->bindParam(':newDuggaFeedback', $newDuggaFeedback);
 								$query->bindParam(':cid', $cid);
@@ -343,9 +382,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				if($ukind=="U"){
 					if ($mark == "UNK"){
 						$mark = null;
-						$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NULL,timesGraded=timesGraded ,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+						$query = $pdo->prepare("UPDATE userAnswer SET seen_status=0, grade=:mark,creator=:cuser,marked=NULL,timesGraded=timesGraded ,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
 					} else {
-						$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+						$query = $pdo->prepare("UPDATE userAnswer SET seen_status=0, grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
 					}
 					$query->bindParam(':mark', $mark);
 					$query->bindParam(':cuser', $userid);
@@ -364,7 +403,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 						$lentries=$mark;
 					}
 					if ($newDuggaFeedback != "UNK"){
-						$query = $pdo->prepare('UPDATE userAnswer SET feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
+						$query = $pdo->prepare('UPDATE userAnswer SET seen_status=0, feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
 						$newDuggaFeedback = date("Y-m-d h:i") . "%%" . $newDuggaFeedback;
 						$query->bindParam(':newDuggaFeedback', $newDuggaFeedback);
 						$query->bindParam(':cid', $cid);
@@ -417,7 +456,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 						$duggaid=$listentry;
 						$lentries=$mark;
 						if ($newDuggaFeedback != "UNK"){
-							$query = $pdo->prepare('UPDATE userAnswer SET feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
+							$query = $pdo->prepare('UPDATE userAnswer SET seen_status=0, feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
 							$newDuggaFeedback = date("Y-m-d h:i") . "%%" . $newDuggaFeedback;
 							$query->bindParam(':newDuggaFeedback', $newDuggaFeedback);
 							$query->bindParam(':cid', $cid);
@@ -459,6 +498,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					}
 				}
 			}
+        // Logging for mark a dugga
+        $description=$coursename." ".$coursecode." ".$duggaid." ".$mark." ".$duggauser;
+        logUserEvent($userid, $loginname, EventTypes::MarkedDugga, $description);
 		}
 
 	if(strcmp($opt,"DUGGA")==0){

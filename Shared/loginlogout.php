@@ -24,7 +24,7 @@ if($opt=="REFRESH"){
 	$password=getOP('password');
   
     // Login barrier
-    $maxLoginTries = 10;
+    $maxLoginTries = 3;
     $IP = getIP();
     $timeInterval = 10; // in minutes
 
@@ -72,14 +72,19 @@ if($opt=="REFRESH"){
 			}
 
 			// Log USERID for Dugga Access
-			logUserEvent($userid,EventTypes::LoginSuccess,"");
+			logUserEvent($userid, $username, EventTypes::LoginSuccess,"");
 
 		  }else{
 			addlogintry(); // If to many attempts has been commited, it will jump to this
 			// As login has failed we log the attempt
 
-			// Logging for failed login
-			logUserEvent($username,EventTypes::LoginFail,"");
+			// Logging for failed login, include guest id if guest cookie is set.
+			if(isset($_COOKIE["cookie_guest"])){
+				logUserEvent($username, $username, EventTypes::LoginFail, $_COOKIE["cookie_guest"]);
+			}
+			else{
+				logUserEvent($username, $username, EventTypes::LoginFail,"");
+			}
 		}
     }else{
 		$res = array("login" => "limit");
@@ -89,7 +94,7 @@ if($opt=="REFRESH"){
 	echo json_encode($res);
 }else{
 	//Adds a row to the logging table for the userlogout.
-	logUserEvent($_SESSION['uid'],EventTypes::Logout,"");
+	logUserEvent($_SESSION['uid'], $_SESSION['loginname'], EventTypes::Logout,"");
 
 	// Parts of Logout copied from http://stackoverflow.com/a/3948312 and slightly modified, licensed under cc by-sa
 	// unset all of the session variables.

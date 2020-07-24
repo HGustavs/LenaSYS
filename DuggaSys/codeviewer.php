@@ -20,64 +20,53 @@
 	$title = $exampleName;
 
     $css = array(
+        'markdown.css',
         'codeviewer.css',
         'style.css',
-        'markdown.css',
-        'jquery-ui-1.10.4.min.css'
+        'jquery-ui-1.10.4.min.css',
+				'blackTheme.css'
     );
-    
+
     $js = array(
         'jquery-1.11.0.min.js',
         'jquery-ui-1.10.4.min.js'
     );
-    
+
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title><?php echo $title; ?></title>
-		
-		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
-        <!--
-        <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-        <link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
-        <link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
-        <link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet" />
 
-        <script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
-        <script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-        <script type="text/javascript" src="../Shared/dugga.js"></script>
-        <script type="text/javascript" src="../Shared/markdown.js"></script>
-        <script type="text/javascript" src="codeviewer.js"></script>
-		-->
+		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
-        
+
         <?php
-        
+
             foreach($css as $filename) {
                 $filemtime = filemtime('../Shared/css/' . $filename);
                 echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
             }
-        
-  
+
+
             foreach($js as $filename) {
-                
+
                 $filemtime = filemtime('../Shared/js/' . $filename);
                 echo "<script type='text/javascript' src='../Shared/js/$filename?$filemtime'  />";
                 echo "</script>";
             }
- 
+
             $filemtime = filemtime('../Shared/dugga.js');
             echo "<script type='text/javascript' src='../Shared/dugga.js?$filemtime'>";
             echo "</script>";
-        
+
             $filemtime = filemtime('../Shared/markdown.js');
             echo "<script type='text/javascript' src='../Shared/markdown.js?$filemtime'>";
             echo "</script>";
-                    
+
             $filemtime = filemtime('codeviewer.js');
             echo "<script type='text/javascript' src='codeviewer.js?$filemtime'>";
             echo "</script>";
@@ -138,7 +127,7 @@ Testing Link:
 		<!-- content START -->
 		<div id="content">
 		<?php
-          
+
 			$exampleid = getOPG('exampleid');
 			$courseID = getOPG('courseid');
 			$cvers = getOPG('cvers');
@@ -148,7 +137,7 @@ Testing Link:
 			$query->bindParam(':exampleid', $exampleid);
 			$query-> execute();
 			$row = $query -> fetch(PDO::FETCH_ASSOC);
-			$public=$row['public'];	// Gets the info if the course are in public mode.
+			$public = $row['public'] ?? false;	// Gets the info if the course are in public mode.
 			$noup="SECTION"; 	// Is called for in Shared/navheader.php, used to call for generic Home/Backbuttons
 			$codeviewer = true;	// Is used in navheader.php@line52: Makes it possible to view the content in the code example. If codeviewer is allocated "false" then one of the error message is gong to be presented.
 			$codeviewerkind=false;	// Is used in navheader.php@line61/62: This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes, the user have the rights. Codeviewerkind is in use in navheader.php to make the settings button visible.
@@ -161,12 +150,12 @@ Testing Link:
 				$userid="00";		// Guest ID is intentionally different from registered users, it begins with a double-zero to indicate guest
 			}
 
-			// Gets username based on uid
+			// Gets username based on uid, USED FOR LOGGING
 			$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
 			$query->bindParam(':uid', $userid);
 			$query-> execute();
 
-			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
+			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
 			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 				$username = $row['username'];
 			}
@@ -175,27 +164,27 @@ Testing Link:
 					// Cookie for guest username is not present, send a guest cookie to user.
 					$username = "Guest" . $userid . rand(0,50000);  // Guests have a random number between 0 and 50k added, this means there's a very small chance some guests have the same ID. These are only used for logging at the moment so this should not be an issue
 					setcookie("cookie_guest", $username, time() + 3600, "/");
-					
+
 				}
 			}
 			else{
 				// refreshes session cookies, thereby extending the time before users sees the alert or get logged out
-				// refreshes takes place when navigating to codeviewer.php, courseed.php, and sectioned.php 
+				// refreshes takes place when navigating to codeviewer.php, courseed.php, and sectioned.php
 				setcookie("sessionEndTime", "expireC", time() + 2700, "/"); // Alerts user in 45min
 				setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends session in 60min, user gets logged out
 			}
-			
-			//	FOR TESTING:	uncomment line below to see log output of #username, 
+
+			//	FOR TESTING:	uncomment line below to see log output of #username,
 			//echo "<script>console.log('Debug Objects: " . $_COOKIE["cookie_guest"] . "' );</script>";
 
 			// Logs users who view example, along with the example they have viewed
 			if ($userid == "00") {
 				$description=$exampleid." ".$courseID." ".$cvers;
-				logUserEvent($_COOKIE["cookie_guest"], EventTypes::DuggaRead, $description);
+				logUserEvent($_COOKIE["cookie_guest"], "guest", EventTypes::DuggaRead, $description);
 			}
 			else{
 				$description=$exampleid." ".$courseID." ".$cvers;
-				logUserEvent($userid, EventTypes::DuggaRead, $description);
+				logUserEvent($userid, $username, EventTypes::DuggaRead, $description);
 			}
 
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
@@ -243,7 +232,7 @@ Testing Link:
 			if($codeviewer) echo "<div id='div2'>If this text remains this means there is an uncaught error. Please contact the administrators</div>";
 			echo "</div>";
         ?>
-            
+
         </div>
 		<!-- Dropdowns START -->
 		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'>Backw</div><span id='backwdropc'>oii</span></span>
@@ -280,7 +269,7 @@ Testing Link:
 						<tr>
 							<td><select id='fontsize'><?php for($i = 9; $i <= 22; $i++) echo '<option value="' . $i . '">' . $i .' px</option>'; ?></select></td>
 							<td>&nbsp;</td>
-						
+
 						</tr>
 						<tr>
 							<td>Important Rows:</td>
@@ -369,12 +358,12 @@ Testing Link:
 		<div id="burgerMenu"></div>
 		<div id="underlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;opacity:0.6;background-color:#000; z-index:8000;"></div>
 
-		
+
 
 		<!-- Template Choosing Box -->
 		<?php
 			// Adding page logging
-			logExampleLoadEvent($courseID, $exampleid, EventTypes::pageLoad);
+			logExampleLoadEvent($courseID, $userid, $username, $exampleid, EventTypes::pageLoad);
 
 			include '../Shared/loginbox.php';
 		?>
@@ -385,9 +374,9 @@ Testing Link:
             <div style="cursor:pointer;" onclick="hideIframe();">x</div>
         </div>
 	<iframe id="iframeFileed"style="width:100%;height:90vh;"src=""></iframe>
-           
+
     </div>
-	
+
 </div>
 
 	</body>

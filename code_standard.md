@@ -31,7 +31,7 @@ Execution Order
 
 /********************************************************************************
 
-   Globals <-- Next are globals - properly declared with var
+   Globals <-- Next are globals - properly declared with var or const
 
 *********************************************************************************/
 
@@ -69,6 +69,7 @@ function returned(data) <-- Returned function should exist and work the same in 
 {	 <-- brackets on same level as function keyword but on the next line
 		test=2; <-- wrong since variable test is not declared using var
 		let test2 = ""; <-- wrong since let is not supported by older browsers, should use var when declaring variables
+		const pi = 3.14; <-- to make constants even though let is not used for code consistency
 		if(retdata['debug']!="NONE!") alert(retdata['debug']); <-- only for very short code we allow single line if-statements and never allow else with single line if-statements
 		
 		// User can choose template if no template has been choosen and the user has write access.

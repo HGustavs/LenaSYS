@@ -52,6 +52,16 @@ if(isset($_SESSION['uid'])){
 	$userid="UNK";
 }
 
+// Gets username based on uid. USED FOR LOGGING
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+	$username = $row['username'];
+}
+
 //  Handle files! One by one  -- if all is ok add file name to database
 //  login for user is successful & has either write access or is superuser
 $filo=print_r($_FILES,true);
@@ -419,7 +429,7 @@ if($ha){
 									$error=true;
 								}
                          $discription = $filetype." ".$fname;
-                         logUserEvent($userid,EventTypes::DuggaFileupload,$discription);
+                         logUserEvent($userid, $username, EventTypes::DuggaFileupload,$discription);
 						}
 				}
 

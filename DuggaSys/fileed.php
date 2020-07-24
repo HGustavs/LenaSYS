@@ -1,22 +1,33 @@
 <?php
+// Start the session
+session_start();
 
 include_once "../../coursesyspw.php";
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
 
-// Connect to database and start session
-session_start();
+// Connect to database
 pdoConnect();
 
 $cid = getOPG('courseid');
 
-echo("<script>console.log('PHP: " . $cid . "');</script>");
 $query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
 $query->bindParam(':cid', $cid);
 $query->execute();
 
 $codeLinkQuery = $pdo->prepare( "SELECT filename, fileid, cid FROM fileLink");
 $codeLinkQuery->execute();
+
+$css = array(
+	'style.css',
+	'jquery-ui-1.10.4.min.css',
+	'markdown.css',
+);
+
+$js = array(
+	'jquery-1.11.0.min.js',
+	'jquery-ui-1.10.4.min.js'
+);
 
 ?>
 
@@ -29,16 +40,34 @@ $codeLinkQuery->execute();
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
     <title>File editor</title>
-    <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-    <link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet">
-    <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-    <script src="../Shared/js/jquery-1.11.0.min.js"></script>
-    <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-    <script src="../Shared/dugga.js"></script>
-    <script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
-    <script src="fileed.js"></script>
-    <script src="../Shared/markdown.js"></script>
-    <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+    
+	<?php
+		foreach($css as $filename) {
+			$filemtime = filemtime('../Shared/css/' . $filename);
+			echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'/>";
+		}
+	
+		foreach($js as $filename) {
+			$filemtime = filemtime('../Shared/js/' . $filename);
+			echo "<script type='text/javascript' src='../Shared/js/$filename?$filemtime'/></script>";
+		}
+
+		$filemtime = filemtime('../Shared/dugga.js');
+		echo "<script type='text/javascript' src='../Shared/dugga.js?$filemtime'></script>";
+				
+		$filemtime = filemtime('../Shared/markdown.js');
+		echo "<script type='text/javascript' src='../Shared/markdown.js?$filemtime'></script>";
+    
+		$filemtime = filemtime('../Shared/SortableTableLibrary/sortableTable.js');
+		echo "<script type='text/javascript' src='../Shared/SortableTableLibrary/sortableTable.js?$filemtime'></script>";
+    
+        $filemtime = filemtime('fileed.js');
+		echo "<script type='text/javascript' src='fileed.js?$filemtime'></script>";
+    
+        $filemtime = filemtime('ace.js');
+		echo "<script type='text/javascript' src='ace.js?$filemtime'></script>";
+	?>
+    
 </head>
 <body onload="setup();">
     <?php
@@ -51,9 +80,16 @@ $codeLinkQuery->execute();
 	<!-- content START -->
     <div id="content">
         <div id='searchBarMobile' style='margin-bottom:15px;'>
-            <input id='searchinputMobile' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);fileLink.reRender();document.getElementById("searchinput").value=document.getElementById("searchinputMobile").value;'/>
+        <div id='tooltip-mobile' class="tooltip-searchbar">
+					<div class="tooltip-searchbar-box">
+                            <b>Keywords:</b> File name, File type <br> 
+                            <b>Ex:</b> html, example1
+					</div>
+					<span>?</span>
+				</div>
+            <input id='searchinputMobile' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();document.getElementById("searchinput").value=document.getElementById("searchinputMobile").value;'/>
 
-            <button id='searchbuttonMobile' class='switchContent' onclick='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);fileLink.reRender();' type='button'>
+            <button id='searchbuttonMobile' class='switchContent' onclick='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();' type='button'>
                 <img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
             </button>
         </div>
@@ -63,33 +99,43 @@ $codeLinkQuery->execute();
         <!-- insert here -->
         <div class="err" id="fileerror0">
         <?php 
-        if($_GET['errortype'] == "extension") {
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "Extension \"" . $_GET['errorvar'] . "\" not allowed.\n";
-        }
-        else if($_GET['errortype'] == "nofile"){
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "No file found - check upload_max_filesize and post_max_size in php.ini.";
-        }
-        else if($_GET['errortype'] == "movefile"){
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "Error moving file ";
-        }
-        else if($_GET['errortype'] == "updatefile"){
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "Error updating filesize and uploaddate: \"" . $_GET['errorvar'] . "\"";
-        }
-        else if($_GET['errortype'] == "uploadfile"){
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "Error updating file entries \"" . $_GET['errorvar'] . "\"";
-        }
-        else if($_GET['errortype'] == "noaccess"){
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "Access denied, you do not have the rights.";
-        }
-        else {
-            echo '<style>#fileerror0{ display:none; }</style>';
-        }
+		$noerrors = true;
+		if(isset($_GET['errortype'])){
+			if($_GET['errortype'] == "extension") {
+				echo'<style>#fileerror0{ display:block; }</style>';
+				echo "Extension \"" . $_GET['errorvar'] . "\" not allowed.\n";
+				$noerrors = false;
+			}
+			else if($_GET['errortype'] == "nofile"){
+				echo'<style>#fileerror0{ display:block; }</style>';
+				echo "No file found - check upload_max_filesize and post_max_size in php.ini.";
+				$noerrors = false;
+			}
+			else if($_GET['errortype'] == "movefile"){
+				echo'<style>#fileerror0{ display:block; }</style>';
+				echo "Error moving file ";
+				$noerrors = false;
+			}
+			else if($_GET['errortype'] == "updatefile"){
+				echo'<style>#fileerror0{ display:block; }</style>';
+				echo "Error updating filesize and uploaddate: \"" . $_GET['errorvar'] . "\"";
+				$noerrors = false;
+			}
+			else if($_GET['errortype'] == "uploadfile"){
+				echo'<style>#fileerror0{ display:block; }</style>';
+				echo "Error updating file entries \"" . $_GET['errorvar'] . "\"";
+				$noerrors = false;
+			}
+			else if($_GET['errortype'] == "noaccess"){
+				echo'<style>#fileerror0{ display:block; }</style>';
+				echo "Access denied, you do not have the rights.";
+				$noerrors = false;
+			}
+		}
+		if($noerrors) {
+			echo '<style>#fileerror0{ display:none; }</style>';
+		}
+		
      
         ?>
         </div>
@@ -145,12 +191,15 @@ $codeLinkQuery->execute();
                     <input type='hidden' id='kind' name='kind' value='Toddler'/>
                     <div class='inputwrapper filePopUp'>
                         <span>Upload File:</span>
-                        <input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple"/>
+                        <input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" placeholder="hej.text"/>
+                        
                         <div class="fileUploadInfo">
                             <h1>Allowed Files</h1>
                             <p>PDF, HTML, PHP, MD, TXT, JS, JPG, PNG</p>
                         </div>
                     </div>
+                    
+                    
                     <div class='inputwrapper linkPopUp'>
                         <span>URL:</span>
                         <input style="width:380px" id="uploadedlink" class="textinput" name="link"
@@ -160,18 +209,39 @@ $codeLinkQuery->execute();
                 <div id='uploadbuttonname'>
                     <input class='submit-button fileed-submit-button' type="submit" onclick="uploadFile(fileKind);"/>
                 </div>
-
                 <div style='display:none;' id='errormessage'></div>
             </form>
 
            </div>
             <div id="createNewEmptyFile" style="display: none;">
-                <form action="#" method="POST">
+                <form enctype="multipart/form-data" action="filereceive.php" method="POST" onsubmit="return validateDummyFile();">
+                    <input type='hidden' id='ecourseid' name='courseid' value='Toddler'/>
+                    <input type='hidden' id='ecoursevers' name='coursevers' value='Toddler'/>
+                    <input type='hidden' id='ekind' name='kind' value='Toddler'/>
                     <label for="newEmptyFile">File name and type e.g greger.txt</label>
-                    <input type="text" id="newEmptyFile" name="newEmptyFile" placeholder="Greger.txt">
-
-                    <input type="submit" name="createBtn" value="Create">
-
+                    <!-- .svg| -->
+                    <ul style="padding-left: 0px; list-style-type: none; display: none;" id="dummyFileErrorList"></ul>
+                    <input type="text" id="newEmptyFile" name="newEmptyFile[]" placeholder="Greger.txt">
+                    <span id="spankind">Kind:</span>
+                    <select name ="efilekind[]" id="selectdir">
+                    <?php
+                    if(isSuperUser($_SESSION['uid'])){
+                        echo '
+                            <option value="GFILE">Global</option>
+                           
+                        ';
+                    }
+                    if(isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w')){
+                    echo '
+                    <option value="MFILE">Course Local</option>
+                    <option value="LFILE">Version Local</option>
+                    ';
+                    }
+                    ?>
+                    <select>
+                    <div id='uploadbuttonname'>
+                        <input type="submit" style="position: relative; top:25px;" onclick="uploadFile('EFILE');"/>
+                    </div>
                 </form>
             </div>
 
@@ -269,7 +339,7 @@ $codeLinkQuery->execute();
                 </div>
 
                 <div class="markdownPrev">
-                    <fieldset id="markPrevSet" style="overflow:scroll;">
+                    <fieldset id="markPrevSet">
                         <legend id="markPrev">Markdown preview</legend>
                         <div class="markTextPrev">
                             <div class="prevSpan">
@@ -279,8 +349,11 @@ $codeLinkQuery->execute();
                         </div>
                     </fieldset>
                 </div>
-                <button class="save-close-button-md" type="submit" onclick="saveMarkdown()">Save</button>
-                <button class="save-close-button-md" onclick="cancelPreview()">Close</button>
+               
+                <button class="save-button-md" type="submit" onclick="saveMarkdown()">Save</button>
+                <button class="close-button-md" onclick="cancelPreview()">Close</button>
+           
+
             </div>
             <div class="editFilePart">
                 <div class="editFileWindow">

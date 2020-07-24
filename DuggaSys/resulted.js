@@ -30,6 +30,7 @@ var duggaArray = [[]];
 var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
+var legendIsHidden = true;
 
 function setup() {
     //Benchmarking function
@@ -37,11 +38,8 @@ function setup() {
     window.onscroll = function () {
 
 	};
-	
-	if (typeof localStorage.getItem("lastExpDate") != undefined) {
-		document.getElementById('lastExportedDate').innerHTML = localStorage.getItem("lastExpDate");
-	}
 
+	AJAXService("getunexported", { getType: "ONLYDATE" }, "GEXPORT");
     AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
@@ -187,14 +185,17 @@ function process() {
 	var dstr = "";
 
 	// Sorting
+	dstr += "<div id='sortLeft'>";
 	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'>";
 	dstr += "<input type='radio' class='headercheck' name='sortdir' value='0' ' onclick='sorttype(-1)' id='sortdirAsc'><label class='headerlabel' for='sortdirAsc'>Sort Ascending</label>";
-	dstr += "<input name='sortdir' type='radio' class='headercheck' value='1' ' onclick='sorttype(-1)' id='sortdirDes'> <label class='headerlabel' for='sortdirDes'>Sort descending</label>";
+	dstr += "<br>";
+	dstr += "<input name='sortdir' type='radio' class='headercheck' value='1' ' onclick='sorttype(-1)' id='sortdirDes'><label class='headerlabel' for='sortdirDes'>Sort descending</label>";
 	dstr += "<div><input name='sortdir' type='radio' class='headercheck' value='2' ' onclick='sorttype(-1)' id='sortdirPen'><label class='headerlabel' for='sortdirPen'>Sort Pending</label></div></div>";
-  dstr += "<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
+    dstr += "<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
 	dstr += "<div class='checkbox-dugga'style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
+	dstr += "</div>";
 
-	dstr += "<table><tr><td>";
+	dstr += "<div id='sortRight'><table ><tr><td>";
 	for (var j = 0; j < momtmp.length; j++) {
 		var lid = moments[j].lid;
 		var name = momtmp[j].entryname;
@@ -212,7 +213,7 @@ function process() {
 		}
 	}
 	dstr += "</td><td style='vertical-align:top;'>";
-	dstr += "</td></tr></table>";
+	dstr += "</td></tr></table></div>";
 	document.getElementById("dropdowns").innerHTML = dstr;
 }
 
@@ -686,12 +687,32 @@ function returnedResults(data) {
 // Success return function for LadExport lastGraded
 //----------------------------------------
 function returnedExportedGrades(gradeData){
+	// Tries to write out the last exported date.
+	// Also checks if the object is undefined.
+	// If it's undefined then show the popup.
+	// If it's not, try to write out the gradeLastExported value.
+	// If this fails, then log the error.
 	try {
-		document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;
-	  }
-	  catch(err) {
-		console.log("gradeLastExported updated in database");
-	  }
+		if (typeof gradeData[0] === 'undefined') {
+			// Show the "gradeExportPopUp" div and insert the message.
+			document.getElementById("gradeExportPopUp").style.display = "block";
+			document.getElementById("exportPopUpMessage").innerHTML = "There are no unexported grades";
+		} else {
+			if (typeof gradeData[0].gradeLastExported !== 'undefined') {
+				document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
+				document.getElementById('lastExportedDate').innerHTML = gradeData[0].gradeLastExported;
+
+				// Checks if gardeData has more values than just gradeLastExported.
+				// If it has, then call ladExport again.
+				// This is to avoid a call loop.
+				if (typeof gradeData[0].uid !== 'undefined') {
+					ladexport(gradeData);
+				}
+			}
+		}
+	} catch (error) {
+		console.log(error);
+	}
 }
 var myTable;
 //----------------------------------------
@@ -784,25 +805,36 @@ function renderCell(col, celldata, cellid) {
 	gradeFilterHandler();
 	// Render minimode
 	if (filterList["minimode"]) {
+		var unassignedCheck = false;
 		// First column (Fname/Lname/SSN)
 		if (col == "FnameLname") {
 			str = "<div class='resultTableCell resultTableMiniLeft'>";
 			str += "<div class='resultTableText'>";
 			str += celldata.firstname + " " + celldata.lastname;
+			str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 			str += "</div>";
 			str += "</div>";
 			return str;
+
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
 			str = "<div class='resultTableCell resultTableMini ";
 			if (celldata.kind == 4) {
 				str += "dugga-moment ";
 			}
+			else if (celldata.grade != null) {
+				// do nothing for the purpose of being able to generate styling for empty cells
+			}
+			else {
+				str += "dugga-empty-mini ";
+			}
+
 			if (celldata.grade > 1) {
 				str += "dugga-pass";
-			} else if (celldata.submittedts <= celldata.deadlinets) {
+			} else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) {
+						
 				str += "dugga-pending";
-			} else if (celldata.kind != 4 && celldata.submittedts > celldata.deadlinets) {
+			} else if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 				str += "dugga-pending-late-submission";
 			} else if (celldata.grade === 1) {
 				str += "dugga-fail";
@@ -810,22 +842,228 @@ function renderCell(col, celldata, cellid) {
 				str += "dugga-assigned";
 			} else {
 				str += "dugga-unassigned";
+				unassignedCheck = true;
 			}
+			
 			str += "'>";
 			str += "</div>";
+			if(filterList["onlyPending"] || filterList["passedDeadline"]){
+				str = "<div class='resultTableCell resultTableMini ";
+			
+				if(celldata.kind== 4 && unassignedCheck){
+				str += "dugga-moment dugga-unassigned '>";
+				
+				}
+
+				else if(filterList["onlyPending"] && filterList["passedDeadline"]){
+					
+					if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
+						str += "dugga-pending ";
+					}else if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+						str += "dugga-pending-late-submission ";
+					} else {
+						str += "dugga-empty-mini";
+					}
+					str += "'>";
+				}
+
+				else if(filterList["onlyPending"]){
+					// color based on pending
+					if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
+						str += "dugga-pending ";
+					} else {
+						str += "dugga-empty-mini";
+					}
+					str += "'>";	
+				}
+
+				else if(filterList["passedDeadline"]){
+					// color based on pending
+					if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+						str += "dugga-pending-late-submission ";
+					} else {
+						str += "dugga-empty-mini";
+					}
+					str += "'>";
+				}
+
+			}
 			return str;
 		}
 		// Render passed deadline duggas
-	} else if(filterList["onlyPending"]){
-		// First column (Fname/Lname/SSN)
-		if (col == "FnameLname") {
-			str = "<div class='resultTableCell resultTableNormal'>";
-			str += "<div class='resultTableText'>";
-			str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
-			str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
-			str += "</div>";
+	}
+	// Render normal mode
+	// First column (Fname/Lname/SSN)
+	if (col == "FnameLname") {
+		str = "<div class='resultTableCell resultTableNormal'>";
+		str += "<div class='resultTableText'>";
+		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
+		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
+		str += "<div>" + hideSSN(celldata.ssn) + "</div>";
+		str += "</div>";
+		return str;
+
+	} else if (filterGrade === "none" || celldata.grade === filterGrade) {
+		var unassignedCheck = false;
+		// color based on pass,fail,pending,assigned,unassigned
+		str = "<div class='resultTableCell ";
+		if (celldata.kind == 4) {
+			str += "dugga-moment ";
+		}
+		else if (celldata.grade != null) {
+			// do nothing for the purpose of being able to generate styling for empty cells
+		}
+		else {
+			str += "dugga-empty ";
+		}
+		if (celldata.grade > 1) {
+			str += "dugga-pass";
+		} else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) {
+			str += "dugga-pending";
+		} else if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+			str += "dugga-pending-late-submission";
+		} else if (celldata.grade === 1) {
+			str += "dugga-fail";
+		} else if (celldata.grade === 0 || isNaN(celldata.grade)) {
+			str += "dugga-assigned";
+		} else {
+			str += "dugga-unassigned";
+			unassignedCheck = true;		
+		}
+		if(unassignedCheck){
+			str += "' style='height:74px;'>";
+		}else{
+			str += "' style='padding:12px;'>";
+		}
+		if(filterList["onlyPending"] || filterList["passedDeadline"]){
+			// First column (Fname/Lname/SSN)
+			if (col == "FnameLname") {
+				str = "<div class='resultTableCell resultTableNormal'>";
+				str += "<div class='resultTableText'>";
+				str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
+				str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
+				str += "</div>";
+				return str;
+			}
+	if (celldata.kind ==4 &&unassignedCheck){
+		console.log(isNaN(celldata.grade));
+		str = "<div style='height:74px;' class='resultTableCell ";
+		str += "dugga-moment dugga-unassigned'>"
+	}
+	else if (celldata.kind ==4 && !unassignedCheck){
+		console.log(isNaN(celldata.grade));
+		str = "<div style='padding:12px;' class='resultTableCell ";
+		str += "dugga-empty'>"
+	} 
+	
+	else if(filterList["onlyPending"] && filterList["passedDeadline"]){
+		if (filterGrade === "none" || celldata.grade === filterGrade) {
+			// color based on pass,fail,pending,assigned,unassigned
+			str = "<div style='padding:12px;' class='resultTableCell ";
+			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
+				str += "dugga-pending ";
+			}else if(celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline){
+				str += "dugga-pending-late-submission";
+			}else {
+				str += "dugga-empty";
+			}
+
+			str += "'>";
+			// Creation of grading buttons
+			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
+				str += "<div class='gradeContainer resultTableText'>";
+				if (celldata.grade === null) {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+				} else if (celldata.grade === -1) {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+				} else {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+				}
+				str += "<img id='korf' class='fist";
+				if ((celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) || celldata.quizfile == null) { // Always shows fist. Should be re-evaluated
+					str += " grading-hidden";
+				}
+				str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
+				str += "/>";
+				//Print times graded
+				str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
+				if (celldata.timesGraded !== 0) {
+					str += '(' + celldata.timesGraded + ')';
+				}
+				str += "</div>";
+				str += "</div>";
+
+				// Print submitted time and change color to red if passed deadline
+				str += "<div class='text-center resultTableText'>";
+				if (celldata.submitted.getTime() !== timeZero.getTime()) {
+					str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+				}
+				for (var p = 0; p < moments.length; p++) {
+					if (moments[p].link == celldata.quizId) {
+						if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+							str += "<img src='../Shared/icons/warningTriangle.svg' style='width:12px;height:12px;' title='Late submission'>";
+						}
+						break;
+					}
+				}
+				str += "</div>";
+			}else if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+				str += "<div class='gradeContainer resultTableText'>";
+				if (celldata.grade === null) {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+				} else if (celldata.grade === -1) {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+				} else {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+				}
+				str += "<img id='korf' class='fist";
+				if ((celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) || celldata.quizfile == null) { // Always shows fist. Should be re-evaluated
+					str += " grading-hidden";
+				}
+				str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
+				str += "/>";
+				//Print times graded
+				str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
+				if (celldata.timesGraded !== 0) {
+					str += '(' + celldata.timesGraded + ')';
+				}
+				str += "</div>";
+				str += "</div>";
+
+				// Print submitted time and change color to red if passed deadline
+				str += "<div class='text-center resultTableText'";
+				for (var p = 0; p < moments.length; p++) {
+					if (moments[p].link == celldata.quizId) {
+						if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+								str += " style='color:red;'";
+							}
+							break;
+						}
+					}
+				str += ">";
+
+				if (celldata.submitted.getTime() !== timeZero.getTime()) {
+					str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+				}
+					
+				for (var p = 0; p < moments.length; p++) {
+					if (moments[p].link == celldata.quizId) {
+						if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+							str += "<img src='../Shared/icons/warningTriangle.svg' style='width:12px;height:12px;' title='Late submission'>";
+						}
+						break;
+					}
+				}
+				str += "</div>";
+				}
 			return str;
-		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
+		}
+		
+
+	}else if(filterList["onlyPending"]){
+		// First column (Fname/Lname/SSN)
+		
+		if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
 			str = "<div style='padding:12px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
@@ -876,128 +1114,22 @@ function renderCell(col, celldata, cellid) {
 			}
 			return str;
 		}
-	}
 
+	}		
 	else if(filterList["passedDeadline"]){
-				// First column (Fname/Lname/SSN)
-			if (col == "FnameLname") {
-				str = "<div class='resultTableCell resultTableNormal'>";
-				str += "<div class='resultTableText'>";
-				str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
-				str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
-				str += "</div>";
-				return str;
-			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
-				// color based on pass,fail,pending,assigned,unassigned
-				str = "<div style='padding:12px;' class='resultTableCell ";
-				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
-					str += "dugga-pending-late-submission";
-				} else {
-					str += "dugga-empty";
-				}
-				
-				str += "'>";
-				// Creation of grading buttons
-				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
-					str += "<div class='gradeContainer resultTableText'>";
-					if (celldata.grade === null) {
-						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
-					} else if (celldata.grade === -1) {
-						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
-					} else {
-						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
-					}
-					str += "<img id='korf' class='fist";
-					if ((celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) || celldata.quizfile == null) { // Always shows fist. Should be re-evaluated
-						str += " grading-hidden";
-					}
-					str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
-					str += "/>";
-					//Print times graded
-					str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
-					if (celldata.timesGraded !== 0) {
-						str += '(' + celldata.timesGraded + ')';
-					}
-					str += "</div>";
-					str += "</div>";
-
-					// Print submitted time and change color to red if passed deadline
-					str += "<div class='text-center resultTableText'";
-					for (var p = 0; p < moments.length; p++) {
-						if (moments[p].link == celldata.quizId) {
-							if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
-								str += " style='color:red;'";
-							}
-							break;
-						}
-					}
-					str += ">";
-
-					if (celldata.submitted.getTime() !== timeZero.getTime()) {
-						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
-					}
-					
-					for (var p = 0; p < moments.length; p++) {
-						if (moments[p].link == celldata.quizId) {
-							if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
-								str += "<img src='../Shared/icons/warningTriangle.svg' style='width:12px;height:12px;' title='Late submission'>";
-							}
-							break;
-						}
-					}
-					str += "</div>";
-				}
-				return str;
+		
+		if (filterGrade === "none" || celldata.grade === filterGrade) {
+			// color based on pass,fail,pending,assigned,unassigned
+			str = "<div style='padding:12px;' class='resultTableCell ";
+			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+				str += "dugga-pending-late-submission";
+			} else {
+				str += "dugga-empty";
 			}
-	}
-
-	// Render normal mode
-	// First column (Fname/Lname/SSN)
-	if (col == "FnameLname") {
-		str = "<div class='resultTableCell resultTableNormal'>";
-		str += "<div class='resultTableText'>";
-		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
-		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
-		str += "<div>" + hideSSN(celldata.ssn) + "</div>";
-		str += "</div>";
-		return str;
-
-	} else if (filterGrade === "none" || celldata.grade === filterGrade) {
-		var unassignedCheck = false;
-		// color based on pass,fail,pending,assigned,unassigned
-		str = "<div class='resultTableCell ";
-		if (celldata.kind == 4) {
-			str += "dugga-moment ";
-		}
-		else if (celldata.grade != null) {
-			// do nothing for the purpose of being able to generate styling for empty cells
-		}
-		else {
-			str += "dugga-empty ";
-		}
-		if (celldata.grade > 1) {
-			str += "dugga-pass";
-		} else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) {
-			str += "dugga-pending";
-		} else if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
-			str += "dugga-pending-late-submission";
-		} else if (celldata.grade === 1) {
-			str += "dugga-fail";
-		} else if (celldata.grade === 0 || isNaN(celldata.grade)) {
-			str += "dugga-assigned";
-		} else {
-			str += "dugga-unassigned";
-			unassignedCheck = true;
-		}
-		if(unassignedCheck){
-			str += "' style='height:74px;'>";
-		}else{
-			str += "' style='padding:12px;'>";
-		}
-
-		// Creation of grading buttons
-		if (celldata.ishere === true || celldata.kind == 4) {
-			if(!unassignedCheck){
+				
+			str += "'>";
+			// Creation of grading buttons
+			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 				str += "<div class='gradeContainer resultTableText'>";
 				if (celldata.grade === null) {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
@@ -1012,12 +1144,67 @@ function renderCell(col, celldata, cellid) {
 				}
 				str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
 				str += "/>";
-			}else{
+				//Print times graded
+				str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
+				if (celldata.timesGraded !== 0) {
+					str += '(' + celldata.timesGraded + ')';
+				}
+				str += "</div>";
+				str += "</div>";
+
+				// Print submitted time and change color to red if passed deadline
+				str += "<div class='text-center resultTableText'";
+				for (var p = 0; p < moments.length; p++) {
+					if (moments[p].link == celldata.quizId) {
+						if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+								str += " style='color:red;'";
+							}
+							break;
+						}
+					}
+				str += ">";
+
+				if (celldata.submitted.getTime() !== timeZero.getTime()) {
+					str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+				}
+					
+				for (var p = 0; p < moments.length; p++) {
+					if (moments[p].link == celldata.quizId) {
+						if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+							str += "<img src='../Shared/icons/warningTriangle.svg' style='width:12px;height:12px;' title='Late submission'>";
+						}
+						break;
+					}
+				}
+				str += "</div>";
+				}
+			return str;
+			}
+	}
+}
+		// Creation of grading buttons
+		if (celldata.ishere === true || celldata.kind == 4) {
+			if(!unassignedCheck && (!filterList["onlyPending"] && !filterList["passedDeadline"])){
+				str += "<div class='gradeContainer resultTableText'>";
+				if (celldata.grade === null) {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+				} else if (celldata.grade === -1) {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+				} else {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+				}
+				str += "<img id='korf' class='fist";
+				if ((celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) || celldata.quizfile == null) { // Always shows fist. Should be re-evaluated
+					str += " grading-hidden";
+				}
+				str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
+				str += "/>";
+			}else if(unassignedCheck){
 				str += "<div class='text-center resultTableText' style='padding-top: 30px;'>Unassigned</div>"
 			}
 			//Print times graded
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
-			if (celldata.timesGraded !== 0 && typeof(celldata.timesGraded) != 'undefined') {
+			if (celldata.timesGraded !== 0 && typeof(celldata.timesGraded) != 'undefined' && (!filterList["onlyPending"] && !filterList["passedDeadline"])) {
 				str += '(' + celldata.timesGraded + ')';
 			}
 			str += "</div>";
@@ -1035,7 +1222,7 @@ function renderCell(col, celldata, cellid) {
 			}
 			str += ">";
 
-			if (celldata.submitted.getTime() !== timeZero.getTime() && !isNaN(celldata.submitted.getTime())) {
+			if (celldata.submitted.getTime() !== timeZero.getTime() && !isNaN(celldata.submitted.getTime()) && (!filterList["onlyPending"] && !filterList["passedDeadline"])) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 			} else if (!unassignedCheck && celldata.submitted.getTime() === timeZero.getTime()) {
 				str += "Not submitted";
@@ -1167,16 +1354,49 @@ function rowFilter(row) {
 		return false;
 	if(!filterList["showStudents"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != 0)
 		return false;
-	if (filterList["onlyPending"]) {
-		var rowPending = false;
-		for (var colname in row) {
-			if (colname != "FnameLname" && row[colname]["needMarking"] == true) {
-				rowPending = true;
-				break;
+	// Filters to display only rows where Duggas that have been submitted after deadline and/or duggas that are pending and needs to be graded
+	if (filterList["passedDeadline"] || filterList["onlyPending"] ){
+	// Filters to display only rows where Duggas that have been submitted after deadline AND duggas that are pending and needs to be graded
+		if (filterList["passedDeadline"] && filterList["onlyPending"] ) {
+			var rowPending = false;
+			for (var colname in row) {
+				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] > row[colname]["deadline"] ) {
+					rowPending = true;
+					break;
+				} else if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] < row[colname]["deadline"] ) {
+					rowPending = true;
+					break;
+				}
+			}
+			if (!rowPending) {
+				return false;
 			}
 		}
-		if (!rowPending) {
-			return false;
+		// Filters to display only rows where duggas are pending and needs to be graded
+		else if (filterList["onlyPending"]) {
+			var rowPending = false;
+			for (var colname in row) {
+				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] < row[colname]["deadline"]) {
+					rowPending = true;
+					break;
+				}
+			}
+			if (!rowPending) {
+				return false;
+			}
+		}
+		// Filters to display only rows where Duggas that have been submitted after deadline
+		else if (filterList["passedDeadline"]) {
+			var rowPending = false;
+			for (var colname in row) {
+				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] > row[colname]["deadline"] ) {
+					rowPending = true;
+					break;
+				}
+			}
+			if (!rowPending) {
+				return false;
+			}
 		}
 	}
 	var teacherDropdown = document.getElementById("teacherDropdown").value;
@@ -1403,7 +1623,7 @@ function onToggleFilter(colId) {
 
 }
 
-function exportCell(format, cell, colname) {
+function exportCell(format, cell, colname, gradeData = "NONE") {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
@@ -1424,14 +1644,36 @@ function exportCell(format, cell, colname) {
 					str = "-";
 				} else {
 					if (cell.gradeSystem === 1 || cell.gradeSystem === 2) {
-						if (cell.grade === 1) {
-							str = "U";
-						} else if (cell.grade === 2) {
-							str = "G";
-						} else if (cell.grade === 3) {
-							str = "VG";
+						// Checks if there data in "gradeData".
+						// If there is, then loop through the array and write out the correct grade.
+						// If there is not, then write out the grades as usual.
+						if (gradeData !== "NONE") {
+							for (var i = 0; i < gradeData.length; i++) {
+								if (cell.uid == gradeData[i].uid && cell.lid == gradeData[i].moment) {
+									if (cell.grade === 1) {
+										str = "U";
+									} else if (cell.grade === 2) {
+										str = "G";
+									} else if (cell.grade === 3) {
+										str = "VG";
+									} else {
+										str = "-";
+									}
+									return str;
+								} else {
+									str = "-";
+								}
+							}
 						} else {
-							str = "-";
+							if (cell.grade === 1) {
+								str = "U";
+							} else if (cell.grade === 2) {
+								str = "G";
+							} else if (cell.grade === 3) {
+								str = "VG";
+							} else {
+								str = "-";
+							}
 						}
 					} else {
 						str = "UNK";
@@ -1471,34 +1713,49 @@ function exportColumnHeading(format, heading, colname) {
 //----------------------------------------
 
 //Function for exporting grades to ladoc
-function ladexport() {
+function ladexport(gradeData = "NONE") {
+	// Checks if the exportType is restricted.
+	// If it is, then ask for data from the database.
+	// If not, then continue as normal.
+	if (document.getElementById("exportType").value === "restricted" && gradeData === "NONE") {
+		AJAXService("getunexported", {}, "GEXPORT");
+	} else {
 	let expo = "";
 
 	expo += document.getElementById("ladselect").value + "\n";
 	expo += document.getElementById("ladgradescale").value + "\n";
 	expo += document.getElementById("laddate").value + "\n";
-	expo += myTable.export("csv", ";");
+	// Checks if there's data in gradeData.
+	// If there's data in gradeData, then write out the grades depending on the data.
+	// If there's not, then just write out all the grades.
+	if (gradeData !== "NONE") {
+		expo += myTable.export("csv", ";", gradeData);
+	} else {
+		expo += myTable.export("csv", ";");
+	}
 
-	//alert(expo);
 	document.getElementById("resultlistheader").innerHTML = "Results for: " + document.getElementById("ladselect").value;
 	document.getElementById("resultlistarea").value = expo;
 	document.getElementById("resultlistpopover").style.display = "flex";
 
-	var today = new Date();
-	var dd = addZero(today.getDate());
-	var mm = addZero(today.getMonth() + 1); //January is 0!
-	var yyyy = today.getFullYear();
-	var time = addZero(today.getHours()) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds());
+	// Remove the date that's in the last exported date span to avoid confusion.
+	document.getElementById("lastExpDate").innerHTML = "";
 
-	today = yyyy + '-' + mm + '-' + dd;
+	 // Check if "gradeData" is the default value
+	 // If it's not, then loop through and update the specific grades that have been exported.
+	 // If it is, then just update everything.
+	 if (gradeData !== "NONE") {
+		for (var i = 0; i < gradeData.length; i++) {
+			console.log(gradeData[i].uid + " " + gradeData[i].moment);
+			AJAXService("updateunexported", { exportType: "restricted", luid: gradeData[i].uid, moment: gradeData[i].moment }, "GEXPORT");
+		}
+	 } else {
+		AJAXService("updateunexported", {}, "GEXPORT");
+	 }
 
-	 var gradeLastExported = today + " " + time;
-	 lastExpDate.innerHTML =  gradeLastExported;
-	 document.getElementById('lastExportedDate').innerHTML = gradeLastExported;
-
-	 localStorage.setItem('lastExpDate', gradeLastExported);
-
-	AJAXService("getunexported", {}, "GEXPORT");
+	 // Get the lastExportedDate from the database.
+	 AJAXService("getunexported", { getType: "ONLYDATE" }, "GEXPORT");
+	}
 }
 
 function copyLadexport() {
@@ -1522,17 +1779,12 @@ function copyLadexport() {
 	today = yyyy + '-' + mm + '-' + dd;
 
 	 var gradeLastExported = today + " " + time;
-	 lastExpDate.innerHTML =  gradeLastExported;
+	 lastExpDate.innerHTML = gradeLastExported;
 	 lastExpDate.style.color = 'green';
 
 	 setInterval(function(){
 		lastExpDate.style.color  = '#000';
 	 }, 5000);
-
-	AJAXService("updateunexported", {
-		gradeLastExported: gradeLastExported,
-	}, "GEXPORT");
-
 }
 
 function addZero(i) {
@@ -1568,10 +1820,16 @@ $(window).scroll(function() {
 	var resultTableWidth = document.getElementById("resultTable___tbl").offsetWidth;
 	var ladExportWidth = document.getElementById("resultedFormContainer").offsetWidth;
 	var scrolled = $(this).scrollLeft();
-	if((scrolled + ladExportWidth) < resultTableWidth){
+	var legendBox = $('#resultedLegendContainer');
+	var $win = $(window);
+	if((scrolled + ladExportWidth) <= resultTableWidth){
 		$('#resultedFormContainer').css({
 			'transform': 'translateX(' + scrolled +'px'+ ')'
 		});
+		legendBox.css("top", "103px");
+	}
+	if ($(window).scrollTop() == 0){
+		legendBox.css("top", "80px");
 	}
 });
 
@@ -1581,6 +1839,21 @@ function hideSSN(ssn){
 	return hiddenSSN;
 }
 
+
+// Function that makes it possible to click on the div to close and open it 
+document.addEventListener('mouseup', function(e) {
+    var legendDiv = document.getElementById('resultedLegendContainer');
+    var legendBtn = document.getElementById('legendBtn');
+    if (legendDiv.contains(e.target) || legendBtn.contains(e.target)) {
+        if (legendIsHidden == true) {
+            legendDiv.style.right = "0px";
+            legendIsHidden = false;
+        } else {
+            legendDiv.style.right = "-323px";
+            legendIsHidden = true;
+        }
+    }
+  });
 
 function compare(firstCell, secoundCell) {
 	let col = myTable.getSortcolumn(); // Get column name

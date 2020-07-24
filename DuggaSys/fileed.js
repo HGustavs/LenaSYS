@@ -32,23 +32,7 @@ var editor;
 var filedata;
 
 function setup() {
-    /*
-    var filt = "";
-    // Add search bar to nav
-    filt += `<td id='searchBar' class='navButt'>`;
-    filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
-    filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
-    filt += `<button id='searchbutton' class='switchContent'`;
-    filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
-    filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
-    filt += `</button></td>`;
-
-    $("#menuHook").before(filt);
-    */
-    
-    AJAXService("GET", {
-        cid: querystring['courseid']
-    }, "FILE");
+    AJAXService("GET", { cid: querystring['courseid'] }, "FILE");
 }
 
 window.onresize = function () {
@@ -59,6 +43,7 @@ $(document).on('click', '.last', function (e) {
     e.stopPropagation();
 });
 
+/*
 $(function () {
     $("#release").datepicker({
         dateFormat: "yy-mm-dd"
@@ -67,6 +52,7 @@ $(function () {
         dateFormat: "yy-mm-dd"
     });
 });
+*/
 
 //----------------------------------------------------------------------------
 // Renderer
@@ -115,7 +101,6 @@ function returnedFile(data) {
         hasCounterColumn: true
     });
 
-
     myTable.renderTable();
     if (querystring['confirmation'] != undefined) {
         $(".confirmationWindow").css("display", "block");
@@ -149,18 +134,20 @@ function showFilePopUp(fileKind) {
     $(".linkPopUp").css("display", "none");
     $("#createNewEmptyFile").css("display", "none");
     $(".addNewFile").css("display", "block");
-
+    $('#uploadedfile').attr('type', 'file');
     if (fileKind == "MFILE") {
         $("#mFileHeadline").css("display", "block");
+        $(".testselect").css("display", "none");
     } else if (fileKind == "LFILE") {
         $("#lFileHeadline").css("display", "block");
+        $(".testselect").css("display", "none");
     } else if (fileKind == "GFILE") {
         $("#gFileHeadline").css("display", "block");
+        $(".testselect").css("display", "none");
     }else if(fileKind == "EFILE"){
         $("#eFileHeadline").css("display", "block");
-        $(".addNewFile").css("display", "none");
         $("#createNewEmptyFile").css("display", "block");
-
+        $(".addNewFile").css("display", "none");
     }
 }
 
@@ -179,6 +166,16 @@ function uploadFile(kind) {
             if (item != ".." && item != ".") str += "<option>" + item + "</option>";
         }
         $("#selectedfile").html(str);
+    } else if (kind == "EFILE") {
+        var str = "<option>NONE</option>";
+        for (i = 0; i < filez['gfiles'].length; i++) {
+            var item = filez['gfiles'][i];
+            if (item != ".." && item != ".") str += "<option>" + item + "</option>";
+        }
+        $("#ekind").val(kind);
+        $("#ecourseid").val(querystring['courseid']);
+        $("#ecoursevers").val(querystring['coursevers']);
+        $("#selectedfile").html(str); 
     } else if (kind == "LFILE" || kind == "LINK") {
         $("#selecty").css("display", "none");
     }
@@ -193,8 +190,6 @@ function closeAddFile() {
 }
 
 function closePreview() {
-    /*$(".previewWindow").css("display","none");
-    $(".previewWindowContainer").css("display", "none");*/
     $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
 }
@@ -217,6 +212,87 @@ function hoverSearch() {
 //stops displaying the dropdown when removing cursor from search bar
 function leaveSearch() {
     $('#dropdownSearch').css({ display: 'none' });
+}
+
+//------------------------------------------------------------------
+// validateDummyFile <- Validates the name and extension of the file
+//------------------------------------------------------------------
+function validateDummyFile() {
+    var allowedExtensions = [
+        "txt",
+        "html",
+        "java",
+        "xml",
+        "js",
+        "css",
+        "php",
+        "sr",
+        "md",
+        "sql",
+        "md",
+        "py",
+        "bat",
+        "xsl"
+    ];
+
+    var filterSymbols = [
+        "<",
+        ">",
+        ":",
+        ",",
+        "|",
+        "*",
+        "?",
+        "=",
+        "\"",
+        "/",
+        "\\"
+    ];
+
+    var errors = [];
+    var name = document.getElementById("newEmptyFile").value;
+    name = name.trim();
+
+    // Get filename
+    var filename = name.substring(0, name.indexOf("."));
+    if (filename.length == 0)
+        errors.push("Invalid filename");
+
+    // Get extension
+    var extension = name.substring(name.lastIndexOf(".") + 1);
+
+    // Check if extension is valid
+    if (!allowedExtensions.includes(extension))
+        errors.push("Invalid extension: ." + extension)
+
+    // Check for invalid characters
+    for (var i = 0; i < name.length; i++) {
+        if (filterSymbols.includes(name[i])) 
+            errors.push("Invalid character at position " + (i + 1) + ": " + name[i]);
+    }
+
+    var list = document.getElementById("dummyFileErrorList");
+
+    if (errors.length > 0) {
+        list.innerHTML = "";
+        list.style.display = "block";
+
+        // Add error message title
+        var liTop = document.createElement('li');
+        liTop.innerHTML = "Errors found:".bold();
+        liTop.style.color = "rgb(199, 80, 80)";
+        list.append(liTop)
+
+        for (var i = 0; i < errors.length; i++) {
+            var li = document.createElement('li');
+            li.innerHTML = errors[i];
+            list.append(li);
+        }
+
+        return false;
+    }
+
+    return true;
 }
 
 //------------------------------------------------------------------
@@ -351,20 +427,19 @@ function filePreviewClose(){
 document.addEventListener('keydown', function (event) {
     var fileview = document.querySelector(".fileView");
     if (event.key === 'Escape') {
-      $(".fileViewContainer").hide();
-      $(".fileViewWindow").hide();
-      while(fileview.firstChild){
-        fileview.removeChild(fileview.firstChild);
+        $(".fileViewContainer").hide();
+        $(".fileViewWindow").hide();
+        while (fileview.firstChild) {
+            fileview.removeChild(fileview.firstChild);
         }
     }
-  })
+});
 
 //---------------------------------------------------------------------------------------------
 //sortAndFilterTogether <- callback function sort and filter files by its kind and search input
 //---------------------------------------------------------------------------------------------
 function sortAndFilterTogether(){
-  filterFilesByKind(sortFilter.kind);
-
+    filterFilesByKind(sortFilter.kind);
 }
 var sortFilter = {
     fileKind : "",
@@ -632,16 +707,15 @@ function deleteFile(fileid, filename, filekind) {
     };
 
     if (confirm("Do you really want to delete the file/link: " + filename)) {
-        AJAXService("DELFILE", tempData
-        , "FILE");
+        AJAXService("DELFILE", tempData, "FILE");
     }
-    /*Reloads window when deleteFile has been called*/
-    window.location.reload(true);
 }
 
+/*
 function createQuickItem() {
     //showFilePopUp('MFILE');
 }
+*/
 
 /*****************************************************************
   loadFile(), editFile(), cancelEditFile() and closeEditFile()
@@ -671,7 +745,6 @@ function loadFile(fileUrl, fileNamez, fileKind) {
 }
 
 function returnFile(data) {
-   
     document.getElementById("filecont").innerHTML = data;
     updateAce(data);
     $(".fileName").html(fileName);
@@ -723,13 +796,6 @@ function saveTextToFile() {
     $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
     
-}
-
-function validatePreviewForm() {
-    if (document.getElementById("cID").value == "Toddler") {
-        return false;
-    }
-    return true;
 }
 
 function setfileCarotPosition() {
