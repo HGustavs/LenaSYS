@@ -703,10 +703,12 @@ function loadPageInformation() {
 
         for (var i = 0; i < data['percentage'][page].length; i++) {
 			numberOfCourses = parseInt(data['percentage'][page].length);
-
-			var cid = data['percentage'][page][i].refer.match('.+?cid=([0-9]+)');
-			if(cid != null) {
-				data['percentage'][page][i].courseid = cid[1];
+			
+			if(data['percentage'][page][i].refer != null){
+				var cid = data['percentage'][page][i].refer.match('.+?cid=([0-9]+)');
+				if(cid != null) {
+					data['percentage'][page][i].courseid = cid[1];
+				}
 			}
 
 			courseID.push([
@@ -898,7 +900,7 @@ function loadUserInformation(){
       var users = {};
       $.each(data, function(i, row) {
 				var user = row.username;
-        
+
         if (!users.hasOwnProperty(user)) {
           users[user] = [["User ID", "Username",  "Course ID", "Course Version", "Subscribed at"]];
 				}
@@ -915,7 +917,7 @@ function loadUserInformation(){
             updateState(users);
         });
 	}
- 
+
     function updateSectionedInformation(){
 		hasCounter = true;
         loadAnalytics("sectionedInformation", function(data) {
@@ -948,7 +950,7 @@ function loadUserInformation(){
 			var users = {};
       $.each(data, function(i, row) {
 			  var user = row.username;
-        
+
         if (!users.hasOwnProperty(user)) {
           users[user] = [["Userid", "Username", "Page", "Timestamp"]];
 				}
@@ -1258,7 +1260,7 @@ function loadUserInformation(){
 				var pageParts;
 				var pageLoad;
 
-				//Retrives the page 
+				//Retrives the page
 				if(row.refer.includes("/DuggaSys/")){
 					pageParts = row.refer.split("/DuggaSys/");
 					pageLoad = pageParts[1];
@@ -1295,7 +1297,7 @@ function loadUserInformation(){
 				var pageParts;
 				var pageLoad;
 
-				//Retrives the page 
+				//Retrives the page
 				if(row.refer.includes("/DuggaSys/")){
 					pageParts = row.refer.split("/DuggaSys/");
 					pageLoad = pageParts[1];
@@ -1333,7 +1335,7 @@ function loadUserInformation(){
 				var pageParts;
 				var pageLoad;
 
-				//Retrives the page 
+				//Retrives the page
 				if(row.refer.includes("/DuggaSys/")){
 					pageParts = row.refer.split("/DuggaSys/");
 					pageLoad = pageParts[1];
