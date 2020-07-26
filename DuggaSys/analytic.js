@@ -898,7 +898,7 @@ function loadUserInformation(){
       var users = {};
       $.each(data, function(i, row) {
 				var user = row.username;
-        
+
         if (!users.hasOwnProperty(user)) {
           users[user] = [["User ID", "Username",  "Course ID", "Course Version", "Subscribed at"]];
 				}
@@ -915,7 +915,7 @@ function loadUserInformation(){
             updateState(users);
         });
 	}
- 
+
     function updateSectionedInformation(){
 		hasCounter = true;
         loadAnalytics("sectionedInformation", function(data) {
@@ -948,7 +948,7 @@ function loadUserInformation(){
 			var users = {};
       $.each(data, function(i, row) {
 			  var user = row.username;
-        
+
         if (!users.hasOwnProperty(user)) {
           users[user] = [["Userid", "Username", "Page", "Timestamp"]];
 				}
@@ -1258,7 +1258,7 @@ function loadUserInformation(){
 				var pageParts;
 				var pageLoad;
 
-				//Retrives the page 
+				//Retrives the page
 				if(row.refer.includes("/DuggaSys/")){
 					pageParts = row.refer.split("/DuggaSys/");
 					pageLoad = pageParts[1];
@@ -1295,7 +1295,7 @@ function loadUserInformation(){
 				var pageParts;
 				var pageLoad;
 
-				//Retrives the page 
+				//Retrives the page
 				if(row.refer.includes("/DuggaSys/")){
 					pageParts = row.refer.split("/DuggaSys/");
 					pageLoad = pageParts[1];
@@ -1333,7 +1333,7 @@ function loadUserInformation(){
 				var pageParts;
 				var pageLoad;
 
-				//Retrives the page 
+				//Retrives the page
 				if(row.refer.includes("/DuggaSys/")){
 					pageParts = row.refer.split("/DuggaSys/");
 					pageLoad = pageParts[1];
@@ -1841,9 +1841,23 @@ function timeSince(date) {
     return a[0] + ' ' + a[1] + (a[0] === 1 ? '' : 's') + suffix;
   }
 
-	function isDarkMode() {
-	  return (
-	    window.matchMedia &&
-	    window.matchMedia("(prefers-color-scheme: dark)").matches
-	  );
-	}
+const darkModeMatcher =
+	window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+
+function isDarkMode() {
+  return darkModeMatcher && darkModeMatcher.matches;
+}
+
+function onDarkModeChange(callback) {
+  if (!darkModeMatcher) {
+    return;
+  }
+
+  darkModeMatcher.addListener(({ matches }) => callback(matches));
+}
+
+function reloadPage(){
+	location.reload();
+}
+
+onDarkModeChange(reloadPage);
