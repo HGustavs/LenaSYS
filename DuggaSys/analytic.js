@@ -665,10 +665,9 @@ function loadPageInformation() {
 		.append('<option value="fileed">fileed</option>')
 		.append('<option value="profile">profile</option>')
 		.append('<option value="resulted">resulted</option>')
-        .append('<option value="showDugga" selected>showDugga</option>')
-        .append('<option value="accessed">profile</option>')
+    .append('<option value="showDugga" selected>showDugga</option>')
 		.append('<option value="sectioned">sectioned</option>')
-        .appendTo($('#analytic-info'));
+    .appendTo($('#analytic-info'));
 
     function updatePageHitInformation(pages, page){
         loadAnalytics("pageInformation", function(data) {
@@ -898,7 +897,7 @@ function loadUserInformation(){
       var users = {};
       $.each(data, function(i, row) {
 				var user = row.username;
-        
+
         if (!users.hasOwnProperty(user)) {
           users[user] = [["User ID", "Username",  "Course ID", "Course Version", "Subscribed at"]];
 				}
@@ -915,7 +914,7 @@ function loadUserInformation(){
             updateState(users);
         });
 	}
- 
+
     function updateSectionedInformation(){
 		hasCounter = true;
         loadAnalytics("sectionedInformation", function(data) {
@@ -948,7 +947,7 @@ function loadUserInformation(){
 			var users = {};
       $.each(data, function(i, row) {
 			  var user = row.username;
-        
+
         if (!users.hasOwnProperty(user)) {
           users[user] = [["Userid", "Username", "Page", "Timestamp"]];
 				}
@@ -1258,7 +1257,7 @@ function loadUserInformation(){
 				var pageParts;
 				var pageLoad;
 
-				//Retrives the page 
+				//Retrives the page
 				if(row.refer.includes("/DuggaSys/")){
 					pageParts = row.refer.split("/DuggaSys/");
 					pageLoad = pageParts[1];
@@ -1295,7 +1294,7 @@ function loadUserInformation(){
 				var pageParts;
 				var pageLoad;
 
-				//Retrives the page 
+				//Retrives the page
 				if(row.refer.includes("/DuggaSys/")){
 					pageParts = row.refer.split("/DuggaSys/");
 					pageLoad = pageParts[1];
@@ -1333,7 +1332,7 @@ function loadUserInformation(){
 				var pageParts;
 				var pageLoad;
 
-				//Retrives the page 
+				//Retrives the page
 				if(row.refer.includes("/DuggaSys/")){
 					pageParts = row.refer.split("/DuggaSys/");
 					pageLoad = pageParts[1];
