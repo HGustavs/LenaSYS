@@ -7010,3 +7010,33 @@ function sortLayer(){
 function diagramCompare(a,b){
     return (a.isLayerLocked === b.isLayerLocked)? 0 : a.isLayerLocked? -1 : 1;
 }
+
+//---------------------------------------------------------------------------------------------------------------------------------------------
+// rotateFreeDraw: rotates all the vectors of the freedraw object
+//---------------------------------------------------------------------------------------------------------------------------------------------
+
+function rotateFreeDraw() {
+    //--------------------------
+    // 1. Select the Object
+    //--------------------------
+
+    var selObject = diagram[lastSelectedObject];
+
+    if(selObject.figureType == "Free") {
+        //--------------------------
+        // 2. Determine Theta
+        //--------------------------
+
+        //Currently preset to 30 degree
+        var theta = 30;
+
+        //--------------------------
+        // 3. Rotate Vectors
+        //--------------------------
+
+        //Rotation Clockwise by THETA degrees
+        for(var i = 0; i < selObject.segments.length; i++) {
+            selObject.rotateFreeDraw(theta, i);
+        }
+    }
+}

@@ -2740,7 +2740,7 @@ function Symbol(kindOfSymbol) {
             y: pixelsToCanvas(0, (y2 - (y2-y1)/2)).y};
     }
 
-
+    
 }
 //--------------------------------------------------------------
 //checkLineIntersection: checks if any two lines does intersect
@@ -3278,7 +3278,7 @@ function Path() {
             if (strokestate) {
                 ctx.stroke();
             }
-
+            
             for(var i = 0; i < this.segments.length; i++) {
                 var seg = points[this.segments[i].pa];
                 var segb = points[this.segments[i].pb];
@@ -3569,6 +3569,122 @@ function Path() {
         }, new Set());
 
         return [...points];
+    }
+
+    //---------------------------------------------------------
+    // rotateFreeDraw: Rotates the vectors of a free draw object
+    //---------------------------------------------------------
+
+    this.rotateFreeDraw = function(theta, array) {
+
+        console.log("----------------");
+        //Determining Origo
+        var origoX = this.minX + ((this.maxX - this.minX) / 2);
+        var origoY = this.minY + ((this.maxY - this.minY) / 2);
+        // Selecting the vector and add it to a temporary graph 
+        // relative to the center of the object (Aka Origo)
+        selVector = this.segments[array];
+        var tempVector = {
+            x : null ,
+            y : null
+        };
+        tempVector.x = points[selVector.pa].x - origoX;
+        tempVector.y = points[selVector.pa].y - origoY;
+
+        console.log(tempVector.x + " " + tempVector.y);
+
+        //Determining Origo
+        var origoX = this.minX + ((this.maxX - this.minX) / 2);
+        var origoY = this.minY + ((this.maxY - this.minY) / 2);
+
+        //Determine the distance between O and V into h
+        h = (tempVector.x * tempVector.x) + (tempVector.y * tempVector.y);
+        h = Math.sqrt(h);
+
+        //console.log(h);
+
+        //Calculating the rotation
+        if(theta >= 0) {
+            //Clockwise
+            console.log("Clockwise");
+
+            //Bottom right
+            if(tempVector.x >= 0 && tempVector.y >= 0) {
+                console.log("Bottom right");
+                // Sin theta * h
+                var d = Math.atan(tempVector.y / tempVector.x);
+                d = d * (180/ Math.PI);
+                console.log(d - theta);
+
+                if(d - theta >= 0) {
+                    var tempX = Math.sin((d-theta) * Math.PI / 180 ) * h;
+                    var tempY = Math.cos((d-theta) * Math.PI / 180 ) * h;
+
+                    console.log(tempX + " " + tempY);
+                    tempVector.x = tempX;
+                    tempVector.y = tempY;
+                } else {
+                    console.log("Extra");
+
+                    var tempX = Math.sin((d-theta) * Math.PI / 180 ) * h;
+                    var tempY = Math.cos((d-theta) * Math.PI / 180 ) * h;
+                    console.log(tempX + " " + tempY);
+                }
+            } 
+            //Top right
+            else if (tempVector.x >= 0 && tempVector.y < 0) {
+                console.log("Top Right");
+                var d = Math.atan(tempVector.y / tempVector.x);
+                d = d * (180/ Math.PI);
+                console.log(d - theta);
+
+                if(d - theta <= 0) {
+                    var tempX = Math.sin((d-theta) * Math.PI / 180 ) * h;
+                    var tempY = Math.cos((d-theta) * Math.PI / 180 ) * h;
+
+                    console.log(tempX + " " + tempY);
+                    tempVector.x = tempX * -1;
+                    tempVector.y = tempY * -1;
+                }
+            } 
+            //Top left
+            else if (tempVector.x < 0 && tempVector.y < 0) {
+                console.log("Top Left");
+                var d = Math.atan(tempVector.y / tempVector.x);
+                d = d * (180/ Math.PI);
+                console.log(d - theta);
+
+                if(d - theta >= 0) {
+                    var tempX = Math.sin((d-theta) * Math.PI / 180 ) * h;
+                    var tempY = Math.cos((d-theta) * Math.PI / 180 ) * h;
+
+                    console.log(tempX + " " + tempY);
+                    tempVector.x = tempX * -1;
+                    tempVector.y = tempY * -1;
+                } 
+            } 
+            // Bottom Left
+            else if (tempVector.x < 0 && tempVector.y >= 0) {
+                console.log("Bottom Left");
+
+                var d = Math.atan(tempVector.y / tempVector.x);
+                d = d * (180/ Math.PI);
+                console.log(d - theta);
+
+                if(d - theta <= 0) {
+                    var tempX = Math.sin((d-theta) * Math.PI / 180 ) * h;
+                    var tempY = Math.cos((d-theta) * Math.PI / 180 ) * h;
+
+                    console.log(tempX + " " + tempY);
+                    tempVector.x = tempX;
+                    tempVector.y = tempY;
+                }
+            }
+        }
+
+        //Set the vectors
+        points[this.segments[array].pa].x = tempVector.x + origoX;
+        points[this.segments[array].pa].y = tempVector.y + origoY;
     }
 }
 
