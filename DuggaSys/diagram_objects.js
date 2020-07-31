@@ -3576,8 +3576,6 @@ function Path() {
     //---------------------------------------------------------
 
     this.rotateFreeDraw = function(theta, array) {
-
-        console.log("----------------");
         //Determining Origo
         var origoX = this.minX + ((this.maxX - this.minX) / 2);
         var origoY = this.minY + ((this.maxY - this.minY) / 2);
@@ -3591,8 +3589,6 @@ function Path() {
         tempVector.x = points[selVector.pa].x - origoX;
         tempVector.y = points[selVector.pa].y - origoY;
 
-        console.log(tempVector.x + " " + tempVector.y);
-
         //Determining Origo
         var origoX = this.minX + ((this.maxX - this.minX) / 2);
         var origoY = this.minY + ((this.maxY - this.minY) / 2);
@@ -3601,81 +3597,64 @@ function Path() {
         h = (tempVector.x * tempVector.x) + (tempVector.y * tempVector.y);
         h = Math.sqrt(h);
 
-        //console.log(h);
-
         //Calculating the rotation
         if(theta >= 0) {
             //Clockwise
-            console.log("Clockwise");
 
             //Bottom right
             if(tempVector.x >= 0 && tempVector.y >= 0) {
-                console.log("Bottom right");
                 // Sin theta * h
                 var d = Math.atan(tempVector.y / tempVector.x);
                 d = d * (180/ Math.PI);
-                console.log(d - theta);
 
                 if(d - theta >= 0) {
                     var tempX = Math.sin((d-theta) * Math.PI / 180 ) * h;
                     var tempY = Math.cos((d-theta) * Math.PI / 180 ) * h;
 
-                    console.log(tempX + " " + tempY);
                     tempVector.x = tempX;
                     tempVector.y = tempY;
                 } else {
-                    console.log("Extra");
 
                     var tempX = Math.sin((d-theta) * Math.PI / 180 ) * h;
                     var tempY = Math.cos((d-theta) * Math.PI / 180 ) * h;
-                    console.log(tempX + " " + tempY);
                 }
             } 
             //Top right
             else if (tempVector.x >= 0 && tempVector.y < 0) {
-                console.log("Top Right");
                 var d = Math.atan(tempVector.y / tempVector.x);
                 d = d * (180/ Math.PI);
-                console.log(d - theta);
 
                 if(d - theta <= 0) {
                     var tempX = Math.sin((d-theta) * Math.PI / 180 ) * h;
                     var tempY = Math.cos((d-theta) * Math.PI / 180 ) * h;
 
-                    console.log(tempX + " " + tempY);
                     tempVector.x = tempX * -1;
                     tempVector.y = tempY * -1;
                 }
             } 
             //Top left
             else if (tempVector.x < 0 && tempVector.y < 0) {
-                console.log("Top Left");
                 var d = Math.atan(tempVector.y / tempVector.x);
                 d = d * (180/ Math.PI);
-                console.log(d - theta);
 
                 if(d - theta >= 0) {
                     var tempX = Math.sin((d-theta) * Math.PI / 180 ) * h;
                     var tempY = Math.cos((d-theta) * Math.PI / 180 ) * h;
-
-                    console.log(tempX + " " + tempY);
+                    
                     tempVector.x = tempX * -1;
                     tempVector.y = tempY * -1;
                 } 
             } 
             // Bottom Left
             else if (tempVector.x < 0 && tempVector.y >= 0) {
-                console.log("Bottom Left");
 
                 var d = Math.atan(tempVector.y / tempVector.x);
                 d = d * (180/ Math.PI);
-                console.log(d - theta);
-
+            
                 if(d - theta <= 0) {
                     var tempX = Math.sin((d-theta) * Math.PI / 180 ) * h;
                     var tempY = Math.cos((d-theta) * Math.PI / 180 ) * h;
-
-                    console.log(tempX + " " + tempY);
+                    
                     tempVector.x = tempX;
                     tempVector.y = tempY;
                 }
