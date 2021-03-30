@@ -7,6 +7,7 @@
   <script src="install_defer.js" defer></script>
 </head>
 <body>
+  <!-- Edit for demo issue 2021 -->
   <!-- Config Section -->
   <?php
     // Saving away old execution time setting and setting new to 120 (default is 30).
