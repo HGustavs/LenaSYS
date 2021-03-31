@@ -451,18 +451,14 @@
             <span id="errorMSG"></span>
         </div>
     </div>
-    <!-- LAKSJDLKASJDLKSAJLDKJALSKDJLKASJDLKAJSLKDJSLAJALKSD -->
-    <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)'>
-		THIS IS THE CONTAINER!
-		</div>
+
+    <!-- Diagram drawing system canvas. -->
+    <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)'></div> <!-- Contains all elements (items) -->
     <svg id="svgoverlay"  preserveAspectRatio="none">
    </svg>
-	
 	<canvas id='canvasOverlay'></canvas>
-
-    <div id="fab" onclick="fab_action();">+</div>
-
-    <div id="options-pane" class="hide-options-pane">
+    <div id="fab" onclick="fab_action();">+</div> <!-- Big (+) button -->
+    <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
         <div id="options-pane-content" >
             <div>
