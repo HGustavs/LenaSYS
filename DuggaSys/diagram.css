@@ -5,7 +5,7 @@
 						border:1px dotted green;
 						width:100%;
 						height:100%;
-				}				
+				}
 
 				#svgoverlay {
 						position:absolute;
@@ -15,7 +15,7 @@
 						width:100%;
 						height:100%;
             pointer-events: none;
-				}				
+				}
 
         #fab {
             position: fixed;
@@ -49,8 +49,8 @@
         #options-pane-button {
             display: inline-block;
             vertical-align: top;
-						transform-origin: top left;            
-						transform: translate(20px,0px) rotate(90deg);					
+						transform-origin: top left;
+						transform: translate(20px,0px) rotate(90deg);
         }
 
         #options-pane-content {
@@ -73,8 +73,8 @@
 
         .hide {
             display: none;
-        }	
-			
+        }
+
 			.element {
           font-size: small;
 					box-sizing: border-box;
@@ -84,7 +84,7 @@
 					position:absolute;
 					/*box-shadow:2px 2px 2px RGBA(0,0,0,0.3);*/
 			}
-			
+
 			#canvasOverlay{
 					pointer-events:none;
 					position:absolute;
@@ -93,7 +93,12 @@
 					width:100%;
 					height:100%;
 			}
-			
+
 			.selected-course {
-          box-shadow:10px 10px 10px RGBA(0,0,0,0.3);	
+          box-shadow:10px 10px 10px RGBA(0,0,0,0.3);
       }
+
+			#diagram-header{
+				z-index: 1;
+				position: relative;
+			}
