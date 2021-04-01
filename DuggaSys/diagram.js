@@ -240,11 +240,10 @@ function findIndex(arr,id)
 // Finds and sets an element's position
 //-------------------------------------------------------------------------------------------------
 function setPos(id, x, y) {
-    for (var i=0;i<data.length;i++) {
-        if (data[i].id==id) {
-            data[i].x-=(x/zoomfact);
-            data[i].y-=(y/zoomfact);
-        }
+    foundId = findIndex(data, id);
+    if(foundId != -1){
+        data[foundId].x-=(x/zoomfact);
+        data[foundId].y-=(y/zoomfact);
     }
 }
 
