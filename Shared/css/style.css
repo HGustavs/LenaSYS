@@ -98,11 +98,11 @@
 /*Styling for printing*/
 @media print {
 	@page { margin: 0; }
-	body { margin: 1.6cm; }
+	body { margin: 1.6cm; }	
 	#appearance,.loginBoxContainer importDiagram{
 	visibility: hidden;
 	}
-
+	
 	#canvasDiv{
 	position: absolute;
 	visibility: visible;
@@ -335,7 +335,7 @@ p {
 }
 
 .validationDialog {
-  font-size: 11px;
+  font-size: 11px; 
   border: 0px;
   margin-left: 25px;
   display:none;
@@ -356,15 +356,15 @@ p {
 }
 /*Announcement box*/
 #announcementBoxOverlay{
-  position: relative;
+  position: relative; 
   display: none;
   background-color:#fff;
-  z-index: 1004;
+  z-index: 1004; 
   left: 0;
   top: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
+  width: 100%; 
+  height: 100%; 
   overflow: auto;
   overflow-x: auto;
   font-family: 'Varela', sans-serif;
@@ -438,7 +438,7 @@ p {
 .announcementForm textarea{
   height: 150px;
   resize: none;
-
+  
 }
 .announcementForm input[type=text]:focus,
 .announcementForm textarea:focus {
@@ -499,12 +499,12 @@ p {
 }
 
 @-webkit-keyframes animatezoom {
-  from {-webkit-transform: scale(0)}
+  from {-webkit-transform: scale(0)} 
   to {-webkit-transform: scale(1)}
 }
-
+  
 @keyframes animatezoom {
-  from {transform: scale(0)}
+  from {transform: scale(0)} 
   to {transform: scale(1)}
 }
 /*retrieve announcement*/
@@ -533,8 +533,8 @@ p {
   margin: 10px 0 25px 0;
 }
 #displayAnnouncements .announcementCard .actionBtns span.editBtn {
-  background-color: #fff;
-  color: black;
+  background-color: #fff; 
+  color: black; 
   border: 2px solid var(--color-logo-background);
   padding: 4px 8px;
   text-align: center;
@@ -1130,7 +1130,7 @@ p {
   #displayAnnouncements .announcementCard{
     width: 100%;
   }
-
+  
   #dugga4Container canvas{
     min-width: 75%;
     height: auto;
@@ -1401,7 +1401,7 @@ div .navButt:hover {
         background:#927b9e;
         padding: 4px;
         font-weight: bold;
-
+        
     }
 
     #burgerMenu {
@@ -1415,7 +1415,7 @@ div .navButt:hover {
         padding: 15px 15px 15px 15px;
     }
     .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2, .PF2, .UI2{display:none;}
-
+    
     .CD{
       display: none;
     }
@@ -2197,7 +2197,6 @@ input {
   height: 20px;
   line-height: 22px;
   padding: 0px 8px;
-  z-index: 0;
 }
 
 .menu-drop-down span.drop-down-label:hover {
@@ -2403,7 +2402,7 @@ input.submit-button {
   margin: 8px 2px 4px 2px;
   font-size: 14px;
   transition: 0.1s background-color;
-
+  
   -webkit-appearance: none
 }
 
@@ -2534,13 +2533,13 @@ input.hide-moments-button {
 .testselect {
   position: relative;
   clear:both;
-  width:150px;
+  width:150px;  
   padding: 3px 0 3px 0;
   height: 30px;
   line-height: 30px;
   left: 90px;
   display: none;
-
+  
 }
 
 .fileUploadInfo {
@@ -3052,11 +3051,11 @@ span.arrow {
 #feedbackTable .feedback-list th {
 	background: var(--color-background-3);
   color:var(--color-text-label);
-
+  
 }
 #feedbackTable .feedback-list, #feedbackTable .feedback-list td {
 	border-color: var(--color-background-3);
-
+	
 }
 
 @media print {
@@ -3322,7 +3321,7 @@ padding: 10px;
   background-color:var(--color-accent);
 }
 div.reset-pw{
-  width:70%;
+  width:70%; 
   margin-left:20px;
   background-color: var(--color-accent);
   color: var(--color-text-primary);
@@ -3441,7 +3440,7 @@ div.reset-pw:hover{
   -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  -webkit-user-select: none;
+  -webkit-user-select: none;     
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -3557,7 +3556,7 @@ div.reset-pw:hover{
   line-height: 30px;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-
+  
 
 }
 
@@ -3931,7 +3930,7 @@ div.reset-pw:hover{
 .dropdown-list-container {
   padding: 8px;
   width: 400px;
-
+  
   font-size: 12px;
   overflow-y: auto;
   display: none;
@@ -4273,7 +4272,7 @@ rect[class*="activitymarker"]:hover {
 .tooltipsearchbar input#tooltipsearchinput{
   width: 250px;
 }
-#searchbar button#searchbutton,
+#searchbar button#searchbutton, 
 #searchbar button#searchbuttonicon{
   padding: 8px 20px 5px 20px;
   background:#76578e;
@@ -5073,7 +5072,7 @@ only screen and (max-device-width: 530px) {
     display: none;
   }
 
-
+  
 
   #searchBarMobile,
   #searchbuttonMobile {
@@ -5101,7 +5100,7 @@ only screen and (max-device-width: 530px) {
     margin: 0;
   }
 
-
+  
 
   #tooltip-mobile {
     border: 2px solid var(--color-border-2);
@@ -5205,7 +5204,7 @@ only screen and (max-device-width: 390px) {
     opacity: 1;
 
   }
-
+ 
 }
 
 @media only screen and (max-width: 320px),
@@ -5612,8 +5611,8 @@ only screen and (max-device-width: 320px) {
   color: initial;
 }
 /*Styling for add & edit in dugga editor on dates.*/
-.flexwrapper #qstart, .flexwrapper #deadline,
-.flexwrapper #deadline1, .flexwrapper #deadline2,
+.flexwrapper #qstart, .flexwrapper #deadline, 
+.flexwrapper #deadline1, .flexwrapper #deadline2, 
 .flexwrapper #deadline3, .flexwrapper #release {
   width:155px;
   font-family:"Roboto";
@@ -5680,8 +5679,6 @@ only screen and (max-device-width: 320px) {
   display: flex;
   align-items: center;
   font-size: 14px;
-  z-index: 1;
-  position: relative;
 }
 
 #diagram-page-wrapper.fullscreen.toolbar #diagram-header {
@@ -6226,7 +6223,7 @@ only screen and (max-device-width: 320px) {
   .fixed-action-button2{
     display:none !important;
   }
-
+  
 }
 
 #Courselist div.fixed-action-button a:hover {
@@ -6495,7 +6492,7 @@ only screen and (max-device-width: 320px) {
 }
 
 /*Scroll up arrow */
-
+ 
 .fixedScroll{
   position: fixed;
   right: 165px;
@@ -6503,7 +6500,7 @@ only screen and (max-device-width: 320px) {
   bottom: 25px;
   display: none;
 }
-
+ 
 .arrow {
   border: solid black;
   border-width: 0 6px 6px 0;
@@ -6511,12 +6508,12 @@ only screen and (max-device-width: 320px) {
   opacity: 0.5;
   padding: 6px;
 }
-
+ 
 .up {
   transform: rotate(-135deg);
   -webkit-transform: rotate(-135deg);
 }
-
+ 
 .tooltiptextScroll {
   visibility: hidden;
   width: 70px;
@@ -6531,7 +6528,7 @@ only screen and (max-device-width: 320px) {
   position: fixed;
   z-index: 1;
 }
-
+ 
 .fixedScroll:hover .tooltiptextScroll {
   visibility: visible;
 }
@@ -6586,7 +6583,7 @@ only screen and (max-device-width: 320px) {
 
 .fileView iframe{
   height: 90%;
-}
+} 
 
 @media only screen and (max-width: 745px) {
   .fileView img {
@@ -6598,7 +6595,7 @@ only screen and (max-device-width: 320px) {
   }
   .fileView iframe{
     height: 80%;
-  }
+  } 
 }
 
 @media only screen and (max-width: 601px) {
@@ -6606,14 +6603,14 @@ only screen and (max-device-width: 320px) {
     width: 75%;
   }
 
-
+    
 }
 @media only screen and (max-height: 600px) {
         .markText{
         height: 60% !important;
     }
 
-
+    
 }
 
 @media only screen and (max-width: 441px) {
@@ -6943,7 +6940,7 @@ textarea#mrkdwntxt {
 
 
     .save-button-md{
-    bottom: 25px;
+    bottom: 25px; 
     }
     .close-button-md {
     bottom: 25px;
@@ -7584,7 +7581,7 @@ textarea#filecont {
   display: flex;
   justify-content: space-around;
   position: relative;
-
+  
 }
 .motdBoxheader h3 {
   font-size: 20px;
@@ -7669,14 +7666,14 @@ textarea#filecont {
   left: -35px;
   border: 1px solid #ccc;
   border-radius: 4px;
-
+  
 }
 
 #spankind {
   position: relative;
   left: 0px;
   float: left;
-
+  
 }
 
 #columnfilter{
