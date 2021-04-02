@@ -132,7 +132,11 @@ function mup(event)
 {
 		deltaX=startX-event.clientX;
 		deltaY=startY-event.clientY;
-		
+
+		// Updates data object position
+        eventElementId=event.target.parentElement.parentElement.id;
+		setPos(eventElementId, deltaX, deltaY)
+
 		mb=0;
 }
 
@@ -230,6 +234,17 @@ function findIndex(arr,id)
 				if(arr[i].id==id) return i;
 		}
 		return -1;
+}
+
+//-------------------------------------------------------------------------------------------------
+// Finds and sets an element's position
+//-------------------------------------------------------------------------------------------------
+function setPos(id, x, y) {
+    foundId = findIndex(data, id);
+    if(foundId != -1){
+        data[foundId].x-=(x/zoomfact);
+        data[foundId].y-=(y/zoomfact);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
