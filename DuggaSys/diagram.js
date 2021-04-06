@@ -36,6 +36,8 @@ var elements=[];
 
 // Currently clicked object list
 var context=[];
+var deltaExceeded = false;
+const maxDeltaBeforeExceeded = 2;
 
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
@@ -113,8 +115,6 @@ function mdown(event)
 				sscrolly=scrolly;
 				startX=event.clientX;
 				startY=event.clientY;
-		}else{
-
 		}
 }
 
@@ -125,42 +125,82 @@ function ddown(event)
 		mb=8;
 	
 		updateSelection(data[findIndex(data,event.currentTarget.id)],null,null);
-	
 }
 
 function mup(event)
 {
-		deltaX=startX-event.clientX;
-		deltaY=startY-event.clientY;
+  deltaX = startX - event.clientX;
+    deltaY = startY - event.clientY;
 
-		// Updates data object position
-        eventElementId=event.target.parentElement.parentElement.id;
-		setPos(eventElementId, deltaX, deltaY)
+    // Event is in container area
+    if (event.target.id == "container")
+    {
+        // User only clicked, clear selection
+        if (!deltaExceeded)
+        {
+            updateSelection(null, undefined, undefined);
+        }
+    }
 
-		mb=0;
+    // Event is in element
+    else
+    {
+        // If one or more objects are selected
+        if (context.length > 0) 
+        {
+            // Move all selected items
+            context.forEach(item =>
+            {
+                eventElementId = event.target.parentElement.parentElement.id;
+                setPos(item.id, deltaX, deltaY);
+            });
+        }
+    }
+
+    // Update all element positions on the screen
+    updatepos(0, 0);
+
+    // Restore mouse state to normal
+    mb = 0;
+    deltaExceeded = false;
 }
 
 function mmoving(event)
 {
-		// Click started in container
-		if(mb==1){
-				// Compute new scroll position
-				deltaX=startX-event.clientX;
-				deltaY=startY-event.clientY;
-				scrollx=sscrollx-Math.round(deltaX*zoomfact);
-				scrolly=sscrolly-Math.round(deltaY*zoomfact);
-			
-				// Update scroll position
-				updatepos(null,null);
-		}else if(mb==8){
-				// Moving object
-				deltaX=startX-event.clientX;
-				deltaY=startY-event.clientY;
-			
-				// We update position of connected objects
-				updatepos(deltaX,deltaY);
+    // Click started in container
+    if (mb == 1)
+    {
+        // Compute new scroll position
+        deltaX = startX - event.clientX;
+        deltaY = startY - event.clientY;
+        scrollx = sscrollx - Math.round(deltaX * zoomfact);
+        scrolly = sscrolly - Math.round(deltaY * zoomfact);
 
-		}
+        // Update scroll position
+        updatepos(null, null);
+
+        // Remember that mouse has moved out of starting bounds
+        if (deltaX >= maxDeltaBeforeExceeded || deltaY >= maxDeltaBeforeExceeded)
+        {
+            deltaExceeded = true;
+        }
+    }
+    else if (mb == 8)
+    {
+        // Moving object
+        movingObject = true;
+        deltaX = startX - event.clientX;
+        deltaY = startY - event.clientY;
+
+        // We update position of connected objects
+        updatepos(deltaX, deltaY);
+
+        // Remember that mouse has moved out of starting bounds
+        if (deltaX >= maxDeltaBeforeExceeded || deltaY >= maxDeltaBeforeExceeded)
+        {
+            deltaExceeded = true;
+        }
+    }
 }
 
 function fab_action()
@@ -351,15 +391,24 @@ function showdata() {
 
 function updateSelection(ctxelement,x,y)
 {
-		// Clear list of selected elements
-		context=[];
-		
-		if(ctxelement!=null){
-				// if we pass a context object e.g. we clicked in object
-				context.push(ctxelement);
-		}else if(typeof x != "undefined" && typeof y != "undefined"){
-				// Or if x and y are both defined
-		}
+    // If we pass a context object e.g. we clicked in object
+    if (ctxelement != null)
+    {
+        // Element not already in context
+        if (!context.includes(ctxelement))
+        {
+            context.push(ctxelement);
+        }
+    }
+    else if (typeof x != "undefined" && typeof y != "undefined")
+    {
+        // Or if x and y are both defined
+    }
+    else
+    {
+        // Clear elements from selection
+        context = [];
+    }
 }
 
 
@@ -369,22 +418,41 @@ function updateSelection(ctxelement,x,y)
 
 function updatepos(deltaX,deltaY)
 {
-		for(var i=0;i<data.length;i++){
-				
-				var element=data[i];
-				var elementbox=document.getElementById(element.id);
-						
-				if(elementbox!=null){
-						if(deltaX!=null&&findIndex(context,element.id)!=-1){
-								elementbox.style.left=(Math.round((element.x*zoomfact)+(scrollx*(1.0/zoomfact)))-deltaX)+"px";
-								elementbox.style.top=(Math.round((element.y*zoomfact)+(scrolly*(1.0/zoomfact)))-deltaY)+"px";
-						}else{
-								elementbox.style.left=Math.round((element.x*zoomfact)+(scrollx*(1.0/zoomfact)))+"px";
-								elementbox.style.top=Math.round((element.y*zoomfact)+(scrolly*(1.0/zoomfact)))+"px";
-						}
-				}
-		}
-		redrawArrows();
+for (var i = 0; i < data.length; i++)
+    {
+        // Element data from the array
+        var element = data[i];
+
+        // Element DIV (dom-object)
+        var elementDiv = document.getElementById(element.id);
+
+        // Only perform update on valid elements
+        if (elementDiv != null)
+        {
+            // If the element was clicked and our mouse movement is not null
+            if (deltaX != null && findIndex(context, element.id) != -1)
+            {
+                // Re-calculate drawing position for our selected element, then apply the mouse movement
+                elementDiv.style.left = (Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) - deltaX) + "px";
+                elementDiv.style.top = (Math.round((element.y * zoomfact) + (scrolly * (1.0 / zoomfact))) - deltaY) + "px";
+
+                // TODO : This should be re-made into specifics regarding each element type. Current version is simply the "basic" beta-version.
+                // Change element colour (selected)
+                elementDiv.children[0].children[0].style.fill = "orange";
+            }
+            else
+            {
+                // Re-calculate drawing position for other elements if there's a change in zoom level
+                elementDiv.style.left = Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) + "px";
+                elementDiv.style.top = Math.round((element.y * zoomfact) + (scrolly * (1.0 / zoomfact))) + "px";
+
+                // TODO : This should be re-made into specifics regarding each element type. Current version is simply the "basic" beta-version.
+                // Restore element background colour (non-selected)
+                elementDiv.children[0].children[0].style.fill = "pink";
+            }
+        }
+    }
+    redrawArrows();
 }
 
 function linetest(x1,y1,x2,y2, x3,y3,x4,y4)
