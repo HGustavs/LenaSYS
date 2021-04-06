@@ -188,7 +188,7 @@
 
 		<!-- Statistics List -->
 
-		<!-- <div id='statisticsList' style="">
+		<div id='statisticsList' style="">
 				<div id='statistics' class='statistics' style='cursor:pointer;'>
 						<div style='margin:10px;'>
 								<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>
@@ -212,7 +212,7 @@
 						</div>
 				</div>
 				<div class="statisticsContentBottom"></div>
-		</div> -->
+		</div>
 		<!-- Statistics List END-->
 
 		<!-- Section List -->
