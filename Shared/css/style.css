@@ -2,7 +2,7 @@
  *                                    Colors                                    *
  * --------------================################================-------------- */
 
-:root {
+ :root {
   --color-text-primary: #775886;
   --color-text-secondary: #434343;
   --color-text-header: #fff;
@@ -794,19 +794,6 @@ p {
   border-radius: 5px;
 }
 
-#sectionList_arrowStatisticsOpen,
-#sectionList_arrowStatisticsClosed{
-  display: none;
-  cursor: pointer;
-}
-.statisticsContentBottom{
-  min-height: 30px;
-  background-color: var(--color-text-primary);
-  display: none;
-
-
-}
-
 .item {
   /*padding-top: 4px;*/
   min-height: 30px;
@@ -1174,31 +1161,6 @@ p {
   display: block;
 }
 
-#statisticsList {
-  display: flex;
-}
-
-.statistics {
-  background-color: var(--color-primary-light);
-  color: white;
-  width: 36px;
-  min-height: calc(100vh - 122px);
-  box-shadow: 3px 0px 0px #aaa;
-  margin-right: 3px;
-  font-size: 14pt;
-}
-
-.statisticsContent {
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-statistics);
-}
-
-.statisticsInnerBox {
-  margin: 10px 10px 10px 10px;
-  border: 2px solid darkgray;
-  background-color: var(--color-sectioned-table-lo);
-}
 
 #errorBox{
   position: fixed;
@@ -3092,15 +3054,13 @@ span.arrow {
   /* ie 6/7 */
 }
 
-.arrowComp,
-#arrowStatisticsClosed {
+.arrowComp{
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
 }
 
-.arrowRight,
-#arrowStatisticsOpen {
+.arrowRight {
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
@@ -4755,9 +4715,6 @@ only screen and (max-device-width: 800px) {
     -o-transition: margin-right 0.5s, width 0.5s;
   }
 
-  #statisticsList {
-    display: none;
-  }
 }
 
 @media only screen and (max-width: 768px),
@@ -4801,9 +4758,6 @@ only screen and (max-device-width: 768px) {
     max-width: 200px;
   }
 
-  #statisticsList {
-    display: none;
-  }
 
   .fileLink_counter {
     font-size: 16px;
@@ -4952,9 +4906,6 @@ only screen and (max-device-width: 860px) {
     opacity: 1.0;
   }
 
-  #statisticsList {
-    display: none;
-  }
   #sectionList_arrowStatisticsOpen{
     display: inline;
   }
@@ -4985,9 +4936,6 @@ only screen and (max-device-width: 790px) {
     opacity: 1.0;
   }
 
-  #statisticsList {
-    display: none;
-  }
 }
 
 @media only screen and (max-width: 670px),
@@ -5017,10 +4965,6 @@ only screen and (max-device-width: 670px) {
     display: block;
     height: 26px;
     opacity: 1.0;
-  }
-
-  #statisticsList {
-    display: none;
   }
 
 }
@@ -5054,10 +4998,6 @@ only screen and (max-device-width: 530px) {
 
   #Sectionlist .course {
     font-size: 16px;
-  }
-
-  #statisticsList {
-    display: none;
   }
 
   /* Mobile view resulted filter / search */
@@ -5177,10 +5117,6 @@ only screen and (max-device-width: 480px) {
     margin-left: 0px;
   }
 
-  #statisticsList {
-    display: none;
-  }
-
   #searchbar input#searchinput{
     width: 150px;
   }
@@ -5213,9 +5149,6 @@ only screen and (max-device-width: 320px) {
     font-size: 14px;
   }
 
-  #statisticsList {
-    display: none;
-  }
 }
 
 /* Title for the subpages of the section-editor */
@@ -5523,9 +5456,6 @@ only screen and (max-device-width: 320px) {
     margin: 1rem auto;
   }
 
-  #statisticsList {
-    display: none;
-  }
   .modal .modalBtns button {
      width: 100%;
   }
