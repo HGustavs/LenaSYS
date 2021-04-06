@@ -185,11 +185,13 @@
 		<!-- + button END -->
 		<div id='courseList'>
 
+
 		<!-- Statistics List -->
 		<!-- <div id='statisticsSwimlanes' class='statisticsInnerBox' style=''>
 				<svg id="swimlaneSVG" width='300px' style='margin: 10px;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
 		</div> -->
 		<!-- Statistics List END-->
+
 
 		<!-- Section List -->
 		<div id='Sectionlisti'>
