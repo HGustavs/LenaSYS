@@ -1071,33 +1071,6 @@ p {
   background-color: var(--color-primary-light);
 }
 
-.StopLight {
-  vertical-align: middle;
-  overflow: hidden;
-  border: 1px solid yellow;
-  width: 26px;
-  height: 26px;
-  margin: 2px 2px 2px 2px;
-  border-radius: 14px;
-  border: 1px solid #000;
-}
-
-.WhiteLight {
-  background: radial-gradient(white, grey, white);
-}
-
-.YellowLight {
-  background: radial-gradient(yellow 50%, grey, white 60%);
-}
-
-.RedLight {
-  background: radial-gradient(red 55%, grey, white 60%);
-}
-
-.GreenLight {
-  background: radial-gradient(green 55%, grey, white 60%);
-}
-
 #Sectionlist .hiddensection {
   opacity: 0.3;
   color: var(--color-text-list);

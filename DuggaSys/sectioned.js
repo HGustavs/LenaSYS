@@ -761,13 +761,13 @@ function returnedSection(data) {
             str += "<div class='StopLight WhiteLight'></div>";
           } else if (status === "pending") {
             //	Nothing marked yet (Yellow)
-            str += "<div class='StopLight YellowLight' title='Status: Handed in\nDate: " + lastSubmit + "' ></div>";
+            str += "<div class='StopLight WhiteLight'></div>";
           } else if (grady == 1) {
             //	Marked Fail! (Red)
-            str += "<div class='StopLight RedLight' title='Status: Failed\nDate: " + marked + "' ></div>";
+            str += "<div class='StopLight WhiteLight'></div>";
           } else if (grady > 1) {
             //	Marked Pass i.e. G/VG/3/4/5 (Green)
-            str += "<div class='StopLight GreenLight'  title='Status: Pass\nDate: " + marked + "' ></div>";
+            str += "<div class='StopLight WhiteLight'></div>";
           }
           str += "</td>";
         }
