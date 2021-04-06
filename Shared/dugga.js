@@ -522,6 +522,47 @@ function randomstring()
 }
 
 //----------------------------------------------------------------------------------
+// randomstring: Generates a random password string with 7 characters
+//----------------------------------------------------------------------------------
+
+function randomPassword()
+{
+		str="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890";
+
+		var valu="";
+		for(i=0;i<7;i++){
+				valu+=str.charAt(Math.floor(Math.random()*str.length));
+		}
+		
+		return valu;
+}
+
+//----------------------------------------------------------------------------------
+// randomstring: Generates a random URL redirect link
+//----------------------------------------------------------------------------------
+
+function randomUrl()
+{
+        str="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890";
+        var realUrl = window.location.href; //"real" url, will be saved into the database
+
+		if(realUrl != true) //Check if URL is in database, currently no database for this
+		{
+				//Add URL to database and its "shortcut"
+				var url="http://localhost/LenaSYS/DuggaSys/sh/";
+
+				for(i=0;i<6;i++){
+					url+=str.charAt(Math.floor(Math.random()*str.length));
+				}
+				//Add both realUrl and shortcutUrl to database
+		}else{
+			//url = shortcutUrl from database
+		}
+		
+        return url;
+}
+
+//----------------------------------------------------------------------------------
 // isNumber:    returns true: the variable only contains numbers
 //              returns false: the variable is not purely numeric
 //        Is called by editImpRows in codeviewer.js
@@ -534,6 +575,12 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
 {
+	var pwd = randomPassword(); //Create random password for URL
+	var url = randomUrl(); //Create URL
+	
+	console.log(url);
+	console.log(pwd);
+
 	var readonly;
 	$.ajax({
 		url: "courseedservice.php",
