@@ -464,8 +464,8 @@
             <div>
                 <fieldset>
                     <legend>Zoom</legend>
-                    <input type="button" value="Zoom in" style="cursor:pointer" onclick='zoomin();' />
-                    <input type="button" value="Zoom out" style="cursor:pointer" onclick='zoomout();' />									
+                    <input class="zoomButtons" type="button" value="Zoom in" onclick='zoomin();' />
+                    <input class="zoomButtons" type="button" value="Zoom out" onclick='zoomout();' />									
                 </fieldset>
             </div>
         </div>

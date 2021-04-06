@@ -78,7 +78,11 @@
         .hide {
             display: none;
         }	
-			
+		
+        .zoomButtons:hover {
+            cursor:pointer;
+        }
+
 			.element {
           font-size: small;
 					box-sizing: border-box;
