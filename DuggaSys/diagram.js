@@ -132,7 +132,11 @@ function mup(event)
 {
 		deltaX=startX-event.clientX;
 		deltaY=startY-event.clientY;
-		
+
+		// Updates data object position
+        eventElementId=event.target.parentElement.parentElement.id;
+		setPos(eventElementId, deltaX, deltaY)
+
 		mb=0;
 }
 
@@ -230,6 +234,17 @@ function findIndex(arr,id)
 				if(arr[i].id==id) return i;
 		}
 		return -1;
+}
+
+//-------------------------------------------------------------------------------------------------
+// Finds and sets an element's position
+//-------------------------------------------------------------------------------------------------
+function setPos(id, x, y) {
+    foundId = findIndex(data, id);
+    if(foundId != -1){
+        data[foundId].x-=(x/zoomfact);
+        data[foundId].y-=(y/zoomfact);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -384,24 +399,24 @@ function linetest(x1,y1,x2,y2, x3,y3,x4,y4)
         return false;
     } else {
         if (x1>=x2) {
-            if (!(x2<=x&&x<=x1)) {return false;}
+            if (!(x2<=x&&x<=x1)) return false;
         } else {
-            if (!(x1<=x&&x<=x2)) {return false;}
+            if (!(x1<=x&&x<=x2)) return false;
         }
         if (y1>=y2) {
-            if (!(y2<=y&&y<=y1)) {return false;}
+            if (!(y2<=y&&y<=y1)) return false;
         } else {
-            if (!(y1<=y&&y<=y2)) {return false;}
+            if (!(y1<=y&&y<=y2)) return false;
         }
         if (x3>=x4) {
-            if (!(x4<=x&&x<=x3)) {return false;}
+            if (!(x4<=x&&x<=x3)) return false;
         } else {
-            if (!(x3<=x&&x<=x4)) {return false;}
+            if (!(x3<=x&&x<=x4)) return false;
         }
         if (y3>=y4) {
-            if (!(y4<=y&&y<=y3)) {return false;}
+            if (!(y4<=y&&y<=y3)) return false;
         } else {
-            if (!(y3<=y&&y<=y4)) {return false;}
+            if (!(y3<=y&&y<=y4)) return false;
         }
     }
     return {x:x,y:y};
