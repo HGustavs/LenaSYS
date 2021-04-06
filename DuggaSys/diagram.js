@@ -473,7 +473,7 @@ function redrawArrows()
         var domelementpos=domelement.getBoundingClientRect();
         element.x1=domelementpos.left;
         element.y1=domelementpos.top;
-        element.x2=domelementpos.left+domelementpos.width-2; // Temp fix by subtracting 2.
+        element.x2=domelementpos.left+domelementpos.width-2;
         element.y2=domelementpos.top+domelementpos.height-2;
         element.cx=element.x1+(domelementpos.width*0.5);
         element.cy=element.y1+(domelementpos.height*0.5);
