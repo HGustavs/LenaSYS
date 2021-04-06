@@ -712,7 +712,6 @@ function returnedSection(data) {
 
           // Styling for quiz row e.g. add a tab spacer
           if (itemKind === 3) str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
-          var grady = -1;
           var status = "";
           var marked;
           var submitted;
@@ -721,7 +720,6 @@ function returnedSection(data) {
           for (var jjj = 0; jjj < data['results'].length; jjj++) {
             var lawtem = data['results'][jjj];
             if ((lawtem['moment'] == item['lid'])) {
-              grady = lawtem['grade'];
               status = "";
 
               var st = lawtem['submitted'];
@@ -756,19 +754,7 @@ function returnedSection(data) {
           } else if (itemKind === 4) {
             str += "<td class='LightBoxFilled" + hideState + "'>";
           }
-          if ((grady == -1 || grady == 0 || grady == null) && status === "") {
-            // Nothing submitted nor marked (White)
-            str += "<div class='StopLight WhiteLight'></div>";
-          } else if (status === "pending") {
-            //	Nothing marked yet (Yellow)
-            str += "<div class='StopLight WhiteLight'></div>";
-          } else if (grady == 1) {
-            //	Marked Fail! (Red)
-            str += "<div class='StopLight WhiteLight'></div>";
-          } else if (grady > 1) {
-            //	Marked Pass i.e. G/VG/3/4/5 (Green)
-            str += "<div class='StopLight WhiteLight'></div>";
-          }
+          str += "<div class='StopLight WhiteLight'></div>";
           str += "</td>";
         }
 
