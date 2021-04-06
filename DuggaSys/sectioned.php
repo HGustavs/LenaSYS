@@ -187,7 +187,7 @@
 		<div id='courseList'>
 					<!--hallåååååå -->
 		<!-- Statistics List -->
-
+		<!-- Testkommentar -->
 		<div id='statisticsList' style="">
 				<div id='statistics' class='statistics' style='cursor:pointer;'>
 						<div style='margin:10px;'>
