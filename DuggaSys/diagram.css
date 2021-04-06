@@ -30,6 +30,7 @@
             border-radius: 40px;
             background-color: #eb4;
             box-shadow: 6px 6px 10px #888;
+        user-select: none;
         }
 
         #options-pane {
