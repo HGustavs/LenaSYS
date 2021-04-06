@@ -183,12 +183,36 @@
 		</div>
 
 		<!-- + button END -->
+
 		<div id='courseList'>
 
 		<!-- Statistics List -->
-		<!-- <div id='statisticsSwimlanes' class='statisticsInnerBox' style=''>
-				<svg id="swimlaneSVG" width='300px' style='margin: 10px;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
-		</div> -->
+
+		<div id='statisticsList' style="">
+				<div id='statistics' class='statistics' style='cursor:pointer;'>
+						<div style='margin:10px;'>
+								<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>
+								<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>
+						</div>
+						<div class='nowrap' style='padding-left:5px' title='statistics'>
+								<span class='listentries-span noselect' style='writing-mode:vertical-rl;text-orientation: sideways;'>Deadlines</span>
+						</div>
+				</div>
+				<div class='statisticsContent' style='display:flex;flex-direction:column;'>
+						<div id='statisticsPie' class='statisticsInnerBox'>
+								<svg id="pieChartSVG" width='300px' height='255px' style='padding: 10px; margin: auto;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
+						</div>
+						<div id='deadlineInfoBox' class='statisticsInnerBox' style='padding: 10px;'>
+								<h3 id='deadlineInfoTitle'>Recent and Upcoming Deadlines</h3>
+								<table id="deadlineList" style="table-layout: fixed;width:300px;">
+								</table>
+						</div>
+						<div id='statisticsSwimlanes' class='statisticsInnerBox' style=''>
+								<svg id="swimlaneSVG" width='300px' style='margin: 10px;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
+						</div>
+				</div>
+				<div class="statisticsContentBottom"></div>
+		</div>
 		<!-- Statistics List END-->
 
 		<!-- Section List -->
