@@ -140,7 +140,7 @@ function updateDugga() {
       return;
   }
   if(deadline < qstart) {
-		alert("Deadline before start:\nDeadline: "+deadline+" - Start: "+qstart);
+		alert(`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`);
 		return;
   }
   if($("#deadline2").val()!=""){
@@ -338,7 +338,7 @@ function deleteVariant(vid) {
 
 // Update the title of the variant editor to refer to the dugga that "owns" the variants
 function updateVariantTitle(number) {
-	document.getElementById("editVariantTitle").innerHTML = "Variants for: " + globalData['entries'][number].qname;
+	document.getElementById("editVariantTitle").innerHTML = `Variants for: ${globalData['entries'][number].qname}`;
 }
 
 // Opens the variant editor.
@@ -356,16 +356,16 @@ function showVariantEditor() {
 
 // Adds a submission row
 function addVariantSubmissionRow() {
-  var subDivContent = "<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>" +
-		"<select name='s_type' id='submissionType" + submissionRow + "' style='width:65px;' onchange='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'>" +
-		"<option value='pdf'>PDF</option>" +
-		"<option value='zip'>Zip</option>" +
-		"<option value='link'>Link</option>" +
-		"<option value='text'>Text</option>" +
-		"<option value='timesheet'>Timesheet</option>" +
-		"</select>" +
-		"<input type='text' name='s_fieldname' id='fieldname" + submissionRow + "' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeyup='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'/>" +
-		"<input type='text' name='s_instruction' id='instruction" + submissionRow + "' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeyup='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'/>"
+  var subDivContent = `<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>
+		<select name='s_type' id='submissionType${submissionRow}' style='width:65px;' onchange='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'>
+		<option value='pdf'>PDF</option>
+		<option value='zip'>Zip</option>
+		<option value='link'>Link</option>
+		<option value='text'>Text</option>
+		<option value='timesheet'>Timesheet</option>
+		</select>
+		<input type='text' name='s_fieldname' id='fieldname${submissionRow}' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeyup='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'/>
+		<input type='text' name='s_instruction' id='instruction${submissionRow}' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeyup='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'/>`
     if(submissionRow != 0){
       // Can't/don't want the first submission row to be deleted so no point having a delete button.
       subDivContent += "<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;' onclick='removeVariantSubmissionRow(this);'></input><br/>";
@@ -574,8 +574,7 @@ function returnedDugga(data) {
 		$('.fixed-action-button').hide();
 		$('#duggaSearch').hide();
 		$('#searchbutton').hide();
-			changeURL("sectioned.php?courseid=" + querystring['courseid'] + "&coursename=" + data.coursename + "&coursevers="
-				+ querystring['coursevers'] + "");
+			changeURL(`sectioned.php?courseid=${querystring['courseid']}&coursename=${data.coursename}&coursevers=${querystring['coursevers']}`);
 	}
   var tabledata = {
 		tblhead: {
@@ -625,7 +624,7 @@ function returnedDugga(data) {
 		else {
 				$("#quiz").html("");
 				alert("You don't have access to this page. You are now being redirected!")
-				changeURL("sectioned.php?courseid=" + querystring['courseid'] + "&coursename=" + data.coursename + "&coursevers=" + querystring['coursevers'] + "");
+				changeURL(`sectioned.php?courseid=${querystring['courseid']}&coursename=${data.coursename}&coursevers=${querystring['coursevers']}`);
 		}
 
 		$("#headerContent").html(content);
@@ -635,12 +634,12 @@ function returnedDugga(data) {
 		var result = 0;
 		filez = data['files'];
 		duggaPages = data['duggaPages'];
-		document.getElementById("sectionedPageTitle").innerHTML = "Dugga editor - " + data.coursename + " - " + data.coursecode;
+		document.getElementById("sectionedPageTitle").innerHTML = `Dugga editor - ${data.coursename} - ${data.coursecode}`;
 		str = "";
 		if (globalVariant){
 				renderVariant(globalVariant);
 		}
-		$(window).scrollTop(localStorage.getItem("duggaEdScrollPosition" + globalData.coursecode));
+		$(window).scrollTop(localStorage.getItem(`duggaEdScrollPosition${globalData.coursecode}`));
 }
 
 // Table for variants
@@ -724,23 +723,23 @@ function renderCell(col, celldata, cellid) {
 		case "arrow":		// DUGGA-TABLE - Arrow icon
 			clickedElement = JSON.parse(cellid.match(/\d+/));
 			retString = "<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
-			retString += " onclick='renderVariant(\"" + clickedElement + "\"); showVariantEditor();'>";
+			retString += ` onclick='renderVariant(\"${clickedElement}\"); showVariantEditor();'>`;
 			break;
 
 		case "cogwheel":	// DUGGA-TABLE - Cogwheel icon
 			object = JSON.parse(celldata);
 			retString = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
-			retString += " onclick='selectDugga(\"" + object + "\");' >";
+			retString += ` onclick='selectDugga(\"${object}\");' >`;
 			break;
 
 		case "trashcan":	// DUGGA-TABLE - Trashcan icon
 			object = JSON.parse(celldata);
 			retString = "<img id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
-			retString += " onclick='confirmBox(\"openConfirmBox\",\"" + object + "\",\"dugga\");' >";
+			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
 			break;
 
 		case "param":		// DUGGA-TABLE - Parameter column
-			retString = "<span class='variants-param-col'>" + celldata + "</span>";
+			retString = `<span class='variants-param-col'>${celldata}</span>`;
 			break;
 
 		case "disabled":	// VARIANT-TABLE - Translades disabled status from integers
@@ -754,19 +753,19 @@ function renderCell(col, celldata, cellid) {
 		case "arrowVariant":	// VARIANT-TABLE - Arrow icon
 			object = JSON.parse(celldata);
 			retString = "<img id='dorf' src='../Shared/icons/PlayT.svg' ";
-			retString += " onclick='getVariantPreview( " + object + ", " + clickedElement + ");'>";
+			retString += ` onclick='getVariantPreview( ${object}, ${clickedElement});'>`;
 			break;
 
 		case "cogwheelVariant":	// VARIANT-TABLE - Cogwheel icon
 		object = JSON.parse(celldata);
 			retString = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
-			retString += " onclick='selectVariant(" + object + ",this);' >";
+			retString += ` onclick='selectVariant(${object},this);' >`;
 			break;
 
 		case "trashcanVariant":	// VARIANT-TABLE - Trashcan icon
 			object = JSON.parse(celldata);
 			retString = "<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
-			retString += " onclick='confirmBox(\"openConfirmBox\",\"" + object + "\",\"variant\");' >";
+			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"variant\");' >`;
 			break;
 
 		default:			// DUGGA- & VARIANT-TABLES - Return celldata for "regular" cells
@@ -795,11 +794,11 @@ function renderSortOptionsDugga(col,status,colname) {
 		*/
 		if (col != "arrow" && col != "cogwheel" && col != "trashcan") {			//Disable sorting for pen, cog and trashcan icons
 			if (status ==- 1) {
-				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+				str += `<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"${col}\",0)'>${colname}</span>`;
 			} else if (status == 0) {
-					str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+					str += `<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"${col}\",1)'>${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
 			} else {
-					str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+					str += `<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"${col}\",0)'>${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
 			}
 		}
 return str;
@@ -809,11 +808,11 @@ return str;
 function renderSortOptionsVariant(col,status,colname) {
 	str = "";
 	if (status ==- 1) {
-		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+		str += `<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"${col}\",0)'>${colname}</span>`;
 	} else if (status == 0) {
-		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+		str += `<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"${col}\",1)'>${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
 	} else {
-		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+		str += `<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"${col}\",0)'>${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
 	}
 	return str;
 }
@@ -862,10 +861,10 @@ function getVariantPreview(vid) {
 	var duggaVariantParam = target_variant['param']; // Set Variant Param
 	var duggaVariantAnswer = target_variant['variantanswer']; // Set Variant Answer
 
-	document.getElementById("resultpopoverTitle").innerHTML = "Previewing a variant with " + template + " template";
+	document.getElementById("resultpopoverTitle").innerHTML = `Previewing a variant with ${template} template`;
 	$("#MarkCont").html(duggaPages[template]);
 
-	$.getScript("templates/" + template + ".js")
+	$.getScript(`templates/${template}.js`)
 		.done(function (script, textStatus) {
 			showFacit(decodeURIComponent(duggaVariantParam), "UNK", decodeURIComponent(duggaVariantAnswer), null, null, null);
 		})
