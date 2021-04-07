@@ -1,6 +1,6 @@
 
 //------------------------------------=======############==========----------------------------------------
-//                           Defaults, mouse variables and zoom variables
+//                           Defaults, mouse variables and zoom variables  
 //------------------------------------=======############==========----------------------------------------
 
 // Data and html building variables
@@ -77,8 +77,8 @@ var defaults={
 // Demo data - read / write from service later on
 var data=[
     {name:"Person",x:100,y:100,width:200,height:50,kind:"EREntity",id:PersonID},
-    {name:"Loan",x:140,y:250,width:200,height:50,kind:"EREntity",id:LoanID, isWeak:true},
-    {name:"Car",x:500,y:140,width:200,height:50,kind:"EREntity",id:CarID},
+    {name:"Loan",x:140,y:250,width:200,height:50,kind:"EREntity",id:LoanID, isWeak:true},    
+    {name:"Car",x:500,y:140,width:200,height:50,kind:"EREntity",id:CarID},	
     {name:"Owns",x:420,y:60,width:60,height:60,kind:"ERRelation",id:HasID},
     {name:"Refer",x:460,y:260,width:60,height:60,kind:"ERRelation",id:RefID,isWeak:true},
     {name:"ID",x:30,y:30,width:90,height:40,kind:"ERAttr",id:IDID,isComputed:true},
@@ -94,10 +94,10 @@ var lines=[
     {id:makeRandomID(),fromID:CarID,toID:SizeID,kind:"Normal"},
 
     {id:makeRandomID(),fromID:PersonID,toID:HasID,kind:"Normal"},
-    {id:makeRandomID(),fromID:HasID,toID:CarID,kind:"Double"},
+    {id:makeRandomID(),fromID:HasID,toID:CarID,kind:"Double"},    
     {id:makeRandomID(),fromID:NameID,toID:FNID,kind:"Normal"},
     {id:makeRandomID(),fromID:NameID,toID:LNID,kind:"Normal"},
-
+    
     {id:makeRandomID(),fromID:LoanID,toID:RefID,kind:"Normal"},
     {id:makeRandomID(),fromID:CarID,toID:RefID,kind:"Normal"},
 ];
@@ -110,7 +110,7 @@ function mdown(event)
 {
 		// React to mouse down on container
 		if(event.target.id=="container"){
-				mb=1;
+				mb=1;		
 				sscrollx=scrollx;
 				sscrolly=scrolly;
 				startX=event.clientX;
@@ -123,7 +123,7 @@ function ddown(event)
 		startX=event.clientX;
 		startY=event.clientY;
 		mb=8;
-
+	
 		updateSelection(data[findIndex(data,event.currentTarget.id)],null,null);
 }
 
@@ -146,7 +146,7 @@ function mup(event)
     else
     {
         // If one or more objects are selected
-        if (context.length > 0)
+        if (context.length > 0) 
         {
             // Move all selected items
             context.forEach(item =>
@@ -211,7 +211,7 @@ function fab_action()
     }else{
 				document.getElementById('optmarker').innerHTML="&#x1f4a9;Options";
 				document.getElementById("options-pane").className="show-options-pane";
-    }
+    }    
 }
 
 //------------------------------------=======############==========----------------------------------------
@@ -226,7 +226,7 @@ function zoomin()
 {
 		scrollx=scrollx/zoomfact;
 		scrolly=scrolly/zoomfact;
-
+	
 		if(zoomfact==0.125) zoomfact=0.25
 		else if(zoomfact==0.25) zoomfact=0.5
 		else if(zoomfact==0.5) zoomfact=0.75
@@ -238,7 +238,7 @@ function zoomin()
 
 		scrollx=scrollx*zoomfact;
 		scrolly=scrolly*zoomfact;
-
+	
 		// Update scroll position - missing code for determining that center of screen should remain at nevw zoom factor
 		showdata();
 }
@@ -247,7 +247,7 @@ function zoomout()
 {
 		scrollx=scrollx/zoomfact;
 		scrolly=scrolly/zoomfact;
-
+	
 		if(zoomfact==0.25) zoomfact=0.125
 		else if(zoomfact==0.5) zoomfact=0.25
 		else if(zoomfact==0.75) zoomfact=0.5
@@ -294,24 +294,24 @@ function setPos(id, x, y) {
 // Generate all courses at appropriate zoom level
 function showdata() {
 		var container=document.getElementById("container");
-		var containerbox=container.getBoundingClientRect();
-
-		// Compute bounds of
+		var containerbox=container.getBoundingClientRect();	
+    
+		// Compute bounds of 
 		cwidth=containerbox.width;
 		cheight=containerbox.height;
-
+	
 		canvas=document.getElementById('canvasOverlay');
 		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
-		ctx = canvas.getContext('2d');
-
+		canvas.height = window.innerHeight;	
+		ctx = canvas.getContext('2d');	
+			
 		var str="";
 		var courses=[];
-
+		
 		// Iterate over programs
 		for(var i=0;i<data.length;i++){
 				var element=data[i];
-
+			
 				// Compute size variables
 				var linew=Math.round(strokewidth*zoomfact);
 				var boxw=Math.round(element.width*zoomfact);
@@ -319,22 +319,22 @@ function showdata() {
 				var texth=Math.round(zoomfact*textheight);
 				var hboxw=Math.round(element.width*zoomfact*0.5);
 				var hboxh=Math.round(element.height*zoomfact*0.5);
-
+			
 				str+=`
 				<div id='${element.id}'	class='element' onmousedown='ddown(event);' style='
 						left:0px;
 						top:0px;
 						width:${boxw}px;
 						height:${boxh}px;
-						font-size:${texth}px;
+						font-size:${texth}px; 
 				'>`;
 				str+=`<svg width='${boxw}' height='${boxh}' >`;
 				if(element.kind=="EREntity"){
-						str+=`<rect x='${linew}' y='${linew}' width='${boxw-(linew*2)}' height='${boxh-(linew*2)}'
+						str+=`<rect x='${linew}' y='${linew}' width='${boxw-(linew*2)}' height='${boxh-(linew*2)}' 
                    stroke-width='${linew}' stroke='black' fill='pink' />
-                   <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
+                   <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text> 
                    `;
-
+            
 				}else if(element.kind=="ERAttr"){
             var dash="";
             if(element.isComputed == true){
@@ -343,35 +343,35 @@ function showdata() {
             var multi="";
             if(element.isMultiple == true){
                 multi=`
-                    <path d="M${linew*multioffs},${hboxh}
-                    Q${linew*multioffs},${linew*multioffs} ${hboxw},${linew*multioffs}
-                    Q${boxw-(linew*multioffs)},${linew*multioffs} ${boxw-(linew*multioffs)},${hboxh}
-                    Q${boxw-(linew*multioffs)},${boxh-(linew*multioffs)} ${hboxw},${boxh-(linew*multioffs)}
-                    Q${linew*multioffs},${boxh-(linew*multioffs)} ${linew*multioffs},${hboxh}"
+                    <path d="M${linew*multioffs},${hboxh} 
+                    Q${linew*multioffs},${linew*multioffs} ${hboxw},${linew*multioffs} 
+                    Q${boxw-(linew*multioffs)},${linew*multioffs} ${boxw-(linew*multioffs)},${hboxh} 
+                    Q${boxw-(linew*multioffs)},${boxh-(linew*multioffs)} ${hboxw},${boxh-(linew*multioffs)} 
+                    Q${linew*multioffs},${boxh-(linew*multioffs)} ${linew*multioffs},${hboxh}" 
                     stroke='black' fill='pink' stroke-width='${linew}' />`;
             }
-						str+=`<path d="M${linew},${hboxh}
-                           Q${linew},${linew} ${hboxw},${linew}
-                           Q${boxw-linew},${linew} ${boxw-linew},${hboxh}
-                           Q${boxw-linew},${boxh-linew} ${hboxw},${boxh-linew}
-                           Q${linew},${boxh-linew} ${linew},${hboxh}"
+						str+=`<path d="M${linew},${hboxh} 
+                           Q${linew},${linew} ${hboxw},${linew} 
+                           Q${boxw-linew},${linew} ${boxw-linew},${hboxh} 
+                           Q${boxw-linew},${boxh-linew} ${hboxw},${boxh-linew} 
+                           Q${linew},${boxh-linew} ${linew},${hboxh}" 
                     stroke='black' fill='pink' ${dash} stroke-width='${linew}' />
-
+                    
                     ${multi}
 
-                    <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
+                    <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text> 
                     `;
 				}else if(element.kind=="ERRelation"){
             var weak="";
             if(element.isWeak == true){
-                weak=`<polygon points="${linew*multioffs*1.5},${hboxh} ${hboxw},${linew*multioffs*1.5} ${boxw-(linew*multioffs*1.5)},${hboxh} ${hboxw},${boxh-(linew*multioffs*1.5)}"
+                weak=`<polygon points="${linew*multioffs*1.5},${hboxh} ${hboxw},${linew*multioffs*1.5} ${boxw-(linew*multioffs*1.5)},${hboxh} ${hboxw},${boxh-(linew*multioffs*1.5)}"  
                 stroke-width='${linew}' stroke='black' fill='pink'/>
                 `;
             }
-            str+=`<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw-linew},${hboxh} ${hboxw},${boxh-linew}"
+            str+=`<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw-linew},${hboxh} ${hboxw},${boxh-linew}"  
                    stroke-width='${linew}' stroke='black' fill='pink'/>
                    ${weak}
-                   <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
+                   <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text> 
                    `;
 
         }
@@ -382,7 +382,7 @@ function showdata() {
 
 		container.innerHTML=str;
 		updatepos(null,null);
-
+	
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -391,47 +391,24 @@ function showdata() {
 
 function updateSelection(ctxelement,x,y)
 {
-	document.addEventListener('keydown', function(e){
-		// LeftControll key pressed
-		if(e.ctrlKey){
-				// If we pass a context object e.g. we clicked in object
-				if (ctxelement != null)
-				{
-				// Element not already in context
-				if (!context.includes(ctxelement))
-				{
-						context.push(ctxelement);
-				}
-				}
-				else if (typeof x != "undefined" && typeof y != "undefined")
-				{
-						// Or if x and y are both defined
-				}
-				else
-				{
-					// Clear elements from selection
-						context = [];
-				}
-			}
-		});
-
-		if (ctxelement != null)
-		{
-		// Element not already in context
-		if (!context.includes(ctxelement) && context.length < 1)
-		{
-				context.push(ctxelement);
-		}
-		}
-		if (typeof x != "undefined" && typeof y != "undefined")
-		{
-				// Or if x and y are both defined
-		}
-		else
-		{
-			// Clear elements from selection
-				context = [];
-		}
+    // If we pass a context object e.g. we clicked in object
+    if (ctxelement != null)
+    {
+        // Element not already in context
+        if (!context.includes(ctxelement))
+        {
+            context.push(ctxelement);
+        }
+    }
+    else if (typeof x != "undefined" && typeof y != "undefined")
+    {
+        // Or if x and y are both defined
+    }
+    else
+    {
+        // Clear elements from selection
+        context = [];
+    }
 }
 
 
@@ -482,7 +459,7 @@ function linetest(x1,y1,x2,y2, x3,y3,x4,y4)
 {
     // Display line test locations using svg lines
     // str+=`<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='#44f' stroke-width='2' />`;
-    // str+=`<line x1='${x3}' y1='${y3}' x2='${x4}' y2='${y4}' stroke='#44f' stroke-width='2' />`
+    // str+=`<line x1='${x3}' y1='${y3}' x2='${x4}' y2='${y4}' stroke='#44f' stroke-width='2' />`    
 
     var x=((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
     var y=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
@@ -584,14 +561,14 @@ function redrawArrows()
         element.cx=element.x1+(domelementpos.width*0.5);
         element.cy=element.y1+(domelementpos.height*0.5);
 		}
-
+		
 		// Make list of all connectors?
 		connectors=[];
 
     for(var i=0;i<lines.length;i++){
         var currentline=lines[i];
         var felem,telem,dx,dy;
-
+        
         felem=data[findIndex(data,currentline.fromID)];
         telem=data[findIndex(data,currentline.toID)];
         currentline.dx=felem.cx-telem.cx;
@@ -601,7 +578,7 @@ function redrawArrows()
         var overlapY=true;
         if(felem.y1>telem.y2||felem.y2<telem.y1) overlapY=false;
         var overlapX=true;
-        if(felem.x1>telem.x2||felem.x2<telem.x1) overlapX=false;
+        if(felem.x1>telem.x2||felem.x2<telem.x1) overlapX=false;        
         var majorX=true;
         if(Math.abs(currentline.dy)>Math.abs(currentline.dx)) majorX=false;
 
@@ -609,10 +586,10 @@ function redrawArrows()
         var ctype=0;
         if(overlapY||((majorX)&&(!overlapX))){
             if(currentline.dx>0) currentline.ctype="LR"
-            else currentline.ctype="RL";
+            else currentline.ctype="RL"; 
         }else{
             if(currentline.dy>0) currentline.ctype="TB";
-            else currentline.ctype="BT";
+            else currentline.ctype="BT"; 
         }
 
         // Add accordingly to association end
@@ -640,13 +617,13 @@ function redrawArrows()
       if(element.bottom.length>1) element.bottom.sort(function(a, b){return sortvectors(a,b,element.bottom,element.id,3)});
       if(element.left.length>1) element.left.sort(function(a, b){return sortvectors(a,b,element.left,element.id,0)});
       if(element.right.length>1) element.right.sort(function(a, b){return sortvectors(a,b,element.right,element.id,1)});
-    }
+    }    
 
     // Draw each line using sorted line ends when applicable
     for(var i=0;i<lines.length;i++){
         var currentline=lines[i];
         var felem,telem,dx,dy;
-
+        
         felem=data[findIndex(data,currentline.fromID)];
         telem=data[findIndex(data,currentline.toID)];
 
@@ -687,7 +664,7 @@ function redrawArrows()
             str+=`<line x1='${fx+(dx*strokewidth*1.5)}' y1='${fy+(dy*strokewidth*1.5)}' x2='${tx+(dx*strokewidth*1.5)}' y2='${ty+(dy*strokewidth*1.5)}' stroke='#f44' stroke-width='${strokewidth}' />`;
             str+=`<line x1='${fx-(dx*strokewidth*1.5)}' y1='${fy-(dy*strokewidth*1.5)}' x2='${tx-(dx*strokewidth*1.5)}' y2='${ty-(dy*strokewidth*1.5)}' stroke='#f44' stroke-width='${strokewidth}' />`;
         }
-
+         
     }
 
     document.getElementById("svgoverlay").innerHTML=str;
@@ -704,7 +681,7 @@ function getData() {
 function data_returned(ret) {
     if (typeof ret.data !== "undefined") {
         service=ret;
-        showdata();
+        showdata();			
 		} else {
         alert("Error receiveing data!");
     }
