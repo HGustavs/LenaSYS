@@ -37,5 +37,7 @@ if($assignment != "UNK"){
 		exit();	
 	}
 }
+//Terminate connection
+$pdo = null;
 
 ?>
