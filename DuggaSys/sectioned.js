@@ -1502,6 +1502,13 @@ function drawSwimlanes() {
   document.getElementById("swimlaneSVG").innerHTML = str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 " + svgHeight);
 
+  //If course longer than 10 weeks, make scroll available
+  if (weekLength > 10) {
+    document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 400 " + svgHeight);
+    $("#statisticsSwimlanes").css('overflow-X', 'scroll');
+    $("#statisticsSwimlanes").width("300px");
+}
+
 }
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
