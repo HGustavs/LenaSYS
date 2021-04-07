@@ -122,9 +122,11 @@ function ddown(event)
 {
 		startX=event.clientX;
 		startY=event.clientY;
-		mb=8;
-	
-		updateSelection(data[findIndex(data,event.currentTarget.id)],null,null);
+        mb=8;
+
+        updateSelection(data[findIndex(data,event.currentTarget.id)],null,null);
+        
+        
 }
 
 function mup(event)
@@ -385,30 +387,60 @@ function showdata() {
 	
 }
 
+
 //-------------------------------------------------------------------------------------------------
 // updateselection - Update context according to selection parameters or clicked element
 //-------------------------------------------------------------------------------------------------
 
 function updateSelection(ctxelement,x,y)
 {
-    // If we pass a context object e.g. we clicked in object
-    if (ctxelement != null)
-    {
-        // Element not already in context
-        if (!context.includes(ctxelement))
-        {
-            context.push(ctxelement);
+	document.addEventListener('keydown', function(e){
+		// LeftControll key pressed
+		if(e.ctrlKey){
+				// If we pass a context object e.g. we clicked in object
+				if (ctxelement != null)
+				{
+				// Element not already in context
+				if (!context.includes(ctxelement))
+				{
+						context.push(ctxelement);
+				}
+				}
+				else if (typeof x != "undefined" && typeof y != "undefined")
+				{
+						// Or if x and y are both defined
+				}
+				else
+				{
+					// Clear elements from selection
+						context = [];
+				}
+			}
+		});
+
+		if (ctxelement != null)
+		{
+		// Element not already in context
+		if (!context.includes(ctxelement) && context.length < 1)
+		{
+			context.push(ctxelement);
+            console.log(context);
+		}
+        else{
+            context = [];
         }
-    }
-    else if (typeof x != "undefined" && typeof y != "undefined")
-    {
-        // Or if x and y are both defined
-    }
-    else
-    {
-        // Clear elements from selection
-        context = [];
-    }
+
+		}
+		if (typeof x != "undefined" && typeof y != "undefined")
+		{
+				// Or if x and y are both defined
+                context.push(ctxelement);
+		}
+		else
+		{
+			// Clear elements from selection
+				context = [];
+		}
 }
 
 
@@ -418,6 +450,8 @@ function updateSelection(ctxelement,x,y)
 
 function updatepos(deltaX,deltaY)
 {
+
+    
 for (var i = 0; i < data.length; i++)
     {
         // Element data from the array
@@ -439,6 +473,7 @@ for (var i = 0; i < data.length; i++)
                 // TODO : This should be re-made into specifics regarding each element type. Current version is simply the "basic" beta-version.
                 // Change element colour (selected)
                 elementDiv.children[0].children[0].style.fill = "orange";
+
             }
             else
             {
@@ -449,6 +484,7 @@ for (var i = 0; i < data.length; i++)
                 // TODO : This should be re-made into specifics regarding each element type. Current version is simply the "basic" beta-version.
                 // Restore element background colour (non-selected)
                 elementDiv.children[0].children[0].style.fill = "pink";
+
             }
         }
     }
