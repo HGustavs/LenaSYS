@@ -5053,10 +5053,6 @@ only screen and (max-device-width: 530px) {
     text-align: center;
   }
 
-  #cookiemsg > p{
-    border: 10px solid red;
-  }
-
   #Sectionlist .course {
     font-size: 16px;
   }
