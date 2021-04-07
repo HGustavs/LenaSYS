@@ -4,6 +4,7 @@
 
 :root {
   --color-text-primary: #775886;
+  --color-text-primary-darker: #620C5B;
   --color-text-secondary: #434343;
   --color-text-header: #fff;
   --color-text-list: #000;
@@ -4405,7 +4406,7 @@ rect[class*="activitymarker"]:hover {
   /* margin-left: 5px; */
   display: inline;
   align-self: center;
-  color: var(--color-text-primary);
+  color: var(--color-text-primary-darker);
 }
 
 .alertmsg input {
