@@ -535,8 +535,8 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 function saveDuggaResult(citstr)
 {
 
+	// Generate hash
 	var hash = generateHash();
-	console.log("asd: " + hash)
 
 	var readonly;
 	$.ajax({
@@ -602,6 +602,9 @@ function saveDuggaResult(citstr)
 	});
 }
 
+//----------------------------------------------------------------------------------
+// generateHash: Generates a hash
+//----------------------------------------------------------------------------------
 function generateHash() {
     var randNum = getRandomNumber();
     var hash = createHash(randNum);
