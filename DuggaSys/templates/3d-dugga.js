@@ -317,10 +317,6 @@ function saveClick()
 	
 	answerString+=" "+$(window).width();
 	answerString+=" "+$(window).height();
-
-	// Generate hash
-	var hash = generateHash();
-
 	//console.log(answerString);
 	saveDuggaResult(answerString);
 }

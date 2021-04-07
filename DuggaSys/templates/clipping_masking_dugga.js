@@ -191,10 +191,7 @@ function saveClick()
   	bitstr += " " + window.screen.width;
   	bitstr += " " + window.screen.height;
   	bitstr += " " + $(window).width();
-    bitstr += " " + $(window).height();
-      
-    // Generate hash
-	var hash = generateHash();
+  	bitstr += " " + $(window).height();
 
   	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
   	saveDuggaResult(bitstr);

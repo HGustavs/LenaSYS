@@ -143,7 +143,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 
-
 					if ($duggafile !== 'contribution') {
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
@@ -153,8 +152,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 						echo "</td>";
 						echo "</tr>";
 						echo "</table>";
-
-						echo "<script src='templates/hashGenerator.js'></script>";
 					}
 
 				}else{
