@@ -28,5 +28,5 @@ function decimalToHexString(number) {
 }
 
 function getRandomNumber() {
-    return Math.floor(Math.random() * 10000000) + 10000;
+    return Math.floor(Math.random() * 1000000) + 100000;
 }
