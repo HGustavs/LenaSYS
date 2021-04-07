@@ -21,6 +21,8 @@ var retdata=null;
 var hc=null;
 var score = -1;
 var activehex;
+
+
 //----------------------------------------------------------------------------------
 // Setup
 //----------------------------------------------------------------------------------
@@ -135,7 +137,10 @@ function saveClick()
 	
 	bitstr+=" "+$(window).width();
 	bitstr+=" "+$(window).height();
-	
+
+	// Generate hash
+	var hash = generateHash();
+
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
 }

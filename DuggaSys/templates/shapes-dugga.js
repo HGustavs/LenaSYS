@@ -119,9 +119,12 @@ function saveClick()
 	} else {
 		score = 0;
 	}
-		
-		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-		saveDuggaResult(bitarray);
+
+	// Generate hash
+	var hash = generateHash();
+	
+	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+	saveDuggaResult(bitarray);
 }
 
 function reset()
