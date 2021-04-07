@@ -581,6 +581,9 @@ function saveDuggaResult(citstr)
 	console.log(url);
 	console.log(pwd);
 
+	document.getElementById('url').innerHTML = url;
+	document.getElementById('pwd').innerHTML = pwd;
+
 	var readonly;
 	$.ajax({
 		url: "courseedservice.php",
