@@ -1618,6 +1618,10 @@ div .navButt:hover {
   transform: translateX(-50%);
 }
 
+#urlAndPwd{
+  margin-top: 15px;
+}
+
 /* <<<<<<<<<<< Create new empty file >>>>>>>>>>>>>>> */
 #createNewEmptyFile input[type=text]{
   width: 100%;
