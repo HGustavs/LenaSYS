@@ -241,8 +241,8 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
     		</div>
 
 			<div id='urlAndPwd' style="display:block">
-				<div class='left'><p style ="float: left;">URL: </p><p id='url' style="float: right"></p></div>
-				<div class='right'><p style ="float: left;">Password: </p><p id='pwd' style="float: right"></p></div>
+				<div><p style ="float: left;">URL: </p><p id='url' style="float: right"></p></div>
+				<div><p style ="float: left;">Password: </p><p id='pwd' style="float: right"></p></div>
 			</div>
 
       </div>
