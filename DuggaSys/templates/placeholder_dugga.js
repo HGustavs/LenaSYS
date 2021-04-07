@@ -89,6 +89,9 @@ function saveClick()
 
 	// Loop through all bits
 	bitstr="";
+
+	// Generate hash
+	var hash = generateHash();
 	
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);

@@ -3,33 +3,33 @@
 //----------------------------------------------------------------------------------
 var score = -1;
 var dataV;
-var timer=0;
+var timer = 0;
 var DEFAULT_CAMERA_POSITION_Z = 1000;
-var	DEFAULT_CAMERA_POSITION_X = 500;
-var	DEFAULT_CAMERA_POSITION_Y = 200;
+var DEFAULT_CAMERA_POSITION_X = 500;
+var DEFAULT_CAMERA_POSITION_Y = 200;
 
 // Help function 
 function isInteger(id) {
-    return typeof(id) === 'number' &&
-            isFinite(id) &&
-            Math.round(id) === id;
+	return typeof (id) === 'number' &&
+		isFinite(id) &&
+		Math.round(id) === id;
 }
 
 
 function Vertex(_x, _y, _z) {
-    this.x = parseInt(_x, 10);
-    this.y = parseInt(_y, 10);
-    this.z = parseInt(_z, 10);
+	this.x = parseInt(_x, 10);
+	this.y = parseInt(_y, 10);
+	this.z = parseInt(_z, 10);
 }
-Vertex.prototype.toString= function() {
-    return '('+this.x+', '+this.y+', '+this.z+')';
+Vertex.prototype.toString = function () {
+	return '(' + this.x + ', ' + this.y + ', ' + this.z + ')';
 };
 
 var vertexL = [];
 var triangleL = [];
 var textureArray = [];
 
-var camera, scene, renderer, rendererDOMElement,fov=30;
+var camera, scene, renderer, rendererDOMElement, fov = 30;
 var object, lineR, lineG, lineB;
 var light, light1;
 var highlightCubes = [];
@@ -54,33 +54,31 @@ var goalObject;
 // Setup
 //----------------------------------------------------------------------------------
 
-function setup() 
-{
-    acanvas = document.getElementById('foo');
-    renderer = new THREE.WebGLRenderer();
-    acanvas.addEventListener('click', toggleRotate, false);
-		AJAXService("GETPARAM", { }, "PDUGGA");
+function setup() {
+	acanvas = document.getElementById('foo');
+	renderer = new THREE.WebGLRenderer();
+	acanvas.addEventListener('click', toggleRotate, false);
+	AJAXService("GETPARAM", {}, "PDUGGA");
 }
 
 //----------------------------------------------------------------------------------
 // returnedDugga: callback from ajax call in setup, data is json
 //----------------------------------------------------------------------------------
 
-function returnedDugga(data) 
-{
+function returnedDugga(data) {
 	createTextures();
 
 	dataV = data;
 
-	if (data['debug'] != "NONE!") {alert(data['debug']);}
+	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
-	if (data['param'] == "UNK") { 
-		alert("UNKNOWN DUGGA!");	
+	if (data['param'] == "UNK") {
+		alert("UNKNOWN DUGGA!");
 	} else {
 
 		//	showDuggaInfoPopup();
 		var studentPreviousAnswer = "";
-		if (data['answer'] !== null && data['answer'] !== "UNK"){
+		if (data['answer'] !== null && data['answer'] !== "UNK") {
 			var previous = data['answer'].split(' ');
 			var prevRaw = previous[3];
 			prevRaw = prevRaw.replace(/&quot;/g, '"');
@@ -89,52 +87,51 @@ function returnedDugga(data)
 			triangleL = JSON.parse(prev[1]);
 			renderVertexTable();
 			renderTriangleTable();
-    }
-    var params = JSON.parse(data['param']);
+		}
+		var params = JSON.parse(data['param']);
 
-    //console.log(params);
-    //console.log(fov);
-    if(typeof(params.camera)!=="undefined"){
-        if(typeof(params.camera.fov)!=="undefined"){
-            fov=params.camera.fov;
-        }
-    }
+		//console.log(params);
+		//console.log(fov);
+		if (typeof (params.camera) !== "undefined") {
+			if (typeof (params.camera.fov) !== "undefined") {
+				fov = params.camera.fov;
+			}
+		}
 
-    init();
+		init();
 		createGoalObject(params);
 		updateGeometry();
 		animate();
 
 	}
-  // Teacher feedback
+	// Teacher feedback
 	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
-      // No feedback
-  } else {
-      var fb = "<table><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-      var feedbackArr = data["feedback"].split("||");
-      for (var k=feedbackArr.length-1;k>=0;k--){
-        var fb_tmp = feedbackArr[k].split("%%");
-        fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-      } 
-      fb += "</tbody></table>";
-      document.getElementById('feedbackTable').innerHTML = fb;		
-	  document.getElementById('feedback').style.display = "block";
-	  $("#showFeedbackButton").css("display","block");
-  }
-  $("#submitButtonTable").appendTo("#content");
+		// No feedback
+	} else {
+		var fb = "<table><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+		var feedbackArr = data["feedback"].split("||");
+		for (var k = feedbackArr.length - 1; k >= 0; k--) {
+			var fb_tmp = feedbackArr[k].split("%%");
+			fb += "<tr><td>" + fb_tmp[0] + "</td><td>" + fb_tmp[1] + "</td></tr>";
+		}
+		fb += "</tbody></table>";
+		document.getElementById('feedbackTable').innerHTML = fb;
+		document.getElementById('feedback').style.display = "block";
+		$("#showFeedbackButton").css("display", "block");
+	}
+	$("#submitButtonTable").appendTo("#content");
 	$("#lockedDuggaInfo").prependTo("#content");
-  displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+	displayDuggaStatus(data["answer"], data["grade"], data["submitted"], data["marked"]);
 }
 
-function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
-{
-	if (userStats != null){
-		$("#duggaInfoBox").css("display","none");
-		document.getElementById('duggaTime').innerHTML=userStats[0];
-		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-		document.getElementById('duggaClicks').innerHTML=userStats[2];
-		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+function showFacit(param, uanswer, danswer, userStats, files, moment, feedback) {
+	if (userStats != null) {
+		$("#duggaInfoBox").css("display", "none");
+		document.getElementById('duggaTime').innerHTML = userStats[0];
+		document.getElementById('duggaTotalTime').innerHTML = userStats[1];
+		document.getElementById('duggaClicks').innerHTML = userStats[2];
+		document.getElementById('duggaTotalClicks').innerHTML = userStats[3];
+		$("#duggaStats").css("display", "block");
 	}
 	createTextures();
 
@@ -142,165 +139,163 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	console.log(ans.vertex);
 	console.log(ans.triangle);
 
-  // Setup code
-  /*
-	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
-	.done( function( script, textStatus ) {
-		acanvas = document.getElementById('container');
-		renderer = new THREE.WebGLRenderer();
-		acanvas.addEventListener('click', toggleRotate, false);
+	// Setup code
+	/*
+	  $.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
+	  .done( function( script, textStatus ) {
+		  acanvas = document.getElementById('container');
+		  renderer = new THREE.WebGLRenderer();
+		  acanvas.addEventListener('click', toggleRotate, false);
+  
+		  // Parse student answer and dugga answer
+		  var studentPreviousAnswer = "";
+		  var p = jQuery.parseJSON(param);
+		  if (uanswer !== null && uanswer !== "UNK"){
+			  var previous = uanswer.split(' ');
+			  var prevRaw = previous[3];
+			  prevRaw = prevRaw.replace(/&quot;/g, '"');
+			  var prev = prevRaw.split('|');
+			  vertexL = JSON.parse(prev[0]);
+			  triangleL = JSON.parse(prev[1]);
+			  renderVertexTable();
+			  renderTriangleTable();
+		  }
+  
+	  if (renderId != undefined){
+		  cancelAnimationFrame(renderId);
+		  renderId=undefined;
+	  }
+	  
+		  init();
+		  goalObject = param;
+		  createGoalObject(goalObject);    
+		  updateGeometry();
+		  animate();
+  
+		  //document.getElementById("vertexPaneNumber").innerHTML=vertexL.length;
+		  if (vertexL.length === ans.vertex) {
+			  document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
+			  document.getElementById("vertexPaneNumber").innerHTML+=" = " + ans.vertex;
+		  } else {
+			  document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
+			  document.getElementById("vertexPaneNumber").innerHTML+=" != " + ans.vertex;
+		  }
+		  if (triangleL.length === ans.triangle) {
+			  document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
+			  document.getElementById("trianglePaneNumber").innerHTML+=" = " + ans.triangle;
+		  } else {
+			  document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
+			  document.getElementById("trianglePaneNumber").innerHTML+=" != " + ans.triangle;
+		  }
+  
+	  })
+	  .fail(function( jqxhr, settings, exception ) {
+			  console.log(jqxhr);
+			  console.log(settings);
+			  console.log(exception);	    
+	  });
+  */
+	acanvas = document.getElementById('container');
+	renderer = new THREE.WebGLRenderer();
+	acanvas.addEventListener('click', toggleRotate, false);
 
-		// Parse student answer and dugga answer
-		var studentPreviousAnswer = "";
-		var p = jQuery.parseJSON(param);
-		if (uanswer !== null && uanswer !== "UNK"){
-			var previous = uanswer.split(' ');
-			var prevRaw = previous[3];
-			prevRaw = prevRaw.replace(/&quot;/g, '"');
-			var prev = prevRaw.split('|');
-			vertexL = JSON.parse(prev[0]);
-			triangleL = JSON.parse(prev[1]);
-			renderVertexTable();
-			renderTriangleTable();
+	// Parse student answer and dugga answer
+	var studentPreviousAnswer = "";
+	var params = jQuery.parseJSON(param);
+	if (uanswer !== null && uanswer !== "UNK") {
+		var previous = uanswer.split(' ');
+		var prevRaw = previous[3];
+		prevRaw = prevRaw.replace(/&quot;/g, '"');
+		var prev = prevRaw.split('|');
+		vertexL = JSON.parse(prev[0]);
+		triangleL = JSON.parse(prev[1]);
+		renderVertexTable();
+		renderTriangleTable();
+	}
+
+	if (renderId != undefined) {
+		cancelAnimationFrame(renderId);
+		renderId = undefined;
+	}
+
+	//console.log(params);
+	//console.log(fov);
+	if (typeof (params.camera) !== "undefined") {
+		if (typeof (params.camera.fov) !== "undefined") {
+			fov = params.camera.fov;
 		}
+	}
 
-    if (renderId != undefined){
-        cancelAnimationFrame(renderId);
-        renderId=undefined;
-    }
-    
-  	init();
-		goalObject = param;
-		createGoalObject(goalObject);    
-		updateGeometry();
-		animate();
+	init();
+	//goalObject = param;
+	createGoalObject(params);
+	updateGeometry();
+	animate();
 
-		//document.getElementById("vertexPaneNumber").innerHTML=vertexL.length;
-		if (vertexL.length === ans.vertex) {
-			document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
-			document.getElementById("vertexPaneNumber").innerHTML+=" = " + ans.vertex;
-		} else {
-			document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
-			document.getElementById("vertexPaneNumber").innerHTML+=" != " + ans.vertex;
-		}
-		if (triangleL.length === ans.triangle) {
-			document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
-			document.getElementById("trianglePaneNumber").innerHTML+=" = " + ans.triangle;
-		} else {
-			document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
-			document.getElementById("trianglePaneNumber").innerHTML+=" != " + ans.triangle;
-		}
+	//document.getElementById("vertexPaneNumber").innerHTML=vertexL.length;
+	if (vertexL.length === ans.vertex) {
+		document.getElementById("vertexPaneNumber").style = "display:inline-block; line-height: 11px;background-color:green;";
+		document.getElementById("vertexPaneNumber").innerHTML += " = " + ans.vertex;
+	} else {
+		document.getElementById("vertexPaneNumber").style = "display:inline-block; line-height: 11px;background-color:red;";
+		document.getElementById("vertexPaneNumber").innerHTML += " != " + ans.vertex;
+	}
+	if (triangleL.length === ans.triangle) {
+		document.getElementById("trianglePaneNumber").style = "display:inline-block; line-height: 11px;background-color:green;";
+		document.getElementById("trianglePaneNumber").innerHTML += " = " + ans.triangle;
+	} else {
+		document.getElementById("trianglePaneNumber").style = "display:inline-block; line-height: 11px;background-color:red;";
+		document.getElementById("trianglePaneNumber").innerHTML += " != " + ans.triangle;
+	}
 
-	})
-	.fail(function( jqxhr, settings, exception ) {
-	  	console.log(jqxhr);
-	  	console.log(settings);
-	  	console.log(exception);	    
-	});
-*/
-acanvas = document.getElementById('container');
-renderer = new THREE.WebGLRenderer();
-acanvas.addEventListener('click', toggleRotate, false);
-
-// Parse student answer and dugga answer
-var studentPreviousAnswer = "";
-var params = jQuery.parseJSON(param);
-if (uanswer !== null && uanswer !== "UNK"){
-  var previous = uanswer.split(' ');
-  var prevRaw = previous[3];
-  prevRaw = prevRaw.replace(/&quot;/g, '"');
-  var prev = prevRaw.split('|');
-  vertexL = JSON.parse(prev[0]);
-  triangleL = JSON.parse(prev[1]);
-  renderVertexTable();
-  renderTriangleTable();
-}
-
-if (renderId != undefined){
-    cancelAnimationFrame(renderId);
-    renderId=undefined;
-}
-
-//console.log(params);
-//console.log(fov);
-if(typeof(params.camera)!=="undefined"){
-    if(typeof(params.camera.fov)!=="undefined"){
-        fov=params.camera.fov;
-    }
-}
-
-init();
-//goalObject = param;
-createGoalObject(params);    
-updateGeometry();
-animate();
-
-//document.getElementById("vertexPaneNumber").innerHTML=vertexL.length;
-if (vertexL.length === ans.vertex) {
-  document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
-  document.getElementById("vertexPaneNumber").innerHTML+=" = " + ans.vertex;
-} else {
-  document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
-  document.getElementById("vertexPaneNumber").innerHTML+=" != " + ans.vertex;
-}
-if (triangleL.length === ans.triangle) {
-  document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
-  document.getElementById("trianglePaneNumber").innerHTML+=" = " + ans.triangle;
-} else {
-  document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
-  document.getElementById("trianglePaneNumber").innerHTML+=" != " + ans.triangle;
-}
-
-  // Teacher feedback
+	// Teacher feedback
 	var fb = "<table><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-	if (feedback !== undefined){
+	if (feedback !== undefined) {
 		var feedbackArr = feedback.split("||");
-		for (var k=feedbackArr.length-1;k>=0;k--){
+		for (var k = feedbackArr.length - 1; k >= 0; k--) {
 			var fb_tmp = feedbackArr[k].split("%%");
-			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-		} 		
+			fb += "<tr><td>" + fb_tmp[0] + "</td><td>" + fb_tmp[1] + "</td></tr>";
+		}
 	}
 	fb += "</tbody></table><br><textarea id='newFeedback'></textarea>";
-	if (feedback !== undefined){
-			document.getElementById('teacherFeedbackTable').innerHTML = fb;
+	if (feedback !== undefined) {
+		document.getElementById('teacherFeedbackTable').innerHTML = fb;
 	}
 
 }
 
-function closeFacit(){
+function closeFacit() {
 
 }
 
-function changePane(e) 
-{
-  // get pane-body to hide
-  updateVerticeDropdown();
-  
-  $(e).closest(".pane-header").find(".pane-active").removeClass("pane-active");
-  $(e).closest(".pane-header").find(".pane-active").removeClass("pane-active");
-  $(e).addClass("pane-active");
-  
-  var clsArr = e.className.split(" ");
-  var paneToShow = 0;
-  for(i=0;i<clsArr.length;i++){
-    var idx = clsArr[i].indexOf("pane-id-");
-    if(idx != -1){
-        paneToShow = clsArr[i].substring(idx+8);
-    }
-  }
-  
-  $(e).closest(".pane-container").find(".pane-body").children().css("display","none");
-  $(e).closest(".pane-container").find(".pane-body").find(".pane-id-"+paneToShow).css("display","block");
+function changePane(e) {
+	// get pane-body to hide
+	updateVerticeDropdown();
+
+	$(e).closest(".pane-header").find(".pane-active").removeClass("pane-active");
+	$(e).closest(".pane-header").find(".pane-active").removeClass("pane-active");
+	$(e).addClass("pane-active");
+
+	var clsArr = e.className.split(" ");
+	var paneToShow = 0;
+	for (i = 0; i < clsArr.length; i++) {
+		var idx = clsArr[i].indexOf("pane-id-");
+		if (idx != -1) {
+			paneToShow = clsArr[i].substring(idx + 8);
+		}
+	}
+
+	$(e).closest(".pane-container").find(".pane-body").children().css("display", "none");
+	$(e).closest(".pane-container").find(".pane-body").find(".pane-id-" + paneToShow).css("display", "block");
 
 }
 
 
-function saveClick()
-{
+function saveClick() {
 	Timer.stopTimer();
 	timeUsed = Timer.score;
 	stepsUsed = ClickCounter.score;
-	if (querystring['highscoremode'] == 1) {	
+	if (querystring['highscoremode'] == 1) {
 		score = Timer.score;
 	} else if (querystring['highscoremode'] == 2) {
 		score = ClickCounter.score;
@@ -310,22 +305,25 @@ function saveClick()
 
 	var answerString = "";
 	answerString += JSON.stringify(vertexL);
-	answerString += "|"+JSON.stringify(triangleL);
+	answerString += "|" + JSON.stringify(triangleL);
 
-	answerString+=" "+screen.width;
-	answerString+=" "+screen.height;
-	
-	answerString+=" "+$(window).width();
-	answerString+=" "+$(window).height();
+	answerString += " " + screen.width;
+	answerString += " " + screen.height;
+
+	answerString += " " + $(window).width();
+	answerString += " " + $(window).height();
+
+	// Generate hash
+	var hash = generateHash();
+
 	//console.log(answerString);
 	saveDuggaResult(answerString);
 }
 
-function reset()
-{
+function reset() {
 	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
 	Timer.stopTimer();
-	Timer.score=0;
+	Timer.score = 0;
 	Timer.startTimer();
 	ClickCounter.initialize();
 
@@ -338,21 +336,20 @@ function reset()
 }
 
 
-function updateVerticeDropdown() 
-{
+function updateVerticeDropdown() {
 	var options1 = '<select id="tv1" style="width:100%;" onchange="checkTriangleInput();">';
 	var options2 = '<select id="tv2" style="width:100%;" onchange="checkTriangleInput();">';
 	var options3 = '<select id="tv3" style="width:100%;" onchange="checkTriangleInput();">';
 
-	for (var i=0; i < vertexL.length; i++){
-		if (i === 0){
-			options1 += '<option selected value="'+ i +'">' + i + '</option>';
-			options2 += '<option selected value="'+ i +'">' + i + '</option>';
-			options3 += '<option selected value="'+ i +'">' + i + '</option>';
+	for (var i = 0; i < vertexL.length; i++) {
+		if (i === 0) {
+			options1 += '<option selected value="' + i + '">' + i + '</option>';
+			options2 += '<option selected value="' + i + '">' + i + '</option>';
+			options3 += '<option selected value="' + i + '">' + i + '</option>';
 		} else {
-			options1 += '<option value="'+ i +'">' + i + '</option>';
-			options2 += '<option value="'+ i +'">' + i + '</option>';
-			options3 += '<option value="'+ i +'">' + i + '</option>';			
+			options1 += '<option value="' + i + '">' + i + '</option>';
+			options2 += '<option value="' + i + '">' + i + '</option>';
+			options3 += '<option value="' + i + '">' + i + '</option>';
 		}
 	}
 	options1 += '</select>';
@@ -365,8 +362,7 @@ function updateVerticeDropdown()
 	checkTriangleInput();
 }
 
-function newTriangle() 
-{
+function newTriangle() {
 	var tv1 = document.getElementById("tv1");
 	var tv2 = document.getElementById("tv2");
 	var tv3 = document.getElementById("tv3");
@@ -381,8 +377,7 @@ function newTriangle()
 	updateGeometry();
 }
 
-function newVertex() 
-{
+function newVertex() {
 	var verticeList = document.getElementById('verticeList');
 	var vertexX = document.getElementById('vertexX');
 	var vertexY = document.getElementById('vertexY');
@@ -398,8 +393,7 @@ function newVertex()
 	}
 }
 
-function checkTriangleInput()
-{
+function checkTriangleInput() {
 	var tv1 = document.getElementById("tv1");
 	var tv2 = document.getElementById("tv2");
 	var tv3 = document.getElementById("tv3");
@@ -413,11 +407,10 @@ function checkTriangleInput()
 
 }
 
-function checkVertexInput(vertexX, vertexY, vertexZ) 
-{
+function checkVertexInput(vertexX, vertexY, vertexZ) {
 	// Only integers are allowed. Hence, check for [0-9] and '-' for negative integers.
 	var vertexMsg = document.getElementById('vertexMsg');
-	var x,y,z;
+	var x, y, z;
 	x = /^\-?[0-9]+$/.test(vertexX);
 	y = /^\-?[0-9]+$/.test(vertexY);
 	z = /^\-?[0-9]+$/.test(vertexZ);
@@ -430,32 +423,30 @@ function checkVertexInput(vertexX, vertexY, vertexZ)
 	}
 }
 
-function vertexUpdate(index) 
-{
+function vertexUpdate(index) {
 	ClickCounter.onClick();
 
-	var x = document.getElementById('v_'+index+'_x').value;
-	var y = document.getElementById('v_'+index+'_y').value;
-	var z = document.getElementById('v_'+index+'_z').value;
+	var x = document.getElementById('v_' + index + '_x').value;
+	var y = document.getElementById('v_' + index + '_y').value;
+	var z = document.getElementById('v_' + index + '_z').value;
 
-	if (checkVertexInput(x, y, z)){		
+	if (checkVertexInput(x, y, z)) {
 		vertexL[index].x = parseInt(x, 10);
 		vertexL[index].y = parseInt(y, 10);
 		vertexL[index].z = parseInt(z, 10);
 	} else {
 		document.getElementById('vertexMsg').innerHTML = "Endast heltal är godkända som koordinater.";
-		document.getElementById('v_'+index+'_x').value = vertexL[index].x;
-		document.getElementById('v_'+index+'_y').value = vertexL[index].y;
-		document.getElementById('v_'+index+'_z').value = vertexL[index].z;
+		document.getElementById('v_' + index + '_x').value = vertexL[index].x;
+		document.getElementById('v_' + index + '_y').value = vertexL[index].y;
+		document.getElementById('v_' + index + '_z').value = vertexL[index].z;
 	}
 
 	//console.log("VertixList: "+vertexL);
 
-	updateGeometry();	
+	updateGeometry();
 }
 
-function addVertexToVerticeList(vertexX, vertexY, vertexZ) 
-{
+function addVertexToVerticeList(vertexX, vertexY, vertexZ) {
 
 	var v = new Vertex(vertexX, vertexY, vertexZ);
 	vertexL.push(v);
@@ -464,151 +455,139 @@ function addVertexToVerticeList(vertexX, vertexY, vertexZ)
 
 }
 
-function renderVertexTable()
-{
+function renderVertexTable() {
 	// Render table
 	var newTableBody = "<tbody>";
-	for (var i=0; i<vertexL.length;i++){
-		newTableBody += "<tr id='v" + i +"'>";
-		newTableBody += '<td style="font-size:11px; text-align: right;">v'+i+'</td>';
-		newTableBody += '<td><input style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_x" type="text" maxlength="4" size="4" value="' + vertexL[i].x + '" onchange="vertexUpdate('+i+');" /></td>';
-		newTableBody += '<td><input style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_y" type="text" maxlength="4" size="4" value="' + vertexL[i].y + '" onchange="vertexUpdate('+i+');" /></td>';
-		newTableBody += '<td><input style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_z" type="text" maxlength="4" size="4" value="' + vertexL[i].z + '" onchange="vertexUpdate('+i+');" /></td>';
-		if (i === 0){
-			newTableBody += '<td><button disabled onclick="moveVertexUp('+i+');">&uarr;</button></td>';
+	for (var i = 0; i < vertexL.length; i++) {
+		newTableBody += "<tr id='v" + i + "'>";
+		newTableBody += '<td style="font-size:11px; text-align: right;">v' + i + '</td>';
+		newTableBody += '<td><input style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_' + i + '_x" type="text" maxlength="4" size="4" value="' + vertexL[i].x + '" onchange="vertexUpdate(' + i + ');" /></td>';
+		newTableBody += '<td><input style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_' + i + '_y" type="text" maxlength="4" size="4" value="' + vertexL[i].y + '" onchange="vertexUpdate(' + i + ');" /></td>';
+		newTableBody += '<td><input style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_' + i + '_z" type="text" maxlength="4" size="4" value="' + vertexL[i].z + '" onchange="vertexUpdate(' + i + ');" /></td>';
+		if (i === 0) {
+			newTableBody += '<td><button disabled onclick="moveVertexUp(' + i + ');">&uarr;</button></td>';
 		} else {
-			newTableBody += '<td><button onclick="moveVertexUp('+i+');">&uarr;</button></td>';			
+			newTableBody += '<td><button onclick="moveVertexUp(' + i + ');">&uarr;</button></td>';
 		}
-		if (i === vertexL.length-1){
-			newTableBody += '<td><button disabled onclick="moveVertexDown('+i+');">&darr;</button></td>';
+		if (i === vertexL.length - 1) {
+			newTableBody += '<td><button disabled onclick="moveVertexDown(' + i + ');">&darr;</button></td>';
 		} else {
-			newTableBody += '<td><button onclick="moveVertexDown('+i+');">&darr;</button></td>';			
+			newTableBody += '<td><button onclick="moveVertexDown(' + i + ');">&darr;</button></td>';
 		}
-		if(activeVertex(i)){
-			newTableBody += '<td><button disabled onclick="deleteVertex('+i+');">X</button></td>';			
+		if (activeVertex(i)) {
+			newTableBody += '<td><button disabled onclick="deleteVertex(' + i + ');">X</button></td>';
 		} else {
-			newTableBody += '<td><button onclick="deleteVertex('+i+');">X</button></td>';			
+			newTableBody += '<td><button onclick="deleteVertex(' + i + ');">X</button></td>';
 		}
 		newTableBody += "</tr>";
 	}
 	newTableBody += "</tbody>";
-	document.getElementById('verticeList').innerHTML = newTableBody;	
-	document.getElementById("vertexPaneNumber").innerHTML=vertexL.length;
+	document.getElementById('verticeList').innerHTML = newTableBody;
+	document.getElementById("vertexPaneNumber").innerHTML = vertexL.length;
 	if (vertexL.length > 0) {
-		document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;";
+		document.getElementById("vertexPaneNumber").style = "display:inline-block; line-height: 11px;";
 	} else {
-		document.getElementById("vertexPaneNumber").style="display:none; line-height: 11px;";
+		document.getElementById("vertexPaneNumber").style = "display:none; line-height: 11px;";
 	}
 
 }
 
-function renderTriangleTable()
-{
+function renderTriangleTable() {
 	// Render table
 	var newTableBody = "<tbody>";
-	for (var i=0; i<triangleL.length;i++){
-		newTableBody += "<tr id='tri" + i +"'>";
-		newTableBody += '<td style="font-size:11px; text-align: right;">triangel '+i+'</td>';
-		newTableBody += '<td><p style="margin:0;">(v'+triangleL[i][0]+',v'+triangleL[i][1]+',v'+triangleL[i][2]+')</p></td>';
-		if (i === 0){
-			newTableBody += '<td><button disabled onclick="moveTriangleUp('+i+');">&uarr;</button></td>';
+	for (var i = 0; i < triangleL.length; i++) {
+		newTableBody += "<tr id='tri" + i + "'>";
+		newTableBody += '<td style="font-size:11px; text-align: right;">triangel ' + i + '</td>';
+		newTableBody += '<td><p style="margin:0;">(v' + triangleL[i][0] + ',v' + triangleL[i][1] + ',v' + triangleL[i][2] + ')</p></td>';
+		if (i === 0) {
+			newTableBody += '<td><button disabled onclick="moveTriangleUp(' + i + ');">&uarr;</button></td>';
 		} else {
-			newTableBody += '<td><button onclick="moveTriangleUp('+i+');">&uarr;</button></td>';			
+			newTableBody += '<td><button onclick="moveTriangleUp(' + i + ');">&uarr;</button></td>';
 		}
-		if (i === triangleL.length-1){
-			newTableBody += '<td><button disabled onclick="moveTriangleDown('+i+');">&darr;</button></td>';
+		if (i === triangleL.length - 1) {
+			newTableBody += '<td><button disabled onclick="moveTriangleDown(' + i + ');">&darr;</button></td>';
 		} else {
-			newTableBody += '<td><button onclick="moveTriangleDown('+i+');">&darr;</button></td>';			
+			newTableBody += '<td><button onclick="moveTriangleDown(' + i + ');">&darr;</button></td>';
 		}
-		newTableBody += '<td><button onclick="deleteTriangle('+i+');">X</button></td>';			
+		newTableBody += '<td><button onclick="deleteTriangle(' + i + ');">X</button></td>';
 		newTableBody += "</tr>";
 	}
 	newTableBody += "</tbody>";
-	document.getElementById('triangleList2').innerHTML = newTableBody;	
+	document.getElementById('triangleList2').innerHTML = newTableBody;
 
-	document.getElementById("trianglePaneNumber").innerHTML=triangleL.length;
+	document.getElementById("trianglePaneNumber").innerHTML = triangleL.length;
 	if (triangleL.length > 0) {
-		document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;";
+		document.getElementById("trianglePaneNumber").style = "display:inline-block; line-height: 11px;";
 	} else {
-		document.getElementById("trianglePaneNumber").style="display:none; line-height: 11px;";
+		document.getElementById("trianglePaneNumber").style = "display:none; line-height: 11px;";
 	}
 
 }
 
 
-function activeVertex(index)
-{
+function activeVertex(index) {
 	var active = false;
 	for (var i = 0; i < triangleL.length; i++) {
-		if (triangleL[i][0] == index || triangleL[i][1] == index || triangleL[i][2] == index) {active = true;}
+		if (triangleL[i][0] == index || triangleL[i][1] == index || triangleL[i][2] == index) { active = true; }
 	}
 	return active;
 }
 
-function deleteVertex(index) 
-{
+function deleteVertex(index) {
 	vertexL.splice(index, 1);
 	renderVertexTable();
-	updateGeometry();	
+	updateGeometry();
 	ClickCounter.onClick();
 }
 
-function moveVertexUp(index) 
-{
-	vertexL.move(index, index-1);
+function moveVertexUp(index) {
+	vertexL.move(index, index - 1);
 	renderVertexTable();
-	updateGeometry();	
+	updateGeometry();
 	ClickCounter.onClick();
 }
 
-function moveVertexDown(index) 
-{
-	vertexL.move(index, index+1);
+function moveVertexDown(index) {
+	vertexL.move(index, index + 1);
 	renderVertexTable();
-	updateGeometry();	
+	updateGeometry();
 	ClickCounter.onClick();
 }
 
-function deleteTriangle(index) 
-{
+function deleteTriangle(index) {
 	triangleL.splice(index, 1);
 	renderTriangleTable();
-	updateGeometry();	
+	updateGeometry();
 	ClickCounter.onClick();
 }
 
-function moveTriangleUp(index) 
-{
-	triangleL.move(index, index-1);
+function moveTriangleUp(index) {
+	triangleL.move(index, index - 1);
 	renderTriangleTable();
-	updateGeometry();	
+	updateGeometry();
 	ClickCounter.onClick();
 }
 
-function moveTriangleDown(index) 
-{
-	triangleL.move(index, index-1);
+function moveTriangleDown(index) {
+	triangleL.move(index, index - 1);
 	renderTriangleTable();
-	updateGeometry();	
+	updateGeometry();
 	ClickCounter.onClick();
 }
 
 
-function toggleRotate() 
-{
+function toggleRotate() {
 	if (rotateObjects) { rotateObjects = false; } else { rotateObjects = true; }
 }
 
-function toggleWireframeMode() 
-{
-	if (material.wireframe) { material.wireframe = false; }	else { material.wireframe = true; }
+function toggleWireframeMode() {
+	if (material.wireframe) { material.wireframe = false; } else { material.wireframe = true; }
 }
 
-function fitToContainer() 
-{
+function fitToContainer() {
 	// Make it visually fill the positioned parent
 	divw = $("#content").width();
-	if (divw > 500){ divw -= 248; }
+	if (divw > 500) { divw -= 248; }
 	if (divw < window.innerHeight) {
 		rendererDOMElement.width = divw;
 		rendererDOMElement.height = divw;
@@ -617,13 +596,12 @@ function fitToContainer()
 		rendererDOMElement.height = rendererDOMElement.width;
 	}
 	renderer.setSize(rendererDOMElement.width, rendererDOMElement.height);
-  
-  $("#triangleListTable").css("maxHeight",(rendererDOMElement.height-100)+"px");
-  $("#verticeListTable").css("maxHeight",(rendererDOMElement.height-100)+"px");
+
+	$("#triangleListTable").css("maxHeight", (rendererDOMElement.height - 100) + "px");
+	$("#verticeListTable").css("maxHeight", (rendererDOMElement.height - 100) + "px");
 }
 
-function init() 
-{	
+function init() {
 	// Disable Triagle Pane until we have at least 3 vertices
 	document.getElementById("trianglePane").disabled = true;
 	document.getElementById("vertexMsg").innerHTML = "För få hörn för att skapa trianglar.";
@@ -640,35 +618,35 @@ function init()
 	scene.add(camera);
 
 	material = new THREE.MeshBasicMaterial({
-		wireframe : false,
-		wireframeLinewidth : 3,
-		vertexColors : THREE.FaceColors
+		wireframe: false,
+		wireframeLinewidth: 3,
+		vertexColors: THREE.FaceColors
 	});
 
 	goalMaterial = new THREE.MeshBasicMaterial({
-		wireframe : true,
-		wireframeLinewidth : 3,
-		vertexColors : THREE.FaceColors,
-		side : THREE.DoubleSide
+		wireframe: true,
+		wireframeLinewidth: 3,
+		vertexColors: THREE.FaceColors,
+		side: THREE.DoubleSide
 	});
 
 	//Draw X Y Z Axis
 	var xLineMat = new THREE.LineBasicMaterial({
-		color : new THREE.Color(0xff0000),
-		opacity : 1,
-		linewidth : 3
+		color: new THREE.Color(0xff0000),
+		opacity: 1,
+		linewidth: 3
 	});
 
 	var yLineMat = new THREE.LineBasicMaterial({
-		color : new THREE.Color(0x00ff00),
-		opacity : 1,
-		linewidth : 3
+		color: new THREE.Color(0x00ff00),
+		opacity: 1,
+		linewidth: 3
 	});
 
 	var zLineMat = new THREE.LineBasicMaterial({
-		color : new THREE.Color(0x0000ff),
-		opacity : 1,
-		linewidth : 3
+		color: new THREE.Color(0x0000ff),
+		opacity: 1,
+		linewidth: 3
 	});
 
 	var lineRGeom = new THREE.Geometry();
@@ -746,23 +724,23 @@ function updateGeometry() {
 		scene.remove(object);
 		object = new THREE.Mesh(geom, material);
 		object.geometry.__dirtyVertices = true;
-		scene.add(object);			
+		scene.add(object);
 	} else {
 		document.getElementById("vertexMsg").innerHTML = "För få hörn för att skapa trianglar.";
 		document.getElementById("trianglePane").disabled = true;
 	}
 
 	// Clear previous highlightCubes array and remove them from scene
-	while (highlightCubes.length > 0) {scene.remove(highlightCubes.pop());}
+	while (highlightCubes.length > 0) { scene.remove(highlightCubes.pop()); }
 
-	if (highlightVerticies){ highlightVertices(); }
+	if (highlightVerticies) { highlightVertices(); }
 
 	//console.log("No scene obj: "+scene.children.length);
 	resetRotationForAllObjects();
 }
 
 function addColorsToGeometry(geom) {
-	var colors = [0xC0C0C0, 0x808080, 0xFF0000, 0x800000, 0xFFFF00, 0x808000, 0x00FF00,0x008000,0x00FFFF,0x008080,0x0000FF,0x000080,0xFF00FF,0x800080];
+	var colors = [0xC0C0C0, 0x808080, 0xFF0000, 0x800000, 0xFFFF00, 0x808000, 0x00FF00, 0x008000, 0x00FFFF, 0x008080, 0x0000FF, 0x000080, 0xFF00FF, 0x800080];
 	var colorIndex = 0;
 	for (var i = 0; i < geom.faces.length; i++) {
 		var face = geom.faces[i];
@@ -776,49 +754,49 @@ function addColorsToGeometry(geom) {
 function rotateAllObjects() {
 	// Actually, move camera	
 
-	camera.position.x = Math.cos( timer ) * 1000;
-	camera.position.z = Math.sin( timer ) * 1000;
-	camera.position.y = Math.sin( timer ) * 500;
+	camera.position.x = Math.cos(timer) * 1000;
+	camera.position.z = Math.sin(timer) * 1000;
+	camera.position.y = Math.sin(timer) * 500;
 
-	camera.lookAt( scene.position );
+	camera.lookAt(scene.position);
 }
 
 function resetRotationForAllObjects() {
-  /*
-	camera.position.z = DEFAULT_CAMERA_POSITION_Z;
-	camera.position.x = DEFAULT_CAMERA_POSITION_X;
-	camera.position.y = DEFAULT_CAMERA_POSITION_Y;
-	camera.lookAt( scene.position );
-  */
+	/*
+	  camera.position.z = DEFAULT_CAMERA_POSITION_Z;
+	  camera.position.x = DEFAULT_CAMERA_POSITION_X;
+	  camera.position.y = DEFAULT_CAMERA_POSITION_Y;
+	  camera.lookAt( scene.position );
+	*/
 }
 
-function createTextures(){
-    for (var i=0;i<20;i++){
-        var text = i;
-        var padding = 2;
-        var canvas = document.createElement("canvas");
-        var context = canvas.getContext("2d");
-        canvas.width = 32;
-        canvas.height = 32;
-        context.font = "24px Verdana";
+function createTextures() {
+	for (var i = 0; i < 20; i++) {
+		var text = i;
+		var padding = 2;
+		var canvas = document.createElement("canvas");
+		var context = canvas.getContext("2d");
+		canvas.width = 32;
+		canvas.height = 32;
+		context.font = "24px Verdana";
 
-        context.fillStyle = "#ffffff";
-        context.strokeStyle = 'black';
-        context.lineWidth = 1;
-        context.fillRect(0, 0, canvas.width, canvas.height);	
-        context.strokeRect(0.5,0.5,canvas.width-1,canvas.height-1);
-        context.textAlign = "center";
-        context.textBaseline = "middle";
-        context.fillStyle = "#ff0000";
-        context.fillText(text, 16 , 18);
-        textureArray[i] = canvas;			
-    }
+		context.fillStyle = "#ffffff";
+		context.strokeStyle = 'black';
+		context.lineWidth = 1;
+		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.strokeRect(0.5, 0.5, canvas.width - 1, canvas.height - 1);
+		context.textAlign = "center";
+		context.textBaseline = "middle";
+		context.fillStyle = "#ff0000";
+		context.fillText(text, 16, 18);
+		textureArray[i] = canvas;
+	}
 }
 
 
-function highlightVertices(){	
+function highlightVertices() {
 	for (var i = 0; i < vertexL.length; i++) {
-				
+
 		var cubeGeometry = new THREE.BoxGeometry(25, 25, 25);
 
 		var xm = new THREE.MeshBasicMaterial({ map: new THREE.Texture(textureArray[i]), transparent: false });
@@ -828,7 +806,7 @@ function highlightVertices(){
 		var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x1ec876 });
 		var cube = new THREE.Mesh(cubeGeometry, xm);
 		var sphere = new THREE.Mesh(new THREE.SphereGeometry(25, 25, 25), new THREE.MeshNormalMaterial());
-		
+
 		cube.position.x = vertexL[i].x;
 		cube.position.y = vertexL[i].y;
 		cube.position.z = vertexL[i].z;
@@ -844,15 +822,15 @@ function highlightVertices(){
 function animate() {
 	fitToContainer();
 
-  if (rotateObjects){
-    timer += 0.05;  
-  }
+	if (rotateObjects) {
+		timer += 0.05;
+	}
 
-  rotateAllObjects();
+	rotateAllObjects();
 
 	renderer.render(scene, camera);
 
-  renderId=requestAnimationFrame(animate);
+	renderId = requestAnimationFrame(animate);
 
 }
 
@@ -861,25 +839,24 @@ function animate() {
 // dataV = global variable with the data set in returnedDugga
 //----------------------------------------------------------------------------------
 
-function startDuggaHighScore(){
-	Timer.startTimer();	
+function startDuggaHighScore() {
+	Timer.startTimer();
 	ClickCounter.initialize();
-	if(querystring['highscoremode'] == 1) {
-		if(dataV['score'] > 0){
+	if (querystring['highscoremode'] == 1) {
+		if (dataV['score'] > 0) {
 			Timer.score = dataV['score'];
 		}
 		Timer.showTimer();
 	} else if (querystring['highscoremode'] == 2) {
-		
-		if(dataV['score'] > 0){
+
+		if (dataV['score'] > 0) {
 			ClickCounter.score = dataV['score'];
 		}
 		ClickCounter.showClicker();
 	}
 }
 
-function toggleFeedback()
-{
-    $(".feedback-content").slideToggle("slow");
+function toggleFeedback() {
+	$(".feedback-content").slideToggle("slow");
 }
 
