@@ -575,20 +575,20 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
 {
-<<<<<<< HEAD
+  
 	var pwd = randomPassword(); //Create random password for URL
 	var url = randomUrl(); //Create URL
+	var hash = generateHash(); // Generate Hash
 	
 	console.log(url);
 	console.log(pwd);
-=======
 
 	var hash = generateHash();
 	console.log("asd: " + hash)
->>>>>>> ff672c5e7 (added hash to saveDuggaResult())
 
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
+	document.getElementById('hash').innerHTML = hash;
 
 	var readonly;
 	$.ajax({
@@ -654,6 +654,13 @@ function saveDuggaResult(citstr)
 	});
 }
 
+
+
+//----------------------------------------------------------------------------------
+// generateHash: Generates a hash
+//----------------------------------------------------------------------------------
+
+
 function generateHash() {
     var randNum = getRandomNumber();
     var hash = createHash(randNum);
@@ -662,26 +669,29 @@ function generateHash() {
 	function createHash(num) {
 		var string = num.toString();
 		var hash = 0;
-	
+
 		if (string.length == 0) return hash;
-	
+    
 		for (i = 0; i < string.length; i++) {
 			char = string.charCodeAt(i);
 			hash = ((hash << 5) - hash) + char;
 			hash = hash & hash;
 		}
-	
+
+
 		return hash;
 	}
-	
+
+
 	function decimalToHexString(number) {
 		if (number < 0) {
 			number = 0xFFFFFFFF + number + 1;
 		}
-	
+
 		return number.toString(16).toUpperCase();
 	}
-	
+
+
 	function getRandomNumber() {
 		return Math.floor(Math.random() * 1000000) + 100000;
 	}
