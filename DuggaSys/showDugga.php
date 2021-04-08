@@ -252,6 +252,13 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
+	<?php 
+	if(isSuperUser($userid)){
+    	echo '<script type="text/javascript">',
+    	'displayDownloadIcon();',
+    	'</script>';
+	}?>
+
   <!--<div id='previewpopover' class='previewPopover' style='display:none;'>-->
   <div id='previewpopover' class='loginBoxContainer' style='display:none; align-items:stretch;'>
     <div style='width:100%; max-height:none;' class="loginBox">

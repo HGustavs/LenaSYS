@@ -14,6 +14,7 @@ var inParams = "UNK";
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 var pressTimer;
+var iconFlag = false;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -1499,6 +1500,11 @@ Array.prototype.move = function (old_index, new_index) {
     return this; // for testing purposes
 };
 
+function displayDownloadIcon(){
+    iconFlag = true;
+}
+
+
 // Latest version of any file in a field - unsure about naming of the function
 function findfilevers(filez,cfield,ctype,displaystate,group)
 {
@@ -1538,9 +1544,13 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								if (ctype == "link"){
 										tab+="<a href='"+filez[i].content+"' ><img title='Download' src='../Shared/icons/file_download.svg' /></a>";
 								} else {
-										tab+="<a href='"+filelink+"' ><img title='Download' src='../Shared/icons/file_download.svg' /></a>";
+									if(iconFlag){
+                                        tab+="<a href='"+filelink+"' ><img title='Download' src='../Shared/icons/file_download.svg' /></a>";
+                                    }
+                                    else{
+										tab+="<img style='opacity: 0;' src='../Shared/icons/file_download.svg' />";
+                                    }
 								}
-
 								// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
 								if (ctype == "pdf") {
 									tab +="\t<tab><a href='"+filelink+"' target='_blank'><img title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
@@ -1552,7 +1562,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								tab+="<td>"+filez[i].username+"</td>";
 							}
 							tab+="<td>";
-              if (ctype == "link"){
+              if (ctype == "link"){							
 								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].content.substring(0,32)+"&#8230;</span>";
@@ -1572,7 +1582,8 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].filename+"."+filez[i].extension+"</a></span>";
 								}
 							} else {
-								tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
+								tab+="<span>";
+								//tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
 								} else if (mobileMediaQuery.matches) {
