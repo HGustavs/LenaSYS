@@ -1420,7 +1420,8 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
       	tab+=
 		`<thead>
 		<tr>
-		<th>User</th><th>Filename</th>
+		<th>User</th>
+		<th>Filename</th>
 		<th>Upload date</th>
 		<th colspan=2>Teacher feedback</th>
 		</tr>
@@ -1429,8 +1430,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 			  tab+=
 			  `<thead>
 			  <tr>
-			  <th>
-			  </th>
+			  <th></th>
 			  <th>User</th>
 			  <th>Filename</th>
 			  <th>Upload date</th>
