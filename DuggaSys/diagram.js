@@ -592,8 +592,8 @@ function redrawArrows()
         var domelementpos=domelement.getBoundingClientRect();
         element.x1=domelementpos.left;
         element.y1=domelementpos.top;
-        element.x2=domelementpos.left+domelementpos.width;
-        element.y2=domelementpos.top+domelementpos.height;
+        element.x2=domelementpos.left+domelementpos.width-2;
+        element.y2=domelementpos.top+domelementpos.height-2;
         element.cx=element.x1+(domelementpos.width*0.5);
         element.cy=element.y1+(domelementpos.height*0.5);
 		}
@@ -697,8 +697,9 @@ function redrawArrows()
             var len=Math.sqrt((dx*dx)+(dy*dy));
             dy=dy/len;
             dx=dx/len;
-            str+=`<line x1='${fx+(dx*strokewidth*1.5)}' y1='${fy+(dy*strokewidth*1.5)}' x2='${tx+(dx*strokewidth*1.5)}' y2='${ty+(dy*strokewidth*1.5)}' stroke='#f44' stroke-width='${strokewidth}' />`;
-            str+=`<line x1='${fx-(dx*strokewidth*1.5)}' y1='${fy-(dy*strokewidth*1.5)}' x2='${tx-(dx*strokewidth*1.5)}' y2='${ty-(dy*strokewidth*1.5)}' stroke='#f44' stroke-width='${strokewidth}' />`;
+            var cstmOffSet = 1.4;
+            str+=`<line x1='${fx+(dx*strokewidth*1.2)-cstmOffSet}' y1='${fy+(dy*strokewidth*1.2)-cstmOffSet}' x2='${tx+(dx*strokewidth*1.8)+cstmOffSet}' y2='${ty+(dy*strokewidth*1.8)+cstmOffSet}' stroke='#f44' stroke-width='${strokewidth}' />`;
+            str+=`<line x1='${fx-(dx*strokewidth*1.8)-cstmOffSet}' y1='${fy-(dy*strokewidth*1.8)-cstmOffSet}' x2='${tx-(dx*strokewidth*1.2)+cstmOffSet}' y2='${ty-(dy*strokewidth*1.2)+cstmOffSet}' stroke='#f44' stroke-width='${strokewidth}' />`;
         }
          
     }
