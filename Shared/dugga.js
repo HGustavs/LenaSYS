@@ -1417,10 +1417,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 
 		if (group) {
       if (mobileMediaQuery.matches) {
-
-      
-
-		tab+=
+      	tab+=
 		`<thead>
 		<tr>
 		<th>User</th><th>Filename</th>
@@ -1428,7 +1425,6 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		<th colspan=2>Teacher feedback</th>
 		</tr>
 		</thead>`;
- 
       } else {
 			  tab+=
 			  `<thead>
