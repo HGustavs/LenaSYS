@@ -29,6 +29,15 @@ const baseline=10;
 const avgcharwidth=6;
 const colors = ["white","Gold","pink","yellow","CornflowerBlue"];
 const multioffs=3;
+// Zoom values for offsetting the mouse cursor positioning
+const zoom1_25 = 0.36;
+const zoom1_5 = 0.555;
+const zoom2 = 0.75;
+const zoom4 = 0.9375;
+const zoom0_75 = -0.775;
+const zoom0_5 = -3;
+const zoom0_25 = -15.01;
+const zoom0_125 = -64;
 
 // Arrow drawing stuff - diagram elements and diagram lines
 var lines=[];
@@ -38,6 +47,16 @@ var elements=[];
 var context=[];
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
+
+
+const mouseModes = {
+    SELECTION: 0,
+    ENTITY: 1,
+    RELATION: 2,
+    ATTRIBUTE: 3,
+};
+var mouseMode = mouseModes.SELECTION;
+
 
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
@@ -85,7 +104,7 @@ var data=[
     {name:"Name",x:170,y:50,width:90,height:45,kind:"ERAttr",id:NameID},
     {name:"Size",x:560,y:40,width:90,height:45,kind:"ERAttr",id:SizeID,isMultiple:true},
     {name:"F Name",x:120,y:-20,width:90,height:45,kind:"ERAttr",id:FNID},
-    {name:"L Name",x:230,y:-20,width:90,height:45,kind:"ERAttr",id:LNID}
+    {name:"L Name",x:230,y:-20,width:90,height:45,kind:"ERAttr",id:LNID},
 ];
 
 var lines=[
@@ -101,6 +120,49 @@ var lines=[
     {id:makeRandomID(),fromID:LoanID,toID:RefID,kind:"Normal"},
     {id:makeRandomID(),fromID:CarID,toID:RefID,kind:"Normal"},
 ];
+
+//------------------------------------=======############==========----------------------------------------
+//                              Coordinate-Screen Position Conversion
+//------------------------------------=======############==========----------------------------------------
+
+function screenToDiagramCoordinates(mouseX,mouseY)
+{
+    // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
+    // These are the constant values that the expression should spit out anyway. If you add more zoom levels please do not come to us.
+    // We're tired.
+
+    // We found out that the relation between 0.125 -> 4 and 0.36->-64 looks like an X^2 equation.
+    var zoomX = 0;
+
+    // ZOOM IN
+    if (zoomfact == 1.25) zoomX = zoom1_25;
+    if (zoomfact == 1.5) zoomX = zoom1_5;
+    if (zoomfact == 2) zoomX = zoom2;
+    if (zoomfact == 4) zoomX = zoom4;
+
+    // ZOOM OUT
+    if (zoomfact == 0.75) zoomX = zoom0_75;
+    if (zoomfact == 0.5) zoomX = zoom0_5;
+    if (zoomfact == 0.25) zoomX = zoom0_25;
+    if (zoomfact == 0.125) zoomX = zoom0_125;
+
+    return {
+        x: Math.round(
+            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 // the 2 makes mouse hover over container
+        ),
+        y: Math.round(
+            ((mouseY - 86) / zoomfact - scrolly) + zoomX * scrolly
+        ),    
+    };
+}
+
+function diagramToScreenPosition(coordX,coordY)
+{
+    return {
+        x: Math.round((coordX+scrollx) / zoomfact + 0),
+        y: Math.round((coordY+scrolly) / zoomfact + 86),    
+    };
+}
 
 //------------------------------------=======############==========----------------------------------------
 //                                           Mouse events
@@ -131,7 +193,7 @@ function ddown(event)
 
 function mup(event)
 {
-  deltaX = startX - event.clientX;
+    deltaX = startX - event.clientX;
     deltaY = startY - event.clientY;
 
     // Event is in container area
@@ -139,8 +201,25 @@ function mup(event)
     {
         // User only clicked, clear selection
         if (!deltaExceeded)
-        {
-            updateSelection(null, undefined, undefined);
+        {   
+            if(mouseMode == 0){
+                updateSelection(null, undefined, undefined);
+            } 
+            else{
+                var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
+                var entityType = getEntityType()
+                
+                data.push({
+                    name:'Entity',
+                    x: mp.x - (entityType.width * 0.5),
+                    y: mp.y - (entityType.height * 0.5),
+                    width: entityType.width,
+                    height: entityType.height,
+                    kind: entityType.kind,
+                    id: makeRandomID()
+                });
+                showdata()
+            }
         }
     }
 
@@ -182,7 +261,7 @@ function mmoving(event)
         updatepos(null, null);
 
         // Remember that mouse has moved out of starting bounds
-        if (deltaX >= maxDeltaBeforeExceeded || deltaY >= maxDeltaBeforeExceeded)
+        if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
         {
             deltaExceeded = true;
         }
@@ -198,7 +277,7 @@ function mmoving(event)
         updatepos(deltaX, deltaY);
 
         // Remember that mouse has moved out of starting bounds
-        if (deltaX >= maxDeltaBeforeExceeded || deltaY >= maxDeltaBeforeExceeded)
+        if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
         {
             deltaExceeded = true;
         }
@@ -214,6 +293,24 @@ function fab_action()
 				document.getElementById('optmarker').innerHTML="&#x1f4a9;Options";
 				document.getElementById("options-pane").className="show-options-pane";
     }    
+}
+
+//------------------------------------=======############==========----------------------------------------
+//                                           Mouse Modes
+//------------------------------------=======############==========----------------------------------------
+function setMouseMode(mode = 0)
+{
+    mouseMode = mode;
+}
+
+function getEntityType()
+{
+    switch(mouseMode)
+    {
+        case 1: return defaults.defaultERtentity;
+        case 2: return defaults.defaultERrelation;
+        case 3: return defaults.defaultERattr;
+    }
 }
 
 //------------------------------------=======############==========----------------------------------------
