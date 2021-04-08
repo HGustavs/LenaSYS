@@ -282,16 +282,6 @@ function mmoving(event)
             deltaExceeded = true;
         }
     }
-
-    // DEBUG STUFF -- DELETE AFTER TESTING
-    // - a19hammi
-    /*
-    var mo = data[data.length - 1];
-    var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
-    mo.x = mp.x + 10;
-    mo.y = mp.y + 10;
-    mo.name = `${mo.x};${mo.y}`;
-    */
 }
 
 function fab_action()
