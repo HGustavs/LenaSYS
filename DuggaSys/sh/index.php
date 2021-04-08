@@ -10,7 +10,6 @@ include_once "../Shared/sessions.php";
 $url = getOPG("c");
 $assignment = getOPG("a");
 
-
 // Connect to database and start session
 pdoConnect();
 session_start();
@@ -19,7 +18,6 @@ echo "|".$url."|".$assignment."|";
 
 if($assignment != "UNK"){
 	// Check if it's an URL shorthand for assignments
-	
 	if($url == "UNK"){
 		foreach($pdo->query( 'SELECT * FROM passwordURL;' ) as $row){
 			if($assignment == $row["shortURL"]){
