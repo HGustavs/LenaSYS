@@ -641,10 +641,15 @@ function saveDuggaResult(citstr)
 			else{ //Check if deadline has past
 
 				if(comment == "UNK" || comment == "undefined" || comment == "null"){
-					document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>";
+					document.getElementById('receiptInfo').innerHTML = 
+					`<p style='margin:15px 5px;'>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p> 
+					<img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/>
+					<p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>`;
 				}
 				else{
-					document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>"+comment+"</p>";
+					document.getElementById('receiptInfo').innerHTML =`<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p> <img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/>
+                    <p>${comment}</p>`;
+					
 				}
 
 			}
@@ -1516,8 +1521,8 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 			  tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
       }
     } else {
-      if (mobileMediaQuery.matches) {
-			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+      if (mobileMediaQuery.matches) {																												
+			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";						
 		  } else {
 			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
 		  }
