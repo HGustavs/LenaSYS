@@ -1510,18 +1510,49 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		var tab="<table class='previewTable'>";
 
 		if (group) {
-      if (mobileMediaQuery.matches) {
-        tab+="<thead><tr><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-      } else {
-			  tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-      }
-    } else {
-      if (mobileMediaQuery.matches) {
-			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-		  } else {
-			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-		  }
-    }
+		if (mobileMediaQuery.matches) {
+			tab+=
+		  		`<thead>
+		 		<tr>
+		 		<th>User</th>
+				<th>Filename</th>
+				<th>Upload date</th>
+			  	<th colspan=2>Teacher feedback</th>
+			  	</tr>
+			  	</thead>`;
+		} else {
+			tab+=
+				`<thead>
+				<tr>
+				<th></th>
+				<th>User</th>
+				<th>Filename</th>
+				<th>Upload date</th>
+				<th colspan=2>Teacher feedback</th>
+				</tr>
+				</thead>`;
+			}
+		} else {
+			if (mobileMediaQuery.matches) {
+				tab+=
+					`<thead>
+					<tr>
+					<th>Filename</th>
+					<th>Upload date</th>
+					<th colspan=2>Teacher feedback</th>
+					</tr>
+					</thead>`;
+			} else {
+				tab+=
+					`<thead>
+					<tr>
+					<th></th>
+					<th>Filename</th>
+					<th>Upload date</th>
+					<th colspan=2>Teacher feedback</th>
+					</tr>
+					</thead>`;
+			}
 
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
