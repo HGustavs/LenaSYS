@@ -86,7 +86,7 @@
     //-----------------------------------------------------------------------------------------------------------------
     // systemVariables: Sets the system variables, path, operatingSystem, username and check if permissions are sat.
     //-----------------------------------------------------------------------------------------------------------------
-    $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
+    $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
     $operatingSystem = PHP_OS_FAMILY;
     $username = getUsername($putFileHere);
     $isPermissionsSat = isPermissionsSat($putFileHere);
