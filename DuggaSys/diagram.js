@@ -39,6 +39,10 @@ var context=[];
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
 
+// Currently hold down buttons
+var ctrlPressed = false;
+var altPressed = false;
+
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
 //-------------------------------------------------------------------------------------------------
@@ -103,6 +107,19 @@ var lines=[
 ];
 
 //------------------------------------=======############==========----------------------------------------
+//                                           Key event listeners
+//------------------------------------=======############==========----------------------------------------
+document.addEventListener('keydown', function(e){
+    if(e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
+    if(e.key == "Alt" && altPressed !== true) altPressed = true;
+});
+
+document.addEventListener('keyup', function(e){
+    if(e.key == "Control") ctrlPressed = false;
+    if(e.key == "Alt") altPressed = false;
+});
+
+//------------------------------------=======############==========----------------------------------------
 //                                           Mouse events
 //------------------------------------=======############==========----------------------------------------
 
@@ -124,7 +141,11 @@ function ddown(event)
 		startY=event.clientY;
         mb=8;
 
-        updateSelection(data[findIndex(data,event.currentTarget.id)],null,null);
+        var element = data[findIndex(data,event.currentTarget.id)];
+        if (element != null && !context.includes(element) || !ctrlPressed){
+            updateSelection(element,null,null);
+        }
+
         
         
 }
@@ -394,53 +415,38 @@ function showdata() {
 
 function updateSelection(ctxelement,x,y)
 {
-	document.addEventListener('keydown', function(e){
-		// LeftControll key pressed
-		if(e.ctrlKey){
-				// If we pass a context object e.g. we clicked in object
-				if (ctxelement != null)
-				{
-				// Element not already in context
+		// If CTRL is pressed and an element is selected
+		if(ctrlPressed && ctxelement != null)
+		{
+				// The element is not already selected
 				if (!context.includes(ctxelement))
 				{
-						context.push(ctxelement);
+				    context.push(ctxelement);
 				}
-				}
-				else if (typeof x != "undefined" && typeof y != "undefined")
-				{
-						// Or if x and y are both defined
-				}
-				else
-				{
-					// Clear elements from selection
-						context = [];
-				}
-			}
-		});
-
-		if (ctxelement != null)
+                // The element is already selected
+		}else if (altPressed && ctxelement != null)
 		{
-		// Element not already in context
-		if (!context.includes(ctxelement) && context.length < 1)
+            if (context.includes(ctxelement))
+            {
+                context = context.filter(function (element) {
+                    return element !== ctxelement;
+                });
+            }
+        }
+		// If CTRL is not pressed and a element has been selected.
+		else if (ctxelement != null)
 		{
-			context.push(ctxelement);
-            console.log(context);
-		}
-        else{
+		    // Element not already in context
+		    if (!context.includes(ctxelement) && context.length < 1)
+		    {
+			    context.push(ctxelement);
+		    }else {
+                context = [];
+                context.push(ctxelement);
+            }
+		}else if(!altPressed && !ctrlPressed){
             context = [];
         }
-
-		}
-		if (typeof x != "undefined" && typeof y != "undefined")
-		{
-				// Or if x and y are both defined
-                context.push(ctxelement);
-		}
-		else
-		{
-			// Clear elements from selection
-				context = [];
-		}
 }
 
 
