@@ -1819,9 +1819,11 @@ function generateTimeSheetOptions(course, moment, selected) {
 
 	// Only one timesheet is available right now
 	if (selected === 0) {
-		return "<option value='issue' selected>Issue</option><option value='pullrequest'>Pull request</option>";
+		return `<option value='issue' selected>Issue</option>
+		<option value='pullrequest'>Pull request</option>`;
 	} else {
-		return "<option value='issue'>Issue</option><option value='pullrequest' selected>Pull request</option>";
+		return `<option value='issue'>Issue</option>
+		<option value='pullrequest' selected>Pull request</option>`;
 	}
 
 }
