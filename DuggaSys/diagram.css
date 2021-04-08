@@ -33,6 +33,7 @@
     background-color: #eb4;
     box-shadow: 6px 6px 10px #888;
     user-select: none;
+    cursor:pointer;
 }
 
 #options-pane {
@@ -81,7 +82,7 @@
     display: none;
 }	
 
-.zoomButtons:hover {
+.paneButtons:hover {
     cursor:pointer;
 }
 
