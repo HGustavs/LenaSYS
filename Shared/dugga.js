@@ -591,8 +591,9 @@ function saveDuggaResult(citstr)
 					<p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>`;
 				}
 				else{
-					document.getElementById('receiptInfo').innerHTML =`<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p>
-					<img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>"comment"</p>`;
+					document.getElementById('receiptInfo').innerHTML =`<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p> <img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/>
+                    <p>${comment }</p>`;
+					
 				}
 
 			}
@@ -1427,7 +1428,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		<th colspan=2>Teacher feedback</th>
 		</tr>
 		</thead>`;
- bb0c70181b68a3ee9fffcbe94bdc44c60246917f
+bb0c70181b68a3ee9fffcbe94bdc44c60246917f
       } else {
 			  tab+=
 			  `<thead>
