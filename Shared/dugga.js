@@ -647,7 +647,8 @@ function saveDuggaResult(citstr)
 					<p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>`;
 				}
 				else{
-					document.getElementById('receiptInfo').innerHTML =`<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p> <img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/>
+					document.getElementById('receiptInfo').innerHTML =`<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p>
+					<img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/>
                     <p>${comment}</p>`;
 					
 				}
@@ -1719,13 +1720,25 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		}
 
 		if (answer == "UNK" && (grade == "UNK" || grade <= 1)){
-				str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Dugga not yet submitted!</div>";
+			str+=
+			`<div class='StopLight WhiteLight' style='margin:4px;'></div>
+			</div>
+			<div>Dugga not yet submitted!</div>`;
 		} else if (submitted != "UNK" && answer != "UNK" && marked == "UNK" || ( submitted !== "UNK" && marked !== "UNK" && (submitted.getTime() > marked.getTime()))) {
-				str+="<div class='StopLight YellowLight' style='margin:4px;'></div></div><div>Dugga submitted."+submitted+"</div>";
+			str+=
+			`<div class='StopLight YellowLight' style='margin:4px;'></div>
+			</div>
+			<div>Dugga submitted. ${submitted}</div>`;
 		} else if (grade != "UNK" && grade <= 1 && (submitted.getTime() < marked.getTime()) ) {
-				str+="<div class='StopLight RedLight' style='margin:4px;'></div></div><div>Dugga marked as fail: "+marked+"</div>";
+			str+=
+			`<div class='StopLight RedLight' style='margin:4px;'></div>
+			</div>
+			<div>Dugga marked as fail: ${marked}</div>`;
 		} else if (grade > 1) {
-				str+="<div class='StopLight GreenLight' style='margin:4px;'></div></div><div>Dugga marked as pass: "+marked+"</div>";
+			str+=
+			`<div class='StopLight GreenLight' style='margin:4px;'></div>
+			</div>
+			<div>Dugga marked as pass: ${marked}</div>`;
 		}
 
 		str+="</div>";
