@@ -1412,15 +1412,47 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 
 		if (group) {
       if (mobileMediaQuery.matches) {
-        tab+="<thead><tr><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+		tab+=
+		`<thead>
+		<tr>
+		<th>User</th><th>Filename</th>
+		<th>Upload date</th>
+		<th colspan=2>Teacher feedback</th>
+		</tr>
+		</thead>`;
       } else {
-			  tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+			  tab+=
+			  `<thead>
+			  <tr>
+			  <th>
+			  </th>
+			  <th>User</th>
+			  <th>Filename</th>
+			  <th>Upload date</th>
+			  <th colspan=2>Teacher feedback</th>
+			  </tr>
+			  </thead>`;
       }
     } else {
       if (mobileMediaQuery.matches) {
-			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+			tab+=
+			`<thead>
+			<tr>
+			<th>Filename</th>
+			<th>Upload date</th>
+			<th colspan=2>Teacher feedback</th>
+			</tr>
+			</thead>`;
 		  } else {
-			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+			tab+=
+			`<thead>
+			<tr>
+			<th></th>
+			<th>Filename</th>
+			<th>Upload date</th>
+			<th colspan=2>Teacher feedback</th>
+			</tr>
+			</thead>`;
 		  }
     }
 
@@ -1444,7 +1476,11 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 
 								// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
 								if (ctype == "pdf") {
-									tab +="\t<tab><a href='"+filelink+"' target='_blank'><img title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
+									tab +=
+									`\t<tab>
+									<a href='"+filelink+"' target='_blank'><img title='Open in new tab' src='../Shared/icons/external_link_open.svg' />
+									</a>
+									</tab>`;
 								}
 								tab+="</td>";
 							}
@@ -1598,26 +1634,40 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 }
 
 function displayDuggaStatus(answer,grade,submitted,marked){
-		var str="<div style='display:flex;justify-content:center;align-items:center;'><div class='LightBox'>";
-		// Get proper dates
-		if(submitted!=="UNK") {
-			var t = submitted.split(/[- :]/);
-			submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-		}
-		if(marked!=="UNK") {
-			var tt = marked.split(/[- :]/);
-			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
-		}
+	var str=
+	`<div style='display:flex;justify-content:center;align-items:center;'>
+	<div class='LightBox'>`;
+	// Get proper dates
+	if(submitted!=="UNK") {
+		var t = submitted.split(/[- :]/);
+		submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+	}
+	if(marked!=="UNK") {
+		var tt = marked.split(/[- :]/);
+		marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
+	}
 
-		if (answer == "UNK" && (grade == "UNK" || grade <= 1)){
-				str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Dugga not yet submitted!</div>";
-		} else if (submitted != "UNK" && answer != "UNK" && marked == "UNK" || ( submitted !== "UNK" && marked !== "UNK" && (submitted.getTime() > marked.getTime()))) {
-				str+="<div class='StopLight YellowLight' style='margin:4px;'></div></div><div>Dugga submitted."+submitted+"</div>";
-		} else if (grade != "UNK" && grade <= 1 && (submitted.getTime() < marked.getTime()) ) {
-				str+="<div class='StopLight RedLight' style='margin:4px;'></div></div><div>Dugga marked as fail: "+marked+"</div>";
-		} else if (grade > 1) {
-				str+="<div class='StopLight GreenLight' style='margin:4px;'></div></div><div>Dugga marked as pass: "+marked+"</div>";
-		}
+	if (answer == "UNK" && (grade == "UNK" || grade <= 1)){
+			str+=
+			`<div class='StopLight WhiteLight' style='margin:4px;'></div>
+			</div>
+			<div>Dugga not yet submitted!</div>`;
+	} else if (submitted != "UNK" && answer != "UNK" && marked == "UNK" || ( submitted !== "UNK" && marked !== "UNK" && (submitted.getTime() > marked.getTime()))) {
+			str+=
+			`<div class='StopLight YellowLight' style='margin:4px;'></div>
+			</div>
+			<div>Dugga submitted. ${submitted}</div>`;
+	} else if (grade != "UNK" && grade <= 1 && (submitted.getTime() < marked.getTime()) ) {
+			str+=
+			`<div class='StopLight RedLight' style='margin:4px;'></div>
+			</div>
+			<div>Dugga marked as fail: ${marked}</div>`;
+	} else if (grade > 1) {
+			str+=
+			`<div class='StopLight GreenLight' style='margin:4px;'></div>
+			</div>
+			<div>Dugga marked as pass: ${marked}</div>`;
+	}
 
 		str+="</div>";
 		$("#duggaStatus").remove();
@@ -1720,9 +1770,11 @@ function generateTimeSheetOptions(course, moment, selected) {
 
 	// Only one timesheet is available right now
 	if (selected === 0) {
-		return "<option value='issue' selected>Issue</option><option value='pullrequest'>Pull request</option>";
+		return `<option value='issue' selected>Issue</option>
+		<option value='pullrequest'>Pull request</option>`;
 	} else {
-		return "<option value='issue'>Issue</option><option value='pullrequest' selected>Pull request</option>";
+		return `<option value='issue'>Issue</option>
+		<option value='pullrequest' selected>Pull request</option>`;
 	}
 
 }
