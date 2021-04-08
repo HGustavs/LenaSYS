@@ -7,12 +7,13 @@ var searchterm = "";
 var tableName = "accessTable";
 var tableCellName = "accessTableCell";
 var myTable;
-var accessFilter = "WRST";
+var accessFilter = "W";
 var trueTeacher;
 var examinerName;
 var activeDropdown;
 var activeArrow;
 var shouldReRender = false;
+var str = "W";
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -137,7 +138,7 @@ function importUsers() {
 }
 
 function addSingleUser() {
-	
+
 	var newUser = new Array();
 	newUser.push($("#addSsn").val());
 	newUser.push($("#addFirstname").val());
@@ -213,7 +214,7 @@ function validateSSN(ssn)
 			const formatTest = /\d{6,8}-\d{4}/;	// Expected format
 			if(formatTest.test(ssn))
 				break;
-						
+
 		default:
 			return 'SSN Error! Should be ######-#### or ########-####';
 	}
@@ -440,7 +441,7 @@ function changeOptDiv(e) {
 	var paramlist = e.target.parentElement.parentElement.id.split("_");
 	key = getColname(e);
 	keyvalue = e.target.getAttribute('data-value');
-	
+
 	obj = {
 		uid: paramlist[1],
 		[key]: keyvalue
@@ -454,7 +455,7 @@ function changeOptDivStudent(e,value){
 	var paramlist = e.target.parentElement.parentElement.id.split("_");
 	key = getColname(e);
 	keyvalue = e.target.getAttribute('data-value');
-	
+
 	obj = {
 		uid: paramlist[1],
 		[key]: keyvalue
@@ -567,7 +568,7 @@ function renderCell(col, celldata, cellid) {
 		}
 		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+trueTeacher+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makeDivItemStudent(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
-		
+
 		if (parseFloat(obj.recent) < 1440) {
 			str = "<div class='submit-button reset-pw new-user' style='display:block;margin:auto;float:none;'";
 		} else {
@@ -735,12 +736,12 @@ function rowFilter(row) {
 							// Search case insensitive
 							searchterm = searchterm.toLocaleLowerCase();
 							caseIgnoreRow = row[property].toLocaleLowerCase();
-							
+
 							// Support ÅÄÖ
 							searchterm = searchterm.replace(/\u00E5/, '&aring;');
 							searchterm = searchterm.replace(/\u00E4/, '&auml;');
 							searchterm = searchterm.replace(/\u00F6/, '&ouml;');
-							
+
 							searchtermArray = searchterm.split(" ");
 							if (searchterm.indexOf(" ") >= 0) {
 								if (row["firstname"].toLocaleLowerCase().indexOf(searchtermArray[0]) != -1 && row["lastname"].toLocaleLowerCase().indexOf(searchtermArray[1]) != -1) return true;
@@ -776,19 +777,19 @@ function returnedAccess(data) {
 			/*ssn: "SSN",*/
 			firstname: "First name",
 			lastname: "Last name",
-			class: "Class",
+			/*class: "Class",*/
 			modified: "Last Modified",
-			examiner: "Examiner",
-			vers: "Version",
+			/*examiner: "Examiner",*/
+			/*vers: "Version",*/
 			access: "Access",
-			groups: "Group(s)",
+			/*groups: "Group(s)",*/
 			requestedpasswordchange: "Password"
 		},
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
 	//myTable = undefined;
-	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", "class", "modified", "examiner", "vers", "access", "groups", "requestedpasswordchange"]
+	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", /*"class",*/ "modified", /*"examiner",*/ /*"vers",*/ "access", /*"groups",*/ "requestedpasswordchange"]
 	if (typeof myTable === "undefined") { // only create a table if none exists
 		myTable = new SortableTable({
 			data: tabledata,
@@ -834,9 +835,9 @@ function showCheckboxes(element) {
 		activeElement = element;
 		activeElementWasNull = true;
 	}
-	
+
 	var checkboxes = activeElement.parentElement.lastChild;
-	
+
 	// save and close current dropdown
 	if (!activeElementWasNull) updateAndCloseGroupDropdown(checkboxes);
 
@@ -870,7 +871,7 @@ function updateAndCloseGroupDropdown(checkboxes){
 
 	obj = {
 		// This should really contain uid as well
-		// but since the table should not write this 
+		// but since the table should not write this
 		// to the database, it might not be an issue
 		// uid: <get-UID-For-Row-User>
 		groups: str
@@ -1058,19 +1059,25 @@ function searchTable() {
 //----------------------------------------------------------------------------------
 function filterAccess() {
 	toggleTeachers = document.getElementById("filterAccess1");
+	/*
 	toggleStudents = document.getElementById("filterAccess2");
 	toggleStudentTeachers = document.getElementById("filterAccess3");
+	*/
 	accessFilter = "";
 
 	if (toggleTeachers.checked) {
 		accessFilter += "W";
 	}
+
+	/*
 	if (toggleStudents.checked) {
 		accessFilter += "R";
 	}
 	if (toggleStudentTeachers.checked) {
 		accessFilter += "ST";
 	}
+	*/
+
 	//console.log(accessFilter);
 	// Save to local storage to remember the filtering. Add the course ID to key to allow for different filterings for each course
 	localStorage.setItem("accessFilter"+querystring['courseid'], accessFilter);
@@ -1081,15 +1088,15 @@ function filterAccess() {
 // createCheckboxes - Create checkboxes for filtering teachers/students
 //----------------------------------------------------------------------------------
 function createCheckboxes() {
-	
-	var labels = ["Show teachers", "Show students", "Show student teachers"];
-	var str = "";
+
+	var labels = ["Show teachers"/*, "Show students", "Show student teachers"*/];
+	str = "";
 	for (i = 0; i < labels.length; i++) {
 		str += "<div class='checkbox-dugga checkmoment'>";
 		str += "<input id='filterAccess" + (i+1) + "' type='checkbox' value='" + (i+1) + "' onchange='filterAccess()' ";
 		if (i == 0 && accessFilter.indexOf("W") > -1) str += "checked";
-		else if (i == 1 && accessFilter.indexOf("R") > -1) str += "checked";
-		else if (i == 2 && accessFilter.indexOf("ST") > -1) str += "checked";
+		//else if (i == 1 && accessFilter.indexOf("R") > -1) str += "checked";
+		//else if (i == 2 && accessFilter.indexOf("ST") > -1) str += "checked";
 		str += "></input>";
 		str += "<label for='filterAccess" + (i+1) + "' class='headerlabel'>" + labels[i] + "</label>";
 		str += "</div>";
@@ -1108,21 +1115,21 @@ function compare(a, b) {
 		if(status==1){
 				var tempA = a;
 				var tempB = b;
-		
+
 		}else{
 				var tempA = b;
 				var tempB = a;
 		}
-	
+
 		if(col=="firstname"||col=="lastname"||col=="class"||col=="examiner"||col=="access"){
 				tempA = JSON.parse(tempA);
 				tempB = JSON.parse(tempB);
 				if(col=="firstname"){
-						tempA=tempA.firstname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	
-						tempB=tempB.firstname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	
+						tempA=tempA.firstname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
+						tempB=tempB.firstname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
 				}else if(col=="lastname"){
-						tempA=tempA.lastname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	;	
-						tempB=tempB.lastname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	;	
+						tempA=tempA.lastname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	;
+						tempB=tempB.lastname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	;
 				}else if(col=="class"){
 						tempA=tempA.class;
 						tempB=tempB.class;
@@ -1158,17 +1165,17 @@ function compare(a, b) {
 				tempA=Date.parse(tempA);
 				tempB=Date.parse(tempB);
 				if(isNaN(tempA)) tempA=-1;
-				if(isNaN(tempB)) tempB=-1;						
+				if(isNaN(tempB)) tempB=-1;
 		}
-	
+
 		if (tempA > tempB) {
 				return 1;
 		} else if (tempA < tempB) {
 				return -1;
 		} else {
 				return 0;
-		}	
-	
+		}
+
 }
 
 function openArrow(element){
