@@ -2,7 +2,7 @@ ErrorDocument 404 "/errorpages/404.php"
 ErrorDocument 403 "/errorpages/403.php"
 
 #URL redirection and clean up
-RewriteEngine On
+#RewriteEngine On
 
 RewriteRule ^/?([a-zA-Z]+)$ sh/index.php?c=$1 [NC]
 RewriteRule ^/?sh/([a-zA-Z]+)/([a-zA-Z]+)$ sh/index.php?c=$1&a=$2 [NC]

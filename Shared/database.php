@@ -1,7 +1,6 @@
 <?php
 
-
-include_once("../../coursesyspw.php");
+require_once(dirname(__FILE__) . '/../../coursesyspw.php');
 
 
 
