@@ -666,7 +666,28 @@ function redrawArrows()
         }
          
     }
-
+    if(context.length!=0){
+        var lowX = context[0].x1;
+        var highX = context[0].x2;
+        var x1;
+        var x2;
+        var lowY = context[0].y1;
+        var highY = context[0].y2;
+        var y1;
+        var y2;
+        for (var i=0; i < context.length; i++) {
+            x1 = context[i].x1;
+            x2 = context[i].x2;
+            y1 = context[i].y1;
+            y2 = context[i].y2;
+            if (x1 < lowX) lowX = x1;
+            if (x2 > highX) highX = x2;
+            if (y1 < lowY) lowY = y1;
+            if (y2 > highY) highY = y2;
+        }
+    
+        str+=`<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(0,0,0)" />`;
+    }
     document.getElementById("svgoverlay").innerHTML=str;
 }
 
