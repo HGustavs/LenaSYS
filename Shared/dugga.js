@@ -1543,7 +1543,12 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 
 								// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
 								if (ctype == "pdf") {
-									tab +="\t<tab><a href='"+filelink+"' target='_blank'><img title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
+									tab +=									
+									`\t<tab>
+									<a href='${filelink}' target='_blank'>
+									<img title='Open in new tab' src='../Shared/icons/external_link_open.svg' />
+									</a>
+									</tab>`;;
 								}
 								tab+="</td>";
 							}
