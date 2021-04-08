@@ -48,6 +48,16 @@ var context=[];
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
 
+
+const mouseModes = {
+    SELECTION: 0,
+    ENTITY: 1,
+    RELATION: 2,
+    ATTRIBUTE: 3,
+};
+var mouseMode = mouseModes.SELECTION;
+
+
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
 //-------------------------------------------------------------------------------------------------
@@ -85,7 +95,6 @@ var defaults={
 
 // Demo data - read / write from service later on
 var data=[
-    {name:"O",x:-10,y:-10,width:20,height:20,kind:"EREntity",id:makeRandomID()}, // DEBUGGING ELEMENT
     {name:"Person",x:100,y:100,width:200,height:50,kind:"EREntity",id:PersonID},
     {name:"Loan",x:140,y:250,width:200,height:50,kind:"EREntity",id:LoanID, isWeak:true},    
     {name:"Car",x:500,y:140,width:200,height:50,kind:"EREntity",id:CarID},	
@@ -96,7 +105,6 @@ var data=[
     {name:"Size",x:560,y:40,width:90,height:45,kind:"ERAttr",id:SizeID,isMultiple:true},
     {name:"F Name",x:120,y:-20,width:90,height:45,kind:"ERAttr",id:FNID},
     {name:"L Name",x:230,y:-20,width:90,height:45,kind:"ERAttr",id:LNID},
-    {name:" ",x:0,y:0,width:100,height:100,kind:"EREntity",id:makeRandomID()}, // DEBUGGING ELEMENT
 ];
 
 var lines=[
@@ -185,7 +193,7 @@ function ddown(event)
 
 function mup(event)
 {
-  deltaX = startX - event.clientX;
+    deltaX = startX - event.clientX;
     deltaY = startY - event.clientY;
 
     // Event is in container area
@@ -193,8 +201,25 @@ function mup(event)
     {
         // User only clicked, clear selection
         if (!deltaExceeded)
-        {
-            updateSelection(null, undefined, undefined);
+        {   
+            if(mouseMode == 0){
+                updateSelection(null, undefined, undefined);
+            } 
+            else{
+                var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
+                var entityType = getEntityType()
+                
+                data.push({
+                    name:'Entity',
+                    x: mp.x - (entityType.width * 0.5),
+                    y: mp.y - (entityType.height * 0.5),
+                    width: entityType.width,
+                    height: entityType.height,
+                    kind: entityType.kind,
+                    id: makeRandomID()
+                });
+                showdata()
+            }
         }
     }
 
@@ -236,7 +261,7 @@ function mmoving(event)
         updatepos(null, null);
 
         // Remember that mouse has moved out of starting bounds
-        if (deltaX >= maxDeltaBeforeExceeded || deltaY >= maxDeltaBeforeExceeded)
+        if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
         {
             deltaExceeded = true;
         }
@@ -252,7 +277,7 @@ function mmoving(event)
         updatepos(deltaX, deltaY);
 
         // Remember that mouse has moved out of starting bounds
-        if (deltaX >= maxDeltaBeforeExceeded || deltaY >= maxDeltaBeforeExceeded)
+        if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
         {
             deltaExceeded = true;
         }
@@ -260,11 +285,13 @@ function mmoving(event)
 
     // DEBUG STUFF -- DELETE AFTER TESTING
     // - a19hammi
+    /*
     var mo = data[data.length - 1];
     var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
     mo.x = mp.x + 10;
     mo.y = mp.y + 10;
     mo.name = `${mo.x};${mo.y}`;
+    */
 }
 
 function fab_action()
@@ -276,6 +303,24 @@ function fab_action()
 				document.getElementById('optmarker').innerHTML="&#x1f4a9;Options";
 				document.getElementById("options-pane").className="show-options-pane";
     }    
+}
+
+//------------------------------------=======############==========----------------------------------------
+//                                           Mouse Modes
+//------------------------------------=======############==========----------------------------------------
+function setMouseMode(mode = 0)
+{
+    mouseMode = mode;
+}
+
+function getEntityType()
+{
+    switch(mouseMode)
+    {
+        case 1: return defaults.defaultERtentity;
+        case 2: return defaults.defaultERrelation;
+        case 3: return defaults.defaultERattr;
+    }
 }
 
 //------------------------------------=======############==========----------------------------------------

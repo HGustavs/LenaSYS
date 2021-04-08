@@ -467,6 +467,11 @@
                     <input class="zoomButtons" type="button" value="Zoom in" onclick='zoomin();' />
                     <input class="zoomButtons" type="button" value="Zoom out" onclick='zoomout();' />									
                 </fieldset>
+
+                <input type="button" value="Mouse Selection" onclick='setMouseMode(0);' />
+                <input type="button" value="Entity" onclick='setMouseMode(1);' />
+                <input type="button" value="Relation" onclick='setMouseMode(2);' />
+                <input type="button" value="Attribute" onclick='setMouseMode(3);' />
             </div>
         </div>
     </div>
