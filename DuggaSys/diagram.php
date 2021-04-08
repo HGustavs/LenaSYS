@@ -14,13 +14,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Diagram</title>
     <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+    <link type="text/css" href="./diagram.css" rel="stylesheet">
     <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
     <script src="diagram.js"></script>
-    <script src="diagram_objects.js"></script>
     <script src="diagram_IOHandler.js"></script>
 
     <!--this script fix so that the drop down menus close after you have clicked on something on them.-->
@@ -37,7 +37,7 @@
         });
     </script>
 </head>
-<body onload="init();" style="overflow-y: hidden;">
+<body onload="getData()" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
@@ -451,107 +451,27 @@
             <span id="errorMSG"></span>
         </div>
     </div>
-    <div id="diagram-container">
-        <div id="diagram-sidebar-container">
-            <div id="diagram-tools-container">
-                <div class="diagram-sidebar-section">
-                    <div class="diagram-sidebar-label">Tools</div>
-                    <button id='attributebutton' onclick='setMode("CreateERAttr");' class='diagram-tools-button diagram-tools-button-big unpressed' data="Create Attribute (Shift + A)">
-                        <img src="../Shared/icons/diagram_create_attribute.svg">
-                    </button>
-                    <button id='entitybutton' onclick='setMode("CreateEREntity");' class='diagram-tools-button diagram-tools-button-big unpressed' data="Create Entity (Shift + E)">
-                        <img src="../Shared/icons/diagram_create_entity.svg">
-                    </button>
-                    <button id='relationbutton' onclick='setMode("CreateERRelation");' class='diagram-tools-button diagram-tools-button-big unpressed' data="Create Relation (Shift + R)">
-                        <img src="../Shared/icons/diagram_create_relation.svg">
-                    </button>
-                    <button id='classbutton' onclick='setMode("CreateClass");' class='diagram-tools-button diagram-tools-button-big unpressed' data="Create Class (Shift + C)">
-                        <img src="../Shared/icons/diagram_create_class.svg">
-                    </button>
-                    <button id='linebutton' onclick='setMode("CreateLine");' class='diagram-tools-button diagram-tools-button-big unpressed' data="Create Line (Shift + L)">
-                        <img src="../Shared/icons/diagram_create_line.svg">
-                    </button>
-                    <button id='drawfreebutton' onclick="setMode('Free');" class='diagram-tools-button diagram-tools-button-big unpressed' data="Draw Free (Shift + F)">
-                        <img src="../Shared/icons/diagram_draw_free.svg">
-                    </button>
-                    <button id='drawtextbutton' onclick="setMode('Text');" class='diagram-tools-button diagram-tools-button-big unpressed' data="Draw Text (Shift + T)">
-                        <img class="invert-color" src="../Shared/icons/textbox.svg">
-                    </button>
-                </div>
-                <div class="diagram-sidebar-section">
-                    <div class="diagram-sidebar-label">Undo/Redo</div>
-                    <div id="diagram-undo-redo-container">
-                        <button id="undoButton" onclick="undoDiagram()" class="diagram-tools-button diagram-tools-button-small" data="Undo (Ctrl + Z)">
-                            <img class="invert-color" src="../Shared/icons/undo.svg">
-                        </button>
-                        <button id="redoButton" onclick="redoDiagram()" class="diagram-tools-button diagram-tools-button-small" data="Redo (Ctrl + Y)">
-                            <img class="invert-color" src="../Shared/icons/redo.svg">
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="ruler-y" class="ruler hidden">
-            <div class="ruler-lines"></div>
-            <div class="ruler-extra-lines">
-                <div class="mouse-line"></div>
-            </div>
-        </div>
-        <div id="diagram-content">
-            <div id="ruler-x" class="ruler hidden">
-                <div class="ruler-lines"></div>
-                <div class="ruler-extra-lines">
-                    <div class="mouse-line"></div>
-                </div>
-            </div>
-            <div id="diagram-canvas-container">
-                <canvas id="diagram-canvas"></canvas>
-                <button id='moveButton' class='unpressed' title="Move Around">
-                    <img src="../Shared/icons/diagram_move_arrows.svg">
-                </button> 
-                <div id="valuesCanvas"></div>
-                <div id="selectDiv">
-                    <span class="tooltipDecrease">
-                        <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1, event);">-</button>
-                        <span class="tooltiptextDec">Zoom Out</span>
-                    </span>
-                    <span id="range">
-                        <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode(event);" onchange="zoomInMode(event);" min="0.1" max="2" value="1" step="0.01" class="zoomSlider">
-                    </span>
-                    <span class="tooltipIncrease">
-                        <button name="Zoom" id="zoomIncrease" class="zoomButtonStyle" type="button" onclick="changeZoom(0.1, event);">+</button>
-                        <span class="tooltiptextInc" style="right: 68px">Zoom In</span>
-                    </span>
-                    <span id="zoomV"></span>
-                </div>
-                <div id="diagram-guideline-container"></div>
-            </div>
-            <div id="diagram-timeline-container">
-                <div class="diagram-timeline-controls" style="border-right:1px solid #000000;">
-                    <button id="diagram-timeline-play-button" class="diagram-tools-button diagram-tools-button-small paused" onclick="playTimeline();">
-                        <img src="../Shared/icons/Play.svg">
-                    </button>
-                    <button id="diagram-timline-plus-button" class="diagram-tools-button diagram-tools-button-small closed" onclick="toggleTimelineControls();">
-                        <img src="../Shared/icons/Plus.svg">
-                    </button>
-                    <div id="diagram-timeline-controls-toggleable" style="display:none;">
-                        <button class="diagram-tools-button diagram-tools-button-small" onclick="undoDiagram();">
-                            <img src="../Shared/icons/SkipB.svg">
-                        </button>
-                        <button class="diagram-tools-button diagram-tools-button-small" onclick="redoDiagram();">
-                            <img src="../Shared/icons/SkipF.svg">
-                        </button>
-                        <button class="diagram-tools-button diagram-tools-button-small" onclick="resetTimeline();">
-                            <img src="../Shared/icons/ResetButton.svg">
-                        </button>
-                        <button class="diagram-tools-button diagram-tools-button-small" onclick='toggleFullscreen();'>
-                            <img src="../Shared/icons/fullscreen.svg">
-                        </button>
-                        <input type="range" id="diagram-timeline-speed-range" class="zoomSlider" min="0.1" max="3" value="1" step="0.1" oninput="playTimeline(true);">
-                        <div id="diagram-timeline-speed"><b>Speed:</b> 1s</div>
-                    </div>
-                </div>
-                <div id="diagram-timeline"></div>
+
+    <!-- Diagram drawing system canvas. -->
+    <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)'></div> <!-- Contains all elements (items) -->
+    <svg id="svgoverlay"  preserveAspectRatio="none">
+   </svg>
+	<canvas id='canvasOverlay'></canvas>
+    <div id="fab" onclick="fab_action();">+</div> <!-- Big (+) button -->
+    <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
+        <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
+        <div id="options-pane-content" >
+            <div>
+                <fieldset>
+                    <legend>Zoom</legend>
+                    <input class="zoomButtons" type="button" value="Zoom in" onclick='zoomin();' />
+                    <input class="zoomButtons" type="button" value="Zoom out" onclick='zoomout();' />									
+                </fieldset>
+
+                <input type="button" value="Mouse Selection" onclick='setMouseMode(0);' />
+                <input type="button" value="Entity" onclick='setMouseMode(1);' />
+                <input type="button" value="Relation" onclick='setMouseMode(2);' />
+                <input type="button" value="Attribute" onclick='setMouseMode(3);' />
             </div>
         </div>
     </div>
