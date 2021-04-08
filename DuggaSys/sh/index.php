@@ -4,7 +4,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
 include_once "../../Shared/basic.php";
-include_once "../Shared/sessions.php";
+include_once "../../Shared/sessions.php";
 
 //Gets the parameter from the URL. If the parameter is not availble then return UNK
 $url = getOPG("c");
