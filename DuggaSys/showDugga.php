@@ -227,7 +227,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 					</div>
 			</div>
 			<div id='receiptInfo'></div>
-    		<textarea id="receipt" autofocus readonly></textarea>
+    		<textarea id="receipt" autofocus readonly style="resize: none;"></textarea>
  <!--    		<div class="button-row">
     			<input type='button' class='submit-button'  onclick="showEmailPopup();" value='Save Receipt'>
     			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
