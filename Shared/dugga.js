@@ -592,7 +592,7 @@ function saveDuggaResult(citstr)
 				}
 				else{
 					document.getElementById('receiptInfo').innerHTML =`<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p>
-					<img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>"+comment+"</p>`;
+					<img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>"comment"</p>`;
 				}
 
 			}
