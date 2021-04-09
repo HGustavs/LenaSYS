@@ -479,6 +479,7 @@
                 <input class="paneButtons" type="button" value="Entity" onclick='setMouseMode(1);' />
                 <input class="paneButtons" type="button" value="Relation" onclick='setMouseMode(2);' />
                 <input class="paneButtons" type="button" value="Attribute" onclick='setMouseMode(3);' />
+                <input class="paneButtons" type="button" value="Draw Line" onclick='setMouseMode(4);' />
             </div>
         </div>
     </div>
