@@ -90,10 +90,7 @@
     font-size: small;
     box-sizing: border-box;
     overflow:hidden;
-    // border:1px solid red;
-    // background:#fff;
     position:absolute;
-    /*box-shadow:2px 2px 2px RGBA(0,0,0,0.3);*/
 }
 
 #canvasOverlay{
