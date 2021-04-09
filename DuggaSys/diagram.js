@@ -1,6 +1,6 @@
 
 //------------------------------------=======############==========----------------------------------------
-//                           Defaults, mouse variables and zoom variables  
+//                           Defaults, mouse variables and zoom variables
 //------------------------------------=======############==========----------------------------------------
 
 // Data and html building variables
@@ -136,12 +136,15 @@ document.addEventListener('keydown', function (e)
 {
     if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
     if (e.key == "Alt" && altPressed !== true) altPressed = true;
+    if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
+
 });
 
 document.addEventListener('keyup', function (e)
 {
     if (e.key == "Control") ctrlPressed = false;
     if (e.key == "Alt") altPressed = false;
+    if (e.key == "Meta") ctrlPressed = false;
 });
 
 //                              Coordinate-Screen Position Conversion
@@ -261,7 +264,9 @@ function mup(event)
     else
     {
         // If one or more objects are selected
+
         if (context.length > 0 && mouseMode != 4) 
+
         {
             // Move all selected items
             context.forEach(item =>
@@ -460,7 +465,7 @@ function showdata()
     var container = document.getElementById("container");
     var containerbox = container.getBoundingClientRect();
 
-    // Compute bounds of 
+    // Compute bounds of
     cwidth = containerbox.width;
     cheight = containerbox.height;
 
@@ -491,14 +496,16 @@ function showdata()
 						top:0px;
 						width:${boxw}px;
 						height:${boxh}px;
-						font-size:${texth}px; 
+						font-size:${texth}px;
 				'>`;
         str += `<svg width='${boxw}' height='${boxh}' >`;
         if (element.kind == "EREntity")
         {
+
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' 
                    stroke-width='${linew}' stroke='black' fill='#ffccdc' />
                    <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text> 
+
                    `;
 
         } else if (element.kind == "ERAttr")
@@ -519,6 +526,7 @@ function showdata()
                     Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
                     stroke='black' fill='#ffccdc' stroke-width='${linew}' />`;
             }
+          
             str += `<path d="M${linew},${hboxh} 
                            Q${linew},${linew} ${hboxw},${linew} 
                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
@@ -528,13 +536,14 @@ function showdata()
                     
                     ${multi}
 
-                    <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text> 
+                    <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
                     `;
         } else if (element.kind == "ERRelation")
         {
             var weak = "";
             if (element.isWeak == true)
             {
+              
                 weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
                 stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                 `;
@@ -542,7 +551,7 @@ function showdata()
             str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
                    stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                    ${weak}
-                   <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text> 
+                   <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
                    `;
 
         }
@@ -654,7 +663,7 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
     // Display line test locations using svg lines
     // str+=`<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='#44f' stroke-width='2' />`;
-    // str+=`<line x1='${x3}' y1='${y3}' x2='${x4}' y2='${y4}' stroke='#44f' stroke-width='2' />`    
+    // str+=`<line x1='${x3}' y1='${y3}' x2='${x4}' y2='${y4}' stroke='#44f' stroke-width='2' />`
 
     var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
     var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
