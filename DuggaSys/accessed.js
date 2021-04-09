@@ -781,7 +781,7 @@ function returnedAccess(data) {
 			modified: "Last Modified",
 			/*examiner: "Examiner",*/
 			/*vers: "Version",*/
-			access: "Access",
+			/*access: "Access",*/
 			/*groups: "Group(s)",*/
 			requestedpasswordchange: "Password"
 		},
@@ -789,7 +789,7 @@ function returnedAccess(data) {
 		tblfoot: {}
 	}
 	//myTable = undefined;
-	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", /*"class",*/ "modified", /*"examiner",*/ /*"vers",*/ "access", /*"groups",*/ "requestedpasswordchange"]
+	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", /*"class",*/ "modified", /*"examiner",*/ /*"vers",*/ /*"access",*/ /*"groups",*/ "requestedpasswordchange"]
 	if (typeof myTable === "undefined") { // only create a table if none exists
 		myTable = new SortableTable({
 			data: tabledata,
