@@ -238,13 +238,14 @@ function makedivItem(option,optionlist,optionstring,valuestring)
 				"If" sets an id so it could be styled and print out all options. "Else" prints out all options.*/
                 if(option == optionlist[i][optionstring]){
                     str+=
-					`<div class = 'access-dropdown-selected' data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")'>";
+					`<div class = 'access-dropdown-selected' data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")'>"
                     ${optionlist[i][optionstring]}
 					</div>`;
 
                 }else{
-                    str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")' >";
-                    str+=""+optionlist[i][optionstring]+"</div>";
+                    str+=`<div data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")' >"
+                    ${optionlist[i][optionstring]}
+					</div>`;
                 }
 			}
 		str +="</div>"
@@ -266,12 +267,12 @@ function makedivItemWithValue(option,optionlist,optionstring,valuestring)
 				"If" sets an id so it could be styled and print out all options. "Else" prints out all options.*/
                 if(option == optionlist[i][optionstring]){
                     str+=
-					`<div class = 'access-dropdown-selected' data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")'>";
+					`<div class = 'access-dropdown-selected' data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")'>"
                     ${optionlist[i][optionstring]}
 					</div>`;
                 }else{
                     str+=
-					`<div data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")' >";
+					`<div data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")' >"
                     ${optionlist[i][optionstring]}
 					</div>`;
                 }
