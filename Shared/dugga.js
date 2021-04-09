@@ -306,7 +306,7 @@ function makeparams(paramarray)
 		var str="";
 		for(var i=0;i<paramarray.length;i++){
 				if(i>0) str+=",";
-				str+="\""+paramarray[i]+"\"";
+				str+=`"${paramarray[i]}"`;
 		}
 		return str;
 }
