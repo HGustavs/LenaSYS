@@ -9,7 +9,7 @@ var str = "";
 var defs = "";
 
 // Interaction variables - unknown if all are needed
-var mb, startX, startY;
+var deltaX = 0, deltaY = 0, startX, startY;
 var startTop, startLeft;
 var sscrollx, sscrolly;
 var cwidth, cheight;
@@ -48,21 +48,37 @@ var context = [];
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
 
-
 // Currently hold down buttons
 var ctrlPressed = false;
 var altPressed = false;
 
+// Box selection variables
+var boxSelectionInUse = false;
+
+// What kind of input mode that user is uing the cursor for.
 const mouseModes = {
-    SELECTION: 0,
+    POINTER: 0,
+    BOX_SELECTION: 1,
+    PLACING_ELEMENT: 2,
+    EDGE_CREATION: 3,
+};
+var mouseMode = mouseModes.POINTER;
+
+// All different element types that can be placed by the user.
+const elementTypes = {
+    NO_SELECTED: 0,
     ENTITY: 1,
     RELATION: 2,
     ATTRIBUTE: 3,
-    LINE: 4
 };
-var mouseMode = mouseModes.SELECTION;
+var elementTypeSelected = elementTypes.ENTITY;
 
-
+const pointerStates = {
+    DEFAULT: 0,
+    CLICKED_CONTAINER: 1,
+    CLICKED_ELEMENT: 2,
+};
+var pointerState = pointerStates.DEFAULT;
 
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
@@ -81,7 +97,6 @@ function makeRandomID()
 }
 
 // Example entities and attributes
-
 var PersonID = makeRandomID();
 var IDID = makeRandomID();
 var NameID = makeRandomID();
@@ -129,8 +144,7 @@ var lines = [
 ];
 
 //------------------------------------=======############==========----------------------------------------
-
-//                                           Key event listeners
+//                                        Key event listeners
 //------------------------------------=======############==========----------------------------------------
 document.addEventListener('keydown', function (e)
 {
@@ -147,6 +161,7 @@ document.addEventListener('keyup', function (e)
     if (e.key == "Meta") ctrlPressed = false;
 });
 
+//------------------------------------=======############==========----------------------------------------
 //                              Coordinate-Screen Position Conversion
 //------------------------------------=======############==========----------------------------------------
 
@@ -181,6 +196,7 @@ function screenToDiagramCoordinates(mouseX, mouseY)
     };
 }
 
+// TODO : This is still the old version, needs update
 function diagramToScreenPosition(coordX, coordY)
 {
     return {
@@ -188,7 +204,6 @@ function diagramToScreenPosition(coordX, coordY)
         y: Math.round((coordY + scrolly) / zoomfact + 86),
     };
 }
-
 
 //------------------------------------=======############==========----------------------------------------
 //                                           Mouse events
@@ -199,28 +214,96 @@ function mdown(event)
     // React to mouse down on container
     if (event.target.id == "container")
     {
-        mb = 1;
-        sscrollx = scrollx;
-        sscrolly = scrolly;
-        startX = event.clientX;
-        startY = event.clientY;
+        switch (mouseMode)
+        {
+            case mouseModes.POINTER:
+                pointerState = pointerStates.CLICKED_CONTAINER;
+                sscrollx = scrollx;
+                sscrolly = scrolly;
+                startX = event.clientX;
+                startY = event.clientY;
+                break;
+            
+            case mouseModes.BOX_SELECTION:
+                boxSelect_Start(event.clientX, event.clientY);
+                break;
+
+            default:
+                break;
+        }
+        
     }
 }
 
 function ddown(event)
 {
-    startX = event.clientX;
-    startY = event.clientY;
-    mb = 8;
+    switch (mouseMode) {
+        case mouseModes.POINTER:
+        case mouseModes.BOX_SELECTION:
+        case mouseModes.PLACING_ELEMENT:
+        case mouseModes.EDGE_CREATION:
+            startX = event.clientX;
+            startY = event.clientY;
+            pointerState = pointerStates.CLICKED_ELEMENT;
 
-    var element = data[findIndex(data, event.currentTarget.id)];
-    if (element != null && !context.includes(element) || !ctrlPressed)
-    {
-        updateSelection(element, null, null);
+            var element = data[findIndex(data, event.currentTarget.id)];
+            if (element != null && !context.includes(element) || !ctrlPressed)
+            {
+                updateSelection(element, null, null);
+            }
+            break;
+    
+        default:
+            console.error(`State ${mouseMode} missing implementation at switch-case in ddown()!`);
+            break;
     }
+}
 
+function mouseMode_onMouseUp(event)
+{
+    switch (mouseMode) {
+        case mouseModes.PLACING_ELEMENT:
+            var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
+            var entityType = constructElementOfType(elementTypeSelected);
 
+            data.push({
+                name: entityType.name,
+                x: mp.x - (entityType.data.width * 0.5),
+                y: mp.y - (entityType.data.height * 0.5),
+                width: entityType.data.width,
+                height: entityType.data.height,
+                kind: entityType.data.kind,
+                id: makeRandomID()
+            });
+            showdata()
+            break;
 
+        case mouseModes.EDGE_CREATION:
+            if (context.length > 1)
+            {
+                lines.push({ 
+                    id: makeRandomID(), 
+                    fromID: context[0].id, 
+                    toID: context[1].id, 
+                    kind: "Normal" 
+                });
+                context = [];
+                redrawArrows();
+            }
+
+            break;
+
+        case mouseModes.BOX_SELECTION:
+            boxSelect_End();
+            break;
+
+        case mouseModes.POINTER: // do nothing
+            break;
+    
+        default:
+            console.error(`State ${mouseMode} missing implementation at switch-case in mouseMode_onMouseUp()!`);
+            break;
+    }
 }
 
 function mup(event)
@@ -228,108 +311,111 @@ function mup(event)
     deltaX = startX - event.clientX;
     deltaY = startY - event.clientY;
 
-    // Event is in container area
-    if (event.target.id == "container")
-    {
-        // User only clicked, clear selection
-        if (!deltaExceeded)
-        {
-            if (mouseMode == 0)
-            {
-                updateSelection(null, undefined, undefined);
-            }
-            else if (mouseMode == 4) {
-                context = [];
-            }
-            else
-            {
-                var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
-                var entityType = getEntityType()
+    switch (pointerState) {
+        case pointerStates.DEFAULT: mouseMode_onMouseUp(event);
+            break;
 
-                data.push({
-                    name: entityType.name,
-                    x: mp.x - (entityType.data.width * 0.5),
-                    y: mp.y - (entityType.data.height * 0.5),
-                    width: entityType.data.width,
-                    height: entityType.data.height,
-                    kind: entityType.data.kind,
-                    id: makeRandomID()
+        case pointerStates.CLICKED_CONTAINER:
+            if (event.target.id == "container")
+            {
+                if (!deltaExceeded)
+                {
+                    if (mouseMode == mouseModes.EDGE_CREATION)
+                    {
+                        context = [];
+                    }
+                    else if (mouseMode == mouseModes.POINTER)
+                    {
+                        updateSelection(null, undefined, undefined);
+                    }
+                }
+            }
+            break;
+
+        case pointerStates.CLICKED_ELEMENT:
+            if (context.length > 0)
+            {
+                context.forEach(item => // Move all selected items
+                {
+                    eventElementId = event.target.parentElement.parentElement.id;
+                    setPos(item.id, deltaX, deltaY);
                 });
-                showdata()
             }
-        }
-    }
-
-    // Event is in element
-    else
-    {
-        // If one or more objects are selected
-
-        if (context.length > 0 && mouseMode != 4) 
-
-        {
-            // Move all selected items
-            context.forEach(item =>
-            {
-                eventElementId = event.target.parentElement.parentElement.id;
-                setPos(item.id, deltaX, deltaY);
-            });
-        } else if(context.length > 1 && mouseMode == 4) {
-            lines.push({ 
-                id: makeRandomID(), 
-                fromID: context[0].id, 
-                toID: context[1].id, 
-                kind: "Normal" 
-            });
-            context = [];
-            redrawArrows();
-        }
+            break;
+    
+        default: console.error(`State ${mouseMode} missing implementation at switch-case in mup()!`);
+            break;
     }
 
     // Update all element positions on the screen
+    deltaX = 0;
+    deltaY = 0;
     updatepos(0, 0);
     drawRulerBars();
 
-    // Restore mouse state to normal
-    mb = 0;
+    // Restore pointer state to normal
+    pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
+}
+
+function mouseMode_onMouseMove(event)
+{
+     switch (mouseMode) {
+        case mouseModes.PLACING_ELEMENT:
+        case mouseModes.EDGE_CREATION:
+        case mouseModes.POINTER: // do nothing
+            break;
+
+        case mouseModes.BOX_SELECTION:
+            boxSelect_Update(event.clientX, event.clientY);
+            updatepos(0, 0);
+            break;
+            
+        default:
+            console.error(`State ${mouseMode} missing implementation at switch-case in mouseMode_onMouseMove()!`);
+            break;
+    }
 }
 
 function mmoving(event)
 {
-    // Click started in container
-    if (mb == 1)
-    {
-        // Compute new scroll position
-        deltaX = startX - event.clientX;
-        deltaY = startY - event.clientY;
-        scrollx = sscrollx - Math.round(deltaX * zoomfact);
-        scrolly = sscrolly - Math.round(deltaY * zoomfact);
+    switch (pointerState) {
+        case pointerStates.CLICKED_CONTAINER:
+            // Compute new scroll position
+            deltaX = startX - event.clientX;
+            deltaY = startY - event.clientY;
+            scrollx = sscrollx - Math.round(deltaX * zoomfact);
+            scrolly = sscrolly - Math.round(deltaY * zoomfact);
 
-        // Update scroll position
-        updatepos(null, null);
+            // Update scroll position
+            updatepos(null, null);
 
-        // Remember that mouse has moved out of starting bounds
-        if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
-        {
-            deltaExceeded = true;
-        }
-    }
-    else if (mb == 8)
-    {
-        // Moving object
-        movingObject = true;
-        deltaX = startX - event.clientX;
-        deltaY = startY - event.clientY;
+            // Remember that mouse has moved out of starting bounds
+            if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
+            {
+                deltaExceeded = true;
+            }
+            break;
 
-        // We update position of connected objects
-        updatepos(deltaX, deltaY);
+        case pointerStates.CLICKED_ELEMENT:
+            // Moving object
+            movingObject = true;
+            deltaX = startX - event.clientX;
+            deltaY = startY - event.clientY;
 
-        // Remember that mouse has moved out of starting bounds
-        if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
-        {
-            deltaExceeded = true;
-        }
+            // We update position of connected objects
+            updatepos(deltaX, deltaY);
+
+            // Remember that mouse has moved out of starting bounds
+            if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
+            {
+                deltaExceeded = true;
+            }
+            break;
+    
+        default:
+            mouseMode_onMouseMove(event);
+            break;
     }
 
     //Sets the rules to current position on screen.
@@ -350,26 +436,294 @@ function fab_action()
 }
 
 //------------------------------------=======############==========----------------------------------------
-//                                           Mouse Modes
+//                                         Helper functions
 //------------------------------------=======############==========----------------------------------------
-function setMouseMode(mode = 0)
+
+// Returns TRUE if an enum contains the tested value
+function enumContainsPropertyValue(value, enumObject) 
 {
-    mouseMode = mode;
+    for (const property in enumObject)
+    {
+        // If any cursor mode matches the passed argument
+        const cm = enumObject[property];
+        if (cm == value)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
-function getEntityType()
+function getPoint (x,y)
 {
-    var entityObj = [
+    return {
+        x: x,
+        y: y
+    };
+}
+
+function getRectFromPoints(p1, p2)
+{
+    return {
+        x: p1.x,
+        y: p1.y,
+        width: p2.x - p1.x,
+        height: p2.y - p1.y,
+    };
+}
+
+function getRectFromElement (element)
+{
+    return {
+        x: element.x,
+        y: element.y,
+        width: element.width,
+        height: element.height,
+    };
+}
+
+function rectsIntersect (left, right)
+{
+    // If the two rects touch each other, returns true otherwise false.
+    //return ((left.X + left.Width >= right.X) &&
+    //        (left.X <= right.X + right.Width) &&
+    //        (left.Y + left.Height >= right.Y) &&
+    //        (left.Y <= right.Y + right.Height));
+
+    return (
+        (left.x + left.width >= right.x) && 
+        (left.x <= right.x + right.width) &&
+        (left.y + left.height >= right.y) &&
+        (left.y <= right.y + right.height)
+    );
+}
+
+//------------------------------------=======############==========----------------------------------------
+//                                           Mouse Modes
+//------------------------------------=======############==========----------------------------------------
+
+function setMouseMode(mode)
+{   
+    if (enumContainsPropertyValue(mode, mouseModes))
+    {
+        // Enable all buttons but the current mode one
+        var children = document.getElementById('cursorModeFieldset').children;
+        for (var index = 0; index < children.length; index++)
+        {
+            const child = children[index];
+
+            // If child is a button
+            if (child.tagName == "INPUT")
+            {
+                // Disable if current mode button, enable otherwise.
+                child.disabled = child.className.toUpperCase().includes(mode) ? true : false;
+            }
+        }
+    }
+    else
+    {
+        // Not implemented exception
+        console.error("Invalid mode passed to setMouseMode method. Missing implementation?");
+        return;
+    }
+
+    // Mode-specific activation/deactivation
+    onMouseModeDisabled(mouseMode);
+    mouseMode = mode;
+    onMouseModeEnabled(mouseMode);
+}
+
+function onMouseModeEnabled(mode)
+{
+    switch (mouseMode) {
+        case mouseModes.POINTER:
+        case mouseModes.PLACING_ELEMENT:
+        case mouseModes.EDGE_CREATION:  
+        case mouseModes.BOX_SELECTION:
+            break;
+
+        default: console.error(`State ${mouseMode} missing implementation at switch-case in onMouseModeEnabled()!`);
+            break;
+    }
+}
+
+function onMouseModeDisabled(mode)
+{
+    switch (mouseMode) {
+        case mouseModes.POINTER:
+        case mouseModes.PLACING_ELEMENT:
+        case mouseModes.EDGE_CREATION:
+        case mouseModes.BOX_SELECTION:
+            break;
+    
+        default: console.error(`State ${mouseMode} missing implementation at switch-case in onMouseModeDisabled()!`);
+            break;
+    }
+}
+
+function setElementPlacementType(type = 0)
+{
+    elementTypeSelected = type;
+}
+
+function constructElementOfType(type)
+{
+    var elementTemplates = [
         {data: defaults.defaultERtentity, name: "Entity"},
         {data: defaults.defaultERrelation, name: "Relation"},
         {data: defaults.defaultERattr, name: "Attribute"}
     ]
-  
-    switch (mouseMode)
+
+    if (enumContainsPropertyValue(type, elementTypes))
     {
-        case 1: return entityObj[0];
-        case 2: return entityObj[1];
-        case 3: return entityObj[2];
+        return elementTemplates[type];
+    }
+}
+
+//------------------------------------=======############==========----------------------------------------
+//                                       Box Select functions
+//------------------------------------=======############==========----------------------------------------
+
+// Returns all elements touching the coordinate box
+function getElementsInsideCoordinateBox(selectionRect)
+{
+    var elements = [];
+    data.forEach(element => {
+
+        // Box collision test
+        if (rectsIntersect(selectionRect, getRectFromElement(element)))
+        {
+            elements.push(element);
+        }
+    });
+    return elements;
+}
+
+function getBoxSelectionPoints()
+{
+    return {
+        n1: getPoint(startX, startY),
+        n2: getPoint(startX + deltaX, startY),
+        n3: getPoint(startX, startY + deltaY),
+        n4: getPoint(startX + deltaX, startY + deltaY),
+    };
+}
+
+function getBoxSelectionCoordinates()
+{
+    return {
+        n1: screenToDiagramCoordinates(startX, startY),
+        n2: screenToDiagramCoordinates(startX + deltaX, startY),
+        n3: screenToDiagramCoordinates(startX, startY + deltaY),
+        n4: screenToDiagramCoordinates(startX + deltaX, startY + deltaY),
+    };
+}
+
+// User has initiated a box selection
+function boxSelect_Start(mouseX, mouseY)
+{
+    // Set starting position
+    startX = mouseX;
+    startY = mouseY;
+    deltaX = 0;
+    deltaY = 0;
+    boxSelectionInUse = true;
+}
+
+function boxSelect_Update(mouseX, mouseY)
+{
+    if (boxSelectionInUse)
+    {
+        // Update relative position form the starting position
+        deltaX = mouseX - startX;
+        deltaY = mouseY - startY;
+
+        // Select all objects inside the box
+        var coords = getBoxSelectionCoordinates();
+            
+        // Calculate top-left and bottom-right coordinates
+        var topLeft = getPoint(0, 0), bottomRight = getPoint(0, 0);
+
+        if (coords.n1.x < coords.n4.x) // left/right
+        {
+            topLeft.x = coords.n1.x;
+            bottomRight.x = coords.n4.x;
+        }
+        else 
+        {
+            topLeft.x = coords.n4.x;
+            bottomRight.x = coords.n1.x;
+        }
+
+        if (coords.n1.y < coords.n4.y) // top/bottom
+        {
+            topLeft.y = coords.n1.y;
+            bottomRight.y = coords.n4.y;
+        }
+        else
+        {
+            topLeft.y = coords.n4.y;
+            bottomRight.y = coords.n1.y;
+        }
+
+        var rect = getRectFromPoints(topLeft, bottomRight);
+        context = getElementsInsideCoordinateBox(rect);
+    }
+}
+
+function boxSelect_End()
+{
+    deltaX = 0;
+    deltaY = 0;
+    boxSelectionInUse = false;
+}
+
+function boxSelect_Draw(str)
+{
+    if (boxSelectionInUse && mouseMode == mouseModes.BOX_SELECTION && pointerState == pointerStates.DEFAULT)
+    {
+        // Positions to draw lines in-between
+        /*
+            Each [nx] depicts one node in the selection triangle.
+            We draw a line between each corner and its neighbours.
+
+            [n1]----------[n2]
+            |              |
+            |              |
+            |              |
+            |              |
+            [n3]----------[n4]
+        */
+
+        // Calculate each node position
+        var boxCoords = getBoxSelectionPoints();
+        var nodeStart = boxCoords.n1;
+        var nodeX = boxCoords.n2
+        var nodeY = boxCoords.n3;
+        var nodeXY = boxCoords.n4;
+
+        // Draw lines between all neighbours
+        // TODO : NO MAGIC NUMBERS!
+        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${2}' />`;
+        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${2}' />`;
+
+        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${2}' />`;
+        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${2}' />`;
+    }
+    
+    return str;
+}
+
+function fab_action()
+{
+    if (document.getElementById("options-pane").className == "show-options-pane")
+    {
+        document.getElementById('optmarker').innerHTML = "&#9660;Options";
+        document.getElementById("options-pane").className = "hide-options-pane";
+    } else
+    {
+        document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
+        document.getElementById("options-pane").className = "show-options-pane";
     }
 }
 
@@ -611,15 +965,28 @@ function updateSelection(ctxelement, x, y)
     }
 }
 
-
 //-------------------------------------------------------------------------------------------------
 // updatepos - Update positions of all elements based on the zoom level and view space coordinate
 //-------------------------------------------------------------------------------------------------
 
 function updatepos(deltaX, deltaY)
 {
+    exportElementDataToCSS();
 
+    // Update svg backlayer -- place everyhing to draw OVER elements here
+    var str = "";
+    str = redrawArrows(str);
+    document.getElementById("svgbacklayer").innerHTML=str;
 
+    // Update svg overlay -- place everyhing to draw OVER elements here
+    str = "";
+    str = boxSelect_Draw(str);
+    document.getElementById("svgoverlay").innerHTML=str;
+}
+
+function exportElementDataToCSS()
+{
+    // Update positions of all elements based on the zoom level and view space coordinate
     for (var i = 0; i < data.length; i++)
     {
         // Element data from the array
@@ -632,31 +999,29 @@ function updatepos(deltaX, deltaY)
         if (elementDiv != null)
         {
             // If the element was clicked and our mouse movement is not null
-            if (deltaX != null && findIndex(context, element.id) != -1)
+            var inContext = deltaX != null && findIndex(context, element.id) != -1;
+            var notBoxSelection = mouseMode != mouseModes.BOX_SELECTION;
+            var clickedElement = pointerState == pointerStates.CLICKED_ELEMENT;
+            var clickedContainer = pointerState == pointerStates.CLICKED_CONTAINER;
+
+            // Handle positioning
+            if (inContext && !clickedContainer && (notBoxSelection || clickedElement))
             {
                 // Re-calculate drawing position for our selected element, then apply the mouse movement
                 elementDiv.style.left = (Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) - deltaX) + "px";
                 elementDiv.style.top = (Math.round((element.y * zoomfact) + (scrolly * (1.0 / zoomfact))) - deltaY) + "px";
-
-                // TODO : This should be re-made into specifics regarding each element type. Current version is simply the "basic" beta-version.
-                // Change element colour (selected)
-                elementDiv.children[0].children[0].style.fill = "#ff66b3";
-
             }
             else
             {
                 // Re-calculate drawing position for other elements if there's a change in zoom level
                 elementDiv.style.left = Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) + "px";
                 elementDiv.style.top = Math.round((element.y * zoomfact) + (scrolly * (1.0 / zoomfact))) + "px";
-
-                // TODO : This should be re-made into specifics regarding each element type. Current version is simply the "basic" beta-version.
-                // Restore element background colour (non-selected)
-                elementDiv.children[0].children[0].style.fill = "#ffccdc";
-
             }
+
+            // Handle colouring
+            elementDiv.children[0].children[0].style.fill = inContext ? "#ff66b3" : "#ffccdc";
         }
     }
-    redrawArrows();
 }
 
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
@@ -759,10 +1124,8 @@ function sortvectors(a, b, ends, elementid, axis)
 // redrawArrows - Redraws arrows based on rprogram and rcourse variables
 //-------------------------------------------------------------------------------------------------
 
-function redrawArrows()
+function redrawArrows(str)
 {
-    str = "";
-
     // Clear all lines and update with dom object dimensions
     for (var i = 0; i < data.length; i++)
     {
@@ -927,7 +1290,8 @@ function redrawArrows()
 
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
     }
-    document.getElementById("svgoverlay").innerHTML = str;
+    
+    return str;
 }
 //-------------------------------------------------------------------------------------------------
 // Change the position of rulerPointers
