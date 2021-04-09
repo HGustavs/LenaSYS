@@ -27,7 +27,7 @@ const textheight = 18;
 const strokewidth = 1.5;
 const baseline = 10;
 const avgcharwidth = 6;
-const colors = ["white", "Gold", "pink", "yellow", "CornflowerBlue"];
+const colors = ["white", "Gold", "#ffccdc", "yellow", "CornflowerBlue"];
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -497,7 +497,7 @@ function showdata()
         if (element.kind == "EREntity")
         {
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' 
-                   stroke-width='${linew}' stroke='black' fill='pink' />
+                   stroke-width='${linew}' stroke='black' fill='#ffccdc' />
                    <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text> 
                    `;
 
@@ -517,14 +517,14 @@ function showdata()
                     Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
                     Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
                     Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
-                    stroke='black' fill='pink' stroke-width='${linew}' />`;
+                    stroke='black' fill='#ffccdc' stroke-width='${linew}' />`;
             }
             str += `<path d="M${linew},${hboxh} 
                            Q${linew},${linew} ${hboxw},${linew} 
                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
                            Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
                            Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                    stroke='black' fill='pink' ${dash} stroke-width='${linew}' />
+                    stroke='black' fill='#ffccdc' ${dash} stroke-width='${linew}' />
                     
                     ${multi}
 
@@ -536,11 +536,11 @@ function showdata()
             if (element.isWeak == true)
             {
                 weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
-                stroke-width='${linew}' stroke='black' fill='pink'/>
+                stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                 `;
             }
             str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
-                   stroke-width='${linew}' stroke='black' fill='pink'/>
+                   stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                    ${weak}
                    <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text> 
                    `;
@@ -631,7 +631,7 @@ function updatepos(deltaX, deltaY)
 
                 // TODO : This should be re-made into specifics regarding each element type. Current version is simply the "basic" beta-version.
                 // Change element colour (selected)
-                elementDiv.children[0].children[0].style.fill = "orange";
+                elementDiv.children[0].children[0].style.fill = "#ff66b3";
 
             }
             else
@@ -642,7 +642,7 @@ function updatepos(deltaX, deltaY)
 
                 // TODO : This should be re-made into specifics regarding each element type. Current version is simply the "basic" beta-version.
                 // Restore element background colour (non-selected)
-                elementDiv.children[0].children[0].style.fill = "pink";
+                elementDiv.children[0].children[0].style.fill = "#ffccdc";
 
             }
         }
