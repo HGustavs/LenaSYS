@@ -40,6 +40,7 @@ function courseQuery($course){
 	return $array;
 }
 
+//Not working for now until other group shortens assignment url.
 function assignmentQuery($assignment){
 	global $pdo;
 	$a = '"%' . $assignment . '%"';
@@ -57,7 +58,7 @@ function queryToUrl($course, $assignment){
 	global $pdo;
 	if($course != 'UNK')
 		$c = courseQuery($course);
-	else echo "No such course";
+	else echo "Unknown Course";
 
 	if($assignment != 'UNK'){
 		$a = assignmentQuery($assignment);
