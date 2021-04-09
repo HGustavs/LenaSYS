@@ -240,12 +240,12 @@ function mup(event)
                 var entityType = getEntityType()
 
                 data.push({
-                    name: 'Entity',
-                    x: mp.x - (entityType.width * 0.5),
-                    y: mp.y - (entityType.height * 0.5),
-                    width: entityType.width,
-                    height: entityType.height,
-                    kind: entityType.kind,
+                    name: entityType.name,
+                    x: mp.x - (entityType.data.width * 0.5),
+                    y: mp.y - (entityType.data.height * 0.5),
+                    width: entityType.data.width,
+                    height: entityType.data.height,
+                    kind: entityType.data.kind,
                     id: makeRandomID()
                 });
                 showdata()
@@ -337,11 +337,17 @@ function setMouseMode(mode = 0)
 
 function getEntityType()
 {
+    var entityObj = [
+        {data: defaults.defaultERtentity, name: "Entity"},
+        {data: defaults.defaultERrelation, name: "Relation"},
+        {data: defaults.defaultERattr, name: "Attribute"}
+    ]
+  
     switch (mouseMode)
     {
-        case 1: return defaults.defaultERtentity;
-        case 2: return defaults.defaultERrelation;
-        case 3: return defaults.defaultERattr;
+        case 1: return entityObj[0];
+        case 2: return entityObj[1];
+        case 3: return entityObj[2];
     }
 }
 
