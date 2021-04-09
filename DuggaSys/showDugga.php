@@ -243,7 +243,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			<div id='urlAndPwd' style="display:block">
 				<div class="testasd"><span>URL: </span><span id='url'></span></div>
 				<div class="testasd"><span>Password: </span><span id='pwd'></span></div>
-				<div class="testasd"><span>Hash: </span><span id='hash'></span></div>
 			</div>
 
       </div>

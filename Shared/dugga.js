@@ -538,29 +538,28 @@ function randomPassword()
 }
 
 //----------------------------------------------------------------------------------
-// randomstring: Generates a random URL redirect link
+// createUrl: creates url that contains the hash
 //----------------------------------------------------------------------------------
 
-function randomUrl()
-{
-        str="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890";
-        var realUrl = window.location.href; //"real" url, will be saved into the database
+function createUrl(hash) {
+	var realUrl = window.location + "&hash=" + hash;
+	var localhostUrl="http://localhost/LenaSYS/DuggaSys/sh/?hash=" + hash;
 
-		if(realUrl != true) //Check if URL is in database, currently no database for this
-		{
-				//Add URL to database and its "shortcut"
-				var url="http://localhost/LenaSYS/DuggaSys/sh/";
+	// temporary solution, if exist in database use real url
+	var realUrlInDatabase = false;
+	var url;
 
-				for(i=0;i<6;i++){
-					url+=str.charAt(Math.floor(Math.random()*str.length));
-				}
-				//Add both realUrl and shortcutUrl to database
-		}else{
-			//url = shortcutUrl from database
-		}
-		
-        return url;
+
+	if (realUrlInDatabase){
+		url = realUrl;
+	}
+	else{
+		url = localhostUrl;
+	}
+
+	return url;
 }
+
 
 //----------------------------------------------------------------------------------
 // isNumber:    returns true: the variable only contains numbers
@@ -577,18 +576,14 @@ function saveDuggaResult(citstr)
 {
   
 	var pwd = randomPassword(); //Create random password for URL
-	var url = randomUrl(); //Create URL
 	var hash = generateHash(); // Generate Hash
+	var url = createUrl(hash); //Create URL
 	
-	console.log(url);
-	console.log(pwd);
-
-	var hash = generateHash();
-	console.log("asd: " + hash)
+	console.log("url: " + url);
+	console.log("pwd: " + pwd);
 
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
-	document.getElementById('hash').innerHTML = hash;
 
 	var readonly;
 	$.ajax({
@@ -660,11 +655,10 @@ function saveDuggaResult(citstr)
 // generateHash: Generates a hash
 //----------------------------------------------------------------------------------
 
-
 function generateHash() {
     var randNum = getRandomNumber();
     var hash = createHash(randNum);
-    return decimalToHexString(hash);
+    return convertDecimalToBase64(hash);
 
 	function createHash(num) {
 		var string = num.toString();
@@ -682,20 +676,39 @@ function generateHash() {
 		return hash;
 	}
 
-
-	function decimalToHexString(number) {
-		if (number < 0) {
-			number = 0xFFFFFFFF + number + 1;
-		}
-
-		return number.toString(16).toUpperCase();
-	}
-
-
 	function getRandomNumber() {
 		return Math.floor(Math.random() * 1000000) + 100000;
 	}
 }
+
+
+//----------------------------------------------------------------------------------
+// convertDecimalToBase64: takes decimal number and converts to base64 "youtube style"
+//----------------------------------------------------------------------------------
+function convertDecimalToBase64(value) {
+	if (typeof(value) === 'number') {
+	  return convertDecimalToBase64.getChars(value, '');
+	}
+  
+	if (typeof(value) === 'string') {
+	  if (value === '') { return NaN; }
+	  return value.split('').reverse().reduce(function(prev, cur, i) {
+		return prev + convertDecimalToBase64.chars.indexOf(cur) * Math.pow(64, i);
+	  }, 0);
+	}
+  }
+  
+  convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
+  
+  convertDecimalToBase64.getChars = function(num, res) {
+	var mod = num % 64,
+		remaining = Math.floor(num / 64),
+		chars = convertDecimalToBase64.chars.charAt(mod) + res;
+  
+	if (remaining <= 0) { return chars; }
+	return convertDecimalToBase64.getChars(remaining, chars);
+  };
+
 
 //----------------------------------------------------------------------------------
 // changeURL: Patch-in for changeURL from project 2014 code
