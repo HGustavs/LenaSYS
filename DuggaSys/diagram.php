@@ -457,6 +457,13 @@
     <svg id="svgoverlay"  preserveAspectRatio="none">
    </svg>
 	<canvas id='canvasOverlay'></canvas>
+    <!-- Diagram rules -->
+    <div id="rulerOverlay">
+        <svg id="ruler-x-svg"></svg>
+        <svg id="ruler-y-svg"></svg>
+        <div id="ruler-x"></div>
+        <div id="ruler-y"></div>
+    </div>
     <div id="fab" onclick="fab_action();">+</div> <!-- Big (+) button -->
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
