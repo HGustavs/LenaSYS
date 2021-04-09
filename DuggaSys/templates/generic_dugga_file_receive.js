@@ -354,8 +354,10 @@ function createFileUploadArea(fileuploadfileds){
             str +="<h4>Instructions</h4>";
             str +="<div id='"+fieldname+"Instruction' style='font-style: italic;padding:0px;'></div>"
             str +="<br />";
+
 			if(teacherFlag == false){
 				str +="<h4>New submission</h4>";
+
 			}
 			str +="<table>";
 			str +="<tr>";
