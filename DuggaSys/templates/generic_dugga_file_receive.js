@@ -357,7 +357,6 @@ function createFileUploadArea(fileuploadfileds){
 
 			if(teacherFlag == false){
 				str +="<h4>New submission</h4>";
-
 			}
 			str +="<table>";
 			str +="<tr>";
