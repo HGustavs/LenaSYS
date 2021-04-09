@@ -113,3 +113,41 @@
     position: relative;
     background-color: #FFF;
 }
+
+#rulerOverlay {
+    position:absolute;
+    left:0;
+    top:86px;
+    width:100%;
+    height:100%;
+    pointer-events: none;
+}
+#ruler-y {
+    left: 20px;
+    background-color: #1f65cd;
+    width: 30px;
+    height: 1px !important;
+    position: absolute;
+    z-index: 5000;
+}
+
+#ruler-x {
+    top: 20px;
+    background-color: #1f65cd;
+    height: 30px;
+    width: 1px;
+    position: absolute;
+    z-index: 5000;
+}
+#ruler-x-svg {
+    background-color: #FFF;
+    position:absolute;
+    width:100%;
+    height:40px;
+}
+#ruler-y-svg {
+    background-color: #FFF;
+    position:absolute;
+    width:40px;
+    height:100%;
+}

@@ -270,6 +270,7 @@ function mup(event)
 
     // Update all element positions on the screen
     updatepos(0, 0);
+    drawRulerBars();
 
     // Restore mouse state to normal
     mb = 0;
@@ -312,6 +313,9 @@ function mmoving(event)
             deltaExceeded = true;
         }
     }
+
+    //Sets the rules to current position on screen.
+    setRulerPosition(event.clientX, event.clientY);
 }
 
 function fab_action()
@@ -372,6 +376,9 @@ function zoomin()
 
     // Update scroll position - missing code for determining that center of screen should remain at nevw zoom factor
     showdata();
+
+    // Draw new rules to match the new zoomfact
+    drawRulerBars();
 }
 
 function zoomout()
@@ -393,6 +400,9 @@ function zoomout()
 
     // Update scroll position - missing code for determining that center of screen should remain at new zoom factor
     showdata();
+
+    // Draw new rules to match the new zoomfact
+    drawRulerBars();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -889,7 +899,61 @@ function redrawArrows()
     }
     document.getElementById("svgoverlay").innerHTML = str;
 }
+//-------------------------------------------------------------------------------------------------
+// Change the position of rulerPointers
+//-------------------------------------------------------------------------------------------------
+function setRulerPosition(x, y) {
+    document.getElementById("ruler-x").style.left = x - 1 + "px";
+    document.getElementById("ruler-y").style.top = y - 125 + "px";
+}
 
+//-------------------------------------------------------------------------------------------------
+// Draws the rulers
+//-------------------------------------------------------------------------------------------------
+function drawRulerBars(){
+    //Get elements
+    svgX = document.getElementById("ruler-x-svg");
+    svgY = document.getElementById("ruler-y-svg");
+    //Settings - Ruler
+    const lineRatio = 10;
+    const fullLineRatio = 10;
+    var barY, barX = "";
+    const color = "black";
+
+    //Draw the Y-axis ruler.
+    var lineNumber = (fullLineRatio - 1);
+    for (i = 40;i <= cheight; i += lineRatio){
+        lineNumber++;
+
+        //Check if a full line should be drawn
+        if (lineNumber === fullLineRatio){
+            var cordY = screenToDiagramCoordinates(0,86 + i).y;
+            lineNumber = 0;
+            barY += "<line x1='0px' y1='"+(i)+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
+            barY += "<text x='2' y='"+(i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
+        }
+        else barY += "<line x1='25px' y1='"+i+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
+    }
+
+    svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
+
+    //Draw the X-axis ruler.
+    lineNumber = (fullLineRatio - 1);
+    for (i = 40;i <= cwidth; i += lineRatio){
+        lineNumber++;
+
+        //Check if a full line should be drawn
+        if (lineNumber === fullLineRatio) {
+            var cordX = screenToDiagramCoordinates(i, 0).x;
+            lineNumber = 0;
+            barX += "<line x1='" +i+"' y1='0' x2='" + i + "' y2='40px' stroke='" + color + "' />";
+            barX += "<text x='"+(i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
+        }
+        else barX += "<line x1='" +i+"' y1='25' x2='" +i+"' y2='40px' stroke='" + color + "' />";
+
+    }
+    svgX.innerHTML = barX;//Print the generated ruler, for X-axis
+}
 //------------------------------------=======############==========----------------------------------------
 //                                    Default data display stuff
 //------------------------------------=======############==========----------------------------------------
@@ -897,6 +961,7 @@ function redrawArrows()
 function getData()
 {
     showdata();
+    drawRulerBars();
 }
 
 function data_returned(ret)
