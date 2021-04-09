@@ -212,15 +212,13 @@ if($demo){
 			$savedvariant=$newvariant;
 
 		}else if(!$isIndb){
-			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant,hash,password) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant,:hash,:password);");
+			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursevers', $coursevers);
 			$query->bindParam(':uid', $userid);
 			$query->bindParam(':did', $duggaid);
 			$query->bindParam(':moment', $moment);
 			$query->bindParam(':variant', $newvariant);
-			$query->bindParam(':hash', $hash);
-			$query->bindParam(':password', $password);
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
@@ -313,6 +311,28 @@ if(checklogin()){
                 }	else {
                 	$savedanswer = $answer;
                 }
+
+				$query = $pdo->prepare("SELECT hash, password FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+				$query->bindParam(':cid', $courseid);
+				$query->bindParam(':coursevers', $coursevers);
+				$query->bindParam(':uid', $userid);
+				$query->bindParam(':moment', $moment);
+				$query->execute();
+				
+				$result = $query->fetch(PDO::FETCH_ASSOC);
+				$checkHash = $result;
+
+				if(is_null($checkHash['hash']) || is_null($checkHash['password'])){
+					$query = $pdo->prepare("UPDATE userAnswer SET hash=:hash, password=:password WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+					$query->bindParam(':cid', $courseid);
+					$query->bindParam(':coursevers', $coursevers);
+					$query->bindParam(':uid', $userid);
+					$query->bindParam(':moment', $moment); 
+				 	$query->bindParam(':hash', $hash);
+					$query->bindParam(':password', $password); 
+				  	$query->execute();
+				}
+
                 // Make sure that current version is set to active for this student
                 $vuery = $pdo->prepare("SELECT vers FROM user_course WHERE uid=:uid AND cid=:cid");
               	$vuery->bindParam(':cid', $courseid);

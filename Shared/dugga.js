@@ -14,8 +14,8 @@ var inParams = "UNK";
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 var pressTimer;
-var password=randomPassword();
-var hash=generateHash();
+var password;
+var hash;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -582,6 +582,9 @@ function saveDuggaResult(citstr)
 	//var url = randomUrl(); //Create URL
 	//var hash = generateHash(); // Generate Hash
 	
+	password = randomPassword();
+	hash = generateHash();
+
 	//console.log(url);
 	console.log(password);
 
