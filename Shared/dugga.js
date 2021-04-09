@@ -255,7 +255,7 @@ function makedivItemWithValue(option,optionlist,optionstring,valuestring)
 {
 		var str="";
 		str +="<div class='access-dropdown-content'>"
-			str+="<div data-value='"+null+"' onclick='changeOptDivStudent(event,\""+-1+"\")'";
+			str+=`<div data-value='${null}' onclick='changeOptDivStudent(event,"${-1}")'`;
 			if (option === "") {
 				str+=" class = 'access-dropdown-selected'";
 			}
@@ -286,7 +286,7 @@ function makeDivItemStudent(option,optionlist,valuelist)
 		var stringArray = ["W","R","ST"];
 		str +="<div class='access-dropdown-content'>"
 		for(var i=0;i<optionlist.length;i++){
-			str+="<div data-value='"+stringArray[i]+"' onclick='changeOptDivStudent(event,\""+stringArray[i]+"\")'";
+			str+=`<div data-value='${stringArray[i]}' onclick='changeOptDivStudent(event,"${stringArray[i]}")'`;
 			if(option == valuelist[i]){
 				str+=" class = 'access-dropdown-selected'>"+optionlist[i]+"</div>";
 			}else{
