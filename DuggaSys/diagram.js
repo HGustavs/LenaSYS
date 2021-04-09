@@ -334,11 +334,7 @@ function setMouseMode(mode = 0)
 {
     mouseMode = mode;
 }
-/*var defaults = {
-    defaultERtentity: { kind: "EREntity", fill: "White", Stroke: "Black", width: 200, height: 50 },
-    defaultERrelation: { kind: "ERRelation", fill: "White", Stroke: "Black", width: 60, height: 60 },
-    defaultERattr: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 }
-}*/
+
 function getEntityType()
 {
     var entityObj = [
