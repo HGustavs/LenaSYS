@@ -15,6 +15,7 @@ Example seed
 //------------==========########### GLOBALS ###########==========------------
 var score = -1;
 var elapsedTime = 0;
+var iconflag = false;
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
@@ -257,16 +258,22 @@ function closeFacit()
 //                                  Local Functions
 //--------------------================############================--------------------
 
-function createFileUploadArea(fileuploadfileds){
-	var str ="";
-	for (var l = 0; l < fileuploadfileds.length; l++){
+function noUploadForTeacher(){
+	iconFlag = true;
+}
 
+function createFileUploadArea(fileuploadfileds){
+	
+	var str ="";
+	
+	for (var l = 0; l < fileuploadfileds.length; l++){
+		
 		var type = fileuploadfileds[l].type;
 		var fieldname = fileuploadfileds[l].fieldname;
 
 		var form = "";
 		form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php' >";
-
+		
 		if(type=="link"){
 				form +="<input name='link' type='text' size='40' maxlength='256' />";
 				form +="<input type='hidden' name='kind' value='2' />";
@@ -276,21 +283,27 @@ function createFileUploadArea(fileuploadfileds){
 		}else if(type=="pdf"){
         // special type for pdf to have accept = .pdf
 				form +="<input name='uploadedfile[]' type='file' id='inputfile" + l + "' class='inputfile' accept='.pdf' multiple='multiple' onchange='this.form.submit();'/>";
-        form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
+				if(iconFlag == false){
+				form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
+				}
 				form +="<input type='hidden' name='kind' value='1' />";
 		} else if(type == "zip"){
       // special type for zip to have accept = .zip and .rar
       form +="<input name='uploadedfile[]' type='file' id='inputfile" + l + "' class='inputfile' accept='.zip,.rar' multiple='multiple' onchange='this.form.submit();'/>";
-      form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
-      form +="<input type='hidden' name='kind' value='1' />";
+      if(iconFlag == false){
+	  form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
+	  }
+	  form +="<input type='hidden' name='kind' value='1' />";
     } else {
       form +="<input name='uploadedfile[]' type='file' id='inputfile" + l + "' class='inputfile' multiple='multiple' onchange='this.form.submit();'/>";
       form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
       form +="<input type='hidden' name='kind' value='1' />";
     }
-
+	if(iconFlag == false){
 		form +="<input type='submit' name='okGo' id='okGo" + l + "' class='inputfile' value='Upload'>";
+	
         form +="<label for='okGo" + l + "' style='padding-left:20px; padding-right:20px'>Upload</label>";
+		}
 		form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 		form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
 		form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";
