@@ -891,7 +891,22 @@ function redrawArrows()
             if (y2 > highY) highY = y2;
         }
 
-        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(0,0,0)" />`;
+        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(0,0,0)"/>`;
+
+        //Draw the nodes
+        const nodeDiameter = 10;
+        //Top-Left
+        str += `<rect class="selectedNode" width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY-10}'/>`;
+        //Top-Right
+        str += `<rect class="selectedNode" width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY-10}'/>`;
+        //Bottom-Left
+        str += `<rect class="selectedNode" width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${highY}'/>`;
+        //Bottom-Right
+        str += `<rect class="selectedNode" width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`;
+        //Middle-Left
+        str += `<rect class="selectedNode" width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY + ((highY-lowY)/2) - 5}'/>`;
+        //Middle-Right
+        str += `<rect class="selectedNode" width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY-lowY)/2) - 5}'/>`;
     }
     document.getElementById("svgoverlay").innerHTML = str;
 }

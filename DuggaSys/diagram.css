@@ -114,3 +114,6 @@
     position: relative;
     background-color: #FFF;
 }
+.selectedNode {
+    cursor: col-resize;
+}
