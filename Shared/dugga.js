@@ -1615,7 +1615,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].filename+"."+filez[i].extension+"</a></span>";
 								}
 							} else {
-								tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
+								tab+=`<span onclick='displayPreview("${filez[i].filepath}","${filez[i].filename}","${filez[i].seq}","${ctype}","${filez[i].extension}",${i},0);' style='cursor: pointer;text-decoration:underline;'>`;
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
 								} else if (mobileMediaQuery.matches) {
@@ -1637,7 +1637,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							if (!mobileMediaQuery.matches) {
 								// Button for making / viewing feedback - note - only button for given feedback to students.
 								if(filez[i].feedback!=="UNK"||displaystate){
-										tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>Feedback</button>";
+										tab+=`<button onclick='displayPreview("${filez[i].filepath}","${filez[i].filename}","${filez[i].seq}","${ctype}","${filez[i].extension}",${i},1);'>Feedback</button>`;
 								}
 							}
 							tab+="</td>";
@@ -1645,7 +1645,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							tab+="<td>";
 							if(filez[i].feedback!=="UNK"){
 								if (mobileMediaQuery.matches || mediumMediaQuery.matches) {
-									tab+="<span style='text-decoration: underline' onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>"+filez[i].feedback.substring(0,8)+"&#8230;</span>";
+									tab+= `<span style='text-decoration: underline' onclick='displayPreview("${filez[i].filepath}","${filez[i].filename}","${filez[i].seq}","${ctype}","${filez[i].extension}",${i},1);'>${filez[i].feedback.substring(0,8)}&#8230;</span>`;
 								} else {
 									tab+=filez[i].feedback.substring(0,64)+"&#8230;";
 								}
