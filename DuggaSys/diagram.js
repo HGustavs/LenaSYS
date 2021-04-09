@@ -58,6 +58,7 @@ const mouseModes = {
     ENTITY: 1,
     RELATION: 2,
     ATTRIBUTE: 3,
+    LINE: 4
 };
 var mouseMode = mouseModes.SELECTION;
 
@@ -234,6 +235,9 @@ function mup(event)
             {
                 updateSelection(null, undefined, undefined);
             }
+            else if (mouseMode == 4) {
+                context = [];
+            }
             else
             {
                 var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
@@ -257,7 +261,7 @@ function mup(event)
     else
     {
         // If one or more objects are selected
-        if (context.length > 0) 
+        if (context.length > 0 && mouseMode != 4) 
         {
             // Move all selected items
             context.forEach(item =>
@@ -265,6 +269,15 @@ function mup(event)
                 eventElementId = event.target.parentElement.parentElement.id;
                 setPos(item.id, deltaX, deltaY);
             });
+        } else if(context.length > 1 && mouseMode == 4) {
+            lines.push({ 
+                id: makeRandomID(), 
+                fromID: context[0].id, 
+                toID: context[1].id, 
+                kind: "Normal" 
+            });
+            context = [];
+            redrawArrows();
         }
     }
 
@@ -578,7 +591,9 @@ function updateSelection(ctxelement, x, y)
             context.push(ctxelement);
         } else
         {
-            context = [];
+            if(mouseMode != 4){
+                context = [];
+            }
             context.push(ctxelement);
         }
     } else if (!altPressed && !ctrlPressed)
