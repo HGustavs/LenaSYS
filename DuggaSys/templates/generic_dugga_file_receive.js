@@ -15,7 +15,7 @@ Example seed
 //------------==========########### GLOBALS ###########==========------------
 var score = -1;
 var elapsedTime = 0;
-var iconflag = false;
+var teacherFlag = false;
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
@@ -259,7 +259,7 @@ function closeFacit()
 //--------------------================############================--------------------
 
 function noUploadForTeacher(){
-	iconFlag = true;
+	teacherFlag = true;
 }
 
 function createFileUploadArea(fileuploadfileds){
@@ -283,14 +283,14 @@ function createFileUploadArea(fileuploadfileds){
 		}else if(type=="pdf"){
         // special type for pdf to have accept = .pdf
 				form +="<input name='uploadedfile[]' type='file' id='inputfile" + l + "' class='inputfile' accept='.pdf' multiple='multiple' onchange='this.form.submit();'/>";
-				if(iconFlag == false){
+				if(teacherFlag == false){
 				form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
 				}
 				form +="<input type='hidden' name='kind' value='1' />";
 		} else if(type == "zip"){
       // special type for zip to have accept = .zip and .rar
       form +="<input name='uploadedfile[]' type='file' id='inputfile" + l + "' class='inputfile' accept='.zip,.rar' multiple='multiple' onchange='this.form.submit();'/>";
-      if(iconFlag == false){
+      if(teacherFlag == false){
 	  form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
 	  }
 	  form +="<input type='hidden' name='kind' value='1' />";
@@ -299,7 +299,7 @@ function createFileUploadArea(fileuploadfileds){
       form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
       form +="<input type='hidden' name='kind' value='1' />";
     }
-	if(iconFlag == false){
+	if(teacherFlag == false){
 		form +="<input type='submit' name='okGo' id='okGo" + l + "' class='inputfile' value='Upload'>";
 	
         form +="<label for='okGo" + l + "' style='padding-left:20px; padding-right:20px'>Upload</label>";
@@ -354,7 +354,9 @@ function createFileUploadArea(fileuploadfileds){
             str +="<h4>Instructions</h4>";
             str +="<div id='"+fieldname+"Instruction' style='font-style: italic;padding:0px;'></div>"
             str +="<br />";
-			str +="<h4>New submission</h4>";
+			if(teacherFlag == false){
+				str +="<h4>New submission</h4>";
+			}
 			str +="<table>";
 			str +="<tr>";
 			str +="<td id='"+fieldname+"'>";
