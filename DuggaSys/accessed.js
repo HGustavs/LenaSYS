@@ -418,7 +418,7 @@ function addClass() {
 function resetPw(uid, username) {
 	rnd = randomstring();
 
-	window.location = "mailto:" + username + "@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20" + rnd + "%0A%0A/LENASys Administrators";
+	window.location = `mailto:${username}@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20${rnd}%0A%0A/LENASys Administrators`;
 
 	AJAXService("CHPWD", {
 		courseid: querystring['courseid'],
@@ -485,7 +485,7 @@ function changeProperty(targetobj, propertyname, propertyvalue) {
 }
 
 function showVersion(vers) {
-	window.location.href = "../DuggaSys/sectioned.php?courseid=" + querystring['courseid'] + "&coursevers=" + vers;
+	window.location.href = `../DuggaSys/sectioned.php?courseid=${querystring['courseid']}&coursevers=` + vers;
 }
 
 //----------------------------------------------------------------
@@ -508,18 +508,24 @@ function renderCell(col, celldata, cellid) {
 	if (col == "username" || col == "ssn" || col == "firstname" || col == "lastname") {
 		//str = "<div style='display:flex;'><input id='"+col+"_"+obj.uid+"' onKeyDown='if(event.keyCode==13) changeOpt(event)' value=\""+obj[col]+"\" style='margin:0 4px;flex-grow:1;font-size:11px;' size=" + obj[col].toString().length +"></div>";
 		if (col == "ssn") {
-			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + hideSSN(obj[col]) + "</span></div>";
+			str = `<div style='display:flex;'><span id='${col}_${obj.uid}' style='margin:0 4px;flex-grow:1;'>
+			${hideSSN(obj[col])}</span></div>`;
 		} else {
-			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + obj[col] + "</span></div>";
+			str = `<div style='display:flex;'><span id='${col}_${obj.uid}' style='margin:0 4px;flex-grow:1;'>
+			${obj[col]}</span></div>`;
 		}
 	} else if (col == "class") {
 		var className = obj.class;
 		if (className == null || className === "null") {
 			className = "";
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'> None"+className+"</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(className, filez['classes'], "class", "class") + "</div>";
+			str = `<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'>
+			None${className}</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			${makedivItem(className, filez['classes'], "class", "class")}</div>`;
 		}
 		else{
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div>"+className+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(className, filez['classes'], "class", "class") + "</div>";
+			str = `<div class='access-dropdown' id='${col}_${obj.uid}'><Div>${className}</Div>
+			<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			${makedivItem(className, filez['classes'], "class", "class")}</div>`;
 		}
 	} else if (col == "examiner") {
 		var examinerName = "";
@@ -530,10 +536,14 @@ function renderCell(col, celldata, cellid) {
 		}
 		if (obj.examiner == null || obj.examiner === "null" || obj.examiner < 0) {
 			examinerName = "";
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'> None</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(examinerName, filez['teachers'], "name", "uid") + "</div>";
+			str = `<div class='access-dropdown' id='${col}_${obj.uid}'><div style='color:#808080'>
+			None</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			${makedivItemWithValue(examinerName, filez['teachers'], "name", "uid")}</div>`;
 		}
 		else{
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(examinerName, filez['teachers'], "name", "uid") + "</div>";
+			str = `<div class='access-dropdown' id='${col}_${obj.uid}'><Div '>${examinerName}</div>
+			<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			${makedivItemWithValue(examinerName, filez['teachers'], "name", "uid")}</div>`;
 		}
 	} else if (col == "vers") {
 		var versname = "";
@@ -544,15 +554,20 @@ function renderCell(col, celldata, cellid) {
 		}
 
 		if (obj.vers == null || obj.vers === "null") {
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'> None</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(versname, filez['courses'], "versname", "vers") + "</select>";
+			str = `<div class='access-dropdown' id='${col}_${obj.uid}'><div style='color:#808080'>
+			None</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			${makedivItem(versname, filez['courses'], "versname", "vers")}</select>`;
 		}
 
 		else{
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div>"+versname+"</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(versname, filez['courses'], "versname", "vers") + "</select>";
+			str = `<div class='access-dropdown' id='${col}_${obj.uid}'><div>"+versname+"</div>
+			<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			${makedivItem(versname, filez['courses'], "versname", "vers")}</select>`;
 		}
 		for (var submission of filez['submissions']) {
             if (obj.uid === submission.uid) {
-                str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>";
+                str += `<img class='oldSubmissionIcon' title='View old version'
+				src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>`;
                 break;
             }
         };
@@ -566,7 +581,9 @@ function renderCell(col, celldata, cellid) {
 		else {
 			trueTeacher = "Student teacher";
 		}
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+trueTeacher+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makeDivItemStudent(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
+		str = `<div class='access-dropdown' id='${col}_${obj.uid}'><Div >${trueTeacher}</Div>
+		<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+		${makeDivItemStudent(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"])}</select>`;
 	} else if (col == "requestedpasswordchange") {
 
 		if (parseFloat(obj.recent) < 1440) {
@@ -591,23 +608,29 @@ function renderCell(col, celldata, cellid) {
 		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
 		if(optstr.includes('None') || optstr == "" || optstr == null){
 			optstr = "";
-			str += "<div><div class='access-dropdown'><span style='color:#808080'>None</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
+			str += `<div><div class='access-dropdown'><span style='color:#808080'>None</span>
+			<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div>
+			<div class='overSelect'></div></div><div class='checkboxes' id='grp${obj.uid}' >`;
 		}
 		else{
-			str += "<div><div class='access-dropdown'><span>" + optstr + "</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
+			str += `<div><div class='access-dropdown'><span>${optstr}
+			</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			</div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp${obj.uid}' >`;
 		}
-    str += "<label><input type='radio' name='groupradio"+obj.uid+"' checked id='g" + obj.uid + "' value='' />None</label>";
+    str += `<label><input type='radio' name='groupradio${obj.uid}' checked id='g${obj.uid}' value='' />None</label>`;
 		for (var i = 0; i < filez['groups'].length; i++) {
 			var group = filez['groups'][i];
 			if (tgroups.indexOf((group.groupkind + "_" + group.groupval)) > -1) {
-				str += "<label><input type='radio' name='groupradio"+obj.uid+"' checked id='g" + obj.uid + "' value='" + group.groupkind + "_" + group.groupval + "' />" + group.groupval + "</label>";
+				str += `<label><input type='radio' name='groupradio${obj.uid}' checked id='g${obj.uid}' 
+				value='${group.groupkind}_${group.groupval}' />${group.groupval}</label>`;
 			} else {
-				str += "<label><input type='radio' name='groupradio"+obj.uid+"' id='g" + obj.uid + "' value='" + group.groupkind + "_" + group.groupval + "' />" + group.groupval + "</label>";
+				str += `<label><input type='radio' name='groupradio${obj.uid}' id='g${obj.uid}' 
+				value='${group.groupkind}_${group.groupval}' />${group.groupval}</label>`;
 			}
 		}
 		str += '</div></div>';
 	} else {
-		str = "<div style='display:flex;'><div style='margin:0 4px;flex-grow:1;'>" + celldata + "</div></div>";
+		str = `<div style='display:flex;'><div style='margin:0 4px;flex-grow:1;'>${celldata}</div></div>`;
 	}
 	return str;
 
@@ -616,11 +639,13 @@ function renderCell(col, celldata, cellid) {
 function renderSortOptions(col, status, colname) {
 	str = "";
 	if (status == -1) {
-		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>${colname}</span>`;
 	} else if (status == 0) {
-		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",1)'>
+		${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
 	} else {
-		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
+		${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
 	}
 	addToSortDropdown(colname, col);
 	return str;
@@ -630,7 +655,8 @@ var sortColumns = [];
 function addToSortDropdown(colname, col) {
 	if (!sortColumns.includes(col)) {
 		var str = "";
-		str += "<div class='checkbox-dugga'><input name='sort' class='sortRadioBtn' type='radio' value="+col+"><label class='headerlabel'>"+colname+"</label></div>";
+		str += `<div class='checkbox-dugga'><input name='sort' class='sortRadioBtn' type='radio' value=${col}>
+		<label class='headerlabel'>${colname}</label></div>`;
 		document.getElementById('sortOptions').innerHTML += str;
 		sortColumns.push(col);
 	}
@@ -666,8 +692,9 @@ function displayCellEdit(celldata, rowno, rowelement, cellelement, column, colno
 	let str = false;
 	if (column == "firstname" || column == "lastname" || column == "username") {
 		celldata = JSON.parse(celldata);
-		str = "<input type='hidden' id='popoveredit_uid' class='popoveredit' style='flex-grow:1;' value='" + celldata.uid + "'/>";
-		str += "<input type='text' id='popoveredit_" + column + "' class='popoveredit' style='flex-grow:1;width:auto;' value='" + celldata[column] + "' size=" + celldata[column].toString().length + "/>";
+		str = `<input type='hidden' id='popoveredit_uid' class='popoveredit' style='flex-grow:1;' value='${celldata.uid}'/>`;
+		str += `<input type='text' id='popoveredit_${olumn}' class='popoveredit' style='flex-grow:1;width:auto;'
+		value='${celldata[column]}' size=${celldata[column].toString().length}/>`;
 	}
 	return str;
 }
@@ -679,11 +706,13 @@ function renderColumnFilter(col, status, colname) {
         return str;
     if (status) {
 		str = "<div class='checkbox-dugga'>";
-        str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel' for='" + colname + "'>" + colname + "</label>";
+        str += `<input id=\"${colname}\" type='checkbox' name='checkbox' checked onclick='onToggleFilter(\"${col}\")'>
+		<label class='headerlabel' for='${colname}'>${colname}</label>`;
         str += "</div>"
     } else {
             str = "<div class='checkbox-dugga'>";
-            str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel' for='" + colname + "'>" + colname + "</label>";
+            str += `<input id=\"${colname}\" type='checkbox' name='checkbox' onclick='onToggleFilter(\"${col}\")'>
+			<label class='headerlabel' for='${colname}'>${colname}</label>`;
             str += "</div>"
     }
     return str;
@@ -1093,7 +1122,7 @@ function createCheckboxes() {
 	str = "";
 	for (i = 0; i < labels.length; i++) {
 		str += "<div class='checkbox-dugga checkmoment'>";
-		str += "<input id='filterAccess" + (i+1) + "' type='checkbox' value='" + (i+1) + "' onchange='filterAccess()' ";
+		str += `<input id='filterAccess${(i+1)}' type='checkbox' value='${(i+1)}' onchange='filterAccess()' `;
 		if (i == 0 && accessFilter.indexOf("W") > -1) str += "checked";
 		//else if (i == 1 && accessFilter.indexOf("R") > -1) str += "checked";
 		//else if (i == 2 && accessFilter.indexOf("ST") > -1) str += "checked";
