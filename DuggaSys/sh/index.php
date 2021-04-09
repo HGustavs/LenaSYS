@@ -4,9 +4,15 @@ date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
 include_once "../../Shared/basic.php";
+include_once "../../Shared/sessions.php";
 
+//Gets the parameter from the URL. If the parameter is not availble then return UNK
 $url = getOPG("c");
 $assignment = getOPG("a");
+
+// Connect to database and start session
+pdoConnect();
+session_start();
 
 echo "|".$url."|".$assignment."|";
 
@@ -28,3 +34,8 @@ if($assignment != "UNK"){
 }
 
 echo "404 Course/Assignment does not exist!";
+
+// Terminate connection
+$pdo = null;
+
+?>
