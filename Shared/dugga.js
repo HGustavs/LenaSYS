@@ -1542,6 +1542,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								tab+="<td>";
 								// Button for making / viewing feedback - note - only button for given feedback to students.
 								if (ctype == "link"){
+
 										tab+="<a href='"+filez[i].content+"' ><img title='Download' src='../Shared/icons/file_download.svg' /></a>";
 								} else {
 									if(iconFlag){
@@ -1582,8 +1583,14 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].filename+"."+filez[i].extension+"</a></span>";
 								}
 							} else {
-								tab+="<span>";
-								//tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
+
+								if(iconFlag){
+									tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
+								}
+								else{
+									tab+="<span>";
+								}
+
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
 								} else if (mobileMediaQuery.matches) {
