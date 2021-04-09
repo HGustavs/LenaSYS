@@ -8,53 +8,47 @@ include_once "../../Shared/sessions.php";
 
 $course = getOPG("c");
 $assignment = getOPG("a");
+pdoConnect();
+session_start();
 
-//====================================================//
-//database values needed are: cid, coursename, activeversion, possibly courseyear?
-//
-//====================================================//
+/*
+SELECT filename FROM filelink WHERE filename LIKE '%$assignment%';
+SELECT cid, coursename, activeversion, coursecode FROM course WHERE '%course%' LIKE cid OR coursename OR activeversion OR coursecode;
+*/
 
-echo "|".$course."|".$assignment."|";
+function courseQuery($course){
 
-switch ($course) {
-	case ("dg"):
-	header("Location: /LenaSYS/DuggaSys/sectioned.php?courseid=3&coursename=Datorns%20grunder&coursevers=1337");
-	exit();
+global $pdo;
+$c = '"%' . $course . '%"';
+$sql = "SELECT cid, coursename, activeversion, coursecode 
+ FROM course 
+ WHERE cid LIKE " . $c . " OR coursename LIKE " . $c . 
+ " OR activeversion LIKE " . $c . 
+ " OR coursecode LIKE " . $c . "
+ AND visibility=1";
 
-	case ("demo"):
-	header("Location: /LenaSYS/DuggaSys/sectioned.php?courseid=1894&coursename=Demo-Course&coursevers=52432");
-	exit();
+$array = array();
 
-	case ("se"):
-	header("Location: /LenaSYS/DuggaSys/sectioned.php?courseid=4&coursename=Software%20Engineering&coursevers=1338");
-	exit();
-
-	case ("wp"):
-	header("Location: /LenaSYS/DuggaSys/sectioned.php?courseid=1&coursename=Webbprogrammering&coursevers=45656");
-	exit();
-
-	case ("dgfk"):
-	header("Location: /LenaSYS/DuggaSys/sectioned.php?courseid=2&coursename=Webbutveckling%20-%20datorgrafik&coursevers=97732");
-	exit();
+foreach ($pdo->query($sql) as $row) {
+	$array["cid"] = $row['cid'];
+	$array["coursename"] = $row['coursename'];
+	$array["coursecode"] = $row['coursecode'];
+	$array["courseservers"] = $row['activeversion'];
+}
+return $array;
 
 }
 
+function queryToUrl($course){
 
-/*if($assignment != "UNK"){
-	if(($course == "Databaskonstruktion" || $course == "dbk")){
-		if($assignment=="a1"){
-			header("Location: https://dugga.iit.his.se/DuggaSys/showdoc.php?cid=4&coursevers=82452&fname=minimikrav_m1a.md");
-			exit();		
-		}else{
-			header("Location: https://dugga.iit.his.se/DuggaSys/sectioned.php?courseid=4&coursevers=82452");
-			exit();		
-		}
-	}
-}else{
-	if(($course == "Databaskonstruktion" || $course == "dbk")){
-		header("Location: https://dugga.iit.his.se/DuggaSys/sectioned.php?courseid=4&coursevers=82452");
-		exit();	
-	}
-}*/
+$query = courseQuery($course);
 
-echo "404 Course/Assignment does not exist!";
+$url = "/LenaSYS/DuggaSys/sectioned.php?courseid=" . $query['cid'] ."&coursename=" . $query['coursename'] . "&coursevers=" .  $query['courseservers'];
+
+return $url; 
+}
+
+header("Location: ". queryToUrl($course));
+
+$pdo = null;
+?>
