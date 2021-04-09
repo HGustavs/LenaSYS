@@ -243,7 +243,8 @@ function makedivItem(option,optionlist,optionstring,valuestring)
 					</div>`;
 
                 }else{
-                    str+=`<div data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")' >"
+                    str+=
+					`<div data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")' >"
                     ${optionlist[i][optionstring]}
 					</div>`;
                 }
@@ -655,7 +656,8 @@ function saveDuggaResult(citstr)
 					<p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>`;
 				}
 				else{
-					document.getElementById('receiptInfo').innerHTML =`<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p>
+					document.getElementById('receiptInfo').innerHTML =
+					`<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p>
 					<img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/>
                     <p>${comment}</p>`;
 					
