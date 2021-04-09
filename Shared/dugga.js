@@ -1587,7 +1587,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].content+"</span>";
 								}
 							}else if(ctype == "zip" || ctype == "rar"){
-								tab+="<span style='cursor: pointer;text-decoration:underline;'>";
+								tab+="<span class='ASDASDSADSAD' style='cursor: pointer;text-decoration:underline;'>";
 								tab += "<a href="+filez[i].filepath+filez[i].filename+filez[i].seq+'.'+filez[i].extension+">";
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</a></span>";
