@@ -1,0 +1,7 @@
+The following columns are not being used by the accessed.js file:
+ Groups
+ Access
+ SSN
+ Class
+ Examiner
+ Vers
