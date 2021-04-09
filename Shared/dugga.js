@@ -576,22 +576,10 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
-{
-  
-	//var pwd = randomPassword(); //Create random password for URL
-	//var url = randomUrl(); //Create URL
-	//var hash = generateHash(); // Generate Hash
-	
+{	
 	password = randomPassword();
 	hash = generateHash();
 
-	//console.log(url);
-	console.log(password);
-
-	//var hash = generateHash();
-	console.log("asd: " + hash)
-
-	//document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = password;
 	document.getElementById('hash').innerHTML = hash;
 
