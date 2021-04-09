@@ -468,10 +468,10 @@
                     <input class="paneButtons" type="button" value="Zoom out" onclick='zoomout();' />									
                 </fieldset>
 
-                <input class="paneButtons" value="Mouse Selection" onclick='setMouseMode(0);' />
-                <input class="paneButtons" value="Entity" onclick='setMouseMode(1);' />
-                <input class="paneButtons" value="Relation" onclick='setMouseMode(2);' />
-                <input class="paneButtons" value="Attribute" onclick='setMouseMode(3);' />
+                <input class="paneButtons" type="button" value="Mouse Selection" onclick='setMouseMode(0);' />
+                <input class="paneButtons" type="button" value="Entity" onclick='setMouseMode(1);' />
+                <input class="paneButtons" type="button" value="Relation" onclick='setMouseMode(2);' />
+                <input class="paneButtons" type="button" value="Attribute" onclick='setMouseMode(3);' />
             </div>
         </div>
     </div>
