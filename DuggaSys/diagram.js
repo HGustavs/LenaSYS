@@ -27,7 +27,7 @@ const textheight = 18;
 const strokewidth = 1.5;
 const baseline = 10;
 const avgcharwidth = 6;
-const colors = ["white", "Gold", "pink", "yellow", "CornflowerBlue"];
+const colors = ["white", "Gold", "#ffccdc", "yellow", "CornflowerBlue"];
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -58,6 +58,7 @@ const mouseModes = {
     ENTITY: 1,
     RELATION: 2,
     ATTRIBUTE: 3,
+    LINE: 4
 };
 var mouseMode = mouseModes.SELECTION;
 
@@ -237,18 +238,21 @@ function mup(event)
             {
                 updateSelection(null, undefined, undefined);
             }
+            else if (mouseMode == 4) {
+                context = [];
+            }
             else
             {
                 var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
                 var entityType = getEntityType()
 
                 data.push({
-                    name: 'Entity',
-                    x: mp.x - (entityType.width * 0.5),
-                    y: mp.y - (entityType.height * 0.5),
-                    width: entityType.width,
-                    height: entityType.height,
-                    kind: entityType.kind,
+                    name: entityType.name,
+                    x: mp.x - (entityType.data.width * 0.5),
+                    y: mp.y - (entityType.data.height * 0.5),
+                    width: entityType.data.width,
+                    height: entityType.data.height,
+                    kind: entityType.data.kind,
                     id: makeRandomID()
                 });
                 showdata()
@@ -260,7 +264,9 @@ function mup(event)
     else
     {
         // If one or more objects are selected
-        if (context.length > 0)
+
+        if (context.length > 0 && mouseMode != 4) 
+
         {
             // Move all selected items
             context.forEach(item =>
@@ -268,11 +274,21 @@ function mup(event)
                 eventElementId = event.target.parentElement.parentElement.id;
                 setPos(item.id, deltaX, deltaY);
             });
+        } else if(context.length > 1 && mouseMode == 4) {
+            lines.push({ 
+                id: makeRandomID(), 
+                fromID: context[0].id, 
+                toID: context[1].id, 
+                kind: "Normal" 
+            });
+            context = [];
+            redrawArrows();
         }
     }
 
     // Update all element positions on the screen
     updatepos(0, 0);
+    drawRulerBars();
 
     // Restore mouse state to normal
     mb = 0;
@@ -315,6 +331,9 @@ function mmoving(event)
             deltaExceeded = true;
         }
     }
+
+    //Sets the rules to current position on screen.
+    setRulerPosition(event.clientX, event.clientY);
 }
 
 function fab_action()
@@ -340,11 +359,17 @@ function setMouseMode(mode = 0)
 
 function getEntityType()
 {
+    var entityObj = [
+        {data: defaults.defaultERtentity, name: "Entity"},
+        {data: defaults.defaultERrelation, name: "Relation"},
+        {data: defaults.defaultERattr, name: "Attribute"}
+    ]
+  
     switch (mouseMode)
     {
-        case 1: return defaults.defaultERtentity;
-        case 2: return defaults.defaultERrelation;
-        case 3: return defaults.defaultERattr;
+        case 1: return entityObj[0];
+        case 2: return entityObj[1];
+        case 3: return entityObj[2];
     }
 }
 
@@ -375,6 +400,9 @@ function zoomin()
 
     // Update scroll position - missing code for determining that center of screen should remain at nevw zoom factor
     showdata();
+
+    // Draw new rules to match the new zoomfact
+    drawRulerBars();
 }
 
 function zoomout()
@@ -396,6 +424,9 @@ function zoomout()
 
     // Update scroll position - missing code for determining that center of screen should remain at new zoom factor
     showdata();
+
+    // Draw new rules to match the new zoomfact
+    drawRulerBars();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -470,9 +501,11 @@ function showdata()
         str += `<svg width='${boxw}' height='${boxh}' >`;
         if (element.kind == "EREntity")
         {
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-                   stroke-width='${linew}' stroke='black' fill='pink' />
-                   <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
+
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' 
+                   stroke-width='${linew}' stroke='black' fill='#ffccdc' />
+                   <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text> 
+
                    `;
 
         } else if (element.kind == "ERAttr")
@@ -486,20 +519,21 @@ function showdata()
             if (element.isMultiple == true)
             {
                 multi = `
-                    <path d="M${linew * multioffs},${hboxh}
-                    Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs}
-                    Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh}
-                    Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)}
-                    Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}"
-                    stroke='black' fill='pink' stroke-width='${linew}' />`;
+                    <path d="M${linew * multioffs},${hboxh} 
+                    Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
+                    Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
+                    Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
+                    Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
+                    stroke='black' fill='#ffccdc' stroke-width='${linew}' />`;
             }
-            str += `<path d="M${linew},${hboxh}
-                           Q${linew},${linew} ${hboxw},${linew}
-                           Q${boxw - linew},${linew} ${boxw - linew},${hboxh}
-                           Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew}
-                           Q${linew},${boxh - linew} ${linew},${hboxh}"
-                    stroke='black' fill='pink' ${dash} stroke-width='${linew}' />
-
+          
+            str += `<path d="M${linew},${hboxh} 
+                           Q${linew},${linew} ${hboxw},${linew} 
+                           Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
+                           Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
+                           Q${linew},${boxh - linew} ${linew},${hboxh}" 
+                    stroke='black' fill='#ffccdc' ${dash} stroke-width='${linew}' />
+                    
                     ${multi}
 
                     <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
@@ -509,12 +543,13 @@ function showdata()
             var weak = "";
             if (element.isWeak == true)
             {
-                weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"
-                stroke-width='${linew}' stroke='black' fill='pink'/>
+              
+                weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
+                stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                 `;
             }
-            str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"
-                   stroke-width='${linew}' stroke='black' fill='pink'/>
+            str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                   stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                    ${weak}
                    <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
                    `;
@@ -565,7 +600,9 @@ function updateSelection(ctxelement, x, y)
             context.push(ctxelement);
         } else
         {
-            context = [];
+            if(mouseMode != 4){
+                context = [];
+            }
             context.push(ctxelement);
         }
     } else if (!altPressed && !ctrlPressed)
@@ -603,7 +640,7 @@ function updatepos(deltaX, deltaY)
 
                 // TODO : This should be re-made into specifics regarding each element type. Current version is simply the "basic" beta-version.
                 // Change element colour (selected)
-                elementDiv.children[0].children[0].style.fill = "orange";
+                elementDiv.children[0].children[0].style.fill = "#ff66b3";
 
             }
             else
@@ -614,7 +651,7 @@ function updatepos(deltaX, deltaY)
 
                 // TODO : This should be re-made into specifics regarding each element type. Current version is simply the "basic" beta-version.
                 // Restore element background colour (non-selected)
-                elementDiv.children[0].children[0].style.fill = "pink";
+                elementDiv.children[0].children[0].style.fill = "#ffccdc";
 
             }
         }
@@ -892,7 +929,61 @@ function redrawArrows()
     }
     document.getElementById("svgoverlay").innerHTML = str;
 }
+//-------------------------------------------------------------------------------------------------
+// Change the position of rulerPointers
+//-------------------------------------------------------------------------------------------------
+function setRulerPosition(x, y) {
+    document.getElementById("ruler-x").style.left = x - 1 + "px";
+    document.getElementById("ruler-y").style.top = y - 125 + "px";
+}
 
+//-------------------------------------------------------------------------------------------------
+// Draws the rulers
+//-------------------------------------------------------------------------------------------------
+function drawRulerBars(){
+    //Get elements
+    svgX = document.getElementById("ruler-x-svg");
+    svgY = document.getElementById("ruler-y-svg");
+    //Settings - Ruler
+    const lineRatio = 10;
+    const fullLineRatio = 10;
+    var barY, barX = "";
+    const color = "black";
+
+    //Draw the Y-axis ruler.
+    var lineNumber = (fullLineRatio - 1);
+    for (i = 40;i <= cheight; i += lineRatio){
+        lineNumber++;
+
+        //Check if a full line should be drawn
+        if (lineNumber === fullLineRatio){
+            var cordY = screenToDiagramCoordinates(0,86 + i).y;
+            lineNumber = 0;
+            barY += "<line x1='0px' y1='"+(i)+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
+            barY += "<text x='2' y='"+(i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
+        }
+        else barY += "<line x1='25px' y1='"+i+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
+    }
+
+    svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
+
+    //Draw the X-axis ruler.
+    lineNumber = (fullLineRatio - 1);
+    for (i = 40;i <= cwidth; i += lineRatio){
+        lineNumber++;
+
+        //Check if a full line should be drawn
+        if (lineNumber === fullLineRatio) {
+            var cordX = screenToDiagramCoordinates(i, 0).x;
+            lineNumber = 0;
+            barX += "<line x1='" +i+"' y1='0' x2='" + i + "' y2='40px' stroke='" + color + "' />";
+            barX += "<text x='"+(i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
+        }
+        else barX += "<line x1='" +i+"' y1='25' x2='" +i+"' y2='40px' stroke='" + color + "' />";
+
+    }
+    svgX.innerHTML = barX;//Print the generated ruler, for X-axis
+}
 //------------------------------------=======############==========----------------------------------------
 //                                    Default data display stuff
 //------------------------------------=======############==========----------------------------------------
@@ -900,6 +991,7 @@ function redrawArrows()
 function getData()
 {
     showdata();
+    drawRulerBars();
 }
 
 function data_returned(ret)

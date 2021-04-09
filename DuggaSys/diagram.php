@@ -457,6 +457,13 @@
     <svg id="svgoverlay"  preserveAspectRatio="none">
    </svg>
 	<canvas id='canvasOverlay'></canvas>
+    <!-- Diagram rules -->
+    <div id="rulerOverlay">
+        <svg id="ruler-x-svg"></svg>
+        <svg id="ruler-y-svg"></svg>
+        <div id="ruler-x"></div>
+        <div id="ruler-y"></div>
+    </div>
     <div id="fab" onclick="fab_action();">+</div> <!-- Big (+) button -->
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
@@ -464,14 +471,15 @@
             <div>
                 <fieldset>
                     <legend>Zoom</legend>
-                    <input class="zoomButtons" type="button" value="Zoom in" onclick='zoomin();' />
-                    <input class="zoomButtons" type="button" value="Zoom out" onclick='zoomout();' />									
+                    <input class="paneButtons" type="button" value="Zoom in" onclick='zoomin();' />
+                    <input class="paneButtons" type="button" value="Zoom out" onclick='zoomout();' />									
                 </fieldset>
 
-                <input type="button" value="Mouse Selection" onclick='setMouseMode(0);' />
-                <input type="button" value="Entity" onclick='setMouseMode(1);' />
-                <input type="button" value="Relation" onclick='setMouseMode(2);' />
-                <input type="button" value="Attribute" onclick='setMouseMode(3);' />
+                <input class="paneButtons" type="button" value="Mouse Selection" onclick='setMouseMode(0);' />
+                <input class="paneButtons" type="button" value="Entity" onclick='setMouseMode(1);' />
+                <input class="paneButtons" type="button" value="Relation" onclick='setMouseMode(2);' />
+                <input class="paneButtons" type="button" value="Attribute" onclick='setMouseMode(3);' />
+                <input class="paneButtons" type="button" value="Draw Line" onclick='setMouseMode(4);' />
             </div>
         </div>
     </div>
