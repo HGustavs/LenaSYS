@@ -136,8 +136,8 @@ document.addEventListener('keydown', function (e)
 {
     if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
     if (e.key == "Alt" && altPressed !== true) altPressed = true;
+    if (e.key == "Delete" && context.length > 0)  removeElements(context);
     if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
-
 });
 
 document.addEventListener('keyup', function (e)
@@ -984,6 +984,24 @@ function drawRulerBars(){
     }
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
+
+//Function to remove elemets and lines
+function removeElements(elementArray){
+    for(var i = 0; i < elementArray.length; i++){
+        //Remove element
+        data=data.filter(function(element) {
+            return element != elementArray[i];
+        });
+        //Remove lines
+        lines= lines.filter(function(line){
+            return line.fromID != elementArray[i].id && line.toID != elementArray[i].id;
+        });
+    }
+    context = [];
+    redrawArrows();
+    showdata();
+}
+
 //------------------------------------=======############==========----------------------------------------
 //                                    Default data display stuff
 //------------------------------------=======############==========----------------------------------------
