@@ -37,6 +37,8 @@ $showall=getOP('showall');
 $contactable=getOP('contactable');
 $rating=getOP('score');
 $entryname=getOP('entryname');
+$hash=getOP('hash');
+$password=getOP('password');
 $showall="true";
 
 $param = "UNK";
@@ -210,13 +212,15 @@ if($demo){
 			$savedvariant=$newvariant;
 
 		}else if(!$isIndb){
-			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
+			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant,hash,password) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant,:hash,:password);");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursevers', $coursevers);
 			$query->bindParam(':uid', $userid);
 			$query->bindParam(':did', $duggaid);
 			$query->bindParam(':moment', $moment);
 			$query->bindParam(':variant', $newvariant);
+			$query->bindParam(':hash', $hash);
+			$query->bindParam(':password', $password);
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];

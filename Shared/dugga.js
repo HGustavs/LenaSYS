@@ -14,6 +14,8 @@ var inParams = "UNK";
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 var pressTimer;
+var password=randomPassword();
+var hash=generateHash();
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -576,18 +578,18 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 function saveDuggaResult(citstr)
 {
   
-	var pwd = randomPassword(); //Create random password for URL
-	var url = randomUrl(); //Create URL
-	var hash = generateHash(); // Generate Hash
+	//var pwd = randomPassword(); //Create random password for URL
+	//var url = randomUrl(); //Create URL
+	//var hash = generateHash(); // Generate Hash
 	
-	console.log(url);
-	console.log(pwd);
+	//console.log(url);
+	console.log(password);
 
-	var hash = generateHash();
+	//var hash = generateHash();
 	console.log("asd: " + hash)
 
-	document.getElementById('url').innerHTML = url;
-	document.getElementById('pwd').innerHTML = pwd;
+	//document.getElementById('url').innerHTML = url;
+	document.getElementById('pwd').innerHTML = password;
 	document.getElementById('hash').innerHTML = hash;
 
 	var readonly;
@@ -933,7 +935,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+password,
 				dataType: "json",
 				success: returnedDugga
 			});
