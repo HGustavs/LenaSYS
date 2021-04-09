@@ -29,15 +29,6 @@ const baseline=10;
 const avgcharwidth=6;
 const colors = ["white","Gold","pink","yellow","CornflowerBlue"];
 const multioffs=3;
-// Zoom values for offsetting the mouse cursor positioning
-const zoom1_25 = 0.36;
-const zoom1_5 = 0.555;
-const zoom2 = 0.75;
-const zoom4 = 0.9375;
-const zoom0_75 = -0.775;
-const zoom0_5 = -3;
-const zoom0_25 = -15.01;
-const zoom0_125 = -64;
 
 // Arrow drawing stuff - diagram elements and diagram lines
 var lines=[];
@@ -47,21 +38,6 @@ var elements=[];
 var context=[];
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
-
-
-// Currently hold down buttons
-var ctrlPressed = false;
-var altPressed = false;
-
-const mouseModes = {
-    SELECTION: 0,
-    ENTITY: 1,
-    RELATION: 2,
-    ATTRIBUTE: 3,
-};
-var mouseMode = mouseModes.SELECTION;
-
-
 
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
@@ -109,7 +85,7 @@ var data=[
     {name:"Name",x:170,y:50,width:90,height:45,kind:"ERAttr",id:NameID},
     {name:"Size",x:560,y:40,width:90,height:45,kind:"ERAttr",id:SizeID,isMultiple:true},
     {name:"F Name",x:120,y:-20,width:90,height:45,kind:"ERAttr",id:FNID},
-    {name:"L Name",x:230,y:-20,width:90,height:45,kind:"ERAttr",id:LNID},
+    {name:"L Name",x:230,y:-20,width:90,height:45,kind:"ERAttr",id:LNID}
 ];
 
 var lines=[
@@ -125,63 +101,6 @@ var lines=[
     {id:makeRandomID(),fromID:LoanID,toID:RefID,kind:"Normal"},
     {id:makeRandomID(),fromID:CarID,toID:RefID,kind:"Normal"},
 ];
-
-//------------------------------------=======############==========----------------------------------------
-
-//                                           Key event listeners
-//------------------------------------=======############==========----------------------------------------
-document.addEventListener('keydown', function(e){
-    if(e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
-    if(e.key == "Alt" && altPressed !== true) altPressed = true;
-});
-
-document.addEventListener('keyup', function(e){
-    if(e.key == "Control") ctrlPressed = false;
-    if(e.key == "Alt") altPressed = false;
-});
-
-//                              Coordinate-Screen Position Conversion
-//------------------------------------=======############==========----------------------------------------
-
-function screenToDiagramCoordinates(mouseX,mouseY)
-{
-    // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
-    // These are the constant values that the expression should spit out anyway. If you add more zoom levels please do not come to us.
-    // We're tired.
-
-    // We found out that the relation between 0.125 -> 4 and 0.36->-64 looks like an X^2 equation.
-    var zoomX = 0;
-
-    // ZOOM IN
-    if (zoomfact == 1.25) zoomX = zoom1_25;
-    if (zoomfact == 1.5) zoomX = zoom1_5;
-    if (zoomfact == 2) zoomX = zoom2;
-    if (zoomfact == 4) zoomX = zoom4;
-
-    // ZOOM OUT
-    if (zoomfact == 0.75) zoomX = zoom0_75;
-    if (zoomfact == 0.5) zoomX = zoom0_5;
-    if (zoomfact == 0.25) zoomX = zoom0_25;
-    if (zoomfact == 0.125) zoomX = zoom0_125;
-
-    return {
-        x: Math.round(
-            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 // the 2 makes mouse hover over container
-        ),
-        y: Math.round(
-            ((mouseY - 86) / zoomfact - scrolly) + zoomX * scrolly
-        ),    
-    };
-}
-
-function diagramToScreenPosition(coordX,coordY)
-{
-    return {
-        x: Math.round((coordX+scrollx) / zoomfact + 0),
-        y: Math.round((coordY+scrolly) / zoomfact + 86),    
-    };
-}
-
 
 //------------------------------------=======############==========----------------------------------------
 //                                           Mouse events
@@ -203,20 +122,14 @@ function ddown(event)
 {
 		startX=event.clientX;
 		startY=event.clientY;
-        mb=8;
-
-        var element = data[findIndex(data,event.currentTarget.id)];
-        if (element != null && !context.includes(element) || !ctrlPressed){
-            updateSelection(element,null,null);
-        }
-
-        
-        
+		mb=8;
+	
+		updateSelection(data[findIndex(data,event.currentTarget.id)],null,null);
 }
 
 function mup(event)
 {
-    deltaX = startX - event.clientX;
+  deltaX = startX - event.clientX;
     deltaY = startY - event.clientY;
 
     // Event is in container area
@@ -224,25 +137,8 @@ function mup(event)
     {
         // User only clicked, clear selection
         if (!deltaExceeded)
-        {   
-            if(mouseMode == 0){
-                updateSelection(null, undefined, undefined);
-            } 
-            else{
-                var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
-                var entityType = getEntityType()
-                
-                data.push({
-                    name:'Entity',
-                    x: mp.x - (entityType.width * 0.5),
-                    y: mp.y - (entityType.height * 0.5),
-                    width: entityType.width,
-                    height: entityType.height,
-                    kind: entityType.kind,
-                    id: makeRandomID()
-                });
-                showdata()
-            }
+        {
+            updateSelection(null, undefined, undefined);
         }
     }
 
@@ -284,7 +180,7 @@ function mmoving(event)
         updatepos(null, null);
 
         // Remember that mouse has moved out of starting bounds
-        if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
+        if (deltaX >= maxDeltaBeforeExceeded || deltaY >= maxDeltaBeforeExceeded)
         {
             deltaExceeded = true;
         }
@@ -300,7 +196,7 @@ function mmoving(event)
         updatepos(deltaX, deltaY);
 
         // Remember that mouse has moved out of starting bounds
-        if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
+        if (deltaX >= maxDeltaBeforeExceeded || deltaY >= maxDeltaBeforeExceeded)
         {
             deltaExceeded = true;
         }
@@ -316,24 +212,6 @@ function fab_action()
 				document.getElementById('optmarker').innerHTML="&#x1f4a9;Options";
 				document.getElementById("options-pane").className="show-options-pane";
     }    
-}
-
-//------------------------------------=======############==========----------------------------------------
-//                                           Mouse Modes
-//------------------------------------=======############==========----------------------------------------
-function setMouseMode(mode = 0)
-{
-    mouseMode = mode;
-}
-
-function getEntityType()
-{
-    switch(mouseMode)
-    {
-        case 1: return defaults.defaultERtentity;
-        case 2: return defaults.defaultERrelation;
-        case 3: return defaults.defaultERattr;
-    }
 }
 
 //------------------------------------=======############==========----------------------------------------
@@ -507,47 +385,53 @@ function showdata() {
 	
 }
 
-
 //-------------------------------------------------------------------------------------------------
 // updateselection - Update context according to selection parameters or clicked element
 //-------------------------------------------------------------------------------------------------
 
 function updateSelection(ctxelement,x,y)
 {
-		// If CTRL is pressed and an element is selected
-		if(ctrlPressed && ctxelement != null)
-		{
-				// The element is not already selected
-				if (!context.includes(ctxelement))
-				{
-				    context.push(ctxelement);
-				}
-                // The element is already selected
-		}else if (altPressed && ctxelement != null)
-		{
-            if (context.includes(ctxelement))
-            {
-                context = context.filter(function (element) {
-                    return element !== ctxelement;
-                });
-            }
+    // If we pass a context object e.g. we clicked in object
+    if (ctxelement != null)
+    {
+        // Element not already in context
+        if (!context.includes(ctxelement))
+        {
+            context.push(ctxelement);
         }
-		// If CTRL is not pressed and a element has been selected.
-		else if (ctxelement != null)
-		{
-		    // Element not already in context
-		    if (!context.includes(ctxelement) && context.length < 1)
-		    {
-			    context.push(ctxelement);
-		    }else {
-                context = [];
-                context.push(ctxelement);
-            }
-		}else if(!altPressed && !ctrlPressed){
-            context = [];
-        }
-}
+    }
+    else if (typeof x != "undefined" && typeof y != "undefined")
+    {
+        // Or if x and y are both defined
+    }
+    else
+    {
+        // Clear elements from selection
+        context = [];
+    }
+    document.addEventListener('keydown', event=>{
+        if(event.keyCode == 46){
+            for (var i = 0; i < data.length; i++) {
+                for (var j = 0; j < data.length; j++) {
+                    if(context[i].id == data[j].id){
+                        data.splice(j, 1);
+                        showdata();
+                    }
+                    if(context[i].id == lines[j].toID || context[i].id == lines[j].fromID){
+                        lines.splice(j, 1);
+                        redrawArrows();
+                    }
 
+                    else if (typeof toID != "undefined" && typeof fromID != "undefined")
+                    {
+                        // Or if x and y are both defined
+                    }
+                }
+            }
+        }
+    
+    });  
+}
 
 //-------------------------------------------------------------------------------------------------
 // updatepos - Update positions of all elements based on the zoom level and view space coordinate
@@ -555,8 +439,6 @@ function updateSelection(ctxelement,x,y)
 
 function updatepos(deltaX,deltaY)
 {
-
-    
 for (var i = 0; i < data.length; i++)
     {
         // Element data from the array
@@ -578,7 +460,6 @@ for (var i = 0; i < data.length; i++)
                 // TODO : This should be re-made into specifics regarding each element type. Current version is simply the "basic" beta-version.
                 // Change element colour (selected)
                 elementDiv.children[0].children[0].style.fill = "orange";
-
             }
             else
             {
@@ -589,7 +470,6 @@ for (var i = 0; i < data.length; i++)
                 // TODO : This should be re-made into specifics regarding each element type. Current version is simply the "basic" beta-version.
                 // Restore element background colour (non-selected)
                 elementDiv.children[0].children[0].style.fill = "pink";
-
             }
         }
     }
@@ -697,8 +577,8 @@ function redrawArrows()
         var domelementpos=domelement.getBoundingClientRect();
         element.x1=domelementpos.left;
         element.y1=domelementpos.top;
-        element.x2=domelementpos.left+domelementpos.width-2;
-        element.y2=domelementpos.top+domelementpos.height-2;
+        element.x2=domelementpos.left+domelementpos.width;
+        element.y2=domelementpos.top+domelementpos.height;
         element.cx=element.x1+(domelementpos.width*0.5);
         element.cy=element.y1+(domelementpos.height*0.5);
 		}
@@ -802,34 +682,12 @@ function redrawArrows()
             var len=Math.sqrt((dx*dx)+(dy*dy));
             dy=dy/len;
             dx=dx/len;
-            var cstmOffSet = 1.4;
-            str+=`<line x1='${fx+(dx*strokewidth*1.2)-cstmOffSet}' y1='${fy+(dy*strokewidth*1.2)-cstmOffSet}' x2='${tx+(dx*strokewidth*1.8)+cstmOffSet}' y2='${ty+(dy*strokewidth*1.8)+cstmOffSet}' stroke='#f44' stroke-width='${strokewidth}' />`;
-            str+=`<line x1='${fx-(dx*strokewidth*1.8)-cstmOffSet}' y1='${fy-(dy*strokewidth*1.8)-cstmOffSet}' x2='${tx-(dx*strokewidth*1.2)+cstmOffSet}' y2='${ty-(dy*strokewidth*1.2)+cstmOffSet}' stroke='#f44' stroke-width='${strokewidth}' />`;
+            str+=`<line x1='${fx+(dx*strokewidth*1.5)}' y1='${fy+(dy*strokewidth*1.5)}' x2='${tx+(dx*strokewidth*1.5)}' y2='${ty+(dy*strokewidth*1.5)}' stroke='#f44' stroke-width='${strokewidth}' />`;
+            str+=`<line x1='${fx-(dx*strokewidth*1.5)}' y1='${fy-(dy*strokewidth*1.5)}' x2='${tx-(dx*strokewidth*1.5)}' y2='${ty-(dy*strokewidth*1.5)}' stroke='#f44' stroke-width='${strokewidth}' />`;
         }
          
     }
-    if(context.length!=0){
-        var lowX = context[0].x1;
-        var highX = context[0].x2;
-        var x1;
-        var x2;
-        var lowY = context[0].y1;
-        var highY = context[0].y2;
-        var y1;
-        var y2;
-        for (var i=0; i < context.length; i++) {
-            x1 = context[i].x1;
-            x2 = context[i].x2;
-            y1 = context[i].y1;
-            y2 = context[i].y2;
-            if (x1 < lowX) lowX = x1;
-            if (x2 > highX) highX = x2;
-            if (y1 < lowY) lowY = y1;
-            if (y2 > highY) highY = y2;
-        }
-    
-        str+=`<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(0,0,0)" />`;
-    }
+
     document.getElementById("svgoverlay").innerHTML=str;
 }
 
