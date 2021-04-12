@@ -44,12 +44,149 @@
 	$visibility=false;
 	$readaccess=false;
 	$checklogin=false;
+	
+	$variants=array();
+	$duggaid=getOPG('did');
+	$moment=getOPG('moment');
+	$courseid=getOPG('courseid');
 
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 	}else{
 		$userid="UNK";
 	}
+
+
+	// Get type of dugga
+	$query = $pdo->prepare("SELECT * FROM quiz WHERE id=:duggaid;");
+	$query->bindParam(':duggaid', $duggaid);
+	$result=$query->execute();
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"quizfile Querying Error!");
+	foreach($query->fetchAll() as $row) {
+		$duggainfo=$row;
+		$quizfile = $row['quizFile'];
+	}
+
+	// Retrieve all dugga variants
+	$firstvariant=-1;
+	$query = $pdo->prepare("SELECT vid,param,disabled FROM variant WHERE quizID=:duggaid;");
+	$query->bindParam(':duggaid', $duggaid);
+	$result=$query->execute();
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"variant Querying Error!");
+	$i=0;
+	foreach($query->fetchAll() as $row) {
+		if($row['disabled']==0) $firstvariant=$i;
+		$variants[$i]=array(
+			'vid' => $row['vid'],
+			'param' => $row['param'],
+			'disabled' => $row['disabled']
+		);
+		$i++;
+		$insertparam = true;
+	}
+	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':coursevers', $coursevers);
+	$query->bindParam(':uid', $userid);
+	$query->bindParam(':moment', $moment);
+	$result = $query->execute();
+
+	$savedvariant="UNK";
+	$newvariant="UNK";
+	$savedanswer="UNK";
+	$isIndb=false;
+
+	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+		$savedvariant=$row['variant'];
+		$savedanswer=$row['useranswer'];
+		$score = $row['score'];
+		$isIndb=true;
+		if ($row['feedback'] != null){
+				$duggafeedback = $row['feedback'];
+		} else {
+				$duggafeedback = "UNK";
+		}
+		$grade = $row['grade'];
+		$submitted = $row['submitted'];
+		$marked = $row['marked'];
+	}
+	
+	// If selected variant is not found - pick another from working list.
+	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
+	$foundvar=-1;
+	foreach ($variants as $key => $value){
+			if($savedvariant==$value['vid']&&$value['disabled']==0) $foundvar=$key;
+	}
+	if($foundvar==-1){
+			$savedvariant="UNK";
+	}
+
+	// If there are many variants, randomize
+	if($savedvariant==""||$savedvariant=="UNK"){
+		// Randomize at most 8 times
+		$cnt=0;
+		do{
+				$randomno=rand(0,sizeof($variants)-1);
+				
+				// If there is a variant choose one at random
+				if(sizeof($variants)>0){
+						if($variants[$randomno]['disabled']==0){
+								$newvariant=$variants[$randomno]['vid'];						
+						}
+				} 
+				$cnt++;
+		}while($cnt<8&&$newvariant=="UNK");
+		
+		// if none has been chosen and there is a first one take that one.
+		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
+	}else{
+		// There is a variant already -- do nothing!	
+	}
+	
+	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
+	if ($newvariant=="UNK"){
+
+	} else if ($newvariant!="UNK") {
+		
+		if($isIndb){
+			$query = $pdo->prepare("UPDATE userAnswer SET variant=:variant WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':coursevers', $coursevers);
+			$query->bindParam(':uid', $userid);
+			$query->bindParam(':moment', $moment);
+			$query->bindParam(':variant', $newvariant);
+			if(!$query->execute() || $query->rowCount()==0) {
+				$error=$query->errorInfo();
+				$debug="Error updating variant (row ".__LINE__.") ".$query->rowCount()." row(s) were updated. Error code: ".$error[2];
+			}
+			$savedvariant=$newvariant;
+
+		}else if(!$isIndb){
+			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':coursevers', $coursevers);
+			$query->bindParam(':uid', $userid);
+			$query->bindParam(':did', $duggaid);
+			$query->bindParam(':moment', $moment);
+			$query->bindParam(':variant', $newvariant);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
+			}
+						
+			$savedvariant=$newvariant;
+		}
+	}
+	// Retrieve variant
+	if($insertparam == false){
+			$param="NONE!";
+	}
+	foreach ($variants as $variant) {
+		if($variant["vid"] == $savedvariant){
+				$param=html_entity_decode($variant['param']);
+		}
+	}
+
 
 	// Gets username based on uid, USED FOR LOGGING
 	$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
@@ -125,7 +262,8 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		}
 ?>
 <script type="text/javascript">
-	var dugga = '<?php echo $duggatitle; ?>';
+	var variant = '<?php echo $savedvariant; ?>';
+	var dugga = '<?php echo $duggaid; ?>';
 	var deadline = '<?php echo $deadline; ?>';
 
 	var previusAllottedAssignmentVariants = JSON.parse(localStorage.getItem("allottedAssignmentVariants"));
@@ -133,7 +271,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 
 	var duggaInfo = {
 		"Dugga": dugga,
-		"Variant": "1",
+		"Variant": variant,
 		"Deadline": deadline
 	};
 	var duggor = {
@@ -147,7 +285,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	var allottedAssignmentVariants = {
 		"Courses": courses
 	};
-	localStorage.setItem("allottedAssignment", JSON.stringify(allottedAssignmentVariants));
+	localStorage.setItem("allottedAssignments", JSON.stringify(allottedAssignmentVariants));
 </script>
 	<?php
 		$noup="SECTION";
@@ -259,7 +397,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
     		<div id='emailPopup' style="display:block">
     			<div class='inputwrapper'><span>Ange din email:</span><input class='textinput' type='text' id='email' placeholder='Email' value=''/></div>
 				<div class="button-row">
-					<input type='button' class='submit-button'  onclick="copyHashtoCB();" value='Copy Hash'>
 					<input type='button' class='submit-button'  onclick="sendReceiptEmail();" value='Send Receipt'>
 					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
 				</div>
@@ -279,11 +416,9 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	<?php 
 	if(isSuperUser($userid)){
     	echo '<script type="text/javascript">',
-    	'displayDownloadIcon();','noUploadForTeacher();',
+    	'displayDownloadIcon();',
     	'</script>';
 	}?>
-
-
 
   <!--<div id='previewpopover' class='previewPopover' style='display:none;'>-->
   <div id='previewpopover' class='loginBoxContainer' style='display:none; align-items:stretch;'>

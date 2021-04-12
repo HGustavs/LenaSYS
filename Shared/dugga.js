@@ -958,6 +958,15 @@ function AJAXService(opt,apara,kind)
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd,
 				dataType: "json",
 				success: returnedDugga
+			})
+			.always(function() {
+				$.ajax({
+					url: "showDugga.php",
+					type: "POST",
+					data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd,
+					dataType: "json",
+					success: returnedDugga
+				})
 			});
 	}else if(kind=="RESULT"){
 			$.ajax({

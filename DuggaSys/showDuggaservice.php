@@ -473,7 +473,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			
 			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
 			if(!file_exists($fedbname)) {
-					$feedback="UNK";
+					$feedback="UNKasd";
 			} else {
 				if($today > $duggainfo['qrelease']  || is_null($duggainfo['qrelease'])){
 					$feedback=file_get_contents($fedbname);				
