@@ -164,6 +164,7 @@ document.addEventListener('keydown', function (e)
         } else if (movingContainer){
             scrollx = sscrollx;
             scrolly = sscrolly;
+            pointerState = pointerStates.DEFAULT;
             showdata();
         }
     }
