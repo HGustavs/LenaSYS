@@ -142,41 +142,9 @@
 	}else{
 		// There is a variant already -- do nothing!	
 	}
-	
-	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
-	if ($newvariant=="UNK"){
 
-	} else if ($newvariant!="UNK") {
-		
-		if($isIndb){
-			$query = $pdo->prepare("UPDATE userAnswer SET variant=:variant WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-			$query->bindParam(':cid', $courseid);
-			$query->bindParam(':coursevers', $coursevers);
-			$query->bindParam(':uid', $userid);
-			$query->bindParam(':moment', $moment);
-			$query->bindParam(':variant', $newvariant);
-			if(!$query->execute() || $query->rowCount()==0) {
-				$error=$query->errorInfo();
-				$debug="Error updating variant (row ".__LINE__.") ".$query->rowCount()." row(s) were updated. Error code: ".$error[2];
-			}
-			$savedvariant=$newvariant;
+	$savedvariant=$newvariant;
 
-		}else if(!$isIndb){
-			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
-			$query->bindParam(':cid', $courseid);
-			$query->bindParam(':coursevers', $coursevers);
-			$query->bindParam(':uid', $userid);
-			$query->bindParam(':did', $duggaid);
-			$query->bindParam(':moment', $moment);
-			$query->bindParam(':variant', $newvariant);
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
-			}
-						
-			$savedvariant=$newvariant;
-		}
-	}
 	// Retrieve variant
 	if($insertparam == false){
 			$param="NONE!";
@@ -227,14 +195,15 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
 		}else if($readaccess){
       // If logged in and has access, get all private(requires login) and public quizes.
-			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND (visible=1 OR visible=2) AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz,variant WHERE variant.quizID=:duggaid AND listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND (visible=1 OR visible=2) AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
 		} else {
-      // If not logged in, get only the public quizes.
-      $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND visible=1 AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-    }
+		// If not logged in, get only the public quizes.
+			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND visible=1 AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+		}
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 		$query->bindParam(':quizid', $quizid);
+		$query->bindParam(':duggaid', $duggaid);
 		$result = $query->execute();
 
 		if($row = $query->fetch(PDO::FETCH_ASSOC)){
