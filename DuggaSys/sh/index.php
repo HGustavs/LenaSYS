@@ -6,18 +6,14 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../Shared/basic.php";
 include_once "../../Shared/sessions.php";
 
+//Gets the parameter from the URL. If the parameter is not availble then return UNK
 $course = getOPG("c");
 $assignment = getOPG("a");
 
+// Connect to database and start session
 pdoConnect();
 session_start();
 
-/*
-/DuggaSys/showdoc.php?cid=4&coursevers=82452&fname=minimikrav_m1a.md"
-
-SELECT filename FROM filelink WHERE filename LIKE '%$assignment%';
-SELECT cid, coursename, activeversion, coursecode FROM course WHERE '%course%' LIKE cid OR coursename OR activeversion OR coursecode;
-*/
 
 
 function courseQuery($course){
@@ -40,16 +36,24 @@ function courseQuery($course){
 	return $array;
 }
 
-//Not working for now until other group shortens assignment url.
-function assignmentQuery($assignment){
-	global $pdo;
-	$a = '"%' . $assignment . '%"';
-	$sql = "SELECT filename, cid FROM filelink WHERE filename LIKE " . $a;
-	$array = array();
+echo "|".$course."|".$assignment."|";
 
-	foreach ($pdo->query($sql) as $row) {
-		$array['filename'] = $row['filename'];
-		$array['cid'] = $row['cid'];
+if($assignment != "UNK"){
+	// Check if it's an URL shorthand for assignments
+	if($course == "UNK"){
+		foreach($pdo->query( 'SELECT * FROM passwordURL;' ) as $row){
+			if($assignment == $row["shortURL"]){
+				header("Location: " + $row['URL']);
+				}
+		}
+	}elseif(($course == "Databaskonstruktion" || $course == "dbk")){
+		if($assignment=="a1"){
+			header("Location: https://dugga.iit.his.se/DuggaSys/showdoc.php?cid=4&coursevers=82452&fname=minimikrav_m1a.md");
+			exit();		
+		}else{
+			header("Location: https://dugga.iit.his.se/DuggaSys/sectioned.php?courseid=4&coursevers=82452");
+			exit();		
+		}
 	}
 	return $array;
 }
@@ -74,3 +78,4 @@ exit();
 
 $pdo = null;
 ?>
+
