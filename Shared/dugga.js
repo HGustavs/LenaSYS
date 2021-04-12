@@ -1671,7 +1671,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 
 		document.getElementById(cfield+"Prev").innerHTML=tab;
 	}
-}
+
 
 function makeForm(cfield, ctype){
 	if (inParams !== "UNK") {
