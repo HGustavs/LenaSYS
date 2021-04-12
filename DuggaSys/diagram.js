@@ -166,7 +166,20 @@ document.addEventListener("keypress", function (e)
 {
     if (e.key == "b") setMouseMode(mouseModes.BOX_SELECTION);
     if (e.key == "m") setMouseMode(mouseModes.POINTER);
-    if (e.key == "e") setMouseMode(2); setElementPlacementType(0);
+    if (e.key == "d") setMouseMode(mouseModes.EDGE_CREATION);
+
+    if (e.key == "e"){
+        setMouseMode(2); 
+        setElementPlacementType(0);
+    }
+    if (e.key == "r"){
+        setMouseMode(2); 
+        setElementPlacementType(1);
+    }
+    if (e.key == "a"){
+        setMouseMode(2); 
+        setElementPlacementType(2);
+    }
 });
 //------------------------------------=======############==========----------------------------------------
 //                              Coordinate-Screen Position Conversion
