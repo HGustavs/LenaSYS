@@ -488,6 +488,9 @@
                 <input class="paneButtons" id="cursorModeEdgeCreation" type="button" value="Edge Creation" onclick='setMouseMode(3);' /><br>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
             </fieldset>
+            <fieldset id='propertyFieldset'>
+                
+            </fieldset>
         </div>
     </div>
     </div>
