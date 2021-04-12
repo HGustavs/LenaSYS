@@ -107,7 +107,7 @@
 				<div class='flexwrapper'>
 					<span>CID:</span>
 					<div class="tooltipDugga"><span id="tooltipCID" style="display: none;" class="tooltipDuggatext">  </span></div>
-					<input placeholder="91001" class='textinput' id='addCid'>
+					<input placeholder="91001" class='textinput' id='addCid' onchange="tooltipCID()" onkeyup="tooltipCID()" />
 				</div>
 				<div class='flexwrapper'>
 					<span>Ny:</span>

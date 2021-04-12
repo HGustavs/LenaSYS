@@ -405,6 +405,11 @@ function tooltipEmail()
 	}
 }
 
+//---------------------------------------------------------------------------------------------------
+// validateTerm(term)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+
 function validateTerm(term)
 {
 	if(term.match(/^(HT-|VT-)\d{2}$/gm) == null ) return 'The term must be in format "VT-10" '; //must follow "HT/VT-XX" format
@@ -425,6 +430,33 @@ function tooltipTerm()
 	}
 }
 
+//---------------------------------------------------------------------------------------------------
+// validateCIDcid)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+
+function validateCID(cid)
+{
+	const length = cid.length;
+	if(length > 5)	return 'CID is too long\nMaximum FIVE characters';	// Too long
+	if(cid.match(/^\d{1,5}$/gm) == null ) return 'The CID can not contain any letters'; // checks if there are non numerical
+
+	return null;
+}
+function tooltipCID()
+{
+	var error = validateCID(document.getElementById('addCid').value);
+	var cidInputBox = document.getElementById('addCid');
+
+	if(error && document.getElementById('addCid').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipCID').innerHTML = error;
+		$('#tooltipCID').fadeIn();
+		cidInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipCID').fadeOut();
+		cidInputBox.style.backgroundColor = '#fff';
+	}
+}
 
 var inputVerified;
 
