@@ -994,9 +994,50 @@ function updatepos(deltaX, deltaY)
     // Update svg overlay -- place everyhing to draw OVER elements here
     str = "";
     str = boxSelect_Draw(str);
-    document.getElementById("svgoverlay").innerHTML=str;
+    str = drawSelectionBox(str);
+    document.getElementById("svgoverlay").innerHTML = str;
+
 }
 
+function drawSelectionBox(str)
+{
+    if (context.length != 0) {
+        var lowX = context[0].x1;
+        var highX = context[0].x2;
+        var x1;
+        var x2;
+        var lowY = context[0].y1;
+        var highY = context[0].y2;
+        var y1;
+        var y2;
+        for (var i = 0; i < context.length; i++) {
+            x1 = context[i].x1;
+            x2 = context[i].x2;
+            y1 = context[i].y1;
+            y2 = context[i].y2;
+            if (x1 < lowX) lowX = x1;
+            if (x2 > highX) highX = x2;
+            if (y1 < lowY) lowY = y1;
+            if (y2 > highY) highY = y2;
+        }
+
+        //If there only is one entity is selected
+        if (context.length == 1) {
+            // Add nodes to the marked selection
+            const nodeDiameter = 10;
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX - 10}' y='${lowY - 10}'/>`; //Top-Left
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY - 10}'/>`; //Top-Right
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX - 10}' y='${highY}'/>`; //Bottom-Left
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`; //Bottom-Right
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX - 10}' y='${lowY + ((highY - lowY) / 2) - 5}'/>`; //Middle-Left
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY - lowY) / 2) - 5}'/>`; //Middle-Right
+        }
+
+        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
+    }
+
+    return str;
+}
 function exportElementDataToCSS()
 {
     // Update positions of all elements based on the zoom level and view space coordinate
@@ -1279,43 +1320,7 @@ function redrawArrows(str)
         }
 
     }
-    if (context.length != 0)
-    {
-        var lowX = context[0].x1;
-        var highX = context[0].x2;
-        var x1;
-        var x2;
-        var lowY = context[0].y1;
-        var highY = context[0].y2;
-        var y1;
-        var y2;
-        for (var i = 0; i < context.length; i++)
-        {
-            x1 = context[i].x1;
-            x2 = context[i].x2;
-            y1 = context[i].y1;
-            y2 = context[i].y2;
-            if (x1 < lowX) lowX = x1;
-            if (x2 > highX) highX = x2;
-            if (y1 < lowY) lowY = y1;
-            if (y2 > highY) highY = y2;
-        }
-
-        //If there only is one entity is selected
-        if(context.length == 1) {
-            // Add nodes to the marked selection
-            const nodeDiameter = 10;
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY-10}'/>`; //Top-Left
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY-10}'/>`; //Top-Right
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${highY}'/>`; //Bottom-Left
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`; //Bottom-Right
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Left
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Right
-        }
-
-        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
-    }
-    
+  
     return str;
 }
 //-------------------------------------------------------------------------------------------------
