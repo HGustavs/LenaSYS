@@ -1,6 +1,6 @@
 <?php
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/coursesyspw.php');
+include_once("../../coursesyspw.php");
 
 
 
