@@ -997,7 +997,6 @@ function updatepos(deltaX, deltaY)
     if (context.length > 0) str += getMarker();
     if (context.length === 1) setNodes(context[0]);
     document.getElementById("svgoverlay").innerHTML=str;
-
 }
 
 function exportElementDataToCSS()
@@ -1318,7 +1317,9 @@ function getMarker(){
         str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`; //Bottom-Right
         str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Left
         str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Right
-
+        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX + ((highX-lowX)/2) - 5}' y='${lowY-10}'/>`; //Middle-Top
+        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX + ((highX-lowX)/2) - 5}' y='${highY}'/>`; //Middle-Bot
+        
         return str;
 }
 function setNodes(element) {
