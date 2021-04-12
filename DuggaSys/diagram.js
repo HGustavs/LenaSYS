@@ -152,6 +152,7 @@ document.addEventListener('keydown', function (e)
     if (e.key == "Alt" && altPressed !== true) altPressed = true;
     if (e.key == "Delete" && context.length > 0)  removeElements(context);
     if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
+
 });
 
 document.addEventListener('keyup', function (e)
@@ -161,6 +162,12 @@ document.addEventListener('keyup', function (e)
     if (e.key == "Meta") ctrlPressed = false;
 });
 
+document.addEventListener("keypress", function (e)
+{
+    if (e.key == "b") setMouseMode(mouseModes.BOX_SELECTION);
+    if (e.key == "m") setMouseMode(mouseModes.POINTER);
+    if (e.key == "e") setMouseMode(2); setElementPlacementType(0);
+});
 //------------------------------------=======############==========----------------------------------------
 //                              Coordinate-Screen Position Conversion
 //------------------------------------=======############==========----------------------------------------
