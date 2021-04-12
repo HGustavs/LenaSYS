@@ -152,6 +152,7 @@ document.addEventListener('keydown', function (e)
     if (e.key == "Alt" && altPressed !== true) altPressed = true;
     if (e.key == "Delete" && context.length > 0)  removeElements(context);
     if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
+    if (e.key == "Backspace" && context.length > 0) removeElements(context);
 });
 
 document.addEventListener('keyup', function (e)
