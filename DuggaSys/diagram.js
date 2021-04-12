@@ -124,7 +124,7 @@ var data = [
     { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, isWeak: true },
     { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, isComputed: true },
     { name: "Name", x: 170, y: 50, width: 90, height: 45, kind: "ERAttr", id: NameID },
-    { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, isMultiple: true },
+    { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, isProperty: "multiple" },
     { name: "F Name", x: 120, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
     { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
 ];
@@ -883,7 +883,7 @@ function showdata()
                 dash = "stroke-dasharray='4 4'";
             }
             var multi = "";
-            if (element.isMultiple == true)
+            if (element.isProperty == "multiple")
             {
                 multi = `
                     <path d="M${linew * multioffs},${hboxh} 
@@ -1025,6 +1025,16 @@ function saveProperties()
     updatepos(0,0);
 }
 
+function changeProperty()
+{
+var property = document.getElementById("propertySelect");
+var value = property.value;
+var element = context[0];
+element.isProperty = value;
+showdata();
+updatepos(0,0);
+}
+
 function generateContextProperties()
 {
     var propSet = document.getElementById("propertyFieldset");
@@ -1035,19 +1045,30 @@ function generateContextProperties()
     if (context.length == 1)
     {
         var element = context[0];
-        
+        var state=["none","multiple","key","computed"];
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
         for (const property in element) {
             switch (property.toLowerCase()) {
                 case "name":
                     str += `<input id="elementProperty_${property}" type="text" value="${element[property]}"> `;
+                     
                     break;
             
                 default:
                     break;
             }
         }
-        str+=`<br><br><input type="submit" value="Save" onclick="saveProperties()">`;
+        console.log(element);
+        if(element.kind=="ERAttr"){
+
+        
+        str += '<select id="propertySelect">';
+        for (i = 0; i < state.length; i++) {
+            str += '<option value='+state[i]+'>'+ state[i] +'</option>';
+        }
+        str += '</select>';
+    }
+        str+=`<br><br><input type="submit" value="Save" onclick="saveProperties(); changeProperty()">`;
 
     }
     else if (context.length > 1)
