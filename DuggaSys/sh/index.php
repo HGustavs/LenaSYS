@@ -17,7 +17,14 @@ session_start();
 echo "|".$url."|".$assignment."|";
 
 if($assignment != "UNK"){
-	if(($url == "Databaskonstruktion" || $url == "dbk")){
+	// Check if it's an URL shorthand for assignments
+	if($url == "UNK"){
+		foreach($pdo->query( 'SELECT * FROM passwordURL;' ) as $row){
+			if($assignment == $row["shortURL"]){
+				header("Location: " + $row['URL']);
+				}
+		}
+	}elseif(($url == "Databaskonstruktion" || $url == "dbk")){
 		if($assignment=="a1"){
 			header("Location: https://dugga.iit.his.se/DuggaSys/showdoc.php?cid=4&coursevers=82452&fname=minimikrav_m1a.md");
 			exit();		
