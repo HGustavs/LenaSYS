@@ -82,6 +82,7 @@ const pointerStates = {
 var pointerState = pointerStates.DEFAULT;
 
 var movingObject = false;
+var movingContainer = false;
 
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
@@ -159,6 +160,10 @@ document.addEventListener('keydown', function (e)
         escPressed = true;
         if (movingObject){
             context = [];
+            showdata();
+        } else if (movingContainer){
+            scrollx = sscrollx;
+            scrolly = sscrolly;
             showdata();
         }
     }
@@ -331,6 +336,8 @@ function mup(event)
         case pointerStates.CLICKED_CONTAINER:
             if (event.target.id == "container")
             {
+                movingContainer = false;
+
                 if (!deltaExceeded)
                 {
                     if (mouseMode == mouseModes.EDGE_CREATION)
@@ -396,6 +403,7 @@ function mmoving(event)
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
             // Compute new scroll position
+            movingContainer = true;
             deltaX = startX - event.clientX;
             deltaY = startY - event.clientY;
             scrollx = sscrollx - Math.round(deltaX * zoomfact);
