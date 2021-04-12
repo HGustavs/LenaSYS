@@ -1669,6 +1669,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		tab+="</table>"
 
 		document.getElementById(cfield+"Prev").innerHTML=tab;
+	}
 }
 
 function makeForm(cfield, ctype){
@@ -1949,3 +1950,4 @@ function sendFeedback(entryname){
 function returnedSubmitFeedback(){
 	$('#submitstatus').css({'color':'var(--color-green)',"display": "inline-block"}).text("Feedback saved");
 }
+
