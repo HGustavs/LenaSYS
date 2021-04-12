@@ -453,7 +453,7 @@
     </div>
 
     <!-- Diagram drawing system canvas. -->
-    <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)'></div> <!-- Contains all elements (items) -->
+    <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
     <svg id="svgoverlay"  preserveAspectRatio="none">
    </svg>
 	<canvas id='canvasOverlay'></canvas>
