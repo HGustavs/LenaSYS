@@ -219,11 +219,18 @@ function validateSSN(ssn)
 			return 'SSN Error! Should be ######-#### or ########-####';
 	}
 
-	const dd = ssn.substring(delimiter-2, delimiter);
+    let samordningsnummer = false;
+	let dd = ssn.substring(delimiter-2, delimiter);
 	const mm = ssn.substring(delimiter-4, delimiter-2);
 	const yyyy = (length === 13) ? ssn.substring(0, 4) : 19+ssn.substring(0, 2);	// Ensure yyyy
 	const birthNum = ssn.substring(delimiter+1, delimiter+4);
-	const ssnDate = new Date(`${yyyy}-${mm}-${dd}`);
+	
+    if (parseInt(dd) > 60) {
+        dd -= 60;
+        samordningsnummer = true;
+    }
+    
+    const ssnDate = new Date(`${yyyy}-${mm}-${dd}`);
 
 	if(ssnDate.getTime() > Date.now())			// Make sure date of SSN is not in the future
 		return 'SSN Error! Impossible date in SSN. The future is not here yet';
@@ -232,6 +239,10 @@ function validateSSN(ssn)
 		|| (parseInt(dd) !== ssnDate.getDate())) {	// Ensures leap years are handled correctly
 		return 'SSN Error! Invalid date';
 	}
+
+    if (samordningsnummer) {
+        dd += 60;
+    }
 
 	const controlDigitString = yyyy.substring(2, 4) + mm + dd + birthNum;
 	var ccd = 0;	// Calculated Control Digit
