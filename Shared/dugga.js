@@ -1606,9 +1606,8 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								} else {
 									tab+=filez[i].content+"</span>";
 								}
-							}else if(ctype == "zip" || ctype == "rar"){
-                
-								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
+							}else if(ctype == "zip" || ctype == "rar"){                
+								tab+="<span>";
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
 								} else if (mobileMediaQuery.matches) {
@@ -1732,9 +1731,9 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 				str += '<iframe allowtransparency="true" style="background: #FFFFFF;" src="'+filename+'" width="100%" height="100%" />';
 		} else {
 		 		if (fileext === "pdf"){
-						str += '<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" />';
+						//str += '<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" />';
 		 		} else if (fileext === "zip" || fileext === "rar"){
-		 				str += '<a href="'+filepath+filename+fileseq+'.'+fileext+'"/>'+filename+'.'+fileext+'</a>';
+		 				//str += '<a href="'+filepath+filename+fileseq+'.'+fileext+'"/>'+filename+'.'+fileext+'</a>';
 		 		} else if (fileext === "txt"){
 		 				str+="<pre style='width: 100%;height: 100%;box-sizing: border-box;'>"+dataV["files"][inParams["moment"]][fileindex].content+"</pre>";
 		 		}
