@@ -278,6 +278,7 @@ function ddown(event)
 
 function mouseMode_onMouseUp(event)
 {
+    console.log("mouseup");
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
             var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
@@ -296,8 +297,10 @@ function mouseMode_onMouseUp(event)
             break;
 
         case mouseModes.EDGE_CREATION:
+            console.log(context.length, mouseMode);
             if (context.length > 1)
             {
+                console.log("CREATE EDGE");
                 lines.push({ 
                     id: makeRandomID(), 
                     fromID: context[0].id, 
@@ -305,7 +308,7 @@ function mouseMode_onMouseUp(event)
                     kind: "Normal" 
                 });
                 context = [];
-                redrawArrows();
+                updatepos(0,0);
             }
 
             break;
@@ -352,14 +355,24 @@ function mup(event)
             break;
 
         case pointerStates.CLICKED_ELEMENT:
+
             movingObject = false;
-            if (context.length > 0)
+            // Special cases:
+            if (mouseMode == mouseModes.EDGE_CREATION)
             {
-                context.forEach(item => // Move all selected items
+                mouseMode_onMouseUp(event);
+            }
+            // Normal mode
+            else 
+            {
+                if (context.length > 0)
                 {
-                    eventElementId = event.target.parentElement.parentElement.id;
-                    setPos(item.id, deltaX, deltaY);
-                });
+                    context.forEach(item => // Move all selected items
+                    {
+                        eventElementId = event.target.parentElement.parentElement.id;
+                        setPos(item.id, deltaX, deltaY);
+                    });
+                }
             }
             break;
     
@@ -975,7 +988,8 @@ function updateSelection(ctxelement, x, y)
             context.push(ctxelement);
         } else
         {
-            if(mouseMode != 4){
+            if (mouseMode != mouseModes.EDGE_CREATION)
+            {
                 context = [];
             }
             context.push(ctxelement);
@@ -1307,6 +1321,18 @@ function redrawArrows(str)
             if (x2 > highX) highX = x2;
             if (y1 < lowY) lowY = y1;
             if (y2 > highY) highY = y2;
+        }
+
+        //If there only is one entity is selected
+        if(context.length == 1) {
+            // Add nodes to the marked selection
+            const nodeDiameter = 10;
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY-10}'/>`; //Top-Left
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY-10}'/>`; //Top-Right
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${highY}'/>`; //Bottom-Left
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`; //Bottom-Right
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Left
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Right
         }
 
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
