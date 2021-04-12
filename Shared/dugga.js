@@ -667,7 +667,11 @@ function saveDuggaResult(citstr)
 function generateHash() {
     var randNum = getRandomNumber();
     var hash = createHash(randNum);
-    return convertDecimalToBase64(hash);
+	var hash64 = convertDecimalToBase64(hash);
+	hash64 = hash64.replace("+", "-");
+	hash = hash64.replace("/", "_");
+
+    return hash;
 
 	function createHash(num) {
 		var string = num.toString();
@@ -707,7 +711,7 @@ function convertDecimalToBase64(value) {
 	}
   }
   
-  convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_";
+  convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
   
   convertDecimalToBase64.getChars = function(num, res) {
 	var mod = num % 64,
@@ -717,7 +721,6 @@ function convertDecimalToBase64(value) {
 	if (remaining <= 0) { return chars; }
 	return convertDecimalToBase64.getChars(remaining, chars);
   };
-
 
 //----------------------------------------------------------------------------------
 // changeURL: Patch-in for changeURL from project 2014 code
