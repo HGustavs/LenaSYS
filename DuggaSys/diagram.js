@@ -156,6 +156,8 @@ document.addEventListener('keydown', function (e)
     if (e.key == "Alt" && altPressed !== true) altPressed = true;
     if (e.key == "Delete" && context.length > 0)  removeElements(context);
     if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
+    if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
+    if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
     if (e.key == "Escape" && escPressed != true){
         escPressed = true;
         context = [];
@@ -178,6 +180,9 @@ document.addEventListener('keyup', function (e)
         escPressed = false;
     }
 });
+
+
+
 
 //------------------------------------=======############==========----------------------------------------
 //                              Coordinate-Screen Position Conversion
@@ -226,6 +231,16 @@ function diagramToScreenPosition(coordX, coordY)
 //------------------------------------=======############==========----------------------------------------
 //                                           Mouse events
 //------------------------------------=======############==========----------------------------------------
+function mwheel(event){
+    if(event.deltaY < 0)
+    {
+        zoomin();
+    }
+    else
+    {
+        zoomout();
+    }
+}
 
 function mdown(event)
 {
