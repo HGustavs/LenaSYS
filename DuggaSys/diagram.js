@@ -158,15 +158,13 @@ document.addEventListener('keydown', function (e)
     if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
     if (e.key == "Escape" && escPressed != true){
         escPressed = true;
-        if (movingObject){
-            context = [];
-            showdata();
-        } else if (movingContainer){
+        context = [];
+        if (movingContainer){
             scrollx = sscrollx;
             scrolly = sscrolly;
-            pointerState = pointerStates.DEFAULT;
-            showdata();
         }
+        pointerState = pointerStates.DEFAULT;
+        showdata();
     }
 });
 
