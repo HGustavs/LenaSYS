@@ -20,6 +20,8 @@ var pwd;
 
 var iconFlag = false;
 
+var hash;
+
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
 		$(".fixed-action-button").css("bottom", "64px");
@@ -582,6 +584,7 @@ function saveDuggaResult(citstr)
 {
   
 	pwd = randomPassword(); //Create random password for URL
+
 	hash = generateHash(); // Generate Hash
 	var url = createUrl(hash); //Create URL
 	
@@ -1346,6 +1349,17 @@ function sendReceiptEmail(){
 			window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
 			hideReceiptPopup();
 	}
+}
+
+//----------------------------------------------------------------------------------
+// copyURLtoCB: Copy the url to user clipboard
+//----------------------------------------------------------------------------------
+function copyHashtoCB() {
+	var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(hash).select();
+    document.execCommand("copy");
+	$temp.remove();
 }
 
 function showSecurityPopup()
