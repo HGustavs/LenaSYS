@@ -994,6 +994,7 @@ function updatepos(deltaX, deltaY)
     // Update svg overlay -- place everyhing to draw OVER elements here
     str = "";
     str = boxSelect_Draw(str);
+    if (context.length > 0) str += getMarker();
     document.getElementById("svgoverlay").innerHTML=str;
 }
 
@@ -1279,8 +1280,12 @@ function redrawArrows(str)
         }
 
     }
-    if (context.length != 0)
-    {
+    
+    return str;
+}
+
+function getMarker(){
+    var str = "";
         var lowX = context[0].x1;
         var highX = context[0].x2;
         var x1;
@@ -1314,9 +1319,8 @@ function redrawArrows(str)
         }
 
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
-    }
-    
-    return str;
+
+        return str;
 }
 //-------------------------------------------------------------------------------------------------
 // Change the position of rulerPointers
