@@ -51,6 +51,7 @@ const maxDeltaBeforeExceeded = 2;
 // Currently hold down buttons
 var ctrlPressed = false;
 var altPressed = false;
+var escPressed = false;
 
 // Box selection variables
 var boxSelectionInUse = false;
@@ -79,6 +80,8 @@ const pointerStates = {
     CLICKED_ELEMENT: 2,
 };
 var pointerState = pointerStates.DEFAULT;
+
+var movingObject = false;
 
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
@@ -152,6 +155,13 @@ document.addEventListener('keydown', function (e)
     if (e.key == "Alt" && altPressed !== true) altPressed = true;
     if (e.key == "Delete" && context.length > 0)  removeElements(context);
     if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
+    if (e.key == "Escape" && escPressed != true){
+        escPressed = true;
+        if (movingObject){
+            context = [];
+            showdata();
+        }
+    }
 });
 
 document.addEventListener('keyup', function (e)
@@ -159,6 +169,9 @@ document.addEventListener('keyup', function (e)
     if (e.key == "Control") ctrlPressed = false;
     if (e.key == "Alt") altPressed = false;
     if (e.key == "Meta") ctrlPressed = false;
+    if (e.key == "Escape"){
+        escPressed = false;
+    }
 });
 
 //------------------------------------=======############==========----------------------------------------
@@ -333,6 +346,7 @@ function mup(event)
             break;
 
         case pointerStates.CLICKED_ELEMENT:
+            movingObject = false;
             if (context.length > 0)
             {
                 context.forEach(item => // Move all selected items
