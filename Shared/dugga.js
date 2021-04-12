@@ -21,6 +21,8 @@ var duggaTitle;
 
 var iconFlag = false;
 
+var hash;
+
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
 		$(".fixed-action-button").css("bottom", "64px");
@@ -583,6 +585,7 @@ function saveDuggaResult(citstr)
 {
   
 	pwd = randomPassword(); //Create random password for URL
+
 	hash = generateHash(); // Generate Hash
 	var url = createUrl(hash); //Create URL
 	
@@ -1349,6 +1352,17 @@ function sendReceiptEmail(){
 	}
 }
 
+//----------------------------------------------------------------------------------
+// copyURLtoCB: Copy the url to user clipboard
+//----------------------------------------------------------------------------------
+function copyHashtoCB() {
+	var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(hash).select();
+    document.execCommand("copy");
+	$temp.remove();
+}
+
 function showSecurityPopup()
 {
    $("#securitynotification").css("display","flex");
@@ -1656,6 +1670,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		tab+="</table>"
 
 		document.getElementById(cfield+"Prev").innerHTML=tab;
+	}
 }
 
 function makeForm(cfield, ctype){
@@ -1940,6 +1955,7 @@ function sendFeedback(entryname){
 function returnedSubmitFeedback(){
 	$('#submitstatus').css({'color':'var(--color-green)',"display": "inline-block"}).text("Feedback saved");
 }
+
 
 function setDuggaTitle(title) {
 	duggaTitle = title;
