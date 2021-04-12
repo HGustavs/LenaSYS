@@ -995,7 +995,9 @@ function updatepos(deltaX, deltaY)
     str = "";
     str = boxSelect_Draw(str);
     if (context.length > 0) str += getMarker();
+    if (context.length === 1) setNodes(context[0]);
     document.getElementById("svgoverlay").innerHTML=str;
+
 }
 
 function exportElementDataToCSS()
@@ -1305,22 +1307,29 @@ function getMarker(){
             if (y1 < lowY) lowY = y1;
             if (y2 > highY) highY = y2;
         }
-
-        //If there only is one entity is selected
-        if(context.length == 1) {
-            // Add nodes to the marked selection
-            const nodeDiameter = 10;
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY-10}'/>`; //Top-Left
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY-10}'/>`; //Top-Right
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${highY}'/>`; //Bottom-Left
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`; //Bottom-Right
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Left
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Right
-        }
-
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
 
+        // Add nodes to the marked selection
+        const nodeDiameter = 10;
+
+        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY-10}'/>`; //Top-Left
+        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY-10}'/>`; //Top-Right
+        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${highY}'/>`; //Bottom-Left
+        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`; //Bottom-Right
+        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Left
+        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Right
+
         return str;
+}
+function setNodes(element) {
+    //Creating a new div to place on top of element.
+    document.getElementById("container").innerHTML += "<div id='markerDiv' style='position: absolute;'></div>";
+
+    var elementDiv = document.getElementById("markerDiv");
+    elementDiv.style.width = Math.round(element.width * zoomfact);
+    elementDiv.style.height = Math.round(element.height * zoomfact);
+    elementDiv.style.left = Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) + "px";
+    elementDiv.style.top = Math.round((element.y * zoomfact) + (scrolly * (1.0 / zoomfact))) + "px";
 }
 //-------------------------------------------------------------------------------------------------
 // Change the position of rulerPointers
