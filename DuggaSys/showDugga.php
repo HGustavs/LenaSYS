@@ -124,7 +124,31 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			echo "<body>";
 		}
 ?>
+<script type="text/javascript">
+	var dugga = '<?php echo $duggatitle; ?>';
+	var deadline = '<?php echo $deadline; ?>';
 
+	var previusAllottedAssignmentVariants = JSON.parse(localStorage.getItem("allottedAssignmentVariants"));
+	if(previusAllottedAssignmentVariants == null) previusAllottedAssignmentVariants = [];
+
+	var duggaInfo = {
+		"Dugga": dugga,
+		"Variant": "1",
+		"Deadline": deadline
+	};
+	var duggor = {
+		"Biträkningsdugga 1": duggaInfo,
+		"Biträkningsdugga 2": duggaInfo
+	};
+	var courses = {
+		"Webbprogrammering": duggor,
+		"Webbutveckling - datorgrafik": duggor
+	};
+	var allottedAssignmentVariants = {
+		"Courses": courses
+	};
+	localStorage.setItem("allottedAssignment", JSON.stringify(allottedAssignmentVariants));
+</script>
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
