@@ -122,7 +122,7 @@
 				<div class='flexwrapper'>
 					<span>Term:</span>
 					<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
-					<input placeholder="HT-11" class='textinput' id='addTerm'>
+					<input placeholder="HT-11" class='textinput' id='addTerm'onchange="tooltipTerm()" onkeyup="tooltipTerm()">
 				</div>
 				<div class='flexwrapper'>
 					<span>Email:</span>

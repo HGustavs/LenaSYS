@@ -407,11 +407,7 @@ function tooltipEmail()
 
 function validateTerm(term)
 {
-	if(term.match(/^(HT|VT)\d{2}$/) !=null ) return 'The term must be in format "VT-10" ';
-	if(term.length >= 0)
-	{
-		return 'wot';
-	}
+	if(term.match(/^(HT-|VT-)\d{2}$/gm) == null ) return 'The term must be in format "VT-10" '; //must follow "HT/VT-XX" format
 	return null; //the provided term is correct
 }
 function tooltipTerm()
