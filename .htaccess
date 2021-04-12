@@ -1,2 +1,14 @@
 ErrorDocument 404 "/errorpages/404.php"
 ErrorDocument 403 "/errorpages/403.php"
+
+#URL redirection and clean up
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+
+
+RewriteRule ^/?DuggaSYS/sh/([0-9a-zA-Z_-]+)$ /LenaSYS/DuggaSYS/sh/index.php?c=$1 [NC]
+
+#RewriteRule ^/?DuggaSYS/sh/([a-zA-Z]+)$ /LenaSYS/DuggaSYS/sh/index.php?c=$1 [NC]
+#RewriteRule ^/?DuggaSYS/sh/([a-zA-Z]+)/([a-zA-Z]+)$ /LenaSYS/DuggaSYS/sh/index.php?c=$1&a=$2 [NC]
+</IfModule>
