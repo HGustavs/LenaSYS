@@ -16,6 +16,7 @@ var querystring=parseGet();
 var pressTimer;
 
 var hash;
+var pwd;
 
 var iconFlag = false;
 
@@ -580,7 +581,7 @@ function saveDuggaResult(citstr)
 
 {
   
-	var pwd = randomPassword(); //Create random password for URL
+	pwd = randomPassword(); //Create random password for URL
 	hash = generateHash(); // Generate Hash
 	var url = createUrl(hash); //Create URL
 	
@@ -951,7 +952,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+password,
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd,
 				dataType: "json",
 				success: returnedDugga
 			});
@@ -1591,14 +1592,14 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].content+"</span>";
 								}
 							}else if(ctype == "zip" || ctype == "rar"){
-								tab+="<span class='ASDASDSADSAD' style='cursor: pointer;text-decoration:underline;'>";
-								tab += "<a href="+filez[i].filepath+filez[i].filename+filez[i].seq+'.'+filez[i].extension+">";
+                
+								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
 								if (mediumMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</a></span>";
+									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
 								} else if (mobileMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</a></span>";
+									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</span>";
 								} else {
-									tab+=filez[i].filename+"."+filez[i].extension+"</a></span>";
+									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
 								}
 							} else {
 
