@@ -244,11 +244,16 @@ function makedivItem(option,optionlist,optionstring,valuestring)
 				If it has, it will be styled by id = 'access-dropdown-selected'.
 				"If" sets an id so it could be styled and print out all options. "Else" prints out all options.*/
                 if(option == optionlist[i][optionstring]){
-                    str+="<div class = 'access-dropdown-selected' data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'>";
-                    str+=""+optionlist[i][optionstring]+"</div>";
+                    str+=
+					`<div class = 'access-dropdown-selected' data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")'>"
+                    ${optionlist[i][optionstring]}
+					</div>`;
+
                 }else{
-                    str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")' >";
-                    str+=""+optionlist[i][optionstring]+"</div>";
+                    str+=
+					`<div data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")' >"
+                    ${optionlist[i][optionstring]}
+					</div>`;
                 }
 			}
 		str +="</div>"
@@ -259,7 +264,7 @@ function makedivItemWithValue(option,optionlist,optionstring,valuestring)
 {
 		var str="";
 		str +="<div class='access-dropdown-content'>"
-			str+="<div data-value='"+null+"' onclick='changeOptDivStudent(event,\""+-1+"\")'";
+			str+=`<div data-value='${null}' onclick='changeOptDivStudent(event,"${-1}")'`;
 			if (option === "") {
 				str+=" class = 'access-dropdown-selected'";
 			}
@@ -269,11 +274,15 @@ function makedivItemWithValue(option,optionlist,optionstring,valuestring)
 				If it has, it will be styled by id = 'access-dropdown-selected'.
 				"If" sets an id so it could be styled and print out all options. "Else" prints out all options.*/
                 if(option == optionlist[i][optionstring]){
-                    str+="<div class = 'access-dropdown-selected' data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'>";
-                    str+=""+optionlist[i][optionstring]+"</div>";
+                    str+=
+					`<div class = 'access-dropdown-selected' data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")'>"
+                    ${optionlist[i][optionstring]}
+					</div>`;
                 }else{
-                    str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")' >";
-                    str+=""+optionlist[i][optionstring]+"</div>";
+                    str+=
+					`<div data-value='${optionlist[i][valuestring]}' onclick='changeOptDivStudent(event,"${optionlist[i][valuestring]}")' >"
+                    ${optionlist[i][optionstring]}
+					</div>`;
                 }
             }
 		str +="</div>"
@@ -286,7 +295,7 @@ function makeDivItemStudent(option,optionlist,valuelist)
 		var stringArray = ["W","R","ST"];
 		str +="<div class='access-dropdown-content'>"
 		for(var i=0;i<optionlist.length;i++){
-			str+="<div data-value='"+stringArray[i]+"' onclick='changeOptDivStudent(event,\""+stringArray[i]+"\")'";
+			str+=`<div data-value='${stringArray[i]}' onclick='changeOptDivStudent(event,"${stringArray[i]}")'`;
 			if(option == valuelist[i]){
 				str+=" class = 'access-dropdown-selected'>"+optionlist[i]+"</div>";
 			}else{
@@ -306,7 +315,7 @@ function makeparams(paramarray)
 		var str="";
 		for(var i=0;i<paramarray.length;i++){
 				if(i>0) str+=",";
-				str+="\""+paramarray[i]+"\"";
+				str+=`"${paramarray[i]}"`;
 		}
 		return str;
 }
@@ -645,10 +654,17 @@ function saveDuggaResult(citstr)
 			else{ //Check if deadline has past
 
 				if(comment == "UNK" || comment == "undefined" || comment == "null"){
-					document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>";
+					document.getElementById('receiptInfo').innerHTML = 
+					`<p style='margin:15px 5px;'>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p> 
+					<img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/>
+					<p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>`;
 				}
 				else{
-					document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>"+comment+"</p>";
+					document.getElementById('receiptInfo').innerHTML =
+					`<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p>
+					<img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/>
+                    <p>${comment}</p>`;
+					
 				}
 
 			}
@@ -1548,19 +1564,51 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		var tab="<table class='previewTable'>";
 
 		if (group) {
-      if (mobileMediaQuery.matches) {
-        tab+="<thead><tr><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-      } else {
-			  tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-      }
-    } else {
-      if (mobileMediaQuery.matches) {
-			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-		  } else {
-			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-		  }
-    }
-
+			if (mobileMediaQuery.matches) {
+				tab+=
+					`<thead>
+					<tr>
+					<th>User</th>
+					<th>Filename</th>
+					<th>Upload date</th>
+					<th colspan=2>Teacher feedback</th>
+					</tr>
+					</thead>`;
+			} else {
+				tab+=
+					`<thead>
+					<tr>
+					<th></th>
+					<th>User</th>
+					<th>Filename</th>
+					<th>Upload date</th>
+					<th colspan=2>Teacher feedback</th>
+					</tr>
+					</thead>`;
+			}
+		} else {
+			if (mobileMediaQuery.matches) {
+				tab+=
+				  `<thead>
+				  <tr>
+				  <th>Filename</th>
+				  <th>Upload date</th>
+				  <th colspan=2>Teacher feedback</th>
+				  </tr>
+				  </thead>`;
+			} else {
+				tab+=
+				  `<thead>
+				  <tr>
+				  <th></th>
+				  <th>Filename</th>
+				  <th>Upload date</th>
+				  <th colspan=2>Teacher feedback</th>
+				  </tr>
+				  </thead>`;
+			}
+		}
+		
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
 			for (var i=filez.length-1;i>=0;i--){
@@ -1579,15 +1627,18 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								} else {
 									if(iconFlag){
 										tab+="<a href='"+filelink+"' ><img title='Download' src='../Shared/icons/file_download.svg' /></a>";
-										
-										// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
-										if (ctype == "pdf") {
-											tab +="\t<tab><a href='"+filelink+"' target='_blank'><img title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
-										} 
-                                    }
-                                    else{
-										tab+="<img style='opacity: 0;' src='../Shared/icons/file_download.svg' />";
-                                    }
+
+								}
+
+								// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
+								if (ctype == "pdf") {
+									tab +=									
+									`\t<tab>
+									<a href='${filelink}' target='_blank'>
+									<img title='Open in new tab' src='../Shared/icons/external_link_open.svg' />
+									</a>
+									</tab>`;;
+
 								}
 								tab+="</td>";
 							}
@@ -1596,8 +1647,10 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								tab+="<td>"+filez[i].username+"</td>";
 							}
 							tab+="<td>";
-              if (ctype == "link"){							
-								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
+
+              if (ctype == "link"){
+								tab+=`<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview("${filez[i].filepath}","${filez[i].filename}","${filez[i].seq}","${ctype}","${filez[i].extension}",${i},0);'>`;
+
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].content.substring(0,32)+"&#8230;</span>";
 								} else if (mobileMediaQuery.matches) {
@@ -1616,13 +1669,13 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
 								}
 							} else {
-
-								if(iconFlag){
-									tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
-								}
-								else{
-									tab+="<span>";
-								}
+                
+              if(iconFlag){
+								tab+=`<span onclick='displayPreview("${filez[i].filepath}","${filez[i].filename}","${filez[i].seq}","${ctype}","${filez[i].extension}",${i},0);' style='cursor: pointer;text-decoration:underline;'>`;
+              }
+              else{
+                tab+="<span>";
+              }
 
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
@@ -1645,7 +1698,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							if (!mobileMediaQuery.matches) {
 								// Button for making / viewing feedback - note - only button for given feedback to students.
 								if(filez[i].feedback!=="UNK"||displaystate){
-										tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>Feedback</button>";
+										tab+=`<button onclick='displayPreview("${filez[i].filepath}","${filez[i].filename}","${filez[i].seq}","${ctype}","${filez[i].extension}",${i},1);'>Feedback</button>`;
 								}
 							}
 							tab+="</td>";
@@ -1653,7 +1706,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							tab+="<td>";
 							if(filez[i].feedback!=="UNK"){
 								if (mobileMediaQuery.matches || mediumMediaQuery.matches) {
-									tab+="<span style='text-decoration: underline' onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>"+filez[i].feedback.substring(0,8)+"&#8230;</span>";
+									tab+= `<span style='text-decoration: underline' onclick='displayPreview("${filez[i].filepath}","${filez[i].filename}","${filez[i].seq}","${ctype}","${filez[i].extension}",${i},1);'>${filez[i].feedback.substring(0,8)}&#8230;</span>`;
 								} else {
 									tab+=filez[i].feedback.substring(0,64)+"&#8230;";
 								}
@@ -1760,13 +1813,25 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		}
 
 		if (answer == "UNK" && (grade == "UNK" || grade <= 1)){
-				str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Dugga not yet submitted!</div>";
+			str+=
+			`<div class='StopLight WhiteLight' style='margin:4px;'></div>
+			</div>
+			<div>Dugga not yet submitted!</div>`;
 		} else if (submitted != "UNK" && answer != "UNK" && marked == "UNK" || ( submitted !== "UNK" && marked !== "UNK" && (submitted.getTime() > marked.getTime()))) {
-				str+="<div class='StopLight YellowLight' style='margin:4px;'></div></div><div>Dugga submitted."+submitted+"</div>";
+			str+=
+			`<div class='StopLight YellowLight' style='margin:4px;'></div>
+			</div>
+			<div>Dugga submitted. ${submitted}</div>`;
 		} else if (grade != "UNK" && grade <= 1 && (submitted.getTime() < marked.getTime()) ) {
-				str+="<div class='StopLight RedLight' style='margin:4px;'></div></div><div>Dugga marked as fail: "+marked+"</div>";
+			str+=
+			`<div class='StopLight RedLight' style='margin:4px;'></div>
+			</div>
+			<div>Dugga marked as fail: ${marked}</div>`;
 		} else if (grade > 1) {
-				str+="<div class='StopLight GreenLight' style='margin:4px;'></div></div><div>Dugga marked as pass: "+marked+"</div>";
+			str+=
+			`<div class='StopLight GreenLight' style='margin:4px;'></div>
+			</div>
+			<div>Dugga marked as pass: ${marked}</div>`;
 		}
 
 		str+="</div>";
@@ -1870,9 +1935,11 @@ function generateTimeSheetOptions(course, moment, selected) {
 
 	// Only one timesheet is available right now
 	if (selected === 0) {
-		return "<option value='issue' selected>Issue</option><option value='pullrequest'>Pull request</option>";
+		return `<option value='issue' selected>Issue</option>
+		<option value='pullrequest'>Pull request</option>`;
 	} else {
-		return "<option value='issue'>Issue</option><option value='pullrequest' selected>Pull request</option>";
+		return `<option value='issue'>Issue</option>
+		<option value='pullrequest' selected>Pull request</option>`;
 	}
 
 }
