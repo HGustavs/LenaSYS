@@ -1481,12 +1481,10 @@ function drawSwimlanes() {
         if(deadlineYear < current.getFullYear()) {
            textcol = "#ff9933";
        
-           console.log("before: " +  entry.deadline);
            var yearDifference = current.getFullYear() - deadlineYear;
            var newYear = new Date(entry.deadline);
            newYear.setFullYear(entry.deadline.getFullYear() + yearDifference);
            entry.deadline = newYear;
-           console.log("after: " + entry.deadline);
          }
        
         if(duggalength < 0){
