@@ -55,6 +55,7 @@ var escPressed = false;
 
 // Box selection variables
 var boxSelectionInUse = false;
+var propFieldState = false;
 
 // What kind of input mode that user is uing the cursor for.
 const mouseModes = {
@@ -168,7 +169,7 @@ document.addEventListener('keydown', function (e)
         pointerState = pointerStates.DEFAULT;
         showdata();
     }
-    if (e.key == "Backspace" && context.length > 0 && document.getElementById("propertyFieldset").onselect() == false) removeElements(context);
+    if (e.key == "Backspace" && context.length > 0 && !propFieldState) removeElements(context);
 });
 
 document.addEventListener('keyup', function (e)
@@ -1104,6 +1105,11 @@ function saveProperties()
     updatepos(0,0);
 }
 
+function propFieldSelected(isSelected)
+{
+    propFieldState = isSelected;
+}
+
 function generateContextProperties()
 {
     var propSet = document.getElementById("propertyFieldset");
@@ -1119,7 +1125,7 @@ function generateContextProperties()
         for (const property in element) {
             switch (property.toLowerCase()) {
                 case "name":
-                    str += `<input id="elementProperty_${property}" type="text" value="${element[property]}"> `;
+                    str += `<input id="elementProperty_${property}" type="text" value="${element[property]}" onfocus="propFieldSelected(true)" onblur="propFieldSelected(false)"> `;
                     break;
             
                 default:
