@@ -14,6 +14,18 @@ $assignment = getOPG("a");
 pdoConnect();
 session_start();
 
+function GetAssigment ($hash){
+	global $pdo;
+	$sql ="SELECT cid, vers, quiz
+	FROM useranswer 
+	WHERE hash='$hash'";	
+	$URL = "";
+	foreach ($pdo->query($sql) as $row){
+		echo $row["cid"] . " | " . $row["vers"] . " | " $row["quiz"]; 
+		$URL = '../DuggaSys/showDugga.php?courseid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}';
+	}	
+	return $URL
+}
 
 
 function courseQuery($course){
@@ -41,11 +53,16 @@ echo "|".$course."|".$assignment."|";
 if($assignment != "UNK"){
 	// Check if it's an URL shorthand for assignments
 	if($course == "UNK"){
+		/*
 		foreach($pdo->query( 'SELECT * FROM passwordURL;' ) as $row){
+			
 			if($assignment == $row["shortURL"]){
 				header("Location: " + $row['URL']);
 				}
 		}
+		*/
+		$gotdata = GetAssigment($assignment);
+		echo $gotdata;
 	}elseif(($course == "Databaskonstruktion" || $course == "dbk")){
 		if($assignment=="a1"){
 			header("Location: https://dugga.iit.his.se/DuggaSys/showdoc.php?cid=4&coursevers=82452&fname=minimikrav_m1a.md");
@@ -63,7 +80,6 @@ function queryToUrl($course, $assignment){
 	if($course != 'UNK')
 		$c = courseQuery($course);
 	else echo "Unknown Course";
-
 	if($assignment != 'UNK'){
 		$a = assignmentQuery($assignment);
 		$url = "/LenasSYS/DuggaSys/showdoc.php?cid=" . $a['cid'] ."&coursevers=" . $c['courseservers'] ."&fname=" . $a['filename'];
