@@ -1433,12 +1433,13 @@ function drawSwimlanes() {
 
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
-  var current = new Date(2018, 9, 14);
+ // var current = new Date(2015, 9, 14);
 
   var deadlineEntries = [];
   var momentEntries = {};
   var current = new Date();
   var momentno = 0;
+ 
   for (var i = 0; i < retdata['entries'].length; i++) {
     var deadline = new Date(retdata['entries'][i].deadline);
     var start = new Date(retdata['entries'][i].qstart);
@@ -1512,6 +1513,7 @@ function drawSwimlanes() {
   var weeky = 15;
   for (obj in momentEntries) {
     for (var i = 0; i < deadlineEntries.length; i++) {
+      
       entry = deadlineEntries[i];
       if (obj == entry.moment) {
         weeky += weekheight;
@@ -1536,6 +1538,19 @@ function drawSwimlanes() {
         } else if((fillcol == "#FFEB3B") && (entry.deadline - current < 0) && (entry.submitted != null)) {
           textcol = `url("#fadeTextRed")`;
         }
+        
+        //Code to compare deadlines to current year. 
+        //If deadline is older than current, red text for late assigment should be displayed as orange instead
+        var deadlineYear = new Date(entry.deadline).getFullYear();
+        if(deadlineYear < current.getFullYear()) {
+           textcol = "#ff9933";
+       
+           var yearDifference = current.getFullYear() - deadlineYear;
+           var newYear = new Date(entry.deadline);
+           newYear.setFullYear(entry.deadline.getFullYear() + yearDifference);
+           entry.deadline = newYear;
+         }
+       
         if(duggalength < 0){
           duggalength = duggalength * -1;
         }
