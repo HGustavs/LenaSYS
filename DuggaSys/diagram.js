@@ -897,12 +897,12 @@ function redrawArrows()
         if(context.length == 1) {
             // Add nodes to the marked selection
             const nodeDiameter = 10;
-            str += `<rect class="selectedNode" width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY-10}'/>`; //Top-Left
-            str += `<rect class="selectedNode" width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY-10}'/>`; //Top-Right
-            str += `<rect class="selectedNode" width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${highY}'/>`; //Bottom-Left
-            str += `<rect class="selectedNode" width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`; //Bottom-Right
-            str += `<rect class="selectedNode" width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Left
-            str += `<rect class="selectedNode" width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Right
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY-10}'/>`; //Top-Left
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY-10}'/>`; //Top-Right
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${highY}'/>`; //Bottom-Left
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`; //Bottom-Right
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Left
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Right
         }
     }
     document.getElementById("svgoverlay").innerHTML = str;
