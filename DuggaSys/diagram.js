@@ -168,7 +168,7 @@ document.addEventListener('keydown', function (e)
         pointerState = pointerStates.DEFAULT;
         showdata();
     }
-    if (e.key == "Backspace" && context.length > 0) removeElements(context);
+    if (e.key == "Backspace" && context.length > 0 && document.getElementById("propertyFieldset").onselect() == false) removeElements(context);
 });
 
 document.addEventListener('keyup', function (e)
