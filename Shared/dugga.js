@@ -15,6 +15,11 @@ var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 var pressTimer;
 
+var hash;
+var pwd;
+
+var iconFlag = false;
+
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
 		$(".fixed-action-button").css("bottom", "64px");
@@ -538,29 +543,28 @@ function randomPassword()
 }
 
 //----------------------------------------------------------------------------------
-// randomstring: Generates a random URL redirect link
+// createUrl: creates url that contains the hash
 //----------------------------------------------------------------------------------
 
-function randomUrl()
-{
-        str="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890";
-        var realUrl = window.location.href; //"real" url, will be saved into the database
+function createUrl(hash) {
+	var realUrl = window.location + "&hash=" + hash;
+	var localhostUrl="http://localhost/LenaSYS/DuggaSys/sh/?hash=" + hash;
 
-		if(realUrl != true) //Check if URL is in database, currently no database for this
-		{
-				//Add URL to database and its "shortcut"
-				var url="http://localhost/LenaSYS/DuggaSys/sh/";
+	// temporary solution, if exist in database use real url
+	var realUrlInDatabase = false;
+	var url;
 
-				for(i=0;i<6;i++){
-					url+=str.charAt(Math.floor(Math.random()*str.length));
-				}
-				//Add both realUrl and shortcutUrl to database
-		}else{
-			//url = shortcutUrl from database
-		}
-		
-        return url;
+
+	if (realUrlInDatabase){
+		url = realUrl;
+	}
+	else{
+		url = localhostUrl;
+	}
+
+	return url;
 }
+
 
 //----------------------------------------------------------------------------------
 // isNumber:    returns true: the variable only contains numbers
@@ -574,21 +578,18 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
+
 {
   
-	var pwd = randomPassword(); //Create random password for URL
-	var url = randomUrl(); //Create URL
-	var hash = generateHash(); // Generate Hash
+	pwd = randomPassword(); //Create random password for URL
+	hash = generateHash(); // Generate Hash
+	var url = createUrl(hash); //Create URL
 	
-	console.log(url);
-	console.log(pwd);
-
-	var hash = generateHash();
-	console.log("asd: " + hash)
+	console.log("url: " + url);
+	console.log("pwd: " + pwd);
 
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
-	document.getElementById('hash').innerHTML = hash;
 
 	var readonly;
 	$.ajax({
@@ -660,11 +661,10 @@ function saveDuggaResult(citstr)
 // generateHash: Generates a hash
 //----------------------------------------------------------------------------------
 
-
 function generateHash() {
     var randNum = getRandomNumber();
     var hash = createHash(randNum);
-    return decimalToHexString(hash);
+    return convertDecimalToBase64(hash);
 
 	function createHash(num) {
 		var string = num.toString();
@@ -682,20 +682,39 @@ function generateHash() {
 		return hash;
 	}
 
-
-	function decimalToHexString(number) {
-		if (number < 0) {
-			number = 0xFFFFFFFF + number + 1;
-		}
-
-		return number.toString(16).toUpperCase();
-	}
-
-
 	function getRandomNumber() {
 		return Math.floor(Math.random() * 1000000) + 100000;
 	}
 }
+
+
+//----------------------------------------------------------------------------------
+// convertDecimalToBase64: takes decimal number and converts to base64 "youtube style"
+//----------------------------------------------------------------------------------
+function convertDecimalToBase64(value) {
+	if (typeof(value) === 'number') {
+	  return convertDecimalToBase64.getChars(value, '');
+	}
+  
+	if (typeof(value) === 'string') {
+	  if (value === '') { return NaN; }
+	  return value.split('').reverse().reduce(function(prev, cur, i) {
+		return prev + convertDecimalToBase64.chars.indexOf(cur) * Math.pow(64, i);
+	  }, 0);
+	}
+  }
+  
+  convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
+  
+  convertDecimalToBase64.getChars = function(num, res) {
+	var mod = num % 64,
+		remaining = Math.floor(num / 64),
+		chars = convertDecimalToBase64.chars.charAt(mod) + res;
+  
+	if (remaining <= 0) { return chars; }
+	return convertDecimalToBase64.getChars(remaining, chars);
+  };
+
 
 //----------------------------------------------------------------------------------
 // changeURL: Patch-in for changeURL from project 2014 code
@@ -933,7 +952,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd,
 				dataType: "json",
 				success: returnedDugga
 			});
@@ -1499,6 +1518,11 @@ Array.prototype.move = function (old_index, new_index) {
     return this; // for testing purposes
 };
 
+function displayDownloadIcon(){
+    iconFlag = true;
+}
+
+
 // Latest version of any file in a field - unsure about naming of the function
 function findfilevers(filez,cfield,ctype,displaystate,group)
 {
@@ -1536,14 +1560,20 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								tab+="<td>";
 								// Button for making / viewing feedback - note - only button for given feedback to students.
 								if (ctype == "link"){
+
 										tab+="<a href='"+filez[i].content+"' ><img title='Download' src='../Shared/icons/file_download.svg' /></a>";
 								} else {
+									if(iconFlag){
 										tab+="<a href='"+filelink+"' ><img title='Download' src='../Shared/icons/file_download.svg' /></a>";
-								}
-
-								// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
-								if (ctype == "pdf") {
-									tab +="\t<tab><a href='"+filelink+"' target='_blank'><img title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
+										
+										// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
+										if (ctype == "pdf") {
+											tab +="\t<tab><a href='"+filelink+"' target='_blank'><img title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
+										} 
+                                    }
+                                    else{
+										tab+="<img style='opacity: 0;' src='../Shared/icons/file_download.svg' />";
+                                    }
 								}
 								tab+="</td>";
 							}
@@ -1552,7 +1582,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								tab+="<td>"+filez[i].username+"</td>";
 							}
 							tab+="<td>";
-              if (ctype == "link"){
+              if (ctype == "link"){							
 								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].content.substring(0,32)+"&#8230;</span>";
@@ -1562,6 +1592,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].content+"</span>";
 								}
 							}else if(ctype == "zip" || ctype == "rar"){
+                
 								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
@@ -1571,7 +1602,14 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
 								}
 							} else {
-								tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
+
+								if(iconFlag){
+									tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
+								}
+								else{
+									tab+="<span>";
+								}
+
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
 								} else if (mobileMediaQuery.matches) {

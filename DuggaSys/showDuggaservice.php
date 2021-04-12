@@ -37,6 +37,8 @@ $showall=getOP('showall');
 $contactable=getOP('contactable');
 $rating=getOP('score');
 $entryname=getOP('entryname');
+$hash=getOP('hash');
+$password=getOP('password');
 $showall="true";
 
 $param = "UNK";
@@ -309,6 +311,28 @@ if(checklogin()){
                 }	else {
                 	$savedanswer = $answer;
                 }
+
+				$query = $pdo->prepare("SELECT hash, password FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+				$query->bindParam(':cid', $courseid);
+				$query->bindParam(':coursevers', $coursevers);
+				$query->bindParam(':uid', $userid);
+				$query->bindParam(':moment', $moment);
+				$query->execute();
+				
+				$result = $query->fetch(PDO::FETCH_ASSOC);
+				$checkHash = $result;
+
+				if(is_null($checkHash['hash']) || is_null($checkHash['password'])){
+					$query = $pdo->prepare("UPDATE userAnswer SET hash=:hash, password=:password WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+					$query->bindParam(':cid', $courseid);
+					$query->bindParam(':coursevers', $coursevers);
+					$query->bindParam(':uid', $userid);
+					$query->bindParam(':moment', $moment); 
+				 	$query->bindParam(':hash', $hash);
+					$query->bindParam(':password', $password); 
+				  	$query->execute();
+				}
+
                 // Make sure that current version is set to active for this student
                 $vuery = $pdo->prepare("SELECT vers FROM user_course WHERE uid=:uid AND cid=:cid");
               	$vuery->bindParam(':cid', $courseid);
