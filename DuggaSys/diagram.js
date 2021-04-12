@@ -973,6 +973,8 @@ function updatepos(deltaX, deltaY)
 {
     exportElementDataToCSS();
 
+    generateContextProperties();
+
     // Update svg backlayer -- place everyhing to draw OVER elements here
     var str = "";
     str = redrawArrows(str);
@@ -982,6 +984,65 @@ function updatepos(deltaX, deltaY)
     str = "";
     str = boxSelect_Draw(str);
     document.getElementById("svgoverlay").innerHTML=str;
+}
+
+function saveProperties() 
+{
+    const propSet = document.getElementById("propertyFieldset");
+    const element = context[0];
+    const children = propSet.children;
+    for (let index = 0; index < children.length; index++) {
+        const child = children[index];
+        const propName = child.id.split(`_`)[1];
+        switch (propName) {
+            case "name":
+                const value = child.value.trim();
+                if (value && value.length > 0) {
+                    element.name = value;
+                }
+
+                break;
+        
+            default:
+                break;
+        }
+    }
+    showdata();
+    updatepos(0,0);
+}
+
+function generateContextProperties()
+{
+    var propSet = document.getElementById("propertyFieldset");
+    var str = "<legend>Properties</legend>";
+
+    //more than one element selected
+
+    if (context.length == 1)
+    {
+        var element = context[0];
+        
+        //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
+        for (const property in element) {
+            switch (property.toLowerCase()) {
+                case "name":
+                    str += `<input id="elementProperty_${property}" type="text" value="${element[property]}"> `;
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+        str+=`<br><br><input type="submit" value="Save" onclick="saveProperties()">`;
+
+    }
+    else if (context.length > 1)
+    {
+        str += "<p>Pick only ONE element!</p>";
+    }
+
+
+    propSet.innerHTML = str;
 }
 
 function exportElementDataToCSS()

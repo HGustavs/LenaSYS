@@ -487,6 +487,9 @@
                 <input class="paneButtons" type="button" value="Attribute" onclick='setMouseMode(2);setElementPlacementType(2);' /><br>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
             </fieldset>
+            <fieldset id='propertyFieldset'>
+                
+            </fieldset>
         </div>
     </div>
     </div>
