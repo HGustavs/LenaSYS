@@ -453,9 +453,12 @@
     </div>
 
     <!-- Diagram drawing system canvas. -->
-    <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
-    <svg id="svgoverlay"  preserveAspectRatio="none">
-   </svg>
+
+    <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)'></div> <!-- Contains all elements (items) -->
+     <!-- One svg layer for background stuff and one for foreground stuff -->
+    <svg id="svgbacklayer" preserveAspectRatio="none"></svg>
+    <svg id="svgoverlay" preserveAspectRatio="none"></svg>
+
 	<canvas id='canvasOverlay'></canvas>
     <!-- Diagram rules -->
     <div id="rulerOverlay">
@@ -474,13 +477,19 @@
                     <input class="paneButtons" type="button" value="Zoom in" onclick='zoomin();' />
                     <input class="paneButtons" type="button" value="Zoom out" onclick='zoomout();' />									
                 </fieldset>
-
-                <input class="paneButtons" type="button" value="Mouse Selection" onclick='setMouseMode(0);' />
-                <input class="paneButtons" type="button" value="Entity" onclick='setMouseMode(1);' />
-                <input class="paneButtons" type="button" value="Relation" onclick='setMouseMode(2);' />
-                <input class="paneButtons" type="button" value="Attribute" onclick='setMouseMode(3);' />
-                <input class="paneButtons" type="button" value="Draw Line" onclick='setMouseMode(4);' />
             </div>
+        </div>
+        <div>
+            <fieldset id='cursorModeFieldset'>
+                <legend>Cursor Modes</legend>
+                <input class="paneButtons" id="cursorModePanning" type="button" value="Mouse Selection" onclick='setMouseMode(0);' /><br>
+                <input class="paneButtons" id="cursorModeBoxBoxSelect" type="button" value="Box Select" onclick='setMouseMode(1);' /><br>
+                <input class="paneButtons" type="button" value="Entity" onclick='setMouseMode(2);setElementPlacementType(0);' /><br>
+                <input class="paneButtons" type="button" value="Relation" onclick='setMouseMode(2);setElementPlacementType(1);' /><br>
+                <input class="paneButtons" type="button" value="Attribute" onclick='setMouseMode(2);setElementPlacementType(2);' /><br>
+                <input class="paneButtons" id="cursorModeEdgeCreation" type="button" value="Edge Creation" onclick='setMouseMode(3);' /><br>
+                <p id="text_currentlyPlacing">Now placing: NULL</p><br>
+            </fieldset>
         </div>
     </div>
     </div>
