@@ -51,6 +51,7 @@ const maxDeltaBeforeExceeded = 2;
 // Currently hold down buttons
 var ctrlPressed = false;
 var altPressed = false;
+var escPressed = false;
 
 // Box selection variables
 var boxSelectionInUse = false;
@@ -79,6 +80,9 @@ const pointerStates = {
     CLICKED_ELEMENT: 2,
 };
 var pointerState = pointerStates.DEFAULT;
+
+var movingObject = false;
+var movingContainer = false;
 
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
@@ -152,6 +156,16 @@ document.addEventListener('keydown', function (e)
     if (e.key == "Alt" && altPressed !== true) altPressed = true;
     if (e.key == "Delete" && context.length > 0)  removeElements(context);
     if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
+    if (e.key == "Escape" && escPressed != true){
+        escPressed = true;
+        context = [];
+        if (movingContainer){
+            scrollx = sscrollx;
+            scrolly = sscrolly;
+        }
+        pointerState = pointerStates.DEFAULT;
+        showdata();
+    }
     if (e.key == "Backspace" && context.length > 0) removeElements(context);
 });
 
@@ -160,6 +174,9 @@ document.addEventListener('keyup', function (e)
     if (e.key == "Control") ctrlPressed = false;
     if (e.key == "Alt") altPressed = false;
     if (e.key == "Meta") ctrlPressed = false;
+    if (e.key == "Escape"){
+        escPressed = false;
+    }
 });
 
 //------------------------------------=======############==========----------------------------------------
@@ -322,6 +339,8 @@ function mup(event)
         case pointerStates.CLICKED_CONTAINER:
             if (event.target.id == "container")
             {
+                movingContainer = false;
+
                 if (!deltaExceeded)
                 {
                     if (mouseMode == mouseModes.EDGE_CREATION)
@@ -337,6 +356,8 @@ function mup(event)
             break;
 
         case pointerStates.CLICKED_ELEMENT:
+
+            movingObject = false;
             // Special cases:
             if (mouseMode == mouseModes.EDGE_CREATION)
             {
@@ -395,6 +416,7 @@ function mmoving(event)
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
             // Compute new scroll position
+            movingContainer = true;
             deltaX = startX - event.clientX;
             deltaY = startY - event.clientY;
             scrollx = sscrollx - Math.round(deltaX * zoomfact);
