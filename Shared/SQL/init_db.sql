@@ -170,6 +170,8 @@ CREATE TABLE userAnswer (
         -- used in conjunction with `marked` to determine if a grade has been changed since it was last exported
         gradeLastExported   timestamp null default null,
 	seen_status             TINYINT(1) NOT NULL DEFAULT 0,
+	hash					VARCHAR(8),
+	password				VARCHAR(7),
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (uid) REFERENCES user(uid),

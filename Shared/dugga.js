@@ -14,6 +14,9 @@ var inParams = "UNK";
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 var pressTimer;
+
+var hash;
+
 var iconFlag = false;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
@@ -574,10 +577,11 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
+
 {
   
 	var pwd = randomPassword(); //Create random password for URL
-	var hash = generateHash(); // Generate Hash
+	hash = generateHash(); // Generate Hash
 	var url = createUrl(hash); //Create URL
 	
 	console.log("url: " + url);
@@ -947,7 +951,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+password,
 				dataType: "json",
 				success: returnedDugga
 			});
