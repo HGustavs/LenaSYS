@@ -135,11 +135,6 @@ table {
   font-family: Roboto, Arial Narrow;
 }
 
-th,
-td {
-  padding: 0;
-}
-
 h1 {
   /*color: #fff;
   font-size: 1.8em;
@@ -1341,6 +1336,8 @@ div .navButt:hover {
 }
 
 #loginbutton {
+  padding:0px;
+  margin:0px;
   cursor: pointer;
   height: 50px;
   width: 50px;
