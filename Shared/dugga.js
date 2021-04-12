@@ -17,6 +17,7 @@ var pressTimer;
 
 var hash;
 var pwd;
+var duggaTitle;
 
 var iconFlag = false;
 
@@ -1734,7 +1735,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 }
 
 function displayDuggaStatus(answer,grade,submitted,marked){
-		var str="<div style='display:flex;justify-content:center;align-items:center;'><div class='LightBox'>";
+		var str="<div style='display:flex;justify-content:center;align-items:center;'><div id='duggaTitleSibling' class='LightBox'>";
 		// Get proper dates
 		if(submitted!=="UNK") {
 			var t = submitted.split(/[- :]/);
@@ -1758,6 +1759,10 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		str+="</div>";
 		$("#duggaStatus").remove();
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
+
+		// Gets the element after "duggaTitleSibling"
+		var str = $("#duggaTitleSibling").next().text();
+		$("#duggaTitleSibling").next().text(duggaTitle + " - " + str);
 }
 
 function FABMouseOver(e) {
@@ -1935,3 +1940,9 @@ function sendFeedback(entryname){
 function returnedSubmitFeedback(){
 	$('#submitstatus').css({'color':'var(--color-green)',"display": "inline-block"}).text("Feedback saved");
 }
+
+function setDuggaTitle(title) {
+	duggaTitle = title;
+}
+
+
