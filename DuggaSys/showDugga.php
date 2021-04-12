@@ -114,6 +114,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			} else {
 				$output = str_replace('%TITLE%', 'Dugga viewer - ' . $duggatitle, $output);
 			}
+			echo "<script>setDuggaTitle('" . $duggatitle . "');</script>";
 			echo $output;
 			
 			echo "<script src='templates/".$duggafile.".js'></script>";
