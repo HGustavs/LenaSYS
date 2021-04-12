@@ -227,7 +227,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 					</div>
 			</div>
 			<div id='receiptInfo'></div>
-    		<textarea id="receipt" autofocus readonly></textarea>
+    		<textarea id="receipt" autofocus readonly style="resize: none;"></textarea>
  <!--    		<div class="button-row">
     			<input type='button' class='submit-button'  onclick="showEmailPopup();" value='Save Receipt'>
     			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
@@ -235,6 +235,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
     		<div id='emailPopup' style="display:block">
     			<div class='inputwrapper'><span>Ange din email:</span><input class='textinput' type='text' id='email' placeholder='Email' value=''/></div>
 				<div class="button-row">
+					<input type='button' class='submit-button'  onclick="copyHashtoCB();" value='Copy Hash'>
 					<input type='button' class='submit-button'  onclick="sendReceiptEmail();" value='Send Receipt'>
 					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
 				</div>
@@ -243,7 +244,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			<div id='urlAndPwd' style="display:block">
 				<div class="testasd"><span>URL: </span><span id='url'></span></div>
 				<div class="testasd"><span>Password: </span><span id='pwd'></span></div>
-				<div class="testasd"><span>Hash: </span><span id='hash'></span></div>
 			</div>
 
       </div>
@@ -251,6 +251,15 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	<!-- Login Box (receipt&Feedback-box ) End! -->
 
 <!---------------------=============####### Preview Popover #######=============--------------------->
+
+	<?php 
+	if(isSuperUser($userid)){
+    	echo '<script type="text/javascript">',
+    	'displayDownloadIcon();','noUploadForTeacher();',
+    	'</script>';
+	}?>
+
+
 
   <!--<div id='previewpopover' class='previewPopover' style='display:none;'>-->
   <div id='previewpopover' class='loginBoxContainer' style='display:none; align-items:stretch;'>
