@@ -518,7 +518,7 @@ function renderCell(col, celldata, cellid) {
 		var className = obj.class;
 		if (className == null || className === "null") {
 			className = "";
-			str = `<div class='access-dropdown' id='€{col}_${obj.uid}'><div style='color:#808080'>
+			str = `<div class='access-dropdown' id='${col}_${obj.uid}'><div style='color:#808080'>
 			None${className}</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
 			${makedivItem(className, filez['classes'], "class", "class")}</div>`;
 		}
