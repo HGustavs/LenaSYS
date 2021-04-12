@@ -16,7 +16,7 @@
     height:100%;
     pointer-events: none;
     z-index: -10;
-}		
+}
 
 #svgoverlay {
     position:absolute;
@@ -65,18 +65,13 @@
     display: inline-block;
     vertical-align: top;
     transform-origin: top left;            
-    transform: translate(20px,0px) rotate(90deg);	
-    cursor:pointer;			
+    transform: translate(20px,0px) rotate(90deg);	 
 }
 
 #options-pane-content {
     margin-left:20px;
     vertical-align: top;
     display: inline-block;
-}
-
-#entityPlacementFieldset {
-    display: none;
 }
 
 .show-options-pane {
@@ -95,7 +90,7 @@
     display: none;
 }	
 
-.zoomButtons:hover {
+.paneButtons:hover {
     cursor:pointer;
 }
 

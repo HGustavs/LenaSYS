@@ -261,6 +261,7 @@ function ddown(event)
 
 function mouseMode_onMouseUp(event)
 {
+    console.log("mouseup");
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
             var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
@@ -279,8 +280,10 @@ function mouseMode_onMouseUp(event)
             break;
 
         case mouseModes.EDGE_CREATION:
+            console.log(context.length, mouseMode);
             if (context.length > 1)
             {
+                console.log("CREATE EDGE");
                 lines.push({ 
                     id: makeRandomID(), 
                     fromID: context[0].id, 
@@ -288,7 +291,7 @@ function mouseMode_onMouseUp(event)
                     kind: "Normal" 
                 });
                 context = [];
-                redrawArrows();
+                updatepos(0,0);
             }
 
             break;
@@ -333,13 +336,22 @@ function mup(event)
             break;
 
         case pointerStates.CLICKED_ELEMENT:
-            if (context.length > 0)
+            // Special cases:
+            if (mouseMode == mouseModes.EDGE_CREATION)
             {
-                context.forEach(item => // Move all selected items
+                mouseMode_onMouseUp(event);
+            }
+            // Normal mode
+            else 
+            {
+                if (context.length > 0)
                 {
-                    eventElementId = event.target.parentElement.parentElement.id;
-                    setPos(item.id, deltaX, deltaY);
-                });
+                    context.forEach(item => // Move all selected items
+                    {
+                        eventElementId = event.target.parentElement.parentElement.id;
+                        setPos(item.id, deltaX, deltaY);
+                    });
+                }
             }
             break;
     
@@ -954,7 +966,8 @@ function updateSelection(ctxelement, x, y)
             context.push(ctxelement);
         } else
         {
-            if(mouseMode != 4){
+            if (mouseMode != mouseModes.EDGE_CREATION)
+            {
                 context = [];
             }
             context.push(ctxelement);

@@ -485,6 +485,7 @@
                 <input class="paneButtons" type="button" value="Entity" onclick='setMouseMode(2);setElementPlacementType(0);' /><br>
                 <input class="paneButtons" type="button" value="Relation" onclick='setMouseMode(2);setElementPlacementType(1);' /><br>
                 <input class="paneButtons" type="button" value="Attribute" onclick='setMouseMode(2);setElementPlacementType(2);' /><br>
+                <input class="paneButtons" id="cursorModeEdgeCreation" type="button" value="Edge Creation" onclick='setMouseMode(3);' /><br>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
             </fieldset>
         </div>
