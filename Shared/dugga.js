@@ -707,7 +707,7 @@ function convertDecimalToBase64(value) {
 	}
   }
   
-  convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
+  convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_";
   
   convertDecimalToBase64.getChars = function(num, res) {
 	var mod = num % 64,
