@@ -270,7 +270,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
     		<div style="position:absolute;left:0px;top:34px;bottom:0px;right:0px;">
     			<table width="100%" height="100%">
     					<tr>
-    							<td width="75%" height="100%" id="popPrev" style="border:2px inset #aaa;background:#bbb; overflow:scroll;">
+    							<td width="75%" height="100%" id="popPrev" style="display:none;border:2px inset #aaa;background:#bbb; overflow:scroll;">
     									<embed src="" width="100%" height="100%" type='application/pdf' />
     							</td>
     							<td height="100%" id='markMenuPlaceholderz' style="background:#bbb;">
