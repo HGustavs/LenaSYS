@@ -29,7 +29,7 @@
 				$_SESSION['coursevers'] = "UNK";
 	
 			// Always show home button which links to course homepage
-			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
+			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img alt='image of house' src='../Shared/icons/Home.svg'></a></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
@@ -41,40 +41,40 @@
 				echo "<td class='menuButton' style='display: inline-block;'>";
 				echo "    <div class='access menuButton'>";
   				echo "      <a id='accessBTN' class='navButt' title='Visit the analytics page' value='Analytics' href='analytic.php'>";
-  				echo "        <img src='../Shared/icons/analytic.svg' style='margin: 8px; height: 30px;'>";
+  				echo "        <img alt='image of bar chart' src='../Shared/icons/analytic.svg' style='margin: 8px; height: 30px;'>";
 				echo "      </a>";
 				echo "    </div>";
 				echo "</td>";
 			} else if($requestedService == "analytic.php") {
-				echo '<td class="navButt" id="home" title="Back"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img src="../Shared/icons/Up.svg"></a></td>';
+				echo '<td class="navButt" id="home" title="Back"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img alt="image of left arrow" src="../Shared/icons/Up.svg"></a></td>';
                 echo '<td class="vl"></td>';
-				echo '<td class="navButt analytic-navbutton GS" id="GeneralStats"><a onclick="loadGeneralStats()"><i class="fas fa-stream"></i></a><span class="navcomment">General Stats</span></td>';
-				echo '<td class="navButt analytic-navbutton CO" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline()"><i class="fas fa-users"></i></a><span class="navcomment">Currently Online</span></td>';
-				echo '<td class="navButt analytic-navbutton PG" id="PasswordGuessing"><a onclick="loadPasswordGuessing()"><i class="fas fa-key"></i></a><span class="navcomment">Password Guessing</span></td>';
-				echo '<td class="navButt analytic-navbutton OP" id="OSPercentage"><a onclick="loadOsPercentage()"><i class="fas fa-laptop"></i></a><span class="navcomment">OS Percentage</span></td>';
-				echo '<td class="navButt analytic-navbutton BP" id="Browserpercentage"><a onclick="loadBrowserPercentage()"><i class="fa fa-chrome"></i></a><span class="navcomment">Browser percentage</span></td>';
-				echo '<td class="navButt analytic-navbutton SU" id="Serviceusage"><a onclick="loadServiceUsage()"><i class="fas fa-chart-line"></i></a><span class="navcomment">Service usage</span></td>';
-				echo '<td class="navButt analytic-navbutton SS" id="Servicespeed"><a onclick="loadServiceAvgDuration()"><i class="fas fa-tachometer-alt"></i></a><span class="navcomment">Service speed</span></td>';
-				echo '<td class="navButt analytic-navbutton SC" id="Servicecrashes"><a onclick="loadServiceCrashes()"><i class="fas fa-car-crash"></i></a><span class="navcomment">Service crashes</span></td>';
-				echo '<td class="navButt analytic-navbutton FF" id="Fileinformation"><a onclick="loadFileInformation()"><i class="fas fa-file-pdf"></i></a><span class="navcomment">File information</span></td>';
-				echo '<td class="navButt analytic-navbutton PF" id="Pageinformation"><a onclick="loadPageInformation()"><i class="fas fa-globe-europe"></i></a><span class="navcomment">Page information</span></td>';
-				echo '<td class="navButt analytic-navbutton UI" id="Userinformation"><a onclick="loadUserInformation()"><i class="fas fa-user"></i></a><span class="navcomment">User information</span></td>';
-				echo '<td class="navButt analytic-navbutton CD" id="CourseDiskUsage"><a onclick="loadCourseDiskUsage()"><i class="fas fa-hdd"></i></a><span class="navcomment">Course disk usage</span></td>';
+				echo '<td class="navButt analytic-navbutton GS" id="GeneralStats"><a onclick="loadGeneralStats()"><i alt="image of stats list" class="fas fa-stream"></i></a><span class="navcomment">General Stats</span></td>';
+				echo '<td class="navButt analytic-navbutton CO" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline()"><i alt="image of multiple users" class="fas fa-users"></i></a><span class="navcomment">Currently Online</span></td>';
+				echo '<td class="navButt analytic-navbutton PG" id="PasswordGuessing"><a onclick="loadPasswordGuessing()"><i alt="image of key" class="fas fa-key"></i></a><span class="navcomment">Password Guessing</span></td>';
+				echo '<td class="navButt analytic-navbutton OP" id="OSPercentage"><a onclick="loadOsPercentage()"><i alt="image of laptop" class="fas fa-laptop"></i></a><span class="navcomment">OS Percentage</span></td>';
+				echo '<td class="navButt analytic-navbutton BP" id="Browserpercentage"><a onclick="loadBrowserPercentage()"><i alt="image of chrome browser" class="fa fa-chrome"></i></a><span class="navcomment">Browser percentage</span></td>';
+				echo '<td class="navButt analytic-navbutton SU" id="Serviceusage"><a onclick="loadServiceUsage()"><i alt="image of line chart" class="fas fa-chart-line"></i></a><span class="navcomment">Service usage</span></td>';
+				echo '<td class="navButt analytic-navbutton SS" id="Servicespeed"><a onclick="loadServiceAvgDuration()"><i alt="image of speedometer" class="fas fa-tachometer-alt"></i></a><span class="navcomment">Service speed</span></td>';
+				echo '<td class="navButt analytic-navbutton SC" id="Servicecrashes"><a onclick="loadServiceCrashes()"><i alt="image of car crash" class="fas fa-car-crash"></i></a><span class="navcomment">Service crashes</span></td>';
+				echo '<td class="navButt analytic-navbutton FF" id="Fileinformation"><a onclick="loadFileInformation()"><i alt="image of pdf file" class="fas fa-file-pdf"></i></a><span class="navcomment">File information</span></td>';
+				echo '<td class="navButt analytic-navbutton PF" id="Pageinformation"><a onclick="loadPageInformation()"><i alt="image of globe" class="fas fa-globe-europe"></i></a><span class="navcomment">Page information</span></td>';
+				echo '<td class="navButt analytic-navbutton UI" id="Userinformation"><a onclick="loadUserInformation()"><i alt="image of user" class="fas fa-user"></i></a><span class="navcomment">User information</span></td>';
+				echo '<td class="navButt analytic-navbutton CD" id="CourseDiskUsage"><a onclick="loadCourseDiskUsage()"><i alt="image of hard drive disk" class="fas fa-hdd"></i></a><span class="navcomment">Course disk usage</span></td>';
 				
 				echo '<td class="navButt analytic-navbutton" id="hamburger"><div class="hamContainer" id="ham" onclick="hamburgerToggle()"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div></div>';
 				echo '<ol class="hamburgerList" id="hamburgerList">';
-				echo '<li class="navButt analytic-navbutton GS2" id="GeneralStats"><a onclick="loadGeneralStats(); hamburgerToggle();" data-tooltip="General Stats"><i class="fas fa-stream"></i></a></li>';
-				echo '<li class="navButt analytic-navbutton CO2" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline(); hamburgerToggle();" data-tooltip="Currently Online"><i class="fas fa-users"></i></a></li>';
-				echo '<li class="navButt analytic-navbutton PG2" id="PasswordGuessing"><a onclick="loadPasswordGuessing(); hamburgerToggle();" data-tooltip="Password Guessing"><i class="fas fa-key"></i></a></li>';
-				echo '<li class="navButt analytic-navbutton OP2" id="OSPercentage"><a onclick="loadOsPercentage(); hamburgerToggle();" data-tooltip="OS Percentage"><i class="fas fa-laptop"></i></a></li>';
-				echo '<li class="navButt analytic-navbutton BP2" id="Browserpercentage"><a onclick="loadBrowserPercentage(); hamburgerToggle();" data-tooltip="Browser percentage"><i class="fa fa-chrome"></i></a></li>';
-				echo '<li class="navButt analytic-navbutton SU2" id="Serviceusage"><a onclick="loadServiceUsage(); hamburgerToggle();" data-tooltip="Service usage"><i class="fas fa-chart-line"></i></a></li>';
-				echo '<li class="navButt analytic-navbutton SS2" id="Servicespeed"><a onclick="loadServiceAvgDuration(); hamburgerToggle();" data-tooltip="Service speed"><i class="fas fa-tachometer-alt"></i></a></li>';
-				echo '<li class="navButt analytic-navbutton SC2" id="Servicecrashes"><a onclick="loadServiceCrashes(); hamburgerToggle();" data-tooltip="Service crashes"><i class="fas fa-car-crash"></i></a></li>';
-				echo '<li class="navButt analytic-navbutton FF2" id="Fileinformation"><a onclick="loadFileInformation(); hamburgerToggle();" data-tooltip="File information"><i class="fas fa-file-pdf"></i></a></li>';
-				echo '<li class="navButt analytic-navbutton PF2" id="Pageinformation"><a onclick="loadPageInformation(); hamburgerToggle();" data-tooltip="Page information"><i class="fas fa-globe-europe"></i></a></li>';
-				echo '<li class="navButt analytic-navbutton UI2" id="Userinformation"><a onclick="loadUserInformation(); hamburgerToggle();" data-tooltip="User information"><i class="fas fa-user"></i></a></li>';
-				echo '<li class="navButt analytic-navbutton CD2" id="CourseDiskUsage"><a onclick="loadCourseDiskUsage(); hamburgerToggle();" data-tooltip="Course disk usage"><i class="fas fa-hdd"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton GS2" id="GeneralStats"><a onclick="loadGeneralStats(); hamburgerToggle();" data-tooltip="General Stats"><i alt="image of stats list" class="fas fa-stream"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton CO2" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline(); hamburgerToggle();" data-tooltip="Currently Online"><i alt="image of multiple users" class="fas fa-users"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton PG2" id="PasswordGuessing"><a onclick="loadPasswordGuessing(); hamburgerToggle();" data-tooltip="Password Guessing"><i alt="image of keys" class="fas fa-key"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton OP2" id="OSPercentage"><a onclick="loadOsPercentage(); hamburgerToggle();" data-tooltip="OS Percentage"><i alt="image of laptop" class="fas fa-laptop"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton BP2" id="Browserpercentage"><a onclick="loadBrowserPercentage(); hamburgerToggle();" data-tooltip="Browser percentage"><i alt="image of chrome browser" class="fa fa-chrome"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton SU2" id="Serviceusage"><a onclick="loadServiceUsage(); hamburgerToggle();" data-tooltip="Service usage"><i alt="image of line chart" class="fas fa-chart-line"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton SS2" id="Servicespeed"><a onclick="loadServiceAvgDuration(); hamburgerToggle();" data-tooltip="Service speed"><i alt="image of speedometer" class="fas fa-tachometer-alt"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton SC2" id="Servicecrashes"><a onclick="loadServiceCrashes(); hamburgerToggle();" data-tooltip="Service crashes"><i alt="image of car crash" class="fas fa-car-crash"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton FF2" id="Fileinformation"><a onclick="loadFileInformation(); hamburgerToggle();" data-tooltip="File information"><i alt="image of pdf file" class="fas fa-file-pdf"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton PF2" id="Pageinformation"><a onclick="loadPageInformation(); hamburgerToggle();" data-tooltip="Page information"><i alt="image of globe" class="fas fa-globe-europe"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton UI2" id="Userinformation"><a onclick="loadUserInformation(); hamburgerToggle();" data-tooltip="User information"><i alt="image of user" class="fas fa-user"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton CD2" id="CourseDiskUsage"><a onclick="loadCourseDiskUsage(); hamburgerToggle();" data-tooltip="Course disk usage"><i alt="image of hard drive disk" class="fas fa-hdd"></i></a></li>';
 				echo '</ol>';
 				echo '</td>';
 
@@ -85,9 +85,9 @@
 			}
 			if($noup=='COURSE'){
 					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
-					echo "<img src='../Shared/icons/Up.svg'></a></td>";
+					echo "<img alt='image of left arrow' src='../Shared/icons/Up.svg'></a></td>";
 			}if ($noup == 'COURSE' && checkLogin()) {
-					echo "<td class='navButt' id='announcement' title='Announcement'><img src='../Shared/icons/announcement_icon.svg'></td>";
+					echo "<td class='navButt' id='announcement' title='Announcement'><img alt='image of megaphone' src='../Shared/icons/announcement_icon.svg'></td>";
 
 			}if ($noup == 'COURSE' && checkLogin() && (isStudentUser($_SESSION['uid']))) {
 					echo "<td class='navButt' id='feedback' title='Recent Feedback'><img src='../Shared/icons/feedback_icon.svg'></td>";
@@ -112,20 +112,20 @@
 						
 							echo "<td class='editVers' style='display: inline-block;margin-left:8px;'>";
 							echo "    <div class='editVers menuButton'>";
-              echo "      <img id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
+              echo "      <img alt='image of cogwheel' id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
 							echo "    </div>";
 							echo "</td>";
 					if(checklogin() && (isSuperUser($_SESSION['uid']) )) {			
 							echo "<td class='newVers' style='display: inline-block;margin-right:16px;'>";
 							echo "    <div class='newVers menuButton'>";
-              echo "      <img id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
+              echo "      <img alt='image of plus sign' id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
 							echo "    </div>";
 							echo "</td>";						
 					}
 							echo "<td class='results' style='display: inline-block;'>";
 							echo "    <div class='results menuButton'>";
 							echo "    <a id='resultsBTN' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "      <img id='versionPlus' class='navButt' src='../Shared/icons/marking_icon.svg'>";
+							echo "      <img alt='image of pen and paper' id='versionPlus' class='navButt' src='../Shared/icons/marking_icon.svg'>";
 							echo "    </a>";
 							echo "    </div>";
 							echo "</td>";
@@ -133,7 +133,7 @@
 							echo "<td class='tests' style='display: inline-block;'>";
 							echo "    <div class='tests menuButton'>";
 							echo "      <a id='testsBTN' title='Show tests' value='Tests' href='duggaed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "        <img id='testsBTN' class='navButt' src='../Shared/icons/test_icon.svg'>";
+							echo "        <img alt='image of document' id='testsBTN' class='navButt' src='../Shared/icons/test_icon.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
@@ -141,7 +141,7 @@
 							echo "<td class='files' style='display: inline-block;'>";
 							echo "    <div class='files menuButton'>";
               echo "      <a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
-              echo "        <img class='navButt' src='../Shared/icons/files_icon.svg'>";
+              echo "        <img alt='image of electrical plug' class='navButt' src='../Shared/icons/files_icon.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
@@ -173,7 +173,7 @@
 								echo "<td class='coursePage' style='display: inline-block;'>";
 								echo "    <div class='course menuButton'>";
 								echo " 		<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
-								echo "        <img id='courseIMG' value='Course' class='navButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
+								echo "        <img alt='image of redirection' id='courseIMG' value='Course' class='navButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
 								echo "		</a>";
 								echo "    </div>";
 								echo "</td>";
@@ -182,7 +182,7 @@
 							echo "<td class='access menuButton' style='display: inline-block;'>";
 							echo "    <div class='access menuButton'>";
               echo "      <a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-              echo "        <img class='navButt' src='../Shared/icons/lock_symbol.svg'>";
+              echo "        <img alt='image of lock' class='navButt' src='../Shared/icons/lock_symbol.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
@@ -302,10 +302,10 @@
 	
 			if(checklogin()) {
 				echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
-				echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
+				echo "<td id='loginbutton' class='loggedin'><img alt='image of logout' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
 			}else{
 				echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
-				echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
+				echo "<td id='loginbutton' class='loggedout'><img alt='image of login' id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
 			}
 
 			echo "</tr></table>";
