@@ -518,7 +518,7 @@ function renderCell(col, celldata, cellid) {
 		var className = obj.class;
 		if (className == null || className === "null") {
 			className = "";
-			str = `<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'>
+			str = `<div class='access-dropdown' id='€{col}_${obj.uid}'><div style='color:#808080'>
 			None${className}</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
 			${makedivItem(className, filez['classes'], "class", "class")}</div>`;
 		}
@@ -567,7 +567,7 @@ function renderCell(col, celldata, cellid) {
 		for (var submission of filez['submissions']) {
             if (obj.uid === submission.uid) {
                 str += `<img class='oldSubmissionIcon' title='View old version'
-				src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>`;
+				src='../Shared/icons/DocumentDark.svg' onclick='showVersion(${submission.vers})'>`;
                 break;
             }
         };
