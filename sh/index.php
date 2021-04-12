@@ -72,9 +72,10 @@ function queryToUrl($course, $assignment){
 
 	return $url; 
 }
-
-header("Location: ". queryToUrl($course, $assignment));
-exit();
+if($course == "UNK" || $assignment == "UNK"){
+    header("Location: ". queryToUrl($course, $assignment));
+    exit();
+}
 
 $pdo = null;
 ?>
