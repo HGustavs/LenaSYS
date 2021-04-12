@@ -14,6 +14,10 @@ var inParams = "UNK";
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 var pressTimer;
+
+var hash;
+var pwd;
+
 var iconFlag = false;
 
 var hash;
@@ -576,9 +580,11 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
+
 {
   
-	var pwd = randomPassword(); //Create random password for URL
+	pwd = randomPassword(); //Create random password for URL
+
 	hash = generateHash(); // Generate Hash
 	var url = createUrl(hash); //Create URL
 	
@@ -949,7 +955,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd,
 				dataType: "json",
 				success: returnedDugga
 			});
@@ -1572,15 +1578,16 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 										tab+="<a href='"+filez[i].content+"' ><img title='Download' src='../Shared/icons/file_download.svg' /></a>";
 								} else {
 									if(iconFlag){
-                                        tab+="<a href='"+filelink+"' ><img title='Download' src='../Shared/icons/file_download.svg' /></a>";
+										tab+="<a href='"+filelink+"' ><img title='Download' src='../Shared/icons/file_download.svg' /></a>";
+										
+										// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
+										if (ctype == "pdf") {
+											tab +="\t<tab><a href='"+filelink+"' target='_blank'><img title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
+										} 
                                     }
                                     else{
 										tab+="<img style='opacity: 0;' src='../Shared/icons/file_download.svg' />";
                                     }
-								}
-								// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
-								if (ctype == "pdf") {
-									tab +="\t<tab><a href='"+filelink+"' target='_blank'><img title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
 								}
 								tab+="</td>";
 							}
@@ -1599,14 +1606,14 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].content+"</span>";
 								}
 							}else if(ctype == "zip" || ctype == "rar"){
-								tab+="<span style='cursor: pointer;text-decoration:underline;'>";
-								tab += "<a href="+filez[i].filepath+filez[i].filename+filez[i].seq+'.'+filez[i].extension+">";
+                
+								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
 								if (mediumMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</a></span>";
+									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
 								} else if (mobileMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</a></span>";
+									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</span>";
 								} else {
-									tab+=filez[i].filename+"."+filez[i].extension+"</a></span>";
+									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
 								}
 							} else {
 
