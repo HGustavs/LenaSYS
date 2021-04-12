@@ -235,6 +235,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
     		<div id='emailPopup' style="display:block">
     			<div class='inputwrapper'><span>Ange din email:</span><input class='textinput' type='text' id='email' placeholder='Email' value=''/></div>
 				<div class="button-row">
+					<input type='button' class='submit-button'  onclick="copyURLtoCB();" value='Copy URL'>
 					<input type='button' class='submit-button'  onclick="sendReceiptEmail();" value='Send Receipt'>
 					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
 				</div>
