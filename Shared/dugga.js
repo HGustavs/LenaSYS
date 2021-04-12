@@ -16,7 +16,7 @@ var querystring=parseGet();
 var pressTimer;
 var iconFlag = false;
 
-var url;
+var hash;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -579,8 +579,8 @@ function saveDuggaResult(citstr)
 {
   
 	var pwd = randomPassword(); //Create random password for URL
-	var hash = generateHash(); // Generate Hash
-	url = createUrl(hash); //Create URL
+	hash = generateHash(); // Generate Hash
+	var url = createUrl(hash); //Create URL
 	
 	console.log("url: " + url);
 	console.log("pwd: " + pwd);
@@ -1348,10 +1348,10 @@ function sendReceiptEmail(){
 //----------------------------------------------------------------------------------
 // copyURLtoCB: Copy the url to user clipboard
 //----------------------------------------------------------------------------------
-function copyURLtoCB() {
+function copyHashtoCB() {
 	var $temp = $("<input>");
     $("body").append($temp);
-    $temp.val(url).select();
+    $temp.val(hash).select();
     document.execCommand("copy");
 	$temp.remove();
 }
