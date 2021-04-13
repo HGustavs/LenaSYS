@@ -373,7 +373,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	<?php 
 	if(isSuperUser($userid)){
     	echo '<script type="text/javascript">',
-    	'displayDownloadIcon();',
+    	'displayDownloadIcon();', 'noUploadForTeacher();',
     	'</script>';
 	}?>
 
