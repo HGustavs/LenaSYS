@@ -179,6 +179,7 @@ document.addEventListener('keydown', function (e)
 document.addEventListener('keyup', function (e)
 {
     cursorStyle = document.getElementById("container").style;
+    
     /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
     if (e.key == "Control") ctrlPressed = false;
     if (e.key == "Alt") altPressed = false;
@@ -459,13 +460,21 @@ function mup(event)
 
 function mouseMode_onMouseMove(event)
 {
+    cursorStyle = document.getElementById("container").style;
+    
      switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
+            cursorStyle.cursor = "cell";
+            break;
         case mouseModes.EDGE_CREATION:
+            cursorStyle.cursor = "grab";
+            break;
         case mouseModes.POINTER: // do nothing
+            cursorStyle.cursor = "pointer";
             break;
 
         case mouseModes.BOX_SELECTION:
+            cursorStyle.cursor = "crosshair";
             boxSelect_Update(event.clientX, event.clientY);
             updatepos(0, 0);
             break;
