@@ -267,13 +267,12 @@ if($demo){
 		}
 	}
 
-	if($newvariant!="UNK"){
+	
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
 		$query->bindParam(':vid', $localStorageVariant);
 		$query->execute();
 		$result = $query->fetch();
-		$param=html_entity_decode($result['param']);	
-	}
+		$param=html_entity_decode($result['param']);
 
 }else{
 
