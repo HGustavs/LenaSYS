@@ -1497,8 +1497,8 @@ function drawSwimlanes() {
       addNumb = 0;
       tempNumb = 2;
     }else if(i > 0){
-      tempNumb = 0;
-      addNumb = 2;
+      tempNumb = 2;
+      addNumb = 10;
     }
     var widthAdjuster = weekwidth+addNumb;
     str += "<rect x='" + (i * widthAdjuster) + "' y='" + (15) + "' width='" +
