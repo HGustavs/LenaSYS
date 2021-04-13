@@ -46,12 +46,12 @@
 				echo "    </div>";
 				echo "</td>";
 			} else if($requestedService == "analytic.php") {
-				echo '<td class="navButt" id="home" title="Back"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img alt="go back icon icon" src="../Shared/icons/Up.svg"></a></td>';
+				echo '<td class="navButt" id="home" title="Back"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img alt="go back icon" src="../Shared/icons/Up.svg"></a></td>';
                 echo '<td class="vl"></td>';
 				echo '<td class="navButt analytic-navbutton GS" id="GeneralStats"><a onclick="loadGeneralStats()"><i alt="general stats icon" class="fas fa-stream"></i></a><span class="navcomment">General Stats</span></td>';
 				echo '<td class="navButt analytic-navbutton CO" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline()"><i alt="currently online icon" class="fas fa-users"></i></a><span class="navcomment">Currently Online</span></td>';
 				echo '<td class="navButt analytic-navbutton PG" id="PasswordGuessing"><a onclick="loadPasswordGuessing()"><i alt="password guessing icon" class="fas fa-key"></i></a><span class="navcomment">Password Guessing</span></td>';
-				echo '<td class="navButt analytic-navbutton OP" id="OSPercentage"><a onclick="loadOsPercentage()"><i alt="laptop icon" class="fas fa-laptop"></i></a><span class="navcomment">OS Percentage</span></td>';
+				echo '<td class="navButt analytic-navbutton OP" id="OSPercentage"><a onclick="loadOsPercentage()"><i alt="load os icon" class="fas fa-laptop"></i></a><span class="navcomment">OS Percentage</span></td>';
 				echo '<td class="navButt analytic-navbutton BP" id="Browserpercentage"><a onclick="loadBrowserPercentage()"><i alt="chrome browser icon" class="fa fa-chrome"></i></a><span class="navcomment">Browser percentage</span></td>';
 				echo '<td class="navButt analytic-navbutton SU" id="Serviceusage"><a onclick="loadServiceUsage()"><i alt="service usage icon" class="fas fa-chart-line"></i></a><span class="navcomment">Service usage</span></td>';
 				echo '<td class="navButt analytic-navbutton SS" id="Servicespeed"><a onclick="loadServiceAvgDuration()"><i alt="service speed icon" class="fas fa-tachometer-alt"></i></a><span class="navcomment">Service speed</span></td>';
@@ -66,7 +66,7 @@
 				echo '<li class="navButt analytic-navbutton GS2" id="GeneralStats"><a onclick="loadGeneralStats(); hamburgerToggle();" data-tooltip="General Stats"><i alt="general stats icon" class="fas fa-stream"></i></a></li>';
 				echo '<li class="navButt analytic-navbutton CO2" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline(); hamburgerToggle();" data-tooltip="Currently Online"><i alt="currently online icon" class="fas fa-users"></i></a></li>';
 				echo '<li class="navButt analytic-navbutton PG2" id="PasswordGuessing"><a onclick="loadPasswordGuessing(); hamburgerToggle();" data-tooltip="Password Guessing"><i alt="password guessing icon" class="fas fa-key"></i></a></li>';
-				echo '<li class="navButt analytic-navbutton OP2" id="OSPercentage"><a onclick="loadOsPercentage(); hamburgerToggle();" data-tooltip="OS Percentage"><i alt="laptop icon" class="fas fa-laptop"></i></a></li>';
+				echo '<li class="navButt analytic-navbutton OP2" id="OSPercentage"><a onclick="loadOsPercentage(); hamburgerToggle();" data-tooltip="OS Percentage"><i alt="load os icon" class="fas fa-laptop"></i></a></li>';
 				echo '<li class="navButt analytic-navbutton BP2" id="Browserpercentage"><a onclick="loadBrowserPercentage(); hamburgerToggle();" data-tooltip="Browser percentage"><i alt="chrome browser icon" class="fa fa-chrome"></i></a></li>';
 				echo '<li class="navButt analytic-navbutton SU2" id="Serviceusage"><a onclick="loadServiceUsage(); hamburgerToggle();" data-tooltip="Service usage"><i alt="service usage icon" class="fas fa-chart-line"></i></a></li>';
 				echo '<li class="navButt analytic-navbutton SS2" id="Servicespeed"><a onclick="loadServiceAvgDuration(); hamburgerToggle();" data-tooltip="Service speed"><i alt="service speed icon" class="fas fa-tachometer-alt"></i></a></li>';
