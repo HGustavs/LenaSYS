@@ -573,6 +573,23 @@ function onMouseModeDisabled(mode)
             break;
     }
 }
+//Function to enable or disable backgroundgrid.
+function enableGrid(){
+
+    var grid = document.getElementById("svggrid");
+    var buttonName = document.getElementById("gridButton");
+
+    if(grid.style.display == "block")
+    {
+        grid.style.display = "none";
+        buttonName.value = "Enable Grid";
+        
+    }else
+    {
+        grid.style.display = "block";
+        buttonName.value = "Disable Grid";
+    }
+}
 
 function setElementPlacementType(type = 0)
 {
