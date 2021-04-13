@@ -21,10 +21,10 @@ function GetAssigment ($hash){
 	WHERE hash='$hash'";	
 	$URL = "";
 	foreach ($pdo->query($sql) as $row){
-		echo $row["cid"] . " | " . $row["vers"] . " | " $row["quiz"]; 
+		echo $row["cid"] . " | " . $row["vers"] . " | " . $row["quiz"]; 
 		$URL = '../DuggaSys/showDugga.php?courseid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}';
 	}	
-	return $URL
+	return $URL;
 }
 
 
