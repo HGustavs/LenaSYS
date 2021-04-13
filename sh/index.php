@@ -16,16 +16,22 @@ session_start();
 
 function GetAssigment ($hash){
 	global $pdo;
-	$sql =
+
+	// Defaults to 404 Error page if no match to hash is found
+	$URL = "../errorpages/404.php";
+
+	// Database request form
+	$sql =	
 	"SELECT useranswer.cid, useranswer.vers, useranswer.quiz, useranswer.moment, course.coursename
 	FROM useranswer 
 	INNER JOIN course ON useranswer.cid=course.cid
-	WHERE hash='$hash'";	
-	$URL = "";
+	WHERE hash='{$hash}'";	
+
+	// There should only be one match to the hash value in database
 	foreach ($pdo->query($sql) as $row){
-		echo $row["cid"] . " | " . $row["vers"] . " | " . $row["quiz"] . " | " . $row["moment"] . " | " . $row["coursename"] . "<br>"; 
 		$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&&courseid={$row["cid"]}&cid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}";
 	}	
+	
 	return $URL;
 }
 
@@ -65,7 +71,7 @@ if($assignment != "UNK"){
 		*/
 		$gotdata = GetAssigment($assignment);
 		//echo $gotdata;
-		header("Location: $gotdata");
+		header("Location: {$gotdata}");
 	}elseif(($course == "Databaskonstruktion" || $course == "dbk")){
 		if($assignment=="a1"){
 			header("Location: https://dugga.iit.his.se/DuggaSys/showdoc.php?cid=4&coursevers=82452&fname=minimikrav_m1a.md");
