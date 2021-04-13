@@ -673,7 +673,7 @@ CREATE TABLE coursekeys(
 	coursecode				VARCHAR(45) NULL UNIQUE,
 	coursename				VARCHAR(80) NULL,
 	activeversion			VARCHAR(8),
-	PRIMARY KEY (cid)
+	PRIMARY KEY (urlkey)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 /*
