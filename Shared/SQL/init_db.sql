@@ -668,7 +668,7 @@ CREATE TABLE userduggafeedback(
 
 /* Table for url shorthands, historic matches to ensure consistency */
 CREATE TABLE coursekeys(
-	cid						INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	cid						INT UNSIGNED NOT NULL,
 	urlkey                  VARCHAR(100) NOT NULL UNIQUE,
 	coursecode				VARCHAR(45) NULL UNIQUE,
 	coursename				VARCHAR(80) NULL,
