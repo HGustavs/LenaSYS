@@ -670,8 +670,8 @@ function returnedSection(data) {
 
     str += "<div id='Sectionlistc'>";
 
-    str += "<div id='statisticsSwimlanes' class='statisticsInnerBox'>";
-		str += "<svg id='swimlaneSVG' width='300px' style='margin: 10px;' viewBox='0 0 300 255' xmlns='http://www.w3.org/2000/svg'></svg>";
+    str += "<div id='statisticsSwimlanes' style='border: 2px solid darkgray; background-color: var(--color-sectioned-table-lo);'>";
+		str += "<svg id='swimlaneSVG' width='800px' style='margin: 10px; margin-top: 0px;' viewBox='0 0 800 200' xmlns='http://www.w3.org/2000/svg'></svg>";
 		str += "</div>";
 
 
@@ -1481,7 +1481,7 @@ function drawSwimlanes() {
   var weekLength = Math.ceil((enddate - startdate) / (7 * 24 * 60 * 60 * 1000));
   var currentWeek = weeksBetween(current, startdate);
   var daySinceStart = Math.ceil((current - startdate) / (24 * 60 * 60 * 1000));
-  var daywidth = 4;
+  var daywidth = 10;
   var weekwidth = daywidth * 7;
   var colwidth = 60;
   var weekheight = 25;
@@ -1578,7 +1578,6 @@ function drawSwimlanes() {
   y2='${(((1 + deadlineEntries.length) * weekheight) + 15)}' stroke-width='4' stroke='red' />`;
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
   document.getElementById("swimlaneSVG").innerHTML = str;
-  document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 " + svgHeight);
 
 }
 
