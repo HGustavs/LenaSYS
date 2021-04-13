@@ -184,15 +184,15 @@ document.addEventListener('keyup', function (e)
     if (e.key == "d") setMouseMode(mouseModes.EDGE_CREATION);
 
     if (e.key == "e"){
-        setMouseMode(2); 
+        setMouseMode(mouseModes.PLACING_ELEMENT); 
         setElementPlacementType(0);
     }
     if (e.key == "r"){
-        setMouseMode(2); 
+        setMouseMode(mouseModes.PLACING_ELEMENT); 
         setElementPlacementType(1);
     }
     if (e.key == "a"){
-        setMouseMode(2); 
+        setMouseMode(mouseModes.PLACING_ELEMENT); 
         setElementPlacementType(2);
     }
 });
