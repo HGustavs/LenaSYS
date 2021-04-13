@@ -191,8 +191,8 @@
 		<div id='statisticsList' style="">
 				<div id='statistics' class='statistics' style='cursor:pointer;'>
 						<div style='margin:10px;'>
-								<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>
-								<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>
+								<img alt="minimize deadline section icon" src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>
+								<img alt="expand deadline section icon" src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>
 						</div>
 						<div class='nowrap' style='padding-left:5px' title='statistics'>
 								<span class='listentries-span noselect' style='writing-mode:vertical-rl;text-orientation: sideways;'>Deadlines</span>
