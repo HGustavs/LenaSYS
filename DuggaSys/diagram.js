@@ -120,9 +120,21 @@ var defaults = {
     defaultERattr: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 }
 }
 // States used for ER-elements 
-var attrState=["normal","multiple","key","computed"];
-var entityState=["normal","weak"];
-var relationState=["normal","weak"];
+const attrState = {
+    NORMAL: "normal",
+    MULTIPLE: "multiple",
+    KEY: "key",
+    COMPUTED: "computed",
+};
+const entityState = {
+    NORMAL: "normal",
+    WEAK: "weak",
+    
+};
+const relationState = {
+    NORMAL: "normal",
+    WEAK: "weak",
+};
 
 // Demo data - read / write from service later on
 var data = [
@@ -1162,27 +1174,21 @@ function generateContextProperties()
             }
         }
         //Creates drop down for changing state of ER elements
+        var value;
         if(element.kind=="ERAttr"){
-            str += '<select id="propertySelect">';
-                for (i = 0; i < attrState.length; i++) {
-                    str += '<option value='+attrState[i]+'>'+ attrState[i] +'</option>';
-                }
-            str += '</select>';
+            value = Object.values(attrState);
         }
         else if(element.kind=="EREntity"){
-            str += '<select id="propertySelect">';
-                for (i = 0; i < entityState.length; i++) {
-                    str += '<option value='+entityState[i]+'>'+ entityState[i] +'</option>';
-                }
-            str += '</select>';
+            value = Object.values(entityState);
         }
         else if(element.kind=="ERRelation"){
-            str += '<select id="propertySelect">';
-                for (i = 0; i < relationState.length; i++) {
-                    str += '<option value='+relationState[i]+'>'+ relationState[i] +'</option>';
-                }
-            str += '</select>';
+            value = Object.values(relationState);
         }
+        str += '<select id="propertySelect">';
+            for (i = 0; i < value.length; i++) {
+                str += '<option value='+value[i]+'>'+ value[i] +'</option>';
+            }
+        str += '</select>';
         str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
 
     }
