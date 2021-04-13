@@ -451,11 +451,8 @@ function mouseMode_onMouseMove(event)
 {
      switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
-            break;
         case mouseModes.EDGE_CREATION:
-            break;
         case mouseModes.POINTER: // do nothing
-            break;
 
         case mouseModes.BOX_SELECTION:
             boxSelect_Update(event.clientX, event.clientY);
