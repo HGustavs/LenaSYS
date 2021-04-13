@@ -104,14 +104,21 @@
 					<div class="tooltipDugga"><span id="tooltipLast" style="display: none;" class="tooltipDuggatext">  </span></div>
 					<input placeholder="Gregersson" class='textinput' type='text' id='addLastname' onchange="tooltipLast()" onkeyup="tooltipLast()"/>
 				</div>
-				<div class='flexwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></div>
-				<div class='flexwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></div>
+				<div class='flexwrapper'>
+					<span>CID:</span>
+					<div class="tooltipDugga"><span id="tooltipCID" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="91001" class='textinput' id='addCid' onchange="tooltipCID()" onkeyup="tooltipCID()" />
+				</div>
 				<div class='flexwrapper'>
 					<span>PID:</span>
 					<div class="tooltipDugga"><span id="tooltipPID" style="display: none;" class="tooltipDuggatext">  </span></div>
 					<input placeholder="WEBUG" class='textinput' id='addPid' onchange="tooltipPID()" onkeyup="tooltipPID()"/>
 				</div>
-				<div class='flexwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></div>
+				<div class='flexwrapper'>
+					<span>Term:</span>
+					<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="HT-11" class='textinput' id='addTerm'onchange="tooltipTerm()" onkeyup="tooltipTerm()">
+				</div>
 				<div class='flexwrapper'>
 					<span>Email:</span>
 					<div class="tooltipDugga"><span id="tooltipEmail" style="display: none;" class="tooltipDuggatext">  </span></div>

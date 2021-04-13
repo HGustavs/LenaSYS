@@ -147,7 +147,6 @@ function addSingleUser() {
 	newUser.push($("#addCid").val());
 	newUser.push($("#addTerm").val());
 	newUser.push($("#addPid").val());
-	newUser.push($("#addNy").val());
 
 	if (!verifyUserInputForm(newUser)) return;
 	var outerArr = new Array();
@@ -191,6 +190,12 @@ function verifyUserInputForm(input) {
 
 	// Verify email
 	if(verifyString = validateEmail(input[3])) {	// Returns null if there is no error
+		alert(verifyString);
+		return false;
+	}
+
+	// Verify term
+	if(verifyString = validateTerm(input[5])) {	// Returns null if there is no error
 		alert(verifyString);
 		return false;
 	}
@@ -287,10 +292,10 @@ function validateName(name)
 	const length = name.length;
 	if(length < 2)	return 'Name is too short\nMinimum two characters';	// Too short
 	if(length > 50)	return 'Name is too long\nMaximum 50 characters';	// Too long
-
+	if(name[0] !== name[0].toLocaleUpperCase()) return 'Name must start with a capital letter';
 	const formatTest = /^[a-zA-ZäöåÄÖÅ]+$/;		// Expected charachters
 	if(!formatTest.test(name))
-		return 'Name contains illegal charachters';
+		return 'Name contains illegal characters, can only contain A-Ö';
 
 	return null;	// The provided name is alright
 }
@@ -337,6 +342,8 @@ function validatePID(pid)
 	const length = pid.length;
 	if(length < 2)	return 'PID is too short\nMinimum two characters';	// Too short
 	if(length > 10)	return 'PID is too long\nMaximum ten characters';	// Too long
+	if(pid.indexOf(" ") != -1) return 'PID can NOT contian an empty space'; //contians empty space
+	if(pid.match(/[a-z]/gm)!=null) return 'PID can only contain Upper case letters'; //contians lower case space
 
 	return null;	// The provided PID is alright
 }
@@ -394,6 +401,59 @@ function tooltipEmail()
 	} else {															// No error, fade out tooltip
 		$('#tooltipEmail').fadeOut();
 		emailInputBox.style.backgroundColor = '#fff';
+	}
+}
+
+//---------------------------------------------------------------------------------------------------
+// validateTerm(term)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+
+function validateTerm(term)
+{
+	if(term.match(/^(HT-|VT-)\d{2}$/gm) == null ) return 'The term must be in format "VT-10" '; //must follow "HT/VT-XX" format
+	return null; //the provided term is correct
+}
+function tooltipTerm()
+{
+	var error = validateTerm(document.getElementById('addTerm').value);
+	var termInputBox = document.getElementById('addTerm');
+
+	if(error && document.getElementById('addTerm').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipTerm').innerHTML = error;
+		$('#tooltipTerm').fadeIn();
+		termInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipTerm').fadeOut();
+		termInputBox.style.backgroundColor = '#fff';
+	}
+}
+
+//---------------------------------------------------------------------------------------------------
+// validateCIDcid)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+
+function validateCID(cid)
+{
+	const length = cid.length;
+	if(length > 5)	return 'CID is too long\nMaximum FIVE characters';	// Too long
+	if(cid.match(/^\d{1,5}$/gm) == null ) return 'The CID can not contain any letters'; // checks if there are non numerical
+
+	return null;
+}
+function tooltipCID()
+{
+	var error = validateCID(document.getElementById('addCid').value);
+	var cidInputBox = document.getElementById('addCid');
+
+	if(error && document.getElementById('addCid').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipCID').innerHTML = error;
+		$('#tooltipCID').fadeIn();
+		cidInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipCID').fadeOut();
+		cidInputBox.style.backgroundColor = '#fff';
 	}
 }
 
