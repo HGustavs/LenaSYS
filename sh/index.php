@@ -17,7 +17,7 @@ session_start();
 function GetAssigment ($hash){
 	global $pdo;
 
-	// Defaults to 404 Error page if no match to hash is found
+	// Defaults to 404 Error page if no there is no match in the database for the hash value
 	$URL = "../errorpages/404.php";
 
 	// Database request form
@@ -27,7 +27,7 @@ function GetAssigment ($hash){
 	INNER JOIN course ON useranswer.cid=course.cid
 	WHERE hash='{$hash}'";	
 
-	// There should only be one match to the hash value in database
+	// There should only be one match to the hash value in database as the hash is uniqe
 	foreach ($pdo->query($sql) as $row){
 		$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&&courseid={$row["cid"]}&cid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}";
 	}	
@@ -61,17 +61,8 @@ function courseQuery($course){
 if($assignment != "UNK"){
 	// Check if it's an URL shorthand for assignments
 	if($course == "UNK"){
-		/*
-		foreach($pdo->query( 'SELECT * FROM passwordURL;' ) as $row){
-			
-			if($assignment == $row["shortURL"]){
-				header("Location: " + $row['URL']);
-				}
-		}
-		*/
-		$gotdata = GetAssigment($assignment);
-		//echo $gotdata;
-		header("Location: {$gotdata}");
+		$assignmentURL = GetAssigment($assignment);
+		header("Location: {$assignmentURL}");
 	}elseif(($course == "Databaskonstruktion" || $course == "dbk")){
 		if($assignment=="a1"){
 			header("Location: https://dugga.iit.his.se/DuggaSys/showdoc.php?cid=4&coursevers=82452&fname=minimikrav_m1a.md");
