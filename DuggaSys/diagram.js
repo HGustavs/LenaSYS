@@ -445,10 +445,10 @@ function mmoving(event)
             var element = document.getElementById(context[0].id);
 
             if (startNodeRight){
-                data[index].width = (startWidth - deltaX);
+                data[index].width = (startWidth - (deltaX / zoomfact));
             } else{
                 data[index].x = screenToDiagramCoordinates((startX - deltaX), 0).x;
-                data[index].width = (startWidth + deltaX);
+                data[index].width = (startWidth + (deltaX / zoomfact));
             }
 
             element.remove();
