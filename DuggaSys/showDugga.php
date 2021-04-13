@@ -233,17 +233,17 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	var variant = '<?php echo $savedvariant; ?>';
 	var dugga = '<?php echo $duggaid; ?>';
 	var deadline = '<?php echo $deadline; ?>';
-	var moment;
+	var variant;
 	var newvariant = '<?php echo $newvariant; ?>';
 	var savedvariant = '<?php echo $savedvariant; ?>';
 
-	if (localStorage.getItem("moment") == null)
-		localStorage.setItem("moment", '<?php echo $moment; ?>');
-	moment = localStorage.getItem("moment");
+	if (localStorage.getItem("variant") == null)
+		localStorage.setItem("variant", newvariant);
+	variant = JSON.parse(localStorage.getItem("variant"));
+	
 
-	setMoment(moment)
+	setVariant(variant);
 
-	console.log("moment: " + moment)
 	console.log("newvariant: " + newvariant)
 	console.log("savedvariant: " + savedvariant)
 
