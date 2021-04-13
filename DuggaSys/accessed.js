@@ -147,7 +147,6 @@ function addSingleUser() {
 	newUser.push($("#addCid").val());
 	newUser.push($("#addTerm").val());
 	newUser.push($("#addPid").val());
-	newUser.push($("#addNy").val());
 
 	if (!verifyUserInputForm(newUser)) return;
 	var outerArr = new Array();

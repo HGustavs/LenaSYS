@@ -110,11 +110,6 @@
 					<input placeholder="91001" class='textinput' id='addCid' onchange="tooltipCID()" onkeyup="tooltipCID()" />
 				</div>
 				<div class='flexwrapper'>
-					<span>Ny:</span>
-					<div class="tooltipDugga"><span id="tooltipNy" style="display: none;" class="tooltipDuggatext">  </span></div>
-					<input placeholder="Ny" class='textinput' id='addNy'>
-				</div>
-				<div class='flexwrapper'>
 					<span>PID:</span>
 					<div class="tooltipDugga"><span id="tooltipPID" style="display: none;" class="tooltipDuggatext">  </span></div>
 					<input placeholder="WEBUG" class='textinput' id='addPid' onchange="tooltipPID()" onkeyup="tooltipPID()"/>
