@@ -482,12 +482,24 @@
         <div>
             <fieldset id='cursorModeFieldset'>
                 <legend>Cursor Modes</legend>
-                <input class="paneButtons" id="cursorModePanning" type="button" value="Mouse Selection" onclick='setMouseMode(0);' /><br>
-                <input class="paneButtons" id="cursorModeBoxBoxSelect" type="button" value="Box Select" onclick='setMouseMode(1);' /><br>
-                <input class="paneButtons" type="button" value="Entity" onclick='setMouseMode(2);setElementPlacementType(0);' /><br>
-                <input class="paneButtons" type="button" value="Relation" onclick='setMouseMode(2);setElementPlacementType(1);' /><br>
-                <input class="paneButtons" type="button" value="Attribute" onclick='setMouseMode(2);setElementPlacementType(2);' /><br>
-                <input class="paneButtons" id="cursorModeEdgeCreation" type="button" value="Edge Creation" onclick='setMouseMode(3);' /><br>
+                <div class="diagramIcons" onclick='setMouseMode(0);'>
+                    <img src="../Shared/icons/diagram_pointer.svg"/>
+                </div>
+                <div class="diagramIcons" onclick='setMouseMode(1);'>
+                    <img src="../Shared/icons/diagram_box_select.svg"/>
+                </div>
+                <div class="diagramIcons" onclick='setMouseMode(2); setElementPlacementType(0);'>
+                    <img src="../Shared/icons/diagram_entity.svg"/>
+                </div>
+                <div class="diagramIcons" onclick='setMouseMode(2); setElementPlacementType(1);'>
+                    <img src="../Shared/icons/diagram_relation.svg"/>
+                </div>
+                <div class="diagramIcons" onclick='setMouseMode(2); setElementPlacementType(2);'>
+                    <img src="../Shared/icons/diagram_attribute.svg"/>
+                </div>
+                <div class="diagramIcons" onclick='setMouseMode(3);'>
+                    <img src="../Shared/icons/diagram_line.svg"/>
+                </div>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
             </fieldset>
             <fieldset id='propertyFieldset'>
