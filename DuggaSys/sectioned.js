@@ -670,8 +670,8 @@ function returnedSection(data) {
 
     str += "<div id='Sectionlistc'>";
 
-    str += "<div id='statisticsSwimlanes' style='border: 2px solid darkgray; background-color: var(--color-sectioned-table-lo);'>";
-		str += "<svg id='swimlaneSVG' width='800px' style='margin: 10px; margin-top: 0px;' viewBox='0 0 800 200' xmlns='http://www.w3.org/2000/svg'></svg>";
+    str += "<div id='statisticsSwimlanes' style='height: 200px; overflow: auto; border: 2px solid darkgray; background-color: var(--color-sectioned-table-lo);'>";
+		str += "<svg id='swimlaneSVG' width='800px' style='margin: 10px; margin-top: 0px;' xmlns='http://www.w3.org/2000/svg'></svg>";
 		str += "</div>";
 
 
@@ -1578,6 +1578,7 @@ function drawSwimlanes() {
   y2='${(((1 + deadlineEntries.length) * weekheight) + 15)}' stroke-width='4' stroke='red' />`;
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
   document.getElementById("swimlaneSVG").innerHTML = str;
+  document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 800 " + svgHeight);
 
 }
 
