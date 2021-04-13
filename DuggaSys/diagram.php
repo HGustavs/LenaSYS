@@ -467,6 +467,19 @@
         <div id="ruler-x"></div>
         <div id="ruler-y"></div>
     </div>
+    <!-- Diagram grid -->
+    <div id="svggrid">
+        <svg id="svgbacklayer">
+            <defs>
+            <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+                <rect width="100" height="100" fill="url(#smallGrid)"/>
+                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-dasharray="5,5" d="M5 20 l215 0" stroke-width="1"/>
+            </pattern>
+            </defs>
+
+            <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>  
+    </div>
     <div id="fab" onclick="fab_action();">+</div> <!-- Big (+) button -->
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
@@ -488,6 +501,7 @@
                 <input class="paneButtons" type="button" value="Relation" onclick='setMouseMode(2);setElementPlacementType(1);' /><br>
                 <input class="paneButtons" type="button" value="Attribute" onclick='setMouseMode(2);setElementPlacementType(2);' /><br>
                 <input class="paneButtons" id="cursorModeEdgeCreation" type="button" value="Edge Creation" onclick='setMouseMode(3);' /><br>
+                <input class="paneButtons" id="gridButton" type="button" value="Enable Grid" onclick='enableGrid()' /><br>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
             </fieldset>
             <fieldset id='propertyFieldset'>
