@@ -496,9 +496,11 @@ function mmoving(event)
             var index = findIndex(data, context[0].id);
             var element = document.getElementById(context[0].id);
 
-            if (startNodeRight){
+            const minWidth = 20; // Declare the minimal with of an object
+
+            if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 data[index].width = (startWidth - (deltaX / zoomfact));
-            } else{
+            } else if (!startNodeRight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 data[index].x = screenToDiagramCoordinates((startX - deltaX), 0).x;
                 data[index].width = (startWidth + (deltaX / zoomfact));
             }
@@ -1083,7 +1085,6 @@ function updatepos(deltaX, deltaY)
     str = "";
     str = boxSelect_Draw(str);
 
-    if (context.length > 0) str += getMarker();
     document.getElementById("svgoverlay").innerHTML=str;
 
     // Updates nodes for resizing
@@ -1115,18 +1116,6 @@ function drawSelectionBox(str)
             if (x2 > highX) highX = x2;
             if (y1 < lowY) lowY = y1;
             if (y2 > highY) highY = y2;
-        }
-
-        //If there only is one entity is selected
-        if (context.length == 1) {
-            // Add nodes to the marked selection
-            const nodeDiameter = 10;
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX - 10}' y='${lowY - 10}'/>`; //Top-Left
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY - 10}'/>`; //Top-Right
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX - 10}' y='${highY}'/>`; //Bottom-Left
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`; //Bottom-Right
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX - 10}' y='${lowY + ((highY - lowY) / 2) - 5}'/>`; //Middle-Left
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY - lowY) / 2) - 5}'/>`; //Middle-Right
         }
 
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
@@ -1488,31 +1477,6 @@ function redrawArrows(str)
     return str;
 }
 
-function getMarker(){
-    var str = "";
-        var lowX = context[0].x1;
-        var highX = context[0].x2;
-        var x1;
-        var x2;
-        var lowY = context[0].y1;
-        var highY = context[0].y2;
-        var y1;
-        var y2;
-        for (var i = 0; i < context.length; i++)
-        {
-            x1 = context[i].x1;
-            x2 = context[i].x2;
-            y1 = context[i].y1;
-            y2 = context[i].y2;
-            if (x1 < lowX) lowX = x1;
-            if (x2 > highX) highX = x2;
-            if (y1 < lowY) lowY = y1;
-            if (y2 > highY) highY = y2;
-        }
-        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
-
-        return str;
-}
 function addNodes(element) {
 
     var elementDiv = document.getElementById(element.id)
