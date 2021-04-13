@@ -7,6 +7,6 @@ RewriteEngine On
 
 RewriteRule ^/?sh/([0-9a-zA-Z_-]+)$ /LenaSYS/sh/index.php?c=$1 [NC]
 
-#RewriteRule ^/?sh/([a-zA-Z]+)$ /LenaSYS/sh/index.php?c=$1 [NC]
-#RewriteRule ^/?sh/([a-zA-Z]+)/([a-zA-Z]+)$ /LenaSYS/sh/index.php?c=$1&a=$2 [NC]
-</IfModule>
+RewriteRule ^/?sh/([a-zA-Z]+)$ /LenaSYS/sh/index.php?c=$1 [NC]
+RewriteRule ^/?sh/([a-zA-Z]+)/([a-zA-Z]+)$ /LenaSYS/sh/index.php?c=$1&a=$2 [NC]
+#</IfModule>

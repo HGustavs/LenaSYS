@@ -5,6 +5,8 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
+require 'course.php';
+require 'query.php';
 
 //Gets the parameter from the URL. If the parameter is not availble then return UNK
 $course = getOPG("c");
@@ -13,6 +15,7 @@ $assignment = getOPG("a");
 // Connect to database and start session
 pdoConnect();
 session_start();
+
 
 function GetAssigment ($hash){
 	global $pdo;
@@ -36,27 +39,6 @@ function GetAssigment ($hash){
 }
 
 
-function courseQuery($course){
-	global $pdo;
-	$c = '"%' . $course . '%"';
-	$sql = "SELECT cid, coursename, activeversion, coursecode 
-	 FROM course 
-	 WHERE cid LIKE " . $c . " OR coursename LIKE " . $c . 
-	 " OR activeversion LIKE " . $c . 
-	 " OR coursecode LIKE " . $c . "
-	 AND visibility=1";
-	$array = array();
-
-	foreach ($pdo->query($sql) as $row) {
-		$array['cid'] = $row['cid'];
-		$array['coursename'] = $row['coursename'];
-		$array['coursecode'] = $row['coursecode'];
-		$array['courseservers'] = $row['activeversion'];
-	}
-	return $array;
-}
-
-//echo "|".$course."|".$assignment."|";
 
 if($assignment != "UNK"){
 	// Check if it's an URL shorthand for assignments
@@ -75,22 +57,12 @@ if($assignment != "UNK"){
 	return $array;
 }
 
-function queryToUrl($course, $assignment){
-	global $pdo;
-	if($course != 'UNK')
-		$c = courseQuery($course);
-	else echo "Unknown Course";
-	if($assignment != 'UNK'){
-		$a = assignmentQuery($assignment);
-		$url = "/LenasSYS/DuggaSys/showdoc.php?cid=" . $a['cid'] ."&coursevers=" . $c['courseservers'] ."&fname=" . $a['filename'];
-	}
-	else $url = "/LenaSYS/DuggaSys/sectioned.php?courseid=" . $c['cid'] ."&coursename=" . $c['coursename'] . "&coursevers=" .  $c['courseservers'];
+$q = queryToUrl($course, $assignment);
 
-	return $url; 
-}
-if($course == "UNK" || $assignment == "UNK"){
-    header("Location: ". queryToUrl($course, $assignment));
-    exit();
+if($q != 'UNK'){
+	header("Location: ". $q);
+	exit();
+
 }
 
 $pdo = null;
