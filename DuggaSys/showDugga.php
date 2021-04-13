@@ -219,6 +219,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			} else {
 				$output = str_replace('%TITLE%', 'Dugga viewer - ' . $duggatitle, $output);
 			}
+			echo "<script>setDuggaTitle('" . $duggatitle . "');</script>";
 			echo $output;
 			
 			echo "<script src='templates/".$duggafile.".js'></script>";
@@ -256,7 +257,8 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
-			if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
+			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
+			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 
@@ -384,7 +386,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
     		<div style="position:absolute;left:0px;top:34px;bottom:0px;right:0px;">
     			<table width="100%" height="100%">
     					<tr>
-    							<td width="75%" height="100%" id="popPrev" style="border:2px inset #aaa;background:#bbb; overflow:scroll;">
+    							<td width="75%" height="100%" id="popPrev" style="display:none;border:2px inset #aaa;background:#bbb; overflow:scroll;">
     									<embed src="" width="100%" height="100%" type='application/pdf' />
     							</td>
     							<td height="100%" id='markMenuPlaceholderz' style="background:#bbb;">

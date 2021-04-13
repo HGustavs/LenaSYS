@@ -17,7 +17,11 @@ var pressTimer;
 
 var hash;
 var pwd;
+
 var localStorageVariant;
+
+var duggaTitle;
+
 
 var iconFlag = false;
 
@@ -28,6 +32,8 @@ $(function () {  // Used to set the position of the FAB above the cookie message
 		$(".fixed-action-button").css("bottom", "64px");
 	}
 })
+
+
 
 //----------------------------------------------------------------------------------
 // get all the indexes where a substring (needle) is found in a string (haystack)
@@ -673,7 +679,11 @@ function saveDuggaResult(citstr)
 function generateHash() {
     var randNum = getRandomNumber();
     var hash = createHash(randNum);
-    return convertDecimalToBase64(hash);
+	var hash64 = convertDecimalToBase64(hash);
+	hash64 = hash64.replace("+", "-");
+	hash = hash64.replace("/", "_");
+
+    return hash;
 
 	function createHash(num) {
 		var string = num.toString();
@@ -723,7 +733,6 @@ function convertDecimalToBase64(value) {
 	if (remaining <= 0) { return chars; }
 	return convertDecimalToBase64.getChars(remaining, chars);
   };
-
 
 //----------------------------------------------------------------------------------
 // changeURL: Patch-in for changeURL from project 2014 code
@@ -1611,9 +1620,8 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								} else {
 									tab+=filez[i].content+"</span>";
 								}
-							}else if(ctype == "zip" || ctype == "rar"){
-                
-								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
+							}else if(ctype == "zip" || ctype == "rar"){                
+								tab+="<span>";
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
 								} else if (mobileMediaQuery.matches) {
@@ -1675,7 +1683,8 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		tab+="</table>"
 
 		document.getElementById(cfield+"Prev").innerHTML=tab;
-}
+	}
+
 
 function makeForm(cfield, ctype){
 	if (inParams !== "UNK") {
@@ -1736,9 +1745,9 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 				str += '<iframe allowtransparency="true" style="background: #FFFFFF;" src="'+filename+'" width="100%" height="100%" />';
 		} else {
 		 		if (fileext === "pdf"){
-						str += '<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" />';
+						//str += '<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" />';
 		 		} else if (fileext === "zip" || fileext === "rar"){
-		 				str += '<a href="'+filepath+filename+fileseq+'.'+fileext+'"/>'+filename+'.'+fileext+'</a>';
+		 				//str += '<a href="'+filepath+filename+fileseq+'.'+fileext+'"/>'+filename+'.'+fileext+'</a>';
 		 		} else if (fileext === "txt"){
 		 				str+="<pre style='width: 100%;height: 100%;box-sizing: border-box;'>"+dataV["files"][inParams["moment"]][fileindex].content+"</pre>";
 		 		}
@@ -1754,7 +1763,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 }
 
 function displayDuggaStatus(answer,grade,submitted,marked){
-		var str="<div style='display:flex;justify-content:center;align-items:center;'><div class='LightBox'>";
+		var str="<div style='display:flex;justify-content:center;align-items:center;'><div id='duggaTitleSibling' class='LightBox'>";
 		// Get proper dates
 		if(submitted!=="UNK") {
 			var t = submitted.split(/[- :]/);
@@ -1778,6 +1787,9 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		str+="</div>";
 		$("#duggaStatus").remove();
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
+
+		// Adds dugga title next to the text "Instructions"
+		$('h3:contains("Instructions")').text(duggaTitle + " - Instructions");
 }
 
 function FABMouseOver(e) {
@@ -1956,4 +1968,9 @@ function returnedSubmitFeedback(){
 	$('#submitstatus').css({'color':'var(--color-green)',"display": "inline-block"}).text("Feedback saved");
 }
 
+
+
+function setDuggaTitle(title) {
+	duggaTitle = title;
+}
 
