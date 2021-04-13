@@ -453,10 +453,12 @@
     </div>
 
     <!-- Diagram drawing system canvas. -->
+
     <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)'></div> <!-- Contains all elements (items) -->
      <!-- One svg layer for background stuff and one for foreground stuff -->
     <svg id="svgbacklayer" preserveAspectRatio="none"></svg>
     <svg id="svgoverlay" preserveAspectRatio="none"></svg>
+
 	<canvas id='canvasOverlay'></canvas>
     <!-- Diagram rules -->
     <div id="rulerOverlay">
@@ -487,6 +489,9 @@
                 <input class="paneButtons" type="button" value="Attribute" onclick='setMouseMode(2);setElementPlacementType(2);' /><br>
                 <input class="paneButtons" id="cursorModeEdgeCreation" type="button" value="Edge Creation" onclick='setMouseMode(3);' /><br>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
+            </fieldset>
+            <fieldset id='propertyFieldset'>
+                
             </fieldset>
         </div>
     </div>
