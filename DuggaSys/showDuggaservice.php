@@ -1,5 +1,7 @@
 <?php 
 
+error_log("--------------- Start document ----------------", 0);
+sleep ( 2 );
 //---------------------------------------------------------------------------------------------------------------
 // showDuggaservice - Retrieve duggor, services save and update duggor
 //---------------------------------------------------------------------------------------------------------------
@@ -40,6 +42,7 @@ $entryname=getOP('entryname');
 $hash=getOP('hash');
 $password=getOP('password');
 $showall="true";
+$localStorageVariant= getOP('variant');
 
 $param = "UNK";
 $savedanswer = "";
@@ -130,7 +133,11 @@ if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
 if($demo){
 	// We are not logged in - provide the first variant as demo.
-	$param=html_entity_decode($variants[0]['param']);	
+	$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+	$query->bindParam(':vid', $localStorageVariant);
+	$query->execute();
+	$result = $query->fetch();
+	$param=html_entity_decode($result['param']);	
 } else if ($hr){
 	// We are part of the course - assign variant
 	// See if we already have a result i.e. a chosen variant.
@@ -604,4 +611,5 @@ echo json_encode($array);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php",$userid,$info);
 
+error_log("--------------- End document ----------------", 0);
 ?>
