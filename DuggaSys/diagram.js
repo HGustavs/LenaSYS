@@ -16,6 +16,7 @@ var cwidth, cheight;
 var hasRecursion = false;
 var startWidth;
 var startNodeRight = false;
+var cursorStyle;
 
 // Zoom variables
 var zoomfact = 1.0;
@@ -177,6 +178,8 @@ document.addEventListener('keydown', function (e)
 
 document.addEventListener('keyup', function (e)
 {
+    cursorStyle = document.getElementById("container").style;
+    /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
     if (e.key == "Control") ctrlPressed = false;
     if (e.key == "Alt") altPressed = false;
     if (e.key == "Meta") ctrlPressed = false;
@@ -187,17 +190,32 @@ document.addEventListener('keyup', function (e)
     if (e.key == "m") setMouseMode(mouseModes.POINTER);
     if (e.key == "d") setMouseMode(mouseModes.EDGE_CREATION);
 
+    if (e.key == "b"){
+        setMouseMode(mouseModes.BOX_SELECTION);
+        cursorStyle.cursor = "crosshair";
+    }
+    if (e.key == "m"){
+        setMouseMode(mouseModes.POINTER);
+        cursorStyle.cursor = "pointer";
+    }
+    if (e.key == "d"){
+        setMouseMode(mouseModes.EDGE_CREATION);
+        cursorStyle.cursor = "grab";
+    }
     if (e.key == "e"){
         setMouseMode(mouseModes.PLACING_ELEMENT); 
         setElementPlacementType(0);
+        cursorStyle.cursor = "cell";
     }
     if (e.key == "r"){
         setMouseMode(mouseModes.PLACING_ELEMENT); 
         setElementPlacementType(1);
+        cursorStyle.cursor = "cell";
     }
     if (e.key == "a"){
         setMouseMode(mouseModes.PLACING_ELEMENT); 
         setElementPlacementType(2);
+        cursorStyle.cursor = "cell";
     }
 });
 
