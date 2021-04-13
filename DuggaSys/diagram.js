@@ -179,11 +179,6 @@ document.addEventListener('keyup', function (e)
     if (e.key == "Escape"){
         escPressed = false;
     }
-});
-
-
-document.addEventListener("keypress", function (e)
-{
     if (e.key == "b") setMouseMode(mouseModes.BOX_SELECTION);
     if (e.key == "m") setMouseMode(mouseModes.POINTER);
     if (e.key == "d") setMouseMode(mouseModes.EDGE_CREATION);
