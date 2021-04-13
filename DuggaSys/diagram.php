@@ -465,6 +465,7 @@
         <div id="ruler-x"></div>
         <div id="ruler-y"></div>
     </div>
+    <!-- Diagram grid -->
     <div id="svggrid">
         <svg id="svgbacklayer">
             <defs>
