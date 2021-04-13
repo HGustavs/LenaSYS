@@ -1942,6 +1942,11 @@ input {
   line-height: 30px;
 }
 
+.inputwrapper #startdate, .inputwrapper #enddate{
+  font-family:"Roboto";
+  color:#7f7f7f;
+}
+
 .loginBox .inputwrapper span {
   float: left;
 }
