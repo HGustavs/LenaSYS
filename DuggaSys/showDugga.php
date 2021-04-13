@@ -244,7 +244,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 
 	setVariant(variant);
 
-	console.log("newvariant: " + newvariant)
+	console.log("newvariants: " + newvariant)
 	console.log("savedvariant: " + savedvariant)
 
 	var previusAllottedAssignmentVariants = JSON.parse(localStorage.getItem("allottedAssignmentVariants"));
