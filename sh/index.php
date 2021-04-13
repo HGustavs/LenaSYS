@@ -5,6 +5,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
+require 'course.php';
 
 //Gets the parameter from the URL. If the parameter is not availble then return UNK
 $course = getOPG("c");
@@ -14,28 +15,29 @@ $assignment = getOPG("a");
 pdoConnect();
 session_start();
 
-
-
 function courseQuery($course){
 	global $pdo;
 	$c = '"%' . $course . '%"';
 	$sql = "SELECT cid, coursename, activeversion, coursecode 
 	 FROM course 
-	 WHERE cid LIKE " . $c . " OR coursename LIKE " . $c . 
+	 WHERE (cid LIKE " . $c . " OR coursename LIKE " . $c . 
 	 " OR activeversion LIKE " . $c . 
-	 " OR coursecode LIKE " . $c . "
+	 " OR coursecode LIKE " . $c . ")
 	 AND visibility=1";
 	$array = array();
 
 	foreach ($pdo->query($sql) as $row) {
-		$array['cid'] = $row['cid'];
-		$array['coursename'] = $row['coursename'];
-		$array['coursecode'] = $row['coursecode'];
-		$array['courseservers'] = $row['activeversion'];
+		$cid = $row['cid'];
+		$coursename = $row['coursename'];
+		$coursecode = $row['coursecode'];
+		$courseservers = $row['activeversion'];
+		$course = new Course($cid, $coursename, $coursecode, $courseservers);
+		$array[] = $course;
 	}
 	return $array;
 }
 
+/*
 echo "|".$course."|".$assignment."|";
 
 if($assignment != "UNK"){
@@ -57,24 +59,45 @@ if($assignment != "UNK"){
 	}
 	return $array;
 }
-
+*/
 function queryToUrl($course, $assignment){
-	global $pdo;
-	if($course != 'UNK')
-		$c = courseQuery($course);
-	else echo "Unknown Course";
+	global $pdo;	
+	$array = courseQuery($course);
+	$count = count($array);
+
+	if($count != 1){
+		echo "Try a more narrow query, these were your matches:<br>";
+		for($i=0; $i<$count;$i++){
+		$array[$i]->test();
+		}
+		return 'UNK';
+	} 
+	
+	$c = $array[0];
+
+	if($course == 'UNK')
+		echo "Unknown Course";
 
 	if($assignment != 'UNK'){
 		$a = assignmentQuery($assignment);
-		$url = "/LenasSYS/DuggaSys/showdoc.php?cid=" . $a['cid'] ."&coursevers=" . $c['courseservers'] ."&fname=" . $a['filename'];
+		$url = "/LenasSYS/DuggaSys/showdoc.php?cid=" . 
+			$a['cid'] ."&coursevers=" . 
+			$c['courseservers'] ."&fname=" . 
+			$a['filename'];
 	}
-	else $url = "/LenaSYS/DuggaSys/sectioned.php?courseid=" . $c['cid'] ."&coursename=" . $c['coursename'] . "&coursevers=" .  $c['courseservers'];
+	else $url = "/LenaSYS/DuggaSys/sectioned.php?courseid=" . 
+		$c->getCid() ."&coursename=" . 
+		$c->getCoursename() . "&coursevers=" .  
+		$c->getCourseserver();
 
 	return $url; 
 }
-if($course == "UNK" || $assignment == "UNK"){
-    header("Location: ". queryToUrl($course, $assignment));
-    exit();
+
+$q = queryToUrl($course, $assignment);
+
+if($q != 'UNK'){
+	header("Location: ". queryToUrl($course, $assignment));
+	exit();
 }
 
 $pdo = null;
