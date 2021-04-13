@@ -291,7 +291,11 @@ function ddown(event)
         case mouseModes.EDGE_CREATION:
             startX = event.clientX;
             startY = event.clientY;
-            pointerState = pointerStates.CLICKED_ELEMENT;
+
+            if (!altPressed)
+            {
+                pointerState = pointerStates.CLICKED_ELEMENT;
+            }
 
             var element = data[findIndex(data, event.currentTarget.id)];
             if (element != null && !context.includes(element) || !ctrlPressed)
