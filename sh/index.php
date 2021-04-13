@@ -16,14 +16,15 @@ session_start();
 
 function GetAssigment ($hash){
 	global $pdo;
-	$sql ="SELECT useranswer.cid, useranswer.vers, useranswer.quiz, useranswer.moment, course.coursename
+	$sql =
+	"SELECT useranswer.cid, useranswer.vers, useranswer.quiz, useranswer.moment, course.coursename
 	FROM useranswer 
 	INNER JOIN course ON useranswer.cid=course.cid
 	WHERE hash='$hash'";	
 	$URL = "";
 	foreach ($pdo->query($sql) as $row){
 		echo $row["cid"] . " | " . $row["vers"] . " | " . $row["quiz"] . " | " . $row["moment"] . " | " . $row["coursename"] . "<br>"; 
-		$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&courseid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}";
+		$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&&courseid={$row["cid"]}&cid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}";
 	}	
 	return $URL;
 }
@@ -63,6 +64,7 @@ if($assignment != "UNK"){
 		}
 		*/
 		$gotdata = GetAssigment($assignment);
+		//echo $gotdata;
 		header("Location: $gotdata");
 	}elseif(($course == "Databaskonstruktion" || $course == "dbk")){
 		if($assignment=="a1"){
