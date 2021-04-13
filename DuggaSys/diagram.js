@@ -1046,6 +1046,8 @@ function generateContextProperties()
     {
         var element = context[0];
         var state=["none","multiple","key","computed"];
+        var state2=["none","weak"];
+        var state3=["none","identifying"];
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
         for (const property in element) {
             switch (property.toLowerCase()) {
@@ -1060,11 +1062,23 @@ function generateContextProperties()
         }
         console.log(element);
         if(element.kind=="ERAttr"){
-
-        
         str += '<select id="propertySelect">';
         for (i = 0; i < state.length; i++) {
             str += '<option value='+state[i]+'>'+ state[i] +'</option>';
+        }
+        str += '</select>';
+    }
+    else if(element.kind=="EREntity"){
+        str += '<select id="propertySelect">';
+        for (i = 0; i < state2.length; i++) {
+            str += '<option value='+state2[i]+'>'+ state2[i] +'</option>';
+        }
+        str += '</select>';
+    }
+    else if(element.kind=="ERRelation"){
+        str += '<select id="propertySelect">';
+        for (i = 0; i < state3.length; i++) {
+            str += '<option value='+state3[i]+'>'+ state3[i] +'</option>';
         }
         str += '</select>';
     }
