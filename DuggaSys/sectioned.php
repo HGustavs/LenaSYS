@@ -207,9 +207,6 @@
 								<table id="deadlineList" style="table-layout: fixed;width:300px;">
 								</table>
 						</div>
-						<div id='statisticsSwimlanes' class='statisticsInnerBox' style=''>
-								<svg id="swimlaneSVG" width='300px' style='margin: 10px;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
-						</div>
 				</div>
 				<div class="statisticsContentBottom"></div>
 		</div>
@@ -217,7 +214,6 @@
 
 		<!-- Section List -->
 		<div id='Sectionlisti'>
-
 		</div>
 	</div>
 	<div class="course">

@@ -665,7 +665,15 @@ function returnedSection(data) {
       hiddenInline = "inline";
     }
 
+
+    
+
     str += "<div id='Sectionlistc'>";
+
+    str += "<div id='statisticsSwimlanes' class='statisticsInnerBox'>";
+		str += "<svg id='swimlaneSVG' width='300px' style='margin: 10px;' viewBox='0 0 300 255' xmlns='http://www.w3.org/2000/svg'></svg>";
+		str += "</div>";
+
 
     // For now we only have two kinds of sections
     if (data['entries'].length > 0) {
@@ -1433,7 +1441,7 @@ function drawSwimlanes() {
 
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
- // var current = new Date(2015, 9, 14);
+  var current = new Date(2015, 9, 14);
 
   var deadlineEntries = [];
   var momentEntries = {};
