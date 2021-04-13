@@ -666,6 +666,14 @@ CREATE TABLE userduggafeedback(
 	FOREIGN KEY (lid) REFERENCES listentries(lid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
+CREATE TABLE coursekeys(
+	cid						INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	key                     VARCHAR(100) NOT NULL UNIQUE,
+	coursecode				VARCHAR(45) NULL UNIQUE,
+	coursename				VARCHAR(80) NULL,
+	activeversion			VARCHAR(8),
+	PRIMARY KEY (cid)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 /*
 	This view eases the process of determining how many hp a student with a specific uid
 	in a specific course cid has finished. See the example below.
