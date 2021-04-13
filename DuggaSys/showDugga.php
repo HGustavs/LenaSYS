@@ -190,20 +190,20 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 */
 
   //If we have permission, and if file exists, include javascript file.
-		if(isSuperUser($userid)){
-      // If the user is a super user, get all quizes.
-			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-		}else if($readaccess){
-      // If logged in and has access, get all private(requires login) and public quizes.
-			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz AND listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND (visible=1 OR visible=2) AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-		} else {
-		// If not logged in, get only the public quizes.
-			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND visible=1 AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-		}
-		$query->bindParam(':cid', $cid);
-		$query->bindParam(':vers', $vers);
-		$query->bindParam(':quizid', $quizid);
-		$result = $query->execute();
+  if(isSuperUser($userid)){
+	// If the user is a super user, get all quizes.
+		  $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+	  }else if($readaccess){
+	// If logged in and has access, get all private(requires login) and public quizes.
+		  $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND (visible=1 OR visible=2) AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+	  } else {
+	// If not logged in, get only the public quizes.
+	$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND visible=1 AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+  }
+	  $query->bindParam(':cid', $cid);
+	  $query->bindParam(':vers', $vers);
+	  $query->bindParam(':quizid', $quizid);
+	  $result = $query->execute();
 
 		if($row = $query->fetch(PDO::FETCH_ASSOC)){
 			$duggatitle=$row['entryname'];
