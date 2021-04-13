@@ -114,17 +114,21 @@ var defaults = {
     defaultERrelation: { kind: "ERRelation", fill: "White", Stroke: "Black", width: 60, height: 60 },
     defaultERattr: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 }
 }
+// States used for ER-elements 
+var attrState=["normal","multiple","key","computed"];
+var entityState=["normal","weak"];
+var relationState=["normal","weak"];
 
 // Demo data - read / write from service later on
 var data = [
     { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
-    { name: "Loan", x: 140, y: 250, width: 200, height: 50, kind: "EREntity", id: LoanID, isWeak: true },
+    { name: "Loan", x: 140, y: 250, width: 200, height: 50, kind: "EREntity", id: LoanID, state: "weak" },
     { name: "Car", x: 500, y: 140, width: 200, height: 50, kind: "EREntity", id: CarID },
     { name: "Owns", x: 420, y: 60, width: 60, height: 60, kind: "ERRelation", id: HasID },
-    { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, isWeak: true },
-    { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, isComputed: true },
+    { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, state: "weak" },
+    { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, state: "computed" },
     { name: "Name", x: 170, y: 50, width: 90, height: 45, kind: "ERAttr", id: NameID },
-    { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, isProperty: "multiple" },
+    { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, state: "multiple" },
     { name: "F Name", x: 120, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
     { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
 ];
@@ -517,6 +521,7 @@ function rectsIntersect (left, right)
 
 function setMouseMode(mode)
 {   
+
     if (enumContainsPropertyValue(mode, mouseModes))
     {
         // Enable all buttons but the current mode one
@@ -878,12 +883,12 @@ function showdata()
         } else if (element.kind == "ERAttr")
         {
             var dash = "";
-            if (element.isComputed == true)
+            if (element.state == "computed")
             {
                 dash = "stroke-dasharray='4 4'";
             }
             var multi = "";
-            if (element.isProperty == "multiple")
+            if (element.state == "multiple")
             {
                 multi = `
                     <path d="M${linew * multioffs},${hboxh} 
@@ -908,7 +913,7 @@ function showdata()
         } else if (element.kind == "ERRelation")
         {
             var weak = "";
-            if (element.isWeak == true)
+            if (element.state == "weak")
             {
               
                 weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
@@ -1024,17 +1029,12 @@ function saveProperties()
     showdata();
     updatepos(0,0);
 }
-
-function changeProperty()
+function changeState()
 {
-var property = document.getElementById("propertySelect");
-var value = property.value;
-var element = context[0];
-element.isProperty = value;
-showdata();
-updatepos(0,0);
+    var property = document.getElementById("propertySelect").value;
+    var element = context[0];
+    element.state = property;
 }
-
 function generateContextProperties()
 {
     var propSet = document.getElementById("propertyFieldset");
@@ -1045,9 +1045,6 @@ function generateContextProperties()
     if (context.length == 1)
     {
         var element = context[0];
-        var state=["none","multiple","key","computed"];
-        var state2=["none","weak"];
-        var state3=["none","identifying"];
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
         for (const property in element) {
             switch (property.toLowerCase()) {
@@ -1060,29 +1057,29 @@ function generateContextProperties()
                     break;
             }
         }
-        console.log(element);
+        //Creates drop down for changing state of ER elements
         if(element.kind=="ERAttr"){
-        str += '<select id="propertySelect">';
-        for (i = 0; i < state.length; i++) {
-            str += '<option value='+state[i]+'>'+ state[i] +'</option>';
+            str += '<select id="propertySelect">';
+                for (i = 0; i < attrState.length; i++) {
+                    str += '<option value='+attrState[i]+'>'+ attrState[i] +'</option>';
+                }
+            str += '</select>';
         }
-        str += '</select>';
-    }
-    else if(element.kind=="EREntity"){
-        str += '<select id="propertySelect">';
-        for (i = 0; i < state2.length; i++) {
-            str += '<option value='+state2[i]+'>'+ state2[i] +'</option>';
+        else if(element.kind=="EREntity"){
+            str += '<select id="propertySelect">';
+                for (i = 0; i < entityState.length; i++) {
+                    str += '<option value='+entityState[i]+'>'+ entityState[i] +'</option>';
+                }
+            str += '</select>';
         }
-        str += '</select>';
-    }
-    else if(element.kind=="ERRelation"){
-        str += '<select id="propertySelect">';
-        for (i = 0; i < state3.length; i++) {
-            str += '<option value='+state3[i]+'>'+ state3[i] +'</option>';
+        else if(element.kind=="ERRelation"){
+            str += '<select id="propertySelect">';
+                for (i = 0; i < relationState.length; i++) {
+                    str += '<option value='+relationState[i]+'>'+ relationState[i] +'</option>';
+                }
+            str += '</select>';
         }
-        str += '</select>';
-    }
-        str+=`<br><br><input type="submit" value="Save" onclick="saveProperties(); changeProperty()">`;
+        str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
 
     }
     else if (context.length > 1)
