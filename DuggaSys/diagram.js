@@ -864,7 +864,7 @@ function setPos(id, x, y)
 //-------------------------------------------------------------------------------------------------
 
 // Generate all courses at appropriate zoom level
-function showdata()
+function showdata() // TODO : Refactoring??
 {
     var container = document.getElementById("container");
     var containerbox = container.getBoundingClientRect();
@@ -893,24 +893,31 @@ function showdata()
         var texth = Math.round(zoomfact * textheight);
         var hboxw = Math.round(element.width * zoomfact * 0.5);
         var hboxh = Math.round(element.height * zoomfact * 0.5);
+        
+        // Caclulate font width using some canvas magic
+        var font = ctx.font;
+        font = `${texth}px ${font.split('px')[1]}`;
+        ctx.font = font;
+        var textWidth = ctx.measureText(element.name).width;
+        
+        // If calculated size is larger than element width
+        const margin = 10;
+        var tooBig = (textWidth >= (boxw - (margin * 2)))
+        var xAnchor = tooBig ? margin : hboxw;
+        var vAlignment = tooBig ? "left" : "middle";
 
-        str += `
-				<div id='${element.id}'	class='element' onmousedown='ddown(event);' style='
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' style='
 						left:0px;
 						top:0px;
 						width:${boxw}px;
 						height:${boxh}px;
-						font-size:${texth}px;
-				'>`;
-        str += `<svg width='${boxw}' height='${boxh}' >`;
+						font-size:${texth}px;'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
         if (element.kind == "EREntity")
         {
-
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' 
                    stroke-width='${linew}' stroke='black' fill='#ffccdc' />
-                   <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text> 
-
-                   `;
+                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
 
         } else if (element.kind == "ERAttr")
         {
@@ -919,6 +926,7 @@ function showdata()
             {
                 dash = "stroke-dasharray='4 4'";
             }
+
             var multi = "";
             if (element.isMultiple == true)
             {
@@ -930,7 +938,7 @@ function showdata()
                     Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
                     stroke='black' fill='#ffccdc' stroke-width='${linew}' />`;
             }
-          
+
             str += `<path d="M${linew},${hboxh} 
                            Q${linew},${linew} ${hboxw},${linew} 
                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
@@ -940,7 +948,7 @@ function showdata()
                     
                     ${multi}
 
-                    <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
+                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
                     `;
         } else if (element.kind == "ERRelation")
         {
@@ -955,9 +963,8 @@ function showdata()
             str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
                    stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                    ${weak}
-                   <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
+                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
                    `;
-
         }
         str += "</svg>"
         str += "</div>";
@@ -1134,7 +1141,6 @@ function generateContextProperties()
         str += "<p>Pick only ONE element!</p>";
     }
 
-
     propSet.innerHTML = str;
 }
 
@@ -1301,6 +1307,7 @@ function redrawArrows(str)
     }
 
     // Make list of all connectors?
+    // TODO : What is this??
     connectors = [];
 
     for (var i = 0; i < lines.length; i++)
