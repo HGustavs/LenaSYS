@@ -178,8 +178,6 @@ document.addEventListener('keydown', function (e)
 
 document.addEventListener('keyup', function (e)
 {
-    cursorStyle = document.getElementById("container").style;
-    
     /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
     if (e.key == "Control") ctrlPressed = false;
     if (e.key == "Alt") altPressed = false;
@@ -187,36 +185,27 @@ document.addEventListener('keyup', function (e)
     if (e.key == "Escape"){
         escPressed = false;
     }
-    if (e.key == "b") setMouseMode(mouseModes.BOX_SELECTION);
-    if (e.key == "m") setMouseMode(mouseModes.POINTER);
-    if (e.key == "d") setMouseMode(mouseModes.EDGE_CREATION);
 
     if (e.key == "b"){
         setMouseMode(mouseModes.BOX_SELECTION);
-        cursorStyle.cursor = "crosshair";
     }
     if (e.key == "m"){
         setMouseMode(mouseModes.POINTER);
-        cursorStyle.cursor = "pointer";
     }
     if (e.key == "d"){
         setMouseMode(mouseModes.EDGE_CREATION);
-        cursorStyle.cursor = "grab";
     }
     if (e.key == "e"){
         setMouseMode(mouseModes.PLACING_ELEMENT); 
         setElementPlacementType(0);
-        cursorStyle.cursor = "cell";
     }
     if (e.key == "r"){
         setMouseMode(mouseModes.PLACING_ELEMENT); 
         setElementPlacementType(1);
-        cursorStyle.cursor = "cell";
     }
     if (e.key == "a"){
         setMouseMode(mouseModes.PLACING_ELEMENT); 
         setElementPlacementType(2);
-        cursorStyle.cursor = "cell";
     }
 });
 
@@ -460,21 +449,15 @@ function mup(event)
 
 function mouseMode_onMouseMove(event)
 {
-    cursorStyle = document.getElementById("container").style;
-    
      switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
-            cursorStyle.cursor = "cell";
             break;
         case mouseModes.EDGE_CREATION:
-            cursorStyle.cursor = "grab";
             break;
         case mouseModes.POINTER: // do nothing
-            cursorStyle.cursor = "pointer";
             break;
 
         case mouseModes.BOX_SELECTION:
-            cursorStyle.cursor = "crosshair";
             boxSelect_Update(event.clientX, event.clientY);
             updatepos(0, 0);
             break;
@@ -658,7 +641,30 @@ function setMouseMode(mode)
     // Mode-specific activation/deactivation
     onMouseModeDisabled(mouseMode);
     mouseMode = mode;
+    setCursorStyles(mode);
     onMouseModeEnabled(mouseMode);
+}
+
+function setCursorStyles(cursorMode = 0)
+{
+    cursorStyle = document.getElementById("container").style;
+    switch(cursorMode)
+    {
+        case mouseModes.POINTER:
+            cursorStyle.cursor = "pointer";
+            break;
+        case mouseModes.BOX_SELECTION:
+            cursorStyle.cursor = "crosshair";
+            break;
+        case mouseModes.PLACING_ELEMENT:
+            cursorStyle.cursor = "cell";
+            break;
+        case mouseModes.EDGE_CREATION:
+            cursorStyle.cursor = "grab";
+            break;
+        default: 
+            break;
+    }
 }
 
 function onMouseModeEnabled(mode)
