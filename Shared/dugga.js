@@ -29,6 +29,8 @@ $(function () {  // Used to set the position of the FAB above the cookie message
 	}
 })
 
+
+
 //----------------------------------------------------------------------------------
 // get all the indexes where a substring (needle) is found in a string (haystack)
 // adapted from https://stackoverflow.com/questions/20798477/how-to-find-index-of-all-occurrences-of-element-in-array
@@ -1777,9 +1779,8 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		$("#duggaStatus").remove();
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
 
-		// Gets the element after "duggaTitleSibling"
-		var str = $("#duggaTitleSibling").next().text();
-		$("#duggaTitleSibling").next().text(duggaTitle + " - " + str);
+		// Adds dugga title next to the text "Instructions"
+		$('h3:contains("Instructions")').text(duggaTitle + " - Instructions");
 }
 
 function FABMouseOver(e) {
@@ -1962,5 +1963,3 @@ function returnedSubmitFeedback(){
 function setDuggaTitle(title) {
 	duggaTitle = title;
 }
-
-
