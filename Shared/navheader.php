@@ -96,7 +96,7 @@
 					echo "<a id='upIcon' href='";
 					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
 					echo "'>";
-					echo "<img src='../Shared/icons/Up.svg'></a></td>";
+					echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
 			}
 
 	
@@ -221,7 +221,7 @@
 					else
 						echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender();' type='button'>";
 
-					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
+					echo     "<img alt='search icon' id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
 					echo   "</button>";
 					echo "</td>";
 					if ($requestedService == "fileed.php" && (hasAccess($_SESSION["uid"], $_SESSION["courseid"], "w") || $_SESSION["superuser"] == 1)) {
@@ -229,7 +229,7 @@
 						echo "<td class='navButt'>";
 						echo "    <div>";
 						echo "      <a id='downloadBTN' title='Download all content in a zip file' target='_blank' value='Download' href='downloadzip.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-						echo "        <img class='navButt' src='../Shared/icons/Diskett.svg'>";
+						echo "        <img alt='download all icon' class='navButt' src='../Shared/icons/Diskett.svg'>";
 						echo "      </a>";
 						echo "    </div>";
 						echo "</td>";
@@ -239,7 +239,7 @@
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
 					echo "<td id='select' class='navButt' onmouseover='hoverc();' onmouseleave='leavec();'>";
 					echo   "<span id='filterButton'>";
-					echo     "<img class='navButt' src='../Shared/icons/filter_icon.svg'>";
+					echo     "<img alt='filter icon' class='navButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 					echo       "<div id='filterOptions'></div>"; 
 					echo       "<div id='columnfilter'></div>";
@@ -252,7 +252,7 @@
 	    if($requestedService=="resulted.php" ){
 					echo "<td id='sort' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
 					echo   "<span id='sortButton'>";
-					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+					echo     "<img alt='sort icon' class='navButt' src='../Shared/icons/sort_white.svg'>";
 					echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
 					echo     "</div>";
 					echo   "</span>";

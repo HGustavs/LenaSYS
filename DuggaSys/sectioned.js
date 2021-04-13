@@ -1925,8 +1925,8 @@ function handleResponse(xhttp, updateannouncementid, cid, versid){
 
 //announcement card grid and list view
 function displayListAndGrid(){
-  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i class="fa fa-bars"></i> List</button>'+
-    '<button class="btn active gridBtn"><i class="fa fa-th-large"></i> Grid</button></div><br>');
+  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i alt="list icon" class="fa fa-bars"></i> List</button>'+
+    '<button class="btn active gridBtn"><i alt="grid icon" class="fa fa-th-large"></i> Grid</button></div><br>');
 
   var announcementCard = document.getElementsByClassName("announcementCard");
   var i;

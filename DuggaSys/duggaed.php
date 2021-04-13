@@ -51,7 +51,7 @@ pdoConnect();
 				<input id='searchinputMobile' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);duggaTable.renderTable();document.getElementById("duggaSearch").value=document.getElementById("searchinputMobile").value;'/>
 
 				<button id='searchbuttonMobile' class='switchContent' onclick='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);duggaTable.renderTable();' type='button'>
-					<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
+					<img alt='search icon' id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
 				</button>
 			</div>
 		<div id="quiz" style='width:100%;'></div> <!-- A div to place the quiz-table within. -->
@@ -197,7 +197,7 @@ pdoConnect();
                     <input id="variantSearch" class="searchFiled" type="search" placeholder="Search.." style="flex-grow: 99; margin: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;"
                     onkeyup="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"onsearch="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"/>
                                         <button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
-                      <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
+                      <img alt="search icon" id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
                     </button>
                   </div>
                 </fieldset>
