@@ -51,9 +51,11 @@ const maxDeltaBeforeExceeded = 2;
 // Currently hold down buttons
 var ctrlPressed = false;
 var altPressed = false;
+var escPressed = false;
 
 // Box selection variables
 var boxSelectionInUse = false;
+var propFieldState = false;
 
 // What kind of input mode that user is uing the cursor for.
 const mouseModes = {
@@ -79,6 +81,9 @@ const pointerStates = {
     CLICKED_ELEMENT: 2,
 };
 var pointerState = pointerStates.DEFAULT;
+
+var movingObject = false;
+var movingContainer = false;
 
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
@@ -152,7 +157,19 @@ document.addEventListener('keydown', function (e)
     if (e.key == "Alt" && altPressed !== true) altPressed = true;
     if (e.key == "Delete" && context.length > 0)  removeElements(context);
     if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
-    if (e.key == "Backspace" && context.length > 0) removeElements(context);
+    if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
+    if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
+    if (e.key == "Escape" && escPressed != true){
+        escPressed = true;
+        context = [];
+        if (movingContainer){
+            scrollx = sscrollx;
+            scrolly = sscrolly;
+        }
+        pointerState = pointerStates.DEFAULT;
+        showdata();
+    }
+    if (e.key == "Backspace" && context.length > 0 && !propFieldState) removeElements(context);
 });
 
 document.addEventListener('keyup', function (e)
@@ -160,6 +177,25 @@ document.addEventListener('keyup', function (e)
     if (e.key == "Control") ctrlPressed = false;
     if (e.key == "Alt") altPressed = false;
     if (e.key == "Meta") ctrlPressed = false;
+    if (e.key == "Escape"){
+        escPressed = false;
+    }
+    if (e.key == "b") setMouseMode(mouseModes.BOX_SELECTION);
+    if (e.key == "m") setMouseMode(mouseModes.POINTER);
+    if (e.key == "d") setMouseMode(mouseModes.EDGE_CREATION);
+
+    if (e.key == "e"){
+        setMouseMode(mouseModes.PLACING_ELEMENT); 
+        setElementPlacementType(0);
+    }
+    if (e.key == "r"){
+        setMouseMode(mouseModes.PLACING_ELEMENT); 
+        setElementPlacementType(1);
+    }
+    if (e.key == "a"){
+        setMouseMode(mouseModes.PLACING_ELEMENT); 
+        setElementPlacementType(2);
+    }
 });
 
 //------------------------------------=======############==========----------------------------------------
@@ -209,6 +245,16 @@ function diagramToScreenPosition(coordX, coordY)
 //------------------------------------=======############==========----------------------------------------
 //                                           Mouse events
 //------------------------------------=======############==========----------------------------------------
+function mwheel(event){
+    if(event.deltaY < 0)
+    {
+        zoomin();
+    }
+    else
+    {
+        zoomout();
+    }
+}
 
 function mdown(event)
 {
@@ -322,6 +368,8 @@ function mup(event)
         case pointerStates.CLICKED_CONTAINER:
             if (event.target.id == "container")
             {
+                movingContainer = false;
+
                 if (!deltaExceeded)
                 {
                     if (mouseMode == mouseModes.EDGE_CREATION)
@@ -337,6 +385,8 @@ function mup(event)
             break;
 
         case pointerStates.CLICKED_ELEMENT:
+
+            movingObject = false;
             // Special cases:
             if (mouseMode == mouseModes.EDGE_CREATION)
             {
@@ -395,6 +445,7 @@ function mmoving(event)
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
             // Compute new scroll position
+            movingContainer = true;
             deltaX = startX - event.clientX;
             deltaY = startY - event.clientY;
             scrollx = sscrollx - Math.round(deltaX * zoomfact);
@@ -1014,7 +1065,49 @@ function updatepos(deltaX, deltaY)
     // Update svg overlay -- place everyhing to draw OVER elements here
     str = "";
     str = boxSelect_Draw(str);
-    document.getElementById("svgoverlay").innerHTML=str;
+    str = drawSelectionBox(str);
+    document.getElementById("svgoverlay").innerHTML = str;
+
+}
+
+function drawSelectionBox(str)
+{
+    if (context.length != 0) {
+        var lowX = context[0].x1;
+        var highX = context[0].x2;
+        var x1;
+        var x2;
+        var lowY = context[0].y1;
+        var highY = context[0].y2;
+        var y1;
+        var y2;
+        for (var i = 0; i < context.length; i++) {
+            x1 = context[i].x1;
+            x2 = context[i].x2;
+            y1 = context[i].y1;
+            y2 = context[i].y2;
+            if (x1 < lowX) lowX = x1;
+            if (x2 > highX) highX = x2;
+            if (y1 < lowY) lowY = y1;
+            if (y2 > highY) highY = y2;
+        }
+
+        //If there only is one entity is selected
+        if (context.length == 1) {
+            // Add nodes to the marked selection
+            const nodeDiameter = 10;
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX - 10}' y='${lowY - 10}'/>`; //Top-Left
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY - 10}'/>`; //Top-Right
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX - 10}' y='${highY}'/>`; //Bottom-Left
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`; //Bottom-Right
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX - 10}' y='${lowY + ((highY - lowY) / 2) - 5}'/>`; //Middle-Left
+            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY - lowY) / 2) - 5}'/>`; //Middle-Right
+        }
+
+        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
+    }
+
+    return str;
 }
 
 function saveProperties() 
@@ -1042,6 +1135,11 @@ function saveProperties()
     updatepos(0,0);
 }
 
+function propFieldSelected(isSelected)
+{
+    propFieldState = isSelected;
+}
+
 function generateContextProperties()
 {
     var propSet = document.getElementById("propertyFieldset");
@@ -1057,7 +1155,7 @@ function generateContextProperties()
         for (const property in element) {
             switch (property.toLowerCase()) {
                 case "name":
-                    str += `<input id="elementProperty_${property}" type="text" value="${element[property]}"> `;
+                    str += `<input id="elementProperty_${property}" type="text" value="${element[property]}" onfocus="propFieldSelected(true)" onblur="propFieldSelected(false)"> `;
                     break;
             
                 default:
@@ -1358,43 +1456,7 @@ function redrawArrows(str)
         }
 
     }
-    if (context.length != 0)
-    {
-        var lowX = context[0].x1;
-        var highX = context[0].x2;
-        var x1;
-        var x2;
-        var lowY = context[0].y1;
-        var highY = context[0].y2;
-        var y1;
-        var y2;
-        for (var i = 0; i < context.length; i++)
-        {
-            x1 = context[i].x1;
-            x2 = context[i].x2;
-            y1 = context[i].y1;
-            y2 = context[i].y2;
-            if (x1 < lowX) lowX = x1;
-            if (x2 > highX) highX = x2;
-            if (y1 < lowY) lowY = y1;
-            if (y2 > highY) highY = y2;
-        }
-
-        //If there only is one entity is selected
-        if(context.length == 1) {
-            // Add nodes to the marked selection
-            const nodeDiameter = 10;
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY-10}'/>`; //Top-Left
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY-10}'/>`; //Top-Right
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${highY}'/>`; //Bottom-Left
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`; //Bottom-Right
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Left
-            str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Right
-        }
-
-        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
-    }
-    
+  
     return str;
 }
 //-------------------------------------------------------------------------------------------------
