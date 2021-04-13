@@ -61,7 +61,6 @@ $studentTeacher = false;
 $feedbackenabled =getOP('feedback');
 $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
-$tabs=getOP('tabs');
 
 $grpmembershp="UNK";
 $unmarked = 0;
