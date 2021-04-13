@@ -33,4 +33,4 @@ class Course{
 	}
 
 }
- ?>
+?>
