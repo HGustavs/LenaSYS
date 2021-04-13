@@ -230,43 +230,17 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		}
 ?>
 <script type="text/javascript">
-	var variant = '<?php echo $savedvariant; ?>';
-	var dugga = '<?php echo $duggaid; ?>';
-	var deadline = '<?php echo $deadline; ?>';
+	// localStorageName is unique and depends on did
+	var localStorageName = "duggaID: " + '<?php echo $duggaid; ?>';
 	var variant;
 	var newvariant = '<?php echo $newvariant; ?>';
-	var savedvariant = '<?php echo $savedvariant; ?>';
-
-	if (localStorage.getItem("variant") == null)
-		localStorage.setItem("variant", newvariant);
-	variant = JSON.parse(localStorage.getItem("variant"));
 	
-
+	if(localStorage.getItem(localStorageName) == null){
+		localStorage.setItem(localStorageName, newvariant);
+	}
+	variant = JSON.parse(localStorage.getItem(localStorageName));
 	setVariant(variant);
-
-	console.log("newvariants: " + newvariant)
-	console.log("savedvariant: " + savedvariant)
-
-	var previusAllottedAssignmentVariants = JSON.parse(localStorage.getItem("allottedAssignmentVariants"));
-	if(previusAllottedAssignmentVariants == null) previusAllottedAssignmentVariants = [];
-
-	var duggaInfo = {
-		"Dugga": dugga,
-		"Variant": variant,
-		"Deadline": deadline
-	};
-	var duggor = {
-		"Biträkningsdugga 1": duggaInfo,
-		"Biträkningsdugga 2": duggaInfo
-	};
-	var courses = {
-		"Webbprogrammering": duggor,
-		"Webbutveckling - datorgrafik": duggor
-	};
-	var allottedAssignmentVariants = {
-		"Courses": courses
-	};
-	localStorage.setItem("allottedAssignments", JSON.stringify(allottedAssignmentVariants));
+	
 </script>
 	<?php
 		$noup="SECTION";
