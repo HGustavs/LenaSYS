@@ -90,7 +90,7 @@
 	$query->bindParam(':uid', $userid);
 	$query->bindParam(':moment', $moment);
 	$result = $query->execute();
-
+	
 	$savedvariant="UNK";
 	$newvariant="UNK";
 	$savedanswer="UNK";
@@ -233,6 +233,19 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	var variant = '<?php echo $savedvariant; ?>';
 	var dugga = '<?php echo $duggaid; ?>';
 	var deadline = '<?php echo $deadline; ?>';
+	var moment;
+	var newvariant = '<?php echo $newvariant; ?>';
+	var savedvariant = '<?php echo $savedvariant; ?>';
+
+	if (localStorage.getItem("moment") == null)
+		localStorage.setItem("moment", '<?php echo $moment; ?>');
+	moment = localStorage.getItem("moment");
+
+	setMoment(moment)
+
+	console.log("moment: " + moment)
+	console.log("newvariant: " + newvariant)
+	console.log("savedvariant: " + savedvariant)
 
 	var previusAllottedAssignmentVariants = JSON.parse(localStorage.getItem("allottedAssignmentVariants"));
 	if(previusAllottedAssignmentVariants == null) previusAllottedAssignmentVariants = [];

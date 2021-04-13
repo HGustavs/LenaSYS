@@ -17,6 +17,7 @@ var pressTimer;
 
 var hash;
 var pwd;
+var moment;
 
 var iconFlag = false;
 
@@ -41,6 +42,11 @@ function getAllIndexes(haystack, needle) {
 		i = haystack.indexOf(needle, ++i);
 	}
 	return indexes;
+}
+
+function setMoment(m) {
+	console.log("moment dugga.js: " + m)
+	moment = 2004;
 }
 
 //Set the localstorage item securitynotifaction to on or off
@@ -955,7 +961,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd,
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+moment+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd,
 				dataType: "json",
 				success: returnedDugga
 			});
