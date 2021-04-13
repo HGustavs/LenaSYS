@@ -14,6 +14,8 @@ var startTop, startLeft;
 var sscrollx, sscrolly;
 var cwidth, cheight;
 var hasRecursion = false;
+var startWidth;
+var startNodeRight = false;
 
 // Zoom variables
 var zoomfact = 1.0;
@@ -77,6 +79,7 @@ const pointerStates = {
     DEFAULT: 0,
     CLICKED_CONTAINER: 1,
     CLICKED_ELEMENT: 2,
+    CLICKED_NODE: 3,
 };
 var pointerState = pointerStates.DEFAULT;
 
@@ -233,6 +236,15 @@ function mdown(event)
         }
         
     }
+    else if(event.target.classList.contains("node")){
+        pointerState = pointerStates.CLICKED_NODE;
+        startWidth = data[findIndex(data, context[0].id)].width;
+
+        startNodeRight = !event.target.classList.contains("mr");
+
+        startX = event.clientX;
+        startY = event.clientY;
+    }
 }
 
 function ddown(event)
@@ -354,6 +366,8 @@ function mup(event)
                 }
             }
             break;
+        case pointerStates.CLICKED_NODE:
+            break;
     
         default: console.error(`State ${mouseMode} missing implementation at switch-case in mup()!`);
             break;
@@ -424,7 +438,24 @@ function mmoving(event)
                 deltaExceeded = true;
             }
             break;
-    
+
+        case pointerStates.CLICKED_NODE:
+            deltaX = startX - event.clientX;
+            var index = findIndex(data, context[0].id);
+            var element = document.getElementById(context[0].id);
+
+            if (startNodeRight){
+                data[index].width = (startWidth - deltaX);
+            } else{
+                data[index].x = screenToDiagramCoordinates((startX - deltaX), 0).x;
+                data[index].width = (startWidth + deltaX);
+            }
+
+            element.remove();
+            document.getElementById("container").innerHTML += drawElement(data[index]);
+            updatepos(null, null);
+            break;
+
         default:
             mouseMode_onMouseMove(event);
             break;
@@ -846,17 +877,25 @@ function showdata()
     // Iterate over programs
     for (var i = 0; i < data.length; i++)
     {
-        var element = data[i];
+        str += drawElement(data[i])
+    }
 
-        // Compute size variables
-        var linew = Math.round(strokewidth * zoomfact);
-        var boxw = Math.round(element.width * zoomfact);
-        var boxh = Math.round(element.height * zoomfact);
-        var texth = Math.round(zoomfact * textheight);
-        var hboxw = Math.round(element.width * zoomfact * 0.5);
-        var hboxh = Math.round(element.height * zoomfact * 0.5);
+    container.innerHTML = str;
+    updatepos(null, null);
 
-        str += `
+}
+
+function drawElement(element){
+    var str = "";
+    // Compute size variables
+    var linew = Math.round(strokewidth * zoomfact);
+    var boxw = Math.round(element.width * zoomfact);
+    var boxh = Math.round(element.height * zoomfact);
+    var texth = Math.round(zoomfact * textheight);
+    var hboxw = Math.round(element.width * zoomfact * 0.5);
+    var hboxh = Math.round(element.height * zoomfact * 0.5);
+
+    str += `
 				<div id='${element.id}'	class='element' onmousedown='ddown(event);' style='
 						left:0px;
 						top:0px;
@@ -864,36 +903,36 @@ function showdata()
 						height:${boxh}px;
 						font-size:${texth}px;
 				'>`;
-        str += `<svg width='${boxw}' height='${boxh}' >`;
-        if (element.kind == "EREntity")
-        {
+    str += `<svg width='${boxw}' height='${boxh}' >`;
+    if (element.kind == "EREntity")
+    {
 
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' 
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' 
                    stroke-width='${linew}' stroke='black' fill='#ffccdc' />
                    <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text> 
 
                    `;
 
-        } else if (element.kind == "ERAttr")
+    } else if (element.kind == "ERAttr")
+    {
+        var dash = "";
+        if (element.isComputed == true)
         {
-            var dash = "";
-            if (element.isComputed == true)
-            {
-                dash = "stroke-dasharray='4 4'";
-            }
-            var multi = "";
-            if (element.isMultiple == true)
-            {
-                multi = `
+            dash = "stroke-dasharray='4 4'";
+        }
+        var multi = "";
+        if (element.isMultiple == true)
+        {
+            multi = `
                     <path d="M${linew * multioffs},${hboxh} 
                     Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
                     Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
                     Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
                     Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
                     stroke='black' fill='#ffccdc' stroke-width='${linew}' />`;
-            }
-          
-            str += `<path d="M${linew},${hboxh} 
+        }
+
+        str += `<path d="M${linew},${hboxh} 
                            Q${linew},${linew} ${hboxw},${linew} 
                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
                            Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
@@ -904,31 +943,26 @@ function showdata()
 
                     <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
                     `;
-        } else if (element.kind == "ERRelation")
+    } else if (element.kind == "ERRelation")
+    {
+        var weak = "";
+        if (element.isWeak == true)
         {
-            var weak = "";
-            if (element.isWeak == true)
-            {
-              
-                weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
+
+            weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
                 stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                 `;
-            }
-            str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+        }
+        str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
                    stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                    ${weak}
                    <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
                    `;
 
-        }
-        str += "</svg>"
-        str += "</div>";
-
     }
-
-    container.innerHTML = str;
-    updatepos(null, null);
-
+    str += "</svg>"
+    str += "</div>";
+    return str;
 }
 
 
@@ -995,8 +1029,11 @@ function updatepos(deltaX, deltaY)
     str = "";
     str = boxSelect_Draw(str);
     if (context.length > 0) str += getMarker();
-    if (context.length === 1) setNodes(context[0]);
     document.getElementById("svgoverlay").innerHTML=str;
+
+    // Updates nodes for resizing
+    removeNodes();
+    if (context.length === 1 && mouseMode == mouseModes.POINTER) addNodes(context[0]);
 }
 
 function exportElementDataToCSS()
@@ -1017,10 +1054,11 @@ function exportElementDataToCSS()
             var inContext = deltaX != null && findIndex(context, element.id) != -1;
             var notBoxSelection = mouseMode != mouseModes.BOX_SELECTION;
             var clickedElement = pointerState == pointerStates.CLICKED_ELEMENT;
+            var clickedNode = pointerState == pointerStates.CLICKED_NODE;
             var clickedContainer = pointerState == pointerStates.CLICKED_CONTAINER;
 
             // Handle positioning
-            if (inContext && !clickedContainer && (notBoxSelection || clickedElement))
+            if (inContext && !clickedContainer && (notBoxSelection || clickedElement) && !clickedNode)
             {
                 // Re-calculate drawing position for our selected element, then apply the mouse movement
                 elementDiv.style.left = (Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) - deltaX) + "px";
@@ -1308,29 +1346,27 @@ function getMarker(){
         }
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
 
-        // Add nodes to the marked selection
-        const nodeDiameter = 10;
-
-        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY-10}'/>`; //Top-Left
-        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY-10}'/>`; //Top-Right
-        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${highY}'/>`; //Bottom-Left
-        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${highY}'/>`; //Bottom-Right
-        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX-10}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Left
-        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${highX}' y='${lowY + ((highY-lowY)/2) - 5}'/>`; //Middle-Right
-        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX + ((highX-lowX)/2) - 5}' y='${lowY-10}'/>`; //Middle-Top
-        str += `<rect width="${nodeDiameter}px" height="${nodeDiameter}px" x='${lowX + ((highX-lowX)/2) - 5}' y='${highY}'/>`; //Middle-Bot
-        
         return str;
 }
-function setNodes(element) {
-    //Creating a new div to place on top of element.
-    document.getElementById("container").innerHTML += "<div id='markerDiv' style='position: absolute;'></div>";
+function addNodes(element) {
 
-    var elementDiv = document.getElementById("markerDiv");
-    elementDiv.style.width = Math.round(element.width * zoomfact);
-    elementDiv.style.height = Math.round(element.height * zoomfact);
-    elementDiv.style.left = Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) + "px";
-    elementDiv.style.top = Math.round((element.y * zoomfact) + (scrolly * (1.0 / zoomfact))) + "px";
+    var elementDiv = document.getElementById(element.id)
+    var nodes = "";
+
+    nodes += "<span class='node mr'></span>";
+    nodes += "<span class='node ml'></span>";
+
+    elementDiv.innerHTML += nodes;
+
+}
+function removeNodes(element) {
+    // Get all elements with the class: "node"
+    var nodes = document.getElementsByClassName("node");
+
+    // For every node remove it
+    while(nodes.length > 0){
+        nodes[0].remove();
+    }
 }
 //-------------------------------------------------------------------------------------------------
 // Change the position of rulerPointers
