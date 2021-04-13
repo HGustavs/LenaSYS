@@ -1,5 +1,7 @@
 <?php 
 
+error_log("--------------- Start document ----------------", 0);
+sleep ( 2 );
 //---------------------------------------------------------------------------------------------------------------
 // showDuggaservice - Retrieve duggor, services save and update duggor
 //---------------------------------------------------------------------------------------------------------------
@@ -609,4 +611,5 @@ echo json_encode($array);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php",$userid,$info);
 
+error_log("--------------- End document ----------------", 0);
 ?>
