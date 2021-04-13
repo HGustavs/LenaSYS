@@ -140,7 +140,8 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
-			if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
+			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
+			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 
