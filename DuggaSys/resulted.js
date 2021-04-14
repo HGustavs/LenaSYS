@@ -1832,7 +1832,23 @@ $(window).scroll(function() {
 		legendBox.css("top", "80px");
 	}
 });
-
+//Puts ladexport popup at a fixed point when scrolling horizontally
+$(window).scroll(function() {
+	var resultTableWidth = document.getElementById("resultTable___tbl").offsetWidth;
+	var ladExportWidth = document.getElementById("resultlistpopover").offsetWidth;
+	var scrolled = $(this).scrollLeft();
+	var legendBox = $('#resultedLegendContainer');
+	var $win = $(window);
+	if((scrolled + ladExportWidth) <= resultTableWidth){
+		$('#resultlistpopover').css({
+			'transform': 'translateX(' + scrolled +'px'+ ')'
+		});
+		legendBox.css("top", "103px");
+	}
+	if ($(window).scrollTop() == 0){
+		legendBox.css("top", "80px");
+	}
+});
 function hideSSN(ssn){
 	var hiddenSSN;
 	hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');

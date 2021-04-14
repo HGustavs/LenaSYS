@@ -1774,16 +1774,7 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
 		}
 
-		if (answer == "UNK" && (grade == "UNK" || grade <= 1)){
-				str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Dugga not yet submitted!</div>";
-		} else if (submitted != "UNK" && answer != "UNK" && marked == "UNK" || ( submitted !== "UNK" && marked !== "UNK" && (submitted.getTime() > marked.getTime()))) {
-				str+="<div class='StopLight YellowLight' style='margin:4px;'></div></div><div>Dugga submitted."+submitted+"</div>";
-		} else if (grade != "UNK" && grade <= 1 && (submitted.getTime() < marked.getTime()) ) {
-				str+="<div class='StopLight RedLight' style='margin:4px;'></div></div><div>Dugga marked as fail: "+marked+"</div>";
-		} else if (grade > 1) {
-				str+="<div class='StopLight GreenLight' style='margin:4px;'></div></div><div>Dugga marked as pass: "+marked+"</div>";
-		}
-
+		str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Dugga</div>";
 		str+="</div>";
 		$("#duggaStatus").remove();
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
