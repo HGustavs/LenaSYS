@@ -341,6 +341,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 						</label>
 					</div>
 					<div>
+						<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
 						<input type='button' class='submit-button'  onclick="sendFeedback(<?php echo "'". $duggatitle ."'" ?>)" value='Save feedback'>
 						<span style='color:var(--color-green); text-align: center; line-height: 2.6; Display:none;' id='submitstatus'>Feedback saved</span>
 					</div>
