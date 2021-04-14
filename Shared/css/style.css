@@ -1604,10 +1604,6 @@ div .navButt:hover {
   transform: translateX(-50%);
 }
 
-#urlAndPwd{
-  margin-top: 15px;
-}
-
 /* <<<<<<<<<<< Create new empty file >>>>>>>>>>>>>>> */
 #createNewEmptyFile input[type=text]{
   width: 100%;
@@ -1792,6 +1788,36 @@ div .navButt:hover {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+}
+
+#urlAndPwd{
+  border: 1px solid grey;
+  background-color: #fff;
+  height: 95px;
+  padding: 9px 0px;
+  padding-left: 9px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#urlAndPwd > *{
+
+}
+
+.testasd{
+  
+}
+
+.testasd > *{
+  font-size: 15px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 #feedbackbox{
@@ -2639,9 +2665,10 @@ div.submit-button:disabled {
 }
 
 .button-row {
+  margin: 20px 0px 15px 0px;
+  display: flex;
+  justify-content: space-evenly;
   width: 100%;
-  height: 35px;
-  text-align: right;
 }
 
 #submitButtonTable{
