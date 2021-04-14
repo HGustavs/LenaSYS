@@ -18,6 +18,17 @@
     z-index: -10;
 }
 
+#svggrid {
+    position:absolute;
+    left:40px;
+    top:26px;
+    display: none;
+    width:96%;
+    height:100%;
+    pointer-events: none;
+    z-index: -10;
+}
+
 #svgoverlay {
     position:absolute;
     left:0px;
