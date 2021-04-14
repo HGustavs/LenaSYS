@@ -1022,12 +1022,12 @@ function drawElement(element){
     } else if (element.kind == "ERAttr")
     {
         var dash = "";
-        if (element.isComputed == true)
+        if (element.state == "computed")
         {
             dash = "stroke-dasharray='4 4'";
         }
         var multi = "";
-        if (element.isMultiple == true)
+        if (element.state == "multiple")
         {
             multi = `
                     <path d="M${linew * multioffs},${hboxh} 
@@ -1052,7 +1052,7 @@ function drawElement(element){
     } else if (element.kind == "ERRelation")
     {
         var weak = "";
-        if (element.isWeak == true)
+        if (element.state == "weak")
         {
 
             weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
