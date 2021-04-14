@@ -160,6 +160,23 @@
     width:40px;
     height:100%;
 }
+
+.diagramIcons{
+    width: 31px;
+    height: 31px;
+    cursor:pointer;
+    border-radius: 30%;
+    border: solid 1px #eb4;
+    margin-top:5px;
+}
+.diagramIcons:hover{
+    background:#cc9923;
+    border: solid 1px #b28210;
+}
+.diagramIcons img{
+    width:30px;
+    height:30px;
+
 .node {
     position: absolute;
     width: 8px;
@@ -175,4 +192,5 @@
     top: calc(50% - 4px);
     right: 0;
     cursor: col-resize;
+
 }
