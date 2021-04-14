@@ -1,4 +1,6 @@
 <?php 
+
+//Queries the entire course table
 function courseQuery($course){
 	global $pdo;
 	$urlkey = $course;
@@ -37,7 +39,7 @@ function courseQuery($course){
 	insertCoursekey($array[0],$urlkey);
 	return $array;
 }
-
+//Queries the existing table of unique matches
 function keyQuery($course){
 	global $pdo;
 	$sql = "SELECT * FROM coursekeys WHERE urlkey LIKE '".$course."';";
@@ -59,6 +61,7 @@ function keyQuery($course){
 	} else return courseQuery($course);	
 }
 
+//Inserts a value into the table
 function insertCoursekey($c, $course){
 	global $pdo;
 	$sql = "INSERT INTO coursekeys(cid, urlkey, coursecode, coursename, activeversion)
@@ -77,6 +80,25 @@ function insertCoursekey($c, $course){
 	}
 }
 
+//returns potential values before LenaSYS in the server address.
+function serverRoot(){
+	$self = $_SERVER["PHP_SELF"]; 
+	$root = explode('/',$self);
+	$docroot = array();
+	for ($i=0;$i<count($root);$i++){
+		if($root[$i] == 'LenaSYS'){
+			break;
+		}elseif ($root[$i]!=''){
+			$u = '/'.$root[$i];
+			$docroot[] = $u;
+		}
+
+	}
+	$result = implode($docroot);
+	return $result;
+}
+
+//Parses a query value to a url
 function queryToUrl($course, $assignment){
 	global $pdo;	
 	$array = keyQuery($course);	
@@ -90,12 +112,12 @@ function queryToUrl($course, $assignment){
 
 	if($assignment != 'UNK'){
 		$a = assignmentQuery($assignment);
-		$url = "/LenasSYS/DuggaSys/showdoc.php?cid=" . 
+		$url = serverRoot()."/LenasSYS/DuggaSys/showdoc.php?cid=" . 
 			$a['cid'] ."&coursevers=" . 
 			$c['courseservers'] ."&fname=" . 
 			$a['filename'];
 	}
-	else $url = "/LenaSYS/DuggaSys/sectioned.php?courseid=" . 
+	else $url = serverRoot()."/LenaSYS/DuggaSys/sectioned.php?courseid=" . 
 		$c->getCid() ."&coursename=" . 
 		$c->getCoursename() . "&coursevers=" .  
 		$c->getCourseserver();
