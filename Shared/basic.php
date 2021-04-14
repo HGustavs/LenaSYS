@@ -64,16 +64,16 @@ function getOP($name, $default="UNK", $type="string")
     $ret = $default;
     if (isset($_POST[$name])) {
         if (strcmp($type, "float") === 0) {
-            $ret = floatval(urldecode($_POST[$name]));
+            $ret = floatval(($_POST[$name]));
         } else if (strcmp($type, "int") === 0) {
-            $ret = intval(urldecode($_POST[$name]));
+            $ret = intval(($_POST[$name]));
         } else if (strcmp($type, "JSON") === 0) {
-            $ret = json_decode(urldecode($_POST[$name]));
+            $ret = json_decode(($_POST[$name]));
             if (json_last_error() !== JSON_ERROR_NONE) {
                 $ret = "UNK";
             }
         } else {
-            $ret = urldecode($_POST[$name]);
+            $ret = ($_POST[$name]);
         }
     }
     return $ret;
@@ -93,7 +93,7 @@ function gettheOP($name)
 
 function getOPG($name)
 {
-		if(isset($_GET[$name]))	return urldecode($_GET[$name]);
+		if(isset($_GET[$name]))	return ($_GET[$name]);
 		else return "UNK";
 }
 

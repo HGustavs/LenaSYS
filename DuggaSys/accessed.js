@@ -7,12 +7,13 @@ var searchterm = "";
 var tableName = "accessTable";
 var tableCellName = "accessTableCell";
 var myTable;
-var accessFilter = "WRST";
+var accessFilter = "W";
 var trueTeacher;
 var examinerName;
 var activeDropdown;
 var activeArrow;
 var shouldReRender = false;
+var str = "W";
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -137,7 +138,7 @@ function importUsers() {
 }
 
 function addSingleUser() {
-	
+
 	var newUser = new Array();
 	newUser.push($("#addSsn").val());
 	newUser.push($("#addFirstname").val());
@@ -146,7 +147,6 @@ function addSingleUser() {
 	newUser.push($("#addCid").val());
 	newUser.push($("#addTerm").val());
 	newUser.push($("#addPid").val());
-	newUser.push($("#addNy").val());
 
 	if (!verifyUserInputForm(newUser)) return;
 	var outerArr = new Array();
@@ -194,6 +194,12 @@ function verifyUserInputForm(input) {
 		return false;
 	}
 
+	// Verify term
+	if(verifyString = validateTerm(input[5])) {	// Returns null if there is no error
+		alert(verifyString);
+		return false;
+	}
+
 	return true;
 }
 
@@ -213,16 +219,23 @@ function validateSSN(ssn)
 			const formatTest = /\d{6,8}-\d{4}/;	// Expected format
 			if(formatTest.test(ssn))
 				break;
-						
+
 		default:
 			return 'SSN Error! Should be ######-#### or ########-####';
 	}
 
-	const dd = ssn.substring(delimiter-2, delimiter);
+    let samordningsnummer = false;
+	let dd = ssn.substring(delimiter-2, delimiter);
 	const mm = ssn.substring(delimiter-4, delimiter-2);
 	const yyyy = (length === 13) ? ssn.substring(0, 4) : 19+ssn.substring(0, 2);	// Ensure yyyy
 	const birthNum = ssn.substring(delimiter+1, delimiter+4);
-	const ssnDate = new Date(`${yyyy}-${mm}-${dd}`);
+	
+    if (parseInt(dd) > 60) {
+        dd -= 60;
+        samordningsnummer = true;
+    }
+    
+    const ssnDate = new Date(`${yyyy}-${mm}-${dd}`);
 
 	if(ssnDate.getTime() > Date.now())			// Make sure date of SSN is not in the future
 		return 'SSN Error! Impossible date in SSN. The future is not here yet';
@@ -231,6 +244,10 @@ function validateSSN(ssn)
 		|| (parseInt(dd) !== ssnDate.getDate())) {	// Ensures leap years are handled correctly
 		return 'SSN Error! Invalid date';
 	}
+
+    if (samordningsnummer) {
+        dd += 60;
+    }
 
 	const controlDigitString = yyyy.substring(2, 4) + mm + dd + birthNum;
 	var ccd = 0;	// Calculated Control Digit
@@ -275,10 +292,10 @@ function validateName(name)
 	const length = name.length;
 	if(length < 2)	return 'Name is too short\nMinimum two characters';	// Too short
 	if(length > 50)	return 'Name is too long\nMaximum 50 characters';	// Too long
-
+	if(name[0] !== name[0].toLocaleUpperCase()) return 'Name must start with a capital letter';
 	const formatTest = /^[a-zA-ZäöåÄÖÅ]+$/;		// Expected charachters
 	if(!formatTest.test(name))
-		return 'Name contains illegal charachters';
+		return 'Name contains illegal characters, can only contain A-Ö';
 
 	return null;	// The provided name is alright
 }
@@ -325,6 +342,8 @@ function validatePID(pid)
 	const length = pid.length;
 	if(length < 2)	return 'PID is too short\nMinimum two characters';	// Too short
 	if(length > 10)	return 'PID is too long\nMaximum ten characters';	// Too long
+	if(pid.indexOf(" ") != -1) return 'PID can NOT contian an empty space'; //contians empty space
+	if(pid.match(/[a-z]/gm)!=null) return 'PID can only contain Upper case letters'; //contians lower case space
 
 	return null;	// The provided PID is alright
 }
@@ -385,6 +404,59 @@ function tooltipEmail()
 	}
 }
 
+//---------------------------------------------------------------------------------------------------
+// validateTerm(term)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+
+function validateTerm(term)
+{
+	if(term.match(/^(HT-|VT-)\d{2}$/gm) == null ) return 'The term must be in format "VT-10" '; //must follow "HT/VT-XX" format
+	return null; //the provided term is correct
+}
+function tooltipTerm()
+{
+	var error = validateTerm(document.getElementById('addTerm').value);
+	var termInputBox = document.getElementById('addTerm');
+
+	if(error && document.getElementById('addTerm').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipTerm').innerHTML = error;
+		$('#tooltipTerm').fadeIn();
+		termInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipTerm').fadeOut();
+		termInputBox.style.backgroundColor = '#fff';
+	}
+}
+
+//---------------------------------------------------------------------------------------------------
+// validateCIDcid)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+//---------------------------------------------------------------------------------------------------
+
+function validateCID(cid)
+{
+	const length = cid.length;
+	if(length > 5)	return 'CID is too long\nMaximum FIVE characters';	// Too long
+	if(cid.match(/^\d{1,5}$/gm) == null ) return 'The CID can not contain any letters'; // checks if there are non numerical
+
+	return null;
+}
+function tooltipCID()
+{
+	var error = validateCID(document.getElementById('addCid').value);
+	var cidInputBox = document.getElementById('addCid');
+
+	if(error && document.getElementById('addCid').value.length > 0) {	// Error, fade in tooltip
+		document.getElementById('tooltipCID').innerHTML = error;
+		$('#tooltipCID').fadeIn();
+		cidInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
+		$('#tooltipCID').fadeOut();
+		cidInputBox.style.backgroundColor = '#fff';
+	}
+}
+
 var inputVerified;
 
 function addClass() {
@@ -417,7 +489,7 @@ function addClass() {
 function resetPw(uid, username) {
 	rnd = randomstring();
 
-	window.location = "mailto:" + username + "@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20" + rnd + "%0A%0A/LENASys Administrators";
+	window.location = `mailto:${username}@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20${rnd}%0A%0A/LENASys Administrators`;
 
 	AJAXService("CHPWD", {
 		courseid: querystring['courseid'],
@@ -440,7 +512,7 @@ function changeOptDiv(e) {
 	var paramlist = e.target.parentElement.parentElement.id.split("_");
 	key = getColname(e);
 	keyvalue = e.target.getAttribute('data-value');
-	
+
 	obj = {
 		uid: paramlist[1],
 		[key]: keyvalue
@@ -454,7 +526,7 @@ function changeOptDivStudent(e,value){
 	var paramlist = e.target.parentElement.parentElement.id.split("_");
 	key = getColname(e);
 	keyvalue = e.target.getAttribute('data-value');
-	
+
 	obj = {
 		uid: paramlist[1],
 		[key]: keyvalue
@@ -484,7 +556,7 @@ function changeProperty(targetobj, propertyname, propertyvalue) {
 }
 
 function showVersion(vers) {
-	window.location.href = "../DuggaSys/sectioned.php?courseid=" + querystring['courseid'] + "&coursevers=" + vers;
+	window.location.href = `../DuggaSys/sectioned.php?courseid=${querystring['courseid']}&coursevers=` + vers;
 }
 
 //----------------------------------------------------------------
@@ -507,18 +579,24 @@ function renderCell(col, celldata, cellid) {
 	if (col == "username" || col == "ssn" || col == "firstname" || col == "lastname") {
 		//str = "<div style='display:flex;'><input id='"+col+"_"+obj.uid+"' onKeyDown='if(event.keyCode==13) changeOpt(event)' value=\""+obj[col]+"\" style='margin:0 4px;flex-grow:1;font-size:11px;' size=" + obj[col].toString().length +"></div>";
 		if (col == "ssn") {
-			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + hideSSN(obj[col]) + "</span></div>";
+			str = `<div style='display:flex;'><span id='${col}_${obj.uid}' style='margin:0 4px;flex-grow:1;'>
+			${hideSSN(obj[col])}</span></div>`;
 		} else {
-			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + obj[col] + "</span></div>";
+			str = `<div style='display:flex;'><span id='${col}_${obj.uid}' style='margin:0 4px;flex-grow:1;'>
+			${obj[col]}</span></div>`;
 		}
 	} else if (col == "class") {
 		var className = obj.class;
 		if (className == null || className === "null") {
 			className = "";
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'> None"+className+"</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(className, filez['classes'], "class", "class") + "</div>";
+			str = `<div class='access-dropdown' id='${col}_${obj.uid}'><div style='color:#808080'>
+			None${className}</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			${makedivItem(className, filez['classes'], "class", "class")}</div>`;
 		}
 		else{
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div>"+className+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(className, filez['classes'], "class", "class") + "</div>";
+			str = `<div class='access-dropdown' id='${col}_${obj.uid}'><Div>${className}</Div>
+			<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			${makedivItem(className, filez['classes'], "class", "class")}</div>`;
 		}
 	} else if (col == "examiner") {
 		var examinerName = "";
@@ -529,10 +607,14 @@ function renderCell(col, celldata, cellid) {
 		}
 		if (obj.examiner == null || obj.examiner === "null" || obj.examiner < 0) {
 			examinerName = "";
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'> None</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(examinerName, filez['teachers'], "name", "uid") + "</div>";
+			str = `<div class='access-dropdown' id='${col}_${obj.uid}'><div style='color:#808080'>
+			None</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			${makedivItemWithValue(examinerName, filez['teachers'], "name", "uid")}</div>`;
 		}
 		else{
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(examinerName, filez['teachers'], "name", "uid") + "</div>";
+			str = `<div class='access-dropdown' id='${col}_${obj.uid}'><Div '>${examinerName}</div>
+			<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			${makedivItemWithValue(examinerName, filez['teachers'], "name", "uid")}</div>`;
 		}
 	} else if (col == "vers") {
 		var versname = "";
@@ -543,15 +625,20 @@ function renderCell(col, celldata, cellid) {
 		}
 
 		if (obj.vers == null || obj.vers === "null") {
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div style='color:#808080'> None</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(versname, filez['courses'], "versname", "vers") + "</select>";
+			str = `<div class='access-dropdown' id='${col}_${obj.uid}'><div style='color:#808080'>
+			None</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			${makedivItem(versname, filez['courses'], "versname", "vers")}</select>`;
 		}
 
 		else{
-			str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><div>"+versname+"</div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(versname, filez['courses'], "versname", "vers") + "</select>";
+			str = `<div class='access-dropdown' id='${col}_${obj.uid}'><div>"+versname+"</div>
+			<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			${makedivItem(versname, filez['courses'], "versname", "vers")}</select>`;
 		}
 		for (var submission of filez['submissions']) {
             if (obj.uid === submission.uid) {
-                str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>";
+                str += `<img class='oldSubmissionIcon' title='View old version'
+				src='../Shared/icons/DocumentDark.svg' onclick='showVersion(${submission.vers})'>`;
                 break;
             }
         };
@@ -565,9 +652,11 @@ function renderCell(col, celldata, cellid) {
 		else {
 			trueTeacher = "Student teacher";
 		}
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+trueTeacher+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makeDivItemStudent(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
+		str = `<div class='access-dropdown' id='${col}_${obj.uid}'><Div >${trueTeacher}</Div>
+		<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+		${makeDivItemStudent(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"])}</select>`;
 	} else if (col == "requestedpasswordchange") {
-		
+
 		if (parseFloat(obj.recent) < 1440) {
 			str = "<div class='submit-button reset-pw new-user' style='display:block;margin:auto;float:none;'";
 		} else {
@@ -590,23 +679,29 @@ function renderCell(col, celldata, cellid) {
 		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
 		if(optstr.includes('None') || optstr == "" || optstr == null){
 			optstr = "";
-			str += "<div><div class='access-dropdown'><span style='color:#808080'>None</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
+			str += `<div><div class='access-dropdown'><span style='color:#808080'>None</span>
+			<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div>
+			<div class='overSelect'></div></div><div class='checkboxes' id='grp${obj.uid}' >`;
 		}
 		else{
-			str += "<div><div class='access-dropdown'><span>" + optstr + "</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
+			str += `<div><div class='access-dropdown'><span>${optstr}
+			</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
+			</div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp${obj.uid}' >`;
 		}
-    str += "<label><input type='radio' name='groupradio"+obj.uid+"' checked id='g" + obj.uid + "' value='' />None</label>";
+    str += `<label><input type='radio' name='groupradio${obj.uid}' checked id='g${obj.uid}' value='' />None</label>`;
 		for (var i = 0; i < filez['groups'].length; i++) {
 			var group = filez['groups'][i];
 			if (tgroups.indexOf((group.groupkind + "_" + group.groupval)) > -1) {
-				str += "<label><input type='radio' name='groupradio"+obj.uid+"' checked id='g" + obj.uid + "' value='" + group.groupkind + "_" + group.groupval + "' />" + group.groupval + "</label>";
+				str += `<label><input type='radio' name='groupradio${obj.uid}' checked id='g${obj.uid}' 
+				value='${group.groupkind}_${group.groupval}' />${group.groupval}</label>`;
 			} else {
-				str += "<label><input type='radio' name='groupradio"+obj.uid+"' id='g" + obj.uid + "' value='" + group.groupkind + "_" + group.groupval + "' />" + group.groupval + "</label>";
+				str += `<label><input type='radio' name='groupradio${obj.uid}' id='g${obj.uid}' 
+				value='${group.groupkind}_${group.groupval}' />${group.groupval}</label>`;
 			}
 		}
 		str += '</div></div>';
 	} else {
-		str = "<div style='display:flex;'><div style='margin:0 4px;flex-grow:1;'>" + celldata + "</div></div>";
+		str = `<div style='display:flex;'><div style='margin:0 4px;flex-grow:1;'>${celldata}</div></div>`;
 	}
 	return str;
 
@@ -615,11 +710,13 @@ function renderCell(col, celldata, cellid) {
 function renderSortOptions(col, status, colname) {
 	str = "";
 	if (status == -1) {
-		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>${colname}</span>`;
 	} else if (status == 0) {
-		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",1)'>
+		${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
 	} else {
-		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
+		${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
 	}
 	addToSortDropdown(colname, col);
 	return str;
@@ -629,7 +726,8 @@ var sortColumns = [];
 function addToSortDropdown(colname, col) {
 	if (!sortColumns.includes(col)) {
 		var str = "";
-		str += "<div class='checkbox-dugga'><input name='sort' class='sortRadioBtn' type='radio' value="+col+"><label class='headerlabel'>"+colname+"</label></div>";
+		str += `<div class='checkbox-dugga'><input name='sort' class='sortRadioBtn' type='radio' value=${col}>
+		<label class='headerlabel'>${colname}</label></div>`;
 		document.getElementById('sortOptions').innerHTML += str;
 		sortColumns.push(col);
 	}
@@ -665,8 +763,9 @@ function displayCellEdit(celldata, rowno, rowelement, cellelement, column, colno
 	let str = false;
 	if (column == "firstname" || column == "lastname" || column == "username") {
 		celldata = JSON.parse(celldata);
-		str = "<input type='hidden' id='popoveredit_uid' class='popoveredit' style='flex-grow:1;' value='" + celldata.uid + "'/>";
-		str += "<input type='text' id='popoveredit_" + column + "' class='popoveredit' style='flex-grow:1;width:auto;' value='" + celldata[column] + "' size=" + celldata[column].toString().length + "/>";
+		str = `<input type='hidden' id='popoveredit_uid' class='popoveredit' style='flex-grow:1;' value='${celldata.uid}'/>`;
+		str += `<input type='text' id='popoveredit_${olumn}' class='popoveredit' style='flex-grow:1;width:auto;'
+		value='${celldata[column]}' size=${celldata[column].toString().length}/>`;
 	}
 	return str;
 }
@@ -678,11 +777,13 @@ function renderColumnFilter(col, status, colname) {
         return str;
     if (status) {
 		str = "<div class='checkbox-dugga'>";
-        str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel' for='" + colname + "'>" + colname + "</label>";
+        str += `<input id=\"${colname}\" type='checkbox' name='checkbox' checked onclick='onToggleFilter(\"${col}\")'>
+		<label class='headerlabel' for='${colname}'>${colname}</label>`;
         str += "</div>"
     } else {
             str = "<div class='checkbox-dugga'>";
-            str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel' for='" + colname + "'>" + colname + "</label>";
+            str += `<input id=\"${colname}\" type='checkbox' name='checkbox' onclick='onToggleFilter(\"${col}\")'>
+			<label class='headerlabel' for='${colname}'>${colname}</label>`;
             str += "</div>"
     }
     return str;
@@ -735,12 +836,12 @@ function rowFilter(row) {
 							// Search case insensitive
 							searchterm = searchterm.toLocaleLowerCase();
 							caseIgnoreRow = row[property].toLocaleLowerCase();
-							
+
 							// Support ÅÄÖ
 							searchterm = searchterm.replace(/\u00E5/, '&aring;');
 							searchterm = searchterm.replace(/\u00E4/, '&auml;');
 							searchterm = searchterm.replace(/\u00F6/, '&ouml;');
-							
+
 							searchtermArray = searchterm.split(" ");
 							if (searchterm.indexOf(" ") >= 0) {
 								if (row["firstname"].toLocaleLowerCase().indexOf(searchtermArray[0]) != -1 && row["lastname"].toLocaleLowerCase().indexOf(searchtermArray[1]) != -1) return true;
@@ -776,19 +877,19 @@ function returnedAccess(data) {
 			/*ssn: "SSN",*/
 			firstname: "First name",
 			lastname: "Last name",
-			class: "Class",
+			/*class: "Class",*/
 			modified: "Last Modified",
-			examiner: "Examiner",
-			vers: "Version",
-			access: "Access",
-			groups: "Group(s)",
+			/*examiner: "Examiner",*/
+			/*vers: "Version",*/
+			/*access: "Access",*/
+			/*groups: "Group(s)",*/
 			requestedpasswordchange: "Password"
 		},
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
 	//myTable = undefined;
-	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", "class", "modified", "examiner", "vers", "access", "groups", "requestedpasswordchange"]
+	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", /*"class",*/ "modified", /*"examiner", "vers", "access", "groups",*/ "requestedpasswordchange"]
 	if (typeof myTable === "undefined") { // only create a table if none exists
 		myTable = new SortableTable({
 			data: tabledata,
@@ -834,9 +935,9 @@ function showCheckboxes(element) {
 		activeElement = element;
 		activeElementWasNull = true;
 	}
-	
+
 	var checkboxes = activeElement.parentElement.lastChild;
-	
+
 	// save and close current dropdown
 	if (!activeElementWasNull) updateAndCloseGroupDropdown(checkboxes);
 
@@ -870,7 +971,7 @@ function updateAndCloseGroupDropdown(checkboxes){
 
 	obj = {
 		// This should really contain uid as well
-		// but since the table should not write this 
+		// but since the table should not write this
 		// to the database, it might not be an issue
 		// uid: <get-UID-For-Row-User>
 		groups: str
@@ -1058,19 +1159,25 @@ function searchTable() {
 //----------------------------------------------------------------------------------
 function filterAccess() {
 	toggleTeachers = document.getElementById("filterAccess1");
+	/*
 	toggleStudents = document.getElementById("filterAccess2");
 	toggleStudentTeachers = document.getElementById("filterAccess3");
+	*/
 	accessFilter = "";
 
 	if (toggleTeachers.checked) {
 		accessFilter += "W";
 	}
+
+	/*
 	if (toggleStudents.checked) {
 		accessFilter += "R";
 	}
 	if (toggleStudentTeachers.checked) {
 		accessFilter += "ST";
 	}
+	*/
+
 	//console.log(accessFilter);
 	// Save to local storage to remember the filtering. Add the course ID to key to allow for different filterings for each course
 	localStorage.setItem("accessFilter"+querystring['courseid'], accessFilter);
@@ -1081,15 +1188,15 @@ function filterAccess() {
 // createCheckboxes - Create checkboxes for filtering teachers/students
 //----------------------------------------------------------------------------------
 function createCheckboxes() {
-	
-	var labels = ["Show teachers", "Show students", "Show student teachers"];
-	var str = "";
+
+	var labels = ["Show teachers"/*, "Show students", "Show student teachers"*/];
+	str = "";
 	for (i = 0; i < labels.length; i++) {
 		str += "<div class='checkbox-dugga checkmoment'>";
-		str += "<input id='filterAccess" + (i+1) + "' type='checkbox' value='" + (i+1) + "' onchange='filterAccess()' ";
+		str += `<input id='filterAccess${(i+1)}' type='checkbox' value='${(i+1)}' onchange='filterAccess()' `;
 		if (i == 0 && accessFilter.indexOf("W") > -1) str += "checked";
-		else if (i == 1 && accessFilter.indexOf("R") > -1) str += "checked";
-		else if (i == 2 && accessFilter.indexOf("ST") > -1) str += "checked";
+		//else if (i == 1 && accessFilter.indexOf("R") > -1) str += "checked";
+		//else if (i == 2 && accessFilter.indexOf("ST") > -1) str += "checked";
 		str += "></input>";
 		str += "<label for='filterAccess" + (i+1) + "' class='headerlabel'>" + labels[i] + "</label>";
 		str += "</div>";
@@ -1108,21 +1215,21 @@ function compare(a, b) {
 		if(status==1){
 				var tempA = a;
 				var tempB = b;
-		
+
 		}else{
 				var tempA = b;
 				var tempB = a;
 		}
-	
+
 		if(col=="firstname"||col=="lastname"||col=="class"||col=="examiner"||col=="access"){
 				tempA = JSON.parse(tempA);
 				tempB = JSON.parse(tempB);
 				if(col=="firstname"){
-						tempA=tempA.firstname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	
-						tempB=tempB.firstname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	
+						tempA=tempA.firstname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
+						tempB=tempB.firstname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
 				}else if(col=="lastname"){
-						tempA=tempA.lastname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	;	
-						tempB=tempB.lastname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	;	
+						tempA=tempA.lastname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	;
+						tempB=tempB.lastname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	;
 				}else if(col=="class"){
 						tempA=tempA.class;
 						tempB=tempB.class;
@@ -1158,17 +1265,17 @@ function compare(a, b) {
 				tempA=Date.parse(tempA);
 				tempB=Date.parse(tempB);
 				if(isNaN(tempA)) tempA=-1;
-				if(isNaN(tempB)) tempB=-1;						
+				if(isNaN(tempB)) tempB=-1;
 		}
-	
+
 		if (tempA > tempB) {
 				return 1;
 		} else if (tempA < tempB) {
 				return -1;
 		} else {
 				return 0;
-		}	
-	
+		}
+
 }
 
 function openArrow(element){

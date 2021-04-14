@@ -184,9 +184,9 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     for (var i = 0; i < retdata['entries'].length; i++) {
       var item = retdata['entries'][i];
       if (item['kind'] == 4) {
-        if (parseInt(moment) == parseInt(item['lid'])) str += "<option selected='selected' " +
-          "value='" + item['lid'] + "'>" + item['entryname'] + "</option>";
-        else str += "<option value='" + item['lid'] + "'>" + item['entryname'] + "</option>";
+        if (parseInt(moment) == parseInt(item['lid'])) str += `<option selected='selected' " +
+          "value='${item['lid']}'>${item['entryname']}</option>`;
+        else str += `<option value='" + item['lid'] + "'>${item['entryname']}</option>`;
       }
     }
   }
@@ -194,11 +194,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
   // Set Name
   $("#sectionname").val(entryname);
-  $("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='" + entryname + "' style='width:448px;'/>");
+  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput' id='sectionname' value='${entryname}' style='width:448px;'/>`);
 
   // Set Comment
   $("#comments").val(comments);
-  $("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='comments' value='" + comments + "' style='width:448px;'/>");
+  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput' id='comments' value='${comments}' style='width:448px;'/>`);
 
   // Set Lid
   $("#lid").val(lid);
@@ -476,7 +476,8 @@ function createVersion() {
       AJAXService("NEWVRS", param, "COURSE");
     }
     $("#newCourseVersion").css("display", "none");
-    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("cversid").value );
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] +
+    "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("cversid").value );
   }
 }
 
@@ -503,18 +504,21 @@ function updateVersion() {
   AJAXService("UPDATEVRS", param, "SECTION");
 
   $("#editCourseVersion").css("display", "none");
-  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("eversid").value );
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] +
+  "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("eversid").value );
 }
 
 //queryString for coursename is added
 function goToVersion(courseDropDown) {
   var value = courseDropDown.options[courseDropDown.selectedIndex].value;
-  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] +
+  "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
 }
 
 function accessCourse() {
   var coursevers = $("#course-coursevers").text();
-  window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
+  window.location.href = "accessed.php?cid=" + querystring['courseid'] +
+  "&coursevers=" + coursevers;
 }
 
 //----------------------------------------
@@ -545,7 +549,8 @@ function returnedGroups(data) {
       if (grp != "") {
         str += "</tbody>";
         str += "</table>";
-        str += "<div style='text-align:right;border-top:2px solid #434343'><a style='white-space:nowrap' href='mailto:" + grpemail + "'>Email group</a></div>"
+        str += `<div style='text-align:right;border-top:2px solid #434343'>
+        <a style='white-space:nowrap' href='mailto:${grpemail}'>Email group</a></div>`
         grpemail = "";
       }
       grp = cgrp;
@@ -554,14 +559,16 @@ function returnedGroups(data) {
       str += "<thead><tr><th rowspan=2 style='text-align:left;'>Group " + cgrp[1] + "</th></tr></thead>";
       str += "<tbody>";
     }
-    str += "<tr><td>" + (j++) + "</td><td><a  style='white-space:nowrap' href='mailto:" + member[3] + "'>" + member[1] + " " + member[2] + "</a></td></tr>";
+    str += "<tr><td>" + (j++) + `</td><td>
+    <a  style='white-space:nowrap' href='mailto:${member[3]}'>${member[1]} ${member[2]}</a></td></tr>`;
     if (grpemail != "") grpemail += ",";
     grpemail += member[3];
   }
   if (grp != "") {
     str += "</tbody>";
     str += "</table>";
-    str += "<div style='text-align:right;border-top:2px solid #434343'><a href='mailto:" + grpemail + "'>Email group</a></div>"
+    str += `<div style='text-align:right;border-top:2px solid #434343'>
+    <a href='mailto:${grpemail}'>Email group</a></div>`
     grpemail = "";
   }
   if (str != "") {
@@ -624,7 +631,7 @@ function returnedSection(data) {
           if (retdata['coursevers'] == item['vers']) {
             bstr += " selected";
           }
-          bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
+          bstr += `>${item['versname']} - ${item['vers']}</option>`;
         }
         // save vers, versname and motd from table vers as global variables.
         versnme = versionname;
@@ -658,7 +665,15 @@ function returnedSection(data) {
       hiddenInline = "inline";
     }
 
+
+    
+
     str += "<div id='Sectionlistc'>";
+
+    str += "<div id='statisticsSwimlanes' style='height: 200px; overflow: auto; border: 2px solid darkgray; background-color: var(--color-sectioned-table-lo);'>";
+		str += "<svg id='swimlaneSVG' width='800px' style='margin: 10px; margin-top: 0px;' xmlns='http://www.w3.org/2000/svg'></svg>";
+		str += "</div>";
+
 
     // For now we only have two kinds of sections
     if (data['entries'].length > 0) {
@@ -673,17 +688,20 @@ function returnedSection(data) {
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
         // New items added get the class glow to show they are new
         if(item['pos'] == "-1" || item['pos'] == "100"){
-          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
+          str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
+          class='${makeTextArray(item['kind'], valarr) +" glow"}' style='display:block'>`;
         }
         else{
-          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
+          str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
+          class='${makeTextArray(item['kind'], valarr)}' style='display:block'>`;
         }
 
         menuState.idCounter++;
         // All are visible according to database
 
         // Content table
-        str += "<table id='lid" + item['lid'] + "' value='" + item['lid'] + "' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
+        str += `<table id='lid${item['lid']}' value='${item['lid']}' style='width:100%;table-layout:fixed;'>
+        <tr style='height:32px;' `;
         if (kk % 2 == 0) {
           str += " class='hi' ";
         } else {
@@ -701,17 +719,21 @@ function returnedSection(data) {
         var itemKind = parseInt(item['kind']);
 
         if(itemKind === 2 || itemKind == 5){
-          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+          str += `<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab'
+          class='tabs${item["tabs"]}'><div class='spacerRight'></div></td>`;
         }
 
         if(itemKind === 6 || itemKind == 7){
-          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+          str += `<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab'
+          class='tabs${item["tabs"]}'><div class='spacerRight'></div></td>`;
         }
 
         if (itemKind === 3 || itemKind === 4) {
 
           // Styling for quiz row e.g. add a tab spacer
-          if (itemKind === 3) str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+          if (itemKind === 3) str += `<td style='width:0px'><div class='spacerLeft'></div></td>
+          <td id='indTab' class='tabs${item["tabs"]}'><div class='spacerRight'></div></td>`;
+          var grady = -1;
           var status = "";
           var marked;
           var submitted;
@@ -720,6 +742,7 @@ function returnedSection(data) {
           for (var jjj = 0; jjj < data['results'].length; jjj++) {
             var lawtem = data['results'][jjj];
             if ((lawtem['moment'] == item['lid'])) {
+              grady = lawtem['grade'];
               status = "";
 
               var st = lawtem['submitted'];
@@ -754,7 +777,19 @@ function returnedSection(data) {
           } else if (itemKind === 4) {
             str += "<td class='LightBoxFilled" + hideState + "'>";
           }
-          str += "<div class='StopLight WhiteLight'></div>";
+          if ((grady == -1 || grady == 0 || grady == null) && status === "") {
+            // Nothing submitted nor marked (White)
+            str += "<div class='StopLight WhiteLight'></div>";
+          } else if (status === "pending") {
+            //	Nothing marked yet (Yellow)
+            str += `<div class='StopLight YellowLight' title='Status: Handed in\nDate: ${lastSubmit}' ></div>`;
+          } else if (grady == 1) {
+            //	Marked Fail! (Red)
+            str += `<div class='StopLight RedLight' title='Status: Failed\nDate: ${marked}' ></div>`;
+          } else if (grady > 1) {
+            //	Marked Pass i.e. G/VG/3/4/5 (Green)
+            str += `<div class='StopLight GreenLight'  title='Status: Pass\nDate: ${marked}' ></div>`;
+          }
           str += "</td>";
         }
 
@@ -782,35 +817,41 @@ function returnedSection(data) {
         // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
         if (itemKind === 0) {
           // Styling for header row
-          str += "</td><td class='header item" + hideState + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' ";
+          str += `</td><td class='header item${hideState}' placeholder='${momentexists}'
+          id='I${item['lid']}' `;
           kk = 0;
 
         } else if (itemKind === 1) {
           // Styling for Section row
-          str += "<td class='section item" + hideState + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' style='cursor:pointer;' ";
+          str += `<td class='section item${hideState}' placeholder='${momentexists}'
+          id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 2) {
-          str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += `<td class='example item${hideState}' placeholder='${momentexists}'
+          id='I${item['lid']}' `;
 
           kk++;
 
         } else if (itemKind === 3) {
           if (item['highscoremode'] != 0 && itemKind == 3) {
-            str += "<td style='width:20px;'><img style=';' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\"" + item['link'] + "\",\"" + item['lid'] + "\")'/></td>";
+            str += `<td style='width:20px;'><img style=';' title='Highscore'
+            src='../Shared/icons/top10.png' onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
           }
-          str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += `<td class='example item${hideState}' placeholder='${momentexists}'
+          id='I${item['lid']}' `;
           kk++;
 
         } else if (itemKind === 4) {
           //new moment bool equals true
           momentexists = item['lid'];
-          str += "<td class='moment item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' style='cursor:pointer;' ";
+          str += `<td class='moment item${hideState}' placeholder='${momentexists}'
+          id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 5) { // Link
 
-          str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += `<td class='example item' placeholder='${momentexists}' id='I${item['lid']}' `;
           kk++;
 
         } else if (itemKind === 6) { //Group
@@ -833,14 +874,17 @@ function returnedSection(data) {
             }
           }
 
-          str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin-right:4.5px;max-width:32px;max-height:32px;overflow:hidden;'></td>";
-          str += "<td class='section-message item' onclick='getGroups(\"" + grp + "\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += `<td style='width:32px;' onclick='getGroups(\"${grp}\");'>
+          <img src='../Shared/icons/group-iconDrk.svg'
+          style='display:block;margin-right:4.5px;max-width:32px;max-height:32px;overflow:hidden;'></td>`;
+          str += `<td class='section-message item' onclick='getGroups(\"${grp}\");'
+          placeholder='${momentexists}' id='I${item['lid']}' `;
 
         } else if (itemKind === 7) { //Message
           if (!(item['link'] == "" || item['link'] == "---===######===---")) {
             str += "<td style='width:32px;'><img title='Important message' src='../Shared/icons/warningTriangle.svg'></td>";
           }
-          str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += `<td class='section-message item' placeholder='${momentexists}' id='I${item['lid']}' `;
         }
 
         // Close Information
@@ -848,20 +892,25 @@ function returnedSection(data) {
         // Content of Section Item
         if (itemKind == 0) {
           // Header
-          str += "<span style='margin-left:8px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
+          str += `<span style='margin-left:8px;' title='${item['entryname']}'>${item['entryname']}</span>`;
         } else if (itemKind == 1) {
           // Section
-          str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
-          str += "<span class='ellipsis listentries-span'>" + item['entryname'] + "</span>";
-          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
+          str += `<div class='nowrap${hideState}'
+          style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
+          str += `<span class='ellipsis listentries-span'>${item['entryname']}</span>`;
+          str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}'
+          class='arrowComp' style='display:inline-block;'>`;
+          str += `<img src='../Shared/icons/right_complement.svg' id='arrowRight${item['lid']}'
+          class='arrowRight' style='display:none;'></div>`;
         } else if (itemKind == 4) {
           // Moment
           var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
-          str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
-          str += "<span class='ellipsis listentries-span'>" + item['entryname'] + " " + strz + " </span>";
-          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'>";
+          str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
+          str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
+          str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}'
+          class='arrowComp' style='display:inline-block;'>`;
+          str += `<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight${item['lid']}'
+          class='arrowRight' style='display:none;'>`;
           str += "</div>";
         } else if (itemKind == 2) {
           // Code Example
@@ -872,7 +921,8 @@ function returnedSection(data) {
             'cvers': querystring['coursevers'],
             'lid': item['lid']
           };
-          str += "<div class='ellipsis nowrap'><span>" + makeanchor("codeviewer.php", hideState, "margin-left:8px;", item['entryname'], false, param) + "</span></div>";
+          str += `<div class='ellipsis nowrap'><span>${makeanchor("codeviewer.php",
+          hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
         } else if (itemKind == 3) {
           // Test / Dugga
           var param = {
@@ -887,11 +937,13 @@ function returnedSection(data) {
             deadline: item['deadline'],
             'cid': querystring['courseid']
           };
-          str += "<div class='ellipsis nowrap'><span>" + makeanchor("showDugga.php", hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, param) + "</span></div>";
+          str += `<div class='ellipsis nowrap'><span>${makeanchor("showDugga.php",
+          hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, param)}</span></div>`;
         } else if (itemKind == 5) {
           // Link
           if (item['link'].substring(0, 4) === "http") {
-            str += makeanchor(item['link'], hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, {});
+            str += makeanchor(item['link'], hideState, "cursor:pointer;margin-left:8px;",
+            item['entryname'], false, {});
           } else {
             var param = {
               'exampleid': item['link'],
@@ -899,11 +951,13 @@ function returnedSection(data) {
               'coursevers': querystring['coursevers'],
               'fname': item['link']
             };
-            str += makeanchor("showdoc.php", hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, param);
+            str += makeanchor("showdoc.php", hideState, "cursor:pointer;margin-left:8px;",
+            item['entryname'], false, param);
           }
         } else if (itemKind == 6) {
           // Group
-          str += "<a class='ellipsis nowrap' onclick='getGroups(\"" + grp + "\");' style='cursor:pointer;'>" + item['entryname'];
+          str += `<a class='ellipsis nowrap' onclick='getGroups(\"${grp}\");'
+          style='cursor:pointer;'>` + item['entryname'];
           let re = new RegExp(grptype, "g");
           grp = grp.replace(re, "");
           if (document.getElementById("userName").innerHTML == "Guest") {
@@ -915,7 +969,8 @@ function returnedSection(data) {
           }
         } else if (itemKind == 7) {
           // Message
-          str += "<span style='margin-left:8px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
+          str += `<span style='margin-left:8px;' title='${item['entryname']}'>
+          ${item['entryname']}</span>`;
         }
 
         str += "</td>";
@@ -959,7 +1014,8 @@ function returnedSection(data) {
         // Userfeedback
         if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
           str += "<td style='width:32px;'>";
-          str += "<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback' onclick='showUserFeedBack(\"" + item['lid']  + "\",\"" + item['feedbackquestion']  + "\");'>";
+          str += `<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback'
+          onclick='showUserFeedBack(\"${item['lid']}\",\"${item['feedbackquestion']}\");'>`;
           str += "</td>";
         }
 
@@ -971,15 +1027,20 @@ function returnedSection(data) {
           if (itemKind === 1) str += "class='section" + hideState + "' ";
           if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
-          str += "><img id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + ");' />";
+
+          str += "><img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
+          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
+          item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
+          item['highscoremode'], item['comments'], item['grptype'], item['deadline'],
+          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + ");' />";
           str += "</td>";
         }
 
         // trashcan
         if (data['writeaccess'] || data['studentteacher']) {
-          str += "<td style='width:32px;' class='" + makeTextArray(itemKind, ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " " + hideState + "'>";
-          str += "<img id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
+          str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
+          ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
+          str += "<img alt='trashcan icon' id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
           str += "</td>";
         }
 
@@ -1220,7 +1281,8 @@ function svgPie(cx, cy, radius, startpct, endpct, fill, stroke) {
     var p2 = svgPie(cx, cy, radius, startpct + halfsies, endpct, fill, stroke);
     return p1 + p2;
   } else {
-    return "<path d='M" + cx + "," + cy + " L" + x1 + "," + y1 + " A" + radius + "," + radius + " 0 0,1 " + x2 + "," + y2 + " z' fill='" + fill + "' />";
+    return "<path d='M" + cx + "," + cy + " L" + x1 + "," + y1 + " A" + radius + ","
+    + radius + " 0 0,1 " + x2 + "," + y2 + " z' fill='" + fill + "' />";
   }
 }
 
@@ -1245,7 +1307,8 @@ function drawPieChart() {
     if (retdata['results'][i]['useranswer'] != null) {
       if (retdata['results'][i].grade > 1) {
         passedQuizes++;
-      } else if (retdata['results'][i].grade == 1 && retdata['results'][i].submitted < retdata['results'][i].marked) {
+      } else if (retdata['results'][i].grade == 1 && retdata['results'][i].submitted
+      < retdata['results'][i].marked) {
         failedQuizes++;
       } else {
         notGradedQuizes++;
@@ -1270,17 +1333,22 @@ function drawPieChart() {
   str += "<circle cx='150' cy='100' r='90' fill='#BDBDBD' />";
   str += svgPie(150, 100, 90, -0.25, notGradedPCT, "#FFEB3B", "#000");
   str += svgPie(150, 100, 90, notGradedPCT, notGradedPCT + passedPCT, "#00E676", "#000");
-  str += svgPie(150, 100, 90, notGradedPCT + passedPCT, notGradedPCT + passedPCT + failedPCT, "#E53935", "#000");
+  str += svgPie(150, 100, 90, notGradedPCT + passedPCT, notGradedPCT + passedPCT +
+  failedPCT, "#E53935", "#000");
 
   str += "<rect x='36' y='200' width='11' height='11' fill='#00E676' />";
   str += "<rect x='36' y='220' width='11' height='11' fill='#E53935' />";
   str += "<rect x='166' y='200' width='11' height='11' fill='#FFEB3B' />";
   str += "<rect x='166' y='220' width='11' height='11' fill='#BDBDBD' />";
 
-  str += "<text x='55' y='211' font-family='Arial' font-size='12px' fill='black'>Passed: (" + Math.round(passedPCT * 100) + "%)</text>";
-  str += "<text x='55' y='231' font-family='Arial' font-size='12px' fill='black'>Failed: (" + Math.round(failedPCT * 100) + "%)</text>";
-  str += "<text x='185' y='211' font-family='Arial' font-size='12px' fill='black'>Pending: (" + Math.round((notGradedPCT + 0.25) * 100) + "%)</text>";
-  str += "<text x='185' y='231' font-family='Arial' font-size='12px' fill='black'>N/A: (" + Math.round(notSubmittedPCT * 100) + "%)</text>";
+  str += `<text x='55' y='211' font-family='Arial' font-size='12px' fill='black'>
+  Passed: (${Math.round(passedPCT * 100)}%)</text>`;
+  str += `<text x='55' y='231' font-family='Arial' font-size='12px' fill='black'>
+  Failed: (${Math.round(failedPCT * 100)}%)</text>`;
+  str += `<text x='185' y='211' font-family='Arial' font-size='12px' fill='black'>
+  Pending: (${Math.round((notGradedPCT + 0.25) * 100)}%)</text>`;
+  str += `<text x='185' y='231' font-family='Arial' font-size='12px' fill='black'>
+  N/A: (${Math.round(notSubmittedPCT * 100)}%)</text>`;
 
   document.getElementById("pieChartSVG").innerHTML = str;
   var passed = Math.round(passedPCT * 100);
@@ -1355,9 +1423,11 @@ function fixDeadlineInfoBoxesText() {
     } else {
       str += "<tr style='color:black;'>";
     }
-    str += "<td style='padding:4px;'><div style='white-space:nowrap;text-overflow:ellipsis;overflow:hidden' title='" + entry.text + "'>" + entry.text + "</div></td>";
-    str += "<td style='padding:4px;white-space:nowrap;'>" + months[entry.start.getMonth()] + " " + entry.start.getDate() + "</td>";
-    str += "<td style='padding:4px;white-space:nowrap;'>" + months[entry.deadline.getMonth()] + " " + entry.deadline.getDate() + "</td>";
+    str += `<td style='padding:4px;'><div style='white-space:nowrap;text-overflow:ellipsis;overflow:hidden' title='${entry.text}'>${entry.text}</div></td>`;
+    str += `<td style='padding:4px;white-space:nowrap;'>${months[entry.start.getMonth()]}
+    ${entry.start.getDate()}</td>`;
+    str += `<td style='padding:4px;white-space:nowrap;'>${months[entry.deadline.getMonth()]}
+    ${entry.deadline.getDate()}</td>`;
     str += "</tr>";
   }
 
@@ -1372,12 +1442,13 @@ function drawSwimlanes() {
 
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
-  var current = new Date(2018, 9, 14);
+  var current = new Date(2015, 9, 14);
 
   var deadlineEntries = [];
   var momentEntries = {};
   var current = new Date();
   var momentno = 0;
+ 
   for (var i = 0; i < retdata['entries'].length; i++) {
     var deadline = new Date(retdata['entries'][i].deadline);
     var start = new Date(retdata['entries'][i].qstart);
@@ -1411,7 +1482,7 @@ function drawSwimlanes() {
   var weekLength = Math.ceil((enddate - startdate) / (7 * 24 * 60 * 60 * 1000));
   var currentWeek = weeksBetween(current, startdate);
   var daySinceStart = Math.ceil((current - startdate) / (24 * 60 * 60 * 1000));
-  var daywidth = 4;
+  var daywidth = 10;
   var weekwidth = daywidth * 7;
   var colwidth = 60;
   var weekheight = 25;
@@ -1427,27 +1498,31 @@ function drawSwimlanes() {
       addNumb = 0;
       tempNumb = 2;
     }else if(i > 0){
-      tempNumb = 0;
+      tempNumb = 2;
       addNumb = 2;
     }
     var widthAdjuster = weekwidth+addNumb;
-    str += "<rect x='" + (i * widthAdjuster) + "' y='" + (15) + "' width='" + (widthAdjuster+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
+    str += "<rect x='" + (i * widthAdjuster) + "' y='" + (15) + "' width='" +
+    (widthAdjuster+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
       str += "fill='#ededed' />";
     } else {
       str += "fill='#ffffff' />";
     }
-    str += "<text x='" + ((i * widthAdjuster) + (widthAdjuster * 0.5) + (tempNumb * 0.5)) + "' y='" + (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
+    str += "<text x='" + ((i * widthAdjuster) + (widthAdjuster * 0.5) + (tempNumb * 0.5)) + "' y='" +
+    (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
-    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" + (weekLength * weekwidth + (addNumb*10)) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
+    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" +
+    (weekLength * weekwidth + (addNumb*10)) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
   }
 
 
   var weeky = 15;
   for (obj in momentEntries) {
     for (var i = 0; i < deadlineEntries.length; i++) {
+      
       entry = deadlineEntries[i];
       if (obj == entry.moment) {
         weeky += weekheight;
@@ -1472,28 +1547,40 @@ function drawSwimlanes() {
         } else if((fillcol == "#FFEB3B") && (entry.deadline - current < 0) && (entry.submitted != null)) {
           textcol = `url("#fadeTextRed")`;
         }
+        
+        //Code to compare deadlines to current year. 
+        //If deadline is older than current, red text for late assigment should be displayed as orange instead
+        var deadlineYear = new Date(entry.deadline).getFullYear();
+        if(deadlineYear < current.getFullYear()) {
+           textcol = "#ff9933";
+       
+           var yearDifference = current.getFullYear() - deadlineYear;
+           var newYear = new Date(entry.deadline);
+           newYear.setFullYear(entry.deadline.getFullYear() + yearDifference);
+           entry.deadline = newYear;
+         }
+       
         if(duggalength < 0){
           duggalength = duggalength * -1;
         }
         var tempVariable = duggalength*daywidth;
 
-        str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
-        str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <title> " + entry.text + " </title>" + entry.text + "</text>";
+        str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='
+        ${(tempVariable)}' height='${weekheight}' fill='${fillcol}' />`;
+
+        str += `<text x='" + (12) + "' y='${(weeky + 18)}' font-family='Arial'
+        font-size='12px' fill='${textcol}' text-anchor='left'> <title>${entry.text}
+        </title>${entry.text}</text>`;
       }
     }
 
   }
-  str += "<line opacity='0.7' x1='" + ((daywidth * daySinceStart) - daywidth) + "' y1='" + (15 + weekheight) + "' x2='" + ((daywidth * daySinceStart) - daywidth) + "' y2='" + (((1 + deadlineEntries.length) * weekheight) + 15) + "' stroke-width='4' stroke='red' />";
+  str += `<line opacity='0.7' x1='${((daywidth * daySinceStart) - daywidth)}'
+  y1='${(15 + weekheight)}' x2='${((daywidth * daySinceStart) - daywidth)}'
+  y2='${(((1 + deadlineEntries.length) * weekheight) + 15)}' stroke-width='4' stroke='red' />`;
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
   document.getElementById("swimlaneSVG").innerHTML = str;
-  document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 " + svgHeight);
-
-  //If course longer than 10 weeks, make scroll available
-  if (weekLength > 10) {
-    document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 400 " + svgHeight);
-    $("#statisticsSwimlanes").css('overflow-X', 'scroll');
-    $("#statisticsSwimlanes").width("300px");
-}
+  document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 800 " + svgHeight);
 
 }
 
@@ -1524,7 +1611,8 @@ $(document).mouseup(function (e) {
 
 $(document).ready(function(){
 $(fabBtn).on("touchstart", function (e) {
-  if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
+  if ($(e.target).parents(".fixed-action-button").length !== 0 &&
+  $(e.target).parents(".fab-btn-list").length === 0) {
     e.preventDefault();
   }
 
@@ -1535,7 +1623,8 @@ $(fabBtn).on("touchstart", function (e) {
 });
 
 $(document).on("touchend", function (e) {
-  if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
+  if ($(e.target).parents(".fixed-action-button").length !== 0 &&
+  $(e.target).parents(".fab-btn-list").length === 0) {
     e.preventDefault();
   }
   mouseUp(e);
@@ -1568,7 +1657,8 @@ function mouseDown(e) {
 
 function mouseUp(e) {
   // if the target of the click isn't the container nor a descendant of the container or if we have clicked inside box and dragged it outside and released it
-  if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) && $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
+  if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) &&
+  $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
 
     event.preventDefault();
 
@@ -1916,17 +2006,21 @@ function handleResponse(xhttp, updateannouncementid, cid, versid){
   $("#courseidAndVersid").remove();
   $("#recipientBox").remove();
 
-  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'"></div>');
-  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="cid" id="cid" value="'+cid+'"></div>');
-  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="versid" id="versid" value="'+versid+'"></div>');
+  $("#announcementForm .announcementFormcontainer .clearfix")
+  .before('<div><input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'
+  +updateannouncementid+'"></div>');
+  $("#announcementForm .announcementFormcontainer .clearfix")
+  .before('<div><input type="hidden" name="cid" id="cid" value="'+cid+'"></div>');
+  $("#announcementForm .announcementFormcontainer .clearfix")
+  .before('<div><input type="hidden" name="versid" id="versid" value="'+versid+'"></div>');
 
 
 }
 
 //announcement card grid and list view
 function displayListAndGrid(){
-  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i class="fa fa-bars"></i> List</button>'+
-    '<button class="btn active gridBtn"><i class="fa fa-th-large"></i> Grid</button></div><br>');
+  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i alt="list icon" class="fa fa-bars"></i> List</button>'+
+    '<button class="btn active gridBtn"><i alt="grid icon" class="fa fa-th-large"></i> Grid</button></div><br>');
 
   var announcementCard = document.getElementsByClassName("announcementCard");
   var i;
@@ -2045,7 +2139,8 @@ function showLessOrMoreAnnouncements(){
       $("#announcementCards").append("<p style='color:#775886;'>No announcements yet</p>");
   }else if(announcementCardLength > 6){
       $(".announcementCard:gt(5)").hide();
-      $("#displayAnnouncements").append('<div class="showmoreBtnContainer"><button class="showAllAnnouncement">'+
+      $("#displayAnnouncements")
+      .append('<div class="showmoreBtnContainer"><button class="showAllAnnouncement">'+
         '<span class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i></span>'+
         '</button></div>');
   }
@@ -2219,7 +2314,8 @@ function replaceDefualtLink(){
   var links = document.getElementsByTagName('a');
 
   for(var i = 0; i < links.length; i++){
-    if((links[i].getAttribute('href')) == ("showdoc.php?exampleid=---===######===---&courseid=" + querystring['courseid'] + "&coursevers=" +
+    if((links[i].getAttribute('href')) == ("showdoc.php?exampleid=---===######===---&courseid=" +
+    querystring['courseid'] + "&coursevers=" +
     querystring['coursevers'] + "&fname=---===######===---")){
       links[i].href = "../errorpages/403.php";
     }
@@ -2231,7 +2327,8 @@ function addClasses() {
   var links = document.getElementsByTagName('a');
 
   for (var i = 0; i < links.length; i++) {
-    if ((links[i].innerHTML.toLowerCase().indexOf("example") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("exempel") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("examples") !== -1)) {
+    if ((links[i].innerHTML.toLowerCase().indexOf("example") !== -1) ||
+    (links[i].innerHTML.toLowerCase().indexOf("exempel") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("examples") !== -1)) {
       links[i].classList.add("example-link");
     } else if (link_is_external(links[i])) {
       links[i].classList.add("external-link");

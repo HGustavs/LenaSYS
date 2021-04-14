@@ -44,12 +44,117 @@
 	$visibility=false;
 	$readaccess=false;
 	$checklogin=false;
+	
+	$variants=array();
+	$duggaid=getOPG('did');
+	$moment=getOPG('moment');
+	$courseid=getOPG('courseid');
 
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 	}else{
 		$userid="UNK";
 	}
+
+
+	// Get type of dugga
+	$query = $pdo->prepare("SELECT * FROM quiz WHERE id=:duggaid;");
+	$query->bindParam(':duggaid', $duggaid);
+	$result=$query->execute();
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"quizfile Querying Error!");
+	foreach($query->fetchAll() as $row) {
+		$duggainfo=$row;
+		$quizfile = $row['quizFile'];
+	}
+
+	// Retrieve all dugga variants
+	$firstvariant=-1;
+	$query = $pdo->prepare("SELECT vid,param,disabled FROM variant WHERE quizID=:duggaid;");
+	$query->bindParam(':duggaid', $duggaid);
+	$result=$query->execute();
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"variant Querying Error!");
+	$i=0;
+	foreach($query->fetchAll() as $row) {
+		if($row['disabled']==0) $firstvariant=$i;
+		$variants[$i]=array(
+			'vid' => $row['vid'],
+			'param' => $row['param'],
+			'disabled' => $row['disabled']
+		);
+		$i++;
+		$insertparam = true;
+	}
+	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':coursevers', $coursevers);
+	$query->bindParam(':uid', $userid);
+	$query->bindParam(':moment', $moment);
+	$result = $query->execute();
+	
+	$savedvariant="UNK";
+	$newvariant="UNK";
+	$savedanswer="UNK";
+	$isIndb=false;
+
+	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+		$savedvariant=$row['variant'];
+		$savedanswer=$row['useranswer'];
+		$score = $row['score'];
+		$isIndb=true;
+		if ($row['feedback'] != null){
+				$duggafeedback = $row['feedback'];
+		} else {
+				$duggafeedback = "UNK";
+		}
+		$grade = $row['grade'];
+		$submitted = $row['submitted'];
+		$marked = $row['marked'];
+	}
+	
+	// If selected variant is not found - pick another from working list.
+	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
+	$foundvar=-1;
+	foreach ($variants as $key => $value){
+			if($savedvariant==$value['vid']&&$value['disabled']==0) $foundvar=$key;
+	}
+	if($foundvar==-1){
+			$savedvariant="UNK";
+	}
+
+	// If there are many variants, randomize
+	if($savedvariant==""||$savedvariant=="UNK"){
+		// Randomize at most 8 times
+		$cnt=0;
+		do{
+				$randomno=rand(0,sizeof($variants)-1);
+				
+				// If there is a variant choose one at random
+				if(sizeof($variants)>0){
+						if($variants[$randomno]['disabled']==0){
+								$newvariant=$variants[$randomno]['vid'];						
+						}
+				} 
+				$cnt++;
+		}while($cnt<8&&$newvariant=="UNK");
+		
+		// if none has been chosen and there is a first one take that one.
+		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
+	}else{
+		// There is a variant already -- do nothing!	
+	}
+
+	$savedvariant=$newvariant;
+
+	// Retrieve variant
+	if($insertparam == false){
+			$param="NONE!";
+	}
+	foreach ($variants as $variant) {
+		if($variant["vid"] == $savedvariant){
+				$param=html_entity_decode($variant['param']);
+		}
+	}
+
 
 	// Gets username based on uid, USED FOR LOGGING
 	$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
@@ -85,20 +190,20 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 */
 
   //If we have permission, and if file exists, include javascript file.
-		if(isSuperUser($userid)){
-      // If the user is a super user, get all quizes.
-			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-		}else if($readaccess){
-      // If logged in and has access, get all private(requires login) and public quizes.
-			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND (visible=1 OR visible=2) AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-		} else {
-      // If not logged in, get only the public quizes.
-      $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND visible=1 AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-    }
-		$query->bindParam(':cid', $cid);
-		$query->bindParam(':vers', $vers);
-		$query->bindParam(':quizid', $quizid);
-		$result = $query->execute();
+  if(isSuperUser($userid)){
+	// If the user is a super user, get all quizes.
+		  $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+	  }else if($readaccess){
+	// If logged in and has access, get all private(requires login) and public quizes.
+		  $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND (visible=1 OR visible=2) AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+	  } else {
+	// If not logged in, get only the public quizes.
+	$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND visible=1 AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+  }
+	  $query->bindParam(':cid', $cid);
+	  $query->bindParam(':vers', $vers);
+	  $query->bindParam(':quizid', $quizid);
+	  $result = $query->execute();
 
 		if($row = $query->fetch(PDO::FETCH_ASSOC)){
 			$duggatitle=$row['entryname'];
@@ -114,6 +219,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			} else {
 				$output = str_replace('%TITLE%', 'Dugga viewer - ' . $duggatitle, $output);
 			}
+			echo "<script>setDuggaTitle('" . $duggatitle . "');</script>";
 			echo $output;
 			
 			echo "<script src='templates/".$duggafile.".js'></script>";
@@ -124,7 +230,19 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			echo "<body>";
 		}
 ?>
-
+<script type="text/javascript">
+	// localStorageName is unique and depends on did
+	var localStorageName = "duggaID: " + '<?php echo $duggaid; ?>';
+	var variant;
+	var newvariant = '<?php echo $newvariant; ?>';
+	
+	if(localStorage.getItem(localStorageName) == null){
+		localStorage.setItem(localStorageName, newvariant);
+	}
+	variant = JSON.parse(localStorage.getItem(localStorageName));
+	setVariant(variant);
+	
+</script>
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
@@ -139,7 +257,8 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
-			if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
+			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
+			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 
@@ -227,7 +346,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 					</div>
 			</div>
 			<div id='receiptInfo'></div>
-    		<textarea id="receipt" autofocus readonly></textarea>
+    		<textarea id="receipt" autofocus readonly style="resize: none;"></textarea>
  <!--    		<div class="button-row">
     			<input type='button' class='submit-button'  onclick="showEmailPopup();" value='Save Receipt'>
     			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
@@ -235,6 +354,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
     		<div id='emailPopup' style="display:block">
     			<div class='inputwrapper'><span>Ange din email:</span><input class='textinput' type='text' id='email' placeholder='Email' value=''/></div>
 				<div class="button-row">
+					<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
 					<input type='button' class='submit-button'  onclick="sendReceiptEmail();" value='Send Receipt'>
 					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
 				</div>
@@ -243,7 +363,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			<div id='urlAndPwd' style="display:block">
 				<div class="testasd"><span>URL: </span><span id='url'></span></div>
 				<div class="testasd"><span>Password: </span><span id='pwd'></span></div>
-				<div class="testasd"><span>Hash: </span><span id='hash'></span></div>
 			</div>
 
       </div>
@@ -251,6 +370,13 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	<!-- Login Box (receipt&Feedback-box ) End! -->
 
 <!---------------------=============####### Preview Popover #######=============--------------------->
+
+	<?php 
+	if(isSuperUser($userid)){
+    	echo '<script type="text/javascript">',
+    	'displayDownloadIcon();', 'noUploadForTeacher();',
+    	'</script>';
+	}?>
 
   <!--<div id='previewpopover' class='previewPopover' style='display:none;'>-->
   <div id='previewpopover' class='loginBoxContainer' style='display:none; align-items:stretch;'>
@@ -261,7 +387,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
     		<div style="position:absolute;left:0px;top:34px;bottom:0px;right:0px;">
     			<table width="100%" height="100%">
     					<tr>
-    							<td width="75%" height="100%" id="popPrev" style="border:2px inset #aaa;background:#bbb; overflow:scroll;">
+    							<td width="75%" height="100%" id="popPrev" style="display:none;border:2px inset #aaa;background:#bbb; overflow:scroll;">
     									<embed src="" width="100%" height="100%" type='application/pdf' />
     							</td>
     							<td height="100%" id='markMenuPlaceholderz' style="background:#bbb;">

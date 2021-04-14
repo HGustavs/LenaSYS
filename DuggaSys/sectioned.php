@@ -62,14 +62,14 @@
 		<div class='fixed-action-button sectioned' id="FABStatic" style="display:none">
 				<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>
 				<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed id='fabBtnList'>
-					 <li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","undefined");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section","undefined");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment","undefined");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='createFABItem("3","New Test","undefined");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","undefined");'><i class='material-icons'>link</i></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","undefined");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","undefined");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","undefined");'><i class='material-icons'>format_quote</i></a></li>
+					 <li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","undefined");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section","undefined");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment","undefined");'><img alt='moment format icon' class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='createFABItem("3","New Test","undefined");'><img alt='test document icon' class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","undefined");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","undefined");'><img alt='code tag icon' class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","undefined");'><img alt='multiple users icon' class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","undefined");'><i alt='quotation mark icon' class='material-icons'>format_quote</i></a></li>
 				</ol>
 		</div>
 		
@@ -154,14 +154,14 @@
 			<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
 				<input id='addElement'  type='button' value='+' style="top:-493px" class='submit-button-newitem' title='New Item' >
 				<ol class='fab-btn-list2' style='display: none;'  reversed id='fabBtnList2'>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Test' onclick='createFABItem("3","New Test","TOP");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i class='material-icons'>link</i></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i class='material-icons'>format_quote</i></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img alt='moment format icon' class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Test' onclick='createFABItem("3","New Test","TOP");'><img alt='test document icon' class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img alt='code tag icon' class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img alt='multiple users icon' class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i alt='quotation mark icon' class='material-icons'>format_quote</i></a></li>
 					</ol>
 			</div>
 				<div style='flex-grow:1'>
@@ -191,8 +191,8 @@
 		<div id='statisticsList' style="">
 				<div id='statistics' class='statistics' style='cursor:pointer;'>
 						<div style='margin:10px;'>
-								<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>
-								<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>
+								<img alt="minimize deadline section icon" src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>
+								<img alt="expand deadline section icon" src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>
 						</div>
 						<div class='nowrap' style='padding-left:5px' title='statistics'>
 								<span class='listentries-span noselect' style='writing-mode:vertical-rl;text-orientation: sideways;'>Deadlines</span>
@@ -207,9 +207,6 @@
 								<table id="deadlineList" style="table-layout: fixed;width:300px;">
 								</table>
 						</div>
-						<div id='statisticsSwimlanes' class='statisticsInnerBox' style=''>
-								<svg id="swimlaneSVG" width='300px' style='margin: 10px;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
-						</div>
 				</div>
 				<div class="statisticsContentBottom"></div>
 		</div>
@@ -217,7 +214,6 @@
 
 		<!-- Section List -->
 		<div id='Sectionlisti'>
-
 		</div>
 	</div>
 	<div class="course">

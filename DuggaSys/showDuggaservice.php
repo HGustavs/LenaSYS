@@ -1,5 +1,4 @@
 <?php 
-
 //---------------------------------------------------------------------------------------------------------------
 // showDuggaservice - Retrieve duggor, services save and update duggor
 //---------------------------------------------------------------------------------------------------------------
@@ -37,7 +36,10 @@ $showall=getOP('showall');
 $contactable=getOP('contactable');
 $rating=getOP('score');
 $entryname=getOP('entryname');
+$hash=getOP('hash');
+$password=getOP('password');
 $showall="true";
+$localStorageVariant= getOP('variant');
 
 $param = "UNK";
 $savedanswer = "";
@@ -54,6 +56,11 @@ $timeUsed;
 $stepsUsed;
 $duggafeedback="UNK";
 $variants=array();
+
+$savedvariant="UNK";
+$newvariant="UNK";
+$savedanswer="UNK";
+$isIndb=false;
 
 // Create empty array for dugga info!
 $duggainfo=array();
@@ -128,7 +135,11 @@ if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
 if($demo){
 	// We are not logged in - provide the first variant as demo.
-	$param=html_entity_decode($variants[0]['param']);	
+	$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+	$query->bindParam(':vid', $localStorageVariant);
+	$query->execute();
+	$result = $query->fetch();
+	$param=html_entity_decode($result['param']);	
 } else if ($hr){
 	// We are part of the course - assign variant
 	// See if we already have a result i.e. a chosen variant.
@@ -138,11 +149,6 @@ if($demo){
 	$query->bindParam(':uid', $userid);
 	$query->bindParam(':moment', $moment);
 	$result = $query->execute();
-
-	$savedvariant="UNK";
-	$newvariant="UNK";
-	$savedanswer="UNK";
-	$isIndb=false;
 
 	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 		$savedvariant=$row['variant'];
@@ -158,7 +164,9 @@ if($demo){
 		$submitted = $row['submitted'];
 		$marked = $row['marked'];
 	}
-	
+
+//----------------------------------- OLD FUNCTIONALITY WHERE DUGGA IS SAVED TO DB WHEN VISITED -------------------------------------------
+	/*
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
 	$foundvar=-1;
@@ -191,6 +199,7 @@ if($demo){
 		// There is a variant already -- do nothing!	
 	}
 	
+	/*
 	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
 	if ($newvariant=="UNK"){
 
@@ -238,9 +247,10 @@ if($demo){
 				$error=$query->errorInfo();
 				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
       }
-      */
+      
 		}
 	}
+
 	// Retrieve variant
 	if($insertparam == false){
 			$param="NONE!";
@@ -249,6 +259,26 @@ if($demo){
 		if($variant["vid"] == $savedvariant){
 				$param=html_entity_decode($variant['param']);
 		}
+	}*/
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+	if($isIndb){ // If dugga is in database, get the variant from the database
+		if($insertparam == false){
+			$param="NONE!";
+		}
+		foreach ($variants as $variant) {
+			if($variant["vid"] == $savedvariant){
+					$param=html_entity_decode($variant['param']);
+			}
+		}
+	}else if(!$isIndb){ // If dugga is not in database, get the variant from the localstorage
+		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+		$query->bindParam(':vid', $localStorageVariant);
+		$query->execute();
+		$result = $query->fetch();
+		$param=html_entity_decode($result['param']);
 	}
 
 }else{
@@ -260,11 +290,12 @@ if($demo){
 
 if(checklogin()){
 		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions			
-        if(strcmp($opt,"SAVDU")==0){				
+        if(strcmp($opt,"SAVDU")==0){	
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
             $discription = $couseid." ".$duggaid." ".$moment." ".$answer;
             logUserEvent($userid, $username, EventTypes::DuggaFileupload,$discription);
+
 
             //Seperate timeUsed, stepsUsed and score from $answer
             $temp = explode("##!!##", $answer);
@@ -291,6 +322,24 @@ if(checklogin()){
                 //if grade equal G, VG, 3, 4, 5, or 6
                 $debug="You have already passed this dugga. You are not required/allowed to submit anything new to this dugga.";
             }else{
+
+			if(!$isIndb){ // If the dugga is not in database, insert into database
+				$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant,hash,password) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant,:hash,:password);");
+				$query->bindParam(':cid', $courseid);
+				$query->bindParam(':coursevers', $coursevers);
+				$query->bindParam(':uid', $userid);
+				$query->bindParam(':did', $duggaid);
+				$query->bindParam(':moment', $moment);
+				$query->bindParam(':variant', $localStorageVariant);
+				$query->bindParam(':hash', $hash);
+				$query->bindParam(':password', $password);
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
+				}
+			
+			}
+
               	// Update Dugga!
               	$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
               	$query->bindParam(':cid', $courseid);
@@ -309,6 +358,7 @@ if(checklogin()){
                 }	else {
                 	$savedanswer = $answer;
                 }
+
                 // Make sure that current version is set to active for this student
                 $vuery = $pdo->prepare("SELECT vers FROM user_course WHERE uid=:uid AND cid=:cid");
               	$vuery->bindParam(':cid', $courseid);
@@ -352,7 +402,7 @@ if(checklogin()){
             
         }
 		}
-}
+	}
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
@@ -519,7 +569,7 @@ if($today < $duggainfo['qrelease']  && !(is_null($duggainfo['qrelease']))){
 		$duggafeedback="UNK";
 }
 //Fetches Data From listentries Table
-if(strcmp($opt,"CHECKFDBCK")==0){	
+if(strcmp($opt,"CHECKFDBCK")==0){
 	$query = $pdo->prepare("SELECT feedbackenabled, feedbackquestion FROM listentries WHERE lid=:moment AND cid=:cid;");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':moment', $moment);
