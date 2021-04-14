@@ -7,6 +7,7 @@
 var service = [];
 var str = "";
 var defs = "";
+var container;
 
 // Interaction variables - unknown if all are needed
 var deltaX = 0, deltaY = 0, startX, startY;
@@ -224,6 +225,11 @@ document.addEventListener('keyup', function (e)
         setMouseMode(mouseModes.PLACING_ELEMENT); 
         setElementPlacementType(2);
     }
+});
+
+window.addEventListener("resize", () => {
+    updateContainerBounds();
+    drawRulerBars();
 });
 
 //------------------------------------=======############==========----------------------------------------
@@ -965,12 +971,7 @@ function setPos(id, x, y)
 // Generate all courses at appropriate zoom level
 function showdata()
 {
-    var container = document.getElementById("container");
-    var containerbox = container.getBoundingClientRect();
-
-    // Compute bounds of
-    cwidth = containerbox.width;
-    cheight = containerbox.height;
+    updateContainerBounds();
 
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
@@ -1146,6 +1147,13 @@ function updatepos(deltaX, deltaY)
     str = drawSelectionBox(str);
     document.getElementById("svgoverlay").innerHTML = str;
 
+}
+
+function updateContainerBounds()
+{
+    var containerbox = container.getBoundingClientRect();
+    cwidth = containerbox.width;
+    cheight = containerbox.height;
 }
 
 function drawSelectionBox(str)
@@ -1652,6 +1660,7 @@ function removeElements(elementArray){
 
 function getData()
 {
+    container = document.getElementById("container");
     showdata();
     drawRulerBars();
 }
