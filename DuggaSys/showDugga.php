@@ -35,6 +35,7 @@
 	$quizid=getOPG('did');
 	$deadline=getOPG('deadline');
 	$comments=getOPG('comments');
+	$hash=getOPG('hash');
 
 	$duggatitle="UNK";
 	$duggafile="UNK";

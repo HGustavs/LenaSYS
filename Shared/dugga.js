@@ -15,8 +15,7 @@ var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 var pressTimer;
 
-var hash;
-var pwd;
+
 
 var localStorageVariant;
 
@@ -25,7 +24,6 @@ var duggaTitle;
 
 var iconFlag = false;
 
-var hash;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -53,6 +51,10 @@ function getAllIndexes(haystack, needle) {
 function setVariant(v) {
 	console.log("variant dugga.js: " + v)
 	localStorageVariant = v;
+}
+
+function setHash(h){
+	//if(h == "UNK") hash = h;
 }
 
 //Set the localstorage item securitynotifaction to on or off
@@ -595,9 +597,9 @@ function saveDuggaResult(citstr)
 
 {
   
-	pwd = randomPassword(); //Create random password for URL
+	//pwd = randomPassword(); //Create random password for URL
 
-	hash = generateHash(); // Generate Hash
+	//hash = generateHash(); // Generate Hash
 	var url = createUrl(hash); //Create URL
 	
 	console.log("url: " + url);
@@ -733,6 +735,9 @@ function convertDecimalToBase64(value) {
 	if (remaining <= 0) { return chars; }
 	return convertDecimalToBase64.getChars(remaining, chars);
   };
+
+  var hash=generateHash();
+  var pwd=randomPassword();
 
 //----------------------------------------------------------------------------------
 // changeURL: Patch-in for changeURL from project 2014 code
