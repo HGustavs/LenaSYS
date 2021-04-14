@@ -44,6 +44,7 @@
 	$visibility=false;
 	$readaccess=false;
 	$checklogin=false;
+	$insertparam = false;
 	
 	$variants=array();
 	$duggaid=getOPG('did');
