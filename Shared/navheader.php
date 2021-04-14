@@ -530,4 +530,21 @@ function hamburgerToggle() {
 			return <?php echo checkLogin() && isSuperUser($_SESSION['uid']) ? "proxied.apply(this, arguments)" : "null" ?>;
 		};
 	})(window.alert);
+
+
+
+// In this part we enter the Embedded link
+var canvasEmbedded = "canvas.his.se";// HOSTNAME for the Embedded Canvas 
+    //We call the function RemoveNavEmbedded if variable = HOSTNAME 
+    if (canvasEmbedded == window.location.hostname){
+                RemoveNavEmbedded();
+        }
+        // Display none header 
+        function RemoveNavEmbedded() {
+                $("header").css('display', 'none');
+        }
+
+
+
+
 </script>
