@@ -561,8 +561,8 @@ function randomPassword()
 //----------------------------------------------------------------------------------
 
 function createUrl(hash) {
-	var realUrl = window.location + "&hash=" + hash;
-	var localhostUrl="http://localhost/LenaSYS/DuggaSys/sh/?hash=" + hash;
+	var realUrl = window.location + "?a=" + hash;
+	var localhostUrl="http://localhost/LenaSYS/DuggaSys/sh/?a=" + hash;
 
 	// temporary solution, if exist in database use real url
 	var realUrlInDatabase = false;
