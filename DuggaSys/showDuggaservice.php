@@ -1,6 +1,4 @@
 <?php 
-
-error_log("--------------- Start document ----------------", 0);
 //---------------------------------------------------------------------------------------------------------------
 // showDuggaservice - Retrieve duggor, services save and update duggor
 //---------------------------------------------------------------------------------------------------------------
@@ -152,12 +150,7 @@ if($demo){
 	$query->bindParam(':moment', $moment);
 	$result = $query->execute();
 
-	
-
-	error_log("INIT",0);
-
 	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-		error_log("FETCH_ASSOC",0);
 		$savedvariant=$row['variant'];
 		$savedanswer=$row['useranswer'];
 		$score = $row['score'];
@@ -298,7 +291,6 @@ if($demo){
 if(checklogin()){
 		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions			
         if(strcmp($opt,"SAVDU")==0){	
-			error_log("SAVDU",0);			
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
             $discription = $couseid." ".$duggaid." ".$moment." ".$answer;
@@ -417,7 +409,6 @@ if(checklogin()){
 //------------------------------------------------------------------------------------------------
 
 if(strcmp($opt,"GETVARIANTANSWER")==0){
-	error_log("GETVARIANTANSWER",0);
 	$temp = explode(" ", $setanswer);
 	$first = $temp[0];
 	$second = $temp[1];
@@ -454,7 +445,6 @@ if(strcmp($marked,"") == 0){$marked = "UNK";} // Return UNK if we have not been 
 
 $userCount = 1;
 if(strcmp($opt,"GRPDUGGA")==0){
-	error_log("GRPDUGGA",0);
 	$query = $pdo->prepare("SELECT groups FROM user_course WHERE uid=:uid AND cid=:cid AND vers=:vers;");
 	$query->bindParam(':uid', $userid);
 	$query->bindParam(':cid', $courseid);
@@ -579,9 +569,7 @@ if($today < $duggainfo['qrelease']  && !(is_null($duggainfo['qrelease']))){
 		$duggafeedback="UNK";
 }
 //Fetches Data From listentries Table
-if(strcmp($opt,"CHECKFDBCK")==0){	
-
-	error_log("CHECKFDBCK",0);
+if(strcmp($opt,"CHECKFDBCK")==0){
 	$query = $pdo->prepare("SELECT feedbackenabled, feedbackquestion FROM listentries WHERE lid=:moment AND cid=:cid;");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':moment', $moment);
@@ -592,7 +580,6 @@ if(strcmp($opt,"CHECKFDBCK")==0){
 }
 //inserts Data to Feedback Table, with and without username
 if(strcmp($opt,"SENDFDBCK")==0){
-	error_log("SENDFDBCK",0);
 	if($contactable == 1){
 		$query = $pdo->prepare("INSERT INTO userduggafeedback(username,cid,lid,score,entryname) VALUES (:username,:cid,:lid,:score,:entryname);");
 		$query->bindParam(':username', $loginname);
@@ -634,5 +621,4 @@ echo json_encode($array);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php",$userid,$info);
 
-error_log("--------------- End document ----------------", 0);
 ?>
