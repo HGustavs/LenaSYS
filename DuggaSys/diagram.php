@@ -454,7 +454,7 @@
 
     <!-- Diagram drawing system canvas. -->
 
-    <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)'></div> <!-- Contains all elements (items) -->
+    <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
      <!-- One svg layer for background stuff and one for foreground stuff -->
     <svg id="svgbacklayer" preserveAspectRatio="none"></svg>
     <svg id="svgoverlay" preserveAspectRatio="none"></svg>
@@ -466,19 +466,6 @@
         <svg id="ruler-y-svg"></svg>
         <div id="ruler-x"></div>
         <div id="ruler-y"></div>
-    </div>
-    <!-- Diagram grid -->
-    <div id="svggrid">
-        <svg id="svgbacklayer">
-            <defs>
-            <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-                <rect width="100" height="100" fill="url(#smallGrid)"/>
-                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-dasharray="5,5" d="M5 20 l215 0" stroke-width="1"/>
-            </pattern>
-            </defs>
-
-            <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>  
     </div>
     <div id="fab" onclick="fab_action();">+</div> <!-- Big (+) button -->
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
@@ -502,6 +489,7 @@
                 <input class="paneButtons" type="button" value="Attribute" onclick='setMouseMode(2);setElementPlacementType(2);' /><br>
                 <input class="paneButtons" id="cursorModeEdgeCreation" type="button" value="Edge Creation" onclick='setMouseMode(3);' /><br>
                 <input class="paneButtons" id="gridButton" type="button" value="Enable Grid Layout" onclick='enableGrid()' /><br>
+
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
             </fieldset>
             <fieldset id='propertyFieldset'>
