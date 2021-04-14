@@ -873,6 +873,7 @@ INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1','weprog
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('2','wutveckling','Webbutveckling - datorgrafik','97732');
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('3','dagr','Datorns grunder','1337');
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('4','soen','Software Engineering','1338');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1894','deco','Demo-Course','52432');
 
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1894','dem','Demo-Course','52432');
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1894','dcourse','Demo-Course','52432');
