@@ -633,7 +633,7 @@ function enableGrid(){
     if(grid.style.display == "block")
     {
         grid.style.display = "none";
-        buttonName.value = "Enable Grid";
+        buttonName.value = "Enable Grid Layout";
         
     }else
     {

@@ -501,7 +501,7 @@
                 <input class="paneButtons" type="button" value="Relation" onclick='setMouseMode(2);setElementPlacementType(1);' /><br>
                 <input class="paneButtons" type="button" value="Attribute" onclick='setMouseMode(2);setElementPlacementType(2);' /><br>
                 <input class="paneButtons" id="cursorModeEdgeCreation" type="button" value="Edge Creation" onclick='setMouseMode(3);' /><br>
-                <input class="paneButtons" id="gridButton" type="button" value="Enable Grid" onclick='enableGrid()' /><br>
+                <input class="paneButtons" id="gridButton" type="button" value="Enable Grid Layout" onclick='enableGrid()' /><br>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
             </fieldset>
             <fieldset id='propertyFieldset'>
