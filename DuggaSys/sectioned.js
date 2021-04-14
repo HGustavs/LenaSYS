@@ -665,7 +665,15 @@ function returnedSection(data) {
       hiddenInline = "inline";
     }
 
+
+    
+
     str += "<div id='Sectionlistc'>";
+
+    str += "<div id='statisticsSwimlanes' style='height: 200px; overflow: auto; border: 2px solid darkgray; background-color: var(--color-sectioned-table-lo);'>";
+		str += "<svg id='swimlaneSVG' width='800px' style='margin: 10px; margin-top: 0px;' xmlns='http://www.w3.org/2000/svg'></svg>";
+		str += "</div>";
+
 
     // For now we only have two kinds of sections
     if (data['entries'].length > 0) {
@@ -1433,7 +1441,7 @@ function drawSwimlanes() {
 
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
- // var current = new Date(2015, 9, 14);
+  var current = new Date(2015, 9, 14);
 
   var deadlineEntries = [];
   var momentEntries = {};
@@ -1473,7 +1481,7 @@ function drawSwimlanes() {
   var weekLength = Math.ceil((enddate - startdate) / (7 * 24 * 60 * 60 * 1000));
   var currentWeek = weeksBetween(current, startdate);
   var daySinceStart = Math.ceil((current - startdate) / (24 * 60 * 60 * 1000));
-  var daywidth = 4;
+  var daywidth = 10;
   var weekwidth = daywidth * 7;
   var colwidth = 60;
   var weekheight = 25;
@@ -1489,7 +1497,7 @@ function drawSwimlanes() {
       addNumb = 0;
       tempNumb = 2;
     }else if(i > 0){
-      tempNumb = 0;
+      tempNumb = 2;
       addNumb = 2;
     }
     var widthAdjuster = weekwidth+addNumb;
@@ -1556,8 +1564,9 @@ function drawSwimlanes() {
         }
         var tempVariable = duggalength*daywidth;
 
-        str += `<rect opacity='0.7' x='" + (startday * daywidth) + "' y='${(weeky)}' width='
+        str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='
         ${(tempVariable)}' height='${weekheight}' fill='${fillcol}' />`;
+
         str += `<text x='" + (12) + "' y='${(weeky + 18)}' font-family='Arial'
         font-size='12px' fill='${textcol}' text-anchor='left'> <title>${entry.text}
         </title>${entry.text}</text>`;
@@ -1570,7 +1579,7 @@ function drawSwimlanes() {
   y2='${(((1 + deadlineEntries.length) * weekheight) + 15)}' stroke-width='4' stroke='red' />`;
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
   document.getElementById("swimlaneSVG").innerHTML = str;
-  document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 " + svgHeight);
+  document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 800 " + svgHeight);
 
 }
 
