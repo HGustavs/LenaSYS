@@ -1188,7 +1188,7 @@ function generateContextProperties()
             for (i = 0; i < value.length; i++) {
                 str += '<option value='+value[i]+'>'+ value[i] +'</option>';
             }
-        str += '</select>';
+        str += '</select>'; 
         str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
 
     }
