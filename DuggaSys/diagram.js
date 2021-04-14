@@ -124,16 +124,33 @@ var defaults = {
     defaultERattr: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 }
 }
 
+// States used for ER-elements 
+const attrState = {
+    NORMAL: "normal",
+    MULTIPLE: "multiple",
+    KEY: "key",
+    COMPUTED: "computed",
+};
+const entityState = {
+    NORMAL: "normal",
+    WEAK: "weak",
+
+};
+const relationState = {
+    NORMAL: "normal",
+    WEAK: "weak",
+};
+
 // Demo data - read / write from service later on
 var data = [
     { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
-    { name: "Loan", x: 140, y: 250, width: 200, height: 50, kind: "EREntity", id: LoanID, isWeak: true },
+    { name: "Loan", x: 140, y: 250, width: 200, height: 50, kind: "EREntity", id: LoanID, state: "weak" },
     { name: "Car", x: 500, y: 140, width: 200, height: 50, kind: "EREntity", id: CarID },
     { name: "Owns", x: 420, y: 60, width: 60, height: 60, kind: "ERRelation", id: HasID },
-    { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, isWeak: true },
-    { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, isComputed: true },
+    { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, state: "weak" },
+    { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, state: "computed" },
     { name: "Name", x: 170, y: 50, width: 90, height: 45, kind: "ERAttr", id: NameID },
-    { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, isMultiple: true },
+    { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, state: "multiple" },
     { name: "F Name", x: 120, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
     { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
 ];
@@ -1005,12 +1022,12 @@ function drawElement(element){
     } else if (element.kind == "ERAttr")
     {
         var dash = "";
-        if (element.isComputed == true)
+        if (element.state == "computed")
         {
             dash = "stroke-dasharray='4 4'";
         }
         var multi = "";
-        if (element.isMultiple == true)
+        if (element.state == "multiple")
         {
             multi = `
                     <path d="M${linew * multioffs},${hboxh} 
@@ -1035,7 +1052,7 @@ function drawElement(element){
     } else if (element.kind == "ERRelation")
     {
         var weak = "";
-        if (element.isWeak == true)
+        if (element.state == "weak")
         {
 
             weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
@@ -1184,6 +1201,12 @@ function saveProperties()
     updatepos(0,0);
 }
 
+function changeState() {
+    var property = document.getElementById("propertySelect").value;
+    var element = context[0];
+    element.state = property;
+}
+
 function propFieldSelected(isSelected)
 {
     propFieldState = isSelected;
@@ -1211,7 +1234,24 @@ function generateContextProperties()
                     break;
             }
         }
-        str+=`<br><br><input type="submit" value="Save" onclick="saveProperties()">`;
+
+        //Creates drop down for changing state of ER elements
+        var value;
+        if(element.kind=="ERAttr"){
+            value = Object.values(attrState);
+        }
+        else if(element.kind=="EREntity"){
+            value = Object.values(entityState);
+        }
+        else if(element.kind=="ERRelation"){
+            value = Object.values(relationState);
+        }
+        str += '<select id="propertySelect">';
+            for (i = 0; i < value.length; i++) {
+                str += '<option value='+value[i]+'>'+ value[i] +'</option>';
+            }
+        str += '</select>'; 
+        str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
 
     }
     else if (context.length > 1)
