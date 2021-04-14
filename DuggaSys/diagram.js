@@ -1002,7 +1002,7 @@ function showdata()
     // Iterate over programs
     for (var i = 0; i < data.length; i++)
     {
-        str += drawElement(data[i])
+        str += drawElement(data[i], ctx)
     }
 
     container.innerHTML = str;
@@ -1010,16 +1010,31 @@ function showdata()
 
 }
 
-function drawElement(element){
+function drawElement(element, canvasContext)
+{
     var str = "";
+
     // Compute size variables
     var linew = Math.round(strokewidth * zoomfact);
-    var boxw = Math.round(element.width * zoomfact);
-    var boxh = Math.round(element.height * zoomfact);
+    var boxw  = Math.round(element.width * zoomfact);
+    var boxh  = Math.round(element.height * zoomfact);
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
+    
+    // Caclulate font width using some canvas magic
+    var font = ctx.font;
+    font = `${texth}px ${font.split('px')[1]}`;
+    ctx.font = font;
+    var textWidth = ctx.measureText(element.name).width;
+    
+    // If calculated size is larger than element width
+    const margin = 10;
+    var tooBig = (textWidth >= (boxw - (margin * 2)))
+    var xAnchor = tooBig ? margin : hboxw;
+    var vAlignment = tooBig ? "left" : "middle";
 
+    // Create div & svg element
     str += `
 				<div id='${element.id}'	class='element' onmousedown='ddown(event);' style='
 						left:0px;
@@ -1029,23 +1044,26 @@ function drawElement(element){
 						font-size:${texth}px;
 				'>`;
     str += `<svg width='${boxw}' height='${boxh}' >`;
+
+    // Create svg 
     if (element.kind == "EREntity")
     {
 
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' 
                    stroke-width='${linew}' stroke='black' fill='#ffccdc' />
-                   <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text> 
-
+                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                    `;
 
-    } else if (element.kind == "ERAttr")
+    }
+    else if (element.kind == "ERAttr")
     {
         var dash = "";
+        var multi = "";
+
         if (element.state == "computed")
         {
             dash = "stroke-dasharray='4 4'";
         }
-        var multi = "";
         if (element.state == "multiple")
         {
             multi = `
@@ -1066,9 +1084,10 @@ function drawElement(element){
                     
                     ${multi}
 
-                    <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
+                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
                     `;
-    } else if (element.kind == "ERRelation")
+    }
+    else if (element.kind == "ERRelation")
     {
         var weak = "";
         if (element.state == "weak")
@@ -1081,7 +1100,7 @@ function drawElement(element){
         str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
                    stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                    ${weak}
-                   <text x='${hboxw}' y='${hboxh}' dominant-baseline='middle' text-anchor='middle'>${element.name}</text>
+                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
                    `;
 
     }
