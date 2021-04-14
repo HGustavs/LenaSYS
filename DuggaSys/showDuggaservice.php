@@ -171,6 +171,8 @@ if($demo){
 		$submitted = $row['submitted'];
 		$marked = $row['marked'];
 	}
+
+//----------------------------------- OLD FUNCTIONALITY WHERE DUGGA IS SAVED TO DB WHEN VISITED -------------------------------------------
 	/*
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
@@ -265,8 +267,11 @@ if($demo){
 				$param=html_entity_decode($variant['param']);
 		}
 	}*/
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	if($isIndb){
+
+
+	if($isIndb){ // If dugga is in database, get the variant from the database
 		if($insertparam == false){
 			$param="NONE!";
 		}
@@ -275,7 +280,7 @@ if($demo){
 					$param=html_entity_decode($variant['param']);
 			}
 		}
-	}else if(!$isIndb){
+	}else if(!$isIndb){ // If dugga is not in database, get the variant from the localstorage
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
 		$query->bindParam(':vid', $localStorageVariant);
 		$query->execute();
@@ -326,7 +331,7 @@ if(checklogin()){
                 $debug="You have already passed this dugga. You are not required/allowed to submit anything new to this dugga.";
             }else{
 
-			if(!$isIndb){
+			if(!$isIndb){ // If the dugga is not in database, insert into database
 				$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant,hash,password) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant,:hash,:password);");
 				$query->bindParam(':cid', $courseid);
 				$query->bindParam(':coursevers', $coursevers);
@@ -341,39 +346,6 @@ if(checklogin()){
 					$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
 				}
 			
-			/*// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
-			if ($newvariant=="UNK"){
-				error_log("newwavriantisUNK",0);
-			} else if ($newvariant!="UNK") {
-				error_log("newwavriantisnotUNK",0);
-				if($isIndb){
-					error_log("ISINDB",0);
-					/*
-					$query = $pdo->prepare("UPDATE userAnswer SET variant=:variant WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-					$query->bindParam(':cid', $courseid);
-					$query->bindParam(':coursevers', $coursevers);
-					$query->bindParam(':uid', $userid);
-					$query->bindParam(':moment', $moment);
-					$query->bindParam(':variant', $newvariant);
-					if(!$query->execute() || $query->rowCount()==0) {
-						$error=$query->errorInfo();
-						$debug="Error updating variant (row ".__LINE__.") ".$query->rowCount()." row(s) were updated. Error code: ".$error[2];
-						
-					}else if(!$isIndb){
-					$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant,hash,password) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant,:hash,:password);");
-					$query->bindParam(':cid', $courseid);
-					$query->bindParam(':coursevers', $coursevers);
-					$query->bindParam(':uid', $userid);
-					$query->bindParam(':did', $duggaid);
-					$query->bindParam(':moment', $moment);
-					$query->bindParam(':variant', $newvariant);
-					$query->bindParam(':hash', $hash);
-					$query->bindParam(':password', $password);
-					if(!$query->execute()) {
-						$error=$query->errorInfo();
-						$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
-					}
-				}*/
 			}
 
               	// Update Dugga!
@@ -395,28 +367,6 @@ if(checklogin()){
                 	$savedanswer = $answer;
                 }
 
-				/*
-				$query = $pdo->prepare("SELECT hash, password FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-				$query->bindParam(':cid', $courseid);
-				$query->bindParam(':coursevers', $coursevers);
-				$query->bindParam(':uid', $userid);
-				$query->bindParam(':moment', $moment);
-				$query->execute();
-				
-				$result = $query->fetch(PDO::FETCH_ASSOC);
-				$checkHash = $result;
-
-				if(is_null($checkHash['hash']) || is_null($checkHash['password'])){
-					$query = $pdo->prepare("UPDATE userAnswer SET hash=:hash, password=:password WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-					$query->bindParam(':cid', $courseid);
-					$query->bindParam(':coursevers', $coursevers);
-					$query->bindParam(':uid', $userid);
-					$query->bindParam(':moment', $moment); 
-				 	$query->bindParam(':hash', $hash);
-					$query->bindParam(':password', $password); 
-				  	$query->execute();
-				}
-				*/
                 // Make sure that current version is set to active for this student
                 $vuery = $pdo->prepare("SELECT vers FROM user_course WHERE uid=:uid AND cid=:cid");
               	$vuery->bindParam(':cid', $courseid);
