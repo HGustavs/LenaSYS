@@ -40,7 +40,7 @@ function GetAssigment ($hash){
 
 
 
-if($assignment != "UNK"){
+/* if($assignment != "UNK"){
 	// Check if it's an URL shorthand for assignments
 	if($course == "UNK"){
 		$assignmentURL = GetAssigment($assignment);
@@ -55,6 +55,31 @@ if($assignment != "UNK"){
 		}
 	}
 	return $array;
+} */
+
+if ($course != "UNK") {
+	global $pdo;
+
+	$sql = "SELECT coursename FROM course";
+	
+	$courses = array();
+
+	foreach($pdo->query($sql) as $course) {
+		array_push($courses, $course["coursename"]);
+	}
+
+	if (in_array($course, $courses)) {
+		$sql = "SELECT activeversion, cid FROM course WHERE coursename='".$course."'";
+		foreach ($pdo->query($sql) as $row) {
+			$cid = $row["cid"];
+			$activeversion = $row["activeversion"];
+		}
+		$serverRoot = serverRoot();
+		echo $serverRoot;
+		header("Location: {$serverRoot}/DuggaSys/sectioned.php?courseid={$cid}&coursevers={$activeversion}");
+		exit();
+	}
+	return 5;
 }
 
 $q = queryToUrl($course, $assignment);
