@@ -160,6 +160,7 @@
     width:40px;
     height:100%;
 }
+
 .diagramIcons{
     width: 31px;
     height: 31px;
@@ -175,4 +176,21 @@
 .diagramIcons img{
     width:30px;
     height:30px;
+
+.node {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: blue;
+}
+.node.mr {
+    top: calc(50% - 4px);
+    left: 0;
+    cursor: col-resize;
+}
+.node.ml {
+    top: calc(50% - 4px);
+    right: 0;
+    cursor: col-resize;
+
 }
