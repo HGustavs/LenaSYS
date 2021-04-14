@@ -170,6 +170,8 @@ CREATE TABLE userAnswer (
         -- used in conjunction with `marked` to determine if a grade has been changed since it was last exported
         gradeLastExported   timestamp null default null,
 	seen_status             TINYINT(1) NOT NULL DEFAULT 0,
+	hash					VARCHAR(8),
+	password				VARCHAR(7),
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (uid) REFERENCES user(uid),
@@ -662,6 +664,16 @@ CREATE TABLE userduggafeedback(
 	FOREIGN KEY (username) REFERENCES user(username),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (lid) REFERENCES listentries(lid)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+
+/* Table for url shorthands, historic matches to ensure consistency */
+CREATE TABLE coursekeys(
+	cid						INT UNSIGNED NOT NULL,
+	urlkey                  VARCHAR(100) NOT NULL UNIQUE,
+	coursecode				VARCHAR(45) NULL UNIQUE,
+	coursename				VARCHAR(80) NULL,
+	activeversion			VARCHAR(8),
+	PRIMARY KEY (urlkey)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 /*

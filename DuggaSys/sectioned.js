@@ -1027,7 +1027,8 @@ function returnedSection(data) {
           if (itemKind === 1) str += "class='section" + hideState + "' ";
           if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
-          str += "><img id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
+
+          str += "><img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'],
@@ -1039,7 +1040,7 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
           ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
-          str += "<img id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
+          str += "<img alt='trashcan icon' id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
           str += "</td>";
         }
 
@@ -2018,8 +2019,8 @@ function handleResponse(xhttp, updateannouncementid, cid, versid){
 
 //announcement card grid and list view
 function displayListAndGrid(){
-  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i class="fa fa-bars"></i> List</button>'+
-    '<button class="btn active gridBtn"><i class="fa fa-th-large"></i> Grid</button></div><br>');
+  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i alt="list icon" class="fa fa-bars"></i> List</button>'+
+    '<button class="btn active gridBtn"><i alt="grid icon" class="fa fa-th-large"></i> Grid</button></div><br>');
 
   var announcementCard = document.getElementsByClassName("announcementCard");
   var i;

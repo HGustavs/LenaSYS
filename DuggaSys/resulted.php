@@ -57,13 +57,13 @@ pdoConnect();
 	
 		<div id="legendBtn"> ? </div>
 		<ul class="legendList">
-			<li class="legendListItem"><img src="../Shared/icons/Uh.png"><img src="../Shared/icons/G.png"> Pass</li>
-			<li class="legendListItem"><img src="../Shared/icons/U.png"><img src="../Shared/icons/Gc.png"> Fail</li>
-			<li class="legendListItem"><img src="../Shared/icons/Uc.png"><img src="../Shared/icons/Gc.png"> Pending / not graded</li>
-			<li class="legendListItem"><img src="../Shared/icons/FistV.png"> Dugga stats</li>
-			<li class="legendListItem"><img src="../Shared/icons/warningTriangle.png"> Deadline passed</li>
+			<li class="legendListItem"><img alt="pass icon" src="../Shared/icons/Uh.png"><img src="../Shared/icons/G.png"> Pass</li>
+			<li class="legendListItem"><img alt="fail icon" src="../Shared/icons/U.png"><img src="../Shared/icons/Gc.png"> Fail</li>
+			<li class="legendListItem"><img alt="pending icon" src="../Shared/icons/Uc.png"><img src="../Shared/icons/Gc.png"> Pending / not graded</li>
+			<li class="legendListItem"><img alt="stats icon" src="../Shared/icons/FistV.png"> Dugga stats</li>
+			<li class="legendListItem"><img alt="deadline passed icon" src="../Shared/icons/warningTriangle.png"> Deadline passed</li>
 			<li class="legendListItem"><span> (9) </span><span> Grading changes</span></li>
-			<li class="legendListItem"><img src="../Shared/icons/not_announced_icon.svg"> Dugga not yet submitted</li>
+			<li class="legendListItem"><img alt="not submitted icon" src="../Shared/icons/not_announced_icon.svg"> Dugga not yet submitted</li>
 			<li class="legendListItem"><div class="dugga-moment"></div> Dugga moment</li>
 			<li class="legendListItem"><div class="dugga-pending-late-submission"></div> Dugga pending: Late submission</li>
 			<li class="legendListItem"><div class="dugga-pending"></div> Dugga pending: Submitted in time</li>
@@ -139,12 +139,14 @@ pdoConnect();
 	<!-- -------------------=============####### Result Popover #######=============------------------- -->
 
 	<div id='resultpopover' class='resultPopover' style='display: none'>
+	<?php if(isSuperUser($_SESSION['uid'])){echo '<script type="text/javascript">','displayDownloadIcon();','</script>';}?>
+	<?php if(isSuperUser($_SESSION['uid'])){echo '<script type="text/javascript">','noUploadForTeacher();','</script>';}?>
 		<div class='loginBoxheader'>
 			<span id="hoverRes" ></span>
 			<h3 style='width:100%;' id='Nameof' onmouseover="hoverResult();"
 			onmouseout="hideHover();" >Show Results</h3>
 			<button id='gradeBtn' class='cursorPointer' onclick="toggleGradeBox();">
-				<img src="../Shared/icons/FistV.png" height="24px" width="24px">
+				<img alt="grade icon" src="../Shared/icons/FistV.png" height="24px" width="24px">
 			</button>
 			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>

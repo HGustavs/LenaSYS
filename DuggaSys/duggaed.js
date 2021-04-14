@@ -27,7 +27,7 @@ function setup() {
     filt += `<form autocomplete='off' style='display:contents'><input id='duggaSearch' readonly style='margin-top:4px;' onmouseover = 'duggaSearchMouseOver()' type='text' name='search' placeholder='Search..'`;
 	filt += `onkeyup='searchterm=document.getElementById("duggaSearch").value;searchKeyUp(event);duggaTable.renderTable();'onsearch='searchterm=document.getElementById("duggaSearch").value; searchKeyUp(event); duggaTable.renderTable();document.getElementById("searchinputMobile").value=document.getElementById("duggaSearch").value;'/></form>`;
 	filt += `<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>`
-    filt += `<img id='lookingGlassSVG' style='height:18px;margin-bottom:6px;' src='../Shared/icons/LookingGlass.svg'>`
+    filt += `<img alt='search icon' id='lookingGlassSVG' style='height:18px;margin-bottom:6px;' src='../Shared/icons/LookingGlass.svg'>`
 	filt += `</button>`
 	filt += `</td>`
     filt += `<img id='lookingGlassSVG' style='height:18px;margin-bottom:6px;' src='../Shared/icons/LookingGlass.svg'/>`;
@@ -722,19 +722,19 @@ function renderCell(col, celldata, cellid) {
 
 		case "arrow":		// DUGGA-TABLE - Arrow icon
 			clickedElement = JSON.parse(cellid.match(/\d+/));
-			retString = "<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
+			retString = "<img alt='edit dugga icon' id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
 			retString += ` onclick='renderVariant(\"${clickedElement}\"); showVariantEditor();'>`;
 			break;
 
 		case "cogwheel":	// DUGGA-TABLE - Cogwheel icon
 			object = JSON.parse(celldata);
-			retString = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
+			retString = "<img alt='dugga settings icon' id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
 			retString += ` onclick='selectDugga(\"${object}\");' >`;
 			break;
 
 		case "trashcan":	// DUGGA-TABLE - Trashcan icon
 			object = JSON.parse(celldata);
-			retString = "<img id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
+			retString = "<img alt='delete dugga icon' id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
 			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
 			break;
 

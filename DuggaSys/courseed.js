@@ -375,7 +375,7 @@ function returnedCourse(data)
 	// Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
 	str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;''><a href='https://github.com/HGustavs/LenaSYS'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div class='ellipsis'> Course Organization System</div>"
 	if (data['writeaccess']){
-		str+="<img style='margin-left:17px;cursor:pointer;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings(); 'title='Edit Server Settings'>"
+		str+="<img alt='settings icon' style='margin-left:17px;cursor:pointer;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings(); 'title='Edit Server Settings'>"
 	}
 	str+="</div>";
 	// For now we only have two kinds of sections
@@ -411,7 +411,7 @@ function returnedCourse(data)
         		str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + courseBegin + courseEnd + "</a></div>";
         		str += "<span style='margin-bottom: 0px'>";
 
-				    str += "<span><img id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
+				    str += "<span><img alt='course settings icon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
         
         		str += "</span>";
       		} else {

@@ -863,3 +863,49 @@ INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,m
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','1','3','2010',NULL,'225',NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','1','3','2011',NULL,'225','2 97732 2011 .T1.T 257 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,0,0);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','1','3','2012',NULL,'225','2 97732 2012 .D2.T 151 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,1,0);
+
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1','wp','Webbprogrammering','45656');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('2','wgfx','Webbutveckling - datorgrafik','97732');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('3','dg','Datorns grunder','1337');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('4','se','Software Engineering','1338');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1894','dc','Demo-Course','52432');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1','weprog','Webbprogrammering','45656');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('2','wutveckling','Webbutveckling - datorgrafik','97732');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('3','dagr','Datorns grunder','1337');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('4','soen','Software Engineering','1338');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1894','deco','Demo-Course','52432');
+
+
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1894','dem','Demo-Course','52432');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1894','dcourse','Demo-Course','52432');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1894','demo','Demo-Course','52432');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1894','demc','Demo-Course','52432');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1894','demcourse','Demo-Course','52432');
+
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('4','soft','Software Engineering','1338');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('4','soften','Software Engineering','1338');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('4','software','Software Engineering','1338');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('4','sofeng','Software Engineering','1338');
+
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('3','datorgrund','Datorns grunder','1337');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('3','datgrund','Datorns grunder','1337');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('3','grund','Datorns grunder','1337');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('3','grunderdata','Datorns grunder','1337');
+
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('2','utveckl','Webbutveckling - datorgrafik','97732');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('2','webbut','Webbutveckling - datorgrafik','97732');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('2','webutv','Webbutveckling - datorgrafik','97732');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('2','utveckling','Webbutveckling - datorgrafik','97732');
+
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1','program','Webbprogrammering','45656');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1','programmering','Webbprogrammering','45656');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1','webprog','Webbprogrammering','45656');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1','wprograming','Webbprogrammering','45656');
+
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1','wepr','Webbprogrammering','45656');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('2','wuve','Webbutveckling - datorgrafik','97732');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('3','dgrunder','Datorns grunder','1337');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('4','soengi','Software Engineering','1338');
+INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1894','dcourse','Demo-Course','52432');
+
+
