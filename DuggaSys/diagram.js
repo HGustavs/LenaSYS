@@ -16,6 +16,7 @@ var cwidth, cheight;
 var hasRecursion = false;
 var startWidth;
 var startNodeRight = false;
+var cursorStyle;
 
 // Zoom variables
 var zoomfact = 1.0;
@@ -177,16 +178,23 @@ document.addEventListener('keydown', function (e)
 
 document.addEventListener('keyup', function (e)
 {
+    /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
     if (e.key == "Control") ctrlPressed = false;
     if (e.key == "Alt") altPressed = false;
     if (e.key == "Meta") ctrlPressed = false;
     if (e.key == "Escape"){
         escPressed = false;
     }
-    if (e.key == "b") setMouseMode(mouseModes.BOX_SELECTION);
-    if (e.key == "m") setMouseMode(mouseModes.POINTER);
-    if (e.key == "d") setMouseMode(mouseModes.EDGE_CREATION);
 
+    if (e.key == "b"){
+        setMouseMode(mouseModes.BOX_SELECTION);
+    }
+    if (e.key == "m"){
+        setMouseMode(mouseModes.POINTER);
+    }
+    if (e.key == "d"){
+        setMouseMode(mouseModes.EDGE_CREATION);
+    }
     if (e.key == "e"){
         setMouseMode(mouseModes.PLACING_ELEMENT); 
         setElementPlacementType(0);
@@ -446,7 +454,7 @@ function mouseMode_onMouseMove(event)
         case mouseModes.EDGE_CREATION:
         case mouseModes.POINTER: // do nothing
             break;
-
+            
         case mouseModes.BOX_SELECTION:
             boxSelect_Update(event.clientX, event.clientY);
             updatepos(0, 0);
@@ -631,7 +639,30 @@ function setMouseMode(mode)
     // Mode-specific activation/deactivation
     onMouseModeDisabled(mouseMode);
     mouseMode = mode;
+    setCursorStyles(mode);
     onMouseModeEnabled(mouseMode);
+}
+
+function setCursorStyles(cursorMode = 0)
+{
+    cursorStyle = document.getElementById("container").style;
+    switch(cursorMode)
+    {
+        case mouseModes.POINTER:
+            cursorStyle.cursor = "pointer";
+            break;
+        case mouseModes.BOX_SELECTION:
+            cursorStyle.cursor = "crosshair";
+            break;
+        case mouseModes.PLACING_ELEMENT:
+            cursorStyle.cursor = "cell";
+            break;
+        case mouseModes.EDGE_CREATION:
+            cursorStyle.cursor = "grab";
+            break;
+        default: 
+            break;
+    }
 }
 
 function onMouseModeEnabled(mode)
