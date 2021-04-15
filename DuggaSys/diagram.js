@@ -486,9 +486,25 @@ function determineLineSelect(mouseX, mouseY)
     // This func is used when determining which line is clicked on.
 
     // TODO: Add functionality to make sure we are only getting LINES from svgbacklayer in the future !!!!!.
-    var allLines = document.getElementById("svgbacklayer").children;
 
+    var allLines = document.getElementById("svgbacklayer").children;
     var cMouse_XY = {x: mouseX, y: mouseY}; // Current mouse XY
+    var currentline = {};
+    var lineData = {};
+    var lineCoeffs = {};
+    var highestX;
+    var lowestX; 
+    var highestY;
+    var lowestY;
+    var lineWasHit = false; 
+
+    // Position and radius of the circle hitbox that is used when 
+    var circleHitBox = {
+        pos_x: cMouse_XY.x, // Mouse pos X.
+        pos_y: cMouse_XY.y, // Mouse pos Y.
+        radius: 10 // This will determine the error margin, "how far away from the line we can click and still select it". Higer val = higher margin.
+    }
+    
     for(var i = 0; i < allLines.length; i++)
     {
         // Get all X and Y -coords for current line in iteration.
@@ -499,40 +515,27 @@ function determineLineSelect(mouseX, mouseY)
             y2: allLines[i].getAttribute("y2")
         };
 
-        var a1 = currentline.x1;
-        var a2 = currentline.x2;
-        var b1 = currentline.y1;
-        var b2 = currentline.y2;
-
         // Used later to make sure the current mouse-position is in the span of a line.
-        var highestX = Math.max(a1, a2);
-        var lowestX = Math.min(a1, a2);
-        var highestY = Math.max(b1, b2);
-        var lowestY = Math.min(b1, b2);
-
-        var lineData = {
+        highestX = Math.max(currentline.x1, currentline.x2);
+        lowestX = Math.min(currentline.x1, currentline.x2);
+        highestY = Math.max(currentline.y1, currentline.y2);
+        lowestY = Math.min(currentline.y1, currentline.y2);
+        lineData = {
             hX: highestX,
             lX: lowestX,
             hY: highestY,
             lY: lowestY
         }
-
-        // Position and radius of the circle hitbox that is used when 
-        var circleHitBox = {
-            pos_x: cMouse_XY.x, // Mouse pos X.
-            pos_y: cMouse_XY.y, // Mouse pos Y.
-            radius: 10 // This will determine the error margin, "how far away from the line we can click and still select it". Higer val = higher margin.
-        }
         
         // Coefficients of the general equation of the current line.
-        var lineCoeffs = {
-            a: (b1 - b2),
-            b: (a2 - a1),
-            c: ((a1 - a2)*b1 + (b2-b1)*a1)
+        lineCoeffs = {
+            a: (currentline.y1 - currentline.y2),
+            b: (currentline.x2 - currentline.x1),
+            c: ((currentline.x1 - currentline.x2)*currentline.y1 + (currentline.y2-currentline.y1)*currentline.x1)
         }
         
         // Determines if a line was clicked
-        var lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
+        lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
         
         // --- Used when debugging ---
         // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
