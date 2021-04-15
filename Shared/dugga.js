@@ -22,10 +22,7 @@ var localStorageVariant;
 
 var duggaTitle;
 
-
 var iconFlag = false;
-
-var hash;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
