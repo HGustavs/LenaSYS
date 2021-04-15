@@ -45,6 +45,7 @@
 	$readaccess=false;
 	$checklogin=false;
 	
+	$variantsize;
 	$variants=array();
 	$duggaid=getOPG('did');
 	$moment=getOPG('moment');
@@ -230,18 +231,28 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			echo "<body>";
 		}
 ?>
+
+<!-- Finds the highest variant.quizID -->
+<?php
+	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
+	$query->execute();
+	$variantsize = $query->fetchColumn();
+?>
 <script type="text/javascript">
-	// localStorageName is unique and depends on did
-	var localStorageName = "duggaID: " + '<?php echo $duggaid; ?>';
-	var variant;
-	var newvariant = '<?php echo $newvariant; ?>';
-	
-	if(localStorage.getItem(localStorageName) == null){
-		localStorage.setItem(localStorageName, newvariant);
+	// This if-statement will only store to localstorage if there is a variant.quizID
+	// that match $duggaid
+	if(<?php echo $duggaid; ?> <= <?php echo $variantsize; ?>) {
+		// localStorageName is unique and depends on did
+		var localStorageName = "duggaID: " + '<?php echo $duggaid; ?>';
+		var variant;
+		var newvariant = '<?php echo $newvariant; ?>';
+		
+		if(localStorage.getItem(localStorageName) == null){
+			localStorage.setItem(localStorageName, newvariant);
+		}
+		variant = JSON.parse(localStorage.getItem(localStorageName));
+		setVariant(variant);
 	}
-	variant = JSON.parse(localStorage.getItem(localStorageName));
-	setVariant(variant);
-	
 </script>
 	<?php
 		$noup="SECTION";
