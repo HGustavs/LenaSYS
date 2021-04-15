@@ -35,6 +35,7 @@
 	$quizid=getOPG('did');
 	$deadline=getOPG('deadline');
 	$comments=getOPG('comments');
+	$hash = getOPG("hash");
 
 	$duggatitle="UNK";
 	$duggafile="UNK";
@@ -242,7 +243,8 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	}
 	variant = JSON.parse(localStorage.getItem(localStorageName));
 	setVariant(variant);
-	
+
+	setHash("<?php echo $hash ?>");	
 </script>
 	<?php
 		$noup="SECTION";
