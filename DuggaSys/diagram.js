@@ -475,7 +475,6 @@ function mup(event)
     deltaX = 0;
     deltaY = 0;
     updatepos(0, 0);
-    drawRulerBars();
 
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
@@ -514,6 +513,9 @@ function mmoving(event)
 
             // Update scroll position
             updatepos(null, null);
+
+            // Update the ruler
+            drawRulerBars();
 
             // Remember that mouse has moved out of starting bounds
             if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
