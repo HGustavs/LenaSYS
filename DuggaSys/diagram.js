@@ -3,6 +3,8 @@
 //                           Defaults, mouse variables and zoom variables
 //------------------------------------=======############==========----------------------------------------
 
+var cursorIcon;
+
 // Data and html building variables
 var service = [];
 var str = "";
@@ -397,6 +399,11 @@ function mouseMode_onMouseUp(event)
     }
 }
 
+function mout(event)
+{
+    cursorIcon.style = "display: none";
+}
+
 function mup(event)
 {
     deltaX = startX - event.clientX;
@@ -470,6 +477,9 @@ function mouseMode_onMouseMove(event)
         case mouseModes.PLACING_ELEMENT:
         case mouseModes.EDGE_CREATION:
         case mouseModes.POINTER: // do nothing
+            
+            cursorIcon.style.top = event.clientY + 15 + "px";
+            cursorIcon.style.left = event.clientX + 15 + "px";
             break;
             
         case mouseModes.BOX_SELECTION:
@@ -669,13 +679,16 @@ function setCursorStyles(cursorMode = 0)
             cursorStyle.cursor = "pointer";
             break;
         case mouseModes.BOX_SELECTION:
-            cursorStyle.cursor = "crosshair";
+            //cursorStyle.cursor = "crosshair";
+            cursorIcon.src = "../Shared/icons/diagram_box_select.svg";
             break;
         case mouseModes.PLACING_ELEMENT:
-            cursorStyle.cursor = "cell";
+            //cursorStyle.cursor = "cell";
+            cursorIcon.src = "../Shared/icons/diagram_entity.svg";
             break;
         case mouseModes.EDGE_CREATION:
-            cursorStyle.cursor = "grab";
+            //cursorStyle.cursor = "grab";
+            cursorIcon.src = "../Shared/icons/diagram_line.svg";
             break;
         default: 
             break;
@@ -1652,6 +1665,7 @@ function removeElements(elementArray){
 
 function getData()
 {
+    cursorIcon = document.getElementById("cursorIcon");
     showdata();
     drawRulerBars();
 }

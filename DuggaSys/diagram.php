@@ -453,8 +453,8 @@
     </div>
 
     <!-- Diagram drawing system canvas. -->
-
-    <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
+    <img id="cursorIcon" style="width:20px; height:20px; position:absolute; z-index:10000; pointer-events: none;" src="../Shared/icons/diagram_box_select.svg" />
+    <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)' onmouseout='mout(event)'></div> <!-- Contains all elements (items) -->
      <!-- One svg layer for background stuff and one for foreground stuff -->
     <svg id="svgbacklayer" preserveAspectRatio="none"></svg>
     <svg id="svgoverlay" preserveAspectRatio="none"></svg>
