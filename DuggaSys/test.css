@@ -1,0 +1,65 @@
+@import url('https://css.gg/check.css');
+
+#mybutton {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: lightgreen;
+	display: table;
+	cursor: pointer;
+	border-radius: 50%;
+	padding: 20px 10px;
+	font-size: 20px;
+	z-index: 1;
+}
+body{
+	background-color: lightblue;
+
+}
+h1{
+	text-align: center;
+	float: center;
+}
+.content{
+
+}
+#box{
+	width: 400px;
+	height: 500px;
+	overflow: hidden;
+	background: #f1f1f1;
+	box-shadow: 0 0 20px black;
+	padding: 5px 10px;
+	border-radius: 8px;
+	position: relative;
+	z-index: 100;
+	display: none;
+	margin: 10% auto;
+}
+
+.close{
+	position: absolute;
+	background: red;
+	top: 0px;
+	right: 5px;
+	color: #aaa;
+	font-size: 25px;
+	font-weight: bold;
+	float:right;
+	padding: 0px 5px;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  cursor: pointer;
+}
+
+.gg-check{
+	display: none;
+	color: green;
+	width: 50px;
+	height: 50px;
+}
+
