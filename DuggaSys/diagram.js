@@ -175,55 +175,62 @@ var lines = [
 //------------------------------------=======############==========----------------------------------------
 document.addEventListener('keydown', function (e)
 {
-    if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
-    if (e.key == "Alt" && altPressed !== true) altPressed = true;
-    if (e.key == "Delete" && context.length > 0)  removeElements(context);
-    if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
-    if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
-    if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
-    if (e.key == "Escape" && escPressed != true){
-        escPressed = true;
-        context = [];
-        if (movingContainer){
-            scrollx = sscrollx;
-            scrolly = sscrolly;
+    // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
+    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase()) ){
+
+        if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
+        if (e.key == "Alt" && altPressed !== true) altPressed = true;
+        if (e.key == "Delete" && context.length > 0)  removeElements(context);
+        if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
+        if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
+        if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
+        if (e.key == "Escape" && escPressed != true){
+            escPressed = true;
+            context = [];
+            if (movingContainer){
+                scrollx = sscrollx;
+                scrolly = sscrolly;
+            }
+            pointerState = pointerStates.DEFAULT;
+            showdata();
         }
-        pointerState = pointerStates.DEFAULT;
-        showdata();
+        if (e.key == "Backspace" && context.length > 0 && !propFieldState) removeElements(context);
     }
-    if (e.key == "Backspace" && context.length > 0 && !propFieldState) removeElements(context);
 });
 
 document.addEventListener('keyup', function (e)
 {
-    /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
-    if (e.key == "Control") ctrlPressed = false;
-    if (e.key == "Alt") altPressed = false;
-    if (e.key == "Meta") ctrlPressed = false;
-    if (e.key == "Escape"){
-        escPressed = false;
-    }
+    // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
+    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase()) ) {
+        /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
+        if (e.key == "Control") ctrlPressed = false;
+        if (e.key == "Alt") altPressed = false;
+        if (e.key == "Meta") ctrlPressed = false;
+        if (e.key == "Escape") {
+            escPressed = false;
+        }
 
-    if (e.key == "b"){
-        setMouseMode(mouseModes.BOX_SELECTION);
-    }
-    if (e.key == "m"){
-        setMouseMode(mouseModes.POINTER);
-    }
-    if (e.key == "d"){
-        setMouseMode(mouseModes.EDGE_CREATION);
-    }
-    if (e.key == "e"){
-        setMouseMode(mouseModes.PLACING_ELEMENT); 
-        setElementPlacementType(0);
-    }
-    if (e.key == "r"){
-        setMouseMode(mouseModes.PLACING_ELEMENT); 
-        setElementPlacementType(1);
-    }
-    if (e.key == "a"){
-        setMouseMode(mouseModes.PLACING_ELEMENT); 
-        setElementPlacementType(2);
+        if (e.key == "b") {
+            setMouseMode(mouseModes.BOX_SELECTION);
+        }
+        if (e.key == "m") {
+            setMouseMode(mouseModes.POINTER);
+        }
+        if (e.key == "d") {
+            setMouseMode(mouseModes.EDGE_CREATION);
+        }
+        if (e.key == "e") {
+            setMouseMode(mouseModes.PLACING_ELEMENT);
+            setElementPlacementType(0);
+        }
+        if (e.key == "r") {
+            setMouseMode(mouseModes.PLACING_ELEMENT);
+            setElementPlacementType(1);
+        }
+        if (e.key == "a") {
+            setMouseMode(mouseModes.PLACING_ELEMENT);
+            setElementPlacementType(2);
+        }
     }
 });
 
