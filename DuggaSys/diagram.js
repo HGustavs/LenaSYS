@@ -1182,6 +1182,9 @@ function updateSelection(ctxelement, x, y)
     {
         context = [];
     }
+
+    // Generate the properties field in options-pane
+    generateContextProperties();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1191,8 +1194,6 @@ function updateSelection(ctxelement, x, y)
 function updatepos(deltaX, deltaY)
 {
     exportElementDataToCSS();
-
-    generateContextProperties();
 
     // Update svg backlayer -- place everyhing to draw OVER elements here
     var str = "";
