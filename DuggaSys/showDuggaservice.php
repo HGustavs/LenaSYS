@@ -75,6 +75,17 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
 
+// Get user hash
+$query = $pdo->prepare("SELECT * FROM userAnswer WHERE hash=:hash");
+$query->bindParam(':hash', $hash);
+$result = $query->execute();
+if(mysql_num_rows($result) == 0){
+	//Hash is unique
+}
+else{
+	//Hash already exists
+}
+
 // Read visibility of course
 $query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
 $query->bindParam(':cid', $courseid);

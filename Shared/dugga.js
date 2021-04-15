@@ -598,6 +598,7 @@ function saveDuggaResult(citstr)
 	pwd = randomPassword(); //Create random password for URL
 
 	hash = generateHash(); // Generate Hash
+	
 	var url = createUrl(hash); //Create URL
 	
 	console.log("url: " + url);
