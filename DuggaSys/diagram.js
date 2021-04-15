@@ -72,10 +72,9 @@ var mouseMode = mouseModes.POINTER;
 
 // All different element types that can be placed by the user.
 const elementTypes = {
-    NO_SELECTED: 0,
-    ENTITY: 1,
-    RELATION: 2,
-    ATTRIBUTE: 3,
+    ENTITY: 0,
+    RELATION: 1,
+    ATTRIBUTE: 2,
 };
 var elementTypeSelected = elementTypes.ENTITY;
 
@@ -221,15 +220,15 @@ document.addEventListener('keyup', function (e)
         }
         if (e.key == "e") {
             setMouseMode(mouseModes.PLACING_ELEMENT);
-            setElementPlacementType(0);
+            setElementPlacementType(elementTypes.ENTITY);
         }
         if (e.key == "r") {
             setMouseMode(mouseModes.PLACING_ELEMENT);
-            setElementPlacementType(1);
+            setElementPlacementType(elementTypes.RELATION);
         }
         if (e.key == "a") {
             setMouseMode(mouseModes.PLACING_ELEMENT);
-            setElementPlacementType(2);
+            setElementPlacementType(elementTypes.ATTRIBUTE);
         }
     }
 });
