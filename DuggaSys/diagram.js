@@ -1282,6 +1282,10 @@ function generateContextProperties()
 
         //Creates drop down for changing state of ER elements
         var value;
+        var selected = context[0].state;
+        if(selected == undefined){
+            selected = "normal"
+        }
         if(element.kind=="ERAttr"){
             value = Object.values(attrState);
         }
@@ -1293,7 +1297,12 @@ function generateContextProperties()
         }
         str += '<select id="propertySelect">';
             for (i = 0; i < value.length; i++) {
-                str += '<option value='+value[i]+'>'+ value[i] +'</option>';
+                if (selected != value[i]) {
+                    str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                }
+                else if(selected == value[i]){
+                    str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                }
             }
         str += '</select>'; 
         str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
