@@ -1037,10 +1037,10 @@ function drawElement(element, canvasContext)
     var hboxh = Math.round(element.height * zoomfact * 0.5);
     
     // Caclulate font width using some canvas magic
-    var font = ctx.font;
+    var font = canvasContext.font;
     font = `${texth}px ${font.split('px')[1]}`;
-    ctx.font = font;
-    var textWidth = ctx.measureText(element.name).width;
+    canvasContext.font = font;
+    var textWidth = canvasContext.measureText(element.name).width;
     
     // If calculated size is larger than element width
     const margin = 10;
