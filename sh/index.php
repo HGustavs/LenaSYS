@@ -46,10 +46,11 @@ if ($course != "UNK") {
 	$courses = array();
 
 	foreach($pdo->query($sql) as $c) {
-		array_push($courses, $c["coursename"]);
+		array_push($courses, str_replace($c["coursename"], " ", "_"));
 	}
 
 	if (in_array($course, $courses)) {
+		$course = str_replace($course, "_", " ");
 		$sql = "SELECT activeversion, cid FROM course WHERE coursename='".$course."'";
 		foreach ($pdo->query($sql) as $row) {
 			$cid = $row["cid"];
