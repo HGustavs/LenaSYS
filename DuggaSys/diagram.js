@@ -1081,7 +1081,6 @@ function drawElement(element, canvasContext)
     {
         var dash = "";
         var multi = "";
-        var key = "";
 
         if (element.state == "computed")
         {
@@ -1109,7 +1108,7 @@ function drawElement(element, canvasContext)
                     <text x='${xAnchor}' y='${hboxh}' `;
 
         if(element.state == "key"){
-            str += `text-decoration='underline' `;
+            str += `class='underline'`;
         }    
             str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
             `;
