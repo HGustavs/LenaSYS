@@ -388,13 +388,15 @@ function mouseMode_onMouseUp(event)
             console.log(context.length, mouseMode);
             if (context.length > 1)
             {
-                console.log("CREATE EDGE");
-                lines.push({ 
-                    id: makeRandomID(), 
-                    fromID: context[0].id, 
-                    toID: context[1].id, 
-                    kind: "Normal" 
-                });
+                // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
+                if (context[0].kind !== context[1].kind || context[0].kind === "ERAttr" ){
+                    lines.push({
+                        id: makeRandomID(),
+                        fromID: context[0].id,
+                        toID: context[1].id,
+                        kind: "Normal"
+                    });
+                }
                 context = [];
                 updatepos(0,0);
             }
