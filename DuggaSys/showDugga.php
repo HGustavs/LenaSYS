@@ -242,6 +242,12 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	}
 	variant = JSON.parse(localStorage.getItem(localStorageName));
 	setVariant(variant);
+
+	var tempHash = '<?php echo $hash; ?>';
+
+	if(tempHash != "UNK"){
+		setHash(tempHash);
+	} 
 	
 </script>
 	<?php

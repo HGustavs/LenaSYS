@@ -54,7 +54,7 @@ function setVariant(v) {
 }
 
 function setHash(h){
-	//if(h == "UNK") hash = h;
+	hash = h;
 }
 
 //Set the localstorage item securitynotifaction to on or off
