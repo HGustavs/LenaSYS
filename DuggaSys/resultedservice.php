@@ -257,7 +257,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$users = $query->fetchAll(PDO::FETCH_ASSOC);
 			
 			//if it is a group assignment and the user being graded is NOT in the "None" group, make database insert/updates for all group members
-			if($groupdugga == 1 && !strpos($usergroups, 'None')){
+			if($groupdugga == 1 && $usergroups){
 				foreach($users as $user){
 					$luid = current($user);
 					if($ukind=="U"){
