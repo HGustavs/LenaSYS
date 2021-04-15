@@ -392,12 +392,25 @@ function prepareItem() {
     param.feedbackquestion = null;
   }
 
+  // Calculated the position between the two Fab-buttons and use this position to when creating new items.
+  var screenPos = 0;
+  var elementBtnTop = document.getElementById("FABStatic2").getBoundingClientRect(),
+  elementBtnBot = document.getElementById("FABStatic").getBoundingClientRect(),
+  screenPos = elementBtnBot.top - elementBtnTop.top;
+  screenPos = (screenPos/50) - 6;
+  
+  param.pos = screenPos;
+
+
+  //Old code for placing the new item at bot or top depending on which FAb-button is used.
+  /*
   if(param.comments == "TOP"){
-    param.pos = "-1";
+    param.pos = screenPos;
   }
   else{
-    param.pos = "100";
+    param.pos = screenPos;
   }
+  */
 
   return param;
 }
