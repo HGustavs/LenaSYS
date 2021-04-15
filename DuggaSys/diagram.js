@@ -1325,13 +1325,9 @@ function exportElementDataToCSS()
         {
             // If the element was clicked and our mouse movement is not null
             var inContext = deltaX != null && findIndex(context, element.id) != -1;
-            var notBoxSelection = mouseMode != mouseModes.BOX_SELECTION;
-            var clickedElement = pointerState == pointerStates.CLICKED_ELEMENT;
-            var clickedNode = pointerState == pointerStates.CLICKED_NODE;
-            var clickedContainer = pointerState == pointerStates.CLICKED_CONTAINER;
 
             // Handle positioning
-            if (inContext && !clickedContainer && (notBoxSelection || clickedElement) && !clickedNode)
+            if (inContext && movingObject)
             {
                 // Re-calculate drawing position for our selected element, then apply the mouse movement
                 elementDiv.style.left = (Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) - deltaX) + "px";
