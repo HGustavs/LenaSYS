@@ -232,7 +232,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		}
 ?>
 
-<!-- Finds the highest variant.quizID -->
+<!-- Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database -->
 <?php
 	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
 	$query->execute();
@@ -240,7 +240,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 ?>
 <script type="text/javascript">
 	// This if-statement will only store to localstorage if there is a variant.quizID
-	// that match $duggaid
+	// that match $duggaid. This is to prevent unecessary local storage when there is no matching variant, and in doing so, prevent swelling of the local storage
 	if(<?php echo $duggaid; ?> <= <?php echo $variantsize; ?>) {
 		// localStorageName is unique and depends on did
 		var localStorageName = "duggaID: " + '<?php echo $duggaid; ?>';
