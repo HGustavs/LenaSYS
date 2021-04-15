@@ -1055,13 +1055,23 @@ function drawElement(element, canvasContext)
     // Create svg 
     if (element.kind == "EREntity")
     {
+        var weak = "";
 
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' 
+        if(element.state == "weak")
+        {
+            weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
+            stroke-width='${linew}' stroke='black' fill='#ffccdc' />
+            <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
+            `;         
+        }
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
                    stroke-width='${linew}' stroke='black' fill='#ffccdc' />
+                   ${weak}
                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                    `;
-
+        
     }
+  
     else if (element.kind == "ERAttr")
     {
         var dash = "";
