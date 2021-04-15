@@ -38,25 +38,6 @@ function GetAssigment ($hash){
 	return $URL;
 }
 
-
-
-/* if($assignment != "UNK"){
-	// Check if it's an URL shorthand for assignments
-	if($course == "UNK"){
-		$assignmentURL = GetAssigment($assignment);
-		header("Location: {$assignmentURL}");
-	}elseif(($course == "Databaskonstruktion" || $course == "dbk")){
-		if($assignment=="a1"){
-			header("Location: https://dugga.iit.his.se/DuggaSys/showdoc.php?cid=4&coursevers=82452&fname=minimikrav_m1a.md");
-			exit();		
-		}else{
-			header("Location: https://dugga.iit.his.se/DuggaSys/sectioned.php?courseid=4&coursevers=82452");
-			exit();		
-		}
-	}
-	return $array;
-} */
-
 if ($course != "UNK") {
 	global $pdo;
 
@@ -64,8 +45,8 @@ if ($course != "UNK") {
 	
 	$courses = array();
 
-	foreach($pdo->query($sql) as $course) {
-		array_push($courses, $course["coursename"]);
+	foreach($pdo->query($sql) as $c) {
+		array_push($courses, $c["coursename"]);
 	}
 
 	if (in_array($course, $courses)) {
@@ -75,11 +56,9 @@ if ($course != "UNK") {
 			$activeversion = $row["activeversion"];
 		}
 		$serverRoot = serverRoot();
-		echo $serverRoot;
 		header("Location: {$serverRoot}/DuggaSys/sectioned.php?courseid={$cid}&coursevers={$activeversion}");
 		exit();
 	}
-	return 5;
 }
 
 $q = queryToUrl($course, $assignment);
