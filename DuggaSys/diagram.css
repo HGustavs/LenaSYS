@@ -203,5 +203,9 @@
     top: calc(50% - 4px);
     right: 0;
     cursor: col-resize;
+}
 
+.underline{
+    text-underline-offset: 0.15em;
+    text-decoration: underline;
 }

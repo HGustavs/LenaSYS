@@ -1107,9 +1107,14 @@ function drawElement(element, canvasContext)
                     stroke='black' fill='#ffccdc' ${dash} stroke-width='${linew}' />
                     
                     ${multi}
+                    <text x='${xAnchor}' y='${hboxh}' `;
 
-                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-                    `;
+        if(element.state == "key"){
+            str += `class='underline'`;
+        }    
+            str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+            `;
+
     }
     else if (element.kind == "ERRelation")
     {
