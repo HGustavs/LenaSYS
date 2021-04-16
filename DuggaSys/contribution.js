@@ -119,9 +119,11 @@ function renderBarDiagram(data) {
 
   var str = "<div style='width:100%;overflow-x:scroll;'>";
   str += "<h2 style='padding-top:10px'>Weekly bar chart</h2>";
-  str += "<svg  class='chart fumho'  style='background-color:#efefef;' width='1300' height='250' aria-labelledby='title desc' role='img'>";
+  str += `<svg  class='chart fumho'  style='background-color:#efefef;'
+  width='1300' height='250' aria-labelledby='title desc' role='img'>`;
   for (var i = 0; i < numOfWeeks; i++) {
-    str += "<rect x='" + (65 + 120 * i) + "' y='0%' width='120' height='100%' style='fill:" + (i % 2 == 1 ? "#cccccc" : "#efefef") + ";' />"
+    str += `<rect x='${(65 + 120 * i)}' y='0%' width='120' height='100%' 
+    style='fill:${(i % 2 == 1 ? "#cccccc" : "#efefef")};' />`
   }
   str += "<line style='stroke:#000;' x1='65' x2='65' y1='5%' y2='220'></line>";
   str += "<line style='stroke:#000;' x1='65' x2='99%' y1='220' y2='220'></line>";
@@ -134,8 +136,9 @@ function renderBarDiagram(data) {
     if (highRange > 100) {
       range = Math.round(range);
     }
-    str += "<text x='" + (62 - (range.toString().length * 9)) + "' y='" + (225 - (range / highRange) * 200) + "'>" + range + "</text>";
-    str += "<line style='stroke:#ccc;' x1='65' x2='99%' y1='" + (220 - (range / highRange) * 200) + "' y2='" + (220 - (range / highRange) * 200) + "'></line>";
+    str += `<text x='${(62 - (range.toString().length * 9))}' y='${(225 - (range / highRange) * 200)}'>${range}</text>`;
+    str += `<line style='stroke:#ccc;' x1='65' x2='99%' y1='${(220 - (range / highRange) * 200)}'
+     y2='${(220 - (range / highRange) * 200)}'></line>`;
   }
 
   // Renders the bars
@@ -144,7 +147,8 @@ function renderBarDiagram(data) {
     for (var j = 0; j < 7; j++) {
       var day = dailyCount[i * 7 + j];
       var yOffset = 0;
-      str += "<g width='10' onmouseover='showInfoText(this, \"" + (day[0] + "<br />commits: " + day[1] + "<br />Events: " + day[2] + "<br />Comments: " + day[3] + "<br />LOC: " + day[4]) + "\");' onmouseout='hideInfoText()'>";
+      str += `<g width='10' onmouseover='showInfoText(this, \"${(day[0] + `<br />commits: ${day[1]}<br />
+      Events: ${day[2]}<br />Comments: ${day[3]}<br />LOC: ` + day[4])}\");' onmouseout='hideInfoText()'>`;
       for (var k = 1; k < day.length; k++) {
         var height = (day[k] / highRange) * 200;
         yOffset += height;
@@ -156,7 +160,8 @@ function renderBarDiagram(data) {
         } else if (k == 4) {
           color = "purple";
         }
-        str += "<rect style='fill:" + color + ";' width='10' height='" + height + "' x='" + (j * 15 + 120 * i + 75) + "' y='" + (220 - yOffset) + "'></rect>";
+        str += `<rect style='fill:${color};' width='10' height='${height}'
+        x='${(j * 15 + 120 * i + 75)}' y='${(220 - yOffset)}'></rect>`;
       }
       str += "</g>";
     }
@@ -179,11 +184,12 @@ function renderLineDiagram(data) {
 
   //Selectbox to choose week
   str = "<h2 style='padding-top:10px'>Weekly line chart</h2>";
-  str += '<select class="group2" id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
+  str += `<select class="group2" id="weekoption" value="0" style="margin-top:25px;"
+  onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">`;
   str += '<option value="' + firstweek + '">All weeks</option>';
   for (i = 0; i < weeks.length; i++) {
     var week = weeks[i];
-    str += '<option value="' + week.weekstart + '">' + "Week " + week.weekno + "   (" + week.weekstart + " - " + week.weekend + ")" + '</option>';
+    str += '<option value="' + week.weekstart + '">' + "Week " + week.weekno + `(${week.weekstart} - ${week.weekend})` + '</option>';
   }
 
   str += '</select>';
@@ -196,7 +202,8 @@ function renderLineDiagram(data) {
 }
 
 function lineDiagram() {
-  str = "<svg viewBox='0 0 580 250' class='lineChart' style='max-width:900px;min-width:700px;background-color:#efefef;margin-top:10px;'>";
+  str = `<svg viewBox='0 0 580 250' class='lineChart' style='max-width:900px;
+  min-width:700px;background-color:#efefef;margin-top:10px;'>`;
 
   // Calculates and render scale numbers on the left
   var decimals = Math.pow(10, Math.round(maxDayCount).toString().length - 2);
@@ -217,8 +224,10 @@ function lineDiagram() {
     if (highRange > 100) {
       range = Math.round(range);
     }
-    str += "<text font-size='10' x='" + (45 - (range.toString().length * 7)) + "' y='" + (225 - (range / highRange) * graphHeight) + "'>" + range + "</text>";
-    str += "<line style='stroke:#ccc;' x1='45' x2='99%' y1='" + (220 - (range / highRange) * graphHeight) + "' y2='" + (220 - (range / highRange) * graphHeight) + "'></line>";
+    str += `<text font-size='10' x='${(45 - (range.toString().length * 7))}'
+    y='${(225 - (range / highRange) * graphHeight)}'>${range}</text>`;
+    str += `<line style='stroke:#ccc;' x1='45' x2='99%' y1='${(220 - (range / highRange) * graphHeight)}'
+    y2='${(220 - (range / highRange) * graphHeight)}'></line>`;
   }
 
   //Grid lines
@@ -247,8 +256,8 @@ function lineDiagram() {
   }
   str += "'/>";
   for (i = 0; i < xNumber.length; i++) {
-    str += "<circle onmouseover='showInfoText(this, \"" + "Commits: : " + (dailyCount[i][1]) + "\");' onmouseout='hideInfoText()'";
-    str += "cx='" + xNumber[i] + "' cy='" + (dailyCount[i][1] / maxDayCount * graphHeight) + "' r='3' fill='#F44336'/>";
+    str += `<circle onmouseover='showInfoText(this, \"${"Commits: : " + (dailyCount[i][1])}\");' onmouseout='hideInfoText()'`;
+    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][1] / maxDayCount * graphHeight)}' r='3' fill='#F44336'/>`;
   }
   str += "</g>";
 
@@ -261,8 +270,8 @@ function lineDiagram() {
   }
   str += "'/>";
   for (i = 0; i < xNumber.length; i++) {
-    str += "<circle onmouseover='showInfoText(this, \"" + "Events: " + (dailyCount[i][2]) + "\");' onmouseout='hideInfoText()'";
-    str += "cx='" + xNumber[i] + "' cy='" + (dailyCount[i][2] / maxDayCount * graphHeight) + "' r='3' fill='#4DB6AC' />";
+    str += `<circle onmouseover='showInfoText(this, \"${"Events: " + (dailyCount[i][2])}\");' onmouseout='hideInfoText()'`;
+    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][2] / maxDayCount * graphHeight)}' r='3' fill='#4DB6AC' />`;
   }
   str += "</g>";
 
@@ -276,8 +285,8 @@ function lineDiagram() {
   str += "'/>";
 
   for (i = 0; i < xNumber.length; i++) {
-    str += "<circle onmouseover='showInfoText(this, \"" + "LOC: " + (dailyCount[i][3]) + "\");' onmouseout='hideInfoText()'";
-    str += "cx='" + xNumber[i] + "' cy='" + (dailyCount[i][3] / maxDayCount * graphHeight) + "' r='3' fill='purple' />";
+    str += `<circle onmouseover='showInfoText(this, \"${"LOC: " + (dailyCount[i][3])}\");' onmouseout='hideInfoText()'`;
+    str += `cx='"${xNumber[i]}' cy='${(dailyCount[i][3] / maxDayCount * graphHeight)}' r='3' fill='purple' />`;
   }
   str += "</g>";
 
@@ -290,8 +299,8 @@ function lineDiagram() {
   }
   str += "'/>";
   for (i = 0; i < xNumber.length; i++) {
-    str += "<circle onmouseover='showInfoText(this, \"" + "Comments: " + (dailyCount[i][4]) + "\");' onmouseout='hideInfoText()'";
-    str += "cx='" + xNumber[i] + "' cy='" + (dailyCount[i][4] / maxDayCount * graphHeight) + "' r='3' fill='#43A047' />";
+    str += `<circle onmouseover='showInfoText(this, \"${"Comments: " + (dailyCount[i][4])}\");' onmouseout='hideInfoText()'`;
+    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][4] / maxDayCount * graphHeight)}' r='3' fill='#43A047' />`;
   }
   str += "</g>";
   str += "</svg>";
@@ -414,7 +423,9 @@ function renderCircleDiagram(data, day) {
     str += "<p style='margin-left: 10px'>Showing activities for the period 2019-03-31 - " + today + "</p>";
   }
   str += "<div class='circleGraph'>";
-  str += "<div id='activityInfoBox'><span style='grid-row-start: -1' id='activityTime'></span><span style='grid-row-start: -1' id='activityPercent'></span><span style='grid-row-start: -1' id='activityCount'></span></div>";
+  str += `<div id='activityInfoBox'><span style='grid-row-start: -1' id='activityTime'>
+  </span><span style='grid-row-start: -1' id='activityPercent'></span>
+  <span style='grid-row-start: -1' id='activityCount'></span></div>`;
   str += "<svg width='500' height='500'>";
   str += "<circle class='circleGraphCircle' cx='250' cy='250' r='220' />";
   str += renderHourMarkers();
@@ -488,7 +499,7 @@ function renderActivityPoints(activities) {
     for (var i = 0; i < uniquePoints.length; i++) {
       str += (uniquePoints[i][0] + 5) + "," + (uniquePoints[i][1] + 5) + " ";
     }
-    str += "250,250' onmouseover='showAllActivity(event, " + JSON.stringify(activityTypes) + ")' onmouseout='hideActivityInfo()' />";
+    str += `250,250' onmouseover='showAllActivity(event, ${JSON.stringify(activityTypes)})' onmouseout='hideActivityInfo()' />`;
   }
 
   uniquePoints.forEach(point => {
@@ -657,7 +668,6 @@ function createTimeSheetTable(data) {
   if(tabledata.tblbody != null || tabledata.tblbody != undefined) {
     myTable.renderTable();
   }
-}
 
 function renderCell(col, celldata, cellid) {
   var str = "UNK";
@@ -666,9 +676,9 @@ function renderCell(col, celldata, cellid) {
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>";
     str += "<a href='" + obj + "' target='_blank'>Github</a></span></div>";
   } else if (col === 'week' || col === 'reference') {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + parseInt(obj) + "</span></div>";
+    str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${parseInt(obj)}</span></div>`;
   } else {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj + "</span></div>";
+    str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${obj}</span></div>`;
   }
   return str;
 }
@@ -676,11 +686,14 @@ function renderCell(col, celldata, cellid) {
 function renderSortOptions(col, status, colname) {
   str = "";
   if (status == -1) {
-    str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+    str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
+    ${colname}</span>`;
   } else if (status == 0) {
-    str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+    str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",1)'>
+    ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
   } else {
-    str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+    str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
+    ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
   }
   return str;
 }
@@ -689,11 +702,14 @@ function renderAllRankSortOptions(col, status, colname) {
 
   str = "";
   if (status == -1) {
-    str += "<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+    str += `<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"${col}\",0)'>
+    ${colname}</span>`;
   } else if (status == 0) {
-    str += "<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+    str += `<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"${col}\",1)'>
+    ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
   } else {
-    str += "<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+    str += `<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"${col}\",0)'>
+    ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
   }
   return str;
 }
@@ -726,10 +742,14 @@ function returnedSection(data) {
   var str = "";
 
   str += "<div id='contributionContainer' class='contributionSort'>";
-  str += "<input type='button' id='allBtn' value='All' class='submit-button title='All' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
-  str += "<input type='button' id='basicBtn' value='Basic' class='submit-button title='Basic' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
-  str += "<input type='button' id='chartsBtn' value='Charts' class='submit-button title='Charts' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
-  str += "<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
+  str += `<input type='button' id='allBtn' value='All' class='submit-button title='All' 
+  onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>`;
+  str += `<input type='button' id='basicBtn' value='Basic' class='submit-button title='Basic'
+  onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>`;
+  str += `<input type='button' id='chartsBtn' value='Charts' class='submit-button title='Charts'
+  onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>`;
+  str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution'
+  onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>`;
   str += "</div>";
 
   localStorage.setItem('GitHubUser', data['githubuser'])
@@ -852,12 +872,12 @@ function createRankTable(data) {
 function rankRenderCell(col, celldata, cellid) {
   var str = "";
   if (col === 'kind' || col === 'number') {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + celldata + "</span></div>";
+    str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${celldata}</span></div>`;
   } else if (col === 'rank' || col === 'grpranking') {
     str += "<div style='background-color:" + intervaltocolor(celldata.amount, celldata.rank) + ";'>"
     str += "<div><span style='margin:0 4px;flex-grow:1;'>" + celldata.rank + "</span></div></div>";
   } else {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj + "</span></div>";
+    str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${obj}</span></div>`;
   }
   return str;
 }
@@ -920,9 +940,11 @@ function renderCellForghContibTable(col, celldata, cellid) {
   obj = celldata;
   var rowNr = cellid.charAt(1);
   if (col === 'weeks') {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + parseInt(obj) + "</span></div>";
+    str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+    ${parseInt(obj)}</span></div>`;
   } else if (col === 'dates') {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj.weekStart + " - " + obj.weekEnd + "</span></div>";
+    str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+    ${obj.weekStart} - ${obj.weekEnd}</span></div>`;
   } else if (col === 'codeContribution') {
     for (var j = 0; j < obj.files.length; j++) {
       var file = obj.files[j];
@@ -943,34 +965,40 @@ function renderCellForghContibTable(col, celldata, cellid) {
      if (obj.issues.length > 0 || obj.comments.length > 0 || obj.events.length > 0 || obj.comments.length > 0) {
        str += "<div class='githubContribution'>";
        if(obj.commits.length > 0){
-         str += "<div id='ghCommits' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Made " + obj.commits.length + " commit(s).</span>";
+         str += `<div id='ghCommits' onclick='toggleContributionTable(this)' 
+         class='contribheading' style='cursor:pointer;'><span>Made ${obj.commits.length} commit(s).</span>`;
          str += "<div id='ghCommits"+rowNr+"' style='pointer-events:auto' class='contribcontent'>";
            for (j = 0; j < obj.commits.length; j++) {
              var message = obj.commits[j].message;
              var hash = obj.commits[j].cid;
-             str += "<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/" + hash + "'>" + message + "</a></span>";
+             str += `<span><a onclick='keepContribContentOpen(event)' 
+             target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}'>${message}</a></span>`;
            }
            str += "</div>";
            str += "</div>";
        }
        if (obj.issues.length > 0) {
-          str += "<div id='ghIssues' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Created " + obj.issues.length + " issue(s).</span>";
-          str += "<div id='ghIssues"+rowNr+"' class='contribcontent'>";
+          str += `<div id='ghIssues' onclick='toggleContributionTable(this)' 
+          class='contribheading' style='cursor:pointer;'><span>Created ${obj.issues.length} issue(s).</span>";
+          str += "<div id='ghIssues"+rowNr+"' class='contribcontent'>`;
           for (j = 0; j < obj.issues.length; j++) {
             var issue = obj.issues[j];
             var issuestr = issue.issueno + " " + issue.title;
-            str += "<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/issues/" + issue.issueno.substr(1) + "'>" + issuestr + "</a></span>";
+            str += `<span><a onclick='keepContribContentOpen(event)' target='_blank' 
+            href='https://github.com/HGustavs/LenaSYS/issues/${issue.issueno.substr(1)}'>${issuestr}</a></span>`;
           }
           str += "</div>";
           str += "</div>";
        }
        if (obj.comments.length > 0) {
-          str += "<div id='ghComments' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Made " + obj.comments.length + " comment(s).</span>";
+          str += `<div id='ghComments' onclick='toggleContributionTable(this)' 
+          class='contribheading' style='cursor:pointer;'><span>Made ${obj.comments.length} comment(s).</span>`;
           str += "<div id='ghComments"+rowNr+"' class='contribcontent'>";
             for (j = 0; j < obj.comments.length; j++) {
               var comment = obj.comments[j];
               var issuestr = comment.issueno + " " + comment.content;
-              str += "<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/issues/" + comment.issueno.substr(1) + "'>" + issuestr + "</a></span>";
+              str += `<span><a onclick='keepContribContentOpen(event)' target='_blank' 
+              href='https://github.com/HGustavs/LenaSYS/issues/${comment.issueno.substr(1)}'>${issuestr}</a></span>`;
             }
           str += "</div>";
           str += "</div>";
@@ -980,7 +1008,9 @@ function renderCellForghContibTable(col, celldata, cellid) {
          for (var j = 0; j < obj.events.length; j++) {
            totalAmountEvents += parseInt(obj.events[j].cnt);
          }
-         str += "<div id='ghEvents' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Performed " + totalAmountEvents + " event(s).</span>";
+         str += `<div id='ghEvents' onclick='toggleContributionTable(this)'
+         class='contribheading' style='cursor:pointer;'>
+         <span>Performed ${totalAmountEvents} event(s).</span>`;
          str += "<div id='ghEvents"+rowNr+"' class='contribcontent'>";
          for (var j = 0; j < obj.events.length; j++) {
            var eve = obj.events[j];
@@ -992,7 +1022,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
      }
      str += "</div>";
   } else {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj + "</span></div>";
+    str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${obj}</span></div>`;
   }
   return str;
 }
@@ -1301,7 +1331,7 @@ function allRankContentSelection(user,data){
 function allRankRenderCell(col,celldata,cellid){
   var str = "";
   if(col === 'login' || col === 'eventrank' || col === 'commentrank' || col === 'locrank' || col === 'commitrank' ){
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+celldata+"</span></div>";
+    str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${celldata}</span></div>`;
   }
   return str;
 }
