@@ -1144,23 +1144,18 @@ function returnedSection(data) {
   if(versionname){
     document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
 
+    drawSwimlanes(); // Create the swimlane used in the statistics section.
+
+    // Change the scroll position to where the user was last time.
+    $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
+
+    // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
+    replaceDefualtLink();
+    
 
 
-
-  drawPieChart(); // Create the pie chart used in the statistics section.
-  fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section
-  drawSwimlanes(); // Create the swimlane used in the statistics section.
-
-  // Change the scroll position to where the user was last time.
-  $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
-
-  // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
-  replaceDefualtLink();
-  
-
-
-  addClasses();
-  showMOTD();
+    addClasses();
+    showMOTD();
   }
 }
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
@@ -1281,37 +1276,12 @@ function returnedHighscore(data) {
   $("#HighscoreBox").css("display", "block");
 }
 
-function courseCompletion(passed, failed, pending){
-  var cid = retdata['courseid'];
-  var coursevers = retdata['coursevers'];
-  var uid, uname = $("#userName").html();
 
-  $.ajax({
-    url: "../Shared/retrieveUserid.php",
-    data: {uname:uname},
-    type: "GET",
-    success: function(data){
-      var parsed_data = JSON.parse(data);
-      uid = parsed_data.uid;
-      $.ajax({
-        url: "../Shared/retrieveuser_course.php",
-        data: {uid:uid, cid:cid, vers:coursevers, passed:passed, failed:failed, pending:pending},
-        type: "POST",
-        success: function(data){
-        }
-      });
-    },
-    error:function(){
-      console.log("*******Error*******");
-    }
-  });
-
-
-}
 
 //----------------------------------------------------------------------------------
-// drawSwimlanes: Draws a schedule for deadlines of alla ssignments in the course
+// drawSwimlanes: Draws schedule for deaadlines on all assignments is course
 //----------------------------------------------------------------------------------
+
 function drawSwimlanes() {
 
   var startdate = new Date(retdata['startdate']);
