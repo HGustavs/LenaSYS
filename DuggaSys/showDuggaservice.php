@@ -61,6 +61,7 @@ $savedvariant="UNK";
 $newvariant="UNK";
 $savedanswer="UNK";
 $isIndb=false;
+$isHashInDb=false;
 
 // Create empty array for dugga info!
 $duggainfo=array();
@@ -76,14 +77,17 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php
 //------------------------------------------------------------------------------------------------
 
 // Get user hash
-$query = $pdo->prepare("SELECT * FROM userAnswer WHERE hash=:hash");
+//$hash = "1YofjS";
+$query = $pdo->prepare("SELECT hash FROM userAnswer WHERE hash=:hash");
 $query->bindParam(':hash', $hash);
-$result = $query->execute();
-if(mysql_num_rows($result) == 0){
-	//Hash is unique
-}
-else{
-	//Hash already exists
+$result=$query->execute();
+if($row = $query->fetch(PDO::FETCH_ASSOC)){
+    $hashTest=$row['hash'];
+    if(mysql_num_rows($result)==0) {
+        $ishashindb = false;
+    } else {
+        $ishashindb = true;
+    }
 }
 
 // Read visibility of course
@@ -625,6 +629,8 @@ $array = array(
 		"userfeedback" => $userfeedback,
 		"feedbackquestion" => $feedbackquestion,
 		"variant" => $savedvariant,
+		"hash" => $hash,
+		"isHashInDb" => $isHashInDb,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 

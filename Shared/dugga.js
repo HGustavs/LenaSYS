@@ -973,7 +973,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorageVariant, 
 				dataType: "json",
-				success: returnedDugga
+				//success: returnedDugga
+				success: function (data123) {
+                    console.log(data123);
+                },
 			});
 	}else if(kind=="RESULT"){
 			$.ajax({
