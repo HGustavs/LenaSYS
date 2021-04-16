@@ -376,7 +376,7 @@ function mouseMode_onMouseUp(event)
         case mouseModes.PLACING_ELEMENT:
             var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
             var entityType = constructElementOfType(elementTypeSelected);
-
+            //Splicing array so that ghost element continues to be the last index of the array.
             data.splice(data.length-2, 0, {
                 name: entityType.name,
                 x: mp.x - (entityType.data.width * 0.5),
@@ -586,11 +586,11 @@ function mouseMode_onMouseMove(event)
 {
      switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
-            var randEl = data[data.length-1];
+            var lastElement = data[data.length-1];
             var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
             
-            randEl.x = cords.x - (randEl.width /2);
-            randEl.y = cords.y - (randEl.height /2);
+            lastElement.x = cords.x - (lastElement.width /2);
+            lastElement.y = cords.y - (lastElement.height /2);
             
             showdata();
             
@@ -822,13 +822,14 @@ function handleMouseModeChange()
         data.pop();
         showdata();
     }
+    // X is set to -1000 because we want to "hide" the spawning position to make it smoother.
     if(mouseMode == mouseModes.PLACING_ELEMENT){
         if(elementTypeSelected == elementTypes.ENTITY){
-            data.push({ name: "Entity", x: 0, y: 0, width: 200, height: 50, kind: "EREntity", id: makeRandomID(), isGhost: true });
+            data.push({ name: "Entity", x: -1000, y: 0, width: 200, height: 50, kind: "EREntity", id: makeRandomID(), isGhost: true });
         } else if (elementTypeSelected == elementTypes.ATTRIBUTE){
-            data.push({ name: "Attribute", x: 0, y: 0, width: 90, height: 45, kind: "ERAttr", id: makeRandomID(), isGhost: true});
+            data.push({ name: "Attribute", x: -1000, y: 0, width: 90, height: 45, kind: "ERAttr", id: makeRandomID(), isGhost: true});
         } else if (elementTypeSelected == elementTypes.RELATION){
-            data.push({ name: "Relation", x: 0, y: 0, width: 60, height: 60, kind: "ERRelation", id: makeRandomID(), isGhost: true});
+            data.push({ name: "Relation", x: -1000, y: 0, width: 60, height: 60, kind: "ERRelation", id: makeRandomID(), isGhost: true});
         }
         showdata();
     }
