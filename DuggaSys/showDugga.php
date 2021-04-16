@@ -84,7 +84,7 @@
 		$i++;
 		$insertparam = true;
 	}
-	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted,hash,password FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$query->bindParam(':uid', $userid);
@@ -109,8 +109,6 @@
 		$grade = $row['grade'];
 		$submitted = $row['submitted'];
 		$marked = $row['marked'];
-		$password = $row['password'];
-		$hash = $row['hash'];
 	}
 	
 	// If selected variant is not found - pick another from working list.
