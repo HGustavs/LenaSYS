@@ -61,7 +61,7 @@ $savedvariant="UNK";
 $newvariant="UNK";
 $savedanswer="UNK";
 $isIndb=false;
-$isHashInDb=false;
+$ishashindb=false;
 
 // Create empty array for dugga info!
 $duggainfo=array();
@@ -630,7 +630,7 @@ $array = array(
 		"feedbackquestion" => $feedbackquestion,
 		"variant" => $savedvariant,
 		"hash" => $hash,
-		"isHashInDb" => $isHashInDb,
+		"ishashindb" => $ishashindb,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
