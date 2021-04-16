@@ -358,7 +358,7 @@ function ddown(event)
             var element = data[findIndex(data, event.currentTarget.id)];
             if (element != null && !context.includes(element) || !ctrlPressed)
             {
-                updateSelection(element, null, null);
+                updateSelection(element);
             }
             break;
     
@@ -435,7 +435,7 @@ function mup(event)
                     }
                     else if (mouseMode == mouseModes.POINTER)
                     {
-                        updateSelection(null, undefined, undefined);
+                        updateSelection(null);
                     }
                 }
             }
@@ -767,10 +767,10 @@ function setMouseMode(mode)
     }
 
     // Mode-specific activation/deactivation
-    onMouseModeDisabled(mouseMode);
+    onMouseModeDisabled();
     mouseMode = mode;
     setCursorStyles(mode);
-    onMouseModeEnabled(mouseMode);
+    onMouseModeEnabled();
 }
 
 function setCursorStyles(cursorMode = 0)
@@ -795,7 +795,7 @@ function setCursorStyles(cursorMode = 0)
     }
 }
 
-function onMouseModeEnabled(mode)
+function onMouseModeEnabled()
 {
     switch (mouseMode) {
         case mouseModes.POINTER:
@@ -809,7 +809,7 @@ function onMouseModeEnabled(mode)
     }
 }
 
-function onMouseModeDisabled(mode)
+function onMouseModeDisabled()
 {
     switch (mouseMode) {
         case mouseModes.POINTER:
@@ -1274,7 +1274,7 @@ function drawElement(element)
 // updateselection - Update context according to selection parameters or clicked element
 //-------------------------------------------------------------------------------------------------
 
-function updateSelection(ctxelement, x, y)
+function updateSelection(ctxelement)
 {
     // If CTRL is pressed and an element is selected
     if (ctrlPressed && ctxelement != null)
