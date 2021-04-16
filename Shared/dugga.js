@@ -57,6 +57,10 @@ function setHash(h){
 	hash = h;
 }
 
+function setPassword(p){
+	pwd = p;
+}
+
 //Set the localstorage item securitynotifaction to on or off
 function setSecurityNotifaction(param){
     localStorage.setItem("securitynotification", param);

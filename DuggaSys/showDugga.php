@@ -35,7 +35,8 @@
 	$quizid=getOPG('did');
 	$deadline=getOPG('deadline');
 	$comments=getOPG('comments');
-	$hash=getOPG('hash');
+	$hash = getOPG("hash");
+	$password= "UNK";
 
 	$duggatitle="UNK";
 	$duggafile="UNK";
@@ -51,6 +52,7 @@
 	$duggaid=getOPG('did');
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
+	
 
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
@@ -113,6 +115,14 @@
 		$marked = $row['marked'];
 	}
 	
+	if ($hash != "UNK"){
+		$query = $pdo->prepare("SELECT password FROM userAnswer WHERE hash=:hash;");
+		$query->bindParam(':hash', $hash);
+		$query->execute();
+		$result = $query->fetch();
+		$password = $result["password"];
+	}
+
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
 	$foundvar=-1;
@@ -243,8 +253,10 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	}
 	variant = JSON.parse(localStorage.getItem(localStorageName));
 	setVariant(variant);
+  
+	setPassword("<?php echo $password ?>");
+	setHash("<?php echo $hash ?>");	
 
-	setHash("<?php echo $hash ?>");
 </script>
 	<?php
 		$noup="SECTION";
