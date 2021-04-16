@@ -119,9 +119,10 @@ function renderBarDiagram(data) {
 
   var str = "<div style='width:100%;overflow-x:scroll;'>";
   str += "<h2 style='padding-top:10px'>Weekly bar chart</h2>";
-  str += "<svg  class='chart fumho'  style='background-color:#efefef;' width='1300' height='250' aria-labelledby='title desc' role='img'>";
+  str += `<svg  class='chart fumho'  style='background-color:#efefef;'
+  width='1300' height='250' aria-labelledby='title desc' role='img'>`;
   for (var i = 0; i < numOfWeeks; i++) {
-    str += "<rect x='" + (65 + 120 * i) + "' y='0%' width='120' height='100%' style='fill:" + (i % 2 == 1 ? "#cccccc" : "#efefef") + ";' />"
+    str += `<rect x='${(65 + 120 * i)}' y='0%' width='120' height='100%' style='fill:${(i % 2 == 1 ? "#cccccc" : "#efefef")};' />`
   }
   str += "<line style='stroke:#000;' x1='65' x2='65' y1='5%' y2='220'></line>";
   str += "<line style='stroke:#000;' x1='65' x2='99%' y1='220' y2='220'></line>";
@@ -134,8 +135,9 @@ function renderBarDiagram(data) {
     if (highRange > 100) {
       range = Math.round(range);
     }
-    str += "<text x='" + (62 - (range.toString().length * 9)) + "' y='" + (225 - (range / highRange) * 200) + "'>" + range + "</text>";
-    str += "<line style='stroke:#ccc;' x1='65' x2='99%' y1='" + (220 - (range / highRange) * 200) + "' y2='" + (220 - (range / highRange) * 200) + "'></line>";
+    str += `<text x='${(62 - (range.toString().length * 9))}' y='${(225 - (range / highRange) * 200)}'>${range}</text>`;
+    str += `<line style='stroke:#ccc;' x1='65' x2='99%' y1='${(220 - (range / highRange) * 200)}'
+     y2='${(220 - (range / highRange) * 200)}'></line>`;
   }
 
   // Renders the bars
@@ -144,7 +146,8 @@ function renderBarDiagram(data) {
     for (var j = 0; j < 7; j++) {
       var day = dailyCount[i * 7 + j];
       var yOffset = 0;
-      str += "<g width='10' onmouseover='showInfoText(this, \"" + (day[0] + "<br />commits: " + day[1] + "<br />Events: " + day[2] + "<br />Comments: " + day[3] + "<br />LOC: " + day[4]) + "\");' onmouseout='hideInfoText()'>";
+      str += `<g width='10' onmouseover='showInfoText(this, \"${(day[0] + `<br />commits: ${day[1]}<br />
+      Events: ${day[2]}<br />Comments: ${day[3]}<br />LOC: ` + day[4])}\");' onmouseout='hideInfoText()'>`;
       for (var k = 1; k < day.length; k++) {
         var height = (day[k] / highRange) * 200;
         yOffset += height;
@@ -156,7 +159,8 @@ function renderBarDiagram(data) {
         } else if (k == 4) {
           color = "purple";
         }
-        str += "<rect style='fill:" + color + ";' width='10' height='" + height + "' x='" + (j * 15 + 120 * i + 75) + "' y='" + (220 - yOffset) + "'></rect>";
+        str += `<rect style='fill:${color};' width='10' height='${height}'
+        x='${(j * 15 + 120 * i + 75)}' y='${(220 - yOffset)}'></rect>`;
       }
       str += "</g>";
     }
@@ -179,7 +183,8 @@ function renderLineDiagram(data) {
 
   //Selectbox to choose week
   str = "<h2 style='padding-top:10px'>Weekly line chart</h2>";
-  str += '<select class="group2" id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
+  str += `<select class="group2" id="weekoption" value="0" style="margin-top:25px;"
+  onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">`;
   str += '<option value="' + firstweek + '">All weeks</option>';
   for (i = 0; i < weeks.length; i++) {
     var week = weeks[i];
@@ -196,7 +201,8 @@ function renderLineDiagram(data) {
 }
 
 function lineDiagram() {
-  str = "<svg viewBox='0 0 580 250' class='lineChart' style='max-width:900px;min-width:700px;background-color:#efefef;margin-top:10px;'>";
+  str = `<svg viewBox='0 0 580 250' class='lineChart' style='max-width:900px;
+  min-width:700px;background-color:#efefef;margin-top:10px;'>`;
 
   // Calculates and render scale numbers on the left
   var decimals = Math.pow(10, Math.round(maxDayCount).toString().length - 2);
@@ -217,8 +223,10 @@ function lineDiagram() {
     if (highRange > 100) {
       range = Math.round(range);
     }
-    str += "<text font-size='10' x='" + (45 - (range.toString().length * 7)) + "' y='" + (225 - (range / highRange) * graphHeight) + "'>" + range + "</text>";
-    str += "<line style='stroke:#ccc;' x1='45' x2='99%' y1='" + (220 - (range / highRange) * graphHeight) + "' y2='" + (220 - (range / highRange) * graphHeight) + "'></line>";
+    str += `<text font-size='10' x='${(45 - (range.toString().length * 7))}'
+    y='${(225 - (range / highRange) * graphHeight)}'>${range}</text>`;
+    str += `<line style='stroke:#ccc;' x1='45' x2='99%' y1='${(220 - (range / highRange) * graphHeight)}'
+    y2='${(220 - (range / highRange) * graphHeight)}'></line>`;
   }
 
   //Grid lines
@@ -247,8 +255,8 @@ function lineDiagram() {
   }
   str += "'/>";
   for (i = 0; i < xNumber.length; i++) {
-    str += "<circle onmouseover='showInfoText(this, \"" + "Commits: : " + (dailyCount[i][1]) + "\");' onmouseout='hideInfoText()'";
-    str += "cx='" + xNumber[i] + "' cy='" + (dailyCount[i][1] / maxDayCount * graphHeight) + "' r='3' fill='#F44336'/>";
+    str += `<circle onmouseover='showInfoText(this, \"${"Commits: : " + (dailyCount[i][1])}");' onmouseout='hideInfoText()'`;
+    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][1] / maxDayCount * graphHeight)}' r='3' fill='#F44336'/>`;
   }
   str += "</g>";
 
@@ -261,8 +269,8 @@ function lineDiagram() {
   }
   str += "'/>";
   for (i = 0; i < xNumber.length; i++) {
-    str += "<circle onmouseover='showInfoText(this, \"" + "Events: " + (dailyCount[i][2]) + "\");' onmouseout='hideInfoText()'";
-    str += "cx='" + xNumber[i] + "' cy='" + (dailyCount[i][2] / maxDayCount * graphHeight) + "' r='3' fill='#4DB6AC' />";
+    str += `<circle onmouseover='showInfoText(this, \"${"Events: " + (dailyCount[i][2])}\");' onmouseout='hideInfoText()'`;
+    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][2] / maxDayCount * graphHeight)}' r='3' fill='#4DB6AC' />`;
   }
   str += "</g>";
 
@@ -276,8 +284,8 @@ function lineDiagram() {
   str += "'/>";
 
   for (i = 0; i < xNumber.length; i++) {
-    str += "<circle onmouseover='showInfoText(this, \"" + "LOC: " + (dailyCount[i][3]) + "\");' onmouseout='hideInfoText()'";
-    str += "cx='" + xNumber[i] + "' cy='" + (dailyCount[i][3] / maxDayCount * graphHeight) + "' r='3' fill='purple' />";
+    str += `<circle onmouseover='showInfoText(this, \"${"LOC: " + (dailyCount[i][3])}\");' onmouseout='hideInfoText()'`;
+    str += `cx='"${xNumber[i]}' cy='${(dailyCount[i][3] / maxDayCount * graphHeight)}' r='3' fill='purple' />`;
   }
   str += "</g>";
 
@@ -290,8 +298,8 @@ function lineDiagram() {
   }
   str += "'/>";
   for (i = 0; i < xNumber.length; i++) {
-    str += "<circle onmouseover='showInfoText(this, \"" + "Comments: " + (dailyCount[i][4]) + "\");' onmouseout='hideInfoText()'";
-    str += "cx='" + xNumber[i] + "' cy='" + (dailyCount[i][4] / maxDayCount * graphHeight) + "' r='3' fill='#43A047' />";
+    str += `<circle onmouseover='showInfoText(this, \"${"Comments: " + (dailyCount[i][4])}\");' onmouseout='hideInfoText()'`;
+    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][4] / maxDayCount * graphHeight)}' r='3' fill='#43A047' />`;
   }
   str += "</g>";
   str += "</svg>";
@@ -414,7 +422,8 @@ function renderCircleDiagram(data, day) {
     str += "<p style='margin-left: 10px'>Showing activities for the period 2019-03-31 - " + today + "</p>";
   }
   str += "<div class='circleGraph'>";
-  str += "<div id='activityInfoBox'><span style='grid-row-start: -1' id='activityTime'></span><span style='grid-row-start: -1' id='activityPercent'></span><span style='grid-row-start: -1' id='activityCount'></span></div>";
+  str += `<div id='activityInfoBox'><span style='grid-row-start: -1' id='activityTime'></span>
+  <span style='grid-row-start: -1' id='activityPercent'></span><span style='grid-row-start: -1' id='activityCount'></span></div>`;
   str += "<svg width='500' height='500'>";
   str += "<circle class='circleGraphCircle' cx='250' cy='250' r='220' />";
   str += renderHourMarkers();
@@ -488,7 +497,7 @@ function renderActivityPoints(activities) {
     for (var i = 0; i < uniquePoints.length; i++) {
       str += (uniquePoints[i][0] + 5) + "," + (uniquePoints[i][1] + 5) + " ";
     }
-    str += "250,250' onmouseover='showAllActivity(event, " + JSON.stringify(activityTypes) + ")' onmouseout='hideActivityInfo()' />";
+    str += `250,250' onmouseover='showAllActivity(event, ${JSON.stringify(activityTypes)})' onmouseout='hideActivityInfo()' />`;
   }
 
   uniquePoints.forEach(point => {
@@ -531,7 +540,7 @@ function renderHourMarkers() {
       str += " x2='" + xCoord + "' y2='" + yCoord + "' />";
     }
   }
-  str += `<circle class='circleGraphCircle' cx='${MIDDLE}' cy='${MIDDLE}' r=25 />`;
+  str += "<circle class='circleGraphCircle' cx='" + MIDDLE + "' cy='" + MIDDLE + "' r=25 />";
   str += "<g id='circleGraphHours'>";
   for (i = 0, number = 18; i < 12; i++) {
     var xCoordNum = (Math.cos(toRadians(i * 30)) * NUMRADIUS) + X_OFFSET;
@@ -657,7 +666,6 @@ function createTimeSheetTable(data) {
   if(tabledata.tblbody != null || tabledata.tblbody != undefined) {
     myTable.renderTable();
   }
-}
 
 function renderCell(col, celldata, cellid) {
   var str = "UNK";
