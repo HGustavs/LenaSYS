@@ -176,32 +176,6 @@ if($demo){
 		$i++;
 		$insertparam = true;
 	}
-	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-	$query->bindParam(':cid', $courseid);
-	$query->bindParam(':coursevers', $coursevers);
-	$query->bindParam(':uid', $userid);
-	$query->bindParam(':moment', $moment);
-	$result = $query->execute();
-	
-	$savedvariant="UNK";
-	$newvariant="UNK";
-	$savedanswer="UNK";
-	$isIndb=false;
-
-	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-		$savedvariant=$row['variant'];
-		$savedanswer=$row['useranswer'];
-		$score = $row['score'];
-		$isIndb=true;
-		if ($row['feedback'] != null){
-				$duggafeedback = $row['feedback'];
-		} else {
-				$duggafeedback = "UNK";
-		}
-		$grade = $row['grade'];
-		$submitted = $row['submitted'];
-		$marked = $row['marked'];
-	}
 	
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
