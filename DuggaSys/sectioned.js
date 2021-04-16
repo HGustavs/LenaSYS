@@ -790,19 +790,7 @@ function returnedSection(data) {
           } else if (itemKind === 4) {
             str += "<td class='LightBoxFilled" + hideState + "'>";
           }
-          if ((grady == -1 || grady == 0 || grady == null) && status === "") {
-            // Nothing submitted nor marked (White)
-            str += "<div class='StopLight WhiteLight'></div>";
-          } else if (status === "pending") {
-            //	Nothing marked yet (Yellow)
-            str += `<div class='StopLight YellowLight' title='Status: Handed in\nDate: ${lastSubmit}' ></div>`;
-          } else if (grady == 1) {
-            //	Marked Fail! (Red)
-            str += `<div class='StopLight RedLight' title='Status: Failed\nDate: ${marked}' ></div>`;
-          } else if (grady > 1) {
-            //	Marked Pass i.e. G/VG/3/4/5 (Green)
-            str += `<div class='StopLight GreenLight'  title='Status: Pass\nDate: ${marked}' ></div>`;
-          }
+          str += "<div class='StopLight WhiteLight'></div>";
           str += "</td>";
         }
 
