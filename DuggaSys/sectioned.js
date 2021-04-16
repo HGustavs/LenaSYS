@@ -1581,7 +1581,7 @@ function drawSwimlanes() {
         str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='
         ${(tempVariable)}' height='${weekheight}' fill='${fillcol}' />`;
 
-        str += `<text x='" + (12) + "' y='${(weeky + 18)}' font-family='Arial'
+        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial'
         font-size='12px' fill='${textcol}' text-anchor='left'> <title>${entry.text}
         </title>${entry.text}</text>`;
       }
@@ -1591,7 +1591,9 @@ function drawSwimlanes() {
   str += `<line opacity='0.7' x1='${((daywidth * daySinceStart) - daywidth)}'
   y1='${(15 + weekheight)}' x2='${((daywidth * daySinceStart) - daywidth)}'
   y2='${(((1 + deadlineEntries.length) * weekheight) + 15)}' stroke-width='4' stroke='red' />`;
+
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
+  
   document.getElementById("swimlaneSVG").innerHTML = str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 800 " + svgHeight);
 
