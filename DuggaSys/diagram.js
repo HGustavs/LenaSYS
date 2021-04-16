@@ -334,6 +334,10 @@ function mdown(event)
         startX = event.clientX;
         startY = event.clientY;
     }
+    // Used when clicking on a line between two elements.
+    var clickedLine = determineLineSelect(event.clientX, event.clientY);
+    if(clickedLine != null) clickedLine.setAttribute('stroke', 'rgb(0,0,255)');
+
 }
 
 function ddown(event)
@@ -480,6 +484,101 @@ function mup(event)
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
+}
+
+function determineLineSelect(mouseX, mouseY)
+{
+    // This func is used when determining which line is clicked on.
+
+    // TODO: Add functionality to make sure we are only getting LINES from svgbacklayer in the future !!!!!.
+
+    var allLines = document.getElementById("svgbacklayer").children;
+    var cMouse_XY = {x: mouseX, y: mouseY}; // Current mouse XY
+    var currentline = {};
+    var lineData = {};
+    var lineCoeffs = {};
+    var highestX;
+    var lowestX; 
+    var highestY;
+    var lowestY;
+    var lineWasHit = false; 
+
+    // Position and radius of the circle hitbox that is used when 
+    var circleHitBox = {
+        pos_x: cMouse_XY.x, // Mouse pos X.
+        pos_y: cMouse_XY.y, // Mouse pos Y.
+        radius: 10 // This will determine the error margin, "how far away from the line we can click and still select it". Higer val = higher margin.
+    }
+    
+    for(var i = 0; i < allLines.length; i++)
+    {
+        // Get all X and Y -coords for current line in iteration.
+        currentline = {
+            x1: allLines[i].getAttribute("x1"),
+            x2: allLines[i].getAttribute("x2"),
+            y1: allLines[i].getAttribute("y1"),
+            y2: allLines[i].getAttribute("y2")
+        };
+
+        // Used later to make sure the current mouse-position is in the span of a line.
+        highestX = Math.max(currentline.x1, currentline.x2);
+        lowestX = Math.min(currentline.x1, currentline.x2);
+        highestY = Math.max(currentline.y1, currentline.y2);
+        lowestY = Math.min(currentline.y1, currentline.y2);
+        lineData = {
+            hX: highestX,
+            lX: lowestX,
+            hY: highestY,
+            lY: lowestY
+        }
+        
+        // Coefficients of the general equation of the current line.
+        lineCoeffs = {
+            a: (currentline.y1 - currentline.y2),
+            b: (currentline.x2 - currentline.x1),
+            c: ((currentline.x1 - currentline.x2)*currentline.y1 + (currentline.y2-currentline.y1)*currentline.x1)
+        }
+        
+        // Determines if a line was clicked
+        lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
+        
+        // --- Used when debugging ---
+        // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
+        //document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke="black" stroke-width="3" fill="red" /> '
+        // ---------------------------
+
+        if(lineWasHit == true)
+        {
+            return allLines[i]; // Return the current line that registered as a "hit".
+        }
+    }
+    return null;
+}
+
+function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
+{
+    // Adding and subtracting with the circle radius to allow for bigger margin of error when clicking.
+    // Check if we are clicking withing the span.
+    if( (circle_x < (line_data.hX + circle_radius)) &&
+     (circle_x > (line_data.lX - circle_radius)) && 
+     (circle_y < (line_data.hY + circle_radius)) && 
+     (circle_y > (line_data.lY - circle_radius))
+    )
+    {
+        // Distance between line and circle center.
+        var distance = (Math.abs(a*circle_x + b*circle_y + c)) / Math.sqrt(a*a + b*b);
+    
+        // Check if circle radius >= distance. (If so is the case, the line is intersecting the circle)
+        if(circle_radius >= distance)
+        {
+            return true;
+        }
+    }
+    else
+    {
+        // console.log("NO LINE WAS SELECTED");
+        return false;
+    }
 }
 
 function mouseMode_onMouseMove(event)
