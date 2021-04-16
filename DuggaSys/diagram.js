@@ -3,37 +3,128 @@
 //                                          Class Definitions
 //------------------------------------=======############==========----------------------------------------
 
-const stateChangeTypes = {
-    ELEMENT_CREATED:            { id: 0, isSoft: false },
-    ELEMENT_DELETED:            { id: 1, isSoft: false },
-    ELEMENT_MOVED:              { id: 2, isSoft: true },
-    ELEMENT_RESIZED:            { id: 3, isSoft: true },
-    ELEMENT_ATTRIBUTE_CHANGED:  { id: 4, isSoft: true },
+class Point
+{
+    x = 0;
+    y = 0;
 
-    EDGE_CREATED:               { id: 5, isSoft: false },
-    EDGE_REMOVED:               { id: 6, isSoft: false },
+    /**
+     * 
+     * @param {number} startX 
+     * @param {number} startY 
+     */
+    constructor(startX = 0, startY = 0)
+    {
+        this.x = startX;
+        this.y = startY;
+    }
+
+    /**
+     * 
+     * @param {Point} other 
+     */
+    add(other)
+    {
+        this.x += other.x;
+        this.y += other.y;
+    }
 };
 
 class StateChange
 {
-    constructor(type, id_list, value)
+    /**
+     * flag: number of 2nd base used to set multiple flags at once.
+     * isSoft: If the change type is something that wishes to overwrite the previous change.
+     * canAppendTo: If the change can be overwritten by another change.
+     */
+    static ChangeTypes = {
+        ELEMENT_CREATED:            { flag: 1, isSoft: false, canAppendTo: true },
+        ELEMENT_DELETED:            { flag: 2, isSoft: false, canAppendTo: false },
+        ELEMENT_MOVED:              { flag: 4, isSoft: true, canAppendTo: true },
+        ELEMENT_RESIZED:            { flag: 8, isSoft: true, canAppendTo: true },
+        ELEMENT_MOVED_AND_RESIZED:  { flag: 4 | 8, isSoft: true, canAppendTo: true },
+        ELEMENT_ATTRIBUTE_CHANGED:  { flag: 16, isSoft: true, canAppendTo: true },
+
+        LINE_CREATED:               { flag: 32, isSoft: false, canAppendTo: true },
+        LINE_DELETED:               { flag: 64, isSoft: false, canAppendTo: false },
+    };
+
+    getFlags() {
+        var flags = 0;
+        for (const change in this.changes)
+            flags = flags | change.flag;
+
+        return flags;
+    }
+
+    /**
+     * @type changeType
+     */
+    changes = null;
+
+    /**
+     * @type String
+     */
+    name = undefined;
+    
+    /**
+     * @type Point
+     */
+    moved = undefined;
+    
+    /**
+     * @type Point
+     */
+    resized = undefined;
+
+    /**
+     * @type number
+     */
+    timestamp = undefined;
+
+    /**
+     * 
+     * @param {number} changeType 
+     * @param {Array<String>} id_list 
+     */
+    constructor(changeType, id_list)
     {
-        this.type = type;
+        this.changes = changeType;
+        this.timestamp = new Date().getTime();
 
         /**
          * @type Array<String>
          */
         this.id_list = id_list;
+    }
 
-        /**
-         * @type *
-         */
-        this.value = value;
-
-        /**
-         * Timestamp in milliseconds.
-         */
-        this.timestamp = new Date().getTime();
+    /**
+     * 
+     * @param {StateChange} changes 
+     */
+    appendValuesFrom(changes)
+    {
+        if (changes.name)
+        {
+            this.name = changes.name;
+        }
+        if (changes.moved)
+        {
+            if (this.moved) this.moved.add(changes.moved);
+            else this.moved = changes;
+        }
+        if (changes.resized)
+        {
+            if (this.resized) this.resized.add(changes.resized);
+            else this.resized = changes.resized;
+        }
+        if (changes.timestamp < this.timestamp)
+        {
+            this.timestamp = changes.timestamp;
+        }
+        
+        /** @type number */
+        this.changes.flag = this.changes.flag | changes.changes.flag;
     }
 }
 
@@ -41,41 +132,79 @@ class StateChangeFactory
 {
     static ElementCreated(element)
     {
+        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_CREATED, [element.id]);
+        state.name = element.name;
+        state.moved = new Point(element.x, element.y);
+        state.resized = new Point(element.width, element.height);
+
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_CREATED, [element.id]);
+    }
+
+    static ElementsDeleted(elements)
+    {
+        var ids = [];
+        elements.forEach(element => {
+            ids.push(element.id);
+        });
+
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_DELETED, ids);
+    }
+
+    static ElementsMoved(elementIDs, moveX, moveY)
+    {
+        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED, elementIDs);
+        state.moved = new Point(moveX, moveY);
+
+        return state;
+    }
+
+    static ElementResized(elementIDs, changeX, changeY)
+    {
+        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_RESIZED, elementIDs);
+        state.resized = new Point(changeX, changeY);
+
+        return state;
+    }
+
+    static ElementMovedAndResized(elementIDs, moveX, moveY, changeX, changeY)
+    {
+        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED, elementIDs);
+        state.moved = new Point(moveX, moveY);
+        state.resized = new Point(changeX, changeY);
+
+        return state;
+    }
+
+    static ElementAttributesChanged(elementID, changeList)
+    {       
+        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED, elementID);
         
-    }
-
-    static ElementDeleted(elements)
-    {
-        
-    }
-
-    static ElementMoved(elementIDs, moveX, moveY)
-    {
-        return new StateChange(stateChangeTypes.ELEMENT_MOVED, elementIDs, getPoint(moveX, moveY));
-    }
-
-    static ElementResized(elementIDs, moveX, moveY, changeX, changeY)
-    {
-        var value = {
-            move: getPoint(moveX, moveY),
-            resize: getPoint(changeX, changeY)
+        if (stringNotEmpty(changeList.name))
+        {
+            state.name = changeList.name;
         }
-        return new StateChange(stateChangeTypes.ELEMENT_RESIZED, elementIDs, value);
+
+        return state;
     }
 
-    static ElementAttributeChanged(elementIDs, attributeName, attributeValue)
+    static LineAdded(line)
     {
-        
+        var values = {
+            element1: line.fromID,
+            element2: line.toID,
+        };
+
+        return new StateChange(StateChange.ChangeTypes.LINE_CREATED, line.id, values);
     }
 
-    static EdgeCreated(edgeID)
+    static LinesRemoved(lines)
     {
-        
-    }
+        var lineIDs = [];
 
-    static EdgeRemoved(edgeID)
-    {
-        
+        lines.forEach(line => {
+            lineIDs.push(line.id);
+        });
+        return new StateChange(StateChange.ChangeTypes.LINE_DELETED, lineIDs, null);
     }
 }
 
@@ -97,54 +226,35 @@ class StateMachine
     /**
      * Stores the passed state change into the state machine.
      * If the change is hard it will be pushed onto the history log,
-     * while a soft change will simply modify the last history entry.
+     * while a soft§ change will simply modify the last history entry.
+     * 
      * @param {StateChange} stateChange State change generated by the StateChangedFactory.
      * @see StateChangeFactory
      */
     save (stateChange)
     {
         if (stateChange instanceof StateChange)
-        {
+        {   
             // If history is present, perform soft/hard-check
             if (this.historyLog.length > 0)
             {
+                /** @type StateChange */
                 var lastLog = this.historyLog[this.historyLog.length - 1];
-                var isSoftChange = false;
-                console.log("New Change / Last Log", stateChange, lastLog);
-                console.log("History", this.historyLog);
-
-                // Previous entry is the same type and it is of the soft type and they have the same lenght
-                if (stateChange.type.isSoft && stateChange.type.id === lastLog.type.id && stateChange.id_list.length === lastLog.id_list.length)
-                {
-                    var allOk = true;
-
-                    for (var i = 0; i < stateChange.id_list.length && allOk; i++)
-                    {
-                        allOk = stateChange.id_list[i] === lastLog.id_list[i];
-                    }
-
-                    isSoftChange = allOk;
-                }
 
                 // If NOT soft change, push new change onto history log
-                if (!isSoftChange)
+                if (!stateChange.changes.isSoft || !lastLog.changes.canAppendTo)
                 {
-                    console.log("Change pushed:", stateChange);
                     this.historyLog.push(stateChange);
                 }
                 // Otherwise, simply modify the last entry.
                 else
                 {
-                    console.log("Soft change modified:", stateChange);
-                    switch (stateChange.type)
+                    switch (stateChange.changes)
                     {
-                        case stateChangeTypes.ELEMENT_MOVED:
-                            lastLog.value = addPoints(lastLog.value, stateChange.value);
-                            break;
-
-                        case stateChangeTypes.ELEMENT_RESIZED:
-                            lastLog.value.move   = addPoints(lastLog.value.move,   stateChange.value.move);
-                            lastLog.value.resize = addPoints(lastLog.value.resize, stateChange.value.resize);
+                        case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
+                        case StateChange.ChangeTypes.ELEMENT_MOVED:
+                        case StateChange.ChangeTypes.ELEMENT_RESIZED:
+                            lastLog.appendValuesFrom(stateChange);
                             break;
 
                         default:
@@ -155,7 +265,6 @@ class StateMachine
             }
             else
             {
-                console.log("Change pushed:", stateChange);
                 this.historyLog.push(stateChange);
             }
         }
@@ -165,19 +274,16 @@ class StateMachine
         }
     }
 
+    /* TODO : Another issue mentioned that a back-forward system is requested. Functionality should most likely be put here.
     stepBack () 
     {
-        // TODO : Implement history/future
-        console.error("NOT IMPLEMENTED YET! BELONGS TO OTHER ISSUE!");
         if (this.futureLog.length > 0) { }
     }
 
     stepForward()
     {
-        // TODO : Implement history/future
-        console.error("NOT IMPLEMENTED YET! BELONGS TO OTHER ISSUE!");
         if (this.futureLog.length > 0) { }
-    }
+    }*/
 };
 
 //------------------------------------=======############==========----------------------------------------
@@ -418,6 +524,15 @@ window.addEventListener("resize", () => {
 //                              Coordinate-Screen Position Conversion
 //------------------------------------=======############==========----------------------------------------
 
+/**
+ * Returns the diagram coordinate that the mouse cursor is currently hovering over.
+ * It is possible for the function to currently return a coorinate out of bounds
+ * since no security checks are performed.
+ * 
+ * @param {number} mouseX Current mouse position on the X-axis
+ * @param {number} mouseY Current mouse position on the Y-axis
+ * @returns A point object denoted {x,y} of the calculated coordinates.
+ */
 function screenToDiagramCoordinates(mouseX, mouseY)
 {
     // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
@@ -439,14 +554,10 @@ function screenToDiagramCoordinates(mouseX, mouseY)
     if (zoomfact == 0.25) zoomX = zoom0_25;
     if (zoomfact == 0.125) zoomX = zoom0_125;
 
-    return {
-        x: Math.round(
-            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 // the 2 makes mouse hover over container
-        ),
-        y: Math.round(
-            ((mouseY - 86) / zoomfact - scrolly) + zoomX * scrolly
-        ),
-    };
+    return new Point(
+        Math.round(((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2), // the 2 makes mouse hover over container
+        Math.round(((mouseY - 86) / zoomfact - scrolly) + zoomX * scrolly)
+    );
 }
 
 // TODO : This is still the old version, needs update
@@ -537,13 +648,11 @@ function ddown(event)
 
 function mouseMode_onMouseUp(event)
 {
-    console.log("mouseup");
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
             var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
             var entityType = constructElementOfType(elementTypeSelected);
-
-            data.push({
+            var newElement = {
                 name: entityType.name,
                 x: mp.x - (entityType.data.width * 0.5),
                 y: mp.y - (entityType.data.height * 0.5),
@@ -551,21 +660,27 @@ function mouseMode_onMouseUp(event)
                 height: entityType.data.height,
                 kind: entityType.data.kind,
                 id: makeRandomID()
-            });
+            };
+
+            data.push(newElement);
+            stateMachine.save(StateChangeFactory.ElementCreated(newElement));
+
             showdata()
             break;
 
         case mouseModes.EDGE_CREATION:
-            console.log(context.length, mouseMode);
             if (context.length > 1)
             {
-                console.log("CREATE EDGE");
-                lines.push({ 
+                var newLine = { 
                     id: makeRandomID(), 
                     fromID: context[0].id, 
                     toID: context[1].id, 
                     kind: "Normal" 
-                });
+                };
+
+                lines.push(newLine);
+                stateMachine.save(StateChangeFactory.LineAdded(newLine));
+
                 context = [];
                 updatepos(0,0);
             }
@@ -635,7 +750,7 @@ function mup(event)
                         id_list.push(item.id);
                     });
 
-                    stateMachine.save(StateChangeFactory.ElementMoved(id_list, -(deltaX / zoomfact), -(deltaY / zoomfact)));
+                    stateMachine.save(StateChangeFactory.ElementsMoved(id_list, -(deltaX / zoomfact), -(deltaY / zoomfact)));
                 }
             }
             break;
@@ -722,27 +837,33 @@ function mmoving(event)
             
             if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth)
             {
-                const x_sizeChange = (deltaX / zoomfact),
-                y_sizeChange = 0;
-                elementData.width = (startWidth - x_sizeChange);
+                // Fetch original width
+                var tmp = elementData.width;
+                elementData.width = (startWidth - (deltaX / zoomfact));
+
+                // Remove the new width, giving us the total change
+                const widthChange = -(tmp - elementData.width);
                 
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, 0, x_sizeChange, y_sizeChange));
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, 0, widthChange, 0));
             }
             else if (!startNodeRight && (startWidth + (deltaX / zoomfact)) > minWidth)
             {
-                const xPosOld = elementData.x;
-                const xPosNew = screenToDiagramCoordinates((startX - deltaX), 0).x;
-                const xPosDelta = xPosOld - xPosNew,
-                        yPosDelta = 0;
-                
-                const x_sizeChange = (deltaX / zoomfact),
-                        y_sizeChange = 0;
+                // Fetch original width
+                var tmp = elementData.width;
+                elementData.width = (startWidth + (deltaX / zoomfact));
 
-                elementData.x = xPosNew;
-                elementData.width = (startWidth + x_sizeChange);
+                // Deduct the new width, giving us the total change
+                const widthChange = -(tmp - elementData.width);
+
+                // Fetch original x-position
+                tmp = elementData.x;
+                elementData.x = screenToDiagramCoordinates((startX - deltaX), 0).x;
+
+                // Deduct the new position, giving us the total change
+                const xChange = -(tmp - elementData.x);
                 
-                stateMachine.save(StateChangeFactory.ElementResized(elementData.id, xPosDelta, yPosDelta, x_sizeChange, y_sizeChange));
+                stateMachine.save(StateChangeFactory.ElementResized(elementData.id, xChange, 0, widthChange, 0));
             }
             
             // Remove DOM element
@@ -782,6 +903,11 @@ function fab_action()
 //                                         Helper functions
 //------------------------------------=======############==========----------------------------------------
 
+function stringNotEmpty (value)
+{
+    return (value && value.length > 0);
+}
+
 // Returns TRUE if an enum contains the tested value
 function enumContainsPropertyValue(value, enumObject) 
 {
@@ -797,20 +923,26 @@ function enumContainsPropertyValue(value, enumObject)
     return false;
 }
 
+/**
+ * @param {number} x position 
+ * @param {number} y position
+ * @returns {Point} Point with passed x and y positions.
+ * @deprecated Use 'new Point()' instead.
+ */
 function getPoint (x,y)
 {
-    return {
-        x: x,
-        y: y
-    };
+    return new Point(x, y);
 }
 
+/**
+ * @param {Point} p1
+ * @param {Point} p2
+ * @returns {Point} Point with passed x and y positions.
+ * @deprecated Use 'p1.add(p2)' instead!
+ */
 function addPoints(p1, p2)
 {
-    return {
-        x: p1.x + p2.x,
-        y: p1.y + p2.y
-    };
+    return new Point(p1.x + p2.x, p1.y + p2.y);
 }
 
 function getRectFromPoints(p1, p2)
@@ -1444,27 +1576,37 @@ function saveProperties()
     const propSet = document.getElementById("propertyFieldset");
     const element = context[0];
     const children = propSet.children;
-    for (let index = 0; index < children.length; index++) {
+
+    var propsChanged = [];
+
+    for (let index = 0; index < children.length; index++)
+    {
         const child = children[index];
         const propName = child.id.split(`_`)[1];
-        switch (propName) {
+        switch (propName)
+        {
             case "name":
                 const value = child.value.trim();
-                if (value && value.length > 0) {
+                if (stringNotEmpty(value) && value !== element.name)
+                {
                     element.name = value;
-                }
 
+                    propsChanged[propName] = value;
+                }
                 break;
-        
+
             default:
                 break;
         }
     }
+
+    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged));
     showdata();
     updatepos(0,0);
 }
 
-function changeState() {
+function changeState()
+{
     var property = document.getElementById("propertySelect").value;
     var element = context[0];
     element.state = property;
@@ -1892,18 +2034,33 @@ function drawRulerBars(){
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
 
-//Function to remove elemets and lines
-function removeElements(elementArray){
-    for(var i = 0; i < elementArray.length; i++){
-        //Remove element
-        data=data.filter(function(element) {
+// Function to remove elemets and lines
+function removeElements(elementArray)
+{
+    var linesToRemove = [];
+    
+    stateMachine.save(StateChangeFactory.ElementsDeleted(elementArray));
+    for (var i = 0; i < elementArray.length; i++)
+    {
+        // Remove element
+        data = data.filter(function(element)
+        {
             return element != elementArray[i];
         });
-        //Remove lines
-        lines= lines.filter(function(line){
-            return line.fromID != elementArray[i].id && line.toID != elementArray[i].id;
-        });
+
+        // Add lines to "linesToRemove"
+        linesToRemove = linesToRemove.concat(lines.filter(function(line)
+        {
+            return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
+        }));
     }
+
+    stateMachine.save(StateChangeFactory.LinesRemoved(linesToRemove));
+    lines = lines.filter(function(line)
+    {
+        return !(linesToRemove.includes(line));
+    });
+    
     context = [];
     redrawArrows();
     showdata();
