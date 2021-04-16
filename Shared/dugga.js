@@ -47,6 +47,14 @@ function setVariant(v) {
 	localStorageVariant = v;
 }
 
+function setHash(h){
+	hash = h;
+}
+
+function setPassword(p){
+	pwd = p;
+}
+
 //Set the localstorage item securitynotifaction to on or off
 function setSecurityNotifaction(param){
     localStorage.setItem("securitynotification", param);
@@ -553,8 +561,8 @@ function randomPassword()
 //----------------------------------------------------------------------------------
 
 function createUrl(hash) {
-	var realUrl = window.location + "&hash=" + hash;
-	var localhostUrl="http://localhost/LenaSYS/DuggaSys/sh/?hash=" + hash;
+	var realUrl = window.location + "?a=" + hash;
+	var localhostUrl="http://localhost/LenaSYS/sh/?a=" + hash;
 
 	// temporary solution, if exist in database use real url
 	var realUrlInDatabase = false;
@@ -580,18 +588,19 @@ function createUrl(hash) {
 
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
+
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
-
 {
-  
-	pwd = randomPassword(); //Create random password for URL
-
-	hash = generateHash(); // Generate Hash
-	var url = createUrl(hash); //Create URL
+	// Check if hash is unknown
+	if (hash == "UNK") {
+		pwd = randomPassword(); //Create random password for URL
+		hash = generateHash(); // Generate Hash
+	}
 	
+	var url = createUrl(hash); //Create URL
 	console.log("url: " + url);
 	console.log("pwd: " + pwd);
 

@@ -35,6 +35,8 @@
 	$quizid=getOPG('did');
 	$deadline=getOPG('deadline');
 	$comments=getOPG('comments');
+	$hash = getOPG("hash");
+	$password= "UNK";
 
 	$duggatitle="UNK";
 	$duggafile="UNK";
@@ -44,11 +46,13 @@
 	$visibility=false;
 	$readaccess=false;
 	$checklogin=false;
+	$insertparam = false;
 	
 	$variants=array();
 	$duggaid=getOPG('did');
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
+	
 
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
@@ -111,6 +115,14 @@
 		$marked = $row['marked'];
 	}
 	
+	if ($hash != "UNK"){
+		$query = $pdo->prepare("SELECT password FROM userAnswer WHERE hash=:hash;");
+		$query->bindParam(':hash', $hash);
+		$query->execute();
+		$result = $query->fetch();
+		$password = $result["password"];
+	}
+
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
 	$foundvar=-1;
@@ -241,7 +253,10 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	}
 	variant = JSON.parse(localStorage.getItem(localStorageName));
 	setVariant(variant);
-	
+  
+	setPassword("<?php echo $password ?>");
+	setHash("<?php echo $hash ?>");	
+
 </script>
 	<?php
 		$noup="SECTION";
@@ -352,6 +367,10 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
     			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
     		</div>-->
     		<div id='emailPopup' style="display:block">
+				<div id='urlAndPwd'>
+					<div class="testasd"><p class="bold">URL</p><p id='url'></p></div>
+					<div class="testasd"><p class="bold">Password</p><p id='pwd'></p></div>
+				</div>
     			<div class='inputwrapper'><span>Ange din email:</span><input class='textinput' type='text' id='email' placeholder='Email' value=''/></div>
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
@@ -359,12 +378,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
 				</div>
     		</div>
-
-			<div id='urlAndPwd' style="display:block">
-				<div class="testasd"><span>URL: </span><span id='url'></span></div>
-				<div class="testasd"><span>Password: </span><span id='pwd'></span></div>
-			</div>
-
       </div>
 	</div>
 	<!-- Login Box (receipt&Feedback-box ) End! -->
