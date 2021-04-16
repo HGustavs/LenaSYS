@@ -21,7 +21,6 @@
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
     <script src="diagram.js"></script>
-    <script src="diagram_IOHandler.js"></script>
 
     <!--this script fix so that the drop down menus close after you have clicked on something on them.-->
     <script>
