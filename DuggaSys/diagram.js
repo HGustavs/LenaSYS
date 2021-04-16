@@ -70,6 +70,7 @@ const mouseModes = {
     EDGE_CREATION: 3,
 };
 var mouseMode = mouseModes.POINTER;
+var previousMouseMode;
 
 // All different element types that can be placed by the user.
 const elementTypes = {
@@ -220,16 +221,16 @@ document.addEventListener('keyup', function (e)
             setMouseMode(mouseModes.EDGE_CREATION);
         }
         if (e.key == "e") {
-            setMouseMode(mouseModes.PLACING_ELEMENT);
             setElementPlacementType(elementTypes.ENTITY);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         if (e.key == "r") {
-            setMouseMode(mouseModes.PLACING_ELEMENT);
             setElementPlacementType(elementTypes.RELATION);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         if (e.key == "a") {
-            setMouseMode(mouseModes.PLACING_ELEMENT);
             setElementPlacementType(elementTypes.ATTRIBUTE);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
     }
 });
@@ -375,8 +376,8 @@ function mouseMode_onMouseUp(event)
         case mouseModes.PLACING_ELEMENT:
             var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
             var entityType = constructElementOfType(elementTypeSelected);
-
-            data.push({
+            //Splicing array so that ghost element continues to be the last index of the array.
+            data.splice(data.length-2, 0, {
                 name: entityType.name,
                 x: mp.x - (entityType.data.width * 0.5),
                 y: mp.y - (entityType.data.height * 0.5),
@@ -584,6 +585,15 @@ function mouseMode_onMouseMove(event)
 {
      switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
+            var lastElement = data[data.length-1];
+            var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
+            
+            lastElement.x = cords.x - (lastElement.width /2);
+            lastElement.y = cords.y - (lastElement.height /2);
+            
+            showdata();
+            
+            break;
         case mouseModes.EDGE_CREATION:
         case mouseModes.POINTER: // do nothing
             break;
@@ -774,9 +784,13 @@ function setMouseMode(mode)
 
     // Mode-specific activation/deactivation
     onMouseModeDisabled(mouseMode);
+
+    previousMouseMode = mouseMode;
     mouseMode = mode;
+
     setCursorStyles(mode);
     onMouseModeEnabled(mouseMode);
+    handleMouseModeChange();
 }
 
 function setCursorStyles(cursorMode = 0)
@@ -798,6 +812,25 @@ function setCursorStyles(cursorMode = 0)
             break;
         default: 
             break;
+    }
+}
+
+function handleMouseModeChange()
+{
+    if(previousMouseMode == mouseModes.PLACING_ELEMENT){
+        data.pop();
+        showdata();
+    }
+    // X is set to -1000 because we want to "hide" the spawning position to make it smoother.
+    if(mouseMode == mouseModes.PLACING_ELEMENT){
+        if(elementTypeSelected == elementTypes.ENTITY){
+            data.push({ name: "Entity", x: -1000, y: 0, width: 200, height: 50, kind: "EREntity", id: makeRandomID(), isGhost: true });
+        } else if (elementTypeSelected == elementTypes.ATTRIBUTE){
+            data.push({ name: "Attribute", x: -1000, y: 0, width: 90, height: 45, kind: "ERAttr", id: makeRandomID(), isGhost: true});
+        } else if (elementTypeSelected == elementTypes.RELATION){
+            data.push({ name: "Relation", x: -1000, y: 0, width: 60, height: 60, kind: "ERRelation", id: makeRandomID(), isGhost: true});
+        }
+        showdata();
     }
 }
 
@@ -1192,8 +1225,14 @@ function drawElement(element)
 						top:0px;
 						width:${boxw}px;
 						height:${boxh}px;
-						font-size:${texth}px;
-				'>`;
+						font-size:${texth}px;`;
+                        if(element.isGhost){
+                           str += `
+                                pointer-events: none;
+                                opacity: 0.5;
+                           `;
+                        }
+				str += `'>`;
     str += `<svg width='${boxw}' height='${boxh}' >`;
 
     // Create svg 
