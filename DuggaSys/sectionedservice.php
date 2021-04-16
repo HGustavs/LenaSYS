@@ -61,6 +61,7 @@ $studentTeacher = false;
 $feedbackenabled =getOP('feedback');
 $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
+$tabs=getOP('tabs');
 
 $grpmembershp="UNK";
 $unmarked = 0;
@@ -214,8 +215,13 @@ if($gradesys=="UNK") $gradesys=0;
 							$link=$pdo->lastInsertId();
 					}
 
-					$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
-															  VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
+					if ($kind == 4) {
+						$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
+																  VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
+					} else {
+						$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
+																  VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :tabs, :highscoremode, :groupkind)");
+					}															  
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':cvs', $coursevers);
 					$query->bindParam(':usrid', $userid);
