@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="test.css">
+</head>
+<body>
+
+	<a onclick="changebox()" id="mybutton">Pop-Up</a>
+
+	<div id="box">
+	<a onclick="changebox()" class="close">&times;</a>
+	<span class="gg-check"></span>
+	  <!-- Box content -->
+	  <div class="content">
+      
+	  <h1>kvitto - Duggasvar</h1>
+	  <p>You need to login to save progress.</p>
+       <img src='../Shared/icons/warningTriangle.svg' style='width:100px;height:100px;'>
+
+		<form action="">
+			<input type="email" placeholder="E-Mail">
+			<input type="password" placeholder="Password">
+			<a href="#" class="button">login</a>
+		</form>
+     
+
+	 <script>
+	 	var c = 0;
+	 	function changebox() {
+	 		if(c == 0){
+	 			document.getElementById("box").style.display = "block";
+	 			c = 1;
+         
+	 		}else{
+	 			document.getElementById("box").style.display = "none";
+	 			c = 0;
+	 		}
+	 	}
+	 </script>
+
+	</div>
+</body>
+</html>
