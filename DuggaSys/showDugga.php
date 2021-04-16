@@ -84,7 +84,7 @@
 		$i++;
 		$insertparam = true;
 	}
-	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted,hash,password FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$query->bindParam(':uid', $userid);
@@ -109,6 +109,8 @@
 		$grade = $row['grade'];
 		$submitted = $row['submitted'];
 		$marked = $row['marked'];
+		$password = $row['password'];
+		$hash = $row['hash'];
 	}
 	
 	// If selected variant is not found - pick another from working list.
@@ -244,7 +246,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	
 </script>
 
-
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
@@ -255,8 +256,35 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		<?php
 			// Log USERID for Dugga Access
 			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
-
 			// Put information in event log irrespective of whether we are allowed to or not.
+
+			//Saved Dugga Login 
+			if($hash!='null'){
+				echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
+				echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
+				echo "<div class='loginBoxheader'>";
+				echo "<h3>Login for Saved Dugga</h3>";
+				echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
+				echo "</div>";
+				echo "<p>Enter your password for the hashed Dugga</p>";
+				echo "<input name='password' class='textinput' type='password' placeholder='Password'>";
+				echo "<input type='submit' class='submit-button' value='Confirm' onclick='hideHashBox()'>";
+				echo "</div>";
+				echo "</div>";
+			}
+
+			function hashPassword($password){
+				if(False){
+				//Authentication Function
+				}else{
+					exit();
+				}
+
+			}
+			//Retrieved from 'password' input field
+			$password;
+			hashPassword($password);
+
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
