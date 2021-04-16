@@ -4,7 +4,6 @@
 //----------------------------------------------------------------------------------
 var renderId; // Used to store active rendering function
 var benchmarkData = performance.timing; // Will be updated after onload event
-
 var status = 0;
 var showing = 1;
 var score;
@@ -14,16 +13,11 @@ var inParams = "UNK";
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 var pressTimer;
-
-
-
+var hash;
+var pwd;
 var localStorageVariant;
-
 var duggaTitle;
-
-
 var iconFlag = false;
-
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -682,64 +676,46 @@ function saveDuggaResult(citstr)
 //----------------------------------------------------------------------------------
 // generateHash: Generates a hash
 //----------------------------------------------------------------------------------
-
 function generateHash() {
     var randNum = getRandomNumber();
-    var hash = createHash(randNum);
-	var hash64 = convertDecimalToBase64(hash);
+	var hash64 = convertDecimalToBase64(randNum);
 	hash64 = hash64.replace("+", "-");
 	hash = hash64.replace("/", "_");
-
     return hash;
-
-	function createHash(num) {
-		var string = num.toString();
-		var hash = 0;
-
-		if (string.length == 0) return hash;
-    
-		for (i = 0; i < string.length; i++) {
-			char = string.charCodeAt(i);
-			hash = ((hash << 5) - hash) + char;
-			hash = hash & hash;
-		}
-
-
-		return hash;
-	}
-
-	function getRandomNumber() {
-		return Math.floor(Math.random() * 1000000) + 100000;
-	}
 }
 
+//----------------------------------------------------------------------------------
+//Generates a random number that can represent every possible hash combination (6-8 characters)
+//----------------------------------------------------------------------------------
+function getRandomNumber() {
+	return Math.floor(Math.random() * 281473902968831) + 1073741824;
+}
 
 //----------------------------------------------------------------------------------
 // convertDecimalToBase64: takes decimal number and converts to base64 "youtube style"
 //----------------------------------------------------------------------------------
 function convertDecimalToBase64(value) {
 	if (typeof(value) === 'number') {
-	  return convertDecimalToBase64.getChars(value, '');
+		return convertDecimalToBase64.getChars(value, '');
 	}
   
 	if (typeof(value) === 'string') {
-	  if (value === '') { return NaN; }
-	  return value.split('').reverse().reduce(function(prev, cur, i) {
-		return prev + convertDecimalToBase64.chars.indexOf(cur) * Math.pow(64, i);
-	  }, 0);
+		if (value === '') { return NaN; }
+		return value.split('').reverse().reduce(function(prev, cur, i) {
+			return prev + convertDecimalToBase64.chars.indexOf(cur) * Math.pow(64, i);
+	  	}, 0);
 	}
-  }
+}
   
-  convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
+convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
   
-  convertDecimalToBase64.getChars = function(num, res) {
+convertDecimalToBase64.getChars = function(num, res) {
 	var mod = num % 64,
 		remaining = Math.floor(num / 64),
-		chars = convertDecimalToBase64.chars.charAt(mod) + res;
-  
+		chars = convertDecimalToBase64.chars.charAt(mod) + res;  
 	if (remaining <= 0) { return chars; }
 	return convertDecimalToBase64.getChars(remaining, chars);
-  };
+};
 
 //----------------------------------------------------------------------------------
 // changeURL: Patch-in for changeURL from project 2014 code
