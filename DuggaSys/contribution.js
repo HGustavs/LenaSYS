@@ -531,7 +531,7 @@ function renderHourMarkers() {
       str += " x2='" + xCoord + "' y2='" + yCoord + "' />";
     }
   }
-  str += "<circle class='circleGraphCircle' cx='" + MIDDLE + "' cy='" + MIDDLE + "' r=25 />";
+  str += `<circle class='circleGraphCircle' cx='${MIDDLE}' cy='${MIDDLE}' r=25 />`;
   str += "<g id='circleGraphHours'>";
   for (i = 0, number = 18; i < 12; i++) {
     var xCoordNum = (Math.cos(toRadians(i * 30)) * NUMRADIUS) + X_OFFSET;
@@ -666,9 +666,9 @@ function renderCell(col, celldata, cellid) {
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>";
     str += "<a href='" + obj + "' target='_blank'>Github</a></span></div>";
   } else if (col === 'week' || col === 'reference') {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + parseInt(obj) + "</span></div>";
+    str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${parseInt(obj)}</span></div>`;
   } else {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj + "</span></div>";
+    str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${obj}</span></div>`;
   }
   return str;
 }
@@ -676,11 +676,11 @@ function renderCell(col, celldata, cellid) {
 function renderSortOptions(col, status, colname) {
   str = "";
   if (status == -1) {
-    str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+    str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>${colname}</span>`;
   } else if (status == 0) {
-    str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+    str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",1)'>${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
   } else {
-    str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+    str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
   }
   return str;
 }
@@ -689,11 +689,11 @@ function renderAllRankSortOptions(col, status, colname) {
 
   str = "";
   if (status == -1) {
-    str += "<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+    str += `<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"${col}\",0)'>${colname}</span>`;
   } else if (status == 0) {
-    str += "<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+    str += `<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"${col}\",1)'>${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
   } else {
-    str += "<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+    str += `<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"${col}\",0)'>${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
   }
   return str;
 }
@@ -920,9 +920,9 @@ function renderCellForghContibTable(col, celldata, cellid) {
   obj = celldata;
   var rowNr = cellid.charAt(1);
   if (col === 'weeks') {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + parseInt(obj) + "</span></div>";
+    str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${parseInt(obj)}</span></div>`;
   } else if (col === 'dates') {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj.weekStart + " - " + obj.weekEnd + "</span></div>";
+    str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${obj.weekStart} - ${obj.weekEnd}</span></div>`;
   } else if (col === 'codeContribution') {
     for (var j = 0; j < obj.files.length; j++) {
       var file = obj.files[j];
@@ -943,23 +943,23 @@ function renderCellForghContibTable(col, celldata, cellid) {
      if (obj.issues.length > 0 || obj.comments.length > 0 || obj.events.length > 0 || obj.comments.length > 0) {
        str += "<div class='githubContribution'>";
        if(obj.commits.length > 0){
-         str += "<div id='ghCommits' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Made " + obj.commits.length + " commit(s).</span>";
+         str += `<div id='ghCommits' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Made ${obj.commits.length} commit(s).</span>`;
          str += "<div id='ghCommits"+rowNr+"' style='pointer-events:auto' class='contribcontent'>";
            for (j = 0; j < obj.commits.length; j++) {
              var message = obj.commits[j].message;
              var hash = obj.commits[j].cid;
-             str += "<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/" + hash + "'>" + message + "</a></span>";
+             str += `<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}'>${message}</a></span>`;
            }
            str += "</div>";
            str += "</div>";
        }
        if (obj.issues.length > 0) {
-          str += "<div id='ghIssues' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Created " + obj.issues.length + " issue(s).</span>";
-          str += "<div id='ghIssues"+rowNr+"' class='contribcontent'>";
+          str += `<div id='ghIssues' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Created ${obj.issues.length} issue(s).</span>";
+          str += "<div id='ghIssues"+rowNr+"' class='contribcontent'>`;
           for (j = 0; j < obj.issues.length; j++) {
             var issue = obj.issues[j];
             var issuestr = issue.issueno + " " + issue.title;
-            str += "<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/issues/" + issue.issueno.substr(1) + "'>" + issuestr + "</a></span>";
+            str += `<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/issues/${issue.issueno.substr(1)}'>${issuestr}</a></span>`;
           }
           str += "</div>";
           str += "</div>";
@@ -970,7 +970,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
             for (j = 0; j < obj.comments.length; j++) {
               var comment = obj.comments[j];
               var issuestr = comment.issueno + " " + comment.content;
-              str += "<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/issues/" + comment.issueno.substr(1) + "'>" + issuestr + "</a></span>";
+              str += `<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/issues/${comment.issueno.substr(1)}'>${issuestr}</a></span>`;
             }
           str += "</div>";
           str += "</div>";
@@ -980,7 +980,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
          for (var j = 0; j < obj.events.length; j++) {
            totalAmountEvents += parseInt(obj.events[j].cnt);
          }
-         str += "<div id='ghEvents' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Performed " + totalAmountEvents + " event(s).</span>";
+         str += `<div id='ghEvents' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Performed ${totalAmountEvents} event(s).</span>`;
          str += "<div id='ghEvents"+rowNr+"' class='contribcontent'>";
          for (var j = 0; j < obj.events.length; j++) {
            var eve = obj.events[j];
