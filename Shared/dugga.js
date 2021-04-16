@@ -1334,6 +1334,14 @@ function hideDuggaStatsPopup()
 	//$("#overlay").css("display", "none");
 }
 
+function hideHashBox(){
+	$("#hashBox").css("display","none");
+}
+//Remove
+function showHashBox(){
+	$("#hashBox").css("display","block");
+}
+
 function checkScroll(obj) {
 	if(obj.clientHeight < obj.scrollHeight) {
 		obj.style.height = (parseInt(obj.style.height)+1) + 'em';
