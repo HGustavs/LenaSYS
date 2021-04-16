@@ -55,10 +55,6 @@ function setVariant(v) {
 	localStorageVariant = v;
 }
 
-function setHash(h){
-	hash = h;
-}
-
 //Set the localstorage item securitynotifaction to on or off
 function setSecurityNotifaction(param){
     localStorage.setItem("securitynotification", param);
@@ -565,8 +561,8 @@ function randomPassword()
 //----------------------------------------------------------------------------------
 
 function createUrl(hash) {
-	var realUrl = window.location + "?a=" + hash;
-	var localhostUrl="http://localhost/LenaSYS/sh/?a=" + hash;
+	var realUrl = window.location + "&hash=" + hash;
+	var localhostUrl="http://localhost/LenaSYS/DuggaSys/sh/?hash=" + hash;
 
 	// temporary solution, if exist in database use real url
 	var realUrlInDatabase = false;
@@ -592,19 +588,17 @@ function createUrl(hash) {
 
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
-
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
 {
-	// Check if hash is unknown
-	if (hash == "UNK") {
-		pwd = randomPassword(); //Create random password for URL
-		hash = generateHash(); // Generate Hash
-	}
-	
+  
+	pwd = randomPassword(); //Create random password for URL
+
+	hash = generateHash(); // Generate Hash
 	var url = createUrl(hash); //Create URL
+	
 	console.log("url: " + url);
 	console.log("pwd: " + pwd);
 
@@ -977,9 +971,9 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorageVariant, 
 				dataType: "json",
-				success: function (data){
-					console.log(data);
-				}
+				success: function (data) {
+                    console.log(data);
+                }
 				//success: returnedDugga
 			});
 	}else if(kind=="RESULT"){

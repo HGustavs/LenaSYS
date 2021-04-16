@@ -139,16 +139,54 @@ if($demo){
 	$query->bindParam(':vid', $localStorageVariant);
 	$query->execute();
 	$result = $query->fetch();
-	$param=html_entity_decode($result['param']);	
-} else if ($hr){
-	// We are part of the course - assign variant
-	// See if we already have a result i.e. a chosen variant.
+	$param=html_entity_decode($result['param']);
+	
+	/*
+	// We are not logged in - provide the first variant as demo.
+	$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+	$query->bindParam(':vid', $localStorageVariant);
+	$query->execute();
+	$result = $query->fetch();
+	$param=html_entity_decode($result['param']);	*/
+	//
+	// Get type of dugga
+	$query = $pdo->prepare("SELECT * FROM quiz WHERE id=:duggaid;");
+	$query->bindParam(':duggaid', $duggaid);
+	$result=$query->execute();
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"quizfile Querying Error!");
+	foreach($query->fetchAll() as $row) {
+		$duggainfo=$row;
+		$quizfile = $row['quizFile'];
+	}
+
+	// Retrieve all dugga variants
+	$firstvariant=-1;
+	$query = $pdo->prepare("SELECT vid,param,disabled FROM variant WHERE quizID=:duggaid;");
+	$query->bindParam(':duggaid', $duggaid);
+	$result=$query->execute();
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"variant Querying Error!");
+	$i=0;
+	foreach($query->fetchAll() as $row) {
+		if($row['disabled']==0) $firstvariant=$i;
+		$variants[$i]=array(
+			'vid' => $row['vid'],
+			'param' => $row['param'],
+			'disabled' => $row['disabled']
+		);
+		$i++;
+		$insertparam = true;
+	}
 	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$query->bindParam(':uid', $userid);
 	$query->bindParam(':moment', $moment);
 	$result = $query->execute();
+	
+	$savedvariant="UNK";
+	$newvariant="UNK";
+	$savedanswer="UNK";
+	$isIndb=false;
 
 	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 		$savedvariant=$row['variant'];
@@ -164,7 +202,52 @@ if($demo){
 		$submitted = $row['submitted'];
 		$marked = $row['marked'];
 	}
+	
+	// If selected variant is not found - pick another from working list.
+	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
+	$foundvar=-1;
+	foreach ($variants as $key => $value){
+			if($savedvariant==$value['vid']&&$value['disabled']==0) $foundvar=$key;
+	}
+	if($foundvar==-1){
+			$savedvariant="UNK";
+	}
 
+	// If there are many variants, randomize
+	if($savedvariant==""||$savedvariant=="UNK"){
+		// Randomize at most 8 times
+		$cnt=0;
+		do{
+				$randomno=rand(0,sizeof($variants)-1);
+				
+				// If there is a variant choose one at random
+				if(sizeof($variants)>0){
+						if($variants[$randomno]['disabled']==0){
+								$newvariant=$variants[$randomno]['vid'];						
+						}
+				} 
+				$cnt++;
+		}while($cnt<8&&$newvariant=="UNK");
+		
+		// if none has been chosen and there is a first one take that one.
+		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
+	}else{
+		// There is a variant already -- do nothing!	
+	}
+
+	$savedvariant=$newvariant;
+
+	// Retrieve variant
+	if($insertparam == false){
+			$param="NONE!";
+	}
+	foreach ($variants as $variant) {
+		if($variant["vid"] == $savedvariant){
+				$param=html_entity_decode($variant['param']);
+		}
+	}
+	
+} else if ($hr){
 //----------------------------------- OLD FUNCTIONALITY WHERE DUGGA IS SAVED TO DB WHEN VISITED -------------------------------------------
 	/*
 	// If selected variant is not found - pick another from working list.
