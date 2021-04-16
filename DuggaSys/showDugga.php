@@ -37,6 +37,7 @@
 	$comments=getOPG('comments');
 	$hash = getOPG("hash");
 	$password= "UNK";
+
 	$duggatitle="UNK";
 	$duggafile="UNK";
 	$duggarel="UNK";
@@ -252,8 +253,10 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	}
 	variant = JSON.parse(localStorage.getItem(localStorageName));
 	setVariant(variant);
+  
 	setPassword("<?php echo $password ?>");
 	setHash("<?php echo $hash ?>");	
+
 </script>
 	<?php
 		$noup="SECTION";
