@@ -35,6 +35,7 @@
 	$quizid=getOPG('did');
 	$deadline=getOPG('deadline');
 	$comments=getOPG('comments');
+	$hash=getOPG('hash');
 
 	$duggatitle="UNK";
 	$duggafile="UNK";
@@ -44,6 +45,7 @@
 	$visibility=false;
 	$readaccess=false;
 	$checklogin=false;
+	$insertparam = false;
 	
 	$variantsize;
 	$variants=array();
@@ -253,6 +255,11 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		variant = JSON.parse(localStorage.getItem(localStorageName));
 		setVariant(variant);
 	}
+
+	variant = JSON.parse(localStorage.getItem(localStorageName));
+	setVariant(variant);
+
+	setHash("<?php echo $hash ?>");
 </script>
 	<?php
 		$noup="SECTION";
@@ -363,6 +370,10 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
     			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
     		</div>-->
     		<div id='emailPopup' style="display:block">
+				<div id='urlAndPwd'>
+					<div class="testasd"><p class="bold">URL</p><p id='url'></p></div>
+					<div class="testasd"><p class="bold">Password</p><p id='pwd'></p></div>
+				</div>
     			<div class='inputwrapper'><span>Ange din email:</span><input class='textinput' type='text' id='email' placeholder='Email' value=''/></div>
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
@@ -370,12 +381,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
 				</div>
     		</div>
-
-			<div id='urlAndPwd' style="display:block">
-				<div class="testasd"><span>URL: </span><span id='url'></span></div>
-				<div class="testasd"><span>Password: </span><span id='pwd'></span></div>
-			</div>
-
       </div>
 	</div>
 	<!-- Login Box (receipt&Feedback-box ) End! -->

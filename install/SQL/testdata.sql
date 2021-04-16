@@ -906,6 +906,5 @@ INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1','wepr',
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('2','wuve','Webbutveckling - datorgrafik','97732');
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('3','dgrunder','Datorns grunder','1337');
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('4','soengi','Software Engineering','1338');
-INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1894','dcourse','Demo-Course','52432');
 
 

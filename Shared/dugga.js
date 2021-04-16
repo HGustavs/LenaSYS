@@ -15,8 +15,7 @@ var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 var pressTimer;
 
-var hash;
-var pwd;
+
 
 var localStorageVariant;
 
@@ -25,7 +24,6 @@ var duggaTitle;
 
 var iconFlag = false;
 
-var hash;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -53,6 +51,10 @@ function getAllIndexes(haystack, needle) {
 function setVariant(v) {
 	console.log("variant dugga.js: " + v)
 	localStorageVariant = v;
+}
+
+function setHash(h){
+	hash = h;
 }
 
 //Set the localstorage item securitynotifaction to on or off
@@ -561,8 +563,8 @@ function randomPassword()
 //----------------------------------------------------------------------------------
 
 function createUrl(hash) {
-	var realUrl = window.location + "&hash=" + hash;
-	var localhostUrl="http://localhost/LenaSYS/DuggaSys/sh/?hash=" + hash;
+	var realUrl = window.location + "?a=" + hash;
+	var localhostUrl="http://localhost/LenaSYS/sh/?a=" + hash;
 
 	// temporary solution, if exist in database use real url
 	var realUrlInDatabase = false;
@@ -588,18 +590,19 @@ function createUrl(hash) {
 
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
+
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
-
 {
-  
-	pwd = randomPassword(); //Create random password for URL
-
-	hash = generateHash(); // Generate Hash
-	var url = createUrl(hash); //Create URL
+	// Check if hash is unknown
+	if (hash == "UNK") {
+		pwd = randomPassword(); //Create random password for URL
+		hash = generateHash(); // Generate Hash
+	}
 	
+	var url = createUrl(hash); //Create URL
 	console.log("url: " + url);
 	console.log("pwd: " + pwd);
 
