@@ -1347,31 +1347,7 @@ function checkScroll(obj) {
 	}
 }
 
-//function showEmailPopup()
-//{
-//	var receiptcemail ="";
-//	document.getElementById("emailPopup").style.display = "block";
-//	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
-//	document.getElementById('email').value = receiptcemail;
-//}
 
-//function hideEmailPopup()
-//{
-//	$("#emailPopup").css("display","none");
-//}
-
-//----------------------------------------------------------------------------------
-// Send dugga receipt to users email, save email in localstorage.
-//----------------------------------------------------------------------------------
-function sendReceiptEmail(){
-	var receipt = document.getElementById('receipt').value;
-	var email = $("#email").val();
-		if (email != ""){
-			localStorage.setItem("receiptcemail", email); //save value of input into a localStorage variable
-			window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
-			hideReceiptPopup();
-	}
-}
 
 //----------------------------------------------------------------------------------
 // copyURLtoCB: Copy the url to user clipboard
