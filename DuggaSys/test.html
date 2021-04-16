@@ -5,28 +5,32 @@
 </head>
 <body>
 
-	<a onclick="changebox()" id="mybutton">Pop-Up</a>
-
-	<div id="box">
-	<a onclick="changebox()" class="close">&times;</a>
-	<span class="gg-check"></span>
+	<div onclick="changebox()" id="mybutton">Pop-Up</div>
+	<div class="loginBoxContainer" id="hashBox" style="display:block;">	
+	<div class="loginBox" style="max-width:400px; overflow-y:visible; margin: 10% auto;">
 	  <!-- Box content -->
-	  <div class="content">
-	  <h1>Box Header</h1>
-	  <p>Some text in the Box..</p>
-	  <button id="login-btn">
-      login
-      </button>
-	 </div>
+	  <div class="loginBoxheader">
+	  
+	  <h3>Login for Saved Dugga</h3>
+	  <div onclick="changebox()" class="cursorPointer">x</div>
+	  
+	  </div>
 
+	  
+	  <p>Some text in the Box..</p>
+	  <form>
+	  	<input class="textinput" type="password" placeholder="Password">
+	  	<input type="submit" class="submit-button" value="Login" onclick="">
+	  </form>
+	 </div>
 	 <script>
 	 	var c = 0;
 	 	function changebox() {
 	 		if(c == 0){
-	 			document.getElementById("box").style.display = "block";
+	 			document.getElementById("hashBox").style.display = "block";
 	 			c = 1;
 	 		}else{
-	 			document.getElementById("box").style.display = "none";
+	 			document.getElementById("hashBox").style.display = "none";
 	 			c = 0;
 	 		}
 	 	}

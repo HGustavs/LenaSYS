@@ -1,4 +1,6 @@
-@import url('https://css.gg/check.css');
+
+@import "../Shared/css/dugga.css";
+@import "../Shared/css/style.css";
 
 #mybutton {
 	position: absolute;
@@ -13,17 +15,14 @@
 	font-size: 20px;
 	z-index: 1;
 }
+#hashBox {
+	max-width: 400;
+}
 body{
 	background-color: lightblue;
+}
 
-}
-h1{
-	text-align: center;
-	float: center;
-}
-.content{
-
-}
+/*
 #box{
 	width: 400px;
 	height: 500px;
@@ -34,15 +33,12 @@ h1{
 	border-radius: 8px;
 	position: relative;
 	z-index: 100;
-	display: none;
+	display: block;
 	margin: 10% auto;
 }
-
+/*
 .close{
-	position: absolute;
 	background: red;
-	top: 0px;
-	right: 5px;
 	color: #aaa;
 	font-size: 25px;
 	font-weight: bold;
@@ -54,12 +50,4 @@ h1{
 .close:focus {
   color: black;
   cursor: pointer;
-}
-
-.gg-check{
-	display: none;
-	color: green;
-	width: 50px;
-	height: 50px;
-}
-
+}*/

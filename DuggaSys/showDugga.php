@@ -243,6 +243,8 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	setVariant(variant);
 	
 </script>
+
+
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
