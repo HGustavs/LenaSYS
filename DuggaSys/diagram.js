@@ -392,15 +392,8 @@ function mouseMode_onMouseUp(event)
             console.log(context.length, mouseMode);
             if (context.length > 1)
             {
-                // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
-                if (context[0].kind !== context[1].kind || context[0].kind === "ERAttr" ){
-                    lines.push({
-                        id: makeRandomID(),
-                        fromID: context[0].id,
-                        toID: context[1].id,
-                        kind: "Normal"
-                    });
-                }
+                // TODO: Change the static variable to make it possible to create different lines.
+                addLine(context[0], context[1], "Normal");
                 context = [];
                 updatepos(0,0);
             }
@@ -1117,6 +1110,44 @@ function showdata()
     container.innerHTML = str;
     updatepos(null, null);
 
+}
+//-------------------------------------------------------------------------------------------------
+// addLine - Adds an new line if the requirements and rules are achieved
+//-------------------------------------------------------------------------------------------------
+function addLine(fromElement, toElement, kind){
+    // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
+    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ){
+
+        // Filter the existing lines and gets the number of existing lines
+        var numOfExistingLines = lines.filter(function (line) {
+            return (fromElement.id === line.fromID &&
+                    toElement.id === line.toID ||
+                    fromElement.id === line.toID &&
+                    toElement.id === line.fromID)
+                    }).length;
+
+        // Define a boolean for special case that relation and entity can have 2 lines
+        var specialCase = (fromElement.kind === "ERRelation" &&
+                            toElement.kind === "EREntity" ||
+                            fromElement.kind === "EREntity" &&
+                            toElement.kind === "ERRelation");
+
+        // If there is no existing lines or is a special case
+        if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)){
+
+            // Adds the line
+            lines.push({
+                id: makeRandomID(),
+                fromID: fromElement.id,
+                toID: toElement.id,
+                kind: kind
+            });
+        }else {
+            // TODO: Display an error-message to the user (Maximal amount of lines between elements)
+        }
+    }else {
+        // TODO: Display an error-message to the user (Cant make lines between those elements)
+    }
 }
 
 function drawElement(element)
