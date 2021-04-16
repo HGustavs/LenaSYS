@@ -1105,18 +1105,13 @@ function showdata()
 {
     updateContainerBounds();
 
-    canvas = document.getElementById('canvasOverlay');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    ctx = canvas.getContext('2d');
-
     var str = "";
     var courses = [];
 
     // Iterate over programs
     for (var i = 0; i < data.length; i++)
     {
-        str += drawElement(data[i], ctx)
+        str += drawElement(data[i])
     }
 
     container.innerHTML = str;
@@ -1124,7 +1119,7 @@ function showdata()
 
 }
 
-function drawElement(element, canvasContext)
+function drawElement(element)
 {
     var str = "";
 
@@ -1135,7 +1130,12 @@ function drawElement(element, canvasContext)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    
+
+    canvas = document.getElementById('canvasOverlay');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvasContext = canvas.getContext('2d');
+
     // Caclulate font width using some canvas magic
     var font = canvasContext.font;
     font = `${texth}px ${font.split('px')[1]}`;
