@@ -49,6 +49,7 @@ var elements = [];
 
 // Currently clicked object list
 var context = [];
+var contextLine = []; // Contains the currently selected line(s).
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
 
@@ -335,8 +336,7 @@ function mdown(event)
         startY = event.clientY;
     }
     // Used when clicking on a line between two elements.
-    var clickedLine = determineLineSelect(event.clientX, event.clientY);
-    if(clickedLine != null) clickedLine.setAttribute('stroke', 'rgb(0,0,255)');
+    updateSelectedLine(determineLineSelect(event.clientX, event.clientY));
 
 }
 
@@ -473,6 +473,7 @@ function mup(event)
     deltaX = 0;
     deltaY = 0;
     updatepos(0, 0);
+    drawRulerBars();
 
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
@@ -490,10 +491,7 @@ function determineLineSelect(mouseX, mouseY)
     var currentline = {};
     var lineData = {};
     var lineCoeffs = {};
-    var highestX;
-    var lowestX; 
-    var highestY;
-    var lowestY;
+    var highestX, lowestX, highestY , lowestY;
     var lineWasHit = false; 
 
     // Position and radius of the circle hitbox that is used when 
@@ -505,6 +503,10 @@ function determineLineSelect(mouseX, mouseY)
     
     for(var i = 0; i < allLines.length; i++)
     {
+        // Make sure that "double lines" have the same id.
+        allLines[i].id = allLines[i].id.replace(/-1/gi, '');
+        allLines[i].id = allLines[i].id.replace(/-2/gi, '');
+  
         // Get all X and Y -coords for current line in iteration.
         currentline = {
             x1: allLines[i].getAttribute("x1"),
@@ -542,7 +544,11 @@ function determineLineSelect(mouseX, mouseY)
 
         if(lineWasHit == true)
         {
-            return allLines[i]; // Return the current line that registered as a "hit".
+            // Return the current line that registered as a "hit".
+            return lines.filter(function(line){
+                return line.id == allLines[i].id;
+            })[0];
+            //return allLines[i];
         }
     }
     return null;
@@ -1202,14 +1208,13 @@ function drawElement(element)
             <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
             `;         
         }
+        
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
                    stroke-width='${linew}' stroke='black' fill='#ffccdc' />
                    ${weak}
                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                    `;
-        
     }
-  
     else if (element.kind == "ERAttr")
     {
         var dash = "";
@@ -1238,6 +1243,7 @@ function drawElement(element)
                     stroke='black' fill='#ffccdc' ${dash} stroke-width='${linew}' />
                     
                     ${multi}
+
                     <text x='${xAnchor}' y='${hboxh}' `;
 
         if(element.state == "key"){
@@ -1245,7 +1251,6 @@ function drawElement(element)
         }    
             str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
             `;
-
     }
     else if (element.kind == "ERRelation")
     {
@@ -1273,6 +1278,44 @@ function drawElement(element)
 //-------------------------------------------------------------------------------------------------
 // updateselection - Update context according to selection parameters or clicked element
 //-------------------------------------------------------------------------------------------------
+function updateSelectedLine(selectedLine)
+{
+    // This function works almost exaclty as updateSelection but for lines instead.
+
+    // If CTRL is pressed and an element is selected
+    if(selectedLine != null && ctrlPressed && !contextLine.includes(selectedLine))
+    {
+        contextLine.push(selectedLine);
+    }
+    // If ALT is pressed while selecting a line -> deselects that line
+    else if(selectedLine != null && altPressed)
+    {
+        if (contextLine.includes(selectedLine))
+        {
+            contextLine = contextLine.filter(function (line)
+            {
+                return line !== selectedLine;
+            });
+        }
+    }
+    // If CTRL is not pressed and a element has been selected.
+    else if (selectedLine != null)
+    {
+        // Element not already in context
+        if (!contextLine.includes(selectedLine) && contextLine.length < 1)
+        {
+            contextLine.push(selectedLine);
+        } else
+        {
+            contextLine = [];
+            contextLine.push(selectedLine);
+        }
+    } else
+    {
+        contextLine = [];
+    }
+    
+}
 
 function updateSelection(ctxelement, x, y)
 {
@@ -1708,7 +1751,12 @@ function redrawArrows(str)
     {
         var currentline = lines[i];
         var felem, telem, dx, dy;
-
+        var lineColor = '#f44';
+        if(contextLine.includes(currentline))
+        {
+            lineColor = '#00ff00';
+        }
+        
         felem = data[findIndex(data, currentline.fromID)];
         telem = data[findIndex(data, currentline.toID)];
 
@@ -1743,7 +1791,7 @@ function redrawArrows(str)
 
         if (currentline.kind == "Normal")
         {
-            str += `<line x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='#f44' stroke-width='${strokewidth}' />`;
+            str += `<line id='${currentline.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
         } else if (currentline.kind == "Double")
         {
             // We mirror the line vector
@@ -1753,13 +1801,13 @@ function redrawArrows(str)
             dy = dy / len;
             dx = dx / len;
             var cstmOffSet = 1.4;
-            str += `<line x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='#f44' stroke-width='${strokewidth}' />`;
-            str += `<line x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='#f44' stroke-width='${strokewidth}' />`;
+            str += `<line id='${currentline.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+            str += `<line id='${currentline.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
         }
 
     }
 
-    
+
     return str;
 }
 
