@@ -199,7 +199,11 @@ document.addEventListener('keydown', function (e)
 
         if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
         if (e.key == "Alt" && altPressed !== true) altPressed = true;
-        if (e.key == "Delete" && context.length > 0)  removeElements(context);
+        if (e.key == "Delete" && (context.length > 0 || contextLine.length > 0)) 
+        {
+            removeElements(context); 
+            removeLines(contextLine);
+        }
         if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
         if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
         if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
@@ -213,7 +217,11 @@ document.addEventListener('keydown', function (e)
             pointerState = pointerStates.DEFAULT;
             showdata();
         }
-        if (e.key == "Backspace" && context.length > 0 && !propFieldState) removeElements(context);
+        if (e.key == "Backspace" && (context.length > 0 || contextLine.length > 0) && !propFieldState)
+        {
+            removeElements(context); 
+            removeLines(contextLine);
+        }
     }
 });
 
@@ -1979,6 +1987,20 @@ function removeElements(elementArray){
         });
     }
     context = [];
+    redrawArrows();
+    showdata();
+}
+//Function to remove selected lines
+function removeLines(linesArray)
+{
+    for(var i = 0; i < linesArray.length; i++){
+
+        //Remove line
+        lines=lines.filter(function(line) {
+            return line.id != linesArray[i].id;
+        });
+    }
+    contextLine = [];
     redrawArrows();
     showdata();
 }
