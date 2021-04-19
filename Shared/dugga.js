@@ -1340,6 +1340,12 @@ function hideHashBox(){
     $("#hashBox").css("display","none");
 }
 
+function checkHashPassword(){
+	var temp;
+	temp = document.getElementById('passwordfield').value;
+	console.log(temp);
+}
+
 function showSecurityPopup()
 {
    $("#securitynotification").css("display","flex");

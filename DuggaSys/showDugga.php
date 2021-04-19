@@ -292,11 +292,13 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 				echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
 				echo "</div>";
 				echo "<p>Enter your password for the hash</p>";
-				echo "<input name='password' class='textinput' type='password' placeholder='Password'>";
-				echo "<input type='submit' class='submit-button' value='Confirm' onclick='hideHashBox()'>";
+				echo "<input id='passwordfield' name='password' class='textinput' type='password' placeholder='Password'>";
+				echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
 				echo "</div>";
 				echo "</div>";
 			}
+
+			$sql = "SELECT hash,password FROM useranswer WHERE '" .$password. "' LIKE password";
 
 			function hashPassword($password, $hash){
 				if($hash!='UNK'){
@@ -306,7 +308,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			}
 			//Retrieved from 'password' input field
 			hashPassword($password, $hash);
-
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
