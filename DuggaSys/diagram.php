@@ -517,25 +517,6 @@
         <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
         <div>
             <fieldset id='cursorModeFieldset'>
-                <legend>Cursor Modes</legend>
-                <div class="diagramIcons" onclick='setMouseMode(0);'>
-                    <img src="../Shared/icons/diagram_pointer.svg"/>
-                </div>
-                <div class="diagramIcons" onclick='setMouseMode(1);'>
-                    <img src="../Shared/icons/diagram_box_select.svg"/>
-                </div>
-                <div class="diagramIcons" onclick='setElementPlacementType(0); setMouseMode(2);'>
-                    <img src="../Shared/icons/diagram_entity.svg"/>
-                </div>
-                <div class="diagramIcons" onclick='setElementPlacementType(1); setMouseMode(2);'>
-                    <img src="../Shared/icons/diagram_relation.svg"/>
-                </div>
-                <div class="diagramIcons" onclick='setElementPlacementType(2); setMouseMode(2);'>
-                    <img src="../Shared/icons/diagram_attribute.svg"/>
-                </div>
-                <div class="diagramIcons" onclick='setMouseMode(3);'>
-                    <img src="../Shared/icons/diagram_line.svg"/>
-                </div>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
                 <input class="paneButtons" id="gridButton" type="button" value="Enable Grid" onclick='enableGrid()' /><br>
             </fieldset>
