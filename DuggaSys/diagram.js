@@ -1913,7 +1913,8 @@ function removeElements(elementArray){
     showdata();
 }
 //Function to remove selected lines
-function removeLines(linesArray){
+function removeLines(linesArray)
+{
     for(var i = 0; i < linesArray.length; i++){
 
         //Remove line
