@@ -231,7 +231,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			echo "<body>";
 		}
 ?>
-<!-- setVariant(variant) sätts inte här -->
+
 <!-- Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database -->
 <?php
 	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
