@@ -717,8 +717,6 @@ function returnedAccess(data) {
 	}
 	filez = data;
 
-	if (data['debug'] != "NONE!") alert(data['debug']);
-
 	var tabledata = {
 
 		tblhead: {
