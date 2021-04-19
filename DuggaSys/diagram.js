@@ -1561,7 +1561,10 @@ function addLine(fromElement, toElement, kind){
 
             // Adds the line
             lines.push(newLine);
+
+            // Save changes into state machine
             stateMachine.save(StateChangeFactory.LineAdded(newLine));
+
             displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
         }
     }else {
