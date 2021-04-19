@@ -554,7 +554,9 @@ if($gradesys=="UNK") $gradesys=0;
 		$entries=array();
 
 		if($cvisibility){
-		  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind, tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+			$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind,
+					listentries.gradesystem as tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id 
+					WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursevers', $coursevers);
 			$result=$query->execute();
