@@ -283,6 +283,29 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		<?php
 			// Log USERID for Dugga Access
 			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+			//Saved Dugga Login 
+			if($hash!='UNK'){
+				echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
+				echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
+				echo "<div class='loginBoxheader'>";
+				echo "<h3>Login for Saved Dugga</h3>";
+				echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
+				echo "</div>";
+				echo "<p>Enter your password for the hash</p>";
+				echo "<input name='password' class='textinput' type='password' placeholder='Password'>";
+				echo "<input type='submit' class='submit-button' value='Confirm' onclick='hideHashBox()'>";
+				echo "</div>";
+				echo "</div>";
+			}
+
+			function hashPassword($password, $hash){
+				if($hash!='UNK'){
+				exit();
+				//Authentication Function
+				}
+			}
+			//Retrieved from 'password' input field
+			hashPassword($password, $hash);
 
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
