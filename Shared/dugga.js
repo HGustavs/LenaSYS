@@ -1336,6 +1336,10 @@ function copyHashtoCB() {
 	$temp.remove();
 }
 
+function hideHashBox(){
+    $("#hashBox").css("display","none");
+}
+
 function showSecurityPopup()
 {
    $("#securitynotification").css("display","flex");
