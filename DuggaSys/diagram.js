@@ -405,7 +405,6 @@ var pointerState = pointerStates.DEFAULT;
 var movingObject = false;
 var movingContainer = false;
 
-var randomidArray = []; // array for checking randomID
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
 //-------------------------------------------------------------------------------------------------
@@ -415,25 +414,11 @@ function makeRandomID()
     var str = "";
     var characters = 'ABCDEF0123456789';
     var charactersLength = characters.length;
-    while(true){
-        for (var i = 0; i < 6; i++){
-            str += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
-            randomidArray.push(str);
-        }
-        else{
-            var check = randomidArray.includes(str); //if check is true the id already exists
-            if(check == true){
-                str = "";
-            }
-            else{
-                randomidArray.push(str);
-                return str;
-            }
-        }
- 
-}
+    for (var i = 0; i < 6; i++)
+    {
+        str += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return str;
 }
 
 // Example entities and attributes
@@ -513,11 +498,7 @@ document.addEventListener('keydown', function (e)
 
         if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
         if (e.key == "Alt" && altPressed !== true) altPressed = true;
-        if (e.key == "Delete" && (context.length > 0 || contextLine.length > 0)) 
-        {
-            removeElements(context); 
-            removeLines(contextLine);
-        }
+        if (e.key == "Delete" && context.length > 0)  removeElements(context);
         if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
         if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
         if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
@@ -531,11 +512,7 @@ document.addEventListener('keydown', function (e)
             pointerState = pointerStates.DEFAULT;
             showdata();
         }
-        if (e.key == "Backspace" && (context.length > 0 || contextLine.length > 0) && !propFieldState)
-        {
-            removeElements(context); 
-            removeLines(contextLine);
-       } 
+        if (e.key == "Backspace" && context.length > 0 && !propFieldState) removeElements(context);
     }
 });
 
@@ -1551,21 +1528,21 @@ function addLine(fromElement, toElement, kind){
 
         // If there is no existing lines or is a special case
         if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)){
-
             var newLine = {
                 id: makeRandomID(),
                 fromID: fromElement.id,
                 toID: toElement.id,
                 kind: kind
             };
+            stateMachine.save(StateChangeFactory.LineAdded(newLine));
 
             // Adds the line
             lines.push(newLine);
-            stateMachine.save(StateChangeFactory.LineAdded(newLine));
-            displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
+        }else {
+            // TODO: Display an error-message to the user (Maximal amount of lines between elements)
         }
     }else {
-        displayMessage("error", "Not possible to draw a line between two: " + context[0].kind);
+        // TODO: Display an error-message to the user (Cant make lines between those elements)
     }
 }
 
@@ -1727,14 +1704,10 @@ function updateSelectedLine(selectedLine)
             contextLine.push(selectedLine);
         } else
         {
-            if(mouseMode != mouseModes.POINTER)
-            {
-                contextLine = [];
-            }
+            contextLine = [];
             contextLine.push(selectedLine);
         }
-
-    } else if (!altPressed && !ctrlPressed)
+    } else
     {
         contextLine = [];
     }
@@ -2282,7 +2255,7 @@ function removeNodes(element) {
 // Change the position of rulerPointers
 //-------------------------------------------------------------------------------------------------
 function setRulerPosition(x, y) {
-    document.getElementById("ruler-x").style.left = x - 51 + "px";
+    document.getElementById("ruler-x").style.left = x - 1 + "px";
     document.getElementById("ruler-y").style.top = y - 125 + "px";
 }
 
@@ -2323,7 +2296,7 @@ function drawRulerBars(){
 
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
-            var cordX = screenToDiagramCoordinates(50 + i, 0).x;
+            var cordX = screenToDiagramCoordinates(i, 0).x;
             lineNumber = 0;
             barX += "<line x1='" +i+"' y1='0' x2='" + i + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
@@ -2364,45 +2337,7 @@ function removeElements(elementArray)
     redrawArrows();
     showdata();
 }
-//Function to remove selected lines
-function removeLines(linesArray)
-{
-    for(var i = 0; i < linesArray.length; i++){
 
-        //Remove line
-        lines=lines.filter(function(line) {
-            return line.id != linesArray[i].id;
-        });
-    }
-    contextLine = [];
-    redrawArrows();
-    showdata();
-}
-
-function displayMessage(type, message)
-{
-    var messageEl = document.getElementById("diagram-message") // Get div for error-messages
-
-    switch (type) {
-        case "error":
-            messageEl.style.background = "rgb(255, 153, 153)";
-            break;
-        case "success":
-            messageEl.style.background = "rgb(153, 255, 153)";
-            break
-        default:
-            messageEl.style.background = "rgb(255, 153, 153)";
-            break;
-    }
-
-    messageEl.innerHTML = "<span>" + message + "</span>";
-    messageEl.style.display = "block";
-
-    //Set timeout to remove the message
-    setTimeout(function (){
-        messageEl.style.display = "none";
-    }, 2000);
-}
 //------------------------------------=======############==========----------------------------------------
 //                                    Default data display stuff
 //------------------------------------=======############==========----------------------------------------

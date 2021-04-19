@@ -451,41 +451,8 @@
         </div>
     </div>
 
-    <!-- Toolbar for diagram -->
-    <div id="diagram-toolbar">
-        <fieldset>
-            <legend>Modes</legend>
-            <div class="diagramIcons" onclick='setMouseMode(0);'>
-                <img src="../Shared/icons/diagram_pointer.svg"/>
-            </div>
-            <div class="diagramIcons" onclick='setMouseMode(1);'>
-                <img src="../Shared/icons/diagram_box_select.svg"/>
-            </div>
-            <div class="diagramIcons" onclick='setElementPlacementType(0); setMouseMode(2);'>
-                <img src="../Shared/icons/diagram_entity.svg"/>
-            </div>
-            <div class="diagramIcons" onclick='setElementPlacementType(1); setMouseMode(2);'>
-                <img src="../Shared/icons/diagram_relation.svg"/>
-            </div>
-            <div class="diagramIcons" onclick='setElementPlacementType(2); setMouseMode(2);'>
-                <img src="../Shared/icons/diagram_attribute.svg"/>
-            </div>
-            <div class="diagramIcons" onclick='setMouseMode(3);'>
-                <img src="../Shared/icons/diagram_line.svg"/>
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>Zoom</legend>
-            <input class="paneButtons" type="button" value="-" onclick='zoomin();' />
-            <input class="paneButtons" type="button" value="+" onclick='zoomout();' />
-        </fieldset>
-    </div>
-
-    <!-- Message prompt -->
-    <div id="diagram-message" onclick="this.style.display = 'none'">
-        <span>This is a error. :)</span>
-    </div>
     <!-- Diagram drawing system canvas. -->
+
     <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
      <!-- One svg layer for background stuff and one for foreground stuff -->
     <svg id="svgbacklayer" preserveAspectRatio="none"></svg>
@@ -515,6 +482,15 @@
     <div id="fab" onclick="fab_action();">+</div> <!-- Big (+) button -->
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
+        <div id="options-pane-content" >
+            <div>
+                <fieldset>
+                    <legend>Zoom</legend>
+                    <input class="paneButtons" type="button" value="Zoom in" onclick='zoomin();' />
+                    <input class="paneButtons" type="button" value="Zoom out" onclick='zoomout();' />									
+                </fieldset>
+            </div>
+        </div>
         <div>
             <fieldset id='cursorModeFieldset'>
                 <legend>Cursor Modes</legend>
