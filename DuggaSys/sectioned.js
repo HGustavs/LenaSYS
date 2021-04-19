@@ -632,6 +632,9 @@ function returnedSection(data) {
     document.getElementById("course-coursename").innerHTML = retdata['coursename'];
     document.getElementById("course-versname").innerHTML = versionname;
 
+    // Set motd before if-statement, so it's displayed for everyone, not just studentteachers and those with writeaccess
+    motd = retdata['versions'].find(v => v.vers == querystring["coursevers"]).motd;
+
     var str = "";
     // Build dropdown and showing FAB-buttons for studentteacher and writeaccess users
     if (data['studentteacher'] || data['writeaccess']) {
