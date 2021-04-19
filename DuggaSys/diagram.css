@@ -6,7 +6,6 @@
     width:100%;
     height:100%;
     user-select: none;
-    cursor: pointer;
 }
 
 #svgbacklayer {
@@ -101,6 +100,12 @@
 .hide {
     display: none;
 }	
+.zoomButtons{
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    padding: 5px;
+}
 
 .paneButtons:hover {
     cursor:pointer;
