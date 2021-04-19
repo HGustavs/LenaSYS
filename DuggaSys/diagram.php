@@ -476,8 +476,8 @@
         </fieldset>
         <fieldset>
             <legend>Zoom</legend>
-            <input class="paneButtons" type="button" value="+" onclick='zoomout();' />
-            <input class="paneButtons" type="button" value="-" onclick='zoomin();' />
+            <input class="paneButtons" type="button" value="+" onclick='zoomin();' />
+            <input class="paneButtons" type="button" value="-" onclick='zoomout();' />
         </fieldset>
     </div>
 
