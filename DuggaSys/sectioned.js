@@ -659,6 +659,7 @@ function returnedSection(data) {
       // Show FAB / Menu
       document.getElementById("FABStatic").style.display = "Block";
       document.getElementById("FABStatic2").style.display = "Block";
+      document.getElementById("DELStatic").style.display = "Block";
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
     } else {
@@ -1042,6 +1043,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
           ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
           str += "<img alt='trashcan icon' id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
+          str += "<input type='checkbox' name='delete[]' value='<?= $lid ?>'";
           str += "</td>";
         }
 
@@ -1569,7 +1571,7 @@ function drawSwimlanes() {
         str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='
         ${(tempVariable)}' height='${weekheight}' fill='${fillcol}' />`;
 
-        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial'
+        str += `<text x='" + (12) + "' y='${(weeky + 18)}' font-family='Arial'
         font-size='12px' fill='${textcol}' text-anchor='left'> <title>${entry.text}
         </title>${entry.text}</text>`;
       }
@@ -1579,9 +1581,7 @@ function drawSwimlanes() {
   str += `<line opacity='0.7' x1='${((daywidth * daySinceStart) - daywidth)}'
   y1='${(15 + weekheight)}' x2='${((daywidth * daySinceStart) - daywidth)}'
   y2='${(((1 + deadlineEntries.length) * weekheight) + 15)}' stroke-width='4' stroke='red' />`;
-
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
-  
   document.getElementById("swimlaneSVG").innerHTML = str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 800 " + svgHeight);
 
