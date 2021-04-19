@@ -97,25 +97,25 @@ var randomidArray = []; // array for checking randomID
 function makeRandomID()
 {
     var str = "";
-    var checkID = true;
     var characters = 'ABCDEF0123456789';
     var charactersLength = characters.length;
-    while(checkID == true){
-    for (var i = 0; i < 6; i++)
-    {
-        str += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
-        randomidArray.push(str);
-    }else{
-        var check = randomidArray.includes(str); //if check is true the id already exists
-        if(check == true){
-            str = "";
-        }else{
-            randomidArray.push(str);
-            return str;
+    while(true){
+        for (var i = 0; i < 6; i++){
+            str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-    }
+        if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
+            randomidArray.push(str);
+        }
+        else{
+            var check = randomidArray.includes(str); //if check is true the id already exists
+            if(check == true){
+                str = "";
+            }
+            else{
+                randomidArray.push(str);
+                return str;
+            }
+        }
  
 }
 }
