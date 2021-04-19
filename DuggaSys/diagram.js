@@ -337,7 +337,6 @@ var elements = [];
 
 // Currently clicked object list
 var context = [];
-var contextLine = []; // Contains the currently selected line(s).
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
 
@@ -358,13 +357,13 @@ const mouseModes = {
     EDGE_CREATION: 3,
 };
 var mouseMode = mouseModes.POINTER;
-var previousMouseMode;
 
 // All different element types that can be placed by the user.
 const elementTypes = {
-    ENTITY: 0,
-    RELATION: 1,
-    ATTRIBUTE: 2,
+    NO_SELECTED: 0,
+    ENTITY: 1,
+    RELATION: 2,
+    ATTRIBUTE: 3,
 };
 var elementTypeSelected = elementTypes.ENTITY;
 
@@ -464,62 +463,55 @@ var lines = [
 //------------------------------------=======############==========----------------------------------------
 document.addEventListener('keydown', function (e)
 {
-    // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
-    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase()) ){
-
-        if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
-        if (e.key == "Alt" && altPressed !== true) altPressed = true;
-        if (e.key == "Delete" && context.length > 0)  removeElements(context);
-        if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
-        if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
-        if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
-        if (e.key == "Escape" && escPressed != true){
-            escPressed = true;
-            context = [];
-            if (movingContainer){
-                scrollx = sscrollx;
-                scrolly = sscrolly;
-            }
-            pointerState = pointerStates.DEFAULT;
-            showdata();
+    if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
+    if (e.key == "Alt" && altPressed !== true) altPressed = true;
+    if (e.key == "Delete" && context.length > 0)  removeElements(context);
+    if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
+    if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
+    if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
+    if (e.key == "Escape" && escPressed != true){
+        escPressed = true;
+        context = [];
+        if (movingContainer){
+            scrollx = sscrollx;
+            scrolly = sscrolly;
         }
-        if (e.key == "Backspace" && context.length > 0 && !propFieldState) removeElements(context);
+        pointerState = pointerStates.DEFAULT;
+        showdata();
     }
+    if (e.key == "Backspace" && context.length > 0 && !propFieldState) removeElements(context);
 });
 
 document.addEventListener('keyup', function (e)
 {
-    // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
-    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase()) ) {
-        /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
-        if (e.key == "Control") ctrlPressed = false;
-        if (e.key == "Alt") altPressed = false;
-        if (e.key == "Meta") ctrlPressed = false;
-        if (e.key == "Escape") {
-            escPressed = false;
-        }
+    /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
+    if (e.key == "Control") ctrlPressed = false;
+    if (e.key == "Alt") altPressed = false;
+    if (e.key == "Meta") ctrlPressed = false;
+    if (e.key == "Escape"){
+        escPressed = false;
+    }
 
-        if (e.key == "b") {
-            setMouseMode(mouseModes.BOX_SELECTION);
-        }
-        if (e.key == "m") {
-            setMouseMode(mouseModes.POINTER);
-        }
-        if (e.key == "d") {
-            setMouseMode(mouseModes.EDGE_CREATION);
-        }
-        if (e.key == "e") {
-            setElementPlacementType(elementTypes.ENTITY);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-        if (e.key == "r") {
-            setElementPlacementType(elementTypes.RELATION);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-        if (e.key == "a") {
-            setElementPlacementType(elementTypes.ATTRIBUTE);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
+    if (e.key == "b"){
+        setMouseMode(mouseModes.BOX_SELECTION);
+    }
+    if (e.key == "m"){
+        setMouseMode(mouseModes.POINTER);
+    }
+    if (e.key == "d"){
+        setMouseMode(mouseModes.EDGE_CREATION);
+    }
+    if (e.key == "e"){
+        setMouseMode(mouseModes.PLACING_ELEMENT); 
+        setElementPlacementType(0);
+    }
+    if (e.key == "r"){
+        setMouseMode(mouseModes.PLACING_ELEMENT); 
+        setElementPlacementType(1);
+    }
+    if (e.key == "a"){
+        setMouseMode(mouseModes.PLACING_ELEMENT); 
+        setElementPlacementType(2);
     }
 });
 
@@ -527,11 +519,6 @@ window.addEventListener("resize", () => {
     updateContainerBounds();
     drawRulerBars();
 });
-
-window.onfocus = function()
-{
-    altPressed=false;
-}
 
 //------------------------------------=======############==========----------------------------------------
 //                              Coordinate-Screen Position Conversion
@@ -629,9 +616,6 @@ function mdown(event)
         startX = event.clientX;
         startY = event.clientY;
     }
-    // Used when clicking on a line between two elements.
-    updateSelectedLine(determineLineSelect(event.clientX, event.clientY));
-
 }
 
 function ddown(event)
@@ -652,7 +636,7 @@ function ddown(event)
             var element = data[findIndex(data, event.currentTarget.id)];
             if (element != null && !context.includes(element) || !ctrlPressed)
             {
-                updateSelection(element);
+                updateSelection(element, null, null);
             }
             break;
     
@@ -669,7 +653,7 @@ function mouseMode_onMouseUp(event)
             var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
             var entityType = constructElementOfType(elementTypeSelected);
             var newElement = {
-              name: entityType.name,
+                name: entityType.name,
                 x: mp.x - (entityType.data.width * 0.5),
                 y: mp.y - (entityType.data.height * 0.5),
                 width: entityType.data.width,
@@ -678,18 +662,24 @@ function mouseMode_onMouseUp(event)
                 id: makeRandomID()
             };
 
-            //Splicing array so that ghost element continues to be the last index of the array.
-            data.splice(data.length-2, 0, newElement);
+            data.push(newElement);
             stateMachine.save(StateChangeFactory.ElementCreated(newElement));
 
-            showdata();
+            showdata()
             break;
 
         case mouseModes.EDGE_CREATION:
             if (context.length > 1)
             {
-                // TODO: Change the static variable to make it possible to create different lines.
-                addLine(context[0], context[1], "Normal");
+                var newLine = { 
+                    id: makeRandomID(), 
+                    fromID: context[0].id, 
+                    toID: context[1].id, 
+                    kind: "Normal" 
+                };
+
+                lines.push(newLine);
+                stateMachine.save(StateChangeFactory.LineAdded(newLine));
 
                 context = [];
                 updatepos(0,0);
@@ -732,7 +722,7 @@ function mup(event)
                     }
                     else if (mouseMode == mouseModes.POINTER)
                     {
-                        updateSelection(null);
+                        updateSelection(null, undefined, undefined);
                     }
                 }
             }
@@ -782,119 +772,10 @@ function mup(event)
     deltaExceeded = false;
 }
 
-function determineLineSelect(mouseX, mouseY)
-{
-    // This func is used when determining which line is clicked on.
-
-    // TODO: Add functionality to make sure we are only getting LINES from svgbacklayer in the future !!!!!.
-
-    var allLines = document.getElementById("svgbacklayer").children;
-    var cMouse_XY = {x: mouseX, y: mouseY}; // Current mouse XY
-    var currentline = {};
-    var lineData = {};
-    var lineCoeffs = {};
-    var highestX, lowestX, highestY , lowestY;
-    var lineWasHit = false; 
-
-    // Position and radius of the circle hitbox that is used when 
-    var circleHitBox = {
-        pos_x: cMouse_XY.x, // Mouse pos X.
-        pos_y: cMouse_XY.y, // Mouse pos Y.
-        radius: 10 // This will determine the error margin, "how far away from the line we can click and still select it". Higer val = higher margin.
-    }
-    
-    for(var i = 0; i < allLines.length; i++)
-    {
-        // Make sure that "double lines" have the same id.
-        allLines[i].id = allLines[i].id.replace(/-1/gi, '');
-        allLines[i].id = allLines[i].id.replace(/-2/gi, '');
-  
-        // Get all X and Y -coords for current line in iteration.
-        currentline = {
-            x1: allLines[i].getAttribute("x1"),
-            x2: allLines[i].getAttribute("x2"),
-            y1: allLines[i].getAttribute("y1"),
-            y2: allLines[i].getAttribute("y2")
-        };
-
-        // Used later to make sure the current mouse-position is in the span of a line.
-        highestX = Math.max(currentline.x1, currentline.x2);
-        lowestX = Math.min(currentline.x1, currentline.x2);
-        highestY = Math.max(currentline.y1, currentline.y2);
-        lowestY = Math.min(currentline.y1, currentline.y2);
-        lineData = {
-            hX: highestX,
-            lX: lowestX,
-            hY: highestY,
-            lY: lowestY
-        }
-        
-        // Coefficients of the general equation of the current line.
-        lineCoeffs = {
-            a: (currentline.y1 - currentline.y2),
-            b: (currentline.x2 - currentline.x1),
-            c: ((currentline.x1 - currentline.x2)*currentline.y1 + (currentline.y2-currentline.y1)*currentline.x1)
-        }
-        
-        // Determines if a line was clicked
-        lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
-        
-        // --- Used when debugging ---
-        // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
-        //document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke="black" stroke-width="3" fill="red" /> '
-        // ---------------------------
-
-        if(lineWasHit == true)
-        {
-            // Return the current line that registered as a "hit".
-            return lines.filter(function(line){
-                return line.id == allLines[i].id;
-            })[0];
-            //return allLines[i];
-        }
-    }
-    return null;
-}
-
-function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
-{
-    // Adding and subtracting with the circle radius to allow for bigger margin of error when clicking.
-    // Check if we are clicking withing the span.
-    if( (circle_x < (line_data.hX + circle_radius)) &&
-     (circle_x > (line_data.lX - circle_radius)) && 
-     (circle_y < (line_data.hY + circle_radius)) && 
-     (circle_y > (line_data.lY - circle_radius))
-    )
-    {
-        // Distance between line and circle center.
-        var distance = (Math.abs(a*circle_x + b*circle_y + c)) / Math.sqrt(a*a + b*b);
-    
-        // Check if circle radius >= distance. (If so is the case, the line is intersecting the circle)
-        if(circle_radius >= distance)
-        {
-            return true;
-        }
-    }
-    else
-    {
-        // console.log("NO LINE WAS SELECTED");
-        return false;
-    }
-}
-
 function mouseMode_onMouseMove(event)
 {
      switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
-            var lastElement = data[data.length-1];
-            var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
-            
-            lastElement.x = cords.x - (lastElement.width /2);
-            lastElement.y = cords.y - (lastElement.height /2);
-            
-            showdata();
-            
-            break;
         case mouseModes.EDGE_CREATION:
         case mouseModes.POINTER: // do nothing
             break;
@@ -923,9 +804,6 @@ function mmoving(event)
 
             // Update scroll position
             updatepos(null, null);
-
-            // Update the ruler
-            drawRulerBars();
 
             // Remember that mouse has moved out of starting bounds
             if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
@@ -1133,12 +1011,10 @@ function setMouseMode(mode)
     }
 
     // Mode-specific activation/deactivation
-    onMouseModeDisabled();
-    previousMouseMode = mouseMode;
+    onMouseModeDisabled(mouseMode);
     mouseMode = mode;
     setCursorStyles(mode);
-    onMouseModeEnabled();
-    handleMouseModeChange();
+    onMouseModeEnabled(mouseMode);
 }
 
 function setCursorStyles(cursorMode = 0)
@@ -1163,27 +1039,7 @@ function setCursorStyles(cursorMode = 0)
     }
 }
 
-
-function handleMouseModeChange()
-{
-    if(previousMouseMode == mouseModes.PLACING_ELEMENT){
-        data.pop();
-        showdata();
-    }
-    // X is set to -1000 because we want to "hide" the spawning position to make it smoother.
-    if(mouseMode == mouseModes.PLACING_ELEMENT){
-        if(elementTypeSelected == elementTypes.ENTITY){
-            data.push({ name: "Entity", x: -1000, y: 0, width: 200, height: 50, kind: "EREntity", id: makeRandomID(), isGhost: true });
-        } else if (elementTypeSelected == elementTypes.ATTRIBUTE){
-            data.push({ name: "Attribute", x: -1000, y: 0, width: 90, height: 45, kind: "ERAttr", id: makeRandomID(), isGhost: true});
-        } else if (elementTypeSelected == elementTypes.RELATION){
-            data.push({ name: "Relation", x: -1000, y: 0, width: 60, height: 60, kind: "ERRelation", id: makeRandomID(), isGhost: true});
-        }
-        showdata();
-    }
-}
-
-function onMouseModeEnabled()
+function onMouseModeEnabled(mode)
 {
     switch (mouseMode) {
         case mouseModes.POINTER:
@@ -1197,7 +1053,7 @@ function onMouseModeEnabled()
     }
 }
 
-function onMouseModeDisabled()
+function onMouseModeDisabled(mode)
 {
     switch (mouseMode) {
         case mouseModes.POINTER:
@@ -1486,61 +1342,25 @@ function showdata()
 {
     updateContainerBounds();
 
+    canvas = document.getElementById('canvasOverlay');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx = canvas.getContext('2d');
+
     var str = "";
     var courses = [];
 
     // Iterate over programs
     for (var i = 0; i < data.length; i++)
     {
-        str += drawElement(data[i])
+        str += drawElement(data[i], ctx)
     }
 
     container.innerHTML = str;
     updatepos(null, null);
 }
-//-------------------------------------------------------------------------------------------------
-// addLine - Adds an new line if the requirements and rules are achieved
-//-------------------------------------------------------------------------------------------------
-function addLine(fromElement, toElement, kind){
-    // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
-    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ){
 
-        // Filter the existing lines and gets the number of existing lines
-        var numOfExistingLines = lines.filter(function (line) {
-            return (fromElement.id === line.fromID &&
-                    toElement.id === line.toID ||
-                    fromElement.id === line.toID &&
-                    toElement.id === line.fromID)
-                    }).length;
-
-        // Define a boolean for special case that relation and entity can have 2 lines
-        var specialCase = (fromElement.kind === "ERRelation" &&
-                            toElement.kind === "EREntity" ||
-                            fromElement.kind === "EREntity" &&
-                            toElement.kind === "ERRelation");
-
-        // If there is no existing lines or is a special case
-        if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)){
-
-            // Adds the line
-            var newLine = { 
-                  id: makeRandomID(),
-                  fromID: fromElement.id,
-                  toID: toElement.id,
-                  kind: kind 
-            };
-
-            lines.push(newLine);
-            stateMachine.save(StateChangeFactory.LineAdded(newLine));
-        }else {
-            // TODO: Display an error-message to the user (Maximal amount of lines between elements)
-        }
-    }else {
-        // TODO: Display an error-message to the user (Cant make lines between those elements)
-    }
-}
-
-function drawElement(element)
+function drawElement(element, canvasContext)
 {
     var str = "";
 
@@ -1551,17 +1371,12 @@ function drawElement(element)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-
-    canvas = document.getElementById('canvasOverlay');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    canvasContext = canvas.getContext('2d');
-
+    
     // Caclulate font width using some canvas magic
-    var font = canvasContext.font;
+    var font = ctx.font;
     font = `${texth}px ${font.split('px')[1]}`;
-    canvasContext.font = font;
-    var textWidth = canvasContext.measureText(element.name).width;
+    ctx.font = font;
+    var textWidth = ctx.measureText(element.name).width;
     
     // If calculated size is larger than element width
     const margin = 10;
@@ -1576,34 +1391,19 @@ function drawElement(element)
 						top:0px;
 						width:${boxw}px;
 						height:${boxh}px;
-						font-size:${texth}px;`;
-                        if(element.isGhost){
-                           str += `
-                                pointer-events: none;
-                                opacity: 0.5;
-                           `;
-                        }
-				str += `'>`;
+						font-size:${texth}px;
+				'>`;
     str += `<svg width='${boxw}' height='${boxh}' >`;
 
     // Create svg 
     if (element.kind == "EREntity")
     {
-        var weak = "";
 
-        if(element.state == "weak")
-        {
-            weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
-            stroke-width='${linew}' stroke='black' fill='#ffccdc' />
-            <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
-            `;         
-        }
-        
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' 
                    stroke-width='${linew}' stroke='black' fill='#ffccdc' />
-                   ${weak}
                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                    `;
+
     }
     else if (element.kind == "ERAttr")
     {
@@ -1634,13 +1434,8 @@ function drawElement(element)
                     
                     ${multi}
 
-                    <text x='${xAnchor}' y='${hboxh}' `;
-
-        if(element.state == "key"){
-            str += `class='underline'`;
-        }    
-            str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-            `;
+                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+                    `;
     }
     else if (element.kind == "ERRelation")
     {
@@ -1668,46 +1463,8 @@ function drawElement(element)
 //-------------------------------------------------------------------------------------------------
 // updateselection - Update context according to selection parameters or clicked element
 //-------------------------------------------------------------------------------------------------
-function updateSelectedLine(selectedLine)
-{
-    // This function works almost exaclty as updateSelection but for lines instead.
 
-    // If CTRL is pressed and an element is selected
-    if(selectedLine != null && ctrlPressed && !contextLine.includes(selectedLine))
-    {
-        contextLine.push(selectedLine);
-    }
-    // If ALT is pressed while selecting a line -> deselects that line
-    else if(selectedLine != null && altPressed)
-    {
-        if (contextLine.includes(selectedLine))
-        {
-            contextLine = contextLine.filter(function (line)
-            {
-                return line !== selectedLine;
-            });
-        }
-    }
-    // If CTRL is not pressed and a element has been selected.
-    else if (selectedLine != null)
-    {
-        // Element not already in context
-        if (!contextLine.includes(selectedLine) && contextLine.length < 1)
-        {
-            contextLine.push(selectedLine);
-        } else
-        {
-            contextLine = [];
-            contextLine.push(selectedLine);
-        }
-    } else
-    {
-        contextLine = [];
-    }
-    
-}
-
-function updateSelection(ctxelement)
+function updateSelection(ctxelement, x, y)
 {
     // If CTRL is pressed and an element is selected
     if (ctrlPressed && ctxelement != null)
@@ -1747,9 +1504,6 @@ function updateSelection(ctxelement)
     {
         context = [];
     }
-
-    // Generate the properties field in options-pane
-    generateContextProperties();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1759,6 +1513,8 @@ function updateSelection(ctxelement)
 function updatepos(deltaX, deltaY)
 {
     exportElementDataToCSS();
+
+    generateContextProperties();
 
     // Update svg backlayer -- place everyhing to draw OVER elements here
     var str = "";
@@ -1886,10 +1642,6 @@ function generateContextProperties()
 
         //Creates drop down for changing state of ER elements
         var value;
-        var selected = context[0].state;
-        if(selected == undefined){
-            selected = "normal"
-        }
         if(element.kind=="ERAttr"){
             value = Object.values(attrState);
         }
@@ -1901,12 +1653,7 @@ function generateContextProperties()
         }
         str += '<select id="propertySelect">';
             for (i = 0; i < value.length; i++) {
-                if (selected != value[i]) {
-                    str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
-                }
-                else if(selected == value[i]){
-                    str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
-                }
+                str += '<option value='+value[i]+'>'+ value[i] +'</option>';
             }
         str += '</select>'; 
         str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
@@ -1938,9 +1685,13 @@ function exportElementDataToCSS()
         {
             // If the element was clicked and our mouse movement is not null
             var inContext = deltaX != null && findIndex(context, element.id) != -1;
+            var notBoxSelection = mouseMode != mouseModes.BOX_SELECTION;
+            var clickedElement = pointerState == pointerStates.CLICKED_ELEMENT;
+            var clickedNode = pointerState == pointerStates.CLICKED_NODE;
+            var clickedContainer = pointerState == pointerStates.CLICKED_CONTAINER;
 
             // Handle positioning
-            if (inContext && movingObject)
+            if (inContext && !clickedContainer && (notBoxSelection || clickedElement) && !clickedNode)
             {
                 // Re-calculate drawing position for our selected element, then apply the mouse movement
                 elementDiv.style.left = (Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) - deltaX) + "px";
@@ -2151,12 +1902,7 @@ function redrawArrows(str)
     {
         var currentline = lines[i];
         var felem, telem, dx, dy;
-        var lineColor = '#f44';
-        if(contextLine.includes(currentline))
-        {
-            lineColor = '#00ff00';
-        }
-        
+
         felem = data[findIndex(data, currentline.fromID)];
         telem = data[findIndex(data, currentline.toID)];
 
@@ -2191,7 +1937,7 @@ function redrawArrows(str)
 
         if (currentline.kind == "Normal")
         {
-            str += `<line id='${currentline.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+            str += `<line x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='#f44' stroke-width='${strokewidth}' />`;
         } else if (currentline.kind == "Double")
         {
             // We mirror the line vector
@@ -2201,13 +1947,13 @@ function redrawArrows(str)
             dy = dy / len;
             dx = dx / len;
             var cstmOffSet = 1.4;
-            str += `<line id='${currentline.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
-            str += `<line id='${currentline.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+            str += `<line x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='#f44' stroke-width='${strokewidth}' />`;
+            str += `<line x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='#f44' stroke-width='${strokewidth}' />`;
         }
 
     }
 
-
+    
     return str;
 }
 
