@@ -91,6 +91,7 @@ var pointerState = pointerStates.DEFAULT;
 var movingObject = false;
 var movingContainer = false;
 
+var randomidArray = []; // array for checking randomID
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
 //-------------------------------------------------------------------------------------------------
@@ -100,11 +101,25 @@ function makeRandomID()
     var str = "";
     var characters = 'ABCDEF0123456789';
     var charactersLength = characters.length;
-    for (var i = 0; i < 6; i++)
-    {
-        str += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return str;
+    while(true){
+        for (var i = 0; i < 6; i++){
+            str += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
+            randomidArray.push(str);
+        }
+        else{
+            var check = randomidArray.includes(str); //if check is true the id already exists
+            if(check == true){
+                str = "";
+            }
+            else{
+                randomidArray.push(str);
+                return str;
+            }
+        }
+ 
+}
 }
 
 // Example entities and attributes
@@ -157,6 +172,9 @@ var data = [
     { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
 ];
 
+// Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
+var ghostElement = null;
+
 var lines = [
     { id: makeRandomID(), fromID: PersonID, toID: IDID, kind: "Normal" },
     { id: makeRandomID(), fromID: PersonID, toID: NameID, kind: "Normal" },
@@ -181,7 +199,11 @@ document.addEventListener('keydown', function (e)
 
         if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
         if (e.key == "Alt" && altPressed !== true) altPressed = true;
-        if (e.key == "Delete" && context.length > 0)  removeElements(context);
+        if (e.key == "Delete" && (context.length > 0 || contextLine.length > 0)) 
+        {
+            removeElements(context); 
+            removeLines(contextLine);
+        }
         if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
         if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
         if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
@@ -195,7 +217,11 @@ document.addEventListener('keydown', function (e)
             pointerState = pointerStates.DEFAULT;
             showdata();
         }
-        if (e.key == "Backspace" && context.length > 0 && !propFieldState) removeElements(context);
+        if (e.key == "Backspace" && (context.length > 0 || contextLine.length > 0) && !propFieldState)
+        {
+            removeElements(context); 
+            removeLines(contextLine);
+        }
     }
 });
 
@@ -204,6 +230,7 @@ document.addEventListener('keyup', function (e)
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase()) ) {
         /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
+        //  TODO : Switch cases?
         if (e.key == "Control") ctrlPressed = false;
         if (e.key == "Alt") altPressed = false;
         if (e.key == "Meta") ctrlPressed = false;
@@ -371,26 +398,17 @@ function ddown(event)
 
 function mouseMode_onMouseUp(event)
 {
-    console.log("mouseup");
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
-            var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
-            var entityType = constructElementOfType(elementTypeSelected);
-            //Splicing array so that ghost element continues to be the last index of the array.
-            data.splice(data.length-2, 0, {
-                name: entityType.name,
-                x: mp.x - (entityType.data.width * 0.5),
-                y: mp.y - (entityType.data.height * 0.5),
-                width: entityType.data.width,
-                height: entityType.data.height,
-                kind: entityType.data.kind,
-                id: makeRandomID()
-            });
-            showdata()
+            if (ghostElement)
+            {
+                data.push(ghostElement);
+                makeGhost();
+                showdata();
+            }
             break;
 
         case mouseModes.EDGE_CREATION:
-            console.log(context.length, mouseMode);
             if (context.length > 1)
             {
                 // TODO: Change the static variable to make it possible to create different lines.
@@ -398,7 +416,6 @@ function mouseMode_onMouseUp(event)
                 context = [];
                 updatepos(0,0);
             }
-
             break;
 
         case mouseModes.BOX_SELECTION:
@@ -576,7 +593,6 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
     }
     else
     {
-        // console.log("NO LINE WAS SELECTED");
         return false;
     }
 }
@@ -585,15 +601,15 @@ function mouseMode_onMouseMove(event)
 {
      switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
-            var lastElement = data[data.length-1];
-            var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
-            
-            lastElement.x = cords.x - (lastElement.width /2);
-            lastElement.y = cords.y - (lastElement.height /2);
-            
-            showdata();
-            
+            if (ghostElement)
+            {
+                var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
+                ghostElement.x = cords.x - (ghostElement.width / 2);
+                ghostElement.y = cords.y - (ghostElement.height / 2);
+                showdata();
+            }
             break;
+
         case mouseModes.EDGE_CREATION:
         case mouseModes.POINTER: // do nothing
             break;
@@ -753,6 +769,24 @@ function rectsIntersect (left, right)
     );
 }
 
+function makeGhost ()
+{
+    var entityType = constructElementOfType(elementTypeSelected);
+    var typeNames = Object.getOwnPropertyNames(elementTypes);
+
+    ghostElement = {
+        name: typeNames[elementTypeSelected],
+        x: -1000,
+        y: 0,
+        width: entityType.data.width,
+        height: entityType.data.height,
+        kind: entityType.data.kind,
+        id: makeRandomID()
+    };
+
+    showdata();
+}
+
 //------------------------------------=======############==========----------------------------------------
 //                                           Mouse Modes
 //------------------------------------=======############==========----------------------------------------
@@ -784,11 +818,9 @@ function setMouseMode(mode)
 
     // Mode-specific activation/deactivation
     onMouseModeDisabled();
-    previousMouseMode = mouseMode;
     mouseMode = mode;
     setCursorStyles(mode);
     onMouseModeEnabled();
-    handleMouseModeChange();
 }
 
 function setCursorStyles(cursorMode = 0)
@@ -813,32 +845,20 @@ function setCursorStyles(cursorMode = 0)
     }
 }
 
-
-function handleMouseModeChange()
-{
-    if(previousMouseMode == mouseModes.PLACING_ELEMENT){
-        data.pop();
-        showdata();
-    }
-    // X is set to -1000 because we want to "hide" the spawning position to make it smoother.
-    if(mouseMode == mouseModes.PLACING_ELEMENT){
-        if(elementTypeSelected == elementTypes.ENTITY){
-            data.push({ name: "Entity", x: -1000, y: 0, width: 200, height: 50, kind: "EREntity", id: makeRandomID(), isGhost: true });
-        } else if (elementTypeSelected == elementTypes.ATTRIBUTE){
-            data.push({ name: "Attribute", x: -1000, y: 0, width: 90, height: 45, kind: "ERAttr", id: makeRandomID(), isGhost: true});
-        } else if (elementTypeSelected == elementTypes.RELATION){
-            data.push({ name: "Relation", x: -1000, y: 0, width: 60, height: 60, kind: "ERRelation", id: makeRandomID(), isGhost: true});
-        }
-        showdata();
-    }
-}
-
 function onMouseModeEnabled()
 {
     switch (mouseMode) {
         case mouseModes.POINTER:
+            break;
+
         case mouseModes.PLACING_ELEMENT:
+            makeGhost();
+            
+            break;
+
         case mouseModes.EDGE_CREATION:  
+            break;
+
         case mouseModes.BOX_SELECTION:
             break;
 
@@ -851,8 +871,16 @@ function onMouseModeDisabled()
 {
     switch (mouseMode) {
         case mouseModes.POINTER:
+            break;
+
         case mouseModes.PLACING_ELEMENT:
+            ghostElement = null;
+            showdata();
+            break;
+
         case mouseModes.EDGE_CREATION:
+            break;
+
         case mouseModes.BOX_SELECTION:
             break;
     
@@ -1142,7 +1170,12 @@ function showdata()
     // Iterate over programs
     for (var i = 0; i < data.length; i++)
     {
-        str += drawElement(data[i])
+        str += drawElement(data[i]);
+    }
+
+    if (ghostElement)
+    {
+        str += drawElement(ghostElement, true);
     }
 
     container.innerHTML = str;
@@ -1180,15 +1213,14 @@ function addLine(fromElement, toElement, kind){
                 toID: toElement.id,
                 kind: kind
             });
-        }else {
-            // TODO: Display an error-message to the user (Maximal amount of lines between elements)
+            displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
         }
     }else {
-        // TODO: Display an error-message to the user (Cant make lines between those elements)
+        displayMessage("error", "Not possible to draw a line between two: " + context[0].kind);
     }
 }
 
-function drawElement(element)
+function drawElement(element, ghosted = false)
 {
     var str = "";
 
@@ -1225,13 +1257,14 @@ function drawElement(element)
 						width:${boxw}px;
 						height:${boxh}px;
 						font-size:${texth}px;`;
-                        if(element.isGhost){
-                           str += `
-                                pointer-events: none;
-                                opacity: 0.5;
-                           `;
-                        }
-				str += `'>`;
+    if (ghosted)
+    {
+        str += `
+            pointer-events: none;
+            opacity: 0.5;
+        `;
+    }
+    str += `'>`;
     str += `<svg width='${boxw}' height='${boxh}' >`;
 
     // Create svg 
@@ -1345,14 +1378,17 @@ function updateSelectedLine(selectedLine)
             contextLine.push(selectedLine);
         } else
         {
-            contextLine = [];
+            if(mouseMode != mouseModes.POINTER)
+            {
+                contextLine = [];
+            }
             contextLine.push(selectedLine);
         }
-    } else
+
+    } else if (!altPressed && !ctrlPressed)
     {
         contextLine = [];
     }
-    
 }
 
 function updateSelection(ctxelement)
@@ -1406,7 +1442,7 @@ function updateSelection(ctxelement)
 
 function updatepos(deltaX, deltaY)
 {
-    exportElementDataToCSS();
+    updateCSSForAllElements();
 
     // Update svg backlayer -- place everyhing to draw OVER elements here
     var str = "";
@@ -1555,14 +1591,27 @@ function generateContextProperties()
         str += "<p>Pick only ONE element!</p>";
     }
 
-
     propSet.innerHTML = str;
-
 }
 
-function exportElementDataToCSS()
+function updateCSSForAllElements()
 {
-    // Update positions of all elements based on the zoom level and view space coordinate
+    function updateElementDivCSS(elementData, divObject, useDelta = false)
+    {
+        var left = Math.round((elementData.x * zoomfact) + (scrollx * (1.0 / zoomfact))),
+            top = Math.round((elementData.y * zoomfact) + (scrolly * (1.0 / zoomfact)));
+
+        if (useDelta)
+        {
+            left -= deltaX;
+            top -= deltaY;
+        }
+
+        divObject.style.left = left + "px";
+        divObject.style.top = top + "px";
+    }
+
+    // Update positions of all data elements based on the zoom level and view space coordinate
     for (var i = 0; i < data.length; i++)
     {
         // Element data from the array
@@ -1576,26 +1625,28 @@ function exportElementDataToCSS()
         {
             // If the element was clicked and our mouse movement is not null
             var inContext = deltaX != null && findIndex(context, element.id) != -1;
+            var useDelta = (inContext && movingObject);
 
-            // Handle positioning
-            if (inContext && movingObject)
-            {
-                // Re-calculate drawing position for our selected element, then apply the mouse movement
-                elementDiv.style.left = (Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) - deltaX) + "px";
-                elementDiv.style.top = (Math.round((element.y * zoomfact) + (scrolly * (1.0 / zoomfact))) - deltaY) + "px";
-            }
-            else
-            {
-                // Re-calculate drawing position for other elements if there's a change in zoom level
-                elementDiv.style.left = Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) + "px";
-                elementDiv.style.top = Math.round((element.y * zoomfact) + (scrolly * (1.0 / zoomfact))) + "px";
-            }
+            updateElementDivCSS(element, elementDiv, useDelta);
 
             // Handle colouring
             elementDiv.children[0].children[0].style.fill = inContext ? "#ff66b3" : "#ffccdc";
         }
     }
+
+    // Also update ghost if there is one
+    if (ghostElement)
+    {
+        var ghostDiv = document.getElementById(ghostElement.id);
+        
+        if (ghostDiv)
+        {
+            updateElementDivCSS(ghostElement, ghostDiv)
+        }
+    }
 }
+
+
 
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
@@ -1942,7 +1993,45 @@ function removeElements(elementArray){
     redrawArrows();
     showdata();
 }
+//Function to remove selected lines
+function removeLines(linesArray)
+{
+    for(var i = 0; i < linesArray.length; i++){
 
+        //Remove line
+        lines=lines.filter(function(line) {
+            return line.id != linesArray[i].id;
+        });
+    }
+    contextLine = [];
+    redrawArrows();
+    showdata();
+}
+
+function displayMessage(type, message)
+{
+    var messageEl = document.getElementById("diagram-message") // Get div for error-messages
+
+    switch (type) {
+        case "error":
+            messageEl.style.background = "rgb(255, 153, 153)";
+            break;
+        case "success":
+            messageEl.style.background = "rgb(153, 255, 153)";
+            break
+        default:
+            messageEl.style.background = "rgb(255, 153, 153)";
+            break;
+    }
+
+    messageEl.innerHTML = "<span>" + message + "</span>";
+    messageEl.style.display = "block";
+
+    //Set timeout to remove the message
+    setTimeout(function (){
+        messageEl.style.display = "none";
+    }, 2000);
+}
 //------------------------------------=======############==========----------------------------------------
 //                                    Default data display stuff
 //------------------------------------=======############==========----------------------------------------

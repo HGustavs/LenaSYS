@@ -481,6 +481,10 @@
         </fieldset>
     </div>
 
+    <!-- Message prompt -->
+    <div id="diagram-message" onclick="this.style.display = 'none'">
+        <span>This is a error. :)</span>
+    </div>
     <!-- Diagram drawing system canvas. -->
     <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
      <!-- One svg layer for background stuff and one for foreground stuff -->
