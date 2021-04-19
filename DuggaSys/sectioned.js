@@ -683,8 +683,8 @@ function returnedSection(data) {
 
     str += "<div id='Sectionlistc'>";
 
-    str += "<div id='statisticsSwimlanes' style='height: 200px; overflow: auto; border: 2px solid darkgray; background-color: var(--color-sectioned-table-lo);'>";
-		str += "<svg id='swimlaneSVG' width='800px' style='margin: 10px; margin-top: 0px;' xmlns='http://www.w3.org/2000/svg'></svg>";
+    str += "<div id='statisticsSwimlanes'>";
+		str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
 		str += "</div>";
 
 
