@@ -1135,23 +1135,18 @@ function returnedSection(data) {
   if(versionname){
     document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
 
+    drawSwimlanes(); // Create the swimlane used in the statistics section.
+
+    // Change the scroll position to where the user was last time.
+    $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
+
+    // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
+    replaceDefualtLink();
+    
 
 
-
-  drawPieChart(); // Create the pie chart used in the statistics section.
-  fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section
-  drawSwimlanes(); // Create the swimlane used in the statistics section.
-
-  // Change the scroll position to where the user was last time.
-  $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
-
-  // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
-  replaceDefualtLink();
-  
-
-
-  addClasses();
-  showMOTD();
+    addClasses();
+    showMOTD();
   }
 }
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
@@ -1273,174 +1268,10 @@ function returnedHighscore(data) {
 }
 
 
-function svgPie(cx, cy, radius, startpct, endpct, fill, stroke) {
-  x1 = cx + (radius * Math.cos(6.28 * startpct));
-  y1 = cy + (radius * Math.sin(6.28 * startpct));
-  x2 = cx + (radius * Math.cos(6.28 * endpct));
-  y2 = cy + (radius * Math.sin(6.28 * endpct));
-  //console.log(endpct-startpct);
-  if (endpct - startpct > 0.5) {
-    var halfsies = (endpct - startpct) * 0.5;
-    var p1 = svgPie(cx, cy, radius, startpct, startpct + halfsies + 0.003, fill, stroke);
-    var p2 = svgPie(cx, cy, radius, startpct + halfsies, endpct, fill, stroke);
-    return p1 + p2;
-  } else {
-    return "<path d='M" + cx + "," + cy + " L" + x1 + "," + y1 + " A" + radius + ","
-    + radius + " 0 0,1 " + x2 + "," + y2 + " z' fill='" + fill + "' />";
-  }
-}
 
 //----------------------------------------------------------------------------------
-// drawPieChart: Statistic-sections functions, for drawing out all the statistics (pie chart and swimlanes) and upcomming deadlines.
+// drawSwimlanes: Draws schedule for deaadlines on all assignments is course
 //----------------------------------------------------------------------------------
-function drawPieChart() {
-
-  var totalQuizes = 0;
-  var passedQuizes = 0;
-  var notGradedQuizes = 0;
-  var failedQuizes = 0;
-  var notSubmittedQuizes = 0;
-  // Calculate total quizes.
-  for (var i = 0; i < retdata['entries'].length; i++) {
-    if (retdata['entries'][i].kind == "3") totalQuizes++;
-  }
-
-  // Calculate passed, failed and not graded quizes.
-  for (var i = 0; i < retdata['results'].length; i++) {
-    // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
-    if (retdata['results'][i]['useranswer'] != null) {
-      if (retdata['results'][i].grade > 1) {
-        passedQuizes++;
-      } else if (retdata['results'][i].grade == 1 && retdata['results'][i].submitted
-      < retdata['results'][i].marked) {
-        failedQuizes++;
-      } else {
-        notGradedQuizes++;
-      }
-    }
-  }
-
-  // if a course has no tests, the chart will show that the student has 100% not submitted tests.
-  if (totalQuizes == 0) {
-    totalQuizes++;
-    notSubmittedQuizes++;
-  }
-
-  // PCT = Percentage
-  var notGradedPCT = (notGradedQuizes / totalQuizes) - 0.25;
-  var passedPCT = (passedQuizes / totalQuizes);
-  var failedPCT = (failedQuizes / totalQuizes);
-  var notSubmittedPCT = (totalQuizes - notGradedQuizes - passedQuizes - failedQuizes) / totalQuizes;
-
-  // Slice 1 from 0 to notGraded ??
-  var str = "";
-  str += "<circle cx='150' cy='100' r='90' fill='#BDBDBD' />";
-  str += svgPie(150, 100, 90, -0.25, notGradedPCT, "#FFEB3B", "#000");
-  str += svgPie(150, 100, 90, notGradedPCT, notGradedPCT + passedPCT, "#00E676", "#000");
-  str += svgPie(150, 100, 90, notGradedPCT + passedPCT, notGradedPCT + passedPCT +
-  failedPCT, "#E53935", "#000");
-
-  str += "<rect x='36' y='200' width='11' height='11' fill='#00E676' />";
-  str += "<rect x='36' y='220' width='11' height='11' fill='#E53935' />";
-  str += "<rect x='166' y='200' width='11' height='11' fill='#FFEB3B' />";
-  str += "<rect x='166' y='220' width='11' height='11' fill='#BDBDBD' />";
-
-  str += `<text x='55' y='211' font-family='Arial' font-size='12px' fill='black'>
-  Passed: (${Math.round(passedPCT * 100)}%)</text>`;
-  str += `<text x='55' y='231' font-family='Arial' font-size='12px' fill='black'>
-  Failed: (${Math.round(failedPCT * 100)}%)</text>`;
-  str += `<text x='185' y='211' font-family='Arial' font-size='12px' fill='black'>
-  Pending: (${Math.round((notGradedPCT + 0.25) * 100)}%)</text>`;
-  str += `<text x='185' y='231' font-family='Arial' font-size='12px' fill='black'>
-  N/A: (${Math.round(notSubmittedPCT * 100)}%)</text>`;
-
-  document.getElementById("pieChartSVG").innerHTML = str;
-  var passed = Math.round(passedPCT * 100);
-  var failed = Math.round(failedPCT * 100);
-  var pending = Math.round((notGradedPCT + 0.25) * 100);
-  courseCompletion(passed, failed, pending);
-}
-
-function courseCompletion(passed, failed, pending){
-  var cid = retdata['courseid'];
-  var coursevers = retdata['coursevers'];
-  var uid, uname = $("#userName").html();
-
-  $.ajax({
-    url: "../Shared/retrieveUserid.php",
-    data: {uname:uname},
-    type: "GET",
-    success: function(data){
-      var parsed_data = JSON.parse(data);
-      uid = parsed_data.uid;
-      $.ajax({
-        url: "../Shared/retrieveuser_course.php",
-        data: {uid:uid, cid:cid, vers:coursevers, passed:passed, failed:failed, pending:pending},
-        type: "POST",
-        success: function(data){
-        }
-      });
-    },
-    error:function(){
-      console.log("*******Error*******");
-    }
-  });
-
-
-}
-//----------------------------------------------------------------------------------
-// fixDeadlineInfoBoxesText: Makes an on-screen table containing deadlines
-//----------------------------------------------------------------------------------
-
-function fixDeadlineInfoBoxesText() {
-  var closestDeadlineArray = [];
-  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-  var str = "<tr><th style='padding:4px;text-align:left;'>Test</th><th style='padding:4px;width:60px;text-align:left;'>Release</th><th style='padding:4px;width:60px;text-align:left;'>Deadline</th></tr>";
-
-  var deadlineEntries = [];
-  var current = new Date();
-  for (var i = 0; i < retdata['entries'].length; i++) {
-    if (retdata['entries'][i].kind == 3) {
-      var deadline = new Date(retdata['entries'][i].deadline);
-      var start = new Date(retdata['entries'][i].qstart);
-      //let deadlineDistance=datediff(deadline,current);
-      let deadlineDistance = (deadline - current) / (24 * 60 * 60 * 1000);
-      if (deadlineDistance > -7 && deadlineDistance < 14) {
-        deadlineEntries.push({
-          'deadline': deadline,
-          'start': start,
-          'text': retdata['entries'][i].entryname
-        });
-      }
-    }
-  }
-
-  deadlineEntries.sort(function (a, b) {
-    return a.deadline - b.deadline;
-  });
-
-  for (i = 0; i < deadlineEntries.length; i++) {
-    var entry = deadlineEntries[i];
-    if (entry.deadline < current) {
-      str += "<tr style='color:red;'>";
-    } else {
-      str += "<tr style='color:black;'>";
-    }
-    str += `<td style='padding:4px;'><div style='white-space:nowrap;text-overflow:ellipsis;overflow:hidden' title='${entry.text}'>${entry.text}</div></td>`;
-    str += `<td style='padding:4px;white-space:nowrap;'>${months[entry.start.getMonth()]}
-    ${entry.start.getDate()}</td>`;
-    str += `<td style='padding:4px;white-space:nowrap;'>${months[entry.deadline.getMonth()]}
-    ${entry.deadline.getDate()}</td>`;
-    str += "</tr>";
-  }
-
-  if (deadlineEntries.length == 0) { // if we have no deadlines, put this nice text instead
-    document.getElementById("deadlineList").innerHTML = "<tr><td>There are no near-term deadlines</td></tr>";
-  } else {
-    document.getElementById("deadlineList").innerHTML = str;
-  }
-}
 
 function drawSwimlanes() {
 
