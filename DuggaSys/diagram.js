@@ -420,6 +420,7 @@ function mouseMode_onMouseUp(event)
 
         case mouseModes.BOX_SELECTION:
             boxSelect_End();
+            generateContextProperties();
             break;
 
         case mouseModes.POINTER: // do nothing
