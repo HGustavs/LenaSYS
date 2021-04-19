@@ -1379,10 +1379,14 @@ function updateSelectedLine(selectedLine)
             contextLine.push(selectedLine);
         } else
         {
-            contextLine = [];
+            if(mouseMode != mouseModes.POINTER)
+            {
+                contextLine = [];
+            }
             contextLine.push(selectedLine);
         }
-    } else
+
+    } else if (!altPressed && !ctrlPressed)
     {
         contextLine = [];
     }
