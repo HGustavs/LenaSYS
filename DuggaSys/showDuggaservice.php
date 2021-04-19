@@ -56,6 +56,7 @@ $timeUsed;
 $stepsUsed;
 $duggafeedback="UNK";
 $variants=array();
+$variantsize;
 
 $savedvariant="UNK";
 $newvariant="UNK";
@@ -134,48 +135,6 @@ $demo=false;
 if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
 if($demo){
-	// We are not logged in - provide the first variant as demo.
-	$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-	$query->bindParam(':vid', $localStorageVariant);
-	$query->execute();
-	$result = $query->fetch();
-	$param=html_entity_decode($result['param']);
-	
-	/*
-	// We are not logged in - provide the first variant as demo.
-	$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-	$query->bindParam(':vid', $localStorageVariant);
-	$query->execute();
-	$result = $query->fetch();
-	$param=html_entity_decode($result['param']);	*/
-	//
-	// Get type of dugga
-	$query = $pdo->prepare("SELECT * FROM quiz WHERE id=:duggaid;");
-	$query->bindParam(':duggaid', $duggaid);
-	$result=$query->execute();
-	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"quizfile Querying Error!");
-	foreach($query->fetchAll() as $row) {
-		$duggainfo=$row;
-		$quizfile = $row['quizFile'];
-	}
-
-	// Retrieve all dugga variants
-	$firstvariant=-1;
-	$query = $pdo->prepare("SELECT vid,param,disabled FROM variant WHERE quizID=:duggaid;");
-	$query->bindParam(':duggaid', $duggaid);
-	$result=$query->execute();
-	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"variant Querying Error!");
-	$i=0;
-	foreach($query->fetchAll() as $row) {
-		if($row['disabled']==0) $firstvariant=$i;
-		$variants[$i]=array(
-			'vid' => $row['vid'],
-			'param' => $row['param'],
-			'disabled' => $row['disabled']
-		);
-		$i++;
-		$insertparam = true;
-	}
 	
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
@@ -217,9 +176,24 @@ if($demo){
 	}
 	foreach ($variants as $variant) {
 		if($variant["vid"] == $savedvariant){
-				$param=html_entity_decode($variant['param']);
+			$param=html_entity_decode($variant['param']);
 		}
 	}
+
+	if(isset($localStorageVariant)) {
+		// We are not logged in - provide the first variant as demo.
+		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+		$query->bindParam(':vid', $localStorageVariant);
+		$query->execute();
+		$result = $query->fetch();
+		$param=html_entity_decode($result['param']);
+	}
+
+	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
+	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
+	$query->execute();
+	$variantsize = $query->fetchColumn();
+	
 	
 } else if ($hr){
 //----------------------------------- OLD FUNCTIONALITY WHERE DUGGA IS SAVED TO DB WHEN VISITED -------------------------------------------
@@ -671,6 +645,7 @@ $array = array(
 		"userfeedback" => $userfeedback,
 		"feedbackquestion" => $feedbackquestion,
 		"variant" => $savedvariant,
+		"variantsize" => $variantsize,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 

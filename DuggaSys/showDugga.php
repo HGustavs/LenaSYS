@@ -251,7 +251,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			localStorage.setItem(localStorageName, newvariant);
 		}
 		variant = JSON.parse(localStorage.getItem(localStorageName));
-		setVariant(variant);
+		//setVariant(variant);
 	}
 </script>
 	<?php

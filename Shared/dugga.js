@@ -966,13 +966,25 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
+		if(localStorage.getItem("variantSize") == null) {
+			localStorage.setItem("variantSize", 100);
+		}
+		var newInt = +localStorage.getItem('variantSize');
+		if(querystring['did'] <= newInt) {
+			if(localStorage.getItem(querystring['did']) == null){
+				localStorage.setItem(querystring['did'], newvariant);
+			}
+		}
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorageVariant, 
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did']), 
 				dataType: "json",
 				success: function (data) {
-                    console.log(data);
+					returnedDugga(data);
+					var newvariant = data['variant'];
+					var variantsize = data['variantsize'];
+					localStorage.setItem("variantSize", variantsize);
                 }
 				//success: returnedDugga
 			});
