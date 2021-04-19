@@ -102,6 +102,13 @@
     display: none;
 }	
 
+.paneButtons{
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    padding: 5px;
+}
+
 .paneButtons:hover {
     cursor:pointer;
 }
