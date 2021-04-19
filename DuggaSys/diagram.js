@@ -91,6 +91,7 @@ var pointerState = pointerStates.DEFAULT;
 var movingObject = false;
 var movingContainer = false;
 
+var randomidArray = []; // array for checking randomID
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
 //-------------------------------------------------------------------------------------------------
@@ -100,11 +101,25 @@ function makeRandomID()
     var str = "";
     var characters = 'ABCDEF0123456789';
     var charactersLength = characters.length;
-    for (var i = 0; i < 6; i++)
-    {
-        str += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return str;
+    while(true){
+        for (var i = 0; i < 6; i++){
+            str += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
+            randomidArray.push(str);
+        }
+        else{
+            var check = randomidArray.includes(str); //if check is true the id already exists
+            if(check == true){
+                str = "";
+            }
+            else{
+                randomidArray.push(str);
+                return str;
+            }
+        }
+ 
+}
 }
 
 // Example entities and attributes
