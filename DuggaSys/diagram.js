@@ -204,7 +204,7 @@ document.addEventListener('keydown', function (e)
             removeElements(context); 
             removeLines(contextLine);
         }
-        if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
+        if (e.key == "Meta" && ctrlPressed !== true) ctrlPressed = true;
         if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
         if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
         if (e.key == "Escape" && escPressed != true){
@@ -1378,10 +1378,7 @@ function updateSelectedLine(selectedLine)
             contextLine.push(selectedLine);
         } else
         {
-            if(mouseMode != mouseModes.POINTER)
-            {
-                contextLine = [];
-            }
+            contextLine = [];
             contextLine.push(selectedLine);
         }
 
