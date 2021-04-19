@@ -1925,7 +1925,7 @@ function removeNodes(element) {
 // Change the position of rulerPointers
 //-------------------------------------------------------------------------------------------------
 function setRulerPosition(x, y) {
-    document.getElementById("ruler-x").style.left = x - 1 + "px";
+    document.getElementById("ruler-x").style.left = x - 51 + "px";
     document.getElementById("ruler-y").style.top = y - 125 + "px";
 }
 
@@ -1966,7 +1966,7 @@ function drawRulerBars(){
 
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
-            var cordX = screenToDiagramCoordinates(i, 0).x;
+            var cordX = screenToDiagramCoordinates(50 + i, 0).x;
             lineNumber = 0;
             barX += "<line x1='" +i+"' y1='0' x2='" + i + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
