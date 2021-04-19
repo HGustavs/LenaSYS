@@ -2431,6 +2431,7 @@ function getData()
     container = document.getElementById("container");
     showdata();
     drawRulerBars();
+    enableGrid();
 }
 
 function data_returned(ret)
