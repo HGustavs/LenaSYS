@@ -164,12 +164,6 @@ function addSingleUser() {
 function verifyUserInputForm(input) {
 	var verifyString = '';
 
-	// Verify SSN using validateSSN function
-	if(verifyString = validateSSN(input[0])) {		// Returns null if there is no error
-		alert(verifyString);
-		return false;
-	}
-
 	// Verify first name
 	if(verifyString = validateName(input[1])) {		// Returns null if there is no error
 		alert(verifyString);
@@ -178,12 +172,6 @@ function verifyUserInputForm(input) {
 
 	// Verify last name
 	if(verifyString = validateName(input[2])) {		// Returns null if there is no error
-		alert(verifyString);
-		return false;
-	}
-
-	// Verify PID
-	if(verifyString = validatePID(input[input.length - 2])) {	// Returns null if there is no error
 		alert(verifyString);
 		return false;
 	}
@@ -201,86 +189,6 @@ function verifyUserInputForm(input) {
 	}
 
 	return true;
-}
-
-//---------------------------------------------------------------------------------------------------
-// validateSSN(ssn)
-// Returns null if there are NO errors, otherwise a descripitve error message as string.
-// For information regarding Swedish personal identity numbers visit:
-// https://www.scb.se/contentassets/8d9d985ca9c84c6e8d879cc89a8ae479/ov9999_2016a01_br_be96br1601.pdf
-//---------------------------------------------------------------------------------------------------
-function validateSSN(ssn)
-{
-	const length = ssn.length;
-	const delimiter = length-5;	// The expected position of the '-' in the ssn
-
-	switch(length) {
-		case 11: case 13:
-			const formatTest = /\d{6,8}-\d{4}/;	// Expected format
-			if(formatTest.test(ssn))
-				break;
-
-		default:
-			return 'SSN Error! Should be ######-#### or ########-####';
-	}
-
-    let samordningsnummer = false;
-	let dd = ssn.substring(delimiter-2, delimiter);
-	const mm = ssn.substring(delimiter-4, delimiter-2);
-	const yyyy = (length === 13) ? ssn.substring(0, 4) : 19+ssn.substring(0, 2);	// Ensure yyyy
-	const birthNum = ssn.substring(delimiter+1, delimiter+4);
-	
-    if (parseInt(dd) > 60) {
-        dd -= 60;
-        samordningsnummer = true;
-    }
-    
-    const ssnDate = new Date(`${yyyy}-${mm}-${dd}`);
-
-	if(ssnDate.getTime() > Date.now())			// Make sure date of SSN is not in the future
-		return 'SSN Error! Impossible date in SSN. The future is not here yet';
-
-	if(isNaN(ssnDate)					// Make sure date is valid (i.e. not 87th April)
-		|| (parseInt(dd) !== ssnDate.getDate())) {	// Ensures leap years are handled correctly
-		return 'SSN Error! Invalid date';
-	}
-
-    if (samordningsnummer) {
-        dd += 60;
-    }
-
-	const controlDigitString = yyyy.substring(2, 4) + mm + dd + birthNum;
-	var ccd = 0;	// Calculated Control Digit
-	for(var i = 0; i < controlDigitString.length; i++) {
-		var n = parseInt(controlDigitString.charAt(i));
-		if(i%2 === 0) n *= 2;			// Every other digit should be multiplied by 2
-		if(n >= 10) n -= 9;			// If value is >= 10, 9 should be subtracted
-
-		ccd += n;	// Add value to the calculation in progress
-	}
-
-	ccd = 10 - (ccd%10);		// 10 - the last digit of the calculation
-	if(ccd === 10) ccd = 0;		// If value is 10, remove the left digit... Leads to ccd = 0
-
-	if(ccd != ssn.substring(length-1))	// Compare calculated to given control digit
-		return 'SSN Error! Incorrect control digit.\nExpected: ' + ccd;
-
-	return null;	// The provided SSN is correct!
-}
-
-function tooltipSSN()
-{
-	var error = validateSSN(document.getElementById('addSsn').value);
-	var ssnInputBox = document.getElementById('addSsn');
-
-	if(error && document.getElementById('addSsn').value.length > 0) {	// Error, fade in tooltip
-		document.getElementById('tooltipSSN').innerHTML = error;
-		$('#tooltipSSN').fadeIn();
-		ssnInputBox.style.backgroundColor = '#f57';
-	} else {															// No error, fade out tooltip
-		$('#tooltipSSN').fadeOut();
-		ssnInputBox.style.backgroundColor = '#fff';
-	}
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -332,37 +240,6 @@ function tooltipLast()
 		lnameInputBox.style.backgroundColor = '#fff';
 	}
 }
-
-//---------------------------------------------------------------------------------------------------
-// validatePID(pid)
-// Returns null if there are NO errors, otherwise a descripitve error message as string.
-//---------------------------------------------------------------------------------------------------
-function validatePID(pid)
-{
-	const length = pid.length;
-	if(length < 2)	return 'PID is too short\nMinimum two characters';	// Too short
-	if(length > 10)	return 'PID is too long\nMaximum ten characters';	// Too long
-	if(pid.indexOf(" ") != -1) return 'PID can NOT contian an empty space'; //contians empty space
-	if(pid.match(/[a-z]/gm)!=null) return 'PID can only contain Upper case letters'; //contians lower case space
-
-	return null;	// The provided PID is alright
-}
-
-function tooltipPID()
-{
-	var error = validatePID(document.getElementById('addPid').value);
-	var pidInputBox = document.getElementById('addPid');
-
-	if(error && document.getElementById('addPid').value.length > 0) {	// Error, fade in tooltip
-		document.getElementById('tooltipPID').innerHTML = error;
-		$('#tooltipPID').fadeIn();
-		pidInputBox.style.backgroundColor = '#f57';
-	} else {															// No error, fade out tooltip
-		$('#tooltipPID').fadeOut();
-		pidInputBox.style.backgroundColor = '#fff';
-	}
-}
-
 
 //---------------------------------------------------------------------------------------------------
 // validateEmail(email)
