@@ -101,8 +101,7 @@
 .hide {
     display: none;
 }	
-
-.paneButtons{
+.zoomButtons{
     display: inline-block;
     width: 36px;
     height: 36px;
