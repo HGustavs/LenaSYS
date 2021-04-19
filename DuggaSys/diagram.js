@@ -444,6 +444,9 @@ var data = [
     { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
 ];
 
+// Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
+var ghostElement = null;
+
 var lines = [
     { id: makeRandomID(), fromID: PersonID, toID: IDID, kind: "Normal" },
     { id: makeRandomID(), fromID: PersonID, toID: NameID, kind: "Normal" },
@@ -484,12 +487,15 @@ document.addEventListener('keydown', function (e)
 
 document.addEventListener('keyup', function (e)
 {
-    /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
-    if (e.key == "Control") ctrlPressed = false;
-    if (e.key == "Alt") altPressed = false;
-    if (e.key == "Meta") ctrlPressed = false;
-    if (e.key == "Escape"){
-        escPressed = false;
+    // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
+    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase()) ) {
+        /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
+        //  TODO : Switch cases?
+        if (e.key == "Control") ctrlPressed = false;
+        if (e.key == "Alt") altPressed = false;
+        if (e.key == "Meta") ctrlPressed = false;
+        if (e.key == "Escape") {
+            escPressed = false;
     }
 
     if (e.key == "b"){
@@ -663,9 +669,17 @@ function mouseMode_onMouseUp(event)
             };
 
             data.push(newElement);
-            stateMachine.save(StateChangeFactory.ElementCreated(newElement));
 
             showdata()
+
+            if (ghostElement)
+            {
+                stateMachine.save(StateChangeFactory.ElementCreated(newElement));
+                data.push(ghostElement);
+                makeGhost();
+                showdata();
+            }
+
             break;
 
         case mouseModes.EDGE_CREATION:
@@ -684,7 +698,6 @@ function mouseMode_onMouseUp(event)
                 context = [];
                 updatepos(0,0);
             }
-
             break;
 
         case mouseModes.BOX_SELECTION:
@@ -772,10 +785,117 @@ function mup(event)
     deltaExceeded = false;
 }
 
+function determineLineSelect(mouseX, mouseY)
+{
+    // This func is used when determining which line is clicked on.
+
+    // TODO: Add functionality to make sure we are only getting LINES from svgbacklayer in the future !!!!!.
+
+    var allLines = document.getElementById("svgbacklayer").children;
+    var cMouse_XY = {x: mouseX, y: mouseY}; // Current mouse XY
+    var currentline = {};
+    var lineData = {};
+    var lineCoeffs = {};
+    var highestX, lowestX, highestY , lowestY;
+    var lineWasHit = false; 
+
+    // Position and radius of the circle hitbox that is used when 
+    var circleHitBox = {
+        pos_x: cMouse_XY.x, // Mouse pos X.
+        pos_y: cMouse_XY.y, // Mouse pos Y.
+        radius: 10 // This will determine the error margin, "how far away from the line we can click and still select it". Higer val = higher margin.
+    }
+    
+    for(var i = 0; i < allLines.length; i++)
+    {
+        // Make sure that "double lines" have the same id.
+        allLines[i].id = allLines[i].id.replace(/-1/gi, '');
+        allLines[i].id = allLines[i].id.replace(/-2/gi, '');
+  
+        // Get all X and Y -coords for current line in iteration.
+        currentline = {
+            x1: allLines[i].getAttribute("x1"),
+            x2: allLines[i].getAttribute("x2"),
+            y1: allLines[i].getAttribute("y1"),
+            y2: allLines[i].getAttribute("y2")
+        };
+
+        // Used later to make sure the current mouse-position is in the span of a line.
+        highestX = Math.max(currentline.x1, currentline.x2);
+        lowestX = Math.min(currentline.x1, currentline.x2);
+        highestY = Math.max(currentline.y1, currentline.y2);
+        lowestY = Math.min(currentline.y1, currentline.y2);
+        lineData = {
+            hX: highestX,
+            lX: lowestX,
+            hY: highestY,
+            lY: lowestY
+        }
+        
+        // Coefficients of the general equation of the current line.
+        lineCoeffs = {
+            a: (currentline.y1 - currentline.y2),
+            b: (currentline.x2 - currentline.x1),
+            c: ((currentline.x1 - currentline.x2)*currentline.y1 + (currentline.y2-currentline.y1)*currentline.x1)
+        }
+        
+        // Determines if a line was clicked
+        lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
+        
+        // --- Used when debugging ---
+        // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
+        //document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke="black" stroke-width="3" fill="red" /> '
+        // ---------------------------
+
+        if(lineWasHit == true)
+        {
+            // Return the current line that registered as a "hit".
+            return lines.filter(function(line){
+                return line.id == allLines[i].id;
+            })[0];
+            //return allLines[i];
+        }
+    }
+    return null;
+}
+
+function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
+{
+    // Adding and subtracting with the circle radius to allow for bigger margin of error when clicking.
+    // Check if we are clicking withing the span.
+    if( (circle_x < (line_data.hX + circle_radius)) &&
+     (circle_x > (line_data.lX - circle_radius)) && 
+     (circle_y < (line_data.hY + circle_radius)) && 
+     (circle_y > (line_data.lY - circle_radius))
+    )
+    {
+        // Distance between line and circle center.
+        var distance = (Math.abs(a*circle_x + b*circle_y + c)) / Math.sqrt(a*a + b*b);
+    
+        // Check if circle radius >= distance. (If so is the case, the line is intersecting the circle)
+        if(circle_radius >= distance)
+        {
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
 function mouseMode_onMouseMove(event)
 {
      switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
+            if (ghostElement)
+            {
+                var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
+                ghostElement.x = cords.x - (ghostElement.width / 2);
+                ghostElement.y = cords.y - (ghostElement.height / 2);
+                showdata();
+            }
+            break;
         case mouseModes.EDGE_CREATION:
         case mouseModes.POINTER: // do nothing
             break;
@@ -981,6 +1101,24 @@ function rectsIntersect (left, right)
     );
 }
 
+function makeGhost ()
+{
+    var entityType = constructElementOfType(elementTypeSelected);
+    var typeNames = Object.getOwnPropertyNames(elementTypes);
+
+    ghostElement = {
+        name: typeNames[elementTypeSelected],
+        x: -1000,
+        y: 0,
+        width: entityType.data.width,
+        height: entityType.data.height,
+        kind: entityType.data.kind,
+        id: makeRandomID()
+    };
+
+    showdata();
+}
+
 //------------------------------------=======############==========----------------------------------------
 //                                           Mouse Modes
 //------------------------------------=======############==========----------------------------------------
@@ -1011,10 +1149,10 @@ function setMouseMode(mode)
     }
 
     // Mode-specific activation/deactivation
-    onMouseModeDisabled(mouseMode);
+    onMouseModeDisabled();
     mouseMode = mode;
     setCursorStyles(mode);
-    onMouseModeEnabled(mouseMode);
+    onMouseModeEnabled();
 }
 
 function setCursorStyles(cursorMode = 0)
@@ -1039,12 +1177,20 @@ function setCursorStyles(cursorMode = 0)
     }
 }
 
-function onMouseModeEnabled(mode)
+function onMouseModeEnabled()
 {
     switch (mouseMode) {
         case mouseModes.POINTER:
+            break;
+
         case mouseModes.PLACING_ELEMENT:
+            makeGhost();
+            
+            break;
+
         case mouseModes.EDGE_CREATION:  
+            break;
+
         case mouseModes.BOX_SELECTION:
             break;
 
@@ -1057,8 +1203,16 @@ function onMouseModeDisabled(mode)
 {
     switch (mouseMode) {
         case mouseModes.POINTER:
+            break;
+
         case mouseModes.PLACING_ELEMENT:
+            ghostElement = null;
+            showdata();
+            break;
+
         case mouseModes.EDGE_CREATION:
+            break;
+
         case mouseModes.BOX_SELECTION:
             break;
     
@@ -1353,14 +1507,19 @@ function showdata()
     // Iterate over programs
     for (var i = 0; i < data.length; i++)
     {
-        str += drawElement(data[i], ctx)
+        str += drawElement(data[i]);
+    }
+
+    if (ghostElement)
+    {
+        str += drawElement(ghostElement, true);
     }
 
     container.innerHTML = str;
     updatepos(null, null);
 }
 
-function drawElement(element, canvasContext)
+function drawElement(element, ghosted = false)
 {
     var str = "";
 
@@ -1391,8 +1550,15 @@ function drawElement(element, canvasContext)
 						top:0px;
 						width:${boxw}px;
 						height:${boxh}px;
-						font-size:${texth}px;
-				'>`;
+						font-size:${texth}px;`;
+    if (ghosted)
+    {
+        str += `
+            pointer-events: none;
+            opacity: 0.5;
+        `;
+    }
+    str += `'>`;
     str += `<svg width='${boxw}' height='${boxh}' >`;
 
     // Create svg 
@@ -1463,6 +1629,43 @@ function drawElement(element, canvasContext)
 //-------------------------------------------------------------------------------------------------
 // updateselection - Update context according to selection parameters or clicked element
 //-------------------------------------------------------------------------------------------------
+function updateSelectedLine(selectedLine)
+{
+    // This function works almost exaclty as updateSelection but for lines instead.
+
+    // If CTRL is pressed and an element is selected
+    if(selectedLine != null && ctrlPressed && !contextLine.includes(selectedLine))
+    {
+        contextLine.push(selectedLine);
+    }
+    // If ALT is pressed while selecting a line -> deselects that line
+    else if(selectedLine != null && altPressed)
+    {
+        if (contextLine.includes(selectedLine))
+        {
+            contextLine = contextLine.filter(function (line)
+            {
+                return line !== selectedLine;
+            });
+        }
+    }
+    // If CTRL is not pressed and a element has been selected.
+    else if (selectedLine != null)
+    {
+        // Element not already in context
+        if (!contextLine.includes(selectedLine) && contextLine.length < 1)
+        {
+            contextLine.push(selectedLine);
+        } else
+        {
+            contextLine = [];
+            contextLine.push(selectedLine);
+        }
+    } else
+    {
+        contextLine = [];
+    }
+}
 
 function updateSelection(ctxelement, x, y)
 {
@@ -1512,7 +1715,7 @@ function updateSelection(ctxelement, x, y)
 
 function updatepos(deltaX, deltaY)
 {
-    exportElementDataToCSS();
+    updateCSSForAllElements();
 
     generateContextProperties();
 
@@ -1664,14 +1867,27 @@ function generateContextProperties()
         str += "<p>Pick only ONE element!</p>";
     }
 
-
     propSet.innerHTML = str;
-
 }
 
-function exportElementDataToCSS()
+function updateCSSForAllElements()
 {
-    // Update positions of all elements based on the zoom level and view space coordinate
+    function updateElementDivCSS(elementData, divObject, useDelta = false)
+    {
+        var left = Math.round((elementData.x * zoomfact) + (scrollx * (1.0 / zoomfact))),
+            top = Math.round((elementData.y * zoomfact) + (scrolly * (1.0 / zoomfact)));
+
+        if (useDelta)
+        {
+            left -= deltaX;
+            top -= deltaY;
+        }
+
+        divObject.style.left = left + "px";
+        divObject.style.top = top + "px";
+    }
+
+    // Update positions of all data elements based on the zoom level and view space coordinate
     for (var i = 0; i < data.length; i++)
     {
         // Element data from the array
@@ -1685,30 +1901,28 @@ function exportElementDataToCSS()
         {
             // If the element was clicked and our mouse movement is not null
             var inContext = deltaX != null && findIndex(context, element.id) != -1;
-            var notBoxSelection = mouseMode != mouseModes.BOX_SELECTION;
-            var clickedElement = pointerState == pointerStates.CLICKED_ELEMENT;
-            var clickedNode = pointerState == pointerStates.CLICKED_NODE;
-            var clickedContainer = pointerState == pointerStates.CLICKED_CONTAINER;
+            var useDelta = (inContext && movingObject);
 
-            // Handle positioning
-            if (inContext && !clickedContainer && (notBoxSelection || clickedElement) && !clickedNode)
-            {
-                // Re-calculate drawing position for our selected element, then apply the mouse movement
-                elementDiv.style.left = (Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) - deltaX) + "px";
-                elementDiv.style.top = (Math.round((element.y * zoomfact) + (scrolly * (1.0 / zoomfact))) - deltaY) + "px";
-            }
-            else
-            {
-                // Re-calculate drawing position for other elements if there's a change in zoom level
-                elementDiv.style.left = Math.round((element.x * zoomfact) + (scrollx * (1.0 / zoomfact))) + "px";
-                elementDiv.style.top = Math.round((element.y * zoomfact) + (scrolly * (1.0 / zoomfact))) + "px";
-            }
+            updateElementDivCSS(element, elementDiv, useDelta);
 
             // Handle colouring
             elementDiv.children[0].children[0].style.fill = inContext ? "#ff66b3" : "#ffccdc";
         }
     }
+
+    // Also update ghost if there is one
+    if (ghostElement)
+    {
+        var ghostDiv = document.getElementById(ghostElement.id);
+        
+        if (ghostDiv)
+        {
+            updateElementDivCSS(ghostElement, ghostDiv)
+        }
+    }
 }
+
+
 
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
