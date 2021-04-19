@@ -1545,6 +1545,44 @@ function showdata()
 
     container.innerHTML = str;
     updatepos(null, null);
+
+}
+//-------------------------------------------------------------------------------------------------
+// addLine - Adds an new line if the requirements and rules are achieved
+//-------------------------------------------------------------------------------------------------
+function addLine(fromElement, toElement, kind){
+    // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
+    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ){
+
+        // Filter the existing lines and gets the number of existing lines
+        var numOfExistingLines = lines.filter(function (line) {
+            return (fromElement.id === line.fromID &&
+                    toElement.id === line.toID ||
+                    fromElement.id === line.toID &&
+                    toElement.id === line.fromID)
+                    }).length;
+
+        // Define a boolean for special case that relation and entity can have 2 lines
+        var specialCase = (fromElement.kind === "ERRelation" &&
+                            toElement.kind === "EREntity" ||
+                            fromElement.kind === "EREntity" &&
+                            toElement.kind === "ERRelation");
+
+        // If there is no existing lines or is a special case
+        if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)){
+
+            // Adds the line
+            lines.push({
+                id: makeRandomID(),
+                fromID: fromElement.id,
+                toID: toElement.id,
+                kind: kind
+            });
+            displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
+        }
+    }else {
+        displayMessage("error", "Not possible to draw a line between two: " + context[0].kind);
+    }
 }
 
 function drawElement(element, ghosted = false)
@@ -1686,10 +1724,14 @@ function updateSelectedLine(selectedLine)
             contextLine.push(selectedLine);
         } else
         {
-            contextLine = [];
+            if(mouseMode != mouseModes.POINTER)
+            {
+                contextLine = [];
+            }
             contextLine.push(selectedLine);
         }
-    } else
+
+    } else if (!altPressed && !ctrlPressed)
     {
         contextLine = [];
     }
@@ -2224,7 +2266,7 @@ function removeNodes(element) {
 // Change the position of rulerPointers
 //-------------------------------------------------------------------------------------------------
 function setRulerPosition(x, y) {
-    document.getElementById("ruler-x").style.left = x - 1 + "px";
+    document.getElementById("ruler-x").style.left = x - 51 + "px";
     document.getElementById("ruler-y").style.top = y - 125 + "px";
 }
 
@@ -2265,7 +2307,7 @@ function drawRulerBars(){
 
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
-            var cordX = screenToDiagramCoordinates(i, 0).x;
+            var cordX = screenToDiagramCoordinates(50 + i, 0).x;
             lineNumber = 0;
             barX += "<line x1='" +i+"' y1='0' x2='" + i + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
@@ -2322,6 +2364,30 @@ function removeLines(linesArray)
     showdata();
 }
 
+function displayMessage(type, message)
+{
+    var messageEl = document.getElementById("diagram-message") // Get div for error-messages
+
+    switch (type) {
+        case "error":
+            messageEl.style.background = "rgb(255, 153, 153)";
+            break;
+        case "success":
+            messageEl.style.background = "rgb(153, 255, 153)";
+            break
+        default:
+            messageEl.style.background = "rgb(255, 153, 153)";
+            break;
+    }
+
+    messageEl.innerHTML = "<span>" + message + "</span>";
+    messageEl.style.display = "block";
+
+    //Set timeout to remove the message
+    setTimeout(function (){
+        messageEl.style.display = "none";
+    }, 2000);
+}
 //------------------------------------=======############==========----------------------------------------
 //                                    Default data display stuff
 //------------------------------------=======############==========----------------------------------------
