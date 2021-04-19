@@ -298,14 +298,14 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 				echo "</div>";
 			}
 
-			function hashPassword($password){
+			function hashPassword($password, $hash){
 				if($hash!='UNK'){
 				exit();
 				//Authentication Function
 				}
 			}
 			//Retrieved from 'password' input field
-			hashPassword($password);
+			hashPassword($password, $hash);
 
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
