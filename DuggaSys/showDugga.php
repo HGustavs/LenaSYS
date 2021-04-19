@@ -298,16 +298,22 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 				echo "</div>";
 			}
 
-			$sql = "SELECT hash,password FROM useranswer WHERE '" .$password. "' LIKE password";
-
 			function hashPassword($password, $hash){
 				if($hash!='UNK'){
-				exit();
-				//Authentication Function
+					global $pdo;
+					$sql = "SELECT hash,password FROM useranswer WHERE '" .$password. "' LIKE password AND '".$hash."' LIKE hash";
+					$query = $pdo->prepare($sql);
+					$query->execute();
+					$count = $query->rowCount();
+					if($count == 0){
+						return false;
+					} else{
+						return true;
+					}
 				}
 			}
 			//Retrieved from 'password' input field
-			hashPassword($password, $hash);
+			hashPassword($password, $hash);	
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
