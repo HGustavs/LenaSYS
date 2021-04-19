@@ -1769,11 +1769,15 @@ $(window).load(function () {
       'flex-direction': 'column'
     });
     $(".statisticsContentBottom").show();
+	$("#swimlaneSVG").show();
+    $("#statisticsSwimlanes").show();  
   });
   $("#sectionList_arrowStatisticsClosed").click(function () {
     $("#sectionList_arrowStatisticsOpen").show();
     $("#sectionList_arrowStatisticsClosed").hide();
     $("#statisticsList").hide();
+	$("#swimlaneSVG").hide();
+    $("#statisticsSwimlanes").hide();
 
   });
   $("#announcement").click(function(){

@@ -790,9 +790,11 @@ p {
   border-radius: 5px;
 }
 
+ #sectionList_arrowStatisticsClosed{
+  display: none;
+}
 #sectionList_arrowStatisticsOpen,
 #sectionList_arrowStatisticsClosed{
-  display: none;
   cursor: pointer;
 }
 .statisticsContentBottom{
