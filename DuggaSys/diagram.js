@@ -1213,6 +1213,7 @@ function addLine(fromElement, toElement, kind){
                 toID: toElement.id,
                 kind: kind
             });
+        }else {
             displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
         }
     }else {
