@@ -106,6 +106,19 @@ class StateChange
         return flags;
     }
 
+    setValues(value_object)
+    {
+        if (value_object)
+        {
+            var props = Object.getOwnPropertyNames(value_object);
+            for (var index = 0; index < props.length; index++)
+            {
+                var propertyName = props[index];
+                this.valuesPassed[propertyName] = value_object[propertyName];
+            }
+        }
+    }
+
     /**
      * 
      * @param {StateChange} changes 
@@ -170,8 +183,6 @@ class StateChangeFactory
     {
         var state = new StateChange(StateChange.ChangeTypes.ELEMENT_RESIZED, elementIDs);
         state.resized = new Point(changeX, changeY);
-        console.log(state.resized);
-
         return state;
     }
 
@@ -180,20 +191,22 @@ class StateChangeFactory
         var state = new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED, elementIDs);
         state.moved = new Point(moveX, moveY);
         state.resized = new Point(changeX, changeY);
-        console.log(state.moved, state.resized);
-
         return state;
     }
 
     static ElementAttributesChanged(elementID, changeList)
     {       
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED, elementID);
-        
-        if (stringNotEmpty(changeList.name))
+        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED, [elementID]);
+
+        // Handle special values that should not be passed, but rather used instantly.
+        if (changeList.name)
         {
             state.name = changeList.name;
+            delete changeList.name;
         }
 
+        // Pass forward values
+        state.setValues(changeList);
         return state;
     }
 
@@ -248,7 +261,7 @@ class StateMachine
     save (stateChange)
     {
         if (stateChange instanceof StateChange)
-        {   
+        {
             // If history is present, perform soft/hard-check
             if (this.historyLog.length > 0)
             {
@@ -783,7 +796,7 @@ function mup(event)
                 mouseMode_onMouseUp(event);
             }
             // Normal mode
-            else 
+            else if (deltaExceeded)
             {
                 var id_list = [];
 
@@ -1857,7 +1870,7 @@ function saveProperties()
     const element = context[0];
     const children = propSet.children;
 
-    var propsChanged = [];
+    var propsChanged = {};
 
     for (let index = 0; index < children.length; index++)
     {
@@ -1870,7 +1883,7 @@ function saveProperties()
                 const value = child.value.trim();
                 if (value && value.length > 0)
                 {
-                    element.name = value;
+                    element[propName] = value;
                     propsChanged[propName] = value;
                 }
                 break;
@@ -1879,7 +1892,10 @@ function saveProperties()
                 break;
         }
     }
-    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged));
+    var a = StateChangeFactory.ElementAttributesChanged(element.id, propsChanged);
+    console.log(a);
+    stateMachine.save(a);
+
     showdata();
     updatepos(0,0);
 }
