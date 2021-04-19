@@ -90,11 +90,6 @@
 			<div style='padding:5px;'>
 				<input type='hidden' id='uid' value='Toddler' />
 				<div class='flexwrapper'>
-					<span>SSN:</span>
-					<div class="tooltipDugga"><span id="tooltipSSN" style="display: none;" class="tooltipDuggatext">  </span></div>
-					<input placeholder="990102-5578" class='textinput' type='text' id='addSsn' onchange="tooltipSSN()" onkeyup="tooltipSSN()"/>
-				</div>
-				<div class='flexwrapper'>
 					<span>First Name:</span>
 					<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
 					<input placeholder="Greger" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
@@ -103,11 +98,6 @@
 					<span>Last Name:</span>
 					<div class="tooltipDugga"><span id="tooltipLast" style="display: none;" class="tooltipDuggatext">  </span></div>
 					<input placeholder="Gregersson" class='textinput' type='text' id='addLastname' onchange="tooltipLast()" onkeyup="tooltipLast()"/>
-				</div>
-				<div class='flexwrapper'>
-					<span>PID:</span>
-					<div class="tooltipDugga"><span id="tooltipPID" style="display: none;" class="tooltipDuggatext">  </span></div>
-					<input placeholder="WEBUG" class='textinput' id='addPid' onchange="tooltipPID()" onkeyup="tooltipPID()"/>
 				</div>
 				<div class='flexwrapper'>
 					<span>Term:</span>
