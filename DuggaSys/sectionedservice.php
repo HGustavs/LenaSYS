@@ -303,11 +303,14 @@ if($gradesys=="UNK") $gradesys=0;
 							$link=$pdo->lastInsertId();
 					}
 
+					$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, gradesystem=:gradesys, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,comments=:comments,groupKind=:groupkind, feedbackenabled=:feedbackenabled, feedbackquestion=:feedbackquestion WHERE lid=:lid;");
+				
 					if ($kind == 4) {
-						$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, gradesystem=:gradesys, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,comments=:comments,groupKind=:groupkind, feedbackenabled=:feedbackenabled, feedbackquestion=:feedbackquestion WHERE lid=:lid;");
+						$query->bindParam(':gradesys', $gradesys);
 					} else {
-						$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, gradesystem=:tabs, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,comments=:comments,groupKind=:groupkind, feedbackenabled=:feedbackenabled, feedbackquestion=:feedbackquestion WHERE lid=:lid;");
+						$query->bindParam(':gradesys', $tabs);
 					}
+
 					$query->bindParam(':lid', $sectid);
 					$query->bindParam(':entryname', $sectname);
 					$query->bindParam(':comments', $comments);
@@ -327,8 +330,6 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(':kind', $kind);
 					$query->bindParam(':link', $link);
 					$query->bindParam(':visible', $visibility);
-					$query->bindParam(':gradesys', $gradesys);
-					$query->bindParam(':tabs', $tabs);
 
 					if(!$query->execute()) {
 						$error=$query->errorInfo();
