@@ -1180,11 +1180,10 @@ function addLine(fromElement, toElement, kind){
                 toID: toElement.id,
                 kind: kind
             });
-        }else {
-            // TODO: Display an error-message to the user (Maximal amount of lines between elements)
+            displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
         }
     }else {
-        // TODO: Display an error-message to the user (Cant make lines between those elements)
+        displayMessage("error", "Not possible to draw a line between two: " + context[0].kind);
     }
 }
 
@@ -1943,6 +1942,30 @@ function removeElements(elementArray){
     showdata();
 }
 
+function displayMessage(type, message)
+{
+    var messageEl = document.getElementById("diagram-message") // Get div for error-messages
+
+    switch (type) {
+        case "error":
+            messageEl.style.background = "rgb(255, 153, 153)";
+            break;
+        case "success":
+            messageEl.style.background = "rgb(153, 255, 153)";
+            break
+        default:
+            messageEl.style.background = "rgb(255, 153, 153)";
+            break;
+    }
+
+    messageEl.innerHTML = "<span>" + message + "</span>";
+    messageEl.style.display = "block";
+
+    //Set timeout to remove the message
+    setTimeout(function (){
+        messageEl.style.display = "none";
+    }, 2000);
+}
 //------------------------------------=======############==========----------------------------------------
 //                                    Default data display stuff
 //------------------------------------=======############==========----------------------------------------
