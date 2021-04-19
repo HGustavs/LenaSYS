@@ -105,11 +105,6 @@
 					<input placeholder="Gregersson" class='textinput' type='text' id='addLastname' onchange="tooltipLast()" onkeyup="tooltipLast()"/>
 				</div>
 				<div class='flexwrapper'>
-					<span>CID:</span>
-					<div class="tooltipDugga"><span id="tooltipCID" style="display: none;" class="tooltipDuggatext">  </span></div>
-					<input placeholder="91001" class='textinput' id='addCid' onchange="tooltipCID()" onkeyup="tooltipCID()" />
-				</div>
-				<div class='flexwrapper'>
 					<span>PID:</span>
 					<div class="tooltipDugga"><span id="tooltipPID" style="display: none;" class="tooltipDuggatext">  </span></div>
 					<input placeholder="WEBUG" class='textinput' id='addPid' onchange="tooltipPID()" onkeyup="tooltipPID()"/>
