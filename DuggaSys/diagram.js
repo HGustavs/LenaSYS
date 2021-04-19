@@ -378,6 +378,7 @@ var pointerState = pointerStates.DEFAULT;
 var movingObject = false;
 var movingContainer = false;
 
+var randomidArray = []; // array for checking randomID
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
 //-------------------------------------------------------------------------------------------------
@@ -387,11 +388,25 @@ function makeRandomID()
     var str = "";
     var characters = 'ABCDEF0123456789';
     var charactersLength = characters.length;
-    for (var i = 0; i < 6; i++)
-    {
-        str += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return str;
+    while(true){
+        for (var i = 0; i < 6; i++){
+            str += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
+            randomidArray.push(str);
+        }
+        else{
+            var check = randomidArray.includes(str); //if check is true the id already exists
+            if(check == true){
+                str = "";
+            }
+            else{
+                randomidArray.push(str);
+                return str;
+            }
+        }
+ 
+}
 }
 
 // Example entities and attributes
@@ -466,21 +481,34 @@ var lines = [
 //------------------------------------=======############==========----------------------------------------
 document.addEventListener('keydown', function (e)
 {
-    if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
-    if (e.key == "Alt" && altPressed !== true) altPressed = true;
-    if (e.key == "Delete" && context.length > 0)  removeElements(context);
-    if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
-    if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
-    if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
-    if (e.key == "Escape" && escPressed != true){
-        escPressed = true;
-        context = [];
-        if (movingContainer){
-            scrollx = sscrollx;
-            scrolly = sscrolly;
+    // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
+    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase()) ){
+
+        if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
+        if (e.key == "Alt" && altPressed !== true) altPressed = true;
+        if (e.key == "Delete" && (context.length > 0 || contextLine.length > 0)) 
+        {
+            removeElements(context); 
+            removeLines(contextLine);
         }
-        pointerState = pointerStates.DEFAULT;
-        showdata();
+        if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
+        if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
+        if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
+        if (e.key == "Escape" && escPressed != true){
+            escPressed = true;
+            context = [];
+            if (movingContainer){
+                scrollx = sscrollx;
+                scrolly = sscrolly;
+            }
+            pointerState = pointerStates.DEFAULT;
+            showdata();
+        }
+        if (e.key == "Backspace" && (context.length > 0 || contextLine.length > 0) && !propFieldState)
+        {
+            removeElements(context); 
+            removeLines(contextLine);
+       } 
     }
     if (e.key == "Backspace" && context.length > 0 && !propFieldState) removeElements(context);
 });
@@ -2276,6 +2304,20 @@ function removeElements(elementArray)
     });
     
     context = [];
+    redrawArrows();
+    showdata();
+}
+//Function to remove selected lines
+function removeLines(linesArray)
+{
+    for(var i = 0; i < linesArray.length; i++){
+
+        //Remove line
+        lines=lines.filter(function(line) {
+            return line.id != linesArray[i].id;
+        });
+    }
+    contextLine = [];
     redrawArrows();
     showdata();
 }
