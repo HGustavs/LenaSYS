@@ -13,7 +13,6 @@ Example seed
 */
 
 //------------==========########### GLOBALS ###########==========------------
-var score = -1;
 var elapsedTime = 0;
 var teacherFlag = false;
 
@@ -132,7 +131,6 @@ function saveClick()
 	timeUsed = Timer.score;
 	stepsUsed = ClickCounter.score;
 
-	score = 0;
 
 	var bitstr = "Submitted";
 
