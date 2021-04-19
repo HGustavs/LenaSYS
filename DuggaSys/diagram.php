@@ -21,7 +21,6 @@
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
     <script src="diagram.js"></script>
-    <script src="diagram_IOHandler.js"></script>
 
     <!--this script fix so that the drop down menus close after you have clicked on something on them.-->
     <script>
@@ -501,13 +500,13 @@
                 <div class="diagramIcons" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_select.svg"/>
                 </div>
-                <div class="diagramIcons" onclick='setMouseMode(2); setElementPlacementType(0);'>
+                <div class="diagramIcons" onclick='setElementPlacementType(0); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_entity.svg"/>
                 </div>
-                <div class="diagramIcons" onclick='setMouseMode(2); setElementPlacementType(1);'>
+                <div class="diagramIcons" onclick='setElementPlacementType(1); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_relation.svg"/>
                 </div>
-                <div class="diagramIcons" onclick='setMouseMode(2); setElementPlacementType(2);'>
+                <div class="diagramIcons" onclick='setElementPlacementType(2); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_attribute.svg"/>
                 </div>
                 <div class="diagramIcons" onclick='setMouseMode(3);'>

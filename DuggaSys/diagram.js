@@ -1,292 +1,5 @@
 
 //------------------------------------=======############==========----------------------------------------
-//                                          Class Definitions
-//------------------------------------=======############==========----------------------------------------
-
-class Point
-{
-    x = 0;
-    y = 0;
-
-    /**
-     * 
-     * @param {number} startX 
-     * @param {number} startY 
-     */
-    constructor(startX = 0, startY = 0)
-    {
-        this.x = startX;
-        this.y = startY;
-    }
-
-    /**
-     * 
-     * @param {Point} other 
-     */
-    add(other)
-    {
-        this.x += other.x;
-        this.y += other.y;
-    }
-};
-
-class StateChange
-{
-    /**
-     * flag: number of 2nd base used to set multiple flags at once.
-     * isSoft: If the change type is something that wishes to overwrite the previous change.
-     * canAppendTo: If the change can be overwritten by another change.
-     */
-    static ChangeTypes = {
-        ELEMENT_CREATED:            { flag: 1, isSoft: false, canAppendTo: true },
-        ELEMENT_DELETED:            { flag: 2, isSoft: false, canAppendTo: false },
-        ELEMENT_MOVED:              { flag: 4, isSoft: true, canAppendTo: true },
-        ELEMENT_RESIZED:            { flag: 8, isSoft: true, canAppendTo: true },
-        ELEMENT_MOVED_AND_RESIZED:  { flag: 4 | 8, isSoft: true, canAppendTo: true },
-        ELEMENT_ATTRIBUTE_CHANGED:  { flag: 16, isSoft: true, canAppendTo: true },
-
-        LINE_CREATED:               { flag: 32, isSoft: false, canAppendTo: true },
-        LINE_DELETED:               { flag: 64, isSoft: false, canAppendTo: false },
-    };
-
-    getFlags() {
-        var flags = 0;
-        for (const change in this.changes)
-            flags = flags | change.flag;
-
-        return flags;
-    }
-
-    /**
-     * @type changeType
-     */
-    changes = null;
-
-    /**
-     * @type String
-     */
-    name = undefined;
-    
-    /**
-     * @type Point
-     */
-    moved = undefined;
-    
-    /**
-     * @type Point
-     */
-    resized = undefined;
-
-    /**
-     * @type number
-     */
-    timestamp = undefined;
-
-    /**
-     * 
-     * @param {number} changeType 
-     * @param {Array<String>} id_list 
-     */
-    constructor(changeType, id_list)
-    {
-        this.changes = changeType;
-        this.timestamp = new Date().getTime();
-
-        /**
-         * @type Array<String>
-         */
-        this.id_list = id_list;
-    }
-
-    /**
-     * 
-     * @param {StateChange} changes 
-     */
-    appendValuesFrom(changes)
-    {
-        if (changes.name)
-        {
-            this.name = changes.name;
-        }
-        if (changes.moved)
-        {
-            if (this.moved) this.moved.add(changes.moved);
-            else this.moved = changes;
-        }
-        if (changes.resized)
-        {
-            if (this.resized) this.resized.add(changes.resized);
-            else this.resized = changes.resized;
-        }
-        if (changes.timestamp < this.timestamp)
-        {
-            this.timestamp = changes.timestamp;
-        }
-        
-        /** @type number */
-        this.changes.flag = this.changes.flag | changes.changes.flag;
-    }
-}
-
-class StateChangeFactory
-{
-    static ElementCreated(element)
-    {
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_CREATED, [element.id]);
-        state.name = element.name;
-        state.moved = new Point(element.x, element.y);
-        state.resized = new Point(element.width, element.height);
-
-        return new StateChange(StateChange.ChangeTypes.ELEMENT_CREATED, [element.id]);
-    }
-
-    static ElementsDeleted(elements)
-    {
-        var ids = [];
-        elements.forEach(element => {
-            ids.push(element.id);
-        });
-
-        return new StateChange(StateChange.ChangeTypes.ELEMENT_DELETED, ids);
-    }
-
-    static ElementsMoved(elementIDs, moveX, moveY)
-    {
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED, elementIDs);
-        state.moved = new Point(moveX, moveY);
-
-        return state;
-    }
-
-    static ElementResized(elementIDs, changeX, changeY)
-    {
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_RESIZED, elementIDs);
-        state.resized = new Point(changeX, changeY);
-
-        return state;
-    }
-
-    static ElementMovedAndResized(elementIDs, moveX, moveY, changeX, changeY)
-    {
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED, elementIDs);
-        state.moved = new Point(moveX, moveY);
-        state.resized = new Point(changeX, changeY);
-
-        return state;
-    }
-
-    static ElementAttributesChanged(elementID, changeList)
-    {       
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED, elementID);
-        
-        if (stringNotEmpty(changeList.name))
-        {
-            state.name = changeList.name;
-        }
-
-        return state;
-    }
-
-    static LineAdded(line)
-    {
-        var values = {
-            element1: line.fromID,
-            element2: line.toID,
-        };
-
-        return new StateChange(StateChange.ChangeTypes.LINE_CREATED, line.id, values);
-    }
-
-    static LinesRemoved(lines)
-    {
-        var lineIDs = [];
-
-        lines.forEach(line => {
-            lineIDs.push(line.id);
-        });
-        return new StateChange(StateChange.ChangeTypes.LINE_DELETED, lineIDs, null);
-    }
-}
-
-class StateMachine
-{
-    constructor ()
-    {
-        /**
-         * @type Array<StateChange>
-         */
-        this.historyLog = [];
-
-        /**
-         * @type Array<StateChange>
-         */
-        this.futureLog = [];
-    }
-
-    /**
-     * Stores the passed state change into the state machine.
-     * If the change is hard it will be pushed onto the history log,
-     * while a soft§ change will simply modify the last history entry.
-     * 
-     * @param {StateChange} stateChange State change generated by the StateChangedFactory.
-     * @see StateChangeFactory
-     */
-    save (stateChange)
-    {
-        if (stateChange instanceof StateChange)
-        {   
-            // If history is present, perform soft/hard-check
-            if (this.historyLog.length > 0)
-            {
-                /** @type StateChange */
-                var lastLog = this.historyLog[this.historyLog.length - 1];
-
-                // If NOT soft change, push new change onto history log
-                if (!stateChange.changes.isSoft || !lastLog.changes.canAppendTo)
-                {
-                    this.historyLog.push(stateChange);
-                }
-                // Otherwise, simply modify the last entry.
-                else
-                {
-                    switch (stateChange.changes)
-                    {
-                        case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                        case StateChange.ChangeTypes.ELEMENT_MOVED:
-                        case StateChange.ChangeTypes.ELEMENT_RESIZED:
-                            lastLog.appendValuesFrom(stateChange);
-                            break;
-
-                        default:
-                            console.error(`Missing implementation for soft state change: ${stateChange}!`);
-                            break;
-                    };
-                }
-            }
-            else
-            {
-                this.historyLog.push(stateChange);
-            }
-        }
-        else
-        {
-            console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
-        }
-    }
-
-    /* TODO : Another issue mentioned that a back-forward system is requested. Functionality should most likely be put here.
-    stepBack () 
-    {
-        if (this.futureLog.length > 0) { }
-    }
-
-    stepForward()
-    {
-        if (this.futureLog.length > 0) { }
-    }*/
-};
-
-//------------------------------------=======############==========----------------------------------------
 //                           Defaults, mouse variables and zoom variables
 //------------------------------------=======############==========----------------------------------------
 
@@ -329,7 +42,6 @@ const zoom0_75 = -0.775;
 const zoom0_5 = -3;
 const zoom0_25 = -15.01;
 const zoom0_125 = -64;
-const stateMachine = new StateMachine();
 
 // Arrow drawing stuff - diagram elements and diagram lines
 var lines = [];
@@ -337,6 +49,7 @@ var elements = [];
 
 // Currently clicked object list
 var context = [];
+var contextLine = []; // Contains the currently selected line(s).
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
 
@@ -357,13 +70,13 @@ const mouseModes = {
     EDGE_CREATION: 3,
 };
 var mouseMode = mouseModes.POINTER;
+var previousMouseMode;
 
 // All different element types that can be placed by the user.
 const elementTypes = {
-    NO_SELECTED: 0,
-    ENTITY: 1,
-    RELATION: 2,
-    ATTRIBUTE: 3,
+    ENTITY: 0,
+    RELATION: 1,
+    ATTRIBUTE: 2,
 };
 var elementTypeSelected = elementTypes.ENTITY;
 
@@ -466,23 +179,27 @@ var lines = [
 //------------------------------------=======############==========----------------------------------------
 document.addEventListener('keydown', function (e)
 {
-    if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
-    if (e.key == "Alt" && altPressed !== true) altPressed = true;
-    if (e.key == "Delete" && context.length > 0)  removeElements(context);
-    if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
-    if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
-    if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
-    if (e.key == "Escape" && escPressed != true){
-        escPressed = true;
-        context = [];
-        if (movingContainer){
-            scrollx = sscrollx;
-            scrolly = sscrolly;
+    // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
+    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase()) ){
+
+        if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
+        if (e.key == "Alt" && altPressed !== true) altPressed = true;
+        if (e.key == "Delete" && context.length > 0)  removeElements(context);
+        if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
+        if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
+        if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
+        if (e.key == "Escape" && escPressed != true){
+            escPressed = true;
+            context = [];
+            if (movingContainer){
+                scrollx = sscrollx;
+                scrolly = sscrolly;
+            }
+            pointerState = pointerStates.DEFAULT;
+            showdata();
         }
-        pointerState = pointerStates.DEFAULT;
-        showdata();
+        if (e.key == "Backspace" && context.length > 0 && !propFieldState) removeElements(context);
     }
-    if (e.key == "Backspace" && context.length > 0 && !propFieldState) removeElements(context);
 });
 
 document.addEventListener('keyup', function (e)
@@ -496,28 +213,29 @@ document.addEventListener('keyup', function (e)
         if (e.key == "Meta") ctrlPressed = false;
         if (e.key == "Escape") {
             escPressed = false;
-    }
+        }
 
-    if (e.key == "b"){
-        setMouseMode(mouseModes.BOX_SELECTION);
-    }
-    if (e.key == "m"){
-        setMouseMode(mouseModes.POINTER);
-    }
-    if (e.key == "d"){
-        setMouseMode(mouseModes.EDGE_CREATION);
-    }
-    if (e.key == "e"){
-        setMouseMode(mouseModes.PLACING_ELEMENT); 
-        setElementPlacementType(0);
-    }
-    if (e.key == "r"){
-        setMouseMode(mouseModes.PLACING_ELEMENT); 
-        setElementPlacementType(1);
-    }
-    if (e.key == "a"){
-        setMouseMode(mouseModes.PLACING_ELEMENT); 
-        setElementPlacementType(2);
+        if (e.key == "b") {
+            setMouseMode(mouseModes.BOX_SELECTION);
+        }
+        if (e.key == "m") {
+            setMouseMode(mouseModes.POINTER);
+        }
+        if (e.key == "d") {
+            setMouseMode(mouseModes.EDGE_CREATION);
+        }
+        if (e.key == "e") {
+            setElementPlacementType(elementTypes.ENTITY);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
+        }
+        if (e.key == "r") {
+            setElementPlacementType(elementTypes.RELATION);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
+        }
+        if (e.key == "a") {
+            setElementPlacementType(elementTypes.ATTRIBUTE);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
+        }
     }
 });
 
@@ -526,19 +244,15 @@ window.addEventListener("resize", () => {
     drawRulerBars();
 });
 
+window.onfocus = function()
+{
+    altPressed=false;
+}
+
 //------------------------------------=======############==========----------------------------------------
 //                              Coordinate-Screen Position Conversion
 //------------------------------------=======############==========----------------------------------------
 
-/**
- * Returns the diagram coordinate that the mouse cursor is currently hovering over.
- * It is possible for the function to currently return a coorinate out of bounds
- * since no security checks are performed.
- * 
- * @param {number} mouseX Current mouse position on the X-axis
- * @param {number} mouseY Current mouse position on the Y-axis
- * @returns A point object denoted {x,y} of the calculated coordinates.
- */
 function screenToDiagramCoordinates(mouseX, mouseY)
 {
     // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
@@ -560,10 +274,14 @@ function screenToDiagramCoordinates(mouseX, mouseY)
     if (zoomfact == 0.25) zoomX = zoom0_25;
     if (zoomfact == 0.125) zoomX = zoom0_125;
 
-    return new Point(
-        Math.round(((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2), // the 2 makes mouse hover over container
-        Math.round(((mouseY - 86) / zoomfact - scrolly) + zoomX * scrolly)
-    );
+    return {
+        x: Math.round(
+            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 // the 2 makes mouse hover over container
+        ),
+        y: Math.round(
+            ((mouseY - 86) / zoomfact - scrolly) + zoomX * scrolly
+        ),
+    };
 }
 
 // TODO : This is still the old version, needs update
@@ -622,6 +340,9 @@ function mdown(event)
         startX = event.clientX;
         startY = event.clientY;
     }
+    // Used when clicking on a line between two elements.
+    updateSelectedLine(determineLineSelect(event.clientX, event.clientY));
+
 }
 
 function ddown(event)
@@ -642,7 +363,7 @@ function ddown(event)
             var element = data[findIndex(data, event.currentTarget.id)];
             if (element != null && !context.includes(element) || !ctrlPressed)
             {
-                updateSelection(element, null, null);
+                updateSelection(element);
             }
             break;
     
@@ -656,45 +377,19 @@ function mouseMode_onMouseUp(event)
 {
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
-            var mp = screenToDiagramCoordinates(event.clientX, event.clientY);
-            var entityType = constructElementOfType(elementTypeSelected);
-            var newElement = {
-                name: entityType.name,
-                x: mp.x - (entityType.data.width * 0.5),
-                y: mp.y - (entityType.data.height * 0.5),
-                width: entityType.data.width,
-                height: entityType.data.height,
-                kind: entityType.data.kind,
-                id: makeRandomID()
-            };
-
-            data.push(newElement);
-
-            showdata()
-
             if (ghostElement)
             {
-                stateMachine.save(StateChangeFactory.ElementCreated(newElement));
                 data.push(ghostElement);
                 makeGhost();
                 showdata();
             }
-
             break;
 
         case mouseModes.EDGE_CREATION:
             if (context.length > 1)
             {
-                var newLine = { 
-                    id: makeRandomID(), 
-                    fromID: context[0].id, 
-                    toID: context[1].id, 
-                    kind: "Normal" 
-                };
-
-                lines.push(newLine);
-                stateMachine.save(StateChangeFactory.LineAdded(newLine));
-
+                // TODO: Change the static variable to make it possible to create different lines.
+                addLine(context[0], context[1], "Normal");
                 context = [];
                 updatepos(0,0);
             }
@@ -735,7 +430,7 @@ function mup(event)
                     }
                     else if (mouseMode == mouseModes.POINTER)
                     {
-                        updateSelection(null, undefined, undefined);
+                        updateSelection(null);
                     }
                 }
             }
@@ -750,20 +445,15 @@ function mup(event)
                 mouseMode_onMouseUp(event);
             }
             // Normal mode
-            else
+            else 
             {
-                if (deltaX != 0 || deltaY != 0 && context.length > 0)
+                if (context.length > 0)
                 {
-                    id_list = [];
-
                     context.forEach(item => // Move all selected items
                     {
                         eventElementId = event.target.parentElement.parentElement.id;
                         setPos(item.id, deltaX, deltaY);
-                        id_list.push(item.id);
                     });
-
-                    stateMachine.save(StateChangeFactory.ElementsMoved(id_list, -(deltaX / zoomfact), -(deltaY / zoomfact)));
                 }
             }
             break;
@@ -896,6 +586,7 @@ function mouseMode_onMouseMove(event)
                 showdata();
             }
             break;
+
         case mouseModes.EDGE_CREATION:
         case mouseModes.POINTER: // do nothing
             break;
@@ -925,6 +616,9 @@ function mmoving(event)
             // Update scroll position
             updatepos(null, null);
 
+            // Update the ruler
+            drawRulerBars();
+
             // Remember that mouse has moved out of starting bounds
             if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
             {
@@ -949,51 +643,21 @@ function mmoving(event)
             break;
 
         case pointerStates.CLICKED_NODE:
-            var index = findIndex(data, context[0].id);
-            var elementData = data[index];
-            
-            const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
-            
-            if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth)
-            {
-                // Fetch original width
-                var tmp = elementData.width;
-                elementData.width = (startWidth - (deltaX / zoomfact));
-
-                // Remove the new width, giving us the total change
-                const widthChange = -(tmp - elementData.width);
-                
-                // Right node will never change the position of the element. We pass 0 as x and y movement.
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, 0, widthChange, 0));
-            }
-            else if (!startNodeRight && (startWidth + (deltaX / zoomfact)) > minWidth)
-            {
-                // Fetch original width
-                var tmp = elementData.width;
-                elementData.width = (startWidth + (deltaX / zoomfact));
-
-                // Deduct the new width, giving us the total change
-                const widthChange = -(tmp - elementData.width);
-
-                // Fetch original x-position
-                tmp = elementData.x;
-                elementData.x = screenToDiagramCoordinates((startX - deltaX), 0).x;
-
-                // Deduct the new position, giving us the total change
-                const xChange = -(tmp - elementData.x);
-                
-                stateMachine.save(StateChangeFactory.ElementResized(elementData.id, xChange, 0, widthChange, 0));
-            }
-            
-            // Remove DOM element
+            var index = findIndex(data, context[0].id);
             var element = document.getElementById(context[0].id);
+
+            const minWidth = 20; // Declare the minimal with of an object
+
+            if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth){
+                data[index].width = (startWidth - (deltaX / zoomfact));
+            } else if (!startNodeRight && (startWidth + (deltaX / zoomfact)) > minWidth){
+                data[index].x = screenToDiagramCoordinates((startX - deltaX), 0).x;
+                data[index].width = (startWidth + (deltaX / zoomfact));
+            }
+
             element.remove();
-
-            // Re-introduce DOM element with correct values
-            document.getElementById("container").innerHTML += drawElement(elementData);
-
-            // Re-draw the DOM elements
+            document.getElementById("container").innerHTML += drawElement(data[index]);
             updatepos(null, null);
             break;
 
@@ -1023,11 +687,6 @@ function fab_action()
 //                                         Helper functions
 //------------------------------------=======############==========----------------------------------------
 
-function stringNotEmpty (value)
-{
-    return (value && value.length > 0);
-}
-
 // Returns TRUE if an enum contains the tested value
 function enumContainsPropertyValue(value, enumObject) 
 {
@@ -1043,26 +702,12 @@ function enumContainsPropertyValue(value, enumObject)
     return false;
 }
 
-/**
- * @param {number} x position 
- * @param {number} y position
- * @returns {Point} Point with passed x and y positions.
- * @deprecated Use 'new Point()' instead.
- */
 function getPoint (x,y)
 {
-    return new Point(x, y);
-}
-
-/**
- * @param {Point} p1
- * @param {Point} p2
- * @returns {Point} Point with passed x and y positions.
- * @deprecated Use 'p1.add(p2)' instead!
- */
-function addPoints(p1, p2)
-{
-    return new Point(p1.x + p2.x, p1.y + p2.y);
+    return {
+        x: x,
+        y: y
+    };
 }
 
 function getRectFromPoints(p1, p2)
@@ -1199,7 +844,7 @@ function onMouseModeEnabled()
     }
 }
 
-function onMouseModeDisabled(mode)
+function onMouseModeDisabled()
 {
     switch (mouseMode) {
         case mouseModes.POINTER:
@@ -1496,11 +1141,6 @@ function showdata()
 {
     updateContainerBounds();
 
-    canvas = document.getElementById('canvasOverlay');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    ctx = canvas.getContext('2d');
-
     var str = "";
     var courses = [];
 
@@ -1517,6 +1157,45 @@ function showdata()
 
     container.innerHTML = str;
     updatepos(null, null);
+
+}
+//-------------------------------------------------------------------------------------------------
+// addLine - Adds an new line if the requirements and rules are achieved
+//-------------------------------------------------------------------------------------------------
+function addLine(fromElement, toElement, kind){
+    // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
+    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ){
+
+        // Filter the existing lines and gets the number of existing lines
+        var numOfExistingLines = lines.filter(function (line) {
+            return (fromElement.id === line.fromID &&
+                    toElement.id === line.toID ||
+                    fromElement.id === line.toID &&
+                    toElement.id === line.fromID)
+                    }).length;
+
+        // Define a boolean for special case that relation and entity can have 2 lines
+        var specialCase = (fromElement.kind === "ERRelation" &&
+                            toElement.kind === "EREntity" ||
+                            fromElement.kind === "EREntity" &&
+                            toElement.kind === "ERRelation");
+
+        // If there is no existing lines or is a special case
+        if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)){
+
+            // Adds the line
+            lines.push({
+                id: makeRandomID(),
+                fromID: fromElement.id,
+                toID: toElement.id,
+                kind: kind
+            });
+        }else {
+            // TODO: Display an error-message to the user (Maximal amount of lines between elements)
+        }
+    }else {
+        // TODO: Display an error-message to the user (Cant make lines between those elements)
+    }
 }
 
 function drawElement(element, ghosted = false)
@@ -1530,12 +1209,17 @@ function drawElement(element, ghosted = false)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    
+
+    canvas = document.getElementById('canvasOverlay');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvasContext = canvas.getContext('2d');
+
     // Caclulate font width using some canvas magic
-    var font = ctx.font;
+    var font = canvasContext.font;
     font = `${texth}px ${font.split('px')[1]}`;
-    ctx.font = font;
-    var textWidth = ctx.measureText(element.name).width;
+    canvasContext.font = font;
+    var textWidth = canvasContext.measureText(element.name).width;
     
     // If calculated size is larger than element width
     const margin = 10;
@@ -1564,12 +1248,21 @@ function drawElement(element, ghosted = false)
     // Create svg 
     if (element.kind == "EREntity")
     {
+        var weak = "";
 
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' 
+        if(element.state == "weak")
+        {
+            weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
+            stroke-width='${linew}' stroke='black' fill='#ffccdc' />
+            <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
+            `;         
+        }
+        
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
                    stroke-width='${linew}' stroke='black' fill='#ffccdc' />
+                   ${weak}
                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                    `;
-
     }
     else if (element.kind == "ERAttr")
     {
@@ -1600,8 +1293,13 @@ function drawElement(element, ghosted = false)
                     
                     ${multi}
 
-                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-                    `;
+                    <text x='${xAnchor}' y='${hboxh}' `;
+
+        if(element.state == "key"){
+            str += `class='underline'`;
+        }    
+            str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+            `;
     }
     else if (element.kind == "ERRelation")
     {
@@ -1667,7 +1365,7 @@ function updateSelectedLine(selectedLine)
     }
 }
 
-function updateSelection(ctxelement, x, y)
+function updateSelection(ctxelement)
 {
     // If CTRL is pressed and an element is selected
     if (ctrlPressed && ctxelement != null)
@@ -1707,6 +1405,9 @@ function updateSelection(ctxelement, x, y)
     {
         context = [];
     }
+
+    // Generate the properties field in options-pane
+    generateContextProperties();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1716,8 +1417,6 @@ function updateSelection(ctxelement, x, y)
 function updatepos(deltaX, deltaY)
 {
     updateCSSForAllElements();
-
-    generateContextProperties();
 
     // Update svg backlayer -- place everyhing to draw OVER elements here
     var str = "";
@@ -1779,37 +1478,27 @@ function saveProperties()
     const propSet = document.getElementById("propertyFieldset");
     const element = context[0];
     const children = propSet.children;
-
-    var propsChanged = [];
-
-    for (let index = 0; index < children.length; index++)
-    {
+    for (let index = 0; index < children.length; index++) {
         const child = children[index];
         const propName = child.id.split(`_`)[1];
-        switch (propName)
-        {
+        switch (propName) {
             case "name":
                 const value = child.value.trim();
-                if (stringNotEmpty(value) && value !== element.name)
-                {
+                if (value && value.length > 0) {
                     element.name = value;
-
-                    propsChanged[propName] = value;
                 }
-                break;
 
+                break;
+        
             default:
                 break;
         }
     }
-
-    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged));
     showdata();
     updatepos(0,0);
 }
 
-function changeState()
-{
+function changeState() {
     var property = document.getElementById("propertySelect").value;
     var element = context[0];
     element.state = property;
@@ -1845,6 +1534,10 @@ function generateContextProperties()
 
         //Creates drop down for changing state of ER elements
         var value;
+        var selected = context[0].state;
+        if(selected == undefined){
+            selected = "normal"
+        }
         if(element.kind=="ERAttr"){
             value = Object.values(attrState);
         }
@@ -1856,7 +1549,12 @@ function generateContextProperties()
         }
         str += '<select id="propertySelect">';
             for (i = 0; i < value.length; i++) {
-                str += '<option value='+value[i]+'>'+ value[i] +'</option>';
+                if (selected != value[i]) {
+                    str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                }
+                else if(selected == value[i]){
+                    str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                }
             }
         str += '</select>'; 
         str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
@@ -2116,7 +1814,12 @@ function redrawArrows(str)
     {
         var currentline = lines[i];
         var felem, telem, dx, dy;
-
+        var lineColor = '#f44';
+        if(contextLine.includes(currentline))
+        {
+            lineColor = '#00ff00';
+        }
+        
         felem = data[findIndex(data, currentline.fromID)];
         telem = data[findIndex(data, currentline.toID)];
 
@@ -2151,7 +1854,7 @@ function redrawArrows(str)
 
         if (currentline.kind == "Normal")
         {
-            str += `<line x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='#f44' stroke-width='${strokewidth}' />`;
+            str += `<line id='${currentline.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
         } else if (currentline.kind == "Double")
         {
             // We mirror the line vector
@@ -2161,13 +1864,13 @@ function redrawArrows(str)
             dy = dy / len;
             dx = dx / len;
             var cstmOffSet = 1.4;
-            str += `<line x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='#f44' stroke-width='${strokewidth}' />`;
-            str += `<line x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='#f44' stroke-width='${strokewidth}' />`;
+            str += `<line id='${currentline.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+            str += `<line id='${currentline.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
         }
 
     }
 
-    
+
     return str;
 }
 
@@ -2248,33 +1951,18 @@ function drawRulerBars(){
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
 
-// Function to remove elemets and lines
-function removeElements(elementArray)
-{
-    var linesToRemove = [];
-    
-    stateMachine.save(StateChangeFactory.ElementsDeleted(elementArray));
-    for (var i = 0; i < elementArray.length; i++)
-    {
-        // Remove element
-        data = data.filter(function(element)
-        {
+//Function to remove elemets and lines
+function removeElements(elementArray){
+    for(var i = 0; i < elementArray.length; i++){
+        //Remove element
+        data=data.filter(function(element) {
             return element != elementArray[i];
         });
-
-        // Add lines to "linesToRemove"
-        linesToRemove = linesToRemove.concat(lines.filter(function(line)
-        {
-            return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
-        }));
+        //Remove lines
+        lines= lines.filter(function(line){
+            return line.fromID != elementArray[i].id && line.toID != elementArray[i].id;
+        });
     }
-
-    stateMachine.save(StateChangeFactory.LinesRemoved(linesToRemove));
-    lines = lines.filter(function(line)
-    {
-        return !(linesToRemove.includes(line));
-    });
-    
     context = [];
     redrawArrows();
     showdata();
