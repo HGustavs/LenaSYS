@@ -179,16 +179,15 @@ if($demo){
 			$param=html_entity_decode($variant['param']);
 		}
 	}
-
+	//Makes sure that the localstorage variant is set before retrieving data from database
 	if(isset($localStorageVariant)) {
-		// We are not logged in - provide the first variant as demo.
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
 		$query->bindParam(':vid', $localStorageVariant);
 		$query->execute();
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
 	}
-
+	
 	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
 	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
 	$query->execute();
