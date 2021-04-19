@@ -803,6 +803,22 @@ p {
 
 }
 
+/*Swimlane styling*/
+#statisticsSwimlanes {
+  display: flex;
+  overflow:auto;
+  border: 2px solid darkgray; 
+  background-color: var(--color-sectioned-table-lo);
+}
+
+#swimlaneSVG {
+  max-height: 300px;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+}
+
 .item {
   /*padding-top: 4px;*/
   min-height: 30px;
