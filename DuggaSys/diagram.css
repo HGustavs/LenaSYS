@@ -240,3 +240,38 @@
     opacity: 0.7;
     display: none;
 }
+
+/*tooltip*/
+
+.diagramIcons{
+    position: relative;
+}
+
+.diagramIcons .toolTipText{
+    top:-5px;
+    left:105%;
+    visibility: hidden;
+    width: 250px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px 0;
+    
+
+    position: absolute;
+    z-index: 2;
+}
+
+.diagramIcons:hover .toolTipText{
+    visibility: visible;
+}
+
+.diagramIcons:not(:hover) .toolTipText{
+    visibility: hidden;
+}
+
+.tooltip{
+    position: absolute;
+    z-index: 1;
+}
