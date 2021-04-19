@@ -14,6 +14,7 @@ var resave = false;
 var versnme = "UNKz";
 var versnr;
 var motd;
+var deleteItemList = [];
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -304,13 +305,21 @@ function confirmBox(operation, item = null) {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
-  } else if (operation == "deleteItem") {
+  } else if (operation == "deleteItem" && deleteItemList.length == 0) {
     deleteItem(active_lid);
+    $("#sectionConfirmBox").css("display", "none");
+  } else if (operation == "deleteItem" && !deleteItemList.length == 0) {
+    deleteMarkedItems(deleteItemList)
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
     $("#noMaterialConfirmBox").css("display", "none");
   }
+}
+
+function markedItems(item = null){
+  active_lid = item ? $(item).parents('table').attr('value') : null;
+  deleteItemList.push(active_lid);
 }
 
 function closeSelect() {
@@ -419,13 +428,28 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-function deleteItem(item_lid = null) {
-  var lid = item_lid ? item_lid : $("#lid").val();
-  AJAXService("DEL", {
-    lid: lid
-  }, "SECTION");
-  $("#editSection").css("display", "none");
+function deleteItem(item_lid = null) { 
+   var lid = item_lid ? item_lid : $("#lid").val();
+    AJAXService("DEL", {
+      lid: lid
+    }, "SECTION");
+    $("#editSection").css("display", "none");
 }
+
+//----------------------------------------------------------------------------------
+// deleteMarkedItems: Deletes Item from Section List
+//----------------------------------------------------------------------------------
+
+function deleteMarkedItems() {
+  for (i=0; i < deleteItemList.length; i++) {  
+    var lid = deleteItemList[i];
+      AJAXService("DEL", {
+        lid: lid
+      }, "SECTION");
+      $("#editSection").css("display", "none");
+    }
+    deleteItemList = [];
+  }
 
 //----------------------------------------------------------------------------------
 // updateItem: Updates Item from Section List
@@ -1043,9 +1067,17 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
           ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
           str += "<img alt='trashcan icon' id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
-          str += "<input type='checkbox' name='delete[]' value='<?= $lid ?>'";
           str += "</td>";
         }
+
+        // checkbox
+        if (data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
+            str += "<input type='checkbox' onclick='markedItems(this)'>";
+            str += "</td>";      
+        }
+        
 
         str += "</tr>";
         str += "</table></div>";
