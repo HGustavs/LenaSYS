@@ -245,3 +245,7 @@
     opacity: 0.7;
     display: none;
 }
+
+#fieldsetBox {
+    margin-left: 20px;
+}
