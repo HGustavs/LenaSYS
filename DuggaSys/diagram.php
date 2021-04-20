@@ -455,22 +455,22 @@
     <div id="diagram-toolbar">
         <fieldset>
             <legend>Modes</legend>
-            <div class="diagramIcons" onclick='setMouseMode(0);'>
+            <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                 <img src="../Shared/icons/diagram_pointer.svg"/>
             </div>
-            <div class="diagramIcons" onclick='setMouseMode(1);'>
+            <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                 <img src="../Shared/icons/diagram_box_select.svg"/>
             </div>
-            <div class="diagramIcons" onclick='setElementPlacementType(0); setMouseMode(2);'>
+            <div id="elementPlacement0" class="diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);'>
                 <img src="../Shared/icons/diagram_entity.svg"/>
             </div>
-            <div class="diagramIcons" onclick='setElementPlacementType(1); setMouseMode(2);'>
+            <div id="elementPlacement1" class="diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);'>
                 <img src="../Shared/icons/diagram_relation.svg"/>
             </div>
-            <div class="diagramIcons" onclick='setElementPlacementType(2); setMouseMode(2);'>
+            <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
                 <img src="../Shared/icons/diagram_attribute.svg"/>
             </div>
-            <div class="diagramIcons" onclick='setMouseMode(3);'>
+            <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='setMouseMode(3);'>
                 <img src="../Shared/icons/diagram_line.svg"/>
             </div>
         </fieldset>

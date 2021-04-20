@@ -187,7 +187,7 @@
     border: solid 1px #eb4;
     margin-top:5px;
 }
-.diagramIcons:hover{
+.diagramIcons:hover, .active{
     background:#cc9923;
     border: solid 1px #b28210;
 }
