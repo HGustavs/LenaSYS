@@ -476,8 +476,12 @@
         </fieldset>
         <fieldset>
             <legend>Zoom</legend>
-            <input class="zoomButtons" type="button" value="+" onclick='zoomin();' />
-            <input class="zoomButtons" type="button" value="-" onclick='zoomout();' />
+            <div class="diagramIcons" onclick='zoomin();'>
+                <img src="../Shared/icons/diagram_zoomin.svg"/>
+            </div>
+            <div class="diagramIcons" onclick='zoomout();'>
+                <img src="../Shared/icons/diagram_zoomout.svg"/>
+            </div>
         </fieldset>
     </div>
 

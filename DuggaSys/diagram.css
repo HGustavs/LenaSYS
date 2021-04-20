@@ -100,16 +100,6 @@
 .hide {
     display: none;
 }	
-.zoomButtons{
-    display: inline-block;
-    width: 36px;
-    height: 36px;
-    padding: 5px;
-}
-
-.paneButtons:hover {
-    cursor:pointer;
-}
 
 .element {
     font-size: small;
