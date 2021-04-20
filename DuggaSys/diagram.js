@@ -1311,6 +1311,7 @@ function toggleRuler(){
     }
 
     isRulerActive = !isRulerActive;
+    drawRulerBars();
 }
 
 function setElementPlacementType(type = 0)
