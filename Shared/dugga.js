@@ -1341,9 +1341,25 @@ function hideHashBox(){
 }
 
 function checkHashPassword(){
-	var temp;
-	temp = document.getElementById('passwordfield').value;
-	console.log(temp);
+	var password;
+	hash = $('hash').text();
+	password = document.getElementById('passwordfield').value;
+	console.log(password);
+	console.log(hash);
+	$.ajax({
+        url: "../Shared/hashpasswordauth.php",
+        data: {password:password, hash:hash},
+        type: "POST",
+        success: function(data){
+        	var value = JSON.parse(data).auth;
+        	console.log(value);
+        	if(value){
+        		console.log('Success!');
+        	}else{
+        		console.log('Fail!');
+        	}
+		}
+	});
 }
 
 function showSecurityPopup()
