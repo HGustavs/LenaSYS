@@ -1292,17 +1292,14 @@ function enableGrid(){
 function enableRuler(){
 
     var ruler = document.getElementById("rulerOverlay");
-    var buttonName = document.getElementById("rulerButton");
 
     if(ruler.style.display == "block")
     {
         ruler.style.display = "none";
-        buttonName.value = "Enable Ruler";
 
     }else
     {
         ruler.style.display = "block";
-        buttonName.value = "Disable Ruler";
     }
 
 }
