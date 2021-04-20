@@ -16,6 +16,7 @@ var pressTimer;
 var hash;
 var pwd;
 var localStorageVariant;
+var ishashindb;
 var duggaTitle;
 var iconFlag = false;
 
@@ -965,6 +966,7 @@ function AJAXService(opt,apara,kind)
 				success: function(data) {
 					returnedDugga(data);
 					console.log(data);
+					ishashindb = data['ishashindb'];
 				}
 				//success: returnedDugga
 			});
