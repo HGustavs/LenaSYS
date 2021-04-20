@@ -16,6 +16,7 @@ var querystring=parseGet();
 var pressTimer;
 var hash;
 var pwd;
+var newvariant;
 
 var localStorageVariant;
 var duggaTitle;
@@ -983,7 +984,7 @@ function AJAXService(opt,apara,kind)
 				success: function (data) {
 					//Returns data from database
 					returnedDugga(data);
-					var newvariant = data['variant'];
+					newvariant = data['variant'];
 					var variantsize = data['variantsize'];
 					//Used to set the variant size to the correct size. Its initially set to 100 to wrap all available dugga IDs
 					localStorage.setItem("variantSize", variantsize);

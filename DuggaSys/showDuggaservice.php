@@ -196,6 +196,10 @@ if($demo){
 	
 } else if ($hr){
 
+	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
+	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
+	$query->execute();
+	$variantsize = $query->fetchColumn();
 
 	if($isIndb){ // If dugga is in database, get the variant from the database
 		if($insertparam == false){
