@@ -1341,19 +1341,20 @@ function hideHashBox(){
 }
 
 function checkHashPassword(){
-	var password;
-	hash = $('hash').text();
-	password = document.getElementById('passwordfield').value;
-	console.log(password);
-	console.log(hash);
+	
+	var hash = $('hash').text();
+	var password = document.getElementById('passwordfield').value;
+	
 	$.ajax({
         url: "../Shared/hashpasswordauth.php",
         data: {password:password, hash:hash},
         type: "POST",
         success: function(data){
-        	var value = JSON.parse(data).auth;
-        	console.log(value);
-        	if(value){
+        	var d = JSON.parse(data);
+            var auth = d.auth
+            console.log(d);
+            if(auth){
+
         		console.log('Success!');
         	}else{
         		console.log('Fail!');
