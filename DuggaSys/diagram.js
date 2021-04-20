@@ -642,7 +642,7 @@ function screenToDiagramCoordinates(mouseX, mouseY)
             ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 // the 2 makes mouse hover over container
         ),
         y: Math.round(
-            ((mouseY - 86) / zoomfact - scrolly) + zoomX * scrolly
+            ((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly
         ),
     };
 }
@@ -652,7 +652,7 @@ function diagramToScreenPosition(coordX, coordY)
 {
     return {
         x: Math.round((coordX + scrollx) / zoomfact + 0),
-        y: Math.round((coordY + scrolly) / zoomfact + 86),
+        y: Math.round((coordY + scrolly) / zoomfact + 0),
     };
 }
 
@@ -764,6 +764,7 @@ function mouseMode_onMouseUp(event)
 
         case mouseModes.BOX_SELECTION:
             boxSelect_End();
+            generateContextProperties();
             break;
 
         case mouseModes.POINTER: // do nothing
@@ -1222,6 +1223,10 @@ function setCursorStyles(cursorMode = 0)
 
 function onMouseModeEnabled()
 {
+    // Add the diagramActive to current diagramIcon
+    if (mouseMode === mouseModes.PLACING_ELEMENT) document.getElementById("elementPlacement" + elementTypeSelected).classList.add("active")
+    else document.getElementById("mouseMode" + mouseMode).classList.add("active")
+
     switch (mouseMode) {
         case mouseModes.POINTER:
             break;
@@ -1244,6 +1249,12 @@ function onMouseModeEnabled()
 
 function onMouseModeDisabled()
 {
+    // Remove all "active" classes in nav bar
+    var navButtons = document.getElementsByClassName("toolbarMode");
+    for (var i = 0; i < navButtons.length; i++) {
+        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
+    }
+
     switch (mouseMode) {
         case mouseModes.POINTER:
             break;
@@ -1268,17 +1279,14 @@ function onMouseModeDisabled()
 function enableGrid(){
 
     var grid = document.getElementById("svggrid");
-    var buttonName = document.getElementById("gridButton");
 
     if(grid.style.display == "block")
     {
         grid.style.display = "none";
-        buttonName.value = "Enable Grid";
 
     }else
     {
         grid.style.display = "block";
-        buttonName.value = "Disable Grid";
     }
 }
 function enableRuler(){
@@ -2335,7 +2343,7 @@ function removeNodes(element) {
 //-------------------------------------------------------------------------------------------------
 function setRulerPosition(x, y) {
     document.getElementById("ruler-x").style.left = x - 51 + "px";
-    document.getElementById("ruler-y").style.top = y - 125 + "px";
+    document.getElementById("ruler-y").style.top = y + "px";
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -2351,6 +2359,7 @@ function drawRulerBars(){
     var barY, barX = "";
     const color = "black";
 
+ 
     //Draw the Y-axis ruler.
     var lineNumber = (fullLineRatio - 1);
     for (i = 40;i <= cheight; i += lineRatio){
@@ -2358,14 +2367,15 @@ function drawRulerBars(){
 
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio){
-            var cordY = screenToDiagramCoordinates(0,86 + i).y;
+            var cordY = screenToDiagramCoordinates(0, i).y;
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(i)+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
             barY += "<text x='2' y='"+(i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
         }
         else barY += "<line x1='25px' y1='"+i+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
     }
-
+    svgY.style.backgroundColor = "#e6e6e6";
+    svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
 
     //Draw the X-axis ruler.
@@ -2383,6 +2393,8 @@ function drawRulerBars(){
         else barX += "<line x1='" +i+"' y1='25' x2='" +i+"' y2='40px' stroke='" + color + "' />";
 
     }
+    svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
+    svgX.style.backgroundColor = "#e6e6e6";
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
 
