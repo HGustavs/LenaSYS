@@ -458,13 +458,14 @@ function setExpireTime(key, value, ttl){
 function getExpireTime(key){
 	const itemString = localStorage.getItem(key)
 
-	if(!itemStr){
+	if(!itemString){
 		return null
 	}
 	const item = JSON.parse(itemString)
 	const now = new Date()
 
-	if(now-getTime() > item.expiry){
+	if(now.getTime() > item.expiry){
+		console.log(key + " has expired")
 		localStorage.removeItem(key)
 		return null
 	}

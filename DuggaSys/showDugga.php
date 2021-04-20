@@ -249,10 +249,14 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		var newvariant = '<?php echo $newvariant; ?>';
 		
 		if(localStorage.getItem(localStorageName) == null){
-			localStorage.setItem(localStorageName, newvariant);
+			//localStorage.setItem(localStorageName, newvariant);
+			setExpireTime(localStorageName, newvariant, 10000);
 		}
+		getExpireTime(localStorageName);
+
 		variant = JSON.parse(localStorage.getItem(localStorageName));
 		setVariant(variant);
+		//setExpireTime(variant, )
 	}
 
 	variant = JSON.parse(localStorage.getItem(localStorageName));
