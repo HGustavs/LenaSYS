@@ -45,10 +45,6 @@
 	$readaccess=false;
 	$checklogin=false;
 	
-	$variantsize;
-	$variants=array();
-	$duggaid=getOPG('did');
-	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
 
 	if(isset($_SESSION['uid'])){
@@ -56,106 +52,6 @@
 	}else{
 		$userid="UNK";
 	}
-
-
-	// Get type of dugga
-	$query = $pdo->prepare("SELECT * FROM quiz WHERE id=:duggaid;");
-	$query->bindParam(':duggaid', $duggaid);
-	$result=$query->execute();
-	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"quizfile Querying Error!");
-	foreach($query->fetchAll() as $row) {
-		$duggainfo=$row;
-		$quizfile = $row['quizFile'];
-	}
-
-	// Retrieve all dugga variants
-	$firstvariant=-1;
-	$query = $pdo->prepare("SELECT vid,param,disabled FROM variant WHERE quizID=:duggaid;");
-	$query->bindParam(':duggaid', $duggaid);
-	$result=$query->execute();
-	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"variant Querying Error!");
-	$i=0;
-	foreach($query->fetchAll() as $row) {
-		if($row['disabled']==0) $firstvariant=$i;
-		$variants[$i]=array(
-			'vid' => $row['vid'],
-			'param' => $row['param'],
-			'disabled' => $row['disabled']
-		);
-		$i++;
-		$insertparam = true;
-	}
-	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-	$query->bindParam(':cid', $courseid);
-	$query->bindParam(':coursevers', $coursevers);
-	$query->bindParam(':uid', $userid);
-	$query->bindParam(':moment', $moment);
-	$result = $query->execute();
-	
-	$savedvariant="UNK";
-	$newvariant="UNK";
-	$savedanswer="UNK";
-	$isIndb=false;
-
-	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-		$savedvariant=$row['variant'];
-		$savedanswer=$row['useranswer'];
-		$score = $row['score'];
-		$isIndb=true;
-		if ($row['feedback'] != null){
-				$duggafeedback = $row['feedback'];
-		} else {
-				$duggafeedback = "UNK";
-		}
-		$grade = $row['grade'];
-		$submitted = $row['submitted'];
-		$marked = $row['marked'];
-	}
-	
-	// If selected variant is not found - pick another from working list.
-	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
-	$foundvar=-1;
-	foreach ($variants as $key => $value){
-			if($savedvariant==$value['vid']&&$value['disabled']==0) $foundvar=$key;
-	}
-	if($foundvar==-1){
-			$savedvariant="UNK";
-	}
-
-	// If there are many variants, randomize
-	if($savedvariant==""||$savedvariant=="UNK"){
-		// Randomize at most 8 times
-		$cnt=0;
-		do{
-				$randomno=rand(0,sizeof($variants)-1);
-				
-				// If there is a variant choose one at random
-				if(sizeof($variants)>0){
-						if($variants[$randomno]['disabled']==0){
-								$newvariant=$variants[$randomno]['vid'];						
-						}
-				} 
-				$cnt++;
-		}while($cnt<8&&$newvariant=="UNK");
-		
-		// if none has been chosen and there is a first one take that one.
-		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
-	}else{
-		// There is a variant already -- do nothing!	
-	}
-
-	$savedvariant=$newvariant;
-
-	// Retrieve variant
-	if($insertparam == false){
-			$param="NONE!";
-	}
-	foreach ($variants as $variant) {
-		if($variant["vid"] == $savedvariant){
-				$param=html_entity_decode($variant['param']);
-		}
-	}
-
 
 	// Gets username based on uid, USED FOR LOGGING
 	$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
@@ -232,27 +128,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		}
 ?>
 
-<!-- Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database -->
-<?php
-	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
-	$query->execute();
-	$variantsize = $query->fetchColumn();
-?>
-<script type="text/javascript">
-	// This if-statement will only store to localstorage if there is a variant.quizID
-	// that match $duggaid. This is to prevent unecessary local storage when there is no matching variant, and in doing so, prevent swelling of the local storage
-	if(<?php echo $duggaid; ?> <= <?php echo $variantsize; ?>) {
-		// localStorageName is unique and depends on did
-		var localStorageName = "duggaID: " + '<?php echo $duggaid; ?>';
-		var variant;
-		var newvariant = '<?php echo $newvariant; ?>';
-		
-		if(localStorage.getItem(localStorageName) == null){
-			localStorage.setItem(localStorageName, newvariant);
-		}
-		variant = JSON.parse(localStorage.getItem(localStorageName));
-		//setVariant(variant);
-	}
 </script>
 	<?php
 		$noup="SECTION";
