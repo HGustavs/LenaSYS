@@ -262,10 +262,6 @@
     visibility: visible;
 }
 
-.diagramIcons:not(:hover) .toolTipText{
-    visibility: hidden;
-}
-
 .tooltip{
     position: absolute;
     z-index: 1;
