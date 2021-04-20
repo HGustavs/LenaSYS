@@ -442,6 +442,35 @@ function setExpireCookieLogOut() {
     }
 }
 
+//Försök till att skapa TTL för localstorage //TTL value är i millisekunder
+function setExpireTime(key, value, ttl){
+	const now = new Date();
+
+	//Item is an object which contains the original value
+	//as well as the time when its supposed to expire
+	const item = {
+		value: value,
+		expiry: now.getTime() + ttl,
+	}
+	localStorage.setItem(key, JSON.stringify(item))
+}
+//Lazily expiring the item (Its only checked when retrieved from storage)
+function getExpireTIme(key){
+	const itemString = localStorage.getItem(key)
+
+	if(!itemStr){
+		return null
+	}
+	const item = JSON.parse(itemString)
+	const now = new Date()
+
+	if(now-getTime() > item.expiry){
+		localStorage.removeItem(key)
+		return null
+	}
+	return item.value
+}
+
 //----------------------------------------------------------------------------------
 function closeWindows(){
 	var index_highest = 0;
