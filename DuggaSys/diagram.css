@@ -280,3 +280,7 @@
     position: absolute;
     z-index: 1;
 }
+
+#fieldsetBox {
+    margin-left: 20px;
+}

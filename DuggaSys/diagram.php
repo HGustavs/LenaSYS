@@ -539,7 +539,7 @@
     <div id="fab" onclick="fab_action();">+</div> <!-- Big (+) button -->
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
-        <div>
+        <div id ="fieldsetBox">
             <fieldset id='cursorModeFieldset'>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
                 <input class="paneButtons" id="gridButton" type="button" value="Enable Grid" onclick='enableGrid()' /><br>
