@@ -122,7 +122,7 @@
                 <div id="gridToggle" class="diagramIcons" onclick='enableGrid()'>
                     <img src="../Shared/icons/diagram_grid.svg"/>
                 </div>
-                <div id="rulerToggle" class="diagramIcons" onclick='enableRuler()'>
+                <div id="rulerToggle" class="diagramIcons" onclick='toggleRuler()'>
                     <img src="../Shared/icons/diagram_ruler.svg"/>
                 </div>
             </fieldset>
