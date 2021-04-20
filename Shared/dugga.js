@@ -1355,7 +1355,8 @@ function checkHashPassword(){
             console.log(d);
             if(auth){
         		console.log('Success!');
-        		sessionStorage.setItem('hashpassword', d.password);
+    			'<%Session["hashpassword"] = "' + password + '"; %>';
+     			alert('<%=Session["hashpassword"] %>');
         		hideHashBox();
         		reloadPage();
         	}else{
