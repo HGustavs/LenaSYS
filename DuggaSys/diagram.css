@@ -58,7 +58,7 @@
 
 #options-pane {
     position: fixed;
-    top: 130px;
+    top: 0px;
     width: 280px;
     bottom: 120px;
     z-index: 5000;
