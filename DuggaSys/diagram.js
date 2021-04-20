@@ -1222,6 +1222,10 @@ function setCursorStyles(cursorMode = 0)
 
 function onMouseModeEnabled()
 {
+    // Add the diagramActive to current diagramIcon
+    if (mouseMode === mouseModes.PLACING_ELEMENT) document.getElementById("elementPlacement" + elementTypeSelected).classList.add("active")
+    else document.getElementById("mouseMode" + mouseMode).classList.add("active")
+
     switch (mouseMode) {
         case mouseModes.POINTER:
             break;
@@ -1244,6 +1248,12 @@ function onMouseModeEnabled()
 
 function onMouseModeDisabled()
 {
+    // Remove all "active" classes in nav bar
+    var navButtons = document.getElementsByClassName("toolbarMode");
+    for (var i = 0; i < navButtons.length; i++) {
+        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
+    }
+
     switch (mouseMode) {
         case mouseModes.POINTER:
             break;

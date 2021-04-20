@@ -455,42 +455,42 @@
     <div id="diagram-toolbar">
         <fieldset>
             <legend>Modes</legend>
-                <div class="diagramIcons" onclick='setMouseMode(0);'>
+                <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer.svg"/>
                     <span class="toolTipText"><b>Pointer</b><br>
                     <p>Allows you to press the different entities and move around the diagram</p><br>
                     <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <div class="diagramIcons" onclick='setMouseMode(1);'>
+                <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_select.svg"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
                     <p>Select everything withing a certain area</p><br>
                     <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <div class="diagramIcons" onclick='setMouseMode(2); setElementPlacementType(0);' >
+                <div id="elementPlacement0" class="diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_entity.svg"/>
                     <span class="toolTipText"><b>Entity</b><br>
                     <p>Add an entity to the diagram</p><br>
                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <div class="diagramIcons" onclick='setMouseMode(2); setElementPlacementType(1);'>
+                <div id="elementPlacement1" class="diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_relation.svg"/>
                     <span class="toolTipText"><b>Relation</b><br>
                     <p>Add a relation between entities</p><br>
                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <div class="diagramIcons" onclick='setMouseMode(2); setElementPlacementType(2);'>
+                <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_attribute.svg"/>
                     <span class="toolTipText"><b>Attribute</b><br>
                     <p>Create an Attribute to an entity</p><br>
                     <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <div class="diagramIcons" onclick='setMouseMode(3);'>
+                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg"/>
                     <span class="toolTipText"><b>Line</b><br>
                     <p>Make a line between objects</p><br>
