@@ -518,7 +518,9 @@
         <div id ="fieldsetBox">
             <fieldset id='cursorModeFieldset'>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
-                <input class="paneButtons" id="gridButton" type="button" value="Enable Grid" onclick='enableGrid()' /><br>
+                <div class="diagramIcons" onclick='enableGrid()'>
+                    <img src="../Shared/icons/diagram_grid.svg"/>
+                </div>
             </fieldset>
             <fieldset id='propertyFieldset'>
                 
