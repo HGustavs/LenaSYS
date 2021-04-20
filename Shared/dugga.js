@@ -1352,11 +1352,8 @@ function checkHashPassword(){
         success: function(data){
         	var d = JSON.parse(data);
             var auth = d.auth
-            console.log(d);
             if(auth){
         		console.log('Success!');
-    			'<%Session["hashpassword"] = "' + password + '"; %>';
-     			alert('<%=Session["hashpassword"] %>');
         		hideHashBox();
         		reloadPage();
         	}else{
