@@ -1601,7 +1601,8 @@ function addLine(fromElement, toElement, kind){
 
             // Save changes into state machine
             stateMachine.save(StateChangeFactory.LineAdded(newLine));
-
+            
+        }else {
             displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
         }
     }else {
