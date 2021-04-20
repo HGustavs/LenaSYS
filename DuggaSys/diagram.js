@@ -1213,7 +1213,7 @@ function setCursorStyles(cursorMode = 0)
             cursorStyle.cursor = "crosshair";
             break;
         case mouseModes.PLACING_ELEMENT:
-            cursorStyle.cursor = "cell";
+            cursorStyle.cursor = "default";
             break;
         case mouseModes.EDGE_CREATION:
             cursorStyle.cursor = "grab";
