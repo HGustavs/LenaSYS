@@ -344,6 +344,19 @@ var hasRecursion = false;
 var startWidth;
 var startNodeRight = false;
 var cursorStyle;
+const keybinds = {
+        LEFT_CONTROL: "Control",
+        ALT: "Alt",
+        META: "Meta",
+        ESCAPE: "Escape",
+        BOX_SELECTION: "b",
+        POINTER: "h",
+        EDGE_CREATION: "d",
+        PLACE_ENTITY: "e",
+        PLACE_RELATION: "r",
+        PLACE_ATTRIBUTE: "a"
+};
+
 
 // Zoom variables
 var zoomfact = 1.0;
@@ -558,31 +571,31 @@ document.addEventListener('keyup', function (e)
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase()) ) {
         /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
         //  TODO : Switch cases?
-        if (e.key == "Control") ctrlPressed = false;
-        if (e.key == "Alt") altPressed = false;
-        if (e.key == "Meta") ctrlPressed = false;
-        if (e.key == "Escape") {
+        if (e.key == keybinds.LEFT_CONTROL) ctrlPressed = false;
+        if (e.key == keybinds.ALT) altPressed = false;
+        if (e.key == keybinds.META) ctrlPressed = false;
+        if (e.key == keybinds.ESCAPE) {
             escPressed = false;
         }
 
-        if (e.key == "b") {
+        if (e.key == keybinds.BOX_SELECTION) {
             setMouseMode(mouseModes.BOX_SELECTION);
         }
-        if (e.key == "m") {
+        if (e.key == keybinds.POINTER) {
             setMouseMode(mouseModes.POINTER);
         }
-        if (e.key == "d") {
+        if (e.key == keybinds.EDGE_CREATION) {
             setMouseMode(mouseModes.EDGE_CREATION);
         }
-        if (e.key == "e") {
+        if (e.key == keybinds.PLACE_ENTITY) {
             setElementPlacementType(elementTypes.ENTITY);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == "r") {
+        if (e.key == keybinds.PLACE_RELATION) {
             setElementPlacementType(elementTypes.RELATION);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == "a") {
+        if (e.key == keybinds.PLACE_ATTRIBUTE) {
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
@@ -646,7 +659,10 @@ function diagramToScreenPosition(coordX, coordY)
 //------------------------------------=======############==========----------------------------------------
 //                                           Mouse events
 //------------------------------------=======############==========----------------------------------------
-function mwheel(event){
+
+
+function mwheel(event)
+{
     if(event.deltaY < 0)
     {
         zoomin();
@@ -2431,7 +2447,24 @@ function getData()
     container = document.getElementById("container");
     showdata();
     drawRulerBars();
+    generateToolTips();
     enableGrid();
+}
+
+function generateToolTips()
+{
+    
+    var toolButtons = document.getElementsByClassName("key_tooltip");
+
+    for (var index = 0; index < toolButtons.length; index++) {
+        const element = toolButtons[index];
+        var id = element.id.split("-")[1];
+        if(Object.getOwnPropertyNames(keybinds).includes(id));
+        {
+           element.innerHTML = `Keybind: ${keybinds[id]}`;
+
+        }
+    }
 }
 
 function data_returned(ret)
