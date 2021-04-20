@@ -455,29 +455,57 @@
     <div id="diagram-toolbar">
         <fieldset>
             <legend>Modes</legend>
-            <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
-                <img src="../Shared/icons/diagram_pointer.svg"/>
-            </div>
-            <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
-                <img src="../Shared/icons/diagram_box_select.svg"/>
-            </div>
-            <div id="elementPlacement0" class="diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);'>
-                <img src="../Shared/icons/diagram_entity.svg"/>
-            </div>
-            <div id="elementPlacement1" class="diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);'>
-                <img src="../Shared/icons/diagram_relation.svg"/>
-            </div>
-            <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
-                <img src="../Shared/icons/diagram_attribute.svg"/>
-            </div>
-            <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='setMouseMode(3);'>
-                <img src="../Shared/icons/diagram_line.svg"/>
-            </div>
+                <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
+                    <img src="../Shared/icons/diagram_pointer.svg"/>
+                    <span class="toolTipText"><b>Pointer</b><br>
+                    <p>Allows you to press the different entities and move around the diagram</p><br>
+                    <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
+                    <img src="../Shared/icons/diagram_box_select.svg"/>
+                    <span class="toolTipText"><b>Box Selection</b><br>
+                    <p>Select everything withing a certain area</p><br>
+                    <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <div id="elementPlacement0" class="diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);'>
+                    <img src="../Shared/icons/diagram_entity.svg"/>
+                    <span class="toolTipText"><b>Entity</b><br>
+                    <p>Add an entity to the diagram</p><br>
+                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <div id="elementPlacement1" class="diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);'>
+                    <img src="../Shared/icons/diagram_relation.svg"/>
+                    <span class="toolTipText"><b>Relation</b><br>
+                    <p>Add a relation between entities</p><br>
+                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
+                    <img src="../Shared/icons/diagram_attribute.svg"/>
+                    <span class="toolTipText"><b>Attribute</b><br>
+                    <p>Create an Attribute to an entity</p><br>
+                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='setMouseMode(3);'>
+                    <img src="../Shared/icons/diagram_line.svg"/>
+                    <span class="toolTipText"><b>Line</b><br>
+                    <p>Make a line between objects</p><br>
+                    <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
         </fieldset>
         <fieldset>
             <legend>Zoom</legend>
-            <input class="zoomButtons" type="button" value="+" onclick='zoomin();' />
-            <input class="zoomButtons" type="button" value="-" onclick='zoomout();' />
+            <div class="diagramIcons" onclick='zoomin();'>
+                <img src="../Shared/icons/diagram_zoomin.svg"/>
+            </div>
+            <div class="diagramIcons" onclick='zoomout();'>
+                <img src="../Shared/icons/diagram_zoomout.svg"/>
+            </div>
         </fieldset>
     </div>
 
@@ -515,7 +543,7 @@
     <div id="fab" onclick="fab_action();">+</div> <!-- Big (+) button -->
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
-        <div>
+        <div id ="fieldsetBox">
             <fieldset id='cursorModeFieldset'>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
                 <input class="paneButtons" id="gridButton" type="button" value="Enable Grid" onclick='enableGrid()' /><br>
