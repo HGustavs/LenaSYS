@@ -18,6 +18,7 @@ var hasRecursion = false;
 var startWidth;
 var startNodeRight = false;
 var cursorStyle;
+var lastMousePos = getPoint(0,0);
 
 // Zoom variables
 var zoomfact = 1.0;
@@ -77,6 +78,7 @@ const elementTypes = {
     ENTITY: 0,
     RELATION: 1,
     ATTRIBUTE: 2,
+    GHOSTENTITY: 3
 };
 var elementTypeSelected = elementTypes.ENTITY;
 
@@ -138,7 +140,8 @@ var RefID = makeRandomID();
 var defaults = {
     defaultERtentity: { kind: "EREntity", fill: "White", Stroke: "Black", width: 200, height: 50 },
     defaultERrelation: { kind: "ERRelation", fill: "White", Stroke: "Black", width: 60, height: 60 },
-    defaultERattr: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 }
+    defaultERattr: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 },
+    defaultGhost: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 5, height: 5 }
 }
 
 // States used for ER-elements 
@@ -422,7 +425,7 @@ function mouseMode_onMouseUp(event)
                 // TODO: Change the static variable to make it possible to create different lines.
                 addLine(context[0], context[1], "Normal");
                 context = [];
-
+                
                 // Bust the ghosts
                 ghostElement = null;
                 ghostLine = null;
@@ -433,9 +436,10 @@ function mouseMode_onMouseUp(event)
             else if (context.length === 1)
             {
                 if (event.target.id != "container")
-                {
-                    // Create ghost line
+                {   
+                    elementTypeSelected = elementTypes.GHOSTENTITY;
                     makeGhost();
+                    // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
                 }
                 else 
@@ -658,6 +662,7 @@ function mouseMode_onMouseMove(event)
 
 function mmoving(event)
 {
+    lastMousePos = getPoint(event.clientX, event.clientY);
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
             // Compute new scroll position
@@ -800,15 +805,15 @@ function rectsIntersect (left, right)
     );
 }
 
-function makeGhost ()
+function makeGhost()
 {
     var entityType = constructElementOfType(elementTypeSelected);
     var typeNames = Object.getOwnPropertyNames(elementTypes);
-
+    var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
     ghostElement = {
         name: typeNames[elementTypeSelected],
-        x: -1000,
-        y: 0,
+        x: lastMouseCoords.x - entityType.data.width * 0.5,
+        y: lastMouseCoords.y - entityType.data.height * 0.5,
         width: entityType.data.width,
         height: entityType.data.height,
         kind: entityType.data.kind,
@@ -948,7 +953,8 @@ function constructElementOfType(type)
     var elementTemplates = [
         {data: defaults.defaultERtentity, name: "Entity"},
         {data: defaults.defaultERrelation, name: "Relation"},
-        {data: defaults.defaultERattr, name: "Attribute"}
+        {data: defaults.defaultERattr, name: "Attribute"},
+        {data: defaults.defaultGhost, name: "Ghost"}
     ]
 
     if (enumContainsPropertyValue(type, elementTypes))
@@ -1292,7 +1298,7 @@ function drawElement(element, ghosted = false)
     {
         str += `
             pointer-events: none;
-            opacity: 0.5;
+            opacity: ${ghostLine ? 0 : 0.5};
         `;
     }
     str += `'>`;
@@ -1738,7 +1744,7 @@ function sortvectors(a, b, ends, elementid, axis)
     // Retrieve opposite element - assume element center (for now)
     if (lineA.fromID == elementid)
     {
-        toElementA = data[findIndex(data, lineA.toID)];
+        toElementA = (lineA == ghostLine) ? ghostElement : data[findIndex(data, lineA.toID)];
     }
     else
     {
@@ -1746,7 +1752,7 @@ function sortvectors(a, b, ends, elementid, axis)
     }
     if (lineB.fromID == elementid)
     {
-        toElementB = data[findIndex(data, lineB.toID)];
+        toElementB = (lineB == ghostLine) ? ghostElement : data[findIndex(data, lineB.toID)];
     }
     else
     {
@@ -1962,7 +1968,6 @@ function redrawArrows(str)
 
     if (ghostLine && ghostElement)
     {
-        sortElementAssociations(ghostElement);
         str += drawLine(ghostLine, true);
     }
 
