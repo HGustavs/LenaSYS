@@ -1941,6 +1941,7 @@ function drawRulerBars(){
     var barY, barX = "";
     const color = "black";
 
+ 
     //Draw the Y-axis ruler.
     var lineNumber = (fullLineRatio - 1);
     for (i = 40;i <= cheight; i += lineRatio){
@@ -1955,7 +1956,8 @@ function drawRulerBars(){
         }
         else barY += "<line x1='25px' y1='"+i+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
     }
-
+    svgY.style.backgroundColor = "#e6e6e6";
+    svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
 
     //Draw the X-axis ruler.
@@ -1973,6 +1975,8 @@ function drawRulerBars(){
         else barX += "<line x1='" +i+"' y1='25' x2='" +i+"' y2='40px' stroke='" + color + "' />";
 
     }
+    svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
+    svgX.style.backgroundColor = "#e6e6e6";
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
 
