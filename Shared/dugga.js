@@ -53,10 +53,15 @@ function getHash(){
 }
 
 function setHash(h){
+	console.log("set hash " + ishashindb);
 	// Check if hash is unknown
 	if(h == "UNK"){
 		hash = generateHash();
 		pwd = randomPassword();
+		if(ishashindb==true){
+			hash = generateHash();
+			console.log("new hash: " + hash);
+		}
 	}else{
 		hash = h;
 	}

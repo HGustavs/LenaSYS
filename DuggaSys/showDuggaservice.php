@@ -75,11 +75,10 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
 
-$hash = "6lynI471237";
 $query = $pdo->prepare("SELECT hash FROM userAnswer WHERE hash=:hash");
 $query->bindParam(':hash', $hash);
 $result=$query->execute();
-//$hashTEST=$row['hash'];
+
 if($row = $query->fetch(PDO::FETCH_ASSOC)){
     $hashTest=$row['hash'];
     if($hashTest == null) {
