@@ -6251,6 +6251,19 @@ only screen and (max-device-width: 320px) {
   padding-top: 8px;
 }
 
+@media screen and (max-height: 600px) {
+  .fab-btn-list {
+    transform-origin: bottom left;
+    transform: rotate(270deg);
+  }
+  .fab-btn-sm {
+    transform: rotate(135deg);
+  }
+  [data-tooltip]:before {
+    bottom: 85%;
+  }
+}
+
 /* FAB scaling transition */
 
 .scale-transition {
