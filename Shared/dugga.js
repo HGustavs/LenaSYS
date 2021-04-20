@@ -455,7 +455,7 @@ function setExpireTime(key, value, ttl){
 	localStorage.setItem(key, JSON.stringify(item))
 }
 //Lazily expiring the item (Its only checked when retrieved from storage)
-function getExpireTIme(key){
+function getExpireTime(key){
 	const itemString = localStorage.getItem(key)
 
 	if(!itemStr){
