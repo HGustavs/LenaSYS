@@ -543,6 +543,7 @@ document.addEventListener('keydown', function (e)
         {
             removeElements(context); 
             removeLines(contextLine);
+            updateSelection();
         }
         if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
         if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
@@ -561,7 +562,8 @@ document.addEventListener('keydown', function (e)
         {
             removeElements(context); 
             removeLines(contextLine);
-       } 
+            updateSelection();
+        }
     }
 });
 
