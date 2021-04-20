@@ -1289,6 +1289,23 @@ function enableGrid(){
         grid.style.display = "block";
     }
 }
+function enableRuler(){
+
+    var ruler = document.getElementById("rulerOverlay");
+    var buttonName = document.getElementById("rulerButton");
+
+    if(ruler.style.display == "block")
+    {
+        ruler.style.display = "none";
+        buttonName.value = "Enable Ruler";
+
+    }else
+    {
+        ruler.style.display = "block";
+        buttonName.value = "Disable Ruler";
+    }
+
+}
 
 function setElementPlacementType(type = 0)
 {
@@ -2462,6 +2479,7 @@ function getData()
     drawRulerBars();
     generateToolTips();
     enableGrid();
+    enableRuler();
 }
 
 function generateToolTips()
