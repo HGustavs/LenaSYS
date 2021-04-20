@@ -125,7 +125,7 @@ foreach($query->fetchAll() as $row) {
 
 // -------------------------OLD FUNCTIONALITY WHERE WE CHECK IF USER IS LOGGED IN AND HAS ACESS-------------------
 
-/*
+
 if(checklogin()){
 	if((hasAccess($userid, $courseid, 'r')&&($dvisibility == 1 || $dvisibility == 2))||isSuperUser($userid)) $hr=true;
 }
@@ -136,10 +136,9 @@ $demo=false;
 if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
 if($demo){
-*/
 
 //----------------------------------- OLD FUNCTIONALITY WHERE DUGGA IS SAVED TO DB WHEN VISITED -------------------------------------------
-	/*
+	
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
 	$foundvar=-1;
@@ -231,7 +230,7 @@ if($demo){
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
 	}
-
+}
 
 //------------------------------------------------------------------------------------------------
 // Services
