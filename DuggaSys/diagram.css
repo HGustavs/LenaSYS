@@ -144,7 +144,7 @@
     position:absolute;
     left:50px;
     top:0;
-    width:100%;
+    width: calc(100% - 55px);
     height:100%;
     pointer-events: none;
 }
