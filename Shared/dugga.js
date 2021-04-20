@@ -42,6 +42,7 @@ function getAllIndexes(haystack, needle) {
 	return indexes;
 }
 
+
 function setVariant(v) {
 	console.log("variant dugga.js: " + v)
 	localStorageVariant = v;
@@ -599,15 +600,15 @@ function createUrl(hash) {
 
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
-
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
 {
-	
+
 	
 	var url = createUrl(hash); //Create URL
+	
 	console.log("url: " + url);
 	console.log("pwd: " + pwd);
 
@@ -957,12 +958,30 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
+		if(localStorage.getItem("variantSize") == null) {
+			localStorage.setItem("variantSize", 100);
+		}
+		var newInt = +localStorage.getItem('variantSize');
+		if(querystring['did'] <= newInt) {
+			if(localStorage.getItem(querystring['did']) == null){
+				localStorage.setItem(querystring['did'], 0);
+			}
+		}
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorageVariant, 
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did']), 
 				dataType: "json",
-				success: returnedDugga
+				success: function (data) {
+					returnedDugga(data);
+					var newvariants = data['variant'];
+					if(localStorage.getItem(querystring['did']) == 0){
+						localStorage.setItem(querystring['did'], newvariants);
+					}
+					var variantsize = data['variantsize'];
+					localStorage.setItem("variantSize", variantsize);
+                }
+				//success: returnedDugga
 			});
 	}else if(kind=="RESULT"){
 			$.ajax({
