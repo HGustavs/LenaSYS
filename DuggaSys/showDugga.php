@@ -299,26 +299,25 @@ function hashPassword($password, $hash){
 				return true;
 			}
 }
-
-echo '<script>console.log("'.$hashpassword.'");</script>';  	
-echo '<script>console.log("'.$hash.'");</script>';	
+	
 //Saved Dugga Login
-if(!hashPassword($hashpassword, $hash)){
-	echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
-	echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
-	echo "<div class='loginBoxheader'>";
-	echo "<h3>Login for Saved Dugga</h3>";
-	echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
-	echo "</div>";
-	echo "<p id='passwordtext'>Enter your password for the hash:</p>";
-	echo "<p id='hash' style='font-weight: bold;'>$hash</p>";
-	echo "<input id='passwordfield' name='password' class='textinput' type='password' placeholder='Password'>";
-	echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
-	echo "</div>";
-	echo "</div>";
-	exit();
+if($hash!='UNK'){
+	if(!hashPassword($hashpassword, $hash)){
+		echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
+		echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
+		echo "<div class='loginBoxheader'>";
+		echo "<h3>Login for Saved Dugga</h3>";
+		echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
+		echo "</div>";
+		echo "<p id='passwordtext'>Enter your password for the hash:</p>";
+		echo "<p id='hash' style='font-weight: bold;'>$hash</p>";
+		echo "<input id='passwordfield' name='password' class='textinput' type='password' placeholder='Password'>";
+		echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
+		echo "</div>";
+		echo "</div>";
+		exit();
+	}
 }
-
 $_SESSION['hashpassword'] = 'UNK';
 
 ?>
