@@ -302,7 +302,7 @@ function screenToDiagramCoordinates(mouseX, mouseY)
             ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 // the 2 makes mouse hover over container
         ),
         y: Math.round(
-            ((mouseY - 86) / zoomfact - scrolly) + zoomX * scrolly
+            ((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly
         ),
     };
 }
@@ -312,7 +312,7 @@ function diagramToScreenPosition(coordX, coordY)
 {
     return {
         x: Math.round((coordX + scrollx) / zoomfact + 0),
-        y: Math.round((coordY + scrolly) / zoomfact + 86),
+        y: Math.round((coordY + scrolly) / zoomfact + 0),
     };
 }
 
@@ -1928,7 +1928,7 @@ function removeNodes(element) {
 //-------------------------------------------------------------------------------------------------
 function setRulerPosition(x, y) {
     document.getElementById("ruler-x").style.left = x - 51 + "px";
-    document.getElementById("ruler-y").style.top = y - 125 + "px";
+    document.getElementById("ruler-y").style.top = y + "px";
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1951,7 +1951,7 @@ function drawRulerBars(){
 
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio){
-            var cordY = screenToDiagramCoordinates(0,86 + i).y;
+            var cordY = screenToDiagramCoordinates(0, i).y;
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(i)+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
             barY += "<text x='2' y='"+(i+10)+"' style='font-size: 10px'>"+cordY+"</text>";

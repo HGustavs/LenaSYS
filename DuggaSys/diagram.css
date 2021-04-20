@@ -1,7 +1,7 @@
 #container {
     position:absolute;
-    left:0px;
-    top:86px;
+    left:0;
+    top:0;
     border:1px dotted green;
     width:100%;
     height:100%;
@@ -22,7 +22,7 @@
 #svggrid {
     position:absolute;
     left:0px;
-    top:26px;
+    top:0;
     display: none;
     width:96%;
     height:100%;
@@ -138,8 +138,8 @@
 #rulerOverlay {
     position:absolute;
     left:50px;
-    top:86px;
-    width:100%;
+    top:0;
+    width: calc(100% - 55px);
     height:100%;
     pointer-events: none;
 }
