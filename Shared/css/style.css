@@ -6320,6 +6320,12 @@ only screen and (max-device-width: 320px) {
   bottom: 55px;
 }
 
+@media screen and (max-width: 600px){
+  .fab-btn-list{
+    bottom: 40px;
+  }
+}
+
 .fab-btn-list2 {
   position: absolute;
   padding: 18px 0px 0px;
