@@ -15,6 +15,7 @@ Example seed
 //------------==========########### GLOBALS ###########==========------------
 var elapsedTime = 0;
 var teacherFlag = false;
+var hash = getHash();
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
@@ -294,7 +295,7 @@ function createFileUploadArea(fileuploadfileds){
 		form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";
 		form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
 		form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
-
+		form +="<input type='hidden' name='hash' value='"+hash+"' />";
 		form +="<input type='hidden' name='field' value='"+fieldname+"' />";
 		form +="</form>";
 

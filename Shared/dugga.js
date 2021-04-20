@@ -47,8 +47,19 @@ function setVariant(v) {
 	localStorageVariant = v;
 }
 
+function getHash(){
+	return hash;
+}
+
 function setHash(h){
-	hash = h;
+	// Check if hash is unknown
+	if(h == "UNK"){
+		hash = generateHash();
+		pwd = randomPassword();
+	}else{
+		hash = h;
+	}
+	
 }
 
 function setPassword(p){
@@ -594,11 +605,7 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
 {
-	// Check if hash is unknown
-	if (hash == "UNK") {
-		pwd = randomPassword(); //Create random password for URL
-		hash = generateHash(); // Generate Hash
-	}
+	
 	
 	var url = createUrl(hash); //Create URL
 	console.log("url: " + url);
