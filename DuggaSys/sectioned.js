@@ -317,10 +317,34 @@ function confirmBox(operation, item = null) {
   }
 }
 
+// Creates an array over all checked items
 function markedItems(item = null){
-  active_lid = item ? $(item).parents('table').attr('value') : null;
-  deleteItemList.push(active_lid);
+  var removed = false;
+    active_lid = item ? $(item).parents('table').attr('value') : null;
+    if (deleteItemList.length != 0){
+      for( var i = 0; i < deleteItemList.length; i++){ 
+        if ( deleteItemList[i] === active_lid) { 
+          deleteItemList.splice(i, 1);
+          i--;
+          var removed = true;
+          console.log("Removed from list");
+        }   
+      } if(removed != true){
+        deleteItemList.push(active_lid);
+        console.log("Adding !empty list");
+      }
+    } else {
+      deleteItemList.push(active_lid);
+      console.log("Added");
+    } 
+    console.log(deleteItemList);
 }
+
+// Clear array of checked items - used in fabbuttons and save to clear array. WIthout this the array will be populated but checkboxes will be reset.
+function clearDeleteItemList(){
+  deleteItemList = [];
+}
+
 
 function closeSelect() {
   $(".item").css("border", "none");
@@ -346,6 +370,7 @@ function showCreateVersion() {
 function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
     selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", 0, null);
+    clearDeleteItemList();
     newItem();
   }
 }
@@ -1058,10 +1083,10 @@ function returnedSection(data) {
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'],
-          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + ");' />";
+          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearDeleteItemList();' />";
           str += "</td>";
         }
-
+        
         // trashcan
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
@@ -1074,7 +1099,7 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
-            str += "<input type='checkbox' onclick='markedItems(this)'>";
+            str += "<input type='checkbox' name='arrayCheckBox' onclick='markedItems(this)'>";
             str += "</td>";      
         }
         
