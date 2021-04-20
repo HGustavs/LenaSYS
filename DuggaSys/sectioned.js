@@ -72,8 +72,15 @@ function hideCollapsedMenus() {
 //   arrow if it is in the arrowIcons array.
 //	 The other way around for the statistics section.
 function toggleArrows() {
-  $('.arrowComp').show();
-  $('.arrowRight').hide();
+	$(".arrowComp").click(function() {
+        $(".arrowComp").hide();
+        $(".arrowRight").show();
+    });
+    $(".arrowRight").click(function() {
+        $(".arrowComp").show();
+        $(".arrowRight").hide();
+    });
+  
   for (var i = 0; i < menuState.arrowIcons.length; i++) {
     if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
       $('#' + menuState.arrowIcons[i]).hide();
@@ -82,14 +89,6 @@ function toggleArrows() {
     }
   }
 
-  $('#arrowStatisticsOpen').show();
-  $('#arrowStatisticsClosed').hide();
-  for (var i = 0; i < menuState.hiddenElements.length; i++) {
-    if (menuState.hiddenElements[i] == "statistics") {
-      $('#arrowStatisticsOpen').hide();
-      $('#arrowStatisticsClosed').show();
-    }
-  }
 }
 menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
