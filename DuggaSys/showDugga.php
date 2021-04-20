@@ -318,6 +318,7 @@ if($hash!='UNK'){
 		exit();
 	}
 }
+//Remove if you want the password to be persistent.
 $_SESSION['hashpassword'] = 'UNK';
 
 ?>
