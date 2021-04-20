@@ -292,7 +292,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 
 			function hashPassword($password, $hash){
 				if($hash!='UNK'){
-				exit();
+				//exit();
 				//Authentication Function
 				}
 			}
