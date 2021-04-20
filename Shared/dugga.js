@@ -1342,7 +1342,7 @@ function hideHashBox(){
 
 function checkHashPassword(){
 	
-	var hash = $('hash').text();
+	var hash = $('#hash').text();
 	var password = document.getElementById('passwordfield').value;
 	
 	$.ajax({
@@ -1354,9 +1354,13 @@ function checkHashPassword(){
             var auth = d.auth
             console.log(d);
             if(auth){
-
         		console.log('Success!');
+        		sessionStorage.setItem('hashpassword', d.password);
+        		hideHashBox();
+        		reloadPage();
         	}else{
+        		$('#passwordtext').text('Wrong password, try again!');
+        		$('#passwordtext').css('color','red');
         		console.log('Fail!');
         	}
 		}
