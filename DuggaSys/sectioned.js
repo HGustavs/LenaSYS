@@ -1387,7 +1387,7 @@ function drawSwimlanes() {
         //If deadline is older than current, red text for late assigment should be displayed as orange instead
         var deadlineYear = new Date(entry.deadline).getFullYear();
         if(deadlineYear < current.getFullYear()) {
-           textcol = "#ff9933";
+           textcol = "#5072C7";
        
            var yearDifference = current.getFullYear() - deadlineYear;
            var newYear = new Date(entry.deadline);
