@@ -6256,6 +6256,12 @@ only screen and (max-device-width: 320px) {
     transform-origin: bottom left;
     transform: rotate(270deg);
   }
+  .fab-btn-sm {
+    transform: rotate(135deg);
+  }
+  [data-tooltip]:before {
+    bottom: 85%;
+  }
 }
 
 /* FAB scaling transition */
