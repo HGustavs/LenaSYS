@@ -14,6 +14,7 @@ var resave = false;
 var versnme = "UNKz";
 var versnr;
 var motd;
+var deleteItemList = [];
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -304,14 +305,46 @@ function confirmBox(operation, item = null) {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
-  } else if (operation == "deleteItem") {
+  } else if (operation == "deleteItem" && deleteItemList.length == 0) {
     deleteItem(active_lid);
+    $("#sectionConfirmBox").css("display", "none");
+  } else if (operation == "deleteItem" && !deleteItemList.length == 0) {
+    deleteMarkedItems(deleteItemList)
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
     $("#noMaterialConfirmBox").css("display", "none");
   }
 }
+
+// Creates an array over all checked items
+function markedItems(item = null){
+  var removed = false;
+    active_lid = item ? $(item).parents('table').attr('value') : null;
+    if (deleteItemList.length != 0){
+      for( var i = 0; i < deleteItemList.length; i++){ 
+        if ( deleteItemList[i] === active_lid) { 
+          deleteItemList.splice(i, 1);
+          i--;
+          var removed = true;
+          console.log("Removed from list");
+        }   
+      } if(removed != true){
+        deleteItemList.push(active_lid);
+        console.log("Adding !empty list");
+      }
+    } else {
+      deleteItemList.push(active_lid);
+      console.log("Added");
+    } 
+    console.log(deleteItemList);
+}
+
+// Clear array of checked items - used in fabbuttons and save to clear array. WIthout this the array will be populated but checkboxes will be reset.
+function clearDeleteItemList(){
+  deleteItemList = [];
+}
+
 
 function closeSelect() {
   $(".item").css("border", "none");
@@ -337,6 +370,7 @@ function showCreateVersion() {
 function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
     selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", 0, null);
+    clearDeleteItemList();
     newItem();
   }
 }
@@ -419,13 +453,28 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-function deleteItem(item_lid = null) {
-  var lid = item_lid ? item_lid : $("#lid").val();
-  AJAXService("DEL", {
-    lid: lid
-  }, "SECTION");
-  $("#editSection").css("display", "none");
+function deleteItem(item_lid = null) { 
+   var lid = item_lid ? item_lid : $("#lid").val();
+    AJAXService("DEL", {
+      lid: lid
+    }, "SECTION");
+    $("#editSection").css("display", "none");
 }
+
+//----------------------------------------------------------------------------------
+// deleteMarkedItems: Deletes Item from Section List
+//----------------------------------------------------------------------------------
+
+function deleteMarkedItems() {
+  for (i=0; i < deleteItemList.length; i++) {  
+    var lid = deleteItemList[i];
+      AJAXService("DEL", {
+        lid: lid
+      }, "SECTION");
+      $("#editSection").css("display", "none");
+    }
+    deleteItemList = [];
+  }
 
 //----------------------------------------------------------------------------------
 // updateItem: Updates Item from Section List
@@ -662,6 +711,7 @@ function returnedSection(data) {
       // Show FAB / Menu
       document.getElementById("FABStatic").style.display = "Block";
       document.getElementById("FABStatic2").style.display = "Block";
+      document.getElementById("DELStatic").style.display = "Block";
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
     } else {
@@ -1036,10 +1086,10 @@ function returnedSection(data) {
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'],
-          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + ");' />";
+          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearDeleteItemList();' />";
           str += "</td>";
         }
-
+        
         // trashcan
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
@@ -1047,6 +1097,15 @@ function returnedSection(data) {
           str += "<img alt='trashcan icon' id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
           str += "</td>";
         }
+
+        // checkbox
+        if (data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
+            str += "<input type='checkbox' name='arrayCheckBox' onclick='markedItems(this)'>";
+            str += "</td>";      
+        }
+        
 
         str += "</tr>";
         str += "</table></div>";
@@ -1403,7 +1462,7 @@ function drawSwimlanes() {
         str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='
         ${(tempVariable)}' height='${weekheight}' fill='${fillcol}' />`;
 
-        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial'
+        str += `<text x='" + (12) + "' y='${(weeky + 18)}' font-family='Arial'
         font-size='12px' fill='${textcol}' text-anchor='left'> <title>${entry.text}
         </title>${entry.text}</text>`;
       }
@@ -1413,9 +1472,7 @@ function drawSwimlanes() {
   str += `<line opacity='0.7' x1='${((daywidth * daySinceStart) - daywidth)}'
   y1='${(15 + weekheight)}' x2='${((daywidth * daySinceStart) - daywidth)}'
   y2='${(((1 + deadlineEntries.length) * weekheight) + 15)}' stroke-width='4' stroke='red' />`;
-
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
-  
   document.getElementById("swimlaneSVG").innerHTML = str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 800 " + svgHeight);
 

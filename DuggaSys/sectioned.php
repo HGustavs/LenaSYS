@@ -144,6 +144,14 @@
 
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
 
+		<!-- Delete button -->
+		
+		<div class='fixed-action-button3 sectioned3'  id="DELStatic" style="display:none">
+			<input id='delElement'  type='button' value='-' style="top:-493px" class='submit-button-newitem' title='Delete marked items' onclick='confirmBox("openConfirmBox");'>
+		</div>
+		
+		<!-- end delete button -->
+
 		<!-- Small FAB Button in top in the header of sectioned -->
 		
 			<div style="margin:10px;">
@@ -240,7 +248,7 @@
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
-					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection");' />
+					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearDeleteItemList();' />
 				</div>
 			</div>
 		</div>
