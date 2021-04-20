@@ -49,7 +49,6 @@ $grade = "UNK";
 $submitted = "";
 $marked ="";
 
-$hr=false;
 $insertparam = false;
 $score = 0;
 $timeUsed;
@@ -124,7 +123,9 @@ foreach($query->fetchAll() as $row) {
 	$insertparam = true;
 }
 
-$hr = false;
+// -------------------------OLD FUNCTIONALITY WHERE WE CHECK IF USER IS LOGGED IN AND HAS ACESS-------------------
+
+/*
 if(checklogin()){
 	if((hasAccess($userid, $courseid, 'r')&&($dvisibility == 1 || $dvisibility == 2))||isSuperUser($userid)) $hr=true;
 }
@@ -135,7 +136,10 @@ $demo=false;
 if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
 if($demo){
-	
+*/
+
+//----------------------------------- OLD FUNCTIONALITY WHERE DUGGA IS SAVED TO DB WHEN VISITED -------------------------------------------
+	/*
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
 	$foundvar=-1;
@@ -228,15 +232,16 @@ if($demo){
 		$param=html_entity_decode($result['param']);
 	}
 
-}else{
 
-}
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
 
+/* -------------------------OLD FUNCTIONALITY WHERE WE CHECK IF USER IS LOGGED IN AND HAS ACESS-------------------
+//------------------------------------------------------
 if(checklogin()){
 		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions			
+			*/
         if(strcmp($opt,"SAVDU")==0){	
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
@@ -252,11 +257,8 @@ if(checklogin()){
             $score = $temp[3];
 
             // check if the user already has a grade on the assignment
-            $query = $pdo->prepare("SELECT grade from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-            $query->bindParam(':cid', $courseid);
-            $query->bindParam(':coursevers', $coursevers);
-            $query->bindParam(':uid', $userid);
-            $query->bindParam(':moment', $moment);				
+            $query = $pdo->prepare("SELECT grade from userAnswer WHERE hash=:hash;");
+            $query->bindParam(':hash', $hash);			
 
             $query->execute();
             $grade = null;
@@ -288,11 +290,8 @@ if(checklogin()){
 			}
 
               	// Update Dugga!
-              	$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-              	$query->bindParam(':cid', $courseid);
-              	$query->bindParam(':coursevers', $coursevers);
-              	$query->bindParam(':uid', $userid);
-              	$query->bindParam(':moment', $moment);
+              	$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score WHERE hash=:hash;");
+              	$query->bindParam(':hash', $hash);
               	$query->bindParam(':useranswer', $answer);
               	$query->bindParam(':timeUsed', $timeUsed);
               	$query->bindParam(':stepsUsed', $stepsUsed);
@@ -334,11 +333,8 @@ if(checklogin()){
             }
             
             // Get submission date
-            $query = $pdo->prepare("SELECT submitted from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-            $query->bindParam(':cid', $courseid);
-            $query->bindParam(':coursevers', $coursevers);
-            $query->bindParam(':uid', $userid);
-            $query->bindParam(':moment', $moment);
+            $query = $pdo->prepare("SELECT submitted from userAnswer WHERE hash=:hash;");
+            $query->bindParam(':hash', $hash);
             if(!$query->execute()) {
             	$error=$query->errorInfo();
             	$debug="Error fetching submit date. (row ".__LINE__.") ".$error[2];
@@ -348,8 +344,8 @@ if(checklogin()){
             }
             
         }
-		}
-	}
+//		}
+//	}
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			

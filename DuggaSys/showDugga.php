@@ -35,6 +35,8 @@
 	$quizid=getOPG('did');
 	$deadline=getOPG('deadline');
 	$comments=getOPG('comments');
+	$hash = getOPG("a");
+	$password= "UNK";
 
 	$duggatitle="UNK";
 	$duggafile="UNK";
@@ -42,10 +44,15 @@
 	$duggadead="UNK";
 
 	$visibility=false;
-	$readaccess=false;
 	$checklogin=false;
 	
+
+	$variantsize;
+	$variants=array();
+	$duggaid=getOPG('did');
+	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
+	
 
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
@@ -53,18 +60,7 @@
 		$userid="UNK";
 	}
 
-	// Gets username based on uid, USED FOR LOGGING
-	$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
-	$query->bindParam(':uid', $userid);
-	$query-> execute();
-
-	// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
-	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
-		$username = $row['username'];
-	}
-
-
-	logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
+//logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
 
 if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	$hr=false;
@@ -74,7 +70,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 			$visibility=$row['visibility'];
 	}
-	$readaccess=hasAccess($userid, $cid, 'r');
 /*
 		//Give permit if the user is logged in and has access to the course or if it is public
 		$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0  && $userid != "UNK");
@@ -86,17 +81,15 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		}
 */
 
-  //If we have permission, and if file exists, include javascript file.
-  if(isSuperUser($userid)){
-	// If the user is a super user, get all quizes.
-		  $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-	  }else if($readaccess){
-	// If logged in and has access, get all private(requires login) and public quizes.
-		  $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND (visible=1 OR visible=2) AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-	  } else {
-	// If not logged in, get only the public quizes.
-	$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND visible=1 AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-  }
+	// can see all duggas and deleted ones
+	if(isSuperUser($userid)){
+		$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+	}
+	// can see all duggas expect from deleted ones
+	else{
+		$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND (visible=1 OR visible=2) AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+	}
+	  
 	  $query->bindParam(':cid', $cid);
 	  $query->bindParam(':vers', $vers);
 	  $query->bindParam(':quizid', $quizid);
@@ -128,6 +121,9 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		}
 ?>
 
+<script type="text/javascript"> 
+	setPassword("<?php echo $password ?>");
+	setHash("<?php echo $hash ?>");	
 </script>
 	<?php
 		$noup="SECTION";
@@ -138,7 +134,34 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	<div id="content">
 		<?php
 			// Log USERID for Dugga Access
-			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+
+      // commented out because we are unsure about the usage of logs
+			//makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+  
+			//Saved Dugga Login 
+			if($hash!='UNK'){
+				echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
+				echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
+				echo "<div class='loginBoxheader'>";
+				echo "<h3>Login for Saved Dugga</h3>";
+				echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
+				echo "</div>";
+				echo "<p>Enter your password for the hash</p>";
+				echo "<input name='password' class='textinput' type='password' placeholder='Password'>";
+				echo "<input type='submit' class='submit-button' value='Confirm' onclick='hideHashBox()'>";
+				echo "</div>";
+				echo "</div>";
+			}
+
+			function hashPassword($password, $hash){
+				if($hash!='UNK'){
+				//exit();
+				//Authentication Function
+				}
+			}
+			//Retrieved from 'password' input field
+			hashPassword($password, $hash);
+
 
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
@@ -171,11 +194,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 				}
         echo "<div class='loginTransparent' id='lockedDuggaInfo' style='margin-bottom:5px;'>";
         echo "<img src='../Shared/icons/duggaLock.svg'>";
-        if ($userid!="UNK") {
-          echo "<p>Not registered to the course!	You can view the assignment but you need to be registered to the course to save your dugga result.</p>";
-        } else {
-  				echo "<p>Not logged in!	You can view the assignment but you need to be logged in and registered to the course to save your dugga result.</p>";
-        }
         echo "</div>";
 
 			}else{
@@ -233,24 +251,18 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			</div>
 			<div id='receiptInfo'></div>
     		<textarea id="receipt" autofocus readonly style="resize: none;"></textarea>
- <!--    		<div class="button-row">
-    			<input type='button' class='submit-button'  onclick="showEmailPopup();" value='Save Receipt'>
-    			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
-    		</div>-->
+ 
     		<div id='emailPopup' style="display:block">
-    			<div class='inputwrapper'><span>Ange din email:</span><input class='textinput' type='text' id='email' placeholder='Email' value=''/></div>
-				<div class="button-row">
-					<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
-					<input type='button' class='submit-button'  onclick="sendReceiptEmail();" value='Send Receipt'>
-					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
-				</div>
+				  <div id='urlAndPwd'>
+				  	<div class="testasd"><p class="bold">URL</p><p id='url'></p></div>
+				  	<div class="testasd"><p class="bold">Password</p><p id='pwd'></p></div>
+				  </div>
+
+				  <div class="button-row">
+				  	<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
+				  	<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
+				  </div>
     		</div>
-
-			<div id='urlAndPwd' style="display:block">
-				<div class="testasd"><span>URL: </span><span id='url'></span></div>
-				<div class="testasd"><span>Password: </span><span id='pwd'></span></div>
-			</div>
-
       </div>
 	</div>
 	<!-- Login Box (receipt&Feedback-box ) End! -->

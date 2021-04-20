@@ -4,7 +4,6 @@
 //----------------------------------------------------------------------------------
 var renderId; // Used to store active rendering function
 var benchmarkData = performance.timing; // Will be updated after onload event
-
 var status = 0;
 var showing = 1;
 var score;
@@ -14,19 +13,11 @@ var inParams = "UNK";
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 var pressTimer;
-
 var hash;
 var pwd;
-
-
 var localStorageVariant;
-
 var duggaTitle;
-
-
 var iconFlag = false;
-
-var hash;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -49,6 +40,31 @@ function getAllIndexes(haystack, needle) {
 		i = haystack.indexOf(needle, ++i);
 	}
 	return indexes;
+}
+
+
+function setVariant(v) {
+	console.log("variant dugga.js: " + v)
+	localStorageVariant = v;
+}
+
+function getHash(){
+	return hash;
+}
+
+function setHash(h){
+	// Check if hash is unknown
+	if(h == "UNK"){
+		hash = generateHash();
+		pwd = randomPassword();
+	}else{
+		hash = h;
+	}
+	
+}
+
+function setPassword(p){
+	pwd = p;
 }
 
 //Set the localstorage item securitynotifaction to on or off
@@ -557,8 +573,8 @@ function randomPassword()
 //----------------------------------------------------------------------------------
 
 function createUrl(hash) {
-	var realUrl = window.location + "&hash=" + hash;
-	var localhostUrl="http://localhost/LenaSYS/DuggaSys/sh/?hash=" + hash;
+	var realUrl = window.location + "?a=" + hash;
+	var localhostUrl="http://localhost/LenaSYS/sh/?a=" + hash;
 
 	// temporary solution, if exist in database use real url
 	var realUrlInDatabase = false;
@@ -589,10 +605,8 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
 {
-  
-	pwd = randomPassword(); //Create random password for URL
 
-	hash = generateHash(); // Generate Hash
+	
 	var url = createUrl(hash); //Create URL
 	
 	console.log("url: " + url);
@@ -670,64 +684,46 @@ function saveDuggaResult(citstr)
 //----------------------------------------------------------------------------------
 // generateHash: Generates a hash
 //----------------------------------------------------------------------------------
-
 function generateHash() {
     var randNum = getRandomNumber();
-    var hash = createHash(randNum);
-	var hash64 = convertDecimalToBase64(hash);
+	var hash64 = convertDecimalToBase64(randNum);
 	hash64 = hash64.replace("+", "-");
 	hash = hash64.replace("/", "_");
-
     return hash;
-
-	function createHash(num) {
-		var string = num.toString();
-		var hash = 0;
-
-		if (string.length == 0) return hash;
-    
-		for (i = 0; i < string.length; i++) {
-			char = string.charCodeAt(i);
-			hash = ((hash << 5) - hash) + char;
-			hash = hash & hash;
-		}
-
-
-		return hash;
-	}
-
-	function getRandomNumber() {
-		return Math.floor(Math.random() * 1000000) + 100000;
-	}
 }
 
+//----------------------------------------------------------------------------------
+//Generates a random number that can represent every possible hash combination (6-8 characters)
+//----------------------------------------------------------------------------------
+function getRandomNumber() {
+	return Math.floor(Math.random() * 281473902968831) + 1073741824;
+}
 
 //----------------------------------------------------------------------------------
 // convertDecimalToBase64: takes decimal number and converts to base64 "youtube style"
 //----------------------------------------------------------------------------------
 function convertDecimalToBase64(value) {
 	if (typeof(value) === 'number') {
-	  return convertDecimalToBase64.getChars(value, '');
+		return convertDecimalToBase64.getChars(value, '');
 	}
   
 	if (typeof(value) === 'string') {
-	  if (value === '') { return NaN; }
-	  return value.split('').reverse().reduce(function(prev, cur, i) {
-		return prev + convertDecimalToBase64.chars.indexOf(cur) * Math.pow(64, i);
-	  }, 0);
+		if (value === '') { return NaN; }
+		return value.split('').reverse().reduce(function(prev, cur, i) {
+			return prev + convertDecimalToBase64.chars.indexOf(cur) * Math.pow(64, i);
+	  	}, 0);
 	}
-  }
+}
   
-  convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
+convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
   
-  convertDecimalToBase64.getChars = function(num, res) {
+convertDecimalToBase64.getChars = function(num, res) {
 	var mod = num % 64,
 		remaining = Math.floor(num / 64),
-		chars = convertDecimalToBase64.chars.charAt(mod) + res;
-  
+		chars = convertDecimalToBase64.chars.charAt(mod) + res;  
 	if (remaining <= 0) { return chars; }
 	return convertDecimalToBase64.getChars(remaining, chars);
-  };
+};
 
 //----------------------------------------------------------------------------------
 // changeURL: Patch-in for changeURL from project 2014 code
@@ -1353,31 +1349,7 @@ function checkScroll(obj) {
 	}
 }
 
-//function showEmailPopup()
-//{
-//	var receiptcemail ="";
-//	document.getElementById("emailPopup").style.display = "block";
-//	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
-//	document.getElementById('email').value = receiptcemail;
-//}
 
-//function hideEmailPopup()
-//{
-//	$("#emailPopup").css("display","none");
-//}
-
-//----------------------------------------------------------------------------------
-// Send dugga receipt to users email, save email in localstorage.
-//----------------------------------------------------------------------------------
-function sendReceiptEmail(){
-	var receipt = document.getElementById('receipt').value;
-	var email = $("#email").val();
-		if (email != ""){
-			localStorage.setItem("receiptcemail", email); //save value of input into a localStorage variable
-			window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
-			hideReceiptPopup();
-	}
-}
 
 //----------------------------------------------------------------------------------
 // copyURLtoCB: Copy the url to user clipboard
@@ -1388,6 +1360,10 @@ function copyHashtoCB() {
     $temp.val(hash).select();
     document.execCommand("copy");
 	$temp.remove();
+}
+
+function hideHashBox(){
+    $("#hashBox").css("display","none");
 }
 
 function showSecurityPopup()
@@ -1585,7 +1561,9 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
       if (mobileMediaQuery.matches) {
 			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
 		  } else {
-			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+			//Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
+			//tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th></tr></thead>";
 		  }
     }
 
@@ -1596,8 +1574,8 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
 							tab+="<tr'>"
 
-
-
+							
+							
 							if (!mobileMediaQuery.matches) {
 								tab+="<td>";
 								// Button for making / viewing feedback - note - only button for given feedback to students.
@@ -1667,16 +1645,21 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							} else {
 								tab+=filez[i].updtime;+"</td>";
 							}
-
+							
+							//Feedback button. Always visable for teachers, only visable for students if feedback have been given.
 							tab+="<td>";
+							/*
 							if (!mobileMediaQuery.matches) {
-								// Button for making / viewing feedback - note - only button for given feedback to students.
+								// Button for making / viewing feedback - note - only button for given feedback to students. 
 								if(filez[i].feedback!=="UNK"||displaystate){
 										tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>Feedback</button>";
 								}
 							}
+							*/
 							tab+="</td>";
-
+							
+							//Display user feedback on the assignment page. 
+							/* 
 							tab+="<td>";
 							if(filez[i].feedback!=="UNK"){
 								if (mobileMediaQuery.matches || mediumMediaQuery.matches) {
@@ -1688,6 +1671,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								tab+="&nbsp;"
 							}
 							tab+="</td>";
+							*/
 							tab+="</tr>";
 					}
 			}
@@ -1766,12 +1750,13 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		 		}
 		}
 		document.getElementById("popPrev").innerHTML=str;
+		
 		if (dataV["files"][inParams["moment"]][clickedindex].feedback !== "UNK"){
 				document.getElementById("responseArea").innerHTML = dataV["files"][inParams["moment"]][clickedindex].feedback;
 		} else {
 				document.getElementById("responseArea").innerHTML = "No feedback given.";
 		}
-
+		
 		$("#previewpopover").css("display", "flex");
 }
 
