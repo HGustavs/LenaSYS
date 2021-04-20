@@ -547,6 +547,7 @@
             <fieldset id='cursorModeFieldset'>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
                 <input class="paneButtons" id="gridButton" type="button" value="Enable Grid" onclick='enableGrid()' /><br>
+                <input class="paneButtons" id="rulerButton" type="button" value="Enable Ruler" onclick='enableRuler()' /><br>
             </fieldset>
             <fieldset id='propertyFieldset'>
                 
