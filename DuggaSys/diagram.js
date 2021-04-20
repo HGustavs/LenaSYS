@@ -1280,6 +1280,9 @@ function enableGrid(){
 
     var grid = document.getElementById("svggrid");
 
+    // Toggle active class on button
+    document.getElementById("gridToggle").classList.toggle("active");
+
     if(grid.style.display == "block")
     {
         grid.style.display = "none";
@@ -1292,6 +1295,9 @@ function enableGrid(){
 function enableRuler(){
 
     var ruler = document.getElementById("rulerOverlay");
+
+    // Toggle active class on button
+    document.getElementById("rulerToggle").classList.toggle("active");
 
     if(ruler.style.display == "block")
     {

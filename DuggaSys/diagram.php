@@ -119,10 +119,10 @@
         <div id ="fieldsetBox">
             <fieldset id='cursorModeFieldset'>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
-                <div class="diagramIcons" onclick='enableGrid()'>
+                <div id="gridToggle" class="diagramIcons" onclick='enableGrid()'>
                     <img src="../Shared/icons/diagram_grid.svg"/>
                 </div>
-                <div class="diagramIcons" onclick='enableRuler()'>
+                <div id="rulerToggle" class="diagramIcons" onclick='enableRuler()'>
                     <img src="../Shared/icons/diagram_ruler.svg"/>
                 </div>
             </fieldset>
