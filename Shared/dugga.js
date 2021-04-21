@@ -958,10 +958,19 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
+		if(localStorage.getItem("variantSize") == null) {
+			localStorage.setItem("variantSize", 100);
+		}
+		var newInt = +localStorage.getItem('variantSize');
+		if(querystring['did'] <= newInt) {
+			if(localStorage.getItem(querystring['did']) == null){
+				localStorage.setItem(querystring['did'], 0);
+			}
+		}
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorageVariant, 
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did']), 
 				dataType: "json",
 				success: function(data) {
 					// First check if dugga hash is unique.
@@ -1582,7 +1591,9 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
       if (mobileMediaQuery.matches) {
 			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
 		  } else {
-			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+			// Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
+			//tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th></tr></thead>";
 		  }
     }
 
@@ -1666,14 +1677,19 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							}
 
 							tab+="<td>";
+							//Feedback button. Always visible for teachers, only visible for students if feedback have been given.
+							/*
 							if (!mobileMediaQuery.matches) {
+							
 								// Button for making / viewing feedback - note - only button for given feedback to students.
 								if(filez[i].feedback!=="UNK"||displaystate){
 										tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>Feedback</button>";
 								}
 							}
+							*/
 							tab+="</td>";
-
+							/*
+							// Display user feedback on the assignment page
 							tab+="<td>";
 							if(filez[i].feedback!=="UNK"){
 								if (mobileMediaQuery.matches || mediumMediaQuery.matches) {
@@ -1685,6 +1701,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								tab+="&nbsp;"
 							}
 							tab+="</td>";
+							*/
 							tab+="</tr>";
 					}
 			}

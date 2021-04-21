@@ -355,6 +355,7 @@ CREATE TABLE submission(
 	mime					VARCHAR(64),
 	kind					INTEGER,
 	segment					INTEGER,
+    hash					VARCHAR(8),
 	updtime					TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (subid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
