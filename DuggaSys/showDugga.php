@@ -351,7 +351,8 @@ $_SESSION['hashpassword'] = 'UNK';
 			}
 			//Retrieved from 'password' input field
 			hashPassword($password, $hash);
-
+?>
+	</div>
 
 =======
 			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
