@@ -146,9 +146,10 @@
 
 		<!-- Delete button -->
 		
-		<div class='fixed-action-button3 sectioned3'  id="DELStatic" style="display:none">
-			<input id='delElement'  type='button' value='-' style="top:-493px" class='submit-button-newitem' title='Delete marked items' onclick='confirmBox("openConfirmBox");'>
+		<div class='fixed-action-button3 sectioned3'  id="DELStatic" style="margin:10px;">
+			<img src="../Shared/icons/Trashcan.svg" id='delElement'  type='button' value='-' style="top:-493px" class='' title='Delete marked items' onclick='confirmBox("openConfirmBox");'>
 		</div>
+		
 		
 		<!-- end delete button -->
 
