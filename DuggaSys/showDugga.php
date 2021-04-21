@@ -54,6 +54,11 @@
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
 	
+	if(isset($_SESSION['hashpassword'])){
+		$hashpassword=$_SESSION['hashpassword'];
+	}else{
+		$hashpassword='UNK';
+	}
 
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];

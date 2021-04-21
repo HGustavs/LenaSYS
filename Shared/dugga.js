@@ -1339,6 +1339,7 @@ function copyHashtoCB() {
 function hideHashBox(){
     $("#hashBox").css("display","none");
 }
+
 function checkHashPassword(){
 	
 	var hash = $('#hash').text();
@@ -1363,7 +1364,6 @@ function checkHashPassword(){
 		}
 	});
 }
-
 
 function showSecurityPopup()
 {
