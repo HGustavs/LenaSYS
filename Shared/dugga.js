@@ -42,13 +42,25 @@ function getAllIndexes(haystack, needle) {
 	return indexes;
 }
 
+
 function setVariant(v) {
 	console.log("variant dugga.js: " + v)
 	localStorageVariant = v;
 }
 
+function getHash(){
+	return hash;
+}
+
 function setHash(h){
-	hash = h;
+	// Check if hash is unknown
+	if(h == "UNK"){
+		hash = generateHash();
+		pwd = randomPassword();
+	}else{
+		hash = h;
+	}
+	
 }
 
 function setPassword(p){
@@ -588,19 +600,15 @@ function createUrl(hash) {
 
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
-
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
 {
-	// Check if hash is unknown
-	if (hash == "UNK") {
-		pwd = randomPassword(); //Create random password for URL
-		hash = generateHash(); // Generate Hash
-	}
+
 	
 	var url = createUrl(hash); //Create URL
+	
 	console.log("url: " + url);
 	console.log("pwd: " + pwd);
 
@@ -950,12 +958,30 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
+		if(localStorage.getItem("variantSize") == null) {
+			localStorage.setItem("variantSize", 100);
+		}
+		var newInt = +localStorage.getItem('variantSize');
+		if(querystring['did'] <= newInt) {
+			if(localStorage.getItem(querystring['did']) == null){
+				localStorage.setItem(querystring['did'], 0);
+			}
+		}
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorageVariant, 
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did']), 
 				dataType: "json",
-				success: returnedDugga
+				success: function (data) {
+					returnedDugga(data);
+					var newvariants = data['variant'];
+					if(localStorage.getItem(querystring['did']) == 0){
+						localStorage.setItem(querystring['did'], newvariants);
+					}
+					var variantsize = data['variantsize'];
+					localStorage.setItem("variantSize", variantsize);
+                }
+				//success: returnedDugga
 			});
 	}else if(kind=="RESULT"){
 			$.ajax({
@@ -1560,7 +1586,9 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
       if (mobileMediaQuery.matches) {
 			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
 		  } else {
-			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+			//Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
+			//tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th></tr></thead>";
 		  }
     }
 
@@ -1571,8 +1599,8 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
 							tab+="<tr'>"
 
-
-
+							
+							
 							if (!mobileMediaQuery.matches) {
 								tab+="<td>";
 								// Button for making / viewing feedback - note - only button for given feedback to students.
@@ -1642,16 +1670,21 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							} else {
 								tab+=filez[i].updtime;+"</td>";
 							}
-
+							
+							//Feedback button. Always visable for teachers, only visable for students if feedback have been given.
 							tab+="<td>";
+							/*
 							if (!mobileMediaQuery.matches) {
-								// Button for making / viewing feedback - note - only button for given feedback to students.
+								// Button for making / viewing feedback - note - only button for given feedback to students. 
 								if(filez[i].feedback!=="UNK"||displaystate){
 										tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>Feedback</button>";
 								}
 							}
+							*/
 							tab+="</td>";
-
+							
+							//Display user feedback on the assignment page. 
+							/* 
 							tab+="<td>";
 							if(filez[i].feedback!=="UNK"){
 								if (mobileMediaQuery.matches || mediumMediaQuery.matches) {
@@ -1663,6 +1696,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								tab+="&nbsp;"
 							}
 							tab+="</td>";
+							*/
 							tab+="</tr>";
 					}
 			}
@@ -1741,12 +1775,13 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		 		}
 		}
 		document.getElementById("popPrev").innerHTML=str;
+		
 		if (dataV["files"][inParams["moment"]][clickedindex].feedback !== "UNK"){
 				document.getElementById("responseArea").innerHTML = dataV["files"][inParams["moment"]][clickedindex].feedback;
 		} else {
 				document.getElementById("responseArea").innerHTML = "No feedback given.";
 		}
-
+		
 		$("#previewpopover").css("display", "flex");
 }
 
