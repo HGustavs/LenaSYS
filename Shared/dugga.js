@@ -44,13 +44,25 @@ function getAllIndexes(haystack, needle) {
 	return indexes;
 }
 
+
 function setVariant(v) {
 	console.log("variant dugga.js: " + v)
 	localStorageVariant = v;
 }
 
+function getHash(){
+	return hash;
+}
+
 function setHash(h){
-	hash = h;
+	// Check if hash is unknown
+	if(h == "UNK"){
+		hash = generateHash();
+		pwd = randomPassword();
+	}else{
+		hash = h;
+	}
+	
 }
 
 function setPassword(p){
@@ -622,19 +634,15 @@ function createUrl(hash) {
 
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
-
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
 {
-	// Check if hash is unknown
-	if (hash == "UNK") {
-		pwd = randomPassword(); //Create random password for URL
-		hash = generateHash(); // Generate Hash
-	}
+
 	
 	var url = createUrl(hash); //Create URL
+	
 	console.log("url: " + url);
 	console.log("pwd: " + pwd);
 
@@ -984,6 +992,15 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
+		if(localStorage.getItem("variantSize") == null) {
+			localStorage.setItem("variantSize", 100);
+		}
+		var newInt = +localStorage.getItem('variantSize');
+		if(querystring['did'] <= newInt) {
+			if(localStorage.getItem(querystring['did']) == null){
+				localStorage.setItem(querystring['did'], 0);
+			}
+		}
 			$.ajax({
 				beforeSend: function(){
 					//Checks if the variantSize variant is set in localstorage. When its not, its set.
@@ -1397,6 +1414,31 @@ function copyHashtoCB() {
 
 function hideHashBox(){
     $("#hashBox").css("display","none");
+}
+
+function checkHashPassword(){
+	
+	var hash = $('#hash').text();
+	var password = document.getElementById('passwordfield').value;
+	
+	$.ajax({
+        url: "../Shared/hashpasswordauth.php",
+        data: {password:password, hash:hash},
+        type: "POST",
+        success: function(data){
+        	var d = JSON.parse(data);
+            var auth = d.auth
+            if(auth){
+        		console.log('Success!');
+        		hideHashBox();
+        		reloadPage();
+        	}else{
+        		$('#passwordtext').text('Wrong password, try again!');
+        		$('#passwordtext').css('color','red');
+        		console.log('Fail!');
+        	}
+		}
+	});
 }
 
 function showSecurityPopup()
