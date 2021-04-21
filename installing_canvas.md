@@ -4,7 +4,7 @@
 
 This guide is written for ubuntu systems v20
 
-# Dependencies 
+# Prerequisites 
 Canvas need several libraries to be installed on Ubuntu linux. Some are even not available any longer on the regular apt-get command. So custom libraries are needed to get them. The needed libraries to date (15/04-21) are the following ruby2.6, ruby2.6-dev, postgresql, zlib1g-dev, libxml2-dev, libsqlite3-dev, ibpq-dev, libxmlsec1-dev, curl and lastly build-essential.
 
 It’s possible that the requirements may change in the near future as Ruby2.6 is on EOL. 
