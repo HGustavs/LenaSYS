@@ -558,6 +558,8 @@ document.addEventListener('keydown', function (e)
                 scrollx = sscrollx;
                 scrolly = sscrolly;
             }
+            ghostLine = null;
+            ghostElement = null;
             pointerState = pointerStates.DEFAULT;
             showdata();
         }
