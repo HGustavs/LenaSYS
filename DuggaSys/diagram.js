@@ -247,7 +247,7 @@ class StateChangeFactory
             toElementID: line.toID
         };
 
-        return new StateChange(StateChange.ChangeTypes.LINE_CREATED, line.id, passed_values);
+        return new StateChange(StateChange.ChangeTypes.LINE_CREATED, [line.id], passed_values);
     }
 
     static LinesRemoved(lines)
@@ -420,10 +420,8 @@ class StateMachine
 
                 var line = lines[findIndex(lines, lastChange.id_list[0])];
 
-                console.log(lastChange, line);
-
                 if (line) {
-                    removeLines([line]);
+                    removeLines([line], false);
                 }
             }
 
