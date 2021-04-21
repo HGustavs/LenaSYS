@@ -56,6 +56,9 @@ $stepsUsed;
 $duggafeedback="UNK";
 $variants=array();
 
+$ishashindb = false;
+$variantsize;
+
 $savedvariant="UNK";
 $newvariant="UNK";
 $savedanswer="UNK";
@@ -73,6 +76,20 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
+
+//See if there's any hash identical to the one generated
+$query = $pdo->prepare("SELECT hash FROM userAnswer WHERE hash=:hash");
+$query->bindParam(':hash', $hash);
+$result=$query->execute();
+
+if($row = $query->fetch(PDO::FETCH_ASSOC)){
+    $hashTest=$row['hash'];
+    if($hashTest == null) {
+        $ishashindb = false;	//Unique hash.
+    } else {
+        $ishashindb = true;		//Already in database. (1 in 1000000 possibility)
+    }
+}
 
 // Read visibility of course
 $query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
@@ -608,6 +625,8 @@ $array = array(
 		"userfeedback" => $userfeedback,
 		"feedbackquestion" => $feedbackquestion,
 		"variant" => $savedvariant,
+		"ishashindb" => $ishashindb,
+		"variantsize" => $variantsize,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 

@@ -18,6 +18,9 @@ var pwd;
 var localStorageVariant;
 var duggaTitle;
 var iconFlag = false;
+var ishashindb;
+var blockhashgen = false;
+var ishashinurl;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -47,8 +50,20 @@ function setVariant(v) {
 	localStorageVariant = v;
 }
 
+function getHash(){
+	return hash;
+}
+
 function setHash(h){
-	hash = h;
+	// Check if hash is unknown
+	if(h == "UNK"){
+		hash = generateHash();
+		pwd = randomPassword();
+		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
+	}else{
+		hash = h;
+		ishashinurl = true;		//Hash is referenced in the url -> A resubmission, this dugga already have a hash in the database.
+	}
 }
 
 function setPassword(p){
@@ -593,17 +608,10 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
-{
-	// Check if hash is unknown
-	if (hash == "UNK") {
-		pwd = randomPassword(); //Create random password for URL
-		hash = generateHash(); // Generate Hash
-	}
-	
-	var url = createUrl(hash); //Create URL
-	console.log("url: " + url);
-	console.log("pwd: " + pwd);
+{	
+	blockhashgen = true; //Block-Hash-Generation: No new hash should be generated if 'Save' is clicked more than once per dugga session.
 
+	var url = createUrl(hash); //Create URL
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
 
@@ -955,7 +963,21 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorageVariant, 
 				dataType: "json",
-				success: returnedDugga
+				success: function(data) {
+					// First check if dugga hash is unique.
+					returnedDugga(data);
+					ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+					if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
+						hash = generateHash();	//Old hash gets replaced by new hash before saving to database.
+					}
+					// Check localstorage variants.
+					var newvariants = data['variant'];    
+					if(localStorage.getItem(querystring['did']) == 0){
+						localStorage.setItem(querystring['did'], newvariants);
+					}
+					var variantsize = data['variantsize'];
+					localStorage.setItem("variantSize", variantsize);
+					}
 			});
 	}else if(kind=="RESULT"){
 			$.ajax({
