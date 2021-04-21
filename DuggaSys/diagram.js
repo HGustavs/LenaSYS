@@ -108,11 +108,10 @@ class StateChange
 
     setValues(value_object)
     {
-        if (value_object)
-        {
+        if (value_object) {
             var props = Object.getOwnPropertyNames(value_object);
-            for (var index = 0; index < props.length; index++)
-            {
+
+            for (var index = 0; index < props.length; index++) {
                 var propertyName = props[index];
                 this.valuesPassed[propertyName] = value_object[propertyName];
             }
@@ -125,22 +124,18 @@ class StateChange
      */
     appendValuesFrom(changes)
     {
-        if (changes.name)
-        {
+        if (changes.name) {
             this.name = changes.name;
         }
-        if (changes.moved)
-        {
+        if (changes.moved) {
             if (this.moved) this.moved.add(changes.moved);
             else this.moved = changes;
         }
-        if (changes.resized)
-        {
-            if (this.resized) this.resized.add(changes.resized);
+        if (changes.resized) {
+            if (this.resized) this.resized.add(changes.resized); 
             else this.resized = changes.resized;
         }
-        if (changes.timestamp < this.timestamp)
-        {
+        if (changes.timestamp < this.timestamp) {
             this.timestamp = changes.timestamp;
         }
         
@@ -199,8 +194,7 @@ class StateChangeFactory
         var state = new StateChange(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED, [elementID]);
 
         // Handle special values that should not be passed, but rather used instantly.
-        if (changeList.name)
-        {
+        if (changeList.name) {
             state.name = changeList.name;
             delete changeList.name;
         }
@@ -260,35 +254,28 @@ class StateMachine
      */
     save (stateChange)
     {
-        if (stateChange instanceof StateChange)
-        {
+        if (stateChange instanceof StateChange) {
             // If history is present, perform soft/hard-check
-            if (this.historyLog.length > 0)
-            {
+            if (this.historyLog.length > 0) {
                 /** @type StateChange */
                 var lastLog = this.historyLog[this.historyLog.length - 1];
                 
                 var sameElements = true;
-                for (var index = 0; index < lastLog.id_list.length && sameElements; index++) 
-                {
+                for (var index = 0; index < lastLog.id_list.length && sameElements; index++) {
                     var id_found = lastLog.id_list[index];
 
-                    if (!stateChange.id_list.includes(id_found))
-                    {
+                    if (!stateChange.id_list.includes(id_found)) {
                         sameElements = false;
                     }
                 }
 
                 // If NOT soft change, push new change onto history log
-                if (!stateChange.flags.isSoft || !lastLog.flags.canAppendTo || !sameElements)
-                {
+                if (!stateChange.flags.isSoft || !lastLog.flags.canAppendTo || !sameElements) {
                     this.historyLog.push(stateChange);
-                }
+
                 // Otherwise, simply modify the last entry.
-                else
-                {
-                    switch (stateChange.flags)
-                    {
+                } else {
+                    switch (stateChange.flags) {
                         case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                         case StateChange.ChangeTypes.ELEMENT_MOVED:
                         case StateChange.ChangeTypes.ELEMENT_RESIZED:
@@ -301,14 +288,10 @@ class StateMachine
                             break;
                     };
                 }
-            }
-            else
-            {
+            } else {
                 this.historyLog.push(stateChange);
             }
-        }
-        else
-        {
+        } else {
             console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
         }
     }
@@ -445,25 +428,24 @@ function makeRandomID()
     var str = "";
     var characters = 'ABCDEF0123456789';
     var charactersLength = characters.length;
-    while(true){
-        for (var i = 0; i < 6; i++){
+    while(true) {
+        for (var i = 0; i < 6; i++) {
             str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
+
         if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
             randomidArray.push(str);
-        }
-        else{
+
+        } else {
             var check = randomidArray.includes(str); //if check is true the id already exists
             if(check == true){
                 str = "";
-            }
-            else{
+            } else {
                 randomidArray.push(str);
                 return str;
             }
         }
- 
-}
+    }
 }
 
 // Example entities and attributes
@@ -541,12 +523,11 @@ var lines = [
 document.addEventListener('keydown', function (e)
 {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
-    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase()) ){
+    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
 
         if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
         if (e.key == "Alt" && altPressed !== true) altPressed = true;
-        if (e.key == "Delete" && (context.length > 0 || contextLine.length > 0)) 
-        {
+        if (e.key == "Delete" && (context.length > 0 || contextLine.length > 0)) {
             removeElements(context); 
             removeLines(contextLine);
             updateSelection();
@@ -554,10 +535,11 @@ document.addEventListener('keydown', function (e)
         if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
         if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
         if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
-        if (e.key == "Escape" && escPressed != true){
+        if (e.key == "Escape" && escPressed != true) {
             escPressed = true;
             context = [];
-            if (movingContainer){
+
+            if (movingContainer) {
                 scrollx = sscrollx;
                 scrolly = sscrolly;
             }
@@ -566,8 +548,8 @@ document.addEventListener('keydown', function (e)
             pointerState = pointerStates.DEFAULT;
             showdata();
         }
-        if (e.key == "Backspace" && (context.length > 0 || contextLine.length > 0) && !propFieldState)
-        {
+
+        if (e.key == "Backspace" && (context.length > 0 || contextLine.length > 0) && !propFieldState) {
             removeElements(context); 
             removeLines(contextLine);
             updateSelection();
@@ -578,7 +560,7 @@ document.addEventListener('keydown', function (e)
 document.addEventListener('keyup', function (e)
 {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
-    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase()) ) {
+    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
         /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
         //  TODO : Switch cases?
         if (e.key == keybinds.LEFT_CONTROL) ctrlPressed = false;
@@ -673,12 +655,9 @@ function diagramToScreenPosition(coordX, coordY)
 
 function mwheel(event)
 {
-    if(event.deltaY < 0)
-    {
+    if(event.deltaY < 0) {
         zoomin();
-    }
-    else
-    {
+    } else {
         zoomout();
     }
 }
@@ -686,10 +665,8 @@ function mwheel(event)
 function mdown(event)
 {
     // React to mouse down on container
-    if (event.target.id == "container")
-    {
-        switch (mouseMode)
-        {
+    if (event.target.id == "container") {
+        switch (mouseMode) {
             case mouseModes.POINTER:
                 pointerState = pointerStates.CLICKED_CONTAINER;
                 sscrollx = scrollx;
@@ -705,9 +682,8 @@ function mdown(event)
             default:
                 break;
         }
-        
-    }
-    else if(event.target.classList.contains("node")){
+       
+    } else if (event.target.classList.contains("node")) {
         pointerState = pointerStates.CLICKED_NODE;
         startWidth = data[findIndex(data, context[0].id)].width;
 
@@ -718,7 +694,6 @@ function mdown(event)
     }
     // Used when clicking on a line between two elements.
     updateSelectedLine(determineLineSelect(event.clientX, event.clientY));
-
 }
 
 function ddown(event)
@@ -729,17 +704,10 @@ function ddown(event)
         case mouseModes.PLACING_ELEMENT:
             startX = event.clientX;
             startY = event.clientY;
-            
-            if (!altPressed)
-            {
+
+            if (!altPressed) {
                 pointerState = pointerStates.CLICKED_ELEMENT;
             }
-            
-            var element = data[findIndex(data, event.currentTarget.id)];
-            if (element != null && !context.includes(element) || !ctrlPressed){
-                updateSelection(element);
-            }
-            break;
 
         case mouseModes.EDGE_CREATION:
             var element = data[findIndex(data, event.currentTarget.id)];
@@ -758,8 +726,7 @@ function mouseMode_onMouseUp(event)
 {
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
-            if (ghostElement)
-            {
+            if (ghostElement) {
                 data.push(ghostElement);
                 stateMachine.save(StateChangeFactory.ElementCreated(ghostElement));
                 makeGhost();
@@ -768,8 +735,7 @@ function mouseMode_onMouseUp(event)
             break;
 
         case mouseModes.EDGE_CREATION:
-            if (context.length > 1)
-            {
+            if (context.length > 1) {
                 // TODO: Change the static variable to make it possible to create different lines.
                 addLine(context[0], context[1], "Normal");
                 context = [];
@@ -815,22 +781,18 @@ function mup(event)
     deltaY = startY - event.clientY;
 
     switch (pointerState) {
-        case pointerStates.DEFAULT: mouseMode_onMouseUp(event);
-            break;
+        case pointerStates.DEFAULT: 
+            mouseMode_onMouseUp(event);
+        break;
 
         case pointerStates.CLICKED_CONTAINER:
-            if (event.target.id == "container")
-            {
+            if (event.target.id == "container") {
                 movingContainer = false;
 
-                if (!deltaExceeded)
-                {
-                    if (mouseMode == mouseModes.EDGE_CREATION)
-                    {
+                if (!deltaExceeded) {
+                    if (mouseMode == mouseModes.EDGE_CREATION) {
                         context = [];
-                    }
-                    else if (mouseMode == mouseModes.POINTER)
-                    {
+                    } else if (mouseMode == mouseModes.POINTER) {
                         updateSelection(null);
                     }
                 }
@@ -841,17 +803,14 @@ function mup(event)
 
             movingObject = false;
             // Special cases:
-            if (mouseMode == mouseModes.EDGE_CREATION)
-            {
+            if (mouseMode == mouseModes.EDGE_CREATION) {
                 mouseMode_onMouseUp(event);
-            }
+
             // Normal mode
-            else if (deltaExceeded)
-            {
+            } else if (deltaExceeded) {
                 var id_list = [];
 
-                if (context.length > 0)
-                {
+                if (context.length > 0) {
                     context.forEach(item => // Move all selected items
                     {
                         eventElementId = event.target.parentElement.parentElement.id;
@@ -868,7 +827,8 @@ function mup(event)
         case pointerStates.CLICKED_NODE:
             break;
     
-        default: console.error(`State ${mouseMode} missing implementation at switch-case in mup()!`);
+        default: 
+            console.error(`State ${mouseMode} missing implementation at switch-case in mup()!`);
             break;
     }
 
@@ -890,7 +850,10 @@ function determineLineSelect(mouseX, mouseY)
     // TODO: Add functionality to make sure we are only getting LINES from svgbacklayer in the future !!!!!.
 
     var allLines = document.getElementById("svgbacklayer").children;
-    var cMouse_XY = {x: mouseX, y: mouseY}; // Current mouse XY
+    var cMouse_XY = {
+        x: mouseX, 
+        y: mouseY
+    }; // Current mouse XY
     var currentline = {};
     var lineData = {};
     var lineCoeffs = {};
@@ -904,8 +867,7 @@ function determineLineSelect(mouseX, mouseY)
         radius: 10 // This will determine the error margin, "how far away from the line we can click and still select it". Higer val = higher margin.
     }
     
-    for(var i = 0; i < allLines.length; i++)
-    {
+    for(var i = 0; i < allLines.length; i++) {
         // Make sure that "double lines" have the same id.
         allLines[i].id = allLines[i].id.replace(/-1/gi, '');
         allLines[i].id = allLines[i].id.replace(/-2/gi, '');
@@ -945,10 +907,9 @@ function determineLineSelect(mouseX, mouseY)
         //document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke="black" stroke-width="3" fill="red" /> '
         // ---------------------------
 
-        if(lineWasHit == true)
-        {
+        if(lineWasHit == true) {
             // Return the current line that registered as a "hit".
-            return lines.filter(function(line){
+            return lines.filter(function(line) {
                 return line.id == allLines[i].id;
             })[0];
             //return allLines[i];
@@ -965,19 +926,15 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
      (circle_x > (line_data.lX - circle_radius)) && 
      (circle_y < (line_data.hY + circle_radius)) && 
      (circle_y > (line_data.lY - circle_radius))
-    )
-    {
+    ) {
         // Distance between line and circle center.
         var distance = (Math.abs(a*circle_x + b*circle_y + c)) / Math.sqrt(a*a + b*b);
     
         // Check if circle radius >= distance. (If so is the case, the line is intersecting the circle)
-        if(circle_radius >= distance)
-        {
+        if(circle_radius >= distance) {
             return true;
         }
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
@@ -986,9 +943,7 @@ function mouseMode_onMouseMove(event)
 {
      switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
-        case mouseModes.EDGE_CREATION:
-            if (ghostElement)
-            {
+            if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
                 ghostElement.x = cords.x - (ghostElement.width / 2);
                 ghostElement.y = cords.y - (ghostElement.height / 2);
@@ -1030,8 +985,8 @@ function mmoving(event)
             drawRulerBars();
 
             // Remember that mouse has moved out of starting bounds
-            if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
-            {
+            if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || 
+                deltaY <= -maxDeltaBeforeExceeded)) {
                 deltaExceeded = true;
             }
             break;
@@ -1046,8 +1001,8 @@ function mmoving(event)
             updatepos(deltaX, deltaY);
 
             // Remember that mouse has moved out of starting bounds
-            if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || deltaY <= -maxDeltaBeforeExceeded))
-            {
+            if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded ||
+                deltaY <= -maxDeltaBeforeExceeded)) {
                 deltaExceeded = true;
             }
             break;
@@ -1059,8 +1014,7 @@ function mmoving(event)
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
-            if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth)
-            {
+            if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
                 elementData.width = (startWidth - (deltaX / zoomfact));
@@ -1070,9 +1024,8 @@ function mmoving(event)
                 
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0));
-            } 
-            else if (!startNodeRight && (startWidth + (deltaX / zoomfact)) > minWidth)
-            {
+
+            } else if (!startNodeRight && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
                 elementData.width = (startWidth + (deltaX / zoomfact));
@@ -1106,12 +1059,10 @@ function mmoving(event)
 
 function fab_action()
 {
-    if (document.getElementById("options-pane").className == "show-options-pane")
-    {
+    if (document.getElementById("options-pane").className == "show-options-pane") {
         document.getElementById('optmarker').innerHTML = "&#9660;Options";
         document.getElementById("options-pane").className = "hide-options-pane";
-    } else
-    {
+    } else {
         document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
         document.getElementById("options-pane").className = "show-options-pane";
     }
@@ -1124,12 +1075,10 @@ function fab_action()
 // Returns TRUE if an enum contains the tested value
 function enumContainsPropertyValue(value, enumObject) 
 {
-    for (const property in enumObject)
-    {
+    for (const property in enumObject) {
         // If any cursor mode matches the passed argument
         const cm = enumObject[property];
-        if (cm == value)
-        {
+        if (cm == value) {
             return true;
         }
     }
@@ -1204,24 +1153,19 @@ function makeGhost()
 
 function setMouseMode(mode)
 {   
-    if (enumContainsPropertyValue(mode, mouseModes))
-    {
+    if (enumContainsPropertyValue(mode, mouseModes)) {
         // Enable all buttons but the current mode one
         var children = document.getElementById('cursorModeFieldset').children;
-        for (var index = 0; index < children.length; index++)
-        {
+        for (var index = 0; index < children.length; index++) {
             const child = children[index];
 
             // If child is a button
-            if (child.tagName == "INPUT")
-            {
+            if (child.tagName == "INPUT") {
                 // Disable if current mode button, enable otherwise.
                 child.disabled = child.className.toUpperCase().includes(mode) ? true : false;
             }
         }
-    }
-    else
-    {
+    } else {
         // Not implemented exception
         console.error("Invalid mode passed to setMouseMode method. Missing implementation?");
         return;
@@ -1237,8 +1181,8 @@ function setMouseMode(mode)
 function setCursorStyles(cursorMode = 0)
 {
     cursorStyle = document.getElementById("container").style;
-    switch(cursorMode)
-    {
+
+    switch(cursorMode) {
         case mouseModes.POINTER:
             cursorStyle.cursor = "pointer";
             break;
@@ -1251,7 +1195,7 @@ function setCursorStyles(cursorMode = 0)
         case mouseModes.EDGE_CREATION:
             cursorStyle.cursor = "grab";
             break;
-        default: 
+        default:
             break;
     }
 }
@@ -1259,8 +1203,11 @@ function setCursorStyles(cursorMode = 0)
 function onMouseModeEnabled()
 {
     // Add the diagramActive to current diagramIcon
-    if (mouseMode === mouseModes.PLACING_ELEMENT) document.getElementById("elementPlacement" + elementTypeSelected).classList.add("active")
-    else document.getElementById("mouseMode" + mouseMode).classList.add("active")
+    if (mouseMode === mouseModes.PLACING_ELEMENT) {
+        document.getElementById("elementPlacement" + elementTypeSelected).classList.add("active");
+    } else {
+        document.getElementById("mouseMode" + mouseMode).classList.add("active");
+    }
 
     switch (mouseMode) {
         case mouseModes.POINTER:
@@ -1311,37 +1258,33 @@ function onMouseModeDisabled()
 }
 
 //Function to enable or disable backgroundgrid.
-function toggleGrid(){
-
+function toggleGrid()
+{
     var grid = document.getElementById("svggrid");
 
     // Toggle active class on button
     document.getElementById("gridToggle").classList.toggle("active");
 
-    if(grid.style.display == "block")
-    {
+    if (grid.style.display == "block") {
         grid.style.display = "none";
-
-    }else
-    {
+     } else {
         grid.style.display = "block";
-    }
+   }
 }
-function toggleRuler(){
 
+function toggleRuler()
+{
     var ruler = document.getElementById("rulerOverlay");
-
+  
     // Toggle active class on button
     document.getElementById("rulerToggle").classList.toggle("active");
 
-    if(isRulerActive)
-    {
+  if(isRulerActive){
         ruler.style.display = "none";
-    }else
-    {
+    } else {
         ruler.style.display = "block";
     }
-
+  
     isRulerActive = !isRulerActive;
     drawRulerBars();
 }
@@ -1360,8 +1303,7 @@ function constructElementOfType(type)
         {data: defaults.defaultGhost, name: "Ghost"}
     ]
 
-    if (enumContainsPropertyValue(type, elementTypes))
-    {
+    if (enumContainsPropertyValue(type, elementTypes)){
         return elementTemplates[type];
     }
 }
@@ -1377,8 +1319,7 @@ function getElementsInsideCoordinateBox(selectionRect)
     data.forEach(element => {
 
         // Box collision test
-        if (rectsIntersect(selectionRect, getRectFromElement(element)))
-        {
+        if (rectsIntersect(selectionRect, getRectFromElement(element))) {
             elements.push(element);
         }
     });
@@ -1421,8 +1362,7 @@ function boxSelect_Start(mouseX, mouseY)
 
 function boxSelect_Update(mouseX, mouseY)
 {
-    if (boxSelectionInUse)
-    {
+    if (boxSelectionInUse) {
         // Update relative position form the starting position
         deltaX = mouseX - startX;
         deltaY = mouseY - startY;
@@ -1433,24 +1373,19 @@ function boxSelect_Update(mouseX, mouseY)
         // Calculate top-left and bottom-right coordinates
         var topLeft = getPoint(0, 0), bottomRight = getPoint(0, 0);
 
-        if (coords.n1.x < coords.n4.x) // left/right
-        {
+        // left/right
+        if (coords.n1.x < coords.n4.x) {
             topLeft.x = coords.n1.x;
             bottomRight.x = coords.n4.x;
-        }
-        else 
-        {
+        } else {
             topLeft.x = coords.n4.x;
             bottomRight.x = coords.n1.x;
         }
-
-        if (coords.n1.y < coords.n4.y) // top/bottom
-        {
+        // top/bottom
+        if (coords.n1.y < coords.n4.y) {
             topLeft.y = coords.n1.y;
             bottomRight.y = coords.n4.y;
-        }
-        else
-        {
+        } else {
             topLeft.y = coords.n4.y;
             bottomRight.y = coords.n1.y;
         }
@@ -1481,8 +1416,7 @@ function boxSelect_End()
 
 function boxSelect_Draw(str)
 {
-    if (boxSelectionInUse && mouseMode == mouseModes.BOX_SELECTION && pointerState == pointerStates.DEFAULT)
-    {
+    if (boxSelectionInUse && mouseMode == mouseModes.BOX_SELECTION && pointerState == pointerStates.DEFAULT) {
         // Positions to draw lines in-between
         /*
             Each [nx] depicts one node in the selection triangle.
@@ -1517,12 +1451,10 @@ function boxSelect_Draw(str)
 
 function fab_action()
 {
-    if (document.getElementById("options-pane").className == "show-options-pane")
-    {
+    if (document.getElementById("options-pane").className == "show-options-pane") {
         document.getElementById('optmarker').innerHTML = "&#9660;Options";
         document.getElementById("options-pane").className = "hide-options-pane";
-    } else
-    {
+    } else {
         document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
         document.getElementById("options-pane").className = "show-options-pane";
     }
@@ -1541,13 +1473,13 @@ function zoomin()
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.125) zoomfact = 0.25
-    else if (zoomfact == 0.25) zoomfact = 0.5
-    else if (zoomfact == 0.5) zoomfact = 0.75
-    else if (zoomfact == 0.75) zoomfact = 1.0
-    else if (zoomfact == 1.0) zoomfact = 1.25
-    else if (zoomfact == 1.25) zoomfact = 1.5
-    else if (zoomfact == 1.5) zoomfact = 2.0
+    if (zoomfact == 0.125) zoomfact = 0.25;
+    else if (zoomfact == 0.25) zoomfact = 0.5;
+    else if (zoomfact == 0.5) zoomfact = 0.75;
+    else if (zoomfact == 0.75) zoomfact = 1.0;
+    else if (zoomfact == 1.0) zoomfact = 1.25;
+    else if (zoomfact == 1.25) zoomfact = 1.5;
+    else if (zoomfact == 1.5) zoomfact = 2.0;
     else if (zoomfact == 2.0) zoomfact = 4.0;
 
     scrollx = scrollx * zoomfact;
@@ -1565,13 +1497,13 @@ function zoomout()
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.25) zoomfact = 0.125
-    else if (zoomfact == 0.5) zoomfact = 0.25
-    else if (zoomfact == 0.75) zoomfact = 0.5
-    else if (zoomfact == 1.0) zoomfact = 0.75
-    else if (zoomfact == 1.25) zoomfact = 1.0
-    else if (zoomfact == 1.5) zoomfact = 1.25
-    else if (zoomfact == 2.0) zoomfact = 1.5
+    if (zoomfact == 0.25) zoomfact = 0.125;
+    else if (zoomfact == 0.5) zoomfact = 0.25;
+    else if (zoomfact == 0.75) zoomfact = 0.5;
+    else if (zoomfact == 1.0) zoomfact = 0.75;
+    else if (zoomfact == 1.25) zoomfact = 1.0;
+    else if (zoomfact == 1.5) zoomfact = 1.25;
+    else if (zoomfact == 2.0) zoomfact = 1.5;
     else if (zoomfact == 4.0) zoomfact = 2.0;
 
     scrollx = scrollx * zoomfact;
@@ -1590,8 +1522,7 @@ function zoomout()
 
 function findIndex(arr, id)
 {
-    for (var i = 0; i < arr.length; i++)
-    {
+    for (var i = 0; i < arr.length; i++) {
         if (arr[i].id == id) return i;
     }
     return -1;
@@ -1603,8 +1534,7 @@ function findIndex(arr, id)
 function setPos(id, x, y)
 {
     foundId = findIndex(data, id);
-    if (foundId != -1)
-    {
+    if (foundId != -1) {
         data[foundId].x -= (x / zoomfact);
         data[foundId].y -= (y / zoomfact);
     }
@@ -1623,13 +1553,11 @@ function showdata()
     var courses = [];
 
     // Iterate over programs
-    for (var i = 0; i < data.length; i++)
-    {
+    for (var i = 0; i < data.length; i++) {
         str += drawElement(data[i]);
     }
 
-    if (ghostElement)
-    {
+    if (ghostElement) {
         str += drawElement(ghostElement, true);
     }
 
@@ -1642,7 +1570,7 @@ function showdata()
 //-------------------------------------------------------------------------------------------------
 function addLine(fromElement, toElement, kind){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
-    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ){
+    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
         // Filter the existing lines and gets the number of existing lines
         var numOfExistingLines = lines.filter(function (line) {
@@ -1659,7 +1587,7 @@ function addLine(fromElement, toElement, kind){
                             toElement.kind === "ERRelation");
 
         // If there is no existing lines or is a special case
-        if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)){
+        if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
 
             var newLine = {
                 id: makeRandomID(),
@@ -1674,10 +1602,10 @@ function addLine(fromElement, toElement, kind){
             // Save changes into state machine
             stateMachine.save(StateChangeFactory.LineAdded(newLine));
             
-        }else {
+        } else {
             displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
         }
-    }else {
+    } else {
         displayMessage("error", "Not possible to draw a line between two: " + context[0].kind);
     }
 }
@@ -1719,8 +1647,7 @@ function drawElement(element, ghosted = false)
 						width:${boxw}px;
 						height:${boxh}px;
 						font-size:${texth}px;`;
-    if (ghosted)
-    {
+    if (ghosted) {
         str += `
             pointer-events: none;
             opacity: ${ghostLine ? 0 : 0.5};
@@ -1730,12 +1657,10 @@ function drawElement(element, ghosted = false)
     str += `<svg width='${boxw}' height='${boxh}' >`;
 
     // Create svg 
-    if (element.kind == "EREntity")
-    {
+    if (element.kind == "EREntity") {
         var weak = "";
 
-        if(element.state == "weak")
-        {
+        if(element.state == "weak") {
             weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
             stroke-width='${linew}' stroke='black' fill='#ffccdc' />
             <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
@@ -1748,17 +1673,14 @@ function drawElement(element, ghosted = false)
                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                    `;
     }
-    else if (element.kind == "ERAttr")
-    {
+    else if (element.kind == "ERAttr") {
         var dash = "";
         var multi = "";
 
-        if (element.state == "computed")
-        {
+        if (element.state == "computed") {
             dash = "stroke-dasharray='4 4'";
         }
-        if (element.state == "multiple")
-        {
+        if (element.state == "multiple") {
             multi = `
                     <path d="M${linew * multioffs},${hboxh} 
                     Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
@@ -1779,17 +1701,15 @@ function drawElement(element, ghosted = false)
 
                     <text x='${xAnchor}' y='${hboxh}' `;
 
-        if(element.state == "key"){
+        if(element.state == "key") {
             str += `class='underline'`;
         }    
             str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
             `;
     }
-    else if (element.kind == "ERRelation")
-    {
+    else if (element.kind == "ERRelation") {
         var weak = "";
-        if (element.state == "weak")
-        {
+        if (element.state == "weak") {
 
             weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
                 stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
@@ -1816,39 +1736,33 @@ function updateSelectedLine(selectedLine)
     // This function works almost exaclty as updateSelection but for lines instead.
 
     // If CTRL is pressed and an element is selected
-    if(selectedLine != null && ctrlPressed && !contextLine.includes(selectedLine))
-    {
+    if(selectedLine != null && ctrlPressed && !contextLine.includes(selectedLine)) {
         contextLine.push(selectedLine);
-    }
+
     // If ALT is pressed while selecting a line -> deselects that line
-    else if(selectedLine != null && altPressed)
-    {
-        if (contextLine.includes(selectedLine))
-        {
-            contextLine = contextLine.filter(function (line)
+    } else if(selectedLine != null && altPressed) {
+
+        if (contextLine.includes(selectedLine)) {    
+            contextLine = contextLine.filter(function (line) 
             {
                 return line !== selectedLine;
             });
         }
     }
     // If CTRL is not pressed and a element has been selected.
-    else if (selectedLine != null)
-    {
+    else if (selectedLine != null) {
         // Element not already in context
-        if (!contextLine.includes(selectedLine) && contextLine.length < 1)
-        {
+        if (!contextLine.includes(selectedLine) && contextLine.length < 1) {
             contextLine.push(selectedLine);
-        } else
-        {
-            if(mouseMode != mouseModes.POINTER)
-            {
+        
+        } else {
+            if (mouseMode != mouseModes.POINTER) {
                 contextLine = [];
             }
             contextLine.push(selectedLine);
         }
 
-    } else if (!altPressed && !ctrlPressed)
-    {
+    } else if (!altPressed && !ctrlPressed) {
         contextLine = [];
     }
 }
@@ -1856,18 +1770,14 @@ function updateSelectedLine(selectedLine)
 function updateSelection(ctxelement)
 {
     // If CTRL is pressed and an element is selected
-    if (ctrlPressed && ctxelement != null)
-    {
+    if (ctrlPressed && ctxelement != null) {
         // The element is not already selected
-        if (!context.includes(ctxelement))
-        {
+        if (!context.includes(ctxelement)) {
             context.push(ctxelement);
         }
         // The element is already selected
-    } else if (altPressed && ctxelement != null)
-    {
-        if (context.includes(ctxelement))
-        {
+    } else if (altPressed && ctxelement != null) {
+        if (context.includes(ctxelement)) {
             context = context.filter(function (element)
             {
                 return element !== ctxelement;
@@ -1875,22 +1785,17 @@ function updateSelection(ctxelement)
         }
     }
     // If CTRL is not pressed and a element has been selected.
-    else if (ctxelement != null)
-    {
+    else if (ctxelement != null) {
         // Element not already in context
-        if (!context.includes(ctxelement) && context.length < 1)
-        {
+        if (!context.includes(ctxelement) && context.length < 1) {
             context.push(ctxelement);
-        } else
-        {
-            if (mouseMode != mouseModes.EDGE_CREATION)
-            {
+        } else {
+            if (mouseMode != mouseModes.EDGE_CREATION) {
                 context = [];
             }
             context.push(ctxelement);
         }
-    } else if (!altPressed && !ctrlPressed)
-    {
+    } else if (!altPressed && !ctrlPressed) {
         context = [];
     }
 
@@ -1969,17 +1874,14 @@ function saveProperties()
 
     var propsChanged = {};
 
-    for (let index = 0; index < children.length; index++)
-    {
+    for (var index = 0; index < children.length; index++) {
         const child = children[index];
         const propName = child.id.split(`_`)[1];
 
-        switch (propName)
-        {
+        switch (propName) {
             case "name":
                 const value = child.value.trim();
-                if (value && value.length > 0)
-                {
+                if (value && value.length > 0) {
                     element[propName] = value;
                     propsChanged[propName] = value;
                 }
@@ -1989,6 +1891,7 @@ function saveProperties()
                 break;
         }
     }
+
     var a = StateChangeFactory.ElementAttributesChanged(element.id, propsChanged);
     console.log(a);
     stateMachine.save(a);
@@ -1997,7 +1900,8 @@ function saveProperties()
     updatepos(0,0);
 }
 
-function changeState() {
+function changeState() 
+{
     var property = document.getElementById("propertySelect").value;
     var element = context[0];
     element.state = property;
@@ -2015,8 +1919,7 @@ function generateContextProperties()
 
     //more than one element selected
 
-    if (context.length == 1)
-    {
+    if (context.length == 1) {
         var element = context[0];
         
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
@@ -2034,33 +1937,28 @@ function generateContextProperties()
         //Creates drop down for changing state of ER elements
         var value;
         var selected = context[0].state;
-        if(selected == undefined){
+        if(selected == undefined) {
             selected = "normal"
         }
-        if(element.kind=="ERAttr"){
+        if(element.kind=="ERAttr") {
             value = Object.values(attrState);
-        }
-        else if(element.kind=="EREntity"){
+        } else if(element.kind=="EREntity") {
             value = Object.values(entityState);
-        }
-        else if(element.kind=="ERRelation"){
+        } else if(element.kind=="ERRelation") {
             value = Object.values(relationState);
         }
         str += '<select id="propertySelect">';
             for (i = 0; i < value.length; i++) {
                 if (selected != value[i]) {
                     str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
-                }
-                else if(selected == value[i]){
+                } else if(selected == value[i]) {
                     str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
                 }
             }
         str += '</select>'; 
         str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
 
-    }
-    else if (context.length > 1)
-    {
+    } else if (context.length > 1) {
         str += "<p>Pick only ONE element!</p>";
     }
 
@@ -2074,8 +1972,7 @@ function updateCSSForAllElements()
         var left = Math.round((elementData.x * zoomfact) + (scrollx * (1.0 / zoomfact))),
             top = Math.round((elementData.y * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
-        if (useDelta)
-        {
+        if (useDelta) {
             left -= deltaX;
             top -= deltaY;
         }
@@ -2085,8 +1982,7 @@ function updateCSSForAllElements()
     }
 
     // Update positions of all data elements based on the zoom level and view space coordinate
-    for (var i = 0; i < data.length; i++)
-    {
+    for (var i = 0; i < data.length; i++) {
         // Element data from the array
         var element = data[i];
 
@@ -2094,8 +1990,7 @@ function updateCSSForAllElements()
         var elementDiv = document.getElementById(element.id);
 
         // Only perform update on valid elements
-        if (elementDiv != null)
-        {
+        if (elementDiv != null) {
             // If the element was clicked and our mouse movement is not null
             var inContext = deltaX != null && findIndex(context, element.id) != -1;
             var useDelta = (inContext && movingObject);
@@ -2108,12 +2003,10 @@ function updateCSSForAllElements()
     }
 
     // Also update ghost if there is one
-    if (ghostElement)
-    {
+    if (ghostElement) {
         var ghostDiv = document.getElementById(ghostElement.id);
         
-        if (ghostDiv)
-        {
+        if (ghostDiv){
             updateElementDivCSS(ghostElement, ghostDiv)
         }
     }
@@ -2129,41 +2022,38 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 
     var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
     var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    if (isNaN(x) || isNaN(y))
-    {
+    if (isNaN(x) || isNaN(y)) {
         return false;
-    } else
-    {
-        if (x1 >= x2)
-        {
+    } else {
+
+        if (x1 >= x2) {
             if (!(x2 <= x && x <= x1)) return false;
-        } else
-        {
+        } else {
             if (!(x1 <= x && x <= x2)) return false;
-        }
-        if (y1 >= y2)
-        {
+        } 
+        
+        if (y1 >= y2) {
             if (!(y2 <= y && y <= y1)) return false;
-        } else
-        {
+        } else {
             if (!(y1 <= y && y <= y2)) return false;
         }
-        if (x3 >= x4)
-        {
+
+        if (x3 >= x4) {
             if (!(x4 <= x && x <= x3)) return false;
-        } else
-        {
+        } else {
             if (!(x3 <= x && x <= x4)) return false;
         }
-        if (y3 >= y4)
-        {
+
+        if (y3 >= y4) {
             if (!(y4 <= y && y <= y3)) return false;
-        } else
-        {
+        } else {
             if (!(y3 <= y && y <= y4)) return false;
         }
     }
-    return { x: x, y: y };
+    return { 
+        x: x,
+        y: y 
+    };
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -2178,21 +2068,20 @@ function sortvectors(a, b, ends, elementid, axis)
     var parent = data[findIndex(data, elementid)];
 
     // Retrieve opposite element - assume element center (for now)
-    if (lineA.fromID == elementid){
+     if (lineA.fromID == elementid){
         toElementA = (lineA == ghostLine) ? ghostElement : data[findIndex(data, lineA.toID)];
-    }else{
+    } else {
         toElementA = data[findIndex(data, lineA.fromID)];
     }
 
     if (lineB.fromID == elementid){
         toElementB = (lineB == ghostLine) ? ghostElement : data[findIndex(data, lineB.toID)];
-    }else{
+    } else {
         toElementB = data[findIndex(data, lineB.fromID)];
     }
 
     // If lines cross swap otherwise keep as is
-    if (axis == 0 || axis == 1)
-    {
+    if (axis == 0 || axis == 1) {
         // Left side
         ay = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(a) + 1));
         by = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(b) + 1));
@@ -2200,8 +2089,8 @@ function sortvectors(a, b, ends, elementid, axis)
         else parentx = parent.x2;
 
         if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return -1
-    } else if (axis == 2 || axis == 3)
-    {
+
+    } else if (axis == 2 || axis == 3) {
         // Top / Bottom side
         ax = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(a) + 1));
         bx = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(b) + 1));
@@ -2381,12 +2270,11 @@ function redrawArrows(str)
     if (ghostLine && ghostElement){
         str += drawLine(ghostLine, true);
     }
-
     return str;
 }
 
-function addNodes(element) {
-
+function addNodes(element) 
+{
     var elementDiv = document.getElementById(element.id)
     var nodes = "";
 
@@ -2394,14 +2282,15 @@ function addNodes(element) {
     nodes += "<span class='node ml'></span>";
 
     elementDiv.innerHTML += nodes;
-
 }
-function removeNodes(element) {
+
+function removeNodes(element) 
+{
     // Get all elements with the class: "node"
     var nodes = document.getElementsByClassName("node");
 
     // For every node remove it
-    while(nodes.length > 0){
+    while(nodes.length > 0) {
         nodes[0].remove();
     }
     return str;
@@ -2409,7 +2298,8 @@ function removeNodes(element) {
 //-------------------------------------------------------------------------------------------------
 // Change the position of rulerPointers
 //-------------------------------------------------------------------------------------------------
-function setRulerPosition(x, y) {
+function setRulerPosition(x, y) 
+{
     document.getElementById("ruler-x").style.left = x - 51 + "px";
     document.getElementById("ruler-y").style.top = y + "px";
 }
@@ -2417,7 +2307,8 @@ function setRulerPosition(x, y) {
 //-------------------------------------------------------------------------------------------------
 // Draws the rulers
 //-------------------------------------------------------------------------------------------------
-function drawRulerBars(){
+function drawRulerBars()
+{
     //Get elements
     if(!isRulerActive) return;
 
@@ -2432,11 +2323,11 @@ function drawRulerBars(){
  
     //Draw the Y-axis ruler.
     var lineNumber = (fullLineRatio - 1);
-    for (i = 40;i <= cheight; i += lineRatio){
+    for (i = 40;i <= cheight; i += lineRatio) {
         lineNumber++;
 
         //Check if a full line should be drawn
-        if (lineNumber === fullLineRatio){
+        if (lineNumber === fullLineRatio) {
             var cordY = screenToDiagramCoordinates(0, i).y;
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(i)+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
@@ -2450,7 +2341,7 @@ function drawRulerBars(){
 
     //Draw the X-axis ruler.
     lineNumber = (fullLineRatio - 1);
-    for (i = 40;i <= cwidth; i += lineRatio){
+    for (i = 40;i <= cwidth; i += lineRatio) {
         lineNumber++;
 
         //Check if a full line should be drawn
@@ -2461,7 +2352,6 @@ function drawRulerBars(){
             barX += "<text x='"+(i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
         }
         else barX += "<line x1='" +i+"' y1='25' x2='" +i+"' y2='40px' stroke='" + color + "' />";
-
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
     svgX.style.backgroundColor = "#e6e6e6";
@@ -2474,23 +2364,21 @@ function removeElements(elementArray)
     stateMachine.save(StateChangeFactory.ElementsDeleted(elementArray));
     
     var linesToRemove = [];
-    for (var i = 0; i < elementArray.length; i++)
-    {
+    for (var i = 0; i < elementArray.length; i++) {
         // Remove element
         data = data.filter(function(element) {
             return element != elementArray[i];
         });
 
         // Add lines to "linesToRemove"
-        linesToRemove = linesToRemove.concat(lines.filter(function(line)
-        {
+        linesToRemove = linesToRemove.concat(lines.filter(function(line) {
             return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
         }));
     }
 
     stateMachine.save(StateChangeFactory.LinesRemoved(linesToRemove));
-    lines = lines.filter(function(line)
-    {
+
+    lines = lines.filter(function(line) {
         return !(linesToRemove.includes(line));
     });
 
@@ -2501,7 +2389,7 @@ function removeElements(elementArray)
 //Function to remove selected lines
 function removeLines(linesArray)
 {
-    for(var i = 0; i < linesArray.length; i++){
+    for(var i = 0; i < linesArray.length; i++) {
 
         //Remove line
         lines=lines.filter(function(line) {
@@ -2553,28 +2441,23 @@ function getData()
 
 function generateToolTips()
 {
-    
     var toolButtons = document.getElementsByClassName("key_tooltip");
 
     for (var index = 0; index < toolButtons.length; index++) {
         const element = toolButtons[index];
         var id = element.id.split("-")[1];
-        if(Object.getOwnPropertyNames(keybinds).includes(id));
-        {
+        if (Object.getOwnPropertyNames(keybinds).includes(id)) {
            element.innerHTML = `Keybind: ${keybinds[id]}`;
-
         }
     }
 }
 
 function data_returned(ret)
 {
-    if (typeof ret.data !== "undefined")
-    {
+    if (typeof ret.data !== "undefined") {
         service = ret;
         showdata();
-    } else
-    {
+    } else {
         alert("Error receiveing data!");
     }
 }
