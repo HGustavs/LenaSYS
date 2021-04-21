@@ -177,7 +177,8 @@ $_SESSION['hashpassword'] = 'UNK';
 	<div id="content">
 		<?php
 			// Log USERID for Dugga Access
-			//makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+
+			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
