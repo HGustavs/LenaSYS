@@ -54,11 +54,6 @@
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
 	
-	if(isset($_SESSION['hashpassword'])){
-		$hashpassword=$_SESSION['hashpassword'];
-	}else{
-		$hashpassword='UNK';
-	}
 
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
@@ -282,6 +277,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
+
 	<div id='login_popup'>
 <?php
 
@@ -321,14 +317,14 @@ if($hash!='UNK'){
 //Remove if you want the password to be persistent.
 $_SESSION['hashpassword'] = 'UNK';
 
-?>
-	</div>
+
 	<!-- content START -->
 	<div id="content">
 		<?php
 			// Log USERID for Dugga Access
-			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
-			//Retrieved from 'password' input field
+      // commented out because we are unsure about the usage of logs
+			//makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+  
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
