@@ -15,7 +15,7 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
-//---------------------------------------------------------------------	
+//---------------------------------------------------------------------
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
 session_start();
@@ -53,10 +53,10 @@ $info = $cid . " " . $vers . " " . $kind . " " . $link . " " . $selectedfile . "
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive.php", $userid, $info);
 
 //  Handle files! One by one  -- if all is ok add file name to database
-//  login for user is successful & has either write access or is superuser					
+//  login for user is successful & has either write access or is superuser
 
-$ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
-if ($ha) {
+// $ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
+// if ($ha) {
     if ($kind == "GFILE" && isSuperUser($_SESSION['uid'] == false)) return;
 
     $storefile = false;
@@ -118,7 +118,7 @@ if ($ha) {
                 }
             }
         }
-        
+
     }else if ($kind == "LFILE" || $kind == "MFILE") {
         //  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
         if (!file_exists($currcvd . "/courses/" . $cid)) {
@@ -136,11 +136,11 @@ if ($ha) {
             }
         }
     }
-}
+// }
 
-else {
-    $errortype ="noaccess";
-}
+// else {
+//     $errortype ="noaccess";
+// }
 
 if ($storefile) {
     //  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
@@ -182,7 +182,7 @@ if ($storefile) {
         //	"rar"		=> [
     ];
     // Uploading of dummy-files in fileed
-    if($kind == "EFILE"){ 
+    if($kind == "EFILE"){
         $fileText = $_POST["newEmptyFile"][0]; //Name of the file
         $fileLocation = $_POST["efilekind"][0]; // global or corselocal
         $extension = substr($fileText, strrpos($fileText, '.') + 1);
@@ -260,8 +260,8 @@ if ($storefile) {
                         $error = $query->errorInfo();
                         echo "Error updating filesize and uploaddate: " . $error[2];
                         $errortype ="updatefile";
-                        $errorvar = $error[2]; 
-                    }        
+                        $errorvar = $error[2];
+                    }
         }
         else{ // Not allowed extension
             $errortype ="extension";
@@ -277,7 +277,7 @@ if ($storefile) {
     //testcommit
 
     foreach ($swizzled as $key => $filea) {
-        
+
         // Uncomment for debug printing
         //print_r($filea) . "<br />";
 
@@ -289,7 +289,7 @@ if ($storefile) {
             $extension = end($temp); //stores the file type
             $extension = strtolower($extension);
 
-           
+
             $filetype = "";
             if (function_exists('mime_content_type'))
                 // Determine file MIME-type
@@ -297,7 +297,7 @@ if ($storefile) {
             else
                 // Use the file type given at upload because the extension "fileinfo" has not been enabled in php.ini
                 $filetype = $filea['type'];
-            
+
             if (array_key_exists($extension, $allowedExtensions)) {
                 //  if file type is allowed, continue the uploading process.
 
@@ -314,7 +314,7 @@ if ($storefile) {
                     logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 } else if ($kind == "MFILE") {
                     $movname = $currcvd . "/courses/" . $cid . "/" . $fname;
-                    
+
                     // Logging for course local files
                     $description="CourseLocal"." ".$fname;
                     logUserEvent($userid, $username, EventTypes::AddFile, $description);
@@ -390,7 +390,7 @@ if ($storefile) {
                         echo "Error updating filesize and uploaddate: " . $error[2];
                         $errortype ="updatefile";
                         $errorvar = $error[2];
-                        
+
                     }
 
                 } else {
