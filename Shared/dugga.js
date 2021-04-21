@@ -45,6 +45,7 @@ function getAllIndexes(haystack, needle) {
 	return indexes;
 }
 
+
 function setVariant(v) {
 	console.log("variant dugga.js: " + v)
 	localStorageVariant = v;
@@ -604,7 +605,6 @@ function createUrl(hash) {
 
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
-
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
@@ -613,6 +613,7 @@ function saveDuggaResult(citstr)
 	blockhashgen = true; //Block-Hash-Generation: No new hash should be generated if 'Save' is clicked more than once per dugga session.
 	
 	var url = createUrl(hash); //Create URL
+	
 	console.log("url: " + url);
 	console.log("pwd: " + pwd);
 
@@ -962,19 +963,36 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
+		if(localStorage.getItem("variantSize") == null) {
+			localStorage.setItem("variantSize", 100);
+		}
+		var newInt = +localStorage.getItem('variantSize');
+		if(querystring['did'] <= newInt) {
+			if(localStorage.getItem(querystring['did']) == null){
+				localStorage.setItem(querystring['did'], 0);
+			}
+		}
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorageVariant, 
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did']), 
 				dataType: "json",
-				success: 
-					function(data) {
+
+				success: function(data) {
+          // First check if dugga hash is unique...ish. Then check localstorage variants
 					returnedDugga(data);
 					ishashindb = data['ishashindb'];				//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
 					if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
 						hash = generateHash();						//Old hash gets replaced by new hash before saving to database.
 					}
+          var newvariants = data['variant'];    
+					if(localStorage.getItem(querystring['did']) == 0){
+						localStorage.setItem(querystring['did'], newvariants);
+					}
+					var variantsize = data['variantsize'];
+					localStorage.setItem("variantSize", variantsize);
 				}
+
 				//success: returnedDugga
 			});
 	}else if(kind=="RESULT"){
@@ -1358,6 +1376,31 @@ function copyHashtoCB() {
 
 function hideHashBox(){
     $("#hashBox").css("display","none");
+}
+
+function checkHashPassword(){
+	
+	var hash = $('#hash').text();
+	var password = document.getElementById('passwordfield').value;
+	
+	$.ajax({
+        url: "../Shared/hashpasswordauth.php",
+        data: {password:password, hash:hash},
+        type: "POST",
+        success: function(data){
+        	var d = JSON.parse(data);
+            var auth = d.auth
+            if(auth){
+        		console.log('Success!');
+        		hideHashBox();
+        		reloadPage();
+        	}else{
+        		$('#passwordtext').text('Wrong password, try again!');
+        		$('#passwordtext').css('color','red');
+        		console.log('Fail!');
+        	}
+		}
+	});
 }
 
 function showSecurityPopup()
