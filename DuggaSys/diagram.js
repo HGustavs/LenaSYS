@@ -1750,7 +1750,7 @@ function updateSelectedLine(selectedLine)
         }
     }
     // If CTRL is not pressed and a element has been selected.
-    else if (selectedLine != null) {
+    else if (selectedLine != null && !ctrlPressed) {
         // Element not already in context
         if (!contextLine.includes(selectedLine) && contextLine.length < 1) {
             contextLine.push(selectedLine);
