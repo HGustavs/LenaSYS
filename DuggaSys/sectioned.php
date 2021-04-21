@@ -144,6 +144,14 @@
 
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
 
+		<!-- Delete button -->
+		
+		<div class='fixed-action-button3 sectioned3'  id="DELStatic" style="display:none">
+			<input id='delElement'  type='button' value='-' style="top:-493px" class='submit-button-newitem' title='Delete marked items' onclick='confirmBox("openConfirmBox");'>
+		</div>
+		
+		<!-- end delete button -->
+
 		<!-- Small FAB Button in top in the header of sectioned -->
 		
 			<div style="margin:10px;">
@@ -185,32 +193,6 @@
 		<!-- + button END -->
 
 		<div id='courseList'>
-
-		<!-- Statistics List -->
-
-		<div id='statisticsList' style="">
-				<div id='statistics' class='statistics' style='cursor:pointer;'>
-						<div style='margin:10px;'>
-								<img alt="minimize deadline section icon" src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>
-								<img alt="expand deadline section icon" src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>
-						</div>
-						<div class='nowrap' style='padding-left:5px' title='statistics'>
-								<span class='listentries-span noselect' style='writing-mode:vertical-rl;text-orientation: sideways;'>Deadlines</span>
-						</div>
-				</div>
-				<div class='statisticsContent' style='display:flex;flex-direction:column;'>
-						<div id='statisticsPie' class='statisticsInnerBox'>
-								<svg id="pieChartSVG" width='300px' height='255px' style='padding: 10px; margin: auto;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
-						</div>
-						<div id='deadlineInfoBox' class='statisticsInnerBox' style='padding: 10px;'>
-								<h3 id='deadlineInfoTitle'>Recent and Upcoming Deadlines</h3>
-								<table id="deadlineList" style="table-layout: fixed;width:300px;">
-								</table>
-						</div>
-				</div>
-				<div class="statisticsContentBottom"></div>
-		</div>
-		<!-- Statistics List END-->
 
 		<!-- Section List -->
 		<div id='Sectionlisti'>
@@ -266,7 +248,7 @@
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
-					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection");' />
+					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearDeleteItemList();' />
 				</div>
 			</div>
 		</div>

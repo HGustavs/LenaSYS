@@ -87,7 +87,7 @@
 					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
 			}if ($noup == 'COURSE' && checkLogin()) {
-					echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/announcement_icon.svg'></td>";
+					echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
 
 			}if ($noup == 'COURSE' && checkLogin() && (isStudentUser($_SESSION['uid']))) {
 					echo "<td class='navButt' id='feedback' title='Recent Feedback'><img src='../Shared/icons/feedback_icon.svg'></td>";
@@ -116,7 +116,7 @@
 							echo "    </div>";
 							echo "</td>";
 					if(checklogin() && (isSuperUser($_SESSION['uid']) )) {			
-							echo "<td class='newVers' style='display: inline-block;margin-right:16px;'>";
+							echo "<td class='newVers' style='display: inline-block;'>";
 							echo "    <div class='newVers menuButton'>";
               echo "      <img alt='plus sign icon' id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
 							echo "    </div>";
@@ -450,7 +450,7 @@ function mouseOverAnnouncement() {
    if(obj != null)
    {
       var images = obj.getElementsByTagName('img');
-      images[0].src = '../Shared/icons/announcement_iconShadow.svg';
+      images[0].src = '../Shared/icons/new_announcement_iconShadow.svg';
    }
 }
 
@@ -459,7 +459,7 @@ function mouseOutAnnouncement() {
    if(obj != null)
    {
       var images = obj.getElementsByTagName('img');
-      images[0].src = '../Shared/icons/announcement_icon.svg';
+      images[0].src = '../Shared/icons/new_announcement_icon.svg';
    }
 }
 /*Shadow hover effect for announcement button END -------------*/
