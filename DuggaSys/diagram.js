@@ -328,8 +328,7 @@ class StateMachine
 
                         var changeType = stateChange.changeTypes[index];
                         
-                        switch (changeType)
-                        {
+                        switch (changeType) {
                             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                             case StateChange.ChangeTypes.ELEMENT_MOVED:
                             case StateChange.ChangeTypes.ELEMENT_RESIZED:
@@ -697,8 +696,7 @@ document.addEventListener('keyup', function (e)
         if (e.key == keybinds.ESCAPE) {
             escPressed = false;
         }
-        if (e.key == keybinds.HISTORY_STEPBACK && ctrlPressed)
-        {
+        if (e.key == keybinds.HISTORY_STEPBACK && ctrlPressed) {
             stateMachine.stepBack();
         }
 
@@ -2494,13 +2492,13 @@ function removeElements(elementArray, stateMachineShouldSave = true)
     var linesToRemove = [];
 
     for (var i = 0; i < elementArray.length; i++) {
-        linesToRemove = linesToRemove.concat(lines.filter(function(line)
-        {
-
+        linesToRemove = linesToRemove.concat(lines.filter(function(line) {
             return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
         }));
     }
-    if (linesToRemove.length > 0) removeLines(linesToRemove, stateMachineShouldSave);
+    if (linesToRemove.length > 0) { 
+        removeLines(linesToRemove, stateMachineShouldSave);
+    }
 
     // Remove elements
     for (var i = 0; i < elementArray.length; i++) {
@@ -2524,12 +2522,16 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     for (var i = 0; i < linesArray.length; i++) {
         lines = lines.filter(function(line) {
             var shouldRemove = (line != linesArray[i]);
-            if (shouldRemove) { anyRemoved = true; }
+            if (shouldRemove) {
+                anyRemoved = true;
+            }
             return shouldRemove;
         });
     }
 
-    if (stateMachineShouldSave && anyRemoved) stateMachine.save(StateChangeFactory.LinesRemoved(linesArray));
+    if (stateMachineShouldSave && anyRemoved) { 
+        stateMachine.save(StateChangeFactory.LinesRemoved(linesArray));
+    }
     
     contextLine = [];
     redrawArrows();
