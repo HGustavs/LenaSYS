@@ -2,8 +2,7 @@
 //                                          Class Definitions
 //------------------------------------=======############==========----------------------------------------
 
-class Point
-{
+class Point {
     x = 0;
     y = 0;
 
@@ -29,8 +28,7 @@ class Point
     }
 };
 
-class StateChange
-{
+class StateChange {
     /**
      * flag: number of 2nd base used to set multiple flags at once.
      * isSoft: If the change type is something that wishes to overwrite the previous change.
@@ -98,11 +96,11 @@ class StateChange
         this.id_list = id_list;
     }
 
-    getFlags() {
+    getFlags()
+    {
         var flags = 0;
 
-        for (var index = 0; index <  this.changeTypes.length; index++)
-        {
+        for (var index = 0; index <  this.changeTypes.length; index++) {
             var change = this.changeTypes[index];
             flags = flags | change.flag;
         }
@@ -119,16 +117,16 @@ class StateChange
     {
         var allFlags = this.getFlags();
         var AND = flag & allFlags;
+
         return (AND === flag);
     }
 
     setValues(value_object)
     {
-        if (value_object)
-        {
+        if (value_object) {
             var props = Object.getOwnPropertyNames(value_object);
-            for (var index = 0; index < props.length; index++)
-            {
+
+            for (var index = 0; index < props.length; index++) {
                 var propertyName = props[index];
                 this.valuesPassed[propertyName] = value_object[propertyName];
             }
@@ -141,22 +139,29 @@ class StateChange
      */
     appendValuesFrom(changes)
     {
-        if (changes.name)
-        {
+        if (changes.name) {
             this.name = changes.name;
         }
-        if (changes.moved)
-        {
-            if (this.moved) this.moved.add(changes.moved);
-            else this.moved = changes;
+
+        if (changes.moved) {
+            if (this.moved) { 
+                this.moved.add(changes.moved);
+            }
+            else { 
+                this.moved = changes;
+            }
         }
-        if (changes.resized)
-        {
-            if (this.resized) this.resized.add(changes.resized);
-            else this.resized = changes.resized;
+
+        if (changes.resized) {
+            if (this.resized) {
+                this.resized.add(changes.resized);
+            }
+            else {
+                this.resized = changes.resized;
+            }
         }
-        if (changes.timestamp < this.timestamp)
-        {
+
+        if (changes.timestamp < this.timestamp) {
             this.timestamp = changes.timestamp;
         }
         
@@ -203,6 +208,7 @@ class StateChangeFactory
     {
         var state = new StateChange(StateChange.ChangeTypes.ELEMENT_RESIZED, elementIDs);
         state.resized = new Point(changeX, changeY);
+
         return state;
     }
 
@@ -211,6 +217,7 @@ class StateChangeFactory
         var state = new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED, elementIDs);
         state.moved = new Point(moveX, moveY);
         state.resized = new Point(changeX, changeY);
+
         return state;
     }
 
@@ -219,8 +226,7 @@ class StateChangeFactory
         var state = new StateChange(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED, [elementID]);
 
         // Handle special values that should not be passed, but rather used instantly.
-        if (changeList.name)
-        {
+        if (changeList.name) {
             state.name = changeList.name;
             delete changeList.name;
         }
@@ -248,8 +254,7 @@ class StateChangeFactory
     {
         var lineIDs = [];
 
-        for (var index = 0; index < lines.length; index++)
-        {
+        for (var index = 0; index < lines.length; index++) {
             lineIDs.push(lines[index].id);
         }
 
@@ -286,48 +291,45 @@ class StateMachine
      */
     save (stateChange)
     {
-        if (stateChange instanceof StateChange)
-        {
+        if (stateChange instanceof StateChange) {
+
             // If history is present, perform soft/hard-check
-            if (this.historyLog.length > 0)
-            {
+            if (this.historyLog.length > 0) {
+
                 /** @type StateChange */
                 var lastLog = this.historyLog[this.historyLog.length - 1];
                 
                 var sameElements = true;
-                for (var index = 0; index < lastLog.id_list.length && sameElements; index++) 
-                {
+                for (var index = 0; index < lastLog.id_list.length && sameElements; index++)  {
+
                     var id_found = lastLog.id_list[index];
 
-                    if (!stateChange.id_list.includes(id_found))
-                    {
+                    if (!stateChange.id_list.includes(id_found)) {
                         sameElements = false;
                     }
                 }
 
                 var isSoft = true;
-                for (var index = 0; index < stateChange.changeTypes.length && isSoft; index++)
-                {
+                for (var index = 0; index < stateChange.changeTypes.length && isSoft; index++) {
                     isSoft = stateChange.changeTypes[index].isSoft;
                 }
 
                 var canAppendToLast = true;
-                for (var index = 0; index < lastLog.changeTypes.length && isSoft; index++)
-                {
+                for (var index = 0; index < lastLog.changeTypes.length && isSoft; index++) {
                     canAppendToLast = lastLog.changeTypes[index].canAppendTo;
                 }
 
                 // If NOT soft change, push new change onto history log
-                if (!isSoft || !canAppendToLast || !sameElements)
-                {
+                if (!isSoft || !canAppendToLast || !sameElements) {
+
                     this.historyLog.push(stateChange);
-                }
-                // Otherwise, simply modify the last entry.
-                else
-                {
-                    for (var index = 0; index < stateChange.changeTypes.length; index++)
-                    {
+
+                } else { // Otherwise, simply modify the last entry.
+
+                    for (var index = 0; index < stateChange.changeTypes.length; index++) {
+
                         var changeType = stateChange.changeTypes[index];
+                        
                         switch (changeType)
                         {
                             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
@@ -343,34 +345,29 @@ class StateMachine
                         };
                     }
                 }
-            }
-            else
-            {
+            } else {
                 this.historyLog.push(stateChange);
             }
-        }
-        else
-        {
+        } else {
             console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
         }
     }
 
     stepBack () 
     {
-        if (this.historyLog.length > 0)
-        {
+        if (this.historyLog.length > 0) {
+
             var lastChange = this.historyLog.pop();
 
             // ------ Test each flag and step back per flag options ------
 
             // Attribute Changed
-            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag))
-            {
-                if (lastChange.name)
-                {
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag)) {
+                if (lastChange.name) {
+
                     var element = data[findIndex(data, lastChange.id_list[0])];
-                    if (element)
-                    {
+ 
+                    if (element) {
                         element.name = "MISSING_VARIABLE"; // TODO : State machine does NOT store old name value.
                         console.warn("State machine doesn't store old names right now. Cannot restore previous name.");
                     }
@@ -378,13 +375,13 @@ class StateMachine
             }
 
             // Element moved
-            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_MOVED.flag))
-            {
-                for (var index = 0; index < lastChange.id_list.length; index++)
-                {
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_MOVED.flag)) {
+
+                for (var index = 0; index < lastChange.id_list.length; index++) {
+
                     var element = data[findIndex(data, lastChange.id_list[index])];
-                    if (element)
-                    {
+
+                    if (element) {
                         element.x -= lastChange.moved.x;
                         element.y -= lastChange.moved.y;
                     }
@@ -392,46 +389,46 @@ class StateMachine
             }
 
             // Element resized
-            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_RESIZED.flag))
-            {
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_RESIZED.flag)) {
+
                 var element = data[findIndex(data, lastChange.id_list[0])];
-                if (element)
-                {
+
+                if (element) {
                     element.width -= lastChange.resized.x;
                     element.height -= lastChange.resized.y;
                 }
             }
 
             // Element created
-            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_CREATED.flag))
-            {
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_CREATED.flag)) {
+
                 var element = data[findIndex(data, lastChange.id_list[0])];
-                if (element)
-                {
+
+                if (element) {
                     removeElements([element], false);
                 }
             }
 
             // Element destroyed
-            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_DELETED.flag))
-            {
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_DELETED.flag)) {
+
                 data = Array.prototype.concat(data, lastChange.valuesPassed.elementsDeleted);
             }
 
             // Line created
-            if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_CREATED.flag))
-            {
+            if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_CREATED.flag)) {
+
                 var line = lines[findIndex(lines, lastChange.id_list[0])];
-                console.log(lastChange);
-                if (line)
-                {
+
+                console.log(lastChange, line);
+
+                if (line) {
                     removeLines([line]);
                 }
             }
 
             // Line destroyed
-            if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_DELETED.flag))
-            {
+            if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_DELETED.flag)) {
                 lines = Array.prototype.concat(lines, lastChange.valuesPassed.linesDeleted);
             }
 
@@ -439,12 +436,6 @@ class StateMachine
             updatepos(0, 0);
         }
     }
-    
-    /* TODO : Stepping forward again
-    stepForward()
-    {
-        if (this.futureLog.length > 0) { }
-    }*/
 };
 
 //------------------------------------=======############==========----------------------------------------
