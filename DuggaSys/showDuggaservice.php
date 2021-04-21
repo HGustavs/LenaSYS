@@ -55,7 +55,6 @@ $timeUsed;
 $stepsUsed;
 $duggafeedback="UNK";
 $variants=array();
-$variantsize;
 
 $savedvariant="UNK";
 $newvariant="UNK";
@@ -125,7 +124,7 @@ foreach($query->fetchAll() as $row) {
 
 // -------------------------OLD FUNCTIONALITY WHERE WE CHECK IF USER IS LOGGED IN AND HAS ACESS-------------------
 
-
+/*
 if(checklogin()){
 	if((hasAccess($userid, $courseid, 'r')&&($dvisibility == 1 || $dvisibility == 2))||isSuperUser($userid)) $hr=true;
 }
@@ -136,9 +135,40 @@ $demo=false;
 if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
 if($demo){
+	// We are not logged in - provide the first variant as demo.
+	$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+	$query->bindParam(':vid', $localStorageVariant);
+	$query->execute();
+	$result = $query->fetch();
+	$param=html_entity_decode($result['param']);	
+	
+} 
+*/
+
+	// We are part of the course - assign variant
+	// See if we already have a result i.e. a chosen variant.
+
+	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE hash=:hash;");
+	$query->bindParam(':hash', $hash);
+	$result = $query->execute();
+
+	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+		$savedvariant=$row['variant'];
+		$savedanswer=$row['useranswer'];
+		$score = $row['score'];
+		$isIndb=true;
+		if ($row['feedback'] != null){
+				$duggafeedback = $row['feedback'];
+		} else {
+				$duggafeedback = "UNK";
+		}
+		$grade = $row['grade'];
+		$submitted = $row['submitted'];
+		$marked = $row['marked'];
+	}
 
 //----------------------------------- OLD FUNCTIONALITY WHERE DUGGA IS SAVED TO DB WHEN VISITED -------------------------------------------
-	
+	/*
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
 	$foundvar=-1;
@@ -170,8 +200,58 @@ if($demo){
 	}else{
 		// There is a variant already -- do nothing!	
 	}
+	
+	/*
+	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
+	if ($newvariant=="UNK"){
 
-	$savedvariant=$newvariant;
+	} else if ($newvariant!="UNK") {
+		
+		if($isIndb){
+			$query = $pdo->prepare("UPDATE userAnswer SET variant=:variant WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':coursevers', $coursevers);
+			$query->bindParam(':uid', $userid);
+			$query->bindParam(':moment', $moment);
+			$query->bindParam(':variant', $newvariant);
+			if(!$query->execute() || $query->rowCount()==0) {
+				$error=$query->errorInfo();
+				$debug="Error updating variant (row ".__LINE__.") ".$query->rowCount()." row(s) were updated. Error code: ".$error[2];
+			}
+			$savedvariant=$newvariant;
+
+		}else if(!$isIndb){
+			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':coursevers', $coursevers);
+			$query->bindParam(':uid', $userid);
+			$query->bindParam(':did', $duggaid);
+			$query->bindParam(':moment', $moment);
+			$query->bindParam(':variant', $newvariant);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
+			}
+						
+			$savedvariant=$newvariant;
+			//------------------------------
+			//mark segment as started on
+      //------------------------------
+      /*
+			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':coursevers', $coursevers);
+			$query->bindParam(':uid', $userid);
+			$query->bindParam(':did', $duggaid);
+			$query->bindParam(':moment', $segment);
+			$query->bindParam(':variant', $newvariant);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
+      }
+      
+		}
+	}
 
 	// Retrieve variant
 	if($insertparam == false){
@@ -179,40 +259,12 @@ if($demo){
 	}
 	foreach ($variants as $variant) {
 		if($variant["vid"] == $savedvariant){
-			$param=html_entity_decode($variant['param']);
+				$param=html_entity_decode($variant['param']);
 		}
-	}
-	//Makes sure that the localstorage variant is set before retrieving data from database
-	if(isset($localStorageVariant)) {
-			// If it's the first time showing this variant
-		if($localStorageVariant == 0) {
-			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-			$query->bindParam(':vid', $savedvariant);
-			$query->execute();
-			$result = $query->fetch();
-			$param=html_entity_decode($result['param']);
-		} else {
-			// If we already have a variant in localstorage
-			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-			$query->bindParam(':vid', $localStorageVariant);
-			$query->execute();
-			$result = $query->fetch();
-			$param=html_entity_decode($result['param']);
-		}
-	}
-	
-	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
-	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
-	$query->execute();
-	$variantsize = $query->fetchColumn();
-	
-	
-} else if ($hr){
+	}*/
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
-	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
-	$query->execute();
-	$variantsize = $query->fetchColumn();
+
 
 	if($isIndb){ // If dugga is in database, get the variant from the database
 		if($insertparam == false){
@@ -230,7 +282,7 @@ if($demo){
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
 	}
-}
+
 
 //------------------------------------------------------------------------------------------------
 // Services
@@ -556,7 +608,6 @@ $array = array(
 		"userfeedback" => $userfeedback,
 		"feedbackquestion" => $feedbackquestion,
 		"variant" => $savedvariant,
-		"variantsize" => $variantsize,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 

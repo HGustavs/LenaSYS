@@ -161,7 +161,19 @@ function returnedDugga(data)
 					}
 				}
 			}
-		} 
+		} else {
+			var msg = "<div class='loginTransparent' id='lockedDuggaInfo' style='margin-bottom:5px;'>";
+			msg+="<img src='../Shared/icons/duggaLock.svg'>";
+			if (document.getElementById("loginbutton").className==="loggedin"){
+				msg+="<p>Not registered to the course!<br>You can view the assignment but you need to be registered to the course to save your dugga result.</p>";
+			} else {
+				msg+="<p>Not logged in!<br>You can view the assignment but you need to be logged in and registered to the course to save your dugga result.</p>";
+
+			}
+			msg+="</div>";
+
+			document.getElementById("tomten").innerHTML=msg;
+		}
 
 		if (duggaFiles && duggaFiles.length > 0){
 			for (var l=0; l<data["files"].length; l++){
@@ -191,6 +203,7 @@ function saveClick()
 	timeUsed = Timer.score;
 	stepsUsed = ClickCounter.score;
 
+	score = 0;
 
 	var bitstr = "Submitted";
 
