@@ -791,6 +791,9 @@ p {
 }
 
  #sectionList_arrowStatisticsClosed{
+  display: inline;
+}
+#sectionList_arrowStatisticsOpen{
   display: none;
 }
 #sectionList_arrowStatisticsOpen,
