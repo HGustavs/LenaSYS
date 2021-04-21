@@ -991,24 +991,25 @@ function AJAXService(opt,apara,kind)
 		if(querystring['did'] <= newInt) {
 			if(localStorage.getItem(querystring['did']) == null){
 				localStorage.setItem(querystring['did'], 0);
-				setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
-				getExpireTime(querystring['did']);
 			}
 		}
+		console.log(localStorage.getItem(querystring['did']));
+		var test = JSON.parse(localStorage.getItem(querystring['did']));
+		console.log(test.value);
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
-			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did'])+"&itemvalue="+itemvalue, 
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +test.value+"&itemvalue="+test.value,
 			dataType: "json",
 			success: function (data) {
 				console.log(itemvalue);
 				console.log(data);
 				returnedDugga(data);
-				var newvariants = data['variant'];
+				var newvariant = data['variant'];
 				if(localStorage.getItem(querystring['did']) == 0){
-					localStorage.setItem(querystring['did'], newvariants);
+					localStorage.setItem(querystring['did'], newvariant);
 					//The big number below represents 30 days in milliseconds
-					setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
+					setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 5000);
 				}
 				getExpireTime(querystring['did']);
 				var variantsize = data['variantsize'];
