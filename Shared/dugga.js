@@ -20,6 +20,7 @@ var ishashindb;
 var duggaTitle;
 var iconFlag = false;
 var blockhashgen = false;
+var ishashinurl;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -53,17 +54,15 @@ function getHash(){
 	return hash;
 }
 
-function updatehashflag(){
-
-}
-
 function setHash(h){
 	// Check if hash is unknown
 	if(h == "UNK"){
 		hash = generateHash();
 		pwd = randomPassword();
+		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
 	}else{
 		hash = h;
+		ishashinurl = true;		//Hash is referenced in the url -> A resubmission, this dugga already have a hash in the database.
 	}
 	
 }
@@ -972,7 +971,7 @@ function AJAXService(opt,apara,kind)
 					function(data) {
 					returnedDugga(data);
 					ishashindb = data['ishashindb'];				//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-					if(ishashindb==true && blockhashgen == false){	//If the hash already exist in database AND the save button hasn't been pressed yet
+					if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
 						hash = generateHash();						//Old hash gets replaced by new hash before saving to database.
 					}
 				}
