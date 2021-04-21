@@ -216,9 +216,9 @@ $_SESSION['hashpassword'] = 'UNK';
 				}else{
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 				}
-        echo "<div class='loginTransparent' id='lockedDuggaInfo' style='margin-bottom:5px;'>";
-        echo "<img src='../Shared/icons/duggaLock.svg'>";
-        echo "</div>";
+        		echo "<div class='loginTransparent' id='lockedDuggaInfo' style='margin-bottom:5px;'>";
+        		echo "<img src='../Shared/icons/duggaLock.svg'>";
+        		echo "</div>";
 
 			}else{
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Something went wrong in loading the test. Contact LENASys-admin.</div>";
