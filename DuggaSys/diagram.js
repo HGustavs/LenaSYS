@@ -942,6 +942,7 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
 function mouseMode_onMouseMove(event)
 {
      switch (mouseMode) {
+        case mouseModes.EDGE_CREATION:
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
