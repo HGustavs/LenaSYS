@@ -53,7 +53,12 @@
 	$duggaid=getOPG('did');
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
-	
+
+	if(isset($_SESSION['hashpassword'])){
+		$hashpassword=$_SESSION['hashpassword'];
+	}else{
+		$hashpassword='UNK';
+	}	
 
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
@@ -277,8 +282,12 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
+
+<div id='login_popup'>
 <?php
 function hashPassword($password, $hash){
+		if($password == 'UNK')
+			return false;
 		global $pdo;
 		$sql = "SELECT hash,password FROM useranswer WHERE '" .$password. "' LIKE password AND '".$hash."' LIKE hash";
 		$query = $pdo->prepare($sql);
@@ -286,13 +295,16 @@ function hashPassword($password, $hash){
 		$count = $query->rowCount();
 			if($count == 0){
 				echo '<script>console.log(false)</script>';
+				echo "<script>console.log('".$count."')</script>;";
 				return false;
 			} else{
 				echo '<script>console.log(true)</script>';
+				echo "<script>console.log('".$count."')</script>;";
 				return true;
 			}
 }
-	
+echo "<script>console.log('".$hash."')</script>;";
+echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
 if($hash!='UNK'){
 	if(!hashPassword($hashpassword, $hash)){
@@ -315,7 +327,7 @@ if($hash!='UNK'){
 $_SESSION['hashpassword'] = 'UNK';
 
 ?>
-	</div>
+</div>
 	<!-- content START -->
 	<div id="content">
 		<?php
