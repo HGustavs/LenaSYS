@@ -612,9 +612,6 @@ function saveDuggaResult(citstr)
 	blockhashgen = true; //Block-Hash-Generation: No new hash should be generated if 'Save' is clicked more than once per dugga session.
 
 	var url = createUrl(hash); //Create URL
-	console.log("url: " + url);
-	console.log("pwd: " + pwd);
-
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
 
@@ -967,17 +964,13 @@ function AJAXService(opt,apara,kind)
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorageVariant, 
 				dataType: "json",
 				success: function(data) {
-					// First check if dugga hash is unique...ish. Then check localstorage variants
+					// First check if dugga hash is unique.
 					returnedDugga(data);
 					ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-					console.log("first hash=" + hash);
-					console.log("is-hash-in-DB=" + ishashindb);
-					console.log("block-hash-generation=" + blockhashgen);
-					console.log("is-hash-in-url=" + ishashinurl);
 					if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
 						hash = generateHash();	//Old hash gets replaced by new hash before saving to database.
-						console.log("GENERATING! new hash=" + hash);
 					}
+					// Check localstorage variants.
 					var newvariants = data['variant'];    
 					if(localStorage.getItem(querystring['did']) == 0){
 						localStorage.setItem(querystring['did'], newvariants);
@@ -985,7 +978,6 @@ function AJAXService(opt,apara,kind)
 					var variantsize = data['variantsize'];
 					localStorage.setItem("variantSize", variantsize);
 					}
-				//returnedDugga
 			});
 	}else if(kind=="RESULT"){
 			$.ajax({
