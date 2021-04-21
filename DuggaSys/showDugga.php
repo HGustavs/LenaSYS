@@ -35,6 +35,8 @@
 	$quizid=getOPG('did');
 	$deadline=getOPG('deadline');
 	$comments=getOPG('comments');
+	$hash = getOPG("hash");
+	$password= "UNK";
 
 	$duggatitle="UNK";
 	$duggafile="UNK";
@@ -44,11 +46,19 @@
 	$visibility=false;
 	$readaccess=false;
 	$checklogin=false;
+	$insertparam = false;
 	
+	$variantsize;
 	$variants=array();
 	$duggaid=getOPG('did');
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
+
+	if(isset($_SESSION['hashpassword'])){
+		$hashpassword=$_SESSION['hashpassword'];
+	}else{
+		$hashpassword='UNK';
+	}	
 
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
@@ -111,6 +121,14 @@
 		$marked = $row['marked'];
 	}
 	
+	if ($hash != "UNK"){
+		$query = $pdo->prepare("SELECT password FROM userAnswer WHERE hash=:hash;");
+		$query->bindParam(':hash', $hash);
+		$query->execute();
+		$result = $query->fetch();
+		$password = $result["password"];
+	}
+
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
 	$foundvar=-1;
@@ -230,30 +248,92 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			echo "<body>";
 		}
 ?>
+
+<!-- Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database -->
+<?php
+	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
+	$query->execute();
+	$variantsize = $query->fetchColumn();
+?>
 <script type="text/javascript">
-	// localStorageName is unique and depends on did
-	var localStorageName = "duggaID: " + '<?php echo $duggaid; ?>';
-	var variant;
-	var newvariant = '<?php echo $newvariant; ?>';
-	
-	if(localStorage.getItem(localStorageName) == null){
-		localStorage.setItem(localStorageName, newvariant);
+	// This if-statement will only store to localstorage if there is a variant.quizID
+	// that match $duggaid. This is to prevent unecessary local storage when there is no matching variant, and in doing so, prevent swelling of the local storage
+	if(<?php echo $duggaid; ?> <= <?php echo $variantsize; ?>) {
+		// localStorageName is unique and depends on did
+		var localStorageName = "duggaID: " + '<?php echo $duggaid; ?>';
+		var variant;
+		var newvariant = '<?php echo $newvariant; ?>';
+		
+		if(localStorage.getItem(localStorageName) == null){
+			localStorage.setItem(localStorageName, newvariant);
+		}
+		variant = JSON.parse(localStorage.getItem(localStorageName));
+		setVariant(variant);
 	}
+
 	variant = JSON.parse(localStorage.getItem(localStorageName));
 	setVariant(variant);
-	
+  
+	setPassword("<?php echo $password ?>");
+	setHash("<?php echo $hash ?>");	
+
 </script>
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
 
+<div id='login_popup'>
+<?php
+function hashPassword($password, $hash){
+		if($password == 'UNK')
+			return false;
+		global $pdo;
+		$sql = "SELECT hash,password FROM useranswer WHERE '" .$password. "' LIKE password AND '".$hash."' LIKE hash";
+		$query = $pdo->prepare($sql);
+		$query->execute();
+		$count = $query->rowCount();
+			if($count == 0){
+				echo '<script>console.log(false)</script>';
+				echo "<script>console.log('".$count."')</script>;";
+				return false;
+			} else{
+				echo '<script>console.log(true)</script>';
+				echo "<script>console.log('".$count."')</script>;";
+				return true;
+			}
+}
+echo "<script>console.log('".$hash."')</script>;";
+echo "<script>console.log('".$hashpassword."')</script>;";
+//Saved Dugga Login
+if($hash!='UNK'){
+	if(!hashPassword($hashpassword, $hash)){
+		echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
+		echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
+		echo "<div class='loginBoxheader'>";
+		echo "<h3>Login for Saved Dugga</h3>";
+		echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
+		echo "</div>";
+		echo "<p id='passwordtext'>Enter your password for the hash:</p>";
+		echo "<p id='hash' style='font-weight: bold;'>$hash</p>";
+		echo "<input id='passwordfield' name='password' class='textinput' type='password' placeholder='Password'>";
+		echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
+		echo "</div>";
+		echo "</div>";
+		exit();
+	}
+}
+//Remove if you want the password to be persistent.
+$_SESSION['hashpassword'] = 'UNK';
+
+?>
+</div>
 	<!-- content START -->
 	<div id="content">
 		<?php
 			// Log USERID for Dugga Access
 			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
-
+			//Retrieved from 'password' input field
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
@@ -347,24 +427,17 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			</div>
 			<div id='receiptInfo'></div>
     		<textarea id="receipt" autofocus readonly style="resize: none;"></textarea>
- <!--    		<div class="button-row">
-    			<input type='button' class='submit-button'  onclick="showEmailPopup();" value='Save Receipt'>
-    			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
-    		</div>-->
+ 
     		<div id='emailPopup' style="display:block">
-    			<div class='inputwrapper'><span>Ange din email:</span><input class='textinput' type='text' id='email' placeholder='Email' value=''/></div>
+				<div id='urlAndPwd'>
+					<div class="testasd"><p class="bold">URL</p><p id='url'></p></div>
+					<div class="testasd"><p class="bold">Password</p><p id='pwd'></p></div>
+				</div>
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
-					<input type='button' class='submit-button'  onclick="sendReceiptEmail();" value='Send Receipt'>
 					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
 				</div>
     		</div>
-
-			<div id='urlAndPwd' style="display:block">
-				<div class="testasd"><span>URL: </span><span id='url'></span></div>
-				<div class="testasd"><span>Password: </span><span id='pwd'></span></div>
-			</div>
-
       </div>
 	</div>
 	<!-- Login Box (receipt&Feedback-box ) End! -->

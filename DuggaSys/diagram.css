@@ -1,7 +1,7 @@
 #container {
     position:absolute;
-    left:0px;
-    top:86px;
+    left:0;
+    top:0;
     border:1px dotted green;
     width:100%;
     height:100%;
@@ -18,6 +18,17 @@
     z-index: -10;
 }
 
+#svggrid {
+    position:absolute;
+    left:0px;
+    top:0;
+    display: none;
+    width:96%;
+    height:100%;
+    pointer-events: none;
+    z-index: -10;
+}
+
 #svgoverlay {
     position:absolute;
     left:0px;
@@ -26,7 +37,7 @@
     width:100%;
     height:100%;
     pointer-events: none;
-    z-index: 10;
+    z-index: -10;
 }		
 
 #fab {
@@ -47,7 +58,7 @@
 
 #options-pane {
     position: fixed;
-    top: 130px;
+    top: 0px;
     width: 280px;
     bottom: 120px;
     z-index: 5000;
@@ -90,10 +101,6 @@
     display: none;
 }	
 
-.paneButtons:hover {
-    cursor:pointer;
-}
-
 .element {
     font-size: small;
     box-sizing: border-box;
@@ -124,12 +131,14 @@
 }
 
 #rulerOverlay {
+    display: none;
     position:absolute;
-    left:0;
-    top:86px;
-    width:100%;
+    left:50px;
+    top:0;
+    width: calc(100% - 55px);
     height:100%;
     pointer-events: none;
+    display:block;
 }
 #ruler-y {
     left: 20px;
@@ -137,7 +146,7 @@
     width: 30px;
     height: 1px !important;
     position: absolute;
-    z-index: 5000;
+    z-index: 500;
 }
 
 #ruler-x {
@@ -146,7 +155,7 @@
     height: 30px;
     width: 1px;
     position: absolute;
-    z-index: 5000;
+    z-index: 500;
 }
 #ruler-x-svg {
     background-color: #FFF;
@@ -162,6 +171,7 @@
 }
 
 .diagramIcons{
+    margin: auto;
     width: 31px;
     height: 31px;
     cursor:pointer;
@@ -169,7 +179,7 @@
     border: solid 1px #eb4;
     margin-top:5px;
 }
-.diagramIcons:hover{
+.diagramIcons:hover, .active{
     background:#cc9923;
     border: solid 1px #b28210;
 }
@@ -192,5 +202,72 @@
     top: calc(50% - 4px);
     right: 0;
     cursor: col-resize;
+}
 
+.underline{
+    text-underline-offset: 0.15em;
+    text-decoration: underline;
+}
+
+#diagram-toolbar {
+    position: absolute;
+    width: 50px;
+    height: 100%;
+    border-right: solid black 1px;
+    background-color: #eb4;
+    z-index: 1000;
+}
+#diagram-toolbar>fieldset {
+    padding: 2px;
+    border-color: #c99d36;
+}
+#diagram-toolbar>fieldset>legend {
+    font-size: 0.6em;
+}
+#diagram-message {
+    min-width: 200px;
+    left: calc(40%);
+    top: 140px;
+    position: absolute;
+    z-index: 3000;
+    background: rgb(255, 153, 153);
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    opacity: 0.7;
+    display: none;
+}
+
+/*tooltip*/
+
+.diagramIcons{
+    position: relative;
+}
+
+.diagramIcons .toolTipText{
+    top:-5px;
+    left:105%;
+    visibility: hidden;
+    width: 250px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 2;
+}
+
+.diagramIcons:hover .toolTipText{
+    visibility: visible;
+}
+
+.tooltip{
+    position: absolute;
+    z-index: 1;
+}
+
+#fieldsetBox {
+    margin-left: 20px;
 }
