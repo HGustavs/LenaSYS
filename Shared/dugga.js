@@ -18,6 +18,7 @@ var pwd;
 var localStorageVariant;
 var duggaTitle;
 var iconFlag = false;
+var itemvalue;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -440,6 +441,39 @@ function setExpireCookieLogOut() {
 				expireDate.setMinutes(expireDate.getMinutes() + 120);	// For actual use
         document.cookie = "sessionEndTimeLogOut=expireC; expires=" + expireDate.toUTCString() + "; path=/";
     }
+}
+
+//Creates TTL for localstorage //TTL value is in milliseconds
+function setExpireTime(key, value, ttl){
+	const now = new Date();
+
+	//Item is an object which contains the original value
+	//as well as the time when its supposed to expire
+	const item = {
+		value: value,
+		expiry: now.getTime() + ttl,
+	}
+	
+	localStorage.setItem(key, JSON.stringify(item))
+}
+//Lazily expiring the item (Its only checked when retrieved from storage)
+function getExpireTime(key){
+	const itemString = localStorage.getItem(key)
+	
+	if(!itemString){
+		return null
+	}
+	const item = JSON.parse(itemString)
+	const now = new Date()
+
+	if(now.getTime() > item.expiry){
+		console.log(key + " has expired")
+		localStorage.removeItem(key)
+		return null
+	}
+	itemvalue = item.value;
+	console.log("item value: "+itemvalue);
+	return item.value;
 }
 
 //----------------------------------------------------------------------------------
@@ -950,12 +984,36 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
-			$.ajax({
-				url: "showDuggaservice.php",
-				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorageVariant, 
-				dataType: "json",
-				success: returnedDugga
+		if(localStorage.getItem("variantSize") == null) {
+			localStorage.setItem("variantSize", 100);
+		}
+		var newInt = +localStorage.getItem('variantSize');
+		if(querystring['did'] <= newInt) {
+			if(localStorage.getItem(querystring['did']) == null){
+				localStorage.setItem(querystring['did'], 0);
+				setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
+				getExpireTime(querystring['did']);
+			}
+		}
+		$.ajax({
+			url: "showDuggaservice.php",
+			type: "POST",
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did'])+"&itemvalue="+itemvalue, 
+			dataType: "json",
+			success: function (data) {
+				console.log(itemvalue);
+				console.log(data);
+				returnedDugga(data);
+				var newvariants = data['variant'];
+				if(localStorage.getItem(querystring['did']) == 0){
+					localStorage.setItem(querystring['did'], newvariants);
+					//The big number below represents 30 days in milliseconds
+					setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
+				}
+				getExpireTime(querystring['did']);
+				var variantsize = data['variantsize'];
+				localStorage.setItem("variantSize", variantsize);
+				}
 			});
 	}else if(kind=="RESULT"){
 			$.ajax({
