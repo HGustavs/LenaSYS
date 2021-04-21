@@ -424,18 +424,3 @@ if (!$error) {
 }*/
 echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id;
 ?>
-<html>
-<head>
-</head>
-<body>
-<?php
-if (!$error) {
-
-    echo "<script>window.location.replace('fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
-}
-?>
-
-
-
-</body>
-</html>
