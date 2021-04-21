@@ -433,6 +433,7 @@ var movingContainer = false;
 var isRulerActive = true;
 
 var randomidArray = []; // array for checking randomID
+var errorMsgTimer; //The variable that you use for clearing the setTimeout function
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
 //-------------------------------------------------------------------------------------------------
@@ -2472,8 +2473,9 @@ function displayMessage(type, message)
     messageEl.innerHTML = "<span>" + message + "</span>";
     messageEl.style.display = "block";
 
+    if(errorMsgTimer) clearTimeout(errorMsgTimer);
     //Set timeout to remove the message
-    setTimeout(function (){
+    errorMsgTimer = setTimeout(function (){
         messageEl.style.display = "none";
     }, 2000);
 }
