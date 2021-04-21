@@ -430,6 +430,7 @@ var pointerState = pointerStates.DEFAULT;
 
 var movingObject = false;
 var movingContainer = false;
+var isRulerActive = true;
 
 var randomidArray = []; // array for checking randomID
 //-------------------------------------------------------------------------------------------------
@@ -1278,7 +1279,7 @@ function onMouseModeDisabled()
 }
 
 //Function to enable or disable backgroundgrid.
-function enableGrid(){
+function toggleGrid(){
 
     var grid = document.getElementById("svggrid");
 
@@ -1294,22 +1295,23 @@ function enableGrid(){
         grid.style.display = "block";
     }
 }
-function enableRuler(){
+function toggleRuler(){
 
     var ruler = document.getElementById("rulerOverlay");
 
     // Toggle active class on button
     document.getElementById("rulerToggle").classList.toggle("active");
 
-    if(ruler.style.display == "block")
+    if(isRulerActive)
     {
         ruler.style.display = "none";
-
     }else
     {
         ruler.style.display = "block";
     }
 
+    isRulerActive = !isRulerActive;
+    drawRulerBars();
 }
 
 function setElementPlacementType(type = 0)
@@ -2357,6 +2359,8 @@ function setRulerPosition(x, y) {
 //-------------------------------------------------------------------------------------------------
 function drawRulerBars(){
     //Get elements
+    if(!isRulerActive) return;
+
     svgX = document.getElementById("ruler-x-svg");
     svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
@@ -2483,8 +2487,7 @@ function getData()
     showdata();
     drawRulerBars();
     generateToolTips();
-    enableGrid();
-    enableRuler();
+    toggleGrid();
 }
 
 function generateToolTips()

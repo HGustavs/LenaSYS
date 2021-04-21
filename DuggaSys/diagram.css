@@ -138,6 +138,7 @@
     width: calc(100% - 55px);
     height:100%;
     pointer-events: none;
+    display:block;
 }
 #ruler-y {
     left: 20px;
