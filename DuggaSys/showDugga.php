@@ -44,7 +44,6 @@
 	$duggadead="UNK";
 
 	$visibility=false;
-	$readaccess=false;
 	$checklogin=false;
 	$insertparam = false;
 	
@@ -94,40 +93,41 @@
 		$i++;
 		$insertparam = true;
 	}
-	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+	if ($hash != "UNK") {
+		//echo "<script>console.log('asdasdsad')</script>";
+		$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,submitted,password FROM userAnswer WHERE hash=:hash;");
+		$query->bindParam(':hash', $hash);
+		$query->execute();
+		//$result = $query->fetch();
+		//$password = $result["password"];
+
+		if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+			$savedvariant=$row['variant'];
+			$savedanswer=$row['useranswer'];
+			$score = $row['score'];
+			$isIndb=true;
+	/* 		if ($row['feedback'] != null){
+					$duggafeedback = $row['feedback'];
+			} else {
+					$duggafeedback = "UNK";
+			} */
+			//$grade = $row['grade'];
+			$submitted = $row['submitted'];
+			$marked = $row['marked'];
+			$password = $row['password'];
+		}
+	}
+	/*$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$query->bindParam(':uid', $userid);
 	$query->bindParam(':moment', $moment);
-	$result = $query->execute();
+	$result = $query->execute(); */
 	
 	$savedvariant="UNK";
 	$newvariant="UNK";
 	$savedanswer="UNK";
 	$isIndb=false;
-
-	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-		$savedvariant=$row['variant'];
-		$savedanswer=$row['useranswer'];
-		$score = $row['score'];
-		$isIndb=true;
-		if ($row['feedback'] != null){
-				$duggafeedback = $row['feedback'];
-		} else {
-				$duggafeedback = "UNK";
-		}
-		$grade = $row['grade'];
-		$submitted = $row['submitted'];
-		$marked = $row['marked'];
-	}
-	
-	if ($hash != "UNK"){
-		$query = $pdo->prepare("SELECT password FROM userAnswer WHERE hash=:hash;");
-		$query->bindParam(':hash', $hash);
-		$query->execute();
-		$result = $query->fetch();
-		$password = $result["password"];
-	}
 
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
@@ -173,19 +173,7 @@
 		}
 	}
 
-
-	// Gets username based on uid, USED FOR LOGGING
-	$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
-	$query->bindParam(':uid', $userid);
-	$query-> execute();
-
-	// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
-	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
-		$username = $row['username'];
-	}
-
-
-	logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
+	//logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
 
 if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	$hr=false;
@@ -195,7 +183,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 			$visibility=$row['visibility'];
 	}
-	$readaccess=hasAccess($userid, $cid, 'r');
+	
 /*
 		//Give permit if the user is logged in and has access to the course or if it is public
 		$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0  && $userid != "UNK");
@@ -207,17 +195,14 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		}
 */
 
-  //If we have permission, and if file exists, include javascript file.
+  // can see all duggas and deleted ones
   if(isSuperUser($userid)){
-	// If the user is a super user, get all quizes.
-		  $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-	  }else if($readaccess){
-	// If logged in and has access, get all private(requires login) and public quizes.
-		  $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND (visible=1 OR visible=2) AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-	  } else {
-	// If not logged in, get only the public quizes.
-	$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND visible=1 AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-  }
+	$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+}
+// can see all duggas expect from deleted ones
+	else{
+	$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND (visible=1 OR visible=2) AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+}
 	  $query->bindParam(':cid', $cid);
 	  $query->bindParam(':vers', $vers);
 	  $query->bindParam(':quizid', $quizid);
@@ -332,7 +317,8 @@ $_SESSION['hashpassword'] = 'UNK';
 	<div id="content">
 		<?php
 			// Log USERID for Dugga Access
-			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+			// commented out because we are unsure about the usage of logs
+			//makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
 			//Retrieved from 'password' input field
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
@@ -365,11 +351,6 @@ $_SESSION['hashpassword'] = 'UNK';
 				}
         echo "<div class='loginTransparent' id='lockedDuggaInfo' style='margin-bottom:5px;'>";
         echo "<img src='../Shared/icons/duggaLock.svg'>";
-        if ($userid!="UNK") {
-          echo "<p>Not registered to the course!	You can view the assignment but you need to be registered to the course to save your dugga result.</p>";
-        } else {
-  				echo "<p>Not logged in!	You can view the assignment but you need to be logged in and registered to the course to save your dugga result.</p>";
-        }
         echo "</div>";
 
 			}else{
