@@ -1278,38 +1278,31 @@ function onMouseModeDisabled()
 }
 
 //Function to enable or disable backgroundgrid.
-function enableGrid(){
-
+function enableGrid()
+{
     var grid = document.getElementById("svggrid");
 
     // Toggle active class on button
     document.getElementById("gridToggle").classList.toggle("active");
 
-    if(grid.style.display == "block")
-    {
+    if (grid.style.display == "block") {
         grid.style.display = "none";
-
-    }else
-    {
+    } else {
         grid.style.display = "block";
     }
 }
-function enableRuler(){
-
+function enableRuler()
+{
     var ruler = document.getElementById("rulerOverlay");
 
     // Toggle active class on button
     document.getElementById("rulerToggle").classList.toggle("active");
 
-    if(ruler.style.display == "block")
-    {
+    if(ruler.style.display == "block"){
         ruler.style.display = "none";
-
-    }else
-    {
+    } else {
         ruler.style.display = "block";
     }
-
 }
 
 function setElementPlacementType(type = 0)
@@ -1325,8 +1318,7 @@ function constructElementOfType(type)
         {data: defaults.defaultERattr, name: "Attribute"}
     ]
 
-    if (enumContainsPropertyValue(type, elementTypes))
-    {
+    if (enumContainsPropertyValue(type, elementTypes)){
         return elementTemplates[type];
     }
 }
@@ -1342,8 +1334,7 @@ function getElementsInsideCoordinateBox(selectionRect)
     data.forEach(element => {
 
         // Box collision test
-        if (rectsIntersect(selectionRect, getRectFromElement(element)))
-        {
+        if (rectsIntersect(selectionRect, getRectFromElement(element))) {
             elements.push(element);
         }
     });
@@ -1383,8 +1374,7 @@ function boxSelect_Start(mouseX, mouseY)
 
 function boxSelect_Update(mouseX, mouseY)
 {
-    if (boxSelectionInUse)
-    {
+    if (boxSelectionInUse) {
         // Update relative position form the starting position
         deltaX = mouseX - startX;
         deltaY = mouseY - startY;
@@ -1395,24 +1385,19 @@ function boxSelect_Update(mouseX, mouseY)
         // Calculate top-left and bottom-right coordinates
         var topLeft = getPoint(0, 0), bottomRight = getPoint(0, 0);
 
-        if (coords.n1.x < coords.n4.x) // left/right
-        {
+        // left/right
+        if (coords.n1.x < coords.n4.x) {
             topLeft.x = coords.n1.x;
             bottomRight.x = coords.n4.x;
-        }
-        else 
-        {
+        } else {
             topLeft.x = coords.n4.x;
             bottomRight.x = coords.n1.x;
         }
-
-        if (coords.n1.y < coords.n4.y) // top/bottom
-        {
+        // top/bottom
+        if (coords.n1.y < coords.n4.y) {
             topLeft.y = coords.n1.y;
             bottomRight.y = coords.n4.y;
-        }
-        else
-        {
+        } else {
             topLeft.y = coords.n4.y;
             bottomRight.y = coords.n1.y;
         }
@@ -1431,8 +1416,7 @@ function boxSelect_End()
 
 function boxSelect_Draw(str)
 {
-    if (boxSelectionInUse && mouseMode == mouseModes.BOX_SELECTION && pointerState == pointerStates.DEFAULT)
-    {
+    if (boxSelectionInUse && mouseMode == mouseModes.BOX_SELECTION && pointerState == pointerStates.DEFAULT) {
         // Positions to draw lines in-between
         /*
             Each [nx] depicts one node in the selection triangle.
@@ -1467,12 +1451,10 @@ function boxSelect_Draw(str)
 
 function fab_action()
 {
-    if (document.getElementById("options-pane").className == "show-options-pane")
-    {
+    if (document.getElementById("options-pane").className == "show-options-pane") {
         document.getElementById('optmarker').innerHTML = "&#9660;Options";
         document.getElementById("options-pane").className = "hide-options-pane";
-    } else
-    {
+    } else {
         document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
         document.getElementById("options-pane").className = "show-options-pane";
     }
@@ -1491,13 +1473,13 @@ function zoomin()
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.125) zoomfact = 0.25
-    else if (zoomfact == 0.25) zoomfact = 0.5
-    else if (zoomfact == 0.5) zoomfact = 0.75
-    else if (zoomfact == 0.75) zoomfact = 1.0
-    else if (zoomfact == 1.0) zoomfact = 1.25
-    else if (zoomfact == 1.25) zoomfact = 1.5
-    else if (zoomfact == 1.5) zoomfact = 2.0
+    if (zoomfact == 0.125) zoomfact = 0.25;
+    else if (zoomfact == 0.25) zoomfact = 0.5;
+    else if (zoomfact == 0.5) zoomfact = 0.75;
+    else if (zoomfact == 0.75) zoomfact = 1.0;
+    else if (zoomfact == 1.0) zoomfact = 1.25;
+    else if (zoomfact == 1.25) zoomfact = 1.5;
+    else if (zoomfact == 1.5) zoomfact = 2.0;
     else if (zoomfact == 2.0) zoomfact = 4.0;
 
     scrollx = scrollx * zoomfact;
@@ -1515,13 +1497,13 @@ function zoomout()
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.25) zoomfact = 0.125
-    else if (zoomfact == 0.5) zoomfact = 0.25
-    else if (zoomfact == 0.75) zoomfact = 0.5
-    else if (zoomfact == 1.0) zoomfact = 0.75
-    else if (zoomfact == 1.25) zoomfact = 1.0
-    else if (zoomfact == 1.5) zoomfact = 1.25
-    else if (zoomfact == 2.0) zoomfact = 1.5
+    if (zoomfact == 0.25) zoomfact = 0.125;
+    else if (zoomfact == 0.5) zoomfact = 0.25;
+    else if (zoomfact == 0.75) zoomfact = 0.5;
+    else if (zoomfact == 1.0) zoomfact = 0.75;
+    else if (zoomfact == 1.25) zoomfact = 1.0;
+    else if (zoomfact == 1.5) zoomfact = 1.25;
+    else if (zoomfact == 2.0) zoomfact = 1.5;
     else if (zoomfact == 4.0) zoomfact = 2.0;
 
     scrollx = scrollx * zoomfact;
@@ -1540,8 +1522,7 @@ function zoomout()
 
 function findIndex(arr, id)
 {
-    for (var i = 0; i < arr.length; i++)
-    {
+    for (var i = 0; i < arr.length; i++) {
         if (arr[i].id == id) return i;
     }
     return -1;
@@ -1553,8 +1534,7 @@ function findIndex(arr, id)
 function setPos(id, x, y)
 {
     foundId = findIndex(data, id);
-    if (foundId != -1)
-    {
+    if (foundId != -1) {
         data[foundId].x -= (x / zoomfact);
         data[foundId].y -= (y / zoomfact);
     }
@@ -1573,13 +1553,11 @@ function showdata()
     var courses = [];
 
     // Iterate over programs
-    for (var i = 0; i < data.length; i++)
-    {
+    for (var i = 0; i < data.length; i++) {
         str += drawElement(data[i]);
     }
 
-    if (ghostElement)
-    {
+    if (ghostElement) {
         str += drawElement(ghostElement, true);
     }
 
@@ -1592,7 +1570,7 @@ function showdata()
 //-------------------------------------------------------------------------------------------------
 function addLine(fromElement, toElement, kind){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
-    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ){
+    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
         // Filter the existing lines and gets the number of existing lines
         var numOfExistingLines = lines.filter(function (line) {
@@ -1609,7 +1587,7 @@ function addLine(fromElement, toElement, kind){
                             toElement.kind === "ERRelation");
 
         // If there is no existing lines or is a special case
-        if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)){
+        if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
 
             var newLine = {
                 id: makeRandomID(),
@@ -1624,10 +1602,10 @@ function addLine(fromElement, toElement, kind){
             // Save changes into state machine
             stateMachine.save(StateChangeFactory.LineAdded(newLine));
             
-        }else {
+        } else {
             displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
         }
-    }else {
+    } else {
         displayMessage("error", "Not possible to draw a line between two: " + context[0].kind);
     }
 }
@@ -1669,8 +1647,7 @@ function drawElement(element, ghosted = false)
 						width:${boxw}px;
 						height:${boxh}px;
 						font-size:${texth}px;`;
-    if (ghosted)
-    {
+    if (ghosted) {
         str += `
             pointer-events: none;
             opacity: 0.5;
@@ -1680,12 +1657,10 @@ function drawElement(element, ghosted = false)
     str += `<svg width='${boxw}' height='${boxh}' >`;
 
     // Create svg 
-    if (element.kind == "EREntity")
-    {
+    if (element.kind == "EREntity") {
         var weak = "";
 
-        if(element.state == "weak")
-        {
+        if(element.state == "weak") {
             weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
             stroke-width='${linew}' stroke='black' fill='#ffccdc' />
             <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
@@ -1698,17 +1673,14 @@ function drawElement(element, ghosted = false)
                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                    `;
     }
-    else if (element.kind == "ERAttr")
-    {
+    else if (element.kind == "ERAttr") {
         var dash = "";
         var multi = "";
 
-        if (element.state == "computed")
-        {
+        if (element.state == "computed") {
             dash = "stroke-dasharray='4 4'";
         }
-        if (element.state == "multiple")
-        {
+        if (element.state == "multiple") {
             multi = `
                     <path d="M${linew * multioffs},${hboxh} 
                     Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
@@ -1729,17 +1701,15 @@ function drawElement(element, ghosted = false)
 
                     <text x='${xAnchor}' y='${hboxh}' `;
 
-        if(element.state == "key"){
+        if(element.state == "key") {
             str += `class='underline'`;
         }    
             str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
             `;
     }
-    else if (element.kind == "ERRelation")
-    {
+    else if (element.kind == "ERRelation") {
         var weak = "";
-        if (element.state == "weak")
-        {
+        if (element.state == "weak") {
 
             weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
                 stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
@@ -1766,39 +1736,33 @@ function updateSelectedLine(selectedLine)
     // This function works almost exaclty as updateSelection but for lines instead.
 
     // If CTRL is pressed and an element is selected
-    if(selectedLine != null && ctrlPressed && !contextLine.includes(selectedLine))
-    {
+    if(selectedLine != null && ctrlPressed && !contextLine.includes(selectedLine)) {
         contextLine.push(selectedLine);
-    }
+
     // If ALT is pressed while selecting a line -> deselects that line
-    else if(selectedLine != null && altPressed)
-    {
-        if (contextLine.includes(selectedLine))
-        {
-            contextLine = contextLine.filter(function (line)
+    } else if(selectedLine != null && altPressed) {
+
+        if (contextLine.includes(selectedLine)) {    
+            contextLine = contextLine.filter(function (line) 
             {
                 return line !== selectedLine;
             });
         }
     }
     // If CTRL is not pressed and a element has been selected.
-    else if (selectedLine != null)
-    {
+    else if (selectedLine != null) {
         // Element not already in context
-        if (!contextLine.includes(selectedLine) && contextLine.length < 1)
-        {
+        if (!contextLine.includes(selectedLine) && contextLine.length < 1) {
             contextLine.push(selectedLine);
-        } else
-        {
-            if(mouseMode != mouseModes.POINTER)
-            {
+        
+        } else {
+            if (mouseMode != mouseModes.POINTER) {
                 contextLine = [];
             }
             contextLine.push(selectedLine);
         }
 
-    } else if (!altPressed && !ctrlPressed)
-    {
+    } else if (!altPressed && !ctrlPressed) {
         contextLine = [];
     }
 }
@@ -1806,18 +1770,14 @@ function updateSelectedLine(selectedLine)
 function updateSelection(ctxelement)
 {
     // If CTRL is pressed and an element is selected
-    if (ctrlPressed && ctxelement != null)
-    {
+    if (ctrlPressed && ctxelement != null) {
         // The element is not already selected
-        if (!context.includes(ctxelement))
-        {
+        if (!context.includes(ctxelement)) {
             context.push(ctxelement);
         }
         // The element is already selected
-    } else if (altPressed && ctxelement != null)
-    {
-        if (context.includes(ctxelement))
-        {
+    } else if (altPressed && ctxelement != null) {
+        if (context.includes(ctxelement)) {
             context = context.filter(function (element)
             {
                 return element !== ctxelement;
@@ -1825,22 +1785,17 @@ function updateSelection(ctxelement)
         }
     }
     // If CTRL is not pressed and a element has been selected.
-    else if (ctxelement != null)
-    {
+    else if (ctxelement != null) {
         // Element not already in context
-        if (!context.includes(ctxelement) && context.length < 1)
-        {
+        if (!context.includes(ctxelement) && context.length < 1) {
             context.push(ctxelement);
-        } else
-        {
-            if (mouseMode != mouseModes.EDGE_CREATION)
-            {
+        } else {
+            if (mouseMode != mouseModes.EDGE_CREATION) {
                 context = [];
             }
             context.push(ctxelement);
         }
-    } else if (!altPressed && !ctrlPressed)
-    {
+    } else if (!altPressed && !ctrlPressed) {
         context = [];
     }
 
@@ -1919,17 +1874,14 @@ function saveProperties()
 
     var propsChanged = {};
 
-    for (let index = 0; index < children.length; index++)
-    {
+    for (var index = 0; index < children.length; index++) {
         const child = children[index];
         const propName = child.id.split(`_`)[1];
 
-        switch (propName)
-        {
+        switch (propName) {
             case "name":
                 const value = child.value.trim();
-                if (value && value.length > 0)
-                {
+                if (value && value.length > 0) {
                     element[propName] = value;
                     propsChanged[propName] = value;
                 }
@@ -1939,6 +1891,7 @@ function saveProperties()
                 break;
         }
     }
+
     var a = StateChangeFactory.ElementAttributesChanged(element.id, propsChanged);
     console.log(a);
     stateMachine.save(a);
@@ -1947,7 +1900,8 @@ function saveProperties()
     updatepos(0,0);
 }
 
-function changeState() {
+function changeState() 
+{
     var property = document.getElementById("propertySelect").value;
     var element = context[0];
     element.state = property;
@@ -1965,8 +1919,7 @@ function generateContextProperties()
 
     //more than one element selected
 
-    if (context.length == 1)
-    {
+    if (context.length == 1) {
         var element = context[0];
         
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
@@ -1984,33 +1937,28 @@ function generateContextProperties()
         //Creates drop down for changing state of ER elements
         var value;
         var selected = context[0].state;
-        if(selected == undefined){
+        if(selected == undefined) {
             selected = "normal"
         }
-        if(element.kind=="ERAttr"){
+        if(element.kind=="ERAttr") {
             value = Object.values(attrState);
-        }
-        else if(element.kind=="EREntity"){
+        } else if(element.kind=="EREntity") {
             value = Object.values(entityState);
-        }
-        else if(element.kind=="ERRelation"){
+        } else if(element.kind=="ERRelation") {
             value = Object.values(relationState);
         }
         str += '<select id="propertySelect">';
             for (i = 0; i < value.length; i++) {
                 if (selected != value[i]) {
                     str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
-                }
-                else if(selected == value[i]){
+                } else if(selected == value[i]) {
                     str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
                 }
             }
         str += '</select>'; 
         str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
 
-    }
-    else if (context.length > 1)
-    {
+    } else if (context.length > 1) {
         str += "<p>Pick only ONE element!</p>";
     }
 
@@ -2024,8 +1972,7 @@ function updateCSSForAllElements()
         var left = Math.round((elementData.x * zoomfact) + (scrollx * (1.0 / zoomfact))),
             top = Math.round((elementData.y * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
-        if (useDelta)
-        {
+        if (useDelta) {
             left -= deltaX;
             top -= deltaY;
         }
@@ -2035,8 +1982,7 @@ function updateCSSForAllElements()
     }
 
     // Update positions of all data elements based on the zoom level and view space coordinate
-    for (var i = 0; i < data.length; i++)
-    {
+    for (var i = 0; i < data.length; i++) {
         // Element data from the array
         var element = data[i];
 
@@ -2044,8 +1990,7 @@ function updateCSSForAllElements()
         var elementDiv = document.getElementById(element.id);
 
         // Only perform update on valid elements
-        if (elementDiv != null)
-        {
+        if (elementDiv != null) {
             // If the element was clicked and our mouse movement is not null
             var inContext = deltaX != null && findIndex(context, element.id) != -1;
             var useDelta = (inContext && movingObject);
@@ -2058,12 +2003,10 @@ function updateCSSForAllElements()
     }
 
     // Also update ghost if there is one
-    if (ghostElement)
-    {
+    if (ghostElement) {
         var ghostDiv = document.getElementById(ghostElement.id);
         
-        if (ghostDiv)
-        {
+        if (ghostDiv){
             updateElementDivCSS(ghostElement, ghostDiv)
         }
     }
@@ -2079,41 +2022,38 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 
     var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
     var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    if (isNaN(x) || isNaN(y))
-    {
+    if (isNaN(x) || isNaN(y)) {
         return false;
-    } else
-    {
-        if (x1 >= x2)
-        {
+    } else {
+
+        if (x1 >= x2) {
             if (!(x2 <= x && x <= x1)) return false;
-        } else
-        {
+        } else {
             if (!(x1 <= x && x <= x2)) return false;
-        }
-        if (y1 >= y2)
-        {
+        } 
+        
+        if (y1 >= y2) {
             if (!(y2 <= y && y <= y1)) return false;
-        } else
-        {
+        } else {
             if (!(y1 <= y && y <= y2)) return false;
         }
-        if (x3 >= x4)
-        {
+
+        if (x3 >= x4) {
             if (!(x4 <= x && x <= x3)) return false;
-        } else
-        {
+        } else {
             if (!(x3 <= x && x <= x4)) return false;
         }
-        if (y3 >= y4)
-        {
+
+        if (y3 >= y4) {
             if (!(y4 <= y && y <= y3)) return false;
-        } else
-        {
+        } else {
             if (!(y3 <= y && y <= y4)) return false;
         }
     }
-    return { x: x, y: y };
+    return { 
+        x: x,
+        y: y 
+    };
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -2128,24 +2068,20 @@ function sortvectors(a, b, ends, elementid, axis)
     var parent = data[findIndex(data, elementid)];
 
     // Retrieve opposite element - assume element center (for now)
-    if (lineA.fromID == elementid)
-    {
+    if (lineA.fromID == elementid) {
         toElementA = data[findIndex(data, lineA.toID)];
-    } else
-    {
+    } else {
         toElementA = data[findIndex(data, lineA.fromID)];
     }
-    if (lineB.fromID == elementid)
-    {
+
+    if (lineB.fromID == elementid) {
         toElementB = data[findIndex(data, lineB.toID)];
-    } else
-    {
+    } else {
         toElementB = data[findIndex(data, lineB.fromID)];
     }
 
     // If lines cross swap otherwise keep as is
-    if (axis == 0 || axis == 1)
-    {
+    if (axis == 0 || axis == 1) {
         // Left side
         ay = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(a) + 1));
         by = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(b) + 1));
@@ -2153,8 +2089,8 @@ function sortvectors(a, b, ends, elementid, axis)
         else parentx = parent.x2;
 
         if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return -1
-    } else if (axis == 2 || axis == 3)
-    {
+
+    } else if (axis == 2 || axis == 3) {
         // Top / Bottom side
         ax = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(a) + 1));
         bx = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(b) + 1));
@@ -2174,8 +2110,7 @@ function sortvectors(a, b, ends, elementid, axis)
 function redrawArrows(str)
 {
     // Clear all lines and update with dom object dimensions
-    for (var i = 0; i < data.length; i++)
-    {
+    for (var i = 0; i < data.length; i++) {
         var element = data[i];
         element.left = [];
         element.right = [];
@@ -2196,8 +2131,7 @@ function redrawArrows(str)
     // Make list of all connectors?
     connectors = [];
 
-    for (var i = 0; i < lines.length; i++)
-    {
+    for (var i = 0; i < lines.length; i++) {
         var currentline = lines[i];
         var felem, telem, dx, dy;
 
@@ -2216,39 +2150,32 @@ function redrawArrows(str)
 
         // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
         var ctype = 0;
-        if (overlapY || ((majorX) && (!overlapX)))
-        {
+        if (overlapY || ((majorX) && (!overlapX))) {
             if (currentline.dx > 0) currentline.ctype = "LR"
             else currentline.ctype = "RL";
-        } else
-        {
+        } else {
             if (currentline.dy > 0) currentline.ctype = "TB";
             else currentline.ctype = "BT";
         }
 
         // Add accordingly to association end
-        if (currentline.ctype == "LR")
-        {
+        if (currentline.ctype == "LR") {
             if (felem.kind == "EREntity") felem.left.push(currentline.id);
             if (telem.kind == "EREntity") telem.right.push(currentline.id);
-        } else if (currentline.ctype == "RL")
-        {
+        } else if (currentline.ctype == "RL") {
             if (felem.kind == "EREntity") felem.right.push(currentline.id);
             if (telem.kind == "EREntity") telem.left.push(currentline.id);
-        } else if (currentline.ctype == "TB")
-        {
+        } else if (currentline.ctype == "TB") {
             if (felem.kind == "EREntity") felem.top.push(currentline.id);
             if (telem.kind == "EREntity") telem.bottom.push(currentline.id);
-        } else if (currentline.ctype == "BT")
-        {
+        } else if (currentline.ctype == "BT") {
             if (felem.kind == "EREntity") felem.bottom.push(currentline.id);
             if (telem.kind == "EREntity") telem.top.push(currentline.id);
         }
     }
 
     // Sort all association ends that number above 0 according to direction of line
-    for (var i = 0; i < data.length; i++)
-    {
+    for (var i = 0; i < data.length; i++) {
         var element = data[i];
 
         // Only sort if size of list is >= 2
@@ -2259,13 +2186,12 @@ function redrawArrows(str)
     }
 
     // Draw each line using sorted line ends when applicable
-    for (var i = 0; i < lines.length; i++)
-    {
+    for (var i = 0; i < lines.length; i++) {
         var currentline = lines[i];
         var felem, telem, dx, dy;
         var lineColor = '#f44';
-        if(contextLine.includes(currentline))
-        {
+
+        if(contextLine.includes(currentline)) {
             lineColor = '#00ff00';
         }
         
@@ -2279,33 +2205,28 @@ function redrawArrows(str)
         ty = telem.cy;
 
         // Collect coordinates
-        if (currentline.ctype == "BT")
-        {
+        if (currentline.ctype == "BT") {
             fy = felem.y2;
             if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(currentline.id) + 1));
             ty = telem.y1;
-        } else if (currentline.ctype == "TB")
-        {
+        } else if (currentline.ctype == "TB") {
             fy = felem.y1;
             if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(currentline.id) + 1));
             ty = telem.y2;
-        } else if (currentline.ctype == "RL")
-        {
+        } else if (currentline.ctype == "RL") {
             fx = felem.x2;
             if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(currentline.id) + 1));
             tx = telem.x1;
-        } else if (currentline.ctype == "LR")
-        {
+        } else if (currentline.ctype == "LR") {
             fx = felem.x1;
             if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(currentline.id) + 1));
             tx = telem.x2;
         }
 
-        if (currentline.kind == "Normal")
-        {
+        if (currentline.kind == "Normal") {
             str += `<line id='${currentline.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
-        } else if (currentline.kind == "Double")
-        {
+
+        } else if (currentline.kind == "Double") {
             // We mirror the line vector
             dy = -(tx - fx);
             dx = ty - fy;
@@ -2316,15 +2237,12 @@ function redrawArrows(str)
             str += `<line id='${currentline.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
             str += `<line id='${currentline.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
         }
-
     }
-
-
     return str;
 }
 
-function addNodes(element) {
-
+function addNodes(element) 
+{
     var elementDiv = document.getElementById(element.id)
     var nodes = "";
 
@@ -2332,14 +2250,15 @@ function addNodes(element) {
     nodes += "<span class='node ml'></span>";
 
     elementDiv.innerHTML += nodes;
-
 }
-function removeNodes(element) {
+
+function removeNodes(element) 
+{
     // Get all elements with the class: "node"
     var nodes = document.getElementsByClassName("node");
 
     // For every node remove it
-    while(nodes.length > 0){
+    while(nodes.length > 0) {
         nodes[0].remove();
     }
     return str;
@@ -2347,7 +2266,8 @@ function removeNodes(element) {
 //-------------------------------------------------------------------------------------------------
 // Change the position of rulerPointers
 //-------------------------------------------------------------------------------------------------
-function setRulerPosition(x, y) {
+function setRulerPosition(x, y) 
+{
     document.getElementById("ruler-x").style.left = x - 51 + "px";
     document.getElementById("ruler-y").style.top = y + "px";
 }
@@ -2355,7 +2275,8 @@ function setRulerPosition(x, y) {
 //-------------------------------------------------------------------------------------------------
 // Draws the rulers
 //-------------------------------------------------------------------------------------------------
-function drawRulerBars(){
+function drawRulerBars()
+{
     //Get elements
     svgX = document.getElementById("ruler-x-svg");
     svgY = document.getElementById("ruler-y-svg");
@@ -2368,11 +2289,11 @@ function drawRulerBars(){
  
     //Draw the Y-axis ruler.
     var lineNumber = (fullLineRatio - 1);
-    for (i = 40;i <= cheight; i += lineRatio){
+    for (i = 40;i <= cheight; i += lineRatio) {
         lineNumber++;
 
         //Check if a full line should be drawn
-        if (lineNumber === fullLineRatio){
+        if (lineNumber === fullLineRatio) {
             var cordY = screenToDiagramCoordinates(0, i).y;
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(i)+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
@@ -2386,7 +2307,7 @@ function drawRulerBars(){
 
     //Draw the X-axis ruler.
     lineNumber = (fullLineRatio - 1);
-    for (i = 40;i <= cwidth; i += lineRatio){
+    for (i = 40;i <= cwidth; i += lineRatio) {
         lineNumber++;
 
         //Check if a full line should be drawn
@@ -2397,7 +2318,6 @@ function drawRulerBars(){
             barX += "<text x='"+(i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
         }
         else barX += "<line x1='" +i+"' y1='25' x2='" +i+"' y2='40px' stroke='" + color + "' />";
-
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
     svgX.style.backgroundColor = "#e6e6e6";
@@ -2410,23 +2330,21 @@ function removeElements(elementArray)
     stateMachine.save(StateChangeFactory.ElementsDeleted(elementArray));
     
     var linesToRemove = [];
-    for (var i = 0; i < elementArray.length; i++)
-    {
+    for (var i = 0; i < elementArray.length; i++) {
         // Remove element
         data = data.filter(function(element) {
             return element != elementArray[i];
         });
 
         // Add lines to "linesToRemove"
-        linesToRemove = linesToRemove.concat(lines.filter(function(line)
-        {
+        linesToRemove = linesToRemove.concat(lines.filter(function(line) {
             return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
         }));
     }
 
     stateMachine.save(StateChangeFactory.LinesRemoved(linesToRemove));
-    lines = lines.filter(function(line)
-    {
+
+    lines = lines.filter(function(line) {
         return !(linesToRemove.includes(line));
     });
 
@@ -2437,7 +2355,7 @@ function removeElements(elementArray)
 //Function to remove selected lines
 function removeLines(linesArray)
 {
-    for(var i = 0; i < linesArray.length; i++){
+    for(var i = 0; i < linesArray.length; i++) {
 
         //Remove line
         lines=lines.filter(function(line) {
@@ -2469,7 +2387,7 @@ function displayMessage(type, message)
     messageEl.style.display = "block";
 
     //Set timeout to remove the message
-    setTimeout(function (){
+    setTimeout(function () {
         messageEl.style.display = "none";
     }, 2000);
 }
@@ -2489,28 +2407,23 @@ function getData()
 
 function generateToolTips()
 {
-    
     var toolButtons = document.getElementsByClassName("key_tooltip");
 
     for (var index = 0; index < toolButtons.length; index++) {
         const element = toolButtons[index];
         var id = element.id.split("-")[1];
-        if(Object.getOwnPropertyNames(keybinds).includes(id));
-        {
+        if (Object.getOwnPropertyNames(keybinds).includes(id)) {
            element.innerHTML = `Keybind: ${keybinds[id]}`;
-
         }
     }
 }
 
 function data_returned(ret)
 {
-    if (typeof ret.data !== "undefined")
-    {
+    if (typeof ret.data !== "undefined") {
         service = ret;
         showdata();
-    } else
-    {
+    } else {
         alert("Error receiveing data!");
     }
 }
