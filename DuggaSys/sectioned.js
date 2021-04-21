@@ -963,7 +963,7 @@ function returnedSection(data) {
           str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
           str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}'
           class='arrowComp' style='display:inline-block;'>`;
-          str += `<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight${item['lid']}'
+          str += `<img src='../Shared/icons/right_complement.svg' id='arrowRight${item['lid']}'
           class='arrowRight' style='display:none;'>`;
           str += "</div>";
         } else if (itemKind == 2) {
