@@ -316,7 +316,8 @@ if($hash!='UNK'){
 }
 //Remove if you want the password to be persistent.
 $_SESSION['hashpassword'] = 'UNK';
-
+?>
+</div>
 
 	<!-- content START -->
 	<div id="content">
