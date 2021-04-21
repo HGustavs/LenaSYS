@@ -19,7 +19,7 @@ var localStorageVariant;
 var ishashindb;
 var duggaTitle;
 var iconFlag = false;
-var hashflag;
+var blockhashgen = false;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -611,7 +611,7 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
 {
-	
+	blockhashgen = true; //Block-Hash-Generation: No new hash should be generated if 'Save' is clicked more than once per dugga session.
 	
 	var url = createUrl(hash); //Create URL
 	console.log("url: " + url);
@@ -971,12 +971,9 @@ function AJAXService(opt,apara,kind)
 				success: 
 					function(data) {
 					returnedDugga(data);
-					ishashindb = data['ishashindb'];
-					console.log("success. ishashindb=" + ishashindb + " hash=" + hash);
-					if(ishashindb){
-						console.log("entered if...");
-						hash = generateHash();
-						console.log("new hash: " + hash)
+					ishashindb = data['ishashindb'];				//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+					if(ishashindb==true && blockhashgen == false){	//If the hash already exist in database AND the save button hasn't been pressed yet
+						hash = generateHash();						//Old hash gets replaced by new hash before saving to database.
 					}
 				}
 				//success: returnedDugga

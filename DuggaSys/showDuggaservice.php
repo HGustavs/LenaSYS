@@ -75,6 +75,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
 
+//See if there's any hash identical to the one generated
 $query = $pdo->prepare("SELECT hash FROM userAnswer WHERE hash=:hash");
 $query->bindParam(':hash', $hash);
 $result=$query->execute();
@@ -82,16 +83,9 @@ $result=$query->execute();
 if($row = $query->fetch(PDO::FETCH_ASSOC)){
     $hashTest=$row['hash'];
     if($hashTest == null) {
-        $ishashindb = false;
-		/*echo 
-		'<script type="text/javascript">',
-     	'updatehashflag(false);',
-     	'</script>';*/
+        $ishashindb = false;	//Unique hash.
     } else {
-        $ishashindb = true;
-		/*'<script type="text/javascript">',
-     	'updatehashflag(true);',
-     	'</script>';*/
+        $ishashindb = true;		//Already in database. (1 in 1000000 possibility)
     }
 }
 
