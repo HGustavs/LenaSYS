@@ -37,7 +37,10 @@ function GetAssigment ($hash){
 	
 	return $URL;
 }
-
+if($assignment != "UNK"){
+	$assignmentURL = GetAssigment($assignment);
+	header("Location: {$assignmentURL}");
+}
 if ($course != "UNK") {
 	global $pdo;
 
