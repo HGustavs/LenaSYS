@@ -11,7 +11,7 @@ It’s possible that the requirements may change in the near future as Ruby2.6 i
 
 $USER seems not to work correctly on Ubuntu v20, The idea behind $USER is that the current user should get elevated privileges when creating/modifying the database. This did not occur when testing the code for Ubuntu v20 so a solution for this is to replace $USER with the account name.
 ## Commands
-```
+<pre>
 sudo apt-get install software-properties-common
 sudo apt-add-repository ppa:brightbox/ruby-ng
 sudo apt-get update
@@ -31,7 +31,7 @@ sudo yarn set version 1.19.1
 sudo -u postgres createuser $USER
 sudo -u postgres psql -c "alter user $USER with superuser" postgres
 sudo gem install bundler -v 2.2.15
-```
+</pre>
 
 
 # Setup Canvas
@@ -44,38 +44,39 @@ The easiest way to download canvas is to use the command git which requires the 
 ### Installing git
 You can download by using the Git command.
 
-```
+<pre>
 sudo apt-get install git
-```
+</pre>
 
 ### Commands 
-<pre><code>cd <b>/var/www/project-g1.webug.his.se/public_html</b>
+<pre>
+cd <b>/var/www/project-g1.webug.his.se/public_html</b>
 sudo git clone https://github.com/instructure/canvas-lms.git canvas
 sudo git checkout stable
-</code></pre>
+</pre>
 
 ## Create a virtual host for canvas
 Virtual host is a feature in apache that allows us to create subdomains. 000-default.conf comes pre configured with apache and can be used as the base when creating new subdomains.
 
 ### Commands
-```
+<pre>
 cd /etc/apache2/sites-available/
-sudo cp 000-default.conf <b>canvas.webug.his.se.conf </b>
-sudo nano <b> canvas.webug.his.se.conf </b>
-```
+sudo cp 000-default.conf **canvas.webug.his.se.conf**
+sudo nano **canvas.webug.his.se.conf**
+</pre>
 
 ### Change
-```
-serverName <b> canvas.webug.his.se </b>
-DocumentRoot <b>/var/www/project-g1.webug.his.se/public_html/canvas/<b>
-```
+<pre>
+serverName **canvas.webug.his.se**
+DocumentRoot **/var/www/project-g1.webug.his.se/public_html/canvas/**
+</pre>
 
 ## Restart Apache2
 For the changes to be implemented so does apache need to be restarted.
 ### Commands
-```
+<pre>
 sudo systemctl restart apache2
-```
+</pre>
 
 
 
@@ -86,12 +87,12 @@ Now that all libraries that canvas relies on are installed so is it possible to 
 Sadly however so is it possible that when installing canvas that the files do not have high enough privileges to conduct the installation correctly. In these cases it would be recommended to temporarily elevate the files read and write access in the canvas folder by using chmod -R 777 through the rest of installation. These should later be reverted to chmod -R 400 so that only the owner may access the files since some of these files contain passwords.
 
 ## Commands
-```
-cd <b>/var/www/project-g1.webug.his.se/public_html/canvas</b>
+<pre>
+cd **/var/www/project-g1.webug.his.se/public_html/canvas**
 sudo bundle install --without pulsar
 sudo yarn install --pure-lockfile
 sudo yarn install --pure-lockfile
-```
+</pre>
 
 
 ## Configuring database
@@ -100,30 +101,30 @@ Here we will set up the database that is used by canvas and do some basic testin
 ### Canvas default configuration (Remade script for ubuntu v20)
 
 #### Commands
-```
+<pre>
 for config in amazon_s3 delayed_jobs domain file_store outgoing_mail security external_migration
 do 
 sudo cp -v config/$config.yml.example config/$config.yml
 done
-```
+</pre>
 
 ### Unpacking database
 
 #### Commands
-```
+<pre>
 sudo bundle exec rails canvas:compile_assets
-```
+</pre>
 
 ### Database configuration
 Inorder to use the postgres database so are accounts needed. There may also be a need to create an account for root since the OS may be locked down in such a way that no other user may use postgres.
 
 #### Commands
-```
+<pre>
 sudo cp config/database.yml.example config/database.yml
 sudo -u postgres createuser <b>$USER</b>
 sudo -u postgres psql -c "alter user  <b>$USER</b> with superuser" postgres
 sudo createdb canvas_development
-```
+</pre>
 
 ### Test Data
 Canvas have sadly not updated their scripts for test data to meet the latest versions of postgres. This has caused commands that they use to longer function properly since they rely on permissions that are no longer available. It’s possible to bypass this by temporarily removing database protection by setting the connection to trust on all. Then after installation is done revert them back to their original values. 
@@ -132,16 +133,16 @@ Canvas have sadly not updated their scripts for test data to meet the latest ver
 The file that needs to be changed is pg_hba.conf . This file may be located in different places depending on where the database is installed. So the easiest way to find where it lay is by searching for it. After it’s found, access it by sudo nano and temporarily change md5 and peer to trust thereafter revert it back once the installation is done. 
 
 #### Commands
-```
+<pre>
 sudo find / -type f -name pg_hba.conf
-```
+</pre>
 
 ### Commands
-```
+<pre>
 sudo bundle exec rails db:initial_setup
-```
+</pre>
 
-```
+<pre>
 psql -c 'CREATE USER canvas' -d postgres
 psql -c 'ALTER USER canvas CREATEDB' -d postgres
 createdb -U canvas canvas_test
@@ -149,63 +150,63 @@ psql -c 'GRANT ALL PRIVILEGES ON DATABASE canvas_test TO canvas' -d canvas_test
 psql -c 'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO canvas' -d canvas_test
 psql -c 'GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO canvas' -d canvas_test
 env RAILS_ENV=test bundle exec rails db:test:reset
-```
+</pre>
 
-```
+<pre>
 sudo bundle exec rspec spec/models/assignment_spec.rb
-```
+</pre>
 
 
 ## Speed up canvas
 This step is not required but will help with the loading speed of canvas since it allows the server to cache data which allows faster delivery. 
 
 ### Commands
-```
+<pre>
 sudo apt-get update
 sudo apt-get install redis-server
 redis-server
 echo -e "development:\n  cache_store: redis_store" > config/cache_store.yml
 echo -e "development:\n  servers:\n  - redis://localhost" > config/redis.yml
-```
+</pre>
 
 ## Start Canvas (in background)
 Rails server will be terminated if it’s running in the foreground when the ssh connection is terminated. So some extra methods are needed in order to keep the server running 24/7. We chose the screen since it’s already a component that is installed on ubuntu v20 and kinda easy to use for beginners. 
 
 
 ### Start a screen instance for canvas (local instance)
-```
+<pre>
 screen -S canvas
-```
+</pre>
 
-```
+<pre>
 sudo bundle exec rails server
-```
+</pre>
 
 Exit screen by pressing ctrl + a then ctrl + d
 
 ### Remote instance
-```
+<pre>
 screen -S canvas
-```
+</pre>
 
-```
-bundle exec rails server --binding=<b>MYIPADRESS</b>
-```
+<pre>
+bundle exec rails server --binding=**MYIPADRESS**
+</pre>
 
 Exit screen by pressing ctrl + a then ctrl + d
 
 ### Return to last used screen
-```
+<pre>
 screen -r
-```
+</pre>
 
 ### List screen 
-```
+<pre>
 screen -list
-```
+</pre>
 
 ### Return to specific screen **XXXX**
-```
+<pre>
 screen -r canvas
-```
+</pre>
 
