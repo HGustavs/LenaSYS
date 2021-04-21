@@ -35,7 +35,7 @@
 	$quizid=getOPG('did');
 	$deadline=getOPG('deadline');
 	$comments=getOPG('comments');
-	$hash = getOPG("a");
+	$hash = getOPG("hash");
 	$password= "UNK";
 
 	$duggatitle="UNK";
@@ -44,9 +44,10 @@
 	$duggadead="UNK";
 
 	$visibility=false;
+	$readaccess=false;
 	$checklogin=false;
+	$insertparam = false;
 	
-
 	$variantsize;
 	$variants=array();
 	$duggaid=getOPG('did');
@@ -60,7 +61,126 @@
 		$userid="UNK";
 	}
 
-//logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
+
+	// Get type of dugga
+	$query = $pdo->prepare("SELECT * FROM quiz WHERE id=:duggaid;");
+	$query->bindParam(':duggaid', $duggaid);
+	$result=$query->execute();
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"quizfile Querying Error!");
+	foreach($query->fetchAll() as $row) {
+		$duggainfo=$row;
+		$quizfile = $row['quizFile'];
+	}
+
+	// Retrieve all dugga variants
+	$firstvariant=-1;
+	$query = $pdo->prepare("SELECT vid,param,disabled FROM variant WHERE quizID=:duggaid;");
+	$query->bindParam(':duggaid', $duggaid);
+	$result=$query->execute();
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"variant Querying Error!");
+	$i=0;
+	foreach($query->fetchAll() as $row) {
+		if($row['disabled']==0) $firstvariant=$i;
+		$variants[$i]=array(
+			'vid' => $row['vid'],
+			'param' => $row['param'],
+			'disabled' => $row['disabled']
+		);
+		$i++;
+		$insertparam = true;
+	}
+	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':coursevers', $coursevers);
+	$query->bindParam(':uid', $userid);
+	$query->bindParam(':moment', $moment);
+	$result = $query->execute();
+	
+	$savedvariant="UNK";
+	$newvariant="UNK";
+	$savedanswer="UNK";
+	$isIndb=false;
+
+	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+		$savedvariant=$row['variant'];
+		$savedanswer=$row['useranswer'];
+		$score = $row['score'];
+		$isIndb=true;
+		if ($row['feedback'] != null){
+				$duggafeedback = $row['feedback'];
+		} else {
+				$duggafeedback = "UNK";
+		}
+		$grade = $row['grade'];
+		$submitted = $row['submitted'];
+		$marked = $row['marked'];
+	}
+	
+	if ($hash != "UNK"){
+		$query = $pdo->prepare("SELECT password FROM userAnswer WHERE hash=:hash;");
+		$query->bindParam(':hash', $hash);
+		$query->execute();
+		$result = $query->fetch();
+		$password = $result["password"];
+	}
+
+	// If selected variant is not found - pick another from working list.
+	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
+	$foundvar=-1;
+	foreach ($variants as $key => $value){
+			if($savedvariant==$value['vid']&&$value['disabled']==0) $foundvar=$key;
+	}
+	if($foundvar==-1){
+			$savedvariant="UNK";
+	}
+
+	// If there are many variants, randomize
+	if($savedvariant==""||$savedvariant=="UNK"){
+		// Randomize at most 8 times
+		$cnt=0;
+		do{
+				$randomno=rand(0,sizeof($variants)-1);
+				
+				// If there is a variant choose one at random
+				if(sizeof($variants)>0){
+						if($variants[$randomno]['disabled']==0){
+								$newvariant=$variants[$randomno]['vid'];						
+						}
+				} 
+				$cnt++;
+		}while($cnt<8&&$newvariant=="UNK");
+		
+		// if none has been chosen and there is a first one take that one.
+		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
+	}else{
+		// There is a variant already -- do nothing!	
+	}
+
+	$savedvariant=$newvariant;
+
+	// Retrieve variant
+	if($insertparam == false){
+			$param="NONE!";
+	}
+	foreach ($variants as $variant) {
+		if($variant["vid"] == $savedvariant){
+				$param=html_entity_decode($variant['param']);
+		}
+	}
+
+
+	// Gets username based on uid, USED FOR LOGGING
+	$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+	$query->bindParam(':uid', $userid);
+	$query-> execute();
+
+	// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+		$username = $row['username'];
+	}
+
+
+	logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
 
 if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	$hr=false;
@@ -70,6 +190,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 			$visibility=$row['visibility'];
 	}
+	$readaccess=hasAccess($userid, $cid, 'r');
 /*
 		//Give permit if the user is logged in and has access to the course or if it is public
 		$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0  && $userid != "UNK");
@@ -81,15 +202,17 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		}
 */
 
-	// can see all duggas and deleted ones
-	if(isSuperUser($userid)){
-		$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-	}
-	// can see all duggas expect from deleted ones
-	else{
-		$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND (visible=1 OR visible=2) AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-	}
-	  
+  //If we have permission, and if file exists, include javascript file.
+  if(isSuperUser($userid)){
+	// If the user is a super user, get all quizes.
+		  $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+	  }else if($readaccess){
+	// If logged in and has access, get all private(requires login) and public quizes.
+		  $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND (visible=1 OR visible=2) AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+	  } else {
+	// If not logged in, get only the public quizes.
+	$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND visible=1 AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+  }
 	  $query->bindParam(':cid', $cid);
 	  $query->bindParam(':vers', $vers);
 	  $query->bindParam(':quizid', $quizid);
@@ -121,19 +244,86 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		}
 ?>
 
-<script type="text/javascript"> 
+<!-- Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database -->
+<?php
+	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
+	$query->execute();
+	$variantsize = $query->fetchColumn();
+?>
+<script type="text/javascript">
+	// This if-statement will only store to localstorage if there is a variant.quizID
+	// that match $duggaid. This is to prevent unecessary local storage when there is no matching variant, and in doing so, prevent swelling of the local storage
+	if(<?php echo $duggaid; ?> <= <?php echo $variantsize; ?>) {
+		// localStorageName is unique and depends on did
+		var localStorageName = "duggaID: " + '<?php echo $duggaid; ?>';
+		var variant;
+		var newvariant = '<?php echo $newvariant; ?>';
+		
+		if(localStorage.getItem(localStorageName) == null){
+			localStorage.setItem(localStorageName, newvariant);
+		}
+		variant = JSON.parse(localStorage.getItem(localStorageName));
+		setVariant(variant);
+	}
+
+	variant = JSON.parse(localStorage.getItem(localStorageName));
+	setVariant(variant);
+  
 	setPassword("<?php echo $password ?>");
 	setHash("<?php echo $hash ?>");	
+
 </script>
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
 
+<<<<<<< HEAD
+=======
+function hashPassword($password, $hash){
+		global $pdo;
+		$sql = "SELECT hash,password FROM useranswer WHERE '" .$password. "' LIKE password AND '".$hash."' LIKE hash";
+		$query = $pdo->prepare($sql);
+		$query->execute();
+		$count = $query->rowCount();
+			if($count == 0){
+				echo '<script>console.log(false)</script>';
+				return false;
+			} else{
+				echo '<script>console.log(true)</script>';
+				return true;
+			}
+}
+	
+//Saved Dugga Login
+if($hash!='UNK'){
+	if(!hashPassword($hashpassword, $hash)){
+		echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
+		echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
+		echo "<div class='loginBoxheader'>";
+		echo "<h3>Login for Saved Dugga</h3>";
+		echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
+		echo "</div>";
+		echo "<p id='passwordtext'>Enter your password for the hash:</p>";
+		echo "<p id='hash' style='font-weight: bold;'>$hash</p>";
+		echo "<input id='passwordfield' name='password' class='textinput' type='password' placeholder='Password'>";
+		echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
+		echo "</div>";
+		echo "</div>";
+		exit();
+	}
+}
+//Remove if you want the password to be persistent.
+$_SESSION['hashpassword'] = 'UNK';
+
+?>
+	</div>
+>>>>>>> parent of c3e50b2df (Merge branch 'G1-2021-W16' into G1-2021-W16-#10141)
 	<!-- content START -->
 	<div id="content">
 		<?php
 			// Log USERID for Dugga Access
+<<<<<<< HEAD
 
       // commented out because we are unsure about the usage of logs
 			//makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
@@ -163,6 +353,10 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			hashPassword($password, $hash);
 
 
+=======
+			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+			//Retrieved from 'password' input field
+>>>>>>> parent of c3e50b2df (Merge branch 'G1-2021-W16' into G1-2021-W16-#10141)
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
@@ -192,9 +386,14 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 				}else{
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 				}
-				echo "<div class='loginTransparent' id='lockedDuggaInfo' style='margin-bottom:5px;'>";
-				echo "<img src='../Shared/icons/duggaLock.svg'>";
-				echo "</div>";
+        echo "<div class='loginTransparent' id='lockedDuggaInfo' style='margin-bottom:5px;'>";
+        echo "<img src='../Shared/icons/duggaLock.svg'>";
+        if ($userid!="UNK") {
+          echo "<p>Not registered to the course!	You can view the assignment but you need to be registered to the course to save your dugga result.</p>";
+        } else {
+  				echo "<p>Not logged in!	You can view the assignment but you need to be logged in and registered to the course to save your dugga result.</p>";
+        }
+        echo "</div>";
 
 			}else{
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Something went wrong in loading the test. Contact LENASys-admin.</div>";
@@ -253,15 +452,14 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
     		<textarea id="receipt" autofocus readonly style="resize: none;"></textarea>
  
     		<div id='emailPopup' style="display:block">
-				  <div id='urlAndPwd'>
-				  	<div class="testasd"><p class="bold">URL</p><p id='url'></p></div>
-				  	<div class="testasd"><p class="bold">Password</p><p id='pwd'></p></div>
-				  </div>
-
-				  <div class="button-row">
-				  	<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
-				  	<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
-				  </div>
+				<div id='urlAndPwd'>
+					<div class="testasd"><p class="bold">URL</p><p id='url'></p></div>
+					<div class="testasd"><p class="bold">Password</p><p id='pwd'></p></div>
+				</div>
+				<div class="button-row">
+					<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
+					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
+				</div>
     		</div>
       </div>
 	</div>
