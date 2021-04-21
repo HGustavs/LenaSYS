@@ -18,6 +18,7 @@ var pwd;
 var localStorageVariant;
 var duggaTitle;
 var iconFlag = false;
+var newvariants;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -989,7 +990,7 @@ function AJAXService(opt,apara,kind)
 		//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
 		if(querystring['did'] <= newInt) {
 			if(localStorage.getItem(querystring['did']) == null){
-				localStorage.setItem(querystring['did'], newvariant);
+				localStorage.setItem(querystring['did'], newvariants);
 				localStorage.setItem(querystring['did'], 0);
 			}
 		}
@@ -1005,7 +1006,9 @@ function AJAXService(opt,apara,kind)
 					var newvariants = data['variant'];
 					if(localStorage.getItem(querystring['did']) == 0){
 						localStorage.setItem(querystring['did'], newvariants);
+						setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 5000);
 					}
+					getExpireTime(querystring['did']);
 					var variantsize = data['variantsize'];
 					localStorage.setItem("variantSize", variantsize);
                 	}
