@@ -146,8 +146,7 @@ class StateChange {
         if (changes.moved) {
             if (this.moved) { 
                 this.moved.add(changes.moved);
-            }
-            else { 
+            } else { 
                 this.moved = changes;
             }
         }
@@ -155,8 +154,7 @@ class StateChange {
         if (changes.resized) {
             if (this.resized) {
                 this.resized.add(changes.resized);
-            }
-            else {
+            } else {
                 this.resized = changes.resized;
             }
         }
