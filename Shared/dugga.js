@@ -19,6 +19,7 @@ var localStorageVariant;
 var ishashindb;
 var duggaTitle;
 var iconFlag = false;
+var hashflag;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -52,16 +53,15 @@ function getHash(){
 	return hash;
 }
 
+function updatehashflag(){
+
+}
+
 function setHash(h){
-	console.log("set hash " + ishashindb);
 	// Check if hash is unknown
 	if(h == "UNK"){
 		hash = generateHash();
 		pwd = randomPassword();
-		if(ishashindb==true){
-			hash = generateHash();
-			console.log("new hash: " + hash);
-		}
 	}else{
 		hash = h;
 	}
@@ -968,10 +968,16 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorageVariant, 
 				dataType: "json",
-				success: function(data) {
+				success: 
+					function(data) {
 					returnedDugga(data);
-					console.log(data);
 					ishashindb = data['ishashindb'];
+					console.log("success. ishashindb=" + ishashindb + " hash=" + hash);
+					if(ishashindb){
+						console.log("entered if...");
+						hash = generateHash();
+						console.log("new hash: " + hash)
+					}
 				}
 				//success: returnedDugga
 			});

@@ -83,8 +83,15 @@ if($row = $query->fetch(PDO::FETCH_ASSOC)){
     $hashTest=$row['hash'];
     if($hashTest == null) {
         $ishashindb = false;
+		/*echo 
+		'<script type="text/javascript">',
+     	'updatehashflag(false);',
+     	'</script>';*/
     } else {
         $ishashindb = true;
+		/*'<script type="text/javascript">',
+     	'updatehashflag(true);',
+     	'</script>';*/
     }
 }
 
