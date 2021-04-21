@@ -19,6 +19,7 @@ var localStorageVariant;
 var duggaTitle;
 var iconFlag = false;
 var newvariants;
+var itemvalue;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -453,12 +454,14 @@ function setExpireTime(key, value, ttl){
 		value: value,
 		expiry: now.getTime() + ttl,
 	}
+	itemvalue = item.value;
+	console.log(itemvalue);
 	localStorage.setItem(key, JSON.stringify(item))
 }
 //Lazily expiring the item (Its only checked when retrieved from storage)
 function getExpireTime(key){
 	const itemString = localStorage.getItem(key)
-
+	console.log(key);
 	if(!itemString){
 		return null
 	}
@@ -981,7 +984,11 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
-				//Checks if the variantSize variant is set in localstorage. When its not, its set.
+		
+			$.ajax({
+				beforeSend: function(){
+			
+		//Checks if the variantSize variant is set in localstorage. When its not, its set.
 		if(localStorage.getItem("variantSize") == null) {
 			localStorage.setItem("variantSize", 100);
 		}
@@ -990,14 +997,16 @@ function AJAXService(opt,apara,kind)
 		//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
 		if(querystring['did'] <= newInt) {
 			if(localStorage.getItem(querystring['did']) == null){
-				localStorage.setItem(querystring['did'], newvariants);
 				localStorage.setItem(querystring['did'], 0);
+				
 			}
 		}
-			$.ajax({
+					
+				},
+
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did']), 
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +getExpireTime(querystring['did']), 
 				dataType: "json",
 				success: function (data) {
 					
@@ -1008,7 +1017,7 @@ function AJAXService(opt,apara,kind)
 						localStorage.setItem(querystring['did'], newvariants);
 						setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 5000);
 					}
-					getExpireTime(querystring['did']);
+					//getExpireTime(querystring['did']);
 					var variantsize = data['variantsize'];
 					localStorage.setItem("variantSize", variantsize);
                 	}
