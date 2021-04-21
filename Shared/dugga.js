@@ -1339,6 +1339,31 @@ function copyHashtoCB() {
 function hideHashBox(){
     $("#hashBox").css("display","none");
 }
+function checkHashPassword(){
+	
+	var hash = $('#hash').text();
+	var password = document.getElementById('passwordfield').value;
+	
+	$.ajax({
+        url: "../Shared/hashpasswordauth.php",
+        data: {password:password, hash:hash},
+        type: "POST",
+        success: function(data){
+        	var d = JSON.parse(data);
+            var auth = d.auth
+            if(auth){
+        		console.log('Success!');
+        		hideHashBox();
+        		reloadPage();
+        	}else{
+        		$('#passwordtext').text('Wrong password, try again!');
+        		$('#passwordtext').css('color','red');
+        		console.log('Fail!');
+        	}
+		}
+	});
+}
+
 
 function showSecurityPopup()
 {
