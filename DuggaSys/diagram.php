@@ -63,7 +63,7 @@
                     <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='setMouseMode(3);'>
+                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='setMouseMode(3); clearContext();'>
                     <img src="../Shared/icons/diagram_line.svg"/>
                     <span class="toolTipText"><b>Line</b><br>
                     <p>Make a line between objects</p><br>

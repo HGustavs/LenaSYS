@@ -578,6 +578,7 @@ document.addEventListener('keyup', function (e)
         }
         if (e.key == keybinds.EDGE_CREATION) {
             setMouseMode(mouseModes.EDGE_CREATION);
+            clearContext();
         }
         if (e.key == keybinds.PLACE_ENTITY) {
             setElementPlacementType(elementTypes.ENTITY);
@@ -2460,4 +2461,10 @@ function data_returned(ret)
     } else {
         alert("Error receiveing data!");
     }
+}
+
+function clearContext()
+{
+    context = [];
+    showdata();
 }
