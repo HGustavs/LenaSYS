@@ -327,6 +327,7 @@ var hasRecursion = false;
 var startWidth;
 var startNodeRight = false;
 var cursorStyle;
+var lastMousePos = getPoint(0,0);
 const keybinds = {
         LEFT_CONTROL: "Control",
         ALT: "Alt",
@@ -339,7 +340,6 @@ const keybinds = {
         PLACE_RELATION: "r",
         PLACE_ATTRIBUTE: "a"
 };
-
 
 // Zoom variables
 var zoomfact = 1.0;
@@ -372,6 +372,7 @@ var elements = [];
 
 // Currently clicked object list
 var context = [];
+var previousContext = [];
 var contextLine = []; // Contains the currently selected line(s).
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
@@ -400,6 +401,7 @@ const elementTypes = {
     ENTITY: 0,
     RELATION: 1,
     ATTRIBUTE: 2,
+    GHOSTENTITY: 3
 };
 var elementTypeSelected = elementTypes.ENTITY;
 
@@ -413,8 +415,10 @@ var pointerState = pointerStates.DEFAULT;
 
 var movingObject = false;
 var movingContainer = false;
+var isRulerActive = true;
 
 var randomidArray = []; // array for checking randomID
+var errorMsgTimer; //The variable that you use for clearing the setTimeout function
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
 //-------------------------------------------------------------------------------------------------
@@ -460,7 +464,8 @@ var RefID = makeRandomID();
 var defaults = {
     defaultERtentity: { kind: "EREntity", fill: "White", Stroke: "Black", width: 200, height: 50 },
     defaultERrelation: { kind: "ERRelation", fill: "White", Stroke: "Black", width: 60, height: 60 },
-    defaultERattr: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 }
+    defaultERattr: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 },
+    defaultGhost: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 5, height: 5 }
 }
 
 // States used for ER-elements 
@@ -496,6 +501,7 @@ var data = [
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
+var ghostLine = null;
 
 var lines = [
     { id: makeRandomID(), fromID: PersonID, toID: IDID, kind: "Normal" },
@@ -537,6 +543,8 @@ document.addEventListener('keydown', function (e)
                 scrollx = sscrollx;
                 scrolly = sscrolly;
             }
+            ghostLine = null;
+            ghostElement = null;
             pointerState = pointerStates.DEFAULT;
             showdata();
         }
@@ -694,20 +702,20 @@ function ddown(event)
         case mouseModes.POINTER:
         case mouseModes.BOX_SELECTION:
         case mouseModes.PLACING_ELEMENT:
-        case mouseModes.EDGE_CREATION:
             startX = event.clientX;
             startY = event.clientY;
 
             if (!altPressed) {
                 pointerState = pointerStates.CLICKED_ELEMENT;
             }
-            var element = data[findIndex(data, event.currentTarget.id)];
 
-            if (element != null && !context.includes(element) || !ctrlPressed) {
+        case mouseModes.EDGE_CREATION:
+            var element = data[findIndex(data, event.currentTarget.id)];
+            if (element != null && !context.includes(element) || !ctrlPressed){
                 updateSelection(element);
             }
             break;
-    
+            
         default:
             console.error(`State ${mouseMode} missing implementation at switch-case in ddown()!`);
             break;
@@ -731,7 +739,25 @@ function mouseMode_onMouseUp(event)
                 // TODO: Change the static variable to make it possible to create different lines.
                 addLine(context[0], context[1], "Normal");
                 context = [];
+                
+                // Bust the ghosts
+                ghostElement = null;
+                ghostLine = null;
+
+                showdata();
                 updatepos(0,0);
+            }else if (context.length === 1){
+                if (event.target.id != "container"){   
+                    elementTypeSelected = elementTypes.GHOSTENTITY;
+                    makeGhost();
+                    // Create ghost line
+                    ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
+                }else{   
+                    context = [];
+                    ghostElement = null;
+                    ghostLine = null;
+                    showdata();
+                }
             }
             break;
 
@@ -922,10 +948,10 @@ function mouseMode_onMouseMove(event)
                 ghostElement.x = cords.x - (ghostElement.width / 2);
                 ghostElement.y = cords.y - (ghostElement.height / 2);
                 showdata();
+                updatepos(0, 0);
             }
             break;
 
-        case mouseModes.EDGE_CREATION:
         case mouseModes.POINTER: // do nothing
             break;
             
@@ -942,6 +968,7 @@ function mouseMode_onMouseMove(event)
 
 function mmoving(event)
 {
+    lastMousePos = getPoint(event.clientX, event.clientY);
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
             // Compute new scroll position
@@ -1102,15 +1129,15 @@ function rectsIntersect (left, right)
     );
 }
 
-function makeGhost ()
+function makeGhost()
 {
     var entityType = constructElementOfType(elementTypeSelected);
     var typeNames = Object.getOwnPropertyNames(elementTypes);
-
+    var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
     ghostElement = {
         name: typeNames[elementTypeSelected],
-        x: -1000,
-        y: 0,
+        x: lastMouseCoords.x - entityType.data.width * 0.5,
+        y: lastMouseCoords.y - entityType.data.height * 0.5,
         width: entityType.data.width,
         height: entityType.data.height,
         kind: entityType.data.kind,
@@ -1163,7 +1190,7 @@ function setCursorStyles(cursorMode = 0)
             cursorStyle.cursor = "crosshair";
             break;
         case mouseModes.PLACING_ELEMENT:
-            cursorStyle.cursor = "cell";
+            cursorStyle.cursor = "default";
             break;
         case mouseModes.EDGE_CREATION:
             cursorStyle.cursor = "grab";
@@ -1188,7 +1215,6 @@ function onMouseModeEnabled()
 
         case mouseModes.PLACING_ELEMENT:
             makeGhost();
-            
             break;
 
         case mouseModes.EDGE_CREATION:  
@@ -1214,12 +1240,13 @@ function onMouseModeDisabled()
         case mouseModes.POINTER:
             break;
 
+        case mouseModes.EDGE_CREATION:
+            ghostLine = null; // continues into mouseMode.PLACING_ELEMENT
+        // NO BREAK
+
         case mouseModes.PLACING_ELEMENT:
             ghostElement = null;
             showdata();
-            break;
-
-        case mouseModes.EDGE_CREATION:
             break;
 
         case mouseModes.BOX_SELECTION:
@@ -1231,7 +1258,7 @@ function onMouseModeDisabled()
 }
 
 //Function to enable or disable backgroundgrid.
-function enableGrid()
+function toggleGrid()
 {
     var grid = document.getElementById("svggrid");
 
@@ -1240,22 +1267,26 @@ function enableGrid()
 
     if (grid.style.display == "block") {
         grid.style.display = "none";
-    } else {
+     } else {
         grid.style.display = "block";
-    }
+   }
 }
-function enableRuler()
+
+function toggleRuler()
 {
     var ruler = document.getElementById("rulerOverlay");
-
+  
     // Toggle active class on button
     document.getElementById("rulerToggle").classList.toggle("active");
 
-    if(ruler.style.display == "block"){
+  if(isRulerActive){
         ruler.style.display = "none";
     } else {
         ruler.style.display = "block";
     }
+  
+    isRulerActive = !isRulerActive;
+    drawRulerBars();
 }
 
 function setElementPlacementType(type = 0)
@@ -1268,7 +1299,8 @@ function constructElementOfType(type)
     var elementTemplates = [
         {data: defaults.defaultERtentity, name: "Entity"},
         {data: defaults.defaultERrelation, name: "Relation"},
-        {data: defaults.defaultERattr, name: "Attribute"}
+        {data: defaults.defaultERattr, name: "Attribute"},
+        {data: defaults.defaultGhost, name: "Ghost"}
     ]
 
     if (enumContainsPropertyValue(type, elementTypes)){
@@ -1317,6 +1349,9 @@ function getBoxSelectionCoordinates()
 // User has initiated a box selection
 function boxSelect_Start(mouseX, mouseY)
 {
+    // Store previous context
+    previousContext = context;
+
     // Set starting position
     startX = mouseX;
     startY = mouseY;
@@ -1356,7 +1391,19 @@ function boxSelect_Update(mouseX, mouseY)
         }
 
         var rect = getRectFromPoints(topLeft, bottomRight);
-        context = getElementsInsideCoordinateBox(rect);
+
+        if (ctrlPressed) {
+            var markedEntities = getElementsInsideCoordinateBox(rect);
+
+            // Remove entity from previous context is the element is marked
+            previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
+
+            context = [];
+            context = context.concat(markedEntities);
+            context = context.concat(previousContext);
+        }else {
+            context = getElementsInsideCoordinateBox(rect);
+        }
     }
 }
 
@@ -1603,7 +1650,7 @@ function drawElement(element, ghosted = false)
     if (ghosted) {
         str += `
             pointer-events: none;
-            opacity: 0.5;
+            opacity: ${ghostLine ? 0 : 0.5};
         `;
     }
     str += `'>`;
@@ -2016,19 +2063,19 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 function sortvectors(a, b, ends, elementid, axis)
 {
     // Get dx dy centered on association end e.g. invert vector if necessary
-    var lineA = lines[findIndex(lines, a)];
-    var lineB = lines[findIndex(lines, b)];
+    var lineA = (ghostLine && a === ghostLine.id) ? ghostLine : lines[findIndex(lines, a)];
+    var lineB = (ghostLine && b === ghostLine.id) ? ghostLine : lines[findIndex(lines, b)];
     var parent = data[findIndex(data, elementid)];
 
     // Retrieve opposite element - assume element center (for now)
-    if (lineA.fromID == elementid) {
-        toElementA = data[findIndex(data, lineA.toID)];
+     if (lineA.fromID == elementid){
+        toElementA = (lineA == ghostLine) ? ghostElement : data[findIndex(data, lineA.toID)];
     } else {
         toElementA = data[findIndex(data, lineA.fromID)];
     }
 
-    if (lineB.fromID == elementid) {
-        toElementB = data[findIndex(data, lineB.toID)];
+    if (lineB.fromID == elementid){
+        toElementB = (lineB == ghostLine) ? ghostElement : data[findIndex(data, lineB.toID)];
     } else {
         toElementB = data[findIndex(data, lineB.fromID)];
     }
@@ -2060,136 +2107,168 @@ function sortvectors(a, b, ends, elementid, axis)
 // redrawArrows - Redraws arrows based on rprogram and rcourse variables
 //-------------------------------------------------------------------------------------------------
 
+function clearLinesForElement(element)
+{
+    element.left = [];
+    element.right = [];
+    element.top = [];
+    element.bottom = [];
+
+    // Get data from dom elements
+    var domelement = document.getElementById(element.id);
+    var domelementpos = domelement.getBoundingClientRect();
+    element.x1 = domelementpos.left;
+    element.y1 = domelementpos.top;
+    element.x2 = domelementpos.left + domelementpos.width - 2;
+    element.y2 = domelementpos.top + domelementpos.height - 2;
+    element.cx = element.x1 + (domelementpos.width * 0.5);
+    element.cy = element.y1 + (domelementpos.height * 0.5);
+}
+
+function determineLine(line, targetGhost = false)
+{
+    var felem, telem, dx, dy;
+
+    felem = data[findIndex(data, line.fromID)];
+
+    // Telem should be our ghost if argument targetGhost is true. Otherwise look through data array.
+    telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
+    line.dx = felem.cx - telem.cx;
+    line.dy = felem.cy - telem.cy;
+
+    // Figure out overlap - if Y overlap we use sides else use top/bottom
+    var overlapY = true;
+    if (felem.y1 > telem.y2 || felem.y2 < telem.y1) overlapY = false;
+    var overlapX = true;
+    if (felem.x1 > telem.x2 || felem.x2 < telem.x1) overlapX = false;
+    var majorX = true;
+    if (Math.abs(line.dy) > Math.abs(line.dx)) majorX = false;
+
+    // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
+    var ctype = 0;
+    if (overlapY || ((majorX) && (!overlapX))){
+        if (line.dx > 0) line.ctype = "LR"
+        else line.ctype = "RL";
+    }else{
+        if (line.dy > 0) line.ctype = "TB";
+        else line.ctype = "BT";
+    }
+
+    // Add accordingly to association end
+    if (line.ctype == "LR"){
+        if (felem.kind == "EREntity") felem.left.push(line.id);
+        if (telem.kind == "EREntity") telem.right.push(line.id);
+    }else if (line.ctype == "RL"){
+        if (felem.kind == "EREntity") felem.right.push(line.id);
+        if (telem.kind == "EREntity") telem.left.push(line.id);
+    }else if (line.ctype == "TB"){
+        if (felem.kind == "EREntity") felem.top.push(line.id);
+        if (telem.kind == "EREntity") telem.bottom.push(line.id);
+    }else if (line.ctype == "BT"){
+        if (felem.kind == "EREntity") felem.bottom.push(line.id);
+        if (telem.kind == "EREntity") telem.top.push(line.id);
+    }
+}
+
+function sortElementAssociations(element)
+{
+    // Only sort if size of list is >= 2
+    if (element.top.length > 1) element.top.sort(function (a, b) { return sortvectors(a, b, element.top, element.id, 2) });
+    if (element.bottom.length > 1) element.bottom.sort(function (a, b) { return sortvectors(a, b, element.bottom, element.id, 3) });
+    if (element.left.length > 1) element.left.sort(function (a, b) { return sortvectors(a, b, element.left, element.id, 0) });
+    if (element.right.length > 1) element.right.sort(function (a, b) { return sortvectors(a, b, element.right, element.id, 1) });
+}
+
+function drawLine(line, targetGhost = false)
+{
+    var felem, telem, dx, dy;
+    var str = "";
+    var lineColor = '#f44';
+    if(contextLine.includes(line)){
+        lineColor = '#00ff00';
+    }
+    
+    felem = data[findIndex(data, line.fromID)];
+
+    // Telem should be our ghost if argument targetGhost is true. Otherwise look through data array.
+    telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
+
+    // Draw each line - compute end coordinate from position in list compared to list count
+    fx = felem.cx;
+    fy = felem.cy;
+    tx = telem.cx;
+    ty = telem.cy;
+
+    // Collect coordinates
+    if (line.ctype == "BT"){
+        fy = felem.y2;
+        if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
+        ty = telem.y1;
+    }else if (line.ctype == "TB"){
+        fy = felem.y1;
+        if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(line.id) + 1));
+        ty = telem.y2;
+    }else if (line.ctype == "RL"){
+        fx = felem.x2;
+        if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(line.id) + 1));
+        tx = telem.x1;
+    }else if (line.ctype == "LR"){
+        fx = felem.x1;
+        if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
+        tx = telem.x2;
+    }
+
+    if (line.kind == "Normal"){
+        str += `<line id='${line.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+    }else if (line.kind == "Double"){
+        // We mirror the line vector
+        dy = -(tx - fx);
+        dx = ty - fy;
+        var len = Math.sqrt((dx * dx) + (dy * dy));
+        dy = dy / len;
+        dx = dx / len;
+        var cstmOffSet = 1.4;
+
+        str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+
+        str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+    }
+
+    return str;
+}
+
 function redrawArrows(str)
 {
     // Clear all lines and update with dom object dimensions
-    for (var i = 0; i < data.length; i++) {
-        var element = data[i];
-        element.left = [];
-        element.right = [];
-        element.top = [];
-        element.bottom = [];
-
-        // Get data from dom elements
-        var domelement = document.getElementById(element.id);
-        var domelementpos = domelement.getBoundingClientRect();
-        element.x1 = domelementpos.left;
-        element.y1 = domelementpos.top;
-        element.x2 = domelementpos.left + domelementpos.width - 2;
-        element.y2 = domelementpos.top + domelementpos.height - 2;
-        element.cx = element.x1 + (domelementpos.width * 0.5);
-        element.cy = element.y1 + (domelementpos.height * 0.5);
+    for (var i = 0; i < data.length; i++){
+        clearLinesForElement(data[i]);
     }
 
     // Make list of all connectors?
     connectors = [];
 
-    for (var i = 0; i < lines.length; i++) {
-        var currentline = lines[i];
-        var felem, telem, dx, dy;
+    for (var i = 0; i < lines.length; i++){
+        determineLine(lines[i]);
+    }
 
-        felem = data[findIndex(data, currentline.fromID)];
-        telem = data[findIndex(data, currentline.toID)];
-        currentline.dx = felem.cx - telem.cx;
-        currentline.dy = felem.cy - telem.cy;
-
-        // Figure out overlap - if Y overlap we use sides else use top/bottom
-        var overlapY = true;
-        if (felem.y1 > telem.y2 || felem.y2 < telem.y1) overlapY = false;
-        var overlapX = true;
-        if (felem.x1 > telem.x2 || felem.x2 < telem.x1) overlapX = false;
-        var majorX = true;
-        if (Math.abs(currentline.dy) > Math.abs(currentline.dx)) majorX = false;
-
-        // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
-        var ctype = 0;
-        if (overlapY || ((majorX) && (!overlapX))) {
-            if (currentline.dx > 0) currentline.ctype = "LR"
-            else currentline.ctype = "RL";
-        } else {
-            if (currentline.dy > 0) currentline.ctype = "TB";
-            else currentline.ctype = "BT";
-        }
-
-        // Add accordingly to association end
-        if (currentline.ctype == "LR") {
-            if (felem.kind == "EREntity") felem.left.push(currentline.id);
-            if (telem.kind == "EREntity") telem.right.push(currentline.id);
-        } else if (currentline.ctype == "RL") {
-            if (felem.kind == "EREntity") felem.right.push(currentline.id);
-            if (telem.kind == "EREntity") telem.left.push(currentline.id);
-        } else if (currentline.ctype == "TB") {
-            if (felem.kind == "EREntity") felem.top.push(currentline.id);
-            if (telem.kind == "EREntity") telem.bottom.push(currentline.id);
-        } else if (currentline.ctype == "BT") {
-            if (felem.kind == "EREntity") felem.bottom.push(currentline.id);
-            if (telem.kind == "EREntity") telem.top.push(currentline.id);
-        }
+    // Determine lines before sorting associations
+    if (ghostLine && ghostElement){
+        clearLinesForElement(ghostElement);
+        determineLine(ghostLine, true);
     }
 
     // Sort all association ends that number above 0 according to direction of line
-    for (var i = 0; i < data.length; i++) {
-        var element = data[i];
-
-        // Only sort if size of list is >= 2
-        if (element.top.length > 1) element.top.sort(function (a, b) { return sortvectors(a, b, element.top, element.id, 2) });
-        if (element.bottom.length > 1) element.bottom.sort(function (a, b) { return sortvectors(a, b, element.bottom, element.id, 3) });
-        if (element.left.length > 1) element.left.sort(function (a, b) { return sortvectors(a, b, element.left, element.id, 0) });
-        if (element.right.length > 1) element.right.sort(function (a, b) { return sortvectors(a, b, element.right, element.id, 1) });
+    for (var i = 0; i < data.length; i++){
+        sortElementAssociations(data[i]);
     }
 
     // Draw each line using sorted line ends when applicable
-    for (var i = 0; i < lines.length; i++) {
-        var currentline = lines[i];
-        var felem, telem, dx, dy;
-        var lineColor = '#f44';
+    for (var i = 0; i < lines.length; i++){
+        str += drawLine(lines[i]);
+    }
 
-        if(contextLine.includes(currentline)) {
-            lineColor = '#00ff00';
-        }
-        
-        felem = data[findIndex(data, currentline.fromID)];
-        telem = data[findIndex(data, currentline.toID)];
-
-        // Draw each line - compute end coordinate from position in list compared to list count
-        fx = felem.cx;
-        fy = felem.cy;
-        tx = telem.cx;
-        ty = telem.cy;
-
-        // Collect coordinates
-        if (currentline.ctype == "BT") {
-            fy = felem.y2;
-            if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(currentline.id) + 1));
-            ty = telem.y1;
-        } else if (currentline.ctype == "TB") {
-            fy = felem.y1;
-            if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(currentline.id) + 1));
-            ty = telem.y2;
-        } else if (currentline.ctype == "RL") {
-            fx = felem.x2;
-            if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(currentline.id) + 1));
-            tx = telem.x1;
-        } else if (currentline.ctype == "LR") {
-            fx = felem.x1;
-            if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(currentline.id) + 1));
-            tx = telem.x2;
-        }
-
-        if (currentline.kind == "Normal") {
-            str += `<line id='${currentline.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
-
-        } else if (currentline.kind == "Double") {
-            // We mirror the line vector
-            dy = -(tx - fx);
-            dx = ty - fy;
-            var len = Math.sqrt((dx * dx) + (dy * dy));
-            dy = dy / len;
-            dx = dx / len;
-            var cstmOffSet = 1.4;
-            str += `<line id='${currentline.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
-            str += `<line id='${currentline.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
-        }
+    if (ghostLine && ghostElement){
+        str += drawLine(ghostLine, true);
     }
     return str;
 }
@@ -2231,6 +2310,8 @@ function setRulerPosition(x, y)
 function drawRulerBars()
 {
     //Get elements
+    if(!isRulerActive) return;
+
     svgX = document.getElementById("ruler-x-svg");
     svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
@@ -2339,8 +2420,9 @@ function displayMessage(type, message)
     messageEl.innerHTML = "<span>" + message + "</span>";
     messageEl.style.display = "block";
 
+    if(errorMsgTimer) clearTimeout(errorMsgTimer);
     //Set timeout to remove the message
-    setTimeout(function () {
+    errorMsgTimer = setTimeout(function (){
         messageEl.style.display = "none";
     }, 2000);
 }
@@ -2354,8 +2436,7 @@ function getData()
     showdata();
     drawRulerBars();
     generateToolTips();
-    enableGrid();
-    enableRuler();
+    toggleGrid();
 }
 
 function generateToolTips()
