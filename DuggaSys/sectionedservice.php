@@ -215,19 +215,25 @@ if($gradesys=="UNK") $gradesys=0;
 							$link=$pdo->lastInsertId();
 					}
 
-					$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind, tabs) VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind, :tabs)");
+					$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
+									   						  VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
+					
+					if ($kind == 4) {
+						$query->bindParam(':gradesys', $gradesys);
+					} else {
+						$query->bindParam(':gradesys', $tabs);
+					}
+
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':cvs', $coursevers);
 					$query->bindParam(':usrid', $userid);
 					$query->bindParam(':entryname', $sectname);
 					$query->bindParam(':link', $link);
 					$query->bindParam(':kind', $kind);
-					$query->bindParam(':gradesys', $gradesys);
 					$query->bindParam(':comment', $comments);
 					$query->bindParam(':visible', $visibility);
 					$query->bindParam(':highscoremode', $highscoremode);
 					$query->bindParam(':pos', $pos);	
-					$query->bindParam(':tabs', $tabs);
 
 					if ($grptype != "UNK") {
 						$query->bindParam(':groupkind', $grptype);
@@ -297,7 +303,14 @@ if($gradesys=="UNK") $gradesys=0;
 							$link=$pdo->lastInsertId();
 					}
 
-					$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, tabs=:tabs, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupKind=:groupkind, feedbackenabled=:feedbackenabled, feedbackquestion=:feedbackquestion WHERE lid=:lid;");
+					$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, gradesystem=:gradesys, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,comments=:comments,groupKind=:groupkind, feedbackenabled=:feedbackenabled, feedbackquestion=:feedbackquestion WHERE lid=:lid;");
+				
+					if ($kind == 4) {
+						$query->bindParam(':gradesys', $gradesys);
+					} else {
+						$query->bindParam(':gradesys', $tabs);
+					}
+
 					$query->bindParam(':lid', $sectid);
 					$query->bindParam(':entryname', $sectname);
 					$query->bindParam(':comments', $comments);
@@ -317,8 +330,6 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(':kind', $kind);
 					$query->bindParam(':link', $link);
 					$query->bindParam(':visible', $visibility);
-					$query->bindParam(':gradesys', $gradesys);
-					$query->bindParam(':tabs', $tabs);
 
 					if(!$query->execute()) {
 						$error=$query->errorInfo();
@@ -544,7 +555,9 @@ if($gradesys=="UNK") $gradesys=0;
 		$entries=array();
 
 		if($cvisibility){
-		  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind, tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+			$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind,
+					listentries.gradesystem as tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id 
+					WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursevers', $coursevers);
 			$result=$query->execute();
