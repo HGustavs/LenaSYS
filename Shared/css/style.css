@@ -844,6 +844,22 @@ p {
 
 /*changes the cursor for the cogwheels*/
 
+/*Swimlane styling*/
+#statisticsSwimlanes {
+  display: flex;
+  overflow:auto;
+  border: 2px solid darkgray; 
+  background-color: var(--color-sectioned-table-lo);
+}
+
+#swimlaneSVG {
+  max-height: 300px;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+}
+
 #dorf {
   cursor: pointer;
 }
