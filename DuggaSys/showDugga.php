@@ -277,9 +277,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
-
-<<<<<<< HEAD
-=======
+<?php
 function hashPassword($password, $hash){
 		global $pdo;
 		$sql = "SELECT hash,password FROM useranswer WHERE '" .$password. "' LIKE password AND '".$hash."' LIKE hash";
@@ -318,46 +316,12 @@ $_SESSION['hashpassword'] = 'UNK';
 
 ?>
 	</div>
->>>>>>> parent of c3e50b2df (Merge branch 'G1-2021-W16' into G1-2021-W16-#10141)
 	<!-- content START -->
 	<div id="content">
 		<?php
 			// Log USERID for Dugga Access
-<<<<<<< HEAD
-
-      // commented out because we are unsure about the usage of logs
-			//makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
-  
-			//Saved Dugga Login 
-			if($hash!='UNK'){
-				echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
-				echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
-				echo "<div class='loginBoxheader'>";
-				echo "<h3>Login for Saved Dugga</h3>";
-				echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
-				echo "</div>";
-				echo "<p>Enter your password for the hash</p>";
-				echo "<input name='password' class='textinput' type='password' placeholder='Password'>";
-				echo "<input type='submit' class='submit-button' value='Confirm' onclick='hideHashBox()'>";
-				echo "</div>";
-				echo "</div>";
-			}
-
-			function hashPassword($password, $hash){
-				if($hash!='UNK'){
-				//exit();
-				//Authentication Function
-				}
-			}
-			//Retrieved from 'password' input field
-			hashPassword($password, $hash);
-?>
-	</div>
-
-=======
 			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
 			//Retrieved from 'password' input field
->>>>>>> parent of c3e50b2df (Merge branch 'G1-2021-W16' into G1-2021-W16-#10141)
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
