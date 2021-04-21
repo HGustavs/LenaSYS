@@ -978,6 +978,7 @@ function mmoving(event)
             scrollx = sscrollx - Math.round(deltaX * zoomfact);
             scrolly = sscrolly - Math.round(deltaY * zoomfact);
 
+            updateGridPos();
             // Update scroll position
             updatepos(null, null);
 
@@ -2460,4 +2461,14 @@ function data_returned(ret)
     } else {
         alert("Error receiveing data!");
     }
+}
+
+function updateGridPos()
+{
+    var bLayer = document.getElementById("grid");
+    //var coords = screenToDiagramCoordinates(event.clientX, event.clientY);
+    bLayer.setAttribute('x', -deltaX);
+    bLayer.setAttribute('y', -deltaY);
+    console.log(bLayer);
+    //return coords;
 }
