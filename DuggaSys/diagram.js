@@ -733,16 +733,14 @@ function ddown(event)
             }
             
             var element = data[findIndex(data, event.currentTarget.id)];
-            if (element != null && !context.includes(element) || !ctrlPressed)
-            {
+            if (element != null && !context.includes(element) || !ctrlPressed){
                 updateSelection(element);
             }
             break;
 
         case mouseModes.EDGE_CREATION:
             var element = data[findIndex(data, event.currentTarget.id)];
-            if (element != null && !context.includes(element) || !ctrlPressed)
-            {
+            if (element != null && !context.includes(element) || !ctrlPressed){
                 updateSelection(element);
             }
             break;
@@ -779,18 +777,13 @@ function mouseMode_onMouseUp(event)
 
                 showdata();
                 updatepos(0,0);
-            }
-            else if (context.length === 1)
-            {
-                if (event.target.id != "container")
-                {   
+            }else if (context.length === 1){
+                if (event.target.id != "container"){   
                     elementTypeSelected = elementTypes.GHOSTENTITY;
                     makeGhost();
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
-                }
-                else 
-                {   
+                }else{   
                     context = [];
                     ghostElement = null;
                     ghostLine = null;
@@ -2166,20 +2159,15 @@ function sortvectors(a, b, ends, elementid, axis)
     var parent = data[findIndex(data, elementid)];
 
     // Retrieve opposite element - assume element center (for now)
-    if (lineA.fromID == elementid)
-    {
+    if (lineA.fromID == elementid){
         toElementA = (lineA == ghostLine) ? ghostElement : data[findIndex(data, lineA.toID)];
-    }
-    else
-    {
+    }else{
         toElementA = data[findIndex(data, lineA.fromID)];
     }
-    if (lineB.fromID == elementid)
-    {
+
+    if (lineB.fromID == elementid){
         toElementB = (lineB == ghostLine) ? ghostElement : data[findIndex(data, lineB.toID)];
-    }
-    else
-    {
+    }else{
         toElementB = data[findIndex(data, lineB.fromID)];
     }
 
@@ -2250,31 +2238,25 @@ function determineLine(line, targetGhost = false)
 
     // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
     var ctype = 0;
-    if (overlapY || ((majorX) && (!overlapX)))
-    {
+    if (overlapY || ((majorX) && (!overlapX))){
         if (line.dx > 0) line.ctype = "LR"
         else line.ctype = "RL";
-    } else
-    {
+    }else{
         if (line.dy > 0) line.ctype = "TB";
         else line.ctype = "BT";
     }
 
     // Add accordingly to association end
-    if (line.ctype == "LR")
-    {
+    if (line.ctype == "LR"){
         if (felem.kind == "EREntity") felem.left.push(line.id);
         if (telem.kind == "EREntity") telem.right.push(line.id);
-    } else if (line.ctype == "RL")
-    {
+    }else if (line.ctype == "RL"){
         if (felem.kind == "EREntity") felem.right.push(line.id);
         if (telem.kind == "EREntity") telem.left.push(line.id);
-    } else if (line.ctype == "TB")
-    {
+    }else if (line.ctype == "TB"){
         if (felem.kind == "EREntity") felem.top.push(line.id);
         if (telem.kind == "EREntity") telem.bottom.push(line.id);
-    } else if (line.ctype == "BT")
-    {
+    }else if (line.ctype == "BT"){
         if (felem.kind == "EREntity") felem.bottom.push(line.id);
         if (telem.kind == "EREntity") telem.top.push(line.id);
     }
@@ -2294,8 +2276,7 @@ function drawLine(line, targetGhost = false)
     var felem, telem, dx, dy;
     var str = "";
     var lineColor = '#f44';
-    if(contextLine.includes(line))
-    {
+    if(contextLine.includes(line)){
         lineColor = '#00ff00';
     }
     
@@ -2311,34 +2292,27 @@ function drawLine(line, targetGhost = false)
     ty = telem.cy;
 
     // Collect coordinates
-    if (line.ctype == "BT")
-    {
+    if (line.ctype == "BT"){
         fy = felem.y2;
         if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
         ty = telem.y1;
-    } else if (line.ctype == "TB")
-    {
+    }else if (line.ctype == "TB"){
         fy = felem.y1;
         if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(line.id) + 1));
         ty = telem.y2;
-    } else if (line.ctype == "RL")
-    {
+    }else if (line.ctype == "RL"){
         fx = felem.x2;
         if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(line.id) + 1));
         tx = telem.x1;
-    } else if (line.ctype == "LR")
-    {
+    }else if (line.ctype == "LR"){
         fx = felem.x1;
         if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
         tx = telem.x2;
     }
 
-    if (line.kind == "Normal")
-    {
+    if (line.kind == "Normal"){
         str += `<line id='${line.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
-    } 
-    else if (line.kind == "Double")
-    {
+    }else if (line.kind == "Double"){
         // We mirror the line vector
         dy = -(tx - fx);
         dx = ty - fy;
@@ -2358,40 +2332,34 @@ function drawLine(line, targetGhost = false)
 function redrawArrows(str)
 {
     // Clear all lines and update with dom object dimensions
-    for (var i = 0; i < data.length; i++)
-    {
+    for (var i = 0; i < data.length; i++){
         clearLinesForElement(data[i]);
     }
 
     // Make list of all connectors?
     connectors = [];
 
-    for (var i = 0; i < lines.length; i++)
-    {
+    for (var i = 0; i < lines.length; i++){
         determineLine(lines[i]);
     }
 
     // Determine lines before sorting associations
-    if (ghostLine && ghostElement)
-    {
+    if (ghostLine && ghostElement){
         clearLinesForElement(ghostElement);
         determineLine(ghostLine, true);
     }
 
     // Sort all association ends that number above 0 according to direction of line
-    for (var i = 0; i < data.length; i++)
-    {
+    for (var i = 0; i < data.length; i++){
         sortElementAssociations(data[i]);
     }
 
     // Draw each line using sorted line ends when applicable
-    for (var i = 0; i < lines.length; i++)
-    {
+    for (var i = 0; i < lines.length; i++){
         str += drawLine(lines[i]);
     }
 
-    if (ghostLine && ghostElement)
-    {
+    if (ghostLine && ghostElement){
         str += drawLine(ghostLine, true);
     }
 
