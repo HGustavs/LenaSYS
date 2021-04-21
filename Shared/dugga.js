@@ -4,7 +4,6 @@
 //----------------------------------------------------------------------------------
 var renderId; // Used to store active rendering function
 var benchmarkData = performance.timing; // Will be updated after onload event
-
 var status = 0;
 var showing = 1;
 var score;
@@ -14,18 +13,11 @@ var inParams = "UNK";
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 var pressTimer;
-
 var hash;
 var pwd;
-
 var localStorageVariant;
-
 var duggaTitle;
-
-
 var iconFlag = false;
-
-var hash;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -53,6 +45,14 @@ function getAllIndexes(haystack, needle) {
 function setVariant(v) {
 	console.log("variant dugga.js: " + v)
 	localStorageVariant = v;
+}
+
+function setHash(h){
+	hash = h;
+}
+
+function setPassword(p){
+	pwd = p;
 }
 
 //Set the localstorage item securitynotifaction to on or off
@@ -561,8 +561,8 @@ function randomPassword()
 //----------------------------------------------------------------------------------
 
 function createUrl(hash) {
-	var realUrl = window.location + "&hash=" + hash;
-	var localhostUrl="http://localhost/LenaSYS/DuggaSys/sh/?hash=" + hash;
+	var realUrl = window.location + "?a=" + hash;
+	var localhostUrl="http://localhost/LenaSYS/sh/?a=" + hash;
 
 	// temporary solution, if exist in database use real url
 	var realUrlInDatabase = false;
@@ -588,18 +588,19 @@ function createUrl(hash) {
 
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
+
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
-
 {
-  
-	pwd = randomPassword(); //Create random password for URL
-
-	hash = generateHash(); // Generate Hash
-	var url = createUrl(hash); //Create URL
+	// Check if hash is unknown
+	if (hash == "UNK") {
+		pwd = randomPassword(); //Create random password for URL
+		hash = generateHash(); // Generate Hash
+	}
 	
+	var url = createUrl(hash); //Create URL
 	console.log("url: " + url);
 	console.log("pwd: " + pwd);
 
@@ -675,64 +676,46 @@ function saveDuggaResult(citstr)
 //----------------------------------------------------------------------------------
 // generateHash: Generates a hash
 //----------------------------------------------------------------------------------
-
 function generateHash() {
     var randNum = getRandomNumber();
-    var hash = createHash(randNum);
-	var hash64 = convertDecimalToBase64(hash);
+	var hash64 = convertDecimalToBase64(randNum);
 	hash64 = hash64.replace("+", "-");
 	hash = hash64.replace("/", "_");
-
     return hash;
-
-	function createHash(num) {
-		var string = num.toString();
-		var hash = 0;
-
-		if (string.length == 0) return hash;
-    
-		for (i = 0; i < string.length; i++) {
-			char = string.charCodeAt(i);
-			hash = ((hash << 5) - hash) + char;
-			hash = hash & hash;
-		}
-
-
-		return hash;
-	}
-
-	function getRandomNumber() {
-		return Math.floor(Math.random() * 1000000) + 100000;
-	}
 }
 
+//----------------------------------------------------------------------------------
+//Generates a random number that can represent every possible hash combination (6-8 characters)
+//----------------------------------------------------------------------------------
+function getRandomNumber() {
+	return Math.floor(Math.random() * 281473902968831) + 1073741824;
+}
 
 //----------------------------------------------------------------------------------
 // convertDecimalToBase64: takes decimal number and converts to base64 "youtube style"
 //----------------------------------------------------------------------------------
 function convertDecimalToBase64(value) {
 	if (typeof(value) === 'number') {
-	  return convertDecimalToBase64.getChars(value, '');
+		return convertDecimalToBase64.getChars(value, '');
 	}
   
 	if (typeof(value) === 'string') {
-	  if (value === '') { return NaN; }
-	  return value.split('').reverse().reduce(function(prev, cur, i) {
-		return prev + convertDecimalToBase64.chars.indexOf(cur) * Math.pow(64, i);
-	  }, 0);
+		if (value === '') { return NaN; }
+		return value.split('').reverse().reduce(function(prev, cur, i) {
+			return prev + convertDecimalToBase64.chars.indexOf(cur) * Math.pow(64, i);
+	  	}, 0);
 	}
-  }
+}
   
-  convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
+convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
   
-  convertDecimalToBase64.getChars = function(num, res) {
+convertDecimalToBase64.getChars = function(num, res) {
 	var mod = num % 64,
 		remaining = Math.floor(num / 64),
-		chars = convertDecimalToBase64.chars.charAt(mod) + res;
-  
+		chars = convertDecimalToBase64.chars.charAt(mod) + res;  
 	if (remaining <= 0) { return chars; }
 	return convertDecimalToBase64.getChars(remaining, chars);
-  };
+};
 
 //----------------------------------------------------------------------------------
 // changeURL: Patch-in for changeURL from project 2014 code
@@ -1340,31 +1323,7 @@ function checkScroll(obj) {
 	}
 }
 
-//function showEmailPopup()
-//{
-//	var receiptcemail ="";
-//	document.getElementById("emailPopup").style.display = "block";
-//	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
-//	document.getElementById('email').value = receiptcemail;
-//}
 
-//function hideEmailPopup()
-//{
-//	$("#emailPopup").css("display","none");
-//}
-
-//----------------------------------------------------------------------------------
-// Send dugga receipt to users email, save email in localstorage.
-//----------------------------------------------------------------------------------
-function sendReceiptEmail(){
-	var receipt = document.getElementById('receipt').value;
-	var email = $("#email").val();
-		if (email != ""){
-			localStorage.setItem("receiptcemail", email); //save value of input into a localStorage variable
-			window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
-			hideReceiptPopup();
-	}
-}
 
 //----------------------------------------------------------------------------------
 // copyURLtoCB: Copy the url to user clipboard
@@ -1375,6 +1334,35 @@ function copyHashtoCB() {
     $temp.val(hash).select();
     document.execCommand("copy");
 	$temp.remove();
+}
+
+function hideHashBox(){
+    $("#hashBox").css("display","none");
+}
+
+function checkHashPassword(){
+	
+	var hash = $('#hash').text();
+	var password = document.getElementById('passwordfield').value;
+	
+	$.ajax({
+        url: "../Shared/hashpasswordauth.php",
+        data: {password:password, hash:hash},
+        type: "POST",
+        success: function(data){
+        	var d = JSON.parse(data);
+            var auth = d.auth
+            if(auth){
+        		console.log('Success!');
+        		hideHashBox();
+        		reloadPage();
+        	}else{
+        		$('#passwordtext').text('Wrong password, try again!');
+        		$('#passwordtext').css('color','red');
+        		console.log('Fail!');
+        	}
+		}
+	});
 }
 
 function showSecurityPopup()

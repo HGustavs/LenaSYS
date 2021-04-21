@@ -32,7 +32,7 @@ function GetAssigment ($hash){
 
 	// There should only be one match to the hash value in database as the hash is uniqe
 	foreach ($pdo->query($sql) as $row){
-		$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&&courseid={$row["cid"]}&cid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}";
+		$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&&courseid={$row["cid"]}&cid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}&hash=$hash";
 	}	
 	
 	return $URL;
