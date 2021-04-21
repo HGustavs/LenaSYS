@@ -455,13 +455,13 @@ function setExpireTime(key, value, ttl){
 		expiry: now.getTime() + ttl,
 	}
 	itemvalue = item.value;
-	console.log(itemvalue);
+	
 	localStorage.setItem(key, JSON.stringify(item))
 }
 //Lazily expiring the item (Its only checked when retrieved from storage)
 function getExpireTime(key){
 	const itemString = localStorage.getItem(key)
-	console.log(key);
+	
 	if(!itemString){
 		return null
 	}
@@ -1015,7 +1015,8 @@ function AJAXService(opt,apara,kind)
 					var newvariants = data['variant'];
 					if(localStorage.getItem(querystring['did']) == 0){
 						localStorage.setItem(querystring['did'], newvariants);
-						setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 5000);
+						//The big number below represents 30 days in milliseconds
+						setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
 					}
 					//getExpireTime(querystring['did']);
 					var variantsize = data['variantsize'];
