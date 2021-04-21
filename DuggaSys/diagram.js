@@ -389,6 +389,7 @@ var elements = [];
 
 // Currently clicked object list
 var context = [];
+var previousContext = [];
 var contextLine = []; // Contains the currently selected line(s).
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
@@ -1375,6 +1376,9 @@ function getBoxSelectionCoordinates()
 // User has initiated a box selection
 function boxSelect_Start(mouseX, mouseY)
 {
+    // Store previous context
+    previousContext = context;
+
     // Set starting position
     startX = mouseX;
     startY = mouseY;
@@ -1420,7 +1424,19 @@ function boxSelect_Update(mouseX, mouseY)
         }
 
         var rect = getRectFromPoints(topLeft, bottomRight);
-        context = getElementsInsideCoordinateBox(rect);
+
+        if (ctrlPressed) {
+            var markedEntities = getElementsInsideCoordinateBox(rect);
+
+            // Remove entity from previous context is the element is marked
+            previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
+
+            context = [];
+            markedEntities.forEach(entity => context.push(entity));
+            previousContext.forEach(entity => context.push(entity));
+        }else {
+            context = getElementsInsideCoordinateBox(rect);
+        }
     }
 }
 
