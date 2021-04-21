@@ -5,7 +5,6 @@ pdoConnect();
 $password = $_POST['password'];
 $hash = $_POST['hash'];
 $_SESSION['hashpassword'] = $password;
-
 function hashPassword($password, $hash){
 	if($hash!='UNK'){
 		global $pdo;
@@ -20,8 +19,6 @@ function hashPassword($password, $hash){
 		}
 	}
 }
-
 $auth = hashPassword($password, $hash);	
 echo json_encode(["auth" => $auth]);
-
 ?>
