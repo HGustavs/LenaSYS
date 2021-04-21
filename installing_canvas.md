@@ -60,14 +60,14 @@ Virtual host is a feature in apache that allows us to create subdomains. 000-def
 ### Commands
 ```
 cd /etc/apache2/sites-available/
-sudo cp 000-default.conf **canvas.webug.his.se.conf**
-sudo nano **canvas.webug.his.se.conf**
+sudo cp 000-default.conf <b>canvas.webug.his.se.conf </b>
+sudo nano <b> canvas.webug.his.se.conf </b>
 ```
 
 ### Change
 ```
-serverName **canvas.webug.his.se**
-DocumentRoot **/var/www/project-g1.webug.his.se/public_html/canvas/**
+serverName <b> canvas.webug.his.se </b>
+DocumentRoot <b>/var/www/project-g1.webug.his.se/public_html/canvas/<b>
 ```
 
 ## Restart Apache2
@@ -87,7 +87,7 @@ Sadly however so is it possible that when installing canvas that the files do no
 
 ## Commands
 ```
-cd **/var/www/project-g1.webug.his.se/public_html/canvas**
+cd <b>/var/www/project-g1.webug.his.se/public_html/canvas</b>
 sudo bundle install --without pulsar
 sudo yarn install --pure-lockfile
 sudo yarn install --pure-lockfile
@@ -120,8 +120,8 @@ Inorder to use the postgres database so are accounts needed. There may also be a
 #### Commands
 ```
 sudo cp config/database.yml.example config/database.yml
-sudo -u postgres createuser **$USER**
-sudo -u postgres psql -c "alter user  **$USER** with superuser" postgres
+sudo -u postgres createuser <b>$USER</b>
+sudo -u postgres psql -c "alter user  <b>$USER</b> with superuser" postgres
 sudo createdb canvas_development
 ```
 
@@ -189,7 +189,7 @@ screen -S canvas
 ```
 
 ```
-bundle exec rails server --binding=**MYIPADRESS**
+bundle exec rails server --binding=<b>MYIPADRESS</b>
 ```
 
 Exit screen by pressing ctrl + a then ctrl + d
