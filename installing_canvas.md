@@ -49,14 +49,13 @@ sudo apt-get install git
 ```
 
 ### Commands 
-```
-cd <b>/var/www/project-g1.webug.his.se/public_html</b>
+<pre><code>cd <b>/var/www/project-g1.webug.his.se/public_html</b>
 sudo git clone https://github.com/instructure/canvas-lms.git canvas
 sudo git checkout stable
-```
+</code></pre>
 
 ## Create a virtual host for canvas
-Virtual host is a feature in apache that allows us to create subdomains. 000-default.conf comes pre configured with apache and can be used as the base when creating new subdomains.```
+Virtual host is a feature in apache that allows us to create subdomains. 000-default.conf comes pre configured with apache and can be used as the base when creating new subdomains.
 
 ### Commands
 ```
