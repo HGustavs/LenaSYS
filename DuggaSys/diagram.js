@@ -1432,8 +1432,8 @@ function boxSelect_Update(mouseX, mouseY)
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
             context = [];
-            markedEntities.forEach(entity => context.push(entity));
-            previousContext.forEach(entity => context.push(entity));
+            context = context.concat(markedEntities);
+            context = context.concat(previousContext);
         }else {
             context = getElementsInsideCoordinateBox(rect);
         }
