@@ -1,6 +1,6 @@
 # Canvas
  
-## Targeted operation system and used programs 
+## Targeted OS
 This guide is written for ubuntu server v20
 
 # Prerequisites 
