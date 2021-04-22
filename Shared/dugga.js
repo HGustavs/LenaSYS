@@ -22,6 +22,7 @@ var ishashindb;
 var blockhashgen = false;
 var ishashinurl;
 var itemvalue;
+var variantvalue;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -482,12 +483,11 @@ function getExpireTime(key){
 	const now = new Date()
 
 	if(now.getTime() > item.expiry){
-		console.log(key + " has expired")
+		console.log(key+"has expired");
 		localStorage.removeItem(key)
 		return null
 	}
 	itemvalue = item.value;
-	console.log("item value: "+itemvalue);
 	return item.value;
 }
 
@@ -993,27 +993,31 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
+		//Checks if the variantSize variant is set in localstorage. When its not, its set.
+		if(localStorage.getItem("variantSize") == null) {
+			localStorage.setItem("variantSize", 100);
+		}
+		//Converts the localstorage variant from string to int
+		var newInt = +localStorage.getItem('variantSize');
+		//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
+		if(querystring['did'] <= newInt) {
+			if(localStorage.getItem(querystring['did']) == null){
+				localStorage.setItem(querystring['did'], 0);
+			}
+		}
+		var test = JSON.parse(localStorage.getItem(querystring['did']));
+		variantvalue = test.value;
+		console.log("test value: "+variantvalue);
+		console.log(localStorage.getItem(querystring['did']));
 			$.ajax({
 				beforeSend: function(){
-					//Checks if the variantSize variant is set in localstorage. When its not, its set.
-					if(localStorage.getItem("variantSize") == null) {
-						localStorage.setItem("variantSize", 100);
-					}
-					//Converts the localstorage variant from string to int
-					var newInt = +localStorage.getItem('variantSize');
-					//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
-					if(querystring['did'] <= newInt) {
-						if(localStorage.getItem(querystring['did']) == null){
-							localStorage.setItem(querystring['did'], 0);
-						}
-					}
-					//var test = JSON.parse(localStorage.getItem(querystring['did']));
 				},
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +getExpireTime(querystring['did']), 
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did'])+"&variantvalue=" +variantvalue, 
 				dataType: "json",
 				success: function (data) {
+					console.log(data);
 					returnedDugga(data);
 					var newvariants = data['variant'];
 					if(localStorage.getItem(querystring['did']) == 0){
@@ -1021,7 +1025,7 @@ function AJAXService(opt,apara,kind)
 						//The big number below represents 30 days in milliseconds
 						setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 5000);
 					}
-					//getExpireTime(querystring['did']);
+					getExpireTime(querystring['did']);
 					var variantsize = data['variantsize'];
 					localStorage.setItem("variantSize", variantsize);
 					}

@@ -40,6 +40,7 @@ $hash=getOP('hash');
 $password=getOP('password');
 $showall="true";
 $localStorageVariant= getOP('variant');
+$variantvalue= getOP('variantvalue');
 
 $param = "UNK";
 $savedanswer = "";
@@ -203,22 +204,38 @@ if($demo){
 	
 	//Makes sure that the localstorage variant is set before retrieving data from database
 	if(isset($localStorageVariant)) {
-		// If it's the first time showing this variant
-	if($localStorageVariant == 0) {
-		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-		$query->bindParam(':vid', $savedvariant);
-		$query->execute();
-		$result = $query->fetch();
-		$param=html_entity_decode($result['param']);
-	} else {
-		// If we already have a variant in localstorage
-		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-		$query->bindParam(':vid', $localStorageVariant);
-		$query->execute();
-		$result = $query->fetch();
-		$param=html_entity_decode($result['param']);
+		// 
+		if($localStorageVariant == 0) {
+			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+			$query->bindParam(':vid', $savedvariant);
+			$query->execute();
+			$result = $query->fetch();
+			$param=html_entity_decode($result['param']);
+		} else {
+			// If we already have a variant in localstorage
+			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+			$query->bindParam(':vid', $localStorageVariant);
+			$query->execute();
+			$result = $query->fetch();
+			$param=html_entity_decode($result['param']);
+		}
 	}
-}
+	if(isset($variantvalue)) {
+		// 
+		if($variantvalue == 0) {
+			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+			$query->bindParam(':vid', $savedvariant);
+			$query->execute();
+			$result = $query->fetch();
+			$param=html_entity_decode($result['param']);
+		} else {
+			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+			$query->bindParam(':vid', $variantvalue);
+			$query->execute();
+			$result = $query->fetch();
+			$param=html_entity_decode($result['param']);
+		}
+	}
 
 
 
@@ -575,6 +592,8 @@ $array = array(
 		"variant" => $savedvariant,
 		"ishashindb" => $ishashindb,
 		"variantsize" => $variantsize,
+		"variantvalue" => $variantvalue,
+		"localstoragevariant" => $localStorageVariant,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
