@@ -683,6 +683,14 @@ var lines = [
 ];
 
 //------------------------------------=======############==========----------------------------------------
+//                                        Getters and Setters
+//------------------------------------=======############==========----------------------------------------
+// Adds object to the dataArray
+function addObjectToData(object){
+    data.push(object);
+    stateMachine.save(StateChangeFactory.ElementCreated(object));
+}
+//------------------------------------=======############==========----------------------------------------
 //                                        Key event listeners
 //------------------------------------=======############==========----------------------------------------
 document.addEventListener('keydown', function (e)
@@ -914,8 +922,7 @@ function mouseMode_onMouseUp(event)
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
-                data.push(ghostElement);
-                stateMachine.save(StateChangeFactory.ElementCreated(ghostElement));
+                addObjectToData(ghostElement);
                 makeGhost();
                 showdata();
             }
@@ -2609,6 +2616,41 @@ function pasteClipboard(elements){
         displayMessage("error", "You do not have any copied elements");
         return;
     }
+
+    /*
+    * Calculate the coordinate for the top-left pos (x1, y1)
+    * and the coordinate for the bottom-right (x2, y2)
+    * */
+    var x1, x2, y1, y2;
+    elements.forEach(element => {
+        if (element.x < x1 || x1 === undefined) x1 = element.x;
+        if (element.y < y1 || y1 === undefined) y1 = element.y;
+        if ((element.x + element.width) > x2 || x2 === undefined) x2 = (element.x + element.width);
+        if ((element.y + element.height) > y2 || y2 === undefined) y2 = (element.y + element.height);
+    });
+
+    var cx = (x2 - x1)/2;
+    var cy = (y2 - y1)/2;
+    var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - cx, lastMousePos.y - cy);
+
+    // For every copied element create a new one and add to data
+    elements.forEach(element => {
+
+        // Create the new object
+        var elementObj = {
+            name: element.name,
+            x: mousePosInPixels.x + (element.x - x1),
+            y: mousePosInPixels.y + (element.y - y1),
+            width: element.width,
+            height: element.height,
+            kind: element.kind,
+            id: makeRandomID()
+        };
+        addObjectToData(elementObj);
+    });
+
+    displayMessage("success", `You have successfully copied ${elements.length} elements!`)
+    showdata();
 }
 
 function displayMessage(type, message)
