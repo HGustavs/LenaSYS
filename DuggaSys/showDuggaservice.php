@@ -53,7 +53,7 @@ $insertparam = false;
 $score = 0;
 $timeUsed;
 $stepsUsed;
-$duggafeedback="UNK";
+$duggafeedback = "UNK";
 $variants=array();
 $variantsize;
 $ishashindb = false;
@@ -139,7 +139,7 @@ foreach($query->fetchAll() as $row) {
 	$insertparam = true;
 }
 
-$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted,password FROM userAnswer WHERE hash=:hash;");
+$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,grade,submitted,password FROM userAnswer WHERE hash=:hash;");
     $query->bindParam(':hash', $hash);
     $result = $query->execute();
 
@@ -148,11 +148,6 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
         $savedanswer=$row['useranswer'];
         $score = $row['score'];
         $isIndb=true;
-        if ($row['feedback'] != null){
-                $duggafeedback = $row['feedback'];
-        } else {
-                $duggafeedback = "UNK";
-        }
         $grade = $row['grade'];
         $submitted = $row['submitted'];
         $marked = $row['marked'];
@@ -539,7 +534,7 @@ if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be o
 // Use string compare to clear grade if not released yet!
 if($today < $duggainfo['qrelease']  && !(is_null($duggainfo['qrelease']))){
 		$grade="UNK";
-		$duggafeedback="UNK";
+		$duggafeedback = "UNK";
 }
 //Fetches Data From listentries Table
 if(strcmp($opt,"CHECKFDBCK")==0){
@@ -577,7 +572,6 @@ $array = array(
 		"answer" => $savedanswer,
 		"score" => $score,
 		"highscoremode" => $highscoremode,
-		"feedback" => $duggafeedback,
 		"grade" => $grade,
 		"submitted" => $submitted,
 		"marked" => $marked,
