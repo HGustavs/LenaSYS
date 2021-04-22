@@ -993,11 +993,11 @@ function AJAXService(opt,apara,kind)
 				localStorage.setItem(querystring['did'], 0);
 			}
 		}
-		var test = JSON.parse(localStorage.getItem(querystring['did']));
+		//var test = JSON.parse(localStorage.getItem(querystring['did']));
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
-			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did'])+"&itemvalue="+test.value,
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did']),
 			dataType: "json",
 			success: function (data) {
 				returnedDugga(data);
@@ -1005,9 +1005,9 @@ function AJAXService(opt,apara,kind)
 				if(localStorage.getItem(querystring['did']) == 0){
 					localStorage.setItem(querystring['did'], newvariant);
 					//The big number below represents 30 days in milliseconds
-					setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 5000);
+					//setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 5000);
 				}
-				getExpireTime(querystring['did']);
+				//getExpireTime(querystring['did']);
 				var variantsize = data['variantsize'];
 				localStorage.setItem("variantSize", variantsize);
 				}
