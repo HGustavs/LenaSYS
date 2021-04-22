@@ -27,7 +27,8 @@ sudo npm install -g npm@latest
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 sudo echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt update
-sudo apt install yarn=1.19.1
+sudo apt install yarn
+sudo yarn set version 1.19.1
 </pre>
 <pre>
 sudo -u postgres createuser <b>$USER</b>
