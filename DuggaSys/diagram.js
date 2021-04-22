@@ -645,6 +645,11 @@ const relationState = {
     WEAK: "weak",
 };
 
+const lineKind = {
+    NORMAL: "Normal",
+    DOUBLE: "Double"
+};
+
 // Demo data - read / write from service later on
 var data = [
     { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
@@ -2081,6 +2086,14 @@ function changeState()
     element.state = property;
 }
 
+function changeLineKind()
+{
+    var property = document.getElementById("propertySelect").value;
+    var line = contextLine[0];
+    line.kind = property;
+    showdata();
+}
+
 function propFieldSelected(isSelected)
 {
     propFieldState = isSelected;
@@ -2141,8 +2154,22 @@ function generateContextProperties()
         str = "<legend>Properties</legend>";
         var line = contextLine[0];
         
+        var value;
+        var selected = contextLine[0].kind;
+        if(selected == undefined) selected = normal;
+        
+        value = Object.values(lineKind);
 
-        //propSet.innerHTML = str;
+        str += '<select id="propertySelect">';
+        for(var i = 0; i < value.length; i++){
+            if(selected == value[i]){
+                str += `<option selected="selected" value='${value[i]}'>${value[i]}</option>`;
+            }else {
+                str += `<option value='${value[i]}'> ${value[i]}</option>`;   
+            }
+        }
+        str += '</select>';
+        str+=`<br><br><input type="submit" value="Save" onclick="changeLineKind();">`;
     }
 
     propSet.innerHTML = str;
