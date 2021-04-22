@@ -39,11 +39,13 @@ class StateChange {
         ELEMENT_DELETED:            { flag: 2, isSoft: false, canAppendTo: false },
         ELEMENT_MOVED:              { flag: 4, isSoft: true, canAppendTo: true },
         ELEMENT_RESIZED:            { flag: 8, isSoft: true, canAppendTo: true },
-        ELEMENT_MOVED_AND_RESIZED:  { flag: 4 | 8, isSoft: true, canAppendTo: true },
         ELEMENT_ATTRIBUTE_CHANGED:  { flag: 16, isSoft: true, canAppendTo: true },
-
         LINE_CREATED:               { flag: 32, isSoft: false, canAppendTo: true },
         LINE_DELETED:               { flag: 64, isSoft: false, canAppendTo: false },
+
+        // Combined flags
+        ELEMENT_MOVED_AND_RESIZED:  { flag: 4|8, isSoft: true, canAppendTo: true },
+        ELEMENT_AND_LINE_DELETED:   { flag: 2|64, isSoft: false, canAppendTo: false },
     };
 
     /**
@@ -188,7 +190,7 @@ class StateChangeFactory
         });
 
         var values = {
-            elementsDeleted: elements
+            deletedElements: elements
         };
 
         return new StateChange(StateChange.ChangeTypes.ELEMENT_DELETED, ids, values);
@@ -248,6 +250,11 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.LINE_CREATED, [line.id], passed_values);
     }
 
+    /**
+     * 
+     * @param {Array<object>} lines 
+     * @returns 
+     */
     static LinesRemoved(lines)
     {
         var lineIDs = [];
@@ -256,11 +263,33 @@ class StateChangeFactory
             lineIDs.push(lines[index].id);
         }
 
-        var values = {
-            linesDeleted: lines
+        var passed_values = {
+            deletedLines: lines
         };
 
-        return new StateChange(StateChange.ChangeTypes.LINE_DELETED, lineIDs, values);
+        return new StateChange(StateChange.ChangeTypes.LINE_DELETED, lineIDs, passed_values);
+    }
+
+    static ElementsAndLinesDeleted(elements, lines)
+    {
+        var allIDs = [];
+
+        // Add all element IDs to the id-list
+        for (var index = 0; index < elements.lenght; index++) {
+            allIDs.push(elements[index].id);
+        }
+
+        // Add all line IDs to the id-list
+        for (var index = 0; index < lines.lenght; index++) {
+            allIDs.push(lines[index].id);
+        }
+
+        var passed_values = {
+            deletedElements: elements,
+            deletedLines: lines
+        };
+        
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED, allIDs, passed_values);
     }
 }
 
@@ -407,7 +436,7 @@ class StateMachine
             // Element destroyed
             if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_DELETED.flag)) {
 
-                data = Array.prototype.concat(data, lastChange.valuesPassed.elementsDeleted);
+                data = Array.prototype.concat(data, lastChange.valuesPassed.deletedElements);
             }
 
             // Line created
@@ -422,7 +451,7 @@ class StateMachine
 
             // Line destroyed
             if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_DELETED.flag)) {
-                lines = Array.prototype.concat(lines, lastChange.valuesPassed.linesDeleted);
+                lines = Array.prototype.concat(lines, lastChange.valuesPassed.deletedLines);
             }
 
             showdata();
@@ -2489,34 +2518,40 @@ function removeElements(elementArray, stateMachineShouldSave = true)
 {
     // Find all lines that should be deleted first
     var linesToRemove = [];
+    var elementsToRemove = [];
 
-    for (var i = 0; i < elementArray.length; i++) {
+    for (var i = 0; i < elementArray.length; i++) { // Find VALID items to remove
         linesToRemove = linesToRemove.concat(lines.filter(function(line) {
             return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
         }));
-    }
-    if (linesToRemove.length > 0) { 
-        removeLines(linesToRemove, stateMachineShouldSave);
+        elementsToRemove = elementsToRemove.concat(data.filter(function(element) {
+            return element == elementArray[i];
+        }));
     }
 
-    // Remove elements
-    for (var i = 0; i < elementArray.length; i++) {
-        // Remove element
-        data = data.filter(function(element) {
-            return element != elementArray[i];
+    if (elementsToRemove.length > 0) { // If there are elements to remove
+        if (linesToRemove.length > 0) { // If there are also lines to remove
+            removeLines(linesToRemove, false);
+            stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
+        } else { // Only removed elements without any lines
+            stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
+        }
+
+        data = data.filter(function(element) { // Delete elements
+            return !elementsToRemove.includes(element);
         });
+    } else { // All passed items were INVALID
+        console.error("Invalid element array passed to removeElements()!");
     }
 
-
-    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementArray));
     context = [];
     redrawArrows();
     showdata();
 }
+
 //Function to remove selected lines
 function removeLines(linesArray, stateMachineShouldSave = true)
 {
-
     var anyRemoved = false;
     for (var i = 0; i < linesArray.length; i++) {
         lines = lines.filter(function(line) {
