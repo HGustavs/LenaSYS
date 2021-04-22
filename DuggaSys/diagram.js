@@ -452,17 +452,20 @@ var startNodeRight = false;
 var cursorStyle;
 var lastMousePos = getPoint(0,0);
 const keybinds = {
-        LEFT_CONTROL: "Control",
-        ALT: "Alt",
-        META: "Meta",
-        HISTORY_STEPBACK: "z",
-        ESCAPE: "Escape",
-        BOX_SELECTION: "b",
-        POINTER: "h",
-        EDGE_CREATION: "d",
-        PLACE_ENTITY: "e",
-        PLACE_RELATION: "r",
-        PLACE_ATTRIBUTE: "a"
+        LEFT_CONTROL: {key: "Control", ctrl: false},
+        ALT: {key: "Alt", ctrl: false},
+        META: {key: "Meta", ctrl: false},
+        HISTORY_STEPBACK: {key: "z", ctrl: true},
+        DELETE: {key: "Delete", ctrl: false},
+        ESCAPE: {key: "Escape", ctrl: false},
+        BOX_SELECTION: {key: "b", ctrl: false},
+        POINTER: {key: "h", ctrl: false},
+        EDGE_CREATION: {key: "d", ctrl: false},
+        PLACE_ENTITY: {key: "e", ctrl: false},
+        PLACE_RELATION: {key: "r", ctrl: false},
+        PLACE_ATTRIBUTE: {key: "a", ctrl: false},
+        ZOOM_IN: {key: "+", ctrl: true},
+        ZOOM_OUT: {key: "-", ctrl: true},
 };
 
 // Zoom variables
@@ -650,18 +653,18 @@ document.addEventListener('keydown', function (e)
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
 
-        if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
-        if (e.key == "Alt" && altPressed !== true) altPressed = true;
-        if (e.key == "Delete") {
+        if (e.key == keybinds.LEFT_CONTROL.key && ctrlPressed !== true) ctrlPressed = true;
+        if (e.key == keybinds.ALT.key && altPressed !== true) altPressed = true;
+        if (e.key == keybinds.DELETE.key && e.ctrlKey == keybinds.DELETE.ctrl) {
             if (contextLine.length > 0) removeLines(contextLine);
             if (context.length > 0) removeElements(context);
 
             updateSelection();
         }
-        if (e.key == "Meta" && ctrlPressed !== true) ctrlPressed = true;
-        if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
-        if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
-        if (e.key == "Escape" && escPressed != true) {
+        if (e.key == keybinds.META.key && ctrlPressed !== true) ctrlPressed = true;
+        if (e.key == keybinds.ZOOM_IN.key && e.ctrlKey == keybinds.ZOOM_IN.ctrl) zoomin(); // Works but interferes with browser zoom
+        if (e.key == keybinds.ZOOM_OUT.key && e.ctrlKey == keybinds.ZOOM_OUT.ctrl) zoomout(); // Works but interferes with browser zoom
+        if (e.key == keybinds.ESCAPE.key && escPressed != true) {
             escPressed = true;
             context = [];
 
@@ -689,35 +692,36 @@ document.addEventListener('keyup', function (e)
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
         /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
         //  TODO : Switch cases?
-        if (e.key == keybinds.LEFT_CONTROL) ctrlPressed = false;
-        if (e.key == keybinds.ALT) altPressed = false;
-        if (e.key == keybinds.META) ctrlPressed = false;
-        if (e.key == keybinds.ESCAPE) {
+        if (e.key == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
+        if (e.key == keybinds.ALT.key) altPressed = false;
+        if (e.key == keybinds.META.key) ctrlPressed = false;
+
+        if (e.key == keybinds.ESCAPE.key && e.ctrlKey == keybinds.ESCAPE.ctrl) {
             escPressed = false;
         }
-        if (e.key == keybinds.HISTORY_STEPBACK && ctrlPressed) {
+        if (e.key == keybinds.HISTORY_STEPBACK.key && e.ctrlKey == keybinds.HISTORY_STEPBACK.ctrl) {
             stateMachine.stepBack();
         }
 
-        if (e.key == keybinds.BOX_SELECTION) {
+        if (e.key == keybinds.BOX_SELECTION.key && e.ctrlKey == keybinds.BOX_SELECTION.ctrl) {
             setMouseMode(mouseModes.BOX_SELECTION);
         }
-        if (e.key == keybinds.POINTER) {
+        if (e.key == keybinds.POINTER.key && e.ctrlKey == keybinds.POINTER.ctrl) {
             setMouseMode(mouseModes.POINTER);
         }
-        if (e.key == keybinds.EDGE_CREATION) {
+        if (e.key == keybinds.EDGE_CREATION.key && e.ctrlKey == keybinds.EDGE_CREATION.ctrl) {
             setMouseMode(mouseModes.EDGE_CREATION);
             clearContext();
         }
-        if (e.key == keybinds.PLACE_ENTITY) {
+        if (e.key == keybinds.PLACE_ENTITY.key && e.ctrlKey == keybinds.PLACE_ENTITY.ctrl) {
             setElementPlacementType(elementTypes.ENTITY);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.PLACE_RELATION) {
+        if (e.key == keybinds.PLACE_RELATION.key && e.ctrlKey == keybinds.PLACE_RELATION.ctrl) {
             setElementPlacementType(elementTypes.RELATION);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.PLACE_ATTRIBUTE) {
+        if (e.key == keybinds.PLACE_ATTRIBUTE.key && e.ctrlKey == keybinds.PLACE_ATTRIBUTE.ctrl) {
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
@@ -2581,7 +2585,13 @@ function generateToolTips()
         const element = toolButtons[index];
         var id = element.id.split("-")[1];
         if (Object.getOwnPropertyNames(keybinds).includes(id)) {
-           element.innerHTML = `Keybind: ${keybinds[id]}`;
+
+            var str = "Keybind: ";
+
+            if (keybinds[id].ctrl) str += "CTRL + ";
+            str += '"' + keybinds[id].key.toUpperCase() + '"';
+
+           element.innerHTML = str;
         }
     }
 }
