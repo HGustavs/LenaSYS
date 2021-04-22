@@ -80,6 +80,15 @@
                 <img src="../Shared/icons/diagram_zoomout.svg"/>
             </div>
         </fieldset>
+        <fieldset>
+            <legend>Toggle</legend>
+            <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
+                <img src="../Shared/icons/diagram_grid.svg"/>
+            </div>
+            <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
+                <img src="../Shared/icons/diagram_ruler.svg"/>
+            </div>
+        </fieldset>
     </div>
 
     <!-- Message prompt -->
@@ -119,12 +128,6 @@
         <div id ="fieldsetBox">
             <fieldset id='cursorModeFieldset'>
                 <p id="text_currentlyPlacing">Now placing: NULL</p><br>
-                <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
-                    <img src="../Shared/icons/diagram_grid.svg"/>
-                </div>
-                <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
-                    <img src="../Shared/icons/diagram_ruler.svg"/>
-                </div>
             </fieldset>
             <fieldset id='propertyFieldset'>
                 
