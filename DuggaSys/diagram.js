@@ -698,7 +698,7 @@ document.addEventListener('keydown', function (e)
         if (e.key == keybinds.ZOOM_OUT.key && e.ctrlKey == keybinds.ZOOM_OUT.ctrl) zoomout(); // Works but interferes with browser zoom
         if (e.key == keybinds.ESCAPE.key && escPressed != true) {
             escPressed = true;
-            context = [];
+            clearContext();
             movingObject = false;
 
             if (movingContainer) {
@@ -914,7 +914,7 @@ function mouseMode_onMouseUp(event)
             if (context.length > 1) {
                 // TODO: Change the static variable to make it possible to create different lines.
                 addLine(context[0], context[1], "Normal");
-                context = [];
+                clearContext();
                 
                 // Bust the ghosts
                 ghostElement = null;
@@ -929,7 +929,7 @@ function mouseMode_onMouseUp(event)
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
                 }else{   
-                    context = [];
+                    clearContext();
                     ghostElement = null;
                     ghostLine = null;
                     showdata();
@@ -967,7 +967,7 @@ function mup(event)
 
                 if (!deltaExceeded) {
                     if (mouseMode == mouseModes.EDGE_CREATION) {
-                        context = [];
+                        clearContext();
                     } else if (mouseMode == mouseModes.POINTER) {
                         updateSelection(null);
                     }
@@ -1575,7 +1575,7 @@ function boxSelect_Update(mouseX, mouseY)
             // Remove entity from previous context is the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
-            context = [];
+            clearContext();
             context = context.concat(markedEntities);
             context = context.concat(previousContext);
         }else if (altPressed) {
@@ -1975,12 +1975,12 @@ function updateSelection(ctxelement)
             context.push(ctxelement);
         } else {
             if (mouseMode != mouseModes.EDGE_CREATION) {
-                context = [];
+                clearContext();
             }
             context.push(ctxelement);
         }
     } else if (!altPressed && !ctrlPressed) {
-        context = [];
+        clearContext();
     }
 
     // Generate the properties field in options-pane
@@ -2570,7 +2570,7 @@ function removeElements(elementArray, stateMachineShouldSave = true)
         console.error("Invalid element array passed to removeElements()!");
     }
 
-    context = [];
+    clearContext();
     redrawArrows();
     showdata();
 }
@@ -2682,6 +2682,8 @@ function updateGridPos()
 }
 function clearContext()
 {
-    context = [];
-    showdata();
+    if(context != null){
+        context = [];
+        generateContextProperties();
+    }
 }
