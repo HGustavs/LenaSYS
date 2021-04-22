@@ -389,7 +389,7 @@ if(strcmp($opt,"GETVARIANTANSWER")==0){
 	$variant = $temp[3];
 
 	
-	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer,feedback FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.cid = :cid and userAnswer.vers = :vers and variant.vid = :vid");
+	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.cid = :cid and userAnswer.vers = :vers and variant.vid = :vid");
 	$query->bindParam(':cid', $first);
 	$query->bindParam(':vers', $second);
 	$query->bindParam(':vid', $variant);
