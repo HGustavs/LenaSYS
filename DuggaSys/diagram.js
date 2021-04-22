@@ -464,7 +464,8 @@ const keybinds = {
         PLACE_RELATION: "r",
         PLACE_ATTRIBUTE: "a",
         GRID: "g",
-        RULER: "t"
+        RULER: "t",
+        OPTIONS: "o"
 };
 
 // Zoom variables
@@ -726,8 +727,11 @@ document.addEventListener('keyup', function (e)
         if (e.key == keybinds.GRID) {
             toggleGrid();
         }
-        if(e.key == keybinds.RULER) {
+        if (e.key == keybinds.RULER) {
             toggleRuler();
+        }
+        if (e.key == keybinds.OPTIONS) {
+            fab_action();
         }
     }
 });
