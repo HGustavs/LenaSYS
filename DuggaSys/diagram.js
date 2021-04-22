@@ -1155,6 +1155,7 @@ function mmoving(event)
             scrollx = sscrollx - Math.round(deltaX * zoomfact);
             scrolly = sscrolly - Math.round(deltaY * zoomfact);
 
+            updateGridPos();
             // Update scroll position
             updatepos(null, null);
 
@@ -1662,6 +1663,8 @@ function zoomin()
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
 
+    updateGridSize();
+
     // Update scroll position - missing code for determining that center of screen should remain at nevw zoom factor
     showdata();
 
@@ -1686,6 +1689,7 @@ function zoomout()
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
 
+    updateGridSize();
     // Update scroll position - missing code for determining that center of screen should remain at new zoom factor
     showdata();
 
@@ -2654,6 +2658,21 @@ function data_returned(ret)
     }
 }
 
+function updateGridSize()
+{
+    var bLayer = document.getElementById("grid");
+    bLayer.setAttribute("width", 100 * zoomfact);
+    bLayer.setAttribute("height", 100 * zoomfact);
+
+    bLayer.children[1].setAttribute('d', `M ${100 * zoomfact} 0 L 0 0 0 ${100 * zoomfact}`);
+}
+
+function updateGridPos()
+{
+    var bLayer = document.getElementById("grid");
+    bLayer.setAttribute('x', (scrollx * (1.0 / zoomfact)));
+    bLayer.setAttribute('y', (scrolly * (1.0 / zoomfact)));
+}
 function clearContext()
 {
     context = [];
