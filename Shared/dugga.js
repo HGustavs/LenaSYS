@@ -1017,9 +1017,13 @@ function AJAXService(opt,apara,kind)
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did'])+"&variantvalue=" +variantvalue, 
 				dataType: "json",
 				success: function (data) {
-					console.log(data);
 					returnedDugga(data);
-					var newvariants = data['variant'];
+					ishashindb = data['ishashindb'];										//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+					if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
+						recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
+					}
+					// Check localstorage variants.
+					var newvariant = data['variant'];
 					if(localStorage.getItem(querystring['did']) == 0){
 						localStorage.setItem(querystring['did'], newvariants);
 						//The big number below represents 30 days in milliseconds
@@ -1028,8 +1032,9 @@ function AJAXService(opt,apara,kind)
 					getExpireTime(querystring['did']);
 					var variantsize = data['variantsize'];
 					localStorage.setItem("variantSize", variantsize);
-					}
-				});
+					setPassword(data['password']);
+				}
+			});
 	}else if(kind=="RESULT"){
 			$.ajax({
 				url: "resultedservice.php",
@@ -1120,6 +1125,24 @@ function AJAXService(opt,apara,kind)
 			success: returnedUserFeedback
 		});
 	}
+}
+
+//If the first generated hash isn't unique this method is recursively called until a hash is unique.
+function recursiveAjax(){
+	hash = generateHash();						//A new hash is generated.
+	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
+		url: "showDuggaservice.php",
+		type: "POST",
+		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
+		dataType: "json",
+		success: function(data) {
+			returnedDugga(data);
+			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+			if(ishashindb==true){				//If the hash already exist in database.
+				recursiveAjax();				//Call this method again.
+			}								
+		}
+	});
 }
 
 //Will handle enter key pressed when loginbox is showing

@@ -140,6 +140,26 @@ foreach($query->fetchAll() as $row) {
 	$insertparam = true;
 }
 
+$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted,password FROM userAnswer WHERE hash=:hash;");
+    $query->bindParam(':hash', $hash);
+    $result = $query->execute();
+
+    if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $savedvariant=$row['variant'];
+        $savedanswer=$row['useranswer'];
+        $score = $row['score'];
+        $isIndb=true;
+        if ($row['feedback'] != null){
+                $duggafeedback = $row['feedback'];
+        } else {
+                $duggafeedback = "UNK";
+        }
+        $grade = $row['grade'];
+        $submitted = $row['submitted'];
+        $marked = $row['marked'];
+		$password = $row['password'];
+    }
+
 // -------------------------OLD FUNCTIONALITY WHERE WE CHECK IF USER IS LOGGED IN AND HAS ACESS-------------------
 
 
@@ -204,7 +224,8 @@ if($demo){
 	
 	//Makes sure that the localstorage variant is set before retrieving data from database
 	if(isset($localStorageVariant)) {
-		// 
+
+		// If it's the first time showing this variant
 		if($localStorageVariant == 0) {
 			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
 			$query->bindParam(':vid', $savedvariant);
@@ -213,6 +234,7 @@ if($demo){
 			$param=html_entity_decode($result['param']);
 			error_log("result param: ".$param);
 		} else {
+      // If we already have a variant in localstorage
 			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
 			$query->bindParam(':vid', $variantvalue);
 			$query->execute();
@@ -220,12 +242,6 @@ if($demo){
 			$param=html_entity_decode($result['param']);
 		}
 	}
-
-
-
-
-
-
 } else if ($hr){
 	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
 	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
@@ -578,6 +594,7 @@ $array = array(
 		"variantsize" => $variantsize,
 		"variantvalue" => $variantvalue,
 		"localstoragevariant" => $localStorageVariant,
+		"password" => $password,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
