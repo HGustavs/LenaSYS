@@ -2478,7 +2478,9 @@ function updateGridSize()
 
 function updateGridPos()
 {
+    var moveX = Math.round(zoomfact + (scrollx * (1.0 / zoomfact)));
+    var moveY = Math.round(zoomfact + (scrolly * (1.0 / zoomfact)));
     var bLayer = document.getElementById("grid");
-    bLayer.setAttribute('x', -deltaX);
-    bLayer.setAttribute('y', -deltaY);
+    bLayer.setAttribute('x', moveX);
+    bLayer.setAttribute('y', moveY);
 }
