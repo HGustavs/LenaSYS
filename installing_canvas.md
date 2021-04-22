@@ -33,7 +33,7 @@ sudo yarn set version 1.19.1
 <pre>
 sudo -u postgres createuser <b>$USER</b>
 sudo -u postgres psql -c "alter user <b>$USER</b> with superuser" postgres
-sudo gem install bundler -v 2.2.15
+sudo gem install bundler -v 2.2.11
 </pre>
 
 # Setup Canvas
