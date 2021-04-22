@@ -657,7 +657,7 @@ document.addEventListener('keydown', function (e)
 
             updateSelection();
         }
-        if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
+        if (e.key == "Meta" && ctrlPressed !== true) ctrlPressed = true;
         if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
         if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
         if (e.key == "Escape" && escPressed != true) {
@@ -1879,18 +1879,14 @@ function updateSelectedLine(selectedLine)
         }
     }
     // If CTRL is not pressed and a element has been selected.
-    else if (selectedLine != null) {
+    else if (selectedLine != null && !ctrlPressed) {
         // Element not already in context
         if (!contextLine.includes(selectedLine) && contextLine.length < 1) {
             contextLine.push(selectedLine);
-        
         } else {
-            if (mouseMode != mouseModes.POINTER) {
-                contextLine = [];
-            }
+            contextLine = [];
             contextLine.push(selectedLine);
         }
-
     } else if (!altPressed && !ctrlPressed) {
         contextLine = [];
     }
