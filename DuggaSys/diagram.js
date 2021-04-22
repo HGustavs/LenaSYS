@@ -1558,13 +1558,20 @@ function boxSelect_Update(mouseX, mouseY)
 
         if (ctrlPressed) {
             var markedEntities = getElementsInsideCoordinateBox(rect);
-
             // Remove entity from previous context is the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
             context = [];
             context = context.concat(markedEntities);
             context = context.concat(previousContext);
+        }else if (altPressed) {
+            markedEntities = getElementsInsideCoordinateBox(rect);
+            // Remove entity from previous context is the element is marked
+            previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
+
+            context = [];
+            context = previousContext;
+
         }else {
             context = getElementsInsideCoordinateBox(rect);
         }
