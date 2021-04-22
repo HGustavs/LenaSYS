@@ -55,8 +55,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive.php", $u
 //  Handle files! One by one  -- if all is ok add file name to database
 //  login for user is successful & has either write access or is superuser					
 
-$ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
-if ($ha) {
+// $ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
+// if ($ha) {
     if ($kind == "GFILE" && isSuperUser($_SESSION['uid'] == false)) return;
 
     $storefile = false;
@@ -136,11 +136,11 @@ if ($ha) {
             }
         }
     }
-}
+// }
 
-else {
-    $errortype ="noaccess";
-}
+// else {
+//     $errortype ="noaccess";
+// }
 
 if ($storefile) {
     //  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
