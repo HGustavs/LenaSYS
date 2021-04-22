@@ -2,14 +2,19 @@
  
 ## Targeted operation system and used programs 
 
-This guide is written for ubuntu systems v20
+This guide is written for ubuntu server v20
+
+
+
 
 # Prerequisites 
 Canvas need several libraries to be installed on Ubuntu linux. Some are even not available any longer on the regular apt-get command. So custom libraries are needed to get them. The needed libraries to date (15/04-21) are the following ruby2.6, ruby2.6-dev, postgresql, zlib1g-dev, libxml2-dev, libsqlite3-dev, ibpq-dev, libxmlsec1-dev, curl and lastly build-essential.
 
 It’s possible that the requirements may change in the near future as Ruby2.6 is on EOL. 
 
+### $USER not working
 $USER seems not to work correctly on Ubuntu v20, The idea behind $USER is that the current user should get elevated privileges when creating/modifying the database. This did not occur when testing the code for Ubuntu v20 so a solution for this is to replace $USER with the account name.
+
 ## Commands
 <pre>
 sudo apt-get install software-properties-common
@@ -28,8 +33,8 @@ sudo apt update
 sudo apt install yarn
 sudo yarn set version 1.19.1
 
-sudo -u postgres createuser $USER
-sudo -u postgres psql -c "alter user $USER with superuser" postgres
+sudo -u postgres createuser <b>$USER</b>
+sudo -u postgres psql -c "alter user <b>$USER</b> with superuser" postgres
 sudo gem install bundler -v 2.2.15
 </pre>
 
@@ -42,7 +47,7 @@ We chose to put the canvas inside our G1 project folder since it was part of our
 The easiest way to download canvas is to use the command git which requires the library git to be installed on the server.
 
 ### Installing git
-You can download by using the Git command.
+You can download Git by using the apt-get command.
 
 <pre>
 sudo apt-get install git
@@ -126,6 +131,18 @@ sudo -u postgres psql -c "alter user  <b>$USER</b> with superuser" postgres
 sudo createdb canvas_development
 </pre>
 
+### Installing database
+Now it's time to install the database and setup the adminimistor account that will be your main account when handeling Canvas.
+#### Commands
+<pre>
+sudo bundle exec rails db:initial_setup
+</pre>
+#### During this setup it will ask you for ...
+Databasename:\
+E-mail:\
+Password: 
+
+
 ### Test Data
 Canvas have sadly not updated their scripts for test data to meet the latest versions of postgres. This has caused commands that they use to longer function properly since they rely on permissions that are no longer available. It’s possible to bypass this by temporarily removing database protection by setting the connection to trust on all. Then after installation is done revert them back to their original values. 
 
@@ -138,9 +155,7 @@ sudo find / -type f -name pg_hba.conf
 </pre>
 
 ### Commands
-<pre>
-sudo bundle exec rails db:initial_setup
-</pre>
+
 
 <pre>
 psql -c 'CREATE USER canvas' -d postgres
