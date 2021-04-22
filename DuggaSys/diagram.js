@@ -2679,6 +2679,4 @@ function clearContext()
         context = [];
         generateContextProperties();
     }
-    
-   /* showdata();*/
 }
