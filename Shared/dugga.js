@@ -1012,6 +1012,7 @@ function AJAXService(opt,apara,kind)
 					// First check if dugga hash is unique.
 					returnedDugga(data);
 					ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+					console.log(hash);
 					if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
 						hash = generateHash();	//Old hash gets replaced by new hash before saving to database.
 					}
