@@ -8,7 +8,7 @@ This guide is written for ubuntu server v20
 
 
 # Prerequisites 
-Canvas need several libraries to be installed on Ubuntu linux. Some are even not available any longer on the regular apt-get command. So custom libraries are needed to get them. The needed libraries to date (15/04-21) are the following ruby2.6, ruby2.6-dev, postgresql, zlib1g-dev, libxml2-dev, libsqlite3-dev, ibpq-dev, libxmlsec1-dev, curl and lastly build-essential.
+Canvas need several libraries to be installed on Ubuntu. Some are even not available any longer on the regular apt-get command. So custom libraries are needed to get them. The needed libraries to date (15/04-21) are the following ruby2.6, ruby2.6-dev, postgresql, zlib1g-dev, libxml2-dev, libsqlite3-dev, ibpq-dev, libxmlsec1-dev, curl and lastly build-essential.
 
 It’s possible that the requirements may change in the near future as Ruby2.6 is on EOL. 
 
@@ -67,7 +67,7 @@ Virtual host is a feature in apache that allows us to create subdomains. 000-def
 <pre>
 cd /etc/apache2/sites-available/
 sudo cp 000-default.conf <b>canvas.webug.his.se.conf</b>
-sudo nano </b>canvas.webug.his.se.conf</b>
+sudo nano <b>canvas.webug.his.se.conf</b>
 </pre>
 
 ### Change
