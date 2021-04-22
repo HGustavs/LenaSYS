@@ -6302,9 +6302,14 @@ only screen and (max-device-width: 320px) {
   width: 100%;
   list-style: none;
   text-align: center;
-  top: 25px;
+  top: 65px;
+  transform: rotate(90deg);
+  transform-origin: top left;
 }
 
+.fab-btn-list2 li {
+  transform: rotate(315deg);
+}
 
 .fab-btn-list li, .fab-btn-list2 li  {
   display: inline-block;
