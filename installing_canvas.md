@@ -17,18 +17,22 @@ sudo apt-get install software-properties-common
 sudo apt-add-repository ppa:brightbox/ruby-ng
 sudo apt-get update
 sudo apt-get install ruby2.6 ruby2.6-dev postgresql zlib1g-dev libxml2-dev libsqlite3-dev libpq-dev libxmlsec1-dev curl build-essential
-
+</pre>
+<pre>
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y nodejs 
 sudo npm install -g npm@latest
-
+</pre>
+<pre>
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 sudo echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-
+</pre>
+<pre>
 sudo apt update
 sudo apt install yarn
 sudo yarn set version 1.19.1
-
+</pre>
+<pre>
 sudo -u postgres createuser <b>$USER</b>
 sudo -u postgres psql -c "alter user <b>$USER</b> with superuser" postgres
 sudo gem install bundler -v 2.2.15
