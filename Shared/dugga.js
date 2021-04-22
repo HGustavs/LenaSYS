@@ -20,11 +20,6 @@ var duggaTitle;
 var iconFlag = false;
 var itemvalue;
 
-var ishashindb;
-var blockhashgen = false;
-var ishashinurl;
-
-
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
 		$(".fixed-action-button").css("bottom", "64px");
@@ -53,20 +48,8 @@ function setVariant(v) {
 	localStorageVariant = v;
 }
 
-function getHash(){
-	return hash;
-}
-
 function setHash(h){
-	// Check if hash is unknown
-	if(h == "UNK"){
-		hash = generateHash();
-		pwd = randomPassword();
-		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
-	}else{
-		hash = h;
-		ishashinurl = true;		//Hash is referenced in the url -> A resubmission, this dugga already have a hash in the database.
-	}
+	hash = h;
 }
 
 function setPassword(p){
@@ -644,10 +627,17 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
-{	
-	blockhashgen = true; //Block-Hash-Generation: No new hash should be generated if 'Save' is clicked more than once per dugga session.
-
+{
+	// Check if hash is unknown
+	if (hash == "UNK") {
+		pwd = randomPassword(); //Create random password for URL
+		hash = generateHash(); // Generate Hash
+	}
+	
 	var url = createUrl(hash); //Create URL
+	console.log("url: " + url);
+	console.log("pwd: " + pwd);
+
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
 
@@ -1003,7 +993,6 @@ function AJAXService(opt,apara,kind)
 				localStorage.setItem(querystring['did'], 0);
 			}
 		}
-
 		//var test = JSON.parse(localStorage.getItem(querystring['did']));
 		$.ajax({
 			url: "showDuggaservice.php",
@@ -1022,7 +1011,6 @@ function AJAXService(opt,apara,kind)
 				var variantsize = data['variantsize'];
 				localStorage.setItem("variantSize", variantsize);
 				}
-
 			});
 	}else if(kind=="RESULT"){
 			$.ajax({
@@ -1627,9 +1615,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
       if (mobileMediaQuery.matches) {
 			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
 		  } else {
-			// Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
-			//tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th></tr></thead>";
+			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
 		  }
     }
 
@@ -1713,19 +1699,14 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							}
 
 							tab+="<td>";
-							//Feedback button. Always visible for teachers, only visible for students if feedback have been given.
-							/*
 							if (!mobileMediaQuery.matches) {
-							
 								// Button for making / viewing feedback - note - only button for given feedback to students.
 								if(filez[i].feedback!=="UNK"||displaystate){
 										tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>Feedback</button>";
 								}
 							}
-							*/
 							tab+="</td>";
-							/*
-							// Display user feedback on the assignment page
+
 							tab+="<td>";
 							if(filez[i].feedback!=="UNK"){
 								if (mobileMediaQuery.matches || mediumMediaQuery.matches) {
@@ -1737,7 +1718,6 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								tab+="&nbsp;"
 							}
 							tab+="</td>";
-							*/
 							tab+="</tr>";
 					}
 			}
