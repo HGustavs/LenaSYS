@@ -4770,6 +4770,9 @@ only screen and (max-device-width: 800px) {
   #addElement {
     display: none;
   }
+  #delElement{
+    display: none;
+  }
 
   table.navheader td.contribution {
     margin-right: 0px;
