@@ -1947,6 +1947,7 @@ function updateSelectedLine(selectedLine)
     } else if (!altPressed && !ctrlPressed) {
         contextLine = [];
     }
+    generateContextProperties();
 }
 
 function updateSelection(ctxelement)
@@ -2145,21 +2146,18 @@ function generateContextProperties()
         str += '</select>'; 
         str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
 
-    } else if (context.length > 1) {
-        str += "<p>Pick only ONE element!</p>";
-    }
+    } 
 
-    // Update selected line
+    // Creates drop down for changing the kind attribute on the selected line.
     if (contextLine.length == 1 && context.length == 0) {
         str = "<legend>Properties</legend>";
-        var line = contextLine[0];
         
         var value;
         var selected = contextLine[0].kind;
         if(selected == undefined) selected = normal;
         
         value = Object.values(lineKind);
-
+        
         str += '<select id="propertySelect">';
         for(var i = 0; i < value.length; i++){
             if(selected == value[i]){
@@ -2170,6 +2168,10 @@ function generateContextProperties()
         }
         str += '</select>';
         str+=`<br><br><input type="submit" value="Save" onclick="changeLineKind();">`;
+    }
+
+    if ((context.length > 1 || contextLine.length > 1) || (context.length == 1 && contextLine.length == 1)) {
+        str += "<p>Pick only ONE element!</p>";
     }
 
     propSet.innerHTML = str;
