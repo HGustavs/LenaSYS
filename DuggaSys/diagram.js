@@ -696,6 +696,7 @@ document.addEventListener('keydown', function (e)
         if (e.key == keybinds.ESCAPE.key && escPressed != true) {
             escPressed = true;
             context = [];
+            movingObject = false;
 
             if (movingContainer) {
                 scrollx = sscrollx;
