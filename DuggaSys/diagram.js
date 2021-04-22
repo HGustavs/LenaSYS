@@ -2,8 +2,7 @@
 //                                          Class Definitions
 //------------------------------------=======############==========----------------------------------------
 
-class Point
-{
+class Point {
     x = 0;
     y = 0;
 
@@ -29,8 +28,7 @@ class Point
     }
 };
 
-class StateChange
-{
+class StateChange {
     /**
      * flag: number of 2nd base used to set multiple flags at once.
      * isSoft: If the change type is something that wishes to overwrite the previous change.
@@ -41,11 +39,13 @@ class StateChange
         ELEMENT_DELETED:            { flag: 2, isSoft: false, canAppendTo: false },
         ELEMENT_MOVED:              { flag: 4, isSoft: true, canAppendTo: true },
         ELEMENT_RESIZED:            { flag: 8, isSoft: true, canAppendTo: true },
-        ELEMENT_MOVED_AND_RESIZED:  { flag: 4 | 8, isSoft: true, canAppendTo: true },
         ELEMENT_ATTRIBUTE_CHANGED:  { flag: 16, isSoft: true, canAppendTo: true },
-
         LINE_CREATED:               { flag: 32, isSoft: false, canAppendTo: true },
         LINE_DELETED:               { flag: 64, isSoft: false, canAppendTo: false },
+
+        // Combined flags
+        ELEMENT_MOVED_AND_RESIZED:  { flag: 4|8, isSoft: true, canAppendTo: true },
+        ELEMENT_AND_LINE_DELETED:   { flag: 2|64, isSoft: false, canAppendTo: false },
     };
 
     /**
@@ -81,14 +81,14 @@ class StateChange
 
     /**
      * 
-     * @param {number} changeFlag What flags this change has.
+     * @param {Object} changeType What flags this change has.
      * @param {Array<String>} id_list Array of all ID's that are affected by the change. This helps with concatting changes more compactly.
      * @param {Object} passed_values Argument map containing all specific values that the state change require. Pass it as an object with properties as the variables!
      * @see {StateChange.ChangeTypes} for available flags.
      */
-    constructor(changeFlag, id_list, passed_values = {})
+    constructor(changeType, id_list, passed_values = {})
     {
-        this.flags = changeFlag;
+        this.changeTypes = [changeType];
         this.timestamp = new Date().getTime();
         this.valuesPassed = passed_values;
 
@@ -98,12 +98,29 @@ class StateChange
         this.id_list = id_list;
     }
 
-    getFlags() {
+    getFlags()
+    {
         var flags = 0;
-        for (const change in this.flags)
+
+        for (var index = 0; index <  this.changeTypes.length; index++) {
+            var change = this.changeTypes[index];
             flags = flags | change.flag;
+        }
 
         return flags;
+    }
+
+    /**
+     * Returns true if this change contains the requested flag.
+     * @param {number} flag 
+     * @returns {boolean}
+     */
+    hasFlag(flag)
+    {
+        var allFlags = this.getFlags();
+        var AND = flag & allFlags;
+
+        return (AND === flag);
     }
 
     setValues(value_object)
@@ -127,20 +144,29 @@ class StateChange
         if (changes.name) {
             this.name = changes.name;
         }
+
         if (changes.moved) {
-            if (this.moved) this.moved.add(changes.moved);
-            else this.moved = changes;
+            if (this.moved) { 
+                this.moved.add(changes.moved);
+            } else { 
+                this.moved = changes;
+            }
         }
+
         if (changes.resized) {
-            if (this.resized) this.resized.add(changes.resized); 
-            else this.resized = changes.resized;
+            if (this.resized) {
+                this.resized.add(changes.resized);
+            } else {
+                this.resized = changes.resized;
+            }
         }
+
         if (changes.timestamp < this.timestamp) {
             this.timestamp = changes.timestamp;
         }
         
         /** @type number */
-        this.flags.flag = this.flags.flag | changes.flags.flag;
+        this.changeTypes.flag = this.changeTypes.flag | changes.changeTypes.flag;
     }
 }
 
@@ -163,7 +189,11 @@ class StateChangeFactory
             ids.push(element.id);
         });
 
-        return new StateChange(StateChange.ChangeTypes.ELEMENT_DELETED, ids);
+        var values = {
+            deletedElements: elements
+        };
+
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_DELETED, ids, values);
     }
 
     static ElementsMoved(elementIDs, moveX, moveY)
@@ -178,6 +208,7 @@ class StateChangeFactory
     {
         var state = new StateChange(StateChange.ChangeTypes.ELEMENT_RESIZED, elementIDs);
         state.resized = new Point(changeX, changeY);
+
         return state;
     }
 
@@ -186,6 +217,7 @@ class StateChangeFactory
         var state = new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED, elementIDs);
         state.moved = new Point(moveX, moveY);
         state.resized = new Point(changeX, changeY);
+
         return state;
     }
 
@@ -215,17 +247,49 @@ class StateChangeFactory
             toElementID: line.toID
         };
 
-        return new StateChange(StateChange.ChangeTypes.LINE_CREATED, line.id, passed_values);
+        return new StateChange(StateChange.ChangeTypes.LINE_CREATED, [line.id], passed_values);
     }
 
+    /**
+     * 
+     * @param {Array<object>} lines 
+     * @returns 
+     */
     static LinesRemoved(lines)
     {
         var lineIDs = [];
 
-        lines.forEach(line => {
-            lineIDs.push(line.id);
-        });
-        return new StateChange(StateChange.ChangeTypes.LINE_DELETED, lineIDs, null);
+        for (var index = 0; index < lines.length; index++) {
+            lineIDs.push(lines[index].id);
+        }
+
+        var passed_values = {
+            deletedLines: lines
+        };
+
+        return new StateChange(StateChange.ChangeTypes.LINE_DELETED, lineIDs, passed_values);
+    }
+
+    static ElementsAndLinesDeleted(elements, lines)
+    {
+        var allIDs = [];
+
+        // Add all element IDs to the id-list
+        for (var index = 0; index < elements.lenght; index++) {
+            allIDs.push(elements[index].id);
+        }
+
+        // Add all line IDs to the id-list
+        for (var index = 0; index < lines.lenght; index++) {
+            allIDs.push(lines[index].id);
+        }
+
+        var passed_values = {
+            deletedElements: elements,
+            deletedLines: lines
+        };
+        
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED, allIDs, passed_values);
     }
 }
 
@@ -255,6 +319,7 @@ class StateMachine
     save (stateChange)
     {
         if (stateChange instanceof StateChange) {
+          
             // If history is present, perform soft/hard-check
             if (this.historyLog.length > 0) {
                 /** @type StateChange */
@@ -269,24 +334,40 @@ class StateMachine
                     }
                 }
 
+                var isSoft = true;
+                for (var index = 0; index < stateChange.changeTypes.length && isSoft; index++) {
+                    isSoft = stateChange.changeTypes[index].isSoft;
+                }
+
+                var canAppendToLast = true;
+                for (var index = 0; index < lastLog.changeTypes.length && isSoft; index++) {
+                    canAppendToLast = lastLog.changeTypes[index].canAppendTo;
+                }
+
                 // If NOT soft change, push new change onto history log
-                if (!stateChange.flags.isSoft || !lastLog.flags.canAppendTo || !sameElements) {
+                if (!isSoft || !canAppendToLast || !sameElements) {
+
                     this.historyLog.push(stateChange);
 
-                // Otherwise, simply modify the last entry.
-                } else {
-                    switch (stateChange.flags) {
-                        case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                        case StateChange.ChangeTypes.ELEMENT_MOVED:
-                        case StateChange.ChangeTypes.ELEMENT_RESIZED:
-                        case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
-                            lastLog.appendValuesFrom(stateChange);
-                            break;
+                } else { // Otherwise, simply modify the last entry.
 
-                        default:
-                            console.error(`Missing implementation for soft state change: ${stateChange}!`);
-                            break;
-                    };
+                    for (var index = 0; index < stateChange.changeTypes.length; index++) {
+
+                        var changeType = stateChange.changeTypes[index];
+                        
+                        switch (changeType) {
+                            case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
+                            case StateChange.ChangeTypes.ELEMENT_MOVED:
+                            case StateChange.ChangeTypes.ELEMENT_RESIZED:
+                            case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
+                                lastLog.appendValuesFrom(stateChange);
+                                break;
+
+                            default:
+                                console.error(`Missing implementation for soft state change: ${stateChange}!`);
+                                break;
+                        };
+                    }
                 }
             } else {
                 this.historyLog.push(stateChange);
@@ -296,16 +377,87 @@ class StateMachine
         }
     }
 
-    /* TODO : Another issue mentioned that a back-forward system is requested. Functionality should most likely be put here.
     stepBack () 
     {
-        if (this.futureLog.length > 0) { }
-    }
+        if (this.historyLog.length > 0) {
 
-    stepForward()
-    {
-        if (this.futureLog.length > 0) { }
-    }*/
+            var lastChange = this.historyLog.pop();
+
+            // ------ Test each flag and step back per flag options ------
+
+            // Attribute Changed
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag)) {
+                if (lastChange.name) {
+
+                    var element = data[findIndex(data, lastChange.id_list[0])];
+ 
+                    if (element) {
+                        element.name = "MISSING_VARIABLE"; // TODO : State machine does NOT store old name value.
+                        console.warn("State machine doesn't store old names right now. Cannot restore previous name.");
+                    }
+                }
+            }
+
+            // Element moved
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_MOVED.flag)) {
+
+                for (var index = 0; index < lastChange.id_list.length; index++) {
+
+                    var element = data[findIndex(data, lastChange.id_list[index])];
+
+                    if (element) {
+                        element.x -= lastChange.moved.x;
+                        element.y -= lastChange.moved.y;
+                    }
+                }
+            }
+
+            // Element resized
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_RESIZED.flag)) {
+
+                var element = data[findIndex(data, lastChange.id_list[0])];
+
+                if (element) {
+                    element.width -= lastChange.resized.x;
+                    element.height -= lastChange.resized.y;
+                }
+            }
+
+            // Element created
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_CREATED.flag)) {
+
+                var element = data[findIndex(data, lastChange.id_list[0])];
+
+                if (element) {
+                    removeElements([element], false);
+                }
+            }
+
+            // Element destroyed
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_DELETED.flag)) {
+
+                data = Array.prototype.concat(data, lastChange.valuesPassed.deletedElements);
+            }
+
+            // Line created
+            if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_CREATED.flag)) {
+
+                var line = lines[findIndex(lines, lastChange.id_list[0])];
+
+                if (line) {
+                    removeLines([line], false);
+                }
+            }
+
+            // Line destroyed
+            if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_DELETED.flag)) {
+                lines = Array.prototype.concat(lines, lastChange.valuesPassed.deletedLines);
+            }
+
+            showdata();
+            updatepos(0, 0);
+        }
+    }
 };
 
 //------------------------------------=======############==========----------------------------------------
@@ -329,16 +481,20 @@ var startNodeRight = false;
 var cursorStyle;
 var lastMousePos = getPoint(0,0);
 const keybinds = {
-        LEFT_CONTROL: "Control",
-        ALT: "Alt",
-        META: "Meta",
-        ESCAPE: "Escape",
-        BOX_SELECTION: "b",
-        POINTER: "h",
-        EDGE_CREATION: "d",
-        PLACE_ENTITY: "e",
-        PLACE_RELATION: "r",
-        PLACE_ATTRIBUTE: "a"
+        LEFT_CONTROL: {key: "Control", ctrl: false},
+        ALT: {key: "Alt", ctrl: false},
+        META: {key: "Meta", ctrl: false},
+        HISTORY_STEPBACK: {key: "z", ctrl: true},
+        DELETE: {key: "Delete", ctrl: false},
+        ESCAPE: {key: "Escape", ctrl: false},
+        BOX_SELECTION: {key: "b", ctrl: false},
+        POINTER: {key: "h", ctrl: false},
+        EDGE_CREATION: {key: "d", ctrl: false},
+        PLACE_ENTITY: {key: "e", ctrl: false},
+        PLACE_RELATION: {key: "r", ctrl: false},
+        PLACE_ATTRIBUTE: {key: "a", ctrl: false},
+        ZOOM_IN: {key: "+", ctrl: true},
+        ZOOM_OUT: {key: "-", ctrl: true},
 };
 
 // Zoom variables
@@ -432,9 +588,10 @@ function makeRandomID()
         for (var i = 0; i < 6; i++) {
             str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-
+        
         if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
             randomidArray.push(str);
+            return str;
 
         } else {
             var check = randomidArray.includes(str); //if check is true the id already exists
@@ -525,17 +682,18 @@ document.addEventListener('keydown', function (e)
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
 
-        if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
-        if (e.key == "Alt" && altPressed !== true) altPressed = true;
-        if (e.key == "Delete" && (context.length > 0 || contextLine.length > 0)) {
-            removeElements(context); 
-            removeLines(contextLine);
+        if (e.key == keybinds.LEFT_CONTROL.key && ctrlPressed !== true) ctrlPressed = true;
+        if (e.key == keybinds.ALT.key && altPressed !== true) altPressed = true;
+        if (e.key == keybinds.DELETE.key && e.ctrlKey == keybinds.DELETE.ctrl) {
+            if (contextLine.length > 0) removeLines(contextLine);
+            if (context.length > 0) removeElements(context);
+
             updateSelection();
         }
-        if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
-        if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
-        if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
-        if (e.key == "Escape" && escPressed != true) {
+        if (e.key == keybinds.META.key && ctrlPressed !== true) ctrlPressed = true;
+        if (e.key == keybinds.ZOOM_IN.key && e.ctrlKey == keybinds.ZOOM_IN.ctrl) zoomin(); // Works but interferes with browser zoom
+        if (e.key == keybinds.ZOOM_OUT.key && e.ctrlKey == keybinds.ZOOM_OUT.ctrl) zoomout(); // Works but interferes with browser zoom
+        if (e.key == keybinds.ESCAPE.key && escPressed != true) {
             escPressed = true;
             context = [];
 
@@ -563,31 +721,36 @@ document.addEventListener('keyup', function (e)
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
         /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
         //  TODO : Switch cases?
-        if (e.key == keybinds.LEFT_CONTROL) ctrlPressed = false;
-        if (e.key == keybinds.ALT) altPressed = false;
-        if (e.key == keybinds.META) ctrlPressed = false;
-        if (e.key == keybinds.ESCAPE) {
+        if (e.key == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
+        if (e.key == keybinds.ALT.key) altPressed = false;
+        if (e.key == keybinds.META.key) ctrlPressed = false;
+
+        if (e.key == keybinds.ESCAPE.key && e.ctrlKey == keybinds.ESCAPE.ctrl) {
             escPressed = false;
         }
+        if (e.key == keybinds.HISTORY_STEPBACK.key && e.ctrlKey == keybinds.HISTORY_STEPBACK.ctrl) {
+            stateMachine.stepBack();
+        }
 
-        if (e.key == keybinds.BOX_SELECTION) {
+        if (e.key == keybinds.BOX_SELECTION.key && e.ctrlKey == keybinds.BOX_SELECTION.ctrl) {
             setMouseMode(mouseModes.BOX_SELECTION);
         }
-        if (e.key == keybinds.POINTER) {
+        if (e.key == keybinds.POINTER.key && e.ctrlKey == keybinds.POINTER.ctrl) {
             setMouseMode(mouseModes.POINTER);
         }
-        if (e.key == keybinds.EDGE_CREATION) {
+        if (e.key == keybinds.EDGE_CREATION.key && e.ctrlKey == keybinds.EDGE_CREATION.ctrl) {
             setMouseMode(mouseModes.EDGE_CREATION);
+            clearContext();
         }
-        if (e.key == keybinds.PLACE_ENTITY) {
+        if (e.key == keybinds.PLACE_ENTITY.key && e.ctrlKey == keybinds.PLACE_ENTITY.ctrl) {
             setElementPlacementType(elementTypes.ENTITY);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.PLACE_RELATION) {
+        if (e.key == keybinds.PLACE_RELATION.key && e.ctrlKey == keybinds.PLACE_RELATION.ctrl) {
             setElementPlacementType(elementTypes.RELATION);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.PLACE_ATTRIBUTE) {
+        if (e.key == keybinds.PLACE_ATTRIBUTE.key && e.ctrlKey == keybinds.PLACE_ATTRIBUTE.ctrl) {
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
@@ -942,6 +1105,7 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
 function mouseMode_onMouseMove(event)
 {
      switch (mouseMode) {
+        case mouseModes.EDGE_CREATION:
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
@@ -1041,7 +1205,7 @@ function mmoving(event)
                 // Deduct the new position, giving us the total change
                 const xChange = -(tmp - elementData.x);
                 
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized(elementData.id, xChange, 0, widthChange, 0));
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0));
             }
 
             document.getElementById(context[0].id).remove();
@@ -1754,18 +1918,14 @@ function updateSelectedLine(selectedLine)
         }
     }
     // If CTRL is not pressed and a element has been selected.
-    else if (selectedLine != null) {
+    else if (selectedLine != null && !ctrlPressed) {
         // Element not already in context
         if (!contextLine.includes(selectedLine) && contextLine.length < 1) {
             contextLine.push(selectedLine);
-        
         } else {
-            if (mouseMode != mouseModes.POINTER) {
-                contextLine = [];
-            }
+            contextLine = [];
             contextLine.push(selectedLine);
         }
-
     } else if (!altPressed && !ctrlPressed) {
         contextLine = [];
     }
@@ -1896,10 +2056,7 @@ function saveProperties()
         }
     }
 
-    var a = StateChangeFactory.ElementAttributesChanged(element.id, propsChanged);
-    console.log(a);
-    stateMachine.save(a);
-
+    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged));
     showdata();
     updatepos(0,0);
 }
@@ -2363,43 +2520,59 @@ function drawRulerBars()
 }
 
 //Function to remove elemets and lines
-function removeElements(elementArray)
+function removeElements(elementArray, stateMachineShouldSave = true)
 {
-    stateMachine.save(StateChangeFactory.ElementsDeleted(elementArray));
-    
+    // Find all lines that should be deleted first
     var linesToRemove = [];
-    for (var i = 0; i < elementArray.length; i++) {
-        // Remove element
-        data = data.filter(function(element) {
-            return element != elementArray[i];
-        });
+    var elementsToRemove = [];
 
-        // Add lines to "linesToRemove"
+    for (var i = 0; i < elementArray.length; i++) { // Find VALID items to remove
         linesToRemove = linesToRemove.concat(lines.filter(function(line) {
             return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
         }));
+        elementsToRemove = elementsToRemove.concat(data.filter(function(element) {
+            return element == elementArray[i];
+        }));
     }
 
-    stateMachine.save(StateChangeFactory.LinesRemoved(linesToRemove));
+    if (elementsToRemove.length > 0) { // If there are elements to remove
+        if (linesToRemove.length > 0) { // If there are also lines to remove
+            removeLines(linesToRemove, false);
+            stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
+        } else { // Only removed elements without any lines
+            stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
+        }
 
-    lines = lines.filter(function(line) {
-        return !(linesToRemove.includes(line));
-    });
+        data = data.filter(function(element) { // Delete elements
+            return !elementsToRemove.includes(element);
+        });
+    } else { // All passed items were INVALID
+        console.error("Invalid element array passed to removeElements()!");
+    }
 
     context = [];
     redrawArrows();
     showdata();
 }
-//Function to remove selected lines
-function removeLines(linesArray)
-{
-    for(var i = 0; i < linesArray.length; i++) {
 
-        //Remove line
-        lines=lines.filter(function(line) {
-            return line.id != linesArray[i].id;
+//Function to remove selected lines
+function removeLines(linesArray, stateMachineShouldSave = true)
+{
+    var anyRemoved = false;
+    for (var i = 0; i < linesArray.length; i++) {
+        lines = lines.filter(function(line) {
+            var shouldRemove = (line != linesArray[i]);
+            if (shouldRemove) {
+                anyRemoved = true;
+            }
+            return shouldRemove;
         });
     }
+
+    if (stateMachineShouldSave && anyRemoved) { 
+        stateMachine.save(StateChangeFactory.LinesRemoved(linesArray));
+    }
+    
     contextLine = [];
     redrawArrows();
     showdata();
@@ -2451,7 +2624,13 @@ function generateToolTips()
         const element = toolButtons[index];
         var id = element.id.split("-")[1];
         if (Object.getOwnPropertyNames(keybinds).includes(id)) {
-           element.innerHTML = `Keybind: ${keybinds[id]}`;
+
+            var str = "Keybind: ";
+
+            if (keybinds[id].ctrl) str += "CTRL + ";
+            str += '"' + keybinds[id].key.toUpperCase() + '"';
+
+           element.innerHTML = str;
         }
     }
 }
@@ -2465,7 +2644,6 @@ function data_returned(ret)
         alert("Error receiveing data!");
     }
 }
-
 
 function updateGridSize()
 {
@@ -2481,4 +2659,9 @@ function updateGridPos()
     var bLayer = document.getElementById("grid");
     bLayer.setAttribute('x', (scrollx * (1.0 / zoomfact)));
     bLayer.setAttribute('y', (scrolly * (1.0 / zoomfact)));
+}
+function clearContext()
+{
+    context = [];
+    showdata();
 }
