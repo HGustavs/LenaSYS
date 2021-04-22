@@ -39,11 +39,13 @@ class StateChange {
         ELEMENT_DELETED:            { flag: 2, isSoft: false, canAppendTo: false },
         ELEMENT_MOVED:              { flag: 4, isSoft: true, canAppendTo: true },
         ELEMENT_RESIZED:            { flag: 8, isSoft: true, canAppendTo: true },
-        ELEMENT_MOVED_AND_RESIZED:  { flag: 4 | 8, isSoft: true, canAppendTo: true },
         ELEMENT_ATTRIBUTE_CHANGED:  { flag: 16, isSoft: true, canAppendTo: true },
-
         LINE_CREATED:               { flag: 32, isSoft: false, canAppendTo: true },
         LINE_DELETED:               { flag: 64, isSoft: false, canAppendTo: false },
+
+        // Combined flags
+        ELEMENT_MOVED_AND_RESIZED:  { flag: 4|8, isSoft: true, canAppendTo: true },
+        ELEMENT_AND_LINE_DELETED:   { flag: 2|64, isSoft: false, canAppendTo: false },
     };
 
     /**
@@ -188,7 +190,7 @@ class StateChangeFactory
         });
 
         var values = {
-            elementsDeleted: elements
+            deletedElements: elements
         };
 
         return new StateChange(StateChange.ChangeTypes.ELEMENT_DELETED, ids, values);
@@ -248,6 +250,11 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.LINE_CREATED, [line.id], passed_values);
     }
 
+    /**
+     * 
+     * @param {Array<object>} lines 
+     * @returns 
+     */
     static LinesRemoved(lines)
     {
         var lineIDs = [];
@@ -256,11 +263,33 @@ class StateChangeFactory
             lineIDs.push(lines[index].id);
         }
 
-        var values = {
-            linesDeleted: lines
+        var passed_values = {
+            deletedLines: lines
         };
 
-        return new StateChange(StateChange.ChangeTypes.LINE_DELETED, lineIDs, values);
+        return new StateChange(StateChange.ChangeTypes.LINE_DELETED, lineIDs, passed_values);
+    }
+
+    static ElementsAndLinesDeleted(elements, lines)
+    {
+        var allIDs = [];
+
+        // Add all element IDs to the id-list
+        for (var index = 0; index < elements.lenght; index++) {
+            allIDs.push(elements[index].id);
+        }
+
+        // Add all line IDs to the id-list
+        for (var index = 0; index < lines.lenght; index++) {
+            allIDs.push(lines[index].id);
+        }
+
+        var passed_values = {
+            deletedElements: elements,
+            deletedLines: lines
+        };
+        
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED, allIDs, passed_values);
     }
 }
 
@@ -407,7 +436,7 @@ class StateMachine
             // Element destroyed
             if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_DELETED.flag)) {
 
-                data = Array.prototype.concat(data, lastChange.valuesPassed.elementsDeleted);
+                data = Array.prototype.concat(data, lastChange.valuesPassed.deletedElements);
             }
 
             // Line created
@@ -422,7 +451,7 @@ class StateMachine
 
             // Line destroyed
             if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_DELETED.flag)) {
-                lines = Array.prototype.concat(lines, lastChange.valuesPassed.linesDeleted);
+                lines = Array.prototype.concat(lines, lastChange.valuesPassed.deletedLines);
             }
 
             showdata();
@@ -452,20 +481,23 @@ var startNodeRight = false;
 var cursorStyle;
 var lastMousePos = getPoint(0,0);
 const keybinds = {
-        LEFT_CONTROL: "Control",
-        ALT: "Alt",
-        META: "Meta",
-        HISTORY_STEPBACK: "z",
-        ESCAPE: "Escape",
-        BOX_SELECTION: "b",
-        POINTER: "m",
-        EDGE_CREATION: "d",
-        PLACE_ENTITY: "e",
-        PLACE_RELATION: "r",
-        PLACE_ATTRIBUTE: "a",
-        GRID: "g",
-        RULER: "t",
-        OPTIONS: "o"
+        LEFT_CONTROL: {key: "Control", ctrl: false},
+        ALT: {key: "Alt", ctrl: false},
+        META: {key: "Meta", ctrl: false},
+        HISTORY_STEPBACK: {key: "z", ctrl: true},
+        DELETE: {key: "Delete", ctrl: false},
+        ESCAPE: {key: "Escape", ctrl: false},
+        BOX_SELECTION: {key: "b", ctrl: false},
+        POINTER: {key: "h", ctrl: false},
+        EDGE_CREATION: {key: "d", ctrl: false},
+        PLACE_ENTITY: {key: "e", ctrl: false},
+        PLACE_RELATION: {key: "r", ctrl: false},
+        PLACE_ATTRIBUTE: {key: "a", ctrl: false},
+        ZOOM_IN: {key: "+", ctrl: true},
+        ZOOM_OUT: {key: "-", ctrl: true},
+        GRID: {key: "g", ctrl: false},
+        RULER: {key: "t", ctrl: false},
+        OPTIONS: {key: "o", ctrl: false},
 };
 
 // Zoom variables
@@ -653,18 +685,18 @@ document.addEventListener('keydown', function (e)
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
 
-        if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
-        if (e.key == "Alt" && altPressed !== true) altPressed = true;
-        if (e.key == "Delete") {
+        if (e.key == keybinds.LEFT_CONTROL.key && ctrlPressed !== true) ctrlPressed = true;
+        if (e.key == keybinds.ALT.key && altPressed !== true) altPressed = true;
+        if (e.key == keybinds.DELETE.key && e.ctrlKey == keybinds.DELETE.ctrl) {
             if (contextLine.length > 0) removeLines(contextLine);
             if (context.length > 0) removeElements(context);
 
             updateSelection();
         }
-        if (e.key == "Meta" && ctrlPressed !== true) ctrlPressed = true;
-        if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
-        if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
-        if (e.key == "Escape" && escPressed != true) {
+        if (e.key == keybinds.META.key && ctrlPressed !== true) ctrlPressed = true;
+        if (e.key == keybinds.ZOOM_IN.key && e.ctrlKey == keybinds.ZOOM_IN.ctrl) zoomin(); // Works but interferes with browser zoom
+        if (e.key == keybinds.ZOOM_OUT.key && e.ctrlKey == keybinds.ZOOM_OUT.ctrl) zoomout(); // Works but interferes with browser zoom
+        if (e.key == keybinds.ESCAPE.key && escPressed != true) {
             escPressed = true;
             context = [];
 
@@ -692,45 +724,46 @@ document.addEventListener('keyup', function (e)
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
         /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
         //  TODO : Switch cases?
-        if (e.key == keybinds.LEFT_CONTROL) ctrlPressed = false;
-        if (e.key == keybinds.ALT) altPressed = false;
-        if (e.key == keybinds.META) ctrlPressed = false;
-        if (e.key == keybinds.ESCAPE) {
+        if (e.key == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
+        if (e.key == keybinds.ALT.key) altPressed = false;
+        if (e.key == keybinds.META.key) ctrlPressed = false;
+
+        if (e.key == keybinds.ESCAPE.key && e.ctrlKey == keybinds.ESCAPE.ctrl) {
             escPressed = false;
         }
-        if (e.key == keybinds.HISTORY_STEPBACK && ctrlPressed) {
+        if (e.key == keybinds.HISTORY_STEPBACK.key && e.ctrlKey == keybinds.HISTORY_STEPBACK.ctrl) {
             stateMachine.stepBack();
         }
 
-        if (e.key == keybinds.BOX_SELECTION) {
+        if (e.key == keybinds.BOX_SELECTION.key && e.ctrlKey == keybinds.BOX_SELECTION.ctrl) {
             setMouseMode(mouseModes.BOX_SELECTION);
         }
-        if (e.key == keybinds.POINTER) {
+        if (e.key == keybinds.POINTER.key && e.ctrlKey == keybinds.POINTER.ctrl) {
             setMouseMode(mouseModes.POINTER);
         }
-        if (e.key == keybinds.EDGE_CREATION) {
+        if (e.key == keybinds.EDGE_CREATION.key && e.ctrlKey == keybinds.EDGE_CREATION.ctrl) {
             setMouseMode(mouseModes.EDGE_CREATION);
             clearContext();
         }
-        if (e.key == keybinds.PLACE_ENTITY) {
+        if (e.key == keybinds.PLACE_ENTITY.key && e.ctrlKey == keybinds.PLACE_ENTITY.ctrl) {
             setElementPlacementType(elementTypes.ENTITY);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.PLACE_RELATION) {
+        if (e.key == keybinds.PLACE_RELATION.key && e.ctrlKey == keybinds.PLACE_RELATION.ctrl) {
             setElementPlacementType(elementTypes.RELATION);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.PLACE_ATTRIBUTE) {
+        if (e.key == keybinds.PLACE_ATTRIBUTE.key && e.ctrlKey == keybinds.PLACE_ATTRIBUTE.ctrl) {
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.GRID) {
+        if (e.key == keybinds.GRID.key && e.ctrlKey == keybinds.GRID.ctrl) {
             toggleGrid();
         }
-        if (e.key == keybinds.RULER) {
+        if (e.key == keybinds.RULER.key && e.ctrlKey == keybinds.RULER.ctrl) {
             toggleRuler();
         }
-        if (e.key == keybinds.OPTIONS) {
+        if (e.key == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
             fab_action();
         }
     }
@@ -1084,6 +1117,7 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
 function mouseMode_onMouseMove(event)
 {
      switch (mouseMode) {
+        case mouseModes.EDGE_CREATION:
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
@@ -2419,7 +2453,7 @@ function addNodes(element)
     elementDiv.innerHTML += nodes;
 }
 
-function removeNodes(element) 
+function removeNodes() 
 {
     // Get all elements with the class: "node"
     var nodes = document.getElementsByClassName("node");
@@ -2498,34 +2532,40 @@ function removeElements(elementArray, stateMachineShouldSave = true)
 {
     // Find all lines that should be deleted first
     var linesToRemove = [];
+    var elementsToRemove = [];
 
-    for (var i = 0; i < elementArray.length; i++) {
+    for (var i = 0; i < elementArray.length; i++) { // Find VALID items to remove
         linesToRemove = linesToRemove.concat(lines.filter(function(line) {
             return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
         }));
-    }
-    if (linesToRemove.length > 0) { 
-        removeLines(linesToRemove, stateMachineShouldSave);
+        elementsToRemove = elementsToRemove.concat(data.filter(function(element) {
+            return element == elementArray[i];
+        }));
     }
 
-    // Remove elements
-    for (var i = 0; i < elementArray.length; i++) {
-        // Remove element
-        data = data.filter(function(element) {
-            return element != elementArray[i];
+    if (elementsToRemove.length > 0) { // If there are elements to remove
+        if (linesToRemove.length > 0) { // If there are also lines to remove
+            removeLines(linesToRemove, false);
+            stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
+        } else { // Only removed elements without any lines
+            stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
+        }
+
+        data = data.filter(function(element) { // Delete elements
+            return !elementsToRemove.includes(element);
         });
+    } else { // All passed items were INVALID
+        console.error("Invalid element array passed to removeElements()!");
     }
 
-
-    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementArray));
     context = [];
     redrawArrows();
     showdata();
 }
+
 //Function to remove selected lines
 function removeLines(linesArray, stateMachineShouldSave = true)
 {
-
     var anyRemoved = false;
     for (var i = 0; i < linesArray.length; i++) {
         lines = lines.filter(function(line) {
@@ -2592,7 +2632,13 @@ function generateToolTips()
         const element = toolButtons[index];
         var id = element.id.split("-")[1];
         if (Object.getOwnPropertyNames(keybinds).includes(id)) {
-           element.innerHTML = `Keybind: ${keybinds[id]}`;
+
+            var str = "Keybind: ";
+
+            if (keybinds[id].ctrl) str += "CTRL + ";
+            str += '"' + keybinds[id].key.toUpperCase() + '"';
+
+           element.innerHTML = str;
         }
     }
 }
