@@ -993,16 +993,6 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
-			if(localStorage.getItem("variantSize") == null) {
-				localStorage.setItem("variantSize", 100);
-			}
-			var newInt = +localStorage.getItem('variantSize');
-			if(querystring['did'] <= newInt) {
-				if(localStorage.getItem(querystring['did']) == null){
-					localStorage.setItem(querystring['did'], 0);
-				}
-			}
-			//var test = JSON.parse(localStorage.getItem(querystring['did']));
 			$.ajax({
 				beforeSend: function(){
 					//Checks if the variantSize variant is set in localstorage. When its not, its set.
@@ -1017,6 +1007,7 @@ function AJAXService(opt,apara,kind)
 							localStorage.setItem(querystring['did'], 0);
 						}
 					}
+					//var test = JSON.parse(localStorage.getItem(querystring['did']));
 				},
 				url: "showDuggaservice.php",
 				type: "POST",
