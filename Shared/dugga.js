@@ -1025,6 +1025,7 @@ function AJAXService(opt,apara,kind)
 					//getExpireTime(querystring['did']);
 					var variantsize = data['variantsize'];
 					localStorage.setItem("variantSize", variantsize);
+					setPassword(data['password']);
 				}
 			});
 	}else if(kind=="RESULT"){
