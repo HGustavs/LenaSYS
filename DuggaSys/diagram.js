@@ -1848,7 +1848,7 @@ function drawElement(element, ghosted = false)
         str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
                    stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                    ${weak}
-                   <text x='${xAnchor}' y='${hboxh}'  lengthAdjust="spacingAndGlyphs" textLength="50px" dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+                   <text x='${xAnchor}' y='${hboxh}' lengthAdjust="spacingAndGlyphs" textLength="40px" dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
                    `;
 
     }
