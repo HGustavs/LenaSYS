@@ -139,6 +139,25 @@ foreach($query->fetchAll() as $row) {
 	$insertparam = true;
 }
 
+$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE hash=:hash;");
+    $query->bindParam(':hash', $hash);
+    $result = $query->execute();
+
+    if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $savedvariant=$row['variant'];
+        $savedanswer=$row['useranswer'];
+        $score = $row['score'];
+        $isIndb=true;
+        if ($row['feedback'] != null){
+                $duggafeedback = $row['feedback'];
+        } else {
+                $duggafeedback = "UNK";
+        }
+        $grade = $row['grade'];
+        $submitted = $row['submitted'];
+        $marked = $row['marked'];
+    }
+
 // -------------------------OLD FUNCTIONALITY WHERE WE CHECK IF USER IS LOGGED IN AND HAS ACESS-------------------
 
 
