@@ -215,29 +215,29 @@ if($demo){
 			$param=html_entity_decode($variant['param']);
 		}
 	}
-}
-//Makes sure that the localstorage variant is set before retrieving data from database
-if(isset($localStorageVariant)) {
+
+	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
+	$query->execute();
+	$variantsize = $query->fetchColumn();
+	
+	//Makes sure that the localstorage variant is set before retrieving data from database
+	if(isset($localStorageVariant)) {
 		// If it's the first time showing this variant
-	if($localStorageVariant == 0) {
-		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-		$query->bindParam(':vid', $savedvariant);
-		$query->execute();
-		$result = $query->fetch();
-		$param=html_entity_decode($result['param']);
-	} else {
-		// If we already have a variant in localstorage
-		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-		$query->bindParam(':vid', $localStorageVariant);
-		$query->execute();
-		$result = $query->fetch();
-		$param=html_entity_decode($result['param']);
+		if($localStorageVariant == 0) {
+			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+			$query->bindParam(':vid', $savedvariant);
+			$query->execute();
+			$result = $query->fetch();
+			$param=html_entity_decode($result['param']);
+		} else {
+			// If we already have a variant in localstorage
+			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+			$query->bindParam(':vid', $localStorageVariant);
+			$query->execute();
+			$result = $query->fetch();
+			$param=html_entity_decode($result['param']);
+		}
 	}
-}
-
-
-
-
 } else if ($hr){
 	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
 	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
