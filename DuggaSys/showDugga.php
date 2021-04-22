@@ -36,7 +36,6 @@
 	$deadline=getOPG('deadline');
 	$comments=getOPG('comments');
 	$hash = getOPG("hash");
-	$password= "UNK";
 
 	$duggatitle="UNK";
 	$duggafile="UNK";
@@ -126,7 +125,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 ?>
 <script type="text/javascript">
 
-	setPassword("<?php echo $password ?>");
 	setHash("<?php echo $hash ?>");	
 
 </script>

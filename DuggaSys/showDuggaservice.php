@@ -139,7 +139,7 @@ foreach($query->fetchAll() as $row) {
 	$insertparam = true;
 }
 
-$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE hash=:hash;");
+$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted,password FROM userAnswer WHERE hash=:hash;");
     $query->bindParam(':hash', $hash);
     $result = $query->execute();
 
@@ -156,6 +156,7 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
         $grade = $row['grade'];
         $submitted = $row['submitted'];
         $marked = $row['marked'];
+		$password = $row['password'];
     }
 
 // -------------------------OLD FUNCTIONALITY WHERE WE CHECK IF USER IS LOGGED IN AND HAS ACESS-------------------
@@ -588,6 +589,7 @@ $array = array(
 		"variant" => $savedvariant,
 		"ishashindb" => $ishashindb,
 		"variantsize" => $variantsize,
+		"password" => $password,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
