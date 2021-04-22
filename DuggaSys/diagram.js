@@ -498,6 +498,8 @@ const keybinds = {
         GRID: {key: "g", ctrl: false},
         RULER: {key: "t", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
+        COPY: {key: "c", ctrl: true},
+        PASTE: {key: "v", ctrl: true},
 };
 
 // Zoom variables
@@ -535,6 +537,9 @@ var previousContext = [];
 var contextLine = []; // Contains the currently selected line(s).
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
+
+// Clipboard
+var clipboard = [];
 
 // Currently hold down buttons
 var ctrlPressed = false;
@@ -766,6 +771,12 @@ document.addEventListener('keyup', function (e)
         }
         if (e.key == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
             fab_action();
+        }
+        if (e.key == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
+            clipboard = context;
+        }
+        if (e.key == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
+            pasteClipboard(clipboard)
         }
     }
 });
@@ -2589,6 +2600,15 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     contextLine = [];
     redrawArrows();
     showdata();
+}
+
+function pasteClipboard(elements){
+
+    // If elements does is empty, display error and return null
+    if(elements.length == 0){
+        displayMessage("error", "You do not have any copied elements");
+        return;
+    }
 }
 
 function displayMessage(type, message)
