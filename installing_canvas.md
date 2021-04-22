@@ -54,6 +54,7 @@ sudo apt-get install git
 <pre>
 cd <b>/var/www/project-g1.webug.his.se/public_html</b>
 sudo git clone https://github.com/instructure/canvas-lms.git canvas
+cd canvas/
 sudo git checkout stable
 </pre>
 
