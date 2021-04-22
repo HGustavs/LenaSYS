@@ -2093,7 +2093,7 @@ function generateContextProperties()
 
     //more than one element selected
 
-    if (context.length == 1) {
+    if (context.length == 1 && contextLine.length == 0) {
         var element = context[0];
         
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
@@ -2134,6 +2134,15 @@ function generateContextProperties()
 
     } else if (context.length > 1) {
         str += "<p>Pick only ONE element!</p>";
+    }
+
+    // Update selected line
+    if (contextLine.length == 1 && context.length == 0) {
+        str = "<legend>Properties</legend>";
+        var line = contextLine[0];
+        
+
+        //propSet.innerHTML = str;
     }
 
     propSet.innerHTML = str;
