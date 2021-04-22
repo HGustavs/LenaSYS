@@ -846,18 +846,27 @@ p {
 
 /*Swimlane styling*/
 #statisticsSwimlanes {
-  display: flex;
-  overflow:auto;
-  border: 2px solid darkgray; 
+  max-height: 300px;
+  overflow: auto;
+  border: 2px solid darkgray;
   background-color: var(--color-sectioned-table-lo);
 }
 
 #swimlaneSVG {
-  max-height: 300px;
-  height: auto;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 0px;
+  width: 70%;
+  display: flex;
+  margin: auto;
+  zoom: 150%;
+}
+
+#swimlaneSVG text {
+  font-size: 12px;
+}
+
+@media only screen and (max-width: 800px) {
+  #swimlaneSVG text {
+    font-size: 14px;
+  }
 }
 
 #dorf {
