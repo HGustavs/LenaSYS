@@ -59,8 +59,6 @@ function setHash(h){
 	// Check if hash is unknown
 	if(h == "UNK"){
 		hash = generateHash();
-		hash= "EjiXooIw";
-		console.log("overwriting original hash...")
 		pwd = randomPassword();
 		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
 	}else{
@@ -1013,11 +1011,9 @@ function AJAXService(opt,apara,kind)
 				success: function(data) {
 					// First check if dugga hash is unique.
 					returnedDugga(data);
-					ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+					ishashindb = data['ishashindb'];										//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
 					if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
-						//hash = generateHash();	//Old hash gets replaced by new hash before saving to database.
-						recursiveAjax();
-						console.log("Out from the recursiveAjax method...");
+						recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
 					}
 					// Check localstorage variants.
 					var newvariant = data['variant'];
@@ -1127,19 +1123,17 @@ function AJAXService(opt,apara,kind)
 //If the first generated hash isn't unique this method is recursively called until a hash is unique.
 function recursiveAjax(){
 	hash = generateHash();						//A new hash is generated.
-	console.log("second time: " + hash);
 	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
 		url: "showDuggaservice.php",
 		type: "POST",
-		data: "&hash="+hash, 
+		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
 		dataType: "json",
 		success: function(data) {
 			returnedDugga(data);
 			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
 			if(ishashindb==true){				//If the hash already exist in database.
 				recursiveAjax();				//Call this method again.
-			}
-			console.log("recursiveAjax->success, is "+hash+" in database = " + ishashindb);
+			}								
 		}
 	});
 }
