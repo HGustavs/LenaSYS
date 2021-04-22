@@ -2441,7 +2441,7 @@ function addNodes(element)
     elementDiv.innerHTML += nodes;
 }
 
-function removeNodes(element) 
+function removeNodes() 
 {
     // Get all elements with the class: "node"
     var nodes = document.getElementsByClassName("node");
