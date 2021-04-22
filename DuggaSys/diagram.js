@@ -495,6 +495,9 @@ const keybinds = {
         PLACE_ATTRIBUTE: {key: "a", ctrl: false},
         ZOOM_IN: {key: "+", ctrl: true},
         ZOOM_OUT: {key: "-", ctrl: true},
+        GRID: {key: "g", ctrl: false},
+        RULER: {key: "t", ctrl: false},
+        OPTIONS: {key: "o", ctrl: false},
 };
 
 // Zoom variables
@@ -754,6 +757,15 @@ document.addEventListener('keyup', function (e)
         if (e.key == keybinds.PLACE_ATTRIBUTE.key && e.ctrlKey == keybinds.PLACE_ATTRIBUTE.ctrl) {
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
+        }
+        if (e.key == keybinds.GRID.key && e.ctrlKey == keybinds.GRID.ctrl) {
+            toggleGrid();
+        }
+        if (e.key == keybinds.RULER.key && e.ctrlKey == keybinds.RULER.ctrl) {
+            toggleRuler();
+        }
+        if (e.key == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
+            fab_action();
         }
     }
 });
