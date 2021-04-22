@@ -432,9 +432,10 @@ function makeRandomID()
         for (var i = 0; i < 6; i++) {
             str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-
+        
         if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
             randomidArray.push(str);
+            return str;
 
         } else {
             var check = randomidArray.includes(str); //if check is true the id already exists
