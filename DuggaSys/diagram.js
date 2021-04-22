@@ -458,11 +458,13 @@ const keybinds = {
         HISTORY_STEPBACK: "z",
         ESCAPE: "Escape",
         BOX_SELECTION: "b",
-        POINTER: "h",
+        POINTER: "m",
         EDGE_CREATION: "d",
         PLACE_ENTITY: "e",
         PLACE_RELATION: "r",
-        PLACE_ATTRIBUTE: "a"
+        PLACE_ATTRIBUTE: "a",
+        GRID: "g",
+        RULER: "t"
 };
 
 // Zoom variables
@@ -720,6 +722,12 @@ document.addEventListener('keyup', function (e)
         if (e.key == keybinds.PLACE_ATTRIBUTE) {
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
+        }
+        if (e.key == keybinds.GRID) {
+            toggleGrid();
+        }
+        if(e.key == keybinds.RULER) {
+            toggleRuler();
         }
     }
 });
