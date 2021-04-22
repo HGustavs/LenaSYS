@@ -16,7 +16,7 @@ $USER seems not to work correctly on Ubuntu v20, The idea behind $USER is that t
 sudo apt-get install software-properties-common
 sudo apt-add-repository ppa:brightbox/ruby-ng
 sudo apt-get update
-sudo apt-get install ruby2.6 ruby2.6-dev postgresql zlib1g-dev libxml2-dev libsqlite3-dev ibpq-dev libxmlsec1-dev curl build-essential
+sudo apt-get install ruby2.6 ruby2.6-dev postgresql zlib1g-dev libxml2-dev libsqlite3-dev libpq-dev libxmlsec1-dev curl build-essential
 
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y nodejs 
