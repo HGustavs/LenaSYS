@@ -1,11 +1,7 @@
 # Canvas
  
 ## Targeted operation system and used programs 
-
 This guide is written for ubuntu server v20
-
-
-
 
 # Prerequisites 
 Canvas need several libraries to be installed on Ubuntu. Some are even not available any longer on the regular apt-get command. So custom libraries are needed to get them. The needed libraries to date (15/04-21) are the following ruby2.6, ruby2.6-dev, postgresql, zlib1g-dev, libxml2-dev, libsqlite3-dev, ibpq-dev, libxmlsec1-dev, curl and lastly build-essential.
@@ -37,7 +33,6 @@ sudo -u postgres createuser <b>$USER</b>
 sudo -u postgres psql -c "alter user <b>$USER</b> with superuser" postgres
 sudo gem install bundler -v 2.2.15
 </pre>
-
 
 # Setup Canvas
 ## Installing Canvas
@@ -155,8 +150,6 @@ sudo find / -type f -name pg_hba.conf
 </pre>
 
 ### Commands
-
-
 <pre>
 psql -c 'CREATE USER canvas' -d postgres
 psql -c 'ALTER USER canvas CREATEDB' -d postgres
