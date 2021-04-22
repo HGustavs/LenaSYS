@@ -211,23 +211,7 @@ if($demo){
 			$query->execute();
 			$result = $query->fetch();
 			$param=html_entity_decode($result['param']);
-		} else {
-			// If we already have a variant in localstorage
-			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-			$query->bindParam(':vid', $localStorageVariant);
-			$query->execute();
-			$result = $query->fetch();
-			$param=html_entity_decode($result['param']);
-		}
-	}
-	if(isset($variantvalue)) {
-		// 
-		if($variantvalue == 0) {
-			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-			$query->bindParam(':vid', $savedvariant);
-			$query->execute();
-			$result = $query->fetch();
-			$param=html_entity_decode($result['param']);
+			error_log("result param: ".$param);
 		} else {
 			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
 			$query->bindParam(':vid', $variantvalue);
