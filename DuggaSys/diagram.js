@@ -684,7 +684,7 @@ document.addEventListener('keydown', function (e)
 {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-
+       
         if (e.key == keybinds.LEFT_CONTROL.key && ctrlPressed !== true) ctrlPressed = true;
         if (e.key == keybinds.ALT.key && altPressed !== true) altPressed = true;
         if (e.key == keybinds.DELETE.key && e.ctrlKey == keybinds.DELETE.ctrl) {
@@ -715,6 +715,14 @@ document.addEventListener('keydown', function (e)
             removeElements(context); 
             removeLines(contextLine);
             updateSelection();
+        }
+       
+    }
+    // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
+    if ( /INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
+        if (e.key == "Enter") {
+            changeState();
+            saveProperties();
         }
     }
 });
