@@ -993,17 +993,13 @@ function AJAXService(opt,apara,kind)
 				localStorage.setItem(querystring['did'], 0);
 			}
 		}
-		console.log(localStorage.getItem(querystring['did']));
 		var test = JSON.parse(localStorage.getItem(querystring['did']));
-		console.log(test.value);
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +test.value+"&itemvalue="+test.value,
 			dataType: "json",
 			success: function (data) {
-				console.log(itemvalue);
-				console.log(data);
 				returnedDugga(data);
 				var newvariant = data['variant'];
 				if(localStorage.getItem(querystring['did']) == 0){
