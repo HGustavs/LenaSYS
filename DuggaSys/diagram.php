@@ -22,7 +22,7 @@
     <script src="../Shared/dugga.js"></script>
     <script src="diagram.js"></script>
 </head>
-<body onload="getData()" style="overflow-y: hidden;">
+<body onload="getData()" style="overflow: hidden;">
 
     <!-- Toolbar for diagram -->
     <div id="diagram-toolbar">
