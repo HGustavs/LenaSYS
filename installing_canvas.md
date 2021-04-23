@@ -4,7 +4,7 @@
 This guide is written for ubuntu server v20
 
 # Prerequisites 
-Canvas need several libraries to be installed on Ubuntu. Some are even not available any longer on the regular apt-get command. So custom libraries are needed to get them. The needed libraries to date (15/04-21) are the following ruby2.6, ruby2.6-dev, postgresql, zlib1g-dev, libxml2-dev, libsqlite3-dev, ibpq-dev, libxmlsec1-dev, curl and lastly build-essential.
+Canvas need several libraries to be installed on Ubuntu. Some are even not available any longer on the regular apt-get command. So custom libraries are needed to get them. The needed libraries to date (15/04-21) are the following apache, ruby2.6, ruby2.6-dev, postgresql, zlib1g-dev, libxml2-dev, libsqlite3-dev, ibpq-dev, libxmlsec1-dev, curl and lastly build-essential.
 
 It’s possible that the requirements may change in the near future as Ruby2.6 is on EOL. 
 
@@ -16,7 +16,7 @@ $USER seems not to work correctly on Ubuntu v20, The idea behind $USER is that t
 sudo apt-get install software-properties-common
 sudo apt-add-repository ppa:brightbox/ruby-ng
 sudo apt-get update
-sudo apt-get install ruby2.6 ruby2.6-dev postgresql zlib1g-dev libxml2-dev libsqlite3-dev libpq-dev libxmlsec1-dev curl build-essential
+sudo apt-get install apache2 ruby2.6 ruby2.6-dev postgresql zlib1g-dev libxml2-dev libsqlite3-dev libpq-dev libxmlsec1-dev curl build-essential
 </pre>
 <pre>
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
