@@ -1372,10 +1372,11 @@ function drawSwimlanes() {
     }
   }
 
+
+
   //var weekLength = weeksBetween(startdate, enddate);
   var weekLength = Math.ceil((enddate - startdate) / (7 * 24 * 60 * 60 * 1000));
   var currentWeek = weeksBetween(current, startdate);
-  var daySinceStart = Math.ceil((current - startdate) / (24 * 60 * 60 * 1000));
   var daywidth = 10;
   var weekwidth = daywidth * 7;
   var colwidth = 60;
@@ -1443,7 +1444,7 @@ function drawSwimlanes() {
         }
         
         //Code to compare deadlines to current year. 
-        //If deadline is older than current, red text for late assigment should be displayed as orange instead
+        //If deadline is older than current, red text for late assigment should be displayed as blue instead
         var deadlineYear = new Date(entry.deadline).getFullYear();
         if(deadlineYear < current.getFullYear()) {
            textcol = "#5072C7";
@@ -1467,8 +1468,19 @@ function drawSwimlanes() {
         </title>${entry.text}</text>`;
       }
     }
-
   }
+
+  // Setting a temporary date on 'current' in case dates not updated in course 
+  // to adjust the red line showing the day in swimlanes
+  var newCurrent;
+  if(deadlineYear < current.getFullYear()) {
+    var yearDifference = current.getFullYear() - deadlineYear;
+    var tempYear = new Date(entry.deadline);
+    tempYear.setFullYear(entry.deadline.getFullYear() - yearDifference);
+    newCurrent = new Date(tempYear);
+  }
+  var daySinceStart = Math.ceil((newCurrent - startdate) / (24 * 60 * 60 * 1000));
+
   str += `<line opacity='0.7' x1='${((daywidth * daySinceStart) - daywidth)}'
   y1='${(15 + weekheight)}' x2='${((daywidth * daySinceStart) - daywidth)}'
   y2='${(((1 + deadlineEntries.length) * weekheight) + 15)}' stroke-width='4' stroke='red' />`;
