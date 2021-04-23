@@ -2673,7 +2673,7 @@ function pasteClipboard(elements)
 
     var cx = (x2 - x1) / 2;
     var cy = (y2 - y1) / 2;
-    var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - cx, lastMousePos.y - cy);
+    var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
 
     // Get all lines
     var alllines = getLines();
