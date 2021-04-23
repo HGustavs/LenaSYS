@@ -38,10 +38,11 @@ $rating=getOP('score');
 $entryname=getOP('entryname');
 $hash=getOP('hash');
 $password=getOP('password');
-$showall="true";
-$localStorageVariant= getOP('variant');
 $AUtoken=getOP('AUtoken');
+//$localStorageVariant= getOP('variant');
+$variantvalue= getOP('variant');
 
+$showall="true";
 $param = "UNK";
 $savedanswer = "";
 $highscoremode = "";
@@ -234,7 +235,7 @@ if($demo){
 			$param="NONE!";
 	}
 	foreach ($variants as $variant) {
-		if($variant["vid"] == $savedvariant){
+		if($variant["vid"] == $variantvalue){
 			$param=html_entity_decode($variant['param']);
 		}
 	}
@@ -242,24 +243,15 @@ if($demo){
 	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
 	$query->execute();
 	$variantsize = $query->fetchColumn();
-	
+
 	//Makes sure that the localstorage variant is set before retrieving data from database
-	if(isset($localStorageVariant)) {
-		// If it's the first time showing this variant
-		if($localStorageVariant == 0) {
-			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-			$query->bindParam(':vid', $savedvariant);
-			$query->execute();
-			$result = $query->fetch();
-			$param=html_entity_decode($result['param']);
-		} else {
-			// If we already have a variant in localstorage
-			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-			$query->bindParam(':vid', $localStorageVariant);
-			$query->execute();
-			$result = $query->fetch();
-			$param=html_entity_decode($result['param']);
-		}
+	if(isset($variantvalue)) {
+		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+		$query->bindParam(':vid', $variantvalue);
+		$query->execute();
+		$result = $query->fetch();
+		$param=html_entity_decode($result['param']);
+		error_log("result param: ".$param);
 	}
 } else if ($hr){
 	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
@@ -272,13 +264,13 @@ if($demo){
 			$param="NONE!";
 		}
 		foreach ($variants as $variant) {
-			if($variant["vid"] == $savedvariant){
+			if($variant["vid"] == $variantvalue){
 					$param=html_entity_decode($variant['param']);
 			}
 		}
 	}else if(!$isIndb){ // If dugga is not in database, get the variant from the localstorage
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-		$query->bindParam(':vid', $localStorageVariant);
+		$query->bindParam(':vid', $variantvalue);
 		$query->execute();
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
@@ -331,7 +323,7 @@ if(checklogin()){
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':moment', $moment);
-				$query->bindParam(':variant', $localStorageVariant);
+				$query->bindParam(':variant', $savedvariant);
 				$query->bindParam(':hash', $hash);
 				$query->bindParam(':password', $password);
 				if(!$query->execute()) {
@@ -467,13 +459,13 @@ if(strcmp($opt,"GRPDUGGA")==0){
 $files= array();
 for ($i = 0; $i < $userCount; $i++) {
 	if ($showall==="true"){
-		$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
+		$query = $pdo->prepare("select subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission where hash=:hash and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
 	} else {
-		$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
+		$query = $pdo->prepare("select subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission where hash=:hash and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
 		$query->bindParam(':did', $duggaid);
 	}
 	if ($i == 0) {
-		$query->bindParam(':uid', $userid);
+		$query->bindParam(':hash', $hash);
 	} else {
 		$query->bindParam(':uid', $usersInGroup[$i-1]);
 	}
@@ -611,6 +603,7 @@ $array = array(
 		"variant" => $savedvariant,
 		"ishashindb" => $ishashindb,
 		"variantsize" => $variantsize,
+		"variantvalue" => $variantvalue,
 		"password" => $password,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
