@@ -1156,7 +1156,7 @@ function mmoving(event)
             scrolly = sscrolly - Math.round(deltaY * zoomfact);
 
             updateGridPos();
-            updateRulerPos();
+            updateRulerPos(scrollx, scrolly);
             // Update scroll position
             updatepos(null, null);
 
@@ -2494,7 +2494,7 @@ function drawRulerBars()
     var barY, barX = "";
     const color = "black";
 
- 
+    barY = "<svg id='svg-pattern-y' width='100%' height='100%'>";
     //Draw the Y-axis ruler.
     var lineNumber = (fullLineRatio - 1);
     for (i = 100;i <= cheight; i += lineRatio) {
@@ -2509,10 +2509,12 @@ function drawRulerBars()
         }
         else barY += "<line x1='25px' y1='"+(i-60)+"' x2='40px' y2='"+(i-60)+"' stroke='"+color+"' />";
     }
+    barY += "/<svg>";
     svgY.style.backgroundColor = "#e6e6e6";
     svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
 
+    barX = "<svg id='svg-pattern-x' width='100%' height='100%'>";
     //Draw the X-axis ruler.
     lineNumber = (fullLineRatio - 1);
     for (i = 48;i <= cwidth; i += lineRatio) {
@@ -2527,6 +2529,7 @@ function drawRulerBars()
         }
         else barX += "<line x1='" +(i-7)+"' y1='25' x2='" +(i-7)+"' y2='40px' stroke='" + color + "' />";
     }
+    barX += "/<svg>";
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
     svgX.style.backgroundColor = "#e6e6e6";
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
@@ -2673,14 +2676,21 @@ function updateGridPos()
     bLayer.setAttribute('x', (scrollx * (1.0 / zoomfact)));
     bLayer.setAttribute('y', (scrolly * (1.0 / zoomfact)));
 }
-function updateRulerPos()
+function updateRulerPos(X, Y)
 {
     var asdfasf = (scrollx * (1.0 / zoomfact));
     var asdfasfasdad = (scrolly * (1.0 / zoomfact));
+
     var rulerY = document.getElementById("ruler-y-svg");
     var rulerX = document.getElementById("ruler-x-svg");
-    rulerX.setAttribute('transform','translate('+asdfasf+')');
-    rulerY.setAttribute('transform','translate(0,'+asdfasfasdad+')');
+    var yyy = document.getElementById("svg-pattern-y");
+    var xxx = document.getElementById("svg-pattern-x");
+    console.log(Y);
+    
+    //rulerX.setAttribute('transform','translate('+(X-100)+')');
+    yyy.setAttribute('transform','translate(0,'+(Y-100)+')');
+    xxx.setAttribute('transform','translate('+(X-100)+')');
+    
     
 }
 function clearContext()
