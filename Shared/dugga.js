@@ -1011,6 +1011,7 @@ function AJAXService(opt,apara,kind)
 		console.log(localStorage.getItem(querystring['did']));
 			$.ajax({
 				beforeSend: function(){
+					getVariant(); //Gets variant so we don't have to load the page twice to display it correctly
 				},
 				url: "showDuggaservice.php",
 				type: "POST",
@@ -1144,6 +1145,19 @@ function recursiveAjax(){
 			}								
 		}
 	});
+}
+
+function getVariant(){
+	$.ajax({
+		url: "showDuggaService.php",
+		type: "POST",
+		data: "&variant="+$variantvalue,
+		datatype: "json",
+		success: function(data){
+			//do stuff
+		}
+
+	})
 }
 
 //Will handle enter key pressed when loginbox is showing
