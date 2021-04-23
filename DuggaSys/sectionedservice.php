@@ -419,10 +419,12 @@ if($gradesys=="UNK") $gradesys=0;
 					$totalGroups = 24 * count($courseversions);
 
 				} else if(strcmp($opt,"TestOPT")===0) {
+
+					$hello='hello';
 					/* $query = $pdo->prepare("UPDATE listentries SET visible=:lid WHERE lid=2005"); */
 					/* $query = $pdo->prepare("INSERT INTO class (class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) VALUES(:lid , 100, thegrey, 199191, XYXYZ, 180.0, 100, NULL)"); */
-					$query = $pdo->prepare("UPDATE class SET class=:lid WHERE regcode=199191");
-					$query->bindParam(':lid', "hello"/* urldecode($_POST["deleteItemList"][0]) */);
+					$query = $pdo->prepare("UPDATE clss SET class=:lid WHERE regcode=199191");
+					$query->bindParam(':lid', $hello/* urldecode($_POST["deleteItemList"][0]) */);
 					if(!$query->execute()) {
 						$error=$query->errorInfo();
 						$debug="Error updating entries".$error[2];
