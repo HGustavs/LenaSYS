@@ -537,6 +537,7 @@ const keybinds = {
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
+        ENTER: {key: "Enter", ctrl: false},
         COPY: {key: "c", ctrl: true},
         PASTE: {key: "v", ctrl: true},
         SELECT_ALL: {key: "a", ctrl: true}
@@ -750,7 +751,7 @@ document.addEventListener('keydown', function (e)
 {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-
+       
         if (e.key == keybinds.LEFT_CONTROL.key && ctrlPressed !== true) ctrlPressed = true;
         if (e.key == keybinds.ALT.key && altPressed !== true) altPressed = true;
         if (e.key == keybinds.DELETE.key && e.ctrlKey == keybinds.DELETE.ctrl) {
@@ -786,6 +787,14 @@ document.addEventListener('keydown', function (e)
         if (e.key == keybinds.SELECT_ALL.key && e.ctrlKey == keybinds.SELECT_ALL.ctrl){
             e.preventDefault();
             selectAll();
+        }
+       
+    }
+    // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
+    if ( /INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
+        if (e.key == keybinds.ENTER.key && e.ctrlKey == keybinds.ENTER.ctrl) {
+            changeState();
+            saveProperties();
         }
     }
 });
