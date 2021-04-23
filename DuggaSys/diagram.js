@@ -2600,7 +2600,8 @@ function removeElements(elementArray, stateMachineShouldSave = true)
     } else { // All passed items were INVALID
         console.error("Invalid element array passed to removeElements()!");
     }
-
+    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementArray));
+    
     context = [];
     redrawArrows();
     showdata();
