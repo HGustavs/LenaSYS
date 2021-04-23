@@ -2610,9 +2610,9 @@ function removeElements(elementArray, stateMachineShouldSave = true)
     if (elementsToRemove.length > 0) { // If there are elements to remove
         if (linesToRemove.length > 0) { // If there are also lines to remove
             removeLines(linesToRemove, false);
-            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
+            stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
         } else { // Only removed elements without any lines
-            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
+            stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
         }
 
         data = data.filter(function(element) { // Delete elements
