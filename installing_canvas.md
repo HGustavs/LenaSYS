@@ -135,7 +135,7 @@ Now it's time to install the database and setup the adminimistor account that wi
 <pre>
 bundle exec rails db:initial_setup
 </pre>
-#### During this setup it will ask you for ...
+#### During this setup it will ask you for...
 E-mail:\
 Password: \
 Databasename:\
