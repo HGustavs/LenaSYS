@@ -498,6 +498,7 @@ const keybinds = {
         GRID: {key: "g", ctrl: false},
         RULER: {key: "t", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
+        ENTER: {key: "Enter", ctrl: false},
 };
 
 // Zoom variables
@@ -720,7 +721,7 @@ document.addEventListener('keydown', function (e)
     }
     // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
     if ( /INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        if (e.key == "Enter") {
+        if (e.key == keybinds.ENTER.key) {
             changeState();
             saveProperties();
         }
