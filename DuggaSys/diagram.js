@@ -1012,7 +1012,7 @@ function mup(event)
     deltaX = 0;
     deltaY = 0;
     updatepos(0, 0);
-    drawRulerBars();
+    
 
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
@@ -1156,11 +1156,11 @@ function mmoving(event)
             scrolly = sscrolly - Math.round(deltaY * zoomfact);
 
             updateGridPos();
+            updateRulerPos();
             // Update scroll position
             updatepos(null, null);
 
-            // Update the ruler
-            drawRulerBars();
+            
 
             // Remember that mouse has moved out of starting bounds
             if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || 
@@ -2497,17 +2497,17 @@ function drawRulerBars()
  
     //Draw the Y-axis ruler.
     var lineNumber = (fullLineRatio - 1);
-    for (i = 40;i <= cheight; i += lineRatio) {
+    for (i = 100;i <= cheight; i += lineRatio) {
         lineNumber++;
 
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
             var cordY = screenToDiagramCoordinates(0, i).y;
             lineNumber = 0;
-            barY += "<line x1='0px' y1='"+(i)+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
-            barY += "<text x='2' y='"+(i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
+            barY += "<line x1='0px' y1='"+(i-60)+"' x2='40px' y2='"+(i-60)+"' stroke='"+color+"' />";
+            barY += "<text x='2' y='"+(i+10-60)+"' style='font-size: 10px'>"+cordY+"</text>";
         }
-        else barY += "<line x1='25px' y1='"+i+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
+        else barY += "<line x1='25px' y1='"+(i-60)+"' x2='40px' y2='"+(i-60)+"' stroke='"+color+"' />";
     }
     svgY.style.backgroundColor = "#e6e6e6";
     svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
@@ -2515,17 +2515,17 @@ function drawRulerBars()
 
     //Draw the X-axis ruler.
     lineNumber = (fullLineRatio - 1);
-    for (i = 40;i <= cwidth; i += lineRatio) {
+    for (i = 48;i <= cwidth; i += lineRatio) {
         lineNumber++;
 
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
             var cordX = screenToDiagramCoordinates(50 + i, 0).x;
             lineNumber = 0;
-            barX += "<line x1='" +i+"' y1='0' x2='" + i + "' y2='40px' stroke='" + color + "' />";
-            barX += "<text x='"+(i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
+            barX += "<line x1='" +(i-7)+"' y1='0' x2='" + (i-7) + "' y2='40px' stroke='" + color + "' />";
+            barX += "<text x='"+(i+5-7)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
         }
-        else barX += "<line x1='" +i+"' y1='25' x2='" +i+"' y2='40px' stroke='" + color + "' />";
+        else barX += "<line x1='" +(i-7)+"' y1='25' x2='" +(i-7)+"' y2='40px' stroke='" + color + "' />";
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
     svgX.style.backgroundColor = "#e6e6e6";
@@ -2672,6 +2672,16 @@ function updateGridPos()
     var bLayer = document.getElementById("grid");
     bLayer.setAttribute('x', (scrollx * (1.0 / zoomfact)));
     bLayer.setAttribute('y', (scrolly * (1.0 / zoomfact)));
+}
+function updateRulerPos()
+{
+    var asdfasf = (scrollx * (1.0 / zoomfact));
+    var asdfasfasdad = (scrolly * (1.0 / zoomfact));
+    var rulerY = document.getElementById("ruler-y-svg");
+    var rulerX = document.getElementById("ruler-x-svg");
+    rulerX.setAttribute('transform','translate('+asdfasf+')');
+    rulerY.setAttribute('transform','translate(0,'+asdfasfasdad+')');
+    
 }
 function clearContext()
 {
