@@ -788,7 +788,9 @@ document.addEventListener('keyup', function (e)
 {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
+        
+        var pressedKey = e.key.toLowerCase();
+
         //  TODO : Switch cases?
         if (e.key == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
         if (e.key == keybinds.ALT.key) altPressed = false;
@@ -797,42 +799,42 @@ document.addEventListener('keyup', function (e)
         if (e.key == keybinds.ESCAPE.key && e.ctrlKey == keybinds.ESCAPE.ctrl) {
             escPressed = false;
         }
-        if (e.key == keybinds.HISTORY_STEPBACK.key && e.ctrlKey == keybinds.HISTORY_STEPBACK.ctrl) {
+        if (pressedKey == keybinds.HISTORY_STEPBACK.key && e.ctrlKey == keybinds.HISTORY_STEPBACK.ctrl) {
             stateMachine.stepBack();
         }
 
-        if (e.key == keybinds.BOX_SELECTION.key && e.ctrlKey == keybinds.BOX_SELECTION.ctrl) {
+        if (pressedKey == keybinds.BOX_SELECTION.key && e.ctrlKey == keybinds.BOX_SELECTION.ctrl) {
             setMouseMode(mouseModes.BOX_SELECTION);
         }
-        if (e.key == keybinds.POINTER.key && e.ctrlKey == keybinds.POINTER.ctrl) {
+        if (pressedKey == keybinds.POINTER.key && e.ctrlKey == keybinds.POINTER.ctrl) {
             setMouseMode(mouseModes.POINTER);
         }
-        if (e.key == keybinds.EDGE_CREATION.key && e.ctrlKey == keybinds.EDGE_CREATION.ctrl) {
+        if (pressedKey == keybinds.EDGE_CREATION.key && e.ctrlKey == keybinds.EDGE_CREATION.ctrl) {
             setMouseMode(mouseModes.EDGE_CREATION);
             clearContext();
         }
-        if (e.key == keybinds.PLACE_ENTITY.key && e.ctrlKey == keybinds.PLACE_ENTITY.ctrl) {
+        if (pressedKey == keybinds.PLACE_ENTITY.key && e.ctrlKey == keybinds.PLACE_ENTITY.ctrl) {
             setElementPlacementType(elementTypes.ENTITY);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.PLACE_RELATION.key && e.ctrlKey == keybinds.PLACE_RELATION.ctrl) {
+        if (pressedKey== keybinds.PLACE_RELATION.key && e.ctrlKey == keybinds.PLACE_RELATION.ctrl) {
             setElementPlacementType(elementTypes.RELATION);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.PLACE_ATTRIBUTE.key && e.ctrlKey == keybinds.PLACE_ATTRIBUTE.ctrl) {
+        if (pressedKey== keybinds.PLACE_ATTRIBUTE.key && e.ctrlKey == keybinds.PLACE_ATTRIBUTE.ctrl) {
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.TOGGLE_GRID.key && e.ctrlKey == keybinds.TOGGLE_GRID.ctrl) {
+        if (pressedKey == keybinds.TOGGLE_GRID.key && e.ctrlKey == keybinds.TOGGLE_GRID.ctrl) {
             toggleGrid();
         }
-        if (e.key == keybinds.TOGGLE_RULER.key && e.ctrlKey == keybinds.TOGGLE_RULER.ctrl) {
+        if (pressedKey == keybinds.TOGGLE_RULER.key && e.ctrlKey == keybinds.TOGGLE_RULER.ctrl) {
             toggleRuler();
         }
-        if (e.key == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
+        if (pressedKey == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
             fab_action();
         }
-        if (e.key == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
+        if (pressedKey == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
             clipboard = context;
             if (clipboard.length !== 0){
                 displayMessage("success", `You have copied ${clipboard.length} elements and it's inner connected lines.`)
@@ -840,7 +842,7 @@ document.addEventListener('keyup', function (e)
                 displayMessage("success", `Clipboard cleared.`)
             }
         }
-        if (e.key == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
+        if (pressedKey == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
             pasteClipboard(clipboard)
         }
     }
