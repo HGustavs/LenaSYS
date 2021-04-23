@@ -190,6 +190,7 @@ screen -S canvas
 </pre>
 
 <pre>
+cd <b>/var/www/project-g1.webug.his.se/public_html/canvas</b>
 bundle exec rails server
 </pre>
 
@@ -201,6 +202,7 @@ screen -S canvas
 </pre>
 
 <pre>
+cd <b>/var/www/project-g1.webug.his.se/public_html/canvas</b>
 bundle exec rails server --binding=<b>MYIPADRESS</b>
 </pre>
 
