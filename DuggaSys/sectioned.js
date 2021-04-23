@@ -1336,11 +1336,12 @@ function drawSwimlanes() {
 
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
-  var current = new Date(2015, 9, 14);
 
   var deadlineEntries = [];
   var momentEntries = {};
+ // var current = new Date(2021, 01, 15);
   var current = new Date();
+
   var momentno = 0;
  
   for (var i = 0; i < retdata['entries'].length; i++) {
@@ -1473,13 +1474,21 @@ function drawSwimlanes() {
   // Setting a temporary date on 'current' in case dates not updated in course 
   // to adjust the red line showing the day in swimlanes
   var newCurrent;
-  if(deadlineYear < current.getFullYear()) {
+  var daySinceStart;
+
+  if(deadlineYear < current.getFullYear()) { //guesstimate deadline for current year
     var yearDifference = current.getFullYear() - deadlineYear;
-    var tempYear = new Date(entry.deadline);
-    tempYear.setFullYear(entry.deadline.getFullYear() - yearDifference);
-    newCurrent = new Date(tempYear);
+    var tempYear = new Date(current); 
+    
+    tempYear.setFullYear(current.getFullYear() - yearDifference); 
+    newCurrent = new Date(tempYear); 
+    daySinceStart = Math.ceil((newCurrent - startdate) / (24 * 60 * 60 * 1000));
   }
-  var daySinceStart = Math.ceil((newCurrent - startdate) / (24 * 60 * 60 * 1000));
+  else {                                           //No guesstimation
+       var daySinceStart = Math.ceil((current - startdate) / (24 * 60 * 60 * 1000));
+  }
+
+
 
   str += `<line opacity='0.7' x1='${((daywidth * daySinceStart) - daywidth)}'
   y1='${(15 + weekheight)}' x2='${((daywidth * daySinceStart) - daywidth)}'
