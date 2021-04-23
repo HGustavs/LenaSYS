@@ -721,7 +721,7 @@ document.addEventListener('keydown', function (e)
     }
     // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
     if ( /INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        if (e.key == keybinds.ENTER.key) {
+        if (e.key == keybinds.ENTER.key && e.ctrlKey == keybinds.ENTER.ctrl) {
             changeState();
             saveProperties();
         }
