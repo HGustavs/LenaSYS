@@ -46,6 +46,7 @@ class StateChange {
         // Combined flags
         ELEMENT_MOVED_AND_RESIZED:  { flag: 4|8, isSoft: true, canAppendTo: true },
         ELEMENT_AND_LINE_DELETED:   { flag: 2|64, isSoft: false, canAppendTo: false },
+        ELEMENT_AND_LINE_CREATED:   { flag: 1|32, isSoft: false, canAppendTo: true },
     };
 
     /**
@@ -291,6 +292,28 @@ class StateChangeFactory
         
         return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED, allIDs, passed_values);
     }
+
+    static ElementsAndLinesCreated(elements, lines)
+    {
+        var allIDs = [];
+
+        // Add all element IDs to the id-list
+        for (var index = 0; index < elements.lenght; index++) {
+            allIDs.push(elements[index].id);
+        }
+
+        // Add all line IDs to the id-list
+        for (var index = 0; index < lines.lenght; index++) {
+            allIDs.push(lines[index].id);
+        }
+
+        var passed_values = {
+            createdElements: elements,
+            createdLines: lines
+        };
+
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED, allIDs, passed_values);
+    }
 }
 
 class StateMachine
@@ -425,11 +448,14 @@ class StateMachine
 
             // Element created
             if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_CREATED.flag)) {
+                if (lastChange.valuesPassed.createdElements){
+                    removeElements(lastChange.valuesPassed.createdElements, false);
+                }else {
+                    var element = data[findIndex(data, lastChange.id_list[0])];
 
-                var element = data[findIndex(data, lastChange.id_list[0])];
-
-                if (element) {
-                    removeElements([element], false);
+                    if (element) {
+                        removeElements([element], false);
+                    }
                 }
             }
 
@@ -441,11 +467,13 @@ class StateMachine
 
             // Line created
             if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_CREATED.flag)) {
+                if (!lastChange.valuesPassed.createdLines){
 
-                var line = lines[findIndex(lines, lastChange.id_list[0])];
+                    var line = lines[findIndex(lines, lastChange.id_list[0])];
 
-                if (line) {
-                    removeLines([line], false);
+                    if (line) {
+                        removeLines([line], false);
+                    }
                 }
             }
 
@@ -686,10 +714,10 @@ var lines = [
 //                                        Getters and Setters
 //------------------------------------=======############==========----------------------------------------
 // Adds object to the dataArray
-function addObjectToData(object)
+function addObjectToData(object, stateMachineShouldSave = true)
 {
     data.push(object);
-    stateMachine.save(StateChangeFactory.ElementCreated(object));
+    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object));
 }
 
 // Return all lines
@@ -1779,7 +1807,7 @@ function showdata()
 //-------------------------------------------------------------------------------------------------
 // addLine - Adds an new line if the requirements and rules are achieved
 //-------------------------------------------------------------------------------------------------
-function addLine(fromElement, toElement, kind){
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
@@ -1811,7 +1839,8 @@ function addLine(fromElement, toElement, kind){
             lines.push(newLine);
 
             // Save changes into state machine
-            stateMachine.save(StateChangeFactory.LineAdded(newLine));
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(newLine));
+            return newLine;
             
         } else {
             displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
@@ -2581,9 +2610,9 @@ function removeElements(elementArray, stateMachineShouldSave = true)
     if (elementsToRemove.length > 0) { // If there are elements to remove
         if (linesToRemove.length > 0) { // If there are also lines to remove
             removeLines(linesToRemove, false);
-            stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
         } else { // Only removed elements without any lines
-            stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
         }
 
         data = data.filter(function(element) { // Delete elements
@@ -2674,6 +2703,9 @@ function pasteClipboard(elements)
     // Object for keep track of change of id
     var oldNewID = {};
 
+    var newElements = [];
+    var newLines = [];
+
     // For every copied element create a new one and add to data
     elements.forEach(element => {
         // Make a new id and save it in an object
@@ -2692,16 +2724,24 @@ function pasteClipboard(elements)
             width: element.width,
             height: element.height,
             kind: element.kind,
-            id: oldNewID[element.id]
+            id: oldNewID[element.id],
+            state: element.state
         };
-        addObjectToData(elementObj);
+        newElements.push(elementObj)
+        addObjectToData(elementObj, false);
     });
 
-    // Create the new lines
+    // Create the new lines but do not saved in stateMachine
     connectedLines.forEach(line => {
-        addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind);
+        newLines.push(
+            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false)
+        );
     });
-    displayMessage("success", `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`)
+
+    // Save the copyed elements to stateMachine
+    stateMachine.save(StateChangeFactory.ElementsAndLinesCreated(newElements, newLines));
+
+    displayMessage("success", `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
     showdata();
 }
 
