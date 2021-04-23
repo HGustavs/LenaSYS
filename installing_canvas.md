@@ -123,10 +123,8 @@ Inorder to use the postgres database so are accounts needed. There may also be a
 
 #### Commands
 <pre>
-sudo cp config/database.yml.example config/database.yml
-sudo -u postgres createuser <b>$USER</b>
-sudo -u postgres psql -c "alter user  <b>$USER</b> with superuser" postgres
-sudo createdb canvas_development
+sudo cp config/database.yml.example config/database.ymlpostgres
+createdb canvas_development
 </pre>
 
 ### Installing database
