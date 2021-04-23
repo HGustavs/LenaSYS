@@ -418,6 +418,23 @@ if($gradesys=="UNK") $gradesys=0;
 					$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
 					$totalGroups = 24 * count($courseversions);
 
+				} else if(strcmp($opt,"TestOPT")===0) {
+					/* $query = $pdo->prepare("UPDATE listentries SET visible=:lid WHERE lid=2005"); */
+					/* $query = $pdo->prepare("INSERT INTO class (class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) VALUES(:lid , 100, thegrey, 199191, XYXYZ, 180.0, 100, NULL)"); */
+					$query = $pdo->prepare("UPDATE class SET class=:lid WHERE regcode=199191");
+					$query->bindParam(':lid', "hello"/* urldecode($_POST["deleteItemList"][0]) */);
+					if(!$query->execute()) {
+						$error=$query->errorInfo();
+						$debug="Error updating entries".$error[2];
+					}
+					/* $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+					$query->bindParam(':cid', $courseid);
+					$query->bindParam(':vers', $versid);
+
+					if(!$query->execute()) {
+						$error=$query->errorInfo();
+						$debug="Error updating entries".$error[2];
+					} */
 				}
 			}
 		}

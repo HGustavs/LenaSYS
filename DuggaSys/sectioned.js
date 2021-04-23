@@ -310,7 +310,8 @@ function confirmBox(operation, item = null) {
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "deleteItem" && !deleteItemList.length == 0) {
     /* deleteMarkedItems(deleteItemList) */
-    AJAXService( , , "MODIFYLISTENTRIES")
+    // OPT - PARAM - KIND
+    AJAXService("TestOPT", { deleteItemList }, "MODIFYLISTENTRIES")
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
@@ -456,7 +457,7 @@ function prepareItem() {
 
 function deleteItem(item_lid = null) { 
    var lid = item_lid ? item_lid : $("#lid").val();
-    AJAXService("DEL", {
+    AJAXService("HIDEITEMS", {
       lid: lid
     }, "SECTION");
     $("#editSection").css("display", "none");
@@ -2632,5 +2633,5 @@ function scrollToTop() {
 // Modified listentries
 //------------------------------------------------------------------------------
 function returnedModifiedListentries(data) {
-
+  console.log(data);
 }

@@ -1047,10 +1047,11 @@ function AJAXService(opt,apara,kind)
 			success: returnedUserFeedback
 		});
 	} else if (kind == "MODIFYLISTENTRIES") {
+		console.log(`deleteItemList=${encodeURI(para)}`);
 		$.ajax({
 			url: "sectionedservice.php",
 			type: "POST",
-			data: "",
+			data: `deleteItemList=${encodeURI(para)}`,
 			dataType: "json",
 			success: returnedModifiedListentries
 		})
