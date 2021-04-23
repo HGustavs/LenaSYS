@@ -22,13 +22,23 @@ var ishashindb;
 var blockhashgen = false;
 var ishashinurl;
 var itemvalue;
+var groupTokenValue = 1;
+var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
+var isGroupDugga = true; // Set to false if you hate the popup
 var variantvalue;
+
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
 		$(".fixed-action-button").css("bottom", "64px");
 	}
 })
+
+function sendGroupAjax(val) {
+	// val = 1: new user, val = 0: exit
+	groupTokenValue = val;
+	AJAXService("UPDATEAU", {}, "GROUPTOKEN");
+}
 
 
 
@@ -650,7 +660,6 @@ function saveDuggaResult(citstr)
 	var url = createUrl(hash); //Create URL
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
-
 	var readonly;
 	$.ajax({
 		url: "courseedservice.php",
@@ -675,7 +684,7 @@ function saveDuggaResult(citstr)
 			for(i=0;i<citstr.length;i++){
 					hexstr+=citstr.charCodeAt(i).toString(16)+" ";
 			}
-
+			
 			AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
 			document.getElementById('receipt').value = hexstr;
@@ -845,6 +854,29 @@ function htmlEntities(str) {
 	}
    	return str;
 }
+
+//----------------------------------------------------------------------------------
+// beforeunload: Detect when student exits dugga
+//----------------------------------------------------------------------------------
+window.addEventListener('beforeunload', function (e) {
+	if(getUrlParam("did") != null){
+		groupTokenValue = -1;
+
+		if (!passwordReload && isGroupDugga) {
+			e.returnValue = '';
+			sendGroupAjax(-1);
+		}
+	}
+	
+});
+
+
+function getUrlParam(param){
+	var url_string = window.location.href;
+	var url = new URL(url_string);
+	return url.searchParams.get(param);
+}
+
 
 //----------------------------------------------------------------------------------
 // AJAX Service: Generic AJAX Calling Function with Prepared Parameters
@@ -1134,6 +1166,15 @@ function AJAXService(opt,apara,kind)
 			data:"courseid="+querystring['cid']+"&opt="+opt+para,
 			dataType: "json",
 			success: returnedUserFeedback
+		});
+		
+	}
+	else if(kind=="GROUPTOKEN") {
+		$.ajax({
+			url: "showDuggaservice.php",
+			type:"POST",
+			data:"AUtoken="+groupTokenValue+"&hash="+hash+"&opt="+opt+para,
+			dataType: "json"
 		});
 	}
 }
@@ -1462,6 +1503,8 @@ function checkHashPassword(){
             if(auth){
         		console.log('Success!');
         		hideHashBox();
+				passwordReload = true;
+				sendGroupAjax(1);
         		reloadPage();
         	}else{
         		$('#passwordtext').text('Wrong password, try again!');

@@ -38,10 +38,11 @@ $rating=getOP('score');
 $entryname=getOP('entryname');
 $hash=getOP('hash');
 $password=getOP('password');
-$showall="true";
+$AUtoken=getOP('AUtoken');
 //$localStorageVariant= getOP('variant');
 $variantvalue= getOP('variant');
 
+$showall="true";
 $param = "UNK";
 $savedanswer = "";
 $highscoremode = "";
@@ -73,6 +74,27 @@ $debug="NONE!";
 $log_uuid = getOP('log_uuid');
 $info=$opt." ".$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$segment." ".$answer;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php",$userid,$info);
+
+if(strcmp($opt,"UPDATEAU")==0){
+	$query = $pdo->prepare("SELECT active_users FROM groupdugga WHERE hash=:hash");
+	$query->bindParam(':hash', $hash);
+	$query->execute();
+	$result = $query->fetch();
+	$active = $result['active_users'];
+	if($active == null){
+		$query = $pdo->prepare("INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken);");
+		$query->bindParam(':hash', $hash);
+		$query->bindParam(':AUtoken', $AUtoken);
+		$query->execute();
+	}else{
+		$newToken = (int)$active + (int)$AUtoken;
+		$query = $pdo->prepare("UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;");
+		$query->bindParam(':hash', $hash);
+		$query->bindParam(':AUtoken', $newToken);
+		$query->execute();
+	}
+}
+
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
