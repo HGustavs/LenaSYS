@@ -53,9 +53,9 @@ sudo apt-get install git
 ### Commands 
 <pre>
 cd <b>/var/www/project-g1.webug.his.se/public_html</b>
-sudo git clone https://github.com/instructure/canvas-lms.git canvas
+git clone https://github.com/instructure/canvas-lms.git canvas
 cd canvas/
-sudo git checkout stable
+git checkout stable
 </pre>
 
 ## Create a virtual host for canvas
@@ -70,10 +70,12 @@ sudo nano <b>canvas.webug.his.se.conf</b>
 
 ### Change
 <pre>
-serverName <b>canvas.webug.his.se</b>
 DocumentRoot <b>/var/www/project-g1.webug.his.se/public_html/canvas/</b>
 </pre>
-
+### Add
+<pre>
+serverName <b>canvas.webug.his.se</b>
+</pre>
 ## Restart Apache2
 For the changes to be implemented so does apache need to be restarted.
 ### Commands
@@ -92,9 +94,9 @@ Sadly however so is it possible that when installing canvas that the files do no
 ## Commands
 <pre>
 cd <b>/var/www/project-g1.webug.his.se/public_html/canvas</b>
-sudo bundle install --without pulsar
-sudo yarn install --pure-lockfile
-sudo yarn install --pure-lockfile
+bundle install --without pulsar
+yarn install --pure-lockfile
+yarn install --pure-lockfile
 </pre>
 
 
@@ -107,7 +109,7 @@ Here we will set up the database that is used by canvas and do some basic testin
 <pre>
 for config in amazon_s3 delayed_jobs domain file_store outgoing_mail security external_migration
 do 
-sudo cp -v config/$config.yml.example config/$config.yml
+cp -v config/$config.yml.example config/$config.yml
 done
 </pre>
 
@@ -115,7 +117,7 @@ done
 
 #### Commands
 <pre>
-sudo bundle exec rails canvas:compile_assets
+bundle exec rails canvas:compile_assets
 </pre>
 
 ### Database configuration
@@ -123,7 +125,7 @@ Inorder to use the postgres database so are accounts needed. There may also be a
 
 #### Commands
 <pre>
-sudo cp config/database.yml.example config/database.ymlpostgres
+cp config/database.yml.example config/database.ymlpostgres
 createdb canvas_development
 </pre>
 
@@ -131,13 +133,13 @@ createdb canvas_development
 Now it's time to install the database and setup the adminimistor account that will be your main account when handeling Canvas.
 #### Commands
 <pre>
-sudo bundle exec rails db:initial_setup
+bundle exec rails db:initial_setup
 </pre>
 #### During this setup it will ask you for ...
-Databasename:\
 E-mail:\
-Password: 
-
+Password: \
+Databasename:\
+Share data with us:
 
 ### Test Data
 Canvas have sadly not updated their scripts for test data to meet the latest versions of postgres. This has caused commands that they use to longer function properly since they rely on permissions that are no longer available. It’s possible to bypass this by temporarily removing database protection by setting the connection to trust on all. Then after installation is done revert them back to their original values. 
@@ -188,7 +190,7 @@ screen -S canvas
 </pre>
 
 <pre>
-sudo bundle exec rails server
+bundle exec rails server
 </pre>
 
 Exit screen by pressing ctrl + a then ctrl + d
