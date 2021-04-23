@@ -2137,7 +2137,7 @@ function generateContextProperties()
                 }
             }
         str += '</select>'; 
-        str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
+        str+=`<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties()">`;
 
     } else if (context.length > 1) {
         str += "<p>Pick only ONE element!</p>";

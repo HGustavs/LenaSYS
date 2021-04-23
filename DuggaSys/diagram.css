@@ -209,6 +209,21 @@
     text-decoration: underline;
 }
 
+.saveButton {
+    background-color: #614875;
+    border: 0px;
+    color: #fff;
+    cursor: pointer;
+    width: 100%;
+    height: 25px;
+    transition: 1s background-color;
+}
+
+.saveButton:hover {
+    background: #815e9d;
+    color: #FFF;
+}
+
 #diagram-toolbar {
     position: absolute;
     width: 50px;
