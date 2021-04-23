@@ -645,6 +645,11 @@ const relationState = {
     WEAK: "weak",
 };
 
+const lineKind = {
+    NORMAL: "Normal",
+    DOUBLE: "Double"
+};
+
 // Demo data - read / write from service later on
 var data = [
     { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
@@ -1949,6 +1954,7 @@ function updateSelectedLine(selectedLine)
     } else if (!altPressed && !ctrlPressed) {
         contextLine = [];
     }
+    generateContextProperties();
 }
 
 function updateSelection(ctxelement)
@@ -2088,6 +2094,14 @@ function changeState()
     element.state = property;
 }
 
+function changeLineKind()
+{
+    var property = document.getElementById("propertySelect").value;
+    var line = contextLine[0];
+    line.kind = property;
+    showdata();
+}
+
 function propFieldSelected(isSelected)
 {
     propFieldState = isSelected;
@@ -2100,7 +2114,7 @@ function generateContextProperties()
 
     //more than one element selected
 
-    if (context.length == 1) {
+    if (context.length == 1 && contextLine.length == 0) {
         var element = context[0];
         
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
@@ -2139,7 +2153,31 @@ function generateContextProperties()
         str += '</select>'; 
         str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
 
-    } else if (context.length > 1) {
+    } 
+
+    // Creates drop down for changing the kind attribute on the selected line.
+    if (contextLine.length == 1 && context.length == 0) {
+        str = "<legend>Properties</legend>";
+        
+        var value;
+        var selected = contextLine[0].kind;
+        if(selected == undefined) selected = normal;
+        
+        value = Object.values(lineKind);
+        
+        str += '<select id="propertySelect">';
+        for(var i = 0; i < value.length; i++){
+            if(selected == value[i]){
+                str += `<option selected="selected" value='${value[i]}'>${value[i]}</option>`;
+            }else {
+                str += `<option value='${value[i]}'> ${value[i]}</option>`;   
+            }
+        }
+        str += '</select>';
+        str+=`<br><br><input type="submit" value="Save" onclick="changeLineKind();">`;
+    }
+
+    if ((context.length > 1 || contextLine.length > 1) || (context.length == 1 && contextLine.length == 1)) {
         str += "<p>Pick only ONE element!</p>";
     }
 
