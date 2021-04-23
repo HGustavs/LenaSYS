@@ -650,7 +650,7 @@ function saveDuggaResult(citstr)
 	var url = createUrl(hash); //Create URL
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
-
+	groupTokenValue = 0; // Number of active users should not change when saving
 	var readonly;
 	$.ajax({
 		url: "courseedservice.php",
@@ -675,7 +675,7 @@ function saveDuggaResult(citstr)
 			for(i=0;i<citstr.length;i++){
 					hexstr+=citstr.charCodeAt(i).toString(16)+" ";
 			}
-
+			
 			AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
 			document.getElementById('receipt').value = hexstr;
