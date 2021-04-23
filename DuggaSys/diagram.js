@@ -704,6 +704,7 @@ document.addEventListener('keydown', function (e)
         if (e.key == keybinds.ESCAPE.key && escPressed != true) {
             escPressed = true;
             clearContext();
+            setMouseMode(mouseModes.POINTER);
             movingObject = false;
 
             if (movingContainer) {
