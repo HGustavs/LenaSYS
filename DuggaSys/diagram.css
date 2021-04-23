@@ -224,6 +224,12 @@
     color: #FFF;
 }
 
+.saveButton:active {
+    background: #614875;
+    transition: 0.1s;
+    color: #FFF;
+}
+
 #diagram-toolbar {
     position: absolute;
     width: 50px;
