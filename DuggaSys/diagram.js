@@ -46,6 +46,7 @@ class StateChange {
         // Combined flags
         ELEMENT_MOVED_AND_RESIZED:  { flag: 4|8, isSoft: true, canAppendTo: true },
         ELEMENT_AND_LINE_DELETED:   { flag: 2|64, isSoft: false, canAppendTo: false },
+        ELEMENT_AND_LINE_CREATED:   { flag: 1|32, isSoft: false, canAppendTo: true },
     };
 
     /**
@@ -291,11 +292,33 @@ class StateChangeFactory
         
         return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED, allIDs, passed_values);
     }
+
+    static ElementsAndLinesCreated(elements, lines)
+    {
+        var allIDs = [];
+
+        // Add all element IDs to the id-list
+        for (var index = 0; index < elements.lenght; index++) {
+            allIDs.push(elements[index].id);
+        }
+
+        // Add all line IDs to the id-list
+        for (var index = 0; index < lines.lenght; index++) {
+            allIDs.push(lines[index].id);
+        }
+
+        var passed_values = {
+            createdElements: elements,
+            createdLines: lines
+        };
+
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED, allIDs, passed_values);
+    }
 }
 
 class StateMachine
 {
-    constructor ()
+    constructor (initialData, initialLines)
     {
         /**
          * @type Array<StateChange>
@@ -306,6 +329,14 @@ class StateMachine
          * @type Array<StateChange>
          */
         this.futureLog = [];
+
+        /**
+         * Our initial data values
+         */
+        this.initialState = {
+            data: Array.from(initialData),
+            lines: Array.from(initialLines)
+        }
     }
 
     /**
@@ -425,11 +456,14 @@ class StateMachine
 
             // Element created
             if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_CREATED.flag)) {
+                if (lastChange.valuesPassed.createdElements){
+                    removeElements(lastChange.valuesPassed.createdElements, false);
+                }else {
+                    var element = data[findIndex(data, lastChange.id_list[0])];
 
-                var element = data[findIndex(data, lastChange.id_list[0])];
-
-                if (element) {
-                    removeElements([element], false);
+                    if (element) {
+                        removeElements([element], false);
+                    }
                 }
             }
 
@@ -441,11 +475,13 @@ class StateMachine
 
             // Line created
             if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_CREATED.flag)) {
+                if (!lastChange.valuesPassed.createdLines){
 
-                var line = lines[findIndex(lines, lastChange.id_list[0])];
+                    var line = lines[findIndex(lines, lastChange.id_list[0])];
 
-                if (line) {
-                    removeLines([line], false);
+                    if (line) {
+                        removeLines([line], false);
+                    }
                 }
             }
 
@@ -453,10 +489,13 @@ class StateMachine
             if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_DELETED.flag)) {
                 lines = Array.prototype.concat(lines, lastChange.valuesPassed.deletedLines);
             }
-
-            showdata();
-            updatepos(0, 0);
+        } else  { // No more history, restoring intial state
+            data = Array.from(this.initialState.data);
+            lines = Array.from(this.initialState.lines);
         }
+
+        showdata();
+        updatepos(0, 0);
     }
 };
 
@@ -495,10 +534,12 @@ const keybinds = {
         PLACE_ATTRIBUTE: {key: "a", ctrl: false},
         ZOOM_IN: {key: "+", ctrl: true},
         ZOOM_OUT: {key: "-", ctrl: true},
-        GRID: {key: "g", ctrl: false},
-        RULER: {key: "t", ctrl: false},
+        TOGGLE_GRID: {key: "g", ctrl: false},
+        TOGGLE_RULER: {key: "t", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
         ENTER: {key: "Enter", ctrl: false},
+        COPY: {key: "c", ctrl: true},
+        PASTE: {key: "v", ctrl: true},
 };
 
 // Zoom variables
@@ -526,7 +567,6 @@ const zoom0_25 = -15.01;
 const zoom0_125 = -64;
 
 // Arrow drawing stuff - diagram elements and diagram lines
-const stateMachine = new StateMachine();
 var lines = [];
 var elements = [];
 
@@ -536,6 +576,9 @@ var previousContext = [];
 var contextLine = []; // Contains the currently selected line(s).
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
+
+// Clipboard
+var clipboard = [];
 
 // Currently hold down buttons
 var ctrlPressed = false;
@@ -646,6 +689,11 @@ const relationState = {
     WEAK: "weak",
 };
 
+const lineKind = {
+    NORMAL: "Normal",
+    DOUBLE: "Double"
+};
+
 // Demo data - read / write from service later on
 var data = [
     { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
@@ -678,6 +726,23 @@ var lines = [
     { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal" },
 ];
 
+const stateMachine = new StateMachine(data, lines);
+
+//------------------------------------=======############==========----------------------------------------
+//                                        Getters and Setters
+//------------------------------------=======############==========----------------------------------------
+// Adds object to the dataArray
+function addObjectToData(object, stateMachineShouldSave = true)
+{
+    data.push(object);
+    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object));
+}
+
+// Return all lines
+function getLines()
+{
+    return lines;
+}
 //------------------------------------=======############==========----------------------------------------
 //                                        Key event listeners
 //------------------------------------=======############==========----------------------------------------
@@ -699,7 +764,7 @@ document.addEventListener('keydown', function (e)
         if (e.key == keybinds.ZOOM_OUT.key && e.ctrlKey == keybinds.ZOOM_OUT.ctrl) zoomout(); // Works but interferes with browser zoom
         if (e.key == keybinds.ESCAPE.key && escPressed != true) {
             escPressed = true;
-            context = [];
+            clearContext();
             movingObject = false;
 
             if (movingContainer) {
@@ -767,14 +832,25 @@ document.addEventListener('keyup', function (e)
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.GRID.key && e.ctrlKey == keybinds.GRID.ctrl) {
+        if (e.key == keybinds.TOGGLE_GRID.key && e.ctrlKey == keybinds.TOGGLE_GRID.ctrl) {
             toggleGrid();
         }
-        if (e.key == keybinds.RULER.key && e.ctrlKey == keybinds.RULER.ctrl) {
+        if (e.key == keybinds.TOGGLE_RULER.key && e.ctrlKey == keybinds.TOGGLE_RULER.ctrl) {
             toggleRuler();
         }
         if (e.key == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
             fab_action();
+        }
+        if (e.key == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
+            clipboard = context;
+            if (clipboard.length !== 0){
+                displayMessage("success", `You have copied ${clipboard.length} elements and it's inner connected lines.`)
+            }else {
+                displayMessage("success", `Clipboard cleared.`)
+            }
+        }
+        if (e.key == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
+            pasteClipboard(clipboard)
         }
     }
 });
@@ -836,7 +912,6 @@ function diagramToScreenPosition(coordX, coordY)
 //------------------------------------=======############==========----------------------------------------
 //                                           Mouse events
 //------------------------------------=======############==========----------------------------------------
-
 
 function mwheel(event)
 {
@@ -912,8 +987,7 @@ function mouseMode_onMouseUp(event)
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
-                data.push(ghostElement);
-                stateMachine.save(StateChangeFactory.ElementCreated(ghostElement));
+                addObjectToData(ghostElement);
                 makeGhost();
                 showdata();
             }
@@ -923,7 +997,7 @@ function mouseMode_onMouseUp(event)
             if (context.length > 1) {
                 // TODO: Change the static variable to make it possible to create different lines.
                 addLine(context[0], context[1], "Normal");
-                context = [];
+                clearContext();
                 
                 // Bust the ghosts
                 ghostElement = null;
@@ -938,7 +1012,7 @@ function mouseMode_onMouseUp(event)
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
                 }else{   
-                    context = [];
+                    clearContext();
                     ghostElement = null;
                     ghostLine = null;
                     showdata();
@@ -976,7 +1050,7 @@ function mup(event)
 
                 if (!deltaExceeded) {
                     if (mouseMode == mouseModes.EDGE_CREATION) {
-                        context = [];
+                        clearContext();
                     } else if (mouseMode == mouseModes.POINTER) {
                         updateSelection(null);
                     }
@@ -1581,13 +1655,20 @@ function boxSelect_Update(mouseX, mouseY)
 
         if (ctrlPressed) {
             var markedEntities = getElementsInsideCoordinateBox(rect);
+            // Remove entity from previous context is the element is marked
+            previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
+            clearContext();
+            context = context.concat(markedEntities);
+            context = context.concat(previousContext);
+        }else if (altPressed) {
+            var markedEntities = getElementsInsideCoordinateBox(rect);
             // Remove entity from previous context is the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
             context = [];
-            context = context.concat(markedEntities);
-            context = context.concat(previousContext);
+            context = previousContext;
+
         }else {
             context = getElementsInsideCoordinateBox(rect);
         }
@@ -1758,7 +1839,7 @@ function showdata()
 //-------------------------------------------------------------------------------------------------
 // addLine - Adds an new line if the requirements and rules are achieved
 //-------------------------------------------------------------------------------------------------
-function addLine(fromElement, toElement, kind){
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
@@ -1790,7 +1871,8 @@ function addLine(fromElement, toElement, kind){
             lines.push(newLine);
 
             // Save changes into state machine
-            stateMachine.save(StateChangeFactory.LineAdded(newLine));
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(newLine));
+            return newLine;
             
         } else {
             displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
@@ -1951,6 +2033,7 @@ function updateSelectedLine(selectedLine)
     } else if (!altPressed && !ctrlPressed) {
         contextLine = [];
     }
+    generateContextProperties();
 }
 
 function updateSelection(ctxelement)
@@ -1977,12 +2060,12 @@ function updateSelection(ctxelement)
             context.push(ctxelement);
         } else {
             if (mouseMode != mouseModes.EDGE_CREATION) {
-                context = [];
+                clearContext();
             }
             context.push(ctxelement);
         }
     } else if (!altPressed && !ctrlPressed) {
-        context = [];
+        clearContext();
     }
 
     // Generate the properties field in options-pane
@@ -2090,6 +2173,14 @@ function changeState()
     element.state = property;
 }
 
+function changeLineKind()
+{
+    var property = document.getElementById("propertySelect").value;
+    var line = contextLine[0];
+    line.kind = property;
+    showdata();
+}
+
 function propFieldSelected(isSelected)
 {
     propFieldState = isSelected;
@@ -2102,7 +2193,7 @@ function generateContextProperties()
 
     //more than one element selected
 
-    if (context.length == 1) {
+    if (context.length == 1 && contextLine.length == 0) {
         var element = context[0];
         
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
@@ -2139,9 +2230,33 @@ function generateContextProperties()
                 }
             }
         str += '</select>'; 
-        str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
+        str+=`<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage('success', 'Successfully saved')">`;
 
-    } else if (context.length > 1) {
+    } 
+
+    // Creates drop down for changing the kind attribute on the selected line.
+    if (contextLine.length == 1 && context.length == 0) {
+        str = "<legend>Properties</legend>";
+        
+        var value;
+        var selected = contextLine[0].kind;
+        if(selected == undefined) selected = normal;
+        
+        value = Object.values(lineKind);
+        
+        str += '<select id="propertySelect">';
+        for(var i = 0; i < value.length; i++){
+            if(selected == value[i]){
+                str += `<option selected="selected" value='${value[i]}'>${value[i]}</option>`;
+            }else {
+                str += `<option value='${value[i]}'> ${value[i]}</option>`;   
+            }
+        }
+        str += '</select>';
+        str+=`<br><br><input type="submit" value="Save" onclick="changeLineKind();">`;
+    }
+
+    if ((context.length > 1 || contextLine.length > 1) || (context.length == 1 && contextLine.length == 1)) {
         str += "<p>Pick only ONE element!</p>";
     }
 
@@ -2194,8 +2309,6 @@ function updateCSSForAllElements()
         }
     }
 }
-
-
 
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
@@ -2560,9 +2673,9 @@ function removeElements(elementArray, stateMachineShouldSave = true)
     if (elementsToRemove.length > 0) { // If there are elements to remove
         if (linesToRemove.length > 0) { // If there are also lines to remove
             removeLines(linesToRemove, false);
-            stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
         } else { // Only removed elements without any lines
-            stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
         }
 
         data = data.filter(function(element) { // Delete elements
@@ -2571,8 +2684,9 @@ function removeElements(elementArray, stateMachineShouldSave = true)
     } else { // All passed items were INVALID
         console.error("Invalid element array passed to removeElements()!");
     }
+    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementArray));
 
-    context = [];
+    clearContext();
     redrawArrows();
     showdata();
 }
@@ -2597,6 +2711,101 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     
     contextLine = [];
     redrawArrows();
+    showdata();
+}
+
+function pasteClipboard(elements)
+{
+
+    // If elements does is empty, display error and return null
+    if(elements.length == 0){
+        displayMessage("error", "You do not have any copied elements");
+        return;
+    }
+
+    /*
+    * Calculate the coordinate for the top-left pos (x1, y1)
+    * and the coordinate for the bottom-right (x2, y2)
+    * */
+    var x1, x2, y1, y2;
+    elements.forEach(element => {
+        if (element.x < x1 || x1 === undefined) x1 = element.x;
+        if (element.y < y1 || y1 === undefined) y1 = element.y;
+        if ((element.x + element.width) > x2 || x2 === undefined) x2 = (element.x + element.width);
+        if ((element.y + element.height) > y2 || y2 === undefined) y2 = (element.y + element.height);
+    });
+
+    var cx = (x2 - x1) / 2;
+    var cy = (y2 - y1) / 2;
+    var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
+
+    // Get all lines
+    var allLines = getLines();
+    var connectedLines = [];
+
+    // Filter - keeps only the lines that are connectet to and from selected elements.
+    allLines = allLines.filter(line => {
+        return (elements.filter(element => {
+            return line.toID == element.id || line.fromID == element.id
+        })).length > 1
+    });
+
+    /*
+    * For every line that shall be copied, create a temp object,
+    * for kind and connection tracking
+    * */
+    allLines.forEach(line => {
+        var temp = {
+            id: line.id,
+            fromID: line.fromID,
+            toID: line.toID,
+            kind: line.kind
+        }
+        connectedLines.push(temp);
+    });
+
+    // An mapping between oldElement ID and the new element ID
+    var idMap = {};
+
+    var newElements = [];
+    var newLines = [];
+
+    // For every copied element create a new one and add to data
+    elements.forEach(element => {
+        // Make a new id and save it in an object
+        idMap[element.id] = makeRandomID();
+
+        connectedLines.forEach(line => {
+            if (line.fromID == element.id) line.fromID = idMap[element.id];
+            else if (line.toID == element.id) line.toID = idMap[element.id];
+        });
+
+        // Create the new object
+        var elementObj = {
+            name: element.name,
+            x: mousePosInPixels.x + (element.x - x1),
+            y: mousePosInPixels.y + (element.y - y1),
+            width: element.width,
+            height: element.height,
+            kind: element.kind,
+            id: idMap[element.id],
+            state: element.state
+        };
+        newElements.push(elementObj)
+        addObjectToData(elementObj, false);
+    });
+
+    // Create the new lines but do not saved in stateMachine
+    connectedLines.forEach(line => {
+        newLines.push(
+            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false)
+        );
+    });
+
+    // Save the copyed elements to stateMachine
+    stateMachine.save(StateChangeFactory.ElementsAndLinesCreated(newElements, newLines));
+
+    displayMessage("success", `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
     showdata();
 }
 
@@ -2684,6 +2893,8 @@ function updateGridPos()
 }
 function clearContext()
 {
-    context = [];
-    showdata();
+    if(context != null){
+        context = [];
+        generateContextProperties();
+    }
 }
