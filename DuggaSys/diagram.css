@@ -76,7 +76,8 @@
     display: inline-block;
     vertical-align: top;
     transform-origin: top left;            
-    transform: translate(20px,0px) rotate(90deg);	 
+    transform: translate(20px,0px) rotate(90deg);
+    cursor: pointer;
 }
 
 #options-pane-content {
