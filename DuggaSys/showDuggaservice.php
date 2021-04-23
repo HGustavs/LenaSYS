@@ -213,7 +213,7 @@ if($demo){
 			$param="NONE!";
 	}
 	foreach ($variants as $variant) {
-		if($variant["vid"] == $savedvariant){
+		if($variant["vid"] == $variantvalue){
 			$param=html_entity_decode($variant['param']);
 		}
 	}
@@ -242,13 +242,13 @@ if($demo){
 			$param="NONE!";
 		}
 		foreach ($variants as $variant) {
-			if($variant["vid"] == $savedvariant){
+			if($variant["vid"] == $variantvalue){
 					$param=html_entity_decode($variant['param']);
 			}
 		}
 	}else if(!$isIndb){ // If dugga is not in database, get the variant from the localstorage
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-		$query->bindParam(':vid', $savedvariant);
+		$query->bindParam(':vid', $variantvalue);
 		$query->execute();
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
