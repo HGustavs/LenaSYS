@@ -539,6 +539,7 @@ const keybinds = {
         OPTIONS: {key: "o", ctrl: false},
         COPY: {key: "c", ctrl: true},
         PASTE: {key: "v", ctrl: true},
+        SELECT_ALL: {key: "a", ctrl: true}
 };
 
 // Zoom variables
@@ -780,6 +781,11 @@ document.addEventListener('keydown', function (e)
             removeElements(context); 
             removeLines(contextLine);
             updateSelection();
+        }
+
+        if (e.key == keybinds.SELECT_ALL.key && e.ctrlKey == keybinds.SELECT_ALL.ctrl){
+            e.preventDefault();
+            selectAll();
         }
     }
 });
@@ -2061,6 +2067,13 @@ function updateSelection(ctxelement)
 
     // Generate the properties field in options-pane
     generateContextProperties();
+}
+
+function selectAll()
+{   
+    context = data;
+    contextLine = lines;
+    showdata();
 }
 
 //-------------------------------------------------------------------------------------------------
