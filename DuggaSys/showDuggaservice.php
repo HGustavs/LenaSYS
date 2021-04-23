@@ -221,10 +221,14 @@ if($demo){
 	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
 	$query->execute();
 	$variantsize = $query->fetchColumn();
-	
+
+	if($variantvalue == "undefined") {
+		$variantvalue = $savedvariant;
+	}
+
 	//Makes sure that the localstorage variant is set before retrieving data from database
 	if(isset($localStorageVariant)) {
-
+		
 		// If it's the first time showing this variant
 		if($localStorageVariant == 0) {
 			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
@@ -259,7 +263,7 @@ if($demo){
 		}
 	}else if(!$isIndb){ // If dugga is not in database, get the variant from the localstorage
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-		$query->bindParam(':vid', $localStorageVariant);
+		$query->bindParam(':vid', $savedvariant);
 		$query->execute();
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
@@ -312,7 +316,7 @@ if(checklogin()){
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':moment', $moment);
-				$query->bindParam(':variant', $localStorageVariant);
+				$query->bindParam(':variant', $savedvariant);
 				$query->bindParam(':hash', $hash);
 				$query->bindParam(':password', $password);
 				if(!$query->execute()) {
