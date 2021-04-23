@@ -2676,11 +2676,11 @@ function pasteClipboard(elements)
     var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
 
     // Get all lines
-    var alllines = getLines();
+    var allLines = getLines();
     var connectedLines = [];
 
     // Filter - keeps only the lines that are connectet to and from selected elements.
-    alllines = alllines.filter(line => {
+    allLines = allLines.filter(line => {
         return (elements.filter(element => {
             return line.toID == element.id || line.fromID == element.id
         })).length > 1
@@ -2690,7 +2690,7 @@ function pasteClipboard(elements)
     * For every line that shall be copied, create a temp object,
     * for kind and connection tracking
     * */
-    alllines.forEach(line => {
+    allLines.forEach(line => {
         var temp = {
             id: line.id,
             fromID: line.fromID,
@@ -2700,8 +2700,8 @@ function pasteClipboard(elements)
         connectedLines.push(temp);
     });
 
-    // Object for keep track of change of id
-    var oldNewID = {};
+    // An mapping between oldElement ID and the new element ID
+    var idMap = {};
 
     var newElements = [];
     var newLines = [];
@@ -2709,11 +2709,11 @@ function pasteClipboard(elements)
     // For every copied element create a new one and add to data
     elements.forEach(element => {
         // Make a new id and save it in an object
-        oldNewID[element.id] = makeRandomID();
+        idMap[element.id] = makeRandomID();
 
         connectedLines.forEach(line => {
-            if (line.fromID == element.id) line.fromID = oldNewID[element.id];
-            else if (line.toID == element.id) line.toID = oldNewID[element.id];
+            if (line.fromID == element.id) line.fromID = idMap[element.id];
+            else if (line.toID == element.id) line.toID = idMap[element.id];
         });
 
         // Create the new object
@@ -2724,7 +2724,7 @@ function pasteClipboard(elements)
             width: element.width,
             height: element.height,
             kind: element.kind,
-            id: oldNewID[element.id],
+            id: idMap[element.id],
             state: element.state
         };
         newElements.push(elementObj)
