@@ -1009,9 +1009,13 @@ function AJAXService(opt,apara,kind)
 		variantvalue = test.value;
 		console.log("test value: "+variantvalue);
 		console.log(localStorage.getItem(querystring['did']));
+		
+		getVariant(); //Gets variant so we don't have to load the page twice to display it correctly
+		variantvalue = JSON.parse(localStorage.getItem("variantvaluetemp"));
+		console.log(localStorage.getItem("variantvaluetemp"));
+		console.log("real variantvalue: "+variantvalue);
 			$.ajax({
 				beforeSend: function(){
-					getVariant(); //Gets variant so we don't have to load the page twice to display it correctly
 				},
 				url: "showDuggaservice.php",
 				type: "POST",
@@ -1152,12 +1156,15 @@ function getVariant(){
 	$.ajax({
 		url: "showDuggaService.php",
 		type: "POST",
-		data: "&variant="+$variantvalue,
+		data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
 		datatype: "json",
 		success: function(data){
 			//do stuff
+			returndata = JSON.parse(data);
+			variantvalue = returndata.variant;
+			localStorage.setItem("variantvaluetemp", variantvalue);
+			console.log(variantvalue);
 		}
-
 	})
 }
 
