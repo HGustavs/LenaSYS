@@ -92,7 +92,7 @@
             <legend>Toggle</legend>
             <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
                 <img src="../Shared/icons/diagram_grid.svg"/>
-                <span class="toolTipText"><b>Toggle grind</b><br>
+                <span class="toolTipText"><b>Toggle grid</b><br>
                     <p>Enable/disable the grid</p><br>
                     <p id="tooltip-TOGGLE_GRID" class="key_tooltip">Keybinding:</p>
                 </span>

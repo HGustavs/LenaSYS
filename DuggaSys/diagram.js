@@ -495,8 +495,8 @@ const keybinds = {
         PLACE_ATTRIBUTE: {key: "a", ctrl: false},
         ZOOM_IN: {key: "+", ctrl: true},
         ZOOM_OUT: {key: "-", ctrl: true},
-        GRID: {key: "g", ctrl: false},
-        RULER: {key: "t", ctrl: false},
+        TOGGLE_GRID: {key: "g", ctrl: false},
+        TOGGLE_RULER: {key: "t", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
 };
 
@@ -703,7 +703,7 @@ document.addEventListener('keydown', function (e)
         if (e.key == keybinds.ZOOM_OUT.key && e.ctrlKey == keybinds.ZOOM_OUT.ctrl) zoomout(); // Works but interferes with browser zoom
         if (e.key == keybinds.ESCAPE.key && escPressed != true) {
             escPressed = true;
-            context = [];
+            clearContext();
             movingObject = false;
 
             if (movingContainer) {
@@ -763,10 +763,10 @@ document.addEventListener('keyup', function (e)
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.GRID.key && e.ctrlKey == keybinds.GRID.ctrl) {
+        if (e.key == keybinds.TOGGLE_GRID.key && e.ctrlKey == keybinds.TOGGLE_GRID.ctrl) {
             toggleGrid();
         }
-        if (e.key == keybinds.RULER.key && e.ctrlKey == keybinds.RULER.ctrl) {
+        if (e.key == keybinds.TOGGLE_RULER.key && e.ctrlKey == keybinds.TOGGLE_RULER.ctrl) {
             toggleRuler();
         }
         if (e.key == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
@@ -919,7 +919,7 @@ function mouseMode_onMouseUp(event)
             if (context.length > 1) {
                 // TODO: Change the static variable to make it possible to create different lines.
                 addLine(context[0], context[1], "Normal");
-                context = [];
+                clearContext();
                 
                 // Bust the ghosts
                 ghostElement = null;
@@ -934,7 +934,7 @@ function mouseMode_onMouseUp(event)
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
                 }else{   
-                    context = [];
+                    clearContext();
                     ghostElement = null;
                     ghostLine = null;
                     showdata();
@@ -972,7 +972,7 @@ function mup(event)
 
                 if (!deltaExceeded) {
                     if (mouseMode == mouseModes.EDGE_CREATION) {
-                        context = [];
+                        clearContext();
                     } else if (mouseMode == mouseModes.POINTER) {
                         updateSelection(null);
                     }
@@ -1577,13 +1577,20 @@ function boxSelect_Update(mouseX, mouseY)
 
         if (ctrlPressed) {
             var markedEntities = getElementsInsideCoordinateBox(rect);
+            // Remove entity from previous context is the element is marked
+            previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
+            clearContext();
+            context = context.concat(markedEntities);
+            context = context.concat(previousContext);
+        }else if (altPressed) {
+            var markedEntities = getElementsInsideCoordinateBox(rect);
             // Remove entity from previous context is the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
             context = [];
-            context = context.concat(markedEntities);
-            context = context.concat(previousContext);
+            context = previousContext;
+
         }else {
             context = getElementsInsideCoordinateBox(rect);
         }
@@ -1974,12 +1981,12 @@ function updateSelection(ctxelement)
             context.push(ctxelement);
         } else {
             if (mouseMode != mouseModes.EDGE_CREATION) {
-                context = [];
+                clearContext();
             }
             context.push(ctxelement);
         }
     } else if (!altPressed && !ctrlPressed) {
-        context = [];
+        clearContext();
     }
 
     // Generate the properties field in options-pane
@@ -2601,8 +2608,8 @@ function removeElements(elementArray, stateMachineShouldSave = true)
         console.error("Invalid element array passed to removeElements()!");
     }
     if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementArray));
-    
-    context = [];
+
+    clearContext();
     redrawArrows();
     showdata();
 }
@@ -2714,6 +2721,8 @@ function updateGridPos()
 }
 function clearContext()
 {
-    context = [];
-    showdata();
+    if(context != null){
+        context = [];
+        generateContextProperties();
+    }
 }
