@@ -669,7 +669,7 @@ function saveDuggaResult(citstr)
 			citstr=querystring['cid']+" "+citstr;
 			citstr+= "##!!##" + timeUsed;
 			citstr+= "##!!##" + stepsUsed;
-			citstr+= "##!!##" + score;
+			//citstr+= "##!!##" + score;
 			hexstr="";
 			for(i=0;i<citstr.length;i++){
 					hexstr+=citstr.charCodeAt(i).toString(16)+" ";
