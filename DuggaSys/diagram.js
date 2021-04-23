@@ -686,9 +686,16 @@ var lines = [
 //                                        Getters and Setters
 //------------------------------------=======############==========----------------------------------------
 // Adds object to the dataArray
-function addObjectToData(object){
+function addObjectToData(object)
+{
     data.push(object);
     stateMachine.save(StateChangeFactory.ElementCreated(object));
+}
+
+// Return all lines
+function getLines()
+{
+    return lines;
 }
 //------------------------------------=======############==========----------------------------------------
 //                                        Key event listeners
@@ -782,6 +789,11 @@ document.addEventListener('keyup', function (e)
         }
         if (e.key == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
             clipboard = context;
+            if (clipboard.length !== 0){
+                displayMessage("success", `You have copied ${clipboard.length} elements and it's inner connected lines.`)
+            }else {
+                displayMessage("success", `Clipboard cleared.`)
+            }
         }
         if (e.key == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
             pasteClipboard(clipboard)
@@ -2609,7 +2621,8 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     showdata();
 }
 
-function pasteClipboard(elements){
+function pasteClipboard(elements)
+{
 
     // If elements does is empty, display error and return null
     if(elements.length == 0){
@@ -2629,12 +2642,47 @@ function pasteClipboard(elements){
         if ((element.y + element.height) > y2 || y2 === undefined) y2 = (element.y + element.height);
     });
 
-    var cx = (x2 - x1)/2;
-    var cy = (y2 - y1)/2;
+    var cx = (x2 - x1) / 2;
+    var cy = (y2 - y1) / 2;
     var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - cx, lastMousePos.y - cy);
+
+    // Get all lines
+    var alllines = getLines();
+    var connectedLines = [];
+
+    // Filter - keeps only the lines that are connectet to and from selected elements.
+    alllines = alllines.filter(line => {
+        return (elements.filter(element => {
+            return line.toID == element.id || line.fromID == element.id
+        })).length > 1
+    });
+
+    /*
+    * For every line that shall be copied, create a temp object,
+    * for kind and connection tracking
+    * */
+    alllines.forEach(line => {
+        var temp = {
+            id: line.id,
+            fromID: line.fromID,
+            toID: line.toID,
+            kind: line.kind
+        }
+        connectedLines.push(temp);
+    });
+
+    // Object for keep track of change of id
+    var oldNewID = {};
 
     // For every copied element create a new one and add to data
     elements.forEach(element => {
+        // Make a new id and save it in an object
+        oldNewID[element.id] = makeRandomID();
+
+        connectedLines.forEach(line => {
+            if (line.fromID == element.id) line.fromID = oldNewID[element.id];
+            else if (line.toID == element.id) line.toID = oldNewID[element.id];
+        });
 
         // Create the new object
         var elementObj = {
@@ -2644,12 +2692,16 @@ function pasteClipboard(elements){
             width: element.width,
             height: element.height,
             kind: element.kind,
-            id: makeRandomID()
+            id: oldNewID[element.id]
         };
         addObjectToData(elementObj);
     });
 
-    displayMessage("success", `You have successfully copied ${elements.length} elements!`)
+    // Create the new lines
+    connectedLines.forEach(line => {
+        addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind);
+    });
+    displayMessage("success", `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`)
     showdata();
 }
 
