@@ -158,50 +158,7 @@ pdoConnect();
 		</div>
 	</div>
 
-  <!-- -------------------=============####### Preview Popover #######=============------------------- -->
 
-
-	<div id='previewpopover' class='previewPopover' style='display:none;'>
-		<div class='loginBoxheader'>
-			<h3 style='width:100%;' id='Nameof'>Document Preview</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
-		</div>
-		<div style="position:absolute;left:0px;top:34px;bottom:0px;right:0px;">
-			<table width="100%" height="100%">
-					<tr>
-							<td width="75%" height="100%" id="popPrev" style="border:2px inset #aaa;background:#bbb; overflow:scroll;">
-									<embed src="" width="100%" height="100%" type='application/pdf' />
-							</td>
-							<td height="100%" id='markMenuPlaceholderz' style="background:#beb;">
-										<table width="100%" height="100%">
-											<tr height="24px">
-													<td>
-															<button onclick='addCanned();'>Add phrase</button>
-															<select id="cannedResponse">
-																	<option>&laquo; NONE &raquo;</option>
-																	<option>(Y) </option>
-																	<option>(N) </option>
-																	<option>:) </option>
-															</select>
-													</td>
-											</tr>
-											<tr height="100%">
-													<td>
-															<textarea id="responseArea" style="width: 100%;height:100%;-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;">Glomar Explorer</textarea>
-													</td>
-											</tr>
-											<tr height="24px">
-													<td>
-															<button onclick='saveResponse();'>Save</button>
-															<!-- Clear text in textarea id="responseArea" -->
-															<button onclick='clearResponseArea()'>Clear</button>
-													</td>
-											</tr>
-										</table>
-							</td>
-					</tr>
-			</table>
-		</div>
-	</div>
   <!-- -------------------=============####### Statistics Popover #######=============------------------- -->
 
 	<div id='statisticspopover' class='previewpopover' style='display:none;'>

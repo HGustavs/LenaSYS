@@ -1794,11 +1794,6 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		clickedindex=fileindex;
 		var str ="";
 
-		if(displaystate){
-				document.getElementById("markMenuPlaceholderz").style.display="block";
-		}else{
-				document.getElementById("markMenuPlaceholderz").style.display="none";
-		}
 
 		if (filetype === "text") {
 				str+="<textarea style='width: 100%;height: 100%;box-sizing: border-box;'>"+dataV["files"][inParams["moment"]][fileindex].content+"</textarea>";
@@ -1820,13 +1815,8 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		 		}
 		}
 		document.getElementById("popPrev").innerHTML=str;
-		if (dataV["files"][inParams["moment"]][clickedindex].feedback !== "UNK"){
-				document.getElementById("responseArea").innerHTML = dataV["files"][inParams["moment"]][clickedindex].feedback;
-		} else {
-				document.getElementById("responseArea").innerHTML = "No feedback given.";
-		}
 
-		$("#previewpopover").css("display", "flex");
+
 }
 
 function displayDuggaStatus(answer,grade,submitted,marked){
