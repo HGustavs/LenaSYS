@@ -36,6 +36,8 @@
 			// If the current page is the course editor, don't display the back button
 			//---------------------------------------------------------------------
 
+            echo '<td class="hamburger" id="hamburgerIcon" onclick=hamburgerChange()>';
+            echo '<i class="fa fa-bars"></i>';
 			// Analytics button
 			if($noup == 'NONE' && $requestedService != "analytic.php" && checklogin() && isSuperUser($_SESSION['uid']) ){
 				echo "<td class='menuButton' style='display: inline-block;'>";

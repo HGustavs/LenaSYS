@@ -1311,6 +1311,65 @@ div .navButt:hover {
   overflow: hidden;
 }
 
+@media screen and (max-width:400px){
+    .hamburger{
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        
+        
+        margin-top: 14px;
+        
+    }
+    #home{
+        display:block;
+
+    }
+    #GeneralStats{
+        display:none;
+    }
+    #CurrentlyOnline{
+        display:none;
+    }
+    #PasswordGuessing{
+        display:none;
+    }
+    #OSPercentage{
+        display:none;
+    }
+    #accessBTN{
+        display:none;
+    }
+    #courseIMG{
+        display:none;
+    }
+    #versionCog{
+        display:none;
+    }
+    #versionPlus{
+        display:none;
+    }
+    #announcement{
+        display:none;
+    }
+    #back{
+        display:none;
+    }
+    .navButt {
+    display:flex;
+        flex-wrap: wrap;
+        position: relative;
+        
+    }
+    .navButt.show{
+        display: flex;
+    }
+}
+
+.navHomeButt{
+    display:block;
+}
+
 .loggedout {
   background-color: var(--color-red);
 }
