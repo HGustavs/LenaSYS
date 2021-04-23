@@ -1639,6 +1639,7 @@ $(document).on('click', '.moment, .section, .statistics', function () {
 
 // Setup (when loaded rather than when ready)
 $(window).load(function () {
+  $("#sectionList_arrowStatisticsClosed").hide();
   accessAdminAction();
   $(".messagebox").hover(function () {
     $("#testbutton").css("background-color", "red");
