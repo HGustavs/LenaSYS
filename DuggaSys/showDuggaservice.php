@@ -39,8 +39,8 @@ $entryname=getOP('entryname');
 $hash=getOP('hash');
 $password=getOP('password');
 $showall="true";
-$localStorageVariant= getOP('variant');
-$variantvalue= getOP('variantvalue');
+//$localStorageVariant= getOP('variant');
+$variantvalue= getOP('variant');
 
 $param = "UNK";
 $savedanswer = "";
@@ -227,24 +227,13 @@ if($demo){
 	}
 
 	//Makes sure that the localstorage variant is set before retrieving data from database
-	if(isset($localStorageVariant)) {
-		
-		// If it's the first time showing this variant
-		if($localStorageVariant == 0) {
-			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-			$query->bindParam(':vid', $savedvariant);
-			$query->execute();
-			$result = $query->fetch();
-			$param=html_entity_decode($result['param']);
-			error_log("result param: ".$param);
-		} else {
-      // If we already have a variant in localstorage
-			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-			$query->bindParam(':vid', $variantvalue);
-			$query->execute();
-			$result = $query->fetch();
-			$param=html_entity_decode($result['param']);
-		}
+	if(isset($variantvalue)) {
+		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+		$query->bindParam(':vid', $variantvalue);
+		$query->execute();
+		$result = $query->fetch();
+		$param=html_entity_decode($result['param']);
+		error_log("result param: ".$param);
 	}
 } else if ($hr){
 	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
@@ -597,7 +586,6 @@ $array = array(
 		"ishashindb" => $ishashindb,
 		"variantsize" => $variantsize,
 		"variantvalue" => $variantvalue,
-		"localstoragevariant" => $localStorageVariant,
 		"password" => $password,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
