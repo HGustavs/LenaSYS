@@ -1046,14 +1046,6 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedUserFeedback
 		});
-	} else if (kind == "MODIFYLISTENTRIES") {
-		$.ajax({
-			url: "sectionedservice.php",
-			type: "POST",
-			data: "",
-			dataType: "json",
-			success: returnedModifiedListentries
-		})
 	}
 }
 
