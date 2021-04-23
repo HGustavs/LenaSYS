@@ -1639,20 +1639,20 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		var mediumMediaQuery = window.matchMedia("(min-width: 801px) and (max-width: 1200px)");
 		var tab="<table class='previewTable'>";
 
-		if (group) {
+	if (group) {
       if (mobileMediaQuery.matches) {
         tab+="<thead><tr><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
       } else {
-			  tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+		tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
       }
     } else {
       if (mobileMediaQuery.matches) {
 			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-		  } else {
+		} else {
 			// Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
 			//tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
 			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th></tr></thead>";
-		  }
+		}
     }
 
 		tab +="<tbody>";
@@ -1686,11 +1686,11 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								tab+="</td>";
 							}
 
-              if (group) {
+              				if (group) {
 								tab+="<td>"+filez[i].username+"</td>";
 							}
 							tab+="<td>";
-              if (ctype == "link"){							
+              				if (ctype == "link"){							
 								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].content.substring(0,32)+"&#8230;</span>";
@@ -1699,14 +1699,18 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								} else {
 									tab+=filez[i].content+"</span>";
 								}
-							}else if(ctype == "zip" || ctype == "rar"){                
+							}else if(ctype == "zip" || ctype == "rar"){ 
+            
 								tab+="<span>";
 								if (mediumMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
+									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension;
+									tab+="hejhej</span>";
 								} else if (mobileMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</span>";
+									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension;
+									tab+="hejhej</span>";
 								} else {
-									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
+									tab+=filez[i].filename+"."+filez[i].extension;
+									tab+="<br>"+filez[i].unzip+"</span>";
 								}
 							} else {
 
