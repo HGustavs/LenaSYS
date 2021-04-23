@@ -22,6 +22,7 @@ var ishashindb;
 var blockhashgen = false;
 var ishashinurl;
 var itemvalue;
+var variantvalue;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -482,12 +483,12 @@ function getExpireTime(key){
 	const now = new Date()
 
 	if(now.getTime() > item.expiry){
-		console.log(key + " has expired")
-		localStorage.removeItem(key)
+		console.log(key+"has expired");
+		localStorage.removeItem(key);
+		location.reload(); //Reloads the site to show correct new variant
 		return null
 	}
 	itemvalue = item.value;
-	console.log("item value: "+itemvalue);
 	return item.value;
 }
 
@@ -993,41 +994,58 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
-			if(localStorage.getItem("variantSize") == null) {
-				localStorage.setItem("variantSize", 100);
-			}
-			var newInt = +localStorage.getItem('variantSize');
-			if(querystring['did'] <= newInt) {
-				if(localStorage.getItem(querystring['did']) == null){
-					localStorage.setItem(querystring['did'], 0);
+		$.ajax({ //get variant
+			url: "showDuggaService.php",
+			type: "POST",
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
+			datatype: "json",
+			success: function(data){
+				//Checks if the variantSize variant is set in localstorage. When its not, its set.
+				if(localStorage.getItem("variantSize") == null) {
+					localStorage.setItem("variantSize", 100);
 				}
-			}
-			//var test = JSON.parse(localStorage.getItem(querystring['did']));
-			$.ajax({
-				url: "showDuggaservice.php",
-				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did']), 
-				dataType: "json",
-				success: function(data) {
-					// First check if dugga hash is unique.
-					returnedDugga(data);
-					ishashindb = data['ishashindb'];										//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-					if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
-						recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
+				//Converts the localstorage variant from string to int
+				var newInt = +localStorage.getItem('variantSize');
+				//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
+				if(querystring['did'] <= newInt) {
+					if(localStorage.getItem(querystring['did']) == null){
+						returndata = JSON.parse(data);
+						variantvalue = returndata.variant;
+					} else {
+						var test = JSON.parse(localStorage.getItem(querystring['did']));
+						variantvalue = test.value;
 					}
-					// Check localstorage variants.
-					var newvariant = data['variant'];
-					if(localStorage.getItem(querystring['did']) == 0){
-						localStorage.setItem(querystring['did'], newvariant);
-						//The big number below represents 30 days in milliseconds
-						//setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 5000);
-					}
-					//getExpireTime(querystring['did']);
-					var variantsize = data['variantsize'];
-					localStorage.setItem("variantSize", variantsize);
-					setPassword(data['password']);
 				}
-			});
+				console.log("real variantvalue: "+variantvalue);
+				$.ajax({ //original ajax call
+					beforeSend: function(){
+					},
+					url: "showDuggaservice.php",
+					type: "POST",
+					data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +variantvalue, 
+					dataType: "json",
+					success: function (data) {
+						returnedDugga(data);
+						ishashindb = data['ishashindb'];										//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+						if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
+							recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
+						}
+						// Check localstorage variants.
+						var newvariant = data['variantvalue'];
+						
+						if(localStorage.getItem(querystring['did']) == null){
+							localStorage.setItem(querystring['did'], newvariant);
+							//The big number below represents 30 days in milliseconds
+							setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
+						}
+						getExpireTime(querystring['did']);
+						var variantsize = data['variantsize'];
+						localStorage.setItem("variantSize", variantsize);
+						setPassword(data['password']);
+					}
+				});
+			}
+		})
 	}else if(kind=="RESULT"){
 			$.ajax({
 				url: "resultedservice.php",
