@@ -765,6 +765,7 @@ document.addEventListener('keydown', function (e)
         if (e.key == keybinds.ESCAPE.key && escPressed != true) {
             escPressed = true;
             clearContext();
+            clearContextLine();
             movingObject = false;
 
             if (movingContainer) {
@@ -2895,6 +2896,13 @@ function clearContext()
 {
     if(context != null){
         context = [];
+        generateContextProperties();
+    }
+}
+function clearContextLine()
+{
+    if(contextLine != null){
+        contextLine = [];
         generateContextProperties();
     }
 }
