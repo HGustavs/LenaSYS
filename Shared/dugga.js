@@ -23,6 +23,7 @@ var blockhashgen = false;
 var ishashinurl;
 var itemvalue;
 var groupTokenValue = 1;
+var isCurrLoggedIn = false;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -847,7 +848,8 @@ function htmlEntities(str) {
 }
 
 window.addEventListener('beforeunload', function (e) {
-	
+	console.log(e);
+	console.log("event:" + isCurrLoggedIn);
 	if(getUrlParam("did") != null){
 		groupTokenValue = -1;
 		e.returnValue = '';
@@ -1025,7 +1027,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did'])+"&AUtoken="+groupTokenValue, 
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did']), 
 				dataType: "json",
 				success: function(data) {
 					// First check if dugga hash is unique.
@@ -1454,7 +1456,12 @@ function checkHashPassword(){
             if(auth){
         		console.log('Success!');
         		hideHashBox();
+				console.log("checkhash1:" + isCurrLoggedIn);
         		reloadPage();
+				console.log("checkhash2:" + isCurrLoggedIn);
+				isCurrLoggedIn = true;
+				console.log("checkhash3:" + isCurrLoggedIn);
+				AJAXService("GETPARAM", {}, "GROUPTOKEN");
         	}else{
         		$('#passwordtext').text('Wrong password, try again!');
         		$('#passwordtext').css('color','red');
