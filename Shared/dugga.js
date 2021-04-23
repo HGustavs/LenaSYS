@@ -22,6 +22,7 @@ var ishashindb;
 var blockhashgen = false;
 var ishashinurl;
 var itemvalue;
+var groupTokenValue = 1;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -845,6 +846,24 @@ function htmlEntities(str) {
    	return str;
 }
 
+window.addEventListener('beforeunload', function (e) {
+	
+	if(getUrlParam("did") != null){
+		groupTokenValue = -1;
+		e.returnValue = '';
+		AJAXService("GETPARAM", {}, "GROUPTOKEN");
+	}
+	
+});
+
+
+function getUrlParam(param){
+	var url_string = window.location.href;
+	var url = new URL(url_string);
+	return url.searchParams.get(param);
+}
+
+
 //----------------------------------------------------------------------------------
 // AJAX Service: Generic AJAX Calling Function with Prepared Parameters
 //----------------------------------------------------------------------------------
@@ -1006,7 +1025,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did']), 
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did'])+"&AUtoken="+groupTokenValue, 
 				dataType: "json",
 				success: function(data) {
 					// First check if dugga hash is unique.
@@ -1116,6 +1135,15 @@ function AJAXService(opt,apara,kind)
 			data:"courseid="+querystring['cid']+"&opt="+opt+para,
 			dataType: "json",
 			success: returnedUserFeedback
+		});
+		
+	}
+	else if(kind=="GROUPTOKEN") {
+		$.ajax({
+			url: "showDuggaservice.php",
+			type:"POST",
+			data:"AUtoken="+groupTokenValue+"&hash="+hash+"&opt="+opt+para,
+			dataType: "json"
 		});
 	}
 }
