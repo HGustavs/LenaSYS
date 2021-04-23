@@ -46,6 +46,7 @@ class StateChange {
         // Combined flags
         ELEMENT_MOVED_AND_RESIZED:  { flag: 4|8, isSoft: true, canAppendTo: true },
         ELEMENT_AND_LINE_DELETED:   { flag: 2|64, isSoft: false, canAppendTo: false },
+        ELEMENT_AND_LINE_CREATED:   { flag: 1|32, isSoft: false, canAppendTo: true },
     };
 
     /**
@@ -291,6 +292,28 @@ class StateChangeFactory
         
         return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED, allIDs, passed_values);
     }
+
+    static ElementsAndLinesCreated(elements, lines)
+    {
+        var allIDs = [];
+
+        // Add all element IDs to the id-list
+        for (var index = 0; index < elements.lenght; index++) {
+            allIDs.push(elements[index].id);
+        }
+
+        // Add all line IDs to the id-list
+        for (var index = 0; index < lines.lenght; index++) {
+            allIDs.push(lines[index].id);
+        }
+
+        var passed_values = {
+            createdElements: elements,
+            createdLines: lines
+        };
+
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED, allIDs, passed_values);
+    }
 }
 
 class StateMachine
@@ -433,11 +456,14 @@ class StateMachine
 
             // Element created
             if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_CREATED.flag)) {
+                if (lastChange.valuesPassed.createdElements){
+                    removeElements(lastChange.valuesPassed.createdElements, false);
+                }else {
+                    var element = data[findIndex(data, lastChange.id_list[0])];
 
-                var element = data[findIndex(data, lastChange.id_list[0])];
-
-                if (element) {
-                    removeElements([element], false);
+                    if (element) {
+                        removeElements([element], false);
+                    }
                 }
             }
 
@@ -449,11 +475,13 @@ class StateMachine
 
             // Line created
             if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_CREATED.flag)) {
+                if (!lastChange.valuesPassed.createdLines){
 
-                var line = lines[findIndex(lines, lastChange.id_list[0])];
+                    var line = lines[findIndex(lines, lastChange.id_list[0])];
 
-                if (line) {
-                    removeLines([line], false);
+                    if (line) {
+                        removeLines([line], false);
+                    }
                 }
             }
 
@@ -509,6 +537,8 @@ const keybinds = {
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
+        COPY: {key: "c", ctrl: true},
+        PASTE: {key: "v", ctrl: true},
 };
 
 // Zoom variables
@@ -545,6 +575,9 @@ var previousContext = [];
 var contextLine = []; // Contains the currently selected line(s).
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
+
+// Clipboard
+var clipboard = [];
 
 // Currently hold down buttons
 var ctrlPressed = false;
@@ -695,6 +728,21 @@ var lines = [
 const stateMachine = new StateMachine(data, lines);
 
 //------------------------------------=======############==========----------------------------------------
+//                                        Getters and Setters
+//------------------------------------=======############==========----------------------------------------
+// Adds object to the dataArray
+function addObjectToData(object, stateMachineShouldSave = true)
+{
+    data.push(object);
+    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object));
+}
+
+// Return all lines
+function getLines()
+{
+    return lines;
+}
+//------------------------------------=======############==========----------------------------------------
 //                                        Key event listeners
 //------------------------------------=======############==========----------------------------------------
 document.addEventListener('keydown', function (e)
@@ -783,6 +831,17 @@ document.addEventListener('keyup', function (e)
         }
         if (e.key == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
             fab_action();
+        }
+        if (e.key == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
+            clipboard = context;
+            if (clipboard.length !== 0){
+                displayMessage("success", `You have copied ${clipboard.length} elements and it's inner connected lines.`)
+            }else {
+                displayMessage("success", `Clipboard cleared.`)
+            }
+        }
+        if (e.key == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
+            pasteClipboard(clipboard)
         }
     }
 });
@@ -919,8 +978,7 @@ function mouseMode_onMouseUp(event)
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
-                data.push(ghostElement);
-                stateMachine.save(StateChangeFactory.ElementCreated(ghostElement));
+                addObjectToData(ghostElement);
                 makeGhost();
                 showdata();
             }
@@ -1772,7 +1830,7 @@ function showdata()
 //-------------------------------------------------------------------------------------------------
 // addLine - Adds an new line if the requirements and rules are achieved
 //-------------------------------------------------------------------------------------------------
-function addLine(fromElement, toElement, kind){
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
@@ -1804,7 +1862,8 @@ function addLine(fromElement, toElement, kind){
             lines.push(newLine);
 
             // Save changes into state machine
-            stateMachine.save(StateChangeFactory.LineAdded(newLine));
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(newLine));
+            return newLine;
             
         } else {
             displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
@@ -2643,6 +2702,101 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     
     contextLine = [];
     redrawArrows();
+    showdata();
+}
+
+function pasteClipboard(elements)
+{
+
+    // If elements does is empty, display error and return null
+    if(elements.length == 0){
+        displayMessage("error", "You do not have any copied elements");
+        return;
+    }
+
+    /*
+    * Calculate the coordinate for the top-left pos (x1, y1)
+    * and the coordinate for the bottom-right (x2, y2)
+    * */
+    var x1, x2, y1, y2;
+    elements.forEach(element => {
+        if (element.x < x1 || x1 === undefined) x1 = element.x;
+        if (element.y < y1 || y1 === undefined) y1 = element.y;
+        if ((element.x + element.width) > x2 || x2 === undefined) x2 = (element.x + element.width);
+        if ((element.y + element.height) > y2 || y2 === undefined) y2 = (element.y + element.height);
+    });
+
+    var cx = (x2 - x1) / 2;
+    var cy = (y2 - y1) / 2;
+    var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
+
+    // Get all lines
+    var allLines = getLines();
+    var connectedLines = [];
+
+    // Filter - keeps only the lines that are connectet to and from selected elements.
+    allLines = allLines.filter(line => {
+        return (elements.filter(element => {
+            return line.toID == element.id || line.fromID == element.id
+        })).length > 1
+    });
+
+    /*
+    * For every line that shall be copied, create a temp object,
+    * for kind and connection tracking
+    * */
+    allLines.forEach(line => {
+        var temp = {
+            id: line.id,
+            fromID: line.fromID,
+            toID: line.toID,
+            kind: line.kind
+        }
+        connectedLines.push(temp);
+    });
+
+    // An mapping between oldElement ID and the new element ID
+    var idMap = {};
+
+    var newElements = [];
+    var newLines = [];
+
+    // For every copied element create a new one and add to data
+    elements.forEach(element => {
+        // Make a new id and save it in an object
+        idMap[element.id] = makeRandomID();
+
+        connectedLines.forEach(line => {
+            if (line.fromID == element.id) line.fromID = idMap[element.id];
+            else if (line.toID == element.id) line.toID = idMap[element.id];
+        });
+
+        // Create the new object
+        var elementObj = {
+            name: element.name,
+            x: mousePosInPixels.x + (element.x - x1),
+            y: mousePosInPixels.y + (element.y - y1),
+            width: element.width,
+            height: element.height,
+            kind: element.kind,
+            id: idMap[element.id],
+            state: element.state
+        };
+        newElements.push(elementObj)
+        addObjectToData(elementObj, false);
+    });
+
+    // Create the new lines but do not saved in stateMachine
+    connectedLines.forEach(line => {
+        newLines.push(
+            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false)
+        );
+    });
+
+    // Save the copyed elements to stateMachine
+    stateMachine.save(StateChangeFactory.ElementsAndLinesCreated(newElements, newLines));
+
+    displayMessage("success", `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
     showdata();
 }
 
