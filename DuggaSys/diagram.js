@@ -295,7 +295,7 @@ class StateChangeFactory
 
 class StateMachine
 {
-    constructor ()
+    constructor (initialData, initialLines)
     {
         /**
          * @type Array<StateChange>
@@ -306,6 +306,14 @@ class StateMachine
          * @type Array<StateChange>
          */
         this.futureLog = [];
+
+        /**
+         * Our initial data values
+         */
+        this.initialState = {
+            data: Array.from(initialData),
+            lines: Array.from(initialLines)
+        }
     }
 
     /**
@@ -453,10 +461,13 @@ class StateMachine
             if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_DELETED.flag)) {
                 lines = Array.prototype.concat(lines, lastChange.valuesPassed.deletedLines);
             }
-
-            showdata();
-            updatepos(0, 0);
+        } else  { // No more history, restoring intial state
+            data = Array.from(this.initialState.data);
+            lines = Array.from(this.initialState.lines);
         }
+
+        showdata();
+        updatepos(0, 0);
     }
 };
 
@@ -525,7 +536,6 @@ const zoom0_25 = -15.01;
 const zoom0_125 = -64;
 
 // Arrow drawing stuff - diagram elements and diagram lines
-const stateMachine = new StateMachine();
 var lines = [];
 var elements = [];
 
@@ -682,6 +692,8 @@ var lines = [
     { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal" },
 ];
 
+const stateMachine = new StateMachine(data, lines);
+
 //------------------------------------=======############==========----------------------------------------
 //                                        Key event listeners
 //------------------------------------=======############==========----------------------------------------
@@ -832,7 +844,6 @@ function diagramToScreenPosition(coordX, coordY)
 //------------------------------------=======############==========----------------------------------------
 //                                           Mouse events
 //------------------------------------=======############==========----------------------------------------
-
 
 function mwheel(event)
 {
@@ -2231,8 +2242,6 @@ function updateCSSForAllElements()
     }
 }
 
-
-
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
     // Display line test locations using svg lines
@@ -2596,9 +2605,9 @@ function removeElements(elementArray, stateMachineShouldSave = true)
     if (elementsToRemove.length > 0) { // If there are elements to remove
         if (linesToRemove.length > 0) { // If there are also lines to remove
             removeLines(linesToRemove, false);
-            stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
         } else { // Only removed elements without any lines
-            stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
         }
 
         data = data.filter(function(element) { // Delete elements
