@@ -74,7 +74,7 @@ $log_uuid = getOP('log_uuid');
 $info=$opt." ".$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$segment." ".$answer;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php",$userid,$info);
 
-if($hash != "UNK" && $AUtoken != 0 && $AUtoken != "UNK"){
+if(strcmp($opt,"UPDATEAU")==0){
 	$query = $pdo->prepare("SELECT active_users FROM groupdugga WHERE hash=:hash");
 	$query->bindParam(':hash', $hash);
 	$query->execute();

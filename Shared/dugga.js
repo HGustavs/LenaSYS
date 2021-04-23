@@ -24,7 +24,7 @@ var ishashinurl;
 var itemvalue;
 var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
-var isGroupDugga = false; // Set to false if you hate the popup
+var isGroupDugga = true; // Set to false if you hate the popup
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -35,7 +35,7 @@ $(function () {  // Used to set the position of the FAB above the cookie message
 function sendGroupAjax(val) {
 	// val = 1: new user, val = 0: exit
 	groupTokenValue = val;
-	AJAXService("GETPARAM", {}, "GROUPTOKEN");
+	AJAXService("UPDATEAU", {}, "GROUPTOKEN");
 }
 
 
