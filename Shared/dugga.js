@@ -23,13 +23,20 @@ var blockhashgen = false;
 var ishashinurl;
 var itemvalue;
 var groupTokenValue = 1;
-var isCurrLoggedIn = false;
+var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
+var isGroupDugga = false; // Set to false if you hate the popup
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
 		$(".fixed-action-button").css("bottom", "64px");
 	}
 })
+
+function sendGroupAjax(val) {
+	// val = 1: new user, val = 0: exit
+	groupTokenValue = val;
+	AJAXService("GETPARAM", {}, "GROUPTOKEN");
+}
 
 
 
@@ -847,13 +854,17 @@ function htmlEntities(str) {
    	return str;
 }
 
+//----------------------------------------------------------------------------------
+// beforeunload: Detect when student exits dugga
+//----------------------------------------------------------------------------------
 window.addEventListener('beforeunload', function (e) {
-	console.log(e);
-	console.log("event:" + isCurrLoggedIn);
 	if(getUrlParam("did") != null){
 		groupTokenValue = -1;
-		e.returnValue = '';
-		AJAXService("GETPARAM", {}, "GROUPTOKEN");
+
+		if (!passwordReload && isGroupDugga) {
+			e.returnValue = '';
+			sendGroupAjax(-1);
+		}
 	}
 	
 });
@@ -1456,12 +1467,9 @@ function checkHashPassword(){
             if(auth){
         		console.log('Success!');
         		hideHashBox();
-				console.log("checkhash1:" + isCurrLoggedIn);
+				passwordReload = true;
+				sendGroupAjax(1);
         		reloadPage();
-				console.log("checkhash2:" + isCurrLoggedIn);
-				isCurrLoggedIn = true;
-				console.log("checkhash3:" + isCurrLoggedIn);
-				AJAXService("GETPARAM", {}, "GROUPTOKEN");
         	}else{
         		$('#passwordtext').text('Wrong password, try again!');
         		$('#passwordtext').css('color','red');
