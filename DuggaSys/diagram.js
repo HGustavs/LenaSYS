@@ -295,7 +295,7 @@ class StateChangeFactory
 
 class StateMachine
 {
-    constructor ()
+    constructor (initialData, initialLines)
     {
         /**
          * @type Array<StateChange>
@@ -306,6 +306,14 @@ class StateMachine
          * @type Array<StateChange>
          */
         this.futureLog = [];
+
+        /**
+         * Our initial data values
+         */
+        this.initialState = {
+            data: initialData,
+            lines: initialLines
+        }
     }
 
     /**
@@ -456,6 +464,9 @@ class StateMachine
 
             showdata();
             updatepos(0, 0);
+        } else  { // No more history, restoring intial state
+            data = this.initialState.data;
+            lines = this.initialState.lines;
         }
     }
 };
@@ -525,7 +536,6 @@ const zoom0_25 = -15.01;
 const zoom0_125 = -64;
 
 // Arrow drawing stuff - diagram elements and diagram lines
-const stateMachine = new StateMachine();
 var lines = [];
 var elements = [];
 
@@ -677,6 +687,8 @@ var lines = [
     { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal" },
 ];
 
+const stateMachine = new StateMachine(data, lines);
+
 //------------------------------------=======############==========----------------------------------------
 //                                        Key event listeners
 //------------------------------------=======############==========----------------------------------------
@@ -827,7 +839,6 @@ function diagramToScreenPosition(coordX, coordY)
 //------------------------------------=======############==========----------------------------------------
 //                                           Mouse events
 //------------------------------------=======############==========----------------------------------------
-
 
 function mwheel(event)
 {
