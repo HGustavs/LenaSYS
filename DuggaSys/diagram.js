@@ -1337,28 +1337,15 @@ function makeGhost()
 function setMouseMode(mode)
 {   
     if (enumContainsPropertyValue(mode, mouseModes)) {
-        // Enable all buttons but the current mode one
-        var children = document.getElementById('cursorModeFieldset').children;
-        for (var index = 0; index < children.length; index++) {
-            const child = children[index];
-
-            // If child is a button
-            if (child.tagName == "INPUT") {
-                // Disable if current mode button, enable otherwise.
-                child.disabled = child.className.toUpperCase().includes(mode) ? true : false;
-            }
-        }
+        // Mode-specific activation/deactivation
+        onMouseModeDisabled();
+        mouseMode = mode;
+        setCursorStyles(mode);
+        onMouseModeEnabled();
     } else {
         // Not implemented exception
         console.error("Invalid mode passed to setMouseMode method. Missing implementation?");
-        return;
     }
-
-    // Mode-specific activation/deactivation
-    onMouseModeDisabled();
-    mouseMode = mode;
-    setCursorStyles(mode);
-    onMouseModeEnabled();
 }
 
 function setCursorStyles(cursorMode = 0)
