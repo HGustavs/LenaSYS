@@ -222,10 +222,6 @@ if($demo){
 	$query->execute();
 	$variantsize = $query->fetchColumn();
 
-	if($variantvalue == "undefined") {
-		$variantvalue = $savedvariant;
-	}
-
 	//Makes sure that the localstorage variant is set before retrieving data from database
 	if(isset($variantvalue)) {
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");

@@ -1036,7 +1036,7 @@ function AJAXService(opt,apara,kind)
 						if(localStorage.getItem(querystring['did']) == null){
 							localStorage.setItem(querystring['did'], newvariant);
 							//The big number below represents 30 days in milliseconds
-							setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 3000);
+							setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
 						}
 						getExpireTime(querystring['did']);
 						var variantsize = data['variantsize'];
