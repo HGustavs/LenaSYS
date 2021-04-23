@@ -445,13 +445,13 @@ if(strcmp($opt,"GRPDUGGA")==0){
 $files= array();
 for ($i = 0; $i < $userCount; $i++) {
 	if ($showall==="true"){
-		$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
+		$query = $pdo->prepare("select subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission where hash=:hash and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
 	} else {
-		$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
+		$query = $pdo->prepare("select subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission where hash=:hash and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
 		$query->bindParam(':did', $duggaid);
 	}
 	if ($i == 0) {
-		$query->bindParam(':uid', $userid);
+		$query->bindParam(':hash', $hash);
 	} else {
 		$query->bindParam(':uid', $usersInGroup[$i-1]);
 	}
