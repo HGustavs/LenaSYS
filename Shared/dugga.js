@@ -1017,6 +1017,7 @@ function AJAXService(opt,apara,kind)
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did'])+"&variantvalue=" +variantvalue, 
 				dataType: "json",
 				success: function (data) {
+					console.log(data);
 					returnedDugga(data);
 					ishashindb = data['ishashindb'];										//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
 					if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
@@ -1028,7 +1029,7 @@ function AJAXService(opt,apara,kind)
 					if(localStorage.getItem(querystring['did']) == 0){
 						localStorage.setItem(querystring['did'], newvariant);
 						//The big number below represents 30 days in milliseconds
-						setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
+						setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 4000);
 					}
 					getExpireTime(querystring['did']);
 					var variantsize = data['variantsize'];
