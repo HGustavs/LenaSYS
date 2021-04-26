@@ -1156,7 +1156,9 @@ function mmoving(event)
             scrolly = sscrolly - Math.round(deltaY * zoomfact);
 
             updateGridPos();
-            updateRulerPos(scrollx, scrolly);
+            //updateRulerPos(scrollx, scrolly);
+            drawRulerBars(scrollx,scrolly);
+
             // Update scroll position
             updatepos(null, null);
 
@@ -1694,7 +1696,7 @@ function zoomout()
     showdata();
 
     // Draw new rules to match the new zoomfact
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -2481,11 +2483,15 @@ function setRulerPosition(x, y)
 //-------------------------------------------------------------------------------------------------
 // Draws the rulers
 //-------------------------------------------------------------------------------------------------
-function drawRulerBars()
+function drawRulerBars(X,Y)
 {
     //Get elements
     if(!isRulerActive) return;
 
+    var pannedY = Y - 100;
+    var pannedX = X - 100;
+    console.log(pannedX - (pannedX *2) + cheight);
+    
     svgX = document.getElementById("ruler-x-svg");
     svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
@@ -2493,43 +2499,44 @@ function drawRulerBars()
     const fullLineRatio = 10;
     var barY, barX = "";
     const color = "black";
-
-    barY = "<svg id='svg-pattern-y' width='100%' height='100%'>";
+    var cordY = 0;
+    var cordX = 0;
+    
     //Draw the Y-axis ruler.
     var lineNumber = (fullLineRatio - 1);
-    for (i = 100;i <= cheight; i += lineRatio) {
+    for (i = 100;i <= pannedY -(pannedY *2) + cheight + 200; i += lineRatio) {
         lineNumber++;
 
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
-            var cordY = screenToDiagramCoordinates(0, i).y;
+            cordY = cordY +100;
             lineNumber = 0;
-            barY += "<line x1='0px' y1='"+(i-60)+"' x2='40px' y2='"+(i-60)+"' stroke='"+color+"' />";
-            barY += "<text x='2' y='"+(i+10-60)+"' style='font-size: 10px'>"+cordY+"</text>";
+            barY += "<line x1='0px' y1='"+(pannedY+i-60)+"' x2='40px' y2='"+(pannedY+i-60)+"' stroke='"+color+"' />";
+            barY += "<text x='2' y='"+(pannedY+i+10-60)+"' style='font-size: 10px'>"+cordY+"</text>";
         }
-        else barY += "<line x1='25px' y1='"+(i-60)+"' x2='40px' y2='"+(i-60)+"' stroke='"+color+"' />";
+        else barY += "<line x1='25px' y1='"+(pannedY+i-60)+"' x2='40px' y2='"+(pannedY+i-60)+"' stroke='"+color+"' />";
     }
-    barY += "/<svg>";
+    
     svgY.style.backgroundColor = "#e6e6e6";
     svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
 
-    barX = "<svg id='svg-pattern-x' width='100%' height='100%'>";
+    
     //Draw the X-axis ruler.
     lineNumber = (fullLineRatio - 1);
-    for (i = 48;i <= cwidth; i += lineRatio) {
+    for (i = 48;i <= pannedX - (pannedX *2) + cheight + 1200; i += lineRatio) {
         lineNumber++;
 
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
-            var cordX = screenToDiagramCoordinates(50 + i, 0).x;
+            cordX = cordX +100;
             lineNumber = 0;
-            barX += "<line x1='" +(i-7)+"' y1='0' x2='" + (i-7) + "' y2='40px' stroke='" + color + "' />";
-            barX += "<text x='"+(i+5-7)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
+            barX += "<line x1='" +(pannedX+i-7)+"' y1='0' x2='" + (pannedX+i-7) + "' y2='40px' stroke='" + color + "' />";
+            barX += "<text x='"+(pannedX+i+5-7)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
         }
-        else barX += "<line x1='" +(i-7)+"' y1='25' x2='" +(i-7)+"' y2='40px' stroke='" + color + "' />";
+        else barX += "<line x1='" +(pannedX+i-7)+"' y1='25' x2='" +(pannedX+i-7)+"' y2='40px' stroke='" + color + "' />";
     }
-    barX += "/<svg>";
+    
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
     svgX.style.backgroundColor = "#e6e6e6";
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
@@ -2627,7 +2634,7 @@ function getData()
 {
     container = document.getElementById("container");
     showdata();
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
     generateToolTips();
     toggleGrid();
 }
@@ -2685,7 +2692,7 @@ function updateRulerPos(X, Y)
     var rulerX = document.getElementById("ruler-x-svg");
     var yyy = document.getElementById("svg-pattern-y");
     var xxx = document.getElementById("svg-pattern-x");
-    console.log(Y);
+    
     
     //rulerX.setAttribute('transform','translate('+(X-100)+')');
     yyy.setAttribute('transform','translate(0,'+(Y-100)+')');
