@@ -162,7 +162,7 @@ foreach($query->fetchAll() as $row) {
 	$insertparam = true;
 }
 
-$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted,password FROM userAnswer WHERE hash=:hash;");
+$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,feedback,grade,submitted,password FROM userAnswer WHERE hash=:hash;");
     $query->bindParam(':hash', $hash);
     $result = $query->execute();
 
@@ -317,10 +317,9 @@ if(checklogin()){
             }else{
 
 			if(!$isIndb){ // If the dugga is not in database, insert into database
-				$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant,hash,password) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant,:hash,:password);");
+				$query = $pdo->prepare("INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password);");
 				$query->bindParam(':cid', $courseid);
 				$query->bindParam(':coursevers', $coursevers);
-				$query->bindParam(':uid', $userid);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':moment', $moment);
 				$query->bindParam(':variant', $savedvariant);

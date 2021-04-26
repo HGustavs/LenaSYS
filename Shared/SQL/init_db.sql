@@ -145,6 +145,7 @@ CREATE TABLE variant(
 	FOREIGN KEY (quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
+DROP TABLE userAnswer;
 CREATE TABLE userAnswer (
 	aid						INT(11) NOT NULL AUTO_INCREMENT,
 	cid						INT UNSIGNED NOT NULL,
@@ -152,7 +153,7 @@ CREATE TABLE userAnswer (
 	variant					INT,
 	moment					INT UNSIGNED NOT NULL,
 	grade 					TINYINT(2),
-	uid 					INT UNSIGNED NOT NULL,
+	uid 					INT,
 	useranswer				TEXT,
 	submitted 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         -- timestamp when last graded/marked
@@ -174,7 +175,6 @@ CREATE TABLE userAnswer (
 	password				VARCHAR(7),
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
-	FOREIGN KEY (uid) REFERENCES user(uid),
 	FOREIGN KEY (quiz) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid),
 	FOREIGN KEY (variant) REFERENCES variant(vid)
