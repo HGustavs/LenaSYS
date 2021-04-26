@@ -11,10 +11,6 @@ INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (19,1894,1,2,'Curve Dugga','curve-dugga','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (20,1894,1,2,'Daily Minutes','daily-minutes','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (21,1894,1,2,'Diagram Dugga','diagram_dugga','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
-
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (22,1894,1,2,'Dugga 1','duggatest','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
-
-
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (22,1894,1,2,'Dugga 1','dugga1','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (23,1894,1,2,'Dugga 2','dugga2','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (24,1894,1,2,'Dugga 3','dugga3','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
@@ -31,6 +27,10 @@ INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (35,1894,1,2,'Shapes Dugga','shapes-dugga','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (36,1894,1,2,'Transforms Dugga','transforms-dugga','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (37,1894,1,2,'XMLAPI Report','XMLAPI_report1','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
+
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (38,1894,1,2,'Duggatest','duggatest','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
+
+
 
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3001,1894,'Tillgängliga Duggor','',4,0,1,1,'52432',3001,2,0,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3002,1894,'3D Dugga','13',3,1,1,1,'52432',3001,2,1,0);
