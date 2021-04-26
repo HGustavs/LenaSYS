@@ -543,8 +543,10 @@ const keybinds = {
 
 // Zoom variables
 var zoomfact = 1.0;
-var scrollx = 192;
-var scrolly = 140;
+var scrollx = 4132 / 4;
+var scrolly = 2600 / 4;
+var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
+var camera = new Point(0, 0); // Relative to coordinate system origo
 
 // Constants
 const elementwidth = 200;
@@ -564,6 +566,7 @@ const zoom0_75 = -0.775;
 const zoom0_5 = -3;
 const zoom0_25 = -15.01;
 const zoom0_125 = -64;
+const zoomPower = 1 / 3;
 
 // Arrow drawing stuff - diagram elements and diagram lines
 var lines = [];
@@ -883,10 +886,10 @@ function screenToDiagramCoordinates(mouseX, mouseY)
 
     return {
         x: Math.round(
-            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 // the 2 makes mouse hover over container
+            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x // the 2 makes mouse hover over container
         ),
         y: Math.round(
-            ((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly
+            ((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y
         ),
     };
 }
@@ -1730,14 +1733,27 @@ function fab_action()
 function zoomin(scrollEvent = undefined)
 {
     // Calculate mouse position relative to window size
-    var w = (scrollEvent.clientX / window.innerWidth  - 0.5) * 2 * window.innerWidth;
-    var h = (scrollEvent.clientY / window.innerHeight - 0.5) * 2 * window.innerHeight;
+    var w = (scrollEvent.clientX / window.innerWidth  - 0.5) * 2;
+    var h = (scrollEvent.clientY / window.innerHeight - 0.5) * 2;
+
+    if (zoomfact != 4.0)
+    {
+        var mc = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
+        console.log("Mouse:", mc.x, mc.y);
+
+        var delta = {
+            x: mc.x - zoomOrigo.x,
+            y: mc.y - zoomOrigo.y
+        };
+        console.log("Delta:", delta.x, delta.y);
+
+        zoomOrigo.x += delta.x * zoomPower;
+        zoomOrigo.y += delta.y * zoomPower;
+    }
 
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
-
-
-
+    
     if (zoomfact == 0.125) zoomfact = 0.25;
     else if (zoomfact == 0.25) zoomfact = 0.5;
     else if (zoomfact == 0.5) zoomfact = 0.75;
@@ -1746,9 +1762,14 @@ function zoomin(scrollEvent = undefined)
     else if (zoomfact == 1.25) zoomfact = 1.5;
     else if (zoomfact == 1.5) zoomfact = 2.0;
     else if (zoomfact == 2.0) zoomfact = 4.0;
-
+    
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
+
+    camera = {
+        x: (window.innerWidth * 0.5 - (scrollx / zoomfact) + 1) / zoomfact,
+        y: (window.innerHeight * 0.5 - (scrolly / zoomfact) + 1) / zoomfact
+    };
 
     updateGridSize();
 
@@ -1761,6 +1782,21 @@ function zoomin(scrollEvent = undefined)
 
 function zoomout(scrollEvent = undefined)
 {
+    if (zoomfact != 0.125)
+    {
+        var mc = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
+        console.log("Mouse:", mc.x, mc.y);
+
+        var delta = {
+            x: mc.x - zoomOrigo.x,
+            y: mc.y - zoomOrigo.y
+        };
+        console.log("Delta:", delta.x, delta.y);
+
+        zoomOrigo.x -= delta.x * zoomPower;
+        zoomOrigo.y -= delta.y * zoomPower;
+    }
+
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
@@ -2264,8 +2300,8 @@ function updateCSSForAllElements()
 {
     function updateElementDivCSS(elementData, divObject, useDelta = false)
     {
-        var left = Math.round((elementData.x * zoomfact) + (scrollx * (1.0 / zoomfact))),
-            top = Math.round((elementData.y * zoomfact) + (scrolly * (1.0 / zoomfact)));
+        var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
+            top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
         if (useDelta) {
             left -= deltaX;
