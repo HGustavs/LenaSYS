@@ -790,7 +790,7 @@ p {
   border-radius: 5px;
 }
 
- #sectionList_arrowStatisticsClosed{
+#sectionList_arrowStatisticsClosed{
   display: inline;
 }
 #sectionList_arrowStatisticsOpen{
@@ -4971,10 +4971,6 @@ only screen and (max-device-width: 860px) {
     display: block;
     height: 26px;
     opacity: 1.0;
-  }
-
-  #sectionList_arrowStatisticsOpen{
-    display: inline;
   }
 }
 
