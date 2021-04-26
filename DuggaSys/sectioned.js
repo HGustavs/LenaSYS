@@ -2137,7 +2137,7 @@ function toggleFeedbacks(){
           duggaFeedback = data.duggaFeedback;
           $(".feedbackContent").html(duggaFeedback);
           if ($(".recentFeedbacks").length == 0) {
-             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
+             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedback to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
              $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'><img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
           }
           $(".oldFeedbacks").hide();                  
@@ -2161,7 +2161,7 @@ function toggleFeedbacks(){
   });
 
   if ($("#feedback").length > 0) {
-    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><span><h2>Recent Feedbacks</h2></span></div><div class='feedbackContent'></div></div></div>");
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div><div class='feedbackContent'></div></div></div>");
 
   }
 
