@@ -481,8 +481,21 @@ for ($i = 0; $i < $userCount; $i++) {
 			
 			$content = "UNK";
 			$feedback = "UNK";
-	
+			$zipdir = "";
+			$zip = new ZipArchive;
 			$currcvd=getcwd();
+			
+
+			$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
+			if(!file_exists($ziptemp)) {
+				$zipdir="UNK";
+			}else{				
+				if ($zip->open($ziptemp) == TRUE) {
+					for ($i = 0; $i < $zip->numFiles; $i++) {
+						$zipdir .= $zip->getNameIndex($i).'<br />';
+					}
+				}
+			}
 			
 			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
 			if(!file_exists($fedbname)) {
@@ -496,7 +509,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			if($row['kind']=="3"){
 					// Read file contents
 					$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
-	
+
 					if(!file_exists($movname)) {
 							$content="UNK!";
 					} else {
@@ -514,7 +527,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			}else{
 					$content="Not a text-submit or URL";
 			}
-		
+
  			$uQuery = $pdo->prepare("SELECT username FROM user WHERE uid=:uid;");
 			$uQuery->bindParam(':uid', $row['uid'], PDO::PARAM_INT);
 			$uQuery->execute();
@@ -537,7 +550,8 @@ for ($i = 0; $i < $userCount; $i++) {
 				'segment' => $row['segment'],	
 				'content' => $content,
 				'feedback' => $feedback,
-				'username' => $username
+				'username' => $username,
+				'zipdir' => $zipdir
 			);
 	
 			// If the filednme key isn't set, create it now
