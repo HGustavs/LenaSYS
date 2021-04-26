@@ -569,11 +569,15 @@ p {
  margin-bottom: 15px;
 
 }
-.displayAnnounceTime,
-.displayAuthor,
+
 .editMark{
   color: #b3b3b3;
 }
+
+.displayAnnounceTime, .displayAuthor{
+  color: #000000;
+}
+
 .displayAuthor{
   float: right;
 }
