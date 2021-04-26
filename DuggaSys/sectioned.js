@@ -1164,6 +1164,7 @@ function returnedSection(data) {
       // But disable sorting if there is a #noAccessMessage
       if( $("#noAccessMessage").length) {
         $("#Sectionlistc").sortable("disable");
+        $("#statisticsSwimlanes").hide();
       }
     }
   } else {
