@@ -108,9 +108,8 @@
     </div>
 
     <!-- Message prompt -->
-    <div id="diagram-message" onclick="this.style.display = 'none'">
-        <span>This is a error. :)</span>
-    </div>
+    <div id="diagram-message"></div>
+
     <!-- Diagram drawing system canvas. -->
     <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
      <!-- One svg layer for background stuff and one for foreground stuff -->
@@ -142,9 +141,6 @@
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
         <div id ="fieldsetBox">
-            <fieldset id='cursorModeFieldset'>
-                <p id="text_currentlyPlacing">Now placing: NULL</p><br>
-            </fieldset>
             <fieldset id='propertyFieldset'>
                 
             </fieldset>

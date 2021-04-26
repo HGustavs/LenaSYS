@@ -46,7 +46,7 @@ class StateChange {
         // Combined flags
         ELEMENT_MOVED_AND_RESIZED:  { flag: 4|8, isSoft: true, canAppendTo: true },
         ELEMENT_AND_LINE_DELETED:   { flag: 2|64, isSoft: false, canAppendTo: false },
-        ELEMENT_AND_LINE_CREATED:   { flag: 1|32, isSoft: false, canAppendTo: true },
+        ELEMENT_AND_LINE_CREATED:   { flag: 1|32, isSoft: false, canAppendTo: false },
     };
 
     /**
@@ -147,7 +147,7 @@ class StateChange {
         }
 
         if (changes.moved) {
-            if (this.moved) { 
+            if (this.moved) {
                 this.moved.add(changes.moved);
             } else { 
                 this.moved = changes;
@@ -537,8 +537,10 @@ const keybinds = {
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
+        ENTER: {key: "Enter", ctrl: false},
         COPY: {key: "c", ctrl: true},
         PASTE: {key: "v", ctrl: true},
+        SELECT_ALL: {key: "a", ctrl: true}
 };
 
 // Zoom variables
@@ -623,7 +625,13 @@ var movingContainer = false;
 var isRulerActive = true;
 
 var randomidArray = []; // array for checking randomID
-var errorMsgTimer; //The variable that you use for clearing the setTimeout function
+var errorMsgMap = {};
+
+const messageTypes = {
+    ERROR: "error",
+    WARNING: "warning",
+    SUCCESS: "success"
+};
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
 //-------------------------------------------------------------------------------------------------
@@ -752,7 +760,7 @@ document.addEventListener('keydown', function (e)
 {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-
+       
         if (e.key == keybinds.LEFT_CONTROL.key && ctrlPressed !== true) ctrlPressed = true;
         if (e.key == keybinds.ALT.key && altPressed !== true) altPressed = true;
         if (e.key == keybinds.DELETE.key && e.ctrlKey == keybinds.DELETE.ctrl) {
@@ -767,6 +775,8 @@ document.addEventListener('keydown', function (e)
         if (e.key == keybinds.ESCAPE.key && escPressed != true) {
             escPressed = true;
             clearContext();
+            setMouseMode(mouseModes.POINTER);
+            clearContextLine();
             movingObject = false;
 
             if (movingContainer) {
@@ -784,6 +794,19 @@ document.addEventListener('keydown', function (e)
             removeLines(contextLine);
             updateSelection();
         }
+
+        if (e.key == keybinds.SELECT_ALL.key && e.ctrlKey == keybinds.SELECT_ALL.ctrl){
+            e.preventDefault();
+            selectAll();
+        }
+       
+    }
+    // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
+    if ( /INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
+        if (e.key == keybinds.ENTER.key && e.ctrlKey == keybinds.ENTER.ctrl) {
+            changeState();
+            saveProperties();
+        }
     }
 });
 
@@ -791,7 +814,9 @@ document.addEventListener('keyup', function (e)
 {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
+        
+        var pressedKey = e.key.toLowerCase();
+
         //  TODO : Switch cases?
         if (e.key == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
         if (e.key == keybinds.ALT.key) altPressed = false;
@@ -800,50 +825,50 @@ document.addEventListener('keyup', function (e)
         if (e.key == keybinds.ESCAPE.key && e.ctrlKey == keybinds.ESCAPE.ctrl) {
             escPressed = false;
         }
-        if (e.key == keybinds.HISTORY_STEPBACK.key && e.ctrlKey == keybinds.HISTORY_STEPBACK.ctrl) {
+        if (pressedKey == keybinds.HISTORY_STEPBACK.key && e.ctrlKey == keybinds.HISTORY_STEPBACK.ctrl) {
             stateMachine.stepBack();
         }
 
-        if (e.key == keybinds.BOX_SELECTION.key && e.ctrlKey == keybinds.BOX_SELECTION.ctrl) {
+        if (pressedKey == keybinds.BOX_SELECTION.key && e.ctrlKey == keybinds.BOX_SELECTION.ctrl) {
             setMouseMode(mouseModes.BOX_SELECTION);
         }
-        if (e.key == keybinds.POINTER.key && e.ctrlKey == keybinds.POINTER.ctrl) {
+        if (pressedKey == keybinds.POINTER.key && e.ctrlKey == keybinds.POINTER.ctrl) {
             setMouseMode(mouseModes.POINTER);
         }
-        if (e.key == keybinds.EDGE_CREATION.key && e.ctrlKey == keybinds.EDGE_CREATION.ctrl) {
+        if (pressedKey == keybinds.EDGE_CREATION.key && e.ctrlKey == keybinds.EDGE_CREATION.ctrl) {
             setMouseMode(mouseModes.EDGE_CREATION);
             clearContext();
         }
-        if (e.key == keybinds.PLACE_ENTITY.key && e.ctrlKey == keybinds.PLACE_ENTITY.ctrl) {
+        if (pressedKey == keybinds.PLACE_ENTITY.key && e.ctrlKey == keybinds.PLACE_ENTITY.ctrl) {
             setElementPlacementType(elementTypes.ENTITY);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.PLACE_RELATION.key && e.ctrlKey == keybinds.PLACE_RELATION.ctrl) {
+        if (pressedKey== keybinds.PLACE_RELATION.key && e.ctrlKey == keybinds.PLACE_RELATION.ctrl) {
             setElementPlacementType(elementTypes.RELATION);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.PLACE_ATTRIBUTE.key && e.ctrlKey == keybinds.PLACE_ATTRIBUTE.ctrl) {
+        if (pressedKey== keybinds.PLACE_ATTRIBUTE.key && e.ctrlKey == keybinds.PLACE_ATTRIBUTE.ctrl) {
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.TOGGLE_GRID.key && e.ctrlKey == keybinds.TOGGLE_GRID.ctrl) {
+        if (pressedKey == keybinds.TOGGLE_GRID.key && e.ctrlKey == keybinds.TOGGLE_GRID.ctrl) {
             toggleGrid();
         }
-        if (e.key == keybinds.TOGGLE_RULER.key && e.ctrlKey == keybinds.TOGGLE_RULER.ctrl) {
+        if (pressedKey == keybinds.TOGGLE_RULER.key && e.ctrlKey == keybinds.TOGGLE_RULER.ctrl) {
             toggleRuler();
         }
-        if (e.key == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
+        if (pressedKey == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
             fab_action();
         }
-        if (e.key == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
+        if (pressedKey == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
             clipboard = context;
             if (clipboard.length !== 0){
-                displayMessage("success", `You have copied ${clipboard.length} elements and it's inner connected lines.`)
+                displayMessage(messageTypes.SUCCESS, `You have copied ${clipboard.length} elements and it's inner connected lines.`)
             }else {
-                displayMessage("success", `Clipboard cleared.`)
+                displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`)
             }
         }
-        if (e.key == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
+        if (pressedKey == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
             pasteClipboard(clipboard)
         }
     }
@@ -964,6 +989,7 @@ function ddown(event)
             }
 
         case mouseModes.EDGE_CREATION:
+            if(event.button == 2) return;
             var element = data[findIndex(data, event.currentTarget.id)];
             if (element != null && !context.includes(element) || !ctrlPressed){
                 updateSelection(element);
@@ -1409,28 +1435,15 @@ function makeGhost()
 function setMouseMode(mode)
 {   
     if (enumContainsPropertyValue(mode, mouseModes)) {
-        // Enable all buttons but the current mode one
-        var children = document.getElementById('cursorModeFieldset').children;
-        for (var index = 0; index < children.length; index++) {
-            const child = children[index];
-
-            // If child is a button
-            if (child.tagName == "INPUT") {
-                // Disable if current mode button, enable otherwise.
-                child.disabled = child.className.toUpperCase().includes(mode) ? true : false;
-            }
-        }
+        // Mode-specific activation/deactivation
+        onMouseModeDisabled();
+        mouseMode = mode;
+        setCursorStyles(mode);
+        onMouseModeEnabled();
     } else {
         // Not implemented exception
         console.error("Invalid mode passed to setMouseMode method. Missing implementation?");
-        return;
     }
-
-    // Mode-specific activation/deactivation
-    onMouseModeDisabled();
-    mouseMode = mode;
-    setCursorStyles(mode);
-    onMouseModeEnabled();
 }
 
 function setCursorStyles(cursorMode = 0)
@@ -1908,10 +1921,10 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
             return newLine;
             
         } else {
-            displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
+            displayMessage(messageTypes.ERROR,"Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
         }
     } else {
-        displayMessage("error", "Not possible to draw a line between two: " + context[0].kind);
+        displayMessage(messageTypes.ERROR, "Not possible to draw a line between two: " + context[0].kind);
     }
 }
 
@@ -2105,6 +2118,13 @@ function updateSelection(ctxelement)
     generateContextProperties();
 }
 
+function selectAll()
+{   
+    context = data;
+    contextLine = lines;
+    showdata();
+}
+
 //-------------------------------------------------------------------------------------------------
 // updatepos - Update positions of all elements based on the zoom level and view space coordinate
 //-------------------------------------------------------------------------------------------------
@@ -2263,7 +2283,7 @@ function generateContextProperties()
                 }
             }
         str += '</select>'; 
-        str+=`<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage('success', 'Successfully saved')">`;
+        str+=`<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
 
     } 
 
@@ -2746,6 +2766,30 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     redrawArrows();
     showdata();
 }
+//-------------------------------------------------------------------------------------------------
+// Create and display an message in the diagram
+//-------------------------------------------------------------------------------------------------
+function displayMessage(type, message, time = 5000)
+{
+    // Message settings
+    const maxMessagesAtDisplay = 5; // The number of messages that can be displayed on the screen
+
+    var messageElement = document.getElementById("diagram-message"); // Get div for error-messages
+    var id = makeRandomID();
+
+    // If the already is the maximum number of messages, remove the oldest one
+    if (messageElement.childElementCount >= maxMessagesAtDisplay) {
+        removeMessage(messageElement.firstElementChild);
+    }
+
+    // Add a new message to the div.
+    messageElement.innerHTML += `<div id='${id}' onclick='removeMessage(this)' class='${type}'><p>${message}</p></div>`;
+
+    if (time > 0) {
+        setTimerToMessage(messageElement.lastElementChild, time);
+    }
+
+}
 
 function pasteClipboard(elements)
 {
@@ -2837,36 +2881,61 @@ function pasteClipboard(elements)
 
     // Save the copyed elements to stateMachine
     stateMachine.save(StateChangeFactory.ElementsAndLinesCreated(newElements, newLines));
-
-    displayMessage("success", `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
+    displayMessage(messageTypes.SUCCESS, `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
+    clearContext(); // Deselect old selected elements
+    context = newElements; // Set context to the pasted elements
     showdata();
 }
 
-function displayMessage(type, message)
-{
-    var messageEl = document.getElementById("diagram-message") // Get div for error-messages
+//-------------------------------------------------------------------------------------------------
+// Set a time for the element to exist, will be removed after time has exceeded
+//-------------------------------------------------------------------------------------------------
 
-    switch (type) {
-        case "error":
-            messageEl.style.background = "rgb(255, 153, 153)";
-            break;
-        case "success":
-            messageEl.style.background = "rgb(153, 255, 153)";
-            break
-        default:
-            messageEl.style.background = "rgb(255, 153, 153)";
-            break;
+function setTimerToMessage(element, time = 5000)
+{
+    if (!element) return;
+
+    element.innerHTML += `<div class="timeIndicatorBar"></div>`;
+    var timer = setInterval( function(){
+        var element = document.getElementById(errorMsgMap[timer].id);
+        errorMsgMap[timer].percent -= 1;
+        element.lastElementChild.style.width = `calc(${errorMsgMap[timer].percent - 1}% - 10px)`;
+
+        // If the time is out, remove the message
+        if(errorMsgMap[timer].percent === 0) removeMessage(element, timer);
+
+    }, time / 100);
+
+    // Adds to map: TimerID: ElementID, Percent
+    errorMsgMap[timer] = {
+        id: element.id,
+        percent: 100
+    };
+}
+//-------------------------------------------------------------------------------------------------
+// Removes the message from DOM and removes all the variables that are used
+//-------------------------------------------------------------------------------------------------
+function removeMessage(element, timer)
+{
+    // If there is no timer in the parameter try find it by elementID in
+    if (!timer) {
+        timer = Object.keys(errorMsgMap).find(key => {
+            return errorMsgMap[key].id === element.id
+        });
     }
 
-    messageEl.innerHTML = "<span>" + message + "</span>";
-    messageEl.style.display = "block";
+    if (timer) {
+        clearInterval(timer); // Remove the timer
+        delete errorMsgMap[timer]; // Remove timer from the map
+    }
 
-    if(errorMsgTimer) clearTimeout(errorMsgTimer);
-    //Set timeout to remove the message
-    errorMsgTimer = setTimeout(function (){
-        messageEl.style.display = "none";
-    }, 2000);
+    element.remove(); // Remove the element from DOM
+    // Remove ID from randomidArray
+    randomidArray = randomidArray.filter(id => {
+        return element.id !== id;
+    });
 }
+
 //------------------------------------=======############==========----------------------------------------
 //                                    Default data display stuff
 //------------------------------------=======############==========----------------------------------------
@@ -2879,6 +2948,7 @@ function getData()
     generateToolTips();
     toggleGrid();
     updateGridPos();
+    setCursorStyles(mouseMode);
 }
 
 function generateToolTips()
@@ -2929,6 +2999,13 @@ function clearContext()
 {
     if(context != null){
         context = [];
+        generateContextProperties();
+    }
+}
+function clearContextLine()
+{
+    if(contextLine != null){
+        contextLine = [];
         generateContextProperties();
     }
 }
