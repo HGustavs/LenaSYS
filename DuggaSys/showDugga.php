@@ -36,6 +36,7 @@
 	$deadline=getOPG('deadline');
 	$comments=getOPG('comments');
 	$hash = getOPG("hash");
+	$test=getOPG('test');
 
 	$duggatitle="UNK";
 	$duggafile="UNK";
@@ -44,6 +45,7 @@
 
 	$visibility=false;
 	$checklogin=false;
+	$isSaved=0;
 	
 	$variantsize;
 	$variants=array();
@@ -146,10 +148,12 @@ function hashPassword($password, $hash){
 			if($count == 0){
 				echo '<script>console.log(false)</script>';
 				echo "<script>console.log('".$count."')</script>;";
+				$isSaved = 0;
 				return false;
 			} else{
 				echo '<script>console.log(true)</script>';
 				echo "<script>console.log('".$count."')</script>;";
+				$isSaved = 1;
 				return true;
 			}
 }
@@ -158,19 +162,23 @@ echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
 if($hash!='UNK'){
 	if(!hashPassword($hashpassword, $hash)){
-		echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
-		echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
-		echo "<div class='loginBoxheader'>";
-		echo "<h3>Login for Saved Dugga</h3>";
-		echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
-		echo "</div>";
-		echo "<p id='passwordtext'>Enter your password for the hash:</p>";
-		echo "<p id='hash' style='font-weight: bold;'>$hash</p>";
-		echo "<input id='passwordfield' name='password' class='textinput' type='password' placeholder='Password'>";
-		echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
-		echo "</div>";
-		echo "</div>";
-		exit();
+		error_log("isSaved = ".$isSaved,0);
+		if($isSaved == 1){
+			echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
+			echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
+			echo "<div class='loginBoxheader'>";
+			echo "<h3>Login for Saved Dugga</h3>";
+			echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
+			echo "</div>";
+			echo "<p id='passwordtext'>Enter your password for the hash:</p>";
+			echo "<p id='hash' style='font-weight: bold;'>$hash</p>";
+			echo "<input id='passwordfield' name='password' class='textinput' type='password' placeholder='Password'>";
+			echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
+			echo "</div>";
+			echo "</div>";
+			exit();
+		}
+		
 	}
 }
 //Remove if you want the password to be persistent.

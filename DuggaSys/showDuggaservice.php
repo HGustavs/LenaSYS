@@ -180,6 +180,8 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
         $submitted = $row['submitted'];
         $marked = $row['marked'];
 		$password = $row['password'];
+
+		
     }
 
 // -------------------------OLD FUNCTIONALITY WHERE WE CHECK IF USER IS LOGGED IN AND HAS ACESS-------------------

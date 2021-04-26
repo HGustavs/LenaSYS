@@ -658,6 +658,8 @@ function saveDuggaResult(citstr)
 	blockhashgen = true; //Block-Hash-Generation: No new hash should be generated if 'Save' is clicked more than once per dugga session.
 
 	var url = createUrl(hash); //Create URL
+	console.log("pwd = "+pwd);
+	if(pwd.includes("undef")) pwd = randomPassword();
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
 	var readonly;
@@ -1073,6 +1075,7 @@ function AJAXService(opt,apara,kind)
 						getExpireTime(querystring['did']);
 						var variantsize = data['variantsize'];
 						localStorage.setItem("variantSize", variantsize);
+						console.log("ajax call "+data['password']);
 						setPassword(data['password']);
 					}
 				});
