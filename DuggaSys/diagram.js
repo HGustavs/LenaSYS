@@ -46,7 +46,7 @@ class StateChange {
         // Combined flags
         ELEMENT_MOVED_AND_RESIZED:  { flag: 4|8, isSoft: true, canAppendTo: true },
         ELEMENT_AND_LINE_DELETED:   { flag: 2|64, isSoft: false, canAppendTo: false },
-        ELEMENT_AND_LINE_CREATED:   { flag: 1|32, isSoft: false, canAppendTo: true },
+        ELEMENT_AND_LINE_CREATED:   { flag: 1|32, isSoft: false, canAppendTo: false },
     };
 
     /**
@@ -147,7 +147,7 @@ class StateChange {
         }
 
         if (changes.moved) {
-            if (this.moved) { 
+            if (this.moved) {
                 this.moved.add(changes.moved);
             } else { 
                 this.moved = changes;
@@ -860,9 +860,9 @@ document.addEventListener('keyup', function (e)
         if (pressedKey == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
             clipboard = context;
             if (clipboard.length !== 0){
-                displayMessage("success", `You have copied ${clipboard.length} elements and it's inner connected lines.`)
+                displayMessage(messageTypes.SUCCESS, `You have copied ${clipboard.length} elements and it's inner connected lines.`)
             }else {
-                displayMessage("success", `Clipboard cleared.`)
+                displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`)
             }
         }
         if (pressedKey == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
@@ -2839,7 +2839,7 @@ function pasteClipboard(elements)
     // Save the copyed elements to stateMachine
     stateMachine.save(StateChangeFactory.ElementsAndLinesCreated(newElements, newLines));
 
-    displayMessage("success", `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
+    displayMessage(messageTypes.SUCCESS, `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
     showdata();
 }
 
