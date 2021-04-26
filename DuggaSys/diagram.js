@@ -772,7 +772,7 @@ document.addEventListener('keyup', function (e)
 
 window.addEventListener("resize", () => {
     updateContainerBounds();
-    drawRulerBars();
+    drawRulerBars(scrollX,scrolly);
 });
 
 window.onfocus = function()
@@ -1156,7 +1156,6 @@ function mmoving(event)
             scrolly = sscrolly - Math.round(deltaY * zoomfact);
 
             updateGridPos();
-            //updateRulerPos(scrollx, scrolly);
             drawRulerBars(scrollx,scrolly);
 
             // Update scroll position
@@ -1467,7 +1466,7 @@ function toggleRuler()
     }
   
     isRulerActive = !isRulerActive;
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 }
 
 function setElementPlacementType(type = 0)
@@ -1672,7 +1671,7 @@ function zoomin()
     showdata();
 
     // Draw new rules to match the new zoomfact
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 }
 
 function zoomout()
@@ -2488,10 +2487,6 @@ function drawRulerBars(X,Y)
 {
     //Get elements
     if(!isRulerActive) return;
-
-    var pannedY = Y - 100;
-    var pannedX = X - 100;
-    console.log(pannedX - (pannedX *2) + cheight);
     
     svgX = document.getElementById("ruler-x-svg");
     svgY = document.getElementById("ruler-y-svg");
@@ -2502,10 +2497,12 @@ function drawRulerBars(X,Y)
     const color = "black";
     var cordY = 0;
     var cordX = 0;
-    
+    var pannedY = Y - 100;
+    var pannedX = X - 100;
+    console.log(X);
     //Draw the Y-axis ruler.
     var lineNumber = (fullLineRatio - 1);
-    for (i = 100;i <= pannedY -(pannedY *2) + cheight + 200; i += lineRatio) {
+    for (i = 100;i <= pannedY -(pannedY *2) + cheight + 80; i += lineRatio) {
         lineNumber++;
 
         //Check if a full line should be drawn
@@ -2517,15 +2514,13 @@ function drawRulerBars(X,Y)
         }
         else barY += "<line x1='25px' y1='"+(pannedY+i-60)+"' x2='40px' y2='"+(pannedY+i-60)+"' stroke='"+color+"' />";
     }
-    
     svgY.style.backgroundColor = "#e6e6e6";
     svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
 
-    
     //Draw the X-axis ruler.
     lineNumber = (fullLineRatio - 1);
-    for (i = 48;i <= pannedX - (pannedX *2) + cheight + 1200; i += lineRatio) {
+    for (i = 48;i <= pannedX - (pannedX *2) + cheight + 900; i += lineRatio) {
         lineNumber++;
 
         //Check if a full line should be drawn
@@ -2537,7 +2532,6 @@ function drawRulerBars(X,Y)
         }
         else barX += "<line x1='" +(pannedX+i-7)+"' y1='25' x2='" +(pannedX+i-7)+"' y2='40px' stroke='" + color + "' />";
     }
-    
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
     svgX.style.backgroundColor = "#e6e6e6";
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
