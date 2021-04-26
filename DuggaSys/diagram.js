@@ -1161,6 +1161,7 @@ function mmoving(event)
 
             // Update scroll position
             updatepos(null, null);
+            //drawRulerBars();
 
             
 
@@ -2683,23 +2684,7 @@ function updateGridPos()
     bLayer.setAttribute('x', (scrollx * (1.0 / zoomfact)));
     bLayer.setAttribute('y', (scrolly * (1.0 / zoomfact)));
 }
-function updateRulerPos(X, Y)
-{
-    var asdfasf = (scrollx * (1.0 / zoomfact));
-    var asdfasfasdad = (scrolly * (1.0 / zoomfact));
 
-    var rulerY = document.getElementById("ruler-y-svg");
-    var rulerX = document.getElementById("ruler-x-svg");
-    var yyy = document.getElementById("svg-pattern-y");
-    var xxx = document.getElementById("svg-pattern-x");
-    
-    
-    //rulerX.setAttribute('transform','translate('+(X-100)+')');
-    yyy.setAttribute('transform','translate(0,'+(Y-100)+')');
-    xxx.setAttribute('transform','translate('+(X-100)+')');
-    
-    
-}
 function clearContext()
 {
     context = [];
