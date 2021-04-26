@@ -543,8 +543,8 @@ const keybinds = {
 
 // Zoom variables
 var zoomfact = 1.0;
-var scrollx = 100;
-var scrolly = 100;
+var scrollx = 192;
+var scrolly = 140;
 
 // Constants
 const elementwidth = 200;
@@ -907,9 +907,9 @@ function diagramToScreenPosition(coordX, coordY)
 function mwheel(event)
 {
     if(event.deltaY < 0) {
-        zoomin();
+        zoomin(event);
     } else {
-        zoomout();
+        zoomout(event);
     }
 }
 
@@ -1727,10 +1727,16 @@ function fab_action()
 // zoomin/out - functions for updating the zoom factor and scroll positions
 //-------------------------------------------------------------------------------------------------
 
-function zoomin()
+function zoomin(scrollEvent = undefined)
 {
+    // Calculate mouse position relative to window size
+    var w = (scrollEvent.clientX / window.innerWidth  - 0.5) * 2 * window.innerWidth;
+    var h = (scrollEvent.clientY / window.innerHeight - 0.5) * 2 * window.innerHeight;
+
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
+
+
 
     if (zoomfact == 0.125) zoomfact = 0.25;
     else if (zoomfact == 0.25) zoomfact = 0.5;
@@ -1753,7 +1759,7 @@ function zoomin()
     drawRulerBars();
 }
 
-function zoomout()
+function zoomout(scrollEvent = undefined)
 {
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
@@ -2836,6 +2842,7 @@ function getData()
     drawRulerBars();
     generateToolTips();
     toggleGrid();
+    updateGridPos();
 }
 
 function generateToolTips()
