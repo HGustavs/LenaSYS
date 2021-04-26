@@ -38,9 +38,11 @@ $rating=getOP('score');
 $entryname=getOP('entryname');
 $hash=getOP('hash');
 $password=getOP('password');
-$showall="true";
-$localStorageVariant= getOP('variant');
+$AUtoken=getOP('AUtoken');
+//$localStorageVariant= getOP('variant');
+$variantvalue= getOP('variant');
 
+$showall="true";
 $param = "UNK";
 $savedanswer = "";
 $highscoremode = "";
@@ -72,6 +74,27 @@ $debug="NONE!";
 $log_uuid = getOP('log_uuid');
 $info=$opt." ".$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$segment." ".$answer;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php",$userid,$info);
+
+if(strcmp($opt,"UPDATEAU")==0){
+	$query = $pdo->prepare("SELECT active_users FROM groupdugga WHERE hash=:hash");
+	$query->bindParam(':hash', $hash);
+	$query->execute();
+	$result = $query->fetch();
+	$active = $result['active_users'];
+	if($active == null){
+		$query = $pdo->prepare("INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken);");
+		$query->bindParam(':hash', $hash);
+		$query->bindParam(':AUtoken', $AUtoken);
+		$query->execute();
+	}else{
+		$newToken = (int)$active + (int)$AUtoken;
+		$query = $pdo->prepare("UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;");
+		$query->bindParam(':hash', $hash);
+		$query->bindParam(':AUtoken', $newToken);
+		$query->execute();
+	}
+}
+
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
@@ -207,7 +230,7 @@ if($demo){
 			$param="NONE!";
 	}
 	foreach ($variants as $variant) {
-		if($variant["vid"] == $savedvariant){
+		if($variant["vid"] == $variantvalue){
 			$param=html_entity_decode($variant['param']);
 		}
 	}
@@ -215,24 +238,15 @@ if($demo){
 	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
 	$query->execute();
 	$variantsize = $query->fetchColumn();
-	
+
 	//Makes sure that the localstorage variant is set before retrieving data from database
-	if(isset($localStorageVariant)) {
-		// If it's the first time showing this variant
-		if($localStorageVariant == 0) {
-			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-			$query->bindParam(':vid', $savedvariant);
-			$query->execute();
-			$result = $query->fetch();
-			$param=html_entity_decode($result['param']);
-		} else {
-			// If we already have a variant in localstorage
-			$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-			$query->bindParam(':vid', $localStorageVariant);
-			$query->execute();
-			$result = $query->fetch();
-			$param=html_entity_decode($result['param']);
-		}
+	if(isset($variantvalue)) {
+		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+		$query->bindParam(':vid', $variantvalue);
+		$query->execute();
+		$result = $query->fetch();
+		$param=html_entity_decode($result['param']);
+		error_log("result param: ".$param);
 	}
 } else if ($hr){
 	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
@@ -245,13 +259,13 @@ if($demo){
 			$param="NONE!";
 		}
 		foreach ($variants as $variant) {
-			if($variant["vid"] == $savedvariant){
+			if($variant["vid"] == $variantvalue){
 					$param=html_entity_decode($variant['param']);
 			}
 		}
 	}else if(!$isIndb){ // If dugga is not in database, get the variant from the localstorage
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-		$query->bindParam(':vid', $localStorageVariant);
+		$query->bindParam(':vid', $variantvalue);
 		$query->execute();
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
@@ -304,7 +318,7 @@ if(checklogin()){
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':moment', $moment);
-				$query->bindParam(':variant', $localStorageVariant);
+				$query->bindParam(':variant', $savedvariant);
 				$query->bindParam(':hash', $hash);
 				$query->bindParam(':password', $password);
 				if(!$query->execute()) {
@@ -440,13 +454,13 @@ if(strcmp($opt,"GRPDUGGA")==0){
 $files= array();
 for ($i = 0; $i < $userCount; $i++) {
 	if ($showall==="true"){
-		$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
+		$query = $pdo->prepare("select subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission where hash=:hash and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
 	} else {
-		$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
+		$query = $pdo->prepare("select subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission where hash=:hash and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
 		$query->bindParam(':did', $duggaid);
 	}
 	if ($i == 0) {
-		$query->bindParam(':uid', $userid);
+		$query->bindParam(':hash', $hash);
 	} else {
 		$query->bindParam(':uid', $usersInGroup[$i-1]);
 	}
@@ -461,13 +475,36 @@ for ($i = 0; $i < $userCount; $i++) {
 	foreach($query->fetchAll() as $row) {
 			
 			$content = "UNK";
+			$feedback = "UNK";
+			$zipdir = "";
+			$zip = new ZipArchive;
 			$currcvd=getcwd();
 			
+
+			$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
+			if(!file_exists($ziptemp)) {
+				$zipdir="UNK";
+			}else{				
+				if ($zip->open($ziptemp) == TRUE) {
+					for ($i = 0; $i < $zip->numFiles; $i++) {
+						$zipdir .= $zip->getNameIndex($i).'<br />';
+					}
+				}
+			}
+			
+			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
+			if(!file_exists($fedbname)) {
+					$feedback="UNK";
+			} else {
+				if($today > $duggainfo['qrelease']  || is_null($duggainfo['qrelease'])){
+					$feedback=file_get_contents($fedbname);				
+				}
+			}			
 			
 			if($row['kind']=="3"){
 					// Read file contents
 					$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
-	
+
 					if(!file_exists($movname)) {
 							$content="UNK!";
 					} else {
@@ -485,7 +522,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			}else{
 					$content="Not a text-submit or URL";
 			}
-		
+
  			$uQuery = $pdo->prepare("SELECT username FROM user WHERE uid=:uid;");
 			$uQuery->bindParam(':uid', $row['uid'], PDO::PARAM_INT);
 			$uQuery->execute();
@@ -507,7 +544,9 @@ for ($i = 0; $i < $userCount; $i++) {
 				'seq' => $row['seq'],	
 				'segment' => $row['segment'],	
 				'content' => $content,
-				'username' => $username
+				'feedback' => $feedback,
+				'username' => $username,
+				'zipdir' => $zipdir
 			);
 	
 			// If the filednme key isn't set, create it now
@@ -572,6 +611,7 @@ $array = array(
 		"variant" => $savedvariant,
 		"ishashindb" => $ishashindb,
 		"variantsize" => $variantsize,
+		"variantvalue" => $variantvalue,
 		"password" => $password,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;

@@ -22,12 +22,23 @@ var ishashindb;
 var blockhashgen = false;
 var ishashinurl;
 var itemvalue;
+var groupTokenValue = 1;
+var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
+var isGroupDugga = true; // Set to false if you hate the popup
+var variantvalue;
+
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
 		$(".fixed-action-button").css("bottom", "64px");
 	}
 })
+
+function sendGroupAjax(val) {
+	// val = 1: new user, val = 0: exit
+	groupTokenValue = val;
+	AJAXService("UPDATEAU", {}, "GROUPTOKEN");
+}
 
 
 
@@ -482,12 +493,12 @@ function getExpireTime(key){
 	const now = new Date()
 
 	if(now.getTime() > item.expiry){
-		console.log(key + " has expired")
-		localStorage.removeItem(key)
+		console.log(key+"has expired");
+		localStorage.removeItem(key);
+		location.reload(); //Reloads the site to show correct new variant
 		return null
 	}
 	itemvalue = item.value;
-	console.log("item value: "+itemvalue);
 	return item.value;
 }
 
@@ -649,7 +660,6 @@ function saveDuggaResult(citstr)
 	var url = createUrl(hash); //Create URL
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
-
 	var readonly;
 	$.ajax({
 		url: "courseedservice.php",
@@ -669,12 +679,12 @@ function saveDuggaResult(citstr)
 			citstr=querystring['cid']+" "+citstr;
 			citstr+= "##!!##" + timeUsed;
 			citstr+= "##!!##" + stepsUsed;
-			citstr+= "##!!##" + score;
+			//citstr+= "##!!##" + score;
 			hexstr="";
 			for(i=0;i<citstr.length;i++){
 					hexstr+=citstr.charCodeAt(i).toString(16)+" ";
 			}
-
+			
 			AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
 			document.getElementById('receipt').value = hexstr;
@@ -846,6 +856,29 @@ function htmlEntities(str) {
 }
 
 //----------------------------------------------------------------------------------
+// beforeunload: Detect when student exits dugga
+//----------------------------------------------------------------------------------
+window.addEventListener('beforeunload', function (e) {
+	if(getUrlParam("did") != null){
+		groupTokenValue = -1;
+
+		if (!passwordReload && isGroupDugga) {
+			e.returnValue = '';
+			sendGroupAjax(-1);
+		}
+	}
+	
+});
+
+
+function getUrlParam(param){
+	var url_string = window.location.href;
+	var url = new URL(url_string);
+	return url.searchParams.get(param);
+}
+
+
+//----------------------------------------------------------------------------------
 // AJAX Service: Generic AJAX Calling Function with Prepared Parameters
 //----------------------------------------------------------------------------------
 
@@ -993,41 +1026,58 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
-			if(localStorage.getItem("variantSize") == null) {
-				localStorage.setItem("variantSize", 100);
-			}
-			var newInt = +localStorage.getItem('variantSize');
-			if(querystring['did'] <= newInt) {
-				if(localStorage.getItem(querystring['did']) == null){
-					localStorage.setItem(querystring['did'], 0);
+		$.ajax({ //get variant
+			url: "showDuggaService.php",
+			type: "POST",
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
+			datatype: "json",
+			success: function(data){
+				//Checks if the variantSize variant is set in localstorage. When its not, its set.
+				if(localStorage.getItem("variantSize") == null) {
+					localStorage.setItem("variantSize", 100);
 				}
-			}
-			//var test = JSON.parse(localStorage.getItem(querystring['did']));
-			$.ajax({
-				url: "showDuggaservice.php",
-				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +localStorage.getItem(querystring['did']), 
-				dataType: "json",
-				success: function(data) {
-					// First check if dugga hash is unique.
-					returnedDugga(data);
-					ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-					if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
-						hash = generateHash();	//Old hash gets replaced by new hash before saving to database.
+				//Converts the localstorage variant from string to int
+				var newInt = +localStorage.getItem('variantSize');
+				//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
+				if(querystring['did'] <= newInt) {
+					if(localStorage.getItem(querystring['did']) == null){
+						returndata = JSON.parse(data);
+						variantvalue = returndata.variant;
+					} else {
+						var test = JSON.parse(localStorage.getItem(querystring['did']));
+						variantvalue = test.value;
 					}
-					// Check localstorage variants.
-					var newvariant = data['variant'];
-					if(localStorage.getItem(querystring['did']) == 0){
-						localStorage.setItem(querystring['did'], newvariant);
-						//The big number below represents 30 days in milliseconds
-						//setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 5000);
-					}
-					//getExpireTime(querystring['did']);
-					var variantsize = data['variantsize'];
-					localStorage.setItem("variantSize", variantsize);
-					setPassword(data['password']);
 				}
-			});
+				console.log("real variantvalue: "+variantvalue);
+				$.ajax({ //original ajax call
+					beforeSend: function(){
+					},
+					url: "showDuggaservice.php",
+					type: "POST",
+					data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +variantvalue, 
+					dataType: "json",
+					success: function (data) {
+						returnedDugga(data);
+						ishashindb = data['ishashindb'];										//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+						if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
+							recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
+						}
+						// Check localstorage variants.
+						var newvariant = data['variantvalue'];
+						
+						if(localStorage.getItem(querystring['did']) == null){
+							localStorage.setItem(querystring['did'], newvariant);
+							//The big number below represents 30 days in milliseconds
+							setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
+						}
+						getExpireTime(querystring['did']);
+						var variantsize = data['variantsize'];
+						localStorage.setItem("variantSize", variantsize);
+						setPassword(data['password']);
+					}
+				});
+			}
+		})
 	}else if(kind=="RESULT"){
 			$.ajax({
 				url: "resultedservice.php",
@@ -1117,7 +1167,34 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedUserFeedback
 		});
+		
 	}
+	else if(kind=="GROUPTOKEN") {
+		$.ajax({
+			url: "showDuggaservice.php",
+			type:"POST",
+			data:"AUtoken="+groupTokenValue+"&hash="+hash+"&opt="+opt+para,
+			dataType: "json"
+		});
+	}
+}
+
+//If the first generated hash isn't unique this method is recursively called until a hash is unique.
+function recursiveAjax(){
+	hash = generateHash();						//A new hash is generated.
+	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
+		url: "showDuggaservice.php",
+		type: "POST",
+		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
+		dataType: "json",
+		success: function(data) {
+			returnedDugga(data);
+			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+			if(ishashindb==true){				//If the hash already exist in database.
+				recursiveAjax();				//Call this method again.
+			}								
+		}
+	});
 }
 
 //Will handle enter key pressed when loginbox is showing
@@ -1426,6 +1503,8 @@ function checkHashPassword(){
             if(auth){
         		console.log('Success!');
         		hideHashBox();
+				passwordReload = true;
+				sendGroupAjax(1);
         		reloadPage();
         	}else{
         		$('#passwordtext').text('Wrong password, try again!');
@@ -1620,19 +1699,25 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		var mobileMediaQuery = window.matchMedia("(max-width: 800px)");
 		var mediumMediaQuery = window.matchMedia("(min-width: 801px) and (max-width: 1200px)");
 		var tab="<table class='previewTable'>";
-
-		if (group) {
+  // Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
+	if (group) {
       if (mobileMediaQuery.matches) {
-        tab+="<thead><tr><th>User</th><th>Filename</th><th>Upload date</th></tr></thead>";
+        tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
       } else {
-			  tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th></tr></thead>";
+			  tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
       }
+	} else if(ctype == "zip" || ctype == "rar"){
+		if(mobileMediaQuery.matches){
+			tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+		} else {
+			tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+		}
     } else {
-      if (mobileMediaQuery.matches) {
-			tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
-		  } else {
-			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th></tr></thead>";
-		  }
+    if (mobileMediaQuery.matches) {
+	    tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+		} else {
+		  tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+		}
     }
 
 		tab +="<tbody>";
@@ -1641,8 +1726,6 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 					if(cfield==filez[i].fieldnme){
 							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
 							tab+="<tr'>"
-
-
 
 							if (!mobileMediaQuery.matches) {
 								tab+="<td>";
@@ -1665,12 +1748,11 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								}
 								tab+="</td>";
 							}
-
-              if (group) {
+              				if (group) {
 								tab+="<td>"+filez[i].username+"</td>";
 							}
 							tab+="<td>";
-              if (ctype == "link"){							
+              				if (ctype == "link"){							
 								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].content.substring(0,32)+"&#8230;</span>";
@@ -1679,24 +1761,25 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								} else {
 									tab+=filez[i].content+"</span>";
 								}
-							}else if(ctype == "zip" || ctype == "rar"){                
+							}else if(ctype == "zip" || ctype == "rar"){ 
 								tab+="<span>";
 								if (mediumMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
+									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension;
+									tab+="<td>"+filez[i].zipdir+"</td></span>";
 								} else if (mobileMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</span>";
+									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension;
+									tab+="<td>"+filez[i].zipdir+"</td></span>";
 								} else {
-									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
+									tab+=filez[i].filename+"."+filez[i].extension;
+									tab+="<td>"+filez[i].zipdir+"</td></span>";
 								}
 							} else {
-
 								if(iconFlag){
 									tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
 								}
 								else{
 									tab+="<span>";
 								}
-
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
 								} else if (mobileMediaQuery.matches) {
@@ -1704,7 +1787,6 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								} else {
 									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
 								}
-
 							}
 							tab+="</td><td>";
 							if (mobileMediaQuery.matches) {

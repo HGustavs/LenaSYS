@@ -35,6 +35,7 @@ $segment=getOP('segment');
 $duggaid=getOP('did');
 $fieldtype=getOP('field');
 $fieldkind=getOP('kind');
+$hash=getOP('hash');
 $error=false;
 
 $seq=0;
@@ -69,8 +70,8 @@ $info=$cid." ".$vers." ".$moment." ".$segment." ".$duggaid." ".$fieldtype." ".$f
 $log_uuid= rand();
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.php",$userid,$info);
 
-$ha = checklogin();
-if($ha){
+// $ha = checklogin();
+// if($ha){
 
 		// Create folder if link textinput or file
 		$currcvd=getcwd();
@@ -112,9 +113,9 @@ if($ha){
 		$userdir = str_replace($national, $nationalReplace, $userdir);
 		$userdir=preg_replace("/[^a-zA-Z0-9._]/", "", $userdir);
 
-		if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
-				if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
-						echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid/".$userdir;
+		if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash)){
+				if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash)){
+						echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid/".$hash;
 						$error=true;
 				}
 		}
@@ -130,11 +131,11 @@ if($ha){
 			$extension="txt";
 			$mime="txt";
 
-			$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+			$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE hash=:hash AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
 			$query->bindParam(':did', $duggaid);
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':fname', $fname);
-			$query->bindParam(':uid', $userid);
+			$query->bindParam(':hash', $hash);
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				echo "Error reading submissions a".$error[2];
@@ -144,8 +145,8 @@ if($ha){
 			}
 			$seq++;
 
-			$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
-			$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;
+			$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/";
+			$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$fname.$seq.".".$extension;
 			file_put_contents($movname, $formattedInput);
 
 			// Save POST values in an array to loop over them
@@ -242,7 +243,7 @@ if($ha){
 				}
 			}
 
-			$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now());");
+			$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now(),:hash);");
 			$query->bindParam(':uid', $userid);
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':vers', $vers);
@@ -255,6 +256,7 @@ if($ha){
 			$query->bindParam(':kind', $fieldkind);
 			$query->bindParam(':seq', $seq);
 			$query->bindParam(':segment', $moment);
+			$query->bindParam(':hash', $hash);
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -268,11 +270,11 @@ if($ha){
 				$extension="txt";
 				$mime="txt";
 
-				$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+				$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE hash=:hash AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':fname', $fname);
-				$query->bindParam(':uid', $userid);
+				$query->bindParam(':hash', $hash);
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					echo "Error reading submissions a".$error[2];
@@ -282,11 +284,11 @@ if($ha){
 				}
 				$seq++;
 
-				$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
-			  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;
+				$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/";
+			  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$fname.$seq.".".$extension;
 			  file_put_contents($movname, htmlentities($inputtext, ENT_QUOTES | ENT_IGNORE, "UTF-8"));
 
-				$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now());");
+				$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now(),:hash);");
 
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':cid', $cid);
@@ -300,6 +302,7 @@ if($ha){
 				$query->bindParam(':kind', $fieldkind);
 				$query->bindParam(':seq', $seq);
 				$query->bindParam(':segment', $moment);
+				$query->bindParam(':hash', $hash);
 
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
@@ -309,8 +312,8 @@ if($ha){
 		}else if($link!="UNK"){
 				// Create a MD5 hash from url to use as file marker - used when giving responsible
 				$md5_filename = md5 ( $link );
-				$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
-				$query->bindParam(':uid', $userid);
+				$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE hash=:hash AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+				$query->bindParam(':hash', $hash);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':fname', $md5_filename);
@@ -320,12 +323,12 @@ if($ha){
 				}
 				$seq++;
 
-				$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
+				$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/";
 
-				$movname = $currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$md5_filename.$seq;
+				$movname = $currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$md5_filename.$seq;
 				file_put_contents($movname, $link);
 
-				$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,null,null,:kind,:seq,:segment,now());");
+				$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,null,null,:kind,:seq,:segment,now(),:hash);");
 
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':cid', $cid);
@@ -337,6 +340,7 @@ if($ha){
 				$query->bindParam(':kind', $fieldkind);
 				$query->bindParam(':seq', $seq);
 				$query->bindParam(':segment', $moment);
+				$query->bindParam(':hash', $hash);
 
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
@@ -381,24 +385,24 @@ if($ha){
 								//  if file type is allowed, continue the uploading process.
 								if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension], True)){
 										$seq=0;
-										$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+										$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE hash=:hash AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
 										$query->bindParam(':did', $duggaid);
 										$query->bindParam(':cid', $cid);
 										$query->bindParam(':fname', $fname);
-										$query->bindParam(':uid', $userid);
+										$query->bindParam(':hash', $hash);
 										$query->execute();
 										foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 													$seq=$row['Dusty']+1;
 										}
 
-									  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;
+									  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$fname.$seq.".".$extension;
 
 										// check if upload is successful
 										if(move_uploaded_file($filea["tmp_name"],$movname)){
 
-														$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now());");
+														$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now(),:hash);");
 
-														$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
+														$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/";
 
 														$query->bindParam(':uid', $userid);
 														$query->bindParam(':cid', $cid);
@@ -412,6 +416,7 @@ if($ha){
 														$query->bindParam(':kind', $fieldkind);
 														$query->bindParam(':seq', $seq);
 														$query->bindParam(':segment', $moment);
+														$query->bindParam(':hash', $hash);
 
 														if(!$query->execute()) {
 															$error=$query->errorInfo();
@@ -435,14 +440,16 @@ if($ha){
 
 		}
 
-}
+// }
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filereceive_dugga.php", $userid,$info);
 /* Commenting this out because error should be displayed in showDugga, so redirect regardless of whether or not the file extension is allowed.
 if(!$error){
 		echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }*/
-echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?courseid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0&cid=".$cid."' />";  //update page, redirect to "showDugga.php" with the variables sent for course id and version id and extension
+echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?courseid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0&cid=".$cid."&hash=".$hash."' />";  //update page, redirect to "showDugga.php" with the variables sent for course id and version id and extension
+
+
 function formatTimeSheetInput(){
 	$inputString = "";
 	$indexedPOST = array_values($_POST);
@@ -459,4 +466,3 @@ function formatTimeSheetInput(){
 	return $inputString;
 }
 ?>
-
