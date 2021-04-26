@@ -1477,7 +1477,7 @@ function drawSwimlanes() {
   var daySinceStart;
 
 
-  if(enddate.getFullYear() < current.getFullYear()) { //guesstimate deadline for current year
+  if(enddate.getFullYear() < current.getFullYear()) { // Guesstimate deadline for current year if course not updated
     var yearDifference = current.getFullYear() - enddate.getFullYear();
     var tempYear = new Date(current); 
     
@@ -1485,7 +1485,7 @@ function drawSwimlanes() {
     newCurrent = new Date(tempYear); 
     daySinceStart = Math.ceil(( newCurrent - startdate) / (24 * 60 * 60 * 1000));
   }
-  else {                                           //No guesstimation
+  else {                                           // When dates are updated and no guesstimation needed
        daySinceStart = Math.ceil(( current - startdate ) / (24 * 60 * 60 * 1000));
   }
 
