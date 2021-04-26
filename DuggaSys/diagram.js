@@ -2498,23 +2498,24 @@ function drawRulerBars(X,Y)
     var cordY = 0;
     var cordX = 0;
     var ZF = 100 * zoomfact;
-    var pannedY = Y - ZF;
-    var pannedX = X - ZF;
-    console.log(zoomfact);
+    
+    var pannedY = (Y - ZF) / zoomfact;
+    var pannedX = (X - ZF) / zoomfact;
+    
 
     //Draw the Y-axis ruler.
     var lineNumber = (fullLineRatio - 1);
-    for (i = 100;i <= pannedY -(pannedY *2) + cheight + 80; i += (lineRatio*zoomfact)) {
+    for (i = 40*zoomfact ;i <= pannedY -(pannedY *2) + cheight + 80; i += (lineRatio*zoomfact)) {
         lineNumber++;
          
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
             cordY = cordY +100;
             lineNumber = 0;
-            barY += "<line x1='0px' y1='"+(pannedY+i-60)+"' x2='40px' y2='"+(pannedY+i-60)+"' stroke='"+color+"' />";
-            barY += "<text x='2' y='"+(pannedY+i+10-60)+"' style='font-size: 10px'>"+cordY+"</text>";
+            barY += "<line x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+            barY += "<text x='2' y='"+(pannedY+i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
         }
-        else barY += "<line x1='25px' y1='"+(pannedY+i-60)+"' x2='40px' y2='"+(pannedY+i-60)+"' stroke='"+color+"' />";
+        else barY += "<line x1='25px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
     }
     svgY.style.backgroundColor = "#e6e6e6";
     svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
@@ -2522,17 +2523,17 @@ function drawRulerBars(X,Y)
 
     //Draw the X-axis ruler.
     lineNumber = (fullLineRatio - 1);
-    for (i = 48;i <= pannedX - (pannedX *2) + cheight + 900; i += (lineRatio*zoomfact)) {
+    for (i = 40*zoomfact ;i <= pannedX - (pannedX *2) + cheight + 900; i += (lineRatio*zoomfact)) {
         lineNumber++;
 
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
             cordX = cordX +100;
             lineNumber = 0;
-            barX += "<line x1='" +(pannedX+i-7)+"' y1='0' x2='" + (pannedX+i-7) + "' y2='40px' stroke='" + color + "' />";
-            barX += "<text x='"+(pannedX+i+5-7)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
+            barX += "<line x1='" +(pannedX+i)+"' y1='0' x2='" + (pannedX+i) + "' y2='40px' stroke='" + color + "' />";
+            barX += "<text x='"+(pannedX+i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
         }
-        else barX += "<line x1='" +(pannedX+i-7)+"' y1='25' x2='" +(pannedX+i-7)+"' y2='40px' stroke='" + color + "' />";
+        else barX += "<line x1='" +(pannedX+i)+"' y1='25' x2='" +(pannedX+i)+"' y2='40px' stroke='" + color + "' />";
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
     svgX.style.backgroundColor = "#e6e6e6";
