@@ -795,11 +795,12 @@ document.addEventListener('keydown', function (e)
         if (e.key == keybinds.SELECT_ALL.key && e.ctrlKey == keybinds.SELECT_ALL.ctrl){
             e.preventDefault();
             selectAll();
+        }      
+    } else { 
+        if (e.key == keybinds.ENTER.key && e.ctrlKey == keybinds.ENTER.ctrl) { 
+            changeState(); 
+            saveProperties(); 
         }
-         
-    } else if (e.key == keybinds.ENTER.key && e.ctrlKey == keybinds.ENTER.ctrl) {
-        changeState();
-        saveProperties();
     }
 });
 
