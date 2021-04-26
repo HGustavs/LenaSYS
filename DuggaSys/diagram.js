@@ -2836,6 +2836,7 @@ function getData()
     drawRulerBars();
     generateToolTips();
     toggleGrid();
+    setCursorStyles(mouseMode);
 }
 
 function generateToolTips()
