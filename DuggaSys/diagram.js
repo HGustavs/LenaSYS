@@ -622,7 +622,13 @@ var movingContainer = false;
 var isRulerActive = true;
 
 var randomidArray = []; // array for checking randomID
-var errorMsgTimer; //The variable that you use for clearing the setTimeout function
+var errorMsgMap = {};
+
+const messageTypes = {
+    ERROR: "error",
+    WARNING: "warning",
+    SUCCESS: "success"
+};
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
 //-------------------------------------------------------------------------------------------------
@@ -1872,10 +1878,10 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
             return newLine;
             
         } else {
-            displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
+            displayMessage(messageTypes.ERROR,"Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
         }
     } else {
-        displayMessage("error", "Not possible to draw a line between two: " + context[0].kind);
+        displayMessage(messageTypes.ERROR, "Not possible to draw a line between two: " + context[0].kind);
     }
 }
 
@@ -2234,7 +2240,7 @@ function generateContextProperties()
                 }
             }
         str += '</select>'; 
-        str+=`<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage('success', 'Successfully saved')">`;
+        str+=`<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
 
     } 
 
@@ -2717,6 +2723,30 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     redrawArrows();
     showdata();
 }
+//-------------------------------------------------------------------------------------------------
+// Create and display an message in the diagram
+//-------------------------------------------------------------------------------------------------
+function displayMessage(type, message, time = 5000)
+{
+    // Message settings
+    const maxMessagesAtDisplay = 5; // The number of messages that can be displayed on the screen
+
+    var messageElement = document.getElementById("diagram-message"); // Get div for error-messages
+    var id = makeRandomID();
+
+    // If the already is the maximum number of messages, remove the oldest one
+    if (messageElement.childElementCount >= maxMessagesAtDisplay) {
+        removeMessage(messageElement.firstElementChild);
+    }
+
+    // Add a new message to the div.
+    messageElement.innerHTML += `<div id='${id}' onclick='removeMessage(this)' class='${type}'><p>${message}</p></div>`;
+
+    if (time > 0) {
+        setTimerToMessage(messageElement.lastElementChild, time);
+    }
+
+}
 
 function pasteClipboard(elements)
 {
@@ -2813,31 +2843,55 @@ function pasteClipboard(elements)
     showdata();
 }
 
-function displayMessage(type, message)
-{
-    var messageEl = document.getElementById("diagram-message") // Get div for error-messages
+//-------------------------------------------------------------------------------------------------
+// Set a time for the element to exist, will be removed after time has exceeded
+//-------------------------------------------------------------------------------------------------
 
-    switch (type) {
-        case "error":
-            messageEl.style.background = "rgb(255, 153, 153)";
-            break;
-        case "success":
-            messageEl.style.background = "rgb(153, 255, 153)";
-            break
-        default:
-            messageEl.style.background = "rgb(255, 153, 153)";
-            break;
+function setTimerToMessage(element, time = 5000)
+{
+    if (!element) return;
+
+    element.innerHTML += `<div class="timeIndicatorBar"></div>`;
+    var timer = setInterval( function(){
+        var element = document.getElementById(errorMsgMap[timer].id);
+        errorMsgMap[timer].percent -= 1;
+        element.lastElementChild.style.width = `calc(${errorMsgMap[timer].percent - 1}% - 10px)`;
+
+        // If the time is out, remove the message
+        if(errorMsgMap[timer].percent === 0) removeMessage(element, timer);
+
+    }, time / 100);
+
+    // Adds to map: TimerID: ElementID, Percent
+    errorMsgMap[timer] = {
+        id: element.id,
+        percent: 100
+    };
+}
+//-------------------------------------------------------------------------------------------------
+// Removes the message from DOM and removes all the variables that are used
+//-------------------------------------------------------------------------------------------------
+function removeMessage(element, timer)
+{
+    // If there is no timer in the parameter try find it by elementID in
+    if (!timer) {
+        timer = Object.keys(errorMsgMap).find(key => {
+            return errorMsgMap[key].id === element.id
+        });
     }
 
-    messageEl.innerHTML = "<span>" + message + "</span>";
-    messageEl.style.display = "block";
+    if (timer) {
+        clearInterval(timer); // Remove the timer
+        delete errorMsgMap[timer]; // Remove timer from the map
+    }
 
-    if(errorMsgTimer) clearTimeout(errorMsgTimer);
-    //Set timeout to remove the message
-    errorMsgTimer = setTimeout(function (){
-        messageEl.style.display = "none";
-    }, 2000);
+    element.remove(); // Remove the element from DOM
+    // Remove ID from randomidArray
+    randomidArray = randomidArray.filter(id => {
+        return element.id !== id;
+    });
 }
+
 //------------------------------------=======############==========----------------------------------------
 //                                    Default data display stuff
 //------------------------------------=======############==========----------------------------------------

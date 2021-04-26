@@ -245,18 +245,43 @@
 #diagram-toolbar>fieldset>legend {
     font-size: 0.6em;
 }
+/* Diagram Messages */
 #diagram-message {
-    min-width: 200px;
-    left: calc(40%);
-    top: 140px;
+    width: 300px;
+    left: 100px;
+    bottom: 20px;
     position: absolute;
     z-index: 3000;
-    background: rgb(255, 153, 153);
-    border-radius: 5px;
-    padding: 5px;
-    text-align: center;
-    opacity: 0.7;
-    display: none;
+    opacity: 1;
+    display: block;
+    pointer-events: none;
+    vertical-align: bottom;
+}
+#diagram-message .timeIndicatorBar {
+    height: 5px;
+    width: calc(100% - 20px);
+    bottom: 5px;
+    left: 10px;
+    background: rgba(255,255,255,0.4);
+}
+#diagram-message>div {
+    pointer-events: auto;
+    margin: 5px;
+    display: block;
+    padding: 10px;
+    box-shadow: 6px 6px 10px #888;
+}
+
+#diagram-message .error {
+    background-color: #FFD2D2;
+}
+
+#diagram-message .success {
+    background-color: #DFF2BF;
+}
+
+#diagram-message .warning {
+    background-color: #FEEFB3;
 }
 
 /*tooltip*/
