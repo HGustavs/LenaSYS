@@ -413,7 +413,7 @@ if(strcmp($opt,"GETVARIANTANSWER")==0){
 	
 	$setanswer=$result['variantanswer'];
 	
-	makeLogEntry($userid,2,$pdo,$first);
+	// makeLogEntry($userid,2,$pdo,$first);
 	$insertparam = true;
 	$param = $setanswer;
 }
@@ -458,15 +458,13 @@ if(strcmp($opt,"GRPDUGGA")==0){
 $files= array();
 for ($i = 0; $i < $userCount; $i++) {
 	if ($showall==="true"){
-		$query = $pdo->prepare("select subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission where hash=:hash and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
+		$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash AND vers=:vers AND cid=:cid ORDER BY subid,fieldnme,updtime asc;");  
 	} else {
-		$query = $pdo->prepare("select subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission where hash=:hash and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
+		$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash AND vers=:vers AND cid=:cid AND did=:did ORDER BY subid,fieldnme,updtime asc;");  
 		$query->bindParam(':did', $duggaid);
 	}
 	if ($i == 0) {
 		$query->bindParam(':hash', $hash);
-	} else {
-		$query->bindParam(':uid', $usersInGroup[$i-1]);
 	}
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':vers', $coursevers);
@@ -513,15 +511,8 @@ for ($i = 0; $i < $userCount; $i++) {
 			}else{
 					$content="Not a text-submit or URL";
 			}
-		
- 			$uQuery = $pdo->prepare("SELECT username FROM user WHERE uid=:uid;");
-			$uQuery->bindParam(':uid', $row['uid'], PDO::PARAM_INT);
-			$uQuery->execute();
-			$uRow = $uQuery->fetch();
-			$username = $uRow['username'];
 
 			$entry = array(
-				'uid' => $row['uid'],
 				'subid' => $row['subid'],
 				'vers' => $row['vers'],
 				'did' => $row['did'],
@@ -535,8 +526,7 @@ for ($i = 0; $i < $userCount; $i++) {
 				'seq' => $row['seq'],	
 				'segment' => $row['segment'],	
 				'content' => $content,
-				'feedback' => $feedback,
-				'username' => $username
+				'feedback' => $feedback
 			);
 	
 			// If the filednme key isn't set, create it now
@@ -609,6 +599,6 @@ if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
 echo json_encode($array);
 
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php",$userid,$info);
+// logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php",$userid,$info);
 
 ?>
