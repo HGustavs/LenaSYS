@@ -1159,6 +1159,7 @@ function mmoving(event)
             updateRulerPos(scrollx, scrolly);
             // Update scroll position
             updatepos(null, null);
+            //drawRulerBars();
 
             
 
@@ -2685,7 +2686,6 @@ function updateRulerPos(X, Y)
     var rulerX = document.getElementById("ruler-x-svg");
     var yyy = document.getElementById("svg-pattern-y");
     var xxx = document.getElementById("svg-pattern-x");
-    console.log(Y);
     
     //rulerX.setAttribute('transform','translate('+(X-100)+')');
     yyy.setAttribute('transform','translate(0,'+(Y-100)+')');
