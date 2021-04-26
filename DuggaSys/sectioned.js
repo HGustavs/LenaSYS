@@ -311,7 +311,8 @@ function confirmBox(operation, item = null) {
   } else if (operation == "deleteItem" && !deleteItemList.length == 0) {
     /* deleteMarkedItems(deleteItemList) */
     // OPT - PARAM - KIND
-    AJAXService("TestOPT", { deleteItemList }, "MODIFYLISTENTRIES")
+    /* AJAXService("TestOPT", { deleteItemList }, "MODIFYLISTENTRIES") */
+    TESTsendRequest(deleteItemList);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
@@ -340,6 +341,23 @@ function markedItems(item = null){
       console.log("Added");
     } 
     console.log(deleteItemList);
+}
+
+function TESTsendRequest(DIL) {
+	console.log(`deleteItemList=${encodeURI(DIL)}`);
+
+	$.ajax({
+		url: `sectioned.php`,
+		type: "POST",
+		data: `deleteItemList=${btoa(DIL)}`,
+		dataType: "string",
+		success: returnedModifiedListentries,
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log(jqXHR);
+      console.log(textStatus);
+      console.log(errorThrown);
+    }
+	});
 }
 
 // Clear array of checked items - used in fabbuttons and save to clear array. WIthout this the array will be populated but checkboxes will be reset.

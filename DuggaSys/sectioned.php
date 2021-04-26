@@ -3,6 +3,7 @@
 	session_start();
 	include_once "../../coursesyspw.php";
 	include_once "../Shared/sessions.php";
+	include_once "../Shared/basic.php";
 	pdoConnect();
 
 
@@ -25,6 +26,25 @@
 		setcookie("sessionEndTime", "expireC", time() + 2700, "/"); // Alerts user in 45min
 		setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends session in 60min, user gets logged out
 	}
+
+	$deleteItemList=getOP("deleteItemList", "HELLO", "string");
+	
+	if ($deleteItemList != "UNK") {
+		$hello = "HELLO FROM THE OTHER SIDE";
+		$js_code = 'console.log(' . json_encode("Hello from the other side", JSON_HEX_TAG) . ');';
+		$js_code = '<script>' . $js_code . '</script>';
+		echo $js_code;
+		$query = $pdo->prepare("UPDATE class SET class=:lid WHERE regcode=199191");
+		$query->bindParam(':lid', $hello/* urldecode($_POST["deleteItemList"][0]) */);
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
+		}
+	}
+
+	$js_code = 'console.log(' . json_encode("Hello from the other side", JSON_HEX_TAG) . ');';
+	$js_code = '<script>' . $js_code . '</script>';
+    echo $js_code;
 ?>
 
 <!DOCTYPE html>
