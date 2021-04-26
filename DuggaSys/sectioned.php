@@ -173,7 +173,7 @@
 					</ol>
 			</div>
 				<div style='flex-grow:1'>
-						<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 5px;margin-right:10px;'>UNK</span>
+						<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
 						<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
 						<span id='course-versname' class='courseVersionField'>UNK</span>
 				</div>
