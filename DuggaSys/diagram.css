@@ -266,24 +266,21 @@
 }
 #diagram-message>div {
     pointer-events: auto;
-    margin-top: 5px;
+    margin: 5px;
     display: block;
-    padding: 5px 5px 10px 5px;
+    padding: 10px;
     box-shadow: 6px 6px 10px #888;
 }
 
 #diagram-message .error {
-    color: #D8000C;
     background-color: #FFD2D2;
 }
 
 #diagram-message .success {
-    color: #4F8A10;
     background-color: #DFF2BF;
 }
 
 #diagram-message .warning {
-    color: #9F6000;
     background-color: #FEEFB3;
 }
 

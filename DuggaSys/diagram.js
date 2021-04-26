@@ -2654,7 +2654,7 @@ function removeLines(linesArray, stateMachineShouldSave = true)
 //-------------------------------------------------------------------------------------------------
 // Create and display an message in the diagram
 //-------------------------------------------------------------------------------------------------
-function displayMessage(type, message, time = 10000)
+function displayMessage(type, message, time = 5000)
 {
     // Message settings
     const maxMessagesAtDisplay = 5; // The number of messages that can be displayed on the screen
@@ -2668,44 +2668,59 @@ function displayMessage(type, message, time = 10000)
     }
 
     // Add a new message to the div.
-    messageElement.innerHTML += `<div id='${id}' onclick='removeMessage(this)' class='${type}'><p>${message}</p><div class="timeIndicatorBar"></div></div>`;
+    messageElement.innerHTML += `<div id='${id}' onclick='removeMessage(this)' class='${type}'><p>${message}</p></div>`;
 
-    fadeMessage(messageElement.lastElementChild, time);
+    if (time > 0) {
+        setTimerToMessage(messageElement.lastElementChild, time);
+    }
 
 }
 //-------------------------------------------------------------------------------------------------
-// Makes an element fade away
+// Set a time for the element to exist, will be removed after time has exceeded
 //-------------------------------------------------------------------------------------------------
-function fadeMessage(element, time = 10000)
+function setTimerToMessage(element, time = 5000)
 {
     if (!element) return;
 
-        var timer = setInterval( function(){
-            var element = document.getElementById(errorMsgMap[timer].id);
-            errorMsgMap[timer].percent -= 1;
-            element.lastElementChild.style.width = `calc(${errorMsgMap[timer].percent - 1}% - 10px)`;
+    element.innerHTML += `<div class="timeIndicatorBar"></div>`;
+    var timer = setInterval( function(){
+        var element = document.getElementById(errorMsgMap[timer].id);
+        errorMsgMap[timer].percent -= 1;
+        element.lastElementChild.style.width = `calc(${errorMsgMap[timer].percent - 1}% - 10px)`;
 
-            // If the time is out, remove the message
-            if(errorMsgMap[timer].percent === 0) removeMessage(element, timer);
+        // If the time is out, remove the message
+        if(errorMsgMap[timer].percent === 0) removeMessage(element, timer);
 
-        }, time / 100);
-        errorMsgMap[timer] = {id: element.id, percent: 100}; // Adds to map: TimerID: ElementID, Percent
+    }, time / 100);
+
+    // Adds to map: TimerID: ElementID, Percent
+    errorMsgMap[timer] = {
+        id: element.id,
+        percent: 100
+    };
 }
 //-------------------------------------------------------------------------------------------------
 // Removes the message from DOM and removes all the variables that are used
 //-------------------------------------------------------------------------------------------------
 function removeMessage(element, timer)
 {
-    // If there is no timer in the parameter find it by elementID in
+    // If there is no timer in the parameter try find it by elementID in
     if (!timer) {
-        timer = Object.keys(errorMsgMap).find(key =>
-            errorMsgMap[key].id === element.id);
+        timer = Object.keys(errorMsgMap).find(key => {
+            return errorMsgMap[key].id === element.id
+        });
     }
 
-    clearInterval(timer); // Remove the timer
+    if (timer) {
+        clearInterval(timer); // Remove the timer
+        delete errorMsgMap[timer]; // Remove timer from the map
+    }
+
     element.remove(); // Remove the element from DOM
-    randomidArray = randomidArray.filter(id => errorMsgMap[timer].id !== id); // Remove ID from randomidArray
-    delete errorMsgMap[timer]; // Remove timer from the map
+    // Remove ID from randomidArray
+    randomidArray = randomidArray.filter(id => {
+        return element.id !== id;
+    });
 }
 
 //------------------------------------=======############==========----------------------------------------
