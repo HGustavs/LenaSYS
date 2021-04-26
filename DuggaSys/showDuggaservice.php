@@ -478,7 +478,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			}else{				
 				if ($zip->open($ziptemp) == TRUE) {
 					for ($i = 0; $i < $zip->numFiles; $i++) {
-						$zipdir .= '- '.$zip->getNameIndex($i).'<br />';
+						$zipdir .= $zip->getNameIndex($i).'<br />';
 					}
 				}
 			}
