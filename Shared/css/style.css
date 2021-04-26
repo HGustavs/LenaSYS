@@ -823,7 +823,7 @@ p {
 
 #Sectionlist .section {
   color: var(--color-text-header);
-  background-color: var(--color-primary-light);
+  background-color: #614875/*var(--color-primary-light)*/;
 }
 
 #Sectionlist .header {
@@ -848,7 +848,7 @@ p {
 #statisticsSwimlanes {
   display: flex;
   overflow:auto;
-  border: 2px solid darkgray; 
+  border: 2px solid darkgray;
   background-color: var(--color-sectioned-table-lo);
 }
 
@@ -1018,7 +1018,7 @@ p {
 }
 .item a {
   text-decoration: none;
-  color: var(--color-text-primary);
+  color: #614875/*var(--color-text-primary-darker)*/;
 }
 
 .item a:hover {
@@ -1808,7 +1808,7 @@ div .navButt:hover {
 }
 
 .testasd{
-  
+
 }
 
 .testasd > *{
