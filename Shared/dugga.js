@@ -1699,21 +1699,25 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		var mobileMediaQuery = window.matchMedia("(max-width: 800px)");
 		var mediumMediaQuery = window.matchMedia("(min-width: 801px) and (max-width: 1200px)");
 		var tab="<table class='previewTable'>";
-
-		if (group) {
+  // Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
+	if (group) {
       if (mobileMediaQuery.matches) {
-        tab+="<thead><tr><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+        tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
       } else {
-			  tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+			  tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
       }
+	} else if(ctype == "zip" || ctype == "rar"){
+		if(mobileMediaQuery.matches){
+			tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+		} else {
+			tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+		}
     } else {
-      if (mobileMediaQuery.matches) {
-			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-		  } else {
-			// Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
-			//tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th></tr></thead>";
-		  }
+    if (mobileMediaQuery.matches) {
+	    tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+		} else {
+		  tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+		}
     }
 
 		tab +="<tbody>";
@@ -1722,8 +1726,6 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 					if(cfield==filez[i].fieldnme){
 							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
 							tab+="<tr'>"
-
-
 
 							if (!mobileMediaQuery.matches) {
 								tab+="<td>";
@@ -1746,12 +1748,11 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								}
 								tab+="</td>";
 							}
-
-              if (group) {
+              				if (group) {
 								tab+="<td>"+filez[i].username+"</td>";
 							}
 							tab+="<td>";
-              if (ctype == "link"){							
+              				if (ctype == "link"){							
 								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].content.substring(0,32)+"&#8230;</span>";
@@ -1760,24 +1761,25 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								} else {
 									tab+=filez[i].content+"</span>";
 								}
-							}else if(ctype == "zip" || ctype == "rar"){                
+							}else if(ctype == "zip" || ctype == "rar"){ 
 								tab+="<span>";
 								if (mediumMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
+									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension;
+									tab+="<td>"+filez[i].zipdir+"</td></span>";
 								} else if (mobileMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</span>";
+									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension;
+									tab+="<td>"+filez[i].zipdir+"</td></span>";
 								} else {
-									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
+									tab+=filez[i].filename+"."+filez[i].extension;
+									tab+="<td>"+filez[i].zipdir+"</td></span>";
 								}
 							} else {
-
 								if(iconFlag){
 									tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
 								}
 								else{
 									tab+="<span>";
 								}
-
 								if (mediumMediaQuery.matches) {
 									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
 								} else if (mobileMediaQuery.matches) {
@@ -1785,7 +1787,6 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 								} else {
 									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
 								}
-
 							}
 							tab+="</td><td>";
 							if (mobileMediaQuery.matches) {
@@ -1794,33 +1795,6 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							} else {
 								tab+=filez[i].updtime;+"</td>";
 							}
-
-							tab+="<td>";
-							//Feedback button. Always visible for teachers, only visible for students if feedback have been given.
-							/*
-							if (!mobileMediaQuery.matches) {
-							
-								// Button for making / viewing feedback - note - only button for given feedback to students.
-								if(filez[i].feedback!=="UNK"||displaystate){
-										tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>Feedback</button>";
-								}
-							}
-							*/
-							tab+="</td>";
-							/*
-							// Display user feedback on the assignment page
-							tab+="<td>";
-							if(filez[i].feedback!=="UNK"){
-								if (mobileMediaQuery.matches || mediumMediaQuery.matches) {
-									tab+="<span style='text-decoration: underline' onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>"+filez[i].feedback.substring(0,8)+"&#8230;</span>";
-								} else {
-									tab+=filez[i].feedback.substring(0,64)+"&#8230;";
-								}
-							}else{
-								tab+="&nbsp;"
-							}
-							tab+="</td>";
-							*/
 							tab+="</tr>";
 					}
 			}
@@ -1873,11 +1847,6 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		clickedindex=fileindex;
 		var str ="";
 
-		if(displaystate){
-				document.getElementById("markMenuPlaceholderz").style.display="block";
-		}else{
-				document.getElementById("markMenuPlaceholderz").style.display="none";
-		}
 
 		if (filetype === "text") {
 				str+="<textarea style='width: 100%;height: 100%;box-sizing: border-box;'>"+dataV["files"][inParams["moment"]][fileindex].content+"</textarea>";
@@ -1899,13 +1868,8 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		 		}
 		}
 		document.getElementById("popPrev").innerHTML=str;
-		if (dataV["files"][inParams["moment"]][clickedindex].feedback !== "UNK"){
-				document.getElementById("responseArea").innerHTML = dataV["files"][inParams["moment"]][clickedindex].feedback;
-		} else {
-				document.getElementById("responseArea").innerHTML = "No feedback given.";
-		}
 
-		$("#previewpopover").css("display", "flex");
+
 }
 
 function displayDuggaStatus(answer,grade,submitted,marked){

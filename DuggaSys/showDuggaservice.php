@@ -55,7 +55,7 @@ $insertparam = false;
 $score = 0;
 $timeUsed;
 $stepsUsed;
-$duggafeedback="UNK";
+$duggafeedback = "UNK";
 $variants=array();
 $variantsize;
 $ishashindb = false;
@@ -163,6 +163,7 @@ foreach($query->fetchAll() as $row) {
 }
 
 $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,feedback,grade,submitted,password FROM userAnswer WHERE hash=:hash;");
+
     $query->bindParam(':hash', $hash);
     $result = $query->execute();
 
@@ -171,11 +172,6 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
         $savedanswer=$row['useranswer'];
         $score = $row['score'];
         $isIndb=true;
-        if ($row['feedback'] != null){
-                $duggafeedback = $row['feedback'];
-        } else {
-                $duggafeedback = "UNK";
-        }
         $grade = $row['grade'];
         $submitted = $row['submitted'];
         $marked = $row['marked'];
@@ -402,7 +398,7 @@ if(strcmp($opt,"GETVARIANTANSWER")==0){
 	$variant = $temp[3];
 
 	
-	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer,feedback FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.cid = :cid and userAnswer.vers = :vers and variant.vid = :vid");
+	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.cid = :cid and userAnswer.vers = :vers and variant.vid = :vid");
 	$query->bindParam(':cid', $first);
 	$query->bindParam(':vers', $second);
 	$query->bindParam(':vid', $variant);
@@ -478,8 +474,21 @@ for ($i = 0; $i < $userCount; $i++) {
 			
 			$content = "UNK";
 			$feedback = "UNK";
-	
+			$zipdir = "";
+			$zip = new ZipArchive;
 			$currcvd=getcwd();
+			
+
+			$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
+			if(!file_exists($ziptemp)) {
+				$zipdir="UNK";
+			}else{				
+				if ($zip->open($ziptemp) == TRUE) {
+					for ($i = 0; $i < $zip->numFiles; $i++) {
+						$zipdir .= $zip->getNameIndex($i).'<br />';
+					}
+				}
+			}
 			
 			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
 			if(!file_exists($fedbname)) {
@@ -493,7 +502,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			if($row['kind']=="3"){
 					// Read file contents
 					$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
-	
+
 					if(!file_exists($movname)) {
 							$content="UNK!";
 					} else {
@@ -511,7 +520,6 @@ for ($i = 0; $i < $userCount; $i++) {
 			}else{
 					$content="Not a text-submit or URL";
 			}
-
 			$entry = array(
 				'subid' => $row['subid'],
 				'vers' => $row['vers'],
@@ -526,7 +534,9 @@ for ($i = 0; $i < $userCount; $i++) {
 				'seq' => $row['seq'],	
 				'segment' => $row['segment'],	
 				'content' => $content,
-				'feedback' => $feedback
+				'feedback' => $feedback,
+				'username' => $username,
+				'zipdir' => $zipdir
 			);
 	
 			// If the filednme key isn't set, create it now
@@ -542,7 +552,7 @@ if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be o
 // Use string compare to clear grade if not released yet!
 if($today < $duggainfo['qrelease']  && !(is_null($duggainfo['qrelease']))){
 		$grade="UNK";
-		$duggafeedback="UNK";
+		$duggafeedback = "UNK";
 }
 //Fetches Data From listentries Table
 if(strcmp($opt,"CHECKFDBCK")==0){
@@ -580,7 +590,6 @@ $array = array(
 		"answer" => $savedanswer,
 		"score" => $score,
 		"highscoremode" => $highscoremode,
-		"feedback" => $duggafeedback,
 		"grade" => $grade,
 		"submitted" => $submitted,
 		"marked" => $marked,
