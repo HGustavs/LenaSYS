@@ -486,8 +486,8 @@ p {
   margin-top: 15px;
   padding: 16px;
 }
-.announcementFormcontainer p{
-  color: #ffa500;
+.announcementFormcontainer p {
+    color: #ff4444;
 }
 .animate {
   -webkit-animation: animatezoom 0.6s;
