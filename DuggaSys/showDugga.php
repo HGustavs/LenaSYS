@@ -178,8 +178,7 @@ if($hash!='UNK'){
 	}
 }
 
-//Resets the hasuploaded variable so we get prompted for password
-$_SESSION['hasUploaded'] = 0;
+
 
 //Remove if you want the password to be persistent.
 //$_SESSION['hashpassword'] = 'UNK';

@@ -332,7 +332,8 @@ if(checklogin()){
 					$error=$query->errorInfo();
 					$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
 				}
-			
+			//Resets the hasuploaded variable so we get prompted for password
+			$_SESSION['hasUploaded'] = 0;
 			}
 
               	// Update Dugga!
