@@ -2505,7 +2505,7 @@ function drawRulerBars(X,Y)
 
     //Draw the Y-axis ruler.
     var lineNumber = (fullLineRatio - 1);
-    for (i = 40 ;i <= pannedY -(pannedY *2) + cheight + 80; i += (lineRatio*zoomfact)) {
+    for (i = 40; i <= pannedY -(pannedY *2) + cheight; i += (lineRatio*zoomfact)) {
         lineNumber++;
          
         //Check if a full line should be drawn
@@ -2523,7 +2523,7 @@ function drawRulerBars(X,Y)
 
     //Draw the X-axis ruler.
     lineNumber = (fullLineRatio - 1);
-    for (i = 41 ;i <= pannedX - (pannedX *2) + cheight + 900; i += (lineRatio*zoomfact)) {
+    for (i = 41 ; i <= pannedX - (pannedX *2) + cwidth; i += (lineRatio*zoomfact)) {
         lineNumber++;
 
         //Check if a full line should be drawn
