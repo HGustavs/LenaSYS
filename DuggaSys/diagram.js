@@ -2822,6 +2822,9 @@ function pasteClipboard(elements)
     // Save the copyed elements to stateMachine
     stateMachine.save(StateChangeFactory.ElementsAndLinesCreated(newElements, newLines));
 
+    clearContext(); // Deselect old selected elements
+    context = newElements; // Set context to the pasted elements
+
     displayMessage("success", `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
     showdata();
 }
