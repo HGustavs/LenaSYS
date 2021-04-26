@@ -447,6 +447,9 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filereceive_dugga.php"
 if(!$error){
 		echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }*/
+
+//Sets hasUploaded variable so we do not get prompted for password when we upload a file.
+$_SESSION['hasUploaded'] = 1;
 echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?courseid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0&cid=".$cid."&hash=".$hash."' />";  //update page, redirect to "showDugga.php" with the variables sent for course id and version id and extension
 
 

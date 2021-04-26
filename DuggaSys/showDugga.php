@@ -45,7 +45,6 @@
 
 	$visibility=false;
 	$checklogin=false;
-	$isSaved=0;
 	
 	$variantsize;
 	$variants=array();
@@ -148,12 +147,10 @@ function hashPassword($password, $hash){
 			if($count == 0){
 				echo '<script>console.log(false)</script>';
 				echo "<script>console.log('".$count."')</script>;";
-				$isSaved = 0;
 				return false;
 			} else{
 				echo '<script>console.log(true)</script>';
 				echo "<script>console.log('".$count."')</script>;";
-				$isSaved = 1;
 				return true;
 			}
 }
@@ -162,8 +159,7 @@ echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
 if($hash!='UNK'){
 	if(!hashPassword($hashpassword, $hash)){
-		error_log("isSaved = ".$isSaved,0);
-		if($isSaved == 1){
+		if($_SESSION['hasUploaded'] != 1){
 			echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
 			echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
 			echo "<div class='loginBoxheader'>";
@@ -181,6 +177,10 @@ if($hash!='UNK'){
 		
 	}
 }
+
+//Resets the hasuploaded variable so we get prompted for password
+$_SESSION['hasUploaded'] = 0;
+
 //Remove if you want the password to be persistent.
 //$_SESSION['hashpassword'] = 'UNK';
 
