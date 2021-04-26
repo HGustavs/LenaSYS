@@ -652,18 +652,6 @@ function makeRandomID()
     }
 }
 
-// Example entities and attributes
-var PersonID = makeRandomID();
-var IDID = makeRandomID();
-var NameID = makeRandomID();
-var SizeID = makeRandomID();
-var HasID = makeRandomID();
-var CarID = makeRandomID();
-var FNID = makeRandomID();
-var LNID = makeRandomID();
-var LoanID = makeRandomID();
-var RefID = makeRandomID();
-
 // Save default to model - updating defaults sets property to all of model
 var defaults = {
     defaultERtentity: { kind: "EREntity", fill: "White", Stroke: "Black", width: 200, height: 50 },
@@ -695,38 +683,64 @@ const lineKind = {
 };
 
 // Demo data - read / write from service later on
-var data = [
-    { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
-    { name: "Loan", x: 140, y: 250, width: 200, height: 50, kind: "EREntity", id: LoanID, state: "weak" },
-    { name: "Car", x: 500, y: 140, width: 200, height: 50, kind: "EREntity", id: CarID },
-    { name: "Owns", x: 420, y: 60, width: 60, height: 60, kind: "ERRelation", id: HasID },
-    { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, state: "weak" },
-    { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, state: "computed" },
-    { name: "Name", x: 170, y: 50, width: 90, height: 45, kind: "ERAttr", id: NameID },
-    { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, state: "multiple" },
-    { name: "F Name", x: 120, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
-    { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
-];
+var data = [];
+var lines = [];
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
 var ghostLine = null;
 
-var lines = [
-    { id: makeRandomID(), fromID: PersonID, toID: IDID, kind: "Normal" },
-    { id: makeRandomID(), fromID: PersonID, toID: NameID, kind: "Normal" },
-    { id: makeRandomID(), fromID: CarID, toID: SizeID, kind: "Normal" },
+// Setup function for static preloaded example elements and lines.
+function onSetup()
+{
+    const PersonID = makeRandomID();
+    const IDID = makeRandomID();
+    const NameID = makeRandomID();
+    const SizeID = makeRandomID();
+    const HasID = makeRandomID();
+    const CarID = makeRandomID();
+    const FNID = makeRandomID();
+    const LNID = makeRandomID();
+    const LoanID = makeRandomID();
+    const RefID = makeRandomID();
 
-    { id: makeRandomID(), fromID: PersonID, toID: HasID, kind: "Normal" },
-    { id: makeRandomID(), fromID: HasID, toID: CarID, kind: "Double" },
-    { id: makeRandomID(), fromID: NameID, toID: FNID, kind: "Normal" },
-    { id: makeRandomID(), fromID: NameID, toID: LNID, kind: "Normal" },
+    const demoData = [
+        { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
+        { name: "Loan", x: 140, y: 250, width: 200, height: 50, kind: "EREntity", id: LoanID, state: "weak" },
+        { name: "Car", x: 500, y: 140, width: 200, height: 50, kind: "EREntity", id: CarID },
+        { name: "Owns", x: 420, y: 60, width: 60, height: 60, kind: "ERRelation", id: HasID },
+        { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, state: "weak" },
+        { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, state: "computed" },
+        { name: "Name", x: 170, y: 50, width: 90, height: 45, kind: "ERAttr", id: NameID },
+        { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, state: "multiple" },
+        { name: "F Name", x: 120, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
+        { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
+    ];
+    
+    const demoLines = [
+        { id: makeRandomID(), fromID: PersonID, toID: IDID, kind: "Normal" },
+        { id: makeRandomID(), fromID: PersonID, toID: NameID, kind: "Normal" },
+        { id: makeRandomID(), fromID: CarID, toID: SizeID, kind: "Normal" },
 
-    { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal" },
-    { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal" },
-];
+        { id: makeRandomID(), fromID: PersonID, toID: HasID, kind: "Normal" },
+        { id: makeRandomID(), fromID: HasID, toID: CarID, kind: "Double" },
+        { id: makeRandomID(), fromID: NameID, toID: FNID, kind: "Normal" },
+        { id: makeRandomID(), fromID: NameID, toID: LNID, kind: "Normal" },
 
-const stateMachine = new StateMachine(data, lines);
+        { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal" },
+        { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal" },
+    ];
+
+    for(var i = 0; i < demoData.length; i++){
+        addObjectToData(demoData[i], false);
+    }
+    for(var i = 0; i < demoLines.length; i++){
+        addObjectToLines(demoLines[i], false);
+    }
+
+    // Global statemachine init
+    stateMachine = new StateMachine(data, lines);
+}
 
 //------------------------------------=======############==========----------------------------------------
 //                                        Getters and Setters
@@ -736,6 +750,13 @@ function addObjectToData(object, stateMachineShouldSave = true)
 {
     data.push(object);
     if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object));
+}
+
+// Adds object to the line-array
+function addObjectToLines(object, stateMachineShouldSave = true)
+{
+    lines.push(object);
+    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(object));
 }
 
 // Return all lines
@@ -2841,6 +2862,7 @@ function displayMessage(type, message)
 function getData()
 {
     container = document.getElementById("container");
+    onSetup();
     showdata();
     drawRulerBars();
     generateToolTips();
