@@ -986,6 +986,7 @@ function ddown(event)
             }
 
         case mouseModes.EDGE_CREATION:
+            if(event.button == 2) return;
             var element = data[findIndex(data, event.currentTarget.id)];
             if (element != null && !context.includes(element) || !ctrlPressed){
                 updateSelection(element);
@@ -2838,8 +2839,9 @@ function pasteClipboard(elements)
 
     // Save the copyed elements to stateMachine
     stateMachine.save(StateChangeFactory.ElementsAndLinesCreated(newElements, newLines));
-
     displayMessage(messageTypes.SUCCESS, `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
+    clearContext(); // Deselect old selected elements
+    context = newElements; // Set context to the pasted elements
     showdata();
 }
 
