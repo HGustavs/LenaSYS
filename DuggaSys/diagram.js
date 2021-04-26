@@ -2497,14 +2497,16 @@ function drawRulerBars(X,Y)
     const color = "black";
     var cordY = 0;
     var cordX = 0;
-    var pannedY = Y - 100;
-    var pannedX = X - 100;
-    console.log(X);
+    var ZF = 100 * zoomfact;
+    var pannedY = Y - ZF;
+    var pannedX = X - ZF;
+    console.log(zoomfact);
+
     //Draw the Y-axis ruler.
     var lineNumber = (fullLineRatio - 1);
-    for (i = 100;i <= pannedY -(pannedY *2) + cheight + 80; i += lineRatio) {
+    for (i = 100;i <= pannedY -(pannedY *2) + cheight + 80; i += (lineRatio*zoomfact)) {
         lineNumber++;
-
+         
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
             cordY = cordY +100;
@@ -2520,7 +2522,7 @@ function drawRulerBars(X,Y)
 
     //Draw the X-axis ruler.
     lineNumber = (fullLineRatio - 1);
-    for (i = 48;i <= pannedX - (pannedX *2) + cheight + 900; i += lineRatio) {
+    for (i = 48;i <= pannedX - (pannedX *2) + cheight + 900; i += (lineRatio*zoomfact)) {
         lineNumber++;
 
         //Check if a full line should be drawn
