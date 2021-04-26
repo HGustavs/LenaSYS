@@ -24,7 +24,7 @@ var ishashinurl;
 var itemvalue;
 var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
-var isGroupDugga = true; // Set to false if you hate the popup
+var isGroupDugga = false; // Set to false if you hate the popup
 var variantvalue;
 
 
@@ -1032,6 +1032,7 @@ function AJAXService(opt,apara,kind)
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
 			datatype: "json",
 			success: function(data){
+				ishashindb = data['ishashindb'];
 				//Checks if the variantSize variant is set in localstorage. When its not, its set.
 				if(localStorage.getItem("variantSize") == null) {
 					localStorage.setItem("variantSize", 100);
@@ -1049,7 +1050,8 @@ function AJAXService(opt,apara,kind)
 					}
 				}
 				console.log("real variantvalue: "+variantvalue);
-				$.ajax({ //original ajax call
+				
+				/*$.ajax({ //original ajax call
 					beforeSend: function(){
 					},
 					url: "showDuggaservice.php",
@@ -1058,24 +1060,25 @@ function AJAXService(opt,apara,kind)
 					dataType: "json",
 					success: function (data) {
 						returnedDugga(data);
-						ishashindb = data['ishashindb'];										//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+				*/												//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+						console.log(hash + " inDB:" + ishashindb + " blockGen:" + blockhashgen + " inUrl:" + ishashinurl)
 						if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
 							recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
 						}
 						// Check localstorage variants.
-						var newvariant = data['variantvalue'];
-						
+						//var newvariant = data['variantvalue'];
+						var newvariant = variantvalue;	
 						if(localStorage.getItem(querystring['did']) == null){
 							localStorage.setItem(querystring['did'], newvariant);
 							//The big number below represents 30 days in milliseconds
-							setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
+							setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 5000); //2592000000
 						}
 						getExpireTime(querystring['did']);
 						var variantsize = data['variantsize'];
 						localStorage.setItem("variantSize", variantsize);
 						setPassword(data['password']);
-					}
-				});
+				//	}
+				//});
 			}
 		})
 	}else if(kind=="RESULT"){
