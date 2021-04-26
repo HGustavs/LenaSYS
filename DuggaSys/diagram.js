@@ -986,6 +986,7 @@ function ddown(event)
             }
 
         case mouseModes.EDGE_CREATION:
+            if(event.button == 2) return;
             var element = data[findIndex(data, event.currentTarget.id)];
             if (element != null && !context.includes(element) || !ctrlPressed){
                 updateSelection(element);
