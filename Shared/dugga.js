@@ -973,7 +973,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "highscoreservice.php",
 				type: "POST",
-				data: "opt="+opt+para,
+				data: "opt="+opt+para+"&hash="+hash,
 				dataType: "json",
 				success: returnedHighscore
 			});
@@ -997,7 +997,7 @@ function AJAXService(opt,apara,kind)
     $.ajax({
       url: "sectionedservice.php",
       type: "POST",
-      data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
+      data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
       dataType: "json",
       success: returnedSection
     });

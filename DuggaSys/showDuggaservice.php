@@ -162,7 +162,8 @@ foreach($query->fetchAll() as $row) {
 	$insertparam = true;
 }
 
-$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,grade,submitted,password FROM userAnswer WHERE hash=:hash;");
+$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,feedback,grade,submitted,password FROM userAnswer WHERE hash=:hash;");
+
     $query->bindParam(':hash', $hash);
     $result = $query->execute();
 
@@ -312,10 +313,9 @@ if(checklogin()){
             }else{
 
 			if(!$isIndb){ // If the dugga is not in database, insert into database
-				$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant,hash,password) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant,:hash,:password);");
+				$query = $pdo->prepare("INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password);");
 				$query->bindParam(':cid', $courseid);
 				$query->bindParam(':coursevers', $coursevers);
-				$query->bindParam(':uid', $userid);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':moment', $moment);
 				$query->bindParam(':variant', $savedvariant);
@@ -409,7 +409,7 @@ if(strcmp($opt,"GETVARIANTANSWER")==0){
 	
 	$setanswer=$result['variantanswer'];
 	
-	makeLogEntry($userid,2,$pdo,$first);
+	// makeLogEntry($userid,2,$pdo,$first);
 	$insertparam = true;
 	$param = $setanswer;
 }
@@ -454,15 +454,13 @@ if(strcmp($opt,"GRPDUGGA")==0){
 $files= array();
 for ($i = 0; $i < $userCount; $i++) {
 	if ($showall==="true"){
-		$query = $pdo->prepare("select subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission where hash=:hash and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
+		$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash AND vers=:vers AND cid=:cid ORDER BY subid,fieldnme,updtime asc;");  
 	} else {
-		$query = $pdo->prepare("select subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission where hash=:hash and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
+		$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash AND vers=:vers AND cid=:cid AND did=:did ORDER BY subid,fieldnme,updtime asc;");  
 		$query->bindParam(':did', $duggaid);
 	}
 	if ($i == 0) {
 		$query->bindParam(':hash', $hash);
-	} else {
-		$query->bindParam(':uid', $usersInGroup[$i-1]);
 	}
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':vers', $coursevers);
@@ -522,15 +520,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			}else{
 					$content="Not a text-submit or URL";
 			}
-
- 			$uQuery = $pdo->prepare("SELECT username FROM user WHERE uid=:uid;");
-			$uQuery->bindParam(':uid', $row['uid'], PDO::PARAM_INT);
-			$uQuery->execute();
-			$uRow = $uQuery->fetch();
-			$username = $uRow['username'];
-
 			$entry = array(
-				'uid' => $row['uid'],
 				'subid' => $row['subid'],
 				'vers' => $row['vers'],
 				'did' => $row['did'],
@@ -618,6 +608,6 @@ if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
 echo json_encode($array);
 
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php",$userid,$info);
+// logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php",$userid,$info);
 
 ?>
