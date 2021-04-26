@@ -1,0 +1,105 @@
+<div class='feedback-container' style="display: none;">
+	<div class='feedback-button' onclick='toggleFeedback()'><h3>Feedback</h3></div>	
+		<div class="feedback-content">	
+				<div id="feedbackTable" style="margin-top: -3px;"></div>	
+		</div>
+</div>
+<div class='instructions-container'>
+<div class='instructions-button' onclick='toggleInstructions()'><h3>Instructions</h3></div>	
+	<div class="instructions-content">
+		<p>Bit-duggan g&aring;r ut p&aring; att representera ett tal med basen 10 b&aring;de bin&auml;rt och hexadecimalt med hj&auml;lp av bitar och hexadecimala siffror.</p>
+		<p>Biten l&auml;ngst till h&ouml;ger &auml;r 'Least Significant Bit (LSB)'. De fyra h&ouml;gra bitarna motsvaras av den h&ouml;gra hexadecimala siffran, de v&auml;nstra bitarna motsvaras av den v&auml;nstra hexadecimala siffran.</p>
+		<p>Fram tills att ditt svar blivit r&auml;ttat av en l&auml;rare kan du &auml;ndra det s&aring; m&aring;nga g&aring;nger du vill. Du &auml;ndrar i bitarna eller de hexadecimala siffrorna genom att klicka p&aring; siffran. F&ouml;r det hexadecimala talet v&auml;jer man v&auml;rdet i listan.</p> 
+		<p>Exempel: F&ouml;r att representera talet 1 bin&auml;rt s&aring; s&auml;tter man alla bitar utom den l&auml;ngst till h&ouml;ger till 0, det vill s&auml;ga '0000 0001'. F&ouml;r att representera talet 1 hexadecimalt s&aring; s&auml;tter man den v&auml;nstra hexadecimala siffran till 0 och den h&ouml;gra till 1, det vill s&auml;ga '0 1'.</p>
+		<strong>Talet du skall representera &auml;r: <span id='talet'></span></strong>
+	</div>
+</div>
+<table class='fouter' width="100%" style='margin-bottom:20px;' >
+		<tr height="100px">
+				<td class='outertd' style='border-top:2px dashed #fb8;border-left:2px dashed #fb8;'> 
+						<table width="100%" style="border-spacing: 4px;border-collapse: separate;">
+								<tr height="64px;">
+										<td id="B7" class='bit noll'>0</td>
+										<td id="B6" class='bit noll'>0</td>
+										<td id="B5" class='bit noll'>0</td>
+										<td id="B4" class='bit noll'>0</td>
+								</tr>
+						</table>												
+					</td>
+					<td style="width:8px;border-top:2px dashed #fb8;"></td>
+				<td class='outertd' style='border-top:2px dashed #fb8;border-right:2px dashed #fb8;'> 
+						<table width="100%" style="border-spacing: 4px;border-collapse: separate;">
+								<tr height="64px;">
+										<td id="B3" class='bit noll'>0</td>
+										<td id="B2" class='bit noll'>0</td>
+										<td id="B1" class='bit noll'>0</td>
+										<td id="B0" class='bit noll'>0</td>
+								</tr>
+						</table>												
+					</td>
+		</tr>
+		<tr height="100px">
+					<td class='outertd' style='border-bottom:2px dashed #fb8;border-left:2px dashed #fb8;'>
+						<table width="100%" style="border-spacing: 4px;border-collapse: separate;">
+								<tr height="64px;">
+										<td colspan='1'>&nbsp;</td>
+										<td id="H0" class='hexo'>0</td>
+										<td colspan='1'>&nbsp;</td>
+								</tr>
+						</table>												
+					</td>
+					<td style="width:8px;border-bottom:2px dashed #fb8" ></td>
+					<td class='outertd' style='border-bottom:2px dashed #fb8;border-right:2px dashed #fb8;'>
+						<table width="100%" style="border-spacing: 4px;border-collapse: separate;">
+								<tr height="64px;">
+										<td colspan='1'>&nbsp;</td>
+										<td id="H1" class='hexo'>0</td>
+										<td colspan='1'>&nbsp;</td>
+								</tr>
+						</table>												
+					</td>
+		</tr>
+</table>
+
+<div id="pop" class="popover arrow-topr" style='top:-35px;display:none;'>
+		<table width="100%" height="100%" style='border-collapse: separate;'>
+				<tr>
+						<td class='hexbutt' onclick="setval('0');">0</td>
+						<td class='hexbutt' onclick="setval('1');">1</td>
+						<td class='hexbutt' onclick="setval('2');">2</td>
+						<td class='hexbutt' onclick="setval('3');">3</td>
+				</tr>
+				<tr>
+						<td class='hexbutt' onclick="setval('4');">4</td>
+						<td class='hexbutt' onclick="setval('5');">5</td>
+						<td class='hexbutt' onclick="setval('6');">6</td>
+						<td class='hexbutt' onclick="setval('7');">7</td>
+				</tr>
+				<tr>
+						<td class='hexbutt' onclick="setval('8');">8</td>
+						<td class='hexbutt' onclick="setval('9');">9</td>
+						<td class='hexbutt' onclick="setval('A');">A</td>
+						<td class='hexbutt' onclick="setval('B');">B</td>
+				</tr>
+				<tr>
+						<td class='hexbutt' onclick="setval('C');">C</td>
+						<td class='hexbutt' onclick="setval('D');">D</td>
+						<td class='hexbutt' onclick="setval('E');">E</td>
+						<td class='hexbutt' onclick="setval('F');">F</td>
+				</tr>
+		</table>												
+</div>
+<div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
+    <div class='loginBoxheader'>
+        <h3>Dugga Stats</h3>
+        <div class='cursorPointer' onclick="hideDuggaStatsPopup()">x</div>
+    </div>
+      <div class="table-wrap">
+        <table>
+            <tr><th></th><th>Highscore</th><th>Total</th></tr>
+            <tr><td>Clicks</td><td id="duggaClicks"></td><td id="duggaTotalClicks"></td></tr>
+            <tr><td>Time</td><td id="duggaTime"></td><td id="duggaTotalTime"></td></tr>
+            <tr><td>Submissions</td><td></td><td id="duggaTotalSubmissions"></td></tr>
+        </table>
+      </div>
+</div>
