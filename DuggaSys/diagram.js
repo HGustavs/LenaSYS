@@ -1938,8 +1938,7 @@ function drawElement(element, ghosted = false)
 
         if(element.state == "weak") {
             weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
-            stroke-width='${linew}' stroke='black' fill='#ffccdc' />
-            <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
+            stroke-width='${linew}' stroke='black' fill='#ffccdc' /> 
             `;         
         }
         
