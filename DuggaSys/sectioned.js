@@ -1452,7 +1452,7 @@ function drawSwimlanes() {
        
            var yearDifference = current.getFullYear() - deadlineYear;
            var newYear = new Date(entry.deadline);
-           newYear.setFullYear(entry.deadline.getFullYear() + yearDifference);
+           newYear.setFullYear(entry.deadline.getFullYear() + yearDifference +1);
            entry.deadline = newYear;
          }
        
@@ -1476,22 +1476,23 @@ function drawSwimlanes() {
   var newCurrent;
   var daySinceStart;
 
-  if(deadlineYear < current.getFullYear()) { //guesstimate deadline for current year
-    var yearDifference = current.getFullYear() - deadlineYear;
+
+  if(enddate.getFullYear() < current.getFullYear()) { //guesstimate deadline for current year
+    var yearDifference = current.getFullYear() - enddate.getFullYear();
     var tempYear = new Date(current); 
     
     tempYear.setFullYear(current.getFullYear() - yearDifference); 
     newCurrent = new Date(tempYear); 
-    daySinceStart = Math.ceil((newCurrent - startdate) / (24 * 60 * 60 * 1000));
+    daySinceStart = Math.ceil(( newCurrent - startdate) / (24 * 60 * 60 * 1000));
   }
   else {                                           //No guesstimation
-       var daySinceStart = Math.ceil((current - startdate) / (24 * 60 * 60 * 1000));
+       daySinceStart = Math.ceil(( current - startdate ) / (24 * 60 * 60 * 1000));
   }
 
 
 
-  str += `<line opacity='0.7' x1='${((daywidth * daySinceStart) - daywidth)}'
-  y1='${(15 + weekheight)}' x2='${((daywidth * daySinceStart) - daywidth)}'
+  str += `<line opacity='0.7' x1='${(daySinceStart * daywidth)}'
+  y1='${(15 + weekheight)}' x2='${(daySinceStart * daywidth) }'
   y2='${(((1 + deadlineEntries.length) * weekheight) + 15)}' stroke-width='4' stroke='red' />`;
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
   document.getElementById("swimlaneSVG").innerHTML = str;
