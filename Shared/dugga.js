@@ -1703,14 +1703,14 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
             
 								tab+="<span>";
 								if (mediumMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension;
-									tab+="hejhej</span>";
+									tab+="<span style='font-style: italic;'>"+filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
+									tab+="<br />"+filez[i].zipdir+"</span>";
 								} else if (mobileMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension;
-									tab+="hejhej</span>";
+									tab+="<span style='font-style: italic;'>"+filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</span>";
+									tab+="<br />"+filez[i].zipdir+"</span>";
 								} else {
-									tab+=filez[i].filename+"."+filez[i].extension;
-									tab+="<br>"+filez[i].unzip+"</span>";
+									tab+="<span style='font-style: italic;'>"+filez[i].filename+"."+filez[i].extension+"</span>";
+									tab+="<br />"+filez[i].zipdir+"</span>";
 								}
 							} else {
 
