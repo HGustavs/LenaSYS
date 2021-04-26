@@ -461,18 +461,8 @@ for ($i = 0; $i < $userCount; $i++) {
 	foreach($query->fetchAll() as $row) {
 			
 			$content = "UNK";
-			$feedback = "UNK";
-	
 			$currcvd=getcwd();
 			
-			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
-			if(!file_exists($fedbname)) {
-					$feedback="UNK";
-			} else {
-				if($today > $duggainfo['qrelease']  || is_null($duggainfo['qrelease'])){
-					$feedback=file_get_contents($fedbname);				
-				}
-			}			
 			
 			if($row['kind']=="3"){
 					// Read file contents
@@ -517,7 +507,6 @@ for ($i = 0; $i < $userCount; $i++) {
 				'seq' => $row['seq'],	
 				'segment' => $row['segment'],	
 				'content' => $content,
-				'feedback' => $feedback,
 				'username' => $username
 			);
 	

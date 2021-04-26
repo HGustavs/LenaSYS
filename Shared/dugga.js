@@ -1623,16 +1623,14 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 
 		if (group) {
       if (mobileMediaQuery.matches) {
-        tab+="<thead><tr><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+        tab+="<thead><tr><th>User</th><th>Filename</th><th>Upload date</th></tr></thead>";
       } else {
-			  tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+			  tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th></tr></thead>";
       }
     } else {
       if (mobileMediaQuery.matches) {
-			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+			tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
 		  } else {
-			// Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
-			//tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
 			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th></tr></thead>";
 		  }
     }
@@ -1715,33 +1713,6 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							} else {
 								tab+=filez[i].updtime;+"</td>";
 							}
-
-							tab+="<td>";
-							//Feedback button. Always visible for teachers, only visible for students if feedback have been given.
-							/*
-							if (!mobileMediaQuery.matches) {
-							
-								// Button for making / viewing feedback - note - only button for given feedback to students.
-								if(filez[i].feedback!=="UNK"||displaystate){
-										tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>Feedback</button>";
-								}
-							}
-							*/
-							tab+="</td>";
-							/*
-							// Display user feedback on the assignment page
-							tab+="<td>";
-							if(filez[i].feedback!=="UNK"){
-								if (mobileMediaQuery.matches || mediumMediaQuery.matches) {
-									tab+="<span style='text-decoration: underline' onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>"+filez[i].feedback.substring(0,8)+"&#8230;</span>";
-								} else {
-									tab+=filez[i].feedback.substring(0,64)+"&#8230;";
-								}
-							}else{
-								tab+="&nbsp;"
-							}
-							tab+="</td>";
-							*/
 							tab+="</tr>";
 					}
 			}
