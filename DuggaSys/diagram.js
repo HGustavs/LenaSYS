@@ -2375,16 +2375,22 @@ function sortvectors(a, b, ends, elementid, axis)
     var parent = data[findIndex(data, elementid)];
 
     // Retrieve opposite element - assume element center (for now)
-     if (lineA.fromID == elementid){
+     if (lineA.fromID == elementid) {
         toElementA = (lineA == ghostLine) ? ghostElement : data[findIndex(data, lineA.toID)];
     } else {
         toElementA = data[findIndex(data, lineA.fromID)];
     }
 
-    if (lineB.fromID == elementid){
+    if (lineB.fromID == elementid) {
         toElementB = (lineB == ghostLine) ? ghostElement : data[findIndex(data, lineB.toID)];
     } else {
         toElementB = data[findIndex(data, lineB.fromID)];
+    }
+
+    if (navigator.userAgent.indexOf("Chrome") !== 1) {
+        sortval = -1;
+    } else {
+        sortval = 1;
     }
 
     // If lines cross swap otherwise keep as is
@@ -2395,7 +2401,7 @@ function sortvectors(a, b, ends, elementid, axis)
         if (axis == 0) parentx = parent.x1
         else parentx = parent.x2;
 
-        if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return -1
+        if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return -sortval
 
     } else if (axis == 2 || axis == 3) {
         // Top / Bottom side
@@ -2404,10 +2410,10 @@ function sortvectors(a, b, ends, elementid, axis)
         if (axis == 2) parenty = parent.y1
         else parenty = parent.y2;
 
-        if (linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty) === false) return -1
+        if (linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty) === false) return -sortval
     }
 
-    return 1;
+    return sortval;
 }
 
 //-------------------------------------------------------------------------------------------------
