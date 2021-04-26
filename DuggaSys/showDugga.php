@@ -141,27 +141,38 @@ function hashPassword($password, $hash){
 		if($password == 'UNK')
 			return false;
 		global $pdo;
-		$sql = "SELECT hash,password FROM useranswer WHERE '" .$password. "' LIKE password AND '".$hash."' LIKE hash";
-		$query = $pdo->prepare($sql);
-		$query->execute();
+		error_log("hashpassword = ".$password);
+		$query = $pdo->prepare("SELECT hash,password FROM userAnswer WHERE hash=:hash");
+		$query->bindParam(':hash', $hash);
+		//$sql = "SELECT hash,password FROM useranswer WHERE '" .$password. "' LIKE password AND '".$hash."' LIKE hash";
+		//$query = $pdo->prepare($sql);
+		$result = $query->execute();
+		if($row = $query->fetch(PDO::FETCH_ASSOC)){
+			if($row['password'] != $password){
+				$password = $row['password'];
+			}
+		}
+
 		$count = $query->rowCount();
 			if($count == 0){
-				echo '<script>console.log(false)</script>';
-				echo "<script>console.log('".$count."')</script>;";
+				error_log("isSaved00 = ".$isSaved,0);
+				global $isSaved;
 				$isSaved = 0;
+				error_log("hashpassword0 = ".$password);
+				error_log("isSaved0 = ".$isSaved,0);
 				return false;
 			} else{
-				echo '<script>console.log(true)</script>';
-				echo "<script>console.log('".$count."')</script>;";
+				error_log("isSaved11 = ".$isSaved,0);
+				global $isSaved;
 				$isSaved = 1;
+				error_log("hashpassword1 = ".$password);
+				error_log("isSaved1 = ".$isSaved,0);
 				return true;
 			}
 }
-echo "<script>console.log('".$hash."')</script>;";
-echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
 if($hash!='UNK'){
-	if(!hashPassword($hashpassword, $hash)){
+	if(hashPassword($hashpassword, $hash)){
 		error_log("isSaved = ".$isSaved,0);
 		if($isSaved == 1){
 			echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
