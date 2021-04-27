@@ -78,7 +78,7 @@ if(checklogin()){
 
 	if(count($user) === 0){
 		// This must be tested
-		$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where user.username = :user AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;");
+		$query = $pdo->prepare("SELECT score FROM userAnswer, user where user.username = :user AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;");
 		$query->bindParam(':did', $duggaid);
 		$query->bindParam(':lid', $variant);
 		$query->bindParam(':user', $_SESSION["loginname"]);
@@ -90,7 +90,6 @@ if(checklogin()){
 				
 		foreach($query->fetchAll() as $row){
 			$user = array(
-				"username" => $row["username"],
 				"score" => $row["score"]
 			);
 		}
