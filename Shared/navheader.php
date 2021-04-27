@@ -120,12 +120,6 @@
 							echo "    </div>";
 							echo "</td>";
 
-
-							echo "<div id='hamburgerBox'>";
-							echo "<img alt='settings icon' id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
-							echo "<img alt='plus sign icon' id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
-							echo "</div>";
-
 					if(checklogin() && (isSuperUser($_SESSION['uid']) )) {	
 						
 				
