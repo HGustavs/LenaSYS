@@ -701,6 +701,11 @@ const lineKind = {
     DOUBLE: "Double"
 };
 
+const lineCardinalitys = {
+    MANY: "N",
+    ONE: "1"
+};
+
 // Demo data - read / write from service later on
 var data = [
     { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
@@ -729,8 +734,8 @@ var lines = [
     { id: makeRandomID(), fromID: NameID, toID: FNID, kind: "Normal" },
     { id: makeRandomID(), fromID: NameID, toID: LNID, kind: "Normal" },
 
-    { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal" },
-    { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal" },
+    { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
+    { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
 ];
 
 const stateMachine = new StateMachine(data, lines);
@@ -2184,11 +2189,27 @@ function changeState()
     element.state = property;
 }
 
-function changeLineKind()
+function changeLineProperties()
 {
+    // Set lineKind
     var property = document.getElementById("propertySelect").value;
     var line = contextLine[0];
     line.kind = property;
+
+    // Change line - cardinality
+    var cFromValue = document.getElementById('propertyCardinalityFrom').value;
+    var cToValue = document.getElementById('propertyCardinalityTo').value;
+
+    // If both are none, remove the key from line object
+    if (cToValue == "" && cFromValue == ""){
+        delete line.cardinality;
+    } else {
+        line.cardinality = {
+            from: cFromValue,
+            to: cToValue
+        }
+    }
+
     showdata();
 }
 
@@ -2254,7 +2275,7 @@ function generateContextProperties()
         if(selected == undefined) selected = normal;
         
         value = Object.values(lineKind);
-        
+        str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
         str += '<select id="propertySelect">';
         for(var i = 0; i < value.length; i++){
             if(selected == value[i]){
@@ -2264,7 +2285,35 @@ function generateContextProperties()
             }
         }
         str += '</select>';
-        str+=`<br><br><input type="submit" value="Save" onclick="changeLineKind();">`;
+
+        // Line cardinality
+        str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinality</h3>`;
+
+        // FROM cardinality
+        str += `<label style="display: block">From (${data[findIndex(data, contextLine[0].fromID)].name}): <select id='propertyCardinalityFrom'>`;
+        str  += `<option value=''></option>`
+        Object.keys(lineCardinalitys).forEach(cardinality => {
+            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality.from === cardinality){
+                str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+            }else {
+                str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+            }
+        });
+        str += `</select></label>`;
+
+        // TO cardinality
+        str += `<label style="display: block">To (${data[findIndex(data, contextLine[0].toID)].name}): <select id='propertyCardinalityTo'>`;
+        str  += `<option value=''></option>`
+        Object.keys(lineCardinalitys).forEach(cardinality => {
+            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality.to == cardinality){
+                str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+            }else {
+                str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+            }
+        });
+        str += `</select></label>`;
+
+        str+=`<br><br><input type="submit" value="Save" onclick="changeLineProperties();">`;
     }
 
     if ((context.length > 1 || contextLine.length > 1) || (context.length == 1 && contextLine.length == 1)) {
@@ -2541,6 +2590,42 @@ function drawLine(line, targetGhost = false)
         str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
     }
 
+    // If the line got cardinality
+    if(line.cardinality) {
+        var toCardinalityX = tx;
+        var toCardinalityY = ty;
+        var fromCardinalityX = fx;
+        var fromCardinalityY = fy;
+
+        if (line.ctype == "BT"){
+            toCardinalityY = ty - 10;
+            fromCardinalityY = fy + 15;
+        }else if (line.ctype == "TB"){
+            toCardinalityX = tx;
+            toCardinalityY = ty + 15;
+            fromCardinalityX = fx;
+            fromCardinalityY = fy - 5;
+        }else if (line.ctype == "RL"){
+            toCardinalityX = tx - 10;
+            toCardinalityY = ty;
+            fromCardinalityX = fx + 10;
+            fromCardinalityY = fy;
+        }else if (line.ctype == "LR"){
+            toCardinalityX = tx;
+            toCardinalityY = ty;
+            fromCardinalityX = fx - 15;
+            fromCardinalityY = fy;
+        }
+        // From cardinality
+        if (line.cardinality.from != ""){
+            str += `<text x="${fromCardinalityX}" y="${fromCardinalityY}">${lineCardinalitys[line.cardinality.from]}</text>`
+        }
+
+        // To cardinality
+        if (line.cardinality.to != "") {
+            str += `<text x="${toCardinalityX}" y="${toCardinalityY}">${lineCardinalitys[line.cardinality.to]}</text>`
+        }
+    }
     return str;
 }
 
