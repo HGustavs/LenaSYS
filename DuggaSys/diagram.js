@@ -545,8 +545,8 @@ const keybinds = {
 
 // Zoom variables
 var zoomfact = 1.0;
-var scrollx = 4132 / 4;
-var scrolly = 2600 / 4;
+var scrollx = 0;
+var scrolly = 0;
 var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
 var camera = new Point(0, 0); // Relative to coordinate system origo
 
@@ -692,6 +692,11 @@ const lineKind = {
     DOUBLE: "Double"
 };
 
+const lineCardinalitys = {
+    MANY: "N",
+    ONE: "1"
+};
+
 // Demo data - read / write from service later on
 var data = [];
 var lines = [];
@@ -737,8 +742,8 @@ function onSetup()
         { id: makeRandomID(), fromID: NameID, toID: FNID, kind: "Normal" },
         { id: makeRandomID(), fromID: NameID, toID: LNID, kind: "Normal" },
 
-        { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal" },
-        { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal" },
+        { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
+        { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
     ];
 
     for(var i = 0; i < demoData.length; i++){
@@ -819,19 +824,16 @@ document.addEventListener('keydown', function (e)
         if (e.key == keybinds.SELECT_ALL.key && e.ctrlKey == keybinds.SELECT_ALL.ctrl){
             e.preventDefault();
             selectAll();
-        }
-       
-    }
-
-    var propField = document.getElementById("elementProperty_name");
-    // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
-    if ( /INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        if (e.key == keybinds.ENTER.key && e.ctrlKey == keybinds.ENTER.ctrl) {
-            changeState();
-            saveProperties();
+        }      
+    } else { 
+        if (e.key == keybinds.ENTER.key && e.ctrlKey == keybinds.ENTER.ctrl) { 
+            var propField = document.getElementById("elementProperty_name");
+            changeState(); 
+            saveProperties(); 
             propField.blur();
             displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
         }
+       
     }
 });
 
@@ -1770,23 +1772,19 @@ function fab_action()
 
 function zoomin(scrollEvent = undefined)
 {
-    // Calculate mouse position relative to window size
-    var w = (scrollEvent.clientX / window.innerWidth  - 0.5) * 2;
-    var h = (scrollEvent.clientY / window.innerHeight - 0.5) * 2;
-
-    if (zoomfact != 4.0)
-    {
-        var mc = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
-        console.log("Mouse:", mc.x, mc.y);
-
+    // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
+    if (scrollEvent && zoomfact != 4.0) {
+        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
-            x: mc.x - zoomOrigo.x,
-            y: mc.y - zoomOrigo.y
+            x: mouseCoordinates.x - zoomOrigo.x,
+            y: mouseCoordinates.y - zoomOrigo.y
         };
-        console.log("Delta:", delta.x, delta.y);
 
         zoomOrigo.x += delta.x * zoomPower;
         zoomOrigo.y += delta.y * zoomPower;
+    } else { // Otherwise, set zoom target to origo.
+        zoomOrigo.x = 0;
+        zoomOrigo.y = 0;
     }
 
     scrollx = scrollx / zoomfact;
@@ -1820,19 +1818,19 @@ function zoomin(scrollEvent = undefined)
 
 function zoomout(scrollEvent = undefined)
 {
-    if (zoomfact != 0.125)
-    {
-        var mc = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
-        console.log("Mouse:", mc.x, mc.y);
-
+    // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
+    if (scrollEvent && zoomfact != 0.125) {
+        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
-            x: mc.x - zoomOrigo.x,
-            y: mc.y - zoomOrigo.y
+            x: mouseCoordinates.x - zoomOrigo.x,
+            y: mouseCoordinates.y - zoomOrigo.y
         };
-        console.log("Delta:", delta.x, delta.y);
 
         zoomOrigo.x -= delta.x * zoomPower;
         zoomOrigo.y -= delta.y * zoomPower;
+    } else { // Otherwise, set zoom target to origo.
+        zoomOrigo.x = 0;
+        zoomOrigo.y = 0;
     }
 
     scrollx = scrollx / zoomfact;
@@ -1851,6 +1849,7 @@ function zoomout(scrollEvent = undefined)
     scrolly = scrolly * zoomfact;
 
     updateGridSize();
+    
     // Update scroll position - missing code for determining that center of screen should remain at new zoom factor
     showdata();
 
@@ -1943,6 +1942,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
 
             // Save changes into state machine
             if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(newLine));
+            
+            displayMessage(messageTypes.SUCCESS,"Created new line between: " + context[0].name + " and " + context[1].name);
             return newLine;
             
         } else {
@@ -2250,7 +2251,7 @@ function changeState()
     element.state = property;
 }
 
-function changeLineKind()
+function changeLineProperties()
 {
     var radio1 = document.getElementById("lineRadio1");
     var radio2 = document.getElementById("lineRadio2");
@@ -2261,6 +2262,25 @@ function changeLineKind()
     }else{
         line.kind = radio2.value;
     }
+    // Set lineKind
+    var property = document.getElementById("propertySelect").value;
+    var line = contextLine[0];
+    line.kind = property;
+
+    // Change line - cardinality
+    var cFromValue = document.getElementById('propertyCardinalityFrom').value;
+    var cToValue = document.getElementById('propertyCardinalityTo').value;
+
+    // If both are none, remove the key from line object
+    if (cToValue == "" && cFromValue == ""){
+        delete line.cardinality;
+    } else {
+        line.cardinality = {
+            from: cFromValue,
+            to: cToValue
+        }
+    }
+
     showdata();
 }
 
@@ -2326,7 +2346,8 @@ function generateContextProperties()
         if(selected == undefined) selected = normal;
         
         value = Object.values(lineKind);
-        
+        str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+        str += '<select id="propertySelect">';
         for(var i = 0; i < value.length; i++){
             if(selected == value[i]){
                 str += `<input type="radio" id="lineRadio1" name="lineKind" value='${value[i]}' checked>`
@@ -2336,7 +2357,36 @@ function generateContextProperties()
                 str += `<label for='${value[i]}'>${value[i]}</label><br>` 
             }
         }
-        str+=`<br><br><input type="submit" value="Save" onclick="changeLineKind();">`;
+        str += '</select>';
+
+        // Line cardinality
+        str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinality</h3>`;
+
+        // FROM cardinality
+        str += `<label style="display: block">From (${data[findIndex(data, contextLine[0].fromID)].name}): <select id='propertyCardinalityFrom'>`;
+        str  += `<option value=''></option>`
+        Object.keys(lineCardinalitys).forEach(cardinality => {
+            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality.from === cardinality){
+                str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+            }else {
+                str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+            }
+        });
+        str += `</select></label>`;
+
+        // TO cardinality
+        str += `<label style="display: block">To (${data[findIndex(data, contextLine[0].toID)].name}): <select id='propertyCardinalityTo'>`;
+        str  += `<option value=''></option>`
+        Object.keys(lineCardinalitys).forEach(cardinality => {
+            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality.to == cardinality){
+                str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+            }else {
+                str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+            }
+        });
+        str += `</select></label>`;
+
+        str+=`<br><br><input type="submit" value="Save" onclick="changeLineProperties();">`;
     }
 
     if ((context.length > 1 || contextLine.length > 1) || (context.length == 1 && contextLine.length == 1)) {
@@ -2619,6 +2669,42 @@ function drawLine(line, targetGhost = false)
         str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
     }
 
+    // If the line got cardinality
+    if(line.cardinality) {
+        var toCardinalityX = tx;
+        var toCardinalityY = ty;
+        var fromCardinalityX = fx;
+        var fromCardinalityY = fy;
+
+        if (line.ctype == "BT"){
+            toCardinalityY = ty - 10;
+            fromCardinalityY = fy + 15;
+        }else if (line.ctype == "TB"){
+            toCardinalityX = tx;
+            toCardinalityY = ty + 15;
+            fromCardinalityX = fx;
+            fromCardinalityY = fy - 5;
+        }else if (line.ctype == "RL"){
+            toCardinalityX = tx - 10;
+            toCardinalityY = ty;
+            fromCardinalityX = fx + 10;
+            fromCardinalityY = fy;
+        }else if (line.ctype == "LR"){
+            toCardinalityX = tx;
+            toCardinalityY = ty;
+            fromCardinalityX = fx - 15;
+            fromCardinalityY = fy;
+        }
+        // From cardinality
+        if (line.cardinality.from != ""){
+            str += `<text x="${fromCardinalityX}" y="${fromCardinalityY}">${lineCardinalitys[line.cardinality.from]}</text>`
+        }
+
+        // To cardinality
+        if (line.cardinality.to != "") {
+            str += `<text x="${toCardinalityX}" y="${toCardinalityY}">${lineCardinalitys[line.cardinality.to]}</text>`
+        }
+    }
     return str;
 }
 
