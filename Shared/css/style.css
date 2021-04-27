@@ -855,7 +855,8 @@ p {
 #swimlaneSVG {
   display: flex;
   margin: auto;
-  zoom: 150%;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 #swimlaneSVG text {
@@ -867,6 +868,25 @@ p {
     font-size: 14px;
   }
 }
+
+@media only screen and (min-width: 1224px) {
+  #swimlaneSVG {
+      transform: scale(0.7);
+      overflow: auto;
+      display: flex;
+      margin-top: -80px;
+  }
+}
+
+@media only screen and (max-width: 1223px) {
+  #swimlaneSVG {
+      display: flex;
+      margin: auto;
+      align-items: center;
+      flex-wrap: wrap;
+  }
+}
+
 
 #dorf {
   cursor: pointer;
