@@ -2034,9 +2034,7 @@ function updateSelectedLine(selectedLine)
             contextLine = [];
             contextLine.push(selectedLine);
         }
-    } else if (!altPressed && !ctrlPressed) {
-        contextLine = [];
-    }
+    } 
     generateContextProperties();
 }
 
