@@ -94,20 +94,12 @@ function showCreateClassPopup() {
 	$("#createClass").css("display", "flex");
 }
 
-function showImportUsersPopup() {
-	$("#importUsers").css("display", "flex");
-}
-
 function hideCreateUserPopup() {
 	$("#createUser").css("display", "none");
 }
 
 function hideCreateClassPopup() {
 	$("#createClass").css("display", "none");
-}
-
-function hideImportUsersPopup() {
-	$("#importUsers").css("display", "none");
 }
 
 function closeEdituser() {
