@@ -1297,7 +1297,7 @@ function returnedHighscore(data) {
 
   var str = "";
 
-  str += "<tr><th>Rank</th><th>Name</th><th>Score</th></tr>";
+  str += "<tr><th>Rank</th><th>Score</th></tr>";
 
   if (data['highscores'].length > 0) {
     for (i = 0; i < data['highscores'].length; i++) {
@@ -1308,7 +1308,6 @@ function returnedHighscore(data) {
         str += "<tr>";
       }
       str += "<td>" + (i + 1) + "</td>";
-      str += "<td>" + item['username'] + "</td>";
       str += "<td>Score: " + item['score'] + "</td>";
       str += "</tr>";
     }
@@ -1317,7 +1316,6 @@ function returnedHighscore(data) {
   if (data["user"]["username"]) {
     str += "<tr class='highscoreUser'>";
     str += "<td></td>";
-    str += "<td>" + data["user"]["username"] + "</td>";
     str += "<td>Score: " + data["user"]["score"] + "</td>";
     str += "</tr>";
   }
