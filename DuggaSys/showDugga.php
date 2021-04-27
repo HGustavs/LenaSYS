@@ -331,7 +331,7 @@ if($hash!='UNK'){
 			
 			console.log(value);	
 
-			var hash = $hash
+			var hash = "$hash"
 			
 			console.log(hash);
 				return false;	
