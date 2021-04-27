@@ -50,26 +50,6 @@ class StateChange {
     };
 
     /**
-     * @type String
-     */
-    name;
-    
-    /**
-     * @type Point
-     */
-    moved;
-    
-    /**
-     * @type Point
-     */
-    resized;
-
-    /**
-     * @type number
-     */
-    timestamp;
-
-    /**
      * Used by certain state changes to pass their own specific data
      * that can be used when decoding the history log using the hange flags.
      * 
@@ -142,32 +122,41 @@ class StateChange {
      */
     appendValuesFrom(changes)
     {
-        if (changes.name) {
-            this.name = changes.name;
-        }
-
-        if (changes.moved) {
-            if (this.moved) {
-                this.moved.add(changes.moved);
-            } else { 
-                this.moved = changes;
-            }
-        }
-
-        if (changes.resized) {
-            if (this.resized) {
-                this.resized.add(changes.resized);
-            } else {
-                this.resized = changes.resized;
-            }
-        }
-
         if (changes.timestamp < this.timestamp) {
             this.timestamp = changes.timestamp;
         }
-        
-        /** @type number */
-        this.changeTypes.flag = this.changeTypes.flag | changes.changeTypes.flag;
+            
+        for(var index = 0; index < changes.changeTypes.length; index++) {
+            var change = changes.changeTypes[index]
+
+            if (!this.changeTypes.includes(change)) {
+                this.changeTypes.push(change);
+            }
+            var props = Object.getOwnPropertyNames(changes.valuesPassed);
+            var values = changes.valuesPassed;
+         
+            for (var index = 0; index < props.length; index++) {
+                var propertyName = props[index];
+            
+                switch(propertyName){
+                    case "elementName": 
+                        this.valuesPassed[propertyName] = values[propertyName]
+                        break;
+                    // Uses point-class, and can be appended.
+                    case "movedElements":
+                    case "resizedElements":
+                        if(propertyName in this.valuesPassed) {
+                            this.valuesPassed[propertyName].add(values[propertyName]);
+                        } else {
+                            this.valuesPassed[propertyName] = values[propertyName];
+                        }
+                        break;
+                    default:
+                        console.error("Unknown passedValue in stateChange.appendValuesFrom", propertyName, changes);
+                        break;
+                }
+            }
+        }
     }
 }
 
@@ -175,12 +164,12 @@ class StateChangeFactory
 {
     static ElementCreated(element)
     {
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_CREATED, [element.id]);
-        state.name = element.name;
-        state.moved = new Point(element.x, element.y);
-        state.resized = new Point(element.width, element.height);
-
-        return state;
+        var values = {
+            elementName: element.name,
+            movedElements: new Point(element.x, element.y),
+            resizedElements: new Point(element.width, element.height)
+        }
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_CREATED, [element.id], values);
     }
 
     static ElementsDeleted(elements)
@@ -199,27 +188,27 @@ class StateChangeFactory
 
     static ElementsMoved(elementIDs, moveX, moveY)
     {
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED, elementIDs);
-        state.moved = new Point(moveX, moveY);
-
-        return state;
+        var values = {
+            movedElements: new Point(moveX, moveY)
+        };
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED, elementIDs, values);
     }
 
     static ElementResized(elementIDs, changeX, changeY)
     {
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_RESIZED, elementIDs);
-        state.resized = new Point(changeX, changeY);
-
-        return state;
+        var values = {
+            resizedElements: new Point(changeX, changeY)
+        };
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_RESIZED, elementIDs, values);
     }
 
     static ElementMovedAndResized(elementIDs, moveX, moveY, changeX, changeY)
     {
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED, elementIDs);
-        state.moved = new Point(moveX, moveY);
-        state.resized = new Point(changeX, changeY);
-
-        return state;
+        var values = {
+            resizedElements: new Point(changeX, changeY),
+            movedElements: new Point(moveX, moveY)
+        };
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED, elementIDs, values);
     }
 
     static ElementAttributesChanged(elementID, changeList)
@@ -418,7 +407,7 @@ class StateMachine
 
             // Attribute Changed
             if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag)) {
-                if (lastChange.name) {
+                if (lastChange.elementName) {
 
                     var element = data[findIndex(data, lastChange.id_list[0])];
  
@@ -437,8 +426,8 @@ class StateMachine
                     var element = data[findIndex(data, lastChange.id_list[index])];
 
                     if (element) {
-                        element.x -= lastChange.moved.x;
-                        element.y -= lastChange.moved.y;
+                        element.x -= lastChange.valuesPassed.movedElements.x;
+                        element.y -= lastChange.valuesPassed.movedElements.y;
                     }
                 }
             }
@@ -449,8 +438,8 @@ class StateMachine
                 var element = data[findIndex(data, lastChange.id_list[0])];
 
                 if (element) {
-                    element.width -= lastChange.resized.x;
-                    element.height -= lastChange.resized.y;
+                    element.width -= lastChange.valuesPassed.resizedElements.x;
+                    element.height -= lastChange.valuesPassed.resizedElements.y;
                 }
             }
 
@@ -2230,7 +2219,7 @@ function saveProperties()
                 const value = child.value.trim();
                 if (value && value.length > 0) {
                     element[propName] = value;
-                    propsChanged[propName] = value;
+                    propsChanged.elementName = value;
                 }
                 break;
         
