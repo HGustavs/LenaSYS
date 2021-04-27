@@ -57,29 +57,6 @@
 	?>
 	<!-- Login Dialog END -->
 
-	<!-- Import Users Dialog START -->
-	<div id='importUsers' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox'>
-			<div class='loginBoxheader'>
-				<h3>Import users</h3>
-				<div class='cursorPointer' onclick='closeWindows();'>x</div>
-			</div>
-			<div class='note'>
-				<p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
-				<p>SSN; Firstname; Lastname; Student email; Email; PID; Status &lt;linebreak&gt;</p>
-				<p>Example:<br/>
-					"18481724-5557";"Fritfjof";"Nilsson Piraten";"a48fripi@student.his.se";"booboo@mail.nu";"WEBUG";"Avklarad"</p>
-			</div>
-			<div style='padding:5px;'>
-				<textarea id="import" ></textarea>
-			</div>
-      <div style='padding:5px;display:flex;justify-content: flex-end;'>
-        <input class='submit-button' type='button' value='Import' onclick='importUsers();' />
-      </div>
-		</div>
-	</div>
-	<!-- Import Users Dialog END -->
-
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:494px;'>
