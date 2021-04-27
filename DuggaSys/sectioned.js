@@ -96,9 +96,10 @@ menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation = 'click') {
+
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
-      //toggleHamburger();
+      toggleHamburger();
       console.log("Inside our if");
     }
   } else {
@@ -108,14 +109,14 @@ function hamburgerChange(operation = 'click') {
 }
 
 function toggleHamburger() {
-  
+
   var x = document.getElementById("hamburgerBox");
   if (x.style.display === "block") {
     x.style.display = "none";
   } else {
     x.style.display = "block";
   }
-  
+
 }
 
 
