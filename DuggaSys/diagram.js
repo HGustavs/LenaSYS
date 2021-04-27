@@ -1077,7 +1077,6 @@ function mup(event)
                         clearContextLine();
                     } else if (mouseMode == mouseModes.POINTER) {
                         updateSelection(null);
-                        console.log("de");
                         clearContextLine();
                     }
                 }
@@ -1086,7 +1085,6 @@ function mup(event)
 
         case pointerStates.CLICKED_LINE:
             updateSelectedLine(determinedLines);
-            console.log("clicied");
             break;
 
         case pointerStates.CLICKED_ELEMENT:
