@@ -816,8 +816,8 @@ document.addEventListener('keydown', function (e)
         }
 
         if (e.key == "Backspace" && (context.length > 0 || contextLine.length > 0) && !propFieldState) {
-            removeElements(context); 
-            removeLines(contextLine);
+            if (contextLine.length > 0) removeLines(contextLine);
+            if (context.length > 0) removeElements(context);
             updateSelection();
         }
 
@@ -2848,7 +2848,6 @@ function removeElements(elementArray, stateMachineShouldSave = true)
     } else { // All passed items were INVALID
         console.error("Invalid element array passed to removeElements()!");
     }
-    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementArray));
 
     clearContext();
     redrawArrows();
