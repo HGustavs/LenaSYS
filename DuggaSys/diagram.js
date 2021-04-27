@@ -2252,9 +2252,15 @@ function changeState()
 
 function changeLineKind()
 {
-    var property = document.getElementById("propertySelect").value;
+    var radio1 = document.getElementById("lineRadio1");
+    var radio2 = document.getElementById("lineRadio2");
     var line = contextLine[0];
-    line.kind = property;
+
+    if(radio1.checked){
+        line.kind = radio1.value;
+    }else{
+        line.kind = radio2.value;
+    }
     showdata();
 }
 
@@ -2311,7 +2317,7 @@ function generateContextProperties()
 
     } 
 
-    // Creates drop down for changing the kind attribute on the selected line.
+    // Creates radio buttons for changing the kind attribute on the selected line.
     if (contextLine.length == 1 && context.length == 0) {
         str = "<legend>Properties</legend>";
         
@@ -2321,15 +2327,15 @@ function generateContextProperties()
         
         value = Object.values(lineKind);
         
-        str += '<select id="propertySelect">';
         for(var i = 0; i < value.length; i++){
             if(selected == value[i]){
-                str += `<option selected="selected" value='${value[i]}'>${value[i]}</option>`;
+                str += `<input type="radio" id="lineRadio1" name="lineKind" value='${value[i]}' checked>`
+                str += `<label for='${value[i]}'>${value[i]}</label><br>`
             }else {
-                str += `<option value='${value[i]}'> ${value[i]}</option>`;   
+                str += `<input type="radio" id="lineRadio2" name="lineKind" value='${value[i]}'>`
+                str += `<label for='${value[i]}'>${value[i]}</label><br>` 
             }
         }
-        str += '</select>';
         str+=`<br><br><input type="submit" value="Save" onclick="changeLineKind();">`;
     }
 
