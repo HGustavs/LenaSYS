@@ -29,7 +29,7 @@
         <fieldset>
             <legend>Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
-                    <img src="../Shared/icons/diagram_pointer.svg"/>
+                    <img src="../Shared/icons/diagram_pointer_white.svg"/>
                     <span class="toolTipText"><b>Pointer</b><br>
                         <p>Allows you to press the different entities and move around the diagram</p><br>
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
