@@ -308,9 +308,9 @@ if($hash!='UNK'){
 		echo <<<EOL
 		<h2>Student feedback</h2>
 		<form id="teacherfeedback">
-			<textarea rows="8" style="width:99%" placeholder="Student feedback..."></textarea>
+			<textarea id="feedback" rows="8" style="width:99%" placeholder="Student feedback..."></textarea>
 			<br>
-			<input class="submit-button large-button" value="Send" type="submit">
+			<input id="feedbackbutton" class="submit-button large-button" value="Send" type="submit">
 		</form> 
 		EOL;
 
@@ -320,26 +320,31 @@ if($hash!='UNK'){
 		
 		window.onload = function() {
 			document.getElementById('teacherfeedback').onsubmit = function() {
+				
+				
 				/* do what you want with the form */
 			
-				// Should be triggered on form submit
-				console.log('hi');
-				// You must return false to prevent the default form behavior
-				return false;
+			
+			
+			var value = document.getElementById('feedback').value;
+			
+			
+			console.log(value);	
+
+			var hash = $hash
+			
+			console.log(hash);
+				return false;	
 			}
-		}
-		$(document).ready(function () {
-            
-            //This function called when the button is clicked
-            $("#btn").click(function () {
-                
-                // val() method is used to get the values from 
-               // textarea and stored in txt variable
-                var txt = $("#txtArea").val();
-                alert(txt);
-            });
-        });
 		
+					
+		}
+		//	if ("$hash" == "UNK"){
+		//	document.getElementById('feedback').disabled = true;
+		//	document.getElementById('feedbackbutton').disabled = true;
+		//	}
+			
+			
 		</script>
 
 		EOL;
