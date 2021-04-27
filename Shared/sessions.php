@@ -399,6 +399,26 @@ function isSuperUser($userId)
         }
 }
 
+function isCreatorUser($userId)
+{
+        global $pdo;
+
+        if($pdo == null) {
+                pdoConnect();
+        }
+
+        $query = $pdo->prepare('SELECT count(uid) AS count FROM user WHERE uid=:userID AND creator=1');
+        $query->bindParam(':userID', $userId);
+        $query->execute();
+        $result = $query->fetch();
+
+        if ($result["count"]==1) {
+                return true;
+        }else{
+                return false;
+        }
+}
+
 //------------------------------------------------------
 //isStudentUser
 //-------------------------------------------------------
