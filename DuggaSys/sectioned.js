@@ -98,23 +98,23 @@ menuState
 function hamburgerChange(operation = 'click') {
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
-      bigMac();
-      toggleHamburger();
+      //toggleHamburger();
+      console.log("Inside our if");
     }
   } else {
+    console.log("this is the else");
     toggleHamburger();
   }
 }
 
 function toggleHamburger() {
-  var x = document.getElementById("hamburgerIcon");
-  findAncestor(x, "hamburger").classList.toggle("change");
+  console.log("reached destination 1");
+  var x = document.getElementById("hamburgerBox");
+  console.log("reached destination 2");
+  findAncestor(x, "hamburger").classList.toggle();
+  console.log("reached destination 3");
 }
 
-// Show the hamburger menu
-function bigMac() {
-  $(".hamburgerMenu").toggle();
-}
 
 // -------------==============######## Dialog Handling ###########==============-------------
 

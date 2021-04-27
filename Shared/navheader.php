@@ -86,7 +86,7 @@
 			if($noup=='COURSE'){
 					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
-					echo '<td class="hamburger fa fa-bars" id="hamburgerIcon" onclick=hamburgerChange()>';
+					echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" onclick=hamburgerChange()>';
 			}if ($noup == 'COURSE' && checkLogin()) {
 					echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
 
@@ -100,7 +100,7 @@
 					echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
 			}
 
-			
+			echo "<div id='hamburgerBox'></div>";
 	
 			// Adding buttons for courses
 			if($noup=='COURSE'){
