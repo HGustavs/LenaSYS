@@ -733,9 +733,7 @@ function saveDuggaResult(citstr)
 //----------------------------------------------------------------------------------
 function generateHash() {
     var randNum = getRandomNumber();
-	var hash64 = convertDecimalToBase64(randNum);
-	hash64 = hash64.replace("+", "-");
-	hash = hash64.replace("/", "_");
+	var hash = convertDecimalToBase64(randNum);
     return hash;
 }
 
@@ -762,9 +760,9 @@ function convertDecimalToBase64(value) {
 	}
 }
   
-convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
-  
-convertDecimalToBase64.getChars = function(num, res) {
+convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_"; //URL friendly dictionary. 64 characters making this a "base" of 64. 
+//Note: This hashing algorithm can't be decoded. However, if decoding the hash was necessary it would still only reveal the randomly generated number (randNum).
+convertDecimalToBase64.getChars = function(num, res) {	
 	var mod = num % 64,
 		remaining = Math.floor(num / 64),
 		chars = convertDecimalToBase64.chars.charAt(mod) + res;  
@@ -1153,6 +1151,7 @@ function AJAXService(opt,apara,kind)
 
 function handleHash(hashdata){
 	ishashindb = hashdata['ishashindb'];									//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+	//console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl);	//For debugging!
 	if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
 		recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
 	}
