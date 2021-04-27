@@ -545,8 +545,8 @@ const keybinds = {
 
 // Zoom variables
 var zoomfact = 1.0;
-var scrollx = 4132 / 4;
-var scrolly = 2600 / 4;
+var scrollx = 0;
+var scrolly = 0;
 var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
 var camera = new Point(0, 0); // Relative to coordinate system origo
 
@@ -1770,23 +1770,19 @@ function fab_action()
 
 function zoomin(scrollEvent = undefined)
 {
-    // Calculate mouse position relative to window size
-    var w = (scrollEvent.clientX / window.innerWidth  - 0.5) * 2;
-    var h = (scrollEvent.clientY / window.innerHeight - 0.5) * 2;
-
-    if (zoomfact != 4.0)
-    {
-        var mc = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
-        console.log("Mouse:", mc.x, mc.y);
-
+    // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
+    if (scrollEvent && zoomfact != 4.0) {
+        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
-            x: mc.x - zoomOrigo.x,
-            y: mc.y - zoomOrigo.y
+            x: mouseCoordinates.x - zoomOrigo.x,
+            y: mouseCoordinates.y - zoomOrigo.y
         };
-        console.log("Delta:", delta.x, delta.y);
 
         zoomOrigo.x += delta.x * zoomPower;
         zoomOrigo.y += delta.y * zoomPower;
+    } else { // Otherwise, set zoom target to origo.
+        zoomOrigo.x = 0;
+        zoomOrigo.y = 0;
     }
 
     scrollx = scrollx / zoomfact;
@@ -1820,19 +1816,19 @@ function zoomin(scrollEvent = undefined)
 
 function zoomout(scrollEvent = undefined)
 {
-    if (zoomfact != 0.125)
-    {
-        var mc = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
-        console.log("Mouse:", mc.x, mc.y);
-
+    // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
+    if (scrollEvent && zoomfact != 0.125) {
+        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
-            x: mc.x - zoomOrigo.x,
-            y: mc.y - zoomOrigo.y
+            x: mouseCoordinates.x - zoomOrigo.x,
+            y: mouseCoordinates.y - zoomOrigo.y
         };
-        console.log("Delta:", delta.x, delta.y);
 
         zoomOrigo.x -= delta.x * zoomPower;
         zoomOrigo.y -= delta.y * zoomPower;
+    } else { // Otherwise, set zoom target to origo.
+        zoomOrigo.x = 0;
+        zoomOrigo.y = 0;
     }
 
     scrollx = scrollx / zoomfact;
@@ -1851,6 +1847,7 @@ function zoomout(scrollEvent = undefined)
     scrolly = scrolly * zoomfact;
 
     updateGridSize();
+    
     // Update scroll position - missing code for determining that center of screen should remain at new zoom factor
     showdata();
 
