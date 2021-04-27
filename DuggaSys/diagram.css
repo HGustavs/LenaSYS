@@ -20,7 +20,7 @@
 
 #svggrid {
     position:absolute;
-    left:0px;
+    left:0;
     top:0;
     display: none;
     width:100%;

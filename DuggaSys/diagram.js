@@ -545,8 +545,8 @@ const keybinds = {
 
 // Zoom variables
 var zoomfact = 1.0;
-var scrollx = 4132 / 4;
-var scrolly = 2600 / 4;
+var scrollx = 100;
+var scrolly = 100;
 var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
 var camera = new Point(0, 0); // Relative to coordinate system origo
 
@@ -623,6 +623,10 @@ var pointerState = pointerStates.DEFAULT;
 var movingObject = false;
 var movingContainer = false;
 var isRulerActive = true;
+
+//Grid Settings
+var gridSize = 100;
+var snapToGrid = true;
 
 var randomidArray = []; // array for checking randomID
 var errorMsgMap = {};
@@ -968,6 +972,7 @@ function mwheel(event)
 
 function mdown(event)
 {
+    console.log(screenToDiagramCoordinates(event.clientX, event.clientY));
     // React to mouse down on container
     if (event.target.id == "container") {
         switch (mouseMode) {
@@ -1877,8 +1882,19 @@ function setPos(id, x, y)
 {
     foundId = findIndex(data, id);
     if (foundId != -1) {
-        data[foundId].x -= (x / zoomfact);
-        data[foundId].y -= (y / zoomfact);
+        var obj = data[foundId];
+        if(snapToGrid){
+            // Calculate nearest snap point
+            obj.x = Math.round((obj.x - x) / gridSize) * gridSize;
+            obj.y = Math.round((obj.y - y) / gridSize) * gridSize;
+
+            // Set the new snap point to center of element
+            obj.x -= obj.width/2
+            obj.y -= obj.height/2;
+        }else {
+            obj.x -= (x / zoomfact);
+            obj.y -= (y / zoomfact);
+        }
     }
 }
 
@@ -2347,9 +2363,22 @@ function updateCSSForAllElements()
         var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
             top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
-        if (useDelta) {
+
+        if (useDelta){
             left -= deltaX;
             top -= deltaY;
+        }
+
+        if(snapToGrid && useDelta){
+            // Calculate nearest snap point
+
+            left = Math.round(left / gridSize) * gridSize;
+            top = Math.round(top / gridSize) * gridSize;
+
+            // Set the new snap point to center of element
+            left -= (elementData.width * zoomfact) / 2;
+            top -= (elementData.height * zoomfact) / 2;
+
         }
 
         divObject.style.left = left + "px";
@@ -3014,17 +3043,20 @@ function data_returned(ret)
 function updateGridSize()
 {
     var bLayer = document.getElementById("grid");
-    bLayer.setAttribute("width", 100 * zoomfact);
-    bLayer.setAttribute("height", 100 * zoomfact);
+    bLayer.setAttribute("width", 100 * zoomfact + "px");
+    bLayer.setAttribute("height", 100 * zoomfact + "px");
 
-    bLayer.children[1].setAttribute('d', `M ${100 * zoomfact} 0 L 0 0 0 ${100 * zoomfact}`);
+    bLayer.children[0].setAttribute('d', `M ${100 * zoomfact} 0 L 0 0 0 ${100 * zoomfact}`);
+    updateGridPos();
 }
 
 function updateGridPos()
 {
+    var gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+    var gridOffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
     var bLayer = document.getElementById("grid");
-    bLayer.setAttribute('x', (scrollx * (1.0 / zoomfact)));
-    bLayer.setAttribute('y', (scrolly * (1.0 / zoomfact)));
+    bLayer.setAttribute('x', gridOffsetX);
+    bLayer.setAttribute('y', gridOffsetY);
 }
 function clearContext()
 {
