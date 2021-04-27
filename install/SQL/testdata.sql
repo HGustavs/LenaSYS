@@ -838,106 +838,106 @@ INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,m
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','9','17','2014',NULL,'220','2 97732 2014 C&quot:Formations:','2018-05-17 10:23:28',NULL,'97732',NULL,NULL,0);
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2001',NULL,'222',NULL,'2018-05-17 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2001',NULL,'222',NULL,'2018-05-17 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','85UX3vwC','4x90nEw');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2002',NULL,'222','2 97732 2002 00000000,0 0 1366 768 1349 662','2018-05-17 09:12:51',NULL,'97732',NULL,1,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2002',NULL,'222','2 97732 2002 00000000,0 0 1366 768 1349 662','2018-05-17 09:12:51',NULL,'97732',NULL,1,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','ZGUZ0FRm','yTHrRLE');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2003',NULL,'222','2 97732 2003 01101000,4 0 1366 768 1349 662','2018-05-17 09:12:51',NULL,'97732',NULL,7,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2003',NULL,'222','2 97732 2003 01101000,4 0 1366 768 1349 662','2018-05-17 09:12:51',NULL,'97732',NULL,7,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','rJeELjy7','lSBhIj1');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','3','7','2004',NULL,'222',NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','3','7','2004',NULL,'222',NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','E4BD7Itw','dixWjrp');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','3','7','2005',NULL,'222','2 97732 2005 0 1 4 0 0 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,6,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','3','7','2005',NULL,'222','2 97732 2005 0 1 4 0 0 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,6,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','fRuKjKNA','EK05cvo');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','12','23','2035',NULL,'222',NULL,'2018-05-17 10:50:42',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','12','23','2035',NULL,'222',NULL,'2018-05-17 10:50:42',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','tzcWn6fo','r73oWMU');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','12','23','2036',NULL,'222','2 97732 2036 .White.T 0 1366 768 1349 662','2018-05-17 10:50:42',NULL,'97732',NULL,0,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','12','23','2036',NULL,'222','2 97732 2036 .White.T 0 1366 768 1349 662','2018-05-17 10:50:42',NULL,'97732',NULL,0,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','GafQtYbr','hfSytjU');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','3','7','2004',1,'223',NULL,'2014-05-17 09:12:51','2014-05-18 09:12:51','97732',NULL,NULL,2,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','3','7','2004',1,'223',NULL,'2014-05-17 09:12:51','2014-05-18 09:12:51','97732',NULL,NULL,2,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','3yYWGueu','H1gnqan');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','3','7','2005',1,'223','2 97732 2005 0 1 4 0 0 1366 768 1349 662','2014-05-17 09:12:51','2014-05-18 09:12:51','97732',NULL,6,2,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','3','7','2005',1,'223','2 97732 2005 0 1 4 0 0 1366 768 1349 662','2014-05-17 09:12:51','2014-05-18 09:12:51','97732',NULL,6,2,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','C4I7zCY9','ugMkvfM');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','3','7','2006',2,'223','2 97732 2006 0 4 0 4 0 0 1366 768 1349 662','2014-05-17 09:12:51','2014-05-18 09:12:51','97732',NULL,4,2,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','3','7','2006',2,'223','2 97732 2006 0 4 0 4 0 0 1366 768 1349 662','2014-05-17 09:12:51','2014-05-18 09:12:51','97732',NULL,4,2,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','_Cz/VPnP','e8NoaKG');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2001',1,'224',NULL,'2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,NULL,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2001',1,'224',NULL,'2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,NULL,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','zZDU3EZ4','G0nSWSS');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2002',1,'224','2 97732 2002 00000000,0 0 1366 768 1349 662','2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,1,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2002',1,'224','2 97732 2002 00000000,0 0 1366 768 1349 662','2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,1,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','8xj6wlDP','ZA8jnsT');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2003',2,'224','2 97732 2003 01101000,4 0 1366 768 1349 662','2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,7,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2003',2,'224','2 97732 2003 01101000,4 0 1366 768 1349 662','2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,7,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','5Q_y-XpE','vqqrtO0');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','3','7','2004',NULL,'224',NULL,'2014-05-17 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','3','7','2004',NULL,'224',NULL,'2014-05-17 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','MVoMjyzz','HhBQcE4');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','3','7','2005',NULL,'224','2 97732 2005 0 1 4 0 0 1366 768 1349 662','2014-05-17 09:12:51',NULL,'97732',NULL,6,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','3','7','2005',NULL,'224','2 97732 2005 0 1 4 0 0 1366 768 1349 662','2014-05-17 09:12:51',NULL,'97732',NULL,6,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','b7WkhPfS','v08NoPL');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','3','7','2006',NULL,'224','2 97732 2006 0 4 0 4 0 0 1366 768 1349 662','2014-05-17 09:12:51',NULL,'97732',NULL,4,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','3','7','2006',NULL,'224','2 97732 2006 0 4 0 4 0 0 1366 768 1349 662','2014-05-17 09:12:51',NULL,'97732',NULL,4,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','1lt9CRZg','ttGtOEY');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2007',NULL,'224',NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2007',NULL,'224',NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','i9LvZiTG','UwlhXmw');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2008',NULL,'224','2 97732 2008 ..T 516 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,0,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2008',NULL,'224','2 97732 2008 ..T 516 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,0,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','2gUahmAG','XcH2100');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2009',NULL,'224','2 97732 2009 .L 10 20.L 10 20.T 951 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,3,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2009',NULL,'224','2 97732 2009 .L 10 20.L 10 20.T 951 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,3,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','EIGdu6tF','pU4baCA');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2010',NULL,'224',NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2010',NULL,'224',NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','R3g8Vb9O','h7DWBMV');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2011',2,'224','2 97732 2011 .T1.T 257 1366 768 1349 662','2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,0,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2011',2,'224','2 97732 2011 .T1.T 257 1366 768 1349 662','2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,0,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','9F1f9crH','yLZk2PH');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2012',NULL,'224','2 97732 2012 .D2.T 151 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,1,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2012',NULL,'224','2 97732 2012 .D2.T 151 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,1,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','4v6v34-y','BKEOI2f');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2001',2,'225',NULL,'2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,NULL,2,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2001',2,'225',NULL,'2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,NULL,2,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','plDMwkUA','CoxU6um');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2002',2,'225','2 97732 2002 00000000,0 0 1366 768 1349 662','2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,1,2,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2002',2,'225','2 97732 2002 00000000,0 0 1366 768 1349 662','2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,1,2,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','fItTXD-f','gFOanNY');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2003',2,'225','2 97732 2003 01101000,4 0 1366 768 1349 662','2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,7,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2003',2,'225','2 97732 2003 01101000,4 0 1366 768 1349 662','2015-01-15 09:12:51','2015-01-16 09:12:51','97732',NULL,7,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','PWVykkqQ','nlORj8c');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','3','7','2004',1,'225',NULL,'2014-05-17 09:12:51','2014-05-18 09:12:51','97732',NULL,NULL,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','3','7','2004',1,'225',NULL,'2014-05-17 09:12:51','2014-05-18 09:12:51','97732',NULL,NULL,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','w4kSpVTx','FCkjqYK');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','3','7','2005',2,'225','2 97732 2005 0 1 4 0 0 1366 768 1349 662','2014-05-17 09:12:51','2014-05-18 09:12:51','97732',NULL,6,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','3','7','2005',2,'225','2 97732 2005 0 1 4 0 0 1366 768 1349 662','2014-05-17 09:12:51','2014-05-18 09:12:51','97732',NULL,6,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','quQLXaEH','qFXWiZG');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','3','7','2006',1,'225','2 97732 2006 0 4 0 4 0 0 1366 768 1349 662','2014-05-17 09:12:51','2014-05-18 09:12:51','97732',NULL,4,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','3','7','2006',1,'225','2 97732 2006 0 4 0 4 0 0 1366 768 1349 662','2014-05-17 09:12:51','2014-05-18 09:12:51','97732',NULL,4,1,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','RiilHhra','bhjKKUx');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2007',NULL,'225',NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2007',NULL,'225',NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','t7tZSCOq','gM8tx24');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2008',NULL,'225','2 97732 2008 ..T 516 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,0,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2008',NULL,'225','2 97732 2008 ..T 516 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,0,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','VejcNiQa','Htq9bVU');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2009',NULL,'225','2 97732 2009 .L 10 20.L 10 20.T 951 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,3,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2009',NULL,'225','2 97732 2009 .L 10 20.L 10 20.T 951 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,3,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','10M2GdnO','8uFwiv0');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2010',NULL,'225',NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2010',NULL,'225',NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','KYCLxJOE','xCTpfok');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2011',NULL,'225','2 97732 2011 .T1.T 257 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,0,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2011',NULL,'225','2 97732 2011 .T1.T 257 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,0,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','IR-ZI93p','tYtOujJ');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('X','2','1','3','2012',NULL,'225','2 97732 2012 .D2.T 151 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,1,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+VALUES ('X','2','1','3','2012',NULL,'225','2 97732 2012 .D2.T 151 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,1,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','n4nPEAJs','UWbvbEQ');
 
 /* If data is ever needed for groupDugga, insert here */
 INSERT INTO groupDugga (hash, active_users) VALUES (NULL, NULL);
