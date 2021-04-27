@@ -890,7 +890,7 @@ document.addEventListener('keyup', function (e)
         if (pressedKey == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
             clipboard = context;
             if (clipboard.length !== 0){
-                displayMessage(messageTypes.SUCCESS, `You have copied ${clipboard.length} elements and it's inner connected lines.`)
+                displayMessage(messageTypes.SUCCESS, `You have copied ${clipboard.length} elements and its inner connected lines.`)
             }else {
                 displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`)
             }
@@ -1943,14 +1943,14 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
             // Save changes into state machine
             if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(newLine));
             
-            displayMessage(messageTypes.SUCCESS,"Created new line between: " + context[0].name + " and " + context[1].name);
+            displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
             return newLine;
             
         } else {
-            displayMessage(messageTypes.ERROR,"Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
+            displayMessage(messageTypes.ERROR,`Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
         }
     } else {
-        displayMessage(messageTypes.ERROR, "Not possible to draw a line between two: " + context[0].kind);
+        displayMessage(messageTypes.ERROR, `Not possible to draw a line between two: ${fromElement.kind} elements`);
     }
 }
 
