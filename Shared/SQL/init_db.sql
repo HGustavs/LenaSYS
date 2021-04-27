@@ -152,7 +152,7 @@ CREATE TABLE userAnswer (
 	variant					INT,
 	moment					INT UNSIGNED NOT NULL,
 	grade 					TINYINT(2),
-	uid 					INT UNSIGNED NOT NULL,
+	uid 					INT,
 	useranswer				TEXT,
 	submitted 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         -- timestamp when last graded/marked
@@ -174,7 +174,6 @@ CREATE TABLE userAnswer (
 	password				VARCHAR(7),
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
-	FOREIGN KEY (uid) REFERENCES user(uid),
 	FOREIGN KEY (quiz) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid),
 	FOREIGN KEY (variant) REFERENCES variant(vid)
@@ -355,6 +354,7 @@ CREATE TABLE submission(
 	mime					VARCHAR(64),
 	kind					INTEGER,
 	segment					INTEGER,
+    hash					VARCHAR(8),
 	updtime					TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (subid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
@@ -524,6 +524,12 @@ CREATE TABLE ANNOUNCEMENTLOG(
     LOGACTION VARCHAR(20) NOT NULL,
     PRIMARY KEY(ID)
     
+)CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+
+CREATE TABLE groupdugga (
+	 hash VARCHAR(8),
+     active_users INT(3) UNSIGNED,
+     PRIMARY KEY(hash)
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 DELIMITER //

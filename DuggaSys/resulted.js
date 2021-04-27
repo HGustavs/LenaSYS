@@ -441,7 +441,6 @@ function hideHover() {
 
 function hoverResult() {
 	$("#hoverRes").css({ display: "block", opacity: 1, zIndex: 5, top: '50px' });
-	$("#hoverRes").html($("#Nameof").html());
 
 }
 // Function for shortening date format
@@ -453,8 +452,7 @@ function formatDateShorter(longDate) {
 
 
 function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid, entryname) {
-	var nameOf = document.getElementById("Nameof");
-	nameOf.textContent = entryname + " by " + firstname + " " + lastname + " - Submitted: " + formatDateShorter(submitted) + " / Marked: " + formatDateShorter(marked);
+
 
 	var menu = "<div class='' style='display:block;'>";
 	menu += "<div class='loginBoxheader'>";
@@ -519,13 +517,8 @@ function moveDist(e) {
 
 function displayPreview(filepath, filename, fileseq, filetype, fileext, fileindex, displaystate) {
 	clickedindex = fileindex;
-	document.getElementById("responseArea").outerHTML = '<textarea id="responseArea" style="width: 100%;height:100%;-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;">' + allData["files"][allData["duggaentry"]][clickedindex].feedback + '</textarea>'
 
-	if (displaystate) {
-		document.getElementById("markMenuPlaceholderz").style.display = "block";
-	} else {
-		document.getElementById("markMenuPlaceholderz").style.display = "none";
-	}
+
 
 	var str = "";
 	if (filetype === "text") {
@@ -547,38 +540,10 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 			str += "<pre style='width: 100%;height: 100%;box-sizing: border-box;'>" + allData["files"][allData["duggaentry"]][fileindex].content + "</pre>";
 		}
 	}
-	document.getElementById("popPrev").innerHTML = str;
 
-	$("#previewpopover").css("display", "block");
 }
 
-//----------------------------------------
-// Adds Canned Response to Response Dialog
-//----------------------------------------
 
-function addCanned() {
-	document.getElementById("responseArea").innerHTML += document.getElementById("cannedResponse").value;
-}
-
-//----------------------------------------
-// Sort results
-//----------------------------------------
-
-function saveResponse() {
-	respo = document.getElementById("responseArea").value;
-
-	var filename = allData["files"][allData["duggaentry"]][clickedindex].filename + allData["files"][allData["duggaentry"]][clickedindex].seq;
-
-	AJAXService("RESP", { cid: querystring['courseid'], vers: querystring['coursevers'], resptext: respo, respfile: filename, duggaid: allData["duggaid"], luid: allData["duggauser"], moment: allData["duggaentry"], luid: allData["duggauser"] }, "RESULT");
-	document.getElementById("responseArea").innerHTML = "";
-	$("#previewpopover").css("display", "none");
-}
-//----------------------------------------
-// Clear response textbox on Preview Popover.
-//----------------------------------------
-function clearResponseArea(){
-	document.getElementById("responseArea").innerHTML = "";
-}
 
 //----------------------------------------
 // Renderer
