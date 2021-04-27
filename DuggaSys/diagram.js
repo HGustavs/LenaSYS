@@ -2,25 +2,24 @@
 //                                          Class Definitions
 //------------------------------------=======############==========----------------------------------------
 
+/** 
+ * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector. */
 class Point {
     x = 0;
     y = 0;
 
     /**
-     * 
      * @param {number} startX 
-     * @param {number} startY 
-     */
+     * @param {number} startY */
     constructor(startX = 0, startY = 0)
     {
         this.x = startX;
         this.y = startY;
     }
 
-    /**
-     * 
-     * @param {Point} other 
-     */
+    /** 
+     * @description Adds x and y of another point to this point.
+     * @param {Point} other Point that should be appended to this. */
     add(other)
     {
         this.x += other.x;
@@ -28,9 +27,18 @@ class Point {
     }
 };
 
+/** 
+ * @description Represents a change stored in the StateMachine.
+ * StateChange contains a list of StateChange.ChangeTypes in
+ * the local property stateChanges, that in turn contains a flag
+ * to describe each change. The getFlags() can be used to
+ * get the sum of all these stateChanges. */
 class StateChange {
     /**
-     * flag: number of 2nd base used to set multiple flags at once.
+     * @description ChangeType containing all information about a certain change.
+     * Several instances of ChangeType can exist inside a StateChange.
+     * 
+     * @enum {Object} ChangeTypes.flag: number of 2nd base used to set multiple flags at once.
      * isSoft: If the change type is something that wishes to overwrite the previous change.
      * canAppendTo: If the change can be overwritten by another change.
      */
@@ -49,9 +57,8 @@ class StateChange {
         ELEMENT_AND_LINE_CREATED:   { flag: 1|32, isSoft: false, canAppendTo: false },
     };
 
-    /**
-     * @type String
-     */
+    /** Change in name of an element. This should be replaced with values_passed!
+     * @type String @deprecated */
     name;
     
     /**
