@@ -2334,7 +2334,7 @@ function generateContextProperties()
 
     } 
 
-    // Creates drop down for changing the kind attribute on the selected line.
+    // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
     if (contextLine.length == 1 && context.length == 0) {
         str = "<legend>Properties</legend>";
         
@@ -2344,15 +2344,15 @@ function generateContextProperties()
         
         value = Object.values(lineKind);
         str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
-        str += '<select id="propertySelect">';
         for(var i = 0; i < value.length; i++){
             if(selected == value[i]){
-                str += `<option selected="selected" value='${value[i]}'>${value[i]}</option>`;
+                str += `<input type="radio" id="lineRadio1" name="lineKind" value='${value[i]}' checked>`
+                str += `<label for='${value[i]}'>${value[i]}</label><br>`
             }else {
-                str += `<option value='${value[i]}'> ${value[i]}</option>`;   
+                str += `<input type="radio" id="lineRadio2" name="lineKind" value='${value[i]}'>`
+                str += `<label for='${value[i]}'>${value[i]}</label><br>` 
             }
         }
-        str += '</select>';
 
         // Line cardinality
         str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinality</h3>`;
