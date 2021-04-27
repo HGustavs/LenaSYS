@@ -36,9 +36,6 @@
 			// If the current page is the course editor, don't display the back button
 			//---------------------------------------------------------------------
 
-			
-
-            
 			// Analytics button
 			if($noup == 'NONE' && $requestedService != "analytic.php" && checklogin() && isSuperUser($_SESSION['uid']) ){
 				echo "<td class='menuButton' style='display: inline-block;'>";
@@ -85,11 +82,11 @@
 
 			if($noup!='NONE') {
 				echo "<td class='navButt' id='back' title='Back'>";
-				echo '<td class="hamburger fa fa-bars" id="hamburgerIcon" onclick=hamburgerChange()>';
 			}
 			if($noup=='COURSE'){
 					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
+					echo '<td class="hamburger fa fa-bars" id="hamburgerIcon" onclick=hamburgerChange()>';
 			}if ($noup == 'COURSE' && checkLogin()) {
 					echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
 
@@ -103,6 +100,7 @@
 					echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
 			}
 
+			
 	
 			// Adding buttons for courses
 			if($noup=='COURSE'){
