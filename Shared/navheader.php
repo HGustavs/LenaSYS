@@ -86,20 +86,23 @@
 				echo "<td class='navButt' id='back' title='Back'>";
 			}
 			if($noup=='COURSE'){
-					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
-					echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
-					echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" onclick=hamburgerChange()>';
+				echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
+				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
+					
+			}if($noup=='COURSE' && checklogin() && (isSuperUser($_SESSION['uid']))){
+				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" onclick=hamburgerChange()>';
+
 			}if ($noup == 'COURSE' && checkLogin()) {
-					echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
+				echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
 
 			}if ($noup == 'COURSE' && checkLogin() && (isStudentUser($_SESSION['uid']))) {
-					echo "<td class='navButt' id='feedback' title='Recent Feedback'><img src='../Shared/icons/feedback_icon.svg'></td>";
+				echo "<td class='navButt' id='feedback' title='Recent Feedback'><img src='../Shared/icons/feedback_icon.svg'></td>";
 
 			}else if($noup=='SECTION'){
-					echo "<a id='upIcon' href='";
-					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
-					echo "'>";
-					echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
+				echo "<a id='upIcon' href='";
+				echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
+				echo "'>";
+				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
 			}
 			// Adding buttons for courses
 			if($noup=='COURSE'){
