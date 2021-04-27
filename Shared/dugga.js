@@ -1034,26 +1034,9 @@ function AJAXService(opt,apara,kind)
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
 			datatype: "json",
 			success: function(data){
-				//Checks if the variantSize variant is set in localstorage. When its not, its set.
-				if(localStorage.getItem("variantSize") == null) {
-					localStorage.setItem("variantSize", 100);
-				}
-				//Converts the localstorage variant from string to int
-				var newInt = +localStorage.getItem('variantSize');
-				//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
-				if(querystring['did'] <= newInt) {
-					if(localStorage.getItem(querystring['did']) == null){
-						returndata = JSON.parse(data);
-						variantvalue = returndata.variant;
-					} else {
-						var test = JSON.parse(localStorage.getItem(querystring['did']));
-						variantvalue = test.value;
-					}
-				}
+				getVariantValue(data);
 				console.log("real variantvalue: "+variantvalue);
 				$.ajax({ //original ajax call
-					beforeSend: function(){
-					},
 					url: "showDuggaservice.php",
 					type: "POST",
 					data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +variantvalue, 
@@ -1061,21 +1044,12 @@ function AJAXService(opt,apara,kind)
 					success: function (data) {
 						returnedDugga(data);
 						ishashindb = data['ishashindb'];										//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+						console.log(hash +" ishashindb="+ishashindb+" blockhashgen="+blockhashgen+" ishashinurl="+ishashinurl);
 						if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
 							recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
 						}
-						// Check localstorage variants.
-						var newvariant = data['variantvalue'];
-						
-						if(localStorage.getItem(querystring['did']) == null){
-							localStorage.setItem(querystring['did'], newvariant);
-							//The big number below represents 30 days in milliseconds
-							setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
-						}
-						getExpireTime(querystring['did']);
-						var variantsize = data['variantsize'];
-						localStorage.setItem("variantSize", variantsize);
-						console.log("ajax call "+data['password']);
+						handleLocalStorage(data);
+						console.log("password: "+data['password']);
 						setPassword(data['password']);
 					}
 				});
@@ -1179,6 +1153,40 @@ function AJAXService(opt,apara,kind)
 			data:"AUtoken="+groupTokenValue+"&hash="+hash+"&opt="+opt+para,
 			dataType: "json"
 		});
+	}
+}
+
+function handleLocalStorage(storagedata){
+	// Check localstorage variants.
+	var newvariant = storagedata['variantvalue'];
+
+	if(localStorage.getItem(querystring['did']) == null){
+		localStorage.setItem(querystring['did'], newvariant);
+		//The big number below represents 30 days in milliseconds
+		setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
+	}
+	getExpireTime(querystring['did']);
+	var variantsize = storagedata['variantsize'];
+	localStorage.setItem("variantSize", variantsize);
+						
+}
+
+function getVariantValue(ajaxdata){
+	//Checks if the variantSize variant is set in localstorage. When its not, its set.
+	if(localStorage.getItem("variantSize") == null) {
+		localStorage.setItem("variantSize", 100);
+	}
+	//Converts the localstorage variant from string to int
+	var newInt = +localStorage.getItem('variantSize');
+	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
+	if(querystring['did'] <= newInt) {
+		if(localStorage.getItem(querystring['did']) == null){
+			returndata = JSON.parse(ajaxdata);
+			variantvalue = returndata.variant;
+		} else {
+			var test = JSON.parse(localStorage.getItem(querystring['did']));
+			variantvalue = test.value;
+		}
 	}
 }
 
