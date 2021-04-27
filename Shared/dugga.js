@@ -24,7 +24,7 @@ var ishashinurl;
 var itemvalue;
 var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
-var isGroupDugga = true; // Set to false if you hate the popup
+var isGroupDugga = false; // Set to false if you hate the popup
 var variantvalue;
 
 
