@@ -449,12 +449,19 @@ $_SESSION['hashpassword'] = 'UNK';
     	echo '<script type="text/javascript">',
     	'displayDownloadIcon();', 'noUploadForTeacher();',
     	'</script>';
+
+		// Creates a Feedback window for teachers
 		echo <<<EOL
 		<h2>Student feedback</h2>
 		<textarea rows="8" style="width:100%" placeholder="Student feedback..."></textarea>
 		<br>
 		<input class="submit-button large-button" value="Send" type="button">
 		EOL;
+
+		// Javascript for Feedback window
+		echo <<<EOL
+		EOL;
+
 	}?>
 
   <!--<div id='previewpopover' class='previewPopover' style='display:none;'>-->
