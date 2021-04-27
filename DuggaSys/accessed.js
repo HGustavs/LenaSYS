@@ -936,15 +936,6 @@ document.addEventListener('click', function(e){
 });
 
 //----------------------------------------------------------------------------------
-// createQuickItem: Handle "fast" click on FAB button
-//----------------------------------------------------------------------------------
-
-function createQuickItem() {
-	clearTimeout(pressTimer);
-	showImportUsersPopup();
-}
-
-//----------------------------------------------------------------------------------
 // Keyboard shortcuts - Edit functionality in the accessed table
 //----------------------------------------------------------------------------------
 document.addEventListener("keyup", function(event)
