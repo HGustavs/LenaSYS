@@ -333,12 +333,13 @@ const keybinds = {
         ALT: "Alt",
         META: "Meta",
         ESCAPE: "Escape",
-        BOX_SELECTION: "b",
-        POINTER: "h",
-        EDGE_CREATION: "d",
-        PLACE_ENTITY: "e",
-        PLACE_RELATION: "r",
-        PLACE_ATTRIBUTE: "a"
+        BOX_SELECTION: "2",
+        POINTER: "1",
+        EDGE_CREATION: "6",
+        PLACE_ENTITY: "3",
+        PLACE_RELATION: "4",
+        PLACE_ATTRIBUTE: "5",
+        TOGGLE_GRID: "G"
 };
 
 // Zoom variables
@@ -553,6 +554,10 @@ document.addEventListener('keydown', function (e)
             removeElements(context); 
             removeLines(contextLine);
             updateSelection();
+        }
+
+        if (e.key == keybinds.TOGGLE_GRID) {
+            toggleGrid();
         }
     }
 });
