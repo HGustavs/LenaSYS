@@ -206,6 +206,7 @@ if($hash!='UNK'){
 						echo "<td align='left'>";
 						echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
 						echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+						echo "<input class='submit-button large-button' type='button' value='Highscore' onclick='showHighscore();' />";
 						echo "</td>";
 						echo "</tr>";
 						echo "</table>";
@@ -230,6 +231,20 @@ if($hash!='UNK'){
 			}
 		?>
 	</div>
+
+	<!-- HighscoreBox START -->
+	<div id='HighscoreBox' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox' style='width:500px;'>
+			<div class='loginBoxheader'>
+				<h3>Highscore</h3>
+				<div class='cursorPointer' onclick='closeWindows();'>x</div>
+			</div>
+			<table id ='HighscoreTable' width='100%'>
+				<tr></tr>
+			</table>
+		</div>
+	</div>
+	<!-- HighscoreBox END -->
 
 	<!-- LoginBox (receipt&Feedback-box ) Start! -->
 	<div id='receiptBox' class="loginBoxContainer" style="display:none">
