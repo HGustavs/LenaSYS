@@ -359,7 +359,7 @@
 
 	<!-- HighscoreBox START -->
 	<div id='HighscoreBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:500px;'>
+		<div class='loginBox' style='width:300px;'>
 			<div class='loginBoxheader'>
 				<h3>Highscore</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
