@@ -2375,7 +2375,7 @@ function generateContextProperties()
         });
         str += `</select></label>`;
 
-        str+=`<br><br><input type="submit" value="Save" onclick="changeLineProperties();">`;
+        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
     }
 
     if ((context.length > 1 || contextLine.length > 1) || (context.length == 1 && contextLine.length == 1)) {
