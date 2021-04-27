@@ -2254,9 +2254,15 @@ function changeState()
 function changeLineProperties()
 {
     // Set lineKind
-    var property = document.getElementById("propertySelect").value;
+    var radio1  = document.getElementById("lineRadio1").value;
+    var radio2 = document.getElementById("lineRadio2").value;
     var line = contextLine[0];
-    line.kind = property;
+
+    if(radio1.checked) {
+        line.kind = radio1.value;
+    } else {
+        line.kind = radio2.value;
+    }
 
     // Change line - cardinality
     var cFromValue = document.getElementById('propertyCardinalityFrom').value;
