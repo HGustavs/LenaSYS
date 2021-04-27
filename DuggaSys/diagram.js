@@ -578,6 +578,7 @@ var elements = [];
 var context = [];
 var previousContext = [];
 var contextLine = []; // Contains the currently selected line(s).
+var determinedLines = null; //Last calculated line(s) clicked.
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
 
@@ -617,6 +618,7 @@ const pointerStates = {
     CLICKED_CONTAINER: 1,
     CLICKED_ELEMENT: 2,
     CLICKED_NODE: 3,
+    CLICKED_LINE: 4,
 };
 var pointerState = pointerStates.DEFAULT;
 
@@ -998,8 +1000,12 @@ function mdown(event)
         startX = event.clientX;
         startY = event.clientY;
     }
-    // Used when clicking on a line between two elements.
-    updateSelectedLine(determineLineSelect(event.clientX, event.clientY));
+     // Used when clicking on a line between two elements.
+     determinedLines = determineLineSelect(event.clientX, event.clientY);
+     if (determinedLines){
+        pointerState=pointerStates.CLICKED_LINE;
+     }
+   
 }
 
 function ddown(event)
@@ -1098,11 +1104,17 @@ function mup(event)
                 if (!deltaExceeded) {
                     if (mouseMode == mouseModes.EDGE_CREATION) {
                         clearContext();
+                        clearContextLine();
                     } else if (mouseMode == mouseModes.POINTER) {
                         updateSelection(null);
+                        clearContextLine();
                     }
                 }
             }
+            break;
+
+        case pointerStates.CLICKED_LINE:
+            updateSelectedLine(determinedLines);
             break;
 
         case pointerStates.CLICKED_ELEMENT:
@@ -2101,9 +2113,11 @@ function updateSelectedLine(selectedLine)
             contextLine = [];
             contextLine.push(selectedLine);
         }
-    } else if (!altPressed && !ctrlPressed) {
+    } else if (!altPressed && !ctrlPressed ) {
+      
         contextLine = [];
     }
+    
     generateContextProperties();
 }
 
