@@ -118,25 +118,6 @@ function closeEdituser() {
 //-------------==========########## Commands ##########==========-------------
 //----------------------------------------------------------------------------
 
-function importUsers() {
-	var newUsersArr = new Array();
-	newusers = $("#import").val();
-	var myArr = newusers.split("\n");
-	for (var i = 0; i < myArr.length; i++) {
-		var input = myArr[i].replace(/\"/g, '').split(";");
-		newUsersArr.push(input);
-		if (!verifyUserInputForm(input)) return;
-	}
-	var newUserJSON = JSON.stringify(newUsersArr);
-
-	AJAXService("ADDUSR", {
-		courseid: querystring['courseid'],
-		newusers: newUserJSON,
-		coursevers: querystring['coursevers']
-	}, "ACCESS");
-	hideImportUsersPopup();
-}
-
 function addSingleUser() {
 
 	var newUser = new Array();
