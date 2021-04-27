@@ -111,6 +111,11 @@ function toggleHamburger() {
   findAncestor(x, "hamburger").classList.toggle("change");
 }
 
+// Show the hamburger menu
+function bigMac() {
+  $(".hamburgerMenu").toggle();
+}
+
 // -------------==============######## Dialog Handling ###########==============-------------
 
 //----------------------------------------------------------------------------------
@@ -294,10 +299,7 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
-// Show the hamburger menu
-function bigMac() {
-  $(".hamburgerMenu").toggle();
-}
+
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {

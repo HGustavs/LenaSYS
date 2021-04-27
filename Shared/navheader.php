@@ -36,8 +36,9 @@
 			// If the current page is the course editor, don't display the back button
 			//---------------------------------------------------------------------
 
-            echo '<td class="hamburger" id="hamburgerIcon" onclick=hamburgerChange()>';
-            echo '<i class="fa fa-bars"></i>';
+			
+
+            
 			// Analytics button
 			if($noup == 'NONE' && $requestedService != "analytic.php" && checklogin() && isSuperUser($_SESSION['uid']) ){
 				echo "<td class='menuButton' style='display: inline-block;'>";
@@ -49,7 +50,7 @@
 				echo "</td>";
 			} else if($requestedService == "analytic.php") {
 				echo '<td class="navButt" id="home" title="Back"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img alt="go back icon" src="../Shared/icons/Up.svg"></a></td>';
-                echo '<td class="vl"></td>';
+				echo '<td class="vl"></td>';
 				echo '<td class="navButt analytic-navbutton GS" id="GeneralStats"><a onclick="loadGeneralStats()"><i alt="general stats icon" class="fas fa-stream"></i></a><span class="navcomment">General Stats</span></td>';
 				echo '<td class="navButt analytic-navbutton CO" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline()"><i alt="currently online icon" class="fas fa-users"></i></a><span class="navcomment">Currently Online</span></td>';
 				echo '<td class="navButt analytic-navbutton PG" id="PasswordGuessing"><a onclick="loadPasswordGuessing()"><i alt="password guessing icon" class="fas fa-key"></i></a><span class="navcomment">Password Guessing</span></td>';
@@ -83,7 +84,8 @@
 			}
 
 			if($noup!='NONE') {
-				  echo "<td class='navButt' id='back' title='Back'>";
+				echo "<td class='navButt' id='back' title='Back'>";
+				echo '<td class="hamburger fa fa-bars" id="hamburgerIcon" onclick=hamburgerChange()>';
 			}
 			if($noup=='COURSE'){
 					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
