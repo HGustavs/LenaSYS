@@ -1940,6 +1940,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
 
             // Save changes into state machine
             if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(newLine));
+            
+            displayMessage(messageTypes.SUCCESS,"Created new line between: " + context[0].name + " and " + context[1].name);
             return newLine;
             
         } else {
