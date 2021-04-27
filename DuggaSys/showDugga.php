@@ -317,6 +317,7 @@ if($hash!='UNK'){
 		// Javascript for Feedback window
 		echo <<<EOL
 		<script>
+		
 		window.onload = function() {
 			document.getElementById('teacherfeedback').onsubmit = function() {
 				/* do what you want with the form */
@@ -327,7 +328,20 @@ if($hash!='UNK'){
 				return false;
 			}
 		}
+		$(document).ready(function () {
+            
+            //This function called when the button is clicked
+            $("#btn").click(function () {
+                
+                // val() method is used to get the values from 
+               // textarea and stored in txt variable
+                var txt = $("#txtArea").val();
+                alert(txt);
+            });
+        });
+		
 		</script>
+
 		EOL;
 
 	}?>
