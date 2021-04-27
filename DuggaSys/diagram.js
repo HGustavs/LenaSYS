@@ -2278,6 +2278,8 @@ function changeLineProperties()
     var cFromValue = document.getElementById('propertyCardinalityFrom').value;
     var cToValue = document.getElementById('propertyCardinalityTo').value;
 
+
+
     // If both are none, remove the key from line object
     if (cToValue == "" && cFromValue == ""){
         delete line.cardinality;
@@ -2702,12 +2704,12 @@ function drawLine(line, targetGhost = false)
         }
         // From cardinality
         if (line.cardinality.from != ""){
-            str += `<text x="${fromCardinalityX}" y="${fromCardinalityY}">${lineCardinalitys[line.cardinality.from]}</text>`
+            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${fromCardinalityX}" y="${fromCardinalityY}">${lineCardinalitys[line.cardinality.from]}</text>`
         }
 
         // To cardinality
         if (line.cardinality.to != "") {
-            str += `<text x="${toCardinalityX}" y="${toCardinalityY}">${lineCardinalitys[line.cardinality.to]}</text>`
+            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${toCardinalityX}" y="${toCardinalityY}">${lineCardinalitys[line.cardinality.to]}</text> `
         }
     }
     return str;
