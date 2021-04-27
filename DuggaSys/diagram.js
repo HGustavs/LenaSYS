@@ -1936,12 +1936,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
                 toID: toElement.id,
                 kind: kind
             };
-
-            // Adds the line
-            lines.push(newLine);
-
-            // Save changes into state machine
-            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(newLine));
+            
+            addObjectToLines(newLine);
             
             displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
             return newLine;
