@@ -939,9 +939,6 @@ VALUES ('77','2','1','3','2011',NULL,NULL,'2 97732 2011 .T1.T 257 1366 768 1349 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
 VALUES ('78','2','1','3','2012',NULL,NULL,'2 97732 2012 .D2.T 151 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,1,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','n4nPEAJs','UWbvbEQ');
 
-/* If data is ever needed for groupDugga, insert here */
-INSERT INTO groupDugga (hash, active_users) VALUES (NULL, NULL);
-
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1','wp','Webbprogrammering','45656');
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('2','wgfx','Webbutveckling - datorgrafik','97732');
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('3','dg','Datorns grunder','1337');
