@@ -2254,8 +2254,8 @@ function changeState()
 function changeLineProperties()
 {
     // Set lineKind
-    var radio1  = document.getElementById("lineRadio1").value;
-    var radio2 = document.getElementById("lineRadio2").value;
+    var radio1  = document.getElementById("lineRadio1");
+    var radio2 = document.getElementById("lineRadio2");
     var line = contextLine[0];
 
     if(radio1.checked) {
