@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg viewBox="147 157 28 19" xmlns="http://www.w3.org/2000/svg">
-  <line style="stroke: rgb(255, 255, 255);" x1="148" y1="159.223" x2="175.999" y2="159.014" transform="matrix(-1, 0, 0, -1, 323, 318.223007)"/>
-  <line style="stroke: rgb(255, 255, 255);" x1="148" y1="164.258" x2="175.999" y2="164.016" transform="matrix(-1, 0, 0, -1, 323, 328.257996)"/>
-  <line style="stroke: rgb(255, 255, 255);" x1="148" y1="169.2" x2="175.999" y2="169.012" transform="matrix(-1, 0, 0, -1, 323, 338.199997)"/>
-  <line style="stroke: rgb(255, 255, 255);" x1="148" y1="174.2" x2="176" y2="174" transform="matrix(-1, 0, 0, -1, 323, 348.199997)"/>
-  <line style="stroke: rgb(255, 255, 255);" x1="149.314" y1="157.382" x2="149.414" y2="176.382" transform="matrix(-1, 0, 0, -1, 298.714005, 333.382004)"/>
-  <line style="stroke: rgb(255, 255, 255);" x1="156.4" y1="157" x2="156.7" y2="176" transform="matrix(-1, 0, 0, -1, 313.099991, 333)"/>
-  <line style="stroke: rgb(255, 255, 255);" x1="164.1" y1="157" x2="164.4" y2="176" transform="matrix(-1, 0, 0, -1, 328.5, 333)"/>
-  <line style="stroke: rgb(255, 255, 255);" x1="172.6" y1="175" x2="172.3" y2="156" transform="matrix(-1, 0, 0, -1, 344.900009, 332)"/>
+  <line style="stroke: rgb(0, 0, 0);" x1="148" y1="159.223" x2="175.999" y2="159.014" transform="matrix(-1, 0, 0, -1, 323, 318.223007)"/>
+  <line style="stroke: rgb(0, 0, 0);" x1="148" y1="164.258" x2="175.999" y2="164.016" transform="matrix(-1, 0, 0, -1, 323, 328.257996)"/>
+  <line style="stroke: rgb(0, 0, 0);" x1="148" y1="169.2" x2="175.999" y2="169.012" transform="matrix(-1, 0, 0, -1, 323, 338.199997)"/>
+  <line style="stroke: rgb(0, 0, 0);" x1="148" y1="174.2" x2="176" y2="174" transform="matrix(-1, 0, 0, -1, 323, 348.199997)"/>
+  <line style="stroke: rgb(0, 0, 0);" x1="149.314" y1="157.382" x2="149.414" y2="176.382" transform="matrix(-1, 0, 0, -1, 298.714005, 333.382004)"/>
+  <line style="stroke: rgb(0, 0, 0);" x1="156.4" y1="157" x2="156.7" y2="176" transform="matrix(-1, 0, 0, -1, 313.099991, 333)"/>
+  <line style="stroke: rgb(0, 0, 0);" x1="164.1" y1="157" x2="164.4" y2="176" transform="matrix(-1, 0, 0, -1, 328.5, 333)"/>
+  <line style="stroke: rgb(0, 0, 0);" x1="172.6" y1="175" x2="172.3" y2="156" transform="matrix(-1, 0, 0, -1, 344.900009, 332)"/>
 </svg>

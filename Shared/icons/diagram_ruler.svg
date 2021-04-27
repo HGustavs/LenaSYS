@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-  <rect x="25" y="185.5" width="450" height="30" style="fill: rgb(255, 255, 255);"/>
-  <rect x="25" y="214.5" width="17" height="100" style="fill: rgb(255, 255, 255);"/>
-  <rect x="241.5" y="214.5" width="17" height="100" style="fill: rgb(255, 255, 255);"/>
-  <rect y="214.5" width="17" height="100" style="fill: rgb(255, 255, 255);" x="458"/>
-  <rect x="69" y="214.5" width="15" height="60" style="fill: rgb(255, 255, 255);"/>
-  <rect x="114" y="214.5" width="15" height="60" style="fill: rgb(255, 255, 255);"/>
-  <rect x="156" y="214.5" width="15" height="60" style="fill: rgb(255, 255, 255);"/>
-  <rect x="199" y="214.5" width="15" height="60" style="fill: rgb(255, 255, 255);"/>
-  <rect x="285" y="214.5" width="15" height="60" style="fill: rgb(255, 255, 255);"/>
-  <rect x="330" y="214.5" width="15" height="60" style="fill: rgb(255, 255, 255);"/>
-  <rect x="372" y="214.5" width="15" height="60" style="fill: rgb(255, 255, 255);"/>
-  <rect x="415" y="214.5" width="15" height="60" style="fill: rgb(255, 255, 255);"/>
+  <rect x="25" y="185.5" width="450" height="30" style="fill: rgb(26, 26, 26);"/>
+  <rect x="25" y="214.5" width="17" height="100" style="fill: rgb(26, 26, 26);"/>
+  <rect x="241.5" y="214.5" width="17" height="100" style="fill: rgb(26, 26, 26);"/>
+  <rect y="214.5" width="17" height="100" style="fill: rgb(26, 26, 26);" x="458"/>
+  <rect x="69" y="214.5" width="15" height="60" style="fill: rgb(26, 26, 26);"/>
+  <rect x="114" y="214.5" width="15" height="60" style="fill: rgb(26, 26, 26);"/>
+  <rect x="156" y="214.5" width="15" height="60" style="fill: rgb(26, 26, 26);"/>
+  <rect x="199" y="214.5" width="15" height="60" style="fill: rgb(26, 26, 26);"/>
+  <rect x="285" y="214.5" width="15" height="60" style="fill: rgb(26, 26, 26);"/>
+  <rect x="330" y="214.5" width="15" height="60" style="fill: rgb(26, 26, 26);"/>
+  <rect x="372" y="214.5" width="15" height="60" style="fill: rgb(26, 26, 26);"/>
+  <rect x="415" y="214.5" width="15" height="60" style="fill: rgb(26, 26, 26);"/>
 </svg>
