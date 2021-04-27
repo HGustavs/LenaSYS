@@ -454,9 +454,9 @@ $_SESSION['hashpassword'] = 'UNK';
 		echo <<<EOL
 		<h2>Student feedback</h2>
 		<form id="teacherfeedback">
-		<textarea rows="8" style="width:99%" placeholder="Student feedback..."></textarea>
-		<br>
-		<input class="submit-button large-button" value="Send" type="submit">
+			<textarea rows="8" style="width:99%" placeholder="Student feedback..."></textarea>
+			<br>
+			<input class="submit-button large-button" value="Send" type="submit">
 		</form> 
 		EOL;
 
@@ -465,12 +465,12 @@ $_SESSION['hashpassword'] = 'UNK';
 		<script>
 		window.onload = function() {
 			document.getElementById('teacherfeedback').onsubmit = function() {
-			/* do what you want with the form */
-		
-			// Should be triggered on form submit
-			console.log('hi');
-			// You must return false to prevent the default form behavior
-			return false;
+				/* do what you want with the form */
+			
+				// Should be triggered on form submit
+				console.log('hi');
+				// You must return false to prevent the default form behavior
+				return false;
 			}
 		}
 		</script>
