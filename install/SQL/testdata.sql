@@ -779,10 +779,16 @@ VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2011','IYSCwHMO','2015-01-
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
 VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2012','gyFUqINO','2015-01-15 09:12:51');
 
+/* Fresh ones */
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
+VALUES ('1','2','10','21','2015',NULL,'216',NULL,'2015-05-20 14:50:35',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
 
-INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','10','21','2015',NULL,'216',NULL,'2015-05-20 14:50:35',NULL,'97732',NULL,NULL,0);
-INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','10','21','2016',NULL,'216','2 97732 3006 Submitted,T 0 1440 900 1440 738','2015-05-20 14:50:35',NULL,'97732',NULL,NULL,0);
-INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','10','21','2015',NULL,'229',NULL,'2015-05-20 14:50:35',NULL,'97732',NULL,NULL,0);
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
+VALUES ('2','2','10','21','2016',NULL,'216','2 97732 3006 Submitted,T 0 1440 900 1440 738','2015-05-20 14:50:35',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
+VALUES ('3','2','10','21','2015',NULL,'229',NULL,'2015-05-20 14:50:35',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','Ac3YM_fc','zIN6IVv');
+
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','10','21','2016',NULL,'229','2 97732 3006 Submitted,T 0 1440 900 1440 738','2015-05-20 14:50:35',NULL,'97732',NULL,NULL,0);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','10','21','2015',NULL,'219',NULL,'2015-05-20 14:50:35',NULL,'97732',NULL,NULL,0);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','10','21','2016',NULL,'219','2 97732 3006 Submitted,T 0 1440 900 1440 738','2015-05-20 14:50:35',NULL,'97732',NULL,NULL,0);
