@@ -676,108 +676,108 @@ INSERT INTO fileLink (filename,kind,cid,isGlobal, filesize) VALUES ("ListTest.tx
 INSERT INTO fileLink (filename,kind,cid,isGlobal, filesize) VALUES ("LinkTest.txt",3,3,0,92);
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (229,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Olsson_Nils_a99nilol/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016', 'Fe9FhdQ', '2018-04-09 14:29:37');
+VALUES (229,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Olsson_Nils_a99nilol/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016', 'Fe9FhdQO', '2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (229,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Olsson_Nils_a99nilol/','coursesyspw.php4','zip','application/zip',1,'2016', 'lQyi1a5','2018-04-09 14:29:37');
+VALUES (229,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Olsson_Nils_a99nilol/','coursesyspw.php4','zip','application/zip',1,'2016', 'lQyi1a5O','2018-04-09 14:29:37');
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (217,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Johansson_Erik_a99erijo/','Kursplan_IT351G','pdf','application/pdf',1,'2016', 'BRXoRat','2018-04-09 14:29:37');
+VALUES (217,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Johansson_Erik_a99erijo/','Kursplan_IT351G','pdf','application/pdf',1,'2016', 'BRXoRatO','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (217,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Johansson_Erik_a99erijo/','coursesyspw.php4','zip','application/zip',1,'2016', 'rxJ6FK9','2018-04-09 14:29:37');
+VALUES (217,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Johansson_Erik_a99erijo/','coursesyspw.php4','zip','application/zip',1,'2016', 'rxJ6FK9O','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (217,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2002','hpMcoe4','2015-01-15 09:12:51');
+VALUES (217,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2002','hpMcoe4O','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (217,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2005','atzKk6O','2015-01-15 09:12:51');
+VALUES (217,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2005','atzKk6OO','2015-01-15 09:12:51');
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (218,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Andersson_Anna_a99annan/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','sBzZBT3','2018-04-09 14:29:37');
+VALUES (218,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Andersson_Anna_a99annan/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','sBzZBT3O','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (218,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Andersson_Anna_a99annan/','coursesyspw.php4','zip','application/zip',1,'2016','ec3HLlh','2018-04-09 14:29:37');
+VALUES (218,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Andersson_Anna_a99annan/','coursesyspw.php4','zip','application/zip',1,'2016','ec3HLlhO','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (218,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2005','nkd5Qfx','2018-05-17 09:12:51');
+VALUES (218,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2005','nkd5QfxO','2018-05-17 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (218,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2006','GCyDuFC','2018-05-17 09:12:51');
+VALUES (218,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2006','GCyDuFCO','2018-05-17 09:12:51');
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (219,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Andersson_Lars_a99laran/','Kursplan_IT351G','pdf','application/pdf',1,'2016','pMhyenP','2018-04-09 14:29:37');
+VALUES (219,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Andersson_Lars_a99laran/','Kursplan_IT351G','pdf','application/pdf',1,'2016','pMhyenPO','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (219,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Andersson_Lars_a99laran/','coursesyspw.php4','zip','application/zip',1,'2016','ZojCqtV','2018-04-09 14:29:37');
+VALUES (219,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Andersson_Lars_a99laran/','coursesyspw.php4','zip','application/zip',1,'2016','ZojCqtVO','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (219,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2002','J00iyGC','2018-05-17 09:12:51');
+VALUES (219,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2002','J00iyGCO','2018-05-17 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (219,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2003','nXP9Lv0','2018-05-17 09:12:51');
+VALUES (219,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2003','nXP9Lv0O','2018-05-17 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (219,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2008','yFF60zp','2018-05-17 09:50:56');
+VALUES (219,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2008','yFF60zpO','2018-05-17 09:50:56');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (219,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2009','nJ2veYU','2018-05-17 09:50:56');
+VALUES (219,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2009','nJ2veYUO','2018-05-17 09:50:56');
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (216,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Johansson_Maria_a99marjo/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','I1mZIB9','2018-04-09 14:29:37');
+VALUES (216,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Johansson_Maria_a99marjo/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','I1mZIB9O','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (216,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Johansson_Maria_a99marjo/','coursesyspw.php4','zip','application/zip',1,'2016','EjfSUFB','2018-04-09 14:29:37');
+VALUES (216,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Johansson_Maria_a99marjo/','coursesyspw.php4','zip','application/zip',1,'2016','EjfSUFBO','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (216,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2002','0ElHtTd','2015-01-15 09:12:51');
+VALUES (216,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2002','0ElHtTdO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (216,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2003','ntMBqQy','2015-01-15 09:12:51');
+VALUES (216,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2003','ntMBqQyO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (216,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2008','rWyFyEx','2015-01-15 09:12:51');
+VALUES (216,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2008','rWyFyExO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (216,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2009','dF1bRp2','2015-01-15 09:12:51');
+VALUES (216,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2009','dF1bRp2O','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (216,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2011','E5IOMAg','2015-01-15 09:12:51');
+VALUES (216,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2011','E5IOMAgO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (216,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2012','T08H2VI','2015-01-15 09:12:51');
+VALUES (216,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2012','T08H2VIO','2015-01-15 09:12:51');
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (220,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2005','sLw86Mv','2018-05-17 09:12:51');
+VALUES (220,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2005','sLw86MvO','2018-05-17 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (220,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2006','XENOqfO','2018-05-17 09:12:51');
+VALUES (220,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2006','XENOqfOO','2018-05-17 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (220,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2011','mH8iAcQ','2018-05-15 09:50:56');
+VALUES (220,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2011','mH8iAcQO','2018-05-15 09:50:56');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (220,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2012','pPBeRQL','2018-05-15 09:50:56');
+VALUES (220,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2012','pPBeRQLO','2018-05-15 09:50:56');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (220,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2014','htfnFix','2018-05-17 10:23:28');
+VALUES (220,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2014','htfnFixO','2018-05-17 10:23:28');
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (222,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2002','mMGFaj0','2018-05-17 09:12:51');
+VALUES (222,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2002','mMGFaj0O','2018-05-17 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (222,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2003','270ISdS','2018-05-17 09:12:51');
+VALUES (222,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2003','270ISdSO','2018-05-17 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (222,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2005','3mscbZm','2015-01-15 09:12:51');
+VALUES (222,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2005','3mscbZmO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (222,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2036','KBx31TD','2018-05-17 10:50:42');
+VALUES (222,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2036','KBx31TDO','2018-05-17 10:50:42');
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (223,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2005','CJzptbh','2014-05-17 09:12:51');
+VALUES (223,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2005','CJzptbhO','2014-05-17 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (223,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2006','XKZLPVa','2014-05-17 09:12:51');
+VALUES (223,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2006','XKZLPVaO','2014-05-17 09:12:51');
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (224,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2002','Xzq5OgL','2015-01-15 09:12:51');
+VALUES (224,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2002','Xzq5OgLO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (224,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2003','j4bChGu','2015-01-15 09:12:51');
+VALUES (224,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2003','j4bChGuO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (224,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2008','7jvLKpO','2015-01-15 09:12:51');
+VALUES (224,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2008','7jvLKpOO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (224,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2009','rh1YbOo','2015-01-15 09:12:51');
+VALUES (224,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2009','rh1YbOoO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (224,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2011','uzu5QB0','2015-01-15 09:12:51');
+VALUES (224,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2011','uzu5QB0O','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (224,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2012','D14k9yr','2015-01-15 09:12:51');
+VALUES (224,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2012','D14k9yrO','2015-01-15 09:12:51');
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2002','s8rJs2B','2015-01-15 09:12:51');
+VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2002','s8rJs2BO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2003','PteP8R1','2015-01-15 09:12:51');
+VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2003','PteP8R1O','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2008','vNzqnyP','2015-01-15 09:12:51');
+VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2008','vNzqnyPO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2009','YGv4Vir','2015-01-15 09:12:51');
+VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2009','YGv4VirO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2011','IYSCwHM','2015-01-15 09:12:51');
+VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2011','IYSCwHMO','2015-01-15 09:12:51');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, hash, updtime)
-VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2012','gyFUqIN','2015-01-15 09:12:51');
+VALUES (225,2,'97732',1,1,NULL,NULL,NULL,NULL,NULL,1,'2012','gyFUqINO','2015-01-15 09:12:51');
 
 
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','10','21','2015',NULL,'216',NULL,'2015-05-20 14:50:35',NULL,'97732',NULL,NULL,0);
