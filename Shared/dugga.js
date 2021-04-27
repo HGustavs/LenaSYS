@@ -24,7 +24,7 @@ var ishashinurl;
 var itemvalue;
 var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
-var isGroupDugga = true; // Set to false if you hate the popup
+var isGroupDugga = false; // Set to false if you hate the popup
 var variantvalue;
 
 
@@ -733,9 +733,7 @@ function saveDuggaResult(citstr)
 //----------------------------------------------------------------------------------
 function generateHash() {
     var randNum = getRandomNumber();
-	var hash64 = convertDecimalToBase64(randNum);
-	hash64 = hash64.replace("+", "-");
-	hash = hash64.replace("/", "_");
+	var hash = convertDecimalToBase64(randNum);
     return hash;
 }
 
@@ -749,6 +747,7 @@ function getRandomNumber() {
 //----------------------------------------------------------------------------------
 // convertDecimalToBase64: takes decimal number and converts to base64 "youtube style"
 //----------------------------------------------------------------------------------
+//This way of converting works well since we don't have to decode the hash (which would only give us the randomly generated number).
 function convertDecimalToBase64(value) {
 	if (typeof(value) === 'number') {
 		return convertDecimalToBase64.getChars(value, '');
@@ -762,7 +761,7 @@ function convertDecimalToBase64(value) {
 	}
 }
   
-convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
+convertDecimalToBase64.chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_";	//Url friendly base. Contains 64 characters, making this a "base" of 64. 
   
 convertDecimalToBase64.getChars = function(num, res) {
 	var mod = num % 64,
@@ -1061,6 +1060,7 @@ function AJAXService(opt,apara,kind)
 					success: function (data) {
 						returnedDugga(data);
 						ishashindb = data['ishashindb'];										//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+						console.log("Hash="+hash+" inDB="+ishashindb + " block=" +blockhashgen + " inURL="+ishashinurl);
 						if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
 							recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
 						}
