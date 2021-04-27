@@ -263,7 +263,7 @@
     width: calc(100% - 20px);
     bottom: 5px;
     left: 10px;
-    background: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,1);
 }
 #diagram-message>div {
     pointer-events: auto;

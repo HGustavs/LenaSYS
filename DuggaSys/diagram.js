@@ -46,7 +46,7 @@ class StateChange {
         // Combined flags
         ELEMENT_MOVED_AND_RESIZED:  { flag: 4|8, isSoft: true, canAppendTo: true },
         ELEMENT_AND_LINE_DELETED:   { flag: 2|64, isSoft: false, canAppendTo: false },
-        ELEMENT_AND_LINE_CREATED:   { flag: 1|32, isSoft: false, canAppendTo: true },
+        ELEMENT_AND_LINE_CREATED:   { flag: 1|32, isSoft: false, canAppendTo: false },
     };
 
     /**
@@ -147,7 +147,7 @@ class StateChange {
         }
 
         if (changes.moved) {
-            if (this.moved) { 
+            if (this.moved) {
                 this.moved.add(changes.moved);
             } else { 
                 this.moved = changes;
@@ -545,8 +545,10 @@ const keybinds = {
 
 // Zoom variables
 var zoomfact = 1.0;
-var scrollx = 100;
-var scrolly = 100;
+var scrollx = 4132 / 4;
+var scrolly = 2600 / 4;
+var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
+var camera = new Point(0, 0); // Relative to coordinate system origo
 
 // Constants
 const elementwidth = 200;
@@ -566,6 +568,7 @@ const zoom0_75 = -0.775;
 const zoom0_5 = -3;
 const zoom0_25 = -15.01;
 const zoom0_125 = -64;
+const zoomPower = 1 / 3;
 
 // Arrow drawing stuff - diagram elements and diagram lines
 var lines = [];
@@ -659,18 +662,6 @@ function makeRandomID()
     }
 }
 
-// Example entities and attributes
-var PersonID = makeRandomID();
-var IDID = makeRandomID();
-var NameID = makeRandomID();
-var SizeID = makeRandomID();
-var HasID = makeRandomID();
-var CarID = makeRandomID();
-var FNID = makeRandomID();
-var LNID = makeRandomID();
-var LoanID = makeRandomID();
-var RefID = makeRandomID();
-
 // Save default to model - updating defaults sets property to all of model
 var defaults = {
     defaultERtentity: { kind: "EREntity", fill: "White", Stroke: "Black", width: 200, height: 50 },
@@ -707,38 +698,64 @@ const lineCardinalitys = {
 };
 
 // Demo data - read / write from service later on
-var data = [
-    { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
-    { name: "Loan", x: 140, y: 250, width: 200, height: 50, kind: "EREntity", id: LoanID, state: "weak" },
-    { name: "Car", x: 500, y: 140, width: 200, height: 50, kind: "EREntity", id: CarID },
-    { name: "Owns", x: 420, y: 60, width: 60, height: 60, kind: "ERRelation", id: HasID },
-    { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, state: "weak" },
-    { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, state: "computed" },
-    { name: "Name", x: 170, y: 50, width: 90, height: 45, kind: "ERAttr", id: NameID },
-    { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, state: "multiple" },
-    { name: "F Name", x: 120, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
-    { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
-];
+var data = [];
+var lines = [];
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
 var ghostLine = null;
 
-var lines = [
-    { id: makeRandomID(), fromID: PersonID, toID: IDID, kind: "Normal" },
-    { id: makeRandomID(), fromID: PersonID, toID: NameID, kind: "Normal" },
-    { id: makeRandomID(), fromID: CarID, toID: SizeID, kind: "Normal" },
+// Setup function for static preloaded example elements and lines.
+function onSetup()
+{
+    const PersonID = makeRandomID();
+    const IDID = makeRandomID();
+    const NameID = makeRandomID();
+    const SizeID = makeRandomID();
+    const HasID = makeRandomID();
+    const CarID = makeRandomID();
+    const FNID = makeRandomID();
+    const LNID = makeRandomID();
+    const LoanID = makeRandomID();
+    const RefID = makeRandomID();
 
-    { id: makeRandomID(), fromID: PersonID, toID: HasID, kind: "Normal" },
-    { id: makeRandomID(), fromID: HasID, toID: CarID, kind: "Double" },
-    { id: makeRandomID(), fromID: NameID, toID: FNID, kind: "Normal" },
-    { id: makeRandomID(), fromID: NameID, toID: LNID, kind: "Normal" },
+    const demoData = [
+        { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
+        { name: "Loan", x: 140, y: 250, width: 200, height: 50, kind: "EREntity", id: LoanID, state: "weak" },
+        { name: "Car", x: 500, y: 140, width: 200, height: 50, kind: "EREntity", id: CarID },
+        { name: "Owns", x: 420, y: 60, width: 60, height: 60, kind: "ERRelation", id: HasID },
+        { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, state: "weak" },
+        { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, state: "computed" },
+        { name: "Name", x: 170, y: 50, width: 90, height: 45, kind: "ERAttr", id: NameID },
+        { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, state: "multiple" },
+        { name: "F Name", x: 120, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
+        { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
+    ];
+    
+    const demoLines = [
+        { id: makeRandomID(), fromID: PersonID, toID: IDID, kind: "Normal" },
+        { id: makeRandomID(), fromID: PersonID, toID: NameID, kind: "Normal" },
+        { id: makeRandomID(), fromID: CarID, toID: SizeID, kind: "Normal" },
 
-    { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
-    { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
-];
+        { id: makeRandomID(), fromID: PersonID, toID: HasID, kind: "Normal" },
+        { id: makeRandomID(), fromID: HasID, toID: CarID, kind: "Double" },
+        { id: makeRandomID(), fromID: NameID, toID: FNID, kind: "Normal" },
+        { id: makeRandomID(), fromID: NameID, toID: LNID, kind: "Normal" },
 
-const stateMachine = new StateMachine(data, lines);
+        { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
+        { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
+    ];
+
+    for(var i = 0; i < demoData.length; i++){
+        addObjectToData(demoData[i], false);
+    }
+    for(var i = 0; i < demoLines.length; i++){
+        addObjectToLines(demoLines[i], false);
+    }
+
+    // Global statemachine init
+    stateMachine = new StateMachine(data, lines);
+}
 
 //------------------------------------=======############==========----------------------------------------
 //                                        Getters and Setters
@@ -748,6 +765,13 @@ function addObjectToData(object, stateMachineShouldSave = true)
 {
     data.push(object);
     if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object));
+}
+
+// Adds object to the line-array
+function addObjectToLines(object, stateMachineShouldSave = true)
+{
+    lines.push(object);
+    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(object));
 }
 
 // Return all lines
@@ -803,11 +827,15 @@ document.addEventListener('keydown', function (e)
         }
        
     }
+
+    var propField = document.getElementById("elementProperty_name");
     // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
     if ( /INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
         if (e.key == keybinds.ENTER.key && e.ctrlKey == keybinds.ENTER.ctrl) {
             changeState();
             saveProperties();
+            propField.blur();
+            displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
         }
     }
 });
@@ -865,9 +893,9 @@ document.addEventListener('keyup', function (e)
         if (pressedKey == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
             clipboard = context;
             if (clipboard.length !== 0){
-                displayMessage("success", `You have copied ${clipboard.length} elements and it's inner connected lines.`)
+                displayMessage(messageTypes.SUCCESS, `You have copied ${clipboard.length} elements and it's inner connected lines.`)
             }else {
-                displayMessage("success", `Clipboard cleared.`)
+                displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`)
             }
         }
         if (pressedKey == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
@@ -913,10 +941,10 @@ function screenToDiagramCoordinates(mouseX, mouseY)
 
     return {
         x: Math.round(
-            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 // the 2 makes mouse hover over container
+            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x // the 2 makes mouse hover over container
         ),
         y: Math.round(
-            ((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly
+            ((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y
         ),
     };
 }
@@ -937,9 +965,9 @@ function diagramToScreenPosition(coordX, coordY)
 function mwheel(event)
 {
     if(event.deltaY < 0) {
-        zoomin();
+        zoomin(event);
     } else {
-        zoomout();
+        zoomout(event);
     }
 }
 
@@ -1745,11 +1773,30 @@ function fab_action()
 // zoomin/out - functions for updating the zoom factor and scroll positions
 //-------------------------------------------------------------------------------------------------
 
-function zoomin()
+function zoomin(scrollEvent = undefined)
 {
+    // Calculate mouse position relative to window size
+    var w = (scrollEvent.clientX / window.innerWidth  - 0.5) * 2;
+    var h = (scrollEvent.clientY / window.innerHeight - 0.5) * 2;
+
+    if (zoomfact != 4.0)
+    {
+        var mc = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
+        console.log("Mouse:", mc.x, mc.y);
+
+        var delta = {
+            x: mc.x - zoomOrigo.x,
+            y: mc.y - zoomOrigo.y
+        };
+        console.log("Delta:", delta.x, delta.y);
+
+        zoomOrigo.x += delta.x * zoomPower;
+        zoomOrigo.y += delta.y * zoomPower;
+    }
+
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
-
+    
     if (zoomfact == 0.125) zoomfact = 0.25;
     else if (zoomfact == 0.25) zoomfact = 0.5;
     else if (zoomfact == 0.5) zoomfact = 0.75;
@@ -1758,9 +1805,14 @@ function zoomin()
     else if (zoomfact == 1.25) zoomfact = 1.5;
     else if (zoomfact == 1.5) zoomfact = 2.0;
     else if (zoomfact == 2.0) zoomfact = 4.0;
-
+    
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
+
+    camera = {
+        x: (window.innerWidth * 0.5 - (scrollx / zoomfact) + 1) / zoomfact,
+        y: (window.innerHeight * 0.5 - (scrolly / zoomfact) + 1) / zoomfact
+    };
 
     updateGridSize();
 
@@ -1771,8 +1823,23 @@ function zoomin()
     drawRulerBars();
 }
 
-function zoomout()
+function zoomout(scrollEvent = undefined)
 {
+    if (zoomfact != 0.125)
+    {
+        var mc = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
+        console.log("Mouse:", mc.x, mc.y);
+
+        var delta = {
+            x: mc.x - zoomOrigo.x,
+            y: mc.y - zoomOrigo.y
+        };
+        console.log("Delta:", delta.x, delta.y);
+
+        zoomOrigo.x -= delta.x * zoomPower;
+        zoomOrigo.y -= delta.y * zoomPower;
+    }
+
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
@@ -1943,8 +2010,7 @@ function drawElement(element, ghosted = false)
 
         if(element.state == "weak") {
             weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
-            stroke-width='${linew}' stroke='black' fill='#ffccdc' />
-            <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
+            stroke-width='${linew}' stroke='black' fill='#ffccdc' /> 
             `;         
         }
         
@@ -2327,8 +2393,8 @@ function updateCSSForAllElements()
 {
     function updateElementDivCSS(elementData, divObject, useDelta = false)
     {
-        var left = Math.round((elementData.x * zoomfact) + (scrollx * (1.0 / zoomfact))),
-            top = Math.round((elementData.y * zoomfact) + (scrolly * (1.0 / zoomfact)));
+        var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
+            top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
         if (useDelta) {
             left -= deltaX;
@@ -2424,16 +2490,22 @@ function sortvectors(a, b, ends, elementid, axis)
     var parent = data[findIndex(data, elementid)];
 
     // Retrieve opposite element - assume element center (for now)
-     if (lineA.fromID == elementid){
+     if (lineA.fromID == elementid) {
         toElementA = (lineA == ghostLine) ? ghostElement : data[findIndex(data, lineA.toID)];
     } else {
         toElementA = data[findIndex(data, lineA.fromID)];
     }
 
-    if (lineB.fromID == elementid){
+    if (lineB.fromID == elementid) {
         toElementB = (lineB == ghostLine) ? ghostElement : data[findIndex(data, lineB.toID)];
     } else {
         toElementB = data[findIndex(data, lineB.fromID)];
+    }
+
+    if (navigator.userAgent.indexOf("Chrome") !== 1) {
+        sortval = -1;
+    } else {
+        sortval = 1;
     }
 
     // If lines cross swap otherwise keep as is
@@ -2444,7 +2516,7 @@ function sortvectors(a, b, ends, elementid, axis)
         if (axis == 0) parentx = parent.x1
         else parentx = parent.x2;
 
-        if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return -1
+        if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return -sortval
 
     } else if (axis == 2 || axis == 3) {
         // Top / Bottom side
@@ -2453,10 +2525,10 @@ function sortvectors(a, b, ends, elementid, axis)
         if (axis == 2) parenty = parent.y1
         else parenty = parent.y2;
 
-        if (linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty) === false) return -1
+        if (linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty) === false) return -sortval
     }
 
-    return 1;
+    return sortval;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -2924,11 +2996,9 @@ function pasteClipboard(elements)
 
     // Save the copyed elements to stateMachine
     stateMachine.save(StateChangeFactory.ElementsAndLinesCreated(newElements, newLines));
-
+    displayMessage(messageTypes.SUCCESS, `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
     clearContext(); // Deselect old selected elements
     context = newElements; // Set context to the pasted elements
-
-    displayMessage("success", `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
     showdata();
 }
 
@@ -2988,10 +3058,13 @@ function removeMessage(element, timer)
 function getData()
 {
     container = document.getElementById("container");
+    onSetup();
     showdata();
     drawRulerBars();
     generateToolTips();
     toggleGrid();
+    updateGridPos();
+    setCursorStyles(mouseMode);
 }
 
 function generateToolTips()
