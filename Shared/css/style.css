@@ -214,9 +214,13 @@ p {
   display: none;
   position: absolute;
   top: 50px;
-  height: 100px;
-  width: 100%;
+  width: 35px;
+  padding: 10px;
   background-color: var(--color-primary-2);
+}
+
+#hamburgerBox div {
+  margin-bottom: 10px;;
 }
 
 
@@ -1338,10 +1342,6 @@ div .navButt:hover {
         margin-top: 14px;
         
     }
-    #home{
-        display:block;
-
-    }
     #GeneralStats{
         display:none;
     }
@@ -1354,29 +1354,9 @@ div .navButt:hover {
     #OSPercentage{
         display:none;
     }
-    #accessBTN{
-        display:none;
-    }
-    #courseIMG{
-        display:none;
-    }
-    #versionCog{
-        display:none;
-    }
-    #versionPlus{
-        display:none;
-    }
-    #announcement{
-        display:none;
-    }
+    
     #back{
         display:none;
-    }
-    .navButt {
-    display:flex;
-        flex-wrap: wrap;
-        position: relative;
-        
     }
     .navButt.show{
         display: flex;
@@ -5058,6 +5038,13 @@ only screen and (max-device-width: 860px) {
 
   #hamburgerBox{
     display: block;
+  }
+
+  /*Här jobbar vi*/
+  #versionCog, #versionPlus, #editStudent,
+  #testsBTN, #editFiles, #courseIMG,
+  #editCourse, #announcement{
+    display: none;
   }
 }
 

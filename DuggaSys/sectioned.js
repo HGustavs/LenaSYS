@@ -1682,6 +1682,14 @@ $(window).load(function () {
     }
 
   });
+  $("#announcementBurger").click(function(){
+    sessionStorage.removeItem("closeUpdateForm");
+    $("#announcementBoxOverlay").toggle();
+    if($("#announcementForm").is(":hidden")){
+      $("#announcementForm").show();
+    }
+
+  });
   $(".createBtn").click(function(){
     sessionStorage.setItem('closeUpdateForm', true);
   });
