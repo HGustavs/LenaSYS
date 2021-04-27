@@ -307,13 +307,27 @@ if($hash!='UNK'){
 		// Creates a Feedback window for teachers
 		echo <<<EOL
 		<h2>Student feedback</h2>
-		<textarea rows="8" style="width:100%" placeholder="Student feedback..."></textarea>
+		<form id="teacherfeedback">
+		<textarea rows="8" style="width:99%" placeholder="Student feedback..."></textarea>
 		<br>
-		<input class="submit-button large-button" value="Send" type="button">
+		<input class="submit-button large-button" value="Send" type="submit">
+		</form> 
 		EOL;
 
 		// Javascript for Feedback window
 		echo <<<EOL
+		<script>
+		window.onload = function() {
+			document.getElementById('teacherfeedback').onsubmit = function() {
+			/* do what you want with the form */
+		
+			// Should be triggered on form submit
+			console.log('hi');
+			// You must return false to prevent the default form behavior
+			return false;
+			}
+		}
+		</script>
 		EOL;
 
 	}?>
