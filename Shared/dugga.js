@@ -1028,29 +1028,24 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
-		$.ajax({ //get variant
+		$.ajax({
 			url: "showDuggaService.php",
 			type: "POST",
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
 			datatype: "json",
 			success: function(data){
-				getVariantValue(data);
+				getVariantValue(data);					//Get variant.
 				console.log("real variantvalue: "+variantvalue);
-				$.ajax({ //original ajax call
+				$.ajax({ 								//We need to have this Ajax call inside of the outer Ajax call, otherwise variantValue cant be retrieved.
 					url: "showDuggaservice.php",
 					type: "POST",
 					data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +variantvalue, 
 					dataType: "json",
 					success: function (data) {
 						returnedDugga(data);
-						ishashindb = data['ishashindb'];										//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-						console.log(hash +" ishashindb="+ishashindb+" blockhashgen="+blockhashgen+" ishashinurl="+ishashinurl);
-						if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
-							recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
-						}
-						handleLocalStorage(data);
-						console.log("password: "+data['password']);
-						setPassword(data['password']);
+						handleHash(data);				//Makes sure hash is unique.			
+						handleLocalStorage(data);		//Set localstorage lifespan.
+						setPassword(data['password']);	//Sets the password retrieved from query.
 					}
 				});
 			}
@@ -1156,6 +1151,13 @@ function AJAXService(opt,apara,kind)
 	}
 }
 
+function handleHash(hashdata){
+	ishashindb = hashdata['ishashindb'];									//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+	if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
+		recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
+	}
+}
+
 function handleLocalStorage(storagedata){
 	// Check localstorage variants.
 	var newvariant = storagedata['variantvalue'];
@@ -1193,6 +1195,7 @@ function getVariantValue(ajaxdata){
 //If the first generated hash isn't unique this method is recursively called until a hash is unique.
 function recursiveAjax(){
 	hash = generateHash();						//A new hash is generated.
+	console.log("new hash " + hash);
 	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
 		url: "showDuggaservice.php",
 		type: "POST",
