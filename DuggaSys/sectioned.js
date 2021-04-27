@@ -108,11 +108,14 @@ function hamburgerChange(operation = 'click') {
 }
 
 function toggleHamburger() {
-  console.log("reached destination 1");
+  
   var x = document.getElementById("hamburgerBox");
-  console.log("reached destination 2");
-  findAncestor(x, "hamburger").classList.toggle();
-  console.log("reached destination 3");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+  
 }
 
 

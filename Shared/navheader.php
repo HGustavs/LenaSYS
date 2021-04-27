@@ -5,7 +5,7 @@
 
 			echo "<table class='navheader'><tr>";
 			include_once "../Shared/basic.php";
-			
+
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
 			if (isset($_GET['courseid']))
 				$_SESSION['courseid'] = getOPG('courseid');
@@ -80,6 +80,9 @@
 
 			}
 
+
+			echo "<div id='hamburgerBox'></div>";
+
 			if($noup!='NONE') {
 				echo "<td class='navButt' id='back' title='Back'>";
 			}
@@ -100,8 +103,6 @@
 					echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
 			}
 
-			echo "<div id='hamburgerBox'></div>";
-	
 			// Adding buttons for courses
 			if($noup=='COURSE'){
 					// Course specific navbar buttons moved from "static" to navheader
