@@ -964,6 +964,16 @@ function mwheel(event)
 
 function mdown(event)
 {
+    // If the middle mouse button (mouse3) is pressed set scroll start values
+    if(event.button == 1) {
+        pointerState = pointerStates.CLICKED_CONTAINER;
+        sscrollx = scrollx;
+        sscrolly = scrolly;
+        startX = event.clientX;
+        startY = event.clientY;
+        return;
+    }
+
     // React to mouse down on container
     if (event.target.id == "container") {
         switch (mouseMode) {
@@ -1002,6 +1012,9 @@ function mdown(event)
 
 function ddown(event)
 {
+    // If the middle mouse button (mouse3) is pressed => return
+    if(event.button == 1) return;
+
     switch (mouseMode) {
         case mouseModes.POINTER:
         case mouseModes.BOX_SELECTION:
