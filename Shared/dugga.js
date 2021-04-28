@@ -1713,25 +1713,47 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		var mediumMediaQuery = window.matchMedia("(min-width: 801px) and (max-width: 1200px)");
 		var tab="<table class='previewTable'>";
   // Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
-	if (group) {
-      if (mobileMediaQuery.matches) {
-        tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
-      } else {
-			  tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
-      }
-	} else if(ctype == "zip" || ctype == "rar"){
-		if(mobileMediaQuery.matches){
-			tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+  	if(iconFlag){
+		if (group) {
+			if (mobileMediaQuery.matches) {
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+			} else {
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+			}
+		} else if(ctype == "zip" || ctype == "rar"){
+			if(mobileMediaQuery.matches){
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+			} else {
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+			}
 		} else {
-			tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+			if (mobileMediaQuery.matches) {
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+			} else {
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+			}
 		}
-    } else {
-    if (mobileMediaQuery.matches) {
-	    tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+	} else {
+		if (group) {
+			if (mobileMediaQuery.matches) {
+			tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+			} else {
+					tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+			}
+		} else if(ctype == "zip" || ctype == "rar"){
+			if(mobileMediaQuery.matches){
+				tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+			} else {
+				tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+			}
 		} else {
-		  tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+			if (mobileMediaQuery.matches) {
+				tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+			} else {
+				tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+			}
 		}
-    }
+	}
 
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
