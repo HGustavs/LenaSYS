@@ -100,10 +100,8 @@ function hamburgerChange(operation = 'click') {
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
       toggleHamburger();
-      console.log("Inside our if");
     }
   } else {
-    console.log("this is the else");
     toggleHamburger();
   }
 }
