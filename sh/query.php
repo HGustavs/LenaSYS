@@ -29,10 +29,7 @@ function courseQuery($course){
 		return 'UNK';
 	}
 	if($count > 1){
-		echo "Try a more narrow query, these were your matches:<br>";
-		for($i=0; $i<$count;$i++){
-		$array[$i]->test();
-		}
+		echo "Error: Try a more narrow query, there were multiple matches.";
 		return 'UNK';
 	} 
 
