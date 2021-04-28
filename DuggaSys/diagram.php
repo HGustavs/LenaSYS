@@ -104,6 +104,7 @@
                     <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
+            <button id="rulerSnapToGrid" style="font-size: 0.5em" onclick="toggleSnapToGrid()">Snap</button>
         </fieldset>
     </div>
 
@@ -129,8 +130,8 @@
         <svg id="svgbacklayer">
             <defs>
             <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-                <rect width="100" height="100" fill="url(#smallGrid)"/>
-                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-dasharray="5,5" d="M5 20 l215 0" stroke-width="1"/>
+
+                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-dasharray="5,5" stroke-width="1"/>
             </pattern>
             </defs>
 
