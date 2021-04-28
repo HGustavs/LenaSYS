@@ -41,6 +41,7 @@ $password=getOP('password');
 $AUtoken=getOP('AUtoken');
 //$localStorageVariant= getOP('variant');
 $variantvalue= getOP('variant');
+$hashvariant;
 
 $showall="true";
 $param = "UNK";
@@ -242,6 +243,22 @@ if($demo){
 	$query->execute();
 	$variantsize = $query->fetchColumn();
 
+	//If the variant value is unknown (E.G: UNK) then we retrieve the variant from the variant set in useranswer 
+	//where there exists a corresponding hash, and set the resulting useranswer.variant into $variantvalue
+
+	error_log("!=UNK".$variantvalue);
+	if($variantvalue == "UNK") {
+		$query = $pdo->prepare("SELECT useranswer.variant FROM useranswer WHERE hash=:hash");
+		$query->bindParam(':hash', $hash);
+		$query->execute();
+		$result = $query->fetch();
+		if($param != null) {
+			$variantvalue = $result['variant'];
+			$hashvariant = $result['variant'];
+		}
+		error_log("==UNK".$result['variant']);
+	}
+
 	//Makes sure that the localstorage variant is set before retrieving data from database
 	if(isset($variantvalue)) {
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
@@ -249,7 +266,7 @@ if($demo){
 		$query->execute();
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
-		error_log("result param: ".$param);
+		error_log("!=UNK".$variantvalue));
 	}
 } else if ($hr){
 	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
@@ -320,7 +337,7 @@ if(checklogin()){
 				$query->bindParam(':coursevers', $coursevers);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':moment', $moment);
-				$query->bindParam(':variant', $savedvariant);
+				$query->bindParam(':variant', $variantvalue);
 				$query->bindParam(':hash', $hash);
 				$query->bindParam(':password', $password);
 				if(!$query->execute()) {
@@ -606,6 +623,7 @@ $array = array(
 		"variantsize" => $variantsize,
 		"variantvalue" => $variantvalue,
 		"password" => $password,
+		"hashvariant" => $hashvariant,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 

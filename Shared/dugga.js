@@ -26,6 +26,7 @@ var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
 var isGroupDugga = true; // Set to false if you hate the popup
 var variantvalue;
+var tempvar;
 
 
 $(function () {  // Used to set the position of the FAB above the cookie message
@@ -1033,7 +1034,7 @@ function AJAXService(opt,apara,kind)
 			datatype: "json",
 			success: function(data){
 				getVariantValue(data);					//Get variant.
-				console.log("real variantvalue: "+variantvalue);
+				
 				$.ajax({ 								//We need to have this Ajax call inside of the outer Ajax call, otherwise variantValue cant be retrieved.
 					url: "showDuggaservice.php",
 					type: "POST",
@@ -1160,7 +1161,7 @@ function handleHash(hashdata){
 function handleLocalStorage(storagedata){
 	// Check localstorage variants.
 	var newvariant = storagedata['variantvalue'];
-
+	console.log(storagedata);
 	if(localStorage.getItem(querystring['did']) == null){
 		localStorage.setItem(querystring['did'], newvariant);
 		//The big number below represents 30 days in milliseconds
@@ -1173,10 +1174,13 @@ function handleLocalStorage(storagedata){
 }
 
 function getVariantValue(ajaxdata){
+	console.log(ajaxdata);
 	//Checks if the variantSize variant is set in localstorage. When its not, its set.
 	if(localStorage.getItem("variantSize") == null) {
 		localStorage.setItem("variantSize", 100);
 	}
+	tempvar = JSON.parse(ajaxdata);
+	console.log("tempvar: "+tempvar.variantvalue);
 	//Converts the localstorage variant from string to int
 	var newInt = +localStorage.getItem('variantSize');
 	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
@@ -1184,9 +1188,15 @@ function getVariantValue(ajaxdata){
 		if(localStorage.getItem(querystring['did']) == null){
 			returndata = JSON.parse(ajaxdata);
 			variantvalue = returndata.variant;
+			console.log("variantvalue1: "+variantvalue);
 		} else {
 			var test = JSON.parse(localStorage.getItem(querystring['did']));
 			variantvalue = test.value;
+			console.log("variantvalue2: "+variantvalue);
+		}
+		if(tempvar.hashvariant != null){
+			variantvalue = tempvar.hashvariant;
+			setExpireTime(querystring['did'], tempvar.hashvariant, 2592000000);
 		}
 	}
 }
