@@ -2,8 +2,7 @@
 //                                          Class Definitions
 //------------------------------------=======############==========----------------------------------------
 
-class Point
-{
+class Point {
     x = 0;
     y = 0;
 
@@ -29,8 +28,7 @@ class Point
     }
 };
 
-class StateChange
-{
+class StateChange {
     /**
      * flag: number of 2nd base used to set multiple flags at once.
      * isSoft: If the change type is something that wishes to overwrite the previous change.
@@ -41,32 +39,15 @@ class StateChange
         ELEMENT_DELETED:            { flag: 2, isSoft: false, canAppendTo: false },
         ELEMENT_MOVED:              { flag: 4, isSoft: true, canAppendTo: true },
         ELEMENT_RESIZED:            { flag: 8, isSoft: true, canAppendTo: true },
-        ELEMENT_MOVED_AND_RESIZED:  { flag: 4 | 8, isSoft: true, canAppendTo: true },
         ELEMENT_ATTRIBUTE_CHANGED:  { flag: 16, isSoft: true, canAppendTo: true },
-
         LINE_CREATED:               { flag: 32, isSoft: false, canAppendTo: true },
         LINE_DELETED:               { flag: 64, isSoft: false, canAppendTo: false },
+
+        // Combined flags
+        ELEMENT_MOVED_AND_RESIZED:  { flag: 4|8, isSoft: true, canAppendTo: true },
+        ELEMENT_AND_LINE_DELETED:   { flag: 2|64, isSoft: false, canAppendTo: false },
+        ELEMENT_AND_LINE_CREATED:   { flag: 1|32, isSoft: false, canAppendTo: false },
     };
-
-    /**
-     * @type String
-     */
-    name;
-    
-    /**
-     * @type Point
-     */
-    moved;
-    
-    /**
-     * @type Point
-     */
-    resized;
-
-    /**
-     * @type number
-     */
-    timestamp;
 
     /**
      * Used by certain state changes to pass their own specific data
@@ -81,14 +62,14 @@ class StateChange
 
     /**
      * 
-     * @param {number} changeFlag What flags this change has.
+     * @param {Object} changeType What flags this change has.
      * @param {Array<String>} id_list Array of all ID's that are affected by the change. This helps with concatting changes more compactly.
      * @param {Object} passed_values Argument map containing all specific values that the state change require. Pass it as an object with properties as the variables!
      * @see {StateChange.ChangeTypes} for available flags.
      */
-    constructor(changeFlag, id_list, passed_values = {})
+    constructor(changeType, id_list, passed_values = {})
     {
-        this.flags = changeFlag;
+        this.changeTypes = [changeType];
         this.timestamp = new Date().getTime();
         this.valuesPassed = passed_values;
 
@@ -98,12 +79,29 @@ class StateChange
         this.id_list = id_list;
     }
 
-    getFlags() {
+    getFlags()
+    {
         var flags = 0;
-        for (const change in this.flags)
+
+        for (var index = 0; index <  this.changeTypes.length; index++) {
+            var change = this.changeTypes[index];
             flags = flags | change.flag;
+        }
 
         return flags;
+    }
+
+    /**
+     * Returns true if this change contains the requested flag.
+     * @param {number} flag 
+     * @returns {boolean}
+     */
+    hasFlag(flag)
+    {
+        var allFlags = this.getFlags();
+        var AND = flag & allFlags;
+
+        return (AND === flag);
     }
 
     setValues(value_object)
@@ -124,23 +122,41 @@ class StateChange
      */
     appendValuesFrom(changes)
     {
-        if (changes.name) {
-            this.name = changes.name;
-        }
-        if (changes.moved) {
-            if (this.moved) this.moved.add(changes.moved);
-            else this.moved = changes;
-        }
-        if (changes.resized) {
-            if (this.resized) this.resized.add(changes.resized); 
-            else this.resized = changes.resized;
-        }
         if (changes.timestamp < this.timestamp) {
             this.timestamp = changes.timestamp;
         }
-        
-        /** @type number */
-        this.flags.flag = this.flags.flag | changes.flags.flag;
+            
+        for(var index = 0; index < changes.changeTypes.length; index++) {
+            var change = changes.changeTypes[index]
+
+            if (!this.changeTypes.includes(change)) {
+                this.changeTypes.push(change);
+            }
+            var props = Object.getOwnPropertyNames(changes.valuesPassed);
+            var values = changes.valuesPassed;
+         
+            for (var index = 0; index < props.length; index++) {
+                var propertyName = props[index];
+            
+                switch(propertyName){
+                    case "elementName": 
+                        this.valuesPassed[propertyName] = values[propertyName]
+                        break;
+                    // Uses point-class, and can be appended.
+                    case "movedElements":
+                    case "resizedElements":
+                        if(propertyName in this.valuesPassed) {
+                            this.valuesPassed[propertyName].add(values[propertyName]);
+                        } else {
+                            this.valuesPassed[propertyName] = values[propertyName];
+                        }
+                        break;
+                    default:
+                        console.error("Unknown passedValue in stateChange.appendValuesFrom", propertyName, changes);
+                        break;
+                }
+            }
+        }
     }
 }
 
@@ -148,12 +164,12 @@ class StateChangeFactory
 {
     static ElementCreated(element)
     {
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_CREATED, [element.id]);
-        state.name = element.name;
-        state.moved = new Point(element.x, element.y);
-        state.resized = new Point(element.width, element.height);
-
-        return state;
+        var values = {
+            elementName: element.name,
+            movedElements: new Point(element.x, element.y),
+            resizedElements: new Point(element.width, element.height)
+        }
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_CREATED, [element.id], values);
     }
 
     static ElementsDeleted(elements)
@@ -163,30 +179,36 @@ class StateChangeFactory
             ids.push(element.id);
         });
 
-        return new StateChange(StateChange.ChangeTypes.ELEMENT_DELETED, ids);
+        var values = {
+            deletedElements: elements
+        };
+
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_DELETED, ids, values);
     }
 
     static ElementsMoved(elementIDs, moveX, moveY)
     {
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED, elementIDs);
-        state.moved = new Point(moveX, moveY);
-
-        return state;
+        var values = {
+            movedElements: new Point(moveX, moveY)
+        };
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED, elementIDs, values);
     }
 
     static ElementResized(elementIDs, changeX, changeY)
     {
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_RESIZED, elementIDs);
-        state.resized = new Point(changeX, changeY);
-        return state;
+        var values = {
+            resizedElements: new Point(changeX, changeY)
+        };
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_RESIZED, elementIDs, values);
     }
 
     static ElementMovedAndResized(elementIDs, moveX, moveY, changeX, changeY)
     {
-        var state = new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED, elementIDs);
-        state.moved = new Point(moveX, moveY);
-        state.resized = new Point(changeX, changeY);
-        return state;
+        var values = {
+            resizedElements: new Point(changeX, changeY),
+            movedElements: new Point(moveX, moveY)
+        };
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED, elementIDs, values);
     }
 
     static ElementAttributesChanged(elementID, changeList)
@@ -215,23 +237,77 @@ class StateChangeFactory
             toElementID: line.toID
         };
 
-        return new StateChange(StateChange.ChangeTypes.LINE_CREATED, line.id, passed_values);
+        return new StateChange(StateChange.ChangeTypes.LINE_CREATED, [line.id], passed_values);
     }
 
+    /**
+     * 
+     * @param {Array<object>} lines 
+     * @returns 
+     */
     static LinesRemoved(lines)
     {
         var lineIDs = [];
 
-        lines.forEach(line => {
-            lineIDs.push(line.id);
-        });
-        return new StateChange(StateChange.ChangeTypes.LINE_DELETED, lineIDs, null);
+        for (var index = 0; index < lines.length; index++) {
+            lineIDs.push(lines[index].id);
+        }
+
+        var passed_values = {
+            deletedLines: lines
+        };
+
+        return new StateChange(StateChange.ChangeTypes.LINE_DELETED, lineIDs, passed_values);
+    }
+
+    static ElementsAndLinesDeleted(elements, lines)
+    {
+        var allIDs = [];
+
+        // Add all element IDs to the id-list
+        for (var index = 0; index < elements.lenght; index++) {
+            allIDs.push(elements[index].id);
+        }
+
+        // Add all line IDs to the id-list
+        for (var index = 0; index < lines.lenght; index++) {
+            allIDs.push(lines[index].id);
+        }
+
+        var passed_values = {
+            deletedElements: elements,
+            deletedLines: lines
+        };
+        
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED, allIDs, passed_values);
+    }
+
+    static ElementsAndLinesCreated(elements, lines)
+    {
+        var allIDs = [];
+
+        // Add all element IDs to the id-list
+        for (var index = 0; index < elements.lenght; index++) {
+            allIDs.push(elements[index].id);
+        }
+
+        // Add all line IDs to the id-list
+        for (var index = 0; index < lines.lenght; index++) {
+            allIDs.push(lines[index].id);
+        }
+
+        var passed_values = {
+            createdElements: elements,
+            createdLines: lines
+        };
+
+        return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED, allIDs, passed_values);
     }
 }
 
 class StateMachine
 {
-    constructor ()
+    constructor (initialData, initialLines)
     {
         /**
          * @type Array<StateChange>
@@ -242,6 +318,14 @@ class StateMachine
          * @type Array<StateChange>
          */
         this.futureLog = [];
+
+        /**
+         * Our initial data values
+         */
+        this.initialState = {
+            data: Array.from(initialData),
+            lines: Array.from(initialLines)
+        }
     }
 
     /**
@@ -255,6 +339,7 @@ class StateMachine
     save (stateChange)
     {
         if (stateChange instanceof StateChange) {
+          
             // If history is present, perform soft/hard-check
             if (this.historyLog.length > 0) {
                 /** @type StateChange */
@@ -269,24 +354,40 @@ class StateMachine
                     }
                 }
 
+                var isSoft = true;
+                for (var index = 0; index < stateChange.changeTypes.length && isSoft; index++) {
+                    isSoft = stateChange.changeTypes[index].isSoft;
+                }
+
+                var canAppendToLast = true;
+                for (var index = 0; index < lastLog.changeTypes.length && isSoft; index++) {
+                    canAppendToLast = lastLog.changeTypes[index].canAppendTo;
+                }
+
                 // If NOT soft change, push new change onto history log
-                if (!stateChange.flags.isSoft || !lastLog.flags.canAppendTo || !sameElements) {
+                if (!isSoft || !canAppendToLast || !sameElements) {
+
                     this.historyLog.push(stateChange);
 
-                // Otherwise, simply modify the last entry.
-                } else {
-                    switch (stateChange.flags) {
-                        case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                        case StateChange.ChangeTypes.ELEMENT_MOVED:
-                        case StateChange.ChangeTypes.ELEMENT_RESIZED:
-                        case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
-                            lastLog.appendValuesFrom(stateChange);
-                            break;
+                } else { // Otherwise, simply modify the last entry.
 
-                        default:
-                            console.error(`Missing implementation for soft state change: ${stateChange}!`);
-                            break;
-                    };
+                    for (var index = 0; index < stateChange.changeTypes.length; index++) {
+
+                        var changeType = stateChange.changeTypes[index];
+                        
+                        switch (changeType) {
+                            case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
+                            case StateChange.ChangeTypes.ELEMENT_MOVED:
+                            case StateChange.ChangeTypes.ELEMENT_RESIZED:
+                            case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
+                                lastLog.appendValuesFrom(stateChange);
+                                break;
+
+                            default:
+                                console.error(`Missing implementation for soft state change: ${stateChange}!`);
+                                break;
+                        };
+                    }
                 }
             } else {
                 this.historyLog.push(stateChange);
@@ -296,16 +397,95 @@ class StateMachine
         }
     }
 
-    /* TODO : Another issue mentioned that a back-forward system is requested. Functionality should most likely be put here.
     stepBack () 
     {
-        if (this.futureLog.length > 0) { }
-    }
+        if (this.historyLog.length > 0) {
 
-    stepForward()
-    {
-        if (this.futureLog.length > 0) { }
-    }*/
+            var lastChange = this.historyLog.pop();
+
+            // ------ Test each flag and step back per flag options ------
+
+            // Attribute Changed
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag)) {
+                if (lastChange.elementName) {
+
+                    var element = data[findIndex(data, lastChange.id_list[0])];
+ 
+                    if (element) {
+                        element.name = "MISSING_VARIABLE"; // TODO : State machine does NOT store old name value.
+                        console.warn("State machine doesn't store old names right now. Cannot restore previous name.");
+                    }
+                }
+            }
+
+            // Element moved
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_MOVED.flag)) {
+
+                for (var index = 0; index < lastChange.id_list.length; index++) {
+
+                    var element = data[findIndex(data, lastChange.id_list[index])];
+
+                    if (element) {
+                        element.x -= lastChange.valuesPassed.movedElements.x;
+                        element.y -= lastChange.valuesPassed.movedElements.y;
+                    }
+                }
+            }
+
+            // Element resized
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_RESIZED.flag)) {
+
+                var element = data[findIndex(data, lastChange.id_list[0])];
+
+                if (element) {
+                    element.width -= lastChange.valuesPassed.resizedElements.x;
+                    element.height -= lastChange.valuesPassed.resizedElements.y;
+                }
+            }
+
+            // Element created
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_CREATED.flag)) {
+                if (lastChange.valuesPassed.createdElements){
+                    removeElements(lastChange.valuesPassed.createdElements, false);
+                }else {
+                    var element = data[findIndex(data, lastChange.id_list[0])];
+
+                    if (element) {
+                        removeElements([element], false);
+                    }
+                }
+            }
+
+            // Element destroyed
+            if (lastChange.hasFlag(StateChange.ChangeTypes.ELEMENT_DELETED.flag)) {
+
+                data = Array.prototype.concat(data, lastChange.valuesPassed.deletedElements);
+            }
+
+            // Line created
+            if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_CREATED.flag)) {
+                if (!lastChange.valuesPassed.createdLines){
+
+                    var line = lines[findIndex(lines, lastChange.id_list[0])];
+
+                    if (line) {
+                        removeLines([line], false);
+                    }
+                }
+            }
+
+            // Line destroyed
+            if (lastChange.hasFlag(StateChange.ChangeTypes.LINE_DELETED.flag)) {
+                lines = Array.prototype.concat(lines, lastChange.valuesPassed.deletedLines);
+            }
+        } else  { // No more history, restoring intial state
+            data = Array.from(this.initialState.data);
+            lines = Array.from(this.initialState.lines);
+        }
+
+        showdata();
+        updatepos(0, 0);
+    }
 };
 
 //------------------------------------=======############==========----------------------------------------
@@ -329,22 +509,35 @@ var startNodeRight = false;
 var cursorStyle;
 var lastMousePos = getPoint(0,0);
 const keybinds = {
-        LEFT_CONTROL: "Control",
-        ALT: "Alt",
-        META: "Meta",
-        ESCAPE: "Escape",
-        BOX_SELECTION: "b",
-        POINTER: "h",
-        EDGE_CREATION: "d",
-        PLACE_ENTITY: "e",
-        PLACE_RELATION: "r",
-        PLACE_ATTRIBUTE: "a"
+        LEFT_CONTROL: {key: "Control", ctrl: false},
+        ALT: {key: "Alt", ctrl: false},
+        META: {key: "Meta", ctrl: false},
+        HISTORY_STEPBACK: {key: "z", ctrl: true},
+        DELETE: {key: "Delete", ctrl: false},
+        ESCAPE: {key: "Escape", ctrl: false},
+        BOX_SELECTION: {key: "2", ctrl: false},
+        POINTER: {key: "1", ctrl: false},
+        EDGE_CREATION: {key: "6", ctrl: false},
+        PLACE_ENTITY: {key: "3", ctrl: false},
+        PLACE_RELATION: {key: "4", ctrl: false},
+        PLACE_ATTRIBUTE: {key: "5", ctrl: false},
+        ZOOM_IN: {key: "+", ctrl: true},
+        ZOOM_OUT: {key: "-", ctrl: true},
+        TOGGLE_GRID: {key: "g", ctrl: false},
+        TOGGLE_RULER: {key: "t", ctrl: false},
+        OPTIONS: {key: "o", ctrl: false},
+        ENTER: {key: "Enter", ctrl: false},
+        COPY: {key: "c", ctrl: true},
+        PASTE: {key: "v", ctrl: true},
+        SELECT_ALL: {key: "a", ctrl: true}
 };
 
 // Zoom variables
 var zoomfact = 1.0;
 var scrollx = 100;
 var scrolly = 100;
+var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
+var camera = new Point(0, 0); // Relative to coordinate system origo
 
 // Constants
 const elementwidth = 200;
@@ -364,9 +557,9 @@ const zoom0_75 = -0.775;
 const zoom0_5 = -3;
 const zoom0_25 = -15.01;
 const zoom0_125 = -64;
+const zoomPower = 1 / 3;
 
 // Arrow drawing stuff - diagram elements and diagram lines
-const stateMachine = new StateMachine();
 var lines = [];
 var elements = [];
 
@@ -374,8 +567,12 @@ var elements = [];
 var context = [];
 var previousContext = [];
 var contextLine = []; // Contains the currently selected line(s).
+var determinedLines = null; //Last calculated line(s) clicked.
 var deltaExceeded = false;
 const maxDeltaBeforeExceeded = 2;
+
+// Clipboard
+var clipboard = [];
 
 // Currently hold down buttons
 var ctrlPressed = false;
@@ -410,6 +607,7 @@ const pointerStates = {
     CLICKED_CONTAINER: 1,
     CLICKED_ELEMENT: 2,
     CLICKED_NODE: 3,
+    CLICKED_LINE: 4,
 };
 var pointerState = pointerStates.DEFAULT;
 
@@ -417,8 +615,18 @@ var movingObject = false;
 var movingContainer = false;
 var isRulerActive = true;
 
+//Grid Settings
+var gridSize = 100;
+var snapToGrid = false;
+
 var randomidArray = []; // array for checking randomID
-var errorMsgTimer; //The variable that you use for clearing the setTimeout function
+var errorMsgMap = {};
+
+const messageTypes = {
+    ERROR: "error",
+    WARNING: "warning",
+    SUCCESS: "success"
+};
 //-------------------------------------------------------------------------------------------------
 // makeRandomID - Random hex number
 //-------------------------------------------------------------------------------------------------
@@ -432,9 +640,10 @@ function makeRandomID()
         for (var i = 0; i < 6; i++) {
             str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-
+        
         if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
             randomidArray.push(str);
+            return str;
 
         } else {
             var check = randomidArray.includes(str); //if check is true the id already exists
@@ -447,18 +656,6 @@ function makeRandomID()
         }
     }
 }
-
-// Example entities and attributes
-var PersonID = makeRandomID();
-var IDID = makeRandomID();
-var NameID = makeRandomID();
-var SizeID = makeRandomID();
-var HasID = makeRandomID();
-var CarID = makeRandomID();
-var FNID = makeRandomID();
-var LNID = makeRandomID();
-var LoanID = makeRandomID();
-var RefID = makeRandomID();
 
 // Save default to model - updating defaults sets property to all of model
 var defaults = {
@@ -485,38 +682,98 @@ const relationState = {
     WEAK: "weak",
 };
 
+const lineKind = {
+    NORMAL: "Normal",
+    DOUBLE: "Double"
+};
+
+const lineCardinalitys = {
+    MANY: "N",
+    ONE: "1"
+};
+
 // Demo data - read / write from service later on
-var data = [
-    { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
-    { name: "Loan", x: 140, y: 250, width: 200, height: 50, kind: "EREntity", id: LoanID, state: "weak" },
-    { name: "Car", x: 500, y: 140, width: 200, height: 50, kind: "EREntity", id: CarID },
-    { name: "Owns", x: 420, y: 60, width: 60, height: 60, kind: "ERRelation", id: HasID },
-    { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, state: "weak" },
-    { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, state: "computed" },
-    { name: "Name", x: 170, y: 50, width: 90, height: 45, kind: "ERAttr", id: NameID },
-    { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, state: "multiple" },
-    { name: "F Name", x: 120, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
-    { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
-];
+var data = [];
+var lines = [];
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
 var ghostLine = null;
 
-var lines = [
-    { id: makeRandomID(), fromID: PersonID, toID: IDID, kind: "Normal" },
-    { id: makeRandomID(), fromID: PersonID, toID: NameID, kind: "Normal" },
-    { id: makeRandomID(), fromID: CarID, toID: SizeID, kind: "Normal" },
+// Setup function for static preloaded example elements and lines.
+function onSetup()
+{
+    const PersonID = makeRandomID();
+    const IDID = makeRandomID();
+    const NameID = makeRandomID();
+    const SizeID = makeRandomID();
+    const HasID = makeRandomID();
+    const CarID = makeRandomID();
+    const FNID = makeRandomID();
+    const LNID = makeRandomID();
+    const LoanID = makeRandomID();
+    const RefID = makeRandomID();
 
-    { id: makeRandomID(), fromID: PersonID, toID: HasID, kind: "Normal" },
-    { id: makeRandomID(), fromID: HasID, toID: CarID, kind: "Double" },
-    { id: makeRandomID(), fromID: NameID, toID: FNID, kind: "Normal" },
-    { id: makeRandomID(), fromID: NameID, toID: LNID, kind: "Normal" },
+    const demoData = [
+        { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
+        { name: "Loan", x: 140, y: 250, width: 200, height: 50, kind: "EREntity", id: LoanID, state: "weak" },
+        { name: "Car", x: 500, y: 140, width: 200, height: 50, kind: "EREntity", id: CarID },
+        { name: "Owns", x: 420, y: 60, width: 60, height: 60, kind: "ERRelation", id: HasID },
+        { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, state: "weak" },
+        { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, state: "computed" },
+        { name: "Name", x: 170, y: 50, width: 90, height: 45, kind: "ERAttr", id: NameID },
+        { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, state: "multiple" },
+        { name: "F Name", x: 120, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
+        { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
+    ];
+    
+    const demoLines = [
+        { id: makeRandomID(), fromID: PersonID, toID: IDID, kind: "Normal" },
+        { id: makeRandomID(), fromID: PersonID, toID: NameID, kind: "Normal" },
+        { id: makeRandomID(), fromID: CarID, toID: SizeID, kind: "Normal" },
 
-    { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal" },
-    { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal" },
-];
+        { id: makeRandomID(), fromID: PersonID, toID: HasID, kind: "Normal" },
+        { id: makeRandomID(), fromID: HasID, toID: CarID, kind: "Double" },
+        { id: makeRandomID(), fromID: NameID, toID: FNID, kind: "Normal" },
+        { id: makeRandomID(), fromID: NameID, toID: LNID, kind: "Normal" },
 
+        { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
+        { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
+    ];
+
+    for(var i = 0; i < demoData.length; i++){
+        addObjectToData(demoData[i], false);
+    }
+    for(var i = 0; i < demoLines.length; i++){
+        addObjectToLines(demoLines[i], false);
+    }
+
+    // Global statemachine init
+    stateMachine = new StateMachine(data, lines);
+}
+
+//------------------------------------=======############==========----------------------------------------
+//                                        Getters and Setters
+//------------------------------------=======############==========----------------------------------------
+// Adds object to the dataArray
+function addObjectToData(object, stateMachineShouldSave = true)
+{
+    data.push(object);
+    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object));
+}
+
+// Adds object to the line-array
+function addObjectToLines(object, stateMachineShouldSave = true)
+{
+    lines.push(object);
+    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(object));
+}
+
+// Return all lines
+function getLines()
+{
+    return lines;
+}
 //------------------------------------=======############==========----------------------------------------
 //                                        Key event listeners
 //------------------------------------=======############==========----------------------------------------
@@ -524,20 +781,24 @@ document.addEventListener('keydown', function (e)
 {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
+       
+        if (e.key == keybinds.LEFT_CONTROL.key && ctrlPressed !== true) ctrlPressed = true;
+        if (e.key == keybinds.ALT.key && altPressed !== true) altPressed = true;
+        if (e.key == keybinds.DELETE.key && e.ctrlKey == keybinds.DELETE.ctrl) {
+            if (contextLine.length > 0) removeLines(contextLine);
+            if (context.length > 0) removeElements(context);
 
-        if (e.key == "Control" && ctrlPressed !== true) ctrlPressed = true;
-        if (e.key == "Alt" && altPressed !== true) altPressed = true;
-        if (e.key == "Delete" && (context.length > 0 || contextLine.length > 0)) {
-            removeElements(context); 
-            removeLines(contextLine);
             updateSelection();
         }
-        if (e.key == "Meta" && ctrlPressed != true) ctrlPressed = true;
-        if (e.key == "-" && ctrlPressed) zoomin(); // Works but interferes with browser zoom
-        if (e.key == "+" && ctrlPressed) zoomout(); // Works but interferes with browser zoom
-        if (e.key == "Escape" && escPressed != true) {
+        if (e.key == keybinds.META.key && ctrlPressed !== true) ctrlPressed = true;
+        if (e.key == keybinds.ZOOM_IN.key && e.ctrlKey == keybinds.ZOOM_IN.ctrl) zoomin(); // Works but interferes with browser zoom
+        if (e.key == keybinds.ZOOM_OUT.key && e.ctrlKey == keybinds.ZOOM_OUT.ctrl) zoomout(); // Works but interferes with browser zoom
+        if (e.key == keybinds.ESCAPE.key && escPressed != true) {
             escPressed = true;
-            context = [];
+            clearContext();
+            setMouseMode(mouseModes.POINTER);
+            clearContextLine();
+            movingObject = false;
 
             if (movingContainer) {
                 scrollx = sscrollx;
@@ -550,9 +811,22 @@ document.addEventListener('keydown', function (e)
         }
 
         if (e.key == "Backspace" && (context.length > 0 || contextLine.length > 0) && !propFieldState) {
-            removeElements(context); 
-            removeLines(contextLine);
+            if (contextLine.length > 0) removeLines(contextLine);
+            if (context.length > 0) removeElements(context);
             updateSelection();
+        }
+
+        if (e.key == keybinds.SELECT_ALL.key && e.ctrlKey == keybinds.SELECT_ALL.ctrl){
+            e.preventDefault();
+            selectAll();
+        }      
+    } else { 
+        if (e.key == keybinds.ENTER.key && e.ctrlKey == keybinds.ENTER.ctrl) { 
+            var propField = document.getElementById("elementProperty_name");
+            changeState(); 
+            saveProperties(); 
+            propField.blur();
+            displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
         }
     }
 });
@@ -561,35 +835,62 @@ document.addEventListener('keyup', function (e)
 {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        /*TODO: Cursor Style could maybe be custom-made to better represent different modes */
+        
+        var pressedKey = e.key.toLowerCase();
+
         //  TODO : Switch cases?
-        if (e.key == keybinds.LEFT_CONTROL) ctrlPressed = false;
-        if (e.key == keybinds.ALT) altPressed = false;
-        if (e.key == keybinds.META) ctrlPressed = false;
-        if (e.key == keybinds.ESCAPE) {
+        if (e.key == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
+        if (e.key == keybinds.ALT.key) altPressed = false;
+        if (e.key == keybinds.META.key) ctrlPressed = false;
+
+        if (e.key == keybinds.ESCAPE.key && e.ctrlKey == keybinds.ESCAPE.ctrl) {
             escPressed = false;
         }
+        if (pressedKey == keybinds.HISTORY_STEPBACK.key && e.ctrlKey == keybinds.HISTORY_STEPBACK.ctrl) {
+            stateMachine.stepBack();
+        }
 
-        if (e.key == keybinds.BOX_SELECTION) {
+        if (pressedKey == keybinds.BOX_SELECTION.key && e.ctrlKey == keybinds.BOX_SELECTION.ctrl) {
             setMouseMode(mouseModes.BOX_SELECTION);
         }
-        if (e.key == keybinds.POINTER) {
+        if (pressedKey == keybinds.POINTER.key && e.ctrlKey == keybinds.POINTER.ctrl) {
             setMouseMode(mouseModes.POINTER);
         }
-        if (e.key == keybinds.EDGE_CREATION) {
+        if (pressedKey == keybinds.EDGE_CREATION.key && e.ctrlKey == keybinds.EDGE_CREATION.ctrl) {
             setMouseMode(mouseModes.EDGE_CREATION);
+            clearContext();
         }
-        if (e.key == keybinds.PLACE_ENTITY) {
+        if (pressedKey == keybinds.PLACE_ENTITY.key && e.ctrlKey == keybinds.PLACE_ENTITY.ctrl) {
             setElementPlacementType(elementTypes.ENTITY);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.PLACE_RELATION) {
+        if (pressedKey== keybinds.PLACE_RELATION.key && e.ctrlKey == keybinds.PLACE_RELATION.ctrl) {
             setElementPlacementType(elementTypes.RELATION);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (e.key == keybinds.PLACE_ATTRIBUTE) {
+        if (pressedKey== keybinds.PLACE_ATTRIBUTE.key && e.ctrlKey == keybinds.PLACE_ATTRIBUTE.ctrl) {
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
+        }
+        if (pressedKey == keybinds.TOGGLE_GRID.key && e.ctrlKey == keybinds.TOGGLE_GRID.ctrl) {
+            toggleGrid();
+        }
+        if (pressedKey == keybinds.TOGGLE_RULER.key && e.ctrlKey == keybinds.TOGGLE_RULER.ctrl) {
+            toggleRuler();
+        }
+        if (pressedKey == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
+            fab_action();
+        }
+        if (pressedKey == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
+            clipboard = context;
+            if (clipboard.length !== 0){
+                displayMessage(messageTypes.SUCCESS, `You have copied ${clipboard.length} elements and its inner connected lines.`)
+            }else {
+                displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`)
+            }
+        }
+        if (pressedKey == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
+            pasteClipboard(clipboard)
         }
     }
 });
@@ -631,10 +932,10 @@ function screenToDiagramCoordinates(mouseX, mouseY)
 
     return {
         x: Math.round(
-            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 // the 2 makes mouse hover over container
+            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x // the 2 makes mouse hover over container
         ),
         y: Math.round(
-            ((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly
+            ((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y
         ),
     };
 }
@@ -652,18 +953,27 @@ function diagramToScreenPosition(coordX, coordY)
 //                                           Mouse events
 //------------------------------------=======############==========----------------------------------------
 
-
 function mwheel(event)
 {
     if(event.deltaY < 0) {
-        zoomin();
+        zoomin(event);
     } else {
-        zoomout();
+        zoomout(event);
     }
 }
 
 function mdown(event)
 {
+    // If the middle mouse button (mouse3) is pressed set scroll start values
+    if(event.button == 1) {
+        pointerState = pointerStates.CLICKED_CONTAINER;
+        sscrollx = scrollx;
+        sscrolly = scrolly;
+        startX = event.clientX;
+        startY = event.clientY;
+        return;
+    }
+
     // React to mouse down on container
     if (event.target.id == "container") {
         switch (mouseMode) {
@@ -692,12 +1002,21 @@ function mdown(event)
         startX = event.clientX;
         startY = event.clientY;
     }
-    // Used when clicking on a line between two elements.
-    updateSelectedLine(determineLineSelect(event.clientX, event.clientY));
+
+    if(pointerState !== pointerStates.CLICKED_NODE){
+        // Used when clicking on a line between two elements.
+        determinedLines = determineLineSelect(event.clientX, event.clientY);
+        if (determinedLines){
+           pointerState=pointerStates.CLICKED_LINE;
+        }
+    }
 }
 
 function ddown(event)
 {
+    // If the middle mouse button (mouse3) is pressed => return
+    if(event.button == 1) return;
+
     switch (mouseMode) {
         case mouseModes.POINTER:
         case mouseModes.BOX_SELECTION:
@@ -710,6 +1029,7 @@ function ddown(event)
             }
 
         case mouseModes.EDGE_CREATION:
+            if(event.button == 2) return;
             var element = data[findIndex(data, event.currentTarget.id)];
             if (element != null && !context.includes(element) || !ctrlPressed){
                 updateSelection(element);
@@ -727,8 +1047,7 @@ function mouseMode_onMouseUp(event)
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
-                data.push(ghostElement);
-                stateMachine.save(StateChangeFactory.ElementCreated(ghostElement));
+                addObjectToData(ghostElement);
                 makeGhost();
                 showdata();
             }
@@ -738,7 +1057,7 @@ function mouseMode_onMouseUp(event)
             if (context.length > 1) {
                 // TODO: Change the static variable to make it possible to create different lines.
                 addLine(context[0], context[1], "Normal");
-                context = [];
+                clearContext();
                 
                 // Bust the ghosts
                 ghostElement = null;
@@ -753,7 +1072,7 @@ function mouseMode_onMouseUp(event)
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
                 }else{   
-                    context = [];
+                    clearContext();
                     ghostElement = null;
                     ghostLine = null;
                     showdata();
@@ -791,12 +1110,18 @@ function mup(event)
 
                 if (!deltaExceeded) {
                     if (mouseMode == mouseModes.EDGE_CREATION) {
-                        context = [];
+                        clearContext();
+                        clearContextLine();
                     } else if (mouseMode == mouseModes.POINTER) {
                         updateSelection(null);
+                        clearContextLine();
                     }
                 }
             }
+            break;
+
+        case pointerStates.CLICKED_LINE:
+            updateSelectedLine(determinedLines);
             break;
 
         case pointerStates.CLICKED_ELEMENT:
@@ -942,6 +1267,7 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
 function mouseMode_onMouseMove(event)
 {
      switch (mouseMode) {
+        case mouseModes.EDGE_CREATION:
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
@@ -978,6 +1304,7 @@ function mmoving(event)
             scrollx = sscrollx - Math.round(deltaX * zoomfact);
             scrolly = sscrolly - Math.round(deltaY * zoomfact);
 
+            updateGridPos();
             // Update scroll position
             updatepos(null, null);
 
@@ -1040,7 +1367,7 @@ function mmoving(event)
                 // Deduct the new position, giving us the total change
                 const xChange = -(tmp - elementData.x);
                 
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized(elementData.id, xChange, 0, widthChange, 0));
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0));
             }
 
             document.getElementById(context[0].id).remove();
@@ -1057,16 +1384,6 @@ function mmoving(event)
     setRulerPosition(event.clientX, event.clientY);
 }
 
-function fab_action()
-{
-    if (document.getElementById("options-pane").className == "show-options-pane") {
-        document.getElementById('optmarker').innerHTML = "&#9660;Options";
-        document.getElementById("options-pane").className = "hide-options-pane";
-    } else {
-        document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
-        document.getElementById("options-pane").className = "show-options-pane";
-    }
-}
 
 //------------------------------------=======############==========----------------------------------------
 //                                         Helper functions
@@ -1154,28 +1471,15 @@ function makeGhost()
 function setMouseMode(mode)
 {   
     if (enumContainsPropertyValue(mode, mouseModes)) {
-        // Enable all buttons but the current mode one
-        var children = document.getElementById('cursorModeFieldset').children;
-        for (var index = 0; index < children.length; index++) {
-            const child = children[index];
-
-            // If child is a button
-            if (child.tagName == "INPUT") {
-                // Disable if current mode button, enable otherwise.
-                child.disabled = child.className.toUpperCase().includes(mode) ? true : false;
-            }
-        }
+        // Mode-specific activation/deactivation
+        onMouseModeDisabled();
+        mouseMode = mode;
+        setCursorStyles(mode);
+        onMouseModeEnabled();
     } else {
         // Not implemented exception
         console.error("Invalid mode passed to setMouseMode method. Missing implementation?");
-        return;
     }
-
-    // Mode-specific activation/deactivation
-    onMouseModeDisabled();
-    mouseMode = mode;
-    setCursorStyles(mode);
-    onMouseModeEnabled();
 }
 
 function setCursorStyles(cursorMode = 0)
@@ -1272,6 +1576,14 @@ function toggleGrid()
    }
 }
 
+function toggleSnapToGrid()
+{
+    // Toggle active class on button
+    document.getElementById("rulerSnapToGrid").classList.toggle("active");
+
+    // Toggle the boolean
+    snapToGrid = !snapToGrid;
+}
 function toggleRuler()
 {
     var ruler = document.getElementById("rulerOverlay");
@@ -1394,13 +1706,20 @@ function boxSelect_Update(mouseX, mouseY)
 
         if (ctrlPressed) {
             var markedEntities = getElementsInsideCoordinateBox(rect);
+            // Remove entity from previous context is the element is marked
+            previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
+            clearContext();
+            context = context.concat(markedEntities);
+            context = context.concat(previousContext);
+        }else if (altPressed) {
+            var markedEntities = getElementsInsideCoordinateBox(rect);
             // Remove entity from previous context is the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
             context = [];
-            context = context.concat(markedEntities);
-            context = context.concat(previousContext);
+            context = previousContext;
+
         }else {
             context = getElementsInsideCoordinateBox(rect);
         }
@@ -1468,11 +1787,26 @@ function fab_action()
 // zoomin/out - functions for updating the zoom factor and scroll positions
 //-------------------------------------------------------------------------------------------------
 
-function zoomin()
+function zoomin(scrollEvent = undefined)
 {
+    // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
+    if (scrollEvent && zoomfact != 4.0) {
+        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
+        var delta = {
+            x: mouseCoordinates.x - zoomOrigo.x,
+            y: mouseCoordinates.y - zoomOrigo.y
+        };
+
+        zoomOrigo.x += delta.x * zoomPower;
+        zoomOrigo.y += delta.y * zoomPower;
+    } else { // Otherwise, set zoom target to origo.
+        zoomOrigo.x = 0;
+        zoomOrigo.y = 0;
+    }
+
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
-
+    
     if (zoomfact == 0.125) zoomfact = 0.25;
     else if (zoomfact == 0.25) zoomfact = 0.5;
     else if (zoomfact == 0.5) zoomfact = 0.75;
@@ -1481,9 +1815,16 @@ function zoomin()
     else if (zoomfact == 1.25) zoomfact = 1.5;
     else if (zoomfact == 1.5) zoomfact = 2.0;
     else if (zoomfact == 2.0) zoomfact = 4.0;
-
+    
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
+
+    camera = {
+        x: (window.innerWidth * 0.5 - (scrollx / zoomfact) + 1) / zoomfact,
+        y: (window.innerHeight * 0.5 - (scrolly / zoomfact) + 1) / zoomfact
+    };
+
+    updateGridSize();
 
     // Update scroll position - missing code for determining that center of screen should remain at nevw zoom factor
     showdata();
@@ -1492,8 +1833,23 @@ function zoomin()
     drawRulerBars();
 }
 
-function zoomout()
+function zoomout(scrollEvent = undefined)
 {
+    // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
+    if (scrollEvent && zoomfact != 0.125) {
+        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
+        var delta = {
+            x: mouseCoordinates.x - zoomOrigo.x,
+            y: mouseCoordinates.y - zoomOrigo.y
+        };
+
+        zoomOrigo.x -= delta.x * zoomPower;
+        zoomOrigo.y -= delta.y * zoomPower;
+    } else { // Otherwise, set zoom target to origo.
+        zoomOrigo.x = 0;
+        zoomOrigo.y = 0;
+    }
+
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
@@ -1509,6 +1865,8 @@ function zoomout()
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
 
+    updateGridSize();
+    
     // Update scroll position - missing code for determining that center of screen should remain at new zoom factor
     showdata();
 
@@ -1535,8 +1893,19 @@ function setPos(id, x, y)
 {
     foundId = findIndex(data, id);
     if (foundId != -1) {
-        data[foundId].x -= (x / zoomfact);
-        data[foundId].y -= (y / zoomfact);
+        var obj = data[foundId];
+        if(snapToGrid){
+            // Calculate nearest snap point
+            obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / gridSize) * gridSize;
+            obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / gridSize) * gridSize;
+
+            // Set the new snap point to center of element
+            obj.x -= obj.width/2
+            obj.y -= obj.height/2;
+        }else {
+            obj.x -= (x / zoomfact);
+            obj.y -= (y / zoomfact);
+        }
     }
 }
 
@@ -1568,7 +1937,7 @@ function showdata()
 //-------------------------------------------------------------------------------------------------
 // addLine - Adds an new line if the requirements and rules are achieved
 //-------------------------------------------------------------------------------------------------
-function addLine(fromElement, toElement, kind){
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
@@ -1595,18 +1964,17 @@ function addLine(fromElement, toElement, kind){
                 toID: toElement.id,
                 kind: kind
             };
-
-            // Adds the line
-            lines.push(newLine);
-
-            // Save changes into state machine
-            stateMachine.save(StateChangeFactory.LineAdded(newLine));
+            
+            addObjectToLines(newLine);
+            
+            displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
+            return newLine;
             
         } else {
-            displayMessage("error","Maximum amount of lines between: " + context[0].name + " and " + context[1].name);
+            displayMessage(messageTypes.ERROR,`Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
         }
     } else {
-        displayMessage("error", "Not possible to draw a line between two: " + context[0].kind);
+        displayMessage(messageTypes.ERROR, `Not possible to draw a line between two: ${fromElement.kind} elements`);
     }
 }
 
@@ -1662,8 +2030,7 @@ function drawElement(element, ghosted = false)
 
         if(element.state == "weak") {
             weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
-            stroke-width='${linew}' stroke='black' fill='#ffccdc' />
-            <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
+            stroke-width='${linew}' stroke='black' fill='#ffccdc' /> 
             `;         
         }
         
@@ -1750,21 +2117,20 @@ function updateSelectedLine(selectedLine)
         }
     }
     // If CTRL is not pressed and a element has been selected.
-    else if (selectedLine != null) {
+    else if (selectedLine != null && !ctrlPressed) {
         // Element not already in context
         if (!contextLine.includes(selectedLine) && contextLine.length < 1) {
             contextLine.push(selectedLine);
-        
         } else {
-            if (mouseMode != mouseModes.POINTER) {
-                contextLine = [];
-            }
+            contextLine = [];
             contextLine.push(selectedLine);
         }
-
-    } else if (!altPressed && !ctrlPressed) {
+    } else if (!altPressed && !ctrlPressed ) {
+      
         contextLine = [];
     }
+    
+    generateContextProperties();
 }
 
 function updateSelection(ctxelement)
@@ -1791,16 +2157,23 @@ function updateSelection(ctxelement)
             context.push(ctxelement);
         } else {
             if (mouseMode != mouseModes.EDGE_CREATION) {
-                context = [];
+                clearContext();
             }
             context.push(ctxelement);
         }
     } else if (!altPressed && !ctrlPressed) {
-        context = [];
+        clearContext();
     }
 
     // Generate the properties field in options-pane
     generateContextProperties();
+}
+
+function selectAll()
+{   
+    context = data;
+    contextLine = lines;
+    showdata();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1883,7 +2256,7 @@ function saveProperties()
                 const value = child.value.trim();
                 if (value && value.length > 0) {
                     element[propName] = value;
-                    propsChanged[propName] = value;
+                    propsChanged.elementName = value;
                 }
                 break;
         
@@ -1892,10 +2265,7 @@ function saveProperties()
         }
     }
 
-    var a = StateChangeFactory.ElementAttributesChanged(element.id, propsChanged);
-    console.log(a);
-    stateMachine.save(a);
-
+    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged));
     showdata();
     updatepos(0,0);
 }
@@ -1905,6 +2275,38 @@ function changeState()
     var property = document.getElementById("propertySelect").value;
     var element = context[0];
     element.state = property;
+}
+
+function changeLineProperties()
+{
+    // Set lineKind
+    var radio1  = document.getElementById("lineRadio1");
+    var radio2 = document.getElementById("lineRadio2");
+    var line = contextLine[0];
+
+    if(radio1.checked) {
+        line.kind = radio1.value;
+    } else {
+        line.kind = radio2.value;
+    }
+
+    // Change line - cardinality
+    var cFromValue = document.getElementById('propertyCardinalityFrom').value;
+    var cToValue = document.getElementById('propertyCardinalityTo').value;
+
+
+
+    // If both are none, remove the key from line object
+    if (cToValue == "" && cFromValue == ""){
+        delete line.cardinality;
+    } else {
+        line.cardinality = {
+            from: cFromValue,
+            to: cToValue
+        }
+    }
+
+    showdata();
 }
 
 function propFieldSelected(isSelected)
@@ -1919,7 +2321,7 @@ function generateContextProperties()
 
     //more than one element selected
 
-    if (context.length == 1) {
+    if (context.length == 1 && contextLine.length == 0) {
         var element = context[0];
         
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
@@ -1956,9 +2358,61 @@ function generateContextProperties()
                 }
             }
         str += '</select>'; 
-        str+=`<br><br><input type="submit" value="Save" onclick="changeState();saveProperties()">`;
+        str+=`<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
 
-    } else if (context.length > 1) {
+    } 
+
+    // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
+    if (contextLine.length == 1 && context.length == 0) {
+        str = "<legend>Properties</legend>";
+        
+        var value;
+        var selected = contextLine[0].kind;
+        if(selected == undefined) selected = normal;
+        
+        value = Object.values(lineKind);
+        str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+        for(var i = 0; i < value.length; i++){
+            if(selected == value[i]){
+                str += `<input type="radio" id="lineRadio1" name="lineKind" value='${value[i]}' checked>`
+                str += `<label for='${value[i]}'>${value[i]}</label><br>`
+            }else {
+                str += `<input type="radio" id="lineRadio2" name="lineKind" value='${value[i]}'>`
+                str += `<label for='${value[i]}'>${value[i]}</label><br>` 
+            }
+        }
+
+        // Line cardinality
+        str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinality</h3>`;
+
+        // FROM cardinality
+        str += `<label style="display: block">From (${data[findIndex(data, contextLine[0].fromID)].name}): <select id='propertyCardinalityFrom'>`;
+        str  += `<option value=''></option>`
+        Object.keys(lineCardinalitys).forEach(cardinality => {
+            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality.from === cardinality){
+                str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+            }else {
+                str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+            }
+        });
+        str += `</select></label>`;
+
+        // TO cardinality
+        str += `<label style="display: block">To (${data[findIndex(data, contextLine[0].toID)].name}): <select id='propertyCardinalityTo'>`;
+        str  += `<option value=''></option>`
+        Object.keys(lineCardinalitys).forEach(cardinality => {
+            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality.to == cardinality){
+                str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+            }else {
+                str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+            }
+        });
+        str += `</select></label>`;
+
+        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
+    }
+
+    if ((context.length > 1 || contextLine.length > 1) || (context.length == 1 && contextLine.length == 1)) {
         str += "<p>Pick only ONE element!</p>";
     }
 
@@ -1969,12 +2423,26 @@ function updateCSSForAllElements()
 {
     function updateElementDivCSS(elementData, divObject, useDelta = false)
     {
-        var left = Math.round((elementData.x * zoomfact) + (scrollx * (1.0 / zoomfact))),
-            top = Math.round((elementData.y * zoomfact) + (scrolly * (1.0 / zoomfact)));
+        var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
+            top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
-        if (useDelta) {
+        if (useDelta){
             left -= deltaX;
             top -= deltaY;
+        }
+
+        if(snapToGrid && useDelta){
+            // The element coordinates with snap point
+            var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / gridSize) * gridSize;
+            var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / gridSize) * gridSize;
+
+            // Add the scroll values
+            left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+            top = Math.round(((objY - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+
+            // Set the new snap point to center of element
+            left -= ((elementData.width * zoomfact) / 2);
+            top -= ((elementData.height * zoomfact) / 2);
         }
 
         divObject.style.left = left + "px";
@@ -2011,8 +2479,6 @@ function updateCSSForAllElements()
         }
     }
 }
-
-
 
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
@@ -2068,16 +2534,22 @@ function sortvectors(a, b, ends, elementid, axis)
     var parent = data[findIndex(data, elementid)];
 
     // Retrieve opposite element - assume element center (for now)
-     if (lineA.fromID == elementid){
+     if (lineA.fromID == elementid) {
         toElementA = (lineA == ghostLine) ? ghostElement : data[findIndex(data, lineA.toID)];
     } else {
         toElementA = data[findIndex(data, lineA.fromID)];
     }
 
-    if (lineB.fromID == elementid){
+    if (lineB.fromID == elementid) {
         toElementB = (lineB == ghostLine) ? ghostElement : data[findIndex(data, lineB.toID)];
     } else {
         toElementB = data[findIndex(data, lineB.fromID)];
+    }
+
+    if (navigator.userAgent.indexOf("Chrome") !== 1) {
+        sortval = -1;
+    } else {
+        sortval = 1;
     }
 
     // If lines cross swap otherwise keep as is
@@ -2088,7 +2560,7 @@ function sortvectors(a, b, ends, elementid, axis)
         if (axis == 0) parentx = parent.x1
         else parentx = parent.x2;
 
-        if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return -1
+        if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return -sortval
 
     } else if (axis == 2 || axis == 3) {
         // Top / Bottom side
@@ -2097,10 +2569,10 @@ function sortvectors(a, b, ends, elementid, axis)
         if (axis == 2) parenty = parent.y1
         else parenty = parent.y2;
 
-        if (linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty) === false) return -1
+        if (linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty) === false) return -sortval
     }
 
-    return 1;
+    return sortval;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -2234,6 +2706,42 @@ function drawLine(line, targetGhost = false)
         str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
     }
 
+    // If the line got cardinality
+    if(line.cardinality) {
+        var toCardinalityX = tx;
+        var toCardinalityY = ty;
+        var fromCardinalityX = fx;
+        var fromCardinalityY = fy;
+
+        if (line.ctype == "BT"){
+            toCardinalityY = ty - 10;
+            fromCardinalityY = fy + 15;
+        }else if (line.ctype == "TB"){
+            toCardinalityX = tx;
+            toCardinalityY = ty + 15;
+            fromCardinalityX = fx;
+            fromCardinalityY = fy - 5;
+        }else if (line.ctype == "RL"){
+            toCardinalityX = tx - 10;
+            toCardinalityY = ty;
+            fromCardinalityX = fx + 10;
+            fromCardinalityY = fy;
+        }else if (line.ctype == "LR"){
+            toCardinalityX = tx;
+            toCardinalityY = ty;
+            fromCardinalityX = fx - 15;
+            fromCardinalityY = fy;
+        }
+        // From cardinality
+        if (line.cardinality.from != ""){
+            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${fromCardinalityX}" y="${fromCardinalityY}">${lineCardinalitys[line.cardinality.from]}</text>`
+        }
+
+        // To cardinality
+        if (line.cardinality.to != "") {
+            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${toCardinalityX}" y="${toCardinalityY}">${lineCardinalitys[line.cardinality.to]}</text> `
+        }
+    }
     return str;
 }
 
@@ -2284,7 +2792,7 @@ function addNodes(element)
     elementDiv.innerHTML += nodes;
 }
 
-function removeNodes(element) 
+function removeNodes() 
 {
     // Get all elements with the class: "node"
     var nodes = document.getElementsByClassName("node");
@@ -2359,73 +2867,233 @@ function drawRulerBars()
 }
 
 //Function to remove elemets and lines
-function removeElements(elementArray)
+function removeElements(elementArray, stateMachineShouldSave = true)
 {
-    stateMachine.save(StateChangeFactory.ElementsDeleted(elementArray));
-    
+    // Find all lines that should be deleted first
     var linesToRemove = [];
-    for (var i = 0; i < elementArray.length; i++) {
-        // Remove element
-        data = data.filter(function(element) {
-            return element != elementArray[i];
-        });
+    var elementsToRemove = [];
 
-        // Add lines to "linesToRemove"
+    for (var i = 0; i < elementArray.length; i++) { // Find VALID items to remove
         linesToRemove = linesToRemove.concat(lines.filter(function(line) {
             return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
         }));
+        elementsToRemove = elementsToRemove.concat(data.filter(function(element) {
+            return element == elementArray[i];
+        }));
     }
 
-    stateMachine.save(StateChangeFactory.LinesRemoved(linesToRemove));
+    if (elementsToRemove.length > 0) { // If there are elements to remove
+        if (linesToRemove.length > 0) { // If there are also lines to remove
+            removeLines(linesToRemove, false);
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
+        } else { // Only removed elements without any lines
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
+        }
 
-    lines = lines.filter(function(line) {
-        return !(linesToRemove.includes(line));
-    });
+        data = data.filter(function(element) { // Delete elements
+            return !elementsToRemove.includes(element);
+        });
+    } else { // All passed items were INVALID
+        console.error("Invalid element array passed to removeElements()!");
+    }
 
-    context = [];
+    clearContext();
     redrawArrows();
     showdata();
 }
-//Function to remove selected lines
-function removeLines(linesArray)
-{
-    for(var i = 0; i < linesArray.length; i++) {
 
-        //Remove line
-        lines=lines.filter(function(line) {
-            return line.id != linesArray[i].id;
+//Function to remove selected lines
+function removeLines(linesArray, stateMachineShouldSave = true)
+{
+    var anyRemoved = false;
+    for (var i = 0; i < linesArray.length; i++) {
+        lines = lines.filter(function(line) {
+            var shouldRemove = (line != linesArray[i]);
+            if (shouldRemove) {
+                anyRemoved = true;
+            }
+            return shouldRemove;
         });
     }
+
+    if (stateMachineShouldSave && anyRemoved) { 
+        stateMachine.save(StateChangeFactory.LinesRemoved(linesArray));
+    }
+    
     contextLine = [];
     redrawArrows();
     showdata();
 }
-
-function displayMessage(type, message)
+//-------------------------------------------------------------------------------------------------
+// Create and display an message in the diagram
+//-------------------------------------------------------------------------------------------------
+function displayMessage(type, message, time = 5000)
 {
-    var messageEl = document.getElementById("diagram-message") // Get div for error-messages
+    // Message settings
+    const maxMessagesAtDisplay = 5; // The number of messages that can be displayed on the screen
 
-    switch (type) {
-        case "error":
-            messageEl.style.background = "rgb(255, 153, 153)";
-            break;
-        case "success":
-            messageEl.style.background = "rgb(153, 255, 153)";
-            break
-        default:
-            messageEl.style.background = "rgb(255, 153, 153)";
-            break;
+    var messageElement = document.getElementById("diagram-message"); // Get div for error-messages
+    var id = makeRandomID();
+
+    // If the already is the maximum number of messages, remove the oldest one
+    if (messageElement.childElementCount >= maxMessagesAtDisplay) {
+        removeMessage(messageElement.firstElementChild);
     }
 
-    messageEl.innerHTML = "<span>" + message + "</span>";
-    messageEl.style.display = "block";
+    // Add a new message to the div.
+    messageElement.innerHTML += `<div id='${id}' onclick='removeMessage(this)' class='${type}'><p>${message}</p></div>`;
 
-    if(errorMsgTimer) clearTimeout(errorMsgTimer);
-    //Set timeout to remove the message
-    errorMsgTimer = setTimeout(function (){
-        messageEl.style.display = "none";
-    }, 2000);
+    if (time > 0) {
+        setTimerToMessage(messageElement.lastElementChild, time);
+    }
+
 }
+
+function pasteClipboard(elements)
+{
+
+    // If elements does is empty, display error and return null
+    if(elements.length == 0){
+        displayMessage("error", "You do not have any copied elements");
+        return;
+    }
+
+    /*
+    * Calculate the coordinate for the top-left pos (x1, y1)
+    * and the coordinate for the bottom-right (x2, y2)
+    * */
+    var x1, x2, y1, y2;
+    elements.forEach(element => {
+        if (element.x < x1 || x1 === undefined) x1 = element.x;
+        if (element.y < y1 || y1 === undefined) y1 = element.y;
+        if ((element.x + element.width) > x2 || x2 === undefined) x2 = (element.x + element.width);
+        if ((element.y + element.height) > y2 || y2 === undefined) y2 = (element.y + element.height);
+    });
+
+    var cx = (x2 - x1) / 2;
+    var cy = (y2 - y1) / 2;
+    var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
+
+    // Get all lines
+    var allLines = getLines();
+    var connectedLines = [];
+
+    // Filter - keeps only the lines that are connectet to and from selected elements.
+    allLines = allLines.filter(line => {
+        return (elements.filter(element => {
+            return line.toID == element.id || line.fromID == element.id
+        })).length > 1
+    });
+
+    /*
+    * For every line that shall be copied, create a temp object,
+    * for kind and connection tracking
+    * */
+    allLines.forEach(line => {
+        var temp = {
+            id: line.id,
+            fromID: line.fromID,
+            toID: line.toID,
+            kind: line.kind
+        }
+        connectedLines.push(temp);
+    });
+
+    // An mapping between oldElement ID and the new element ID
+    var idMap = {};
+
+    var newElements = [];
+    var newLines = [];
+
+    // For every copied element create a new one and add to data
+    elements.forEach(element => {
+        // Make a new id and save it in an object
+        idMap[element.id] = makeRandomID();
+
+        connectedLines.forEach(line => {
+            if (line.fromID == element.id) line.fromID = idMap[element.id];
+            else if (line.toID == element.id) line.toID = idMap[element.id];
+        });
+
+        // Create the new object
+        var elementObj = {
+            name: element.name,
+            x: mousePosInPixels.x + (element.x - x1),
+            y: mousePosInPixels.y + (element.y - y1),
+            width: element.width,
+            height: element.height,
+            kind: element.kind,
+            id: idMap[element.id],
+            state: element.state
+        };
+        newElements.push(elementObj)
+        addObjectToData(elementObj, false);
+    });
+
+    // Create the new lines but do not saved in stateMachine
+    connectedLines.forEach(line => {
+        newLines.push(
+            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false)
+        );
+    });
+
+    // Save the copyed elements to stateMachine
+    stateMachine.save(StateChangeFactory.ElementsAndLinesCreated(newElements, newLines));
+    displayMessage(messageTypes.SUCCESS, `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
+    clearContext(); // Deselect old selected elements
+    context = newElements; // Set context to the pasted elements
+    showdata();
+}
+
+//-------------------------------------------------------------------------------------------------
+// Set a time for the element to exist, will be removed after time has exceeded
+//-------------------------------------------------------------------------------------------------
+
+function setTimerToMessage(element, time = 5000)
+{
+    if (!element) return;
+
+    element.innerHTML += `<div class="timeIndicatorBar"></div>`;
+    var timer = setInterval( function(){
+        var element = document.getElementById(errorMsgMap[timer].id);
+        errorMsgMap[timer].percent -= 1;
+        element.lastElementChild.style.width = `calc(${errorMsgMap[timer].percent - 1}% - 10px)`;
+
+        // If the time is out, remove the message
+        if(errorMsgMap[timer].percent === 0) removeMessage(element, timer);
+
+    }, time / 100);
+
+    // Adds to map: TimerID: ElementID, Percent
+    errorMsgMap[timer] = {
+        id: element.id,
+        percent: 100
+    };
+}
+//-------------------------------------------------------------------------------------------------
+// Removes the message from DOM and removes all the variables that are used
+//-------------------------------------------------------------------------------------------------
+function removeMessage(element, timer)
+{
+    // If there is no timer in the parameter try find it by elementID in
+    if (!timer) {
+        timer = Object.keys(errorMsgMap).find(key => {
+            return errorMsgMap[key].id === element.id
+        });
+    }
+
+    if (timer) {
+        clearInterval(timer); // Remove the timer
+        delete errorMsgMap[timer]; // Remove timer from the map
+    }
+
+    element.remove(); // Remove the element from DOM
+    // Remove ID from randomidArray
+    randomidArray = randomidArray.filter(id => {
+        return element.id !== id;
+    });
+}
+
 //------------------------------------=======############==========----------------------------------------
 //                                    Default data display stuff
 //------------------------------------=======############==========----------------------------------------
@@ -2433,10 +3101,13 @@ function displayMessage(type, message)
 function getData()
 {
     container = document.getElementById("container");
+    onSetup();
     showdata();
     drawRulerBars();
     generateToolTips();
     toggleGrid();
+    updateGridPos();
+    setCursorStyles(mouseMode);
 }
 
 function generateToolTips()
@@ -2447,7 +3118,13 @@ function generateToolTips()
         const element = toolButtons[index];
         var id = element.id.split("-")[1];
         if (Object.getOwnPropertyNames(keybinds).includes(id)) {
-           element.innerHTML = `Keybind: ${keybinds[id]}`;
+
+            var str = "Keybind: ";
+
+            if (keybinds[id].ctrl) str += "CTRL + ";
+            str += '"' + keybinds[id].key.toUpperCase() + '"';
+
+           element.innerHTML = str;
         }
     }
 }
@@ -2459,5 +3136,38 @@ function data_returned(ret)
         showdata();
     } else {
         alert("Error receiveing data!");
+    }
+}
+
+function updateGridSize()
+{
+    var bLayer = document.getElementById("grid");
+    bLayer.setAttribute("width", 100 * zoomfact + "px");
+    bLayer.setAttribute("height", 100 * zoomfact + "px");
+
+    bLayer.children[0].setAttribute('d', `M ${100 * zoomfact} 0 L 0 0 0 ${100 * zoomfact}`);
+    updateGridPos();
+}
+
+function updateGridPos()
+{
+    var gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+    var gridOffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+    var bLayer = document.getElementById("grid");
+    bLayer.setAttribute('x', gridOffsetX);
+    bLayer.setAttribute('y', gridOffsetY);
+}
+function clearContext()
+{
+    if(context != null){
+        context = [];
+        generateContextProperties();
+    }
+}
+function clearContextLine()
+{
+    if(contextLine != null){
+        contextLine = [];
+        generateContextProperties();
     }
 }
