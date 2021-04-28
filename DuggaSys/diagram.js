@@ -989,12 +989,14 @@ function mdown(event)
         startX = event.clientX;
         startY = event.clientY;
     }
-     // Used when clicking on a line between two elements.
-     determinedLines = determineLineSelect(event.clientX, event.clientY);
-     if (determinedLines){
-        pointerState=pointerStates.CLICKED_LINE;
-     }
-   
+
+    if(pointerState !== pointerStates.CLICKED_NODE){
+        // Used when clicking on a line between two elements.
+        determinedLines = determineLineSelect(event.clientX, event.clientY);
+        if (determinedLines){
+           pointerState=pointerStates.CLICKED_LINE;
+        }
+    }
 }
 
 function ddown(event)
