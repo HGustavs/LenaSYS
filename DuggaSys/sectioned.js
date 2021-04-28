@@ -15,6 +15,7 @@ var versnme = "UNKz";
 var versnr;
 var motd;
 var deleteItemList = [];
+var hasDuggs = false;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
