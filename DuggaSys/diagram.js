@@ -626,7 +626,7 @@ var isRulerActive = true;
 
 //Grid Settings
 var gridSize = 100;
-var snapToGrid = true;
+var snapToGrid = false;
 
 var randomidArray = []; // array for checking randomID
 var errorMsgMap = {};
@@ -1569,6 +1569,14 @@ function toggleGrid()
    }
 }
 
+function toggleSnapToGrid()
+{
+    // Toggle active class on button
+    document.getElementById("rulerSnapToGrid").classList.toggle("active");
+
+    // Toggle the boolean
+    snapToGrid = !snapToGrid;
+}
 function toggleRuler()
 {
     var ruler = document.getElementById("rulerOverlay");

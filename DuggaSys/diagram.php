@@ -104,6 +104,7 @@
                     <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
+            <button id="rulerSnapToGrid" style="font-size: 0.5em" onclick="toggleSnapToGrid()">Snap</button>
         </fieldset>
     </div>
 
