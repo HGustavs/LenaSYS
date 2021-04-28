@@ -802,7 +802,7 @@ function returnedSection(data) {
         if (itemKind === 3 || itemKind === 4) {
           
           //If there exists atleast one test or moment swimlanes shall be hidden
-          var hasDuggs = true;
+          hasDuggs = true;
 
           // Styling for quiz row e.g. add a tab spacer
           if (itemKind === 3) str += `<td style='width:0px'><div class='spacerLeft'></div></td>
@@ -1146,7 +1146,7 @@ function returnedSection(data) {
       resave = false;
     }
 
-    if (!hasDuggs){
+    if (hasDuggs === false){
       $("#statisticsSwimlanes").hide();
     }
 
@@ -1691,7 +1691,6 @@ $(window).load(function () {
       'flex-direction': 'column'
     });
     $(".statisticsContentBottom").show();
-    console.log(hasDuggs);
     if (hasDuggs) {
       $("#swimlaneSVG").show();
       $("#statisticsSwimlanes").show(); 
