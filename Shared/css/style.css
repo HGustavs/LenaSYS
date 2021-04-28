@@ -833,6 +833,9 @@ p {
     width: 25%;
     font-size: 10pt;
   }
+	.internal-link {
+        font-size: 10px;
+    }
 }
 
 #Sectionlist .section {
@@ -885,8 +888,8 @@ p {
 .tabs1{
   width: 64px;
 }
-.tabs2{
-  width: 96px;
+.tabs2 {
+    width: 32px;
 }
 .tabs3{
   width: 128px;
@@ -951,12 +954,13 @@ p {
   border-right: 2px solid black;
 }
 /*Vertical line for 2 tabs*/
+/*
 #Sectionlist .tabs2 .spacerRight {
   height: 32px;
   width: 64px;
   margin-left: 15px;
   border-right: 2px solid black;
-}
+}*/
 /*Vertical line for 3 tabs*/
 #Sectionlist .tabs3 .spacerRight {
   height: 32px;
