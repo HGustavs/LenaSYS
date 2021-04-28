@@ -5,7 +5,7 @@
 
 			echo "<table class='navheader'><tr>";
 			include_once "../Shared/basic.php";
-			
+
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
 			if (isset($_GET['courseid']))
 				$_SESSION['courseid'] = getOPG('courseid');
@@ -47,7 +47,7 @@
 				echo "</td>";
 			} else if($requestedService == "analytic.php") {
 				echo '<td class="navButt" id="home" title="Back"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img alt="go back icon" src="../Shared/icons/Up.svg"></a></td>';
-                echo '<td class="vl"></td>';
+				echo '<td class="vl"></td>';
 				echo '<td class="navButt analytic-navbutton GS" id="GeneralStats"><a onclick="loadGeneralStats()"><i alt="general stats icon" class="fas fa-stream"></i></a><span class="navcomment">General Stats</span></td>';
 				echo '<td class="navButt analytic-navbutton CO" id="CurrentlyOnline"><a onclick="loadCurrentlyOnline()"><i alt="currently online icon" class="fas fa-users"></i></a><span class="navcomment">Currently Online</span></td>';
 				echo '<td class="navButt analytic-navbutton PG" id="PasswordGuessing"><a onclick="loadPasswordGuessing()"><i alt="password guessing icon" class="fas fa-key"></i></a><span class="navcomment">Password Guessing</span></td>';
@@ -80,30 +80,34 @@
 
 			}
 
+
+
 			if($noup!='NONE') {
-				  echo "<td class='navButt' id='back' title='Back'>";
+				echo "<td class='navButt' id='back' title='Back'>";
 			}
 			if($noup=='COURSE'){
-					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
-					echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
+				echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
+				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
+					
+			}if($noup=='COURSE' && checklogin() && (isSuperUser($_SESSION['uid']))){
+				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
+
 			}if ($noup == 'COURSE' && checkLogin()) {
-					echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
+				echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
 
 			}if ($noup == 'COURSE' && checkLogin() && (isStudentUser($_SESSION['uid']))) {
-					echo "<td class='navButt' id='feedback' title='Recent Feedback'><img src='../Shared/icons/feedback_icon.svg'></td>";
+				echo "<td class='navButt' id='feedback' title='Recent Feedback'><img src='../Shared/icons/feedback_icon.svg'></td>";
 
 			}else if($noup=='SECTION'){
-					echo "<a id='upIcon' href='";
-					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
-					echo "'>";
-					echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
+				echo "<a id='upIcon' href='";
+				echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
+				echo "'>";
+				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
 			}
-
-	
 			// Adding buttons for courses
 			if($noup=='COURSE'){
 					// Course specific navbar buttons moved from "static" to navheader
-					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv'))) {				
+					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv'))) {		
 							echo "<td style='display: inline-block;' title='Choose course version'>";
 							echo "    <div class='course-dropdown-div'>";
 							echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
@@ -115,7 +119,13 @@
               echo "      <img alt='settings icon' id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
 							echo "    </div>";
 							echo "</td>";
-					if(checklogin() && (isSuperUser($_SESSION['uid']) )) {			
+
+					if(checklogin() && (isSuperUser($_SESSION['uid']) )) {	
+						
+				
+
+
+
 							echo "<td class='newVers' style='display: inline-block;'>";
 							echo "    <div class='newVers menuButton'>";
               echo "      <img alt='plus sign icon' id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
@@ -141,7 +151,7 @@
 							echo "<td class='files' style='display: inline-block;'>";
 							echo "    <div class='files menuButton'>";
               echo "      <a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
-              echo "        <img alt='files icon' class='navButt' src='../Shared/icons/files_icon.svg'>";
+              echo "        <img alt='files icon' id='editFiles' class='navButt' src='../Shared/icons/files_icon.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
@@ -181,12 +191,44 @@
 						
 							echo "<td class='access menuButton' style='display: inline-block;'>";
 							echo "    <div class='access menuButton'>";
-              echo "      <a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-              echo "        <img alt='give access icon' class='navButt' src='../Shared/icons/lock_symbol.svg'>";
+            			    echo "      <a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
+             				echo "        <img alt='give access icon' id='editCourse' class='navButt' src='../Shared/icons/lock_symbol.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
 							echo "<input type='text' id='adminLoggedin' value='yes' style='display:none;'>";
+
+
+							echo "<div id='hamburgerBox' style='display:none;'>";
+							echo "<div><img alt='announcement icon' id='announcementBurger' class='burgerButt' src='../Shared/icons/new_announcement_icon.svg'></div>";
+							echo "<div><img alt='settings icon' id='versionCogBurger' class='burgerButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'></div>";
+							echo "<div><img alt='plus sign icon' id='versionPlusBurger' value='New version' class='burgerButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'></div>";
+							echo "<div>";
+							echo "<a id='resultsBTNBurger' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
+							echo "<img alt='edit results icon' id='editStudentBurger' class='navButt' src='../Shared/icons/marking_icon.svg'>";
+							echo "</a>";
+							echo "</div>";
+							echo "<div>";
+							echo "<a id='testsBTNBurger' title='Show tests' value='Tests' href='duggaed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
+							echo "<img alt='show tests icon' id='testsBTNBurger' class='navButt' src='../Shared/icons/test_icon.svg'>";
+							echo "</a>";
+							echo "</div>";
+							echo "<div class='files menuButton'>";
+							echo "<a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
+							echo "<img alt='files icon' id='editFilesBurger' class='burgerButt' src='../Shared/icons/files_icon.svg'>";
+							echo "</a>";
+							echo "</div>";
+							echo "<div class='course menuButton'>";
+							echo "<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
+							echo "<img alt='course page icon' id='courseIMGBurger' value='Course' class='burgerButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
+							echo "</a>";
+							echo "</div>";
+							echo "<div class='access menuButton'>";
+            			    echo "<a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
+							echo "<img alt='give access icon' id='editCourseBurger' class='burgerButt' src='../Shared/icons/lock_symbol.svg'>";
+							echo "</a>";
+							echo "</div>";
+							echo "</div>";
 					}
 			}
 	

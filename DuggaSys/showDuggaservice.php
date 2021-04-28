@@ -38,9 +38,11 @@ $rating=getOP('score');
 $entryname=getOP('entryname');
 $hash=getOP('hash');
 $password=getOP('password');
-$showall="true";
-$localStorageVariant= getOP('variant');
+$AUtoken=getOP('AUtoken');
+//$localStorageVariant= getOP('variant');
+$variantvalue= getOP('variant');
 
+$showall="true";
 $param = "UNK";
 $savedanswer = "";
 $highscoremode = "";
@@ -53,8 +55,11 @@ $insertparam = false;
 $score = 0;
 $timeUsed;
 $stepsUsed;
-$duggafeedback="UNK";
+$duggafeedback = "UNK";
 $variants=array();
+$variantsize;
+$ishashindb = false;
+
 
 $savedvariant="UNK";
 $newvariant="UNK";
@@ -70,9 +75,44 @@ $log_uuid = getOP('log_uuid');
 $info=$opt." ".$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$segment." ".$answer;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php",$userid,$info);
 
+if(strcmp($opt,"UPDATEAU")==0){
+	$query = $pdo->prepare("SELECT active_users FROM groupdugga WHERE hash=:hash");
+	$query->bindParam(':hash', $hash);
+	$query->execute();
+	$result = $query->fetch();
+	$active = $result['active_users'];
+	if($active == null){
+		$query = $pdo->prepare("INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken);");
+		$query->bindParam(':hash', $hash);
+		$query->bindParam(':AUtoken', $AUtoken);
+		$query->execute();
+	}else{
+		$newToken = (int)$active + (int)$AUtoken;
+		$query = $pdo->prepare("UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;");
+		$query->bindParam(':hash', $hash);
+		$query->bindParam(':AUtoken', $newToken);
+		$query->execute();
+	}
+}
+
+
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
+
+//See if there's any hash identical to the one generated
+$query = $pdo->prepare("SELECT hash FROM userAnswer WHERE hash=:hash");
+$query->bindParam(':hash', $hash);
+$result=$query->execute();
+
+if($row = $query->fetch(PDO::FETCH_ASSOC)){
+    $hashTest=$row['hash'];
+    if($hashTest == null) {
+        $ishashindb = false;	//Unique hash.
+    } else {
+        $ishashindb = true;		//Already in database. (1 in 1000000 possibility)
+    }
+}
 
 // Read visibility of course
 $query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
@@ -122,9 +162,27 @@ foreach($query->fetchAll() as $row) {
 	$insertparam = true;
 }
 
+$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,feedback,grade,submitted,password FROM userAnswer WHERE hash=:hash;");
+
+    $query->bindParam(':hash', $hash);
+    $result = $query->execute();
+
+    if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $savedvariant=$row['variant'];
+        $savedanswer=$row['useranswer'];
+        $score = $row['score'];
+        $isIndb=true;
+        $grade = $row['grade'];
+        $submitted = $row['submitted'];
+        $marked = $row['marked'];
+		$password = $row['password'];
+
+		
+    }
+
 // -------------------------OLD FUNCTIONALITY WHERE WE CHECK IF USER IS LOGGED IN AND HAS ACESS-------------------
 
-/*
+
 if(checklogin()){
 	if((hasAccess($userid, $courseid, 'r')&&($dvisibility == 1 || $dvisibility == 2))||isSuperUser($userid)) $hr=true;
 }
@@ -135,40 +193,7 @@ $demo=false;
 if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
 if($demo){
-	// We are not logged in - provide the first variant as demo.
-	$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-	$query->bindParam(':vid', $localStorageVariant);
-	$query->execute();
-	$result = $query->fetch();
-	$param=html_entity_decode($result['param']);	
-	
-} 
-*/
-
-	// We are part of the course - assign variant
-	// See if we already have a result i.e. a chosen variant.
-
-	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked,feedback,grade,submitted FROM userAnswer WHERE hash=:hash;");
-	$query->bindParam(':hash', $hash);
-	$result = $query->execute();
-
-	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-		$savedvariant=$row['variant'];
-		$savedanswer=$row['useranswer'];
-		$score = $row['score'];
-		$isIndb=true;
-		if ($row['feedback'] != null){
-				$duggafeedback = $row['feedback'];
-		} else {
-				$duggafeedback = "UNK";
-		}
-		$grade = $row['grade'];
-		$submitted = $row['submitted'];
-		$marked = $row['marked'];
-	}
-
-//----------------------------------- OLD FUNCTIONALITY WHERE DUGGA IS SAVED TO DB WHEN VISITED -------------------------------------------
-	/*
+		
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
 	$foundvar=-1;
@@ -201,88 +226,54 @@ if($demo){
 		// There is a variant already -- do nothing!	
 	}
 	
-	/*
-	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
-	if ($newvariant=="UNK"){
-
-	} else if ($newvariant!="UNK") {
-		
-		if($isIndb){
-			$query = $pdo->prepare("UPDATE userAnswer SET variant=:variant WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-			$query->bindParam(':cid', $courseid);
-			$query->bindParam(':coursevers', $coursevers);
-			$query->bindParam(':uid', $userid);
-			$query->bindParam(':moment', $moment);
-			$query->bindParam(':variant', $newvariant);
-			if(!$query->execute() || $query->rowCount()==0) {
-				$error=$query->errorInfo();
-				$debug="Error updating variant (row ".__LINE__.") ".$query->rowCount()." row(s) were updated. Error code: ".$error[2];
-			}
-			$savedvariant=$newvariant;
-
-		}else if(!$isIndb){
-			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
-			$query->bindParam(':cid', $courseid);
-			$query->bindParam(':coursevers', $coursevers);
-			$query->bindParam(':uid', $userid);
-			$query->bindParam(':did', $duggaid);
-			$query->bindParam(':moment', $moment);
-			$query->bindParam(':variant', $newvariant);
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
-			}
-						
-			$savedvariant=$newvariant;
-			//------------------------------
-			//mark segment as started on
-      //------------------------------
-      /*
-			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
-			$query->bindParam(':cid', $courseid);
-			$query->bindParam(':coursevers', $coursevers);
-			$query->bindParam(':uid', $userid);
-			$query->bindParam(':did', $duggaid);
-			$query->bindParam(':moment', $segment);
-			$query->bindParam(':variant', $newvariant);
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
-      }
-      
-		}
-	}
-
+	$savedvariant=$newvariant;
+	
 	// Retrieve variant
 	if($insertparam == false){
 			$param="NONE!";
 	}
 	foreach ($variants as $variant) {
-		if($variant["vid"] == $savedvariant){
-				$param=html_entity_decode($variant['param']);
+		if($variant["vid"] == $variantvalue){
+			$param=html_entity_decode($variant['param']);
 		}
-	}*/
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	}
 
+	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
+	$query->execute();
+	$variantsize = $query->fetchColumn();
 
+	//Makes sure that the localstorage variant is set before retrieving data from database
+	if(isset($variantvalue)) {
+		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+		$query->bindParam(':vid', $variantvalue);
+		$query->execute();
+		$result = $query->fetch();
+		$param=html_entity_decode($result['param']);
+		error_log("result param: ".$param);
+	}
+} else if ($hr){
+	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
+	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
+	$query->execute();
+	$variantsize = $query->fetchColumn();
 
 	if($isIndb){ // If dugga is in database, get the variant from the database
 		if($insertparam == false){
 			$param="NONE!";
 		}
 		foreach ($variants as $variant) {
-			if($variant["vid"] == $savedvariant){
+			if($variant["vid"] == $variantvalue){
 					$param=html_entity_decode($variant['param']);
 			}
 		}
 	}else if(!$isIndb){ // If dugga is not in database, get the variant from the localstorage
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-		$query->bindParam(':vid', $localStorageVariant);
+		$query->bindParam(':vid', $variantvalue);
 		$query->execute();
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
 	}
-
+}
 
 //------------------------------------------------------------------------------------------------
 // Services
@@ -324,20 +315,20 @@ if(checklogin()){
             }else{
 
 			if(!$isIndb){ // If the dugga is not in database, insert into database
-				$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant,hash,password) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant,:hash,:password);");
+				$query = $pdo->prepare("INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password);");
 				$query->bindParam(':cid', $courseid);
 				$query->bindParam(':coursevers', $coursevers);
-				$query->bindParam(':uid', $userid);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':moment', $moment);
-				$query->bindParam(':variant', $localStorageVariant);
+				$query->bindParam(':variant', $savedvariant);
 				$query->bindParam(':hash', $hash);
 				$query->bindParam(':password', $password);
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
 				}
-			
+			//Resets the hasuploaded variable so we get prompted for password
+			$_SESSION['hasUploaded'] = 0;
 			}
 
               	// Update Dugga!
@@ -410,7 +401,7 @@ if(strcmp($opt,"GETVARIANTANSWER")==0){
 	$variant = $temp[3];
 
 	
-	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer,feedback FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.cid = :cid and userAnswer.vers = :vers and variant.vid = :vid");
+	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.cid = :cid and userAnswer.vers = :vers and variant.vid = :vid");
 	$query->bindParam(':cid', $first);
 	$query->bindParam(':vers', $second);
 	$query->bindParam(':vid', $variant);
@@ -421,7 +412,7 @@ if(strcmp($opt,"GETVARIANTANSWER")==0){
 	
 	$setanswer=$result['variantanswer'];
 	
-	makeLogEntry($userid,2,$pdo,$first);
+	// makeLogEntry($userid,2,$pdo,$first);
 	$insertparam = true;
 	$param = $setanswer;
 }
@@ -466,15 +457,13 @@ if(strcmp($opt,"GRPDUGGA")==0){
 $files= array();
 for ($i = 0; $i < $userCount; $i++) {
 	if ($showall==="true"){
-		$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
+		$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash AND vers=:vers AND cid=:cid ORDER BY subid,fieldnme,updtime asc;");  
 	} else {
-		$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
+		$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash AND vers=:vers AND cid=:cid AND did=:did ORDER BY subid,fieldnme,updtime asc;");  
 		$query->bindParam(':did', $duggaid);
 	}
 	if ($i == 0) {
-		$query->bindParam(':uid', $userid);
-	} else {
-		$query->bindParam(':uid', $usersInGroup[$i-1]);
+		$query->bindParam(':hash', $hash);
 	}
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':vers', $coursevers);
@@ -488,8 +477,21 @@ for ($i = 0; $i < $userCount; $i++) {
 			
 			$content = "UNK";
 			$feedback = "UNK";
-	
+			$zipdir = "";
+			$zip = new ZipArchive;
 			$currcvd=getcwd();
+			
+
+			$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
+			if(!file_exists($ziptemp)) {
+				$zipdir="UNK";
+			}else{				
+				if ($zip->open($ziptemp) == TRUE) {
+					for ($i = 0; $i < $zip->numFiles; $i++) {
+						$zipdir .= $zip->getNameIndex($i).'<br />';
+					}
+				}
+			}
 			
 			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
 			if(!file_exists($fedbname)) {
@@ -503,7 +505,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			if($row['kind']=="3"){
 					// Read file contents
 					$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
-	
+
 					if(!file_exists($movname)) {
 							$content="UNK!";
 					} else {
@@ -521,15 +523,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			}else{
 					$content="Not a text-submit or URL";
 			}
-		
- 			$uQuery = $pdo->prepare("SELECT username FROM user WHERE uid=:uid;");
-			$uQuery->bindParam(':uid', $row['uid'], PDO::PARAM_INT);
-			$uQuery->execute();
-			$uRow = $uQuery->fetch();
-			$username = $uRow['username'];
-
 			$entry = array(
-				'uid' => $row['uid'],
 				'subid' => $row['subid'],
 				'vers' => $row['vers'],
 				'did' => $row['did'],
@@ -544,7 +538,8 @@ for ($i = 0; $i < $userCount; $i++) {
 				'segment' => $row['segment'],	
 				'content' => $content,
 				'feedback' => $feedback,
-				'username' => $username
+				'username' => $username,
+				'zipdir' => $zipdir
 			);
 	
 			// If the filednme key isn't set, create it now
@@ -560,7 +555,7 @@ if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be o
 // Use string compare to clear grade if not released yet!
 if($today < $duggainfo['qrelease']  && !(is_null($duggainfo['qrelease']))){
 		$grade="UNK";
-		$duggafeedback="UNK";
+		$duggafeedback = "UNK";
 }
 //Fetches Data From listentries Table
 if(strcmp($opt,"CHECKFDBCK")==0){
@@ -598,7 +593,6 @@ $array = array(
 		"answer" => $savedanswer,
 		"score" => $score,
 		"highscoremode" => $highscoremode,
-		"feedback" => $duggafeedback,
 		"grade" => $grade,
 		"submitted" => $submitted,
 		"marked" => $marked,
@@ -608,11 +602,15 @@ $array = array(
 		"userfeedback" => $userfeedback,
 		"feedbackquestion" => $feedbackquestion,
 		"variant" => $savedvariant,
+		"ishashindb" => $ishashindb,
+		"variantsize" => $variantsize,
+		"variantvalue" => $variantvalue,
+		"password" => $password,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
 echo json_encode($array);
 
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php",$userid,$info);
+// logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php",$userid,$info);
 
 ?>

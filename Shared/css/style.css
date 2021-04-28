@@ -210,6 +210,20 @@ p {
  *                               Lists and Content                              *
  * --------------================################================-------------- */
 
+#hamburgerBox{
+  display: none;
+  position: absolute;
+  top: 50px;
+  width: 35px;
+  padding: 10px;
+  background-color: var(--color-primary-2);
+}
+
+#hamburgerBox div {
+  margin-bottom: 10px;;
+}
+
+
 .version {
   color: #EFF;
   text-shadow: 1px 1px var(--color-text-list);
@@ -486,8 +500,8 @@ p {
   margin-top: 15px;
   padding: 16px;
 }
-.announcementFormcontainer p{
-  color: #ffa500;
+.announcementFormcontainer p {
+    color: #ff4444;
 }
 .animate {
   -webkit-animation: animatezoom 0.6s;
@@ -569,11 +583,15 @@ p {
  margin-bottom: 15px;
 
 }
-.displayAnnounceTime,
-.displayAuthor,
+
 .editMark{
   color: #b3b3b3;
 }
+
+.displayAnnounceTime, .displayAuthor{
+  color: #000000;
+}
+
 .displayAuthor{
   float: right;
 }
@@ -790,7 +808,7 @@ p {
   border-radius: 5px;
 }
 
- #sectionList_arrowStatisticsClosed{
+#sectionList_arrowStatisticsClosed{
   display: inline;
 }
 #sectionList_arrowStatisticsOpen{
@@ -819,6 +837,9 @@ p {
     width: 25%;
     font-size: 10pt;
   }
+	.internal-link {
+        font-size: 10px;
+    }
 }
 
 #Sectionlist .section {
@@ -871,8 +892,8 @@ p {
 .tabs1{
   width: 64px;
 }
-.tabs2{
-  width: 96px;
+.tabs2 {
+    width: 32px;
 }
 .tabs3{
   width: 128px;
@@ -937,12 +958,13 @@ p {
   border-right: 2px solid black;
 }
 /*Vertical line for 2 tabs*/
+/*
 #Sectionlist .tabs2 .spacerRight {
   height: 32px;
   width: 64px;
   margin-left: 15px;
   border-right: 2px solid black;
-}
+}*/
 /*Vertical line for 3 tabs*/
 #Sectionlist .tabs3 .spacerRight {
   height: 32px;
@@ -1251,6 +1273,13 @@ header td {
   margin:auto 10px auto 0;
 }
 
+.burgerButt {
+  margin-left: 10px;
+  vertical-align: middle;
+  height: 32px;
+  margin:auto 10px auto 0;
+}
+
 .navButt:hover {
   cursor: pointer;
 }
@@ -1309,6 +1338,47 @@ div .navButt:hover {
   color: #FFFFFF;
   text-decoration: underline;
   overflow: hidden;
+}
+
+@media screen and (max-width:400px){
+    .hamburger{
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        
+        
+        margin-top: 14px;
+        
+    }
+    #GeneralStats{
+        display:none;
+    }
+    #CurrentlyOnline{
+        display:none;
+    }
+    #PasswordGuessing{
+        display:none;
+    }
+    #OSPercentage{
+        display:none;
+    }
+    
+    #back{
+        display:none;
+    }
+    .navButt.show{
+        display: flex;
+    }
+    .bugerButt {
+      display:flex;
+      flex-wrap: wrap;
+      position: relative;
+      
+    }
+}
+
+.navHomeButt{
+    display:block;
 }
 
 .loggedout {
@@ -3348,7 +3418,7 @@ div.reset-pw{
   width:70%;
   margin-left:20px;
   background-color: var(--color-accent);
-  color: var(--color-text-primary);
+  color: var(--color-text-primary-darker);
 }
 div.reset-pw:hover{
   background-color: var(--color-accent-hover);
@@ -4770,6 +4840,9 @@ only screen and (max-device-width: 800px) {
   #addElement {
     display: none;
   }
+  #delElement{
+    display: none;
+  }
 
   table.navheader td.contribution {
     margin-right: 0px;
@@ -4972,6 +5045,17 @@ only screen and (max-device-width: 860px) {
 
   #sectionList_arrowStatisticsOpen{
     display: inline;
+  }
+
+  #hamburgerBox{
+    display: block;
+  }
+
+  /*Här jobbar vi*/
+  #versionCog, #versionPlus, #editStudent,
+  #testsBTN, #editFiles, #courseIMG,
+  #editCourse, #announcement{
+    display: none;
   }
 }
 
@@ -6305,6 +6389,17 @@ only screen and (max-device-width: 320px) {
   top: 25px;
 }
 
+@media screen and (max-height: 600px) {
+  .fab-btn-list2{
+    top: 65px;
+    transform: rotate(90deg);
+    transform-origin: top left;
+  }
+  
+  .fab-btn-list2 li {
+    transform: rotate(315deg);
+  }
+}
 
 .fab-btn-list li, .fab-btn-list2 li  {
   display: inline-block;

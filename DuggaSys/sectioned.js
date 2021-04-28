@@ -96,9 +96,9 @@ menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation = 'click') {
+
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
-      bigMac();
       toggleHamburger();
     }
   } else {
@@ -107,9 +107,16 @@ function hamburgerChange(operation = 'click') {
 }
 
 function toggleHamburger() {
-  var x = document.getElementById("hamburgerIcon");
-  findAncestor(x, "hamburger").classList.toggle("change");
+
+  var x = document.getElementById("hamburgerBox");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+
 }
+
 
 // -------------==============######## Dialog Handling ###########==============-------------
 
@@ -294,10 +301,7 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
-// Show the hamburger menu
-function bigMac() {
-  $(".hamburgerMenu").toggle();
-}
+
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
@@ -963,7 +967,7 @@ function returnedSection(data) {
           str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
           str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}'
           class='arrowComp' style='display:inline-block;'>`;
-          str += `<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight${item['lid']}'
+          str += `<img src='../Shared/icons/right_complement.svg' id='arrowRight${item['lid']}'
           class='arrowRight' style='display:none;'>`;
           str += "</div>";
         } else if (itemKind == 2) {
@@ -1336,11 +1340,12 @@ function drawSwimlanes() {
 
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
-  var current = new Date(2015, 9, 14);
 
   var deadlineEntries = [];
   var momentEntries = {};
+ // var current = new Date(2021, 01, 15);
   var current = new Date();
+
   var momentno = 0;
  
   for (var i = 0; i < retdata['entries'].length; i++) {
@@ -1372,10 +1377,11 @@ function drawSwimlanes() {
     }
   }
 
+
+
   //var weekLength = weeksBetween(startdate, enddate);
   var weekLength = Math.ceil((enddate - startdate) / (7 * 24 * 60 * 60 * 1000));
   var currentWeek = weeksBetween(current, startdate);
-  var daySinceStart = Math.ceil((current - startdate) / (24 * 60 * 60 * 1000));
   var daywidth = 10;
   var weekwidth = daywidth * 7;
   var colwidth = 60;
@@ -1443,14 +1449,14 @@ function drawSwimlanes() {
         }
         
         //Code to compare deadlines to current year. 
-        //If deadline is older than current, red text for late assigment should be displayed as orange instead
+        //If deadline is older than current, red text for late assigment should be displayed as blue instead
         var deadlineYear = new Date(entry.deadline).getFullYear();
         if(deadlineYear < current.getFullYear()) {
            textcol = "#5072C7";
        
            var yearDifference = current.getFullYear() - deadlineYear;
            var newYear = new Date(entry.deadline);
-           newYear.setFullYear(entry.deadline.getFullYear() + yearDifference);
+           newYear.setFullYear(entry.deadline.getFullYear() + yearDifference +1);
            entry.deadline = newYear;
          }
        
@@ -1467,10 +1473,30 @@ function drawSwimlanes() {
         </title>${entry.text}</text>`;
       }
     }
-
   }
-  str += `<line opacity='0.7' x1='${((daywidth * daySinceStart) - daywidth)}'
-  y1='${(15 + weekheight)}' x2='${((daywidth * daySinceStart) - daywidth)}'
+
+  // Setting a temporary date on 'current' in case dates not updated in course 
+  // to adjust the red line showing the day in swimlanes
+  var newCurrent;
+  var daySinceStart;
+
+
+  if(enddate.getFullYear() < current.getFullYear()) { // Guesstimate deadline for current year if course not updated
+    var yearDifference = current.getFullYear() - enddate.getFullYear();
+    var tempYear = new Date(current); 
+    
+    tempYear.setFullYear(current.getFullYear() - yearDifference); 
+    newCurrent = new Date(tempYear); 
+    daySinceStart = Math.ceil(( newCurrent - startdate) / (24 * 60 * 60 * 1000));
+  }
+  else {                                           // When dates are updated and no guesstimation needed
+       daySinceStart = Math.ceil(( current - startdate ) / (24 * 60 * 60 * 1000));
+  }
+
+
+
+  str += `<line opacity='0.7' x1='${(daySinceStart * daywidth)}'
+  y1='${(15 + weekheight)}' x2='${(daySinceStart * daywidth) }'
   y2='${(((1 + deadlineEntries.length) * weekheight) + 15)}' stroke-width='4' stroke='red' />`;
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
   document.getElementById("swimlaneSVG").innerHTML = str;
@@ -1669,6 +1695,14 @@ $(window).load(function () {
 
   });
   $("#announcement").click(function(){
+    sessionStorage.removeItem("closeUpdateForm");
+    $("#announcementBoxOverlay").toggle();
+    if($("#announcementForm").is(":hidden")){
+      $("#announcementForm").show();
+    }
+
+  });
+  $("#announcementBurger").click(function(){
     sessionStorage.removeItem("closeUpdateForm");
     $("#announcementBoxOverlay").toggle();
     if($("#announcementForm").is(":hidden")){
@@ -2137,7 +2171,7 @@ function toggleFeedbacks(){
           duggaFeedback = data.duggaFeedback;
           $(".feedbackContent").html(duggaFeedback);
           if ($(".recentFeedbacks").length == 0) {
-             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedbacks to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedbacks</span></p>");
+             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedback to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
              $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'><img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
           }
           $(".oldFeedbacks").hide();                  
@@ -2161,7 +2195,7 @@ function toggleFeedbacks(){
   });
 
   if ($("#feedback").length > 0) {
-    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><span><h2>Recent Feedbacks</h2></span></div><div class='feedbackContent'></div></div></div>");
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div><div class='feedbackContent'></div></div></div>");
 
   }
 
@@ -2181,7 +2215,7 @@ function toggleFeedbacks(){
   });
 }
 function viewOldFeedbacks(){
-  $(".feedbackHeader h2").html("Old Feedbacks");
+  $(".feedbackHeader h2").html("Old Feedback");
   $(".noFeedbacks").remove();
   $(".feedbackContent").append('<div id="loadMore"><span>Load More</span><div>');
   if ($(".feedback_card").length <= 5) {

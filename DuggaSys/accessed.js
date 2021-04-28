@@ -94,20 +94,12 @@ function showCreateClassPopup() {
 	$("#createClass").css("display", "flex");
 }
 
-function showImportUsersPopup() {
-	$("#importUsers").css("display", "flex");
-}
-
 function hideCreateUserPopup() {
 	$("#createUser").css("display", "none");
 }
 
 function hideCreateClassPopup() {
 	$("#createClass").css("display", "none");
-}
-
-function hideImportUsersPopup() {
-	$("#importUsers").css("display", "none");
 }
 
 function closeEdituser() {
@@ -117,25 +109,6 @@ function closeEdituser() {
 //----------------------------------------------------------------------------
 //-------------==========########## Commands ##########==========-------------
 //----------------------------------------------------------------------------
-
-function importUsers() {
-	var newUsersArr = new Array();
-	newusers = $("#import").val();
-	var myArr = newusers.split("\n");
-	for (var i = 0; i < myArr.length; i++) {
-		var input = myArr[i].replace(/\"/g, '').split(";");
-		newUsersArr.push(input);
-		if (!verifyUserInputForm(input)) return;
-	}
-	var newUserJSON = JSON.stringify(newUsersArr);
-
-	AJAXService("ADDUSR", {
-		courseid: querystring['courseid'],
-		newusers: newUserJSON,
-		coursevers: querystring['coursevers']
-	}, "ACCESS");
-	hideImportUsersPopup();
-}
 
 function addSingleUser() {
 
@@ -961,15 +934,6 @@ document.addEventListener('click', function(e){
 		activeArrow = undefined;
 	}
 });
-
-//----------------------------------------------------------------------------------
-// createQuickItem: Handle "fast" click on FAB button
-//----------------------------------------------------------------------------------
-
-function createQuickItem() {
-	clearTimeout(pressTimer);
-	showImportUsersPopup();
-}
 
 //----------------------------------------------------------------------------------
 // Keyboard shortcuts - Edit functionality in the accessed table
