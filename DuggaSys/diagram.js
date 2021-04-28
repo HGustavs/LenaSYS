@@ -968,6 +968,16 @@ function mwheel(event)
 
 function mdown(event)
 {
+    // If the middle mouse button (mouse3) is pressed set scroll start values
+    if(event.button == 1) {
+        pointerState = pointerStates.CLICKED_CONTAINER;
+        sscrollx = scrollx;
+        sscrolly = scrolly;
+        startX = event.clientX;
+        startY = event.clientY;
+        return;
+    }
+
     // React to mouse down on container
     if (event.target.id == "container") {
         switch (mouseMode) {
@@ -996,16 +1006,21 @@ function mdown(event)
         startX = event.clientX;
         startY = event.clientY;
     }
-     // Used when clicking on a line between two elements.
-     determinedLines = determineLineSelect(event.clientX, event.clientY);
-     if (determinedLines){
-        pointerState=pointerStates.CLICKED_LINE;
-     }
-   
+
+    if(pointerState !== pointerStates.CLICKED_NODE){
+        // Used when clicking on a line between two elements.
+        determinedLines = determineLineSelect(event.clientX, event.clientY);
+        if (determinedLines){
+           pointerState=pointerStates.CLICKED_LINE;
+        }
+    }
 }
 
 function ddown(event)
 {
+    // If the middle mouse button (mouse3) is pressed => return
+    if(event.button == 1) return;
+
     switch (mouseMode) {
         case mouseModes.POINTER:
         case mouseModes.BOX_SELECTION:
@@ -1373,16 +1388,6 @@ function mmoving(event)
     setRulerPosition(event.clientX, event.clientY);
 }
 
-function fab_action()
-{
-    if (document.getElementById("options-pane").className == "show-options-pane") {
-        document.getElementById('optmarker').innerHTML = "&#9660;Options";
-        document.getElementById("options-pane").className = "hide-options-pane";
-    } else {
-        document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
-        document.getElementById("options-pane").className = "show-options-pane";
-    }
-}
 
 //------------------------------------=======############==========----------------------------------------
 //                                         Helper functions
