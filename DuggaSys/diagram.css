@@ -177,12 +177,12 @@
     height: 31px;
     cursor:pointer;
     border-radius: 30%;
-    border: solid 1px #eb4;
+    border: solid 1px var(--color-primary);
     margin-top:5px;
 }
 .diagramIcons:hover, .active{
-    background:#cc9923;
-    border: solid 1px #b28210;
+    background: var(--color-primary-hover);
+    border: solid 1px var(--color-primary-light);
 }
 .diagramIcons img{
     width:30px;
@@ -236,14 +236,15 @@
     width: 50px;
     height: 100%;
     border-right: solid black 1px;
-    background-color: #eb4;
+    background-color: var(--color-primary);
     z-index: 1000;
 }
 #diagram-toolbar>fieldset {
     padding: 2px;
-    border-color: #c99d36;
+    border-color: var(--color-primary-hover);
 }
 #diagram-toolbar>fieldset>legend {
+    color: var(--color-text-header);
     font-size: 0.6em;
 }
 /* Diagram Messages */
