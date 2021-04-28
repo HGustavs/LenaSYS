@@ -1763,25 +1763,25 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							tab+="<tr'>"
 
 							if (!mobileMediaQuery.matches) {
-								tab+="<td>";
 								// Button for making / viewing feedback - note - only button for given feedback to students.
-								if (ctype == "link"){
-
+								if(iconFlag){
+									if (ctype == "link"){
+										tab+="<td>";
 										tab+="<a href='"+filez[i].content+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";
-								} else {
-									if(iconFlag){
-										tab+="<a href='"+filelink+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";
-										
+										tab+="</td>";
+									} else {								
+										tab+="<td>";
+										tab+="<a href='"+filelink+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";										
 										// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
 										if (ctype == "pdf") {
 											tab +="\t<tab><a href='"+filelink+"' target='_blank'><img alt='open in new tab icon' title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
-										} 
-                                    }
-                                    else{
-										tab+="<img style='opacity: 0;' src='../Shared/icons/file_download.svg' />";
-                                    }
-								}
-								tab+="</td>";
+											tab+="</td>";
+										}
+										else{
+											tab+="</td>";
+										}
+									}
+                                }
 							}
               				if (group) {
 								tab+="<td>"+filez[i].username+"</td>";
