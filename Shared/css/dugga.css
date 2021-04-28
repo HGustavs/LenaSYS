@@ -353,7 +353,7 @@ svg text {
 }
 .previewTable th {
 	font-weight: bold;
-	text-align: center;
+	text-align: left;
 	vertical-align: inherit;
 	padding-right: 30px;
 	padding-left: 10px;
