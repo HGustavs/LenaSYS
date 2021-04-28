@@ -242,7 +242,8 @@ if($demo){
 	$query->execute();
 	$variantsize = $query->fetchColumn();
 
-
+	//If the variant value is unknown (E.G: UNK) then we retrieve the variant from the variant set in useranswer 
+	//where there exists a corresponding hash, and set the resulting useranswer.variant into $variantvalue
 	if($variantvalue == "UNK") {
 		$query = $pdo->prepare("SELECT useranswer.variant FROM useranswer WHERE hash=:hash");
 		$query->bindParam(':hash', $hash);

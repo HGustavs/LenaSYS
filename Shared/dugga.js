@@ -1035,7 +1035,7 @@ function AJAXService(opt,apara,kind)
 			datatype: "json",
 			success: function(data){
 				getVariantValue(data);					//Get variant.
-				console.log("real variantvalue: "+variantvalue);
+				
 				$.ajax({ 								//We need to have this Ajax call inside of the outer Ajax call, otherwise variantValue cant be retrieved.
 					url: "showDuggaservice.php",
 					type: "POST",
