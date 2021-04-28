@@ -1042,7 +1042,7 @@ function AJAXService(opt,apara,kind)
 					success: function (data) {
 						returnedDugga(data);
 						handleHash(data);				//Makes sure hash is unique.			
-						handleLocalStorage(data);		//Set localstorage lifespan.
+						//handleLocalStorage(data);		//Set localstorage lifespan.
 						setPassword(data['password']);	//Sets the password retrieved from query.
 					}
 				});
@@ -1189,6 +1189,16 @@ function getVariantValue(ajaxdata){
 			variantvalue = test.value;
 		}
 	}
+
+	$.ajax({ 
+		url: "showDuggaservice.php",
+		type: "POST",
+		data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +variantvalue, 
+		dataType: "json",
+		success: function (data){
+			handleLocalStorage(data);
+		}
+	});
 }
 
 //If the first generated hash isn't unique this method is recursively called until a hash is unique.
