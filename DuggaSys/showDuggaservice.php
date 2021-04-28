@@ -331,7 +331,7 @@ if(checklogin()){
 				$query->bindParam(':coursevers', $coursevers);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':moment', $moment);
-				$query->bindParam(':variant', $savedvariant);
+				$query->bindParam(':variant', $variantvalue);
 				$query->bindParam(':hash', $hash);
 				$query->bindParam(':password', $password);
 				if(!$query->execute()) {
