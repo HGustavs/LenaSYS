@@ -104,7 +104,13 @@
                     <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-            <button id="rulerSnapToGrid" style="font-size: 0.5em" onclick="toggleSnapToGrid()">Snap</button>
+            <!-- Temporary until svg element is implemented -->
+            <button id="rulerSnapToGrid" class="diagramIcons active" style="font-size: 0.5em; left: 3px;" onclick="toggleSnapToGrid()">Snap
+                <span class="toolTipText"><b>Toggle Snap To Grid</b><br>
+                    <p>Enable/disable snap to grid</p><br>
+                    <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
+                </span>
+            </button>    
         </fieldset>
     </div>
 
