@@ -515,12 +515,12 @@ const keybinds = {
         HISTORY_STEPBACK: {key: "z", ctrl: true},
         DELETE: {key: "Delete", ctrl: false},
         ESCAPE: {key: "Escape", ctrl: false},
-        BOX_SELECTION: {key: "b", ctrl: false},
-        POINTER: {key: "h", ctrl: false},
-        EDGE_CREATION: {key: "d", ctrl: false},
-        PLACE_ENTITY: {key: "e", ctrl: false},
-        PLACE_RELATION: {key: "r", ctrl: false},
-        PLACE_ATTRIBUTE: {key: "a", ctrl: false},
+        BOX_SELECTION: {key: "2", ctrl: false},
+        POINTER: {key: "1", ctrl: false},
+        EDGE_CREATION: {key: "6", ctrl: false},
+        PLACE_ENTITY: {key: "3", ctrl: false},
+        PLACE_RELATION: {key: "4", ctrl: false},
+        PLACE_ATTRIBUTE: {key: "5", ctrl: false},
         ZOOM_IN: {key: "+", ctrl: true},
         ZOOM_OUT: {key: "-", ctrl: true},
         TOGGLE_GRID: {key: "g", ctrl: false},
@@ -828,7 +828,6 @@ document.addEventListener('keydown', function (e)
             propField.blur();
             displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
         }
-       
     }
 });
 
