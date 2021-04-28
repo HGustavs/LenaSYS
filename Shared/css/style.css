@@ -3418,7 +3418,7 @@ div.reset-pw{
   width:70%;
   margin-left:20px;
   background-color: var(--color-accent);
-  color: var(--color-text-primary);
+  color: var(--color-text-primary-darker);
 }
 div.reset-pw:hover{
   background-color: var(--color-accent-hover);
