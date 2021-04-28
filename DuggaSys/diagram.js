@@ -525,6 +525,7 @@ const keybinds = {
         ZOOM_OUT: {key: "-", ctrl: true},
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
+        TOGGLE_SNAPGRID: {key: "s", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
         ENTER: {key: "Enter", ctrl: false},
         COPY: {key: "c", ctrl: true},
@@ -877,6 +878,9 @@ document.addEventListener('keyup', function (e)
         }
         if (pressedKey == keybinds.TOGGLE_RULER.key && e.ctrlKey == keybinds.TOGGLE_RULER.ctrl) {
             toggleRuler();
+        }
+        if (pressedKey == keybinds.TOGGLE_SNAPGRID.key && e.ctrlKey == keybinds.TOGGLE_SNAPGRID.ctrl) {
+            toggleSnapToGrid();
         }
         if (pressedKey == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
             fab_action();
