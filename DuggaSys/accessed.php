@@ -57,29 +57,6 @@
 	?>
 	<!-- Login Dialog END -->
 
-	<!-- Import Users Dialog START -->
-	<div id='importUsers' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox'>
-			<div class='loginBoxheader'>
-				<h3>Import users</h3>
-				<div class='cursorPointer' onclick='closeWindows();'>x</div>
-			</div>
-			<div class='note'>
-				<p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
-				<p>SSN; Firstname; Lastname; Student email; Email; PID; Status &lt;linebreak&gt;</p>
-				<p>Example:<br/>
-					"18481724-5557";"Fritfjof";"Nilsson Piraten";"a48fripi@student.his.se";"booboo@mail.nu";"WEBUG";"Avklarad"</p>
-			</div>
-			<div style='padding:5px;'>
-				<textarea id="import" ></textarea>
-			</div>
-      <div style='padding:5px;display:flex;justify-content: flex-end;'>
-        <input class='submit-button' type='button' value='Import' onclick='importUsers();' />
-      </div>
-		</div>
-	</div>
-	<!-- Import Users Dialog END -->
-
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:494px;'>
@@ -168,11 +145,6 @@
 	<div class="fixed-action-button" id="fabButtonAcc">
 		<a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
 		<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
-			<li onclick="showImportUsersPopup();" >
-							<a id="iFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Import user(s)'>
-									<img id="iFabBtnImg" class="fab-icon" src="../Shared/icons/importUser.svg">
-							</a>
-					</li>
 	        <li onclick="showCreateUserPopup();">
 							<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Create user'>
 									<img id="cFabBtnImg" class="fab-icon" src="../Shared/icons/createUser.svg">
