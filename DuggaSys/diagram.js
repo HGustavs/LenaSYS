@@ -1,7 +1,5 @@
-//------------------------------------=======############==========----------------------------------------
-//                                          Class Definitions
-//------------------------------------=======############==========----------------------------------------
-
+// =============================================================================================
+//#region ================================ CLASSES              ================================
 class Point {
     x = 0;
     y = 0;
@@ -487,27 +485,8 @@ class StateMachine
         updatepos(0, 0);
     }
 };
-
-//------------------------------------=======############==========----------------------------------------
-//                           Defaults, mouse variables and zoom variables
-//------------------------------------=======############==========----------------------------------------
-
-// Data and html building variables
-var service = [];
-var str = "";
-var defs = "";
-var container;
-
-// Interaction variables - unknown if all are needed
-var deltaX = 0, deltaY = 0, startX, startY;
-var startTop, startLeft;
-var sscrollx, sscrolly;
-var cwidth, cheight;
-var hasRecursion = false;
-var startWidth;
-var startNodeRight = false;
-var cursorStyle;
-var lastMousePos = getPoint(0,0);
+//#endregion ===================================================================================
+//#region ================================ ENUMS                ================================
 const keybinds = {
         LEFT_CONTROL: {key: "Control", ctrl: false},
         ALT: {key: "Alt", ctrl: false},
@@ -531,6 +510,80 @@ const keybinds = {
         PASTE: {key: "v", ctrl: true},
         SELECT_ALL: {key: "a", ctrl: true}
 };
+
+const mouseModes = {
+    POINTER: 0,
+    BOX_SELECTION: 1,
+    PLACING_ELEMENT: 2,
+    EDGE_CREATION: 3,
+};
+
+const elementTypes = {
+    ENTITY: 0,
+    RELATION: 1,
+    ATTRIBUTE: 2,
+    GHOSTENTITY: 3
+};
+
+const pointerStates = {
+    DEFAULT: 0,
+    CLICKED_CONTAINER: 1,
+    CLICKED_ELEMENT: 2,
+    CLICKED_NODE: 3,
+    CLICKED_LINE: 4,
+};
+
+const messageTypes = {
+    ERROR: "error",
+    WARNING: "warning",
+    SUCCESS: "success"
+};
+
+const attrState = {
+    NORMAL: "normal",
+    MULTIPLE: "multiple",
+    KEY: "key",
+    COMPUTED: "computed",
+};
+
+const entityState = {
+    NORMAL: "normal",
+    WEAK: "weak",
+
+};
+
+const relationState = {
+    NORMAL: "normal",
+    WEAK: "weak",
+};
+
+const lineKind = {
+    NORMAL: "Normal",
+    DOUBLE: "Double"
+};
+
+const lineCardinalitys = {
+    MANY: "N",
+    ONE: "1"
+};
+//#endregion ===================================================================================
+//#region ================================ GLOBAL VARIABLES     ================================
+// Data and html building variables
+var service = [];
+var str = "";
+var defs = "";
+var container;
+
+// Interaction variables - unknown if all are needed
+var deltaX = 0, deltaY = 0, startX, startY;
+var startTop, startLeft;
+var sscrollx, sscrolly;
+var cwidth, cheight;
+var hasRecursion = false;
+var startWidth;
+var startNodeRight = false;
+var cursorStyle;
+var lastMousePos = getPoint(0,0);
 
 // Zoom variables
 var zoomfact = 1.0;
@@ -584,31 +637,13 @@ var boxSelectionInUse = false;
 var propFieldState = false;
 
 // What kind of input mode that user is uing the cursor for.
-const mouseModes = {
-    POINTER: 0,
-    BOX_SELECTION: 1,
-    PLACING_ELEMENT: 2,
-    EDGE_CREATION: 3,
-};
+
 var mouseMode = mouseModes.POINTER;
 var previousMouseMode;
 
 // All different element types that can be placed by the user.
-const elementTypes = {
-    ENTITY: 0,
-    RELATION: 1,
-    ATTRIBUTE: 2,
-    GHOSTENTITY: 3
-};
-var elementTypeSelected = elementTypes.ENTITY;
 
-const pointerStates = {
-    DEFAULT: 0,
-    CLICKED_CONTAINER: 1,
-    CLICKED_ELEMENT: 2,
-    CLICKED_NODE: 3,
-    CLICKED_LINE: 4,
-};
+var elementTypeSelected = elementTypes.ENTITY;
 var pointerState = pointerStates.DEFAULT;
 
 var movingObject = false;
@@ -618,79 +653,8 @@ var isRulerActive = true;
 //Grid Settings
 var gridSize = 100;
 var snapToGrid = false;
-
 var randomidArray = []; // array for checking randomID
 var errorMsgMap = {};
-
-const messageTypes = {
-    ERROR: "error",
-    WARNING: "warning",
-    SUCCESS: "success"
-};
-//-------------------------------------------------------------------------------------------------
-// makeRandomID - Random hex number
-//-------------------------------------------------------------------------------------------------
-
-function makeRandomID()
-{
-    var str = "";
-    var characters = 'ABCDEF0123456789';
-    var charactersLength = characters.length;
-    while(true) {
-        for (var i = 0; i < 6; i++) {
-            str += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        
-        if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
-            randomidArray.push(str);
-            return str;
-
-        } else {
-            var check = randomidArray.includes(str); //if check is true the id already exists
-            if(check == true){
-                str = "";
-            } else {
-                randomidArray.push(str);
-                return str;
-            }
-        }
-    }
-}
-
-// Save default to model - updating defaults sets property to all of model
-var defaults = {
-    defaultERtentity: { kind: "EREntity", fill: "White", Stroke: "Black", width: 200, height: 50 },
-    defaultERrelation: { kind: "ERRelation", fill: "White", Stroke: "Black", width: 60, height: 60 },
-    defaultERattr: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 },
-    defaultGhost: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 5, height: 5 }
-}
-
-// States used for ER-elements 
-const attrState = {
-    NORMAL: "normal",
-    MULTIPLE: "multiple",
-    KEY: "key",
-    COMPUTED: "computed",
-};
-const entityState = {
-    NORMAL: "normal",
-    WEAK: "weak",
-
-};
-const relationState = {
-    NORMAL: "normal",
-    WEAK: "weak",
-};
-
-const lineKind = {
-    NORMAL: "Normal",
-    DOUBLE: "Double"
-};
-
-const lineCardinalitys = {
-    MANY: "N",
-    ONE: "1"
-};
 
 // Demo data - read / write from service later on
 var data = [];
@@ -699,8 +663,16 @@ var lines = [];
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
 var ghostLine = null;
-
-// Setup function for static preloaded example elements and lines.
+//#endregion ===================================================================================
+//#region ================================ DEFAULTS             ================================
+var defaults = {
+    defaultERtentity: { kind: "EREntity", fill: "White", Stroke: "Black", width: 200, height: 50 },
+    defaultERrelation: { kind: "ERRelation", fill: "White", Stroke: "Black", width: 60, height: 60 },
+    defaultERattr: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 },
+    defaultGhost: { kind: "ERAttr", fill: "White", Stroke: "Black", width: 5, height: 5 }
+}
+//#endregion ===================================================================================
+//#region ================================ INIT AND SETUP       ================================
 function onSetup()
 {
     const PersonID = makeRandomID();
@@ -752,31 +724,30 @@ function onSetup()
     stateMachine = new StateMachine(data, lines);
 }
 
-//------------------------------------=======############==========----------------------------------------
-//                                        Getters and Setters
-//------------------------------------=======############==========----------------------------------------
-// Adds object to the dataArray
-function addObjectToData(object, stateMachineShouldSave = true)
+function getData()
 {
-    data.push(object);
-    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object));
+    container = document.getElementById("container");
+    onSetup();
+    showdata();
+    drawRulerBars();
+    generateToolTips();
+    toggleGrid();
+    updateGridPos();
+    setCursorStyles(mouseMode);
 }
 
-// Adds object to the line-array
-function addObjectToLines(object, stateMachineShouldSave = true)
+function data_returned(ret)
 {
-    lines.push(object);
-    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(object));
+    if (typeof ret.data !== "undefined") {
+        service = ret;
+        showdata();
+    } else {
+        alert("Error receiveing data!");
+    }
 }
-
-// Return all lines
-function getLines()
-{
-    return lines;
-}
-//------------------------------------=======############==========----------------------------------------
-//                                        Key event listeners
-//------------------------------------=======############==========----------------------------------------
+//#endregion ===================================================================================
+//#region ================================ EVENTS               ================================
+// --------------------------------------- Window Events    --------------------------------
 document.addEventListener('keydown', function (e)
 {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
@@ -905,54 +876,7 @@ window.onfocus = function()
     altPressed=false;
 }
 
-//------------------------------------=======############==========----------------------------------------
-//                              Coordinate-Screen Position Conversion
-//------------------------------------=======############==========----------------------------------------
-
-function screenToDiagramCoordinates(mouseX, mouseY)
-{
-    // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
-    // These are the constant values that the expression should spit out anyway. If you add more zoom levels please do not come to us.
-    // We're tired.
-
-    // We found out that the relation between 0.125 -> 4 and 0.36->-64 looks like an X^2 equation.
-    var zoomX = 0;
-
-    // ZOOM IN
-    if (zoomfact == 1.25) zoomX = zoom1_25;
-    if (zoomfact == 1.5) zoomX = zoom1_5;
-    if (zoomfact == 2) zoomX = zoom2;
-    if (zoomfact == 4) zoomX = zoom4;
-
-    // ZOOM OUT
-    if (zoomfact == 0.75) zoomX = zoom0_75;
-    if (zoomfact == 0.5) zoomX = zoom0_5;
-    if (zoomfact == 0.25) zoomX = zoom0_25;
-    if (zoomfact == 0.125) zoomX = zoom0_125;
-
-    return {
-        x: Math.round(
-            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x // the 2 makes mouse hover over container
-        ),
-        y: Math.round(
-            ((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y
-        ),
-    };
-}
-
-// TODO : This is still the old version, needs update
-function diagramToScreenPosition(coordX, coordY)
-{
-    return {
-        x: Math.round((coordX + scrollx) / zoomfact + 0),
-        y: Math.round((coordY + scrolly) / zoomfact + 0),
-    };
-}
-
-//------------------------------------=======############==========----------------------------------------
-//                                           Mouse events
-//------------------------------------=======############==========----------------------------------------
-
+// --------------------------------------- Mouse Events    --------------------------------
 function mwheel(event)
 {
     if(event.deltaY < 0) {
@@ -1384,10 +1308,453 @@ function mmoving(event)
     setRulerPosition(event.clientX, event.clientY);
 }
 
+//#endregion ===================================================================================
+//#region ================================ ELEMENT MANIPULATION ================================
+function makeRandomID()
+{
+    var str = "";
+    var characters = 'ABCDEF0123456789';
+    var charactersLength = characters.length;
+    while(true) {
+        for (var i = 0; i < 6; i++) {
+            str += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        
+        if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
+            randomidArray.push(str);
+            return str;
 
-//------------------------------------=======############==========----------------------------------------
-//                                         Helper functions
-//------------------------------------=======############==========----------------------------------------
+        } else {
+            var check = randomidArray.includes(str); //if check is true the id already exists
+            if(check == true){
+                str = "";
+            } else {
+                randomidArray.push(str);
+                return str;
+            }
+        }
+    }
+}
+
+function findIndex(arr, id)
+{
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i].id == id) return i;
+    }
+    return -1;
+}
+
+// Adds object to the dataArray
+function addObjectToData(object, stateMachineShouldSave = true)
+{
+    data.push(object);
+    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object));
+}
+
+// Adds object to the line-array
+function addObjectToLines(object, stateMachineShouldSave = true)
+{
+    lines.push(object);
+    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(object));
+}
+
+//Function to remove elemets and lines
+function removeElements(elementArray, stateMachineShouldSave = true)
+{
+    // Find all lines that should be deleted first
+    var linesToRemove = [];
+    var elementsToRemove = [];
+
+    for (var i = 0; i < elementArray.length; i++) { // Find VALID items to remove
+        linesToRemove = linesToRemove.concat(lines.filter(function(line) {
+            return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
+        }));
+        elementsToRemove = elementsToRemove.concat(data.filter(function(element) {
+            return element == elementArray[i];
+        }));
+    }
+
+    if (elementsToRemove.length > 0) { // If there are elements to remove
+        if (linesToRemove.length > 0) { // If there are also lines to remove
+            removeLines(linesToRemove, false);
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
+        } else { // Only removed elements without any lines
+            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
+        }
+
+        data = data.filter(function(element) { // Delete elements
+            return !elementsToRemove.includes(element);
+        });
+    } else { // All passed items were INVALID
+        console.error("Invalid element array passed to removeElements()!");
+    }
+
+    clearContext();
+    redrawArrows();
+    showdata();
+}
+
+//Function to remove selected lines
+function removeLines(linesArray, stateMachineShouldSave = true)
+{
+    var anyRemoved = false;
+    for (var i = 0; i < linesArray.length; i++) {
+        lines = lines.filter(function(line) {
+            var shouldRemove = (line != linesArray[i]);
+            if (shouldRemove) {
+                anyRemoved = true;
+            }
+            return shouldRemove;
+        });
+    }
+
+    if (stateMachineShouldSave && anyRemoved) { 
+        stateMachine.save(StateChangeFactory.LinesRemoved(linesArray));
+    }
+    
+    contextLine = [];
+    redrawArrows();
+    showdata();
+}
+
+// Return all lines
+function getLines()
+{
+    return lines;
+}
+
+function makeGhost()
+{
+    var entityType = constructElementOfType(elementTypeSelected);
+    var typeNames = Object.getOwnPropertyNames(elementTypes);
+    var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
+    ghostElement = {
+        name: typeNames[elementTypeSelected],
+        x: lastMouseCoords.x - entityType.data.width * 0.5,
+        y: lastMouseCoords.y - entityType.data.height * 0.5,
+        width: entityType.data.width,
+        height: entityType.data.height,
+        kind: entityType.data.kind,
+        id: makeRandomID()
+    };
+
+    showdata();
+}
+
+function constructElementOfType(type)
+{
+    var elementTemplates = [
+        {data: defaults.defaultERtentity, name: "Entity"},
+        {data: defaults.defaultERrelation, name: "Relation"},
+        {data: defaults.defaultERattr, name: "Attribute"},
+        {data: defaults.defaultGhost, name: "Ghost"}
+    ]
+
+    if (enumContainsPropertyValue(type, elementTypes)){
+        return elementTemplates[type];
+    }
+}
+
+function changeState() 
+{
+    var property = document.getElementById("propertySelect").value;
+    var element = context[0];
+    element.state = property;
+}
+
+function saveProperties() 
+{
+    const propSet = document.getElementById("propertyFieldset");
+    const element = context[0];
+    const children = propSet.children;
+
+    var propsChanged = {};
+
+    for (var index = 0; index < children.length; index++) {
+        const child = children[index];
+        const propName = child.id.split(`_`)[1];
+
+        switch (propName) {
+            case "name":
+                const value = child.value.trim();
+                if (value && value.length > 0) {
+                    element[propName] = value;
+                    propsChanged.elementName = value;
+                }
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged));
+    showdata();
+    updatepos(0,0);
+}
+
+function changeLineProperties()
+{
+    // Set lineKind
+    var radio1  = document.getElementById("lineRadio1");
+    var radio2 = document.getElementById("lineRadio2");
+    var line = contextLine[0];
+
+    if(radio1.checked) {
+        line.kind = radio1.value;
+    } else {
+        line.kind = radio2.value;
+    }
+
+    // Change line - cardinality
+    var cFromValue = document.getElementById('propertyCardinalityFrom').value;
+    var cToValue = document.getElementById('propertyCardinalityTo').value;
+
+
+
+    // If both are none, remove the key from line object
+    if (cToValue == "" && cFromValue == ""){
+        delete line.cardinality;
+    } else {
+        line.cardinality = {
+            from: cFromValue,
+            to: cToValue
+        }
+    }
+
+    showdata();
+}
+
+function updateSelectedLine(selectedLine)
+{
+    // This function works almost exaclty as updateSelection but for lines instead.
+
+    // If CTRL is pressed and an element is selected
+    if(selectedLine != null && ctrlPressed && !contextLine.includes(selectedLine)) {
+        contextLine.push(selectedLine);
+
+    // If ALT is pressed while selecting a line -> deselects that line
+    } else if(selectedLine != null && altPressed) {
+
+        if (contextLine.includes(selectedLine)) {    
+            contextLine = contextLine.filter(function (line) 
+            {
+                return line !== selectedLine;
+            });
+        }
+    }
+    // If CTRL is not pressed and a element has been selected.
+    else if (selectedLine != null && !ctrlPressed) {
+        // Element not already in context
+        if (!contextLine.includes(selectedLine) && contextLine.length < 1) {
+            contextLine.push(selectedLine);
+        } else {
+            contextLine = [];
+            contextLine.push(selectedLine);
+        }
+    } else if (!altPressed && !ctrlPressed ) {
+      
+        contextLine = [];
+    }
+    
+    generateContextProperties();
+}
+
+function updateSelection(ctxelement)
+{
+    // If CTRL is pressed and an element is selected
+    if (ctrlPressed && ctxelement != null) {
+        // The element is not already selected
+        if (!context.includes(ctxelement)) {
+            context.push(ctxelement);
+        }
+        // The element is already selected
+    } else if (altPressed && ctxelement != null) {
+        if (context.includes(ctxelement)) {
+            context = context.filter(function (element)
+            {
+                return element !== ctxelement;
+            });
+        }
+    }
+    // If CTRL is not pressed and a element has been selected.
+    else if (ctxelement != null) {
+        // Element not already in context
+        if (!context.includes(ctxelement) && context.length < 1) {
+            context.push(ctxelement);
+        } else {
+            if (mouseMode != mouseModes.EDGE_CREATION) {
+                clearContext();
+            }
+            context.push(ctxelement);
+        }
+    } else if (!altPressed && !ctrlPressed) {
+        clearContext();
+    }
+
+    // Generate the properties field in options-pane
+    generateContextProperties();
+}
+
+function selectAll()
+{   
+    context = data;
+    contextLine = lines;
+    showdata();
+}
+
+function pasteClipboard(elements)
+{
+
+    // If elements does is empty, display error and return null
+    if(elements.length == 0){
+        displayMessage("error", "You do not have any copied elements");
+        return;
+    }
+
+    /*
+    * Calculate the coordinate for the top-left pos (x1, y1)
+    * and the coordinate for the bottom-right (x2, y2)
+    * */
+    var x1, x2, y1, y2;
+    elements.forEach(element => {
+        if (element.x < x1 || x1 === undefined) x1 = element.x;
+        if (element.y < y1 || y1 === undefined) y1 = element.y;
+        if ((element.x + element.width) > x2 || x2 === undefined) x2 = (element.x + element.width);
+        if ((element.y + element.height) > y2 || y2 === undefined) y2 = (element.y + element.height);
+    });
+
+    var cx = (x2 - x1) / 2;
+    var cy = (y2 - y1) / 2;
+    var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
+
+    // Get all lines
+    var allLines = getLines();
+    var connectedLines = [];
+
+    // Filter - keeps only the lines that are connectet to and from selected elements.
+    allLines = allLines.filter(line => {
+        return (elements.filter(element => {
+            return line.toID == element.id || line.fromID == element.id
+        })).length > 1
+    });
+
+    /*
+    * For every line that shall be copied, create a temp object,
+    * for kind and connection tracking
+    * */
+    allLines.forEach(line => {
+        var temp = {
+            id: line.id,
+            fromID: line.fromID,
+            toID: line.toID,
+            kind: line.kind
+        }
+        connectedLines.push(temp);
+    });
+
+    // An mapping between oldElement ID and the new element ID
+    var idMap = {};
+
+    var newElements = [];
+    var newLines = [];
+
+    // For every copied element create a new one and add to data
+    elements.forEach(element => {
+        // Make a new id and save it in an object
+        idMap[element.id] = makeRandomID();
+
+        connectedLines.forEach(line => {
+            if (line.fromID == element.id) line.fromID = idMap[element.id];
+            else if (line.toID == element.id) line.toID = idMap[element.id];
+        });
+
+        // Create the new object
+        var elementObj = {
+            name: element.name,
+            x: mousePosInPixels.x + (element.x - x1),
+            y: mousePosInPixels.y + (element.y - y1),
+            width: element.width,
+            height: element.height,
+            kind: element.kind,
+            id: idMap[element.id],
+            state: element.state
+        };
+        newElements.push(elementObj)
+        addObjectToData(elementObj, false);
+    });
+
+    // Create the new lines but do not saved in stateMachine
+    connectedLines.forEach(line => {
+        newLines.push(
+            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false)
+        );
+    });
+
+    // Save the copyed elements to stateMachine
+    stateMachine.save(StateChangeFactory.ElementsAndLinesCreated(newElements, newLines));
+    displayMessage(messageTypes.SUCCESS, `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
+    clearContext(); // Deselect old selected elements
+    context = newElements; // Set context to the pasted elements
+    showdata();
+}
+
+function clearContext()
+{
+    if(context != null){
+        context = [];
+        generateContextProperties();
+    }
+}
+
+function clearContextLine()
+{
+    if(contextLine != null){
+        contextLine = [];
+        generateContextProperties();
+    }
+}
+//#endregion ===================================================================================
+//#region ================================ HELPER FUNCTIONS     ================================
+function screenToDiagramCoordinates(mouseX, mouseY)
+{
+    // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
+    // These are the constant values that the expression should spit out anyway. If you add more zoom levels please do not come to us.
+    // We're tired.
+
+    // We found out that the relation between 0.125 -> 4 and 0.36->-64 looks like an X^2 equation.
+    var zoomX = 0;
+
+    // ZOOM IN
+    if (zoomfact == 1.25) zoomX = zoom1_25;
+    if (zoomfact == 1.5) zoomX = zoom1_5;
+    if (zoomfact == 2) zoomX = zoom2;
+    if (zoomfact == 4) zoomX = zoom4;
+
+    // ZOOM OUT
+    if (zoomfact == 0.75) zoomX = zoom0_75;
+    if (zoomfact == 0.5) zoomX = zoom0_5;
+    if (zoomfact == 0.25) zoomX = zoom0_25;
+    if (zoomfact == 0.125) zoomX = zoom0_125;
+
+    return {
+        x: Math.round(
+            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x // the 2 makes mouse hover over container
+        ),
+        y: Math.round(
+            ((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y
+        ),
+    };
+}
+
+// TODO : This is still the old version, needs update
+function diagramToScreenPosition(coordX, coordY)
+{
+    return {
+        x: Math.round((coordX + scrollx) / zoomfact + 0),
+        y: Math.round((coordY + scrolly) / zoomfact + 0),
+    };
+}
 
 // Returns TRUE if an enum contains the tested value
 function enumContainsPropertyValue(value, enumObject) 
@@ -1446,28 +1813,27 @@ function rectsIntersect (left, right)
     );
 }
 
-function makeGhost()
+function setPos(id, x, y)
 {
-    var entityType = constructElementOfType(elementTypeSelected);
-    var typeNames = Object.getOwnPropertyNames(elementTypes);
-    var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
-    ghostElement = {
-        name: typeNames[elementTypeSelected],
-        x: lastMouseCoords.x - entityType.data.width * 0.5,
-        y: lastMouseCoords.y - entityType.data.height * 0.5,
-        width: entityType.data.width,
-        height: entityType.data.height,
-        kind: entityType.data.kind,
-        id: makeRandomID()
-    };
+    foundId = findIndex(data, id);
+    if (foundId != -1) {
+        var obj = data[foundId];
+        if(snapToGrid){
+            // Calculate nearest snap point
+            obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / gridSize) * gridSize;
+            obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / gridSize) * gridSize;
 
-    showdata();
+            // Set the new snap point to center of element
+            obj.x -= obj.width/2
+            obj.y -= obj.height/2;
+        }else {
+            obj.x -= (x / zoomfact);
+            obj.y -= (y / zoomfact);
+        }
+    }
 }
-
-//------------------------------------=======############==========----------------------------------------
-//                                           Mouse Modes
-//------------------------------------=======############==========----------------------------------------
-
+//#endregion =====================================================================================
+//#region ================================ MOUSE MODE FUNCS     ================================
 function setMouseMode(mode)
 {   
     if (enumContainsPropertyValue(mode, mouseModes)) {
@@ -1561,69 +1927,7 @@ function onMouseModeDisabled()
     }
 }
 
-//Function to enable or disable backgroundgrid.
-function toggleGrid()
-{
-    var grid = document.getElementById("svggrid");
-
-    // Toggle active class on button
-    document.getElementById("gridToggle").classList.toggle("active");
-
-    if (grid.style.display == "block") {
-        grid.style.display = "none";
-     } else {
-        grid.style.display = "block";
-   }
-}
-
-function toggleSnapToGrid()
-{
-    // Toggle active class on button
-    document.getElementById("rulerSnapToGrid").classList.toggle("active");
-
-    // Toggle the boolean
-    snapToGrid = !snapToGrid;
-}
-function toggleRuler()
-{
-    var ruler = document.getElementById("rulerOverlay");
-  
-    // Toggle active class on button
-    document.getElementById("rulerToggle").classList.toggle("active");
-
-  if(isRulerActive){
-        ruler.style.display = "none";
-    } else {
-        ruler.style.display = "block";
-    }
-  
-    isRulerActive = !isRulerActive;
-    drawRulerBars();
-}
-
-function setElementPlacementType(type = 0)
-{
-    elementTypeSelected = type;
-}
-
-function constructElementOfType(type)
-{
-    var elementTemplates = [
-        {data: defaults.defaultERtentity, name: "Entity"},
-        {data: defaults.defaultERrelation, name: "Relation"},
-        {data: defaults.defaultERattr, name: "Attribute"},
-        {data: defaults.defaultGhost, name: "Ghost"}
-    ]
-
-    if (enumContainsPropertyValue(type, elementTypes)){
-        return elementTemplates[type];
-    }
-}
-
-//------------------------------------=======############==========----------------------------------------
-//                                       Box Select functions
-//------------------------------------=======############==========----------------------------------------
-
+// --------------------------------------- Box Selection    --------------------------------
 // Returns all elements touching the coordinate box
 function getElementsInsideCoordinateBox(selectionRect)
 {
@@ -1767,25 +2071,52 @@ function boxSelect_Draw(str)
     
     return str;
 }
-
-function fab_action()
+//#endregion =====================================================================================
+//#region ================================ GUI                  ==================================
+function toggleGrid()
 {
-    if (document.getElementById("options-pane").className == "show-options-pane") {
-        document.getElementById('optmarker').innerHTML = "&#9660;Options";
-        document.getElementById("options-pane").className = "hide-options-pane";
-    } else {
-        document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
-        document.getElementById("options-pane").className = "show-options-pane";
-    }
+    var grid = document.getElementById("svggrid");
+
+    // Toggle active class on button
+    document.getElementById("gridToggle").classList.toggle("active");
+
+    if (grid.style.display == "block") {
+        grid.style.display = "none";
+     } else {
+        grid.style.display = "block";
+   }
 }
 
-//------------------------------------=======############==========----------------------------------------
-//                                           Zoom handling
-//------------------------------------=======############==========----------------------------------------
+function toggleSnapToGrid()
+{
+    // Toggle active class on button
+    document.getElementById("rulerSnapToGrid").classList.toggle("active");
 
-//-------------------------------------------------------------------------------------------------
-// zoomin/out - functions for updating the zoom factor and scroll positions
-//-------------------------------------------------------------------------------------------------
+    // Toggle the boolean
+    snapToGrid = !snapToGrid;
+}
+
+function toggleRuler()
+{
+    var ruler = document.getElementById("rulerOverlay");
+  
+    // Toggle active class on button
+    document.getElementById("rulerToggle").classList.toggle("active");
+
+  if(isRulerActive){
+        ruler.style.display = "none";
+    } else {
+        ruler.style.display = "block";
+    }
+  
+    isRulerActive = !isRulerActive;
+    drawRulerBars();
+}
+
+function setElementPlacementType(type = 0)
+{
+    elementTypeSelected = type;
+}
 
 function zoomin(scrollEvent = undefined)
 {
@@ -1872,441 +2203,6 @@ function zoomout(scrollEvent = undefined)
 
     // Draw new rules to match the new zoomfact
     drawRulerBars();
-}
-
-//-------------------------------------------------------------------------------------------------
-// findIndex - Returns index of object with certain ID
-//-------------------------------------------------------------------------------------------------
-
-function findIndex(arr, id)
-{
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i].id == id) return i;
-    }
-    return -1;
-}
-
-//-------------------------------------------------------------------------------------------------
-// Finds and sets an element's position
-//-------------------------------------------------------------------------------------------------
-function setPos(id, x, y)
-{
-    foundId = findIndex(data, id);
-    if (foundId != -1) {
-        var obj = data[foundId];
-        if(snapToGrid){
-            // Calculate nearest snap point
-            obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / gridSize) * gridSize;
-            obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / gridSize) * gridSize;
-
-            // Set the new snap point to center of element
-            obj.x -= obj.width/2
-            obj.y -= obj.height/2;
-        }else {
-            obj.x -= (x / zoomfact);
-            obj.y -= (y / zoomfact);
-        }
-    }
-}
-
-//-------------------------------------------------------------------------------------------------
-// Showdata iterates over all diagram elements
-//-------------------------------------------------------------------------------------------------
-
-// Generate all courses at appropriate zoom level
-function showdata()
-{
-    updateContainerBounds();
-
-    var str = "";
-    var courses = [];
-
-    // Iterate over programs
-    for (var i = 0; i < data.length; i++) {
-        str += drawElement(data[i]);
-    }
-
-    if (ghostElement) {
-        str += drawElement(ghostElement, true);
-    }
-
-    container.innerHTML = str;
-    updatepos(null, null);
-
-}
-//-------------------------------------------------------------------------------------------------
-// addLine - Adds an new line if the requirements and rules are achieved
-//-------------------------------------------------------------------------------------------------
-function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
-    // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
-    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
-
-        // Filter the existing lines and gets the number of existing lines
-        var numOfExistingLines = lines.filter(function (line) {
-            return (fromElement.id === line.fromID &&
-                    toElement.id === line.toID ||
-                    fromElement.id === line.toID &&
-                    toElement.id === line.fromID)
-                    }).length;
-
-        // Define a boolean for special case that relation and entity can have 2 lines
-        var specialCase = (fromElement.kind === "ERRelation" &&
-                            toElement.kind === "EREntity" ||
-                            fromElement.kind === "EREntity" &&
-                            toElement.kind === "ERRelation");
-
-        // If there is no existing lines or is a special case
-        if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
-
-            var newLine = {
-                id: makeRandomID(),
-                fromID: fromElement.id,
-                toID: toElement.id,
-                kind: kind
-            };
-            
-            addObjectToLines(newLine);
-            
-            displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
-            return newLine;
-            
-        } else {
-            displayMessage(messageTypes.ERROR,`Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
-        }
-    } else {
-        displayMessage(messageTypes.ERROR, `Not possible to draw a line between two: ${fromElement.kind} elements`);
-    }
-}
-
-function drawElement(element, ghosted = false)
-{
-    var str = "";
-
-    // Compute size variables
-    var linew = Math.round(strokewidth * zoomfact);
-    var boxw  = Math.round(element.width * zoomfact);
-    var boxh  = Math.round(element.height * zoomfact);
-    var texth = Math.round(zoomfact * textheight);
-    var hboxw = Math.round(element.width * zoomfact * 0.5);
-    var hboxh = Math.round(element.height * zoomfact * 0.5);
-
-    canvas = document.getElementById('canvasOverlay');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    canvasContext = canvas.getContext('2d');
-
-    // Caclulate font width using some canvas magic
-    var font = canvasContext.font;
-    font = `${texth}px ${font.split('px')[1]}`;
-    canvasContext.font = font;
-    var textWidth = canvasContext.measureText(element.name).width;
-    
-    // If calculated size is larger than element width
-    const margin = 10;
-    var tooBig = (textWidth >= (boxw - (margin * 2)))
-    var xAnchor = tooBig ? margin : hboxw;
-    var vAlignment = tooBig ? "left" : "middle";
-
-    // Create div & svg element
-    str += `
-				<div id='${element.id}'	class='element' onmousedown='ddown(event);' style='
-						left:0px;
-						top:0px;
-						width:${boxw}px;
-						height:${boxh}px;
-						font-size:${texth}px;`;
-    if (ghosted) {
-        str += `
-            pointer-events: none;
-            opacity: ${ghostLine ? 0 : 0.5};
-        `;
-    }
-    str += `'>`;
-    str += `<svg width='${boxw}' height='${boxh}' >`;
-
-    // Create svg 
-    if (element.kind == "EREntity") {
-        var weak = "";
-
-        if(element.state == "weak") {
-            weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
-            stroke-width='${linew}' stroke='black' fill='#ffccdc' /> 
-            `;         
-        }
-        
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-                   stroke-width='${linew}' stroke='black' fill='#ffccdc' />
-                   ${weak}
-                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
-                   `;
-    }
-    else if (element.kind == "ERAttr") {
-        var dash = "";
-        var multi = "";
-
-        if (element.state == "computed") {
-            dash = "stroke-dasharray='4 4'";
-        }
-        if (element.state == "multiple") {
-            multi = `
-                    <path d="M${linew * multioffs},${hboxh} 
-                    Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
-                    Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
-                    Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
-                    Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
-                    stroke='black' fill='#ffccdc' stroke-width='${linew}' />`;
-        }
-
-        str += `<path d="M${linew},${hboxh} 
-                           Q${linew},${linew} ${hboxw},${linew} 
-                           Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
-                           Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
-                           Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                    stroke='black' fill='#ffccdc' ${dash} stroke-width='${linew}' />
-                    
-                    ${multi}
-
-                    <text x='${xAnchor}' y='${hboxh}' `;
-
-        if(element.state == "key") {
-            str += `class='underline'`;
-        }    
-            str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-            `;
-    }
-    else if (element.kind == "ERRelation") {
-        var weak = "";
-        if (element.state == "weak") {
-
-            weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
-                stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
-                `;
-        }
-        str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
-                   stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
-                   ${weak}
-                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-                   `;
-
-    }
-    str += "</svg>"
-    str += "</div>";
-    return str;
-}
-
-
-//-------------------------------------------------------------------------------------------------
-// updateselection - Update context according to selection parameters or clicked element
-//-------------------------------------------------------------------------------------------------
-function updateSelectedLine(selectedLine)
-{
-    // This function works almost exaclty as updateSelection but for lines instead.
-
-    // If CTRL is pressed and an element is selected
-    if(selectedLine != null && ctrlPressed && !contextLine.includes(selectedLine)) {
-        contextLine.push(selectedLine);
-
-    // If ALT is pressed while selecting a line -> deselects that line
-    } else if(selectedLine != null && altPressed) {
-
-        if (contextLine.includes(selectedLine)) {    
-            contextLine = contextLine.filter(function (line) 
-            {
-                return line !== selectedLine;
-            });
-        }
-    }
-    // If CTRL is not pressed and a element has been selected.
-    else if (selectedLine != null && !ctrlPressed) {
-        // Element not already in context
-        if (!contextLine.includes(selectedLine) && contextLine.length < 1) {
-            contextLine.push(selectedLine);
-        } else {
-            contextLine = [];
-            contextLine.push(selectedLine);
-        }
-    } else if (!altPressed && !ctrlPressed ) {
-      
-        contextLine = [];
-    }
-    
-    generateContextProperties();
-}
-
-function updateSelection(ctxelement)
-{
-    // If CTRL is pressed and an element is selected
-    if (ctrlPressed && ctxelement != null) {
-        // The element is not already selected
-        if (!context.includes(ctxelement)) {
-            context.push(ctxelement);
-        }
-        // The element is already selected
-    } else if (altPressed && ctxelement != null) {
-        if (context.includes(ctxelement)) {
-            context = context.filter(function (element)
-            {
-                return element !== ctxelement;
-            });
-        }
-    }
-    // If CTRL is not pressed and a element has been selected.
-    else if (ctxelement != null) {
-        // Element not already in context
-        if (!context.includes(ctxelement) && context.length < 1) {
-            context.push(ctxelement);
-        } else {
-            if (mouseMode != mouseModes.EDGE_CREATION) {
-                clearContext();
-            }
-            context.push(ctxelement);
-        }
-    } else if (!altPressed && !ctrlPressed) {
-        clearContext();
-    }
-
-    // Generate the properties field in options-pane
-    generateContextProperties();
-}
-
-function selectAll()
-{   
-    context = data;
-    contextLine = lines;
-    showdata();
-}
-
-//-------------------------------------------------------------------------------------------------
-// updatepos - Update positions of all elements based on the zoom level and view space coordinate
-//-------------------------------------------------------------------------------------------------
-
-function updatepos(deltaX, deltaY)
-{
-    updateCSSForAllElements();
-
-    // Update svg backlayer -- place everyhing to draw OVER elements here
-    var str = "";
-    str = redrawArrows(str);
-    document.getElementById("svgbacklayer").innerHTML=str;
-
-    // Update svg overlay -- place everyhing to draw OVER elements here
-    str = "";
-    str = boxSelect_Draw(str);
-
-    document.getElementById("svgoverlay").innerHTML=str;
-
-    // Updates nodes for resizing
-    removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER) addNodes(context[0]);
-
-    str = drawSelectionBox(str);
-    document.getElementById("svgoverlay").innerHTML = str;
-
-}
-
-function updateContainerBounds()
-{
-    var containerbox = container.getBoundingClientRect();
-    cwidth = containerbox.width;
-    cheight = containerbox.height;
-}
-
-function drawSelectionBox(str)
-{
-    if (context.length != 0) {
-        var lowX = context[0].x1;
-        var highX = context[0].x2;
-        var x1;
-        var x2;
-        var lowY = context[0].y1;
-        var highY = context[0].y2;
-        var y1;
-        var y2;
-        for (var i = 0; i < context.length; i++) {
-            x1 = context[i].x1;
-            x2 = context[i].x2;
-            y1 = context[i].y1;
-            y2 = context[i].y2;
-            if (x1 < lowX) lowX = x1;
-            if (x2 > highX) highX = x2;
-            if (y1 < lowY) lowY = y1;
-            if (y2 > highY) highY = y2;
-        }
-
-        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
-    }
-
-    return str;
-}
-
-function saveProperties() 
-{
-    const propSet = document.getElementById("propertyFieldset");
-    const element = context[0];
-    const children = propSet.children;
-
-    var propsChanged = {};
-
-    for (var index = 0; index < children.length; index++) {
-        const child = children[index];
-        const propName = child.id.split(`_`)[1];
-
-        switch (propName) {
-            case "name":
-                const value = child.value.trim();
-                if (value && value.length > 0) {
-                    element[propName] = value;
-                    propsChanged.elementName = value;
-                }
-                break;
-        
-            default:
-                break;
-        }
-    }
-
-    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged));
-    showdata();
-    updatepos(0,0);
-}
-
-function changeState() 
-{
-    var property = document.getElementById("propertySelect").value;
-    var element = context[0];
-    element.state = property;
-}
-
-function changeLineProperties()
-{
-    // Set lineKind
-    var radio1  = document.getElementById("lineRadio1");
-    var radio2 = document.getElementById("lineRadio2");
-    var line = contextLine[0];
-
-    if(radio1.checked) {
-        line.kind = radio1.value;
-    } else {
-        line.kind = radio2.value;
-    }
-
-    // Change line - cardinality
-    var cFromValue = document.getElementById('propertyCardinalityFrom').value;
-    var cToValue = document.getElementById('propertyCardinalityTo').value;
-
-
-
-    // If both are none, remove the key from line object
-    if (cToValue == "" && cFromValue == ""){
-        delete line.cardinality;
-    } else {
-        line.cardinality = {
-            from: cFromValue,
-            to: cToValue
-        }
-    }
-
-    showdata();
 }
 
 function propFieldSelected(isSelected)
@@ -2419,113 +2315,131 @@ function generateContextProperties()
     propSet.innerHTML = str;
 }
 
-function updateCSSForAllElements()
+function fab_action()
 {
-    function updateElementDivCSS(elementData, divObject, useDelta = false)
-    {
-        var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
-            top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
-
-        if (useDelta){
-            left -= deltaX;
-            top -= deltaY;
-        }
-
-        if(snapToGrid && useDelta){
-            // The element coordinates with snap point
-            var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / gridSize) * gridSize;
-            var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / gridSize) * gridSize;
-
-            // Add the scroll values
-            left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-            top = Math.round(((objY - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
-
-            // Set the new snap point to center of element
-            left -= ((elementData.width * zoomfact) / 2);
-            top -= ((elementData.height * zoomfact) / 2);
-        }
-
-        divObject.style.left = left + "px";
-        divObject.style.top = top + "px";
+    if (document.getElementById("options-pane").className == "show-options-pane") {
+        document.getElementById('optmarker').innerHTML = "&#9660;Options";
+        document.getElementById("options-pane").className = "hide-options-pane";
+    } else {
+        document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
+        document.getElementById("options-pane").className = "show-options-pane";
     }
+}
 
-    // Update positions of all data elements based on the zoom level and view space coordinate
-    for (var i = 0; i < data.length; i++) {
-        // Element data from the array
-        var element = data[i];
+function generateToolTips()
+{
+    var toolButtons = document.getElementsByClassName("key_tooltip");
 
-        // Element DIV (dom-object)
-        var elementDiv = document.getElementById(element.id);
+    for (var index = 0; index < toolButtons.length; index++) {
+        const element = toolButtons[index];
+        var id = element.id.split("-")[1];
+        if (Object.getOwnPropertyNames(keybinds).includes(id)) {
 
-        // Only perform update on valid elements
-        if (elementDiv != null) {
-            // If the element was clicked and our mouse movement is not null
-            var inContext = deltaX != null && findIndex(context, element.id) != -1;
-            var useDelta = (inContext && movingObject);
+            var str = "Keybind: ";
 
-            updateElementDivCSS(element, elementDiv, useDelta);
+            if (keybinds[id].ctrl) str += "CTRL + ";
+            str += '"' + keybinds[id].key.toUpperCase() + '"';
 
-            // Handle colouring
-            elementDiv.children[0].children[0].style.fill = inContext ? "#ff66b3" : "#ffccdc";
-        }
-    }
-
-    // Also update ghost if there is one
-    if (ghostElement) {
-        var ghostDiv = document.getElementById(ghostElement.id);
-        
-        if (ghostDiv){
-            updateElementDivCSS(ghostElement, ghostDiv)
+           element.innerHTML = str;
         }
     }
 }
 
-function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
+function setRulerPosition(x, y) 
 {
-    // Display line test locations using svg lines
-    // str+=`<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='#44f' stroke-width='2' />`;
-    // str+=`<line x1='${x3}' y1='${y3}' x2='${x4}' y2='${y4}' stroke='#44f' stroke-width='2' />`
+    document.getElementById("ruler-x").style.left = x - 51 + "px";
+    document.getElementById("ruler-y").style.top = y + "px";
+}
 
-    var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    if (isNaN(x) || isNaN(y)) {
-        return false;
-    } else {
+function updateGridSize()
+{
+    var bLayer = document.getElementById("grid");
+    bLayer.setAttribute("width", 100 * zoomfact + "px");
+    bLayer.setAttribute("height", 100 * zoomfact + "px");
 
-        if (x1 >= x2) {
-            if (!(x2 <= x && x <= x1)) return false;
-        } else {
-            if (!(x1 <= x && x <= x2)) return false;
-        } 
-        
-        if (y1 >= y2) {
-            if (!(y2 <= y && y <= y1)) return false;
-        } else {
-            if (!(y1 <= y && y <= y2)) return false;
-        }
+    bLayer.children[0].setAttribute('d', `M ${100 * zoomfact} 0 L 0 0 0 ${100 * zoomfact}`);
+    updateGridPos();
+}
 
-        if (x3 >= x4) {
-            if (!(x4 <= x && x <= x3)) return false;
-        } else {
-            if (!(x3 <= x && x <= x4)) return false;
-        }
+function updateGridPos()
+{
+    var gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+    var gridOffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+    var bLayer = document.getElementById("grid");
+    bLayer.setAttribute('x', gridOffsetX);
+    bLayer.setAttribute('y', gridOffsetY);
+}
 
-        if (y3 >= y4) {
-            if (!(y4 <= y && y <= y3)) return false;
-        } else {
-            if (!(y3 <= y && y <= y4)) return false;
-        }
+function displayMessage(type, message, time = 5000)
+{
+    // Message settings
+    const maxMessagesAtDisplay = 5; // The number of messages that can be displayed on the screen
+
+    var messageElement = document.getElementById("diagram-message"); // Get div for error-messages
+    var id = makeRandomID();
+
+    // If the already is the maximum number of messages, remove the oldest one
+    if (messageElement.childElementCount >= maxMessagesAtDisplay) {
+        removeMessage(messageElement.firstElementChild);
     }
-    return { 
-        x: x,
-        y: y 
+
+    // Add a new message to the div.
+    messageElement.innerHTML += `<div id='${id}' onclick='removeMessage(this)' class='${type}'><p>${message}</p></div>`;
+
+    if (time > 0) {
+        setTimerToMessage(messageElement.lastElementChild, time);
+    }
+
+}
+//-------------------------------------------------------------------------------------------------
+// Set a time for the element to exist, will be removed after time has exceeded
+//-------------------------------------------------------------------------------------------------
+function setTimerToMessage(element, time = 5000)
+{
+    if (!element) return;
+
+    element.innerHTML += `<div class="timeIndicatorBar"></div>`;
+    var timer = setInterval( function(){
+        var element = document.getElementById(errorMsgMap[timer].id);
+        errorMsgMap[timer].percent -= 1;
+        element.lastElementChild.style.width = `calc(${errorMsgMap[timer].percent - 1}% - 10px)`;
+
+        // If the time is out, remove the message
+        if(errorMsgMap[timer].percent === 0) removeMessage(element, timer);
+
+    }, time / 100);
+
+    // Adds to map: TimerID: ElementID, Percent
+    errorMsgMap[timer] = {
+        id: element.id,
+        percent: 100
     };
 }
-
 //-------------------------------------------------------------------------------------------------
-// sortvectors - Uses steering vectors as a sorting criteria for lines
+// Removes the message from DOM and removes all the variables that are used
 //-------------------------------------------------------------------------------------------------
+function removeMessage(element, timer)
+{
+    // If there is no timer in the parameter try find it by elementID in
+    if (!timer) {
+        timer = Object.keys(errorMsgMap).find(key => {
+            return errorMsgMap[key].id === element.id
+        });
+    }
 
+    if (timer) {
+        clearInterval(timer); // Remove the timer
+        delete errorMsgMap[timer]; // Remove timer from the map
+    }
+
+    element.remove(); // Remove the element from DOM
+    // Remove ID from randomidArray
+    randomidArray = randomidArray.filter(id => {
+        return element.id !== id;
+    });
+}
+//#endregion =====================================================================================
+//#region ================================ ELEMENT CALCULATIONS ==================================
 function sortvectors(a, b, ends, elementid, axis)
 {
     // Get dx dy centered on association end e.g. invert vector if necessary
@@ -2575,9 +2489,47 @@ function sortvectors(a, b, ends, elementid, axis)
     return sortval;
 }
 
-//-------------------------------------------------------------------------------------------------
-// redrawArrows - Redraws arrows based on rprogram and rcourse variables
-//-------------------------------------------------------------------------------------------------
+function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
+{
+    // Display line test locations using svg lines
+    // str+=`<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='#44f' stroke-width='2' />`;
+    // str+=`<line x1='${x3}' y1='${y3}' x2='${x4}' y2='${y4}' stroke='#44f' stroke-width='2' />`
+
+    var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
+    var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
+    if (isNaN(x) || isNaN(y)) {
+        return false;
+    } else {
+
+        if (x1 >= x2) {
+            if (!(x2 <= x && x <= x1)) return false;
+        } else {
+            if (!(x1 <= x && x <= x2)) return false;
+        } 
+        
+        if (y1 >= y2) {
+            if (!(y2 <= y && y <= y1)) return false;
+        } else {
+            if (!(y1 <= y && y <= y2)) return false;
+        }
+
+        if (x3 >= x4) {
+            if (!(x4 <= x && x <= x3)) return false;
+        } else {
+            if (!(x3 <= x && x <= x4)) return false;
+        }
+
+        if (y3 >= y4) {
+            if (!(y4 <= y && y <= y3)) return false;
+        } else {
+            if (!(y3 <= y && y <= y4)) return false;
+        }
+    }
+    return { 
+        x: x,
+        y: y 
+    };
+}
 
 function clearLinesForElement(element)
 {
@@ -2651,6 +2603,51 @@ function sortElementAssociations(element)
     if (element.right.length > 1) element.right.sort(function (a, b) { return sortvectors(a, b, element.right, element.id, 1) });
 }
 
+//-------------------------------------------------------------------------------------------------
+// addLine - Adds an new line if the requirements and rules are achieved
+//-------------------------------------------------------------------------------------------------
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
+    // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
+    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
+
+        // Filter the existing lines and gets the number of existing lines
+        var numOfExistingLines = lines.filter(function (line) {
+            return (fromElement.id === line.fromID &&
+                    toElement.id === line.toID ||
+                    fromElement.id === line.toID &&
+                    toElement.id === line.fromID)
+                    }).length;
+
+        // Define a boolean for special case that relation and entity can have 2 lines
+        var specialCase = (fromElement.kind === "ERRelation" &&
+                            toElement.kind === "EREntity" ||
+                            fromElement.kind === "EREntity" &&
+                            toElement.kind === "ERRelation");
+
+        // If there is no existing lines or is a special case
+        if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
+
+            var newLine = {
+                id: makeRandomID(),
+                fromID: fromElement.id,
+                toID: toElement.id,
+                kind: kind
+            };
+            
+            addObjectToLines(newLine);
+            
+            displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
+            return newLine;
+            
+        } else {
+            displayMessage(messageTypes.ERROR,`Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
+        }
+    } else {
+        displayMessage(messageTypes.ERROR, `Not possible to draw a line between two: ${fromElement.kind} elements`);
+    }
+}
+//#endregion =====================================================================================
+//#region ================================ DRAWING FUNCTIONS    ==================================
 function drawLine(line, targetGhost = false)
 {
     var felem, telem, dx, dy;
@@ -2803,18 +2800,7 @@ function removeNodes()
     }
     return str;
 }
-//-------------------------------------------------------------------------------------------------
-// Change the position of rulerPointers
-//-------------------------------------------------------------------------------------------------
-function setRulerPosition(x, y) 
-{
-    document.getElementById("ruler-x").style.left = x - 51 + "px";
-    document.getElementById("ruler-y").style.top = y + "px";
-}
 
-//-------------------------------------------------------------------------------------------------
-// Draws the rulers
-//-------------------------------------------------------------------------------------------------
 function drawRulerBars()
 {
     //Get elements
@@ -2866,308 +2852,260 @@ function drawRulerBars()
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
 
-//Function to remove elemets and lines
-function removeElements(elementArray, stateMachineShouldSave = true)
+function drawElement(element, ghosted = false)
 {
-    // Find all lines that should be deleted first
-    var linesToRemove = [];
-    var elementsToRemove = [];
+    var str = "";
 
-    for (var i = 0; i < elementArray.length; i++) { // Find VALID items to remove
-        linesToRemove = linesToRemove.concat(lines.filter(function(line) {
-            return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
-        }));
-        elementsToRemove = elementsToRemove.concat(data.filter(function(element) {
-            return element == elementArray[i];
-        }));
-    }
+    // Compute size variables
+    var linew = Math.round(strokewidth * zoomfact);
+    var boxw  = Math.round(element.width * zoomfact);
+    var boxh  = Math.round(element.height * zoomfact);
+    var texth = Math.round(zoomfact * textheight);
+    var hboxw = Math.round(element.width * zoomfact * 0.5);
+    var hboxh = Math.round(element.height * zoomfact * 0.5);
 
-    if (elementsToRemove.length > 0) { // If there are elements to remove
-        if (linesToRemove.length > 0) { // If there are also lines to remove
-            removeLines(linesToRemove, false);
-            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove));
-        } else { // Only removed elements without any lines
-            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove));
-        }
+    canvas = document.getElementById('canvasOverlay');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvasContext = canvas.getContext('2d');
 
-        data = data.filter(function(element) { // Delete elements
-            return !elementsToRemove.includes(element);
-        });
-    } else { // All passed items were INVALID
-        console.error("Invalid element array passed to removeElements()!");
-    }
-
-    clearContext();
-    redrawArrows();
-    showdata();
-}
-
-//Function to remove selected lines
-function removeLines(linesArray, stateMachineShouldSave = true)
-{
-    var anyRemoved = false;
-    for (var i = 0; i < linesArray.length; i++) {
-        lines = lines.filter(function(line) {
-            var shouldRemove = (line != linesArray[i]);
-            if (shouldRemove) {
-                anyRemoved = true;
-            }
-            return shouldRemove;
-        });
-    }
-
-    if (stateMachineShouldSave && anyRemoved) { 
-        stateMachine.save(StateChangeFactory.LinesRemoved(linesArray));
-    }
+    // Caclulate font width using some canvas magic
+    var font = canvasContext.font;
+    font = `${texth}px ${font.split('px')[1]}`;
+    canvasContext.font = font;
+    var textWidth = canvasContext.measureText(element.name).width;
     
-    contextLine = [];
-    redrawArrows();
-    showdata();
-}
-//-------------------------------------------------------------------------------------------------
-// Create and display an message in the diagram
-//-------------------------------------------------------------------------------------------------
-function displayMessage(type, message, time = 5000)
-{
-    // Message settings
-    const maxMessagesAtDisplay = 5; // The number of messages that can be displayed on the screen
+    // If calculated size is larger than element width
+    const margin = 10;
+    var tooBig = (textWidth >= (boxw - (margin * 2)))
+    var xAnchor = tooBig ? margin : hboxw;
+    var vAlignment = tooBig ? "left" : "middle";
 
-    var messageElement = document.getElementById("diagram-message"); // Get div for error-messages
-    var id = makeRandomID();
-
-    // If the already is the maximum number of messages, remove the oldest one
-    if (messageElement.childElementCount >= maxMessagesAtDisplay) {
-        removeMessage(messageElement.firstElementChild);
+    // Create div & svg element
+    str += `
+				<div id='${element.id}'	class='element' onmousedown='ddown(event);' style='
+						left:0px;
+						top:0px;
+						width:${boxw}px;
+						height:${boxh}px;
+						font-size:${texth}px;`;
+    if (ghosted) {
+        str += `
+            pointer-events: none;
+            opacity: ${ghostLine ? 0 : 0.5};
+        `;
     }
+    str += `'>`;
+    str += `<svg width='${boxw}' height='${boxh}' >`;
 
-    // Add a new message to the div.
-    messageElement.innerHTML += `<div id='${id}' onclick='removeMessage(this)' class='${type}'><p>${message}</p></div>`;
+    // Create svg 
+    if (element.kind == "EREntity") {
+        var weak = "";
 
-    if (time > 0) {
-        setTimerToMessage(messageElement.lastElementChild, time);
-    }
-
-}
-
-function pasteClipboard(elements)
-{
-
-    // If elements does is empty, display error and return null
-    if(elements.length == 0){
-        displayMessage("error", "You do not have any copied elements");
-        return;
-    }
-
-    /*
-    * Calculate the coordinate for the top-left pos (x1, y1)
-    * and the coordinate for the bottom-right (x2, y2)
-    * */
-    var x1, x2, y1, y2;
-    elements.forEach(element => {
-        if (element.x < x1 || x1 === undefined) x1 = element.x;
-        if (element.y < y1 || y1 === undefined) y1 = element.y;
-        if ((element.x + element.width) > x2 || x2 === undefined) x2 = (element.x + element.width);
-        if ((element.y + element.height) > y2 || y2 === undefined) y2 = (element.y + element.height);
-    });
-
-    var cx = (x2 - x1) / 2;
-    var cy = (y2 - y1) / 2;
-    var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
-
-    // Get all lines
-    var allLines = getLines();
-    var connectedLines = [];
-
-    // Filter - keeps only the lines that are connectet to and from selected elements.
-    allLines = allLines.filter(line => {
-        return (elements.filter(element => {
-            return line.toID == element.id || line.fromID == element.id
-        })).length > 1
-    });
-
-    /*
-    * For every line that shall be copied, create a temp object,
-    * for kind and connection tracking
-    * */
-    allLines.forEach(line => {
-        var temp = {
-            id: line.id,
-            fromID: line.fromID,
-            toID: line.toID,
-            kind: line.kind
+        if(element.state == "weak") {
+            weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
+            stroke-width='${linew}' stroke='black' fill='#ffccdc' /> 
+            `;         
         }
-        connectedLines.push(temp);
-    });
+        
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+                   stroke-width='${linew}' stroke='black' fill='#ffccdc' />
+                   ${weak}
+                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
+                   `;
+    }
+    else if (element.kind == "ERAttr") {
+        var dash = "";
+        var multi = "";
 
-    // An mapping between oldElement ID and the new element ID
-    var idMap = {};
+        if (element.state == "computed") {
+            dash = "stroke-dasharray='4 4'";
+        }
+        if (element.state == "multiple") {
+            multi = `
+                    <path d="M${linew * multioffs},${hboxh} 
+                    Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
+                    Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
+                    Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
+                    Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
+                    stroke='black' fill='#ffccdc' stroke-width='${linew}' />`;
+        }
 
-    var newElements = [];
-    var newLines = [];
+        str += `<path d="M${linew},${hboxh} 
+                           Q${linew},${linew} ${hboxw},${linew} 
+                           Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
+                           Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
+                           Q${linew},${boxh - linew} ${linew},${hboxh}" 
+                    stroke='black' fill='#ffccdc' ${dash} stroke-width='${linew}' />
+                    
+                    ${multi}
 
-    // For every copied element create a new one and add to data
-    elements.forEach(element => {
-        // Make a new id and save it in an object
-        idMap[element.id] = makeRandomID();
+                    <text x='${xAnchor}' y='${hboxh}' `;
 
-        connectedLines.forEach(line => {
-            if (line.fromID == element.id) line.fromID = idMap[element.id];
-            else if (line.toID == element.id) line.toID = idMap[element.id];
-        });
+        if(element.state == "key") {
+            str += `class='underline'`;
+        }    
+            str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+            `;
+    }
+    else if (element.kind == "ERRelation") {
+        var weak = "";
+        if (element.state == "weak") {
 
-        // Create the new object
-        var elementObj = {
-            name: element.name,
-            x: mousePosInPixels.x + (element.x - x1),
-            y: mousePosInPixels.y + (element.y - y1),
-            width: element.width,
-            height: element.height,
-            kind: element.kind,
-            id: idMap[element.id],
-            state: element.state
-        };
-        newElements.push(elementObj)
-        addObjectToData(elementObj, false);
-    });
+            weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
+                stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
+                `;
+        }
+        str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                   stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
+                   ${weak}
+                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+                   `;
 
-    // Create the new lines but do not saved in stateMachine
-    connectedLines.forEach(line => {
-        newLines.push(
-            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false)
-        );
-    });
-
-    // Save the copyed elements to stateMachine
-    stateMachine.save(StateChangeFactory.ElementsAndLinesCreated(newElements, newLines));
-    displayMessage(messageTypes.SUCCESS, `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
-    clearContext(); // Deselect old selected elements
-    context = newElements; // Set context to the pasted elements
-    showdata();
+    }
+    str += "</svg>"
+    str += "</div>";
+    return str;
 }
 
-//-------------------------------------------------------------------------------------------------
-// Set a time for the element to exist, will be removed after time has exceeded
-//-------------------------------------------------------------------------------------------------
-
-function setTimerToMessage(element, time = 5000)
+function updatepos(deltaX, deltaY)
 {
-    if (!element) return;
+    updateCSSForAllElements();
 
-    element.innerHTML += `<div class="timeIndicatorBar"></div>`;
-    var timer = setInterval( function(){
-        var element = document.getElementById(errorMsgMap[timer].id);
-        errorMsgMap[timer].percent -= 1;
-        element.lastElementChild.style.width = `calc(${errorMsgMap[timer].percent - 1}% - 10px)`;
+    // Update svg backlayer -- place everyhing to draw OVER elements here
+    var str = "";
+    str = redrawArrows(str);
+    document.getElementById("svgbacklayer").innerHTML=str;
 
-        // If the time is out, remove the message
-        if(errorMsgMap[timer].percent === 0) removeMessage(element, timer);
+    // Update svg overlay -- place everyhing to draw OVER elements here
+    str = "";
+    str = boxSelect_Draw(str);
 
-    }, time / 100);
+    document.getElementById("svgoverlay").innerHTML=str;
 
-    // Adds to map: TimerID: ElementID, Percent
-    errorMsgMap[timer] = {
-        id: element.id,
-        percent: 100
-    };
+    // Updates nodes for resizing
+    removeNodes();
+    if (context.length === 1 && mouseMode == mouseModes.POINTER) addNodes(context[0]);
+
+    str = drawSelectionBox(str);
+    document.getElementById("svgoverlay").innerHTML = str;
+
 }
-//-------------------------------------------------------------------------------------------------
-// Removes the message from DOM and removes all the variables that are used
-//-------------------------------------------------------------------------------------------------
-function removeMessage(element, timer)
+
+function updateContainerBounds()
 {
-    // If there is no timer in the parameter try find it by elementID in
-    if (!timer) {
-        timer = Object.keys(errorMsgMap).find(key => {
-            return errorMsgMap[key].id === element.id
-        });
+    var containerbox = container.getBoundingClientRect();
+    cwidth = containerbox.width;
+    cheight = containerbox.height;
+}
+
+function drawSelectionBox(str)
+{
+    if (context.length != 0) {
+        var lowX = context[0].x1;
+        var highX = context[0].x2;
+        var x1;
+        var x2;
+        var lowY = context[0].y1;
+        var highY = context[0].y2;
+        var y1;
+        var y2;
+        for (var i = 0; i < context.length; i++) {
+            x1 = context[i].x1;
+            x2 = context[i].x2;
+            y1 = context[i].y1;
+            y2 = context[i].y2;
+            if (x1 < lowX) lowX = x1;
+            if (x2 > highX) highX = x2;
+            if (y1 < lowY) lowY = y1;
+            if (y2 > highY) highY = y2;
+        }
+
+        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
     }
 
-    if (timer) {
-        clearInterval(timer); // Remove the timer
-        delete errorMsgMap[timer]; // Remove timer from the map
+    return str;
+}
+
+function updateCSSForAllElements()
+{
+    function updateElementDivCSS(elementData, divObject, useDelta = false)
+    {
+        var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
+            top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+
+        if (useDelta){
+            left -= deltaX;
+            top -= deltaY;
+        }
+
+        if(snapToGrid && useDelta){
+            // The element coordinates with snap point
+            var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / gridSize) * gridSize;
+            var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / gridSize) * gridSize;
+
+            // Add the scroll values
+            left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+            top = Math.round(((objY - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+
+            // Set the new snap point to center of element
+            left -= ((elementData.width * zoomfact) / 2);
+            top -= ((elementData.height * zoomfact) / 2);
+        }
+
+        divObject.style.left = left + "px";
+        divObject.style.top = top + "px";
     }
 
-    element.remove(); // Remove the element from DOM
-    // Remove ID from randomidArray
-    randomidArray = randomidArray.filter(id => {
-        return element.id !== id;
-    });
-}
+    // Update positions of all data elements based on the zoom level and view space coordinate
+    for (var i = 0; i < data.length; i++) {
+        // Element data from the array
+        var element = data[i];
 
-//------------------------------------=======############==========----------------------------------------
-//                                    Default data display stuff
-//------------------------------------=======############==========----------------------------------------
+        // Element DIV (dom-object)
+        var elementDiv = document.getElementById(element.id);
 
-function getData()
-{
-    container = document.getElementById("container");
-    onSetup();
-    showdata();
-    drawRulerBars();
-    generateToolTips();
-    toggleGrid();
-    updateGridPos();
-    setCursorStyles(mouseMode);
-}
+        // Only perform update on valid elements
+        if (elementDiv != null) {
+            // If the element was clicked and our mouse movement is not null
+            var inContext = deltaX != null && findIndex(context, element.id) != -1;
+            var useDelta = (inContext && movingObject);
 
-function generateToolTips()
-{
-    var toolButtons = document.getElementsByClassName("key_tooltip");
+            updateElementDivCSS(element, elementDiv, useDelta);
 
-    for (var index = 0; index < toolButtons.length; index++) {
-        const element = toolButtons[index];
-        var id = element.id.split("-")[1];
-        if (Object.getOwnPropertyNames(keybinds).includes(id)) {
-
-            var str = "Keybind: ";
-
-            if (keybinds[id].ctrl) str += "CTRL + ";
-            str += '"' + keybinds[id].key.toUpperCase() + '"';
-
-           element.innerHTML = str;
+            // Handle colouring
+            elementDiv.children[0].children[0].style.fill = inContext ? "#ff66b3" : "#ffccdc";
         }
     }
-}
 
-function data_returned(ret)
-{
-    if (typeof ret.data !== "undefined") {
-        service = ret;
-        showdata();
-    } else {
-        alert("Error receiveing data!");
+    // Also update ghost if there is one
+    if (ghostElement) {
+        var ghostDiv = document.getElementById(ghostElement.id);
+        
+        if (ghostDiv){
+            updateElementDivCSS(ghostElement, ghostDiv)
+        }
     }
 }
 
-function updateGridSize()
+function showdata()
 {
-    var bLayer = document.getElementById("grid");
-    bLayer.setAttribute("width", 100 * zoomfact + "px");
-    bLayer.setAttribute("height", 100 * zoomfact + "px");
+    updateContainerBounds();
 
-    bLayer.children[0].setAttribute('d', `M ${100 * zoomfact} 0 L 0 0 0 ${100 * zoomfact}`);
-    updateGridPos();
-}
+    var str = "";
+    var courses = [];
 
-function updateGridPos()
-{
-    var gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-    var gridOffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
-    var bLayer = document.getElementById("grid");
-    bLayer.setAttribute('x', gridOffsetX);
-    bLayer.setAttribute('y', gridOffsetY);
-}
-function clearContext()
-{
-    if(context != null){
-        context = [];
-        generateContextProperties();
+    // Iterate over programs
+    for (var i = 0; i < data.length; i++) {
+        str += drawElement(data[i]);
     }
-}
-function clearContextLine()
-{
-    if(contextLine != null){
-        contextLine = [];
-        generateContextProperties();
+
+    if (ghostElement) {
+        str += drawElement(ghostElement, true);
     }
+
+    container.innerHTML = str;
+    updatepos(null, null);
+
 }
+//#endregion =====================================================================================
