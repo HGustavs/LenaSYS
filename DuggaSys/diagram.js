@@ -903,6 +903,7 @@ window.addEventListener("resize", () => {
 window.onfocus = function()
 {
     altPressed=false;
+    ctrlPressed=false;
 }
 
 //------------------------------------=======############==========----------------------------------------
