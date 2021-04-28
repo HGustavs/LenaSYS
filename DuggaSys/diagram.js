@@ -1369,16 +1369,6 @@ function mmoving(event)
     setRulerPosition(event.clientX, event.clientY);
 }
 
-function fab_action()
-{
-    if (document.getElementById("options-pane").className == "show-options-pane") {
-        document.getElementById('optmarker').innerHTML = "&#9660;Options";
-        document.getElementById("options-pane").className = "hide-options-pane";
-    } else {
-        document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
-        document.getElementById("options-pane").className = "show-options-pane";
-    }
-}
 
 //------------------------------------=======############==========----------------------------------------
 //                                         Helper functions
