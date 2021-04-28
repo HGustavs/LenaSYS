@@ -108,7 +108,7 @@
                 <img src="../Shared/icons/diagram_gridmagnet.svg"/>
                 <span class="toolTipText"><b>Toggle Snap To Grid</b><br>
                     <p>Enable/disable the Snap To Grid</p><br>
-                    <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
+                    <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
                 </snap>
         </fieldset>
     </div>
