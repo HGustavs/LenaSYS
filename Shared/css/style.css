@@ -804,7 +804,7 @@ p {
   border-radius: 5px;
 }
 
- #sectionList_arrowStatisticsClosed{
+#sectionList_arrowStatisticsClosed{
   display: inline;
 }
 #sectionList_arrowStatisticsOpen{
@@ -4832,6 +4832,9 @@ only screen and (max-device-width: 800px) {
   #addElement {
     display: none;
   }
+  #delElement{
+    display: none;
+  }
 
   table.navheader td.contribution {
     margin-right: 0px;
@@ -6378,6 +6381,17 @@ only screen and (max-device-width: 320px) {
   top: 25px;
 }
 
+@media screen and (max-height: 600px) {
+  .fab-btn-list2{
+    top: 65px;
+    transform: rotate(90deg);
+    transform-origin: top left;
+  }
+  
+  .fab-btn-list2 li {
+    transform: rotate(315deg);
+  }
+}
 
 .fab-btn-list li, .fab-btn-list2 li  {
   display: inline-block;
