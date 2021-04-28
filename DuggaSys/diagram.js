@@ -972,7 +972,6 @@ function mwheel(event)
 
 function mdown(event)
 {
-    console.log(screenToDiagramCoordinates(event.clientX, event.clientY));
     // React to mouse down on container
     if (event.target.id == "container") {
         switch (mouseMode) {
@@ -1885,8 +1884,8 @@ function setPos(id, x, y)
         var obj = data[foundId];
         if(snapToGrid){
             // Calculate nearest snap point
-            obj.x = Math.round((obj.x - x) / gridSize) * gridSize;
-            obj.y = Math.round((obj.y - y) / gridSize) * gridSize;
+            obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / gridSize) * gridSize;
+            obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / gridSize) * gridSize;
 
             // Set the new snap point to center of element
             obj.x -= obj.width/2
@@ -2363,22 +2362,23 @@ function updateCSSForAllElements()
         var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
             top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
-
         if (useDelta){
             left -= deltaX;
             top -= deltaY;
         }
 
         if(snapToGrid && useDelta){
-            // Calculate nearest snap point
+            // The element coordinates with snap point
+            var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / gridSize) * gridSize;
+            var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / gridSize) * gridSize;
 
-            left = Math.round(left / gridSize) * gridSize;
-            top = Math.round(top / gridSize) * gridSize;
+            // Add the scroll values
+            left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+            top = Math.round(((objY - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
             // Set the new snap point to center of element
-            left -= (elementData.width * zoomfact) / 2;
-            top -= (elementData.height * zoomfact) / 2;
-
+            left -= ((elementData.width * zoomfact) / 2);
+            top -= ((elementData.height * zoomfact) / 2);
         }
 
         divObject.style.left = left + "px";
