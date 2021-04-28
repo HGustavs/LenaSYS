@@ -2510,7 +2510,9 @@ function drawRulerBars(X,Y)
             barY += "<text x='2' y='"+(pannedY+i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
             cordY = cordY +100;
         }
-        else barY += "<line x1='25px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+        else if( zoomfact > 0.5){
+            barY += "<line x1='25px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+        } 
     }
 
     //Draw the Y-axis ruler negative side.
@@ -2526,7 +2528,9 @@ function drawRulerBars(X,Y)
             barY += "<text x='2' y='"+(pannedY-i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
             cordY = cordY -100;
         }
-        else barY += "<line x1='25px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+        else if( zoomfact > 0.5){
+            barY += "<line x1='25px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+        }
     }
     svgY.style.backgroundColor = "#e6e6e6";
     svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
@@ -2544,7 +2548,9 @@ function drawRulerBars(X,Y)
             barX += "<text x='"+(i+5+pannedX)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
             cordX = cordX +100;
         }
-        else barX += "<line x1='" +(i+pannedX)+"' y1='25' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+        else if( zoomfact > 0.5){
+            barX += "<line x1='" +(i+pannedX)+"' y1='25' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+        }
     }
 
     //Draw the X-axis ruler negative side.
@@ -2560,7 +2566,9 @@ function drawRulerBars(X,Y)
             barX += "<text x='"+(pannedX-i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
             cordX = cordX -100;
         }
-        else barX += "<line x1='" +(pannedX-i)+"' y1='25' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+        else if( zoomfact > 0.5){
+            barX += "<line x1='" +(pannedX-i)+"' y1='25' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+        }
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
     svgX.style.backgroundColor = "#e6e6e6";
