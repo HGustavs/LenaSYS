@@ -41,6 +41,7 @@ $password=getOP('password');
 $AUtoken=getOP('AUtoken');
 //$localStorageVariant= getOP('variant');
 $variantvalue= getOP('variant');
+$hashvariant;
 
 $showall="true";
 $param = "UNK";
@@ -244,6 +245,8 @@ if($demo){
 
 	//If the variant value is unknown (E.G: UNK) then we retrieve the variant from the variant set in useranswer 
 	//where there exists a corresponding hash, and set the resulting useranswer.variant into $variantvalue
+	
+	error_log("!=UNK".$variantvalue);
 	if($variantvalue == "UNK") {
 		$query = $pdo->prepare("SELECT useranswer.variant FROM useranswer WHERE hash=:hash");
 		$query->bindParam(':hash', $hash);
@@ -251,7 +254,9 @@ if($demo){
 		$result = $query->fetch();
 		if($param != null) {
 			$variantvalue = $result['variant'];
+			$hashvariant = $result['variant'];
 		}
+		error_log("==UNK".$result['variant']);
 	}
 
 	//Makes sure that the variantvalue is set before retrieving data from database
@@ -261,6 +266,7 @@ if($demo){
 		$query->execute();
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
+		error_log("!=UNK".$variantvalue);
 	}
 } else if ($hr){
 	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
@@ -617,6 +623,7 @@ $array = array(
 		"variantsize" => $variantsize,
 		"variantvalue" => $variantvalue,
 		"password" => $password,
+		"hashvariant" => $hashvariant,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
