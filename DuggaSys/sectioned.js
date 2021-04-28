@@ -96,9 +96,9 @@ menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation = 'click') {
+
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
-      bigMac();
       toggleHamburger();
     }
   } else {
@@ -107,9 +107,16 @@ function hamburgerChange(operation = 'click') {
 }
 
 function toggleHamburger() {
-  var x = document.getElementById("hamburgerIcon");
-  findAncestor(x, "hamburger").classList.toggle("change");
+
+  var x = document.getElementById("hamburgerBox");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+
 }
+
 
 // -------------==============######## Dialog Handling ###########==============-------------
 
@@ -294,10 +301,7 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
-// Show the hamburger menu
-function bigMac() {
-  $(".hamburgerMenu").toggle();
-}
+
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
@@ -1691,6 +1695,14 @@ $(window).load(function () {
 
   });
   $("#announcement").click(function(){
+    sessionStorage.removeItem("closeUpdateForm");
+    $("#announcementBoxOverlay").toggle();
+    if($("#announcementForm").is(":hidden")){
+      $("#announcementForm").show();
+    }
+
+  });
+  $("#announcementBurger").click(function(){
     sessionStorage.removeItem("closeUpdateForm");
     $("#announcementBoxOverlay").toggle();
     if($("#announcementForm").is(":hidden")){

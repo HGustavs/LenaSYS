@@ -210,6 +210,20 @@ p {
  *                               Lists and Content                              *
  * --------------================################================-------------- */
 
+#hamburgerBox{
+  display: none;
+  position: absolute;
+  top: 50px;
+  width: 35px;
+  padding: 10px;
+  background-color: var(--color-primary-2);
+}
+
+#hamburgerBox div {
+  margin-bottom: 10px;;
+}
+
+
 .version {
   color: #EFF;
   text-shadow: 1px 1px var(--color-text-list);
@@ -1251,6 +1265,13 @@ header td {
   margin:auto 10px auto 0;
 }
 
+.burgerButt {
+  margin-left: 10px;
+  vertical-align: middle;
+  height: 32px;
+  margin:auto 10px auto 0;
+}
+
 .navButt:hover {
   cursor: pointer;
 }
@@ -1309,6 +1330,47 @@ div .navButt:hover {
   color: #FFFFFF;
   text-decoration: underline;
   overflow: hidden;
+}
+
+@media screen and (max-width:400px){
+    .hamburger{
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        
+        
+        margin-top: 14px;
+        
+    }
+    #GeneralStats{
+        display:none;
+    }
+    #CurrentlyOnline{
+        display:none;
+    }
+    #PasswordGuessing{
+        display:none;
+    }
+    #OSPercentage{
+        display:none;
+    }
+    
+    #back{
+        display:none;
+    }
+    .navButt.show{
+        display: flex;
+    }
+    .bugerButt {
+      display:flex;
+      flex-wrap: wrap;
+      position: relative;
+      
+    }
+}
+
+.navHomeButt{
+    display:block;
 }
 
 .loggedout {
@@ -4971,6 +5033,21 @@ only screen and (max-device-width: 860px) {
     display: block;
     height: 26px;
     opacity: 1.0;
+  }
+
+  #sectionList_arrowStatisticsOpen{
+    display: inline;
+  }
+
+  #hamburgerBox{
+    display: block;
+  }
+
+  /*Här jobbar vi*/
+  #versionCog, #versionPlus, #editStudent,
+  #testsBTN, #editFiles, #courseIMG,
+  #editCourse, #announcement{
+    display: none;
   }
 }
 
