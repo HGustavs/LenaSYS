@@ -47,6 +47,7 @@ This is a view that pulls the top 10 fastest quiz finishing students and lists t
 improw contains a list of the important rows for a certain example (NOT IMPLEMENT YET, NOT FUNCTIONAL BECAUSE IT USES THE box TABLE).
 
 ### impwordlist
+impwordlist contains a list of important words for a certain code example (NOT IMPLEMENT YET, NOT FUNCTIONAL BECAUSE IT USES THE box TABLE).
 
 ### list
 
