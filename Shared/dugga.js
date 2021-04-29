@@ -1032,13 +1032,8 @@ function AJAXService(opt,apara,kind)
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
 			datatype: "json",
 			success: function(data){
-				getVariantValue(data);					//Get variant.
-				console.log("real variantvalue: "+variantvalue);
-				handleLocalStorage(opt, para);	//Set localstorage lifespan.
-				console.log("The hash: "+hash);
-				handleHash(data);				//Makes sure hash is unique.
-				setPassword(data['password']);	//Sets the password retrieved from query.
-				console.log("data: "+data);
+				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
+				handleHash();						//Makes sure hash is unique.
 			}
 		})
 	}else if(kind=="RESULT"){
@@ -1142,40 +1137,39 @@ function AJAXService(opt,apara,kind)
 	}
 }
 
-function handleHash(hashdata){
-	ishashindb = hashdata['ishashindb'];									//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-	console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl);	//For debugging!
-	if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
-		recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
-	}
-}
-
-function handleLocalStorage(opt, para){
-	$.ajax({ 								//We need to have this Ajax call inside of the outer Ajax call, otherwise variantValue cant be retrieved.
+function handleHash(){
+	$.ajax({									//Ajax call to see if the hash have a match with any hash in the database.
 		url: "showDuggaservice.php",
 		type: "POST",
-		data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +variantvalue, 
+		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
 		dataType: "json",
-		success: function (data) {
+		success: function(data) {
 			returnedDugga(data);
-			// Check localstorage variants.
-			var newvariant = data['variantvalue'];
-			console.log("newVariant: " + newvariant);
-
-			if(localStorage.getItem(querystring['did']) == null){
-				localStorage.setItem(querystring['did'], newvariant);
-				//The big number below represents 30 days in milliseconds
-				setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
+			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+			console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl);	//For debugging!
+			if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
+				recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
 			}
-			getExpireTime(querystring['did']);
-			var variantsize = data['variantsize'];
-			localStorage.setItem("variantSize", variantsize);
 		}
 	});
-						
 }
 
-function getVariantValue(ajaxdata){
+function handleLocalStorage(data){
+	// Check localstorage variants.
+	var newvariant = data['variantvalue'];
+	console.log("newVariant: " + newvariant);
+
+	if(localStorage.getItem(querystring['did']) == null){
+		localStorage.setItem(querystring['did'], newvariant);
+		//The big number below represents 30 days in milliseconds
+		setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
+	}
+	getExpireTime(querystring['did']);
+	var variantsize = data['variantsize'];
+	localStorage.setItem("variantSize", variantsize);					
+}
+
+function getVariantValue(ajaxdata, opt, para){
 	//Checks if the variantSize variant is set in localstorage. When its not, its set.
 	if(localStorage.getItem("variantSize") == null) {
 		localStorage.setItem("variantSize", 100);
@@ -1192,12 +1186,24 @@ function getVariantValue(ajaxdata){
 			variantvalue = test.value;
 		}
 	}
+
+	$.ajax({ 								//We need to have this Ajax call inside of the outer Ajax call, otherwise variantValue cant be retrieved.
+		url: "showDuggaservice.php",
+		type: "POST",
+		data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +variantvalue, 
+		dataType: "json",
+		success: function (data) {
+			returnedDugga(data);
+			handleLocalStorage(data);		//Set localstorage lifespan.			
+			setPassword(data['password']);	//Sets the password retrieved from query.
+		}
+	});
 }
 
 //If the first generated hash isn't unique this method is recursively called until a hash is unique.
 function recursiveAjax(){
 	hash = generateHash();						//A new hash is generated.
-	console.log("new hash " + hash);
+	console.log("Not a unique hash! generating new hash => " + hash);
 	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
 		url: "showDuggaservice.php",
 		type: "POST",
