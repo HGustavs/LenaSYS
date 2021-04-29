@@ -1034,19 +1034,11 @@ function AJAXService(opt,apara,kind)
 			success: function(data){
 				getVariantValue(data);					//Get variant.
 				console.log("real variantvalue: "+variantvalue);
-				$.ajax({ 								//We need to have this Ajax call inside of the outer Ajax call, otherwise variantValue cant be retrieved.
-					url: "showDuggaservice.php",
-					type: "POST",
-					data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +variantvalue, 
-					dataType: "json",
-					success: function (data) {
-						returnedDugga(data);
-						handleHash(data);				//Makes sure hash is unique.			
-						handleLocalStorage(data);		//Set localstorage lifespan.
-						setPassword(data['password']);	//Sets the password retrieved from query.
-						console.log(data);
-					}
-				});
+				handleLocalStorage(opt, para);	//Set localstorage lifespan.
+				console.log("The hash: "+hash);
+				handleHash(data);				//Makes sure hash is unique.
+				setPassword(data['password']);	//Sets the password retrieved from query.
+				console.log("data: "+data);
 			}
 		})
 	}else if(kind=="RESULT"){
@@ -1152,24 +1144,34 @@ function AJAXService(opt,apara,kind)
 
 function handleHash(hashdata){
 	ishashindb = hashdata['ishashindb'];									//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-	//console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl);	//For debugging!
+	console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl);	//For debugging!
 	if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
 		recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
 	}
 }
 
-function handleLocalStorage(storagedata){
-	// Check localstorage variants.
-	var newvariant = storagedata['variantvalue'];
+function handleLocalStorage(opt, para){
+	$.ajax({ 								//We need to have this Ajax call inside of the outer Ajax call, otherwise variantValue cant be retrieved.
+		url: "showDuggaservice.php",
+		type: "POST",
+		data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +variantvalue, 
+		dataType: "json",
+		success: function (data) {
+			returnedDugga(data);
+			// Check localstorage variants.
+			var newvariant = data['variantvalue'];
+			console.log("newVariant: " + newvariant);
 
-	if(localStorage.getItem(querystring['did']) == null){
-		localStorage.setItem(querystring['did'], newvariant);
-		//The big number below represents 30 days in milliseconds
-		setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
-	}
-	getExpireTime(querystring['did']);
-	var variantsize = storagedata['variantsize'];
-	localStorage.setItem("variantSize", variantsize);
+			if(localStorage.getItem(querystring['did']) == null){
+				localStorage.setItem(querystring['did'], newvariant);
+				//The big number below represents 30 days in milliseconds
+				setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
+			}
+			getExpireTime(querystring['did']);
+			var variantsize = data['variantsize'];
+			localStorage.setItem("variantSize", variantsize);
+		}
+	});
 						
 }
 
