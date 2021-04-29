@@ -74,65 +74,68 @@ pdoConnect();
 			<li class="legendListItem"><span>Unassigned</span><span> No moment assigned</span></li>
 		</ul>
 	</div>
-    <div id="resultedFormContainer">
-	<div class="titles" style="justify-content:flex-start;">
+	<div id="resultedFormContainer">
+		<div class="titles" style="justify-content:flex-start;">
 			<h1>Edit student results</h1>
-    </div>
-      <div id="ladexportContainer">
-      <div class="resultedFormsFlex">
-        <label>Subcourse</label>
-        <select id="ladselect"></select>
-      </div>
-      <div class="resultedFormsFlex">
-        <label>Grading scale</label>
-        <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
-        <select id="ladgradescale">
-          <option value="U-G-VG" selected>U-G-VG</option>
-          <option value="U-G">U-G</option>
-       	  <!-- <option value="U-3-4-5">U-3-4-5</option> -->
-        </select>
-      </div>
-      <div class="resultedFormsFlex">
-        <label>Date of grading</label>
-        <input id="laddate" type="date" style="font-size:12px;">
-        </div>
-		<div class="resultedFormsFlex">
-			<label>Export...</label>
-			<select id="exportType">
-				<option value="restricted">Unexported</option>
-				<option value="all">All</option>
-			</select>
-		</div>
-		<div class="resultedFormsFlex">
-      <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
-	  <span id="lastExportedDate"></span>
-	  </div>
+    	</div>
+      	<div id="ladexportContainer">
+      		<div class="resultedFormsFlex">
+        		<label>Subcourse</label>
+        		<select id="ladselect"></select>
+      		</div>
+      		<div class="resultedFormsFlex">
+        		<label>Grading scale</label>
+        		<!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
+        		<select id="ladgradescale">
+          			<option value="U-G-VG" selected>U-G-VG</option>
+          			<option value="U-G">U-G</option>
+       	  			<!-- <option value="U-3-4-5">U-3-4-5</option> -->
+        		</select>
+      		</div>
+      		<div class="resultedFormsFlex">
+        		<label>Date of grading</label>
+        		<input id="laddate" type="date" style="font-size:12px;">
+        	</div>
+			<div class="resultedFormsFlex">
+				<label>Export...</label>
+				<select id="exportType">
+					<option value="restricted">Unexported</option>
+					<option value="all">All</option>
+				</select>
 			</div>
-			<div style="display: flex;">
-			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
-			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
-				<button class="resultedbuttons" onclick="mail();">Mail students</button>
-			<?php }else{ ?>
-				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
-			<?php } ?>
-        <div class="resultedFormsFlex">
-				<label>Filter by...</label>
+			<div class="resultedFormsFlex">
+      			<button class="resultedbuttons" onclick="ladexport();">LadExport</button>
+	  			<span id="lastExportedDate"></span>
+	  		</div>
+		</div>
+		<div style="display: flex;">
+        	<div class="resultedFormsFlex">
+				<p style="margin-top:0px; margin-bottom:18px;">Filter by...</p>
+			</div>
+			<div class="resultedFormsFlex">
+				<label>Grade</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
 					<option value="Filter-none" selected>none</option>
 					<option value="Filter-G">G</option>
 					<option value="Filter-VG">VG</option>
 					<option value="Filter-U">U</option>
 				</select>
-				</div>
-				<div class="resultedFormsFlex">
+			</div>
+			<div class="resultedFormsFlex">
 					<label>Assignment</label>
-					<select id="assignmentDropdown" onchange="updateTable()"></select>
-				</div>
-				<div class="resultedFormsFlex">
+					<select name="assignmentDropdown" id="assignmentDropdown"></select>
+			</div>
+			<div class="resultedFormsFlex">
 					<label>Examinator</label>
 					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
-				</div>
 			</div>
+			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
+			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
+				<button class="resultedbuttons" onclick="mail();">Mail students</button>
+			<?php }else{ ?>
+				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
+			<?php } ?>
+		</div>
     </div>
 
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
