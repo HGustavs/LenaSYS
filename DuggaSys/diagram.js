@@ -932,9 +932,8 @@ function mdown(event)
         startX = event.clientX;
         startY = event.clientY;
     }
-    // Check if not an element OR node has been clicked at the event
-    if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT){
 
+    if(pointerState !== pointerStates.CLICKED_NODE){
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
         if (determinedLines){
