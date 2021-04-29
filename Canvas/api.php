@@ -1,7 +1,11 @@
 <?php
     include 'login.php';
 
-    function sendData($URL, $data){
+    //  Canvas connection handlers
+    //  Creates the request in such a way that canvas can resive it
+
+    // Puts data on to canvas
+    function putData($URL, $data){
         $ch = curl_init($URL);
         $headers = array(
           "Authorization: Bearer ". $GLOBALS['token'],
@@ -20,6 +24,7 @@
 
         return $fileupload;
     }
+
     // gets data from the url.
     function getData($URL){
         $ch = curl_init($URL);
@@ -42,37 +47,42 @@
         return $fileupload;
     }
     
+
+    // GET API
+    // Functions created to handle the get requests and return the values in a array format
+
     // getting course data 
     function getCourses(){
-        $url = "http://canvas.webug.his.se/api/v1/courses";
-        return getData($url);
+        return getData("http://canvas.webug.his.se/api/v1/courses");
     }
 
     // getting coursestudent data
     function getCourseStudents($course){
-        $url = "http://canvas.webug.his.se/api/v1/courses/{$course['id']}/users";
-        return getData($url);
+        return getData("http://canvas.webug.his.se/api/v1/courses/{$course['id']}/users");
     }
 
-    function putCommentSubmission($course, $submission, $data){
-        $url = "http://canvas.webug.his.se/api/v1/courses/{$course['id']}/assignments/{$submission['assignment_id']}/submissions/{$submission['user_id']}";
-        return sendData($url, $data);
-    }
     function getAssignment($student, $assignment){
-        $url = "http://canvas.webug.his.se/api/v1/courses/{$assignment['course_id']}/assignments/{$assignment['id']}/submissions/{$student['id']}";
-        return getCurl($url);
+        return getData("http://canvas.webug.his.se/api/v1/courses/{$assignment['course_id']}/assignments/{$assignment['id']}/submissions/{$student['id']}");
      }
+
     function getAssignments($course){
-        $url = "http://canvas.webug.his.se/api/v1/courses/{$course['id']}/assignments";
-        return getData($url);
+        return getData("http://canvas.webug.his.se/api/v1/courses/{$course['id']}/assignments");
      }
+
     function getSubmissions($course, $assignment){
-        $url = "http://canvas.webug.his.se/api/v1/courses/{$course['id']}/assignments/{$assignment['id']}/submissions";
-        return getData($url);
+        return getData("http://canvas.webug.his.se/api/v1/courses/{$course['id']}/assignments/{$assignment['id']}/submissions");
     }
+
     function getSubmission($student, $assignment){
-        $url = "http://canvas.webug.his.se/api/v1/courses/{$assignment['course_id']}/assignments/{$assignment['id']}/submissions/{$student['id']}";
-        return getData($url);
+        return getData("http://canvas.webug.his.se/api/v1/courses/{$assignment['course_id']}/assignments/{$assignment['id']}/submissions/{$student['id']}");
+    }
+
+    
+    // PUT API
+    // Functions created to handle the put requests and return the response in a array format
+
+    function putCommentSubmission($course, $submission, $data){
+        return putData("http://canvas.webug.his.se/api/v1/courses/{$course['id']}/assignments/{$submission['assignment_id']}/submissions/{$submission['user_id']}", $data);
     }
 
 ?>
