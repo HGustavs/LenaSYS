@@ -68,6 +68,7 @@ This table is not used right now. However, it stores results from a part of a co
 This table is not used, should be removed.
 
 ### programcourse
+This table represents a many-to-many relation between class and course tables.
 
 ### quiz
 
