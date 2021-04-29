@@ -2715,25 +2715,25 @@ function drawLine(line, targetGhost = false)
         var fromCardinalityY = fy;
 
         if (line.ctype == "BT"){
-            toCardinalityX = tx;
+            toCardinalityX = tx + 10 * zoomfact;
             toCardinalityY = ty - 18 * zoomfact;
-            fromCardinalityX = fx + 10;
+            fromCardinalityX = fx + 10 * zoomfact;
             fromCardinalityY = fy + 25 * zoomfact;
         }else if (line.ctype == "TB"){
-            toCardinalityX = tx;
+            toCardinalityX = tx + 10 * zoomfact;
             toCardinalityY = ty + 18 * zoomfact;
-            fromCardinalityX = fx + 10;
+            fromCardinalityX = fx + 10 * zoomfact;
             fromCardinalityY = fy - 18 * zoomfact;
         }else if (line.ctype == "RL"){
             toCardinalityX = tx - 18 * zoomfact;
-            toCardinalityY = ty;
+            toCardinalityY = ty - 10 * zoomfact;
             fromCardinalityX = fx + 18 * zoomfact;
-            fromCardinalityY = fy - 10;
+            fromCardinalityY = fy - 10 * zoomfact;
         }else if (line.ctype == "LR"){
             toCardinalityX = tx + 18 * zoomfact;
-            toCardinalityY = ty;
+            toCardinalityY = ty - 10 * zoomfact;
             fromCardinalityX = fx - 25 * zoomfact;
-            fromCardinalityY = fy - 10;
+            fromCardinalityY = fy - 10 * zoomfact;
         }
         // From cardinality
         if (line.cardinality.from != ""){
