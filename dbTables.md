@@ -24,6 +24,7 @@ An entry in the announcement table is created when a teacher creates an announce
 The class table stores all the programs that are available in the school and is stored alongside a responsible teacher for that class.
 
 ### codeexample
+Code Example contains a list of the code examples for a version of a course in the database. Version of sections and examples corresponds roughly to year or semester that the course was given.
 
 ### course
 
