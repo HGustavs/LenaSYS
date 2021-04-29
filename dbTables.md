@@ -65,6 +65,7 @@ This table is not used, should be removed.
 This table is not used right now. However, it stores results from a part of a course. Might need a rework.
 
 ### playereditor_playbacks
+This table is not used, should be removed.
 
 ### programcourse
 
