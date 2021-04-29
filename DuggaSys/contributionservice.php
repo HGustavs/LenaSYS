@@ -18,7 +18,7 @@ $vers=$_SESSION['coursevers'];
 
 $debug="NONE!";
 
-$log_db = new PDO('sqlite:../../GHData/GHdata_2019_10.db');
+$log_db = new PDO('sqlite:C:\Users\dan_l\Desktop\lenasys\GHdata\GHdata_Projekt.db');
 
 $opt = getOP('opt');
 $courseid=getOP('courseid');
@@ -36,7 +36,7 @@ if (!checklogin()) die;
 if(strcmp($opt,"get")==0) {
 	if(checklogin() && isSuperUser($_SESSION['uid'])) {
 		$gituser = getOP('userid');
-		$query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2019-03-31" and blamedate<"2020-01-01" union select author as usr from event where eventtime>"2019-03-31" and eventtime<"2020-01-01" union select author as usr from issue where issuetime>"2019-03-31" and issuetime<"2019-01-08") order by usr;');
+		$query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2020-03-31" and blamedate<"2021-01-01" union select author as usr from event where eventtime>"2020-03-31" and eventtime<"2021-01-01" union select author as usr from issue where issuetime>"2020-03-31" and issuetime<"2020-01-08") order by usr;');
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries\n".$error[2];
@@ -75,7 +75,7 @@ if(strcmp($opt,"get")==0) {
 
 	//$debug=print_r($_SESSION,true);
 
-	$startweek = strtotime('2019-04-01');									// First monday in january
+	$startweek = strtotime('2020-04-01');									// First monday in january
 	$currentweek=$startweek;
 	$currentweekend=strtotime("+1 week",$currentweek);
 	$weekno=1;
@@ -168,7 +168,7 @@ if(strcmp($opt,"get")==0) {
   $commitgrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT COUNT(*) as rowk, author FROM commitgit WHERE thedate>"2019-03-31" AND thedate<"2020-01-01" GROUP BY author ORDER BY rowk DESC;');
+	$query = $log_db->prepare('SELECT COUNT(*) as rowk, author FROM commitgit WHERE thedate>"2020-03-31" AND thedate<"2021-01-01" GROUP BY author ORDER BY rowk DESC;');
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -197,7 +197,7 @@ if(strcmp($opt,"get")==0) {
   $rowgrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT sum(rowcnt) as rowk, blameuser FROM Bfile,Blame WHERE Blame.fileid=Bfile.id and blamedate>"2019-03-31" and blamedate<"2020-01-01" group by blameuser order by rowk desc;');
+	$query = $log_db->prepare('SELECT sum(rowcnt) as rowk, blameuser FROM Bfile,Blame WHERE Blame.fileid=Bfile.id and blamedate>"2020-03-31" and blamedate<"2021-01-01" group by blameuser order by rowk desc;');
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -226,7 +226,7 @@ if(strcmp($opt,"get")==0) {
   $eventgrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2019-03-31" AND  eventtime<"2020-01-01" and eventtime!="undefined" AND kind != "comment" group by author order by rowk desc;');
+	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2020-03-31" AND  eventtime<"2021-01-01" and eventtime!="undefined" AND kind != "comment" group by author order by rowk desc;');
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -255,7 +255,7 @@ if(strcmp($opt,"get")==0) {
   $commentgrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2019-03-31" and eventtime!="undefined" and eventtime<"2020-01-01" and kind="comment" group by author order by rowk desc;');
+	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2020-03-31" and eventtime!="undefined" and eventtime<"2021-01-01" and kind="comment" group by author order by rowk desc;');
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -284,7 +284,7 @@ if(strcmp($opt,"get")==0) {
   $issuegrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM issue where issuetime>"2019-03-31" and issuetime<"2020-01-01" and issuetime!="undefined" group by author order by rowk desc;');
+	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM issue where issuetime>"2020-03-31" and issuetime<"2021-01-01" and issuetime!="undefined" group by author order by rowk desc;');
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -458,7 +458,7 @@ if(strcmp($opt,"get")==0) {
 	$hourlyevents = array();
 
 	// Events and issues by the user today
-	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>"2019-03-31" and eventtime!="undefined" and eventtime<"2020-01-01" AND kind IN ("comment", "commit");');
+	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>"2020-03-31" and eventtime!="undefined" and eventtime<"2021-01-01" AND kind IN ("comment", "commit");');
 	$query->bindParam(':gituser', $gituser);
 	if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -473,7 +473,7 @@ if(strcmp($opt,"get")==0) {
 			array_push($hourlyevents, $event);
 	}
 	$commits = array();
-	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>"2019-03-31" and issuetime!="undefined" and issuetime<"2020-01-01";');
+	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>"2020-03-31" and issuetime!="undefined" and issuetime<"2021-01-01";');
 	$query->bindParam(':gituser', $gituser);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -639,6 +639,6 @@ if(strcmp($opt,"get")==0) {
 	echo json_encode($array);
 }
 
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "contributionservice.php",$userid,$info);
+//logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "contributionservice.php",$userid,$info);
 
 ?>

@@ -1,4 +1,5 @@
 <?php
+phpinfo();
 session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
@@ -6,9 +7,9 @@ include_once "../Shared/basic.php";
 pdoConnect();
 $cid=getOPG('cid');
 $vers=getOPG('coursevers');
-if (!$_SERVER['HTTP_REFERER']) {
-	header('Location: sectioned.php?courseid='.$cid.'&coursevers='.$vers);
-}
+// if (!$_SERVER['HTTP_REFERER']) {
+// 	header('Location: sectioned.php?courseid='.$cid.'&coursevers='.$vers);
+// }
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +36,7 @@ if (!$_SERVER['HTTP_REFERER']) {
 
 </head>
 <body onload="loadContribFormLocalStorage()">
+	
 	<div id="infoText" style="background-color:#ffffff; border:1px solid black; top:100px; display:none;position:absolute;"></div>
 
 	<!-- content START -->
