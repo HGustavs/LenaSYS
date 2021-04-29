@@ -20,6 +20,7 @@
 
         return $fileupload;
     }
+    // gets data from the url.
     function getData($URL){
         $ch = curl_init($URL);
         $headers = array(
@@ -40,12 +41,14 @@
 
         return $fileupload;
     }
-
+    
+    // getting course data 
     function getCourses(){
         $url = "http://canvas.webug.his.se/api/v1/courses";
         return getData($url);
     }
 
+    // getting coursestudent data
     function getCourseStudents($course){
         $url = "http://canvas.webug.his.se/api/v1/courses/{$course['id']}/users";
         return getData($url);

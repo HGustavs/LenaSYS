@@ -1,7 +1,7 @@
 <?php
 
 include 'api.php';
-
+// print data from submitted assigment, we can tell the date submission was made and did it by looking at user_id
 $courses = getCourses();
     foreach ($courses as $course){
         $assignments = getAssignments($course);
@@ -32,7 +32,7 @@ $courses = getCourses();
                         EOL;
                         $data = [
                             "comment" => [
-                                "text_comment" => "Testar"
+                                "text_comment" => "Mera mer"
                                 ]
                             ];
                         print_r(putCommentSubmission($course, $submission, $data));
@@ -42,7 +42,8 @@ $courses = getCourses();
             }
         }
         /*
-        $saveStudent;
+
+        // print our student id and name.
         $students = getCourseStudents($course);  
         foreach($students as $student){
             if($student['id'] == 7){
@@ -52,7 +53,6 @@ $courses = getCourses();
                 ID: {$student['id']}
                 <hr>
                 EOL;
-                $saveStudent = $student;
                 
             }
         }
