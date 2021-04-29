@@ -5047,10 +5047,6 @@ only screen and (max-device-width: 860px) {
     display: inline;
   }
 
-  #hamburgerBox{
-    display: block;
-  }
-
   /*Här jobbar vi*/
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,

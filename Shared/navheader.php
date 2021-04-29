@@ -199,7 +199,7 @@
 							echo "<input type='text' id='adminLoggedin' value='yes' style='display:none;'>";
 
 
-							echo "<div id='hamburgerBox' style='display:none;'>";
+							echo "<div id='hamburgerBox'>";
 							echo "<div><img alt='announcement icon' id='announcementBurger' class='burgerButt' src='../Shared/icons/new_announcement_icon.svg'></div>";
 							echo "<div><img alt='settings icon' id='versionCogBurger' class='burgerButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'></div>";
 							echo "<div><img alt='plus sign icon' id='versionPlusBurger' value='New version' class='burgerButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'></div>";
