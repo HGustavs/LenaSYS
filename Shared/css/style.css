@@ -210,19 +210,6 @@ p {
  *                               Lists and Content                              *
  * --------------================################================-------------- */
 
-#hamburgerBox{
-  display: none;
-  position: absolute;
-  top: 50px;
-  width: 35px;
-  padding: 10px;
-  background-color: var(--color-primary-2);
-}
-
-#hamburgerBox div {
-  margin-bottom: 10px;;
-}
-
 
 .version {
   color: #EFF;
@@ -5047,7 +5034,24 @@ only screen and (max-device-width: 860px) {
     display: inline;
   }
 
-  /*Här jobbar vi*/
+  #hamburgerBox{
+    display: none;
+    position: absolute;
+    top: 50px;
+    width: 35px;
+    padding: 10px;
+    background-color: var(--color-primary-2);
+  }
+  #hamburgerBox div {
+    margin-bottom: 10px;
+  }
+
+  #versionCogBurger, #versionPlusBurger, #editStudentBurger,
+  #testsBTNBurger, #editFilesBurger, #courseIMGBurger,
+  #editCourseBurger, #announcementBurger{
+    display: block;
+  }
+  
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
   #editCourse, #announcement{
@@ -7769,6 +7773,17 @@ textarea#filecont {
   }
 }
 
+@media only screen and (min-width: 861px) {
+  #versionCogBurger, #versionPlusBurger, #editStudentBurger,
+  #testsBTNBurger, #editFilesBurger, #courseIMGBurger,
+  #editCourseBurger, #announcementBurger{
+    display: none;
+  }
+
+  #hamburgerBox{
+    display:none;
+  }
+}
 
 #selectdir{
   width: 120px;
