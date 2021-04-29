@@ -33,6 +33,7 @@ In this table every course that is available is stored, however there are some c
 This table represents a many-to-many relation between courses, to illustrate pre-requirements for courses.
 
 ### eventlog
+When a user tries to log in and fails to enter the correct password an entry is created in the eventlog table.
 
 ### fileLink
 
