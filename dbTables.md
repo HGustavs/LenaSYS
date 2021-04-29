@@ -18,6 +18,7 @@ When adding or editing testdata go to `/install/SQL/testdata.sql` and keep in mi
 An entry in the announcement table is created when a teacher creates an announcement. There will be one entry in the table for each student that gets the announcement.
 
 ### box
+"Dugga" entries in the "Webbprogrammering" course. 2 entries per dugga, 1 txt entry and one other for the dugga type (html, php or js file). (NOT IMPLEMENTED YET, NOT FUNCTIONAL.) 
 
 ### class
 
