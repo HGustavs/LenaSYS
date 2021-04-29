@@ -1691,7 +1691,7 @@ function pasteClipboard(elements)
     // Create the new lines but do not saved in stateMachine
     connectedLines.forEach(line => {
         newLines.push(
-            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false)
+            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false, false)
         );
     });
 
@@ -2610,7 +2610,7 @@ function sortElementAssociations(element)
 //-------------------------------------------------------------------------------------------------
 // addLine - Adds an new line if the requirements and rules are achieved
 //-------------------------------------------------------------------------------------------------
-function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
@@ -2640,7 +2640,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
             
             addObjectToLines(newLine);
             
-            displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
+            if(successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
             return newLine;
             
         } else {
