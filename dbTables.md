@@ -27,6 +27,7 @@ The class table stores all the programs that are available in the school and is 
 Code Example contains a list of the code examples for a version of a course in the database. Version of sections and examples corresponds roughly to year or semester that the course was given.
 
 ### course
+In this table every course that is available is stored, however there are some courses that has visibility '0' and those courses are only visible for the teachers. The course table contains the most essential information relating to study courses in the database.
 
 ### course_req
 
