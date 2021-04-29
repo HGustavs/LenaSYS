@@ -6416,7 +6416,7 @@ only screen and (max-device-width: 320px) {
 
 @media screen and (max-height: 600px) {
   .fab-btn-list {
-    transform-origin: bottom left;
+    transform-origin: 35% bottom;
     transform: rotate(270deg);
   }
   .fab-btn-sm {
