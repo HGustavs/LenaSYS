@@ -1,6 +1,6 @@
 <?php
     $local = "../../../secrets/canvas_token.txt";
-    $server =  "";
+    $server =  "../../../../../secrets/canvas_token.txt";
 
     // looks after if the tokens are local or from the server, also search if we have secret canvas file saved locally.
     if (file_exists($local)){
