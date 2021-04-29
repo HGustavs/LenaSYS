@@ -1,12 +1,12 @@
 <?php
     include 'login.php';
-
+    
     function sendData($URL, $data){
         $ch = curl_init();
         $headers = array(
           "Authorization: Bearer ". $GLOBALS['token'],
         );
-
+        // giving curl session handle 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_URL,$URL);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
@@ -23,6 +23,7 @@
 
         print_r($fileupload);
     }
+    // gets data from the url.
     function getData($URL){
         $ch = curl_init();
         $headers = array(
@@ -44,12 +45,12 @@
 
         return $fileupload;
     }
-
+    // getting course data 
     function courses(){
         $url = "http://canvas.webug.his.se/api/v1/courses";
         return getData($url);
     }
-
+    // getting coursestudent data
     function courseStudents($course){
         $url = "http://canvas.webug.his.se/api/v1/courses/{$course['id']}/users";
         return getData($url);
