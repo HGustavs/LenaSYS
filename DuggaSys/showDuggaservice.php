@@ -266,7 +266,7 @@ if($demo){
 		$query->execute();
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
-		error_log("!=UNK".$variantvalue));
+		error_log("!=UNK".$variantvalue);
 	}
 } else if ($hr){
 	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database

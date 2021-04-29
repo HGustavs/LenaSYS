@@ -483,6 +483,15 @@ function setExpireTime(key, value, ttl){
 	
 	localStorage.setItem(key, JSON.stringify(item))
 }
+function updateExpireTime(key, value){
+
+	const item = {
+		value: value,
+		expiry: ttl,
+	}
+	
+	localStorage.setItem(key, JSON.stringify(item))
+}
 //Lazily expiring the item (Its only checked when retrieved from storage)
 function getExpireTime(key){
 	const itemString = localStorage.getItem(key)
