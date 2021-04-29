@@ -85,6 +85,7 @@ This table is not used, should be removed.
 ### studentresultcourse
 
 ### submission
+The table that stores the link to the uploaded file that a student submits on a dugga where you upload a file.
 
 ### subparts
 
