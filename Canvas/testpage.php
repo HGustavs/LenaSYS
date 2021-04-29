@@ -30,18 +30,25 @@ $courses = getCourses();
                         url: {$submission['preview_url']}
                         <hr style="color:grey">
                         EOL;
+                        /*
+                        This code bellow works for making a comment on a submission.
+                        It was used to comment on Kristina Larsson' submission 
+                        http://canvas.webug.his.se/courses/1/assignments/1?module_item_id=7
+                        but it should work on other submissions also if the course and submission exists.
+
                         $data = [
                             "comment" => [
                                 "text_comment" => "Mera mer"
                                 ]
                             ];
                         print_r(putCommentSubmission($course, $submission, $data));
+                        */
                     }
                 }
                 echo "<hr>";
             }
         }
-        /*
+        
 
         // print our student id and name.
         $students = getCourseStudents($course);  
@@ -57,7 +64,7 @@ $courses = getCourses();
             }
         }
         echo "<br>";
-        */
+        
     }
 
 ?>
