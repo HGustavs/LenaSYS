@@ -602,15 +602,8 @@ function returnedResults(data) {
 					}
 				}
 			}
-			var assignmentList;
-			assignmentList += "<option value='none'>none</option>";
-			for(var i = 0; i < moments.length; i++){
-				assignmentList += "<option value='"+ moments[i].entryname +"' selected>"+ moments[i].entryname + "</option>";
-			}
-
 			var uniqueTeacherList = [...new Set(teacherList)]
 			document.getElementById("teacherDropdown").innerHTML = teacherList;
-			document.getElementById("assignmentDropdown").innerHTML = assignmentList;
 			document.getElementById("ladselect").innerHTML = ladmoments;
 			document.getElementById("laddate").valueAsDate = new Date();
 
