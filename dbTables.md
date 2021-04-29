@@ -15,6 +15,7 @@ When adding or editing testdata go to `/install/SQL/testdata.sql` and keep in mi
 ## Tables
 
 ### announcment
+An entry in the announcement table is created when a teacher creates an announcement. There will be one entry in the table for each student that gets the announcement.
 
 ### box
 
