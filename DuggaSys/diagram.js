@@ -2822,20 +2822,27 @@ function drawRulerBars(X,Y)
     var ZF = 100 * zoomfact;
     var pannedY = (Y - ZF) / zoomfact;
     var pannedX = (X - ZF) / zoomfact;
+    var zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact));
+    var zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
+
+    if(zoomfact < 0.5){
+        var verticalText = "writing-mode= 'vertical-lr'";
+    }else {
+        var verticalText = " ";
+    }
     
     //Draw the Y-axis ruler positive side.
     var lineNumber = (fullLineRatio - 1);
-    for (i = 40; i <= pannedY -(pannedY *2) + cheight ; i += (lineRatio*zoomfact)) {
+    for (i = 100 + zoomY; i <= pannedY -(pannedY *2) + cheight ; i += (lineRatio*zoomfact)) {
         lineNumber++;
          
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
-            barY += "<text x='2' y='"+(pannedY+i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
+            barY += "<text x='2' y='"+(pannedY+i+10)+"'style='font-size: 10px'>"+cordY+"</text>";
             cordY = cordY +100;
-        }
-        else if (zoomfact > 0.5){
+        }else if (zoomfact > 0.5){
             barY += "<line x1='25px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
         } 
     }
@@ -2843,7 +2850,7 @@ function drawRulerBars(X,Y)
     //Draw the Y-axis ruler negative side.
     lineNumber = (fullLineRatio - 11);
     cordY = -100;
-    for (i = -40; i <= pannedY; i += (lineRatio*zoomfact)) {
+    for (i = -100 - zoomY; i <= pannedY; i += (lineRatio*zoomfact)) {
         lineNumber++;
          
         //Check if a full line should be drawn
@@ -2852,8 +2859,7 @@ function drawRulerBars(X,Y)
             barY += "<line x1='0px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
             barY += "<text x='2' y='"+(pannedY-i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
             cordY = cordY -100;
-        }
-        else if (zoomfact > 0.5){
+        }else if (zoomfact > 0.5){
             barY += "<line x1='25px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
         }
     }
@@ -2863,17 +2869,16 @@ function drawRulerBars(X,Y)
     
     //Draw the X-axis ruler positive side.
     lineNumber = (fullLineRatio - 1);
-    for (i = 41; i <= pannedX - (pannedX *2) + cwidth; i += (lineRatio*zoomfact)) {
+    for (i = 51 + zoomX; i <= pannedX - (pannedX *2) + cwidth; i += (lineRatio*zoomfact)) {
         lineNumber++;
         
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
             lineNumber = 0;
             barX += "<line x1='" +(i+pannedX)+"' y1='0' x2='" + (i+pannedX) + "' y2='40px' stroke='" + color + "' />";
-            barX += "<text x='"+(i+5+pannedX)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
+            barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
             cordX = cordX +100;
-        }
-        else if (zoomfact > 0.5){
+        }else if (zoomfact > 0.5){
             barX += "<line x1='" +(i+pannedX)+"' y1='25' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
         }
     }
@@ -2881,17 +2886,16 @@ function drawRulerBars(X,Y)
     //Draw the X-axis ruler negative side.
     lineNumber = (fullLineRatio - 11);
     cordX = -100;
-    for (i = -41; i <= pannedX; i += (lineRatio*zoomfact)) {
+    for (i = -51 - zoomX; i <= pannedX; i += (lineRatio*zoomfact)) {
         lineNumber++;
         
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
             lineNumber = 0;
             barX += "<line x1='" +(pannedX-i)+"' y1='0' x2='" + (pannedX-i) + "' y2='40px' stroke='" + color + "' />";
-            barX += "<text x='"+(pannedX-i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
+            barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px'>"+cordX+"</text>";
             cordX = cordX -100;
-        }
-        else if (zoomfact > 0.5){
+        }else if (zoomfact > 0.5){
             barX += "<line x1='" +(pannedX-i)+"' y1='25' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
         }
     }
