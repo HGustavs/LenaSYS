@@ -119,6 +119,7 @@ Stores all users that have signed up for push notifications.
 An entry in the variant table is used to add questions to quiz tests.
 
 ### vers
+Stores the different versions of a course for different years.
 
 ### word
 
