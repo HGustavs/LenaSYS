@@ -50,7 +50,7 @@ improw contains a list of the important rows for a certain example (NOT IMPLEMEN
 impwordlist contains a list of important words for a certain code example (NOT IMPLEMENT YET, NOT FUNCTIONAL BECAUSE IT USES THE box TABLE).
 
 ### list
-This table is not used, should be removed.
+This table is not used.
 
 ### listentries
 The listentries table contains the list of dugga's, headers, etc. in a course. Everything that is listed in a dugga is stored in this table. 
@@ -59,13 +59,13 @@ The listentries table contains the list of dugga's, headers, etc. in a course. E
 Opponents table used to save opponents for seminars.
 
 ### options
-This table is not used, should be removed.
+This table is not used.
 
 ### partresult
 This table is not used right now. However, it stores results from a part of a course. Might need a rework.
 
 ### playereditor_playbacks
-This table is not used, should be removed.
+This table is not used.
 
 ### programcourse
 This table represents a many-to-many relation between class and course tables.
@@ -74,13 +74,13 @@ This table represents a many-to-many relation between class and course tables.
 The quiz table contains everything related to a dugga, and connects the dugga to a specific .js template file. It does not save answers, it only loads the dugga how it is supposed to look like.
 
 ### sequence
-This table is not used, should be removed.
+This table is not used.
 
 ### settings
 The settings table is used for setting the MOTD in courseed.php. This MOTD is currently hidden but can still be set.
 
 ### studentresultat
-This table is not used, should be removed.
+This table is not used.
 
 ### studentresultcourse
 A view that selects elements from the partresult and subparts tables.
@@ -110,6 +110,7 @@ This table represents a many-to-many relation between users and courses. That is
 Represents a many-to-many relation between users and groups.
 
 ### user_participant
+This table is not used.
 
 ### user_push_registration
 
