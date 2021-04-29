@@ -26,8 +26,6 @@ var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
 var isGroupDugga = true; // Set to false if you hate the popup
 var variantvalue;
-var tempvar;
-
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -483,14 +481,26 @@ function setExpireTime(key, value, ttl){
 	
 	localStorage.setItem(key, JSON.stringify(item))
 }
-function updateExpireTime(key, value){
+//Saves the expiry time if we change variant with hash
+function updateExpireTime(key, value, ttl){
+	const now = new Date();
+	const itemString = localStorage.getItem(key)
+	const itemParse = JSON.parse(itemString)
 
-	const item = {
-		value: value,
-		expiry: ttl,
+	if(itemParse != null) {
+		const item = {
+			value: value,
+			expiry: itemParse.expiry,
+		}
+		localStorage.setItem(key, JSON.stringify(item));
+	} else {
+		console.log("expiry");
+		const item = {
+			value: value,
+			expiry: now.getTime() + ttl,
+		}
+		localStorage.setItem(key, JSON.stringify(item));
 	}
-	
-	localStorage.setItem(key, JSON.stringify(item))
 }
 //Lazily expiring the item (Its only checked when retrieved from storage)
 function getExpireTime(key){
@@ -1188,8 +1198,6 @@ function getVariantValue(ajaxdata){
 	if(localStorage.getItem("variantSize") == null) {
 		localStorage.setItem("variantSize", 100);
 	}
-	tempvar = JSON.parse(ajaxdata);
-	console.log("tempvar: "+tempvar.variantvalue);
 	//Converts the localstorage variant from string to int
 	var newInt = +localStorage.getItem('variantSize');
 	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
@@ -1203,9 +1211,11 @@ function getVariantValue(ajaxdata){
 			variantvalue = test.value;
 			console.log("variantvalue2: "+variantvalue);
 		}
-		if(tempvar.hashvariant != null){
-			variantvalue = tempvar.hashvariant;
-			setExpireTime(querystring['did'], tempvar.hashvariant, 2592000000);
+		//Will overrule localstorage variant if we use hash url
+		var dbvariant = JSON.parse(ajaxdata);
+		if(dbvariant.hashvariant != null){
+			variantvalue = dbvariant.hashvariant;
+			updateExpireTime(querystring['did'], dbvariant.hashvariant, 2592000000);
 		}
 	}
 }
