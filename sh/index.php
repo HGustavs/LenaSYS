@@ -25,9 +25,9 @@ function GetAssigment ($hash){
 
 	// Database request form
 	$sql =	
-	"SELECT useranswer.cid, useranswer.vers, useranswer.quiz, useranswer.moment, course.coursename
-	FROM useranswer 
-	INNER JOIN course ON useranswer.cid=course.cid
+	"SELECT userAnswer.cid, userAnswer.vers, userAnswer.quiz, userAnswer.moment, course.coursename
+	FROM userAnswer 
+	INNER JOIN course ON userAnswer.cid=course.cid
 	WHERE hash='{$hash}'";	
 
 	// There should only be one match to the hash value in database as the hash is uniqe
