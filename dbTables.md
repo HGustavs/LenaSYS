@@ -92,7 +92,7 @@ The table that stores the link to the uploaded file that a student submits on a 
 Not in use at the moment. However, it stores the different subparts of each course.
 
 ### template
-
+This table is not used, there is no way to insert and all the entries in the table are files that do no exist.
 ### timesheet
 
 ### user
