@@ -1,13 +1,8 @@
 <?php
 session_start();
-include_once "../Shared/basic.php";
 
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
-// Show analytics if user is superuser, otherwise redirect them to courseed.
-/* if(!isset($_SESSION["superuser"]) || $_SESSION["superuser"] != 1) {
-	header('Location: courseed.php');
-} */
 
 if (!(isSuperUser($_SESSION['uid']) || isCreator($_SESSION['uid']))) {
 	header('Location: courseed.php');
