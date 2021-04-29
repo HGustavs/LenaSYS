@@ -113,6 +113,7 @@ Represents a many-to-many relation between users and groups.
 This table is not used.
 
 ### user_push_registration
+Stores all users that have signed up for push notifications.
 
 ### variant
 
