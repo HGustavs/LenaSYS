@@ -125,3 +125,4 @@ Stores the different versions of a course for different years.
 Stores all the keywords that are used in a specific language.
 
 ### wordlist
+Used to categorize the words from the word table into different languages.
