@@ -122,5 +122,6 @@ An entry in the variant table is used to add questions to quiz tests.
 Stores the different versions of a course for different years.
 
 ### word
+Stores all the keywords that are used in a specific language.
 
 ### wordlist
