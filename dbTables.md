@@ -53,6 +53,7 @@ impwordlist contains a list of important words for a certain code example (NOT I
 This table is not used, should be removed.
 
 ### listentries
+The listentries table contains the list of dugga's, headers, etc. in a course. Everything that is listed in a dugga is stored in this table. 
 
 ### opponents
 
