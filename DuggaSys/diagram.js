@@ -1199,8 +1199,15 @@ function mouseMode_onMouseMove(event)
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
-                ghostElement.x = cords.x - (ghostElement.width / 2);
-                ghostElement.y = cords.y - (ghostElement.height / 2);
+
+                // If snap to grid is enable, calculate closest snap-point to the mouse position
+                if (snapToGrid){
+                    ghostElement.x = Math.round(cords.x / gridSize) * gridSize - (ghostElement.width / 2);
+                    ghostElement.y = Math.round(cords.y / gridSize) * gridSize - (ghostElement.height / 2);
+                }else {
+                    ghostElement.x = cords.x - (ghostElement.width / 2);
+                    ghostElement.y = cords.y - (ghostElement.height / 2);
+                }
                 showdata();
                 updatepos(0, 0);
             }
