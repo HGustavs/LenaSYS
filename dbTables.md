@@ -56,6 +56,7 @@ This table is not used, should be removed.
 The listentries table contains the list of dugga's, headers, etc. in a course. Everything that is listed in a dugga is stored in this table. 
 
 ### opponents
+Opponents table used to save opponents for seminars.
 
 ### options
 
