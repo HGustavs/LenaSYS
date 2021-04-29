@@ -93,7 +93,9 @@ Not in use at the moment. However, it stores the different subparts of each cour
 
 ### template
 This table is not used, there is no way to insert and all the entries in the table are files that do no exist.
+
 ### timesheet
+Used for timesheet duggas.
 
 ### user
 
