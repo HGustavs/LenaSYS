@@ -41,6 +41,7 @@ When a user tries to log in and fails to enter the correct password an entry is 
 All groups that exists are stored in this table. Students needing to team up on a cooperative dugga are assigned to a group (This is done in the user_group table).
 
 ### highscore_quiz_time 
+This is a view that pulls the top 10 fastest quiz finishing students and lists them.
 
 ### improw
 
