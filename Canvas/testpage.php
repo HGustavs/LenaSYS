@@ -17,7 +17,6 @@ $courses = getCourses();
                 URL : {$assignment['html_url']}
                 <hr>
                 EOL;
-                $saveAssignment = $assignment;
                 $submissions = getSubmissions($course, $assignment);
                 foreach($submissions as $submission){
                     if($submission['user_id'] == 5){
@@ -31,12 +30,18 @@ $courses = getCourses();
                         url: {$submission['preview_url']}
                         <hr style="color:grey">
                         EOL;
-                        postCommentSubmission($course, $submission);
+                        $data = [
+                            "comment" => [
+                                "text_comment" => "Testar"
+                                ]
+                            ];
+                        print_r(putCommentSubmission($course, $submission, $data));
                     }
                 }
                 echo "<hr>";
             }
         }
+        /*
         $saveStudent;
         $students = getCourseStudents($course);  
         foreach($students as $student){
@@ -52,7 +57,7 @@ $courses = getCourses();
             }
         }
         echo "<br>";
-        //studentSubmission($saveStudent, $saveAssignment);
+        */
     }
 
 ?>
