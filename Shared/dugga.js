@@ -15,7 +15,6 @@ var querystring=parseGet();
 var pressTimer;
 var hash;
 var pwd;
-var localStorageVariant;
 var duggaTitle;
 var iconFlag = false;
 var ishashindb;
@@ -26,7 +25,6 @@ var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
 var isGroupDugga = true; // Set to false if you hate the popup
 var variantvalue;
-
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -55,11 +53,6 @@ function getAllIndexes(haystack, needle) {
 		i = haystack.indexOf(needle, ++i);
 	}
 	return indexes;
-}
-
-function setVariant(v) {
-	console.log("variant dugga.js: " + v)
-	localStorageVariant = v;
 }
 
 function getHash(){
@@ -481,6 +474,27 @@ function setExpireTime(key, value, ttl){
 	}
 	
 	localStorage.setItem(key, JSON.stringify(item))
+}
+//Saves the expiry time if we change variant with hash
+function updateExpireTime(key, value, ttl){
+	const now = new Date();
+	const itemString = localStorage.getItem(key)
+	const itemParse = JSON.parse(itemString)
+
+	if(itemParse != null) {
+		const item = {
+			value: value,
+			expiry: itemParse.expiry,
+		}
+		localStorage.setItem(key, JSON.stringify(item));
+	} else {
+		console.log("expiry");
+		const item = {
+			value: value,
+			expiry: now.getTime() + ttl,
+		}
+		localStorage.setItem(key, JSON.stringify(item));
+	}
 }
 //Lazily expiring the item (Its only checked when retrieved from storage)
 function getExpireTime(key){
@@ -1033,7 +1047,7 @@ function AJAXService(opt,apara,kind)
 			datatype: "json",
 			success: function(data){
 				getVariantValue(data);					//Get variant.
-				console.log("real variantvalue: "+variantvalue);
+				
 				$.ajax({ 								//We need to have this Ajax call inside of the outer Ajax call, otherwise variantValue cant be retrieved.
 					url: "showDuggaservice.php",
 					type: "POST",
@@ -1160,7 +1174,7 @@ function handleHash(hashdata){
 function handleLocalStorage(storagedata){
 	// Check localstorage variants.
 	var newvariant = storagedata['variantvalue'];
-
+	
 	if(localStorage.getItem(querystring['did']) == null){
 		localStorage.setItem(querystring['did'], newvariant);
 		//The big number below represents 30 days in milliseconds
@@ -1173,6 +1187,7 @@ function handleLocalStorage(storagedata){
 }
 
 function getVariantValue(ajaxdata){
+	
 	//Checks if the variantSize variant is set in localstorage. When its not, its set.
 	if(localStorage.getItem("variantSize") == null) {
 		localStorage.setItem("variantSize", 100);
@@ -1184,9 +1199,17 @@ function getVariantValue(ajaxdata){
 		if(localStorage.getItem(querystring['did']) == null){
 			returndata = JSON.parse(ajaxdata);
 			variantvalue = returndata.variant;
+			
 		} else {
 			var test = JSON.parse(localStorage.getItem(querystring['did']));
 			variantvalue = test.value;
+			
+		}
+		//Will overrule localstorage variant if we use hash url
+		var dbvariant = JSON.parse(ajaxdata);
+		if(dbvariant.hashvariant != null){
+			variantvalue = dbvariant.hashvariant;
+			updateExpireTime(querystring['did'], dbvariant.hashvariant, 2592000000);
 		}
 	}
 }
