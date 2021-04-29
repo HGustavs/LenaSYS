@@ -1200,7 +1200,7 @@ function mouseMode_onMouseMove(event)
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
 
-                // If snap to grid is enable, calculate closest snap-point to the mouse position
+                // If not in EDGE_CREATION AND in snap to grid, calculate the closest snap-point
                 if (snapToGrid && mouseMode != mouseModes.EDGE_CREATION){
                     ghostElement.x = Math.round(cords.x / gridSize) * gridSize - (ghostElement.width / 2);
                     ghostElement.y = Math.round(cords.y / gridSize) * gridSize - (ghostElement.height / 2);
