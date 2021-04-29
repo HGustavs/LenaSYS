@@ -25,7 +25,7 @@
 <body onload="getData()" style="overflow: hidden;">
 
     <!-- Toolbar for diagram -->
-    <div id="diagram-toolbar">
+    <div id="diagram-toolbar" onmousedown='mdown(event)'>
         <fieldset>
             <legend>Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
@@ -143,8 +143,8 @@
             <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>  
     </div> 
-    <div id="fab" onclick="fab_action();">+</div> <!-- Big (+) button -->
-    <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
+    <div id="fab" onclick="fab_action();" onmousedown='mdown(event)'>+</div> <!-- Big (+) button -->
+    <div id="options-pane" class="hide-options-pane" onmousedown='mdown(event)'> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
         <div id ="fieldsetBox">
             <fieldset id='propertyFieldset'>

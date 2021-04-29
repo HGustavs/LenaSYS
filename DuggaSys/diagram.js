@@ -899,6 +899,7 @@ function mdown(event)
         sscrolly = scrolly;
         startX = event.clientX;
         startY = event.clientY;
+        event.preventDefault();
         return;
     }
 
