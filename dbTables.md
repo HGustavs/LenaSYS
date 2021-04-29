@@ -38,6 +38,7 @@ When a user tries to log in and fails to enter the correct password an entry is 
 ### fileLink
 
 ### groups
+All groups that exists are stored in this table. Students needing to team up on a cooperative dugga are assigned to a group (This is done in the user_group table).
 
 ### highscore_quiz_time 
 
