@@ -1,12 +1,14 @@
 // =============================================================================================
 //#region ================================ CLASSES              ================================
+/** 
+ * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector. */
 class Point {
     x = 0;
     y = 0;
 
     /**
-     * 
-     * @param {number} startX 
+     * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector. 
+     * @param {number} startX
      * @param {number} startY 
      */
     constructor(startX = 0, startY = 0)
@@ -15,10 +17,9 @@ class Point {
         this.y = startY;
     }
 
-    /**
-     * 
-     * @param {Point} other 
-     */
+    /** 
+     * @description Adds x and y of another point to this point.
+     * @param {Point} other Point that should be appended to this. */
     add(other)
     {
         this.x += other.x;
@@ -26,11 +27,14 @@ class Point {
     }
 };
 
+/** 
+ * @description Represents a change stored in the StateMachine. StateChange contains a list of StateChange.ChangeTypes in the local property stateChanges, that in turn contains a flag to describe each change. The getFlags() can be used to get the sum of all these stateChanges. */
 class StateChange {
     /**
-     * flag: number of 2nd base used to set multiple flags at once.
-     * isSoft: If the change type is something that wishes to overwrite the previous change.
-     * canAppendTo: If the change can be overwritten by another change.
+     * @description ChangeType containing all information about a certain change. Several instances of ChangeType can exist inside a StateChange.
+     * @member flag A number represented in 2nd base. This allows several flags to be merged through bit operators.
+     * @member isSoft Boolean deciding if this change is considered a hard/soft change. Hard changes will not try to merge with previous change.
+     * @member canAppendTo Boolean deciding if a soft change is allowd to merge into this change.
      */
     static ChangeTypes = {
         ELEMENT_CREATED:            { flag: 1, isSoft: false, canAppendTo: true },
@@ -48,41 +52,36 @@ class StateChange {
     };
 
     /**
-     * Used by certain state changes to pass their own specific data
-     * that can be used when decoding the history log using the hange flags.
-     * 
-     * This should stay as an object where properties are set as arguments/values,
-     * which lets us use it as an map when reading the values later!
-     * 
-     * @type {Object}
+     * @description Object containing values this StateChange contains. StateChangeFactory will map passed arguments as properties in this object to the values.
      */
     valuesPassed;
 
     /**
-     * 
-     * @param {Object} changeType What flags this change has.
-     * @param {Array<String>} id_list Array of all ID's that are affected by the change. This helps with concatting changes more compactly.
-     * @param {Object} passed_values Argument map containing all specific values that the state change require. Pass it as an object with properties as the variables!
-     * @see {StateChange.ChangeTypes} for available flags.
+     * @description Creates a new StateChange instance.
+     * @param {ChangeTypes} changeType What kind of change this is, see {StateChange.ChangeTypes} for available values.
+     * @param {Array<String>} id_list Array of all elements affected by this state change. This is used for merging changes on the same elements.
+     * @param {Object} passed_values Map of all values that this change contains. Each property represents a change.
      */
     constructor(changeType, id_list, passed_values = {})
     {
         this.changeTypes = [changeType];
         this.timestamp = new Date().getTime();
         this.valuesPassed = passed_values;
-
-        /**
-         * @type Array<String>
-         */
         this.id_list = id_list;
     }
 
+    /** 
+     * @description Calculates and returns the bit-or of all flags in this state change.
+     * @returns {Number}
+     */
     getFlags()
     {
         var flags = 0;
 
         for (var index = 0; index <  this.changeTypes.length; index++) {
             var change = this.changeTypes[index];
+
+            // Perform bit-or operation
             flags = flags | change.flag;
         }
 
@@ -90,9 +89,9 @@ class StateChange {
     }
 
     /**
-     * Returns true if this change contains the requested flag.
-     * @param {number} flag 
-     * @returns {boolean}
+     * @description Tests if this state change contains a certain flag.
+     * @param {Number} flag Flag that is tested.
+     * @returns {Boolean} Boolean value depending on this state change containing the tested flag.
      */
     hasFlag(flag)
     {
@@ -102,6 +101,10 @@ class StateChange {
         return (AND === flag);
     }
 
+    /**
+     * @description Writes all properties of parameter to valuesPassed. This does NOT append values, but REPLACES them!
+     * @param {Object} value_object Object containting properties that should be written onto valuesPassed.
+     */
     setValues(value_object)
     {
         if (value_object) {
@@ -115,27 +118,31 @@ class StateChange {
     }
 
     /**
-     * 
-     * @param {StateChange} changes 
+     * @description Appends all property values onto the valuesPassed object. Logic for each specific property is different, some overwrite and some replaces.
+     * @param {StateChange} changes Another state change that will have its values copied over to this state change. Flags will also be merged.
      */
     appendValuesFrom(changes)
     {
         if (changes.timestamp < this.timestamp) {
             this.timestamp = changes.timestamp;
         }
-            
+        
+        // Go through all changes in the StateChange.
         for(var index = 0; index < changes.changeTypes.length; index++) {
             var change = changes.changeTypes[index]
 
             if (!this.changeTypes.includes(change)) {
                 this.changeTypes.push(change);
             }
+
             var props = Object.getOwnPropertyNames(changes.valuesPassed);
             var values = changes.valuesPassed;
          
+            // Go through each property in this change.
             for (var index = 0; index < props.length; index++) {
                 var propertyName = props[index];
             
+                // Perform logic depending on which property it is.
                 switch(propertyName){
                     case "elementName": 
                         this.valuesPassed[propertyName] = values[propertyName]
@@ -158,8 +165,15 @@ class StateChange {
     }
 }
 
+/**
+ * @description Constructs state changes with appropriate values set for each situation. This factory will also map passed argument into correct properties in the valuesPassed object.
+ */
 class StateChangeFactory
 {
+    /**
+     * @param {Object} element The new element that has been created.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementCreated(element)
     {
         var values = {
@@ -170,6 +184,10 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.ELEMENT_CREATED, [element.id], values);
     }
 
+    /**
+     * @param {Object} elements The elements that has been/are going to be deleted.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementsDeleted(elements)
     {
         var ids = [];
@@ -184,6 +202,12 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.ELEMENT_DELETED, ids, values);
     }
 
+    /**
+     * @param {List<String>} elementIDs List of IDs for all elements that were moved.
+     * @param {Number} moveX Amount of coordinates along the x-axis the elements have moved.
+     * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementsMoved(elementIDs, moveX, moveY)
     {
         var values = {
@@ -192,6 +216,12 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED, elementIDs, values);
     }
 
+    /**
+     * @param {List<String>} elementIDs List of IDs for all elements that were resized.
+     * @param {Number} changeX Amount of coordinates along the x-axis the elements have resized.
+     * @param {Number} changeY Amount of coordinates along the y-axis the elements have resized.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementResized(elementIDs, changeX, changeY)
     {
         var values = {
@@ -200,6 +230,14 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.ELEMENT_RESIZED, elementIDs, values);
     }
 
+    /**
+     * @param {List<String>} elementIDs List of IDs for all elements that were moved and resized.
+     * @param {Number} moveX Amount of coordinates along the x-axis the elements have moved.
+     * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
+     * @param {Number} changeX Amount of coordinates along the x-axis the elements have resized.
+     * @param {Number} changeY Amount of coordinates along the y-axis the elements have resized.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementMovedAndResized(elementIDs, moveX, moveY, changeX, changeY)
     {
         var values = {
@@ -209,24 +247,29 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED, elementIDs, values);
     }
 
+    /**
+     * @param {List<String>} elementID ID for element that has been changed.
+     * @param {Object} changeList Object containing changed attributes for the element. Each property represents each attribute changed.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */ 
     static ElementAttributesChanged(elementID, changeList)
     {       
         var state = new StateChange(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED, [elementID]);
 
+        // TODO : Could this be deleted? "changeList.name" should be handled in StateChange instead.
         // Handle special values that should not be passed, but rather used instantly.
         if (changeList.name) {
             state.name = changeList.name;
             delete changeList.name;
         }
 
-        // Pass forward values
         state.setValues(changeList);
         return state;
     }
 
     /**
-     * @param {*} line 
-     * @returns 
+     * @param {Object} line New line that has been created.
+     * @returns {StateChange} A new instance of the StateChange class.
      */
     static LineAdded(line)
     {
@@ -239,9 +282,8 @@ class StateChangeFactory
     }
 
     /**
-     * 
-     * @param {Array<object>} lines 
-     * @returns 
+     * @param {Array<object>} lines List of all lines that have been / are going to be removed.
+     * @returns {StateChange} A new instance of the StateChange class.
      */
     static LinesRemoved(lines)
     {
@@ -258,6 +300,11 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.LINE_DELETED, lineIDs, passed_values);
     }
 
+    /**
+     * @param {Array<object>} elements All elements that have been / are going to be removed.
+     * @param {Array<object>} lines All lines that have been / are going to be removed.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementsAndLinesDeleted(elements, lines)
     {
         var allIDs = [];
@@ -280,6 +327,11 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED, allIDs, passed_values);
     }
 
+    /**
+     * @param {Array<object>} elements All elements that have been created.
+     * @param {Array<object>} lines All lines that have been created.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementsAndLinesCreated(elements, lines)
     {
         var allIDs = [];
