@@ -2286,25 +2286,25 @@ function generateContextProperties()
         str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinality</h3>`;
 
         // FROM cardinality
-        str += `<label style="display: block">From (${data[findIndex(data, contextLine[0].fromID)].name}): <select id='propertyCardinalityFrom'>`;
-        str  += `<option value=''></option>`
+        str += `<label style="display: block">From (${data[findIndex(data, contextLine[0].fromID)].name}):<br> <select class='propertyCardinality' id='propertyCardinalityFrom'>`;
+        str  += `<option value=''>None</option>`
         Object.keys(lineCardinalitys).forEach(cardinality => {
             if (contextLine[0].cardinality != undefined && contextLine[0].cardinality.from === cardinality){
-                str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+                str += `<option value='${cardinality}' selected> ${lineCardinalitys[cardinality]}</option>`;
             }else {
-                str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+                str += `<option value='${cardinality}'> ${lineCardinalitys[cardinality]}</option>`;
             }
         });
         str += `</select></label>`;
 
         // TO cardinality
-        str += `<label style="display: block">To (${data[findIndex(data, contextLine[0].toID)].name}): <select id='propertyCardinalityTo'>`;
-        str  += `<option value=''></option>`
+        str += `<label style="display: block">To (${data[findIndex(data, contextLine[0].toID)].name}):<br> <select class='propertyCardinality' id='propertyCardinalityTo'>`;
+        str  += `<option value=''>None</option>`
         Object.keys(lineCardinalitys).forEach(cardinality => {
             if (contextLine[0].cardinality != undefined && contextLine[0].cardinality.to == cardinality){
-                str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+                str += `<option value='${cardinality}' selected> ${lineCardinalitys[cardinality]}</option>`;
             }else {
-                str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+                str += `<option value='${cardinality}'> ${lineCardinalitys[cardinality]}</option>`;
             }
         });
         str += `</select></label>`;
