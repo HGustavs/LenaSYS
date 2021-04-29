@@ -62,6 +62,7 @@ Opponents table used to save opponents for seminars.
 This table is not used, should be removed.
 
 ### partresult
+This table is not used right now. However, it stores results from a part of a course. Might need a rework.
 
 ### playereditor_playbacks
 
