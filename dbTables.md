@@ -36,6 +36,7 @@ This table represents a many-to-many relation between courses, to illustrate pre
 When a user tries to log in and fails to enter the correct password an entry is created in the eventlog table.
 
 ### fileLink
+An entry in this table allow file locations to be related to specific courses. For example, if an instructor wants to give students a link to a file that they should be able to download from the course page.
 
 ### groups
 All groups that exists are stored in this table. Students needing to team up on a cooperative dugga are assigned to a group (This is done in the user_group table).
