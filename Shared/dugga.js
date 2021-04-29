@@ -1713,25 +1713,47 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		var mediumMediaQuery = window.matchMedia("(min-width: 801px) and (max-width: 1200px)");
 		var tab="<table class='previewTable'>";
   // Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
-	if (group) {
-      if (mobileMediaQuery.matches) {
-        tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
-      } else {
-			  tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
-      }
-	} else if(ctype == "zip" || ctype == "rar"){
-		if(mobileMediaQuery.matches){
-			tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+  	if(iconFlag){
+		if (group) {
+			if (mobileMediaQuery.matches) {
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+			} else {
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+			}
+		} else if(ctype == "zip" || ctype == "rar"){
+			if(mobileMediaQuery.matches){
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+			} else {
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+			}
 		} else {
-			tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+			if (mobileMediaQuery.matches) {
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+			} else {
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+			}
 		}
-    } else {
-    if (mobileMediaQuery.matches) {
-	    tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+	} else {
+		if (group) {
+			if (mobileMediaQuery.matches) {
+			tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+			} else {
+					tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+			}
+		} else if(ctype == "zip" || ctype == "rar"){
+			if(mobileMediaQuery.matches){
+				tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+			} else {
+				tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+			}
 		} else {
-		  tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+			if (mobileMediaQuery.matches) {
+				tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+			} else {
+				tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+			}
 		}
-    }
+	}
 
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
@@ -1740,26 +1762,24 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
 							tab+="<tr'>"
 
-							if (!mobileMediaQuery.matches) {
-								tab+="<td>";
-								// Button for making / viewing feedback - note - only button for given feedback to students.
+							// Button for making / viewing feedback - note - only button for given feedback to students.
+							if(iconFlag){
 								if (ctype == "link"){
-
-										tab+="<a href='"+filez[i].content+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";
-								} else {
-									if(iconFlag){
-										tab+="<a href='"+filelink+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";
-										
-										// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
-										if (ctype == "pdf") {
-											tab +="\t<tab><a href='"+filelink+"' target='_blank'><img alt='open in new tab icon' title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
-										} 
-                                    }
-                                    else{
-										tab+="<img style='opacity: 0;' src='../Shared/icons/file_download.svg' />";
-                                    }
+									tab+="<td>";
+									tab+="<a href='"+filez[i].content+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";
+									tab+="</td>";
+								} else {								
+									tab+="<td>";
+									tab+="<a href='"+filelink+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";										
+									// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
+									if (ctype == "pdf") {
+										tab +="\t<tab><a href='"+filelink+"' target='_blank'><img alt='open in new tab icon' title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
+										tab+="</td>";
+									}
+									else{
+										tab+="</td>";
+									}
 								}
-								tab+="</td>";
 							}
               				if (group) {
 								tab+="<td>"+filez[i].username+"</td>";
