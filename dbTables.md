@@ -89,6 +89,7 @@ A view that selects elements from the partresult and subparts tables.
 The table that stores the link to the uploaded file that a student submits on a dugga where you upload a file.
 
 ### subparts
+Not in use at the moment. However, it stores the different subparts of each course.
 
 ### template
 
