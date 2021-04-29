@@ -80,6 +80,7 @@ This table is not used, should be removed.
 The settings table is used for setting the MOTD in courseed.php. This MOTD is currently hidden but can still be set.
 
 ### studentresultat
+This table is not used, should be removed.
 
 ### studentresultcourse
 
