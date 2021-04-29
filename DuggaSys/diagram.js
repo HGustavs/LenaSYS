@@ -1600,6 +1600,7 @@ function updateSelection(ctxelement)
     }
     // If CTRL is not pressed and a element has been selected.
     else if (ctxelement != null) {
+        clearContextLine();
         // Element not already in context
         if (!context.includes(ctxelement) && context.length < 1) {
             context.push(ctxelement);
