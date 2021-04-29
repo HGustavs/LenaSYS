@@ -107,6 +107,7 @@ Stores all the duggas that has been saved in the system. That is, the answers th
 This table represents a many-to-many relation between users and courses. That is, a tuple in this table joins a user with a course.
 
 ### user_group
+Represents a many-to-many relation between users and groups.
 
 ### user_participant
 
