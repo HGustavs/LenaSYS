@@ -101,6 +101,7 @@ Used for timesheet duggas.
 Stores all the users that exists in the system.
 
 ### userAnswer
+Stores all the duggas that has been saved in the system. That is, the answers that a student has entered is stored here.
 
 ### user_course
 
