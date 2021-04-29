@@ -767,11 +767,12 @@ document.addEventListener('keydown', function (e)
         if (e.key == keybinds.ZOOM_OUT.key && e.ctrlKey == keybinds.ZOOM_OUT.ctrl) zoomout(); // Works but interferes with browser zoom
         if (e.key == keybinds.ESCAPE.key && escPressed != true) {
             escPressed = true;
-            clearContext();
-            setMouseMode(mouseModes.POINTER);
-            clearContextLine();
-            movingObject = false;
-
+            if(context.length > 0 || contextLine.length > 0) {
+                clearContext();
+                clearContextLine();
+            } else {
+                setMouseMode(mouseModes.POINTER);
+            }
             if (movingContainer) {
                 scrollx = sscrollx;
                 scrolly = sscrolly;
@@ -781,7 +782,7 @@ document.addEventListener('keydown', function (e)
             pointerState = pointerStates.DEFAULT;
             showdata();
         }
-
+        
         if (e.key == "Backspace" && (context.length > 0 || contextLine.length > 0) && !propFieldState) {
             if (contextLine.length > 0) removeLines(contextLine);
             if (context.length > 0) removeElements(context);
