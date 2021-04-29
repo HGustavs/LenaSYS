@@ -2661,7 +2661,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                 kind: kind
             };
             
-            addObjectToLines(newLine);
+            addObjectToLines(newLine, stateMachineShouldSave);
             
             if(successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
             return newLine;
