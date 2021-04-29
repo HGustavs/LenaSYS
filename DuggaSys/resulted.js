@@ -31,6 +31,7 @@ var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
 var legendIsHidden = true;
+var answers = new Array;
 
 function setup() {
     //Benchmarking function
@@ -450,8 +451,11 @@ function formatDateShorter(longDate) {
 	return d.toLocaleString()
 }
 
+function clickResult(grade){
+	console.log("grade "+grade)
+}
 
-function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid, entryname) {
+/*function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid, entryname) {
 
 
 	var menu = "<div class='' style='display:block;'>";
@@ -477,7 +481,7 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	document.getElementById('markMenuPlaceholder').innerHTML = menu;
 
 	AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers }, "RESULT");
-}
+}*/
 //Toggles the visibility of the grading box. if the box is hidden it will change the display to block, if its visible it'll change the display to none
 function toggleGradeBox(){
 	var toggleGrade = document.getElementById('toggleGrade');
@@ -714,16 +718,37 @@ function buildStudentInfo() {
 	return studentInfo;
 }
 
+function buildAnswerInfo(){
+
+
+}
+
+function buildAnswerArray(){
+
+}
+
+
 function createSortableTable(data) {
 	var tblhead = buildDynamicHeaders();
 	studentInfo = buildStudentInfo();
+	console.log(data);
 
 	var tabledata = {
-		tblhead,
-		tblbody: studentInfo,
-		tblfoot: []
-	}
-	var colOrder = buildColumnOrder();
+		tblhead:{
+			dugga: "Dugga",
+			hash:"Hash",
+			password:"Password",
+			submitted:"Submission Date",
+			handNr: "Nr of hand-ins",
+			grade: "Grade", 
+      		link:"Link",
+			asd: "asd"
+		},
+		tblbody: data['entries'],
+		tblfoot:{}
+	};
+
+	var colOrder = ["dugga","hash", "password", "submitted", "handNr", "grade", "link"];
 	myTable = new SortableTable({
 		data: tabledata,
 		tableElementId: tableName,
@@ -733,7 +758,6 @@ function createSortableTable(data) {
 		exportColumnHeadingCallback: exportColumnHeading,
 		renderSortOptionsCallback: renderSortOptions,
 		renderColumnFilterCallback: renderColumnFilter,
-		rowFilterCallback: rowFilter,
 		columnOrder: colOrder,
 		hasRowHighlight: true,
 		hasMagicHeadings: true,
@@ -767,7 +791,28 @@ function gradeFilterHandler() {
 }
 
 function renderCell(col, celldata, cellid) {
-	gradeFilterHandler();
+	//console.log("col " + col);
+	//console.log("cell " + celldata);
+	//console.log("cellid " + cellid);
+	//console.log("gradeSystem" + celldata.gradesystem);
+	
+	if(col == "grade"){
+
+		str = "<div class='resultTableCell'>";
+		str += "<div class='gradeContainer resultTableText'>";
+		str += "<img id='korf' class='fist' src='../Shared/icons/FistV.png' onclick='clickResult("+celldata+")'/>";
+		str += "</div>";
+		str += "</div>";
+	}else{
+		str = "<div class='resultTableCell'>";
+		str += "<div class='resultTableText'>";
+		str += "<div>" + celldata +"</div>";
+		str += "</div>";
+		str += "</div>";
+	}
+	return str;
+}
+	/*gradeFilterHandler();
 	// Render minimode
 	if (filterList["minimode"]) {
 		var unassignedCheck = false;
@@ -859,12 +904,13 @@ function renderCell(col, celldata, cellid) {
 	}
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
-	if (col == "FnameLname") {
+	//console.log(col);
+	if (col == "hash") {
 		str = "<div class='resultTableCell resultTableNormal'>";
 		str += "<div class='resultTableText'>";
-		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
-		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
-		str += "<div>" + hideSSN(celldata.ssn) + "</div>";
+		str += "<div style='font-weight:bold'>" + celldata + " " + celldata+ "</div>";
+		str += "<div>" + celldata + " / " + celldata + "</div>";
+		//str += "<div>" + hideSSN(celldata.ssn) + "</div>";
 		str += "</div>";
 		return str;
 
@@ -1218,8 +1264,8 @@ function renderCell(col, celldata, cellid) {
 		return str;
 	}
 
-	return celldata; //editor says it is never reached, might be safe to remove
-}
+	return celldata; //editor says it is never reached, might be safe to remove*/
+//}
 
 function smartSearch(splitSearch, row) {
 	var columnToSearch;

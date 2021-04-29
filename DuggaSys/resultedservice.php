@@ -649,9 +649,8 @@ if(strcmp($opt,"CHGR")!==0){
 
 		}
 		*/
-		$query = $pdo->prepare("SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class,user_course.access,user_course.examiner FROM user,user_course WHERE user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;");
-		//		$query = $pdo->prepare("select user_course.cid as cid,user.uid as uid,username,firstname,lastname,ssn,access from user,user_course where user.uid=user_course.uid and user_course.cid=:cid;");
-		$query->bindParam(':coursevers', $vers);
+
+		$query = $pdo->prepare("SELECT * FROM userAnswer WHERE cid=:cid");
 		$query->bindParam(':cid', $cid);
 
 		if(!$query->execute()) {
@@ -664,15 +663,14 @@ if(strcmp($opt,"CHGR")!==0){
 
 			// This is unused in resulted, but kept if needed elsewhere / some other time
 			$entry = array(
-				'cid' => (int)$row['cid'],
-				'uid' => (int)$row['uid'],
-				'username' => $row['username'],
-				'firstname' => $row['firstname'],
-				'lastname' => $row['lastname'],
-				'ssn' => $row['ssn'],
-				'class' => $row['class'],
-				'access' => $row['access'],
-				'examiner' => $row['examiner']
+				'dugga' => "bit",
+				'hash' => $row['hash'],
+				'password' => $row['password'],
+				'grade' => $row['grade'],
+				'submitted' => $row['submitted'],
+				'handNr' => "bit",
+				'link' => "links",
+				'asd' => "asd"
 			);
 
 			// The array which is displayed on resulted without SSN
