@@ -59,6 +59,7 @@ The listentries table contains the list of dugga's, headers, etc. in a course. E
 Opponents table used to save opponents for seminars.
 
 ### options
+This table is not used, should be removed.
 
 ### partresult
 
