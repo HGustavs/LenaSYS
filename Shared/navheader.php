@@ -37,7 +37,7 @@
 			//---------------------------------------------------------------------
 
 			// Analytics button
-			if($noup == 'NONE' && $requestedService != "analytic.php" && checklogin() && isSuperUser($_SESSION['uid']) ){
+			if($noup == 'NONE' && $requestedService != "analytic.php" && checklogin() && (isSuperUser($_SESSION['uid']) || isCreator($_SESSION['uid'])) ){
 				echo "<td class='menuButton' style='display: inline-block;'>";
 				echo "    <div class='access menuButton'>";
   				echo "      <a id='accessBTN' class='navButt' title='Visit the analytics page' value='Analytics' href='analytic.php'>";
