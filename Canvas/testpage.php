@@ -1,7 +1,7 @@
 <?php
 
 include 'api.php';
-
+// print data from submitted assigment, we can tell the date submission was made and did it by looking at user_id
 $courses = courses();
     foreach ($courses as $course){
         $assignments = assignments($course);
@@ -35,6 +35,8 @@ $courses = courses();
                 echo "<hr>";
             }
         }
+
+        // print our student id and name.
         $saveStudent;
         $students = courseStudents($course);  
         foreach($students as $student){
