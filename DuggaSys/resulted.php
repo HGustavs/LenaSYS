@@ -123,6 +123,9 @@ pdoConnect();
 					<option value="Filter-VG">VG</option>
 					<option value="Filter-U">U</option>
 				</select>
+				</div><div class="resultedFormsFlex">
+					<label>Assignment</label>
+					<select id="assignmentDropdown" onchange="updateTable()"></select>
 				</div>
 				<div class="resultedFormsFlex">
 					<label>Examinator</label>
