@@ -21,6 +21,7 @@ An entry in the announcement table is created when a teacher creates an announce
 "Dugga" entries in the "Webbprogrammering" course. 2 entries per dugga, 1 txt entry and one other for the dugga type (html, php or js file). (NOT IMPLEMENTED YET, NOT FUNCTIONAL.) 
 
 ### class
+The class table stores all the programs that are available in the school and is stored alongside a responsible teacher for that class.
 
 ### codeexample
 
