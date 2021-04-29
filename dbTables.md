@@ -14,78 +14,78 @@ When adding or editing testdata go to `/install/SQL/testdata.sql` and keep in mi
 
 ## Tables
 
-#### announcment
+### announcment
 
-#### box
+### box
 
-#### class
+### class
 
-#### codeexample
+### codeexample
 
-#### course
+### course
 
-#### course_req
+### course_req
 
-#### eventlog
+### eventlog
 
-#### fileLink
+### fileLink
 
-#### groups
+### groups
 
-#### highscore_quiz_time 
+### highscore_quiz_time 
 
-#### improw
+### improw
 
-#### impwordlist
+### impwordlist
 
-#### list
+### list
 
-#### listentries
+### listentries
 
-#### opponents
+### opponents
 
-#### options
+### options
 
-#### partresult
+### partresult
 
-#### playereditor_playbacks
+### playereditor_playbacks
 
-#### programcourse
+### programcourse
 
-#### quiz
+### quiz
 
-#### sequence
+### sequence
 
-#### settings
+### settings
 
-#### studentresultat
+### studentresultat
 
-#### studentresultcourse
+### studentresultcourse
 
-#### submission
+### submission
 
-#### subparts
+### subparts
 
-#### template
+### template
 
-#### timesheet
+### timesheet
 
-#### user
+### user
 
-#### userAnswer
+### userAnswer
 
-#### user_course
+### user_course
 
-#### user_group
+### user_group
 
-#### user_participant
+### user_participant
 
-#### user_push_registration
+### user_push_registration
 
-#### variant
+### variant
 
-#### vers
+### vers
 
-#### word
+### word
 
-#### wordlist
+### wordlist
