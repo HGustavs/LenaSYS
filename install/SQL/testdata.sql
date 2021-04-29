@@ -806,7 +806,7 @@ INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitt
 VALUES ('14','2','10','21','2016',NULL,NULL,'2 97732 3006 Submitted,T 0 1440 900 1440 738','2015-05-20 14:50:35',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','i4DbRocC','SamXJ4C');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
-VALUES ('15','2','1','3','2001',NULL,NULL,NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','E_X-FUT+','yMp0cdW');
+VALUES ('15','2','1','3','2001',NULL,NULL,NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','E_X-FUTy','yMp0cdW');
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
 VALUES ('16','2','1','3','2002',NULL,NULL,'2 97732 2002 00000000,0 0 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,1,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','HUQ0mMrf','iRIlrbY');
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password) 
