@@ -878,6 +878,7 @@ window.addEventListener("resize", () => {
 window.onfocus = function()
 {
     altPressed=false;
+    ctrlPressed=false;
 }
 
 // --------------------------------------- Mouse Events    --------------------------------
