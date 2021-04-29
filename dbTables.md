@@ -83,6 +83,7 @@ The settings table is used for setting the MOTD in courseed.php. This MOTD is cu
 This table is not used, should be removed.
 
 ### studentresultcourse
+A view that selects elements from the partresult and subparts tables.
 
 ### submission
 
