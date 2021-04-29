@@ -914,7 +914,7 @@ function mdown(event)
                 break;
             
             case mouseModes.BOX_SELECTION:
-                boxSelect_Start(event.clientX, event.clientY);
+                boxSelect_Start(event.clientX, event.clientY);  
                 break;
 
             default:
@@ -1049,7 +1049,12 @@ function mup(event)
             break;
 
         case pointerStates.CLICKED_LINE:
-            updateSelectedLine(determinedLines);
+            if(!deltaExceeded){
+                updateSelectedLine(determinedLines);
+            }
+            if (mouseMode == mouseModes.BOX_SELECTION) {
+                mouseMode_onMouseUp(event);
+            }
             break;
 
         case pointerStates.CLICKED_ELEMENT:
@@ -1239,10 +1244,14 @@ function mmoving(event)
             // Update the ruler
             drawRulerBars();
 
-            // Remember that mouse has moved out of starting bounds
-            if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || 
-                deltaY <= -maxDeltaBeforeExceeded)) {
-                deltaExceeded = true;
+            calculateDeltaExceeded();
+            break;
+
+        case pointerState.CLICKED_LINE:
+
+            if(mouseMode == mouseModes.BOX_SELECTION){
+                calculateDeltaExceeded();
+                mouseMode_onMouseMove(mouseMode);
             }
             break;
 
@@ -1255,11 +1264,7 @@ function mmoving(event)
             // We update position of connected objects
             updatepos(deltaX, deltaY);
 
-            // Remember that mouse has moved out of starting bounds
-            if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded ||
-                deltaY <= -maxDeltaBeforeExceeded)) {
-                deltaExceeded = true;
-            }
+            calculateDeltaExceeded();
             break;
 
         case pointerStates.CLICKED_NODE:
@@ -1930,7 +1935,13 @@ function onMouseModeDisabled()
             break;
     }
 }
-
+function calculateDeltaExceeded(){
+    // Remember that mouse has moved out of starting bounds
+    if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded ||
+        deltaY <= -maxDeltaBeforeExceeded)) {
+        deltaExceeded = true;
+    }
+}
 // --------------------------------------- Box Selection    --------------------------------
 // Returns all elements touching the coordinate box
 function getElementsInsideCoordinateBox(selectionRect)
@@ -1986,6 +1997,8 @@ function boxSelect_Update(mouseX, mouseY)
         // Update relative position form the starting position
         deltaX = mouseX - startX;
         deltaY = mouseY - startY;
+
+        calculateDeltaExceeded();
 
         // Select all objects inside the box
         var coords = getBoxSelectionCoordinates();
@@ -2043,7 +2056,7 @@ function boxSelect_End()
 
 function boxSelect_Draw(str)
 {
-    if (boxSelectionInUse && mouseMode == mouseModes.BOX_SELECTION && pointerState == pointerStates.DEFAULT) {
+    if (boxSelectionInUse && mouseMode == mouseModes.BOX_SELECTION && (pointerState == pointerStates.DEFAULT || pointerState == pointerStates.CLICKED_LINE)) {
         // Positions to draw lines in-between
         /*
             Each [nx] depicts one node in the selection triangle.
