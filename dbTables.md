@@ -116,6 +116,7 @@ This table is not used.
 Stores all users that have signed up for push notifications.
 
 ### variant
+An entry in the variant table is used to add questions to quiz tests.
 
 ### vers
 
