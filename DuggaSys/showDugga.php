@@ -303,6 +303,51 @@ if($hash!='UNK'){
     	echo '<script type="text/javascript">',
     	'displayDownloadIcon();', 'noUploadForTeacher();',
     	'</script>';
+
+		// Creates a Feedback window for teachers
+		echo <<<EOL
+		<h2>Student feedback</h2>
+		<form id="teacherfeedback">
+			<textarea id="feedback" rows="8" style="width:99%" placeholder="Student feedback..."></textarea>
+			<br>
+			<input id="feedbackbutton" class="submit-button large-button" value="Send" type="submit">
+		</form> 
+		EOL;
+
+		// Javascript for Feedback window
+		echo <<<EOL
+		<script>
+		
+		window.onload = function() {
+			document.getElementById('teacherfeedback').onsubmit = function() {
+				
+				
+				/* do what you want with the form */
+			
+			
+			
+			var value = document.getElementById('feedback').value;
+			
+			
+			console.log(value);	
+
+			var hash = "$hash"
+			
+			console.log(hash);
+				return false;	
+			}
+		
+					
+		}
+		//	if ("$hash" == "UNK"){
+		//	document.getElementById('feedback').disabled = true;
+		//	document.getElementById('feedbackbutton').disabled = true;
+		//	}
+			
+			
+		</script>
+
+		EOL;
 	}?>
 
  
