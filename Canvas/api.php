@@ -56,6 +56,9 @@
         return getData("http://canvas.webug.his.se/api/v1/courses");
     }
 
+    function getCourse($courseID){
+        return getData("http://canvas.webug.his.se/api/v1/courses/{$courseID}");
+    }
     // getting coursestudent data
     function getCourseStudents($course){
         return getData("http://canvas.webug.his.se/api/v1/courses/{$course['id']}/users");
