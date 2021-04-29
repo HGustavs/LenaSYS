@@ -98,6 +98,7 @@ This table is not used, there is no way to insert and all the entries in the tab
 Used for timesheet duggas.
 
 ### user
+Stores all the users that exists in the system.
 
 ### userAnswer
 
