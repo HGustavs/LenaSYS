@@ -15,7 +15,6 @@ var querystring=parseGet();
 var pressTimer;
 var hash;
 var pwd;
-var localStorageVariant;
 var duggaTitle;
 var iconFlag = false;
 var ishashindb;
@@ -54,11 +53,6 @@ function getAllIndexes(haystack, needle) {
 		i = haystack.indexOf(needle, ++i);
 	}
 	return indexes;
-}
-
-function setVariant(v) {
-	console.log("variant dugga.js: " + v)
-	localStorageVariant = v;
 }
 
 function getHash(){
@@ -1180,7 +1174,7 @@ function handleHash(hashdata){
 function handleLocalStorage(storagedata){
 	// Check localstorage variants.
 	var newvariant = storagedata['variantvalue'];
-	console.log(storagedata);
+	
 	if(localStorage.getItem(querystring['did']) == null){
 		localStorage.setItem(querystring['did'], newvariant);
 		//The big number below represents 30 days in milliseconds
@@ -1193,7 +1187,7 @@ function handleLocalStorage(storagedata){
 }
 
 function getVariantValue(ajaxdata){
-	console.log(ajaxdata);
+	
 	//Checks if the variantSize variant is set in localstorage. When its not, its set.
 	if(localStorage.getItem("variantSize") == null) {
 		localStorage.setItem("variantSize", 100);
@@ -1205,11 +1199,11 @@ function getVariantValue(ajaxdata){
 		if(localStorage.getItem(querystring['did']) == null){
 			returndata = JSON.parse(ajaxdata);
 			variantvalue = returndata.variant;
-			console.log("variantvalue1: "+variantvalue);
+			
 		} else {
 			var test = JSON.parse(localStorage.getItem(querystring['did']));
 			variantvalue = test.value;
-			console.log("variantvalue2: "+variantvalue);
+			
 		}
 		//Will overrule localstorage variant if we use hash url
 		var dbvariant = JSON.parse(ajaxdata);
