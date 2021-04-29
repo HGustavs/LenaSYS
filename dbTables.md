@@ -44,6 +44,7 @@ All groups that exists are stored in this table. Students needing to team up on 
 This is a view that pulls the top 10 fastest quiz finishing students and lists them.
 
 ### improw
+improw contains a list of the important rows for a certain example (NOT IMPLEMENT YET, NOT FUNCTIONAL BECAUSE IT USES THE box TABLE).
 
 ### impwordlist
 
