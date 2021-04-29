@@ -1044,6 +1044,7 @@ function AJAXService(opt,apara,kind)
 						handleHash(data);				//Makes sure hash is unique.			
 						handleLocalStorage(data);		//Set localstorage lifespan.
 						setPassword(data['password']);	//Sets the password retrieved from query.
+						console.log(data);
 					}
 				});
 			}
