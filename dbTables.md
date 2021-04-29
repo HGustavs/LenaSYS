@@ -50,6 +50,7 @@ improw contains a list of the important rows for a certain example (NOT IMPLEMEN
 impwordlist contains a list of important words for a certain code example (NOT IMPLEMENT YET, NOT FUNCTIONAL BECAUSE IT USES THE box TABLE).
 
 ### list
+This table is not used, should be removed.
 
 ### listentries
 
