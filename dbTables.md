@@ -74,6 +74,7 @@ This table represents a many-to-many relation between class and course tables.
 The quiz table contains everything related to a dugga, and connects the dugga to a specific .js template file. It does not save answers, it only loads the dugga how it is supposed to look like.
 
 ### sequence
+This table is not used, should be removed.
 
 ### settings
 
