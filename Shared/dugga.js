@@ -1034,9 +1034,10 @@ function AJAXService(opt,apara,kind)
 			success: function(data){
 				//returnedDugga(data);
 				getVariantValue(data);//Get variant.
-				handleHash(data);				//Makes sure hash is unique.		
+				console.log("returned variantvalue: "+variantvalue);
+				handleHash(data);							//Makes sure hash is unique.		
 				handleLocalStorage(para, opt, data);		//Set localstorage lifespan.
-				setPassword(data['password']);	//Sets the password retrieved from query.				
+				setPassword(data['password']);				//Sets the password retrieved from query.				
 			}
 		})
 	}else if(kind=="RESULT"){
