@@ -858,6 +858,7 @@ function htmlEntities(str) {
 //----------------------------------------------------------------------------------
 // beforeunload: Detect when student exits dugga
 //----------------------------------------------------------------------------------
+/*
 window.addEventListener('beforeunload', function (e) {
 	if(getUrlParam("did") != null){
 		groupTokenValue = -1;
@@ -868,8 +869,16 @@ window.addEventListener('beforeunload', function (e) {
 		}
 	}
 	
-});
+});*/
 
+//Check if score is above threshhold
+function duggaChange(){
+	if(score>10){
+		return true;
+	}else{
+		return false;
+	}
+}
 
 function getUrlParam(param){
 	var url_string = window.location.href;
