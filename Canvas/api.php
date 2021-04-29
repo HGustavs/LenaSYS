@@ -9,8 +9,9 @@
         // giving curl session handle 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_URL,$URL);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_POST,1);
+        //curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         
 
@@ -21,7 +22,7 @@
 
         $fileupload=json_decode($result,true);
 
-        print_r($fileupload);
+        return $fileupload;
     }
     // gets data from the url.
     function getData($URL){
@@ -52,30 +53,45 @@
     }
     // getting coursestudent data
     function courseStudents($course){
+
+    function getCourses(){
+        $url = "http://canvas.webug.his.se/api/v1/courses";
+        return getData($url);
+    }
+
+    function getCourseStudents($course){
         $url = "http://canvas.webug.his.se/api/v1/courses/{$course['id']}/users";
         return getData($url);
     }
 
-    function commentAssignment($student, $assignment){
+    function postCommentSubmission($course ,$submission){
         $comment = [
-            "comment" => "Testar detta",
+            "text_comment" => "Testar detta",
         ];
-        $url = "http://canvas.webug.his.se/api/v1/courses/{$assignment['course_id']}/assignments/{$assignment['id']}/submissions/{$student['id']}/comments/1";
-        sendData($url, $comment);
+        
+        echo "Målet :";
+        $url = "http://canvas.webug.his.se/api/v1/courses/{$course['id']}/assignments/{$submission['assignment_id']}/submissions/{$submission['user_id']}";
+        echo $url . "<br>";
+        print_r(getData($url));
+        echo "<br><br><br>";
+        print_r($submission);
+        $url = "http://canvas.webug.his.se/api/v1/courses/{$course['id']}/assignments/{$submission['assignment_id']}/submissions/{$submission['user_id']}";
+
+        return sendData($url, $comment);
     }
     function getAssignment($student, $assignment){
         $url = "http://canvas.webug.his.se/api/v1/courses/{$assignment['course_id']}/assignments/{$assignment['id']}/submissions/{$student['id']}";
         return getCurl($url);
      }
-    function assignments($course){
+    function getAssignments($course){
         $url = "http://canvas.webug.his.se/api/v1/courses/{$course['id']}/assignments";
         return getData($url);
      }
-    function submissions($course, $assignment){
+    function getSubmissions($course, $assignment){
         $url = "http://canvas.webug.his.se/api/v1/courses/{$course['id']}/assignments/{$assignment['id']}/submissions";
         return getData($url);
     }
-    function studentSubmission($student, $assignment){
+    function getSubmission($student, $assignment){
         $url = "http://canvas.webug.his.se/api/v1/courses/{$assignment['course_id']}/assignments/{$assignment['id']}/submissions/{$student['id']}";
         return getData($url);
     }

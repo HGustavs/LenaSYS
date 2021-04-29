@@ -3,8 +3,10 @@
 include 'api.php';
 // print data from submitted assigment, we can tell the date submission was made and did it by looking at user_id
 $courses = courses();
+
+$courses = getCourses();
     foreach ($courses as $course){
-        $assignments = assignments($course);
+        $assignments = getAssignments($course);
         $saveAssignment;
         foreach($assignments as $assignment){
             if ($assignment['id'] == 1){
@@ -18,19 +20,21 @@ $courses = courses();
                 <hr>
                 EOL;
                 $saveAssignment = $assignment;
-                $submissions = submissions($course, $assignment);
+                $submissions = getSubmissions($course, $assignment);
                 foreach($submissions as $submission){
-                    print_r($submission);
-                    echo <<<EOL
-                    <br>
-                    <br>
-                    Submission ID: {$submission['id']}
-                    <br>
-                    Student  ID: {$submission['user_id']}
-                    <br>
-                    url: {$submission['preview_url']}
-                    <hr style="color:grey">
-                    EOL;
+                    if($submission['user_id'] == 5){
+                        echo <<<EOL
+                        <br>
+                        <br>
+                        Submission ID: {$submission['id']}
+                        <br>
+                        Student  ID: {$submission['user_id']}
+                        <br>
+                        url: {$submission['preview_url']}
+                        <hr style="color:grey">
+                        EOL;
+                        postCommentSubmission($course, $submission);
+                    }
                 }
                 echo "<hr>";
             }
@@ -38,7 +42,7 @@ $courses = courses();
 
         // print our student id and name.
         $saveStudent;
-        $students = courseStudents($course);  
+        $students = getCourseStudents($course);  
         foreach($students as $student){
             if($student['id'] == 7){
                 echo <<<EOL
@@ -51,7 +55,6 @@ $courses = courses();
                 
             }
         }
-        //commentAssignment($saveStudent, $saveAssignment);
         echo "<br>";
         //studentSubmission($saveStudent, $saveAssignment);
     }
