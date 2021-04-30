@@ -760,11 +760,12 @@ document.addEventListener('keydown', function (e)
         if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
         if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
             escPressed = true;
-            clearContext();
-            setMouseMode(mouseModes.POINTER);
-            clearContextLine();
-            movingObject = false;
-
+            if(context.length > 0 || contextLine.length > 0) {
+                clearContext();
+                clearContextLine();
+            } else {
+                setMouseMode(mouseModes.POINTER);
+            }
             if (movingContainer) {
                 scrollx = sscrollx;
                 scrolly = sscrolly;
@@ -774,8 +775,10 @@ document.addEventListener('keydown', function (e)
             pointerState = pointerStates.DEFAULT;
             showdata();
         }
+
         if (isKeybindValid(e, keybinds.ZOOM_IN)) zoomin();
         if (isKeybindValid(e, keybinds.ZOOM_OUT)) zoomout();
+
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
             e.preventDefault();
             selectAll();
@@ -899,7 +902,7 @@ function mdown(event)
                 break;
             
             case mouseModes.BOX_SELECTION:
-                boxSelect_Start(event.clientX, event.clientY);
+                boxSelect_Start(event.clientX, event.clientY);  
                 break;
 
             default:
@@ -916,7 +919,8 @@ function mdown(event)
         startY = event.clientY;
     }
 
-    if(pointerState !== pointerStates.CLICKED_NODE){
+    // Check if not an element OR node has been clicked at the event
+    if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT){
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
         if (determinedLines){
@@ -1034,7 +1038,12 @@ function mup(event)
             break;
 
         case pointerStates.CLICKED_LINE:
-            updateSelectedLine(determinedLines);
+            if(!deltaExceeded){
+                updateSelectedLine(determinedLines);
+            }
+            if (mouseMode == mouseModes.BOX_SELECTION) {
+                mouseMode_onMouseUp(event);
+            }
             break;
 
         case pointerStates.CLICKED_ELEMENT:
@@ -1231,10 +1240,14 @@ function mmoving(event)
             // Update the ruler
             drawRulerBars();
 
-            // Remember that mouse has moved out of starting bounds
-            if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || 
-                deltaY <= -maxDeltaBeforeExceeded)) {
-                deltaExceeded = true;
+            calculateDeltaExceeded();
+            break;
+
+        case pointerState.CLICKED_LINE:
+
+            if(mouseMode == mouseModes.BOX_SELECTION){
+                calculateDeltaExceeded();
+                mouseMode_onMouseMove(mouseMode);
             }
             break;
 
@@ -1247,11 +1260,7 @@ function mmoving(event)
             // We update position of connected objects
             updatepos(deltaX, deltaY);
 
-            // Remember that mouse has moved out of starting bounds
-            if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded ||
-                deltaY <= -maxDeltaBeforeExceeded)) {
-                deltaExceeded = true;
-            }
+            calculateDeltaExceeded();
             break;
 
         case pointerStates.CLICKED_NODE:
@@ -1538,9 +1547,10 @@ function updateSelectedLine(selectedLine)
                 return line !== selectedLine;
             });
         }
-    }
+    }   
     // If CTRL is not pressed and a element has been selected.
     else if (selectedLine != null && !ctrlPressed) {
+        clearContext();
         // Element not already in context
         if (!contextLine.includes(selectedLine) && contextLine.length < 1) {
             contextLine.push(selectedLine);
@@ -1575,6 +1585,7 @@ function updateSelection(ctxelement)
     }
     // If CTRL is not pressed and a element has been selected.
     else if (ctxelement != null) {
+        clearContextLine();
         // Element not already in context
         if (!context.includes(ctxelement) && context.length < 1) {
             context.push(ctxelement);
@@ -1683,7 +1694,7 @@ function pasteClipboard(elements)
     // Create the new lines but do not saved in stateMachine
     connectedLines.forEach(line => {
         newLines.push(
-            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false)
+            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false, false)
         );
     });
 
@@ -1927,7 +1938,13 @@ function onMouseModeDisabled()
             break;
     }
 }
-
+function calculateDeltaExceeded(){
+    // Remember that mouse has moved out of starting bounds
+    if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded ||
+        deltaY <= -maxDeltaBeforeExceeded)) {
+        deltaExceeded = true;
+    }
+}
 // --------------------------------------- Box Selection    --------------------------------
 // Returns all elements touching the coordinate box
 function getElementsInsideCoordinateBox(selectionRect)
@@ -1983,6 +2000,8 @@ function boxSelect_Update(mouseX, mouseY)
         // Update relative position form the starting position
         deltaX = mouseX - startX;
         deltaY = mouseY - startY;
+
+        calculateDeltaExceeded();
 
         // Select all objects inside the box
         var coords = getBoxSelectionCoordinates();
@@ -2040,7 +2059,7 @@ function boxSelect_End()
 
 function boxSelect_Draw(str)
 {
-    if (boxSelectionInUse && mouseMode == mouseModes.BOX_SELECTION && pointerState == pointerStates.DEFAULT) {
+    if (boxSelectionInUse && mouseMode == mouseModes.BOX_SELECTION && (pointerState == pointerStates.DEFAULT || pointerState == pointerStates.CLICKED_LINE)) {
         // Positions to draw lines in-between
         /*
             Each [nx] depicts one node in the selection triangle.
@@ -2607,7 +2626,7 @@ function sortElementAssociations(element)
 //-------------------------------------------------------------------------------------------------
 // addLine - Adds an new line if the requirements and rules are achieved
 //-------------------------------------------------------------------------------------------------
-function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
@@ -2635,9 +2654,9 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
                 kind: kind
             };
             
-            addObjectToLines(newLine);
+            addObjectToLines(newLine, stateMachineShouldSave);
             
-            displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
+            if(successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
             return newLine;
             
         } else {
