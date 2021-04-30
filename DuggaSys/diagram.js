@@ -2665,9 +2665,9 @@ function drawLine(line, targetGhost = false)
 {
     var felem, telem, dx, dy;
     var str = "";
-    var lineColor = '#f44';
+    var lineColor = '#A000DC';
     if(contextLine.includes(line)){
-        lineColor = '#00ff00';
+        lineColor = '#F0D11C';
     }
     
     felem = data[findIndex(data, line.fromID)];
