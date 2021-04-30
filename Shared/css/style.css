@@ -6391,13 +6391,19 @@ only screen and (max-device-width: 320px) {
 
 @media screen and (max-height: 600px) {
   .fab-btn-list2{
-    top: 65px;
+    top: 30px;
+    left: 45px;
     transform: rotate(90deg);
     transform-origin: top left;
   }
   
   .fab-btn-list2 li {
-    transform: rotate(315deg);
+    transform: rotate(225deg);
+  }
+
+  [data-tooltip]:before {
+    right: 55%;
+    top: 10px;
   }
 }
 
@@ -6416,7 +6422,7 @@ only screen and (max-device-width: 320px) {
 
 @media screen and (max-height: 600px) {
   .fab-btn-list {
-    transform-origin: bottom left;
+    transform-origin: 35% bottom;
     transform: rotate(270deg);
   }
   .fab-btn-sm {
