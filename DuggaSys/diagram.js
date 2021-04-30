@@ -653,7 +653,7 @@ var movingContainer = false;
 var isRulerActive = true;
 
 //Grid Settings
-var gridSize = 100;
+const gridSize = 50;
 var snapToGrid = false;
 var randomidArray = []; // array for checking randomID
 var errorMsgMap = {};
@@ -735,6 +735,7 @@ function getData()
     generateToolTips();
     toggleGrid();
     updateGridPos();
+    updateGridSize();
     setCursorStyles(mouseMode);
 }
 
@@ -2365,10 +2366,10 @@ function setRulerPosition(x, y)
 function updateGridSize()
 {
     var bLayer = document.getElementById("grid");
-    bLayer.setAttribute("width", 100 * zoomfact + "px");
-    bLayer.setAttribute("height", 100 * zoomfact + "px");
+    bLayer.setAttribute("width", gridSize * zoomfact + "px");
+    bLayer.setAttribute("height", gridSize * zoomfact + "px");
 
-    bLayer.children[0].setAttribute('d', `M ${100 * zoomfact} 0 L 0 0 0 ${100 * zoomfact}`);
+    bLayer.children[0].setAttribute('d', `M ${gridSize * zoomfact} 0 L 0 0 0 ${gridSize * zoomfact}`);
     updateGridPos();
 }
 
