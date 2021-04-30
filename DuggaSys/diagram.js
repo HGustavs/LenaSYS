@@ -1779,7 +1779,11 @@ function updateSelectedLine(selectedLine)
     generateContextProperties();
 }
 
-function updateSelection(ctxelement)
+/**
+ * @description Updates the current selection of elements depending on what buttons are down. Context array may have the new element added or removed from the context array, have the context array replaced with only the new element or simply have the array emptied.
+ * @param {Object} ctxelement Element that has was clicked or null. A null value will DESELECT all elements, emptying the entire context array.
+ */
+function updateSelection(ctxelement) // TODO : Default null value since we use it for deselection?
 {
     // If CTRL is pressed and an element is selected
     if (ctrlPressed && ctxelement != null) {
@@ -1815,6 +1819,9 @@ function updateSelection(ctxelement)
     generateContextProperties();
 }
 
+/**
+ * @description Puts all available elements of the data array into the context array.
+ */
 function selectAll()
 {   
     context = data;
@@ -1822,6 +1829,10 @@ function selectAll()
     showdata();
 }
 
+/**
+ * Places a copy of all elements into the data array centered around the current mouse position.
+ * @param {Array<Object>} elements List of all elements to paste into the data array.
+ */
 function pasteClipboard(elements)
 {
 
@@ -1918,6 +1929,9 @@ function pasteClipboard(elements)
     showdata();
 }
 
+/**
+ * @description Empties the context array of all selected elements.
+ */
 function clearContext()
 {
     if(context != null){
@@ -1926,6 +1940,9 @@ function clearContext()
     }
 }
 
+/**
+ * @description Empties the context array of all selected lines.
+ */
 function clearContextLine()
 {
     if(contextLine != null){
@@ -1935,6 +1952,13 @@ function clearContextLine()
 }
 //#endregion ===================================================================================
 //#region ================================ HELPER FUNCTIONS     ================================
+/**
+ * @description Converst a position in screen pixels into coordinates of the array.
+ * @param {Number} mouseX Pixel position in the x-axis.
+ * @param {Number} mouseY Pixel position in the y-axis.
+ * @returns {Point} Point containing the calculated coordinates.
+ * @see diagramToScreenPosition() For converting the other way.
+ */
 function screenToDiagramCoordinates(mouseX, mouseY)
 {
     // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
@@ -1956,26 +1980,34 @@ function screenToDiagramCoordinates(mouseX, mouseY)
     if (zoomfact == 0.25) zoomX = zoom0_25;
     if (zoomfact == 0.125) zoomX = zoom0_125;
 
-    return {
-        x: Math.round(
-            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x // the 2 makes mouse hover over container
-        ),
-        y: Math.round(
-            ((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y
-        ),
-    };
+    return new Point(Math.round( ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
+                    Math.round(((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
+    );
 }
 
-// TODO : This is still the old version, needs update
+/**
+ * @description Converts a coordinate on the canvas into a pixel position on the screen.
+ * @param {Number} coordX Coordinate position in the x-axis.
+ * @param {Number} coordY Coordinate position in the y-axis.
+ * @returns {Point} Point containing the calculated screen position.
+ * @depricated TODO : Needs to be updated
+ * @see screenToDiagramCoordinates() For converting the other way.
+ */
 function diagramToScreenPosition(coordX, coordY)
 {
-    return {
-        x: Math.round((coordX + scrollx) / zoomfact + 0),
-        y: Math.round((coordY + scrolly) / zoomfact + 0),
-    };
+    console.warn("diagramToScreenPosition() is depricated. It should be updated to use new screenToDiagramCoordinates() algorithm reversed.");
+    return new Point(
+        Math.round((coordX + scrollx) / zoomfact + 0),
+        Math.round((coordY + scrolly) / zoomfact + 0)
+    );
 }
 
-// Returns TRUE if an enum contains the tested value
+/**
+ * @description Test weither an enum object contains a certain property value.
+ * @param {*} value The value that the enumObject is tested for.
+ * @param {Object} enumObject The enum object containing all possible values.
+ * @returns {Boolean} Returns TRUE if an enum contains the tested value
+ */
 function enumContainsPropertyValue(value, enumObject) 
 {
     for (const property in enumObject) {
@@ -1988,6 +2020,13 @@ function enumContainsPropertyValue(value, enumObject)
     return false;
 }
 
+/**
+ * @description Creates an object with the selected x and y values.
+ * @param {*} x 
+ * @param {*} y 
+ * @returns {Object} Returns object with x and y properties set.
+ * @depricated Use new Point object instead!
+ */
 function getPoint (x,y)
 {
     return {
@@ -1996,16 +2035,27 @@ function getPoint (x,y)
     };
 }
 
-function getRectFromPoints(p1, p2)
+/**
+ * @description Creates a new rectangle from upper left point and lower right point.
+ * @param {Point} topLeft 
+ * @param {Point} bottomRight 
+ * @returns {Object} Returns an object representing a rectangle with position and size.
+ */
+function getRectFromPoints(topLeft, bottomRight)
 {
     return {
-        x: p1.x,
-        y: p1.y,
-        width: p2.x - p1.x,
-        height: p2.y - p1.y,
+        x: topLeft.x,
+        y: topLeft.y,
+        width: bottomRight.x - topLeft.x,
+        height: bottomRight.y - topLeft.y,
     };
 }
 
+/**
+ * @description Creates a new rectangle from an element.
+ * @param {Object} element Element with a x,y,width and height propery.
+ * @returns 
+ */
 function getRectFromElement (element)
 {
     return {
@@ -2016,14 +2066,14 @@ function getRectFromElement (element)
     };
 }
 
+/**
+ * @description Performs a box-collision between two rectangles.
+ * @param {*} left First rectangle
+ * @param {*} right Second rectangle
+ * @returns {Boolean} true if the rectangles collide with each other.
+ */
 function rectsIntersect (left, right)
 {
-    // If the two rects touch each other, returns true otherwise false.
-    //return ((left.X + left.Width >= right.X) &&
-    //        (left.X <= right.X + right.Width) &&
-    //        (left.Y + left.Height >= right.Y) &&
-    //        (left.Y <= right.Y + right.Height));
-
     return (
         (left.x + left.width >= right.x) && 
         (left.x <= right.x + right.width) &&
@@ -2032,6 +2082,12 @@ function rectsIntersect (left, right)
     );
 }
 
+/**
+ * @description Moves the first element with matching ID a certain coordinates along the x/y-axis.
+ * @param {String} id Hexadecimal ID represented as a string.
+ * @param {Number} x Coordinates along the x-axis to move
+ * @param {Number} y Coordinates along the y-axis to move
+ */
 function setPos(id, x, y)
 {
     foundId = findIndex(data, id);
@@ -2053,6 +2109,11 @@ function setPos(id, x, y)
 }
 //#endregion =====================================================================================
 //#region ================================ MOUSE MODE FUNCS     ================================
+/**
+ * @description Changes the current mouse mode using argument enum value.
+ * @param {mouseModes} mode What mouse mode to change into.
+ * @see mouseModes For all available enum values.
+ */
 function setMouseMode(mode)
 {   
     if (enumContainsPropertyValue(mode, mouseModes)) {
@@ -2067,8 +2128,14 @@ function setMouseMode(mode)
     }
 }
 
-function setCursorStyles(cursorMode = 0)
+/**
+ * @description Changes the current visual cursor style for the user.
+ * @param {Number} cursorMode CursorStyle value. This will be translated into appropriate cursor style.
+ */
+function setCursorStyles(cursorMode = mouseModes.POINTER)
 {
+    // TODO : Create new string enum for all cursor styles? This would result in us not needing to use any form of branching and still get correct result.
+    // TODO : Should have better name. This is the CONTAINER and not a CURSORSTYLE!
     cursorStyle = document.getElementById("container").style;
 
     switch(cursorMode) {
@@ -2089,6 +2156,9 @@ function setCursorStyles(cursorMode = 0)
     }
 }
 
+/**
+ * @description Function triggered just AFTER the current mouse mode is changed.
+ */
 function onMouseModeEnabled()
 {
     // Add the diagramActive to current diagramIcon
@@ -2117,6 +2187,9 @@ function onMouseModeEnabled()
     }
 }
 
+/**
+ * @description Function triggered just BEFORE the current mouse mode is changed.
+ */
 function onMouseModeDisabled()
 {
     // Remove all "active" classes in nav bar
@@ -2292,6 +2365,9 @@ function boxSelect_Draw(str)
 }
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
+/**
+ * @description Toggles the visual background grid ON/OFF.
+ */
 function toggleGrid()
 {
     var grid = document.getElementById("svggrid");
@@ -2306,6 +2382,9 @@ function toggleGrid()
    }
 }
 
+/**
+ * @description Toggles weither the snap-to-grid logic should be active or not. The GUI button will also be flipped.
+ */
 function toggleSnapToGrid()
 {
     // Toggle active class on button
@@ -2315,6 +2394,9 @@ function toggleSnapToGrid()
     snapToGrid = !snapToGrid;
 }
 
+/**
+ * @description Toggles weither the ruler is visible or not for the end user.
+ */
 function toggleRuler()
 {
     var ruler = document.getElementById("rulerOverlay");
@@ -2322,7 +2404,7 @@ function toggleRuler()
     // Toggle active class on button
     document.getElementById("rulerToggle").classList.toggle("active");
 
-  if(isRulerActive){
+    if(isRulerActive){
         ruler.style.display = "none";
     } else {
         ruler.style.display = "block";
@@ -2332,11 +2414,20 @@ function toggleRuler()
     drawRulerBars();
 }
 
-function setElementPlacementType(type = 0)
+/**
+ * @description Changes what element will be constructed on next constructElementOfType call.
+ * @param {Number} type What kind of element to place.
+ * @see constructElementOfType
+ */
+function setElementPlacementType(type = elementTypes.ENTITY)
 {
     elementTypeSelected = type;
 }
 
+/**
+ * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
+ * @param {MouseEvent} scrollEvent The current mouse event.
+ */
 function zoomin(scrollEvent = undefined)
 {
     // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
@@ -2383,6 +2474,10 @@ function zoomin(scrollEvent = undefined)
     drawRulerBars();
 }
 
+/**
+ * @description Decreases the current zoom level if not already at minimum. This will shrink all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom away from the cursor position.
+ * @param {MouseEvent} scrollEvent The current mouse event.
+ */
 function zoomout(scrollEvent = undefined)
 {
     // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
@@ -2424,11 +2519,19 @@ function zoomout(scrollEvent = undefined)
     drawRulerBars();
 }
 
+/**
+ * @description Event function triggered whenever a property field is pressed in the options panel. This will appropriatly update the current propFieldState variable.
+ * @param {Boolean} isSelected Boolean value representing if the selection was ACTIVATED or DEACTIVATED.
+ * @see propFieldState For seeing if any fieldset is currently selected.
+ */
 function propFieldSelected(isSelected)
 {
     propFieldState = isSelected;
 }
 
+/**
+ * @description Generates fields for all properties of the currently selected element/line in the context. These fields can be used to modify the selected element/line.
+ */
 function generateContextProperties()
 {
     var propSet = document.getElementById("propertyFieldset");
@@ -2534,6 +2637,9 @@ function generateContextProperties()
     propSet.innerHTML = str;
 }
 
+/**
+ * @description Toggles the option menu being open or closed.
+ */
 function fab_action()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
@@ -2545,6 +2651,10 @@ function fab_action()
     }
 }
 
+/**
+ * @description Generates keybind tooltips for all keybinds that are available for the diagram.
+ * @see keybinds All available keybinds currently configured.
+ */
 function generateToolTips()
 {
     var toolButtons = document.getElementsByClassName("key_tooltip");
@@ -2564,12 +2674,22 @@ function generateToolTips()
     }
 }
 
+/**
+ * @description Modified the current ruler position to respective x and y coordinate. This DOM-element has an absolute position and does not change depending on other elements.
+ * @param {Number} x Absolute x-position in pixels from the left of the inner window.
+ * @param {Number} y Absolute y-position in pixels from the top of the inner window.
+ */
 function setRulerPosition(x, y) 
 {
     document.getElementById("ruler-x").style.left = x - 51 + "px";
     document.getElementById("ruler-y").style.top = y + "px";
 }
 
+/**
+ * @description Performs an update to the current grid size depending on the current zoom level.
+ * @see zoomin Function where the zoom level increases.
+ * @see zoomout Function where the zoom level decreases.
+ */
 function updateGridSize()
 {
     var bLayer = document.getElementById("grid");
@@ -2580,6 +2700,9 @@ function updateGridSize()
     updateGridPos();
 }
 
+/**
+ * @description Calculates new positioning for the background grid.
+ */
 function updateGridPos()
 {
     var gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
@@ -2589,6 +2712,13 @@ function updateGridPos()
     bLayer.setAttribute('y', gridOffsetY);
 }
 
+/**
+ * @description Displays a popup message as feedback for the current user. This message will then be destroyed after a specified time.
+ * @param {messageTypes} type What kind of message type this is.
+ * @param {String} message Contents of the message displayed.
+ * @param {Number} time Milliseconds until the message will be destroyed.
+ * @see messageTypes All kind of messages there exist to display.
+ */
 function displayMessage(type, message, time = 5000)
 {
     // Message settings
@@ -2610,16 +2740,19 @@ function displayMessage(type, message, time = 5000)
     }
 
 }
-//-------------------------------------------------------------------------------------------------
-// Set a time for the element to exist, will be removed after time has exceeded
-//-------------------------------------------------------------------------------------------------
+
+/**
+ * @description Function for setting the message destruction timer of a popup message. This is used by the displayMessage() function. 
+ * @param {HTMLElement} element The message DOM element that should be edited.
+ * @param {Number} time Milliseconds until the message will be destroyed.
+ */
 function setTimerToMessage(element, time = 5000)
 {
     if (!element) return;
 
     element.innerHTML += `<div class="timeIndicatorBar"></div>`;
     var timer = setInterval( function(){
-        var element = document.getElementById(errorMsgMap[timer].id);
+        var element = document.getElementById(errorMsgMap[timer].id); // TODO : SAME VARIABLE NAME AS OUTER SCOPE?????
         errorMsgMap[timer].percent -= 1;
         element.lastElementChild.style.width = `calc(${errorMsgMap[timer].percent - 1}% - 10px)`;
 
@@ -2637,6 +2770,11 @@ function setTimerToMessage(element, time = 5000)
 //-------------------------------------------------------------------------------------------------
 // Removes the message from DOM and removes all the variables that are used
 //-------------------------------------------------------------------------------------------------
+/**
+ * @description Destroys a popup message.
+ * @param {HTMLElement} element The message DOM element that should be destroyed.
+ * @param {Number} timer Kills the timer associated with the popup message. Can be null and will not remove any timer then.
+ */
 function removeMessage(element, timer)
 {
     // If there is no timer in the parameter try find it by elementID in
@@ -2659,7 +2797,16 @@ function removeMessage(element, timer)
 }
 //#endregion =====================================================================================
 //#region ================================ ELEMENT CALCULATIONS ==================================
-function sortvectors(a, b, ends, elementid, axis)
+/**
+ * @description Sorts all lines connected to an element on each side.
+ * @param {String} a Hexadecimal id for the element at current test index for sorting.
+ * @param {String} b Hexadecimal id for the element were comparing to.
+ * @param {Array<Object>} ends Array of all lines connected on this side.
+ * @param {String} elementid Hexadecimal id for element to perform sorting on.
+ * @param {Number} axis 
+ * @returns {Number} 1 or -1 depending in the resulting calculation.
+ */
+function sortvectors(a, b, ends, elementid, axis) // TODO : Replace variable names a and b
 {
     // Get dx dy centered on association end e.g. invert vector if necessary
     var lineA = (ghostLine && a === ghostLine.id) ? ghostLine : lines[findIndex(lines, a)];
@@ -2708,8 +2855,23 @@ function sortvectors(a, b, ends, elementid, axis)
     return sortval;
 }
 
+/**
+ * @description
+ * @param {Number} x1 Position 1 
+ * @param {Number} y1 Position 1 
+ * @param {Number} x2 Position 2 
+ * @param {Number} y2 Position 2 
+ * @param {Number} x3 Position 3 
+ * @param {Number} y3 Position 3 
+ * @param {Number} x4 Position 4 
+ * @param {Number} y4 Position 4 
+ * @returns False or An object with x/y coordinates.
+ */
+ // TODO : WHY does it return EITHER a boolean OR an object??????? Either this is a TRUE/FALSE function and return booleans OR it returns objects/null/undefined!
+ // TODO : Use new POINT objects to reduce amount of arguments?
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
+    // TODO : Can be deleted?
     // Display line test locations using svg lines
     // str+=`<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='#44f' stroke-width='2' />`;
     // str+=`<line x1='${x3}' y1='${y3}' x2='${x4}' y2='${y4}' stroke='#44f' stroke-width='2' />`
@@ -2750,6 +2912,10 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
     };
 }
 
+/**
+ * @description Clears the line list on all sides of an element.
+ * @param {Object} element Element to empty all sides of.
+ */
 function clearLinesForElement(element)
 {
     element.left = [];
@@ -2816,6 +2982,7 @@ function determineLine(line, targetGhost = false)
 function sortElementAssociations(element)
 {
     // Only sort if size of list is >= 2
+    // TODO : Replace variable names a and b
     if (element.top.length > 1) element.top.sort(function (a, b) { return sortvectors(a, b, element.top, element.id, 2) });
     if (element.bottom.length > 1) element.bottom.sort(function (a, b) { return sortvectors(a, b, element.bottom, element.id, 3) });
     if (element.left.length > 1) element.left.sort(function (a, b) { return sortvectors(a, b, element.left, element.id, 0) });
