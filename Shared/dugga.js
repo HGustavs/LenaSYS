@@ -1194,13 +1194,13 @@ function getVariantValue(ajaxdata, opt, para){
 	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
 	if(querystring['did'] <= newInt) {
 		if(localStorage.getItem(querystring['did']) == null){
+			//If we don't have a variant in localstorage
 			returndata = JSON.parse(ajaxdata);
 			variantvalue = returndata.variant;
-			
 		} else {
+			//If we have a variant in localstorage
 			var test = JSON.parse(localStorage.getItem(querystring['did']));
 			variantvalue = test.value;
-			
 		}
 		//Will overrule localstorage variant if we use hash url
 		var dbvariant = JSON.parse(ajaxdata);
