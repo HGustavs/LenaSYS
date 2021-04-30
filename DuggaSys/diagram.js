@@ -710,8 +710,8 @@ function onSetup()
         { id: makeRandomID(), fromID: NameID, toID: FNID, kind: "Normal" },
         { id: makeRandomID(), fromID: NameID, toID: LNID, kind: "Normal" },
 
-        { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
-        { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
+        { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal", cardinality: "MANY" },
+        { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal", cardinality: "MANY" },
     ];
 
     for(var i = 0; i < demoData.length; i++){
@@ -1527,19 +1527,11 @@ function changeLineProperties()
     }
 
     // Change line - cardinality
-    var cFromValue = document.getElementById('propertyCardinalityFrom').value;
-    var cToValue = document.getElementById('propertyCardinalityTo').value;
-
-
-
-    // If both are none, remove the key from line object
-    if (cToValue == "" && cFromValue == ""){
+    var cardinalityInputValue = document.getElementById('propertyCardinality').value
+    if (cardinalityInputValue == ""){
         delete line.cardinality;
     } else {
-        line.cardinality = {
-            from: cFromValue,
-            to: cToValue
-        }
+        line.cardinality = cardinalityInputValue
     }
 
     showdata();
@@ -1853,6 +1845,15 @@ function setPos(id, x, y)
             obj.y -= (y / zoomfact);
         }
     }
+}
+
+function findEntityFromLine(lineObj){
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ENTITY).data.kind){
+        return -1;
+    }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.ENTITY).data.kind) {
+        return 1;
+    }
+    return null;
 }
 //#endregion =====================================================================================
 //#region ================================ MOUSE MODE FUNCS     ================================
@@ -2308,32 +2309,21 @@ function generateContextProperties()
             }
         }
 
-        // Line cardinality
-        str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinality</h3>`;
+        // Cardinality
+        // If FROM or TO has an entity, print option for change
+        if (findEntityFromLine(contextLine[0]) != null){
+            str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
+            str  += `<option value=''></option>`
+            Object.keys(lineCardinalitys).forEach(cardinality => {
+                if (contextLine[0].cardinality != undefined && contextLine[0].cardinality == cardinality){
+                    str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+                }else {
+                    str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+                }
+            });
+            str += `</select></label>`;
+        }
 
-        // FROM cardinality
-        str += `<label style="display: block">From (${data[findIndex(data, contextLine[0].fromID)].name}): <select id='propertyCardinalityFrom'>`;
-        str  += `<option value=''></option>`
-        Object.keys(lineCardinalitys).forEach(cardinality => {
-            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality.from === cardinality){
-                str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
-            }else {
-                str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
-            }
-        });
-        str += `</select></label>`;
-
-        // TO cardinality
-        str += `<label style="display: block">To (${data[findIndex(data, contextLine[0].toID)].name}): <select id='propertyCardinalityTo'>`;
-        str  += `<option value=''></option>`
-        Object.keys(lineCardinalitys).forEach(cardinality => {
-            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality.to == cardinality){
-                str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
-            }else {
-                str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
-            }
-        });
-        str += `</select></label>`;
 
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
     }
@@ -2663,6 +2653,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                 toID: toElement.id,
                 kind: kind
             };
+
+            // If the new line has an entity FROM or TO, add default cardinality
+            if (findEntityFromLine(newLine) != null) {
+                newLine.cardinality = "MANY";
+            }
             
             addObjectToLines(newLine, stateMachineShouldSave);
             
@@ -2761,14 +2756,11 @@ function drawLine(line, targetGhost = false)
             fromCardinalityX = fx - 25 * zoomfact;
             fromCardinalityY = fy - 10 * zoomfact;
         }
-        // From cardinality
-        if (line.cardinality.from != ""){
-            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${fromCardinalityX}" y="${fromCardinalityY}">${lineCardinalitys[line.cardinality.from]}</text>`
-        }
-
-        // To cardinality
-        if (line.cardinality.to != "") {
-            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${toCardinalityX}" y="${toCardinalityY}">${lineCardinalitys[line.cardinality.to]}</text> `
+        // If the entity is on the from side
+        if (findEntityFromLine(line) == -1){
+            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${fromCardinalityX}" y="${fromCardinalityY}">${lineCardinalitys[line.cardinality]}</text>`
+        }else {
+            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${toCardinalityX}" y="${toCardinalityY}">${lineCardinalitys[line.cardinality]}</text> `
         }
     }
     return str;
