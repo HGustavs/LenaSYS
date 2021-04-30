@@ -1412,6 +1412,14 @@ div .navButt:hover {
   }
 }
 
+#groupbutton {
+  float:right;
+  cursor: pointer;
+  height: 50px;
+  width: 50px;
+}
+
+
 #div2 {
   position: absolute;
   top: 50px;

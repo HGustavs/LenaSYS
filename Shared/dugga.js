@@ -859,7 +859,7 @@ function htmlEntities(str) {
 //----------------------------------------------------------------------------------
 // beforeunload: Detect when student exits dugga
 //----------------------------------------------------------------------------------
-/*
+
 window.addEventListener('beforeunload', function (e) {
 	if(getUrlParam("did") != null){
 		groupTokenValue = -1;
@@ -870,7 +870,7 @@ window.addEventListener('beforeunload', function (e) {
 		}
 	}
 	
-});*/
+});
 
 //Check if score is above threshhold
 function duggaChange(){
@@ -892,8 +892,7 @@ function addGroupButton(){
 	var nav = document.getElementById('navbar');
 	var guest = document.getElementById('navName');
 	var btn = document.createElement('td');
-	btn.style.float='right';
-	btn.innerHTML = "<td class='navButt' id='groupbutton' onClick='duggaChange()'><img alt='group icon' id='groupbuttonicon' src='../Shared/icons/crying.svg' title='Group'</td>";
+	btn.innerHTML = "<img alt='group icon' id='groupbuttonicon' src='../Shared/icons/crying.svg' title='Group'>";
 	nav.insertBefore(btn, guest);
 	btn.addEventListener("click", duggaChange);
 	console.log(nav);
