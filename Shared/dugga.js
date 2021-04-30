@@ -892,10 +892,12 @@ function addGroupButton(){
 	var nav = document.getElementById('navbar');
 	var guest = document.getElementById('navName');
 	var btn = document.createElement('td');
+	btn.className = 'navButt';
+	btn.id = 'groupbutton';
 	btn.innerHTML = "<img alt='group icon' id='groupbuttonicon' src='../Shared/icons/crying.svg' title='Group'>";
 	nav.insertBefore(btn, guest);
 	btn.addEventListener("click", duggaChange);
-	console.log(nav);
+	//console.log(nav);
 }
 
 function getUrlParam(param){
