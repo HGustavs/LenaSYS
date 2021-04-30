@@ -730,7 +730,7 @@ function getData()
     container = document.getElementById("container");
     onSetup();
     showdata();
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
     generateToolTips();
     toggleGrid();
     updateGridPos();
@@ -873,7 +873,7 @@ document.addEventListener('keyup', function (e)
 
 window.addEventListener("resize", () => {
     updateContainerBounds();
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 });
 
 window.onfocus = function()
@@ -1098,7 +1098,7 @@ function mup(event)
     deltaX = 0;
     deltaY = 0;
     updatepos(0, 0);
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
@@ -1253,7 +1253,7 @@ function mmoving(event)
             updatepos(null, null);
 
             // Update the ruler
-            drawRulerBars();
+            drawRulerBars(scrollx,scrolly);
 
             calculateDeltaExceeded();
             break;
@@ -2140,7 +2140,7 @@ function toggleRuler()
     }
   
     isRulerActive = !isRulerActive;
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 }
 
 function setElementPlacementType(type = 0)
@@ -2191,7 +2191,7 @@ function zoomin(scrollEvent = undefined)
     showdata();
 
     // Draw new rules to match the new zoomfact
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 }
 
 function zoomout(scrollEvent = undefined)
@@ -2232,7 +2232,7 @@ function zoomout(scrollEvent = undefined)
     showdata();
 
     // Draw new rules to match the new zoomfact
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 }
 
 function propFieldSelected(isSelected)
@@ -2833,11 +2833,11 @@ function removeNodes()
     return str;
 }
 
-function drawRulerBars()
+function drawRulerBars(X,Y)
 {
     //Get elements
     if(!isRulerActive) return;
-
+    
     svgX = document.getElementById("ruler-x-svg");
     svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
@@ -2845,39 +2845,87 @@ function drawRulerBars()
     const fullLineRatio = 10;
     var barY, barX = "";
     const color = "black";
+    var cordY = 0;
+    var cordX = 0;
+    var ZF = 100 * zoomfact;
+    var pannedY = (Y - ZF) / zoomfact;
+    var pannedX = (X - ZF) / zoomfact;
+    var zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact));
+    var zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
 
- 
-    //Draw the Y-axis ruler.
+    if(zoomfact < 0.5){
+        var verticalText = "writing-mode= 'vertical-lr'";
+    }else {
+        var verticalText = " ";
+    }
+    
+    //Draw the Y-axis ruler positive side.
     var lineNumber = (fullLineRatio - 1);
-    for (i = 40;i <= cheight; i += lineRatio) {
+    for (i = 100 + zoomY; i <= pannedY -(pannedY *2) + cheight ; i += (lineRatio*zoomfact)) {
         lineNumber++;
-
+         
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
-            var cordY = screenToDiagramCoordinates(0, i).y;
             lineNumber = 0;
-            barY += "<line x1='0px' y1='"+(i)+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
-            barY += "<text x='2' y='"+(i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
+            barY += "<line x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+            barY += "<text x='2' y='"+(pannedY+i+10)+"'style='font-size: 10px'>"+cordY+"</text>";
+            cordY = cordY +100;
+        }else if (zoomfact > 0.5){
+            barY += "<line x1='25px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+        } 
+    }
+
+    //Draw the Y-axis ruler negative side.
+    lineNumber = (fullLineRatio - 11);
+    cordY = -100;
+    for (i = -100 - zoomY; i <= pannedY; i += (lineRatio*zoomfact)) {
+        lineNumber++;
+         
+        //Check if a full line should be drawn
+        if (lineNumber === fullLineRatio) {
+            lineNumber = 0;
+            barY += "<line x1='0px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+            barY += "<text x='2' y='"+(pannedY-i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
+            cordY = cordY -100;
+        }else if (zoomfact > 0.5){
+            barY += "<line x1='25px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
         }
-        else barY += "<line x1='25px' y1='"+i+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
     }
     svgY.style.backgroundColor = "#e6e6e6";
     svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
-
-    //Draw the X-axis ruler.
+    
+    //Draw the X-axis ruler positive side.
     lineNumber = (fullLineRatio - 1);
-    for (i = 40;i <= cwidth; i += lineRatio) {
+    for (i = 51 + zoomX; i <= pannedX - (pannedX *2) + cwidth; i += (lineRatio*zoomfact)) {
         lineNumber++;
-
+        
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
-            var cordX = screenToDiagramCoordinates(50 + i, 0).x;
             lineNumber = 0;
-            barX += "<line x1='" +i+"' y1='0' x2='" + i + "' y2='40px' stroke='" + color + "' />";
-            barX += "<text x='"+(i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
+            barX += "<line x1='" +(i+pannedX)+"' y1='0' x2='" + (i+pannedX) + "' y2='40px' stroke='" + color + "' />";
+            barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
+            cordX = cordX +100;
+        }else if (zoomfact > 0.5){
+            barX += "<line x1='" +(i+pannedX)+"' y1='25' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
         }
-        else barX += "<line x1='" +i+"' y1='25' x2='" +i+"' y2='40px' stroke='" + color + "' />";
+    }
+
+    //Draw the X-axis ruler negative side.
+    lineNumber = (fullLineRatio - 11);
+    cordX = -100;
+    for (i = -51 - zoomX; i <= pannedX; i += (lineRatio*zoomfact)) {
+        lineNumber++;
+        
+        //Check if a full line should be drawn
+        if (lineNumber === fullLineRatio) {
+            lineNumber = 0;
+            barX += "<line x1='" +(pannedX-i)+"' y1='0' x2='" + (pannedX-i) + "' y2='40px' stroke='" + color + "' />";
+            barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px'>"+cordX+"</text>";
+            cordX = cordX -100;
+        }else if (zoomfact > 0.5){
+            barX += "<line x1='" +(pannedX-i)+"' y1='25' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+        }
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
     svgX.style.backgroundColor = "#e6e6e6";
