@@ -585,6 +585,10 @@ var startWidth;
 var startNodeRight = false;
 var cursorStyle;
 var lastMousePos = getPoint(0,0);
+var dblPreviousTime = new Date().getTime(); ; // Used when determining if an element was doubleclicked.
+var dblClickDeltaTime = 500; // 500 ms = if less than 500 ms between clicks -> Doubleclick was performed.
+var wasDblClicked = false;
+
 
 // Zoom variables
 var zoomfact = 1.0;
@@ -944,6 +948,15 @@ function mdown(event)
 
 function ddown(event)
 {
+    // Used when determining time between clicks.
+    if((new Date().getTime() - dblPreviousTime) < dblClickDeltaTime){
+
+        console.log(Math.round(dblPreviousTime));
+        console.log("yes");
+        wasDblClicked = true;
+        
+    }   
+
     // If the middle mouse button (mouse3) is pressed => return
     if(event.button == 1) return;
 
@@ -970,6 +983,9 @@ function ddown(event)
             console.error(`State ${mouseMode} missing implementation at switch-case in ddown()!`);
             break;
     }
+
+    dblPreviousTime = new Date().getTime(); // Update dblClick-timer.
+    wasDblClicked = false; // Reset the bool.
 }
 
 function mouseMode_onMouseUp(event)
