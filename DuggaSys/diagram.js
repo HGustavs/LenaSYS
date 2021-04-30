@@ -2472,10 +2472,10 @@ function sortvectors(a, b, ends, elementid, axis)
         toElementB = data[findIndex(data, lineB.fromID)];
     }
 
-    if (navigator.userAgent.indexOf("Chrome") !== 1) {
-        sortval = -1;
-    } else {
+    if (navigator.userAgent.indexOf("Chrome") !== -1) {
         sortval = 1;
+    } else {
+        sortval = -1;
     }
 
     // If lines cross swap otherwise keep as is
@@ -2486,7 +2486,7 @@ function sortvectors(a, b, ends, elementid, axis)
         if (axis == 0) parentx = parent.x1
         else parentx = parent.x2;
 
-        if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return -sortval
+        if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return sortval
 
     } else if (axis == 2 || axis == 3) {
         // Top / Bottom side
@@ -2495,10 +2495,10 @@ function sortvectors(a, b, ends, elementid, axis)
         if (axis == 2) parenty = parent.y1
         else parenty = parent.y2;
 
-        if (linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty) === false) return -sortval
+        if (linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty) === false) return sortval
     }
 
-    return sortval;
+    return -sortval;
 }
 
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
