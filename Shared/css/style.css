@@ -6398,7 +6398,12 @@ only screen and (max-device-width: 320px) {
   }
   
   .fab-btn-list2 li {
-    transform: rotate(315deg);
+    transform: rotate(225deg);
+  }
+
+  [data-tooltip]:before {
+    right: 55%;
+    top: 10px;
   }
 }
 
