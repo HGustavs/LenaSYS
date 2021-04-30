@@ -462,7 +462,7 @@
 		}else{
 				$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 		}		
-
+		//HERE
 		if(strcmp($preview,"UNK")!=0){
 				echo $bummer;
 		}else	if(!$readfile){
