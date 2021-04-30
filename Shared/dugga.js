@@ -63,19 +63,26 @@ function getHash(){
 function setHash(h){
 	// Check if hash is unknown
 	if(h == "UNK"){
-		console.log("This is the generated hash: " + hash);
-		hash = generateHash();
 		
-		/*if((localstoraget.getItem("locallystoredhash" == null)) || (localstoraget.getItem("locallystoredhash" == undefined)) || (!localstoraget.getItem("locallystoredhash"))){
+		//hash = generateHash();
+
+		console.log("This is the generated hash: " + hash);
+
+		locallystoredhash = localStorage.getItem("locallystoredhash");
+
+		if((locallystoredhash == null) || (locallystoredhash == undefined) || (!locallystoredhash)){
 			hash = generateHash();
+			console.log("locallystoredhash has not been set, but will be after this.");
 			localStorage.setItem("locallystoredhash", hash);
+			hash = localStorage.getItem("locallystoredhash");
 		}
 		else{
-			hash = localstorage.getItem("locallystoredhash", hash);
-		}*/
+			hash = localStorage.getItem("locallystoredhash");
+		}
 		
 		
 		console.log("This is the generated hash: " + hash);
+		
 		pwd = randomPassword();
 		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
 	}else{
@@ -686,7 +693,7 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 function saveDuggaResult(citstr)
 {	
 	blockhashgen = true; //Block-Hash-Generation: No new hash should be generated if 'Save' is clicked more than once per dugga session.
-
+	
 	var url = createUrl(hash); //Create URL
 	console.log("pwd = "+pwd);
 	if(pwd.includes("undef")) pwd = randomPassword();
