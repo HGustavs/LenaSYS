@@ -26,6 +26,7 @@ var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
 var isGroupDugga = true; // Set to false if you hate the popup
 var variantvalue;
+var tempclicks = 0;
 
 
 $(function () {  // Used to set the position of the FAB above the cookie message
@@ -873,11 +874,29 @@ window.addEventListener('beforeunload', function (e) {
 
 //Check if score is above threshhold
 function duggaChange(){
-	if(score>10){
+	var clicksP = document.getElementById('clicks').innerHTML;
+	var clicks = parseInt(clicksP);
+	if(clicks>tempclicks){
+		tempclicks=clicks;
+		console.log('Dugga changed');
+		console.log(clicks);
 		return true;
 	}else{
+		console.log('Dugga did not change');
+		console.log(clicks);
 		return false;
 	}
+}
+
+function addGroupButton(){
+	var nav = document.getElementById('navbar');
+	var guest = document.getElementById('navName');
+	var btn = document.createElement('td');
+	btn.style.float='right';
+	btn.innerHTML = "<td class='navButt' id='groupbutton' onClick='duggaChange()'><img alt='group icon' id='groupbuttonicon' src='../Shared/icons/crying.svg' title='Group'</td>";
+	nav.insertBefore(btn, guest);
+	btn.addEventListener("click", duggaChange);
+	console.log(nav);
 }
 
 function getUrlParam(param){

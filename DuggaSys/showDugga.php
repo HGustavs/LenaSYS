@@ -316,6 +316,7 @@ if($hash!='UNK'){
 		<p id='clicks'><p>
 		<script>
 			console.log(duggaChange());
+			addGroupButton();
 		</script>;	
 	</div>
 	<!-- content END -->
