@@ -488,12 +488,12 @@ class StateMachine
 //#endregion ===================================================================================
 //#region ================================ ENUMS                ================================
 const keybinds = {
-        LEFT_CONTROL: {key: "Control", ctrl: false},
-        ALT: {key: "Alt", ctrl: false},
-        META: {key: "Meta", ctrl: false},
+        LEFT_CONTROL: {key: "control", ctrl: true},
+        ALT: {key: "alt", ctrl: false},
+        META: {key: "meta", ctrl: false},
         HISTORY_STEPBACK: {key: "z", ctrl: true},
-        DELETE: {key: "Delete", ctrl: false},
-        ESCAPE: {key: "Escape", ctrl: false},
+        DELETE: {key: "delete", ctrl: false},
+        ESCAPE: {key: "escape", ctrl: false},
         BOX_SELECTION: {key: "2", ctrl: false},
         POINTER: {key: "1", ctrl: false},
         EDGE_CREATION: {key: "6", ctrl: false},
@@ -506,10 +506,11 @@ const keybinds = {
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
-        ENTER: {key: "Enter", ctrl: false},
+        ENTER: {key: "enter", ctrl: false},
         COPY: {key: "c", ctrl: true},
         PASTE: {key: "v", ctrl: true},
-        SELECT_ALL: {key: "a", ctrl: true}
+        SELECT_ALL: {key: "a", ctrl: true},
+        DELETE_B: {key: "backspace", ctrl: false}
 };
 
 const mouseModes = {
@@ -753,19 +754,11 @@ document.addEventListener('keydown', function (e)
 {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-       
-        if (e.key == keybinds.LEFT_CONTROL.key && ctrlPressed !== true) ctrlPressed = true;
-        if (e.key == keybinds.ALT.key && altPressed !== true) altPressed = true;
-        if (e.key == keybinds.DELETE.key && e.ctrlKey == keybinds.DELETE.ctrl) {
-            if (contextLine.length > 0) removeLines(contextLine);
-            if (context.length > 0) removeElements(context);
-
-            updateSelection();
-        }
-        if (e.key == keybinds.META.key && ctrlPressed !== true) ctrlPressed = true;
-        if (e.key == keybinds.ZOOM_IN.key && e.ctrlKey == keybinds.ZOOM_IN.ctrl) zoomin(); // Works but interferes with browser zoom
-        if (e.key == keybinds.ZOOM_OUT.key && e.ctrlKey == keybinds.ZOOM_OUT.ctrl) zoomout(); // Works but interferes with browser zoom
-        if (e.key == keybinds.ESCAPE.key && escPressed != true) {
+        
+        if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
+        if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
+        if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
+        if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
             escPressed = true;
             if(context.length > 0 || contextLine.length > 0) {
                 clearContext();
@@ -782,19 +775,17 @@ document.addEventListener('keydown', function (e)
             pointerState = pointerStates.DEFAULT;
             showdata();
         }
-        
-        if (e.key == "Backspace" && (context.length > 0 || contextLine.length > 0) && !propFieldState) {
-            if (contextLine.length > 0) removeLines(contextLine);
-            if (context.length > 0) removeElements(context);
-            updateSelection();
-        }
 
-        if (e.key == keybinds.SELECT_ALL.key && e.ctrlKey == keybinds.SELECT_ALL.ctrl){
+        if (isKeybindValid(e, keybinds.ZOOM_IN)) zoomin();
+        if (isKeybindValid(e, keybinds.ZOOM_OUT)) zoomout();
+
+        if (isKeybindValid(e, keybinds.SELECT_ALL)){
             e.preventDefault();
             selectAll();
         }      
+
     } else { 
-        if (e.key == keybinds.ENTER.key && e.ctrlKey == keybinds.ENTER.ctrl) { 
+        if (isKeybindValid(e, keybinds.ENTER)) { 
             var propField = document.getElementById("elementProperty_name");
             changeState(); 
             saveProperties(); 
@@ -812,61 +803,55 @@ document.addEventListener('keyup', function (e)
         var pressedKey = e.key.toLowerCase();
 
         //  TODO : Switch cases?
-        if (e.key == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
-        if (e.key == keybinds.ALT.key) altPressed = false;
-        if (e.key == keybinds.META.key) ctrlPressed = false;
+        if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
+        if (pressedKey == keybinds.ALT.key) altPressed = false;
+        if (pressedKey == keybinds.META.key) ctrlPressed = false;
 
-        if (e.key == keybinds.ESCAPE.key && e.ctrlKey == keybinds.ESCAPE.ctrl) {
-            escPressed = false;
-        }
-        if (pressedKey == keybinds.HISTORY_STEPBACK.key && e.ctrlKey == keybinds.HISTORY_STEPBACK.ctrl) {
-            stateMachine.stepBack();
-        }
+        if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) stateMachine.stepBack();
+        if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
+        if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
+            if (contextLine.length > 0) removeLines(contextLine);
+            if (context.length > 0) removeElements(context);
 
-        if (pressedKey == keybinds.BOX_SELECTION.key && e.ctrlKey == keybinds.BOX_SELECTION.ctrl) {
-            setMouseMode(mouseModes.BOX_SELECTION);
+            updateSelection();
         }
-        if (pressedKey == keybinds.POINTER.key && e.ctrlKey == keybinds.POINTER.ctrl) {
-            setMouseMode(mouseModes.POINTER);
-        }
-        if (pressedKey == keybinds.EDGE_CREATION.key && e.ctrlKey == keybinds.EDGE_CREATION.ctrl) {
+        
+        if(isKeybindValid(e, keybinds.POINTER)) setMouseMode(mouseModes.POINTER);
+        if(isKeybindValid(e, keybinds.BOX_SELECTION)) setMouseMode(mouseModes.BOX_SELECTION);
+        
+        if(isKeybindValid(e, keybinds.EDGE_CREATION)){
             setMouseMode(mouseModes.EDGE_CREATION);
             clearContext();
         }
-        if (pressedKey == keybinds.PLACE_ENTITY.key && e.ctrlKey == keybinds.PLACE_ENTITY.ctrl) {
+
+        if(isKeybindValid(e, keybinds.PLACE_ENTITY)){
             setElementPlacementType(elementTypes.ENTITY);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (pressedKey== keybinds.PLACE_RELATION.key && e.ctrlKey == keybinds.PLACE_RELATION.ctrl) {
+
+        if(isKeybindValid(e, keybinds.PLACE_RELATION)){
             setElementPlacementType(elementTypes.RELATION);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (pressedKey== keybinds.PLACE_ATTRIBUTE.key && e.ctrlKey == keybinds.PLACE_ATTRIBUTE.ctrl) {
+
+        if(isKeybindValid(e, keybinds.PLACE_ATTRIBUTE)){
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (pressedKey == keybinds.TOGGLE_GRID.key && e.ctrlKey == keybinds.TOGGLE_GRID.ctrl) {
-            toggleGrid();
-        }
-        if (pressedKey == keybinds.TOGGLE_RULER.key && e.ctrlKey == keybinds.TOGGLE_RULER.ctrl) {
-            toggleRuler();
-        }
-        if (pressedKey == keybinds.TOGGLE_SNAPGRID.key && e.ctrlKey == keybinds.TOGGLE_SNAPGRID.ctrl) {
-            toggleSnapToGrid();
-        }
-        if (pressedKey == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
-            fab_action();
-        }
-        if (pressedKey == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
+
+        if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
+        if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
+        if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
+        if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
+        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(clipboard)
+        
+        if (isKeybindValid(e, keybinds.COPY)){
             clipboard = context;
             if (clipboard.length !== 0){
                 displayMessage(messageTypes.SUCCESS, `You have copied ${clipboard.length} elements and its inner connected lines.`)
             }else {
                 displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`)
             }
-        }
-        if (pressedKey == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
-            pasteClipboard(clipboard)
         }
     }
 });
@@ -1847,7 +1832,13 @@ function setPos(id, x, y)
     }
 }
 
-function findEntityFromLine(lineObj){
+function isKeybindValid(e, keybind)
+{
+    return e.key.toLowerCase() == keybind.key && e.ctrlKey == keybind.ctrl;
+}
+
+function findEntityFromLine(lineObj)
+{
     if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ENTITY).data.kind){
         return -1;
     }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.ENTITY).data.kind) {
