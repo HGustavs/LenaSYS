@@ -5029,11 +5029,7 @@ only screen and (max-device-width: 860px) {
     height: 26px;
     opacity: 1.0;
   }
-
-  #sectionList_arrowStatisticsOpen{
-    display: inline;
-  }
-
+	
   #hamburgerBox{
     display: none;
     position: absolute;
