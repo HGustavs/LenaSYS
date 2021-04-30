@@ -15,6 +15,7 @@ var versnme = "UNKz";
 var versnr;
 var motd;
 var deleteItemList = [];
+var hasDuggs = false;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -799,6 +800,9 @@ function returnedSection(data) {
         }
 
         if (itemKind === 3 || itemKind === 4) {
+          
+          //If there exists atleast one test or moment swimlanes shall be hidden
+          hasDuggs = true;
 
           // Styling for quiz row e.g. add a tab spacer
           if (itemKind === 3) str += `<td style='width:0px'><div class='spacerLeft'></div></td>
@@ -1140,6 +1144,10 @@ function returnedSection(data) {
         order: str
       }, "SECTION");
       resave = false;
+    }
+
+    if (hasDuggs === false){
+      $("#statisticsSwimlanes").hide();
     }
 
     if (data['writeaccess']) {
@@ -1683,9 +1691,11 @@ $(window).load(function () {
       'flex-direction': 'column'
     });
     $(".statisticsContentBottom").show();
-	$("#swimlaneSVG").show();
-    $("#statisticsSwimlanes").show();  
-  });
+    if (hasDuggs) {
+      $("#swimlaneSVG").show();
+      $("#statisticsSwimlanes").show(); 
+    }
+  }); 
   $("#sectionList_arrowStatisticsClosed").click(function () {
     $("#sectionList_arrowStatisticsOpen").show();
     $("#sectionList_arrowStatisticsClosed").hide();
