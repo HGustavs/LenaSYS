@@ -10,3 +10,6 @@ G1-Olof Jansson, a99oloja@student.his.se, a99oloja, password
 # Teachers (Name, Email, UserID, Password)
 G1-Joey Stenhus, joey.s@his.se, stei, password
 G1-Leif GW Persson, leif.gw@his.se, leifgw, password
+
+# Courses (Coursename, CourseID)
+G1 - Webbutveckling - datorgrafik, IT118G
