@@ -3023,6 +3023,17 @@ function sortElementAssociations(element)
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true){
+
+    if (fromElement.kind === "ERRelation") {
+        var id = fromElement.id;
+    }else if (toElement.kind === "ERRelation") {
+        var id = toElement.id;
+    }
+    var test = lines.filter(function (line) {
+    return (id === line.fromID ||
+            id === line.toID)
+    }).length;
+    if(test < 2){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
@@ -3033,12 +3044,12 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                     fromElement.id === line.toID &&
                     toElement.id === line.fromID)
                     }).length;
-
         // Define a boolean for special case that relation and entity can have 2 lines
         var specialCase = (fromElement.kind === "ERRelation" &&
                             toElement.kind === "EREntity" ||
                             fromElement.kind === "EREntity" &&
                             toElement.kind === "ERRelation");
+        
 
         // If there is no existing lines or is a special case
         if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
@@ -3066,6 +3077,9 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     } else {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between two: ${fromElement.kind} elements`);
     }
+} else{
+    displayMessage(messageTypes.ERROR, `Too many lines to the Relation`);
+}
 }
 //#endregion =====================================================================================
 //#region ================================ DRAWING FUNCTIONS    ==================================
