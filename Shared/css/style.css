@@ -868,42 +868,49 @@ p {
 /*Swimlane styling*/
 #statisticsSwimlanes {
   max-height: 300px;
-  overflow:auto;
-  border: 2px solid darkgray; 
+  position: relative;
+  overflow: auto;
+  border: 2px solid darkgray;
   background-color: var(--color-sectioned-table-lo);
 }
 
 #swimlaneSVG {
   display: flex;
-  margin: auto;
   align-items: center;
   flex-wrap: wrap;
 }
 
 #swimlaneSVG text {
-  font-size: 12px;
+  font-size: 10px;
 }
+
 @media only screen and (max-width: 800px) {
   #swimlaneSVG text {
-    font-size: 14px;
+      font-size: 14px;
   }
 }
 
 @media only screen and (min-width: 1224px) {
   #swimlaneSVG {
-      transform: scale(0.7);
       overflow: auto;
-      display: flex;
-      margin-top: -80px;
+      width: 55%;
+      margin: auto;
   }
 }
 
 @media only screen and (max-width: 1223px) {
   #swimlaneSVG {
-      display: flex;
-      margin: auto;
-      align-items: center;
-      flex-wrap: wrap;
+    overflow: auto;
+    width: 70%;
+    margin: auto;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #swimlaneSVG {
+    overflow: auto;
+    width: 90%;
+    margin: auto;
   }
 }
 
