@@ -206,7 +206,6 @@ if($hash!='UNK'){
 						echo "<td align='left'>";
 						echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
 						echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
-						echo "<input class='submit-button large-button' type='button' value='Highscore' />";
 						echo "</td>";
 						echo "</tr>";
 						echo "</table>";
