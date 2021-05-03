@@ -1202,8 +1202,12 @@ function handleLocalStorage(data){
 		localStorage.setItem(querystring['did'], newvariant);
 		//The big number below represents 30 days in milliseconds
 		setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000, hash);
-
 	}
+	//If locallystoragehash doesn't exist, it will set it to correct hash.
+	var itemString = localStorage.getItem(querystring['did']);
+	var itemParse = JSON.parse(itemString);
+	localStorage.setItem("locallystoredhash"+(querystring['did']), itemParse.locallystoredhash);
+
 	getExpireTime(querystring['did']);
 	var variantsize = data['variantsize'];
 	localStorage.setItem("variantSize", variantsize);
