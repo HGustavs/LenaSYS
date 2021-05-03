@@ -696,15 +696,7 @@ function saveDuggaResult(citstr)
 			citstr+= "##!!##" + timeUsed;
 			citstr+= "##!!##" + stepsUsed;
 			//citstr+= "##!!##" + score;
-			//Old way of generating a receipt. Not used anymore.
-			/*hexstr="";
-			for(i=0;i<citstr.length;i++){
-					hexstr+=citstr.charCodeAt(i).toString(16)+" ";
-			}
-			*/
 			AJAXService("SAVDU",{answer:citstr},"PDUGGA");
-
-			//document.getElementById('receipt').value = hexstr;
 
 			var dateTime = new Date(); // Get the current date and time
 

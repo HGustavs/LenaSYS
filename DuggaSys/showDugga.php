@@ -279,7 +279,7 @@ if($hash!='UNK'){
 					</div>
 			</div>
 			<div id='receiptInfo'></div>
-    		<!--<textarea id="receipt" autofocus readonly style="resize: none;"></textarea>-->
+
     		<div id='emailPopup' style="display:block">
 				<div id='urlAndPwd'>
 					<div class="testasd"><p class="bold">URL</p><p id='url'></p></div>
