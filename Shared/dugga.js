@@ -66,22 +66,22 @@ function setHash(h){
 		
 		//hash = generateHash();
 
-		console.log("This is the generated hash: " + hash);
-
+		
+		//From localstorage we load what we have into our locallystoredhash variable, that is then compared against. 
+		//On the first dugga load, it will be undefined, and thereafter a hash value will be generated.
+		//If a hash is already stored in localstorage, we will load that hash instead.
 		locallystoredhash = localStorage.getItem("locallystoredhash"+(querystring['did']));
 
 		if((locallystoredhash == null) || (locallystoredhash == undefined) || (!locallystoredhash)){
 			hash = generateHash();
-			console.log("locallystoredhash has not been set, but will be after this.");
+			//locallystoredhash has not been set at this point, but will be after this.
 			localStorage.setItem("locallystoredhash"+(querystring['did']), hash);
 			hash = localStorage.getItem("locallystoredhash"+(querystring['did']));
 		}
 		else{
 			hash = localStorage.getItem("locallystoredhash"+(querystring['did']));
 		}
-		
-		
-		console.log("This is the generated hash: " + hash);
+
 		
 		pwd = randomPassword();
 		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
@@ -1073,7 +1073,7 @@ function AJAXService(opt,apara,kind)
 				if(!localStorage.getItem("locallystoredhash"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 					handleHash();	//Makes sure hash is unique.
 				}
-				console.log("This is inside the ajax call: "+hash);
+				
 			}
 		})
 	}else if(kind=="RESULT"){
