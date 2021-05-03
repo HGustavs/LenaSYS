@@ -145,17 +145,17 @@
         </svg>  
     </div> 
     <div id="fab" onclick="fab_action();" onmousedown='mdown(event)'>+ <!-- Big (+) button -->
-    <span class="toolTipText"><b>Show Option Panel</b><br>
-                    <p>Enable/disable the Option Panel</p><br>
-                    <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
-                </span>
+        <span class="toolTipText"><b>Show Option Panel</b><br>
+            <p>Enable/disable the Option Panel</p><br>
+            <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
+        </span>
     </div>
     <div id="options-pane" class="hide-options-pane" onmousedown='mdown(event)'> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span>
-        <span class="toolTipText"><b>Show Option Panel</b><br>
-                    <p>Enable/disable the Option Panel</p><br>
-                    <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
-                </span>
+            <span class="toolTipText"><b>Show Option Panel</b><br>
+                <p>Enable/disable the Option Panel</p><br>
+                <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
+            </span>
         </div>
         <div id ="fieldsetBox">
             <fieldset id='propertyFieldset'>
