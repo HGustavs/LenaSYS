@@ -654,6 +654,7 @@ var isRulerActive = true;
 
 //Grid Settings
 const gridSize = 50;
+const origoWidth = 2;
 var snapToGrid = false;
 var randomidArray = []; // array for checking randomID
 var errorMsgMap = {};
@@ -2371,6 +2372,15 @@ function updateGridSize()
     bLayer.setAttribute("height", gridSize * zoomfact + "px");
 
     bLayer.children[0].setAttribute('d', `M ${gridSize * zoomfact} 0 L 0 0 0 ${gridSize * zoomfact}`);
+
+    // Set width of origo line on the x axis
+    bLayer = document.getElementById("origoX");
+    bLayer.style.strokeWidth = origoWidth * zoomfact;
+
+    // Set width of origo line on the y axis
+    bLayer = document.getElementById("origoY");
+    bLayer.style.strokeWidth = origoWidth * zoomfact;
+
     updateGridPos();
 }
 
@@ -2381,6 +2391,16 @@ function updateGridPos()
     var bLayer = document.getElementById("grid");
     bLayer.setAttribute('x', gridOffsetX);
     bLayer.setAttribute('y', gridOffsetY);
+
+    // origo x axis line position
+    bLayer = document.getElementById("origoX");
+    bLayer.setAttribute('y1', gridOffsetY);
+    bLayer.setAttribute('y2', gridOffsetY);
+
+    // origo y axis line position
+    bLayer = document.getElementById("origoY");
+    bLayer.setAttribute('x1', gridOffsetX);
+    bLayer.setAttribute('x2', gridOffsetX);
 }
 
 function displayMessage(type, message, time = 5000)
