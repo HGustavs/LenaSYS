@@ -305,9 +305,7 @@ if($hash!='UNK'){
     	'displayDownloadIcon();', 'noUploadForTeacher();',
     	'</script>';
 	}?>
-
- hr
-
+	
 	<!-- Timer START -->
 	<div id='scoreElement'>	
 	</div>
