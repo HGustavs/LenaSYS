@@ -3454,15 +3454,13 @@ function updatepos(deltaX, deltaY)
     // Update svg overlay -- place everyhing to draw OVER elements here
     str = "";
     str = boxSelect_Draw(str);
-
+    str = drawSelectionBox(str);
     document.getElementById("svgoverlay").innerHTML=str;
 
     // Updates nodes for resizing
     removeNodes();
     if (context.length === 1 && mouseMode == mouseModes.POINTER) addNodes(context[0]);
 
-    str = drawSelectionBox(str);
-    document.getElementById("svgoverlay").innerHTML = str;
 
 }
 /**
