@@ -875,13 +875,10 @@ window.addEventListener('beforeunload', function (e) {
 //Check if score is above threshhold
 function duggaChange(){
 	var clicksP = document.getElementById('clicks').innerHTML;
-	var clicks;
+	var clicks = parseInt(clicksP);
 	if(isNaN(clicks)){
 		clicks = 0;
-	}else{
-		clicks = parseInt(clicksP);
 	}
-
 	if(clicks>tempclicks){
 		tempclicks=clicks;
 		console.log('Dugga changed');
@@ -900,6 +897,7 @@ function addGroupButton(){
 	var btn = document.createElement('td');
 	btn.className = 'navButt';
 	btn.id = 'groupbutton';
+	btn.style.display = 'none';
 	btn.innerHTML = "<img alt='group icon' id='groupbuttonicon' src='../Shared/icons/crying.svg' title='Group'>";
 	nav.insertBefore(btn, guest);
 	btn.addEventListener("click", duggaChange);

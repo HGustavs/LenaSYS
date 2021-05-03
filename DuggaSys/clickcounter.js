@@ -17,6 +17,7 @@ var ClickCounter = {
 		this.score++;
 		// Calls animate clicks to directly update the click counter user interface 
 		this.animateClicks();
+		duggaChange();
 	},
 	
 	//show clicker
@@ -28,7 +29,6 @@ var ClickCounter = {
 	animateClicks: function() {
 		var cc = document.getElementById('scoreElement');
 		var clicks = document.getElementById('groupAssignment');
-		duggaChange();
 		if (cc){
 			// Apply some web magic to change the ui counter
 			var str = `<p id="clicks">`;
