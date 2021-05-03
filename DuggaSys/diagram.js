@@ -677,38 +677,52 @@ var defaults = {
 //#region ================================ INIT AND SETUP       ================================
 function onSetup()
 {
-    const PersonID = makeRandomID();
+    const EMPLOYEE = makeRandomID();
     const IDID = makeRandomID();
     const NameID = makeRandomID();
     const SizeID = makeRandomID();
     const HasID = makeRandomID();
     const CarID = makeRandomID();
     const FNID = makeRandomID();
+    const Initial = makeRandomID();
     const LNID = makeRandomID();
     const LoanID = makeRandomID();
     const RefID = makeRandomID();
+    const Ssn = makeRandomID();
+    const Address = makeRandomID();
+    const Salary = makeRandomID();
+    const SUPERVISION = makeRandomID();
 
     const demoData = [
-        { name: "Person", x: 100, y: 100, width: 200, height: 50, kind: "EREntity", id: PersonID },
-        { name: "Loan", x: 140, y: 250, width: 200, height: 50, kind: "EREntity", id: LoanID, state: "weak" },
-        { name: "Car", x: 500, y: 140, width: 200, height: 50, kind: "EREntity", id: CarID },
-        { name: "Owns", x: 420, y: 60, width: 60, height: 60, kind: "ERRelation", id: HasID },
+        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", id: EMPLOYEE },
+        { name: "Loan", x: 440, y: 350, width: 200, height: 50, kind: "EREntity", id: LoanID, state: "weak" },
+        { name: "Car", x: 800, y: 140, width: 200, height: 50, kind: "EREntity", id: CarID },
+        { name: "Owns", x: 720, y: 60, width: 60, height: 60, kind: "ERRelation", id: HasID },
         { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, state: "weak" },
-        { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, state: "computed" },
-        { name: "Name", x: 170, y: 50, width: 90, height: 45, kind: "ERAttr", id: NameID },
-        { name: "Size", x: 560, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, state: "multiple" },
-        { name: "F Name", x: 120, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
-        { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
+        { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, state: "Normal" },
+        { name: "Ssn", x: 20, y: 100, width: 90, height: 40, kind: "ERAttr", id: Ssn, state: "key"},
+        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", id: NameID },
+        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", id: Address },
+        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", id: Salary },
+        { name: "Size", x: 860, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, state: "multiple" },
+        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
+        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", id: Initial },
+        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
+        { name: "SUPERVISIONS", x: 170, y: 400, width: 60, height: 60, kind: "ERRelation", id: SUPERVISION },
     ];
     
     const demoLines = [
-        { id: makeRandomID(), fromID: PersonID, toID: IDID, kind: "Normal" },
-        { id: makeRandomID(), fromID: PersonID, toID: NameID, kind: "Normal" },
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: IDID, kind: "Normal" },
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: Ssn, kind: "Normal" },
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: NameID, kind: "Normal" },
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: Address, kind: "Normal" },
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: Salary, kind: "Normal" },
         { id: makeRandomID(), fromID: CarID, toID: SizeID, kind: "Normal" },
 
-        { id: makeRandomID(), fromID: PersonID, toID: HasID, kind: "Normal" },
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: HasID, kind: "Normal" },
         { id: makeRandomID(), fromID: HasID, toID: CarID, kind: "Double" },
         { id: makeRandomID(), fromID: NameID, toID: FNID, kind: "Normal" },
+        { id: makeRandomID(), fromID: NameID, toID: Initial, kind: "Normal" },
         { id: makeRandomID(), fromID: NameID, toID: LNID, kind: "Normal" },
 
         { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal", cardinality: "MANY" },
