@@ -2933,7 +2933,11 @@ function clearLinesForElement(element)
     element.cx = element.x1 + (domelementpos.width * 0.5);
     element.cy = element.y1 + (domelementpos.height * 0.5);
 }
-
+/**
+ * @description Checks overlapping and what side of the elements that the line is connected to.
+ * @param {Object} line Line that should be checked.
+ * @param {boolean} targetGhost Is the line an ghostLine
+ */
 function determineLine(line, targetGhost = false)
 {
     var felem, telem, dx, dy;
@@ -2978,7 +2982,10 @@ function determineLine(line, targetGhost = false)
         if (telem.kind == "EREntity") telem.top.push(line.id);
     }
 }
-
+/**
+ * @description Sort the associations for each side of an element.
+ * @param {Object} element Element to sort.
+ */
 function sortElementAssociations(element)
 {
     // Only sort if size of list is >= 2
@@ -2989,9 +2996,13 @@ function sortElementAssociations(element)
     if (element.right.length > 1) element.right.sort(function (a, b) { return sortvectors(a, b, element.right, element.id, 1) });
 }
 
-//-------------------------------------------------------------------------------------------------
-// addLine - Adds an new line if the requirements and rules are achieved
-//-------------------------------------------------------------------------------------------------
+/**
+ * @description Add an line between two elements. Also checks if the line is connected between right elements and is not exceed the allowed amount.
+ * @param {Object} fromElement Element that the line is from.
+ * @param {Object} toElement Element that the line is to.
+ * @param {String} kind The kind of line that should be added.
+ * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
+ */
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
@@ -3034,6 +3045,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
 }
 //#endregion =====================================================================================
 //#region ================================ DRAWING FUNCTIONS    ==================================
+/**
+ * @description Constructs an string containing the svg line-elements of the inputted line object in parameter.
+ * @param {Object} line The line object that is drawn.
+ * @param {boolean} targetGhost Is the targeted line an ghost line
+ */
 function drawLine(line, targetGhost = false)
 {
     var felem, telem, dx, dy;
@@ -3129,7 +3145,11 @@ function drawLine(line, targetGhost = false)
     }
     return str;
 }
-
+/**
+ * @description Removes all existing lines and draw them again
+ * @param {String} str The string to add the created line elements to
+ * @return String containing all the new lines-elements
+ */
 function redrawArrows(str)
 {
     // Clear all lines and update with dom object dimensions
@@ -3165,7 +3185,10 @@ function redrawArrows(str)
     }
     return str;
 }
-
+/**
+ * @description Adds nodes for resizing to an elements
+ * @param {Object} element The target element to add nodes to.
+ */
 function addNodes(element) 
 {
     var elementDiv = document.getElementById(element.id)
@@ -3176,7 +3199,9 @@ function addNodes(element)
 
     elementDiv.innerHTML += nodes;
 }
-
+/**
+ * @description Remove all elements with the class "node"
+ */
 function removeNodes() 
 {
     // Get all elements with the class: "node"
@@ -3188,7 +3213,9 @@ function removeNodes()
     }
     return str;
 }
-
+/**
+ * @description Draw and updates the rulers, depending on the window size and current position in the diagram.
+ */
 function drawRulerBars()
 {
     //Get elements
@@ -3239,7 +3266,12 @@ function drawRulerBars()
     svgX.style.backgroundColor = "#e6e6e6";
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
-
+/**
+ * @description Construct an string containing all the elements for an data-object.
+ * @param {Object} element The object that should be drawn.
+ * @param {boolean} ghosted Is the element an ghost element.
+ * @return Returns an string containing the elements that should be drawn.
+ */
 function drawElement(element, ghosted = false)
 {
     var str = "";
@@ -3355,7 +3387,11 @@ function drawElement(element, ghosted = false)
     str += "</div>";
     return str;
 }
-
+/**
+ * @description Updates the elements translations and redraw lines.
+ * @param {Interger} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
+ * @param {Interger} deltaY The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the Y-axis.
+ */
 function updatepos(deltaX, deltaY)
 {
     updateCSSForAllElements();
@@ -3379,14 +3415,20 @@ function updatepos(deltaX, deltaY)
     document.getElementById("svgoverlay").innerHTML = str;
 
 }
-
+/**
+ * @description Updates the variables for the size of the container-element.
+ */
 function updateContainerBounds()
 {
     var containerbox = container.getBoundingClientRect();
     cwidth = containerbox.width;
     cheight = containerbox.height;
 }
-
+/**
+ * @description Draw the box around the selected elements.
+ * @param {String} str The string that the SVG-element is added to.
+ * @return The populated string with the selection box rect.
+ */
 function drawSelectionBox(str)
 {
     if (context.length != 0) {
@@ -3414,7 +3456,9 @@ function drawSelectionBox(str)
 
     return str;
 }
-
+/**
+ * @description Translate all elements to the correct coordinate
+ */
 function updateCSSForAllElements()
 {
     function updateElementDivCSS(elementData, divObject, useDelta = false)
@@ -3475,7 +3519,9 @@ function updateCSSForAllElements()
         }
     }
 }
-
+/**
+ * @description Redraw all elements and lines
+ */
 function showdata()
 {
     updateContainerBounds();
