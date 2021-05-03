@@ -1070,7 +1070,9 @@ function AJAXService(opt,apara,kind)
 			datatype: "json",
 			success: function(data){
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
-				handleHash();						//Makes sure hash is unique.
+				if(!localStorage.getItem("locallystoredhash"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
+					handleHash();	//Makes sure hash is unique.
+				}
 				console.log("This is inside the ajax call: "+hash);
 			}
 		})
