@@ -1029,11 +1029,10 @@ function mup(event)
                 if (!deltaExceeded) {
                     if (mouseMode == mouseModes.EDGE_CREATION) {
                         clearContext();
-                        clearContextLine();
                     } else if (mouseMode == mouseModes.POINTER) {
                         updateSelection(null);
-                        clearContextLine();
                     }
+                    if (!ctrlPressed) clearContextLine();
                 }
             }
             break;
