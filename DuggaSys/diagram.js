@@ -1,12 +1,14 @@
 // =============================================================================================
 //#region ================================ CLASSES              ================================
+/** 
+ * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector. */
 class Point {
     x = 0;
     y = 0;
 
     /**
-     * 
-     * @param {number} startX 
+     * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector. 
+     * @param {number} startX
      * @param {number} startY 
      */
     constructor(startX = 0, startY = 0)
@@ -15,10 +17,9 @@ class Point {
         this.y = startY;
     }
 
-    /**
-     * 
-     * @param {Point} other 
-     */
+    /** 
+     * @description Adds x and y of another point to this point.
+     * @param {Point} other Point that should be appended to this. */
     add(other)
     {
         this.x += other.x;
@@ -26,11 +27,15 @@ class Point {
     }
 };
 
+/** 
+ * @description Represents a change stored in the StateMachine. StateChange contains a list of StateChange.ChangeTypes in the local property stateChanges, that in turn contains a flag to describe each change. The getFlags() can be used to get the sum of all these stateChanges. 
+ */
 class StateChange {
     /**
-     * flag: number of 2nd base used to set multiple flags at once.
-     * isSoft: If the change type is something that wishes to overwrite the previous change.
-     * canAppendTo: If the change can be overwritten by another change.
+     * @description ChangeType containing all information about a certain change. Several instances of ChangeType can exist inside a StateChange.
+     * @member flag A number represented in 2nd base. This allows several flags to be merged through bit operators.
+     * @member isSoft Boolean deciding if this change is considered a hard/soft change. Hard changes will not try to merge with previous change.
+     * @member canAppendTo Boolean deciding if a soft change is allowd to merge into this change.
      */
     static ChangeTypes = {
         ELEMENT_CREATED:            { flag: 1, isSoft: false, canAppendTo: true },
@@ -48,41 +53,36 @@ class StateChange {
     };
 
     /**
-     * Used by certain state changes to pass their own specific data
-     * that can be used when decoding the history log using the hange flags.
-     * 
-     * This should stay as an object where properties are set as arguments/values,
-     * which lets us use it as an map when reading the values later!
-     * 
-     * @type {Object}
+     * @description Object containing values this StateChange contains. StateChangeFactory will map passed arguments as properties in this object to the values.
      */
     valuesPassed;
 
     /**
-     * 
-     * @param {Object} changeType What flags this change has.
-     * @param {Array<String>} id_list Array of all ID's that are affected by the change. This helps with concatting changes more compactly.
-     * @param {Object} passed_values Argument map containing all specific values that the state change require. Pass it as an object with properties as the variables!
-     * @see {StateChange.ChangeTypes} for available flags.
+     * @description Creates a new StateChange instance.
+     * @param {ChangeTypes} changeType What kind of change this is, see {StateChange.ChangeTypes} for available values.
+     * @param {Array<String>} id_list Array of all elements affected by this state change. This is used for merging changes on the same elements.
+     * @param {Object} passed_values Map of all values that this change contains. Each property represents a change.
      */
     constructor(changeType, id_list, passed_values = {})
     {
         this.changeTypes = [changeType];
         this.timestamp = new Date().getTime();
         this.valuesPassed = passed_values;
-
-        /**
-         * @type Array<String>
-         */
         this.id_list = id_list;
     }
 
+    /** 
+     * @description Calculates and returns the bit-or of all flags in this state change.
+     * @returns {Number}
+     */
     getFlags()
     {
         var flags = 0;
 
         for (var index = 0; index <  this.changeTypes.length; index++) {
             var change = this.changeTypes[index];
+
+            // Perform bit-or operation
             flags = flags | change.flag;
         }
 
@@ -90,9 +90,9 @@ class StateChange {
     }
 
     /**
-     * Returns true if this change contains the requested flag.
-     * @param {number} flag 
-     * @returns {boolean}
+     * @description Tests if this state change contains a certain flag.
+     * @param {Number} flag Flag that is tested.
+     * @returns {Boolean} Boolean value depending on this state change containing the tested flag.
      */
     hasFlag(flag)
     {
@@ -102,6 +102,10 @@ class StateChange {
         return (AND === flag);
     }
 
+    /**
+     * @description Writes all properties of parameter to valuesPassed. This does NOT append values, but REPLACES them!
+     * @param {Object} value_object Object containting properties that should be written onto valuesPassed.
+     */
     setValues(value_object)
     {
         if (value_object) {
@@ -115,27 +119,31 @@ class StateChange {
     }
 
     /**
-     * 
-     * @param {StateChange} changes 
+     * @description Appends all property values onto the valuesPassed object. Logic for each specific property is different, some overwrite and some replaces.
+     * @param {StateChange} changes Another state change that will have its values copied over to this state change. Flags will also be merged.
      */
     appendValuesFrom(changes)
     {
         if (changes.timestamp < this.timestamp) {
             this.timestamp = changes.timestamp;
         }
-            
+        
+        // Go through all changes in the StateChange.
         for(var index = 0; index < changes.changeTypes.length; index++) {
             var change = changes.changeTypes[index]
 
             if (!this.changeTypes.includes(change)) {
                 this.changeTypes.push(change);
             }
+
             var props = Object.getOwnPropertyNames(changes.valuesPassed);
             var values = changes.valuesPassed;
          
+            // Go through each property in this change.
             for (var index = 0; index < props.length; index++) {
                 var propertyName = props[index];
             
+                // Perform logic depending on which property it is.
                 switch(propertyName){
                     case "elementName": 
                         this.valuesPassed[propertyName] = values[propertyName]
@@ -158,8 +166,15 @@ class StateChange {
     }
 }
 
+/**
+ * @description Constructs state changes with appropriate values set for each situation. This factory will also map passed argument into correct properties in the valuesPassed object.
+ */
 class StateChangeFactory
 {
+    /**
+     * @param {Object} element The new element that has been created.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementCreated(element)
     {
         var values = {
@@ -170,6 +185,10 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.ELEMENT_CREATED, [element.id], values);
     }
 
+    /**
+     * @param {Object} elements The elements that has been/are going to be deleted.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementsDeleted(elements)
     {
         var ids = [];
@@ -184,6 +203,12 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.ELEMENT_DELETED, ids, values);
     }
 
+    /**
+     * @param {List<String>} elementIDs List of IDs for all elements that were moved.
+     * @param {Number} moveX Amount of coordinates along the x-axis the elements have moved.
+     * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementsMoved(elementIDs, moveX, moveY)
     {
         var values = {
@@ -192,6 +217,12 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED, elementIDs, values);
     }
 
+    /**
+     * @param {List<String>} elementIDs List of IDs for all elements that were resized.
+     * @param {Number} changeX Amount of coordinates along the x-axis the elements have resized.
+     * @param {Number} changeY Amount of coordinates along the y-axis the elements have resized.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementResized(elementIDs, changeX, changeY)
     {
         var values = {
@@ -200,6 +231,14 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.ELEMENT_RESIZED, elementIDs, values);
     }
 
+    /**
+     * @param {List<String>} elementIDs List of IDs for all elements that were moved and resized.
+     * @param {Number} moveX Amount of coordinates along the x-axis the elements have moved.
+     * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
+     * @param {Number} changeX Amount of coordinates along the x-axis the elements have resized.
+     * @param {Number} changeY Amount of coordinates along the y-axis the elements have resized.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementMovedAndResized(elementIDs, moveX, moveY, changeX, changeY)
     {
         var values = {
@@ -209,24 +248,29 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED, elementIDs, values);
     }
 
+    /**
+     * @param {List<String>} elementID ID for element that has been changed.
+     * @param {Object} changeList Object containing changed attributes for the element. Each property represents each attribute changed.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */ 
     static ElementAttributesChanged(elementID, changeList)
     {       
         var state = new StateChange(StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED, [elementID]);
 
+        // TODO : Could this be deleted? "changeList.name" should be handled in StateChange instead.
         // Handle special values that should not be passed, but rather used instantly.
         if (changeList.name) {
             state.name = changeList.name;
             delete changeList.name;
         }
 
-        // Pass forward values
         state.setValues(changeList);
         return state;
     }
 
     /**
-     * @param {*} line 
-     * @returns 
+     * @param {Object} line New line that has been created.
+     * @returns {StateChange} A new instance of the StateChange class.
      */
     static LineAdded(line)
     {
@@ -239,9 +283,8 @@ class StateChangeFactory
     }
 
     /**
-     * 
-     * @param {Array<object>} lines 
-     * @returns 
+     * @param {Array<object>} lines List of all lines that have been / are going to be removed.
+     * @returns {StateChange} A new instance of the StateChange class.
      */
     static LinesRemoved(lines)
     {
@@ -258,6 +301,11 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.LINE_DELETED, lineIDs, passed_values);
     }
 
+    /**
+     * @param {Array<object>} elements All elements that have been / are going to be removed.
+     * @param {Array<object>} lines All lines that have been / are going to be removed.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementsAndLinesDeleted(elements, lines)
     {
         var allIDs = [];
@@ -280,6 +328,11 @@ class StateChangeFactory
         return new StateChange(StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED, allIDs, passed_values);
     }
 
+    /**
+     * @param {Array<object>} elements All elements that have been created.
+     * @param {Array<object>} lines All lines that have been created.
+     * @returns {StateChange} A new instance of the StateChange class.
+     */
     static ElementsAndLinesCreated(elements, lines)
     {
         var allIDs = [];
@@ -303,9 +356,17 @@ class StateChangeFactory
     }
 }
 
+/**
+ * @description Handles storage and retrieval of usage history allowing undoing and redoing changes. Internal data should ONLY be modified through class methods to prevent weird behaviour.
+ */
 class StateMachine
 {
-    constructor (initialData, initialLines)
+    /**
+     * @description Instanciate a new StateMachine. Constructor arguments will determine the "initial state", only changes AFTER this will be logged.
+     * @param {Array<Object>} initialElements All elements that should be stored in the initial state.
+     * @param {*} initialLines All lines that should be stored in the initial state.
+     */
+    constructor (initialElements, initialLines)
     {
         /**
          * @type Array<StateChange>
@@ -321,18 +382,16 @@ class StateMachine
          * Our initial data values
          */
         this.initialState = {
-            data: Array.from(initialData),
+            elements: Array.from(initialElements),
             lines: Array.from(initialLines)
         }
     }
 
     /**
-     * Stores the passed state change into the state machine.
-     * If the change is hard it will be pushed onto the history log,
-     * while a soft§ change will simply modify the last history entry.
-     * 
-     * @param {StateChange} stateChange State change generated by the StateChangedFactory.
-     * @see StateChangeFactory
+     * @description Stores the passed state change into the state machine. If the change is hard it will be pushed onto the history log. A soft change will modify the previously stored state IF that state allows it. The soft state will otherwise be pushed into the history log instead. StateChanges REQUIRE flags to be identified by the stepBack and stepForward methods!
+     * @param {StateChange} stateChange All changes to be logged.
+     * @see StateChangeFactory For constructing new state changes more easily.
+     * @see StateChange For available flags.
      */
     save (stateChange)
     {
@@ -395,6 +454,10 @@ class StateMachine
         }
     }
 
+    /**
+     * @description Undoes the last stored history log changes. Determines what should be looked for by reading the state change flags.
+     * @see StateChange For available flags.
+     */
     stepBack () 
     {
         if (this.historyLog.length > 0) {
@@ -477,7 +540,7 @@ class StateMachine
                 lines = Array.prototype.concat(lines, lastChange.valuesPassed.deletedLines);
             }
         } else  { // No more history, restoring intial state
-            data = Array.from(this.initialState.data);
+            data = Array.from(this.initialState.elements);
             lines = Array.from(this.initialState.lines);
         }
 
@@ -487,6 +550,9 @@ class StateMachine
 };
 //#endregion ===================================================================================
 //#region ================================ ENUMS                ================================
+/**
+ * @description Keybinds that are used in the system. This is used to generate tooltips and for determining keyboard input logic.
+ */
 const keybinds = {
         LEFT_CONTROL: {key: "control", ctrl: true},
         ALT: {key: "alt", ctrl: false},
@@ -513,6 +579,8 @@ const keybinds = {
         DELETE_B: {key: "backspace", ctrl: false}
 };
 
+/** 
+ * @description Represents the current input mode the end user is currently in. */
 const mouseModes = {
     POINTER: 0,
     BOX_SELECTION: 1,
@@ -520,6 +588,10 @@ const mouseModes = {
     EDGE_CREATION: 3,
 };
 
+/** 
+ * @description All different types of elements that can be constructed.
+ * @see constructElementOfType() For creating elements out dof this enum.
+ */
 const elementTypes = {
     ENTITY: 0,
     RELATION: 1,
@@ -527,6 +599,10 @@ const elementTypes = {
     GHOSTENTITY: 3
 };
 
+/**
+ * @description Used by the mup and mmoving functions to determine what was clicked in ddown/mdown.
+ * @see ddown For mouse down on top of elements.
+ */
 const pointerStates = {
     DEFAULT: 0,
     CLICKED_CONTAINER: 1,
@@ -535,12 +611,19 @@ const pointerStates = {
     CLICKED_LINE: 4,
 };
 
+/**
+ * @description Used by the user feedback popup messages to indicate different messages.
+ * @see displayMessage() For showing popup messages.
+ */
 const messageTypes = {
     ERROR: "error",
     WARNING: "warning",
     SUCCESS: "success"
 };
 
+/**
+ * @description Available types of the attribute element. This will alter how the attribute is drawn onto the screen.
+ */
 const attrState = {
     NORMAL: "normal",
     MULTIPLE: "multiple",
@@ -548,22 +631,34 @@ const attrState = {
     COMPUTED: "computed",
 };
 
+/**
+ * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
+ */
 const entityState = {
     NORMAL: "normal",
     WEAK: "weak",
 
 };
 
+/**
+ * @description Available types of the relation element. This will alter how the relation is drawn onto the screen.
+ */
 const relationState = {
     NORMAL: "normal",
     WEAK: "weak",
 };
 
+/**
+ * @description Available types of lines to draw between different elements.
+ */
 const lineKind = {
     NORMAL: "Normal",
     DOUBLE: "Double"
 };
 
+/**
+ * @description Available options of strings to display next to lines connecting two elements.
+ */
 const lineCardinalitys = {
     MANY: "N",
     ONE: "1"
@@ -667,6 +762,10 @@ var ghostElement = null;
 var ghostLine = null;
 //#endregion ===================================================================================
 //#region ================================ DEFAULTS             ================================
+/**
+ * @description All default values for element types. These will be applied to new elements created via the construction function ONLY.
+ * @see constructElementOfType() For creating new elements with default values.
+ */
 var defaults = {
     defaultERtentity: { kind: "EREntity", fill: "White", Stroke: "Black", width: 200, height: 50 },
     defaultERrelation: { kind: "ERRelation", fill: "White", Stroke: "Black", width: 60, height: 60 },
@@ -675,6 +774,10 @@ var defaults = {
 }
 //#endregion ===================================================================================
 //#region ================================ INIT AND SETUP       ================================
+/**
+ * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
+ * @see getData() For the VERY FIRST function called in the file.
+ */
 function onSetup()
 {
     const PersonID = makeRandomID();
@@ -726,6 +829,9 @@ function onSetup()
     stateMachine = new StateMachine(data, lines);
 }
 
+/**
+ * @description Very first function that is called when the window is loaded. This will perform initial setup and then call the drawing functions to generate the first frame on the screen.
+ */
 function getData()
 {
     container = document.getElementById("container");
@@ -739,6 +845,12 @@ function getData()
     setCursorStyles(mouseMode);
 }
 
+/**
+ * @description Used to determine if returned data is correct.
+ * @param {*} ret Returned data to determine.
+ * @deprecated This function is no longer in use since the new drawing system of April 2021.
+ */
+// TODO : No references of this function throughout the entire codebase. Should be deleted?
 function data_returned(ret)
 {
     if (typeof ret.data !== "undefined") {
@@ -869,6 +981,10 @@ window.onfocus = function()
 }
 
 // --------------------------------------- Mouse Events    --------------------------------
+/**
+ * @description Event function triggered when the mousewheel reader has a value of grater or less than 0.
+ * @param {MouseEvent} event Triggered mouse event.
+ */
 function mwheel(event)
 {
     if(event.deltaY < 0) {
@@ -878,6 +994,10 @@ function mwheel(event)
     }
 }
 
+/**
+ * @description Event function triggered when any mouse button is pressed down on top of the container.
+ * @param {MouseEvent} event Triggered mouse event.
+ */
 function mdown(event)
 {
     // If the middle mouse button (mouse3) is pressed set scroll start values
@@ -930,6 +1050,10 @@ function mdown(event)
     }
 }
 
+/**
+ * @description Event function triggered when any mouse button is pressed down on top of any element.
+ * @param {MouseEvent} event Triggered mouse event.
+ */
 function ddown(event)
 {
     // If the middle mouse button (mouse3) is pressed => return
@@ -960,6 +1084,11 @@ function ddown(event)
     }
 }
 
+/**
+ * @description Called on mouse up if no pointer state has blocked the input in the mup()-function.
+ * @param {MouseEvent} event Triggered mouse event.
+ * @see mup() For event triggering mouse down.
+ */
 function mouseMode_onMouseUp(event)
 {
     switch (mouseMode) {
@@ -1012,6 +1141,11 @@ function mouseMode_onMouseUp(event)
     }
 }
 
+/**
+ * @description Event function triggered when any mouse button is released on top of the container. Logic is handled depending on the current pointer state.
+ * @param {MouseEvent} event Triggered mouse event.
+ * @see pointerStates For all available states.
+ */
 function mup(event)
 {
     deltaX = startX - event.clientX;
@@ -1090,6 +1224,11 @@ function mup(event)
     deltaExceeded = false;
 }
 
+/**
+ * @description Calculates if any line is present on x/y position in pixels.
+ * @param {Number} mouseX
+ * @param {Number} mouseY
+ */
 function determineLineSelect(mouseX, mouseY)
 {
     // This func is used when determining which line is clicked on.
@@ -1165,6 +1304,9 @@ function determineLineSelect(mouseX, mouseY)
     return null;
 }
 
+/**
+ * @description Performs a circle detection algorithm on a certain point in pixels to decide if any line was clicked.
+ */
 function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
 {
     // Adding and subtracting with the circle radius to allow for bigger margin of error when clicking.
@@ -1186,6 +1328,9 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
     }
 }
 
+/**
+ * @description Called on mouse moving if no pointer state has blocked the event in mmoving()-function.
+ */
 function mouseMode_onMouseMove(event)
 {
      switch (mouseMode) {
@@ -1221,6 +1366,10 @@ function mouseMode_onMouseMove(event)
     }
 }
 
+/**
+ * @description Event function triggered when the mouse has moved on top of the container.
+ * @param {MouseEvent} event Triggered mouse event.
+ */
 function mmoving(event)
 {
     lastMousePos = getPoint(event.clientX, event.clientY);
@@ -1315,6 +1464,11 @@ function mmoving(event)
 
 //#endregion ===================================================================================
 //#region ================================ ELEMENT MANIPULATION ================================
+/**
+ * Generates a new hexadecimal ID that is not already stored to identify things in the program.
+ * @returns {String} Hexadecimal number represented as a string.
+ * @see randomidArray For an array of all generated IDs by this function.
+ */
 function makeRandomID()
 {
     var str = "";
@@ -1341,6 +1495,12 @@ function makeRandomID()
     }
 }
 
+/**
+ * Searches an array for the specified item and returns its stored index in the array if found.
+ * @param {Array} arr Array to search.
+ * @param {*} id Item to determine index for.
+ * @returns {Number} Index for the searched item OR -1 for a miss.
+ */
 function findIndex(arr, id)
 {
     for (var i = 0; i < arr.length; i++) {
@@ -1349,21 +1509,33 @@ function findIndex(arr, id)
     return -1;
 }
 
-// Adds object to the dataArray
+/**
+ * @description Adds an object to the data array of elements.
+ * @param {Object} object Element to be added.
+ * @param {Boolean} stateMachineShouldSave If the state machine should log this change to allow undoing.
+ */
 function addObjectToData(object, stateMachineShouldSave = true)
 {
     data.push(object);
     if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object));
 }
 
-// Adds object to the line-array
+/**
+ * @description Adds a line to the data array of lines.
+ * @param {Object} object Line to be added.
+ * @param {Boolean} stateMachineShouldSave If the state machine should log this change to allow undoing.
+ */
 function addObjectToLines(object, stateMachineShouldSave = true)
 {
     lines.push(object);
     if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(object));
 }
 
-//Function to remove elemets and lines
+/**
+ * @description Attempts removing all elements passed through the elementArray argument. Passed argument will be sanitized to ensure it ONLY contains real elements that are present in the data array. This is to make sure the state machine does not store deletion of non-existent objects.
+ * @param {Array<Object>} elementArray List of all elements that should be deleted.
+ * @param {Boolean} stateMachineShouldSave If the state machine should log this change to allow undoing.
+ */
 function removeElements(elementArray, stateMachineShouldSave = true)
 {
     // Find all lines that should be deleted first
@@ -1399,7 +1571,11 @@ function removeElements(elementArray, stateMachineShouldSave = true)
     showdata();
 }
 
-//Function to remove selected lines
+/**
+ * @description Attempts removing all lines passed through the linesArray argument. Passed argument will be sanitized to ensure it ONLY contains real lines that are present in the data array. This is to make sure the state machine does not store deletion of non-existent objects.
+ * @param {Array<Object>} linesArray List of all elements that should be deleted.
+ * @param {Boolean} stateMachineShouldSave If the state machine should log this change to allow undoing.
+ */
 function removeLines(linesArray, stateMachineShouldSave = true)
 {
     var anyRemoved = false;
@@ -1422,12 +1598,19 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     showdata();
 }
 
-// Return all lines
-function getLines()
+/**
+ * @description Will return all lines in the data array. This is mainly used for debugging purposes since we can log whenever the lines are read from.
+ * @returns Returns all lines in the data array.
+ */
+function getLines() // TODO : Replace all lines[i] with getLines()[i], or event introduce a new getLineAt(i)?
 {
     return lines;
 }
 
+/**
+ * @description Generatesa a new ghost element that is used for visual feedback to the end user when creating new elements and/or lines. Setting ghostElement to null will remove the ghost element.
+ * @see ghostElement
+ */
 function makeGhost()
 {
     var entityType = constructElementOfType(elementTypeSelected);
@@ -1446,6 +1629,12 @@ function makeGhost()
     showdata();
 }
 
+/**
+ * Creates a new element using the appropriate default values. These values are determined using the elementTypes enum.
+ * @param {Number} type What type of element to construct.
+ * @see elementTypes For all available values to pass as argument.
+ * @returns {Object}
+ */
 function constructElementOfType(type)
 {
     var elementTemplates = [
@@ -1458,15 +1647,24 @@ function constructElementOfType(type)
     if (enumContainsPropertyValue(type, elementTypes)){
         return elementTemplates[type];
     }
+    // TODO : No return value if INVALID type.
 }
 
+/**
+ * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
+ * @see context For currently selected element.
+ */
 function changeState() 
 {
+    // TODO : THIS DOES NOT USE THE STATE MACHINE, VERY BAD!
     var property = document.getElementById("propertySelect").value;
     var element = context[0];
     element.state = property;
 }
 
+/**
+ * @description Triggered on pressing the SAVE-button inside the options panel. This will apply all changes to the select element and will store the changes into the state machine.
+ */
 function saveProperties() 
 {
     const propSet = document.getElementById("propertyFieldset");
@@ -1498,8 +1696,12 @@ function saveProperties()
     updatepos(0,0);
 }
 
+/**
+ * Applies new changes to line attributes in the data array of lines.
+ */
 function changeLineProperties()
 {
+    // TODO : DOES NOT STORE ANYTHING TO THE STATE MACHINE, VERY BAD!
     // Set lineKind
     var radio1  = document.getElementById("lineRadio1");
     var radio2 = document.getElementById("lineRadio2");
@@ -1522,6 +1724,10 @@ function changeLineProperties()
     showdata();
 }
 
+/**
+ * @description Updates what line(s) are selected.
+ * @param {Object} selectedLine Line that has been selected.
+ */
 function updateSelectedLine(selectedLine)
 {
     // This function works almost exaclty as updateSelection but for lines instead.
@@ -1558,7 +1764,11 @@ function updateSelectedLine(selectedLine)
     generateContextProperties();
 }
 
-function updateSelection(ctxelement)
+/**
+ * @description Updates the current selection of elements depending on what buttons are down. Context array may have the new element added or removed from the context array, have the context array replaced with only the new element or simply have the array emptied.
+ * @param {Object} ctxelement Element that has was clicked or null. A null value will DESELECT all elements, emptying the entire context array.
+ */
+function updateSelection(ctxelement) // TODO : Default null value since we use it for deselection?
 {
     // If CTRL is pressed and an element is selected
     if (ctrlPressed && ctxelement != null) {
@@ -1595,6 +1805,9 @@ function updateSelection(ctxelement)
     generateContextProperties();
 }
 
+/**
+ * @description Puts all available elements of the data array into the context array.
+ */
 function selectAll()
 {   
     context = data;
@@ -1602,6 +1815,10 @@ function selectAll()
     showdata();
 }
 
+/**
+ * Places a copy of all elements into the data array centered around the current mouse position.
+ * @param {Array<Object>} elements List of all elements to paste into the data array.
+ */
 function pasteClipboard(elements)
 {
 
@@ -1698,6 +1915,9 @@ function pasteClipboard(elements)
     showdata();
 }
 
+/**
+ * @description Empties the context array of all selected elements.
+ */
 function clearContext()
 {
     if(context != null){
@@ -1706,6 +1926,9 @@ function clearContext()
     }
 }
 
+/**
+ * @description Empties the context array of all selected lines.
+ */
 function clearContextLine()
 {
     if(contextLine != null){
@@ -1715,6 +1938,13 @@ function clearContextLine()
 }
 //#endregion ===================================================================================
 //#region ================================ HELPER FUNCTIONS     ================================
+/**
+ * @description Converst a position in screen pixels into coordinates of the array.
+ * @param {Number} mouseX Pixel position in the x-axis.
+ * @param {Number} mouseY Pixel position in the y-axis.
+ * @returns {Point} Point containing the calculated coordinates.
+ * @see diagramToScreenPosition() For converting the other way.
+ */
 function screenToDiagramCoordinates(mouseX, mouseY)
 {
     // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
@@ -1736,26 +1966,34 @@ function screenToDiagramCoordinates(mouseX, mouseY)
     if (zoomfact == 0.25) zoomX = zoom0_25;
     if (zoomfact == 0.125) zoomX = zoom0_125;
 
-    return {
-        x: Math.round(
-            ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x // the 2 makes mouse hover over container
-        ),
-        y: Math.round(
-            ((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y
-        ),
-    };
+    return new Point(Math.round( ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
+                    Math.round(((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
+    );
 }
 
-// TODO : This is still the old version, needs update
+/**
+ * @description Converts a coordinate on the canvas into a pixel position on the screen.
+ * @param {Number} coordX Coordinate position in the x-axis.
+ * @param {Number} coordY Coordinate position in the y-axis.
+ * @returns {Point} Point containing the calculated screen position.
+ * @depricated TODO : Needs to be updated
+ * @see screenToDiagramCoordinates() For converting the other way.
+ */
 function diagramToScreenPosition(coordX, coordY)
 {
-    return {
-        x: Math.round((coordX + scrollx) / zoomfact + 0),
-        y: Math.round((coordY + scrolly) / zoomfact + 0),
-    };
+    console.warn("diagramToScreenPosition() is depricated. It should be updated to use new screenToDiagramCoordinates() algorithm reversed.");
+    return new Point(
+        Math.round((coordX + scrollx) / zoomfact + 0),
+        Math.round((coordY + scrolly) / zoomfact + 0)
+    );
 }
 
-// Returns TRUE if an enum contains the tested value
+/**
+ * @description Test weither an enum object contains a certain property value.
+ * @param {*} value The value that the enumObject is tested for.
+ * @param {Object} enumObject The enum object containing all possible values.
+ * @returns {Boolean} Returns TRUE if an enum contains the tested value
+ */
 function enumContainsPropertyValue(value, enumObject) 
 {
     for (const property in enumObject) {
@@ -1768,6 +2006,13 @@ function enumContainsPropertyValue(value, enumObject)
     return false;
 }
 
+/**
+ * @description Creates an object with the selected x and y values.
+ * @param {*} x 
+ * @param {*} y 
+ * @returns {Object} Returns object with x and y properties set.
+ * @depricated Use new Point object instead!
+ */
 function getPoint (x,y)
 {
     return {
@@ -1776,16 +2021,27 @@ function getPoint (x,y)
     };
 }
 
-function getRectFromPoints(p1, p2)
+/**
+ * @description Creates a new rectangle from upper left point and lower right point.
+ * @param {Point} topLeft 
+ * @param {Point} bottomRight 
+ * @returns {Object} Returns an object representing a rectangle with position and size.
+ */
+function getRectFromPoints(topLeft, bottomRight)
 {
     return {
-        x: p1.x,
-        y: p1.y,
-        width: p2.x - p1.x,
-        height: p2.y - p1.y,
+        x: topLeft.x,
+        y: topLeft.y,
+        width: bottomRight.x - topLeft.x,
+        height: bottomRight.y - topLeft.y,
     };
 }
 
+/**
+ * @description Creates a new rectangle from an element.
+ * @param {Object} element Element with a x,y,width and height propery.
+ * @returns 
+ */
 function getRectFromElement (element)
 {
     return {
@@ -1796,14 +2052,14 @@ function getRectFromElement (element)
     };
 }
 
+/**
+ * @description Performs a box-collision between two rectangles.
+ * @param {*} left First rectangle
+ * @param {*} right Second rectangle
+ * @returns {Boolean} true if the rectangles collide with each other.
+ */
 function rectsIntersect (left, right)
 {
-    // If the two rects touch each other, returns true otherwise false.
-    //return ((left.X + left.Width >= right.X) &&
-    //        (left.X <= right.X + right.Width) &&
-    //        (left.Y + left.Height >= right.Y) &&
-    //        (left.Y <= right.Y + right.Height));
-
     return (
         (left.x + left.width >= right.x) && 
         (left.x <= right.x + right.width) &&
@@ -1812,6 +2068,12 @@ function rectsIntersect (left, right)
     );
 }
 
+/**
+ * @description Moves the first element with matching ID a certain coordinates along the x/y-axis.
+ * @param {String} id Hexadecimal ID represented as a string.
+ * @param {Number} x Coordinates along the x-axis to move
+ * @param {Number} y Coordinates along the y-axis to move
+ */
 function setPos(id, x, y)
 {
     foundId = findIndex(data, id);
@@ -1848,6 +2110,11 @@ function findEntityFromLine(lineObj)
 }
 //#endregion =====================================================================================
 //#region ================================ MOUSE MODE FUNCS     ================================
+/**
+ * @description Changes the current mouse mode using argument enum value.
+ * @param {mouseModes} mode What mouse mode to change into.
+ * @see mouseModes For all available enum values.
+ */
 function setMouseMode(mode)
 {   
     if (enumContainsPropertyValue(mode, mouseModes)) {
@@ -1862,8 +2129,14 @@ function setMouseMode(mode)
     }
 }
 
-function setCursorStyles(cursorMode = 0)
+/**
+ * @description Changes the current visual cursor style for the user.
+ * @param {Number} cursorMode CursorStyle value. This will be translated into appropriate cursor style.
+ */
+function setCursorStyles(cursorMode = mouseModes.POINTER)
 {
+    // TODO : Create new string enum for all cursor styles? This would result in us not needing to use any form of branching and still get correct result.
+    // TODO : Should have better name. This is the CONTAINER and not a CURSORSTYLE!
     cursorStyle = document.getElementById("container").style;
 
     switch(cursorMode) {
@@ -1884,6 +2157,9 @@ function setCursorStyles(cursorMode = 0)
     }
 }
 
+/**
+ * @description Function triggered just AFTER the current mouse mode is changed.
+ */
 function onMouseModeEnabled()
 {
     // Add the diagramActive to current diagramIcon
@@ -1912,6 +2188,9 @@ function onMouseModeEnabled()
     }
 }
 
+/**
+ * @description Function triggered just BEFORE the current mouse mode is changed.
+ */
 function onMouseModeDisabled()
 {
     // Remove all "active" classes in nav bar
@@ -2095,6 +2374,9 @@ function boxSelect_Draw(str)
 }
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
+/**
+ * @description Toggles the visual background grid ON/OFF.
+ */
 function toggleGrid()
 {
     var grid = document.getElementById("svggrid");
@@ -2109,6 +2391,9 @@ function toggleGrid()
    }
 }
 
+/**
+ * @description Toggles weither the snap-to-grid logic should be active or not. The GUI button will also be flipped.
+ */
 function toggleSnapToGrid()
 {
     // Toggle active class on button
@@ -2118,6 +2403,9 @@ function toggleSnapToGrid()
     snapToGrid = !snapToGrid;
 }
 
+/**
+ * @description Toggles weither the ruler is visible or not for the end user.
+ */
 function toggleRuler()
 {
     var ruler = document.getElementById("rulerOverlay");
@@ -2125,7 +2413,7 @@ function toggleRuler()
     // Toggle active class on button
     document.getElementById("rulerToggle").classList.toggle("active");
 
-  if(isRulerActive){
+    if(isRulerActive){
         ruler.style.display = "none";
     } else {
         ruler.style.display = "block";
@@ -2135,11 +2423,20 @@ function toggleRuler()
     drawRulerBars(scrollx,scrolly);
 }
 
-function setElementPlacementType(type = 0)
+/**
+ * @description Changes what element will be constructed on next constructElementOfType call.
+ * @param {Number} type What kind of element to place.
+ * @see constructElementOfType
+ */
+function setElementPlacementType(type = elementTypes.ENTITY)
 {
     elementTypeSelected = type;
 }
 
+/**
+ * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
+ * @param {MouseEvent} scrollEvent The current mouse event.
+ */
 function zoomin(scrollEvent = undefined)
 {
     // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
@@ -2188,6 +2485,10 @@ function zoomin(scrollEvent = undefined)
     drawRulerBars(scrollx,scrolly);
 }
 
+/**
+ * @description Decreases the current zoom level if not already at minimum. This will shrink all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom away from the cursor position.
+ * @param {MouseEvent} scrollEvent The current mouse event.
+ */
 function zoomout(scrollEvent = undefined)
 {
     // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
@@ -2229,11 +2530,19 @@ function zoomout(scrollEvent = undefined)
     drawRulerBars(scrollx,scrolly);
 }
 
+/**
+ * @description Event function triggered whenever a property field is pressed in the options panel. This will appropriatly update the current propFieldState variable.
+ * @param {Boolean} isSelected Boolean value representing if the selection was ACTIVATED or DEACTIVATED.
+ * @see propFieldState For seeing if any fieldset is currently selected.
+ */
 function propFieldSelected(isSelected)
 {
     propFieldState = isSelected;
 }
 
+/**
+ * @description Generates fields for all properties of the currently selected element/line in the context. These fields can be used to modify the selected element/line.
+ */
 function generateContextProperties()
 {
     var propSet = document.getElementById("propertyFieldset");
@@ -2327,6 +2636,9 @@ function generateContextProperties()
     propSet.innerHTML = str;
 }
 
+/**
+ * @description Toggles the option menu being open or closed.
+ */
 function fab_action()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
@@ -2338,6 +2650,10 @@ function fab_action()
     }
 }
 
+/**
+ * @description Generates keybind tooltips for all keybinds that are available for the diagram.
+ * @see keybinds All available keybinds currently configured.
+ */
 function generateToolTips()
 {
     var toolButtons = document.getElementsByClassName("key_tooltip");
@@ -2357,12 +2673,22 @@ function generateToolTips()
     }
 }
 
+/**
+ * @description Modified the current ruler position to respective x and y coordinate. This DOM-element has an absolute position and does not change depending on other elements.
+ * @param {Number} x Absolute x-position in pixels from the left of the inner window.
+ * @param {Number} y Absolute y-position in pixels from the top of the inner window.
+ */
 function setRulerPosition(x, y) 
 {
     document.getElementById("ruler-x").style.left = x - 51 + "px";
     document.getElementById("ruler-y").style.top = y + "px";
 }
 
+/**
+ * @description Performs an update to the current grid size depending on the current zoom level.
+ * @see zoomin Function where the zoom level increases.
+ * @see zoomout Function where the zoom level decreases.
+ */
 function updateGridSize()
 {
     var bLayer = document.getElementById("grid");
@@ -2373,6 +2699,9 @@ function updateGridSize()
     updateGridPos();
 }
 
+/**
+ * @description Calculates new positioning for the background grid.
+ */
 function updateGridPos()
 {
     var gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
@@ -2382,6 +2711,13 @@ function updateGridPos()
     bLayer.setAttribute('y', gridOffsetY);
 }
 
+/**
+ * @description Displays a popup message as feedback for the current user. This message will then be destroyed after a specified time.
+ * @param {messageTypes} type What kind of message type this is.
+ * @param {String} message Contents of the message displayed.
+ * @param {Number} time Milliseconds until the message will be destroyed.
+ * @see messageTypes All kind of messages there exist to display.
+ */
 function displayMessage(type, message, time = 5000)
 {
     // Message settings
@@ -2403,16 +2739,19 @@ function displayMessage(type, message, time = 5000)
     }
 
 }
-//-------------------------------------------------------------------------------------------------
-// Set a time for the element to exist, will be removed after time has exceeded
-//-------------------------------------------------------------------------------------------------
+
+/**
+ * @description Function for setting the message destruction timer of a popup message. This is used by the displayMessage() function. 
+ * @param {HTMLElement} element The message DOM element that should be edited.
+ * @param {Number} time Milliseconds until the message will be destroyed.
+ */
 function setTimerToMessage(element, time = 5000)
 {
     if (!element) return;
 
     element.innerHTML += `<div class="timeIndicatorBar"></div>`;
     var timer = setInterval( function(){
-        var element = document.getElementById(errorMsgMap[timer].id);
+        var element = document.getElementById(errorMsgMap[timer].id); // TODO : SAME VARIABLE NAME AS OUTER SCOPE?????
         errorMsgMap[timer].percent -= 1;
         element.lastElementChild.style.width = `calc(${errorMsgMap[timer].percent - 1}% - 10px)`;
 
@@ -2430,6 +2769,11 @@ function setTimerToMessage(element, time = 5000)
 //-------------------------------------------------------------------------------------------------
 // Removes the message from DOM and removes all the variables that are used
 //-------------------------------------------------------------------------------------------------
+/**
+ * @description Destroys a popup message.
+ * @param {HTMLElement} element The message DOM element that should be destroyed.
+ * @param {Number} timer Kills the timer associated with the popup message. Can be null and will not remove any timer then.
+ */
 function removeMessage(element, timer)
 {
     // If there is no timer in the parameter try find it by elementID in
@@ -2452,7 +2796,16 @@ function removeMessage(element, timer)
 }
 //#endregion =====================================================================================
 //#region ================================ ELEMENT CALCULATIONS ==================================
-function sortvectors(a, b, ends, elementid, axis)
+/**
+ * @description Sorts all lines connected to an element on each side.
+ * @param {String} a Hexadecimal id for the element at current test index for sorting.
+ * @param {String} b Hexadecimal id for the element were comparing to.
+ * @param {Array<Object>} ends Array of all lines connected on this side.
+ * @param {String} elementid Hexadecimal id for element to perform sorting on.
+ * @param {Number} axis 
+ * @returns {Number} 1 or -1 depending in the resulting calculation.
+ */
+function sortvectors(a, b, ends, elementid, axis) // TODO : Replace variable names a and b
 {
     // Get dx dy centered on association end e.g. invert vector if necessary
     var lineA = (ghostLine && a === ghostLine.id) ? ghostLine : lines[findIndex(lines, a)];
@@ -2501,8 +2854,23 @@ function sortvectors(a, b, ends, elementid, axis)
     return -sortval;
 }
 
+/**
+ * @description
+ * @param {Number} x1 Position 1 
+ * @param {Number} y1 Position 1 
+ * @param {Number} x2 Position 2 
+ * @param {Number} y2 Position 2 
+ * @param {Number} x3 Position 3 
+ * @param {Number} y3 Position 3 
+ * @param {Number} x4 Position 4 
+ * @param {Number} y4 Position 4 
+ * @returns False or An object with x/y coordinates.
+ */
+ // TODO : WHY does it return EITHER a boolean OR an object??????? Either this is a TRUE/FALSE function and return booleans OR it returns objects/null/undefined!
+ // TODO : Use new POINT objects to reduce amount of arguments?
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
+    // TODO : Can be deleted?
     // Display line test locations using svg lines
     // str+=`<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='#44f' stroke-width='2' />`;
     // str+=`<line x1='${x3}' y1='${y3}' x2='${x4}' y2='${y4}' stroke='#44f' stroke-width='2' />`
@@ -2543,6 +2911,10 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
     };
 }
 
+/**
+ * @description Clears the line list on all sides of an element.
+ * @param {Object} element Element to empty all sides of.
+ */
 function clearLinesForElement(element)
 {
     element.left = [];
@@ -2560,7 +2932,11 @@ function clearLinesForElement(element)
     element.cx = element.x1 + (domelementpos.width * 0.5);
     element.cy = element.y1 + (domelementpos.height * 0.5);
 }
-
+/**
+ * @description Checks overlapping and what side of the elements that the line is connected to.
+ * @param {Object} line Line that should be checked.
+ * @param {boolean} targetGhost Is the line an ghostLine
+ */
 function determineLine(line, targetGhost = false)
 {
     var felem, telem, dx, dy;
@@ -2605,19 +2981,27 @@ function determineLine(line, targetGhost = false)
         if (telem.kind == "EREntity") telem.top.push(line.id);
     }
 }
-
+/**
+ * @description Sort the associations for each side of an element.
+ * @param {Object} element Element to sort.
+ */
 function sortElementAssociations(element)
 {
     // Only sort if size of list is >= 2
+    // TODO : Replace variable names a and b
     if (element.top.length > 1) element.top.sort(function (a, b) { return sortvectors(a, b, element.top, element.id, 2) });
     if (element.bottom.length > 1) element.bottom.sort(function (a, b) { return sortvectors(a, b, element.bottom, element.id, 3) });
     if (element.left.length > 1) element.left.sort(function (a, b) { return sortvectors(a, b, element.left, element.id, 0) });
     if (element.right.length > 1) element.right.sort(function (a, b) { return sortvectors(a, b, element.right, element.id, 1) });
 }
 
-//-------------------------------------------------------------------------------------------------
-// addLine - Adds an new line if the requirements and rules are achieved
-//-------------------------------------------------------------------------------------------------
+/**
+ * @description Add an line between two elements. Also checks if the line is connected between right elements and is not exceed the allowed amount.
+ * @param {Object} fromElement Element that the line is from.
+ * @param {Object} toElement Element that the line is to.
+ * @param {String} kind The kind of line that should be added.
+ * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
+ */
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
@@ -2665,6 +3049,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 }
 //#endregion =====================================================================================
 //#region ================================ DRAWING FUNCTIONS    ==================================
+/**
+ * @description Constructs an string containing the svg line-elements of the inputted line object in parameter.
+ * @param {Object} line The line object that is drawn.
+ * @param {boolean} targetGhost Is the targeted line an ghost line
+ */
 function drawLine(line, targetGhost = false)
 {
     var felem, telem, dx, dy;
@@ -2757,7 +3146,11 @@ function drawLine(line, targetGhost = false)
     }
     return str;
 }
-
+/**
+ * @description Removes all existing lines and draw them again
+ * @param {String} str The string to add the created line elements to
+ * @return String containing all the new lines-elements
+ */
 function redrawArrows(str)
 {
     // Clear all lines and update with dom object dimensions
@@ -2793,7 +3186,10 @@ function redrawArrows(str)
     }
     return str;
 }
-
+/**
+ * @description Adds nodes for resizing to an elements
+ * @param {Object} element The target element to add nodes to.
+ */
 function addNodes(element) 
 {
     var elementDiv = document.getElementById(element.id)
@@ -2804,7 +3200,9 @@ function addNodes(element)
 
     elementDiv.innerHTML += nodes;
 }
-
+/**
+ * @description Remove all elements with the class "node"
+ */
 function removeNodes() 
 {
     // Get all elements with the class: "node"
@@ -2817,6 +3215,9 @@ function removeNodes()
     return str;
 }
 
+/**
+ * @description Draw and updates the rulers, depending on the window size and current position in the diagram.
+ */
 function drawRulerBars(X,Y)
 {
     //Get elements
@@ -2915,7 +3316,12 @@ function drawRulerBars(X,Y)
     svgX.style.backgroundColor = "#e6e6e6";
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
-
+/**
+ * @description Construct an string containing all the elements for an data-object.
+ * @param {Object} element The object that should be drawn.
+ * @param {boolean} ghosted Is the element an ghost element.
+ * @return Returns an string containing the elements that should be drawn.
+ */
 function drawElement(element, ghosted = false)
 {
     var str = "";
@@ -3031,7 +3437,11 @@ function drawElement(element, ghosted = false)
     str += "</div>";
     return str;
 }
-
+/**
+ * @description Updates the elements translations and redraw lines.
+ * @param {Interger} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
+ * @param {Interger} deltaY The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the Y-axis.
+ */
 function updatepos(deltaX, deltaY)
 {
     updateCSSForAllElements();
@@ -3055,14 +3465,20 @@ function updatepos(deltaX, deltaY)
     document.getElementById("svgoverlay").innerHTML = str;
 
 }
-
+/**
+ * @description Updates the variables for the size of the container-element.
+ */
 function updateContainerBounds()
 {
     var containerbox = container.getBoundingClientRect();
     cwidth = containerbox.width;
     cheight = containerbox.height;
 }
-
+/**
+ * @description Draw the box around the selected elements.
+ * @param {String} str The string that the SVG-element is added to.
+ * @return The populated string with the selection box rect.
+ */
 function drawSelectionBox(str)
 {
     if (context.length != 0) {
@@ -3090,7 +3506,9 @@ function drawSelectionBox(str)
 
     return str;
 }
-
+/**
+ * @description Translate all elements to the correct coordinate
+ */
 function updateCSSForAllElements()
 {
     function updateElementDivCSS(elementData, divObject, useDelta = false)
@@ -3151,7 +3569,9 @@ function updateCSSForAllElements()
         }
     }
 }
-
+/**
+ * @description Redraw all elements and lines
+ */
 function showdata()
 {
     updateContainerBounds();
