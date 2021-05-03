@@ -599,7 +599,6 @@ const elementwidth = 200;
 const elementheight = 50;
 const textheight = 18;
 const strokewidth = 1.5;
-const outline = 40;
 const baseline = 10;
 const avgcharwidth = 6;
 const colors = ["white", "Gold", "#ffccdc", "yellow", "CornflowerBlue"];
