@@ -488,12 +488,12 @@ class StateMachine
 //#endregion ===================================================================================
 //#region ================================ ENUMS                ================================
 const keybinds = {
-        LEFT_CONTROL: {key: "Control", ctrl: false},
-        ALT: {key: "Alt", ctrl: false},
-        META: {key: "Meta", ctrl: false},
+        LEFT_CONTROL: {key: "control", ctrl: true},
+        ALT: {key: "alt", ctrl: false},
+        META: {key: "meta", ctrl: false},
         HISTORY_STEPBACK: {key: "z", ctrl: true},
-        DELETE: {key: "Delete", ctrl: false},
-        ESCAPE: {key: "Escape", ctrl: false},
+        DELETE: {key: "delete", ctrl: false},
+        ESCAPE: {key: "escape", ctrl: false},
         BOX_SELECTION: {key: "2", ctrl: false},
         POINTER: {key: "1", ctrl: false},
         EDGE_CREATION: {key: "6", ctrl: false},
@@ -506,10 +506,11 @@ const keybinds = {
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
-        ENTER: {key: "Enter", ctrl: false},
+        ENTER: {key: "enter", ctrl: false},
         COPY: {key: "c", ctrl: true},
         PASTE: {key: "v", ctrl: true},
-        SELECT_ALL: {key: "a", ctrl: true}
+        SELECT_ALL: {key: "a", ctrl: true},
+        DELETE_B: {key: "backspace", ctrl: false}
 };
 
 const mouseModes = {
@@ -652,7 +653,7 @@ var movingContainer = false;
 var isRulerActive = true;
 
 //Grid Settings
-var gridSize = 100;
+const gridSize = 50;
 var snapToGrid = false;
 var randomidArray = []; // array for checking randomID
 var errorMsgMap = {};
@@ -710,8 +711,8 @@ function onSetup()
         { id: makeRandomID(), fromID: NameID, toID: FNID, kind: "Normal" },
         { id: makeRandomID(), fromID: NameID, toID: LNID, kind: "Normal" },
 
-        { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
-        { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal", cardinality: {from: "MANY", to: ""}},
+        { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal", cardinality: "MANY" },
+        { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal", cardinality: "MANY" },
     ];
 
     for(var i = 0; i < demoData.length; i++){
@@ -730,10 +731,11 @@ function getData()
     container = document.getElementById("container");
     onSetup();
     showdata();
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
     generateToolTips();
     toggleGrid();
     updateGridPos();
+    updateGridSize();
     setCursorStyles(mouseMode);
 }
 
@@ -753,25 +755,18 @@ document.addEventListener('keydown', function (e)
 {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-       
-        if (e.key == keybinds.LEFT_CONTROL.key && ctrlPressed !== true) ctrlPressed = true;
-        if (e.key == keybinds.ALT.key && altPressed !== true) altPressed = true;
-        if (e.key == keybinds.DELETE.key && e.ctrlKey == keybinds.DELETE.ctrl) {
-            if (contextLine.length > 0) removeLines(contextLine);
-            if (context.length > 0) removeElements(context);
-
-            updateSelection();
-        }
-        if (e.key == keybinds.META.key && ctrlPressed !== true) ctrlPressed = true;
-        if (e.key == keybinds.ZOOM_IN.key && e.ctrlKey == keybinds.ZOOM_IN.ctrl) zoomin(); // Works but interferes with browser zoom
-        if (e.key == keybinds.ZOOM_OUT.key && e.ctrlKey == keybinds.ZOOM_OUT.ctrl) zoomout(); // Works but interferes with browser zoom
-        if (e.key == keybinds.ESCAPE.key && escPressed != true) {
+        
+        if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
+        if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
+        if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
+        if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
             escPressed = true;
-            clearContext();
-            setMouseMode(mouseModes.POINTER);
-            clearContextLine();
-            movingObject = false;
-
+            if(context.length > 0 || contextLine.length > 0) {
+                clearContext();
+                clearContextLine();
+            } else {
+                setMouseMode(mouseModes.POINTER);
+            }
             if (movingContainer) {
                 scrollx = sscrollx;
                 scrolly = sscrolly;
@@ -782,18 +777,16 @@ document.addEventListener('keydown', function (e)
             showdata();
         }
 
-        if (e.key == "Backspace" && (context.length > 0 || contextLine.length > 0) && !propFieldState) {
-            if (contextLine.length > 0) removeLines(contextLine);
-            if (context.length > 0) removeElements(context);
-            updateSelection();
-        }
+        if (isKeybindValid(e, keybinds.ZOOM_IN)) zoomin();
+        if (isKeybindValid(e, keybinds.ZOOM_OUT)) zoomout();
 
-        if (e.key == keybinds.SELECT_ALL.key && e.ctrlKey == keybinds.SELECT_ALL.ctrl){
+        if (isKeybindValid(e, keybinds.SELECT_ALL)){
             e.preventDefault();
             selectAll();
         }      
+
     } else { 
-        if (e.key == keybinds.ENTER.key && e.ctrlKey == keybinds.ENTER.ctrl) { 
+        if (isKeybindValid(e, keybinds.ENTER)) { 
             var propField = document.getElementById("elementProperty_name");
             changeState(); 
             saveProperties(); 
@@ -811,52 +804,49 @@ document.addEventListener('keyup', function (e)
         var pressedKey = e.key.toLowerCase();
 
         //  TODO : Switch cases?
-        if (e.key == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
-        if (e.key == keybinds.ALT.key) altPressed = false;
-        if (e.key == keybinds.META.key) ctrlPressed = false;
+        if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
+        if (pressedKey == keybinds.ALT.key) altPressed = false;
+        if (pressedKey == keybinds.META.key) ctrlPressed = false;
 
-        if (e.key == keybinds.ESCAPE.key && e.ctrlKey == keybinds.ESCAPE.ctrl) {
-            escPressed = false;
-        }
-        if (pressedKey == keybinds.HISTORY_STEPBACK.key && e.ctrlKey == keybinds.HISTORY_STEPBACK.ctrl) {
-            stateMachine.stepBack();
-        }
+        if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) stateMachine.stepBack();
+        if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
+        if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
+            if (contextLine.length > 0) removeLines(contextLine);
+            if (context.length > 0) removeElements(context);
 
-        if (pressedKey == keybinds.BOX_SELECTION.key && e.ctrlKey == keybinds.BOX_SELECTION.ctrl) {
-            setMouseMode(mouseModes.BOX_SELECTION);
+            updateSelection();
         }
-        if (pressedKey == keybinds.POINTER.key && e.ctrlKey == keybinds.POINTER.ctrl) {
-            setMouseMode(mouseModes.POINTER);
-        }
-        if (pressedKey == keybinds.EDGE_CREATION.key && e.ctrlKey == keybinds.EDGE_CREATION.ctrl) {
+        
+        if(isKeybindValid(e, keybinds.POINTER)) setMouseMode(mouseModes.POINTER);
+        if(isKeybindValid(e, keybinds.BOX_SELECTION)) setMouseMode(mouseModes.BOX_SELECTION);
+        
+        if(isKeybindValid(e, keybinds.EDGE_CREATION)){
             setMouseMode(mouseModes.EDGE_CREATION);
             clearContext();
         }
-        if (pressedKey == keybinds.PLACE_ENTITY.key && e.ctrlKey == keybinds.PLACE_ENTITY.ctrl) {
+
+        if(isKeybindValid(e, keybinds.PLACE_ENTITY)){
             setElementPlacementType(elementTypes.ENTITY);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (pressedKey== keybinds.PLACE_RELATION.key && e.ctrlKey == keybinds.PLACE_RELATION.ctrl) {
+
+        if(isKeybindValid(e, keybinds.PLACE_RELATION)){
             setElementPlacementType(elementTypes.RELATION);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (pressedKey== keybinds.PLACE_ATTRIBUTE.key && e.ctrlKey == keybinds.PLACE_ATTRIBUTE.ctrl) {
+
+        if(isKeybindValid(e, keybinds.PLACE_ATTRIBUTE)){
             setElementPlacementType(elementTypes.ATTRIBUTE);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-        if (pressedKey == keybinds.TOGGLE_GRID.key && e.ctrlKey == keybinds.TOGGLE_GRID.ctrl) {
-            toggleGrid();
-        }
-        if (pressedKey == keybinds.TOGGLE_RULER.key && e.ctrlKey == keybinds.TOGGLE_RULER.ctrl) {
-            toggleRuler();
-        }
-        if (pressedKey == keybinds.TOGGLE_SNAPGRID.key && e.ctrlKey == keybinds.TOGGLE_SNAPGRID.ctrl) {
-            toggleSnapToGrid();
-        }
-        if (pressedKey == keybinds.OPTIONS.key && e.ctrlKey == keybinds.OPTIONS.ctrl) {
-            fab_action();
-        }
-        if (pressedKey == keybinds.COPY.key && e.ctrlKey == keybinds.COPY.ctrl){
+
+        if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
+        if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
+        if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
+        if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
+        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(clipboard)
+        
+        if (isKeybindValid(e, keybinds.COPY)){
             clipboard = context;
             if (clipboard.length !== 0){
                 displayMessage(messageTypes.SUCCESS, `You have copied ${clipboard.length} elements and its inner connected lines.`)
@@ -864,20 +854,18 @@ document.addEventListener('keyup', function (e)
                 displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`)
             }
         }
-        if (pressedKey == keybinds.PASTE.key && e.ctrlKey == keybinds.PASTE.ctrl){
-            pasteClipboard(clipboard)
-        }
     }
 });
 
 window.addEventListener("resize", () => {
     updateContainerBounds();
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 });
 
 window.onfocus = function()
 {
     altPressed=false;
+    ctrlPressed=false;
 }
 
 // --------------------------------------- Mouse Events    --------------------------------
@@ -899,6 +887,7 @@ function mdown(event)
         sscrolly = scrolly;
         startX = event.clientX;
         startY = event.clientY;
+        event.preventDefault();
         return;
     }
 
@@ -914,7 +903,7 @@ function mdown(event)
                 break;
             
             case mouseModes.BOX_SELECTION:
-                boxSelect_Start(event.clientX, event.clientY);
+                boxSelect_Start(event.clientX, event.clientY);  
                 break;
 
             default:
@@ -931,7 +920,8 @@ function mdown(event)
         startY = event.clientY;
     }
 
-    if(pointerState !== pointerStates.CLICKED_NODE){
+    // Check if not an element OR node has been clicked at the event
+    if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT){
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
         if (determinedLines){
@@ -1049,7 +1039,12 @@ function mup(event)
             break;
 
         case pointerStates.CLICKED_LINE:
-            updateSelectedLine(determinedLines);
+            if(!deltaExceeded){
+                updateSelectedLine(determinedLines);
+            }
+            if (mouseMode == mouseModes.BOX_SELECTION) {
+                mouseMode_onMouseUp(event);
+            }
             break;
 
         case pointerStates.CLICKED_ELEMENT:
@@ -1089,7 +1084,7 @@ function mup(event)
     deltaX = 0;
     deltaY = 0;
     updatepos(0, 0);
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
@@ -1199,8 +1194,15 @@ function mouseMode_onMouseMove(event)
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
-                ghostElement.x = cords.x - (ghostElement.width / 2);
-                ghostElement.y = cords.y - (ghostElement.height / 2);
+
+                // If not in EDGE_CREATION AND in snap to grid, calculate the closest snap-point
+                if (snapToGrid && mouseMode != mouseModes.EDGE_CREATION){
+                    ghostElement.x = Math.round(cords.x / gridSize) * gridSize - (ghostElement.width / 2);
+                    ghostElement.y = Math.round(cords.y / gridSize) * gridSize - (ghostElement.height / 2);
+                }else {
+                    ghostElement.x = cords.x - (ghostElement.width / 2);
+                    ghostElement.y = cords.y - (ghostElement.height / 2);
+                }
                 showdata();
                 updatepos(0, 0);
             }
@@ -1237,12 +1239,16 @@ function mmoving(event)
             updatepos(null, null);
 
             // Update the ruler
-            drawRulerBars();
+            drawRulerBars(scrollx,scrolly);
 
-            // Remember that mouse has moved out of starting bounds
-            if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded || 
-                deltaY <= -maxDeltaBeforeExceeded)) {
-                deltaExceeded = true;
+            calculateDeltaExceeded();
+            break;
+
+        case pointerState.CLICKED_LINE:
+
+            if(mouseMode == mouseModes.BOX_SELECTION){
+                calculateDeltaExceeded();
+                mouseMode_onMouseMove(mouseMode);
             }
             break;
 
@@ -1255,11 +1261,7 @@ function mmoving(event)
             // We update position of connected objects
             updatepos(deltaX, deltaY);
 
-            // Remember that mouse has moved out of starting bounds
-            if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded ||
-                deltaY <= -maxDeltaBeforeExceeded)) {
-                deltaExceeded = true;
-            }
+            calculateDeltaExceeded();
             break;
 
         case pointerStates.CLICKED_NODE:
@@ -1511,19 +1513,11 @@ function changeLineProperties()
     }
 
     // Change line - cardinality
-    var cFromValue = document.getElementById('propertyCardinalityFrom').value;
-    var cToValue = document.getElementById('propertyCardinalityTo').value;
-
-
-
-    // If both are none, remove the key from line object
-    if (cToValue == "" && cFromValue == ""){
+    var cardinalityInputValue = document.getElementById('propertyCardinality').value
+    if (cardinalityInputValue == ""){
         delete line.cardinality;
     } else {
-        line.cardinality = {
-            from: cFromValue,
-            to: cToValue
-        }
+        line.cardinality = cardinalityInputValue
     }
 
     showdata();
@@ -1546,9 +1540,10 @@ function updateSelectedLine(selectedLine)
                 return line !== selectedLine;
             });
         }
-    }
+    }   
     // If CTRL is not pressed and a element has been selected.
     else if (selectedLine != null && !ctrlPressed) {
+        clearContext();
         // Element not already in context
         if (!contextLine.includes(selectedLine) && contextLine.length < 1) {
             contextLine.push(selectedLine);
@@ -1583,6 +1578,7 @@ function updateSelection(ctxelement)
     }
     // If CTRL is not pressed and a element has been selected.
     else if (ctxelement != null) {
+        clearContextLine();
         // Element not already in context
         if (!context.includes(ctxelement) && context.length < 1) {
             context.push(ctxelement);
@@ -1691,7 +1687,7 @@ function pasteClipboard(elements)
     // Create the new lines but do not saved in stateMachine
     connectedLines.forEach(line => {
         newLines.push(
-            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false)
+            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false, false)
         );
     });
 
@@ -1836,6 +1832,21 @@ function setPos(id, x, y)
         }
     }
 }
+
+function isKeybindValid(e, keybind)
+{
+    return e.key.toLowerCase() == keybind.key && e.ctrlKey == keybind.ctrl;
+}
+
+function findEntityFromLine(lineObj)
+{
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ENTITY).data.kind){
+        return -1;
+    }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.ENTITY).data.kind) {
+        return 1;
+    }
+    return null;
+}
 //#endregion =====================================================================================
 //#region ================================ MOUSE MODE FUNCS     ================================
 function setMouseMode(mode)
@@ -1930,7 +1941,13 @@ function onMouseModeDisabled()
             break;
     }
 }
-
+function calculateDeltaExceeded(){
+    // Remember that mouse has moved out of starting bounds
+    if ((deltaX >= maxDeltaBeforeExceeded || deltaX <= -maxDeltaBeforeExceeded) || (deltaY >= maxDeltaBeforeExceeded ||
+        deltaY <= -maxDeltaBeforeExceeded)) {
+        deltaExceeded = true;
+    }
+}
 // --------------------------------------- Box Selection    --------------------------------
 // Returns all elements touching the coordinate box
 function getElementsInsideCoordinateBox(selectionRect)
@@ -1986,6 +2003,8 @@ function boxSelect_Update(mouseX, mouseY)
         // Update relative position form the starting position
         deltaX = mouseX - startX;
         deltaY = mouseY - startY;
+
+        calculateDeltaExceeded();
 
         // Select all objects inside the box
         var coords = getBoxSelectionCoordinates();
@@ -2043,7 +2062,7 @@ function boxSelect_End()
 
 function boxSelect_Draw(str)
 {
-    if (boxSelectionInUse && mouseMode == mouseModes.BOX_SELECTION && pointerState == pointerStates.DEFAULT) {
+    if (boxSelectionInUse && mouseMode == mouseModes.BOX_SELECTION && (pointerState == pointerStates.DEFAULT || pointerState == pointerStates.CLICKED_LINE)) {
         // Positions to draw lines in-between
         /*
             Each [nx] depicts one node in the selection triangle.
@@ -2114,7 +2133,7 @@ function toggleRuler()
     }
   
     isRulerActive = !isRulerActive;
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 }
 
 function setElementPlacementType(type = 0)
@@ -2125,16 +2144,18 @@ function setElementPlacementType(type = 0)
 function zoomin(scrollEvent = undefined)
 {
     // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
-    if (scrollEvent && zoomfact != 4.0) {
+    if (scrollEvent && zoomfact <= 4.0) {
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
             x: mouseCoordinates.x - zoomOrigo.x,
             y: mouseCoordinates.y - zoomOrigo.y
         };
-
-        zoomOrigo.x += delta.x * zoomPower;
-        zoomOrigo.y += delta.y * zoomPower;
-    } else { // Otherwise, set zoom target to origo.
+        if(zoomfact < 4.0) { // Only change zoomOrigo when not fully zoomed in.
+            zoomOrigo.x += delta.x * zoomPower;
+            zoomOrigo.y += delta.y * zoomPower;
+        }
+        
+    }else { // Otherwise, set zoom target to origo.
         zoomOrigo.x = 0;
         zoomOrigo.y = 0;
     }
@@ -2165,7 +2186,7 @@ function zoomin(scrollEvent = undefined)
     showdata();
 
     // Draw new rules to match the new zoomfact
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 }
 
 function zoomout(scrollEvent = undefined)
@@ -2206,7 +2227,7 @@ function zoomout(scrollEvent = undefined)
     showdata();
 
     // Draw new rules to match the new zoomfact
-    drawRulerBars();
+    drawRulerBars(scrollx,scrolly);
 }
 
 function propFieldSelected(isSelected)
@@ -2282,32 +2303,20 @@ function generateContextProperties()
             }
         }
 
-        // Line cardinality
-        str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinality</h3>`;
-
-        // FROM cardinality
-        str += `<label style="display: block">From (${data[findIndex(data, contextLine[0].fromID)].name}):<br> <select class='propertyCardinality' id='propertyCardinalityFrom'>`;
-        str  += `<option value=''>None</option>`
-        Object.keys(lineCardinalitys).forEach(cardinality => {
-            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality.from === cardinality){
-                str += `<option value='${cardinality}' selected> ${lineCardinalitys[cardinality]}</option>`;
-            }else {
-                str += `<option value='${cardinality}'> ${lineCardinalitys[cardinality]}</option>`;
-            }
-        });
-        str += `</select></label>`;
-
-        // TO cardinality
-        str += `<label style="display: block">To (${data[findIndex(data, contextLine[0].toID)].name}):<br> <select class='propertyCardinality' id='propertyCardinalityTo'>`;
-        str  += `<option value=''>None</option>`
-        Object.keys(lineCardinalitys).forEach(cardinality => {
-            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality.to == cardinality){
-                str += `<option value='${cardinality}' selected> ${lineCardinalitys[cardinality]}</option>`;
-            }else {
-                str += `<option value='${cardinality}'> ${lineCardinalitys[cardinality]}</option>`;
-            }
-        });
-        str += `</select></label>`;
+        // Cardinality
+        // If FROM or TO has an entity, print option for change
+        if (findEntityFromLine(contextLine[0]) != null){
+            str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
+            str  += `<option value=''>None</option>`
+            Object.keys(lineCardinalitys).forEach(cardinality => {
+                if (contextLine[0].cardinality != undefined && contextLine[0].cardinality == cardinality){
+                    str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+                }else {
+                    str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+                }
+            });
+            str += `</select></label>`;
+        }
 
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
     }
@@ -2358,10 +2367,10 @@ function setRulerPosition(x, y)
 function updateGridSize()
 {
     var bLayer = document.getElementById("grid");
-    bLayer.setAttribute("width", 100 * zoomfact + "px");
-    bLayer.setAttribute("height", 100 * zoomfact + "px");
+    bLayer.setAttribute("width", gridSize * zoomfact + "px");
+    bLayer.setAttribute("height", gridSize * zoomfact + "px");
 
-    bLayer.children[0].setAttribute('d', `M ${100 * zoomfact} 0 L 0 0 0 ${100 * zoomfact}`);
+    bLayer.children[0].setAttribute('d', `M ${gridSize * zoomfact} 0 L 0 0 0 ${gridSize * zoomfact}`);
     updateGridPos();
 }
 
@@ -2464,10 +2473,10 @@ function sortvectors(a, b, ends, elementid, axis)
         toElementB = data[findIndex(data, lineB.fromID)];
     }
 
-    if (navigator.userAgent.indexOf("Chrome") !== 1) {
-        sortval = -1;
-    } else {
+    if (navigator.userAgent.indexOf("Chrome") !== -1) {
         sortval = 1;
+    } else {
+        sortval = -1;
     }
 
     // If lines cross swap otherwise keep as is
@@ -2478,7 +2487,7 @@ function sortvectors(a, b, ends, elementid, axis)
         if (axis == 0) parentx = parent.x1
         else parentx = parent.x2;
 
-        if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return -sortval
+        if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return sortval
 
     } else if (axis == 2 || axis == 3) {
         // Top / Bottom side
@@ -2487,10 +2496,10 @@ function sortvectors(a, b, ends, elementid, axis)
         if (axis == 2) parenty = parent.y1
         else parenty = parent.y2;
 
-        if (linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty) === false) return -sortval
+        if (linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty) === false) return sortval
     }
 
-    return sortval;
+    return -sortval;
 }
 
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
@@ -2610,7 +2619,7 @@ function sortElementAssociations(element)
 //-------------------------------------------------------------------------------------------------
 // addLine - Adds an new line if the requirements and rules are achieved
 //-------------------------------------------------------------------------------------------------
-function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
@@ -2637,10 +2646,15 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true){
                 toID: toElement.id,
                 kind: kind
             };
+
+            // If the new line has an entity FROM or TO, add default cardinality
+            if (findEntityFromLine(newLine) != null) {
+                newLine.cardinality = "MANY";
+            }
             
-            addObjectToLines(newLine);
+            addObjectToLines(newLine, stateMachineShouldSave);
             
-            displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
+            if(successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
             return newLine;
             
         } else {
@@ -2656,9 +2670,9 @@ function drawLine(line, targetGhost = false)
 {
     var felem, telem, dx, dy;
     var str = "";
-    var lineColor = '#f44';
+    var lineColor = '#A000DC';
     if(contextLine.includes(line)){
-        lineColor = '#00ff00';
+        lineColor = '#F0D11C';
     }
     
     felem = data[findIndex(data, line.fromID)];
@@ -2715,32 +2729,31 @@ function drawLine(line, targetGhost = false)
         var fromCardinalityY = fy;
 
         if (line.ctype == "BT"){
-            toCardinalityY = ty - 10;
-            fromCardinalityY = fy + 15;
+            toCardinalityX = tx + 10 * zoomfact;
+            toCardinalityY = ty - 18 * zoomfact;
+            fromCardinalityX = fx + 10 * zoomfact;
+            fromCardinalityY = fy + 25 * zoomfact;
         }else if (line.ctype == "TB"){
-            toCardinalityX = tx;
-            toCardinalityY = ty + 15;
-            fromCardinalityX = fx;
-            fromCardinalityY = fy - 5;
+            toCardinalityX = tx + 10 * zoomfact;
+            toCardinalityY = ty + 18 * zoomfact;
+            fromCardinalityX = fx + 10 * zoomfact;
+            fromCardinalityY = fy - 18 * zoomfact;
         }else if (line.ctype == "RL"){
-            toCardinalityX = tx - 10;
-            toCardinalityY = ty;
-            fromCardinalityX = fx + 10;
-            fromCardinalityY = fy;
+            toCardinalityX = tx - 18 * zoomfact;
+            toCardinalityY = ty - 10 * zoomfact;
+            fromCardinalityX = fx + 18 * zoomfact;
+            fromCardinalityY = fy - 10 * zoomfact;
         }else if (line.ctype == "LR"){
-            toCardinalityX = tx;
-            toCardinalityY = ty;
-            fromCardinalityX = fx - 15;
-            fromCardinalityY = fy;
+            toCardinalityX = tx + 18 * zoomfact;
+            toCardinalityY = ty - 10 * zoomfact;
+            fromCardinalityX = fx - 25 * zoomfact;
+            fromCardinalityY = fy - 10 * zoomfact;
         }
-        // From cardinality
-        if (line.cardinality.from != ""){
-            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${fromCardinalityX}" y="${fromCardinalityY}">${lineCardinalitys[line.cardinality.from]}</text>`
-        }
-
-        // To cardinality
-        if (line.cardinality.to != "") {
-            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${toCardinalityX}" y="${toCardinalityY}">${lineCardinalitys[line.cardinality.to]}</text> `
+        // If the entity is on the from side
+        if (findEntityFromLine(line) == -1){
+            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${fromCardinalityX}" y="${fromCardinalityY}">${lineCardinalitys[line.cardinality]}</text>`
+        }else {
+            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${toCardinalityX}" y="${toCardinalityY}">${lineCardinalitys[line.cardinality]}</text> `
         }
     }
     return str;
@@ -2805,11 +2818,11 @@ function removeNodes()
     return str;
 }
 
-function drawRulerBars()
+function drawRulerBars(X,Y)
 {
     //Get elements
     if(!isRulerActive) return;
-
+    
     svgX = document.getElementById("ruler-x-svg");
     svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
@@ -2817,39 +2830,87 @@ function drawRulerBars()
     const fullLineRatio = 10;
     var barY, barX = "";
     const color = "black";
+    var cordY = 0;
+    var cordX = 0;
+    var ZF = 100 * zoomfact;
+    var pannedY = (Y - ZF) / zoomfact;
+    var pannedX = (X - ZF) / zoomfact;
+    var zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact));
+    var zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
 
- 
-    //Draw the Y-axis ruler.
+    if(zoomfact < 0.5){
+        var verticalText = "writing-mode= 'vertical-lr'";
+    }else {
+        var verticalText = " ";
+    }
+    
+    //Draw the Y-axis ruler positive side.
     var lineNumber = (fullLineRatio - 1);
-    for (i = 40;i <= cheight; i += lineRatio) {
+    for (i = 100 + zoomY; i <= pannedY -(pannedY *2) + cheight ; i += (lineRatio*zoomfact)) {
         lineNumber++;
-
+         
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
-            var cordY = screenToDiagramCoordinates(0, i).y;
             lineNumber = 0;
-            barY += "<line x1='0px' y1='"+(i)+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
-            barY += "<text x='2' y='"+(i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
+            barY += "<line x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+            barY += "<text x='2' y='"+(pannedY+i+10)+"'style='font-size: 10px'>"+cordY+"</text>";
+            cordY = cordY +100;
+        }else if (zoomfact > 0.5){
+            barY += "<line x1='25px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+        } 
+    }
+
+    //Draw the Y-axis ruler negative side.
+    lineNumber = (fullLineRatio - 11);
+    cordY = -100;
+    for (i = -100 - zoomY; i <= pannedY; i += (lineRatio*zoomfact)) {
+        lineNumber++;
+         
+        //Check if a full line should be drawn
+        if (lineNumber === fullLineRatio) {
+            lineNumber = 0;
+            barY += "<line x1='0px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+            barY += "<text x='2' y='"+(pannedY-i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
+            cordY = cordY -100;
+        }else if (zoomfact > 0.5){
+            barY += "<line x1='25px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
         }
-        else barY += "<line x1='25px' y1='"+i+"' x2='40px' y2='"+i+"' stroke='"+color+"' />";
     }
     svgY.style.backgroundColor = "#e6e6e6";
     svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
-
-    //Draw the X-axis ruler.
+    
+    //Draw the X-axis ruler positive side.
     lineNumber = (fullLineRatio - 1);
-    for (i = 40;i <= cwidth; i += lineRatio) {
+    for (i = 51 + zoomX; i <= pannedX - (pannedX *2) + cwidth; i += (lineRatio*zoomfact)) {
         lineNumber++;
-
+        
         //Check if a full line should be drawn
         if (lineNumber === fullLineRatio) {
-            var cordX = screenToDiagramCoordinates(50 + i, 0).x;
             lineNumber = 0;
-            barX += "<line x1='" +i+"' y1='0' x2='" + i + "' y2='40px' stroke='" + color + "' />";
-            barX += "<text x='"+(i+5)+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
+            barX += "<line x1='" +(i+pannedX)+"' y1='0' x2='" + (i+pannedX) + "' y2='40px' stroke='" + color + "' />";
+            barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
+            cordX = cordX +100;
+        }else if (zoomfact > 0.5){
+            barX += "<line x1='" +(i+pannedX)+"' y1='25' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
         }
-        else barX += "<line x1='" +i+"' y1='25' x2='" +i+"' y2='40px' stroke='" + color + "' />";
+    }
+
+    //Draw the X-axis ruler negative side.
+    lineNumber = (fullLineRatio - 11);
+    cordX = -100;
+    for (i = -51 - zoomX; i <= pannedX; i += (lineRatio*zoomfact)) {
+        lineNumber++;
+        
+        //Check if a full line should be drawn
+        if (lineNumber === fullLineRatio) {
+            lineNumber = 0;
+            barX += "<line x1='" +(pannedX-i)+"' y1='0' x2='" + (pannedX-i) + "' y2='40px' stroke='" + color + "' />";
+            barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px'>"+cordX+"</text>";
+            cordX = cordX -100;
+        }else if (zoomfact > 0.5){
+            barX += "<line x1='" +(pannedX-i)+"' y1='25' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+        }
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
     svgX.style.backgroundColor = "#e6e6e6";
