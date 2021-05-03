@@ -678,55 +678,116 @@ var defaults = {
 function onSetup()
 {
     const EMPLOYEE = makeRandomID();
-    const IDID = makeRandomID();
-    const NameID = makeRandomID();
-    const SizeID = makeRandomID();
-    const HasID = makeRandomID();
-    const CarID = makeRandomID();
+    const Bdale = makeRandomID();
+    const BdaleDependent = makeRandomID();
+    const Name = makeRandomID();
+    const NameDependent = makeRandomID();
+    const NameProject = makeRandomID();
     const FNID = makeRandomID();
     const Initial = makeRandomID();
     const LNID = makeRandomID();
-    const LoanID = makeRandomID();
-    const RefID = makeRandomID();
     const Ssn = makeRandomID();
     const Address = makeRandomID();
     const Salary = makeRandomID();
     const SUPERVISION = makeRandomID();
+    const DEPENDENTS_OF = makeRandomID();
+    const DEPENDENT = makeRandomID();
+    const Number_of_depends = makeRandomID();
+    const AddressDependent = makeRandomID();
+    const Relationship = makeRandomID();
+    const WORKS_ON = makeRandomID();
+    const Hours = makeRandomID();
+    const PROJECT = makeRandomID();
+    const NumberProject = makeRandomID();
+    const Location = makeRandomID();
+    const MANAGES = makeRandomID();
+    const Start_date = makeRandomID();
+    const CONTROLS_ID = makeRandomID();
+    const WORKS_FOR_ID = makeRandomID();
+    const Locations_ID = makeRandomID();
+    const DEPARTMENT_ID = makeRandomID();
+    const NameDEPARTMENT_ID = makeRandomID();
+    const NumberDEPARTMENT_ID = makeRandomID();
+    const Number_of_employees_ID = makeRandomID();
 
     const demoData = [
         { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", id: EMPLOYEE },
-        { name: "Loan", x: 440, y: 350, width: 200, height: 50, kind: "EREntity", id: LoanID, state: "weak" },
-        { name: "Car", x: 800, y: 140, width: 200, height: 50, kind: "EREntity", id: CarID },
-        { name: "Owns", x: 720, y: 60, width: 60, height: 60, kind: "ERRelation", id: HasID },
-        { name: "Refer", x: 460, y: 260, width: 60, height: 60, kind: "ERRelation", id: RefID, state: "weak" },
-        { name: "ID", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: IDID, state: "Normal" },
+        { name: "Bdale", x: 30, y: 30, width: 90, height: 40, kind: "ERAttr", id: Bdale, state: "Normal" },
+        { name: "Bdale", x: 380, y: 700, width: 90, height: 40, kind: "ERAttr", id: BdaleDependent, state: "Normal" },
         { name: "Ssn", x: 20, y: 100, width: 90, height: 40, kind: "ERAttr", id: Ssn, state: "key"},
-        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", id: NameID },
+        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", id: Name },
+        { name: "Name", x: 140, y: 700, width: 90, height: 45, kind: "ERAttr", id: NameDependent, state: "key"},
+        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", id: NameProject, state: "key"},
         { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", id: Address },
+        { name: "Address", x: 260, y: 700, width: 90, height: 45, kind: "ERAttr", id: AddressDependent },
+        { name: "Relationship", x: 500, y: 700, width: 120, height: 45, kind: "ERAttr", id: Relationship },
         { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", id: Salary },
-        { name: "Size", x: 860, y: 40, width: 90, height: 45, kind: "ERAttr", id: SizeID, state: "multiple" },
         { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
         { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", id: Initial },
         { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
-        { name: "SUPERVISIONS", x: 170, y: 400, width: 60, height: 60, kind: "ERRelation", id: SUPERVISION },
+        { name: "SUPERVISIONS", x: 100, y: 400, width: 180, height: 120, kind: "ERRelation", id: SUPERVISION },
+        { name: "DEPENDENTS_OF", x: 270, y: 450, width: 180, height: 120, kind: "ERRelation", id: DEPENDENTS_OF, state: "weak"},
+        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", id: DEPENDENT, state: "weak"},
+        { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", id: Number_of_depends, state: "computed"},
+        { name: "WORKS_ON", x: 600, y: 470, width: 180, height: 120, kind: "ERRelation", id: WORKS_ON },
+        { name: "Hours", x: 800, y: 450, width: 90, height: 45, kind: "ERAttr", id: Hours },
+        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", id: PROJECT },
+        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", id: NumberProject, state: "key"},
+        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", id: Location},
+        { name: "MANAGES", x: 600, y: 300, width: 180, height: 120, kind: "ERRelation", id: MANAGES },
+        { name: "Start date", x: 500, y: 220, width: 100, height: 45, kind: "ERAttr", id: Start_date },
+        { name: "CONTROLS", x: 810, y: 300, width: 180, height: 120, kind: "ERRelation", id: CONTROLS_ID },
+        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", id: DEPARTMENT_ID },
+        { name: "Locations", x: 855, y: 20, width: 90, height: 45, kind: "ERAttr", id: Locations_ID, state: "multiple" },
+        { name: "WORKS_FOR", x: 550, y: 60, width: 180, height: 120, kind: "ERRelation", id: WORKS_FOR_ID },
+        { name: "Name", x: 980, y: 70, width: 90, height: 40, kind: "ERAttr", id: NameDEPARTMENT_ID, state: "key"},
+        { name: "Number", x: 1030, y: 70, width: 90, height: 40, kind: "ERAttr", id: NumberDEPARTMENT_ID, state: "key"},
+        { name: "Number_of_employees", x: 600, y: 175, width: 180, height: 45, kind: "ERAttr", id: Number_of_employees_ID, state: "computed"},
+        
     ];
     
     const demoLines = [
-        { id: makeRandomID(), fromID: EMPLOYEE, toID: IDID, kind: "Normal" },
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: Bdale, kind: "Normal" },
         { id: makeRandomID(), fromID: EMPLOYEE, toID: Ssn, kind: "Normal" },
-        { id: makeRandomID(), fromID: EMPLOYEE, toID: NameID, kind: "Normal" },
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: Name, kind: "Normal" },
         { id: makeRandomID(), fromID: EMPLOYEE, toID: Address, kind: "Normal" },
         { id: makeRandomID(), fromID: EMPLOYEE, toID: Salary, kind: "Normal" },
-        { id: makeRandomID(), fromID: CarID, toID: SizeID, kind: "Normal" },
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: SUPERVISION, kind: "Normal", cardinality: "MANY" },
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: SUPERVISION, kind: "Normal", cardinality: "ONE"},
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: DEPENDENTS_OF, kind: "Normal", cardinality: "ONE" },
 
-        { id: makeRandomID(), fromID: EMPLOYEE, toID: HasID, kind: "Normal" },
-        { id: makeRandomID(), fromID: HasID, toID: CarID, kind: "Double" },
-        { id: makeRandomID(), fromID: NameID, toID: FNID, kind: "Normal" },
-        { id: makeRandomID(), fromID: NameID, toID: Initial, kind: "Normal" },
-        { id: makeRandomID(), fromID: NameID, toID: LNID, kind: "Normal" },
+        { id: makeRandomID(), fromID: Name, toID: FNID, kind: "Normal" },
+        { id: makeRandomID(), fromID: Name, toID: Initial, kind: "Normal" },
+        { id: makeRandomID(), fromID: Name, toID: LNID, kind: "Normal" },
+     
+        { id: makeRandomID(), fromID: DEPENDENT, toID: DEPENDENTS_OF, kind: "Double", cardinality: "MANY" },
+        { id: makeRandomID(), fromID: DEPENDENT, toID: Number_of_depends, kind: "Normal"},
+        { id: makeRandomID(), fromID: DEPENDENT, toID: NameDependent, kind: "Normal"},
+        { id: makeRandomID(), fromID: DEPENDENT, toID: AddressDependent, kind: "Normal"},
+        { id: makeRandomID(), fromID: DEPENDENT, toID: BdaleDependent, kind: "Normal"},
+        { id: makeRandomID(), fromID: DEPENDENT, toID: Relationship, kind: "Normal"},
 
-        { id: makeRandomID(), fromID: LoanID, toID: RefID, kind: "Normal", cardinality: "MANY" },
-        { id: makeRandomID(), fromID: CarID, toID: RefID, kind: "Normal", cardinality: "MANY" },
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: WORKS_ON, kind: "Double", cardinality: "MANY" },
+        { id: makeRandomID(), fromID: Hours, toID: WORKS_ON, kind: "Normal"},
+        { id: makeRandomID(), fromID: WORKS_ON, toID: PROJECT, kind: "Double", cardinality: "MANY"},
+
+        { id: makeRandomID(), fromID: NameProject, toID: PROJECT, kind: "Normal"},
+        { id: makeRandomID(), fromID: NumberProject, toID: PROJECT, kind: "Normal"},
+        { id: makeRandomID(), fromID: Location, toID: PROJECT, kind: "Normal"},
+        
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: MANAGES, kind: "Normal", cardinality: "ONE"},
+        { id: makeRandomID(), fromID: MANAGES, toID: Start_date, kind: "Normal"},
+
+        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Locations_ID, kind: "Normal" },
+        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: CONTROLS_ID, kind: "Normal" },
+        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NameDEPARTMENT_ID, kind: "Normal" },
+        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NumberDEPARTMENT_ID, kind: "Normal" },
+
+        { id: makeRandomID(), fromID: EMPLOYEE, toID: WORKS_FOR_ID, kind: "Normal" },
+        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Number_of_employees_ID, kind: "Normal" },
+
+        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: MANAGES, kind: "Normal", cardinality: "MANY" },
+        { id: makeRandomID(), fromID: WORKS_FOR_ID, toID: DEPARTMENT_ID, kind: "Double", cardinality: "ONE" },
     ];
 
     for(var i = 0; i < demoData.length; i++){
