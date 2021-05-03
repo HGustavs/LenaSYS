@@ -306,17 +306,14 @@ if($hash!='UNK'){
     	'</script>';
 	}?>
 
- 
+ hr
 
 	<!-- Timer START -->
 	<div id='scoreElement'>	
 	</div>
 	<!-- Test output -->
 	<div id='groupAssignment'>
-		<p id='clicks'><p>
-		<script>
-			addGroupButton();
-		</script>	
+		<p id='clicks'><p>	
 	</div>
 	<!-- content END -->
 	<?php
