@@ -945,20 +945,22 @@ function mdown(event)
         }
     }
 }
-//*
+
 function ddown(event)
 {
     // Used when determining time between clicks.
     if((new Date().getTime() - dblPreviousTime) < dblClickInterval){
 
-        wasDblClicked = true;
+        wasDblClicked = true; // General purpose bool. True when doubleclick was performed.
         
         var element = data[findIndex(data, event.currentTarget.id)];
-        if (element != null && context.includes(element)){
-            event.preventDefault();
-            var input = document.getElementById(`elementProperty_name`);
+        if (element != null && context.length == 1 && context.includes(element) && contextLine.length == 0){
+            event.preventDefault(); // Needed in order for focus() to work properly 
+            var input = document.getElementById("elementProperty_name");
             input.focus();
-            input.setSelectionRange(0,input.value.length);
+            input.setSelectionRange(0,input.value.length); // Select the whole text.
+            document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
+            document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
         }
     }   
 
