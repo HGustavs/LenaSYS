@@ -292,7 +292,7 @@
     position: relative;
 }
 
-.diagramIcons .toolTipText{
+.toolTipText{
     top:-5px;
     left:105%;
     visibility: hidden;
@@ -308,6 +308,22 @@
 }
 
 .diagramIcons:hover .toolTipText{
+    visibility: visible;
+}
+
+#options-pane-button .toolTipText{
+    transform: translate(-150px,100px) rotate(-90deg);
+}
+#options-pane-button:hover .toolTipText{
+    visibility: visible;
+}
+#fab .toolTipText{
+    transform: translate(-335px,-20px);
+    font-size: 16px;
+    line-height: 20px;
+
+}
+#fab:hover .toolTipText{
     visibility: visible;
 }
 

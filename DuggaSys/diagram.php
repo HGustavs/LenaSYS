@@ -109,7 +109,8 @@
                 <span class="toolTipText"><b>Toggle Snap To Grid</b><br>
                     <p>Enable/disable the Snap To Grid</p><br>
                     <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
-                </snap>
+                </span>
+            </div>   
         </fieldset>
     </div>
 
@@ -144,9 +145,19 @@
             <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" style="stroke:rgb(171, 171, 171);stroke-width:2"/>
         </svg>  
     </div> 
-    <div id="fab" onclick="fab_action();" onmousedown='mdown(event)'>+</div> <!-- Big (+) button -->
+    <div id="fab" onclick="fab_action();" onmousedown='mdown(event)'>+ <!-- Big (+) button -->
+        <span class="toolTipText"><b>Show Option Panel</b><br>
+            <p>Enable/disable the Option Panel</p><br>
+            <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
+        </span>
+    </div>
     <div id="options-pane" class="hide-options-pane" onmousedown='mdown(event)'> <!-- Yellow menu on right side of screen -->
-        <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
+        <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span>
+            <span class="toolTipText"><b>Show Option Panel</b><br>
+                <p>Enable/disable the Option Panel</p><br>
+                <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
+            </span>
+        </div>
         <div id ="fieldsetBox">
             <fieldset id='propertyFieldset'>
                 
