@@ -1,13 +1,13 @@
 <?php
 session_start();
 
-include_once "../../coursesyspw.php";
-include_once "../Shared/sessions.php";
 
-if (!(isSuperUser($_SESSION['uid']) || isCreator($_SESSION['uid']))) {
+
+if (!isset($_SESSION["superuser"]) || $_SESSION["superuser"] != 1) {
 	header('Location: courseed.php');
 }
-
+include_once "../../coursesyspw.php";
+include_once "../Shared/sessions.php";
 pdoConnect();
 
 $css = array(
