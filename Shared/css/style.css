@@ -831,7 +831,7 @@ p {
 
 #Sectionlist .section {
   color: var(--color-text-header);
-  background-color: var(--color-primary-light);
+  background-color: var(--color-primary)/*var(--color-primary-light)*/;
 }
 
 #Sectionlist .header {
@@ -856,7 +856,7 @@ p {
 #statisticsSwimlanes {
   display: flex;
   overflow:auto;
-  border: 2px solid darkgray; 
+  border: 2px solid darkgray;
   background-color: var(--color-sectioned-table-lo);
 }
 
@@ -1027,7 +1027,7 @@ p {
 }
 .item a {
   text-decoration: none;
-  color: var(--color-text-primary);
+  color: var(--color-primary)/*var(--color-text-primary)*/;
 }
 
 .item a:hover {
@@ -1332,10 +1332,10 @@ div .navButt:hover {
         display: flex;
         flex-wrap: wrap;
         position: relative;
-        
-        
+
+
         margin-top: 14px;
-        
+
     }
     #GeneralStats{
         display:none;
@@ -1349,7 +1349,7 @@ div .navButt:hover {
     #OSPercentage{
         display:none;
     }
-    
+
     #back{
         display:none;
     }
@@ -1360,7 +1360,7 @@ div .navButt:hover {
       display:flex;
       flex-wrap: wrap;
       position: relative;
-      
+
     }
 }
 
@@ -1865,7 +1865,7 @@ div .navButt:hover {
 }
 
 .testasd{
-  
+
 }
 
 .testasd > *{
@@ -5029,7 +5029,7 @@ only screen and (max-device-width: 860px) {
     height: 26px;
     opacity: 1.0;
   }
-	
+
   #hamburgerBox{
     display: none;
     position: absolute;
@@ -5047,7 +5047,7 @@ only screen and (max-device-width: 860px) {
   #editCourseBurger, #announcementBurger{
     display: block;
   }
-  
+
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
   #editCourse, #announcement{
@@ -6392,7 +6392,7 @@ only screen and (max-device-width: 320px) {
     transform: rotate(90deg);
     transform-origin: top left;
   }
-  
+
   .fab-btn-list2 li {
     transform: rotate(225deg);
   }
