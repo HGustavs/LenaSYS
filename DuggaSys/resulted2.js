@@ -1,4 +1,5 @@
 var tableName = "resultTable";
+var filterList;
 
 function setup(){
     /*window.onscroll = function () {
@@ -7,9 +8,41 @@ function setup(){
     AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
+function process(){
+
+
+    filterList = JSON.parse(localStorage.getItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers']));
+    if (filterList == null) {
+		filterList = {};
+	}
+
+    var dstr = "";
+	dstr += makeCustomFilter("showBit", "Show BitDugga");
+    document.getElementById("customfilter").innerHTML = dstr;
+    var dstr = "";
+
+	// Sorting
+	dstr += "<div id='sortLeft'>";
+	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'>";
+	dstr += "<input type='radio' class='headercheck' name='sortdir' value='0' ' onclick='sorttype(-1)' id='sortdirAsc'><label class='headerlabel' for='sortdirAsc'>Sort Ascending</label>";
+	dstr += "<br>";
+	dstr += "<input name='sortdir' type='radio' class='headercheck' value='1' ' onclick='sorttype(-1)' id='sortdirDes'><label class='headerlabel' for='sortdirDes'>Sort descending</label>";
+	dstr += "<div><input name='sortdir' type='radio' class='headercheck' value='2' ' onclick='sorttype(-1)' id='sortdirPen'><label class='headerlabel' for='sortdirPen'>Sort Pending</label></div></div>";
+    dstr += "<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
+	dstr += "<div class='checkbox-dugga'style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
+	dstr += "</div>";
+    dstr += "<div id='sortRight'><table ><tr><td>";
+    dstr += "</td><td style='vertical-align:top;'>";
+	dstr += "</td></tr></table></div>";
+	document.getElementById("dropdowns").innerHTML = dstr;
+}
+
 
 function returnedResults(data){
     console.log(data);
+
+    //data.sort(compare);
+    process();
     createSortableTable(data);
 }
 
@@ -34,7 +67,8 @@ function createSortableTable(data){
 		tableElementId: tableName,
 		filterElementId: "columnfilter",
 		renderCellCallback: renderCell,
-        //renderSortOptionsCallback: renderSortOptions,
+        renderSortOptionsCallback: renderSortOptions,
+        rowFilterCallback: rowFilter,
 		columnOrder: colOrder,
 		hasRowHighlight: true,
 		hasMagicHeadings: true,
@@ -66,13 +100,168 @@ function renderCell(col, celldata, cellid) {
 	return str;
 }
 
-function renderSortOptions(col, status, colname) {
+function renderSortOptions(col, status, colname){
+    str = "";
+    if(col == "duggaName" || col == "submitted"){
+        if(status == 1){
 
-    if (col == "duggaName"){
-        //document.getElementById("sortcol0_0").checked = true;
-        //document.getElementById("sortdirAsc").checked = true;
+            str += "<div style='white-space:nowrap;cursor:pointer'>"
+            str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "(ASC)" +"</span>";
+    
+        }else if (status == 0){
+    
+            str += "<div style='white-space:nowrap;cursor:pointer'>"
+            str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "(DES)" + "</span>";
+        }else{
+            str += "<div style='white-space:nowrap;cursor:pointer'>"
+            str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname +"</span>";
+        }
+    }else{
+        str += colname;
     }
+    
+    return str;
+}
 
+function makeCustomFilter(filtername, labeltext) {
+	str = "<div class='checkbox-dugga checkmoment'>";
+	str += "<input type='checkbox' id='" + filtername + "' onclick='toggleFilter(\"" + filtername + "\")'";
+    //console.log(filterList[filtername]);
+	if (filterList[filtername] == null) {
+        console.log("asd");
+		filterList[filtername] = false;
+	}
+	if (filterList[filtername] || filtername == "showBit") { //Enables filter and saves it in local storage when opening resulted.php.
+		str += " checked";
 
+		//Enables the showStudents and the showTeachers filters.
+		filterList[filtername] = true;
+		//Saves the checkbox values in localstorage.
+		localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
+	}
+	str += "><label class='headerlabel' for='" + filtername + "'>" + labeltext + "</label></div>";
+	return str;
+}
 
+function rowFilter(row) {
+
+	if (filterList["showbit"]){
+        //console.log(row);
+        if(row["duggaName"] == "Bitdugga1"){
+            return true;            
+        }
+    }
+		return false;
+	if(!filterList["showStudents"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != 0)
+		return false;
+	// Filters to display only rows where Duggas that have been submitted after deadline and/or duggas that are pending and needs to be graded
+	if (filterList["passedDeadline"] || filterList["onlyPending"] ){
+	// Filters to display only rows where Duggas that have been submitted after deadline AND duggas that are pending and needs to be graded
+		if (filterList["passedDeadline"] && filterList["onlyPending"] ) {
+			var rowPending = false;
+			for (var colname in row) {
+				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] > row[colname]["deadline"] ) {
+					rowPending = true;
+					break;
+				} else if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] < row[colname]["deadline"] ) {
+					rowPending = true;
+					break;
+				}
+			}
+			if (!rowPending) {
+				return false;
+			}
+		}
+		// Filters to display only rows where duggas are pending and needs to be graded
+		else if (filterList["onlyPending"]) {
+			var rowPending = false;
+			for (var colname in row) {
+				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] < row[colname]["deadline"]) {
+					rowPending = true;
+					break;
+				}
+			}
+			if (!rowPending) {
+				return false;
+			}
+		}
+		// Filters to display only rows where Duggas that have been submitted after deadline
+		else if (filterList["passedDeadline"]) {
+			var rowPending = false;
+			for (var colname in row) {
+				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] > row[colname]["deadline"] ) {
+					rowPending = true;
+					break;
+				}
+			}
+			if (!rowPending) {
+				return false;
+			}
+		}
+	}
+	var teacherDropdown = document.getElementById("teacherDropdown").value;
+	if(teacherDropdown !== "none" && row.FnameLname.examiner != teacherDropdown){
+		return false;
+	}
+  	// divides the search on white space
+	var tempSplitSearch = searchterm.split(" ");
+	var splitSearch = [];
+
+	tempSplitSearch.forEach(function (s) {
+		if (s.length > 0)
+			splitSearch.push(s.trim().split(":"));
+	})
+
+  	// The else makes sure that you can search on names without a search-category.
+	if (searchterm != "" && splitSearch != searchterm) {
+		return smartSearch(splitSearch, row);
+	} else {
+		for (colname in row) {
+			if (colname == "FnameLname") {
+				var name = "";
+				if(searchterm.length == 1){ //if only 1 character has been entered in the search field
+				if (row[colname]["firstname"] != null) {
+					name += row[colname]["firstname"] + " ";
+				}
+				if (row[colname]["lastname"] != null) {
+					name += row[colname]["lastname"];
+				}
+        		var nameArray = name.split(" "); //Array with [firstname, lastname]
+				//Checks for the first character in firstname and/or lastname
+				if (nameArray[0].toUpperCase().startsWith(searchterm.toUpperCase()) || nameArray[1].toUpperCase().startsWith(searchterm.toUpperCase())) {
+					return true;
+				}
+				//when more characters than 1 has been entered
+			} else {
+				if (row[colname]["firstname"] != null) {
+					name += row[colname]["firstname"] + " ";
+				}
+				if (row[colname]["lastname"] != null) {
+					name += row[colname]["lastname"];
+				}
+				name = name.replace(" ", "");
+				if(name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1){
+					return true;
+				}
+				 if (row[colname]["ssn"] != null) {
+				 	if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+				 		return true;
+					}
+				if (row[colname]["username"] != null) {
+					if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+						return true;
+				}
+				if (row[colname]["class"] != null) {
+					if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+						return true;
+				}
+				if (row[colname]["setTeacher"] != null) {
+					if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+						return true;
+				} 
+			}
+			}
+		}
+		return false;
+	}
 }

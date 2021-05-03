@@ -49,15 +49,25 @@ function sortableInternalSort(a, b) {
 	var ret = 0;
 	//var colname = sortableTable.currentTable.getKeyByValue();
 	var colname = sortableTable.currentTable.getSortcolumn();
-
-	if ((sortableTable.currentTable.sortkind % 2) == 0) {
+	var kind = sortableTable.currentTable.getSortkind();
+	if ((kind % 2) == 0) {
 		//alert("Compare: "+a+" "+b);
-		//ret = compare(a[colname], b[colname]);
+		ret = compare(a[colname], b[colname]);
 	} else {
 		//alert("Compare: "+b+" "+a);
-		//ret = compare(b[colname], a[colname]);
+		ret = compare(b[colname], a[colname]);
 	}
 	return ret;
+}
+
+function compare(a, b) {
+    if (a.toLowerCase() < b.toLowerCase()){
+    	return 1;
+    }else if (a.toLowerCase() > b.toLowerCase()){
+		return -1;
+	}
+
+	return 0;	
 }
 
 // clears all the edit inputs and closes the "editpopover" box
@@ -526,7 +536,7 @@ function SortableTable(param) {
 	this.toggleSortStatus = function (col, kind) {
 		// Assign currently active table
 		sortableTable.currentTable = this;
-
+		
 		// Save column name to local storage!
 		localStorage.setItem(this.tableid + DELIMITER + "sortcol", col);
 		localStorage.setItem(this.tableid + DELIMITER + "sortkind", kind);
