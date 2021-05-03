@@ -52,10 +52,10 @@ function sortableInternalSort(a, b) {
 
 	if ((sortableTable.currentTable.sortkind % 2) == 0) {
 		//alert("Compare: "+a+" "+b);
-		ret = compare(a[colname], b[colname]);
+		//ret = compare(a[colname], b[colname]);
 	} else {
 		//alert("Compare: "+b+" "+a);
-		ret = compare(b[colname], a[colname]);
+		//ret = compare(b[colname], a[colname]);
 	}
 	return ret;
 }

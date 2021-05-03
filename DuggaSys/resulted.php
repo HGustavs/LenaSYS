@@ -30,7 +30,7 @@ pdoConnect();
 	<script src="../Shared/dugga.js"></script>
 	<script src="../Shared/markdown.js"></script>
 	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
-	<script src="resulted.js"></script>
+	<script src="resulted2.js"></script>
 </head>
 <body onload="setup();">
 	<?php
