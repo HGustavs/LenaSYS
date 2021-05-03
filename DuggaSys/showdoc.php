@@ -465,10 +465,12 @@
 		//HERE
 		if(strcmp($preview,"UNK")!=0){
 				echo $bummer;
-		}else	if(!$readfile){
+		}else	
+			if(!$readfile){
 				if($hdrs=="none"){
 				
-				}else{
+			}
+			else{
             $temp = explode('.', $filename);
             $ext  = array_pop($temp);
             $name = implode('.', $temp);
@@ -486,7 +488,7 @@
 						echo "<script src='../Shared/markdown.js'></script>";				
 						echo "</head>";
 						echo "<body>";
-				}
+			}
 				
 				if($hdrs=="none"){
 					
