@@ -415,7 +415,7 @@ function isTeacher($userId)
                 pdoConnect();
         }
 
-        $query = $pdo->prepare('SELECT count(uid) AS count FROM user_course WHERE uid=:userId AND access ='W'');
+        $query = $pdo->prepare('SELECT count(uid) AS count FROM user_course WHERE uid=:userId AND access ="W"');
         $query->bindParam(':userId', $userId);
         $query->execute();
         $result = $query->fetch();
