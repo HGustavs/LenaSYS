@@ -14,7 +14,7 @@ include_once "../Shared/sessions.php";
 pdoConnect();
 session_start();
 
-if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
+if (isset($_SESSION['uid']) && checklogin() && (isSuperUser($_SESSION['uid']) || isCreator($_SESSION['uid']))) {
 	if (isset($_POST['query'])) {
 		switch ($_POST['query']) {
 			case 'generalStats':
