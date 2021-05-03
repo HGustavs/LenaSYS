@@ -873,9 +873,15 @@ window.addEventListener('beforeunload', function (e) {
 });
 
 //Check if score is above threshhold
-export function duggaChange(){
+function duggaChange(){
 	var clicksP = document.getElementById('clicks').innerHTML;
-	var clicks = parseInt(clicksP);
+	var clicks;
+	if(isNaN(clicks)){
+		clicks = 0;
+	}else{
+		clicks = parseInt(clicksP);
+	}
+
 	if(clicks>tempclicks){
 		tempclicks=clicks;
 		console.log('Dugga changed');
@@ -2115,5 +2121,3 @@ function returnedSubmitFeedback(){
 function setDuggaTitle(title) {
 	duggaTitle = title;
 }
-
-export { duggaChange };

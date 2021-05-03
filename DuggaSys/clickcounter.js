@@ -1,8 +1,6 @@
 //---------------------------------------------------------------------------------------------------------------
 // Click counter - Used by highscore system implementations in dugga's to count the number of button clicks
 //---------------------------------------------------------------------------------------------------------------
-import { duggaChange } from '../Shared/dugga.js';
-
 var ClickCounter = {
 	// Used to count clicks
 	score: 0,
@@ -19,7 +17,6 @@ var ClickCounter = {
 		this.score++;
 		// Calls animate clicks to directly update the click counter user interface 
 		this.animateClicks();
-
 	},
 	
 	//show clicker
