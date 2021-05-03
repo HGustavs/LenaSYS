@@ -1030,11 +1030,10 @@ function mup(event)
                 if (!deltaExceeded) {
                     if (mouseMode == mouseModes.EDGE_CREATION) {
                         clearContext();
-                        clearContextLine();
                     } else if (mouseMode == mouseModes.POINTER) {
                         updateSelection(null);
-                        clearContextLine();
                     }
+                    if (!ctrlPressed) clearContextLine();
                 }
             }
             break;
@@ -2308,7 +2307,7 @@ function generateContextProperties()
         // If FROM or TO has an entity, print option for change
         if (findEntityFromLine(contextLine[0]) != null){
             str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
-            str  += `<option value=''></option>`
+            str  += `<option value=''>None</option>`
             Object.keys(lineCardinalitys).forEach(cardinality => {
                 if (contextLine[0].cardinality != undefined && contextLine[0].cardinality == cardinality){
                     str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
@@ -2318,7 +2317,6 @@ function generateContextProperties()
             });
             str += `</select></label>`;
         }
-
 
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
     }
