@@ -3076,24 +3076,72 @@ function updateContainerBounds()
 
 function drawSelectionBox(str)
 {
-    if (context.length != 0) {
-        var lowX = context[0].x1;
-        var highX = context[0].x2;
+    if (context.length != 0 || contextLine.length != 0) {
+        var lowX;
+        var highX;
+        var lineLowX;
+        var lineHighX;
         var x1;
         var x2;
-        var lowY = context[0].y1;
-        var highY = context[0].y2;
+        var lowY;
+        var highY;
+        var lineLowY;
+        var lineHighY;
         var y1;
         var y2;
-        for (var i = 0; i < context.length; i++) {
-            x1 = context[i].x1;
-            x2 = context[i].x2;
-            y1 = context[i].y1;
-            y2 = context[i].y2;
-            if (x1 < lowX) lowX = x1;
-            if (x2 > highX) highX = x2;
-            if (y1 < lowY) lowY = y1;
-            if (y2 > highY) highY = y2;
+        if (context.length != 0) {
+            lowX = context[0].x1;
+            highX = context[0].x2;
+            lowY = context[0].y1;
+            highY = context[0].y2;
+            for (var i = 0; i < context.length; i++) {
+                x1 = context[i].x1;
+                x2 = context[i].x2;
+                y1 = context[i].y1;
+                y2 = context[i].y2;
+                if (x1 < lowX) lowX = x1;
+                if (x2 > highX) highX = x2;
+                if (y1 < lowY) lowY = y1;
+                if (y2 > highY) highY = y2;
+            }
+        }
+        var tempLines = [];
+        if (contextLine.length > 0) {
+            for (var i = 0; i < contextLine.length; i++) {
+                tempLines.push(document.getElementById(contextLine[i].id));
+            }
+
+            // Find highest and lowest x and y coordinates of the first element in lines
+            var tempX1 = tempLines[0].getAttribute("x1");
+            var tempX2 = tempLines[0].getAttribute("x2");
+            var tempY1 = tempLines[0].getAttribute("y1");
+            var tempY2 = tempLines[0].getAttribute("y2");
+            lineLowX = Math.min(tempX1, tempX2);
+            lineHighX = Math.max(tempX1, tempX2);
+            lineLowY = Math.min(tempY1, tempY2);
+            lineHighY = Math.max(tempY1, tempY2);
+
+            // Loop through all selected lines and find highest and lowest x and y coordinates
+            for (var i = 0; i < tempLines.length; i++) {
+                tempX1 = tempLines[i].getAttribute("x1");
+                tempX2 = tempLines[i].getAttribute("x2");
+                tempY1 = tempLines[i].getAttribute("y1");
+                tempY2 = tempLines[i].getAttribute("y2");
+                x1 = Math.min(tempX1, tempX2);
+                x2 = Math.max(tempX1, tempX2);
+                y1 = Math.min(tempY1, tempY2);
+                y2 = Math.max(tempY1, tempY2);
+                if (x1 < lineLowX) lineLowX = x1;
+                if (x2 > lineHighX) lineHighX = x2;
+                if (y1 < lineLowY) lineLowY = y1;
+                if (y2 > lineHighY) lineHighY = y2;
+            }
+
+            // Compare between elements and lines to find lowest and highest x and y coordinates
+            lowX = (lowX < lineLowX) ? lowX : lineLowX;
+            highX = (highX > lineHighX) ? highX : lineHighX;
+            lowY = (lowY < lineLowY) ? lowY : lineLowY;
+            highY = (highY > lineHighY) ? highY : lineHighY;
         }
 
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
