@@ -676,11 +676,9 @@ function saveDuggaResult(citstr)
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
 
-	//localStorage.setItem("score", score);
-
-	var scores = JSON.parse(localStorage.getItem('scores') || '[]')
-	scores.push(score)
-	localStorage.setItem('scores', JSON.stringify(scores))
+	var scores = JSON.parse(localStorage.getItem("scores"+querystring['did']) || '[]');
+	scores.push(score);
+	localStorage.setItem("scores"+querystring['did'], JSON.stringify(scores));
 
 	var readonly;
 	$.ajax({
