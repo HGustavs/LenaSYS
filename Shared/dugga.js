@@ -676,6 +676,7 @@ function saveDuggaResult(citstr)
 	if(pwd.includes("undef")) pwd = randomPassword();
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
+	localStorage.setItem("score", score);
 	var readonly;
 	$.ajax({
 		url: "courseedservice.php",
