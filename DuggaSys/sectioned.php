@@ -389,7 +389,7 @@
       </div>
     </div>
     <!-- User Feedback Dialog END -->
-
+<script type="text/javascript">getElements()</script>
 </body>
 
 </html>

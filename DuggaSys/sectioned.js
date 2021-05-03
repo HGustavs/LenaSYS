@@ -2484,6 +2484,13 @@ function validateSectName(name, dialogid){
 
 }
 
+/* Write a function which gets all anchor elements of class "internal-link" */
+function getElements(){
+  var duggor = document.getElementsByClassName("internal-link");
+  console.log(duggor);
+}
+
+
 /*Validates all forms*/
 
 function validateForm(formid) {
