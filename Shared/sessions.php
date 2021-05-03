@@ -404,7 +404,7 @@ function isSuperUser($userId)
 //------------------------------------------------------------------------------------------------
 // Returns superuser status of user
 // @param int $userId User ID of the user to look up
-// @return true false. True if superuser false if not
+// @return true false. True if teacher false if not
 //------------------------------------------------------------------------------------------------
 
 function isTeacher($userId)
