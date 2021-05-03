@@ -848,10 +848,11 @@ function returnedSection(data) {
 
           if (itemKind === 3) {
             str += "<td class='LightBox" + hideState + "'>";
+            str += "<div ><img alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
             str += "<td class='LightBoxFilled" + hideState + "'>";
+            str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
           }
-          str += "<div class='StopLight WhiteLight'></div>";
           str += "</td>";
         }
 
