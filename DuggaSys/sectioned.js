@@ -851,7 +851,7 @@ function returnedSection(data) {
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
             str += "<td class='LightBoxFilled" + hideState + "'>";
-            str += "<div ><img alt='pen icon dugga' src='../Shared/icons/PenV.svg'></div>";
+            str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
           }
           str += "</td>";
         }
