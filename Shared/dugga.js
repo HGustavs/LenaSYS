@@ -68,16 +68,16 @@ function setHash(h){
 
 		console.log("This is the generated hash: " + hash);
 
-		locallystoredhash = localStorage.getItem("locallystoredhash");
+		locallystoredhash = localStorage.getItem("locallystoredhash"+(querystring['did']));
 
 		if((locallystoredhash == null) || (locallystoredhash == undefined) || (!locallystoredhash)){
 			hash = generateHash();
 			console.log("locallystoredhash has not been set, but will be after this.");
-			localStorage.setItem("locallystoredhash", hash);
-			hash = localStorage.getItem("locallystoredhash");
+			localStorage.setItem("locallystoredhash"+(querystring['did']), hash);
+			hash = localStorage.getItem("locallystoredhash"+(querystring['did']));
 		}
 		else{
-			hash = localStorage.getItem("locallystoredhash");
+			hash = localStorage.getItem("locallystoredhash"+(querystring['did']));
 		}
 		
 		
