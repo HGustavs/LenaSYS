@@ -316,7 +316,7 @@ if($hash!='UNK'){
 		<p id='clicks'><p>
 		<script>
 			addGroupButton();
-		</script>;	
+		</script>	
 	</div>
 	<!-- content END -->
 	<?php

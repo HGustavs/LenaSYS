@@ -873,7 +873,7 @@ window.addEventListener('beforeunload', function (e) {
 });
 
 //Check if score is above threshhold
-function duggaChange(){
+export function duggaChange(){
 	var clicksP = document.getElementById('clicks').innerHTML;
 	var clicks = parseInt(clicksP);
 	if(clicks>tempclicks){
@@ -897,7 +897,6 @@ function addGroupButton(){
 	btn.innerHTML = "<img alt='group icon' id='groupbuttonicon' src='../Shared/icons/crying.svg' title='Group'>";
 	nav.insertBefore(btn, guest);
 	btn.addEventListener("click", duggaChange);
-	//console.log(nav);
 }
 
 function getUrlParam(param){
@@ -2117,3 +2116,4 @@ function setDuggaTitle(title) {
 	duggaTitle = title;
 }
 
+export { duggaChange };
