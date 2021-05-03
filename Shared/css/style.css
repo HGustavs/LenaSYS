@@ -854,19 +854,54 @@ p {
 
 /*Swimlane styling*/
 #statisticsSwimlanes {
-  display: flex;
-  overflow:auto;
-  border: 2px solid darkgray; 
+  max-height: 300px;
+  position: relative;
+  overflow: auto;
+  border: 2px solid darkgray;
   background-color: var(--color-sectioned-table-lo);
 }
 
 #swimlaneSVG {
-  max-height: 300px;
-  height: auto;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 0px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
+
+#swimlaneSVG text {
+  font-size: 10px;
+}
+
+@media only screen and (max-width: 800px) {
+  #swimlaneSVG text {
+      font-size: 14px;
+  }
+}
+
+@media only screen and (min-width: 1224px) {
+  #swimlaneSVG {
+      overflow: auto;
+      width: 55%;
+      margin: auto;
+  }
+}
+
+@media only screen and (max-width: 1223px) {
+  #swimlaneSVG {
+    overflow: auto;
+    width: 70%;
+    margin: auto;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #swimlaneSVG {
+    overflow: auto;
+    width: 90%;
+    margin: auto;
+  }
+}
+
+/*Swimlane styling Ends*/
 
 #dorf {
   cursor: pointer;
