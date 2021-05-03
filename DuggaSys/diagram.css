@@ -320,10 +320,6 @@
     margin-left: 20px;
 }
 
-.outline {
-    filter: drop-shadow(3px 1px 3px black);
-}
-
 .propertyCardinality{
     padding-left:3px;
     padding-right:3px;

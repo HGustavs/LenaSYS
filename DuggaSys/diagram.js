@@ -2667,14 +2667,15 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 //#endregion =====================================================================================
 //#region ================================ DRAWING FUNCTIONS    ==================================
 function drawLine(line, targetGhost = false)
-{
+{   
     var felem, telem, dx, dy;
     var str = "";
+    
     var lineColor = '#A000DC';
     if(contextLine.includes(line)){
         lineColor = '#F0D11C';
     }
-    
+
     felem = data[findIndex(data, line.fromID)];
 
     // Telem should be our ghost if argument targetGhost is true. Otherwise look through data array.
@@ -2707,7 +2708,7 @@ function drawLine(line, targetGhost = false)
 
     if (line.kind == "Normal"){
 
-        str += `<line id='${line.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}' ${contextLine.includes(line)?"class='outline'":''}/>`;
+        str += `<line id='${line.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
     
     }else if (line.kind == "Double"){
         // We mirror the line vector
@@ -2721,6 +2722,13 @@ function drawLine(line, targetGhost = false)
         str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' ${contextLine.includes(line)?"class='outline'":''}/>`;
 
         str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' ${contextLine.includes(line)?"class='outline'":''}/>`;
+    }
+
+    if(contextLine.includes(line)){
+
+        var x = (fx + tx) /2;
+        var y = (fy + ty) /2;
+        str += `<rect x="${x-(2 * zoomfact)}" y="${y-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' stroke="black" stroke-width="3"/>`;
     }
 
     // If the line got cardinality
