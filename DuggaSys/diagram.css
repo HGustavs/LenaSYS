@@ -319,3 +319,7 @@
 #fieldsetBox {
     margin-left: 20px;
 }
+
+.outline {
+    filter: drop-shadow(3px 1px 3px black);
+}

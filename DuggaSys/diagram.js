@@ -599,6 +599,7 @@ const elementwidth = 200;
 const elementheight = 50;
 const textheight = 18;
 const strokewidth = 1.5;
+const outline = 40;
 const baseline = 10;
 const avgcharwidth = 6;
 const colors = ["white", "Gold", "#ffccdc", "yellow", "CornflowerBlue"];
@@ -2707,7 +2708,9 @@ function drawLine(line, targetGhost = false)
     }
 
     if (line.kind == "Normal"){
-        str += `<line id='${line.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+
+        str += `<line id='${line.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}' ${contextLine.includes(line)?"class='outline'":''}/>`;
+    
     }else if (line.kind == "Double"){
         // We mirror the line vector
         dy = -(tx - fx);
@@ -2717,9 +2720,9 @@ function drawLine(line, targetGhost = false)
         dx = dx / len;
         var cstmOffSet = 1.4;
 
-        str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+        str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' ${contextLine.includes(line)?"class='outline'":''}/>`;
 
-        str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+        str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' ${contextLine.includes(line)?"class='outline'":''}/>`;
     }
 
     // If the line got cardinality
