@@ -2485,9 +2485,11 @@ function validateSectName(name, dialogid){
 }
 
 /* Write a function which gets all anchor elements of class "internal-link" */
-function getElements(){
-  var duggor = document.getElementsByClassName("internal-link");
+function getDuggaElements(){
+  var duggor = document.getElementsByClassName("ellipsis nowrap");
+  var rubriker = document.getElementsByClassName("ellipsis listentries-span");
   console.log(duggor);
+  console.log(rubriker);
 }
 
 
