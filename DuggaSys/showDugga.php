@@ -234,7 +234,7 @@ if($hash!='UNK'){
 	<!-- LoginBox (receipt&Feedback-box ) Start! -->
 	<div id='receiptBox' class="loginBoxContainer" style="display:none">
 	  <div class="receiptBox loginBox" style="max-width:400px; overflow-y:visible;">
-			<div class='loginBoxheader'><h3>Kvittoo och feedback - Duggasvar</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
+			<div class='loginBoxheader'><h3>Kvitto och feedback - Duggasvar</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
 			<div id='feedbackbox'>
 				<span id='feedbackquestion'></span>
 					<div id="ratingbox">
@@ -279,7 +279,6 @@ if($hash!='UNK'){
 					</div>
 			</div>
 			<div id='receiptInfo'></div>
-    		<textarea id="receipt" autofocus readonly style="resize: none;"></textarea>
  
     		<div id='emailPopup' style="display:block">
 				<div id='urlAndPwd'>
