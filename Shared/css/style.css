@@ -6283,7 +6283,7 @@ only screen and (max-device-width: 320px) {
 }
 
 .fixed-action-button.sectioned {
-  right: 75px;
+  right: 115px;
 }
 
 .fixed-action-button2 {
@@ -6611,7 +6611,7 @@ only screen and (max-device-width: 320px) {
 
 .fixedScroll{
   position: fixed;
-  right: 165px;
+  right: 205px;
   cursor: pointer;
   bottom: 25px;
   display: none;
@@ -6640,7 +6640,7 @@ only screen and (max-device-width: 320px) {
   font-size: 12px;
   opacity: 0.3;
   bottom: 56px;
-  right: 140px;
+  right: 180px;
   position: fixed;
   z-index: 1;
 }
