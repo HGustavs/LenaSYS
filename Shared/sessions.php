@@ -399,33 +399,6 @@ function isSuperUser($userId)
         }
 }
 
-//------------------------------------------------------------------------------------------------
-// isCreator
-//------------------------------------------------------------------------------------------------
-// Returns creator status of user
-// @param int $userId User ID of the user to look up
-// @return true false. True if creator false if not
-//------------------------------------------------------------------------------------------------
-
-function isCreator($userId)
-{
-        global $pdo;
-
-        if($pdo == null) {
-                pdoConnect();
-        }
-
-        $query = $pdo->prepare('SELECT count(uid) AS count FROM user WHERE uid=:userId AND creator=1');
-        $query->bindParam(':userId', $userId);
-        $query->execute();
-        $result = $query->fetch();
-
-        if ($result["count"]==1) {
-                return true;
-        }else{
-                return false;
-        }
-}
 
 //------------------------------------------------------
 //isStudentUser
