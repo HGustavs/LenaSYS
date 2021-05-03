@@ -955,23 +955,10 @@ function ddown(event)
         
         var element = data[findIndex(data, event.currentTarget.id)];
         if (element != null && context.includes(element)){
-            /**@type {HTMLInputElement} */optmarker
-            //document.getElementById('optmarker').focus();
-            //document.getElementById('options-pane').focus();
-            //document.getElementById('propertyFieldset').focus();
-            //document.getElementById('propertyFieldset').click();
+            event.preventDefault();
             var input = document.getElementById(`elementProperty_name`);
-            console.log(input);
             input.focus();
-            //input.scrollIntoView();
-            //input.select();
-            //input.setSelectionRange(0,input.value.length);
-            /*
-            input.value = "hej";
-            input.click();
-            input.select();
-            input.setSelectionRange(0,input.value.length,"none");
-            */   
+            input.setSelectionRange(0,input.value.length);
         }
     }   
 
