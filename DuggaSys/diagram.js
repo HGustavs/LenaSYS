@@ -681,6 +681,10 @@ var startWidth;
 var startNodeRight = false;
 var cursorStyle;
 var lastMousePos = getPoint(0,0);
+var dblPreviousTime = new Date().getTime(); ; // Used when determining if an element was doubleclicked.
+var dblClickInterval = 500; // 500 ms = if less than 500 ms between clicks -> Doubleclick was performed.
+var wasDblClicked = false;
+
 
 // Zoom variables
 var zoomfact = 1.0;
@@ -1057,6 +1061,22 @@ function mdown(event)
  */
 function ddown(event)
 {
+    // Used when determining time between clicks.
+    if((new Date().getTime() - dblPreviousTime) < dblClickInterval){
+
+        wasDblClicked = true; // General purpose bool. True when doubleclick was performed.
+        
+        var element = data[findIndex(data, event.currentTarget.id)];
+        if (element != null && context.length == 1 && context.includes(element) && contextLine.length == 0){
+            event.preventDefault(); // Needed in order for focus() to work properly 
+            var input = document.getElementById("elementProperty_name");
+            input.focus();
+            input.setSelectionRange(0,input.value.length); // Select the whole text.
+            document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
+            document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
+        }
+    }   
+
     // If the middle mouse button (mouse3) is pressed => return
     if(event.button == 1) return;
 
@@ -1083,6 +1103,9 @@ function ddown(event)
             console.error(`State ${mouseMode} missing implementation at switch-case in ddown()!`);
             break;
     }
+
+    dblPreviousTime = new Date().getTime(); // Update dblClick-timer.
+    wasDblClicked = false; // Reset the bool.
 }
 
 /**
@@ -2546,6 +2569,9 @@ function propFieldSelected(isSelected)
  */
 function generateContextProperties()
 {
+    // Return if double clicking the same element.
+    if(wasDblClicked)return;
+
     var propSet = document.getElementById("propertyFieldset");
     var str = "<legend>Properties</legend>";
 
@@ -2553,7 +2579,6 @@ function generateContextProperties()
 
     if (context.length == 1 && contextLine.length == 0) {
         var element = context[0];
-        
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
         for (const property in element) {
             switch (property.toLowerCase()) {
