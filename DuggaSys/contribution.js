@@ -668,6 +668,7 @@ function createTimeSheetTable(data) {
   if(tabledata.tblbody != null || tabledata.tblbody != undefined) {
     myTable.renderTable();
   }
+}
 
 function renderCell(col, celldata, cellid) {
   var str = "UNK";

@@ -435,7 +435,7 @@ function prepareItem() {
   var elementBtnTop = document.getElementById("FABStatic2").getBoundingClientRect(),
   elementBtnBot = document.getElementById("FABStatic").getBoundingClientRect(),
   screenPos = elementBtnBot.top - elementBtnTop.top;
-  screenPos = (screenPos/50) - 6;
+  screenPos = (screenPos/45);
   
   param.pos = screenPos;
 
