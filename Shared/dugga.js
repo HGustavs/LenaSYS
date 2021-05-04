@@ -42,9 +42,10 @@ function sendGroupAjax(val) {
 	AJAXService("UPDATEAU", {}, "GROUPTOKEN");
 }
 
+		// Loades a dugga from hash and redirects to index.php that then continues to redirect to the specified dugga
 function loadDugga(){
-	var hashValue = document.getElementById('hash');
-	console.log(hashValue.value);
+	var hash = document.getElementById('hash');
+	window.location.href = "../sh/?a="+hash.value;
 }
 
 //----------------------------------------------------------------------------------
