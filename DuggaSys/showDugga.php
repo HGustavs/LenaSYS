@@ -231,6 +231,20 @@ if($hash!='UNK'){
 			}else{
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Something went wrong in loading the test. Contact LENASys-admin.</div>";
 			}
+
+			// Feedback area START
+			if(isSuperUser($userid) && $hash!='UNK'){
+				echo "<div id='container' style='margin:0px;'>";
+					echo "<div class='instructions-container'>";
+						echo "<div class='instructions-button' onclick='toggleInstructions(this)'><h3>Feedback</h3></div>";
+							echo "<div class='instructions-content' style=' -webkit-columns: 1; -moz-columns: 1; columns: 1; ' id='snus'>";
+								echo "<textarea name='feedback' id='feedback' style='float: left; width: 100%; min-height: 75px;'></textarea><br>";
+								echo "<input class='submit-button large-button' type='button' value='Skicka feedback' />";
+							echo "</div>";
+						echo "</div>";
+					echo "</div>";
+				echo "</div>";
+			}
 		?>
 	</div>
 
