@@ -2728,10 +2728,19 @@ function drawLine(line, targetGhost = false)
         var posX, posY;
         var distance = Math.sqrt(Math.pow((tx - fx), 2) + Math.pow((ty - fy), 2));
 
+        // Used to tweak the cardinality position when the line gets very short.
+        var tweakOffset = 0.30; 
+
         if(findEntityFromLine(line) == -1){
-            // Set position on line for the given offset
-            posX = fx + (offsetOnLine * (tx - fx) / distance);
-            posY = fy + (offsetOnLine * (ty - fy) / distance);
+            if(offsetOnLine > distance){
+                posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
+                posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
+            }else{
+                // Set position on line for the given offset
+                posX = fx + (offsetOnLine * (tx - fx) / distance);
+                posY = fy + (offsetOnLine * (ty - fy) / distance);
+            }
+
 
             /*
             * Depending on the side of the element that the line is connected to
@@ -2751,9 +2760,14 @@ function drawLine(line, targetGhost = false)
                 else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
             }
         } else {
-            // Set position on line for the given offset
-            posX = tx + (offsetOnLine * (fx - tx) / distance);
-            posY = ty + (offsetOnLine * (fy - ty) / distance);
+            if(offsetOnLine > distance){
+                posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
+                posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
+            }else{
+                // Set position on line for the given offset
+                posX = fx + (offsetOnLine * (tx - fx) / distance);
+                posY = fy + (offsetOnLine * (ty - fy) / distance);
+            }
 
             /*
             * Depending on the side of the element that the line is connected to
