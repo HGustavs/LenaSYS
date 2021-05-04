@@ -31,6 +31,7 @@ pdoConnect();
 	<script src="../Shared/markdown.js"></script>
 	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
 	<script src="resulted.js"></script>
+	<script src="resulted2.js"></script>
 </head>
 <body onload="setup();">
 	<?php
@@ -132,6 +133,8 @@ pdoConnect();
     </div>
 
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
+		<div id="resultButtons"></div>
+		<div id="resultTable2"></div>
 		<div id="resultTable"></div>
 	</div>
 	<!-- content END -->

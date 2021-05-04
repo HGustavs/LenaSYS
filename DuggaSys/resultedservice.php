@@ -61,6 +61,7 @@ $duggatimesgraded="";
 $duggagrade="";
 $gradeupdated=false;
 $users = "";
+$tableInfo = array();
 
 const updateunexported_service_name = "updateunexported";
 const getunexported_service_name = "getunexported";
@@ -79,6 +80,33 @@ $debug="NONE!";
 $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
+
+// Get hash
+$query = $pdo->prepare("SELECT * FROM userAnswer WHERE cid=:cid");
+$query->bindParam(':cid', $cid);
+
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+}
+
+foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+
+	$query2 = $pdo->prepare("SELECT qname FROM quiz WHERE id=:id AND cid=:cid");
+	$query2->bindParam(':id', $row['quiz']);
+	$query2->bindParam(':cid', $cid);
+	$query2->execute();
+	$asd123 = $query2->fetch();
+
+	$tableSubmissionInfo = array(
+		'duggaName' => $asd123[0],
+		'hash' => $row['hash'],
+		'password' => $row['password'],
+		'grade' => $row['grade'],
+		'submitted' => $row['submitted']
+	);
+
+	array_push($tableInfo, $tableSubmissionInfo);
+}
 
 // checks if the user is logged in and has access to send mail, only admins (superusers) will be able to mail
 if($requestType == "mail" && checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){
@@ -957,7 +985,7 @@ if($users != "" && !strpos($usergroups, 'None') && $groupdugga != 0){
 			'results' => $lentries,
 			'teachers' => $teachers,
 			'courseteachers' => $courseteachers,
-      'access' => $access,
+      		'access' => $access,
       
 			'duggauser' => $duggauser,
 			'duggaentry' => $duggaentry,
@@ -989,7 +1017,8 @@ if($users != "" && !strpos($usergroups, 'None') && $groupdugga != 0){
 		'results' => $lentries,
 		'teachers' => $teachers,
 		'courseteachers' => $courseteachers,
-    'access' => $access,
+    	'access' => $access,
+		"tableInfo" => $tableInfo,
     
 		'duggauser' => $duggauser,
 		'duggaentry' => $duggaentry,
@@ -1014,5 +1043,3 @@ if($users != "" && !strpos($usergroups, 'None') && $groupdugga != 0){
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php",$userid,$info);
 }
-
-?>
