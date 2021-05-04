@@ -569,8 +569,8 @@ function hamburgerToggle() {
 <script type="text/javascript">
 	(function(proxied) {
 		window.alert = function() {
-			return <?php echo checkLogin() && isSuperUser($_SESSION['uid']) ? "proxied.apply(this, arguments)" : "null" ?>;
-		};
+			return <?php echo checkLogin() && isSuperUser($_SESSION['uid']) ? "proxied.apply(this, arguments)" : "null" ?>
+		}
 	})(window.alert);
 
 
@@ -581,8 +581,10 @@ function hamburgerToggle() {
 
 var isEmbedded = (window === window.parent) ? false : true;
 
-    if (isEmbedded){
-            RemoveNavEmbedded();
+    if (isEmbedded) {
+		if(<?php echo isStudentUser($_SESSION['uid']); ?>){
+				RemoveNavEmbedded();
+			}
         }
         // Display none header 
         function RemoveNavEmbedded() {

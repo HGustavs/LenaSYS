@@ -154,8 +154,8 @@ function hashPassword($password, $hash){
 				return true;
 			}
 }
-echo "<script>console.log('".$hash."')</script>;";
-echo "<script>console.log('".$hashpassword."')</script>;";
+echo "<script>console.log('".$hash."')</script>";
+echo "<script>console.log('".$hashpassword."')</script>";
 //Saved Dugga Login
 if($hash!='UNK'){
 	if(!hashPassword($hashpassword, $hash)){
