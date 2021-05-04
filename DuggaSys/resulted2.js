@@ -1,15 +1,18 @@
 var tableName = "resultTable";
 var filterList;
+var buttonFlag = true;
+var duggaFilter;
 
 function setup(){
     /*window.onscroll = function () {
-
+	
 	};*/
+	
     AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
-function process(){
 
+function process(){
 
     filterList = JSON.parse(localStorage.getItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers']));
     if (filterList == null) {
@@ -19,32 +22,45 @@ function process(){
     var dstr = "";
 	dstr += makeCustomFilter("duggaFilter", "Show Dugga");
     document.getElementById("customfilter").innerHTML = dstr;
-    var dstr = "";
-
-	// Sorting
-	dstr += "<div id='sortLeft'>";
-	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'>";
-	dstr += "<input type='radio' class='headercheck' name='sortdir' value='0' ' onclick='sorttype(-1)' id='sortdirAsc'><label class='headerlabel' for='sortdirAsc'>Sort Ascending</label>";
-	dstr += "<br>";
-	dstr += "<input name='sortdir' type='radio' class='headercheck' value='1' ' onclick='sorttype(-1)' id='sortdirDes'><label class='headerlabel' for='sortdirDes'>Sort descending</label>";
-	dstr += "<div><input name='sortdir' type='radio' class='headercheck' value='2' ' onclick='sorttype(-1)' id='sortdirPen'><label class='headerlabel' for='sortdirPen'>Sort Pending</label></div></div>";
-    dstr += "<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
-	dstr += "<div class='checkbox-dugga'style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
-	dstr += "</div>";
-    dstr += "<div id='sortRight'><table ><tr><td>";
-    dstr += "</td><td style='vertical-align:top;'>";
-	dstr += "</td></tr></table></div>";
-	document.getElementById("dropdowns").innerHTML = dstr;
+   
 }
-
+function updateTable(){
+	
+	filterList["duggaFilter"] = true;
+	duggaFilter = document.getElementById("assignmentDropdown").value;
+	console.log(duggaFilter);
+	myTable.renderTable();
+}
 
 function returnedResults(data){
     console.log(data);
-
     //data.sort(compare);
     process();
-    createSortableTable(data);
+	//filterButton(data['duggaFilterOptions']);
+	if(buttonFlag){
+		var assignmentList;
+		var duggaFilterOptions = data['duggaFilterOptions'];
+		assignmentList += "<option value='none'>none</option>";
+		for(var i = 0; i < duggaFilterOptions.length; i++){
+			assignmentList += "<option value='"+ duggaFilterOptions[i].entryname +"' selected>"+ duggaFilterOptions[i].entryname + "</option>";
+		}
+		document.getElementById("assignmentDropdown").innerHTML = assignmentList;
+		buttonFlag = false;
+	}
+    createSortableTable(data['tableInfo']);
 }
+
+function filterButton(duggaFilterOptions){
+	var assignmentList;
+	assignmentList += "<option value='none'>none</option>";
+	for(var i = 0; i < duggaFilterOptions.length; i++){
+		assignmentList += "<option value='"+ duggaFilterOptions[i].entryname +"' selected>"+ duggaFilterOptions[i].entryname + "</option>";
+	}
+	document.getElementById("assignmentDropdown").innerHTML = assignmentList;
+	console.log(assignmentList);
+	buttonFlag = false;
+}
+
 
 function createSortableTable(data){
 
@@ -55,13 +71,14 @@ function createSortableTable(data){
 			password:"Password",
 			submitted:"Submission Date",
             grade: "Grade",
+			subCourse: "Subcourse"
 
 		},
 		tblbody: data,
 		tblfoot:{}
 	};
 
-	var colOrder = ["duggaName","hash", "password", "submitted", "grade"];
+	var colOrder = ["duggaName","hash", "password", "submitted", "grade", "subCourse"];
 	myTable = new SortableTable({
 		data: tabledata,
 		tableElementId: tableName,
@@ -74,6 +91,8 @@ function createSortableTable(data){
 		hasMagicHeadings: true,
 		hasCounterColumn: true
 	});
+	//Default ascending sort of dugga column
+	myTable.toggleSortStatus("duggaName", 1);
 
 	myTable.renderTable();
 
@@ -102,23 +121,21 @@ function renderCell(col, celldata, cellid) {
 
 function renderSortOptions(col, status, colname){
     str = "";
-    if(col == "duggaName" || col == "submitted"){
-        if(status == 1){
 
-            str += "<div style='white-space:nowrap;cursor:pointer'>"
+	if(col == "duggaName" || col == "submitted"){
+		str += "<div style='white-space:nowrap;cursor:pointer'>"
+        if(status == 1){		
             str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "(ASC)" +"</span>";
-    
+
         }else if (status == 0){
-    
-            str += "<div style='white-space:nowrap;cursor:pointer'>"
             str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "(DES)" + "</span>";
+			
         }else{
-            str += "<div style='white-space:nowrap;cursor:pointer'>"
             str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname +"</span>";
         }
     }else{
-        str += colname;
-    }
+		str += colname;
+	}
     
     return str;
 }
@@ -134,12 +151,11 @@ function makeCustomFilter(filtername, labeltext) {
 		str += " checked";
 
 		//Enables the showStudents and the showTeachers filters.
-		filterList[filtername] = true;
+		//filterList[filtername] = true;
 		//Saves the checkbox values in localstorage.
 		localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
 	}
 	str += "><label class='headerlabel' for='" + filtername + "'>" + labeltext + "</label></div>";
-	console.log(filterList[filtername]);
 	return str;
 }
 
@@ -147,7 +163,7 @@ function rowFilter(row) {
 
 	if (filterList["duggaFilter"]){
         //console.log(row);
-        if(row["duggaName"] == "Bitdugga1"){
+        if(row["duggaName"] == duggaFilter || row["subCourse"] == duggaFilter){
             return true;            
         }else{
 			return false;
