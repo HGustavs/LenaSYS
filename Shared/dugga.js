@@ -25,6 +25,7 @@ var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
 var isGroupDugga = true; // Set to false if you hate the popup
 var variantvalue;
+var locallystoredhash;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -62,7 +63,26 @@ function getHash(){
 function setHash(h){
 	// Check if hash is unknown
 	if(h == "UNK"){
-		hash = generateHash();
+		
+		//hash = generateHash();
+
+		
+		//From localstorage we load what we have into our locallystoredhash variable, that is then compared against. 
+		//On the first dugga load, it will be undefined, and thereafter a hash value will be generated.
+		//If a hash is already stored in localstorage, we will load that hash instead.
+		locallystoredhash = localStorage.getItem("locallystoredhash"+(querystring['did']));
+
+		if((locallystoredhash == null) || (locallystoredhash == undefined) || (!locallystoredhash)){
+			hash = generateHash();
+			//locallystoredhash has not been set at this point, but will be after this.
+			localStorage.setItem("locallystoredhash"+(querystring['did']), hash);
+			hash = localStorage.getItem("locallystoredhash"+(querystring['did']));
+		}
+		else{
+			hash = localStorage.getItem("locallystoredhash"+(querystring['did']));
+		}
+
+		
 		pwd = randomPassword();
 		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
 	}else{
@@ -463,7 +483,7 @@ function setExpireCookieLogOut() {
 }
 
 //Creates TTL for localstorage //TTL value is in milliseconds
-function setExpireTime(key, value, ttl){
+function setExpireTime(key, value, ttl, locallystoredhash){
 	const now = new Date();
 
 	//Item is an object which contains the original value
@@ -471,12 +491,13 @@ function setExpireTime(key, value, ttl){
 	const item = {
 		value: value,
 		expiry: now.getTime() + ttl,
+		locallystoredhash: locallystoredhash,
 	}
 	
 	localStorage.setItem(key, JSON.stringify(item))
 }
 //Saves the expiry time if we change variant with hash
-function updateExpireTime(key, value, ttl){
+function updateExpireTime(key, value, ttl, locallystoredhash){
 	const now = new Date();
 	const itemString = localStorage.getItem(key)
 	const itemParse = JSON.parse(itemString)
@@ -485,6 +506,7 @@ function updateExpireTime(key, value, ttl){
 		const item = {
 			value: value,
 			expiry: itemParse.expiry,
+			locallystoredhash: locallystoredhash,
 		}
 		localStorage.setItem(key, JSON.stringify(item));
 	} else {
@@ -492,6 +514,7 @@ function updateExpireTime(key, value, ttl){
 		const item = {
 			value: value,
 			expiry: now.getTime() + ttl,
+			locallystoredhash: locallystoredhash,
 		}
 		localStorage.setItem(key, JSON.stringify(item));
 	}
@@ -670,7 +693,7 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 function saveDuggaResult(citstr)
 {	
 	blockhashgen = true; //Block-Hash-Generation: No new hash should be generated if 'Save' is clicked more than once per dugga session.
-
+	
 	var url = createUrl(hash); //Create URL
 	console.log("pwd = "+pwd);
 	if(pwd.includes("undef")) pwd = randomPassword();
@@ -1040,7 +1063,10 @@ function AJAXService(opt,apara,kind)
 			datatype: "json",
 			success: function(data){
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
-				handleHash();						//Makes sure hash is unique.
+				if(!localStorage.getItem("locallystoredhash"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
+					handleHash();	//Makes sure hash is unique.
+				}
+				
 			}
 		})
 	}else if(kind=="RESULT"){
@@ -1168,8 +1194,13 @@ function handleLocalStorage(data){
 	if(localStorage.getItem(querystring['did']) == null){
 		localStorage.setItem(querystring['did'], newvariant);
 		//The big number below represents 30 days in milliseconds
-		setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000);
+		setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000, hash);
 	}
+	//If locallystoragehash doesn't exist, it will set it to correct hash.
+	var itemString = localStorage.getItem(querystring['did']);
+	var itemParse = JSON.parse(itemString);
+	localStorage.setItem("locallystoredhash"+(querystring['did']), itemParse.locallystoredhash);
+
 	getExpireTime(querystring['did']);
 	var variantsize = data['variantsize'];
 	localStorage.setItem("variantSize", variantsize);
@@ -1187,19 +1218,19 @@ function getVariantValue(ajaxdata, opt, para){
 	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
 	if(querystring['did'] <= newInt) {
 		if(localStorage.getItem(querystring['did']) == null){
+			//If we don't have a variant in localstorage
 			returndata = JSON.parse(ajaxdata);
 			variantvalue = returndata.variant;
-			
 		} else {
+			//If we have a variant in localstorage
 			var test = JSON.parse(localStorage.getItem(querystring['did']));
 			variantvalue = test.value;
-			
 		}
 		//Will overrule localstorage variant if we use hash url
 		var dbvariant = JSON.parse(ajaxdata);
 		if(dbvariant.hashvariant != null){
 			variantvalue = dbvariant.hashvariant;
-			updateExpireTime(querystring['did'], dbvariant.hashvariant, 2592000000);
+			updateExpireTime(querystring['did'], dbvariant.hashvariant, 2592000000, hash);
 		}
 	}
 
