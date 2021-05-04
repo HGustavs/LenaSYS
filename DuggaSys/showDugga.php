@@ -210,6 +210,9 @@ if($hash!='UNK'){
 							echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 						}
 						echo "</td>";
+						echo "<td align='right'>";
+						echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
+						echo "</td>";
 						echo "</tr>";
 						echo "</table>";
 					}
@@ -311,6 +314,26 @@ if($hash!='UNK'){
       </div>
 	</div>
 	<!-- Login Box (receipt&Feedback-box ) End! -->
+
+
+	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
+	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
+	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
+			<div class='loginBoxheader'><h3>Hämta dugga genom hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
+			<div id='loadDuggaInfo'></div>
+    		<div id='loadDuggaPopup' style="display:block">
+				<div class='inputwrapper'><span>Ange din hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value=''/></div>
+				<div class="button-row">
+					<input type='button' class='submit-button' onclick="loadDugga();" value='Load Dugga'>
+					<input type='button' class='submit-button' onclick="hideLoadDuggaPopup();" value='Close'>
+				</div>
+    		</div>
+      </div>
+	</div>
+	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
+
+
+
 
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
