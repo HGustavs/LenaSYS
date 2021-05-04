@@ -248,7 +248,7 @@
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
-					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearDeleteItemList();' />
+					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearDeleteItemList(); getCourseElements();' />
 				</div>
 			</div>
 		</div>
@@ -389,7 +389,6 @@
       </div>
     </div>
     <!-- User Feedback Dialog END -->
-<script type="text/javascript">getDuggaElements()</script>
 </body>
 
 </html>
