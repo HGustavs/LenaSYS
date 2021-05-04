@@ -576,10 +576,13 @@ function hamburgerToggle() {
 
 
 // In this part we enter the Embedded link
-var canvasEmbedded = "canvas.his.se";// HOSTNAME for the Embedded Canvas 
+// HOSTNAME for the Embedded Canvas 
     //We call the function RemoveNavEmbedded if variable = HOSTNAME 
-    if (canvasEmbedded == window.location.hostname){
-                RemoveNavEmbedded();
+
+var isEmbedded = (window === window.parent) ? false : true;
+
+    if (isEmbedded){
+            RemoveNavEmbedded();
         }
         // Display none header 
         function RemoveNavEmbedded() {
