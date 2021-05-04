@@ -64,9 +64,10 @@ function filter(sortType, sortValue) {
 function sortArray(item, order) {
     var arr = tableInfo;
 
-    // ascending is set to base if no order is input
-    var first = (order == "asc" || order == undefined) ? "a" : "b";
-    var second = (order == "asc" || order == undefined) ? "b" : "a";
+    // If order is undefined (not entered), asc is set to default (a, b)
+    var isAsc = (order == "asc" || order == undefined)
+    var first = (isAsc) ? "a" : "b";
+    var second = (isAsc) ? "b" : "a";
 
     //console.log(`first: ${first} - second: ${second} - item: ${item} - order: ${order}`)
 
