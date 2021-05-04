@@ -1578,7 +1578,6 @@ div .navButt:hover {
 .floatRightBox {
   width: 220px;
   min-height: 300px;
-  float: left;
   margin-left: 10px;
   overflow: auto;
   float: right;
@@ -1588,6 +1587,20 @@ div .navButt:hover {
   background-color: var(--color-background-2);
   border: 2px solid var(--color-border);
 }
+
+.floatleftBox {
+  width: 220px;
+  min-height: 300px;
+  float: left;
+  margin-left: 10px;
+  overflow: auto;
+  z-index: 9000;
+  box-shadow: 2px 2px 4px #000;
+  padding: 4px;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
+}
+
 @media screen and (max-width: 600px) {
   .navheader {
     float: none;
