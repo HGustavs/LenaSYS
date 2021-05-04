@@ -205,7 +205,9 @@ if($hash!='UNK'){
 						echo "<tr>";
 						echo "<td align='left'>";
 						echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
-						echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+						if ($duggafile !== 'generic_dugga_file_receive') {
+							echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+						}
 						echo "</td>";
 						echo "</tr>";
 						echo "</table>";
