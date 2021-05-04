@@ -43,7 +43,8 @@ function sendGroupAjax(val) {
 }
 
 function loadDugga(){
-	
+	var hashValue = document.getElementById('hash');
+	console.log(hashValue.value);
 }
 
 //----------------------------------------------------------------------------------
