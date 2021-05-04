@@ -202,6 +202,18 @@ if($hash!='UNK'){
 					readfile("templates/".$duggafile.".html");
 
 					if ($duggafile !== 'contribution') {
+						//$hash="b0Iv_9wU";
+						//Check if our hash has anything in useranswer.useranswer or if it's null
+						$query = $pdo->prepare("SELECT useranswer FROM userAnswer WHERE hash=:hash");
+						$query->bindParam(':hash', $hash);
+						$query->execute();
+						$result = $query->fetch();
+						if($result['useranswer'] == "UNK") {
+							echo "<script>console.log('Useranswer: ');</script>";
+						} else {
+							echo "<script>console.log('Useranswer: '+'".$result['useranswer']."');</script>";
+						}
+						
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='left'>";
