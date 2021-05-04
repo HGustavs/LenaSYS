@@ -235,7 +235,7 @@ if($hash!='UNK'){
 	<!-- Feedback START -->
 	<div id="content">
 		<?php
-		if(isSuperUser($userid)){
+		if(isSuperUser($userid) && $hash!='UNK'){
 			echo "<div id='container' style='margin:0px;'>";
 				echo "<div class='instructions-container'>";
 					echo "<div class='instructions-button' onclick='toggleInstructions(this)'><h3>Feedback</h3></div>";
