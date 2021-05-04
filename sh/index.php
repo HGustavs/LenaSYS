@@ -25,14 +25,15 @@ function GetAssigment ($hash){
 
 	// Database request form
 	$sql =	
-	"SELECT useranswer.cid, useranswer.vers, useranswer.quiz, useranswer.moment, course.coursename
+	"SELECT useranswer.cid, useranswer.vers, useranswer.quiz, useranswer.moment, course.coursename, quiz.deadline
 	FROM useranswer 
 	INNER JOIN course ON useranswer.cid=course.cid
-	WHERE hash='{$hash}'";	
+	INNER JOIN quiz ON useranswer.quiz=quiz.id
+	WHERE hash='{$hash}'";		
 
 	// There should only be one match to the hash value in database as the hash is uniqe
 	foreach ($pdo->query($sql) as $row){
-		$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&&courseid={$row["cid"]}&cid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}&hash=$hash";
+		$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&&courseid={$row["cid"]}&cid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}&deadline={$row["deadline"]}&hash=$hash";
 	}	
 	
 	return $URL;
