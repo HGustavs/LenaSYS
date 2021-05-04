@@ -696,14 +696,7 @@ function saveDuggaResult(citstr)
 			citstr+= "##!!##" + timeUsed;
 			citstr+= "##!!##" + stepsUsed;
 			//citstr+= "##!!##" + score;
-			hexstr="";
-			for(i=0;i<citstr.length;i++){
-					hexstr+=citstr.charCodeAt(i).toString(16)+" ";
-			}
-			
 			AJAXService("SAVDU",{answer:citstr},"PDUGGA");
-
-			document.getElementById('receipt').value = hexstr;
 
 			var dateTime = new Date(); // Get the current date and time
 
@@ -711,26 +704,26 @@ function saveDuggaResult(citstr)
 
 			var deadline = querystring['deadline']; //Get deadlinedate from URL
 
-
+			
 			Number.prototype.padLeft = function(base,chr){
 				var  len = (String(base || 10).length - String(this).length)+1;
 				return len > 0? new Array(len).join(chr || '0')+this : this;
 			}
-
+			
 			dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');
 
 			if(deadline > dateTimeFormat){	//Check if deadline has past
 
-				document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
+				document.getElementById('receiptInfo').innerHTML = "<p>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.\n\n</p>";
 
 			}
 			else{ //Check if deadline has past
 
 				if(comment == "UNK" || comment == "undefined" || comment == "null"){
-					document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>";
+					document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>OBS! This assignment has passed its deadline. The teacher will grade this assignment during the next ordinary grading occation OR when time allows.</p>";
 				}
 				else{
-					document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>"+comment+"</p>";
+					document.getElementById('receiptInfo').innerHTML = "<p>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>"+comment+"</p>";
 				}
 
 			}
