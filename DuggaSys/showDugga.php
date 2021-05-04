@@ -208,6 +208,9 @@ if($hash!='UNK'){
 						echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
 						echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 						echo "</td>";
+						echo "<td align='right'>";
+						echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='loadDugga();' />";
+						echo "</td>";
 						echo "</tr>";
 						echo "</table>";
 					}
@@ -295,6 +298,31 @@ if($hash!='UNK'){
       </div>
 	</div>
 	<!-- Login Box (receipt&Feedback-box ) End! -->
+
+
+
+	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
+	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
+			<div class='loginBoxheader'><h3>Hämta dugga genom hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
+			<div id='loadDuggaInfo'></div>
+
+    		<div id='emailPopup' style="display:block">
+				<div id='urlAndPwd'>
+					<div class="testasd"><p class="bold">URL</p><p id='url'></p></div>
+					<div class="testasd"><p class="bold">Password</p><p id='pwd'></p></div>
+				</div>
+				
+				<div class="button-row">
+					<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
+					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
+				</div>
+    		</div>
+      </div>
+	</div>
+
+
+
+
 
 <!---------------------=============####### Preview Popover #######=============--------------------->
 

@@ -42,7 +42,9 @@ function sendGroupAjax(val) {
 	AJAXService("UPDATEAU", {}, "GROUPTOKEN");
 }
 
-
+function loadDugga(){
+	showLoadDuggaPopup();
+}
 
 //----------------------------------------------------------------------------------
 // get all the indexes where a substring (needle) is found in a string (haystack)
@@ -1529,6 +1531,17 @@ function setupLoginLogoutButton(isLoggedIn){
 		$("#loginbutton").click(function(){showLoginPopup();});
 	}
 }
+
+function showLoadDuggaPopup()
+{
+	$("#loadDuggaBox").css("display","flex");
+}
+
+function hideLoadDuggaPopup()
+{
+	$("#loadDuggaBox").css("display","none");
+}
+
 
 function showReceiptPopup()
 {
