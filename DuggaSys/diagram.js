@@ -700,7 +700,7 @@ function onSetup()
         { name: "F Name", x: 120, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
         { name: "L Name", x: 230, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
     ];
-    
+
     const demoLines = [
         { id: makeRandomID(), fromID: PersonID, toID: IDID, kind: "Normal" },
         { id: makeRandomID(), fromID: PersonID, toID: NameID, kind: "Normal" },
@@ -2722,38 +2722,60 @@ function drawLine(line, targetGhost = false)
 
     // If the line got cardinality
     if(line.cardinality) {
-        var toCardinalityX = tx;
-        var toCardinalityY = ty;
-        var fromCardinalityX = fx;
-        var fromCardinalityY = fy;
 
-        if (line.ctype == "BT"){
-            toCardinalityX = tx + 10 * zoomfact;
-            toCardinalityY = ty - 18 * zoomfact;
-            fromCardinalityX = fx + 10 * zoomfact;
-            fromCardinalityY = fy + 25 * zoomfact;
-        }else if (line.ctype == "TB"){
-            toCardinalityX = tx + 10 * zoomfact;
-            toCardinalityY = ty + 18 * zoomfact;
-            fromCardinalityX = fx + 10 * zoomfact;
-            fromCardinalityY = fy - 18 * zoomfact;
-        }else if (line.ctype == "RL"){
-            toCardinalityX = tx - 18 * zoomfact;
-            toCardinalityY = ty - 10 * zoomfact;
-            fromCardinalityX = fx + 18 * zoomfact;
-            fromCardinalityY = fy - 10 * zoomfact;
-        }else if (line.ctype == "LR"){
-            toCardinalityX = tx + 18 * zoomfact;
-            toCardinalityY = ty - 10 * zoomfact;
-            fromCardinalityX = fx - 25 * zoomfact;
-            fromCardinalityY = fy - 10 * zoomfact;
+        const offsetOnLine = 20 * zoomfact;
+        var offset = Math.round(zoomfact * textheight / 2);
+        var posX, posY;
+        var distance = Math.sqrt(Math.pow((tx - fx), 2) + Math.pow((ty - fy), 2));
+
+        if(findEntityFromLine(line) == -1){
+            // Set position on line for the given offset
+            posX = fx + (offsetOnLine * (tx - fx) / distance);
+            posY = fy + (offsetOnLine * (ty - fy) / distance);
+
+            /*
+            * Depending on the side of the element that the line is connected to
+            * and the number of lines from that side, set the offset.
+            * */
+            if (line.ctype == "TB") {
+                if (felem.top.indexOf(line.id) == 0) posX -= offset;
+                else posX += offset;
+            }else if(line.ctype == "BT"){
+                if (felem.bottom.indexOf(line.id) == 0) posX -= offset;
+                else posX += offset;
+            }else if(line.ctype == "RL"){
+                if (felem.right.indexOf(line.id) == 0) posY -= offset;
+                else if (felem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
+            }else if (line.ctype == "LR") {
+                if (felem.left.indexOf(line.id) == 0) posY -= offset;
+                else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
+            }
+        } else {
+            // Set position on line for the given offset
+            posX = tx + (offsetOnLine * (fx - tx) / distance);
+            posY = ty + (offsetOnLine * (fy - ty) / distance);
+
+            /*
+            * Depending on the side of the element that the line is connected to
+            * and the number of lines from that side, set the offset.
+            * */
+            if (line.ctype == "TB") {
+                if (telem.bottom.indexOf(line.id) == 0) posX -= offset;
+                else posX += offset;
+            }else if(line.ctype == "BT"){
+                if (telem.top.indexOf(line.id) == 0) posX -= offset;
+                else posX += offset;
+            }else if(line.ctype == "RL"){
+                if (telem.left.indexOf(line.id) == 0) posY -= offset;
+                else if (telem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
+            }else if (line.ctype == "LR") {
+                if (telem.right.indexOf(line.id) == 0) posY -= offset;
+                else if (telem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
+            }
         }
-        // If the entity is on the from side
-        if (findEntityFromLine(line) == -1){
-            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${fromCardinalityX}" y="${fromCardinalityY}">${lineCardinalitys[line.cardinality]}</text>`
-        }else {
-            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${toCardinalityX}" y="${toCardinalityY}">${lineCardinalitys[line.cardinality]}</text> `
-        }
+
+        // Add the line to the str
+        str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`
     }
     return str;
 }
