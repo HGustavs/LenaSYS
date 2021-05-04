@@ -399,6 +399,34 @@ function isSuperUser($userId)
         }
 }
 
+//------------------------------------------------------------------------------------------------
+// isTeacher
+//------------------------------------------------------------------------------------------------
+// Returns superuser status of user
+// @param int $userId User ID of the user to look up
+// @return true false. True if teacher false if not
+//------------------------------------------------------------------------------------------------
+
+function isTeacher($userId)
+{
+        global $pdo;
+
+        if($pdo == null) {
+                pdoConnect();
+        }
+
+        $query = $pdo->prepare('SELECT count(uid) AS count FROM user_course WHERE uid=:userId AND access ="W"');
+        $query->bindParam(':userId', $userId);
+        $query->execute();
+        $result = $query->fetch();
+
+        if ($result["count"]==1) {
+                return true;
+        }else{
+                return false;
+        }
+}
+
 
 //------------------------------------------------------
 //isStudentUser
