@@ -724,6 +724,8 @@ var contextLine = []; // Contains the currently selected line(s).
 var determinedLines = null; //Last calculated line(s) clicked.
 var deltaExceeded = false;
 var targetElement = null;
+var targetElementDiv;
+
 const maxDeltaBeforeExceeded = 2;
 
 // Clipboard
@@ -1091,6 +1093,7 @@ function ddown(event)
             if (!altPressed) {
                 pointerState = pointerStates.CLICKED_ELEMENT;
                 targetElement = event.currentTarget;
+                targetElementDiv = document.getElementById(targetElement.id);
             }
 
         case mouseModes.EDGE_CREATION:
@@ -1108,7 +1111,6 @@ function ddown(event)
 
     dblPreviousTime = new Date().getTime(); // Update dblClick-timer.
     wasDblClicked = false; // Reset the bool.
-    console.log(targetElement);
 }
 
 /**
@@ -1433,10 +1435,9 @@ function mmoving(event)
                 x: data[findIndex(data, targetElement.id)].x,
                 y: data[findIndex(data, targetElement.id)].y
             }
-            var el = document.getElementById(targetElement.id);
             var targetPos = {
-                x: 1 * el.style.left.substr(0, el.style.left.length - 2),
-                y: 1 * el.style.top.substr(0, el.style.top.length - 2)
+                x: 1 * targetElementDiv.style.left.substr(0, targetElementDiv.style.left.length - 2),
+                y: 1 * targetElementDiv.style.top.substr(0, targetElementDiv.style.top.length - 2)
             };
             targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
             targetDelta = {
