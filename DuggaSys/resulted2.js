@@ -19,9 +19,9 @@ function returnedResults(data) {
 
 function generateTableInfo() {
     var arr = [];
-    for (var asd of phpData) {
-        for (var asd2 of asd.tableInfo) {
-            arr.push(asd2);
+    for (var object of phpData) {
+        for (var submission of object.tableInfo) {
+            arr.push(submission);
         }
     }
 
@@ -170,7 +170,6 @@ function createTableBody() {
         var tbody = "";
 
         for (var submission of tableInfo) {
-            //var i = 0;
             var tr = "<tr class='resultedTable'>";
             var td = "";
 
