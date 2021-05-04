@@ -17,7 +17,7 @@ function process(){
 	}
 
     var dstr = "";
-	dstr += makeCustomFilter("showBit", "Show BitDugga");
+	dstr += makeCustomFilter("duggaFilter", "Show Dugga");
     document.getElementById("customfilter").innerHTML = dstr;
     var dstr = "";
 
@@ -128,10 +128,9 @@ function makeCustomFilter(filtername, labeltext) {
 	str += "<input type='checkbox' id='" + filtername + "' onclick='toggleFilter(\"" + filtername + "\")'";
     //console.log(filterList[filtername]);
 	if (filterList[filtername] == null) {
-        console.log("asd");
 		filterList[filtername] = false;
 	}
-	if (filterList[filtername] || filtername == "showBit") { //Enables filter and saves it in local storage when opening resulted.php.
+	if (filterList[filtername] || filtername == "duggaFilter") { //Enables filter and saves it in local storage when opening resulted.php.
 		str += " checked";
 
 		//Enables the showStudents and the showTeachers filters.
@@ -140,18 +139,21 @@ function makeCustomFilter(filtername, labeltext) {
 		localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
 	}
 	str += "><label class='headerlabel' for='" + filtername + "'>" + labeltext + "</label></div>";
+	console.log(filterList[filtername]);
 	return str;
 }
 
 function rowFilter(row) {
 
-	if (filterList["showbit"]){
+	if (filterList["duggaFilter"]){
         //console.log(row);
         if(row["duggaName"] == "Bitdugga1"){
             return true;            
-        }
+        }else{
+			return false;
+		}
     }
-		return false;
+	return true;
 	if(!filterList["showStudents"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != 0)
 		return false;
 	// Filters to display only rows where Duggas that have been submitted after deadline and/or duggas that are pending and needs to be graded
