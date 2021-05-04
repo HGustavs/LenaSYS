@@ -836,7 +836,7 @@ p {
 
 #Sectionlist .header {
   color: var(--color-text-header);
-  background-color: var(--color-text-primary);
+  background-color: var(--color-primary);
   text-align: center;
 }
 
