@@ -232,13 +232,13 @@ if($hash!='UNK'){
 		?>
 	</div>
 
-	<!-- content START -->
+	<!-- Feedback START -->
 	<div id="content">
 		<?php
 		if(isSuperUser($userid)){
 			echo "<div id='container' style='margin:0px;'>";
 				echo "<div class='instructions-container'>";
-					echo "<div class='instructions-button'><h3>Feedback</h3></div>";
+					echo "<div class='instructions-button' onclick='toggleInstructions(this)'><h3>Feedback</h3></div>";
 						echo "<div class='instructions-content' style=' -webkit-columns: 1; -moz-columns: 1; columns: 1; ' id='snus'>";
 							echo "<textarea name='feedback' id='feedback'cols='65' rows='10'></textarea><br>";
 							echo "<input class='submit-button large-button' type='button' value='Skicka feedback' />";
