@@ -740,9 +740,9 @@ function saveDuggaResult(citstr)
 			dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');
 			console.log("deadline: " + deadline + " > dateTimeFormat: " + dateTimeFormat);
 			
-			if(deadline < dateTimeFormat){	
+			if(deadline > dateTimeFormat){	
 				//Deadline has not been passed.
-				document.getElementById('receiptInfo').innerHTML = "<p>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.\n\n</p><p>Successfully submitted before deadline</p>";
+				document.getElementById('receiptInfo').innerHTML = "<p>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.\n\n</p><p>Successfully submitted before deadline.</p>";
 			}
 			else{ 
 				//Deadline has passed.
