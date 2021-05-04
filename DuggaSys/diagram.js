@@ -1258,8 +1258,10 @@ function determineLineSelect(mouseX, mouseY)
     // This func is used when determining which line is clicked on.
 
     // TODO: Add functionality to make sure we are only getting LINES from svgbacklayer in the future !!!!!.
-
+    
     var allLines = document.getElementById("svgbacklayer").children;
+    var bLayerLineIDs = []; // Used to only store the IDs. Needed since we later need a value copy of the ID and not the ref.
+
     var cMouse_XY = {
         x: mouseX, 
         y: mouseY
@@ -1278,9 +1280,13 @@ function determineLineSelect(mouseX, mouseY)
     }
     
     for(var i = 0; i < allLines.length; i++) {
+        
+        // Copy the IDs.
+        bLayerLineIDs[i] = allLines[i].id;
+
         // Make sure that "double lines" have the same id.
-        allLines[i].id = allLines[i].id.replace(/-1/gi, '');
-        allLines[i].id = allLines[i].id.replace(/-2/gi, '');
+        bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
+        bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
   
         // Get all X and Y -coords for current line in iteration.
         currentline = {
@@ -1320,9 +1326,8 @@ function determineLineSelect(mouseX, mouseY)
         if(lineWasHit == true) {
             // Return the current line that registered as a "hit".
             return lines.filter(function(line) {
-                return line.id == allLines[i].id;
+                return line.id == bLayerLineIDs[i];
             })[0];
-            //return allLines[i];
         }
     }
     return null;
