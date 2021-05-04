@@ -240,7 +240,7 @@ if($hash!='UNK'){
 				echo "<div class='instructions-container'>";
 					echo "<div class='instructions-button' onclick='toggleInstructions(this)'><h3>Feedback</h3></div>";
 						echo "<div class='instructions-content' style=' -webkit-columns: 1; -moz-columns: 1; columns: 1; ' id='snus'>";
-							echo "<textarea name='feedback' id='feedback'cols='65' rows='10'></textarea><br>";
+							echo "<textarea name='feedback' id='feedback' style='float: left; width: 100%; min-height: 75px;'></textarea><br>";
 							echo "<input class='submit-button large-button' type='button' value='Skicka feedback' />";
 						echo "</div>";
 					echo "</div>";
