@@ -188,6 +188,7 @@ if($hash!='UNK'){
 	<!-- content START -->
 	<div id="content">
 		<?php
+		echo "<script>console.log('".$duggafile."');</script>";
 			// Log USERID for Dugga Access
 			// commented out because we are unsure about the usage of logs
 			//makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
@@ -303,11 +304,13 @@ if($hash!='UNK'){
     	'displayDownloadIcon();', 'noUploadForTeacher();',
     	'</script>';
 	}?>
-
- 
-
+	
 	<!-- Timer START -->
-	<div id='scoreElement'>
+	<div id='scoreElement'>	
+	</div>
+	<!-- Test output -->
+	<div id='groupAssignment'>
+		<p id='clicks'><p>	
 	</div>
 	<!-- content END -->
 	<?php

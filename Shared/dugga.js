@@ -25,7 +25,10 @@ var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
 var isGroupDugga = true; // Set to false if you hate the popup
 var variantvalue;
+var tempclicks = 0;
+var clicks = 0;
 var locallystoredhash;
+
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -888,6 +891,7 @@ function htmlEntities(str) {
 //----------------------------------------------------------------------------------
 // beforeunload: Detect when student exits dugga
 //----------------------------------------------------------------------------------
+
 window.addEventListener('beforeunload', function (e) {
 	if(getUrlParam("did") != null){
 		groupTokenValue = -1;
@@ -900,6 +904,20 @@ window.addEventListener('beforeunload', function (e) {
 	
 });
 
+//Check if score is above threshhold
+function duggaChange(){
+	if(clicks > ClickCounter.score){
+		ClickCounter.score = clicks;
+	}else{
+		clicks = ClickCounter.score;
+	}
+	if(clicks>=tempclicks){
+		tempclicks=clicks;
+		return true;
+	}else{
+		return false;
+	}
+}
 
 function getUrlParam(param){
 	var url_string = window.location.href;
