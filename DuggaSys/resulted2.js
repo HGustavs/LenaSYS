@@ -70,15 +70,14 @@ function createSortableTable(data){
 			hash:"Hash",
 			password:"Password",
 			submitted:"Submission Date",
-            grade: "Grade",
-			subCourse: "Subcourse"
+            grade: "Grade"
 
 		},
 		tblbody: data,
 		tblfoot:{}
 	};
 
-	var colOrder = ["duggaName","hash", "password", "submitted", "grade", "subCourse"];
+	var colOrder = ["duggaName","hash", "password", "submitted", "grade"];
 	myTable = new SortableTable({
 		data: tabledata,
 		tableElementId: tableName,
@@ -163,7 +162,7 @@ function rowFilter(row) {
 
 	if (filterList["duggaFilter"]){
         //console.log(row);
-        if(row["duggaName"] == duggaFilter || row["subCourse"] == duggaFilter){
+        if(row["duggaName"] == duggaFilter || row["subCourse"] == duggaFilter || duggaFilter == "none"){
             return true;            
         }else{
 			return false;

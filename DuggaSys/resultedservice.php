@@ -50,33 +50,19 @@ $subCourse = "UNK";
 
 foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
 	
-	for($i=0; $i<sizeof($duggaFilterOptions); $i++){
+	foreach($duggaFilterOptions as $row2){
 
-		if($duggaFilterOptions[$i]['kind'] == 3 && $duggaFilterOptions[$i]['lid'] == $row['moment']){
-			$duggaName = $duggaFilterOptions[$i]['entryname'];
-			$j = $i;
-			/*while($duggaFilterOptions[$j]['kind'] != 4){
-				$j = $j-1;
-			}*/
-			$subCourse = $duggaFilterOptions[$j]['entryname'];
+		if($row2['kind'] == 4){
+			$subCourse = $row2['entryname'];
+			error_log($subCourse);
 		}
-	}
-
-
-
-   foreach($duggaFilterOptions as $row2){
-	//error_log($row2['moment']);
-	error_log($row['moment']);
 
 		if($row2['kind'] == 3 && $row2['lid'] == $row['moment']){
 			$duggaName = $row2['entryname'];
-
-
-		}else if($row2['lid'] == $row['moment']){
-			error_log($row2['entryname']);
-			$subCourse = $row2['entryname'];
+			break;
 		}
-   }
+	}
+
 
     $tableSubmissionInfo = array(
         'duggaName' => $duggaName,
