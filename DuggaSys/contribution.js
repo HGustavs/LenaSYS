@@ -816,7 +816,7 @@ function returnedSection(data) {
   document.getElementById('barchart').innerHTML = renderBarDiagram(data);
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(JSON.stringify(data['hourlyevents']));
-  renderCommits(data);
+  document.getElementById('commitsTable').innerHTML = renderCommits(data);
   document.getElementById('content').innerHTML = str;
 }
 
