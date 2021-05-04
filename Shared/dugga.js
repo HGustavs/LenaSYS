@@ -1897,11 +1897,6 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
 		}
 
-		str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Dugga</div>";
-		str+="</div>";
-		$("#duggaStatus").remove();
-		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
-
 		// Adds dugga title next to the text "Instructions"
 		$('h3:contains("Instructions")').text(duggaTitle + " - Instructions");
 }
