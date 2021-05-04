@@ -3024,19 +3024,21 @@ function sortElementAssociations(element)
  */
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true){
 
-    if (fromElement.kind === "ERRelation") {
-        var id = fromElement.id;
-    }else if (toElement.kind === "ERRelation") {
-        var id = toElement.id;
-    }
-    var test = lines.filter(function (line) {
-    return (id === line.fromID ||
-            id === line.toID)
-    }).length;
-    if(test < 2){
+    
+    
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
+        if (fromElement.kind === "ERRelation") {
+            var id = fromElement.id;
+        }else if (toElement.kind === "ERRelation") {
+            var id = toElement.id;
+        }
+        // Filter the existing line to the ERRelation 
+        var numOfRelationLines = lines.filter(function (line) {
+            return((id === line.fromID || id === line.toID) )
+        }).length;   
+        
         // Filter the existing lines and gets the number of existing lines
         var numOfExistingLines = lines.filter(function (line) {
             return (fromElement.id === line.fromID &&
@@ -3050,9 +3052,9 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                             fromElement.kind === "EREntity" &&
                             toElement.kind === "ERRelation");
         
-
+        
         // If there is no existing lines or is a special case
-        if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
+        if (numOfRelationLines < 2 && (numOfExistingLines === 0) || (specialCase && numOfExistingLines == 1) || (specialCase && numOfExistingLines <= 1 && numOfRelationLines <= 2)) {
 
             var newLine = {
                 id: makeRandomID(),
@@ -3077,9 +3079,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     } else {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between two: ${fromElement.kind} elements`);
     }
-} else{
-    displayMessage(messageTypes.ERROR, `Too many lines to the Relation`);
-}
+
 }
 //#endregion =====================================================================================
 //#region ================================ DRAWING FUNCTIONS    ==================================
