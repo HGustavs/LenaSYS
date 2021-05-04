@@ -733,7 +733,7 @@ function saveDuggaResult(citstr)
 			var comment = querystring['comment']; //Get the comment
 
 			var deadline = querystring['deadline']; //Get deadlinedate from URL
-
+			console.log("comment: "+comment);
 			
 			Number.prototype.padLeft = function(base,chr){
 				var  len = (String(base || 10).length - String(this).length)+1;
@@ -741,7 +741,7 @@ function saveDuggaResult(citstr)
 			}
 			
 			dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');
-
+			console.log("deadline: " + deadline + " > dateTimeFormat: " + dateTimeFormat);
 			if(deadline > dateTimeFormat){	//Check if deadline has past
 
 				document.getElementById('receiptInfo').innerHTML = "<p>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.\n\n</p>";
@@ -753,6 +753,7 @@ function saveDuggaResult(citstr)
 					document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>OBS! This assignment has passed its deadline. The teacher will grade this assignment during the next ordinary grading occation OR when time allows.</p>";
 				}
 				else{
+
 					document.getElementById('receiptInfo').innerHTML = "<p>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>"+comment+"</p>";
 				}
 
