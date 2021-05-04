@@ -136,6 +136,9 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 
 <div id='login_popup'>
 <?php
+function confirmSaveClick() {
+	echo '<script>console.log("AAAAAAAAAAA")</script>';
+}
 function hashPassword($password, $hash){
 		if($password == 'UNK')
 			return false;
@@ -184,6 +187,7 @@ if($hash!='UNK'){
 //$_SESSION['hashpassword'] = 'UNK';
 
 ?>
+
 </div>
 	<!-- content START -->
 	<div id="content">
@@ -201,40 +205,24 @@ if($hash!='UNK'){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 
-					if ($duggafile !== 'contribution') {
-						//$hash="b0Iv_9wU";
+					if ($duggafile !== 'contribution') {						
+						echo "<table id='submitButtonTable' class='navheader'>";
+						echo "<tr>";
+						echo "<td align='left'>";
+
+						
+						$hash="b0Iv_9wU";
 						//Check if our hash has anything in useranswer.useranswer or if it's null
 						$query = $pdo->prepare("SELECT useranswer FROM userAnswer WHERE hash=:hash");
 						$query->bindParam(':hash', $hash);
 						$query->execute();
 						$result = $query->fetch();
-						if($result['useranswer'] == null) {
+						if(!isset($result['useranswer'])) {
 							echo "<script>console.log('Useranswer: ');</script>";
 							echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
 						} else {
-							echo "<script>console.log('Useranswer: TESTEST '+'".$result['useranswer']."');</script>";
-							echo "<div class='loginBoxContainer' id='confirmationBox' style='display:block;'>";	
-									echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
-									echo "<div class='loginBoxheader'>";
-									echo "<h3>Confirm or Deny</h3>";
-									//Måste göra en hideConfirmationBox function
-									echo "<div onclick='hideConfirmationBox()' class='cursorPointer'>x</div>";
-									echo "</div>";
-									
-									//Måste antagligen lägga till CSS för de här
-									echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
-									//Behöver vi en exitWindowFunction?
-									echo "<input type='exit' class='exit-button' value='Exit' name='Exit' onclick='exitWindowFunction()'>";
-									
-									echo "</div>";
-									echo "</div>";
-									exit();
+							echo "<input id='confirmSaveDuggaButton' class='submit-button large-button' type='button' value='Re-Save' onclick='confirmSaveClick();' />";
 						}
-						
-						echo "<table id='submitButtonTable' class='navheader'>";
-						echo "<tr>";
-						echo "<td align='left'>";
-
 						//echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='' />";
 						/*
 						

@@ -2185,3 +2185,19 @@ function returnedSubmitFeedback(){
 function setDuggaTitle(title) {
 	duggaTitle = title;
 }
+
+
+function confirmSaveClick() {
+	console.log("HEJEEE");
+}
+
+
+function confirmSaveClick() {
+  var txt;
+  if (confirm("Press a button!")) {
+    txt = "You pressed OK!";
+  } else {
+    txt = "You pressed Cancel!";
+  }
+  document.getElementById("demo").innerHTML = txt;
+}
