@@ -6,9 +6,6 @@ include_once "../Shared/basic.php";
 pdoConnect();
 $cid=getOPG('cid');
 $vers=getOPG('coursevers');
-if (!$_SERVER['HTTP_REFERER']) {
-	header('Location: sectioned.php?courseid='.$cid.'&coursevers='.$vers);
-}
 ?>
 
 <!DOCTYPE html>
