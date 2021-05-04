@@ -689,7 +689,6 @@ function createUrl(hash) {
 
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
-
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
@@ -702,6 +701,11 @@ function saveDuggaResult(citstr)
 	if(pwd.includes("undef")) pwd = randomPassword();
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
+
+	var scores = JSON.parse(localStorage.getItem("scores"+querystring['did']) || '[]');
+	scores.push(score);
+	localStorage.setItem("scores"+querystring['did'], JSON.stringify(scores));
+
 	var readonly;
 	$.ajax({
 		url: "courseedservice.php",
