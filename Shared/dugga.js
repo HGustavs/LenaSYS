@@ -728,12 +728,9 @@ function saveDuggaResult(citstr)
 			//citstr+= "##!!##" + score;
 			AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
-			var dateTime = new Date(); // Get the current date and time
-
-			var comment = querystring['comment']; //Get the comment
-
+			var dateTime = new Date(); 				//Get the current date and time
+			var comment = querystring['comment']; 	//Get the comment. 'comment' will be null by default. A not-null/not-undefined value of comment will appear only if deadline has been passed.
 			var deadline = querystring['deadline']; //Get deadlinedate from URL
-
 			
 			Number.prototype.padLeft = function(base,chr){
 				var  len = (String(base || 10).length - String(this).length)+1;
@@ -741,15 +738,15 @@ function saveDuggaResult(citstr)
 			}
 			
 			dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');
-
-			if(deadline > dateTimeFormat){	//Check if deadline has past
-
-				document.getElementById('receiptInfo').innerHTML = "<p>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.\n\n</p>";
-
+			console.log("deadline: " + deadline + " > dateTimeFormat: " + dateTimeFormat);
+			
+			if(deadline > dateTimeFormat){	
+				//Deadline has not been passed.
+				document.getElementById('receiptInfo').innerHTML = "<p>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.\n\n</p><p>Successfully submitted before deadline.</p>";
 			}
-			else{ //Check if deadline has past
-
-				if(comment == "UNK" || comment == "undefined" || comment == "null"){
+			else{ 
+				//Deadline has passed.
+				if(comment == "UNK" || comment == undefined || comment == "null"){
 					document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>OBS! This assignment has passed its deadline. The teacher will grade this assignment during the next ordinary grading occation OR when time allows.</p>";
 				}
 				else{
