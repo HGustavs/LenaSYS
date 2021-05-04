@@ -209,6 +209,10 @@
     text-underline-offset: 0.15em;
     text-decoration: underline;
 }
+.weakAttribute{
+    text-underline-offset: 0.15em;
+    text-decoration: underline dotted;
+}
 
 .saveButton {
     background-color: #614875;

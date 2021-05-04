@@ -626,6 +626,7 @@ const messageTypes = {
  */
 const attrState = {
     NORMAL: "normal",
+    WEAK: "weak",
     MULTIPLE: "multiple",
     KEY: "key",
     COMPUTED: "computed",
@@ -3436,6 +3437,7 @@ function drawElement(element, ghosted = false)
         if (element.state == "computed") {
             dash = "stroke-dasharray='4 4'";
         }
+       
         if (element.state == "multiple") {
             multi = `
                     <path d="M${linew * multioffs},${hboxh} 
@@ -3456,6 +3458,12 @@ function drawElement(element, ghosted = false)
                     ${multi}
 
                     <text x='${xAnchor}' y='${hboxh}' `;
+
+        if(element.state == "weak") {
+            str += `class='weakAttribute'`;
+        }
+        str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+            `;
 
         if(element.state == "key") {
             str += `class='underline'`;
