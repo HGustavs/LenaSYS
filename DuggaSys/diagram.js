@@ -3458,18 +3458,17 @@ function drawElement(element, ghosted = false)
                     ${multi}
 
                     <text x='${xAnchor}' y='${hboxh}' `;
-
+                    
         if(element.state == "weak") {
             str += `class='weakAttribute'`;
         }
-        str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-            `;
 
         if(element.state == "key") {
             str += `class='underline'`;
         }    
             str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
             `;
+    
     }
     else if (element.kind == "ERRelation") {
         var weak = "";
