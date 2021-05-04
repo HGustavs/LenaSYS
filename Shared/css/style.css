@@ -5085,7 +5085,7 @@ only screen and (max-device-width: 860px) {
   
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
-  #editCourse, #announcement{
+  #editCourse{
     display: none;
   }
 }
