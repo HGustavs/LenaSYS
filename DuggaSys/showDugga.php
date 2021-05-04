@@ -217,7 +217,35 @@ if($hash!='UNK'){
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='left'>";
-						echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
+
+						//echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='' />";
+						
+						
+								if(if hash is in db then run this code){
+									echo "<div class='loginBoxContainer' id='confirmationBox' style='display:block;'>";	
+									echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
+									echo "<div class='loginBoxheader'>";
+									echo "<h3>Confirm or Deny</h3>";
+									//Måste göra en hideConfirmationBox function
+									echo "<div onclick='hideConfirmationBox()' class='cursorPointer'>x</div>";
+									echo "</div>";
+									
+									//Måste antagligen lägga till CSS för de här
+									echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
+									//Behöver vi en exitWindowFunction?
+									echo "<input type='exit' class='exit-button' value='Exit' name='Exit' onclick='exitWindowFunction()'>";
+									
+									echo "</div>";
+									echo "</div>";
+									exit();
+								}
+								else{
+									run this code
+									echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
+								}
+						
+						//echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
+
 						echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 						echo "</td>";
 						echo "</tr>";
