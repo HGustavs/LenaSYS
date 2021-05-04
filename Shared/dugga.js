@@ -880,17 +880,10 @@ function duggaChange(){
 	}else{
 		clicks = ClickCounter.score;
 	}
-
 	if(clicks>=tempclicks){
 		tempclicks=clicks;
-		console.log('Dugga changed');
-		console.log(clicks);
-		console.log(tempclicks);
 		return true;
 	}else{
-		console.log('Dugga did not change');
-		console.log(clicks);
-		console.log(tempclicks);
 		return false;
 	}
 }
