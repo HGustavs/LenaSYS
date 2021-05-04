@@ -43,7 +43,7 @@ function sendGroupAjax(val) {
 }
 
 function loadDugga(){
-	showLoadDuggaPopup();
+	
 }
 
 //----------------------------------------------------------------------------------

@@ -181,7 +181,7 @@ strong {font-weight: bold;}
 	background: #fff;
 }
 
-#emailPopup {
+#emailPopup, #loadDuggaPopup{
 	margin-top: 15px;
 	float: none;
 }
