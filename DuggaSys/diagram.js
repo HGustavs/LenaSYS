@@ -967,8 +967,14 @@ document.addEventListener('keydown', function (e)
             showdata();
         }
 
-        if (isKeybindValid(e, keybinds.ZOOM_IN)) zoomin();
-        if (isKeybindValid(e, keybinds.ZOOM_OUT)) zoomout();
+        if (isKeybindValid(e, keybinds.ZOOM_IN)){
+            e.preventDefault();
+            zoomin();
+        } 
+        if (isKeybindValid(e, keybinds.ZOOM_OUT)){
+            e.preventDefault();
+            zoomout();
+        } 
 
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
             e.preventDefault();
@@ -1065,6 +1071,7 @@ window.onfocus = function()
  */
 function mwheel(event)
 {
+    event.preventDefault();
     if(event.deltaY < 0) {
         zoomin(event);
     } else {
