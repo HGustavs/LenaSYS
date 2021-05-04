@@ -2732,7 +2732,7 @@ function drawLine(line, targetGhost = false)
         var tweakOffset = 0.30; 
 
         if(findEntityFromLine(line) == -1){
-            if(offsetOnLine > distance){
+            if(offsetOnLine > distance *0.5){
                 posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
                 posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
             }else{
@@ -2760,7 +2760,7 @@ function drawLine(line, targetGhost = false)
                 else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
             }
         } else {
-            if(offsetOnLine > distance){
+            if(offsetOnLine > distance *0.5){
                 posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
                 posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
             }else{
