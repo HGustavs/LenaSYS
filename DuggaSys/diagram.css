@@ -212,7 +212,7 @@
 
 .weakAttribute{
     text-underline-offset: 0.15em;
-    text-decoration: underline dotted;
+    text-decoration: underline dotted 2px;
 }
 
 .saveButton {

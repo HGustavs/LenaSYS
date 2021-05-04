@@ -626,7 +626,7 @@ const messageTypes = {
  */
 const attrState = {
     NORMAL: "normal",
-    WEAK: "weak",
+    WEAK: "weakKey",
     MULTIPLE: "multiple",
     KEY: "key",
     COMPUTED: "computed",
@@ -3459,7 +3459,7 @@ function drawElement(element, ghosted = false)
 
                     <text x='${xAnchor}' y='${hboxh}' `;
                     
-        if(element.state == "weak") {
+        if(element.state == "weakKey") {
             str += `class='weakAttribute'`;
         }
 
