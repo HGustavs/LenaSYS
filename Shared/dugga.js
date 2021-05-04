@@ -2007,7 +2007,15 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
 		}
 
-		str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Dugga</div>";
+		//If duggaTitle variable have a value set. 
+		if(duggaTitle) {	
+			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>"+duggaTitle+"</div>";
+		}
+		//If there is no name of the dugga.
+		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
+			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
+		}
+
 		str+="</div>";
 		$("#duggaStatus").remove();
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
