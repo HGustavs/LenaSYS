@@ -3180,14 +3180,15 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
  * @param {boolean} targetGhost Is the targeted line an ghost line
  */
 function drawLine(line, targetGhost = false)
-{
+{   
     var felem, telem, dx, dy;
     var str = "";
+    
     var lineColor = '#A000DC';
     if(contextLine.includes(line)){
         lineColor = '#F0D11C';
     }
-    
+
     felem = data[findIndex(data, line.fromID)];
 
     // Telem should be our ghost if argument targetGhost is true. Otherwise look through data array.
@@ -3219,7 +3220,9 @@ function drawLine(line, targetGhost = false)
     }
 
     if (line.kind == "Normal"){
-        str += `<line id='${line.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+
+        str += `<line id='${line.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    
     }else if (line.kind == "Double"){
         // We mirror the line vector
         dy = -(tx - fx);
@@ -3229,9 +3232,16 @@ function drawLine(line, targetGhost = false)
         dx = dx / len;
         var cstmOffSet = 1.4;
 
-        str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+        str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
 
-        str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}' />`;
+        str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    }
+
+    if(contextLine.includes(line)){
+
+        var x = (fx + tx) /2;
+        var y = (fy + ty) /2;
+        str += `<rect x="${x-(2 * zoomfact)}" y="${y-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' stroke="black" stroke-width="3"/>`;
     }
 
     // If the line got cardinality
@@ -3604,24 +3614,72 @@ function updateContainerBounds()
  */
 function drawSelectionBox(str)
 {
-    if (context.length != 0) {
-        var lowX = context[0].x1;
-        var highX = context[0].x2;
+    if (context.length != 0 || contextLine.length != 0) {
+        var lowX;
+        var highX;
+        var lineLowX;
+        var lineHighX;
         var x1;
         var x2;
-        var lowY = context[0].y1;
-        var highY = context[0].y2;
+        var lowY;
+        var highY;
+        var lineLowY;
+        var lineHighY;
         var y1;
         var y2;
-        for (var i = 0; i < context.length; i++) {
-            x1 = context[i].x1;
-            x2 = context[i].x2;
-            y1 = context[i].y1;
-            y2 = context[i].y2;
-            if (x1 < lowX) lowX = x1;
-            if (x2 > highX) highX = x2;
-            if (y1 < lowY) lowY = y1;
-            if (y2 > highY) highY = y2;
+        if (context.length != 0) {
+            lowX = context[0].x1;
+            highX = context[0].x2;
+            lowY = context[0].y1;
+            highY = context[0].y2;
+            for (var i = 0; i < context.length; i++) {
+                x1 = context[i].x1;
+                x2 = context[i].x2;
+                y1 = context[i].y1;
+                y2 = context[i].y2;
+                if (x1 < lowX) lowX = x1;
+                if (x2 > highX) highX = x2;
+                if (y1 < lowY) lowY = y1;
+                if (y2 > highY) highY = y2;
+            }
+        }
+        var tempLines = [];
+        if (contextLine.length > 0) {
+            for (var i = 0; i < contextLine.length; i++) {
+                tempLines.push(document.getElementById(contextLine[i].id));
+            }
+
+            // Find highest and lowest x and y coordinates of the first element in lines
+            var tempX1 = tempLines[0].getAttribute("x1");
+            var tempX2 = tempLines[0].getAttribute("x2");
+            var tempY1 = tempLines[0].getAttribute("y1");
+            var tempY2 = tempLines[0].getAttribute("y2");
+            lineLowX = Math.min(tempX1, tempX2);
+            lineHighX = Math.max(tempX1, tempX2);
+            lineLowY = Math.min(tempY1, tempY2);
+            lineHighY = Math.max(tempY1, tempY2);
+
+            // Loop through all selected lines and find highest and lowest x and y coordinates
+            for (var i = 0; i < tempLines.length; i++) {
+                tempX1 = tempLines[i].getAttribute("x1");
+                tempX2 = tempLines[i].getAttribute("x2");
+                tempY1 = tempLines[i].getAttribute("y1");
+                tempY2 = tempLines[i].getAttribute("y2");
+                x1 = Math.min(tempX1, tempX2);
+                x2 = Math.max(tempX1, tempX2);
+                y1 = Math.min(tempY1, tempY2);
+                y2 = Math.max(tempY1, tempY2);
+                if (x1 < lineLowX) lineLowX = x1;
+                if (x2 > lineHighX) lineHighX = x2;
+                if (y1 < lineLowY) lineLowY = y1;
+                if (y2 > lineHighY) lineHighY = y2;
+            }
+
+            // Compare between elements and lines to find lowest and highest x and y coordinates
+            lowX = (lowX < lineLowX) ? lowX : lineLowX;
+            highX = (highX > lineHighX) ? highX : lineHighX;
+            lowY = (lowY < lineLowY) ? lowY : lineLowY;
+            highY = (highY > lineHighY) ? highY : lineHighY;
         }
 
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
