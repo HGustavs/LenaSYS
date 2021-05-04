@@ -174,7 +174,46 @@ function renderBarDiagram(data) {
   str += "</div>";
   return str;
 }
+function renderCommits(data) {
 
+  var current = new Date();
+  var currentYear = current.getFullYear();
+
+  var yearlyCommits = new Array();
+  console.log(data);
+
+
+  //get all commits for current year
+  for(var i = 0; i < data['count'].length;i++) {
+    if(data['count'][i].getFullYear() == currentYear) {
+      yearlyCommits.add(data['count'][i]);
+    }
+  }
+  var sortedByID = [[]];
+  var TEMP_ID_VARIABL_THAT_WE_DONT_HAVE;
+  //sort commits by their IDs, so we have a 
+  //x = ID
+  //y all commits for that ID
+  for(var i = 0; i < yearlyCommits.length;i++) {
+    if(!sortedByID.contains(TEMP_ID_VARIABL_THAT_WE_DONT_HAVE)) {
+      sortedByID.add(TEMP_ID_VARIABL_THAT_WE_DONT_HAVE);
+    }
+    else {
+      sortedByID[TEMP_ID_VARIABL_THAT_WE_DONT_HAVE].add(yearlyCommits[i]);
+    }
+  }
+
+  for(var i = 0; i < sortedByID.length;i++)
+  {
+    
+  }
+
+
+
+
+
+
+}
 function renderLineDiagram(data) {
 
   var weeks = data.weeks;
@@ -669,8 +708,6 @@ function createTimeSheetTable(data) {
     myTable.renderTable();
   }
 }
-
-
 function renderCell(col, celldata, cellid) {
   var str = "UNK";
   obj = celldata;
@@ -779,7 +816,7 @@ function returnedSection(data) {
   document.getElementById('barchart').innerHTML = renderBarDiagram(data);
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(JSON.stringify(data['hourlyevents']));
-
+  renderCommits(data);
   document.getElementById('content').innerHTML = str;
 }
 
@@ -1298,6 +1335,7 @@ function buildAllRankData(data){
 
     rankData.push(allRanks);
   }
+
   return rankData;
 }
 function checkIfDataContanisUser(user,data){
@@ -1380,3 +1418,4 @@ function hideTooltip() {
     }
 }
 console.error
+
