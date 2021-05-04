@@ -177,7 +177,7 @@ hr {
 }
 
 .hidden {
-  opacity: 0.7;
+  /*opacity: 0.7;*/
   /* border-radius:4px; */
   margin-left: 16px;
 }
