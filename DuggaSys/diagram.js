@@ -819,38 +819,38 @@ function onSetup()
     const Number_of_employees_ID = makeRandomID();
 
     const demoData = [
-        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", id: EMPLOYEE_ID },
-        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", id: Bdale_ID, state: "Normal" },
-        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", id: BdaleDependent_ID, state: "Normal" },
-        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", id: Ssn_ID, state: "key"},
-        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", id: Name_ID },
-        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", id: NameDependent_ID, state: "key"},
-        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", id: NameProject_ID, state: "key"},
-        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", id: NameDEPARTMENT_ID, state: "key"},
-        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", id: Address_ID },
-        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", id: AddressDependent_ID },
-        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", id: Relationship_ID },
-        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", id: Salary_ID },
-        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID },
-        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", id: Initial_ID },
-        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID },
-        { name: "SUPERVISIONS", x: 100, y: 400, width: 180, height: 120, kind: "ERRelation", id: SUPERVISION_ID },
-        { name: "DEPENDENTS_OF", x: 270, y: 450, width: 180, height: 120, kind: "ERRelation", id: DEPENDENTS_OF_ID, state: "weak"},
-        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", id: DEPENDENT_ID, state: "weak"},
-        { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", id: Number_of_depends_ID, state: "computed"},
-        { name: "WORKS_ON", x: 600, y: 470, width: 180, height: 120, kind: "ERRelation", id: WORKS_ON_ID },
-        { name: "Hours", x: 750, y: 420, width: 90, height: 45, kind: "ERAttr", id: Hours_ID },
-        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", id: PROJECT_ID },
-        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", id: NumberProject_ID, state: "key"},
-        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", id: Location_ID},
-        { name: "MANAGES", x: 600, y: 300, width: 180, height: 120, kind: "ERRelation", id: MANAGES_ID },
-        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", id: Start_date_ID },
-        { name: "CONTROLS", x: 1010, y: 300, width: 180, height: 120, kind: "ERRelation", id: CONTROLS_ID },
-        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", id: DEPARTMENT_ID },
-        { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", id: Locations_ID, state: "multiple" },
-        { name: "WORKS_FOR", x: 550, y: 60, width: 180, height: 120, kind: "ERRelation", id: WORKS_FOR_ID },
-        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", id: NumberDEPARTMENT_ID, state: "key"},
-        { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", id: Number_of_employees_ID, state: "computed"},
+        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", id: EMPLOYEE_ID, isLocked: false },
+        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", id: Bdale_ID, isLocked: false, state: "Normal" },
+        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", id: BdaleDependent_ID, isLocked: false, state: "Normal" },
+        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", id: Ssn_ID, isLocked: false, state: "key"},
+        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", id: Name_ID, isLocked: false },
+        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", id: NameDependent_ID, isLocked: false, state: "key"},
+        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", id: NameProject_ID, isLocked: false, state: "key"},
+        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", id: NameDEPARTMENT_ID, isLocked: false, state: "key"},
+        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", id: Address_ID, isLocked: false },
+        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", id: AddressDependent_ID, isLocked: false },
+        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", id: Relationship_ID, isLocked: false },
+        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", id: Salary_ID, isLocked: false },
+        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID, isLocked: false },
+        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", id: Initial_ID, isLocked: false },
+        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID, isLocked: false },
+        { name: "SUPERVISIONS", x: 100, y: 400, width: 180, height: 120, kind: "ERRelation", id: SUPERVISION_ID, isLocked: false },
+        { name: "DEPENDENTS_OF", x: 270, y: 450, width: 180, height: 120, kind: "ERRelation", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak"},
+        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", id: DEPENDENT_ID, isLocked: false, state: "weak"},
+        { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", id: Number_of_depends_ID, isLocked: false, state: "computed"},
+        { name: "WORKS_ON", x: 600, y: 470, width: 180, height: 120, kind: "ERRelation", id: WORKS_ON_ID, isLocked: false },
+        { name: "Hours", x: 750, y: 420, width: 90, height: 45, kind: "ERAttr", id: Hours_ID, isLocked: false },
+        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", id: PROJECT_ID, isLocked: false },
+        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", id: NumberProject_ID, isLocked: false, state: "key"},
+        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", id: Location_ID, isLocked: false},
+        { name: "MANAGES", x: 600, y: 300, width: 180, height: 120, kind: "ERRelation", id: MANAGES_ID, isLocked: false },
+        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", id: Start_date_ID, isLocked: false },
+        { name: "CONTROLS", x: 1010, y: 300, width: 180, height: 120, kind: "ERRelation", id: CONTROLS_ID, isLocked: false },
+        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", id: DEPARTMENT_ID, isLocked: false },
+        { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", id: Locations_ID, isLocked: false, state: "multiple" },
+        { name: "WORKS_FOR", x: 550, y: 60, width: 180, height: 120, kind: "ERRelation", id: WORKS_FOR_ID, isLocked: false },
+        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", id: NumberDEPARTMENT_ID, isLocked: false, state: "key"},
+        { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", id: Number_of_employees_ID, isLocked: false, state: "computed"},
     ];
     
     const demoLines = [
@@ -1251,7 +1251,7 @@ function mouseMode_onMouseUp(event)
  * @see pointerStates For all available states.
  */
 function mup(event)
-{
+{   
     deltaX = startX - event.clientX;
     deltaY = startY - event.clientY;
 
@@ -1285,7 +1285,7 @@ function mup(event)
             break;
 
         case pointerStates.CLICKED_ELEMENT:
-
+            
             movingObject = false;
             // Special cases:
             if (mouseMode == mouseModes.EDGE_CREATION) {
@@ -1298,11 +1298,13 @@ function mup(event)
                 if (context.length > 0) {
                     context.forEach(item => // Move all selected items
                     {
-                        eventElementId = event.target.parentElement.parentElement.id;
-                        setPos(item.id, deltaX, deltaY);
+                        if(!item.isLocked){
+                            eventElementId = event.target.parentElement.parentElement.id;
+                            setPos(item.id, deltaX, deltaY);
 
-                        if (deltaX > 0 || deltaX < 0 || deltaY > 0 || deltaY < 0)
-                            id_list.push(item.id);
+                            if (deltaX > 0 || deltaX < 0 || deltaY > 0 || deltaY < 0)
+                                id_list.push(item.id);
+                        }
                     });
                 }
 
@@ -1485,7 +1487,6 @@ function mmoving(event)
             deltaY = startY - event.clientY;
             scrollx = sscrollx - Math.round(deltaX * zoomfact);
             scrolly = sscrolly - Math.round(deltaY * zoomfact);
-
             updateGridPos();
             // Update scroll position
             updatepos(null, null);
@@ -1505,8 +1506,8 @@ function mmoving(event)
             break;
 
         case pointerStates.CLICKED_ELEMENT:
-            // Moving object
             movingObject = true;
+            // Moving object
             deltaX = startX - event.clientX;
             deltaY = startY - event.clientY;
 
@@ -2479,6 +2480,27 @@ function boxSelect_Draw(str)
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
 /**
+ * @description Toggles the movement of elements ON/OFF.
+ */
+function toggleEntityLocked()
+{
+    var locked = true;
+    for(var i = 0; i < context.length; i++){
+        if(!context[i].isLocked) {
+            locked = false;
+            break;
+        }
+    }
+    for (var i = 0; i < context.length; i++){
+        if(!locked) {
+            context[i].isLocked = true;
+        } else {
+            context[i].isLocked = false;
+        }
+    }
+}
+
+/**
  * @description Toggles the visual background grid ON/OFF.
  */
 function toggleGrid()
@@ -2693,8 +2715,7 @@ function generateContextProperties()
                 }
             }
         str += '</select>'; 
-        str+=`<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
-
+        str +=`<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
     } 
 
     // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
@@ -2735,8 +2756,8 @@ function generateContextProperties()
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
     }
 
-    if ((context.length > 1 || contextLine.length > 1) || (context.length == 1 && contextLine.length == 1)) {
-        str += "<p>Pick only ONE element!</p>";
+    if(context.length > 0) {
+        str += `<br></br><input type="submit" value="Lock" class="saveButton" onclick="toggleEntityLocked();">`;
     }
 
     propSet.innerHTML = str;
@@ -3694,6 +3715,8 @@ function updateCSSForAllElements()
 {
     function updateElementDivCSS(elementData, divObject, useDelta = false)
     {
+        if(elementData.isLocked) return;
+
         var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
             top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
