@@ -191,9 +191,9 @@ if(checklogin()){
 // Case 1: If course is public and dugga is public and we are not part of the course we should see a preview
 // Case 2: If dugga req login and we are logged and have read access
 $demo=false;
-if ($cvisibility == 1 && $dvisibility == 1 && !$hr || $hr) $demo=true;
+if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
-if($demo){
+if($demo || $hr){
 		
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
