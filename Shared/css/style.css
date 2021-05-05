@@ -177,7 +177,7 @@ hr {
 }
 
 .hidden {
-  opacity: 0.7;
+  /*opacity: 0.7;*/
   /* border-radius:4px; */
   margin-left: 16px;
 }
@@ -831,18 +831,18 @@ p {
 
 #Sectionlist .section {
   color: var(--color-text-header);
-  background-color: var(--color-primary-light);
+  background-color: var(--color-primary)/*var(--color-primary-light)*/;
 }
 
 #Sectionlist .header {
   color: var(--color-text-header);
-  background-color: var(--color-text-primary);
+  background-color: var(--color-primary);
   text-align: center;
 }
 
 #Sectionlist .moment {
   color: var(--color-text-header);
-  background-color: var(--color-primary-light);
+  background-color: var(--color-primary);
   /*
   cursor: pointer;
   box-shadow: 0px 3px 0px #aaa;
@@ -1062,7 +1062,7 @@ p {
 }
 .item a {
   text-decoration: none;
-  color: var(--color-text-primary);
+  color: var(--color-primary)/*var(--color-text-primary)*/;
 }
 
 .item a:hover {
@@ -1123,7 +1123,7 @@ p {
   width: 32px;
   vertical-align: middle;
   overflow: hidden;
-  background-color: var(--color-primary-light);
+  background-color: var(--color-primary);
 }
 
 .StopLight {
@@ -1367,10 +1367,10 @@ div .navButt:hover {
         display: flex;
         flex-wrap: wrap;
         position: relative;
-        
-        
+
+
         margin-top: 14px;
-        
+
     }
     #GeneralStats{
         display:none;
@@ -1384,7 +1384,7 @@ div .navButt:hover {
     #OSPercentage{
         display:none;
     }
-    
+
     #back{
         display:none;
     }
@@ -1395,7 +1395,7 @@ div .navButt:hover {
       display:flex;
       flex-wrap: wrap;
       position: relative;
-      
+
     }
 }
 
@@ -1900,7 +1900,7 @@ div .navButt:hover {
 }
 
 .testasd{
-  
+
 }
 
 .testasd > *{
@@ -5064,7 +5064,7 @@ only screen and (max-device-width: 860px) {
     height: 26px;
     opacity: 1.0;
   }
-	
+
   #hamburgerBox{
     display: none;
     position: absolute;
@@ -5082,7 +5082,7 @@ only screen and (max-device-width: 860px) {
   #editCourseBurger, #announcementBurger{
     display: block;
   }
-  
+
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
   #editCourse{
@@ -6427,7 +6427,7 @@ only screen and (max-device-width: 320px) {
     transform: rotate(90deg);
     transform-origin: top left;
   }
-  
+
   .fab-btn-list2 li {
     transform: rotate(225deg);
   }
