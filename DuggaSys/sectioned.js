@@ -314,7 +314,7 @@ function confirmBox(operation, item = null) {
     deleteItem(active_lid);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "deleteItem" && !hideItemList.length == 0) {
-    deleteMarkedItems(hideItemList)
+    hideMarkedItems(hideItemList)
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
@@ -467,10 +467,10 @@ function deleteItem(item_lid = null) {
 }
 
 //----------------------------------------------------------------------------------
-// deleteMarkedItems: Deletes Item from Section List
+// hideMarkedItems: Hides Item from Section List
 //----------------------------------------------------------------------------------
 
-function deleteMarkedItems() {
+function hideMarkedItems() {
   for (i=0; i < hideItemList.length; i++) {  
     var lid = hideItemList[i];
       AJAXService("HIDDEN", {
