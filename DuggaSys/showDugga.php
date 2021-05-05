@@ -340,7 +340,7 @@ if($hash!='UNK'){
 			<div class='loginBoxheader'><h3>Hämta variant av dugga</h3><div class='cursorPointer' onclick="hideLoadVariantPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
     		<div id='loadDuggaPopup' style="display:block">
-				<div class='inputwrapper'><span>Variants:</span><br><input class='textinput' type='text' id='hash' placeholder='Hash' value=''/></div>
+				<div class='inputwrapper'><span>Variants:</span><br></div>
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="loadDugga();" value='Load variant'>
 					<input type='button' class='submit-button' onclick="hideLoadVariantPopup();" value='Close'>
@@ -358,7 +358,9 @@ if($hash!='UNK'){
 	<?php 
 	if(isSuperUser($userid)){
     	echo '<script type="text/javascript">',
-    	'displayDownloadIcon();', 'noUploadForTeacher();',
+    	//'displayDownloadIcon();', 
+		//'noUploadForTeacher();',
+		'toggleLoadVariant();',
     	'</script>';
 	}?>
 	
