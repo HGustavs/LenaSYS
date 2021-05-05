@@ -3676,7 +3676,12 @@ function drawSelectionBox(str)
         var tempLines = [];
         if (contextLine.length > 0) {
             for (var i = 0; i < contextLine.length; i++) {
-                tempLines.push(document.getElementById(contextLine[i].id));
+                if (contextLine[i].kind === lineKind.DOUBLE) {
+                    tempLines.push(document.getElementById(contextLine[i].id + "-1"));
+                    tempLines.push(document.getElementById(contextLine[i].id + "-2"));
+                } else {
+                    tempLines.push(document.getElementById(contextLine[i].id));
+                }
             }
 
             // Find highest and lowest x and y coordinates of the first element in lines
