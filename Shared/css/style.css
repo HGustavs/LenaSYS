@@ -4841,7 +4841,7 @@ only screen and (max-device-width: 800px) {
     display: none;
   }
   #delElement{
-    display: none;
+    display: block;
   }
 
   table.navheader td.contribution {
@@ -5144,7 +5144,7 @@ only screen and (max-device-width: 530px) {
   }
 
   #Sectionlist .course {
-    font-size: 16px;
+    font-size: 14px;
   }
 
 
@@ -5272,6 +5272,11 @@ only screen and (max-device-width: 480px) {
     padding: 8px 10px 5px 10px;
   }
 
+  #delElement{
+    width: 20px;
+    height: 20px;
+  }
+
 }
 @media only screen and (max-width: 390px),
 only screen and (max-device-width: 390px) {
@@ -5289,12 +5294,17 @@ only screen and (max-device-width: 390px) {
 
   }
 
+  #delElement{
+    width: 20px;
+    height: 20px;
+  }
+
 }
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
   #Sectionlist .course {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 
@@ -6295,7 +6305,7 @@ only screen and (max-device-width: 320px) {
 }
 
 .fixed-action-button2.sectioned2 {
-  right: 120px;
+  right: 80px;
 }
 
 .fixed-action-button3 {
@@ -6306,9 +6316,6 @@ only screen and (max-device-width: 320px) {
   touch-action: none;
 }
 
-.fixed-action-button3.sectioned3 {
-  right: 80px;
-}
 
 /* Fix mobile-view for top FAB-button and Sectionlist heading */
 @media screen and (max-width: 680px) {
