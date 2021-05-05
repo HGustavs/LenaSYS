@@ -28,6 +28,7 @@ var variantvalue;
 var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
+var loadVariantFlag = false;
 
 
 $(function () {  // Used to set the position of the FAB above the cookie message
@@ -1530,6 +1531,19 @@ function setupLoginLogoutButton(isLoggedIn){
 	}
 }
 
+function toggleLoadVariant(setbool){
+	loadVariantFlag = setbool;
+	console.log("Value: " + setbool);
+}
+
+function showLoadVariantPopup(){
+	$("#loadVariantBox").css("display","flex");
+}
+
+function hideLoadVariantPopup(){
+	$("#loadVariantBox").css("display","none");
+}
+
 function showLoadDuggaPopup()
 {
 	$("#loadDuggaBox").css("display","flex");
@@ -2019,6 +2033,10 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
 		}
 
+		if(loadVariantFlag){
+			str+="<div style='width:0px;'><input class='submit-button large-button' type='button' value='Load variant' onclick='showLoadVariantPopup();' /></div>";
+		}
+		
 		str+="</div>";
 		$("#duggaStatus").remove();
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
