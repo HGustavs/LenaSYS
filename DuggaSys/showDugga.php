@@ -37,7 +37,8 @@
 	$comments=getOPG('comments');
 	$hash = getOPG("hash");
 	$test=getOPG('test');
-
+	
+	
 	$duggatitle="UNK";
 	$duggafile="UNK";
 	$duggarel="UNK";
@@ -45,9 +46,7 @@
 
 	$visibility=false;
 	$checklogin=false;
-	
-	$variantsize;
-	$variants=array();
+
 	$duggaid=getOPG('did');
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
@@ -126,9 +125,11 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 ?>
 <script type="text/javascript">
 
-	setHash("<?php echo $hash ?>");	
+	setHash("<?php echo $hash ?>");
 
 </script>
+
+
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
@@ -184,6 +185,7 @@ if($hash!='UNK'){
 //$_SESSION['hashpassword'] = 'UNK';
 
 ?>
+
 </div>
 	<!-- content START -->
 	<div id="content">
@@ -201,7 +203,7 @@ if($hash!='UNK'){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 
-					if ($duggafile !== 'contribution') {
+					if ($duggafile !== 'contribution') {						
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='left'>";
