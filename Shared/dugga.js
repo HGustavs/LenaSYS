@@ -1080,7 +1080,7 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="PDUGGA"){
 		$.ajax({
-			url: "showDuggaService.php",
+			url: "showDuggaservice.php",
 			type: "POST",
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
 			datatype: "json",

@@ -28,6 +28,25 @@
     pointer-events: none;
     z-index: -10;
 }
+#svgA4Template{
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:100%;
+    pointer-events: none;
+    z-index: -10;
+}
+#a4Template{
+    position:absolute;
+    left:0;
+    top:0;
+    display: none;
+    width:100%;
+    height:100%;
+    pointer-events: none;
+    z-index: -10;
+}
 
 #svgoverlay {
     position:absolute;
@@ -292,7 +311,7 @@
     position: relative;
 }
 
-.diagramIcons .toolTipText{
+.toolTipText{
     top:-5px;
     left:105%;
     visibility: hidden;
@@ -311,6 +330,22 @@
     visibility: visible;
 }
 
+#options-pane-button .toolTipText{
+    transform: translate(-150px,100px) rotate(-90deg);
+}
+#options-pane-button:hover .toolTipText{
+    visibility: visible;
+}
+#fab .toolTipText{
+    transform: translate(-335px,-20px);
+    font-size: 16px;
+    line-height: 20px;
+
+}
+#fab:hover .toolTipText{
+    visibility: visible;
+}
+
 .tooltip{
     position: absolute;
     z-index: 1;
@@ -318,4 +353,11 @@
 
 #fieldsetBox {
     margin-left: 20px;
+}
+
+/*Cardinality stuff*/
+
+.propertyCardinality{
+    padding-left:3px;
+    padding-right:3px;
 }

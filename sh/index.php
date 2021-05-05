@@ -25,11 +25,11 @@ function GetAssigment ($hash){
 
 	// Database request form
 	$sql =	
-	"SELECT useranswer.cid, useranswer.vers, useranswer.quiz, useranswer.moment, course.coursename, quiz.deadline
-	FROM useranswer 
-	INNER JOIN course ON useranswer.cid=course.cid
-	INNER JOIN quiz ON useranswer.quiz=quiz.id
-	WHERE hash='{$hash}'";		
+	"SELECT userAnswer.cid, userAnswer.vers, userAnswer.quiz, userAnswer.moment, course.coursename, quiz.deadline
+	FROM userAnswer 
+	INNER JOIN course ON userAnswer.cid=course.cid
+	INNER JOIN quiz ON userAnswer.quiz=quiz.id
+	WHERE hash='{$hash}'";
 
 	// There should only be one match to the hash value in database as the hash is uniqe
 	foreach ($pdo->query($sql) as $row){
