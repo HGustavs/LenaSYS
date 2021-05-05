@@ -958,6 +958,7 @@ document.addEventListener('keydown', function (e)
                 clearContext();
                 clearContextLine();
             } else {
+                ghostElement = null;
                 setMouseMode(mouseModes.POINTER);
             }
             if (movingContainer) {
@@ -965,7 +966,6 @@ document.addEventListener('keydown', function (e)
                 scrolly = sscrolly;
             }
             ghostLine = null;
-            ghostElement = null;
             pointerState = pointerStates.DEFAULT;
             showdata();
         }
