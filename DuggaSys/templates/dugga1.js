@@ -148,7 +148,7 @@ function saveClick()
 					// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 					saveDuggaResult(bitstr);
 				}
-			} else {
+			} else {                            //If it's the first time we save with this hash
 				Timer.stopTimer();
 
 				timeUsed = Timer.score;
