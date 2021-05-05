@@ -2519,7 +2519,6 @@ function getCourseElements(){
     var e = rubriker[i];
     list.push(e);
   }
-  console.log(list);
   return list;
 }
 
@@ -2532,20 +2531,20 @@ function validateForm(formid) {
   if (formid === 'editSection') {
     var sName = document.getElementById("sectionname").value;
     var deadDate = document.getElementById("setDeadlineValue").value;
-    console.log(getCourseElements().indexOf(sName));
-    console.log(sName);
+    var duplicate;
     //If fields empty
     if (sName == null || sName == "") {
       alert("Fill in all fields");
+    }
 
-    if(getCourseElements().indexOf(sName) >= 0){
-      console.log(getCourseElements().indexOf(sName));
+    if(getCourseElements().indexOf(sName) >= 0){      
       alert('Name already exists, choose another one');
-    }
+      duplicate == true;
+    } else duplicate == false;
 
-    }
     // if all information is correct
-    if (window.bool8 === true && window.bool10 === true ) {
+    if (window.bool8 === true && window.bool10 == true 
+      && duplicate == false || undefined) {
       alert('The item is now updated');
       updateItem();
       updateDeadline();
