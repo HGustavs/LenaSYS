@@ -190,6 +190,15 @@
     height:100%;
 }
 
+#rulerCorner {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    background-color: #e6e6e6;
+    z-index: 700;
+    top: 0px;
+}
+
 .diagramIcons{
     margin: auto;
     width: 31px;
