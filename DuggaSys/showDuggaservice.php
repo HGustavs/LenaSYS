@@ -268,29 +268,30 @@ if($demo || $hr){
 		$param=html_entity_decode($result['param']);
 		error_log("!=UNK".$variantvalue);
 	}
-} else if ($hr){
-	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
-	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
-	$query->execute();
-	$variantsize = $query->fetchColumn();
+} 
+// else if ($hr){
+// 	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
+// 	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
+// 	$query->execute();
+// 	$variantsize = $query->fetchColumn();
 
-	if($isIndb){ // If dugga is in database, get the variant from the database
-		if($insertparam == false){
-			$param="NONE!";
-		}
-		foreach ($variants as $variant) {
-			if($variant["vid"] == $variantvalue){
-					$param=html_entity_decode($variant['param']);
-			}
-		}
-	}else if(!$isIndb){ // If dugga is not in database, get the variant from the localstorage
-		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-		$query->bindParam(':vid', $variantvalue);
-		$query->execute();
-		$result = $query->fetch();
-		$param=html_entity_decode($result['param']);
-	}
-}
+// 	if($isIndb){ // If dugga is in database, get the variant from the database
+// 		if($insertparam == false){
+// 			$param="NONE!";
+// 		}
+// 		foreach ($variants as $variant) {
+// 			if($variant["vid"] == $variantvalue){
+// 					$param=html_entity_decode($variant['param']);
+// 			}
+// 		}
+// 	}else if(!$isIndb){ // If dugga is not in database, get the variant from the localstorage
+// 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+// 		$query->bindParam(':vid', $variantvalue);
+// 		$query->execute();
+// 		$result = $query->fetch();
+// 		$param=html_entity_decode($result['param']);
+// 	}
+// }
 
 //------------------------------------------------------------------------------------------------
 // Services
