@@ -576,7 +576,8 @@ const keybinds = {
         COPY: {key: "c", ctrl: true},
         PASTE: {key: "v", ctrl: true},
         SELECT_ALL: {key: "a", ctrl: true},
-        DELETE_B: {key: "backspace", ctrl: false}
+        DELETE_B: {key: "backspace", ctrl: false},
+        CENTER_CAMERA: {key: "home", ctrl: false}
 };
 
 /** 
@@ -1054,6 +1055,7 @@ document.addEventListener('keyup', function (e)
                 displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`)
             }
         }
+        if (isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
     }
 });
 
@@ -3885,3 +3887,43 @@ function showdata()
 
 }
 //#endregion =====================================================================================
+//#region ================================ Camera Functions     ================================
+/**
+ * @description Centers the camera between the highest and lowest x and y values of all elements
+ */
+function centerCamera()
+{
+    var maxX = undefined;
+    var maxY = undefined;
+    var minX = undefined;
+    var minY = undefined;
+    for (var i = 0; i < data.length; i++) {
+        if (maxX == undefined || data[i].x + data[i].width > maxX) maxX = data[i].x + data[i].width;
+        if (minX == undefined || data[i].x < minX) minX = data[i].x;
+        if (maxY == undefined || data[i].y + data[i].height > maxY) maxY = data[i].y + data[i].height;
+        if (minY == undefined || data[i].y < minY) minY = data[i].y;
+    }
+    console.log(new Point(minX, minY), new Point(maxX, maxY));
+    camera = {
+        x: (window.innerWidth * 0.5 - (scrollx / zoomfact) + 1) / zoomfact,
+        y: (window.innerHeight * 0.5 - (scrolly / zoomfact) + 1) / zoomfact
+    };
+
+    var center = {
+        x: minX + (maxX - minX) / 2,
+        y: minY + (maxY - minY) / 2
+    };
+
+    scrollx = -center.x * zoomfact + window.innerWidth * 0.5 * zoomfact;
+    scrolly = -center.y * zoomfact + window.innerHeight * 0.5 * zoomfact;
+    console.log(center);
+    //scrollx -= camera.x - ((window.innerWidth / 2) * zoomfact);
+    //scrolly -= camera.y - ((window.innerHeight / 2) * zoomfact);
+    showdata();
+    updatepos();
+    updateGridPos();
+    updateGridSize();
+    drawRulerBars(scrollx, scrolly);
+}
+
+//#endregion ===================================================================================
