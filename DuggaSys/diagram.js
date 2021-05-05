@@ -972,10 +972,12 @@ document.addEventListener('keydown', function (e)
         }
 
         if (isKeybindValid(e, keybinds.ZOOM_IN)){
+            e.stopPropagation();
             e.preventDefault();
             zoomin();
         } 
         if (isKeybindValid(e, keybinds.ZOOM_OUT)){
+            e.stopPropagation();
             e.preventDefault();
             zoomout();
         } 
