@@ -358,9 +358,9 @@ if($hash!='UNK'){
 	<?php 
 	if(isSuperUser($userid)){
     	echo '<script type="text/javascript">',
-    	//'displayDownloadIcon();', 
-		//'noUploadForTeacher();',
 		'toggleLoadVariant(true);',
+    	'displayDownloadIcon();', 
+		'noUploadForTeacher();',
     	'</script>';
 	}?>
 	
