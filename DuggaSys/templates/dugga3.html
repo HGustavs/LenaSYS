@@ -4,13 +4,24 @@
 				<div id="feedbackTable" style="margin-top: -3px;"></div>	
 		</div>
 </div>
+<div class='instructions-container'>
+	<div class='instructions-button' onclick='toggleInstructions(this)'><h3>Instructions</h3></div>	
+		<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " id="snus">
+			<p>Geometriduggan går ut på att fylla i det gråa streck som är ritat. 
+                Till ert förfogande finns 3 typer grafiska element: linje, kubisk kurva och kvadratisk kurva.
+                Rita från röd prick till blå prick.
+            </p>
+            <p>Lycka till!</p>
+            
+		</div>
+	</div>
 <div>
     <div id="container">
         <canvas id='a' style='background-color:#FFFFFF; border:2px solid black;float:left; cursor:none; display:block;'></canvas>
     </div>
 
 
-        <div id="infobox" class="floatRightBox" style="padding:4px;">
+        <div id="infobox" class="floatleftBox" style="padding:4px;">
             <div id="quizInstructions"></div>
 
             <div class='loginBoxheader'>
@@ -32,7 +43,7 @@
         </div>
 
 </div>
-<div id='duggaInfoBox' class="loginBox" style="display:none">
+<div style="display:none">
   <div>
         <div class='loginBoxheader'>
             <h3>Dugga 3 - Geometri</h3>

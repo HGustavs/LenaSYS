@@ -40,3 +40,13 @@ CREATE TABLE userAnswer (
 	FOREIGN KEY (moment) REFERENCES listentries(lid),
 	FOREIGN KEY (variant) REFERENCES variant(vid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+
+/* Associated with issue #10662 */
+DELIMITER //
+CREATE TRIGGER delete_group BEFORE DELETE ON userAnswer
+FOR EACH ROW
+BEGIN
+DELETE FROM groupdugga
+    WHERE OLD.hash = groupdugga.hash;
+END //
+DELIMITER ;

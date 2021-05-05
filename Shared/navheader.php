@@ -3,7 +3,7 @@
 			$requestedService = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
 			$requestedService = substr($requestedService,strrpos ( $requestedService , "/")+1);
 
-			echo "<table class='navheader'><tr>";
+			echo "<table class='navheader' id='navheader'><tr id='navbar'>";
 			include_once "../Shared/basic.php";
 
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
@@ -37,7 +37,7 @@
 			//---------------------------------------------------------------------
 
 			// Analytics button
-			if($noup == 'NONE' && $requestedService != "analytic.php" && checklogin() && isSuperUser($_SESSION['uid']) ){
+			if($noup == 'NONE' && $requestedService != "analytic.php" && checklogin() && isSuperUser($_SESSION['uid'])){
 				echo "<td class='menuButton' style='display: inline-block;'>";
 				echo "    <div class='access menuButton'>";
   				echo "      <a id='accessBTN' class='navButt' title='Visit the analytics page' value='Analytics' href='analytic.php'>";
@@ -89,7 +89,7 @@
 				echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
 					
-			}if($noup=='COURSE' && checklogin() && (isSuperUser($_SESSION['uid']))){
+			}if($noup=='COURSE' && checklogin() && ((isSuperUser($_SESSION['uid'])) || isTeacher($_SESSION['uid']))){
 				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
 
 			}if ($noup == 'COURSE' && checkLogin()) {
@@ -199,7 +199,7 @@
 							echo "<input type='text' id='adminLoggedin' value='yes' style='display:none;'>";
 
 
-							echo "<div id='hamburgerBox' style='display:none;'>";
+							echo "<div id='hamburgerBox'>";
 							echo "<div><img alt='announcement icon' id='announcementBurger' class='burgerButt' src='../Shared/icons/new_announcement_icon.svg'></div>";
 							echo "<div><img alt='settings icon' id='versionCogBurger' class='burgerButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'></div>";
 							echo "<div><img alt='plus sign icon' id='versionPlusBurger' value='New version' class='burgerButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'></div>";
@@ -343,10 +343,10 @@
 			}
 	
 			if(checklogin()) {
-				echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
+				echo "<td class='navName' id='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
 				echo "<td id='loginbutton' class='loggedin'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
 			}else{
-				echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
+				echo "<td class='navName' id='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
 				echo "<td id='loginbutton' class='loggedout'><img alt='login icon' id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
 			}
 

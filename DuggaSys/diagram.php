@@ -25,7 +25,7 @@
 <body onload="getData()" style="overflow: hidden;">
 
     <!-- Toolbar for diagram -->
-    <div id="diagram-toolbar">
+    <div id="diagram-toolbar" onmousedown='mdown(event)'>
         <fieldset>
             <legend>Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
@@ -108,8 +108,16 @@
                 <img src="../Shared/icons/diagram_gridmagnet.svg"/>
                 <span class="toolTipText"><b>Toggle Snap To Grid</b><br>
                     <p>Enable/disable the Snap To Grid</p><br>
-                    <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
-                </snap>
+                    <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+            <div id="a4TemplateToggle" class="diagramIcons" onclick="toggleA4Template()">
+                <img src="../Shared/icons/diagram_a4.svg"/>
+                <span class="toolTipText"><b>Toggle A4 template</b><br>
+                    <p>Enable/disable the A4 template</p><br>
+                    <p id="tooltip-TOGGLE_A4" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>     
         </fieldset>
     </div>
 
@@ -131,7 +139,7 @@
         <div id="ruler-y"></div>
     </div>
     <!-- Diagram grid -->
-    <div id="svggrid">
+    <div id="svggrid" style="z-index:-11">
         <svg id="svgbacklayer">
             <defs>
             <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
@@ -139,13 +147,31 @@
                 <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-dasharray="5,5" stroke-width="1"/>
             </pattern>
             </defs>
-
             <rect width="100%" height="100%" fill="url(#grid)" />
+            <line id="origoX" x1="0%" y1="100" x2="100%" y2="100" style="stroke:rgb(171, 171, 171);stroke-width:2;"/>
+            <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" style="stroke:rgb(171, 171, 171);stroke-width:2;"/>
         </svg>  
-    </div> 
-    <div id="fab" onclick="fab_action();">+</div> <!-- Big (+) button -->
-    <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
-        <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span></div>
+    </div>
+    <!-- A4 template -->
+    <div id="a4Template" style="z-index:-11">
+        <svg id="svgA4Template">
+            <rect id="a4Rect" x="100" y="100" width="794" height="1122" style="stroke:rgb(50, 50, 50);stroke-width:2" stroke-dasharray="5 3" fill="#ffffee" fill-opacity="0.4"/>
+            <text id="a4Text" x="880" y="90">A4</text>
+        </svg>  
+    </div>  
+    <div id="fab" onclick="fab_action();" onmousedown='mdown(event)'>+ <!-- Big (+) button -->
+        <span class="toolTipText"><b>Show Option Panel</b><br>
+            <p>Enable/disable the Option Panel</p><br>
+            <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
+        </span>
+    </div>
+    <div id="options-pane" class="hide-options-pane" onmousedown='mdown(event)'> <!-- Yellow menu on right side of screen -->
+        <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span>
+            <span class="toolTipText"><b>Show Option Panel</b><br>
+                <p>Enable/disable the Option Panel</p><br>
+                <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
+            </span>
+        </div>
         <div id ="fieldsetBox">
             <fieldset id='propertyFieldset'>
                 

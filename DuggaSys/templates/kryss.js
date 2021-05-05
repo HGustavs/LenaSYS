@@ -119,25 +119,58 @@ function getCheckedBoxes(){
 
 function saveClick()
 {
-	Timer.stopTimer();
+	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
+		url: "showDuggaservice.php",
+		type: "POST",
+		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
+		dataType: "json",
+		success: function(data) {
+			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+			if(ishashindb==true){				//If the hash already exist in database.
+				if (confirm("You already have a saved version!")) {
+					Timer.stopTimer();
 
-	timeUsed = Timer.score;
-	stepsUsed = ClickCounter.score;
+					timeUsed = Timer.score;
+					stepsUsed = ClickCounter.score;
 
-	if (querystring['highscoremode'] == 1) {	
-		score = Timer.score;
-	} else if (querystring['highscoremode'] == 2) {
-		score = ClickCounter.score;
-	}
+					if (querystring['highscoremode'] == 1) {	
+						score = Timer.score;
+					} else if (querystring['highscoremode'] == 2) {
+						score = ClickCounter.score;
+					}
 
-var answer ="";
-	for(var t = 1;t <= idunique; t++){
-	answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
-	}
-idunique = 0;
-		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-		answer = variant + " " + answer;
-		saveDuggaResult(answer);
+					var answer ="";
+					for(var t = 1;t <= idunique; t++){
+					answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
+					}
+					idunique = 0;
+					// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+					answer = variant + " " + answer;
+					saveDuggaResult(answer);
+				}
+			} else {                            //If it's the first time we save with this hash
+				Timer.stopTimer();
+
+				timeUsed = Timer.score;
+				stepsUsed = ClickCounter.score;
+
+				if (querystring['highscoremode'] == 1) {	
+					score = Timer.score;
+				} else if (querystring['highscoremode'] == 2) {
+					score = ClickCounter.score;
+				}
+
+				var answer ="";
+				for(var t = 1;t <= idunique; t++){
+				answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
+				}
+				idunique = 0;
+				// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+				answer = variant + " " + answer;
+				saveDuggaResult(answer);
+			}
+		}
+	});
 }
 
 //----------------------------------------------------------------------------------

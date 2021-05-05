@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-// Show analytics if user is superuser, otherwise redirect them to courseed.
-if(!isset($_SESSION["superuser"]) || $_SESSION["superuser"] != 1) {
+
+
+if (!isset($_SESSION["superuser"]) || $_SESSION["superuser"] != 1) {
 	header('Location: courseed.php');
 }
-
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
