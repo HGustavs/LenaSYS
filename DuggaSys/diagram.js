@@ -3446,7 +3446,7 @@ function drawElement(element, ghosted = false)
                     Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
                     Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
                     stroke='black' fill='#ffccdc' stroke-width='${linew}' />`;
-        }
+        }    
 
         str += `<path d="M${linew},${hboxh} 
                            Q${linew},${linew} ${hboxw},${linew} 
@@ -3458,17 +3458,17 @@ function drawElement(element, ghosted = false)
                     ${multi}
 
                     <text x='${xAnchor}' y='${hboxh}' `;
-                    
-        if(element.state == "weakKey") {
-            str += `class='weakAttribute'`;
-        }
-
+        
         if(element.state == "key") {
             str += `class='underline'`;
-        }    
-            str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-            `;
-    
+        }             
+        str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+        `;
+            
+        if(element.state == "weakKey") {
+            str += `<line x1="${xAnchor - textWidth / 2}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2}" y2="${hboxh + texth * 0.5 + 1}" stroke="black" stroke-dasharray="5" stroke-width='2'/>`;
+        }
+        
     }
     else if (element.kind == "ERRelation") {
         var weak = "";
