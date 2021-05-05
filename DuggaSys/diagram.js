@@ -71,53 +71,6 @@ class StateChange {
         }
     }
 
-    /** 
-     * @description Calculates and returns the bit-or of all flags in this state change.
-     * @returns {Number}
-     */
-    getFlags()
-    {
-        var flags = 0;
-
-        for (var index = 0; index <  this.changeTypes.length; index++) {
-            var change = this.changeTypes[index];
-
-            // Perform bit-or operation
-            flags = flags | change.flag;
-        }
-
-        return flags;
-    }
-
-    /**
-     * @description Tests if this state change contains a certain flag.
-     * @param {Number} flag Flag that is tested.
-     * @returns {Boolean} Boolean value depending on this state change containing the tested flag.
-     */
-    hasFlag(flag)
-    {
-        var allFlags = this.getFlags();
-        var AND = flag & allFlags;
-
-        return (AND === flag);
-    }
-
-    /**
-     * @description Writes all properties of parameter to valuesPassed. This does NOT append values, but REPLACES them!
-     * @param {Object} value_object Object containting properties that should be written onto valuesPassed.
-     */
-    setValues(value_object)
-    {
-        if (value_object) {
-            var props = Object.getOwnPropertyNames(value_object);
-
-            for (var index = 0; index < props.length; index++) {
-                var propertyName = props[index];
-                this.valuesPassed[propertyName] = value_object[propertyName];
-            }
-        }
-    }
-
     /**
      * @description Appends all property values onto the valuesPassed object. Logic for each specific property is different, some overwrite and some replaces.
      * @param {StateChange} changes Another state change that will have its values copied over to this state change. Flags will also be merged.
@@ -126,7 +79,13 @@ class StateChange {
     {
         var propertys = Object.getOwnPropertyNames(changes);
 
+        // For every value in change
         propertys.forEach(key => {
+
+            /**
+             * If the current key in the loop is a number, update the value or if it do not
+             * exists, set the value. Else just set the value.
+             */
             if (Number.isInteger(changes[key])){
                 if (this[key] === undefined) this[key] = changes[key];
                 else this[key] += changes[key]
@@ -150,12 +109,14 @@ class StateChangeFactory
     {
         var values = { kind: element.kind };
 
+        // Get the keys of the values that is unique from default
         var uniqueKeysArr = Object.keys(element).filter(key => {
             return (Object.keys(defaults[element.kind]).filter(value => {
                 return defaults[element.kind][value] == element[key];
             }).length == 0);
         });
 
+        // For every unique value set it into the change
         uniqueKeysArr.forEach(key => {
             values[key] = element[key];
         });
@@ -163,12 +124,14 @@ class StateChangeFactory
     }
 
     /**
-     * @param {Object} elements The elements that has been/are going to be deleted.
+     * @param {Array<Object>} elements The elements that has been/are going to be deleted.
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementsDeleted(elements)
     {
         var ids = [];
+
+        // For every object in the array, get id and add it to the array ids
         elements.forEach(element => {
             ids.push(element.id);
         });
@@ -184,16 +147,18 @@ class StateChangeFactory
      */
     static ElementsMoved(elementIDs, moveX, moveY)
     {
-        var values = {
-            x: moveX,
-            y: moveY
-        };
+        var values = {};
+
+        // If moveX or Y is 0, the value should not be applied
+        if (moveX != 0) values.x = moveX;
+        if (moveY != 0) values.y = moveY;
+        if (moveX == 0 && moveY == 0) return null;
 
         return new StateChange(elementIDs, values);
     }
 
     /**
-     * @param {List<String>} elementIDs List of IDs for all elements that were resized.
+     * @param {Array<String>} elementIDs List of IDs for all elements that were resized.
      * @param {Number} changeX Amount of coordinates along the x-axis the elements have resized.
      * @param {Number} changeY Amount of coordinates along the y-axis the elements have resized.
      * @returns {StateChange} A new instance of the StateChange class.
@@ -225,23 +190,18 @@ class StateChangeFactory
     }
 
     /**
-     * @param {List<String>} elementID ID for element that has been changed.
+     * @param {Array<String>} elementID ID for element that has been changed.
      * @param {Object} changeList Object containing changed attributes for the element. Each property represents each attribute changed.
      * @returns {StateChange} A new instance of the StateChange class.
      */ 
     static ElementAttributesChanged(elementID, changeList)
     {
-        var state = new StateChange([elementID]);
-
-        // TODO : Could this be deleted? "changeList.name" should be handled in StateChange instead.
-        // Handle special values that should not be passed, but rather used instantly.
-        if (changeList.name) {
-            state.name = changeList.name;
-            delete changeList.name;
-        }
-
-        state.setValues(changeList);
-        return state;
+        var values = {};
+        // For every attribut in changeList, add it to values
+        Object.keys(changeList).forEach(key => {
+            values[key] = changeList[key];
+        });
+        return new StateChange(elementID, values);
     }
 
     /**
@@ -250,13 +210,21 @@ class StateChangeFactory
      */
     static LineAdded(line)
     {
-        var passed_values = {
-            kind: line.kind,
-            fromID: line.fromID,
-            toID: line.toID
-        };
+        var values = {};
 
-        return new StateChange(line.id, passed_values);
+        // Get the keys of the values that is unique from default
+        var uniqueKeysArr = Object.keys(line).filter(key => {
+            return (Object.keys(defaultLine).filter(value => {
+                return defaultLine[value] == line[key];
+            }).length == 0);
+        });
+
+        // For every unique value set it into the change
+        uniqueKeysArr.forEach(key => {
+            values[key] = line[key];
+        });
+
+        return new StateChange(line.id, values);
     }
 
     /**
@@ -267,6 +235,7 @@ class StateChangeFactory
     {
         var lineIDs = [];
 
+        // For every object in the lines array, add them to lineIDs
         for (var index = 0; index < lines.length; index++) {
             lineIDs.push(lines[index].id);
         }
@@ -378,9 +347,15 @@ class StateMachine
             this.initialState.lines.push(obj)
         });
 
-        this.lastFlag = {};
+        /**
+         * @type StateChange.ChangeTypes
+         */
+        this.lastFlag = { };
 
-        this.timestamp = new Date().getTime();
+        /**
+         * Interger of the currentIndex position of historyLog
+        */
+        this.currentHistoryIndex = -1;
     }
 
     /**
@@ -392,12 +367,19 @@ class StateMachine
     save (stateChange, changeType)
     {
         if (stateChange instanceof StateChange) {
-          
+
+            // Remove the history entries that are after current index
+            while(this.currentHistoryIndex + 1 != this.historyLog.length) {
+                this.historyLog.pop();
+            }
+
             // If history is present, perform soft/hard-check
             if (this.historyLog.length > 0) {
-                /** @type StateChange */
+
+                // Get the last state in historyLog
                 var lastLog = this.historyLog[this.historyLog.length - 1];
 
+                // Check if the element is the same
                 var sameElements = true;
                 if (Array.isArray(lastLog.id)){
                     if (stateChange.id.length != lastLog.id.length) sameElements = false;
@@ -408,9 +390,11 @@ class StateMachine
 
                     }
                 }else {
-                    if (!lastLog.id == stateChange.id) sameElements = false;
+                    console.log(stateChange.id, lastLog.id)
+                    if (lastLog.id != stateChange.id) sameElements = false;
                 }
 
+                // Check if the current change is soft
                 var isSoft = true;
                 if (Array.isArray(changeType)){
                     for (var index = 0; index < changeType.length && isSoft; index++) {
@@ -422,6 +406,7 @@ class StateMachine
                     var changeTypes = [changeType];
                 }
 
+                // Check if the change can be appended to last change
                 var canAppendToLast = true;
                 for (var index = 0; index < this.lastFlag.length && isSoft; index++) {
                     canAppendToLast = this.lastFlag[index].canAppendTo;
@@ -431,6 +416,8 @@ class StateMachine
                 if (!isSoft || !canAppendToLast || !sameElements) {
 
                     this.historyLog.push(stateChange);
+                    this.lastFlag = changeType;
+                    this.currentHistoryIndex = this.historyLog.length -1;
 
                 } else { // Otherwise, simply modify the last entry.
 
@@ -454,11 +441,12 @@ class StateMachine
                 }
             } else {
                 this.historyLog.push(stateChange);
+                this.lastFlag = changeType;
+                this.currentHistoryIndex = this.historyLog.length -1;
             }
         } else {
             console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
         }
-        //console.log(stateMachine.historyLog[stateMachine.historyLog.length - 1])
     }
 
     /**
@@ -468,57 +456,74 @@ class StateMachine
     stepBack () 
     {
         // If there is no history => return
-        if (this.historyLog.length == 0) return;
-
-        // Put the latest change into futureLog
-        this.futureLog.push(this.historyLog.pop());
+        if (this.currentHistoryIndex == -1) return;
 
         // Set initial values to data and lines.
         data = [];
         lines = [];
-        Object.assign(data, this.initialState.elements);
-        Object.assign(lines, this.initialState.lines);
 
-        this.historyLog.forEach(state => {
+        this.initialState.elements.forEach(element => {
+            var obj = {};
+            Object.assign(obj, element);
+            data.push(obj)
+        });
+        this.initialState.lines.forEach(line => {
+            var obj = {};
+            Object.assign(obj, line);
+            lines.push(obj)
+        });
 
+        // For every change that should be redone
+        for (var i = 0; i < this.currentHistoryIndex; i++) {
+            var state = this.historyLog[i];
             var keys = Object.keys(state);
 
             // If there is only an key that is ID in the state, delete those objects
             if (keys.length == 1 && keys[0] == "id") {
-
                 var elementsToRemove = [];
                 var linesToRemove = [];
 
-                if (Array.isArray(state.id)){
-                    state.id.forEach(objID => {
-                        if (data[findIndex(data, objID)] != undefined){
-                            elementsToRemove.push(data[findIndex(data, state.id)]);
-                        }else {
-                            linesToRemove.push(lines[findIndex(lines, state.id)]);
-                        }
-                    });
-                }else {
-                    if (data[findIndex(data, state.id)] != undefined){
+                if (!Array.isArray(state.id)) state.id = [state.id];
+
+                state.id.forEach(objID => {
+                    if (data[findIndex(data, objID)] != undefined){
                         elementsToRemove.push(data[findIndex(data, state.id)]);
                     }else {
                         linesToRemove.push(lines[findIndex(lines, state.id)]);
                     }
-                }
+                });
                 if (linesToRemove.length != 0) removeLines(linesToRemove, false);
                 if (elementsToRemove.length != 0) removeElements(elementsToRemove, false);
-                clearContext();
-                showdata();
-                updatepos(0, 0);
-                displayMessage(messageTypes.SUCCESS, "Changes reverted!")
-                return;
+                continue;
             }
 
-            if (state[0].id != undefined){
-                /** TODO: Add the group of objects again */
-                return;
-            }
+            if (state[0] != undefined && state[0].id != undefined){
+                Object.keys(state).forEach(index => {
 
-            // If the state is for multiple objects
+                    var temp = {};
+                    Object.keys(state[index]).forEach(key => {
+                        if (key == "id") temp.id = state[index][key];
+                        else temp[key] = state[index][key];
+                    });
+
+                    // If the object is an element
+                    if (state[index].x && state[index].y){
+                        // Add the defaults to the element
+                        Object.keys(defaults[temp.kind]).forEach(key => {
+                            if (!temp[key]) temp[key] = defaults[temp.kind][key];
+                        });
+                        data.push(temp);
+                    }else {
+                        // Add the defaults to the element
+                        Object.keys(defaultLine).forEach(key => {
+                            if (!temp[key]) temp[key] = defaultLine[key];
+                        });
+                        lines.push(temp);
+                    }
+                });
+                continue;
+            }
+            
             if (!Array.isArray(state.id)) state.id = [state.id];
 
             for (var i = 0; i < state.id.length; i++){
@@ -528,16 +533,15 @@ class StateMachine
                 else if (lines[findIndex(lines, state.id)] != undefined) object = lines[findIndex(lines, state.id)];
 
                 if (object){
-                        keys.forEach(key => {
-                            if (key == "id") return;
-
-                            if (Number.isInteger(state[key])){
-                                object[key] = 0 + object[key] + state[key];
-                            }else {
-                                object[key] = state[key];
-                            }
-                        });
-                    }else { // Create new object
+                    keys.forEach(key => {
+                        if (key != "id" && Number.isInteger(state[key])){
+                            if (object[key] === undefined) object[key] = state[key];
+                            else object[key] += state[key]
+                        }else {
+                            object[key] = state[key];
+                        }
+                    });
+                }else { // Create new object
                     var temp = {};
                     Object.keys(state).forEach(key => {
                         if (key == "id") temp.id = state.id[i];
@@ -560,7 +564,11 @@ class StateMachine
                     }
                 }
             }
-        });
+        }
+
+        // Lower the historyIndex by one
+        this.currentHistoryIndex--;
+
         clearContext();
         showdata();
         updatepos(0, 0);
@@ -1767,10 +1775,9 @@ function getLines() // TODO : Replace all lines[i] with getLines()[i], or event 
 function makeGhost()
 {
     var entityType = constructElementOfType(elementTypeSelected);
-    var typeNames = Object.getOwnPropertyNames(elementTypes);
     var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
     ghostElement = {
-        name: typeNames[elementTypeSelected],
+        name: entityType.name,
         x: lastMouseCoords.x - entityType.data.width * 0.5,
         y: lastMouseCoords.y - entityType.data.height * 0.5,
         width: entityType.data.width,
@@ -1809,10 +1816,11 @@ function constructElementOfType(type)
  */
 function changeState() 
 {
-    // TODO : THIS DOES NOT USE THE STATE MACHINE, VERY BAD!
+
     var property = document.getElementById("propertySelect").value;
     var element = context[0];
     element.state = property;
+    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
 }
 
 /**
@@ -1835,7 +1843,7 @@ function saveProperties()
                 const value = child.value.trim();
                 if (value && value.length > 0) {
                     element[propName] = value;
-                    propsChanged.elementName = value;
+                    propsChanged.name = value;
                 }
                 break;
         
