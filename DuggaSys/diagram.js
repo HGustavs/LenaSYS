@@ -3466,7 +3466,10 @@ function drawElement(element, ghosted = false)
         `;
             
         if(element.state == "weakKey") {
-            str += `<line x1="${xAnchor - textWidth / 2}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2}" y2="${hboxh + texth * 0.5 + 1}" stroke="black" stroke-dasharray="5" stroke-width='2'/>`;
+            // Calculates how far to the left X starts
+            var diff = xAnchor - textWidth / 2;
+            diff = diff < 0 ? 0 - diff + 10 : 0;
+            str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="black" stroke-dasharray="5" stroke-width='2'/>`;
         }
         
     }
