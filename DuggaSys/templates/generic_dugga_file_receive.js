@@ -116,7 +116,7 @@ function returnedDugga(data)
 
 function reset()
 {
-	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
+	confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
 
 
 	Timer.stopTimer();
