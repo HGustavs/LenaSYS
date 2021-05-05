@@ -856,7 +856,7 @@ p {
 #statisticsSwimlanes {
   display: flex;
   overflow:auto;
-  border: 2px solid darkgray;
+  border: 2px solid darkgray; 
   background-color: var(--color-sectioned-table-lo);
 }
 
