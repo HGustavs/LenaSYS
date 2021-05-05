@@ -125,15 +125,17 @@ function returnedDugga(data)
 
 function reset()
 {
-	confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
+	if(confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.")){
+		document.getElementById("content-window").value = "";
+		document.getElementById("url-input").value = "";
 
-	document.getElementById("content-window").value = "";
-	document.getElementById("url-input").value = "";
-
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
-	ClickCounter.initialize();
+		Timer.stopTimer();
+		Timer.score=0;
+		Timer.startTimer();
+		ClickCounter.initialize();
+    } else {
+        
+    } 
 
 }
 

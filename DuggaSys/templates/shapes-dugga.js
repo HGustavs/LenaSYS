@@ -126,15 +126,18 @@ function saveClick()
 
 function reset()
 {
-	confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
-	ClickCounter.initialize();
+	if(confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.")){
+		Timer.stopTimer();
+		Timer.score=0;
+		Timer.startTimer();
+		ClickCounter.initialize();
 
-	bitarray=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-	facitarray = bitarray;
-	redrawgfx();
+		bitarray=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+		facitarray = bitarray;
+		redrawgfx();
+    } else {
+        
+    } 
 
 }
 

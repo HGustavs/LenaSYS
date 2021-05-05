@@ -96,11 +96,14 @@ function saveClick()
 
 function reset()
 {
-	confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
-	ClickCounter.initialize();
+	if(confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.")){
+		Timer.stopTimer();
+		Timer.score=0;
+		Timer.startTimer();
+		ClickCounter.initialize();
+    } else {
+        
+    } 
 
 }
 
