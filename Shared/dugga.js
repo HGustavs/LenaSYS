@@ -1530,6 +1530,14 @@ function setupLoginLogoutButton(isLoggedIn){
 	}
 }
 
+function showLoadVariantPopup(){
+	$("#loadVariantBox").css("display","flex");
+}
+
+function hideLoadVariantPopup(){
+	$("#loadVariantBox").css("display","none");
+}
+
 function showLoadDuggaPopup()
 {
 	$("#loadDuggaBox").css("display","flex");
@@ -2018,7 +2026,7 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
 			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
 		}
-		str+="<div style='width:30px;'><input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' /></div>";
+		str+="<div style='width:0px;'><input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load variant' onclick='showLoadVariantPopup();' /></div>";
 		str+="</div>";
 		
 		$("#duggaStatus").remove();
