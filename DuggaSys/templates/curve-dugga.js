@@ -139,16 +139,18 @@ function returnedDugga(data) {
 
 function reset()
 {
-	confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-	while (document.getElementById('operations').options.length > 0) {
-		document.getElementById('operations').remove(0);
+	if(confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.")){
+		while (document.getElementById('operations').options.length > 0) {
+			document.getElementById('operations').remove(0);
+		}
+
+		Timer.stopTimer();
+		Timer.score=0;
+		Timer.startTimer();
+		ClickCounter.initialize();
+	} else {
+
 	}
-
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
-	ClickCounter.initialize();
-
 }
 
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
