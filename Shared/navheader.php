@@ -3,7 +3,7 @@
 			$requestedService = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
 			$requestedService = substr($requestedService,strrpos ( $requestedService , "/")+1);
 
-			echo "<table class='navheader'><tr>";
+			echo "<table class='navheader' id='navheader'><tr id='navbar'>";
 			include_once "../Shared/basic.php";
 
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
@@ -343,10 +343,10 @@
 			}
 	
 			if(checklogin()) {
-				echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
+				echo "<td class='navName' id='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
 				echo "<td id='loginbutton' class='loggedin'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
 			}else{
-				echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
+				echo "<td class='navName' id='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
 				echo "<td id='loginbutton' class='loggedout'><img alt='login icon' id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
 			}
 

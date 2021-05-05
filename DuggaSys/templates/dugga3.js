@@ -347,6 +347,15 @@ function populateOperationsList()
 
 function saveClick() 
 {
+	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
+		url: "showDuggaservice.php",
+		type: "POST",
+		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
+		dataType: "json",
+		success: function(data) {
+			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+			if(ishashindb==true){				//If the hash already exist in database.
+				if (confirm("You already have a saved version!")) {
 	Timer.stopTimer();
 
 	timeUsed = Timer.score;
@@ -379,7 +388,43 @@ function saveClick()
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
 }
+} else {
+	Timer.stopTimer();
 
+	timeUsed = Timer.score;
+	stepsUsed = ClickCounter.score;
+
+	if (querystring['highscoremode'] == 1) {	
+		score = Timer.score;
+	} else if (querystring['highscoremode'] == 2) {
+		score = ClickCounter.score;
+	}
+
+	// Loop through all bits
+	bitstr = ",";
+	var opList = document.getElementById("operations");
+
+	for (var i = 0; i < document.getElementById('operations').length; i++) {
+		bitstr += opList[i].value;
+		if (i < document.getElementById('operations').length - 1)
+			bitstr += ",";
+	}
+
+	bitstr += ",T " + elapsedTime;
+
+	bitstr += " " + window.screen.width;
+	bitstr += " " + window.screen.height;
+
+	bitstr += " " + $(window).width();
+	bitstr += " " + $(window).height();
+
+	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+	saveDuggaResult(bitstr);
+
+			}
+		}
+	});
+}
 function newOp(operation, operationText) 
 {
 	ClickCounter.onClick();

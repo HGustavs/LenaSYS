@@ -139,38 +139,84 @@ function reset()
 
 function saveClick()
 {
-	Timer.stopTimer();
+	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
+		url: "showDuggaservice.php",
+		type: "POST",
+		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
+		dataType: "json",
+		success: function(data) {
+			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+			if(ishashindb==true){				//If the hash already exist in database.
+				if (confirm("You already have a saved version!")) {
+					Timer.stopTimer();
 
-	timeUsed = Timer.score;
-	stepsUsed = ClickCounter.score;
+					timeUsed = Timer.score;
+					stepsUsed = ClickCounter.score;
 
-	score = 0;
+					score = 0;
 
-	if (querystring['highscoremode'] == 1) {
-		score = Timer.score;
-	} else if (querystring['highscoremode'] == 2) {
-		score = ClickCounter.score;
-	}
+					if (querystring['highscoremode'] == 1) {
+						score = Timer.score;
+					} else if (querystring['highscoremode'] == 2) {
+						score = ClickCounter.score;
+					}
 
-	if (document.getElementById("content-window").value.length > MAX_SUBMIT_LENGTH){
-		alert("Din kod är för lång. Svaret går att göra mindre. Inget har sparats.");
-		return;
-	}
+					if (document.getElementById("content-window").value.length > MAX_SUBMIT_LENGTH){
+						alert("Din kod är för lång. Svaret går att göra mindre. Inget har sparats.");
+						return;
+					}
 
-	bitstr = htmlEntities("###HTMLSTART###"+document.getElementById("content-window").value+"###HTMLEND###");
-	bitstr += htmlEntities("###URLSTART###"+document.getElementById("url-input").value+"###URLEND###");
+					bitstr = htmlEntities("###HTMLSTART###"+document.getElementById("content-window").value+"###HTMLEND###");
+					bitstr += htmlEntities("###URLSTART###"+document.getElementById("url-input").value+"###URLEND###");
 
-	bitstr += ",T " + elapsedTime;
+					bitstr += ",T " + elapsedTime;
 
-	bitstr += " " + window.screen.width;
-	bitstr += " " + window.screen.height;
+					bitstr += " " + window.screen.width;
+					bitstr += " " + window.screen.height;
 
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
+					bitstr += " " + $(window).width();
+					bitstr += " " + $(window).height();
 
-	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-	saveDuggaResult(bitstr);
+					// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+					saveDuggaResult(bitstr);
+				}
+			} else {                            //If it's the first time we save with this hash
+				Timer.stopTimer();
+
+				timeUsed = Timer.score;
+				stepsUsed = ClickCounter.score;
+
+				score = 0;
+
+				if (querystring['highscoremode'] == 1) {
+					score = Timer.score;
+				} else if (querystring['highscoremode'] == 2) {
+					score = ClickCounter.score;
+				}
+
+				if (document.getElementById("content-window").value.length > MAX_SUBMIT_LENGTH){
+					alert("Din kod är för lång. Svaret går att göra mindre. Inget har sparats.");
+					return;
+				}
+
+				bitstr = htmlEntities("###HTMLSTART###"+document.getElementById("content-window").value+"###HTMLEND###");
+				bitstr += htmlEntities("###URLSTART###"+document.getElementById("url-input").value+"###URLEND###");
+
+				bitstr += ",T " + elapsedTime;
+
+				bitstr += " " + window.screen.width;
+				bitstr += " " + window.screen.height;
+
+				bitstr += " " + $(window).width();
+				bitstr += " " + $(window).height();
+
+				// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+				saveDuggaResult(bitstr);
+			}
+		}
+	});
 }
+
 
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {

@@ -41,6 +41,7 @@ $password=getOP('password');
 $AUtoken=getOP('AUtoken');
 //$localStorageVariant= getOP('variant');
 $variantvalue= getOP('variant');
+$hashvariant;
 
 $showall="true";
 $param = "UNK";
@@ -192,7 +193,7 @@ if(checklogin()){
 $demo=false;
 if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
-if($demo){
+if($demo || $hr){
 		
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
@@ -242,6 +243,22 @@ if($demo){
 	$query->execute();
 	$variantsize = $query->fetchColumn();
 
+	//If the variant value is unknown (E.G: UNK) then we retrieve the variant from the variant set in useranswer 
+	//where there exists a corresponding hash, and set the resulting useranswer.variant into $variantvalue
+
+	error_log("!=UNK".$variantvalue);
+	if($variantvalue == "UNK") {
+		$query = $pdo->prepare("SELECT useranswer.variant FROM useranswer WHERE hash=:hash");
+		$query->bindParam(':hash', $hash);
+		$query->execute();
+		$result = $query->fetch();
+		if($param != null) {
+			$variantvalue = $result['variant'];
+			$hashvariant = $result['variant'];
+		}
+		error_log("==UNK".$result['variant']);
+	}
+
 	//Makes sure that the localstorage variant is set before retrieving data from database
 	if(isset($variantvalue)) {
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
@@ -249,31 +266,32 @@ if($demo){
 		$query->execute();
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
-		error_log("result param: ".$param);
+		error_log("!=UNK".$variantvalue);
 	}
-} else if ($hr){
-	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
-	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
-	$query->execute();
-	$variantsize = $query->fetchColumn();
+} 
+// else if ($hr){
+// 	//Finds the highest variant.quizID, which is then used to compare against the duggaid to make sure that the dugga is within the scope of listed duggas in the database
+// 	$query = $pdo->prepare("SELECT MAX(quizID) FROM variant");
+// 	$query->execute();
+// 	$variantsize = $query->fetchColumn();
 
-	if($isIndb){ // If dugga is in database, get the variant from the database
-		if($insertparam == false){
-			$param="NONE!";
-		}
-		foreach ($variants as $variant) {
-			if($variant["vid"] == $variantvalue){
-					$param=html_entity_decode($variant['param']);
-			}
-		}
-	}else if(!$isIndb){ // If dugga is not in database, get the variant from the localstorage
-		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
-		$query->bindParam(':vid', $variantvalue);
-		$query->execute();
-		$result = $query->fetch();
-		$param=html_entity_decode($result['param']);
-	}
-}
+// 	if($isIndb){ // If dugga is in database, get the variant from the database
+// 		if($insertparam == false){
+// 			$param="NONE!";
+// 		}
+// 		foreach ($variants as $variant) {
+// 			if($variant["vid"] == $variantvalue){
+// 					$param=html_entity_decode($variant['param']);
+// 			}
+// 		}
+// 	}else if(!$isIndb){ // If dugga is not in database, get the variant from the localstorage
+// 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
+// 		$query->bindParam(':vid', $variantvalue);
+// 		$query->execute();
+// 		$result = $query->fetch();
+// 		$param=html_entity_decode($result['param']);
+// 	}
+// }
 
 //------------------------------------------------------------------------------------------------
 // Services
@@ -320,7 +338,7 @@ if(checklogin()){
 				$query->bindParam(':coursevers', $coursevers);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':moment', $moment);
-				$query->bindParam(':variant', $savedvariant);
+				$query->bindParam(':variant', $variantvalue);
 				$query->bindParam(':hash', $hash);
 				$query->bindParam(':password', $password);
 				if(!$query->execute()) {
@@ -606,6 +624,7 @@ $array = array(
 		"variantsize" => $variantsize,
 		"variantvalue" => $variantvalue,
 		"password" => $password,
+		"hashvariant" => $hashvariant,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
