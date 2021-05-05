@@ -110,7 +110,6 @@ function returnedDugga(data)
 
 function saveClick()
 {
-	//if (confirm("You have already a saved version!")) {
 	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
 		url: "showDuggaservice.php",
 		type: "POST",
@@ -119,7 +118,7 @@ function saveClick()
 		success: function(data) {
 			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
 			if(ishashindb==true){				//If the hash already exist in database.
-				if (confirm("You have already a saved version!")) {
+				if (confirm("You already have a saved version!")) {
 					Timer.stopTimer();
 
 					timeUsed = Timer.score;
