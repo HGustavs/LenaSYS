@@ -152,7 +152,7 @@ function returnedDugga(data)
 function reset()
 {
 	// console.log(JSON.stringify(boxes));
-	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
+	confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
 
 	boxes.length = 0; // Clear array.
 	for (var b=0; b<retdata["boxes"].length; b++) {
