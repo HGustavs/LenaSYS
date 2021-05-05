@@ -28,7 +28,7 @@ var variantvalue;
 var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
-var loadVariantFlag = false;
+var loadVariantFlag = false;	// Flag to decide if the 'Load Variant' button should be visable or not.
 
 
 $(function () {  // Used to set the position of the FAB above the cookie message
@@ -1531,16 +1531,16 @@ function setupLoginLogoutButton(isLoggedIn){
 	}
 }
 
-function toggleLoadVariant(setbool){
+function toggleLoadVariant(setbool){	//setbool has a value of True or False. This decides if the Load Variant button should be visable or not.
 	loadVariantFlag = setbool;
 	console.log("Value: " + setbool);
 }
 
-function showLoadVariantPopup(){
+function showLoadVariantPopup(){		//If 'Load variant' is clicked.
 	$("#loadVariantBox").css("display","flex");
 }
 
-function hideLoadVariantPopup(){
+function hideLoadVariantPopup(){		//'Load variant' window exit.
 	$("#loadVariantBox").css("display","none");
 }
 
@@ -2033,10 +2033,10 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
 		}
 
-		if(loadVariantFlag){
+		if(loadVariantFlag){	//If the 'Load Variant' button is set to be visable (Teachers only). 
 			str+="<div style='width:0px;'><input class='submit-button large-button' type='button' value='Load variant' onclick='showLoadVariantPopup();' /></div>";
 		}
-		
+
 		str+="</div>";
 		$("#duggaStatus").remove();
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");

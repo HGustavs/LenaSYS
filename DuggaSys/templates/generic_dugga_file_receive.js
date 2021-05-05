@@ -28,7 +28,7 @@ function setup()
 
 function returnedDugga(data)
 {
-	toggleLoadVariant(false);
+	toggleLoadVariant(false);	//A submission doesn't have any variants. The Load Variant button should be disabled.
 	dataV = data;
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 

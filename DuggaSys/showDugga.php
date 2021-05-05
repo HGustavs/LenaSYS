@@ -334,7 +334,7 @@ if($hash!='UNK'){
 	</div>
 	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
 
-	<!-- Load Variant Popup (Change variant locally to check if the variant is presented) -->
+	<!-- Load Variant Popup (Change variant locally to check if the variant is presented. Teachers only) -->
 	<div id='loadVariantBox' class="loginBoxContainer" style="display:none">
 	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
 			<div class='loginBoxheader'><h3>Hämta variant av dugga</h3><div class='cursorPointer' onclick="hideLoadVariantPopup()">x</div></div>
@@ -355,7 +355,7 @@ if($hash!='UNK'){
 
 	<?php 
 	if(isSuperUser($userid)){
-		if($hash == "UNK"){
+		if($hash == "UNK"){		//A teacher should not be able to change the variant (local) if they are grading an assignment.
 			echo '<script type="text/javascript">toggleLoadVariant(true);</script>';
 		}
     	echo '<script type="text/javascript">',
