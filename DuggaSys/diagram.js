@@ -922,6 +922,7 @@ function getData()
     generateToolTips();
     toggleGrid();
     updateGridPos();
+    updateA4Pos();
     updateGridSize();
     setCursorStyles(mouseMode);
 }
@@ -1499,6 +1500,7 @@ function mmoving(event)
             scrollx = sscrollx - Math.round(deltaX * zoomfact);
             scrolly = sscrolly - Math.round(deltaY * zoomfact);
             updateGridPos();
+            updateA4Pos();
             // Update scroll position
             updatepos(null, null);
 
@@ -2549,6 +2551,23 @@ function toggleGrid()
 }
 
 /**
+ * @description Toggles the A4 template ON/OFF.
+ */
+function toggleA4Template()
+{
+    var template = document.getElementById("a4Template");
+
+    // Toggle active class on button
+    document.getElementById("a4TemplateToggle").classList.toggle("active");
+
+    if (template.style.display == "block") {
+        template.style.display = "none";
+     } else {
+        template.style.display = "block";
+   }
+}
+
+/**
  * @description Toggles weither the snap-to-grid logic should be active or not. The GUI button will also be flipped.
  */
 function toggleSnapToGrid()
@@ -2634,6 +2653,7 @@ function zoomin(scrollEvent = undefined)
     };
 
     updateGridSize();
+    updateA4Size();
 
     // Update scroll position - missing code for determining that center of screen should remain at nevw zoom factor
     showdata();
@@ -2679,6 +2699,7 @@ function zoomout(scrollEvent = undefined)
     scrolly = scrolly * zoomfact;
 
     updateGridSize();
+    updateA4Size();
     
     // Update scroll position - missing code for determining that center of screen should remain at new zoom factor
     showdata();
@@ -2867,6 +2888,19 @@ function updateGridSize()
 }
 
 /**
+ * @description Performs an update to the current A4 template size depending on the current zoom level.
+ * @see zoomin Function where the zoom level increases.
+ * @see zoomout Function where the zoom level decreases.
+ */
+ function updateA4Size()
+ {
+    var rect = document.getElementById("a4Rect");
+    rect.setAttribute("width", 794 * zoomfact + "px");
+    rect.setAttribute("height", 1122 * zoomfact + "px");
+    updateA4Pos();
+ }
+
+/**
  * @description Calculates new positioning for the background grid.
  */
 function updateGridPos()
@@ -2887,6 +2921,21 @@ function updateGridPos()
     bLayer.setAttribute('x1', gridOffsetX);
     bLayer.setAttribute('x2', gridOffsetX);
 }
+
+/**
+ * @description Calculates new positioning for the A4 template.
+ */
+ function updateA4Pos()
+ {
+    var OffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+    var OffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+    var rect = document.getElementById("a4Rect");
+    var text = document.getElementById("a4Text");
+    rect.setAttribute('x', OffsetX);
+    rect.setAttribute('y', OffsetY);
+    text.setAttribute('x',(OffsetX + (780 *zoomfact)));
+    text.setAttribute('y',(OffsetY - 5));
+ }
 
 /**
  * @description Displays a popup message as feedback for the current user. This message will then be destroyed after a specified time.

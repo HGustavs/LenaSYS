@@ -110,7 +110,14 @@
                     <p>Enable/disable the Snap To Grid</p><br>
                     <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
                 </span>
-            </div>   
+            </div>
+            <div id="a4TemplateToggle" class="diagramIcons" onclick="toggleA4Template()">
+                <img src="../Shared/icons/diagram_a4.svg"/>
+                <span class="toolTipText"><b>Toggle A4 template</b><br>
+                    <p>Enable/disable the A4 template</p><br>
+                    <p id="tooltip-TOGGLE_A4" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>     
         </fieldset>
     </div>
 
@@ -141,10 +148,17 @@
             </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
-            <line id="origoX" x1="0%" y1="100" x2="100%" y2="100" style="stroke:rgb(171, 171, 171);stroke-width:2"/>
-            <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" style="stroke:rgb(171, 171, 171);stroke-width:2"/>
+            <line id="origoX" x1="0%" y1="100" x2="100%" y2="100" style="stroke:rgb(171, 171, 171);stroke-width:2;"/>
+            <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" style="stroke:rgb(171, 171, 171);stroke-width:2;"/>
         </svg>  
-    </div> 
+    </div>
+    <!-- A4 template -->
+    <div id="a4Template" style="z-index:-11">
+        <svg id="svgA4Template">
+            <rect id="a4Rect" x="100" y="100" width="794" height="1122" style="stroke:rgb(50, 50, 50);stroke-width:2" stroke-dasharray="5 3" fill="#ffffee" fill-opacity="0.4"/>
+            <text id="a4Text" x="880" y="90">A4</text>
+        </svg>  
+    </div>  
     <div id="fab" onclick="fab_action();" onmousedown='mdown(event)'>+ <!-- Big (+) button -->
         <span class="toolTipText"><b>Show Option Panel</b><br>
             <p>Enable/disable the Option Panel</p><br>
