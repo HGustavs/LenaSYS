@@ -1956,6 +1956,10 @@ function toggleInstructions(element)
 {
 	$(element).parent().find(".instructions-content").slideToggle("slow");
 }
+function toggleFeedback(element)
+{
+	$(element).parent().find(".feedback-content").slideToggle("slow");
+}
 
 function disableSave(){
 	document.getElementById("saveDuggaButton").disabled = true;
