@@ -431,12 +431,33 @@ function prepareItem() {
   }
 
   // Calculated the position between the two Fab-buttons and use this position to when creating new items.
-  var screenPos = 0;
-  var elementBtnTop = document.getElementById("FABStatic2").getBoundingClientRect(),
-  elementBtnBot = document.getElementById("FABStatic").getBoundingClientRect(),
-  screenPos = elementBtnBot.top - elementBtnTop.top;
-  screenPos = (screenPos/45);
+  /*var screenPos = 0;
+  var elementBtnTop = document.getElementById("FABStatic2").getBoundingClientRect();
+  elementBtnBot = document.getElementById("home").getBoundingClientRect();
   
+  console.log("Fab: " + elementBtnTop.top + "\nHome: " + elementBtnBot.top);
+  
+  screenPos = elementBtnBot.top - elementBtnTop.top;
+  
+  console.log("screenPos: " +screenPos);
+
+  screenPos = Math.round((screenPos/30));
+  */
+
+  var elementBtnTop = document.getElementById("FABStatic2").getBoundingClientRect();
+
+  console.log(elementBtnTop.top);
+
+  screenPos = Math.round((-1 * elementBtnTop.top)/350);
+
+  console.log("screenPos: " +screenPos);
+
+  if(screenPos < 1){
+    screenPos = 12;
+  }else{
+    screenPos = 12 * screenPos;
+  }
+  console.log("Postion: " + screenPos);
   param.pos = screenPos;
 
 
