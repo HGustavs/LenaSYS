@@ -14,7 +14,7 @@ var resave = false;
 var versnme = "UNKz";
 var versnr;
 var motd;
-var deleteItemList = [];
+var hideItemList = [];
 var hasDuggs = false;
 
 // Stores everything that relates to collapsable menus and their state.
@@ -310,11 +310,11 @@ function confirmBox(operation, item = null) {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
-  } else if (operation == "deleteItem" && deleteItemList.length == 0) {
+  } else if (operation == "deleteItem" && hideItemList.length == 0) {
     deleteItem(active_lid);
     $("#sectionConfirmBox").css("display", "none");
-  } else if (operation == "deleteItem" && !deleteItemList.length == 0) {
-    deleteMarkedItems(deleteItemList)
+  } else if (operation == "deleteItem" && !hideItemList.length == 0) {
+    deleteMarkedItems(hideItemList)
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
@@ -326,28 +326,28 @@ function confirmBox(operation, item = null) {
 function markedItems(item = null){
   var removed = false;
     active_lid = item ? $(item).parents('table').attr('value') : null;
-    if (deleteItemList.length != 0){
-      for( var i = 0; i < deleteItemList.length; i++){ 
-        if ( deleteItemList[i] === active_lid) { 
-          deleteItemList.splice(i, 1);
+    if (hideItemList.length != 0){
+      for( var i = 0; i < hideItemList.length; i++){ 
+        if ( hideItemList[i] === active_lid) { 
+          hideItemList.splice(i, 1);
           i--;
           var removed = true;
           console.log("Removed from list");
         }   
       } if(removed != true){
-        deleteItemList.push(active_lid);
+        hideItemList.push(active_lid);
         console.log("Adding !empty list");
       }
     } else {
-      deleteItemList.push(active_lid);
+      hideItemList.push(active_lid);
       console.log("Added");
     } 
-    console.log(deleteItemList);
+    console.log(hideItemList);
 }
 
 // Clear array of checked items - used in fabbuttons and save to clear array. WIthout this the array will be populated but checkboxes will be reset.
-function clearDeleteItemList(){
-  deleteItemList = [];
+function clearHideItemList(){
+  hideItemList = [];
 }
 
 
@@ -375,7 +375,7 @@ function showCreateVersion() {
 function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
     selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", 0, null);
-    clearDeleteItemList();
+    clearHideItemList();
     newItem();
   }
 }
@@ -471,14 +471,14 @@ function deleteItem(item_lid = null) {
 //----------------------------------------------------------------------------------
 
 function deleteMarkedItems() {
-  for (i=0; i < deleteItemList.length; i++) {  
-    var lid = deleteItemList[i];
+  for (i=0; i < hideItemList.length; i++) {  
+    var lid = hideItemList[i];
       AJAXService("HIDDEN", {
         lid: lid
       }, "SECTION");
       $("#editSection").css("display", "none");
     }
-    deleteItemList = [];
+    hideItemList = [];
   }
 
 //----------------------------------------------------------------------------------
@@ -1095,7 +1095,7 @@ function returnedSection(data) {
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'],
-          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearDeleteItemList();' />";
+          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
           str += "</td>";
         }
         
