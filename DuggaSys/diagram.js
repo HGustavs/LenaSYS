@@ -977,12 +977,15 @@ document.addEventListener('keydown', function (e)
             zoomin();
         } 
         if (isKeybindValid(e, keybinds.ZOOM_OUT)){
+            e.stopImmediatePropagation();
             e.stopPropagation();
             e.preventDefault();
             zoomout();
         } 
 
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
+            e.stopImmediatePropagation();
+            e.stopPropagation();
             e.preventDefault();
             selectAll();
         }      
