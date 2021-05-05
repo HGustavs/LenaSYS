@@ -1531,8 +1531,9 @@ function setupLoginLogoutButton(isLoggedIn){
 	}
 }
 
-function toggleLoadVariant(){
-	loadVariantFlag = true;
+function toggleLoadVariant(setbool){
+	loadVariantFlag = setbool;
+	console.log("Value: " + setbool);
 }
 
 function showLoadVariantPopup(){

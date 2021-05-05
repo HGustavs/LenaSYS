@@ -360,7 +360,7 @@ if($hash!='UNK'){
     	echo '<script type="text/javascript">',
     	//'displayDownloadIcon();', 
 		//'noUploadForTeacher();',
-		'toggleLoadVariant();',
+		'toggleLoadVariant(true);',
     	'</script>';
 	}?>
 	

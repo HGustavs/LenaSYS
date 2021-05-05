@@ -28,6 +28,7 @@ function setup()
 
 function returnedDugga(data)
 {
+	toggleLoadVariant(false);
 	dataV = data;
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
