@@ -158,7 +158,7 @@ function hashPassword($password, $hash){
 echo "<script>console.log('".$hash."')</script>;";
 echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
-if($hash!='UNK'){
+if($hash!='UNK' && !isSuperUser($userid)){
 	if(!hashPassword($hashpassword, $hash)){
 		if($_SESSION['hasUploaded'] != 1){
 			echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
