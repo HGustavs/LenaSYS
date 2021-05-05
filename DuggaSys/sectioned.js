@@ -2519,6 +2519,8 @@ function getCourseElements(){
     var e = rubriker[i];
     list.push(e);
   }
+  console.log(list);
+  return list;
 }
 
 
@@ -2530,10 +2532,16 @@ function validateForm(formid) {
   if (formid === 'editSection') {
     var sName = document.getElementById("sectionname").value;
     var deadDate = document.getElementById("setDeadlineValue").value;
-
+    console.log(getCourseElements().indexOf(sName));
+    console.log(sName);
     //If fields empty
     if (sName == null || sName == "") {
       alert("Fill in all fields");
+
+    if(getCourseElements().indexOf(sName) >= 0){
+      console.log(getCourseElements().indexOf(sName));
+      alert('Name already exists, choose another one');
+    }
 
     }
     // if all information is correct
