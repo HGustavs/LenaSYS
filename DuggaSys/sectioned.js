@@ -473,7 +473,7 @@ function deleteItem(item_lid = null) {
 function deleteMarkedItems() {
   for (i=0; i < deleteItemList.length; i++) {  
     var lid = deleteItemList[i];
-      AJAXService("DEL", {
+      AJAXService("HIDDEN", {
         lid: lid
       }, "SECTION");
       $("#editSection").css("display", "none");
