@@ -62,7 +62,7 @@ $feedbackenabled =getOP('feedback');
 $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
 $tabs=getOP('tabs');
-$hash=getOP("hash");
+
 
 $grpmembershp="UNK";
 $unmarked = 0;
@@ -81,7 +81,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 		$info=$opt." ".$courseid." ".$coursevers." ".$coursename;
 		$log_uuid = getOP('log_uuid');
-		// logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "sectionedservice.php",$userid,$info);
+		 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "sectionedservice.php",$userid,$info);
 
 		//------------------------------------------------------------------------------------------------
 		// Services
@@ -243,7 +243,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 						// Logging for newly added items
 						$description=$sectname;
-                        // logUserEvent($userid, $username, EventTypes::SectionItems,$sectname);
+                         logUserEvent($userid, $username, EventTypes::SectionItems,$sectname);
 
 					}
 
@@ -400,7 +400,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 						// Logging for editing course version
 						$description=$courseid." ".$versid;
-						// logUserEvent($userid, $username, EventTypes::EditCourseVers, $description);	
+						 logUserEvent($userid, $username, EventTypes::EditCourseVers, $description);	
 
 				} else if(strcmp($opt,"CHGVERS")===0) {
 					$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
@@ -495,10 +495,10 @@ if($gradesys=="UNK") $gradesys=0;
 		}
 
 		$resulties=array();
-		$query = $pdo->prepare("SELECT moment,quiz,grade,DATE_FORMAT(submitted, '%Y-%m-%dT%H:%i:%s') AS submitted,DATE_FORMAT(marked, '%Y-%m-%dT%H:%i:%s') AS marked,useranswer FROM userAnswer WHERE hash=:hash AND cid=:cid AND vers=:vers;");
+		$query = $pdo->prepare("SELECT moment,quiz,grade,DATE_FORMAT(submitted, '%Y-%m-%dT%H:%i:%s') AS submitted,DATE_FORMAT(marked, '%Y-%m-%dT%H:%i:%s') AS marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':vers', $coursevers);
-		$query->bindParam(':hash', $hash);
+		$query->bindParam(':uid', $userid);
 		$result=$query->execute();
 
 		if(!$query->execute()) {
@@ -872,7 +872,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 		echo json_encode($array);
 
-		// logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "sectionedservice.php",$userid,$info);
+		logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "sectionedservice.php",$userid,$info);
 
 
 ?>
