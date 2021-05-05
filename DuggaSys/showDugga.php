@@ -37,7 +37,8 @@
 	$comments=getOPG('comments');
 	$hash = getOPG("hash");
 	$test=getOPG('test');
-
+	
+	
 	$duggatitle="UNK";
 	$duggafile="UNK";
 	$duggarel="UNK";
@@ -45,9 +46,7 @@
 
 	$visibility=false;
 	$checklogin=false;
-	
-	$variantsize;
-	$variants=array();
+
 	$duggaid=getOPG('did');
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
@@ -126,9 +125,11 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 ?>
 <script type="text/javascript">
 
-	setHash("<?php echo $hash ?>");	
+	setHash("<?php echo $hash ?>");
 
 </script>
+
+
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
@@ -184,10 +185,12 @@ if($hash!='UNK'){
 //$_SESSION['hashpassword'] = 'UNK';
 
 ?>
+
 </div>
 	<!-- content START -->
 	<div id="content">
 		<?php
+		echo "<script>console.log('".$duggafile."');</script>";
 			// Log USERID for Dugga Access
 			// commented out because we are unsure about the usage of logs
 			//makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
@@ -200,12 +203,17 @@ if($hash!='UNK'){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 
-					if ($duggafile !== 'contribution') {
+					if ($duggafile !== 'contribution') {						
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='left'>";
 						echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
-						echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+						if ($duggafile !== 'generic_dugga_file_receive') {
+							echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+						}
+						echo "</td>";
+						echo "<td align='right'>";
+						echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
 						echo "</td>";
 						echo "</tr>";
 						echo "</table>";
@@ -227,6 +235,20 @@ if($hash!='UNK'){
 
 			}else{
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Something went wrong in loading the test. Contact LENASys-admin.</div>";
+			}
+
+			// Feedback area START
+			if(isSuperUser($userid) && $hash!='UNK'){
+				echo "<div id='container' style='margin:0px;'>";
+					echo "<div class='instructions-container'>";
+						echo "<div class='instructions-button' onclick='toggleFeedback()'><h3>Feedback</h3></div>";
+							echo "<div class='feedback-content' style=' -webkit-columns: 1; -moz-columns: 1; columns: 1; ' id='snus'>";
+								echo "<textarea name='feedback' id='feedback' style='float: left; width: 100%; min-height: 75px;'></textarea><br>";
+								echo "<input class='submit-button large-button' type='button' value='Skicka feedback' />";
+							echo "</div>";
+						echo "</div>";
+					echo "</div>";
+				echo "</div>";
 			}
 		?>
 	</div>
@@ -279,8 +301,7 @@ if($hash!='UNK'){
 					</div>
 			</div>
 			<div id='receiptInfo'></div>
-    		<textarea id="receipt" autofocus readonly style="resize: none;"></textarea>
- 
+
     		<div id='emailPopup' style="display:block">
 				<div id='urlAndPwd'>
 					<div class="testasd"><p class="bold">URL</p><p id='url'></p></div>
@@ -296,6 +317,26 @@ if($hash!='UNK'){
 	</div>
 	<!-- Login Box (receipt&Feedback-box ) End! -->
 
+
+	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
+	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
+	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
+			<div class='loginBoxheader'><h3>Hämta dugga genom hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
+			<div id='loadDuggaInfo'></div>
+    		<div id='loadDuggaPopup' style="display:block">
+				<div class='inputwrapper'><span>Ange din hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value=''/></div>
+				<div class="button-row">
+					<input type='button' class='submit-button' onclick="loadDugga();" value='Load Dugga'>
+					<input type='button' class='submit-button' onclick="hideLoadDuggaPopup();" value='Close'>
+				</div>
+    		</div>
+      </div>
+	</div>
+	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
+
+
+
+
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
 	<?php 
@@ -304,11 +345,13 @@ if($hash!='UNK'){
     	'displayDownloadIcon();', 'noUploadForTeacher();',
     	'</script>';
 	}?>
-
- 
-
+	
 	<!-- Timer START -->
-	<div id='scoreElement'>
+	<div id='scoreElement'>	
+	</div>
+	<!-- Test output -->
+	<div id='groupAssignment'>
+		<p id='clicks'><p>	
 	</div>
 	<!-- content END -->
 	<?php

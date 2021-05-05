@@ -180,6 +180,18 @@ CREATE TABLE userAnswer (
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 /**
+ * Removes entries from groupdugga when entries from useranswer are removed.
+ */
+DELIMITER //
+CREATE TRIGGER delete_group BEFORE DELETE ON userAnswer
+FOR EACH ROW
+BEGIN
+DELETE FROM groupdugga
+    WHERE OLD.hash = groupdugga.hash;
+END //
+DELIMITER ;
+
+/**
  * This view pulls the top 10 fastest quiz finishing students and lists them
  */
 DROP VIEW IF EXISTS highscore_quiz_time;

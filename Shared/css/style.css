@@ -1247,6 +1247,21 @@ header td {
   display: none;
 }
 
+#groupAssignment {
+  z-index: 9000;
+  width: 100px;
+  background: var(--color-background);
+  text-align: center;
+  position: fixed;
+  top: 0%;
+  left: 50%;
+  margin-top: 7px;
+  margin-left: -50px;
+  border-style: solid;
+  border-width: 1px;
+  display: none;
+}
+
 .navheader {
   height: 20px;
   margin-bottom: 10px;
@@ -1411,7 +1426,6 @@ div .navButt:hover {
     width: 35px;
   }
 }
-
 #div2 {
   position: absolute;
   top: 50px;
@@ -1564,7 +1578,6 @@ div .navButt:hover {
 .floatRightBox {
   width: 220px;
   min-height: 300px;
-  float: left;
   margin-left: 10px;
   overflow: auto;
   float: right;
@@ -1574,6 +1587,20 @@ div .navButt:hover {
   background-color: var(--color-background-2);
   border: 2px solid var(--color-border);
 }
+
+.floatleftBox {
+  width: 220px;
+  min-height: 300px;
+  float: left;
+  margin-left: 10px;
+  overflow: auto;
+  z-index: 9000;
+  box-shadow: 2px 2px 4px #000;
+  padding: 4px;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
+}
+
 @media screen and (max-width: 600px) {
   .navheader {
     float: none;

@@ -137,6 +137,15 @@ function reset()
 
 function saveClick() 
 {
+	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
+		url: "showDuggaservice.php",
+		type: "POST",
+		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
+		dataType: "json",
+		success: function(data) {
+			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+			if(ishashindb==true){				//If the hash already exist in database.
+				if (confirm("You already have a saved version!")) {
 	Timer.stopTimer();
 
 	timeUsed = Timer.score;
@@ -165,7 +174,39 @@ function saveClick()
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
 }
+} else {
+	Timer.stopTimer();
 
+	timeUsed = Timer.score;
+	stepsUsed = ClickCounter.score;
+
+	if (querystring['highscoremode'] == 1) {	
+		score = Timer.score;
+	} else if (querystring['highscoremode'] == 2) {
+		score = ClickCounter.score;
+	}
+
+	// Loop through all operations
+	bitstr = ",";
+	
+	$("*[id*=opCode_]").each(function (){
+			bitstr+=this.innerHTML + ",";
+	});
+	bitstr += "T " + elapsedTime;
+
+	bitstr += " " + window.screen.width;
+	bitstr += " " + window.screen.height;
+
+	bitstr += " " + $(window).width();
+	bitstr += " " + $(window).height();
+
+	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+	saveDuggaResult(bitstr);
+
+			}
+		}
+	});
+}
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
 	if (userStats != null){
