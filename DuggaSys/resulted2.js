@@ -4,10 +4,7 @@ var buttonFlag = true;
 var duggaFilter;
 
 function setup(){
-    /*window.onscroll = function () {
-	
-	};*/
-	
+  
     AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
@@ -17,50 +14,32 @@ function process(){
     if (filterList == null) {
 		filterList = {};
 	}
-
-    var dstr = "";
-	dstr += makeCustomFilter("duggaFilter", "Show Dugga");
-    document.getElementById("customfilter").innerHTML = dstr;
+	makeCustomFilter("duggaFilter");
    
 }
 
 function updateTable(){
 	
-	filterList["duggaFilter"] = true;
-	duggaFilter = document.getElementById("assignmentDropdown").value;
-	console.log(duggaFilter);
+	filterList["duggaFilter"] = document.getElementById("assignmentDropdown").value;
+	localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
+	
 	myTable.renderTable();
 }
 
 function returnedResults(data){
     console.log(data);
-    //data.sort(compare);
     process();
-	//filterButton(data['duggaFilterOptions']);
-	if(buttonFlag){
-		var assignmentList;
-		var duggaFilterOptions = data['duggaFilterOptions'];
-		assignmentList += "<option value='none'>none</option>";
-		for(var i = 0; i < duggaFilterOptions.length; i++){
-			assignmentList += "<option value='"+ duggaFilterOptions[i].entryname +"' selected>"+ duggaFilterOptions[i].entryname + "</option>";
-		}
-		document.getElementById("assignmentDropdown").innerHTML = assignmentList;
-		buttonFlag = false;
-	}
-    createSortableTable(data['tableInfo']);
-}
 
-function filterButton(duggaFilterOptions){
 	var assignmentList;
+	var duggaFilterOptions = data['duggaFilterOptions'];
 	assignmentList += "<option value='none'>none</option>";
 	for(var i = 0; i < duggaFilterOptions.length; i++){
 		assignmentList += "<option value='"+ duggaFilterOptions[i].entryname +"' selected>"+ duggaFilterOptions[i].entryname + "</option>";
 	}
-	document.getElementById("assignmentDropdown").innerHTML = assignmentList;
-	console.log(assignmentList);
-	buttonFlag = false;
+	document.getElementById("assignmentDropdown").innerHTML = assignmentList; 
+		
+    createSortableTable(data['tableInfo']);
 }
-
 
 function createSortableTable(data){
 
@@ -90,8 +69,16 @@ function createSortableTable(data){
 		hasMagicHeadings: true,
 		hasCounterColumn: true
 	});
-	//Default ascending sort of dugga column
-	myTable.toggleSortStatus("duggaName", 1);
+
+	var sortCol = localStorage.getItem("resultTable___sortcol");
+	var sortDir = parseInt(localStorage.getItem("resultTable___sortkind"));
+	if(sortCol != null && sortDir != null){
+		myTable.toggleSortStatus(sortCol, sortDir); //Set sort from localstorage
+	}else{
+		myTable.toggleSortStatus("duggaName", 1); //Default ascending sort of dugga column
+	}
+	
+	
 
 	myTable.renderTable();
 
@@ -139,33 +126,26 @@ function renderSortOptions(col, status, colname){
     return str;
 }
 
-function makeCustomFilter(filtername, labeltext) {
-	str = "<div class='checkbox-dugga checkmoment'>";
-	str += "<input type='checkbox' id='" + filtername + "' onclick='toggleFilter(\"" + filtername + "\")'";
-    //console.log(filterList[filtername]);
+function makeCustomFilter(filtername) {
+	
 	if (filterList[filtername] == null) {
-		filterList[filtername] = false;
+		filterList[filtername] = "none";
 	}
-	if (filterList[filtername] || filtername == "duggaFilter") { //Enables filter and saves it in local storage when opening resulted.php.
-		str += " checked";
-
-		//Enables the showStudents and the showTeachers filters.
-		//filterList[filtername] = true;
-		//Saves the checkbox values in localstorage.
+	if (filtername == "duggaFilter") { //Saves the filter in local storage when opening resulted.php.
 		localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
 	}
-	str += "><label class='headerlabel' for='" + filtername + "'>" + labeltext + "</label></div>";
-	return str;
 }
 
+//for multiple filters, add more if statements
 function rowFilter(row) {
-
-	if (filterList["duggaFilter"]){
-        if(row["duggaName"] == duggaFilter || row["subCourse"] == duggaFilter || duggaFilter == "none"){
-            return true;            
-        }else{
-			return false;
+	var returnVariable = true;
+	if(filterList["duggaFilter"] != "none"){
+    	if(row["duggaName"] == filterList["duggaFilter"] || row["subCourse"] == filterList["duggaFilter"]){
+        	returnVariable = true;            
+   		}else{
+			returnVariable = false;
 		}
-    }
-	return true;
+	}
+	
+	return returnVariable;
 }
