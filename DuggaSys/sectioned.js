@@ -2484,22 +2484,41 @@ function validateSectName(name, dialogid){
 
 }
 
+/*recursive functions to retrieve the deepest DOM element */
+function unNestElement(node){
+  if(node == null)
+    return;
+  if(node.firstChild == null){
+    return node;
+  }
+  return unNestElement(node.firstChild);
+}
+
+function unNestElements(htmlArray){
+  let array = [];
+  for(var i = 0; i<htmlArray.length; i++){
+      var e = unNestElement(htmlArray[i]);
+      if(e != undefined)
+        array.push(e.textContent);
+  }
+  return array;
+}
+
 /* Write a function which gets all anchor elements of class "internal-link" */
 function getCourseElements(){
   let list = [];
   var duggor = Array.from(document.getElementsByClassName("ellipsis nowrap"));
   var rubriker = Array.from(document.getElementsByClassName("ellipsis listentries-span"));
+  duggor = unNestElements(duggor);
+  rubriker = unNestElements(rubriker);
   for(var i=0; i<duggor.length; i++){
-    var e = duggor[i].innerHTML;
+    var e = duggor[i];
     list.push(e);
   }
   for(var i=0; i<rubriker.length; i++){
-    var e = rubriker[i].innerHTML;
+    var e = rubriker[i];
     list.push(e);
   }
-  console.log(duggor);
-  console.log(rubriker);
-  console.log(list);
 }
 
 
