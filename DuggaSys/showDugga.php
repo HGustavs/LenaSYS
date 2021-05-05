@@ -37,7 +37,8 @@
 	$comments=getOPG('comments');
 	$hash = getOPG("hash");
 	$test=getOPG('test');
-
+	
+	
 	$duggatitle="UNK";
 	$duggafile="UNK";
 	$duggarel="UNK";
@@ -45,9 +46,7 @@
 
 	$visibility=false;
 	$checklogin=false;
-	
-	$variantsize;
-	$variants=array();
+
 	$duggaid=getOPG('did');
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
@@ -126,9 +125,11 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 ?>
 <script type="text/javascript">
 
-	setHash("<?php echo $hash ?>");	
+	setHash("<?php echo $hash ?>");
 
 </script>
+
+
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
@@ -136,9 +137,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 
 <div id='login_popup'>
 <?php
-function confirmSaveClick() {
-	echo '<script>console.log("AAAAAAAAAAA")</script>';
-}
 function hashPassword($password, $hash){
 		if($password == 'UNK')
 			return false;
@@ -209,48 +207,7 @@ if($hash!='UNK'){
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='left'>";
-
-						
-						$hash="b0Iv_9wU";
-						//Check if our hash has anything in useranswer.useranswer or if it's null
-						$query = $pdo->prepare("SELECT useranswer FROM userAnswer WHERE hash=:hash");
-						$query->bindParam(':hash', $hash);
-						$query->execute();
-						$result = $query->fetch();
-						if(!isset($result['useranswer'])) {
-							echo "<script>console.log('Useranswer: ');</script>";
-							echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
-						} else {
-							echo "<input id='confirmSaveDuggaButton' class='submit-button large-button' type='button' value='Re-Save' onclick='confirmSaveClick();' />";
-						}
-						//echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='' />";
-						/*
-						
-								if(if hash is in db then run this code){
-									echo "<div class='loginBoxContainer' id='confirmationBox' style='display:block;'>";	
-									echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
-									echo "<div class='loginBoxheader'>";
-									echo "<h3>Confirm or Deny</h3>";
-									//Måste göra en hideConfirmationBox function
-									echo "<div onclick='hideConfirmationBox()' class='cursorPointer'>x</div>";
-									echo "</div>";
-									
-									//Måste antagligen lägga till CSS för de här
-									echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
-									//Behöver vi en exitWindowFunction?
-									echo "<input type='exit' class='exit-button' value='Exit' name='Exit' onclick='exitWindowFunction()'>";
-									
-									echo "</div>";
-									echo "</div>";
-									exit();
-								}
-								else{
-									run this code
-									echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
-								}
-						*/
-						//echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
-
+						echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
 						echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 						echo "</td>";
 						echo "</tr>";

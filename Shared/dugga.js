@@ -1088,7 +1088,6 @@ function AJAXService(opt,apara,kind)
 				if(!localStorage.getItem("locallystoredhash"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 					handleHash();	//Makes sure hash is unique.
 				}
-				
 			}
 		})
 	}else if(kind=="RESULT"){
@@ -2180,24 +2179,6 @@ function returnedSubmitFeedback(){
 	$('#submitstatus').css({'color':'var(--color-green)',"display": "inline-block"}).text("Feedback saved");
 }
 
-
-
 function setDuggaTitle(title) {
 	duggaTitle = title;
-}
-
-
-function confirmSaveClick() {
-	console.log("HEJEEE");
-}
-
-
-function confirmSaveClick() {
-  var txt;
-  if (confirm("Press a button!")) {
-    txt = "You pressed OK!";
-  } else {
-    txt = "You pressed Cancel!";
-  }
-  document.getElementById("demo").innerHTML = txt;
 }
