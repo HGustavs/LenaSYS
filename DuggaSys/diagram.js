@@ -1487,7 +1487,6 @@ function mmoving(event)
             deltaY = startY - event.clientY;
             scrollx = sscrollx - Math.round(deltaX * zoomfact);
             scrolly = sscrolly - Math.round(deltaY * zoomfact);
-            console.log(scrollx, scrolly);
             updateGridPos();
             // Update scroll position
             updatepos(null, null);
