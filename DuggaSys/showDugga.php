@@ -213,6 +213,7 @@ if($hash!='UNK'){
 						}
 						echo "</td>";
 						echo "<td align='right'>";
+						//echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
 						echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
 						echo "</td>";
 						echo "</tr>";

@@ -2018,10 +2018,12 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
 			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
 		}
-
+		str+="<div style='width:30px;'><input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' /></div>";
 		str+="</div>";
+		
 		$("#duggaStatus").remove();
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
+		
 
 		// Adds dugga title next to the text "Instructions"
 		$('h3:contains("Instructions")').text(duggaTitle + " - Instructions");
