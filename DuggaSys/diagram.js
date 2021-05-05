@@ -1487,6 +1487,7 @@ function mmoving(event)
             deltaY = startY - event.clientY;
             scrollx = sscrollx - Math.round(deltaX * zoomfact);
             scrolly = sscrolly - Math.round(deltaY * zoomfact);
+            console.log(scrollx, scrolly);
             updateGridPos();
             // Update scroll position
             updatepos(null, null);
@@ -2192,9 +2193,9 @@ function setPos(id, x, y)
             // Set the new snap point to center of element
             obj.x -= obj.width/2
             obj.y -= obj.height/2;
-        }else {
-            obj.x -= (x / zoomfact);
-            obj.y -= (y / zoomfact);
+        } else {
+                obj.x -= (x / zoomfact);
+                obj.y -= (y / zoomfact);
         }
     }
 }
@@ -3715,8 +3716,6 @@ function updateCSSForAllElements()
 {
     function updateElementDivCSS(elementData, divObject, useDelta = false)
     {
-        if(elementData.isLocked) return;
-
         var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
             top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
@@ -3756,7 +3755,7 @@ function updateCSSForAllElements()
             // If the element was clicked and our mouse movement is not null
             var inContext = deltaX != null && findIndex(context, element.id) != -1;
             var useDelta = (inContext && movingObject);
-
+            if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
 
             // Handle colouring
