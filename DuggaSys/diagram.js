@@ -684,7 +684,7 @@ var lastMousePos = getPoint(0,0);
 var dblPreviousTime = new Date().getTime(); ; // Used when determining if an element was doubleclicked.
 var dblClickInterval = 500; // 500 ms = if less than 500 ms between clicks -> Doubleclick was performed.
 var wasDblClicked = false;
-
+var targetDelta;
 
 // Zoom variables
 var zoomfact = 1.0;
@@ -723,6 +723,9 @@ var previousContext = [];
 var contextLine = []; // Contains the currently selected line(s).
 var determinedLines = null; //Last calculated line(s) clicked.
 var deltaExceeded = false;
+var targetElement = null;
+var targetElementDiv;
+
 const maxDeltaBeforeExceeded = 2;
 
 // Clipboard
@@ -1169,6 +1172,8 @@ function ddown(event)
 
             if (!altPressed) {
                 pointerState = pointerStates.CLICKED_ELEMENT;
+                targetElement = event.currentTarget;
+                targetElementDiv = document.getElementById(targetElement.id);
             }
 
         case mouseModes.EDGE_CREATION:
@@ -1251,7 +1256,8 @@ function mouseMode_onMouseUp(event)
  * @see pointerStates For all available states.
  */
 function mup(event)
-{   
+{
+    targetElement = null;
     deltaX = startX - event.clientX;
     deltaY = startY - event.clientY;
 
@@ -1340,8 +1346,10 @@ function determineLineSelect(mouseX, mouseY)
     // This func is used when determining which line is clicked on.
 
     // TODO: Add functionality to make sure we are only getting LINES from svgbacklayer in the future !!!!!.
-
+    
     var allLines = document.getElementById("svgbacklayer").children;
+    var bLayerLineIDs = []; // Used to only store the IDs. Needed since we later need a value copy of the ID and not the ref.
+
     var cMouse_XY = {
         x: mouseX, 
         y: mouseY
@@ -1360,9 +1368,13 @@ function determineLineSelect(mouseX, mouseY)
     }
     
     for(var i = 0; i < allLines.length; i++) {
+        
+        // Copy the IDs.
+        bLayerLineIDs[i] = allLines[i].id;
+
         // Make sure that "double lines" have the same id.
-        allLines[i].id = allLines[i].id.replace(/-1/gi, '');
-        allLines[i].id = allLines[i].id.replace(/-2/gi, '');
+        bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
+        bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
   
         // Get all X and Y -coords for current line in iteration.
         currentline = {
@@ -1402,9 +1414,8 @@ function determineLineSelect(mouseX, mouseY)
         if(lineWasHit == true) {
             // Return the current line that registered as a "hit".
             return lines.filter(function(line) {
-                return line.id == allLines[i].id;
+                return line.id == bLayerLineIDs[i];
             })[0];
-            //return allLines[i];
         }
     }
     return null;
@@ -1506,6 +1517,21 @@ function mmoving(event)
             break;
 
         case pointerStates.CLICKED_ELEMENT:
+            var prevTargetPos = {
+                x: data[findIndex(data, targetElement.id)].x,
+                y: data[findIndex(data, targetElement.id)].y
+            }
+            var targetPos = {
+                x: 1 * targetElementDiv.style.left.substr(0, targetElementDiv.style.left.length - 2),
+                y: 1 * targetElementDiv.style.top.substr(0, targetElementDiv.style.top.length - 2)
+            };
+            targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
+            targetDelta = {
+                x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
+                y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
+            }
+
+            // Moving object
             movingObject = true;
             // Moving object
             deltaX = startX - event.clientX;
@@ -2184,17 +2210,22 @@ function setPos(id, x, y)
     foundId = findIndex(data, id);
     if (foundId != -1) {
         var obj = data[foundId];
-        if(snapToGrid){
-            // Calculate nearest snap point
-            obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / gridSize) * gridSize;
-            obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / gridSize) * gridSize;
+        if (snapToGrid) {
+            if (!ctrlPressed) {
+                // Calculate nearest snap point
+                obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / gridSize) * gridSize;
+                obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / gridSize) * gridSize;
 
-            // Set the new snap point to center of element
-            obj.x -= obj.width/2
-            obj.y -= obj.height/2;
-        } else {
-                obj.x -= (x / zoomfact);
-                obj.y -= (y / zoomfact);
+                // Set the new snap point to center of element
+                obj.x -= obj.width / 2
+                obj.y -= obj.height / 2;
+            } else {
+                obj.x += (targetDelta.x / zoomfact);
+                obj.y += (targetDelta.y / zoomfact);
+            }
+        }else {
+            obj.x -= (x / zoomfact);
+            obj.y -= (y / zoomfact);
         }
     }
 }
@@ -3667,7 +3698,12 @@ function drawSelectionBox(str)
         var tempLines = [];
         if (contextLine.length > 0) {
             for (var i = 0; i < contextLine.length; i++) {
-                tempLines.push(document.getElementById(contextLine[i].id));
+                if (contextLine[i].kind === lineKind.DOUBLE) {
+                    tempLines.push(document.getElementById(contextLine[i].id + "-1"));
+                    tempLines.push(document.getElementById(contextLine[i].id + "-2"));
+                } else {
+                    tempLines.push(document.getElementById(contextLine[i].id));
+                }
             }
 
             // Find highest and lowest x and y coordinates of the first element in lines
@@ -3723,18 +3759,23 @@ function updateCSSForAllElements()
             top -= deltaY;
         }
 
-        if(snapToGrid && useDelta){
-            // The element coordinates with snap point
-            var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / gridSize) * gridSize;
-            var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / gridSize) * gridSize;
+        if (snapToGrid && useDelta) {
+            if (elementData.id === targetElement.id) {
+                // The element coordinates with snap point
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / gridSize) * gridSize;
+                var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / gridSize) * gridSize;
 
-            // Add the scroll values
-            left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-            top = Math.round(((objY - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+                // Add the scroll values
+                left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+                top = Math.round(((objY - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
-            // Set the new snap point to center of element
-            left -= ((elementData.width * zoomfact) / 2);
-            top -= ((elementData.height * zoomfact) / 2);
+                // Set the new snap point to center of element
+                left -= ((elementData.width * zoomfact) / 2);
+                top -= ((elementData.height * zoomfact) / 2);
+            } else if (ctrlPressed) {
+                left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))) + targetDelta.x;
+                top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact))) + targetDelta.y; 
+            }
         }
 
         divObject.style.left = left + "px";
