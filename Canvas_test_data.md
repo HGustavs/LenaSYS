@@ -13,3 +13,4 @@ G1-Leif GW Persson, leif.gw@his.se, leifgw, password
 
 # Courses (Coursename, CourseID)
 G1 - Webbutveckling - datorgrafik, IT118G
+MasterBranch - Webbutveckling - datorgrafik, IT118G
