@@ -249,6 +249,11 @@ function noUploadForTeacher(){
 	teacherFlag = true;
 }
 
+function toggleFeedback()
+{
+    $(".feedback-content").slideToggle("slow");
+}
+
 function createFileUploadArea(fileuploadfileds){
 	
 	var str ="";
