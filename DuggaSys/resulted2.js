@@ -11,7 +11,6 @@ function setup(){
     AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
-
 function process(){
 
     filterList = JSON.parse(localStorage.getItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers']));
@@ -24,6 +23,7 @@ function process(){
     document.getElementById("customfilter").innerHTML = dstr;
    
 }
+
 function updateTable(){
 	
 	filterList["duggaFilter"] = true;
@@ -161,7 +161,6 @@ function makeCustomFilter(filtername, labeltext) {
 function rowFilter(row) {
 
 	if (filterList["duggaFilter"]){
-        //console.log(row);
         if(row["duggaName"] == duggaFilter || row["subCourse"] == duggaFilter || duggaFilter == "none"){
             return true;            
         }else{
@@ -169,116 +168,4 @@ function rowFilter(row) {
 		}
     }
 	return true;
-	if(!filterList["showStudents"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != 0)
-		return false;
-	// Filters to display only rows where Duggas that have been submitted after deadline and/or duggas that are pending and needs to be graded
-	if (filterList["passedDeadline"] || filterList["onlyPending"] ){
-	// Filters to display only rows where Duggas that have been submitted after deadline AND duggas that are pending and needs to be graded
-		if (filterList["passedDeadline"] && filterList["onlyPending"] ) {
-			var rowPending = false;
-			for (var colname in row) {
-				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] > row[colname]["deadline"] ) {
-					rowPending = true;
-					break;
-				} else if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] < row[colname]["deadline"] ) {
-					rowPending = true;
-					break;
-				}
-			}
-			if (!rowPending) {
-				return false;
-			}
-		}
-		// Filters to display only rows where duggas are pending and needs to be graded
-		else if (filterList["onlyPending"]) {
-			var rowPending = false;
-			for (var colname in row) {
-				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] < row[colname]["deadline"]) {
-					rowPending = true;
-					break;
-				}
-			}
-			if (!rowPending) {
-				return false;
-			}
-		}
-		// Filters to display only rows where Duggas that have been submitted after deadline
-		else if (filterList["passedDeadline"]) {
-			var rowPending = false;
-			for (var colname in row) {
-				if (colname != "FnameLname" && row[colname]["needMarking"] == true && row[colname]["submitted"] > row[colname]["deadline"] ) {
-					rowPending = true;
-					break;
-				}
-			}
-			if (!rowPending) {
-				return false;
-			}
-		}
-	}
-	var teacherDropdown = document.getElementById("teacherDropdown").value;
-	if(teacherDropdown !== "none" && row.FnameLname.examiner != teacherDropdown){
-		return false;
-	}
-  	// divides the search on white space
-	var tempSplitSearch = searchterm.split(" ");
-	var splitSearch = [];
-
-	tempSplitSearch.forEach(function (s) {
-		if (s.length > 0)
-			splitSearch.push(s.trim().split(":"));
-	})
-
-  	// The else makes sure that you can search on names without a search-category.
-	if (searchterm != "" && splitSearch != searchterm) {
-		return smartSearch(splitSearch, row);
-	} else {
-		for (colname in row) {
-			if (colname == "FnameLname") {
-				var name = "";
-				if(searchterm.length == 1){ //if only 1 character has been entered in the search field
-				if (row[colname]["firstname"] != null) {
-					name += row[colname]["firstname"] + " ";
-				}
-				if (row[colname]["lastname"] != null) {
-					name += row[colname]["lastname"];
-				}
-        		var nameArray = name.split(" "); //Array with [firstname, lastname]
-				//Checks for the first character in firstname and/or lastname
-				if (nameArray[0].toUpperCase().startsWith(searchterm.toUpperCase()) || nameArray[1].toUpperCase().startsWith(searchterm.toUpperCase())) {
-					return true;
-				}
-				//when more characters than 1 has been entered
-			} else {
-				if (row[colname]["firstname"] != null) {
-					name += row[colname]["firstname"] + " ";
-				}
-				if (row[colname]["lastname"] != null) {
-					name += row[colname]["lastname"];
-				}
-				name = name.replace(" ", "");
-				if(name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1){
-					return true;
-				}
-				 if (row[colname]["ssn"] != null) {
-				 	if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-				 		return true;
-					}
-				if (row[colname]["username"] != null) {
-					if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-						return true;
-				}
-				if (row[colname]["class"] != null) {
-					if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-						return true;
-				}
-				if (row[colname]["setTeacher"] != null) {
-					if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-						return true;
-				} 
-			}
-			}
-		}
-		return false;
-	}
 }

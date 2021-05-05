@@ -9,19 +9,6 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
-if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
-	$loginname=$_SESSION['loginname'];
-	$lastname=$_SESSION['lastname'];
-	$firstname=$_SESSION['firstname'];
-}else{
-	$userid=1;
-	$loginname="UNK";
-	$lastname="UNK";
-	$firstname="UNK";
-}
-
-
 $courseid = getOP('courseid');
 $opt = getOP('opt');
 $cid = getOP('cid');
@@ -84,5 +71,3 @@ $returnArray = array(
 echo json_encode($returnArray);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php",$userid,$info);
-
-//$query = $pdo->prepare("SELECT listentries.entryname, course.coursename FROM listentries,course WHERE listentries.lid = :lid and listentries.cid = course.cid");
