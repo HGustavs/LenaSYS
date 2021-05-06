@@ -41,6 +41,7 @@ $password=getOP('password');
 $AUtoken=getOP('AUtoken');
 //$localStorageVariant= getOP('variant');
 $variantvalue= getOP('variant');
+$subid= getOP('subid');
 $hashvariant;
 
 $showall="true";
@@ -470,6 +471,12 @@ if(strcmp($opt,"GRPDUGGA")==0){
 		}
 	}
 	$userCount += count($usersInGroup);
+}
+
+if(strcmp($opt,"DELETESUBM")==0){
+	$query = $pdo->prepare("DELETE FROM submission WHERE subid=:subid");
+	$query->bindParam(':subid', $subid);
+	$query->execute();
 }
 
 $files= array();

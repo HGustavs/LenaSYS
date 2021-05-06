@@ -29,6 +29,8 @@ var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
 
+var gSubid;
+
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -1181,14 +1183,22 @@ function AJAXService(opt,apara,kind)
 			success: returnedUserFeedback
 		});
 		
-	}
-	else if(kind=="GROUPTOKEN") {
+	} else if(kind=="GROUPTOKEN") {
 		$.ajax({
 			url: "showDuggaservice.php",
 			type:"POST",
 			data:"AUtoken="+groupTokenValue+"&hash="+hash+"&opt="+opt+para,
 			dataType: "json"
 		});
+	} else if(kind=="DELETESUBM") {
+		$.ajax({
+			url: "showDuggaservice.php",
+			type: "POST",
+			data: "opt="+opt+"&courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&subid="+gSubid,
+			datatype: "json",
+			success: location.reload()
+		});	
+		
 	}
 }
 
@@ -1917,10 +1927,10 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							} else {
 								tab+=filez[i].updtime;+"</td>";
 							}
+							//Create trashcan icon and pass the submissionID to the onclick function.
 							tab+="<td>";
-							tab+="<img alt='trashcan icon' id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='test123();'>";
-							tab+="</td>";
-
+							tab+=`<img alt='trashcan icon' style='cursor:pointer' src='../Shared/icons/Trashcan.svg' onclick='test123(${filez[i].subid});'>`;
+							tab+="</td>";			
 							tab+="</tr>";
 					}
 			}
@@ -1931,8 +1941,12 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		document.getElementById(cfield+"Prev").innerHTML=tab;
 }
 
-function test123(){
-	console.log("works?");
+function test123(subid){
+	gSubid=subid;
+
+	console.log(subid);
+
+	AJAXService("DELETESUBM",{},"DELETESUBM");
 }
 
 function makeForm(cfield, ctype){
