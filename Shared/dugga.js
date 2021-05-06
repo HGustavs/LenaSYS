@@ -77,16 +77,16 @@ function setHash(h){
 		//From localstorage we load what we have into our locallystoredhash variable, that is then compared against. 
 		//On the first dugga load, it will be undefined, and thereafter a hash value will be generated.
 		//If a hash is already stored in localstorage, we will load that hash instead.
-		locallystoredhash = localStorage.getItem("locallystoredhash"+(querystring['did']));
+		locallystoredhash = localStorage.getItem("ls-dugga-hash"+(querystring['did']));
 
 		if((locallystoredhash == null) || (locallystoredhash == undefined) || (!locallystoredhash)){
 			hash = generateHash();
 			//locallystoredhash has not been set at this point, but will be after this.
-			localStorage.setItem("locallystoredhash"+(querystring['did']), hash);
-			hash = localStorage.getItem("locallystoredhash"+(querystring['did']));
+			localStorage.setItem("ls-dugga-hash"+(querystring['did']), hash);
+			hash = localStorage.getItem("ls-dugga-hash"+(querystring['did']));
 		}
 		else{
-			hash = localStorage.getItem("locallystoredhash"+(querystring['did']));
+			hash = localStorage.getItem("ls-dugga-hash"+(querystring['did']));
 		}
 
 		
@@ -466,7 +466,7 @@ function removeYearFromDate(date){
 //----------------------------------------------------------------------------------
 
 function setExpireCookie(){
-    if(localStorage.getItem("securityquestion") == "set") {
+    if(localStorage.getItem("ls-security-question") == "set") {
 				var expireDate = new Date();
 				// A test date so you dont have to actually wait 1 hour and 45 minutes.
 				// Don't forget to change the one below (setExpireCookieLogOut()) too.
@@ -481,7 +481,7 @@ function setExpireCookie(){
 //----------------------------------------------------------------------------------
 
 function setExpireCookieLogOut() {
-    if (localStorage.getItem("securityquestion") == "set") {
+    if (localStorage.getItem("ls-security-question") == "set") {
 				var expireDate = new Date();
 				//expireDate.setMinutes(expireDate.getMinutes() + 2);	// For testing
 				expireDate.setMinutes(expireDate.getMinutes() + 120);	// For actual use
@@ -706,9 +706,9 @@ function saveDuggaResult(citstr)
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
 
-	var scores = JSON.parse(localStorage.getItem("scores"+querystring['did']) || '[]');
+	var scores = JSON.parse(localStorage.getItem("ls-highscore-dg"+querystring['did']) || '[]');
 	scores.push(score);
-	localStorage.setItem("scores"+querystring['did'], JSON.stringify(scores));
+	localStorage.setItem("ls-highscore-dg"+querystring['did'], JSON.stringify(scores));
 
 	var readonly;
 	$.ajax({
@@ -1086,7 +1086,7 @@ function AJAXService(opt,apara,kind)
 			datatype: "json",
 			success: function(data){
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
-				if(!localStorage.getItem("locallystoredhash"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
+				if(!localStorage.getItem("ls-dugga-hash"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 					handleHash();	//Makes sure hash is unique.
 				}
 			}
@@ -1221,7 +1221,7 @@ function handleLocalStorage(data){
 	//If locallystoragehash doesn't exist, it will set it to correct hash.
 	var itemString = localStorage.getItem(querystring['did']);
 	var itemParse = JSON.parse(itemString);
-	localStorage.setItem("locallystoredhash"+(querystring['did']), itemParse.locallystoredhash);
+	localStorage.setItem("ls-dugga-hash"+(querystring['did']), itemParse.locallystoredhash);
 
 	getExpireTime(querystring['did']);
 	var variantsize = data['variantsize'];
@@ -1312,7 +1312,7 @@ function addSecurityQuestionProfile(username) {
 		success:function(data) {
 			var result = JSON.parse(data);
 			if(result['getname'] == "success") {
-				$("#challengeQuestion").html(result['securityquestion']);
+				$("#challengeQuestion").html(result['ls-security-question']);
 			}else{
 				if(typeof result.reason != "undefined") {
 					$("#changeChallengeQuestion #securityQuestionError").html("<div class='alert danger'>" + result.reason + "</div>");
@@ -1346,7 +1346,7 @@ function processResetPasswordCheckUsername() {
 			var result = JSON.parse(data);
 				//It is worth to note that getname should probably be named status/error since thats basically what it is
 			if(result['getname'] == "success") {
-				$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
+				$("#showsecurityquestion #displaysecurityquestion").html(result['ls-security-question']);
 				status = 2;
 				toggleloginnewpass();
 			}else if(result['getname'] == "limit"){
@@ -1418,8 +1418,8 @@ function processLogin() {
 			hideLoginPopup();
 
           	// was commented out before which resulted in the session to never end
-			if(result['securityquestion'] != null) {
-				localStorage.setItem("securityquestion", "set");
+			if(result['ls-security-question'] != null) {
+				localStorage.setItem("ls-security-question", "set");
 			} else {
 				setSecurityNotifaction("on");
 			}
@@ -1468,7 +1468,7 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
-            localStorage.removeItem("securityquestion");
+            localStorage.removeItem("ls-security-question");
             localStorage.removeItem("securitynotification");
             location.replace("../DuggaSys/courseed.php");
 		},

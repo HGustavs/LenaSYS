@@ -651,7 +651,7 @@ function returnedSection(data) {
 
   //data variable is put in localStorage which is then used in Codeviewer
 	//to get the right order when going backward and forward in code examples
-	localStorage.setItem("sectionData", JSON.stringify(data));
+	localStorage.setItem("ls-section-data", JSON.stringify(data));
 
   var now = new Date();
   var startdate = new Date(retdata['startdate']);
