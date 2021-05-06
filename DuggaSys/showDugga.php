@@ -199,6 +199,12 @@ if($hash!='UNK'){
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
+			$btnDisable = "";
+			if (isSuperUser($userid)){
+				$btnDisable = "btn-disable";
+			}
+
+
 			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
@@ -207,9 +213,9 @@ if($hash!='UNK'){
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='left'>";
-						echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
+						echo "<input id='saveDuggaButton' class='".$btnDisable." submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
 						if ($duggafile !== 'generic_dugga_file_receive') {
-							echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 						}
 						echo "</td>";
 						echo "<td align='right'>";

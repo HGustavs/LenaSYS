@@ -2802,6 +2802,7 @@ div.submit-button:disabled {
   line-height: 48px !important;
 }
 
+
 /* Tooltip */
 
 .tooltipDugga {
@@ -3703,6 +3704,10 @@ div.reset-pw:hover{
 
 }
 
+.btn-disable {
+  pointer-events: none;
+  background-color: var(--color-primary-light) !important;
+}
 
 #TopMenuStatic .submit-button {
   background-color: var(--color-primary-2);
