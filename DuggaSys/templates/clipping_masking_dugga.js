@@ -94,16 +94,16 @@ function show(){
             fb+="<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div>"
         }
         fb+="<table class='list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-        if(hasFeedback){
+        if(feedback != undefined){
             var feedbackArr = feedback.split("||");
             for (var k=feedbackArr.length-1;k>=0;k--){
                 var fb_tmp = feedbackArr[k].split("%%");
                 fb+="<tr><td style='vertical-align:top;width:40px;'>"+fb_tmp[0].slice(0,10)+"</td><td>"+fb_tmp[1]+"</td></tr>";
             }
+			fb += "</tbody></table>";
+			document.getElementById('feedbackTable').innerHTML = fb;
+			document.getElementById('feedback').style.display = "block";
         }
-				fb += "</tbody></table>";
-				document.getElementById('feedbackTable').innerHTML = fb;
-				document.getElementById('feedback').style.display = "block";
 		}
 
     if(hasFacit){
