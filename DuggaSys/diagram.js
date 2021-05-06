@@ -390,7 +390,6 @@ class StateMachine
 
                     }
                 }else {
-                    console.log(stateChange.id, lastLog.id)
                     if (lastLog.id != stateChange.id) sameElements = false;
                 }
 
@@ -519,9 +518,9 @@ class StateMachine
 
             state.id.forEach(objID => {
                 if (data[findIndex(data, objID)] != undefined){
-                    elementsToRemove.push(data[findIndex(data, state.id)]);
+                    elementsToRemove.push(data[findIndex(data, objID)]);
                 }else {
-                    linesToRemove.push(lines[findIndex(lines, state.id)]);
+                    linesToRemove.push(lines[findIndex(lines, objID)]);
                 }
             });
             if (linesToRemove.length != 0) removeLines(linesToRemove, false);
@@ -1768,8 +1767,8 @@ function removeElements(elementArray, stateMachineShouldSave = true)
     }
 
     clearContext();
-    redrawArrows();
     showdata();
+    redrawArrows();
 }
 
 /**
@@ -1779,6 +1778,7 @@ function removeElements(elementArray, stateMachineShouldSave = true)
  */
 function removeLines(linesArray, stateMachineShouldSave = true)
 {
+
     var anyRemoved = false;
     for (var i = 0; i < linesArray.length; i++) {
         lines = lines.filter(function(line) {
@@ -1793,10 +1793,10 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     if (stateMachineShouldSave && anyRemoved) { 
         stateMachine.save(StateChangeFactory.LinesRemoved(linesArray), StateChange.ChangeTypes.LINE_DELETED);
     }
-    
+
     contextLine = [];
-    redrawArrows();
     showdata();
+    redrawArrows();
 }
 
 /**
