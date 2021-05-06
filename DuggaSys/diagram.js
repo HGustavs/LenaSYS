@@ -2662,15 +2662,15 @@ function zoomin(scrollEvent = undefined)
 
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
-    
-    if (zoomfact == 0.125) zoomfact = 0.25;
-    else if (zoomfact == 0.25) zoomfact = 0.5;
-    else if (zoomfact == 0.5) zoomfact = 0.75;
-    else if (zoomfact == 0.75) zoomfact = 1.0;
-    else if (zoomfact == 1.0) zoomfact = 1.25;
-    else if (zoomfact == 1.25) zoomfact = 1.5;
-    else if (zoomfact == 1.5) zoomfact = 2.0;
-    else if (zoomfact == 2.0) zoomfact = 4.0;
+
+    if (zoomfact == 0.125) {zoomfact = 0.25;document.getElementById("zoom-message").innerHTML = "0.25x";}
+    else if (zoomfact == 0.25) {zoomfact = 0.5;document.getElementById("zoom-message").innerHTML = "0.5x";}
+    else if (zoomfact == 0.5) {zoomfact = 0.75; document.getElementById("zoom-message").innerHTML = "0.75x";}
+    else if (zoomfact == 0.75) {zoomfact = 1.0;document.getElementById("zoom-message").innerHTML = "1x";}
+    else if (zoomfact == 1.0) {zoomfact = 1.25;document.getElementById("zoom-message").innerHTML = "1.25x";}
+    else if (zoomfact == 1.25) {zoomfact = 1.5;document.getElementById("zoom-message").innerHTML = "1.5x";}
+    else if (zoomfact == 1.5) {zoomfact = 2.0;document.getElementById("zoom-message").innerHTML = "2x";}
+    else if (zoomfact == 2.0) {zoomfact = 4.0;document.getElementById("zoom-message").innerHTML = "2.25x";}
     
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
@@ -2714,14 +2714,14 @@ function zoomout(scrollEvent = undefined)
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.25) zoomfact = 0.125;
-    else if (zoomfact == 0.5) zoomfact = 0.25;
-    else if (zoomfact == 0.75) zoomfact = 0.5;
-    else if (zoomfact == 1.0) zoomfact = 0.75;
-    else if (zoomfact == 1.25) zoomfact = 1.0;
-    else if (zoomfact == 1.5) zoomfact = 1.25;
-    else if (zoomfact == 2.0) zoomfact = 1.5;
-    else if (zoomfact == 4.0) zoomfact = 2.0;
+    if (zoomfact == 0.25) {zoomfact = 0.125;document.getElementById("zoom-message").innerHTML = "0.125x";}
+    else if (zoomfact == 0.5) {zoomfact = 0.25;document.getElementById("zoom-message").innerHTML = "0.25x";}
+    else if (zoomfact == 0.75) {zoomfact = 0.5;document.getElementById("zoom-message").innerHTML = "0.5x";}
+    else if (zoomfact == 1.0) {zoomfact = 0.75; document.getElementById("zoom-message").innerHTML = "0.75x";}
+    else if (zoomfact == 1.25) {zoomfact = 1.0;document.getElementById("zoom-message").innerHTML = "1x";}
+    else if (zoomfact == 1.5){ zoomfact = 1.25;document.getElementById("zoom-message").innerHTML = "1.25x";}
+    else if (zoomfact == 2.0){ zoomfact = 1.5;document.getElementById("zoom-message").innerHTML = "1.5x";}
+    else if (zoomfact == 4.0) {zoomfact = 2.0;document.getElementById("zoom-message").innerHTML = "2x";}
 
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
