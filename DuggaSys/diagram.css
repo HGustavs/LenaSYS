@@ -73,6 +73,7 @@
     box-shadow: 6px 6px 10px #888;
     user-select: none;
     cursor:pointer;
+    z-index: 5001;
 }
 
 #options-pane {
