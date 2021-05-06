@@ -42,6 +42,7 @@ $AUtoken=getOP('AUtoken');
 //$localStorageVariant= getOP('variant');
 $variantvalue= getOP('variant');
 $hashvariant;
+$isFileSubmitted;
 
 $showall="true";
 $param = "UNK";
@@ -501,6 +502,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			
 
 			$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
+			$isFileSubmitted = file_exists($ziptemp);
 			if(!file_exists($ziptemp)) {
 				$zipdir="UNK";
 			}else{				
@@ -625,6 +627,7 @@ $array = array(
 		"variantvalue" => $variantvalue,
 		"password" => $password,
 		"hashvariant" => $hashvariant,
+		"isFileSubmitted" => $isFileSubmitted,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 

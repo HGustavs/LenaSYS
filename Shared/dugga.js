@@ -28,13 +28,43 @@ var variantvalue;
 var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
+var isFileSubmitted;
 
+window.addEventListener("click", function() {
+/* 	var elems = document.querySelectorAll(".btn-disable");
+	elems.classList.remove("btn-disable"); */
+/* 	var elems = document.querySelectorAll(".large-button");
+
+	for (var e of elems){
+		e.classList.remove("large-button");
+	} */
+	//elems.classList.add("asdasdasdasd");
+	canSave();
+
+
+	//console.log(querystring)
+});
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
 		$(".fixed-action-button").css("bottom", "64px");
 	}
 })
+
+function canSave() {
+	console.log(isFileSubmitted)
+	if (clicks > 0 || isFileSubmitted) {
+		// 	var elems = document.querySelectorAll(".btn-disable");
+	var elems = document.querySelectorAll(".large-button");
+
+	for (var e of elems){
+		e.classList.remove("large-button");
+	}
+	//elems.classList.add("asdasdasdasd");
+	}
+	else
+	console.log("false")
+}
 
 function sendGroupAjax(val) {
 	// val = 1: new user, val = 0: exit
@@ -1085,6 +1115,9 @@ function AJAXService(opt,apara,kind)
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
 			datatype: "json",
 			success: function(data){
+				
+				isFileSubmitted = JSON.parse(data).isFileSubmitted;
+				canSave();
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
 				if(!localStorage.getItem("locallystoredhash"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 					handleHash();	//Makes sure hash is unique.
