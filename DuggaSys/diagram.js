@@ -756,15 +756,26 @@ var movingContainer = false;
 
 //Grid Settings
 var settings = {
-   
-    gridSize: 50,
-    origoWidth: 2,
-    snapToGrid: false,
-    randomidArray: [], // array for checking randomID
-    errorMsgMap: {},
-    isRulerActive: true,
+    ruler: {
+        lineRatio: 10,
+        fullLineRatio: 10,
+        ZF: 100 * zoomfact,
+        zoomX: Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact)),
+        zoomY: Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact)),
+        isRulerActive: true,
+    },
+    grid: {
+        gridSize: 50,
+        origoWidth: 2,
+        snapToGrid: false,
+    },
+    misc: {
+        randomidArray: [], // array for checking randomID
+        errorMsgMap: {},
+    },
     zoomPower: 1 / 3,
 };
+
 
 // Demo data - read / write from service later on
 var data = [];
@@ -1463,9 +1474,9 @@ function mouseMode_onMouseMove(event)
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
 
                 // If not in EDGE_CREATION AND in snap to grid, calculate the closest snap-point
-                if (settings.snapToGrid && mouseMode != mouseModes.EDGE_CREATION){
-                    ghostElement.x = Math.round(cords.x / settings.gridSize) * settings.gridSize - (ghostElement.width / 2);
-                    ghostElement.y = Math.round(cords.y / settings.gridSize) * settings.gridSize - (ghostElement.height / 2);
+                if (settings.grid.snapToGrid && mouseMode != mouseModes.EDGE_CREATION){
+                    ghostElement.x = Math.round(cords.x / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.width / 2);
+                    ghostElement.y = Math.round(cords.y / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.height / 2);
                 }else {
                     ghostElement.x = cords.x - (ghostElement.width / 2);
                     ghostElement.y = cords.y - (ghostElement.height / 2);
@@ -1617,16 +1628,16 @@ function makeRandomID()
             str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
         
-        if (settings.randomidArray === undefined || settings.randomidArray.length == 0) { //always add first id
-            settings.randomidArray.push(str);
+        if (settings.misc.randomidArray === undefined || settings.misc.randomidArray.length == 0) { //always add first id
+            settings.misc.randomidArray.push(str);
             return str;
 
         } else {
-            var check = settings.randomidArray.includes(str); //if check is true the id already exists
+            var check = settings.misc.randomidArray.includes(str); //if check is true the id already exists
             if(check == true){
                 str = "";
             } else {
-                settings.randomidArray.push(str);
+                settings.misc.randomidArray.push(str);
                 return str;
             }
         }
@@ -2217,11 +2228,11 @@ function setPos(id, x, y)
     foundId = findIndex(data, id);
     if (foundId != -1) {
         var obj = data[foundId];
-        if (settings.snapToGrid) {
+        if (settings.grid.snapToGrid) {
             if (!ctrlPressed) {
                 // Calculate nearest snap point
-                obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.gridSize) * settings.gridSize;
-                obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.gridSize) * settings.gridSize;
+                obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
 
                 // Set the new snap point to center of element
                 obj.x -= obj.width / 2
@@ -2581,7 +2592,7 @@ function toggleSnapToGrid()
     document.getElementById("rulerSnapToGrid").classList.toggle("active");
 
     // Toggle the boolean
-    settings.snapToGrid = !settings.snapToGrid;
+    settings.grid.snapToGrid = !settings.grid.snapToGrid;
 }
 
 /**
@@ -2594,13 +2605,13 @@ function toggleRuler()
     // Toggle active class on button
     document.getElementById("rulerToggle").classList.toggle("active");
 
-    if(settings.isRulerActive){
+    if(settings.ruler.isRulerActive){
         ruler.style.display = "none";
     } else {
         ruler.style.display = "block";
     }
   
-    settings.isRulerActive = !settings.isRulerActive;
+    settings.ruler.isRulerActive = !settings.ruler.isRulerActive;
     drawRulerBars(scrollx,scrolly);
 }
 
@@ -2876,18 +2887,18 @@ function setRulerPosition(x, y)
 function updateGridSize()
 {
     var bLayer = document.getElementById("grid");
-    bLayer.setAttribute("width", settings.gridSize * zoomfact + "px");
-    bLayer.setAttribute("height", settings.gridSize * zoomfact + "px");
+    bLayer.setAttribute("width", settings.grid.gridSize * zoomfact + "px");
+    bLayer.setAttribute("height", settings.grid.gridSize * zoomfact + "px");
 
-    bLayer.children[0].setAttribute('d', `M ${settings.gridSize * zoomfact} 0 L 0 0 0 ${settings.gridSize * zoomfact}`);
+    bLayer.children[0].setAttribute('d', `M ${settings.grid.gridSize * zoomfact} 0 L 0 0 0 ${settings.grid.gridSize * zoomfact}`);
 
     // Set width of origo line on the x axis
     bLayer = document.getElementById("origoX");
-    bLayer.style.strokeWidth = settings.origoWidth * zoomfact;
+    bLayer.style.strokeWidth = settings.grid.origoWidth * zoomfact;
 
     // Set width of origo line on the y axis
     bLayer = document.getElementById("origoY");
-    bLayer.style.strokeWidth = settings.origoWidth * zoomfact;
+    bLayer.style.strokeWidth = settings.grid.origoWidth * zoomfact;
 
     updateGridPos();
 }
@@ -2982,17 +2993,17 @@ function setTimerToMessage(element, time = 5000)
 
     element.innerHTML += `<div class="timeIndicatorBar"></div>`;
     var timer = setInterval( function(){
-        var element = document.getElementById(settings.errorMsgMap[timer].id); // TODO : SAME VARIABLE NAME AS OUTER SCOPE?????
-        settings.errorMsgMap[timer].percent -= 1;
-        element.lastElementChild.style.width = `calc(${settings.errorMsgMap[timer].percent - 1}% - 10px)`;
+        var element = document.getElementById(settings.misc.errorMsgMap[timer].id); // TODO : SAME VARIABLE NAME AS OUTER SCOPE?????
+        settings.misc.errorMsgMap[timer].percent -= 1;
+        element.lastElementChild.style.width = `calc(${settings.misc.errorMsgMap[timer].percent - 1}% - 10px)`;
 
         // If the time is out, remove the message
-        if(settings.errorMsgMap[timer].percent === 0) removeMessage(element, timer);
+        if(settings.misc.errorMsgMap[timer].percent === 0) removeMessage(element, timer);
 
     }, time / 100);
 
     // Adds to map: TimerID: ElementID, Percent
-    settings.errorMsgMap[timer] = {
+    settings.misc.errorMsgMap[timer] = {
         id: element.id,
         percent: 100
     };
@@ -3009,19 +3020,19 @@ function removeMessage(element, timer)
 {
     // If there is no timer in the parameter try find it by elementID in
     if (!timer) {
-        timer = Object.keys(settings.errorMsgMap).find(key => {
-            return settings.errorMsgMap[key].id === element.id
+        timer = Object.keys(settings.misc.errorMsgMap).find(key => {
+            return settings.misc.errorMsgMap[key].id === element.id
         });
     }
 
     if (timer) {
         clearInterval(timer); // Remove the timer
-        delete settings.errorMsgMap[timer]; // Remove timer from the map
+        delete settings.misc.errorMsgMap[timer]; // Remove timer from the map
     }
 
     element.remove(); // Remove the element from DOM
     // Remove ID from randomidArray
-    settings.randomidArray = settings.randomidArray.filter(id => {
+    settings.misc.randomidArray = settings.misc.randomidArray.filter(id => {
         return element.id !== id;
     });
 }
@@ -3462,26 +3473,19 @@ function removeNodes()
 function drawRulerBars(X,Y)
 {
     //Get elements
-    if(!settings.isRulerActive) return;
+    if(!settings.ruler.isRulerActive) return;
     
     svgX = document.getElementById("ruler-x-svg");
     svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
-    var rulerSettings = {
-       
-        lineRatio: 10,
-        fullLineRatio: 10,
-        ZF: 100 * zoomfact,
-        zoomX: Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact)),
-        zoomY: Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact)),
-    };
+
 
     var barY, barX = "";
     const color = "black";
     var cordY = 0;
     var cordX = 0;
-    var pannedY = (Y - rulerSettings.ZF) / zoomfact;
-    var pannedX = (X - rulerSettings.ZF) / zoomfact;
+    var pannedY = (Y - settings.ruler.ZF) / zoomfact;
+    var pannedX = (X - settings.ruler.ZF) / zoomfact;
 
     if(zoomfact < 0.5){
         var verticalText = "writing-mode= 'vertical-lr'";
@@ -3490,12 +3494,12 @@ function drawRulerBars(X,Y)
     }
     
     //Draw the Y-axis ruler positive side.
-    var lineNumber = (rulerSettings.fullLineRatio - 1);
-    for (i = 100 + rulerSettings.zoomY; i <= pannedY -(pannedY *2) + cheight ; i += (rulerSettings.lineRatio*zoomfact)) {
+    var lineNumber = (settings.ruler.lineRatio - 1);
+    for (i = 100 + settings.ruler.zoomY; i <= pannedY -(pannedY *2) + cheight ; i += (settings.ruler.lineRatio*zoomfact)) {
         lineNumber++;
          
         //Check if a full line should be drawn
-        if (lineNumber === rulerSettings.fullLineRatio) {
+        if (lineNumber === settings.ruler.lineRatio) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
             barY += "<text x='2' y='"+(pannedY+i+10)+"'style='font-size: 10px'>"+cordY+"</text>";
@@ -3506,13 +3510,13 @@ function drawRulerBars(X,Y)
     }
 
     //Draw the Y-axis ruler negative side.
-    lineNumber = (rulerSettings.fullLineRatio - 11);
+    lineNumber = (settings.ruler.lineRatio - 11);
     cordY = -100;
-    for (i = -100 - rulerSettings.zoomY; i <= pannedY; i += (rulerSettings.lineRatio*zoomfact)) {
+    for (i = -100 - settings.ruler.zoomY; i <= pannedY; i += (settings.ruler.lineRatio*zoomfact)) {
         lineNumber++;
          
         //Check if a full line should be drawn
-        if (lineNumber === rulerSettings.fullLineRatio) {
+        if (lineNumber === settings.ruler.lineRatio) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
             barY += "<text x='2' y='"+(pannedY-i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
@@ -3526,12 +3530,12 @@ function drawRulerBars(X,Y)
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
     
     //Draw the X-axis ruler positive side.
-    lineNumber = (rulerSettings.fullLineRatio - 1);
-    for (i = 51 + rulerSettings.zoomX; i <= pannedX - (pannedX *2) + cwidth; i += (rulerSettings.lineRatio*zoomfact)) {
+    lineNumber = (settings.ruler.lineRatio - 1);
+    for (i = 51 + settings.ruler.zoomX; i <= pannedX - (pannedX *2) + cwidth; i += (settings.ruler.lineRatio*zoomfact)) {
         lineNumber++;
         
         //Check if a full line should be drawn
-        if (lineNumber === rulerSettings.fullLineRatio) {
+        if (lineNumber === settings.ruler.lineRatio) {
             lineNumber = 0;
             barX += "<line x1='" +(i+pannedX)+"' y1='0' x2='" + (i+pannedX) + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
@@ -3542,13 +3546,13 @@ function drawRulerBars(X,Y)
     }
 
     //Draw the X-axis ruler negative side.
-    lineNumber = (rulerSettings.fullLineRatio - 11);
+    lineNumber = (settings.ruler.lineRatio - 11);
     cordX = -100;
-    for (i = -51 - rulerSettings.zoomX; i <= pannedX; i += (rulerSettings.lineRatio*zoomfact)) {
+    for (i = -51 - settings.ruler.zoomX; i <= pannedX; i += (settings.ruler.lineRatio*zoomfact)) {
         lineNumber++;
         
         //Check if a full line should be drawn
-        if (lineNumber === rulerSettings.fullLineRatio) {
+        if (lineNumber === settings.ruler.lineRatio) {
             lineNumber = 0;
             barX += "<line x1='" +(pannedX-i)+"' y1='0' x2='" + (pannedX-i) + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px'>"+cordX+"</text>";
@@ -3817,11 +3821,11 @@ function updateCSSForAllElements()
             top -= deltaY;
         }
 
-        if (settings.snapToGrid && useDelta) {
+        if (settings.grid.snapToGrid && useDelta) {
             if (elementData.id === targetElement.id) {
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / settings.gridSize) * settings.gridSize;
-                var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.gridSize) * settings.gridSize;
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
 
                 // Add the scroll values
                 left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
