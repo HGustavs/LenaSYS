@@ -77,16 +77,16 @@ function setHash(h){
 		//From localstorage we load what we have into our locallystoredhash variable, that is then compared against. 
 		//On the first dugga load, it will be undefined, and thereafter a hash value will be generated.
 		//If a hash is already stored in localstorage, we will load that hash instead.
-		locallystoredhash = localStorage.getItem("ls-dugga-hash"+(querystring['did']));
+		locallystoredhash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
 
 		if((locallystoredhash == null) || (locallystoredhash == undefined) || (!locallystoredhash)){
 			hash = generateHash();
 			//locallystoredhash has not been set at this point, but will be after this.
-			localStorage.setItem("ls-dugga-hash"+(querystring['did']), hash);
-			hash = localStorage.getItem("ls-dugga-hash"+(querystring['did']));
+			localStorage.setItem("ls-hash-dg"+(querystring['did']), hash);
+			hash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
 		}
 		else{
-			hash = localStorage.getItem("ls-dugga-hash"+(querystring['did']));
+			hash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
 		}
 
 		
@@ -1086,7 +1086,7 @@ function AJAXService(opt,apara,kind)
 			datatype: "json",
 			success: function(data){
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
-				if(!localStorage.getItem("ls-dugga-hash"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
+				if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 					handleHash();	//Makes sure hash is unique.
 				}
 			}
@@ -1221,7 +1221,7 @@ function handleLocalStorage(data){
 	//If locallystoragehash doesn't exist, it will set it to correct hash.
 	var itemString = localStorage.getItem("ls-allocated-variant-dg"+querystring['did']);
 	var itemParse = JSON.parse(itemString);
-	localStorage.setItem("ls-dugga-hash"+(querystring['did']), itemParse.locallystoredhash);
+	localStorage.setItem("ls-hash-dg"+(querystring['did']), itemParse.locallystoredhash);
 
 	getExpireTime("ls-allocated-variant-dg"+querystring['did']);
 	var variantsize = data['variantsize'];
