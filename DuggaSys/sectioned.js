@@ -448,11 +448,11 @@ function prepareItem() {
   console.log("screenPos: " +screenPos);
 
   if(screenPos < 1){
-    screenPos = 12;
+    screenPos = 5;
   }else{
-    screenPos = 12 * screenPos;
+    screenPos = 4 * screenPos;
   }
-  console.log("Postion: " + screenPos);
+  console.log("Position: " + screenPos);
 
  
   param.pos = screenPos;
