@@ -144,13 +144,13 @@
 
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
 
-		<!-- Delete button -->
+		<!-- Hide button -->
 		
-		<div class='fixed-action-button3 sectioned3'  id="DELStatic" style="display:none">
-			<input id='delElement'  type='button' value='-' style="top:-493px" class='submit-button-newitem' title='Delete marked items' onclick='confirmBox("openConfirmBox");'>
+		<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
+			<input id='hideElement'  type='button' value='-' style="top:-493px" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
 		</div>
 		
-		<!-- end delete button -->
+		<!-- end hide button -->
 
 		<!-- Small FAB Button in top in the header of sectioned -->
 		

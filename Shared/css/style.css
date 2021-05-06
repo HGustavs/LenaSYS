@@ -4889,7 +4889,7 @@ only screen and (max-device-width: 800px) {
   #addElement {
     display: none;
   }
-  #delElement{
+  #hideElement{
     display: block;
   }
 
@@ -5330,7 +5330,7 @@ only screen and (max-device-width: 480px) {
     padding: 8px 10px 5px 10px;
   }
 
-  #delElement{
+  #hideElement{
     width: 20px;
     height: 20px;
   }
@@ -5352,7 +5352,7 @@ only screen and (max-device-width: 390px) {
 
   }
 
-  #delElement{
+  #hideElement{
     width: 20px;
     height: 20px;
   }

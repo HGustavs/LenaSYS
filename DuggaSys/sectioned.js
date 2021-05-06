@@ -310,14 +310,19 @@ function confirmBox(operation, item = null) {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
+  } else if (operation == "openHideConfirmBox") {
+    active_lid = item ? $(item).parents('table').attr('value') : null;
+    $("#sectionHideConfirmBox").css("display", "flex");
+    $('#close-item-button').focus();
   } else if (operation == "deleteItem" && hideItemList.length == 0) {
     deleteItem(active_lid);
     $("#sectionConfirmBox").css("display", "none");
-  } else if (operation == "deleteItem" && !hideItemList.length == 0) {
+  } else if (operation == "hideItem" && !hideItemList.length == 0) {
     hideMarkedItems(hideItemList)
-    $("#sectionConfirmBox").css("display", "none");
+    $("#sectionHideConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
+    $("#sectionHideConfirmBox").css("display", "none");
     $("#noMaterialConfirmBox").css("display", "none");
   }
 }
@@ -716,7 +721,7 @@ function returnedSection(data) {
       // Show FAB / Menu
       document.getElementById("FABStatic").style.display = "Block";
       document.getElementById("FABStatic2").style.display = "Block";
-      document.getElementById("DELStatic").style.display = "Block";
+      document.getElementById("HIDEStatic").style.display = "Block";
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
     } else {
