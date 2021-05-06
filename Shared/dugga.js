@@ -29,6 +29,7 @@ var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
 var loadVariantFlag = false;	// Flag to decide if the 'Load Variant' button should be visable or not.
+var varArr;
 
 
 $(function () {  // Used to set the position of the FAB above the cookie message
@@ -1210,6 +1211,9 @@ function handleHash(){
 	});
 }
 function handleLocalStorage(data){
+	varArr = [];
+	data['variants'].forEach(element => varArr.push(element));
+	console.log(varArr);
 
 	// Check localstorage variants.
 	var newvariant = data['variantvalue'];
@@ -1233,6 +1237,7 @@ function handleLocalStorage(data){
 }
 
 function getVariantValue(ajaxdata, opt, para){
+	
 	//Checks if the variantSize variant is set in localstorage. When its not, its set.
 	if(localStorage.getItem("variantSize") == null) {
 		localStorage.setItem("variantSize", 100);
