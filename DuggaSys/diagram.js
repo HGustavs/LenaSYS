@@ -458,6 +458,35 @@ class StateMachine
         // If there is no history => return
         if (this.currentHistoryIndex == -1) return;
 
+        this.scrubHistory(this.currentHistoryIndex)
+
+        // Lower the historyIndex by one
+        this.currentHistoryIndex--;
+
+        clearContext();
+        showdata();
+        updatepos(0, 0);
+        displayMessage(messageTypes.SUCCESS, "Changes reverted!")
+    }
+    stepForward(){
+        // If there is no history => return
+        // If the current index is last index
+        if (this.currentHistoryIndex == -1 && this.historyLog.length -1 == this.currentHistoryIndex) return;
+
+        // Increase the currentHistoryIndex by one
+        this.currentHistoryIndex++;
+
+        // Restore the state
+        this.restoreState(this.historyLog[this.currentHistoryIndex]);
+
+        // Update diagram
+        clearContext();
+        showdata();
+        updatepos(0, 0);
+        displayMessage(messageTypes.SUCCESS, "Changes reverse reverted!")
+    }
+    scrubHistory(endIndex)
+    {
         // Set initial values to data and lines.
         data = [];
         lines = [];
@@ -473,106 +502,100 @@ class StateMachine
             lines.push(obj)
         });
 
-        // For every change that should be redone
-        for (var i = 0; i < this.currentHistoryIndex; i++) {
-            var state = this.historyLog[i];
-            var keys = Object.keys(state);
+        for (var i = 0; i < endIndex; i++) {
+            this.restoreState(this.historyLog[i])
+        }
+    }
+    restoreState(state)
+    {
+        var keys = Object.keys(state);
 
-            // If there is only an key that is ID in the state, delete those objects
-            if (keys.length == 1 && keys[0] == "id") {
-                var elementsToRemove = [];
-                var linesToRemove = [];
+        // If there is only an key that is ID in the state, delete those objects
+        if (keys.length == 1 && keys[0] == "id") {
+            var elementsToRemove = [];
+            var linesToRemove = [];
 
-                if (!Array.isArray(state.id)) state.id = [state.id];
-
-                state.id.forEach(objID => {
-                    if (data[findIndex(data, objID)] != undefined){
-                        elementsToRemove.push(data[findIndex(data, state.id)]);
-                    }else {
-                        linesToRemove.push(lines[findIndex(lines, state.id)]);
-                    }
-                });
-                if (linesToRemove.length != 0) removeLines(linesToRemove, false);
-                if (elementsToRemove.length != 0) removeElements(elementsToRemove, false);
-                continue;
-            }
-
-            if (state[0] != undefined && state[0].id != undefined){
-                Object.keys(state).forEach(index => {
-
-                    var temp = {};
-                    Object.keys(state[index]).forEach(key => {
-                        if (key == "id") temp.id = state[index][key];
-                        else temp[key] = state[index][key];
-                    });
-
-                    // If the object is an element
-                    if (state[index].x && state[index].y){
-                        // Add the defaults to the element
-                        Object.keys(defaults[temp.kind]).forEach(key => {
-                            if (!temp[key]) temp[key] = defaults[temp.kind][key];
-                        });
-                        data.push(temp);
-                    }else {
-                        // Add the defaults to the element
-                        Object.keys(defaultLine).forEach(key => {
-                            if (!temp[key]) temp[key] = defaultLine[key];
-                        });
-                        lines.push(temp);
-                    }
-                });
-                continue;
-            }
-            
             if (!Array.isArray(state.id)) state.id = [state.id];
 
-            for (var i = 0; i < state.id.length; i++){
-                // Find object
-                var object;
-                if (data[findIndex(data, state.id)] != undefined) object = data[findIndex(data, state.id)];
-                else if (lines[findIndex(lines, state.id)] != undefined) object = lines[findIndex(lines, state.id)];
+            state.id.forEach(objID => {
+                if (data[findIndex(data, objID)] != undefined){
+                    elementsToRemove.push(data[findIndex(data, state.id)]);
+                }else {
+                    linesToRemove.push(lines[findIndex(lines, state.id)]);
+                }
+            });
+            if (linesToRemove.length != 0) removeLines(linesToRemove, false);
+            if (elementsToRemove.length != 0) removeElements(elementsToRemove, false);
+            return;
+        }
 
-                if (object){
-                    keys.forEach(key => {
-                        if (key != "id" && Number.isInteger(state[key])){
-                            if (object[key] === undefined) object[key] = state[key];
-                            else object[key] += state[key]
-                        }else {
-                            object[key] = state[key];
-                        }
-                    });
-                }else { // Create new object
-                    var temp = {};
-                    Object.keys(state).forEach(key => {
-                        if (key == "id") temp.id = state.id[i];
-                        else temp[key] = state[key];
-                    });
+        if (state[0] != undefined && state[0].id != undefined){
+            Object.keys(state).forEach(index => {
 
-                    // If the object is an element
-                    if (temp.x && temp.y){
-                        // Add the defaults to the element
-                        Object.keys(defaults[temp.kind]).forEach(key => {
-                            if (!temp[key]) temp[key] = defaults[temp.kind][key];
-                        });
-                        data.push(temp);
+                var temp = {};
+                Object.keys(state[index]).forEach(key => {
+                    if (key == "id") temp.id = state[index][key];
+                    else temp[key] = state[index][key];
+                });
+
+                // If the object is an element
+                if (state[index].x && state[index].y){
+                    // Add the defaults to the element
+                    Object.keys(defaults[temp.kind]).forEach(key => {
+                        if (!temp[key]) temp[key] = defaults[temp.kind][key];
+                    });
+                    data.push(temp);
+                }else {
+                    // Add the defaults to the element
+                    Object.keys(defaultLine).forEach(key => {
+                        if (!temp[key]) temp[key] = defaultLine[key];
+                    });
+                    lines.push(temp);
+                }
+            });
+            return;
+        }
+
+        if (!Array.isArray(state.id)) state.id = [state.id];
+
+        for (var i = 0; i < state.id.length; i++){
+            // Find object
+            var object;
+            if (data[findIndex(data, state.id)] != undefined) object = data[findIndex(data, state.id)];
+            else if (lines[findIndex(lines, state.id)] != undefined) object = lines[findIndex(lines, state.id)];
+
+            if (object){
+                keys.forEach(key => {
+                    if (key != "id" && Number.isInteger(state[key])){
+                        if (object[key] === undefined) object[key] = state[key];
+                        else object[key] += state[key]
                     }else {
-                        // Add the defaults to the element
-                        Object.keys(defaultLine).forEach(key => {
-                            if (!temp[key]) temp[key] = defaultLine[key];
-                        });
-                        lines.push(temp);
+                        object[key] = state[key];
                     }
+                });
+            }else { // Create new object
+                var temp = {};
+                Object.keys(state).forEach(key => {
+                    if (key == "id") temp.id = state.id[i];
+                    else temp[key] = state[key];
+                });
+
+                // If the object is an element
+                if (temp.x && temp.y){
+                    // Add the defaults to the element
+                    Object.keys(defaults[temp.kind]).forEach(key => {
+                        if (!temp[key]) temp[key] = defaults[temp.kind][key];
+                    });
+                    data.push(temp);
+                }else {
+                    // Add the defaults to the element
+                    Object.keys(defaultLine).forEach(key => {
+                        if (!temp[key]) temp[key] = defaultLine[key];
+                    });
+                    lines.push(temp);
                 }
             }
         }
-
-        // Lower the historyIndex by one
-        this.currentHistoryIndex--;
-
-        clearContext();
-        showdata();
-        updatepos(0, 0);
-        displayMessage(messageTypes.SUCCESS, "Changes reverted!")
     }
 }
 //#endregion ===================================================================================
