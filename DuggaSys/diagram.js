@@ -3893,6 +3893,7 @@ function showdata()
  */
 function centerCamera()
 {
+    zoomfact = 1;
     var maxX = undefined;
     var maxY = undefined;
     var minX = undefined;
@@ -3903,27 +3904,71 @@ function centerCamera()
         if (maxY == undefined || data[i].y + data[i].height > maxY) maxY = data[i].y + data[i].height;
         if (minY == undefined || data[i].y < minY) minY = data[i].y;
     }
-    console.log(new Point(minX, minY), new Point(maxX, maxY));
-    camera = {
-        x: (window.innerWidth * 0.5 - (scrollx / zoomfact) + 1) / zoomfact,
-        y: (window.innerHeight * 0.5 - (scrolly / zoomfact) + 1) / zoomfact
+
+    // mitten av skärmen i pixlar
+    var centerScreen = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2
     };
+
+    // center av diagrammet i koordinater
+    var centerDiagram = {
+        x: minX + (maxX - minX) / 2,
+        y: minY + (maxY - minY) / 2
+    };
+
+    // flytta kameran till mitten av diagrammet
+    scrollx = centerDiagram.x * zoomfact;
+    scrolly = centerDiagram.y * zoomfact;
+
+    var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+    console.log(middleCoordinate);
+
+    scrollx = middleCoordinate.x;
+    scrolly = middleCoordinate.y;
+
+    var finalCamera = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+
+    console.log(
+        `camera: {${middleCoordinate.x}, ${middleCoordinate.y}} `,
+        `centerDiagram: {${centerDiagram.x}, ${centerDiagram.y}}`,
+        `finalCamera: {${finalCamera.x}, ${finalCamera.y}}`);
+    // uppdatera skärmen
+    showdata();
+    updatepos();
+    updateGridPos();
+    updateGridSize();
+    drawRulerBars(scrollx, scrolly);
+
+
+    /*console.log(new Point(minX, minY), new Point(maxX, maxY));
 
     var center = {
         x: minX + (maxX - minX) / 2,
         y: minY + (maxY - minY) / 2
     };
 
-    scrollx = -center.x * zoomfact + window.innerWidth * 0.5 * zoomfact;
-    scrolly = -center.y * zoomfact + window.innerHeight * 0.5 * zoomfact;
-    console.log(center);
-    //scrollx -= camera.x - ((window.innerWidth / 2) * zoomfact);
-    //scrolly -= camera.y - ((window.innerHeight / 2) * zoomfact);
+    // expected x: 206, y: 69 zoomfact: 0.5
+    // de facto x: 877, y: 359
+    console.log(window.innerWidth, zoomfact)
+    var term = -center.x - zoomOrigo.x;
+    console.log(term);
+    scrollx = center.x;
+    // 877 = (-610 - 1085 + 1279.5) * 0.5
+
+    scrolly = center.y;
+
+    camera = {
+        x: (window.innerWidth * 0.5 - (scrollx / zoomfact) + 1) / zoomfact,
+        y: (window.innerHeight * 0.5 - (scrolly / zoomfact) + 1) / zoomfact
+    };
+
+    console.log(center, new Point(scrollx, scrolly), camera, "end");
     showdata();
     updatepos();
     updateGridPos();
     updateGridSize();
-    drawRulerBars(scrollx, scrolly);
+    drawRulerBars(scrollx, scrolly);*/
 }
 
 //#endregion ===================================================================================
