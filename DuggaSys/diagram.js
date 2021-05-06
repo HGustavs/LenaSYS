@@ -1908,6 +1908,7 @@ function updateSelection(ctxelement) // TODO : Default null value since we use i
         // The element is not already selected
         if (!context.includes(ctxelement)) {
             context.push(ctxelement);
+            showdata();
         }
         // The element is already selected
     } else if (altPressed && ctxelement != null) {
@@ -1924,6 +1925,7 @@ function updateSelection(ctxelement) // TODO : Default null value since we use i
         // Element not already in context
         if (!context.includes(ctxelement) && context.length < 1) {
             context.push(ctxelement);
+            showdata();
         } else {
             if (mouseMode != mouseModes.EDGE_CREATION) {
                 clearContext();
@@ -3595,6 +3597,9 @@ function drawElement(element, ghosted = false)
 						width:${boxw}px;
 						height:${boxh}px;
 						font-size:${texth}px;`;
+    if(context.includes(element)){
+        str += `z-index: 1;`;
+    }
     if (ghosted) {
         str += `
             pointer-events: none;
