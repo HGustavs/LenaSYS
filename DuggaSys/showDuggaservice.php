@@ -473,10 +473,36 @@ if(strcmp($opt,"GRPDUGGA")==0){
 	$userCount += count($usersInGroup);
 }
 
+// Deletes submitted files from the filesystem and the database.
 if(strcmp($opt,"DELETESUBM")==0){
-	$query = $pdo->prepare("DELETE FROM submission WHERE subid=:subid");
-	$query->bindParam(':subid', $subid);
-	$query->execute();
+    $query = $pdo->prepare("SELECT filepath,filename,extension,seq FROM submission WHERE subid=:subid");
+    $query->bindParam(':subid', $subid);
+    $query->execute();
+
+    if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $filepath=$row['filepath'];
+        $filename=$row['filename'];
+        $extension=$row['extension'];
+        $seq=$row['seq'];
+    }
+
+    $path = getcwd();
+    $path = str_replace('\\','/', $path);
+    $fullpath = $path."/".$filepath.$filename.$seq.".".$extension;
+
+    if(file_exists($fullpath)){
+        if(unlink($fullpath)){
+            //File successfully deleted
+        } else {
+            //File found, but could not be deleted
+        }
+    } else {
+        //File does not exist
+    }
+
+    $query = $pdo->prepare("DELETE FROM submission WHERE subid=:subid");
+    $query->bindParam(':subid', $subid);
+    $query->execute();
 }
 
 $files= array();
