@@ -1805,41 +1805,41 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
   	if(iconFlag){
 		if (group) {
 			if (mobileMediaQuery.matches) {
-				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th><th>Delete</th></tr></thead>";
 			} else {
-				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th><th>Delete</th></tr></thead>";
 			}
 		} else if(ctype == "zip" || ctype == "rar"){
 			if(mobileMediaQuery.matches){
-				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Ziparchive</th><th>Upload date</th><th>Delete</th></tr></thead>";
 			} else {
-				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Ziparchive</th><th>Upload date</th><th>Delete</th></tr></thead>";
 			}
 		} else {
 			if (mobileMediaQuery.matches) {
-				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th><th>Delete</th></tr></thead>";
 			} else {
-				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th><th>Delete</th></tr></thead>";
 			}
 		}
 	} else {
 		if (group) {
 			if (mobileMediaQuery.matches) {
-			tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th>Delete</th></tr></thead>";
 			} else {
-					tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+					tab+="<thead><tr><th>Filename</th><th>Upload date</th><th>Delete</th></tr></thead>";
 			}
 		} else if(ctype == "zip" || ctype == "rar"){
 			if(mobileMediaQuery.matches){
-				tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+				tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th><th>Delete</th></tr></thead>";
 			} else {
-				tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+				tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th><th>Delete</th></tr></thead>";
 			}
 		} else {
 			if (mobileMediaQuery.matches) {
-				tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+				tab+="<thead><tr><th>Filename</th><th>Upload date</th><th>Delete</th></tr></thead>";
 			} else {
-				tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+				tab+="<thead><tr><th>Filename</th><th>Upload date</th><th>Delete</th></tr></thead>";
 			}
 		}
 	}
@@ -1917,6 +1917,10 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							} else {
 								tab+=filez[i].updtime;+"</td>";
 							}
+							tab+="<td>";
+							tab+="<img alt='trashcan icon' id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='test123();'>";
+							tab+="</td>";
+
 							tab+="</tr>";
 					}
 			}
@@ -1925,8 +1929,11 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		tab+="</table>"
 
 		document.getElementById(cfield+"Prev").innerHTML=tab;
-	}
+}
 
+function test123(){
+	console.log("works?");
+}
 
 function makeForm(cfield, ctype){
 	if (inParams !== "UNK") {
