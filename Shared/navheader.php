@@ -362,7 +362,7 @@
 	include '../Shared/logoutbox.php';
 ?>
 <script type="text/javascript">
-		if(localStorage.getItem("cookieMessage")=="off"){
+		if(localStorage.getItem("ls-cookie-message")=="off"){
 			$("#cookiemsg").css("display", "none");
 		}else{
 			$("#cookiemsg").css("display", "flex");
@@ -370,7 +370,7 @@
 	setupLoginLogoutButton('<?PHP echo json_encode(checklogin()) ?>');
 	function cookieMessage(){
 		hideCookieMessage();
-		localStorage.setItem("cookieMessage", "off");
+		localStorage.setItem("ls-cookie-message", "off");
 	}
 	function hoverBack(){
 		$(".dropdown-list-container").css("display", "none");
