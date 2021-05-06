@@ -179,7 +179,7 @@ if($hash!='UNK'){
 	}
 }
 
-
+echo "<input class='submit-button large-button' type='button' value='edit' />";
 
 //Remove if you want the password to be persistent.
 //$_SESSION['hashpassword'] = 'UNK';
@@ -190,6 +190,7 @@ if($hash!='UNK'){
 	<!-- content START -->
 	<div id="content">
 		<?php
+	
 		echo "<script>console.log('".$duggafile."');</script>";
 			// Log USERID for Dugga Access
 			// commented out because we are unsure about the usage of logs
@@ -199,6 +200,7 @@ if($hash!='UNK'){
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
+
 			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
@@ -210,6 +212,9 @@ if($hash!='UNK'){
 						echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
 						if ($duggafile !== 'generic_dugga_file_receive') {
 							echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+						}
+						if(isSuperUser($userid)){
+							echo "<input class='submit-button large-button' type='button' value='Edit Instructions' />";
 						}
 						echo "</td>";
 						echo "<td align='right'>";
