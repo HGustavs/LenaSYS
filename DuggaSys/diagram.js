@@ -972,20 +972,15 @@ document.addEventListener('keydown', function (e)
         }
 
         if (isKeybindValid(e, keybinds.ZOOM_IN)){
-            e.stopPropagation();
             e.preventDefault();
             zoomin();
         } 
         if (isKeybindValid(e, keybinds.ZOOM_OUT)){
-            e.stopImmediatePropagation();
-            e.stopPropagation();
             e.preventDefault();
             zoomout();
         } 
 
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
-            e.stopImmediatePropagation();
-            e.stopPropagation();
             e.preventDefault();
             selectAll();
         }      
@@ -2239,7 +2234,7 @@ function setPos(id, x, y)
 
 function isKeybindValid(e, keybind)
 {
-    return e.key.toLowerCase() == keybind.key && e.ctrlKey == keybind.ctrl;
+    return e.key.toLowerCase() == keybind.key && e.ctrlKey || e.metaKey == keybind.ctrl;
 }
 
 function findEntityFromLine(lineObj)
