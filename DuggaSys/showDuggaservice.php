@@ -224,6 +224,7 @@ if($demo || $hr){
 		// if none has been chosen and there is a first one take that one.
 		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
 	}else{
+	
 		// There is a variant already -- do nothing!	
 	}
 	

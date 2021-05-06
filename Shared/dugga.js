@@ -1212,8 +1212,8 @@ function handleHash(){
 }
 function handleLocalStorage(data){
 	varArr = [];
-	data['variants'].forEach(element => varArr.push(element));
-	console.log(varArr);
+	data['variants'].forEach(element => varArr.push(element.vid));
+	console.log(varArr[1]);
 
 	// Check localstorage variants.
 	var newvariant = data['variantvalue'];
