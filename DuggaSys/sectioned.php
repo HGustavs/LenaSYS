@@ -272,6 +272,24 @@
 	</div>
 	<!-- Confirm Edit Section Dialog END -->
 
+	<!-- Confirm Section Hide Dialog START -->
+	<div id='sectionHideConfirmBox' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox' style='width:460px;'>
+			<div class='loginBoxheader'>
+					<h3>Confirm hiding</h3>
+					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+			</div>
+			<div style='text-align: center;'>
+					<h4>Are you sure you want to hide this item?</h4>
+			</div>
+			<div style='display:flex; align-items:center; justify-content: center;'>
+				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("hideItem");' />
+				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+			</div>
+		</div>
+	</div>
+	<!-- Confirm Edit Section Hide Dialog END -->
+
 	<!-- Confirm Missing Material Dialog START -->
 	<div id='noMaterialConfirmBox' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:460px;'>
