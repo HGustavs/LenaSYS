@@ -2504,6 +2504,21 @@ function unNestElements(htmlArray){
   return array;
 }
 
+function removeGrade(string){
+  var str1 = "(U-G)";
+  var str2 = "(U-G-VG)";
+  var array = string.split(" ");
+  var result = [];
+  for(var i = 0; i<array.length; i++){
+    if(array[i] != str1 && str2){
+      result.push(array[i]);
+    }
+  }
+  result = result.join(' ');
+  result = result.slice(0, -1);
+  return result;
+}
+
 /* Write a function which gets all anchor elements of class "internal-link" */
 function getCourseElements(){
   let list = [];
@@ -2516,9 +2531,10 @@ function getCourseElements(){
     list.push(e);
   }
   for(var i=0; i<rubriker.length; i++){
-    var e = rubriker[i];
+    var e = removeGrade(rubriker[i]);
     list.push(e);
   }
+  console.log(list);
   return list;
 }
 
@@ -2531,20 +2547,22 @@ function validateForm(formid) {
   if (formid === 'editSection') {
     var sName = document.getElementById("sectionname").value;
     var deadDate = document.getElementById("setDeadlineValue").value;
-    var duplicate;
+    window.bool11 = false;
     //If fields empty
     if (sName == null || sName == "") {
       alert("Fill in all fields");
     }
-
-    if(getCourseElements().indexOf(sName) >= 0){      
+    //Name is a duplicate
+    if(getCourseElements().indexOf(sName) >= 0){
+      window.bool11 = false;      
       alert('Name already exists, choose another one');
-      duplicate == true;
-    } else duplicate == false;
+    }else{ 
+      window.bool11 = true;
+      console.log(sName,getCourseElements().indexOf(sName));
+    }
 
     // if all information is correct
-    if (window.bool8 === true && window.bool10 == true 
-      && duplicate == false || undefined) {
+    if (window.bool8 == true && window.bool10 == true && window.bool11 == true) {
       alert('The item is now updated');
       updateItem();
       updateDeadline();
