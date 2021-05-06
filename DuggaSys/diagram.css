@@ -315,6 +315,7 @@
     border-radius: 5px;
     text-align: center;
     z-index: 100;
+    pointer-events: none;
 }
 
 /*tooltip*/
