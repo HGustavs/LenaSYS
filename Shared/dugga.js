@@ -104,7 +104,7 @@ function setPassword(p){
 
 //Set the localstorage item securitynotifaction to on or off
 function setSecurityNotifaction(param){
-    localStorage.setItem("securitynotification", param);
+    localStorage.setItem("ls-security-notification", param);
 }
 
 function resetLoginStatus(){
@@ -1213,46 +1213,46 @@ function handleLocalStorage(data){
 	var newvariant = data['variantvalue'];
 	console.log("newVariant: " + newvariant);
 	
-	if(localStorage.getItem(querystring['did']) == null){
-		localStorage.setItem(querystring['did'], newvariant);
+	if(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']) == null){
+		localStorage.setItem("ls-allocated-variant-dg"+querystring['did'], newvariant);
 		//The big number below represents 30 days in milliseconds
-		setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000, hash);
+		setExpireTime("ls-allocated-variant-dg"+querystring['did'], localStorage.getItem("ls-allocated-variant-dg"+querystring['did']), 2592000000, hash);
 	}
 	//If locallystoragehash doesn't exist, it will set it to correct hash.
-	var itemString = localStorage.getItem(querystring['did']);
+	var itemString = localStorage.getItem("ls-allocated-variant-dg"+querystring['did']);
 	var itemParse = JSON.parse(itemString);
 	localStorage.setItem("ls-dugga-hash"+(querystring['did']), itemParse.locallystoredhash);
 
-	getExpireTime(querystring['did']);
+	getExpireTime("ls-allocated-variant-dg"+querystring['did']);
 	var variantsize = data['variantsize'];
-	localStorage.setItem("variantSize", variantsize);
+	localStorage.setItem("ls-highest-variant-quizid", variantsize);
 						
 }
 
 function getVariantValue(ajaxdata, opt, para){
 	
 	//Checks if the variantSize variant is set in localstorage. When its not, its set.
-	if(localStorage.getItem("variantSize") == null) {
-		localStorage.setItem("variantSize", 100);
+	if(localStorage.getItem("ls-highest-variant-quizid") == null) {
+		localStorage.setItem("ls-highest-variant-quizid", 100);
 	}
 	//Converts the localstorage variant from string to int
-	var newInt = +localStorage.getItem('variantSize');
+	var newInt = +localStorage.getItem('ls-highest-variant-quizid');
 	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
 	if(querystring['did'] <= newInt) {
-		if(localStorage.getItem(querystring['did']) == null){
+		if(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']) == null){
 			//If we don't have a variant in localstorage
 			returndata = JSON.parse(ajaxdata);
 			variantvalue = returndata.variant;
 		} else {
 			//If we have a variant in localstorage
-			var test = JSON.parse(localStorage.getItem(querystring['did']));
+			var test = JSON.parse(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']));
 			variantvalue = test.value;
 		}
 		//Will overrule localstorage variant if we use hash url
 		var dbvariant = JSON.parse(ajaxdata);
 		if(dbvariant.hashvariant != null){
 			variantvalue = dbvariant.hashvariant;
-			updateExpireTime(querystring['did'], dbvariant.hashvariant, 2592000000, hash);
+			updateExpireTime("ls-allocated-variant-dg"+querystring['did'], dbvariant.hashvariant, 2592000000, hash);
 		}
 	}
 
@@ -1468,8 +1468,10 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
+
             localStorage.removeItem("ls-security-question");
             localStorage.removeItem("securitynotification");
+
             location.replace("../DuggaSys/courseed.php");
 		},
 		error:function() {
