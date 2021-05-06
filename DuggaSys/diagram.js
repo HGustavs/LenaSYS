@@ -593,8 +593,8 @@ const keybinds = {
         PLACE_ENTITY: {key: "3", ctrl: false},
         PLACE_RELATION: {key: "4", ctrl: false},
         PLACE_ATTRIBUTE: {key: "5", ctrl: false},
-        ZOOM_IN: {key: "+", ctrl: true},
-        ZOOM_OUT: {key: "-", ctrl: true},
+        ZOOM_IN: {key: "+", ctrl: true, meta: true},
+        ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
@@ -997,7 +997,7 @@ document.addEventListener('keydown', function (e)
         
         if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
         if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
-        if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
+        if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = false;
         if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
             escPressed = true;
             if(context.length > 0 || contextLine.length > 0) {
@@ -2279,7 +2279,7 @@ function setPos(id, x, y)
 
 function isKeybindValid(e, keybind)
 {
-    return e.key.toLowerCase() == keybind.key && e.ctrlKey == keybind.ctrl;
+    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || e.metaKey == keybind.meta);
 }
 
 function findEntityFromLine(lineObj)
