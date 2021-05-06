@@ -1535,6 +1535,7 @@ function setupLoginLogoutButton(isLoggedIn){
 function showLoadDuggaPopup()
 {
 	$("#loadDuggaBox").css("display","flex");
+	localStorage.setItem("ls-redirect-last-url", document.URL);
 }
 
 function hideLoadDuggaPopup()
@@ -1590,7 +1591,7 @@ function copyHashtoCB() {
 
 function hideHashBox(){
     $("#hashBox").css("display","none");
-	history.back(); //Takes us back to the dugga when pressing X on the popup.
+	window.location.href = localStorage.getItem("ls-redirect-last-url"); //Takes us to previous visited dugga
 }
 
 function checkHashPassword(){
