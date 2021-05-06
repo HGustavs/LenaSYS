@@ -124,11 +124,16 @@
 .element {
     font-size: small;
     box-sizing: border-box;
-    overflow:hidden;
+    overflow: none;
     /* border:1px solid red;
      background:#fff;*/
     position:absolute;
     /*box-shadow:2px 2px 2px RGBA(0,0,0,0.3);*/
+}
+#pad_lock{
+    top: -45%;
+    display: block;
+    position: relative;
 }
 
 #canvasOverlay{

@@ -2555,11 +2555,13 @@ function toggleEntityLocked()
     }
     for (var i = 0; i < context.length; i++){
         if(!locked) {
-            context[i].isLocked = true;
+            context[i].isLocked = true;  
         } else {
             context[i].isLocked = false;
         }
     }
+    showdata();
+    updatepos(0,0);
 }
 
 /**
@@ -3599,6 +3601,7 @@ function drawElement(element, ghosted = false)
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
 
+
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -3632,7 +3635,6 @@ function drawElement(element, ghosted = false)
     }
     str += `'>`;
     str += `<svg width='${boxw}' height='${boxh}' >`;
-
     // Create svg 
     if (element.kind == "EREntity") {
         var weak = "";
@@ -3707,7 +3709,10 @@ function drawElement(element, ghosted = false)
                    `;
 
     }
-    str += "</svg>"
+    str += "</svg>";
+    if (element.isLocked) {
+        str += `<img id="pad_lock" width='${zoomfact *20}' height='${zoomfact *25}' src="../Shared/icons/pad_lock.svg"/>`;     
+    }
     str += "</div>";
     return str;
 }
