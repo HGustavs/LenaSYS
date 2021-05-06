@@ -177,9 +177,10 @@ hr {
 }
 
 .hidden {
-  /*opacity: 0.7;*/
-  /* border-radius:4px; */
   margin-left: 16px;
+text-decoration: line-through !important;
+ -webkit-text-decoration-color: var(--color-primary-2) !important;
+  text-decoration-color: var(--color-primary-2) !important;
 }
 
 p {
