@@ -133,11 +133,13 @@
 	<canvas id='canvasOverlay'></canvas> 
     <!-- Diagram rules -->
     <div id="rulerOverlay">
+        <div id="rulerCorner"></div>
         <svg id="ruler-x-svg"></svg>
         <svg id="ruler-y-svg"></svg>
         <div id="ruler-x"></div>
         <div id="ruler-y"></div>
     </div>
+    
     <!-- Diagram grid -->
     <div id="svggrid" style="z-index:-11">
         <svg id="svgbacklayer">
