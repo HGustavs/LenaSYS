@@ -200,7 +200,7 @@ if($hash!='UNK'){
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
 			$btnDisable = "";
-			if (isSuperUser($userid)){
+			if (isSuperUser($userid) && $hash!='UNK'){
 				$btnDisable = "btn-disable";
 			}
 
