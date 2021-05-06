@@ -1210,9 +1210,11 @@ function handleHash(){
 	});
 }
 function handleLocalStorage(data){
+
 	// Check localstorage variants.
 	var newvariant = data['variantvalue'];
 	console.log("newVariant: " + newvariant);
+
 	
 	if(localStorage.getItem(querystring['did']) == null){
 		localStorage.setItem(querystring['did'], newvariant);
@@ -1231,13 +1233,13 @@ function handleLocalStorage(data){
 }
 
 function getVariantValue(ajaxdata, opt, para){
-	
 	//Checks if the variantSize variant is set in localstorage. When its not, its set.
 	if(localStorage.getItem("variantSize") == null) {
 		localStorage.setItem("variantSize", 100);
 	}
 	//Converts the localstorage variant from string to int
 	var newInt = +localStorage.getItem('variantSize');
+	console.log("variantSize: " + newInt);
 	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
 	if(querystring['did'] <= newInt) {
 		if(localStorage.getItem(querystring['did']) == null){
@@ -1586,8 +1588,6 @@ function checkScroll(obj) {
 		obj.style.height = (parseInt(obj.style.height)+1) + 'em';
 	}
 }
-
-
 
 //----------------------------------------------------------------------------------
 // copyURLtoCB: Copy the url to user clipboard

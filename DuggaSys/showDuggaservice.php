@@ -625,6 +625,7 @@ $array = array(
 		"variantvalue" => $variantvalue,
 		"password" => $password,
 		"hashvariant" => $hashvariant,
+		"variants" => $variants,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
