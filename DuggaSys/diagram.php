@@ -117,7 +117,21 @@
                     <p>Enable/disable the A4 template</p><br>
                     <p id="tooltip-TOGGLE_A4" class="key_tooltip">Keybinding:</p>
                 </span>
-            </div>     
+            </div>
+            <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
+                <img src="../Shared/icons/diagram_stepforward.svg"/>
+                <span class="toolTipText"><b>Toggle step forward</b><br>
+                    <p>Click to step forward in history</p><br>
+                    <p id="tooltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+            <div id="stepBackToggle" class="diagramIcons" onclick="toggleStepBack()">
+                <img src="../Shared/icons/diagram_stepback.svg"/>
+                <span class="toolTipText"><b>Toggle step backward</b><br>
+                    <p>Click to step back in history</p><br>
+                    <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>            
         </fieldset>
     </div>
 
