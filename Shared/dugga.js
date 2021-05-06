@@ -1590,6 +1590,7 @@ function copyHashtoCB() {
 
 function hideHashBox(){
     $("#hashBox").css("display","none");
+	history.back(); //Takes us back to the dugga when pressing X on the popup.
 }
 
 function checkHashPassword(){
