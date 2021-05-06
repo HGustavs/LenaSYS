@@ -566,8 +566,8 @@ const keybinds = {
         PLACE_ENTITY: {key: "3", ctrl: false},
         PLACE_RELATION: {key: "4", ctrl: false},
         PLACE_ATTRIBUTE: {key: "5", ctrl: false},
-        ZOOM_IN: {key: "+", ctrl: true},
-        ZOOM_OUT: {key: "-", ctrl: true},
+        ZOOM_IN: {key: "+", ctrl: true, meta: true},
+        ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
@@ -2234,7 +2234,7 @@ function setPos(id, x, y)
 
 function isKeybindValid(e, keybind)
 {
-    return e.key.toLowerCase() == keybind.key && e.ctrlKey == keybind.ctrl;
+    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || e.metaKey == keybind.meta);
 }
 
 function findEntityFromLine(lineObj)
