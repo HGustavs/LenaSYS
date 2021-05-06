@@ -491,6 +491,14 @@ function setExpireCookieLogOut() {
     }
 }
 
+
+function changeVariant(){
+	//Call setExpireTime() but with a specific 'value' taken from varArr[].
+	//localStorage.remove(key);
+	//setExpireTime(key, "2", ttl, locallystoredhash);
+}
+
+
 //Creates TTL for localstorage //TTL value is in milliseconds
 function setExpireTime(key, value, ttl, locallystoredhash){
 	const now = new Date();
