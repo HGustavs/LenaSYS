@@ -57,7 +57,8 @@ foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
         'password' => $row['password'],
         'grade' => $row['grade'],
         'submitted' => $row['submitted'],
-		'subCourse' => $subCourse
+		'subCourse' => $subCourse,
+		'link' => "UNK"
     );
 
     array_push($tableInfo, $tableSubmissionInfo);
