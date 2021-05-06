@@ -79,16 +79,16 @@ function setHash(h){
 		//From localstorage we load what we have into our locallystoredhash variable, that is then compared against. 
 		//On the first dugga load, it will be undefined, and thereafter a hash value will be generated.
 		//If a hash is already stored in localstorage, we will load that hash instead.
-		locallystoredhash = localStorage.getItem("locallystoredhash"+(querystring['did']));
+		locallystoredhash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
 
 		if((locallystoredhash == null) || (locallystoredhash == undefined) || (!locallystoredhash)){
 			hash = generateHash();
 			//locallystoredhash has not been set at this point, but will be after this.
-			localStorage.setItem("locallystoredhash"+(querystring['did']), hash);
-			hash = localStorage.getItem("locallystoredhash"+(querystring['did']));
+			localStorage.setItem("ls-hash-dg"+(querystring['did']), hash);
+			hash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
 		}
 		else{
-			hash = localStorage.getItem("locallystoredhash"+(querystring['did']));
+			hash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
 		}
 
 		
@@ -106,7 +106,7 @@ function setPassword(p){
 
 //Set the localstorage item securitynotifaction to on or off
 function setSecurityNotifaction(param){
-    localStorage.setItem("securitynotification", param);
+    localStorage.setItem("ls-security-notification", param);
 }
 
 function resetLoginStatus(){
@@ -468,7 +468,7 @@ function removeYearFromDate(date){
 //----------------------------------------------------------------------------------
 
 function setExpireCookie(){
-    if(localStorage.getItem("securityquestion") == "set") {
+    if(localStorage.getItem("ls-security-question") == "set") {
 				var expireDate = new Date();
 				// A test date so you dont have to actually wait 1 hour and 45 minutes.
 				// Don't forget to change the one below (setExpireCookieLogOut()) too.
@@ -483,7 +483,7 @@ function setExpireCookie(){
 //----------------------------------------------------------------------------------
 
 function setExpireCookieLogOut() {
-    if (localStorage.getItem("securityquestion") == "set") {
+    if (localStorage.getItem("ls-security-question") == "set") {
 				var expireDate = new Date();
 				//expireDate.setMinutes(expireDate.getMinutes() + 2);	// For testing
 				expireDate.setMinutes(expireDate.getMinutes() + 120);	// For actual use
@@ -708,9 +708,9 @@ function saveDuggaResult(citstr)
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
 
-	var scores = JSON.parse(localStorage.getItem("scores"+querystring['did']) || '[]');
+	var scores = JSON.parse(localStorage.getItem("ls-highscore-dg"+querystring['did']) || '[]');
 	scores.push(score);
-	localStorage.setItem("scores"+querystring['did'], JSON.stringify(scores));
+	localStorage.setItem("ls-highscore-dg"+querystring['did'], JSON.stringify(scores));
 
 	var readonly;
 	$.ajax({
@@ -1088,7 +1088,7 @@ function AJAXService(opt,apara,kind)
 			datatype: "json",
 			success: function(data){
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
-				if(!localStorage.getItem("locallystoredhash"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
+				if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 					handleHash();	//Makes sure hash is unique.
 				}
 			}
@@ -1220,47 +1220,47 @@ function handleLocalStorage(data){
 	console.log("newVariant: " + newvariant);
 
 	
-	if(localStorage.getItem(querystring['did']) == null){
-		localStorage.setItem(querystring['did'], newvariant);
+	if(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']) == null){
+		localStorage.setItem("ls-allocated-variant-dg"+querystring['did'], newvariant);
 		//The big number below represents 30 days in milliseconds
-		setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000, hash);
+		setExpireTime("ls-allocated-variant-dg"+querystring['did'], localStorage.getItem("ls-allocated-variant-dg"+querystring['did']), 2592000000, hash);
 	}
 	//If locallystoragehash doesn't exist, it will set it to correct hash.
-	var itemString = localStorage.getItem(querystring['did']);
+	var itemString = localStorage.getItem("ls-allocated-variant-dg"+querystring['did']);
 	var itemParse = JSON.parse(itemString);
-	localStorage.setItem("locallystoredhash"+(querystring['did']), itemParse.locallystoredhash);
+	localStorage.setItem("ls-hash-dg"+(querystring['did']), itemParse.locallystoredhash);
 
-	getExpireTime(querystring['did']);
+	getExpireTime("ls-allocated-variant-dg"+querystring['did']);
 	var variantsize = data['variantsize'];
-	localStorage.setItem("variantSize", variantsize);
+	localStorage.setItem("ls-highest-variant-quizid", variantsize);
 						
 }
 
 function getVariantValue(ajaxdata, opt, para){
 	
 	//Checks if the variantSize variant is set in localstorage. When its not, its set.
-	if(localStorage.getItem("variantSize") == null) {
-		localStorage.setItem("variantSize", 100);
+	if(localStorage.getItem("ls-highest-variant-quizid") == null) {
+		localStorage.setItem("ls-highest-variant-quizid", 100);
 	}
 	//Converts the localstorage variant from string to int
-	var newInt = +localStorage.getItem('variantSize');
+	var newInt = +localStorage.getItem('ls-highest-variant-quizid');
 	console.log("variantSize: " + newInt);
 	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
 	if(querystring['did'] <= newInt) {
-		if(localStorage.getItem(querystring['did']) == null){
+		if(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']) == null){
 			//If we don't have a variant in localstorage
 			returndata = JSON.parse(ajaxdata);
 			variantvalue = returndata.variant;
 		} else {
 			//If we have a variant in localstorage
-			var test = JSON.parse(localStorage.getItem(querystring['did']));
+			var test = JSON.parse(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']));
 			variantvalue = test.value;
 		}
 		//Will overrule localstorage variant if we use hash url
 		var dbvariant = JSON.parse(ajaxdata);
 		if(dbvariant.hashvariant != null){
 			variantvalue = dbvariant.hashvariant;
-			updateExpireTime(querystring['did'], dbvariant.hashvariant, 2592000000, hash);
+			updateExpireTime("ls-allocated-variant-dg"+querystring['did'], dbvariant.hashvariant, 2592000000, hash);
 		}
 	}
 
@@ -1320,7 +1320,7 @@ function addSecurityQuestionProfile(username) {
 		success:function(data) {
 			var result = JSON.parse(data);
 			if(result['getname'] == "success") {
-				$("#challengeQuestion").html(result['securityquestion']);
+				$("#challengeQuestion").html(result['ls-security-question']);
 			}else{
 				if(typeof result.reason != "undefined") {
 					$("#changeChallengeQuestion #securityQuestionError").html("<div class='alert danger'>" + result.reason + "</div>");
@@ -1354,7 +1354,7 @@ function processResetPasswordCheckUsername() {
 			var result = JSON.parse(data);
 				//It is worth to note that getname should probably be named status/error since thats basically what it is
 			if(result['getname'] == "success") {
-				$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
+				$("#showsecurityquestion #displaysecurityquestion").html(result['ls-security-question']);
 				status = 2;
 				toggleloginnewpass();
 			}else if(result['getname'] == "limit"){
@@ -1426,8 +1426,8 @@ function processLogin() {
 			hideLoginPopup();
 
           	// was commented out before which resulted in the session to never end
-			if(result['securityquestion'] != null) {
-				localStorage.setItem("securityquestion", "set");
+			  if(result['ls-security-question'] != null) {
+				localStorage.setItem("ls-security-question", "set");
 			} else {
 				setSecurityNotifaction("on");
 			}
@@ -1476,7 +1476,7 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
-            localStorage.removeItem("securityquestion");
+            localStorage.removeItem("ls-security-question");
             localStorage.removeItem("securitynotification");
             location.replace("../DuggaSys/courseed.php");
 		},
