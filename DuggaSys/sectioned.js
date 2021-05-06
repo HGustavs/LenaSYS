@@ -200,6 +200,8 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   }
   $("#moment").html(str);
 
+  $("#editSectionDialogTitle").text(entryname);
+
   // Set Name
   $("#sectionname").val(entryname);
   $("sectionnamewrapper").html(`<input type='text' class='form-control textinput' id='sectionname' value='${entryname}' style='width:448px;'/>`);
@@ -2534,7 +2536,6 @@ function getCourseElements(){
     var e = removeGrade(rubriker[i]);
     list.push(e);
   }
-  console.log(list);
   return list;
 }
 
@@ -2547,18 +2548,20 @@ function validateForm(formid) {
   if (formid === 'editSection') {
     var sName = document.getElementById("sectionname").value;
     var deadDate = document.getElementById("setDeadlineValue").value;
-    window.bool11 = false;
+    var item = document.getElementById("editSectionDialogTitle").innerHTML;
     //If fields empty
     if (sName == null || sName == "") {
       alert("Fill in all fields");
     }
     //Name is a duplicate
-    if(getCourseElements().indexOf(sName) >= 0){
+    if(sName == item){ 
+      window.bool11 = true;
+    }
+    else if(getCourseElements().indexOf(sName) >= 0){
       window.bool11 = false;      
       alert('Name already exists, choose another one');
     }else{ 
       window.bool11 = true;
-      console.log(sName,getCourseElements().indexOf(sName));
     }
 
     // if all information is correct
