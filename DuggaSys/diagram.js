@@ -54,9 +54,8 @@ class StateChange {
 
     /**
      * @description Creates a new StateChange instance.
-     * @param {ChangeTypes} changeType What kind of change this is, see {StateChange.ChangeTypes} for available values.
-     * @param {Array<String>} id_list Array of all elements affected by this state change. This is used for merging changes on the same elements.
-     * @param {Object} passed_values Map of all values that this change contains. Each property represents a change.
+     * @param {ChangeTypes} id Array of all objectIDs that is related to the change.
+     * @param {Object} values Map of all values that this change contains. Each property represents a change.
      */
     constructor(id, values)
     {
@@ -313,9 +312,9 @@ class StateChangeFactory
 class StateMachine
 {
     /**
-     * @description Instanciate a new StateMachine. Constructor arguments will determine the "initial state", only changes AFTER this will be logged.
+     * @description Instantiate a new StateMachine. Constructor arguments will determine the "initial state", only changes AFTER this will be logged.
      * @param {Array<Object>} initialElements All elements that should be stored in the initial state.
-     * @param {*} initialLines All lines that should be stored in the initial state.
+     * @param {Array<Object>} initialLines All lines that should be stored in the initial state.
      */
     constructor (initialElements, initialLines)
     {
@@ -361,6 +360,7 @@ class StateMachine
     /**
      * @description Stores the passed state change into the state machine. If the change is hard it will be pushed onto the history log. A soft change will modify the previously stored state IF that state allows it. The soft state will otherwise be pushed into the history log instead. StateChanges REQUIRE flags to be identified by the stepBack and stepForward methods!
      * @param {StateChange} stateChange All changes to be logged.
+     * @param {StateChange.ChangeTypes} changeType All the flags for the change.
      * @see StateChangeFactory For constructing new state changes more easily.
      * @see StateChange For available flags.
      */
@@ -390,7 +390,6 @@ class StateMachine
 
                     }
                 }else {
-                    console.log(stateChange.id, lastLog.id)
                     if (lastLog.id != stateChange.id) sameElements = false;
                 }
 
@@ -450,7 +449,7 @@ class StateMachine
     }
 
     /**
-     * @description Undoes the last stored history log changes. Determines what should be looked for by reading the state change flags.
+     * @description Decrement the currentHistoryIndex and recalculate the diagram
      * @see StateChange For available flags.
      */
     stepBack () 
