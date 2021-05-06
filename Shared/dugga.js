@@ -498,7 +498,7 @@ function setExpireTime(key, value, ttl, locallystoredhash){
 	//Item is an object which contains the original value
 	//as well as the time when its supposed to expire
 	const item = {
-		value: value,
+		value: value,	//Här
 		expiry: now.getTime() + ttl,
 		locallystoredhash: locallystoredhash,
 	}
@@ -531,6 +531,8 @@ function updateExpireTime(key, value, ttl, locallystoredhash){
 //Lazily expiring the item (Its only checked when retrieved from storage)
 function getExpireTime(key){
 	const itemString = localStorage.getItem(key)
+	console.log("key: "+itemString);
+;
 	
 	if(!itemString){
 		return null
@@ -1213,7 +1215,7 @@ function handleHash(){
 function handleLocalStorage(data){
 	varArr = [];
 	data['variants'].forEach(element => varArr.push(element.vid));
-	console.log(varArr[1]);
+	console.log(varArr);
 
 	// Check localstorage variants.
 	var newvariant = data['variantvalue'];
