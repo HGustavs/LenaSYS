@@ -618,6 +618,7 @@ const keybinds = {
         PLACE_ATTRIBUTE: {key: "5", ctrl: false},
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
+        ZOOM_RESET: {key: "0", ctrl: true, metal: true},
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
@@ -1047,6 +1048,11 @@ document.addEventListener('keydown', function (e)
             e.preventDefault();
             zoomout();
         } 
+
+        if (isKeybindValid(e, keybinds.ZOOM_RESET)){
+            e.preventDefault();
+            zoomreset();
+        }
 
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
             e.preventDefault();
@@ -2776,6 +2782,21 @@ function zoomout(scrollEvent = undefined)
 
     // Draw new rules to match the new zoomfact
     drawRulerBars(scrollx,scrolly);
+}
+function zoomreset()
+{
+    //set zoomfact to starting zoomfactor = 1.0
+    zoomfact = 1.0;
+
+    //update the grid when reseting zoom
+    updateGridSize();
+    
+    // Update scroll position
+    showdata()
+    
+    //update the rulerbars when reseting zoomfact
+    drawRulerBars(scrollx,scrolly);
+
 }
 
 /**
