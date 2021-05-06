@@ -502,20 +502,24 @@ class StateMachine
         });
 
         for (var i = 0; i < endIndex; i++) {
-            this.restoreState(this.historyLog[i])
+            this.restoreState(this.historyLog[i]);
         }
     }
     restoreState(state)
     {
+        // Get all keys from the state.
         var keys = Object.keys(state);
 
         // If there is only an key that is ID in the state, delete those objects
+        // TODO: Change the delete key to "del" OR "delete"
         if (keys.length == 1 && keys[0] == "id") {
             var elementsToRemove = [];
             var linesToRemove = [];
 
+            // If the id is not an array, make it into an array
             if (!Array.isArray(state.id)) state.id = [state.id];
 
+            // For every id, find the object and add to the corresponding array
             state.id.forEach(objID => {
                 if (data[findIndex(data, objID)] != undefined){
                     elementsToRemove.push(data[findIndex(data, objID)]);
@@ -523,14 +527,16 @@ class StateMachine
                     linesToRemove.push(lines[findIndex(lines, objID)]);
                 }
             });
+            // If the array is not empty remove the objects
             if (linesToRemove.length != 0) removeLines(linesToRemove, false);
             if (elementsToRemove.length != 0) removeElements(elementsToRemove, false);
             return;
         }
 
-        if (state[0] != undefined && state[0].id != undefined){
-            Object.keys(state).forEach(index => {
+        // If index 0 is an object and that object has an value of the key "id"
+        if (typeof state[0] === 'object' && state[0].id != undefined){
 
+            Object.keys(state).forEach(index => {
                 var temp = {};
                 Object.keys(state[index]).forEach(key => {
                     if (key == "id") temp.id = state[index][key];
@@ -558,36 +564,40 @@ class StateMachine
         if (!Array.isArray(state.id)) state.id = [state.id];
 
         for (var i = 0; i < state.id.length; i++){
+
             // Find object
             var object;
-            if (data[findIndex(data, state.id)] != undefined) object = data[findIndex(data, state.id)];
-            else if (lines[findIndex(lines, state.id)] != undefined) object = lines[findIndex(lines, state.id)];
+            if (data[findIndex(data, state.id[i])] != undefined) object = data[findIndex(data, state.id[i])];
+            else if (lines[findIndex(lines, state.id[i])] != undefined) object = lines[findIndex(lines, state.id[i])];
 
+            // If an object was found
             if (object){
+                // For every key, apply the changes
                 keys.forEach(key => {
-                    if (key != "id" && Number.isInteger(state[key])){
+                    if (key == "id") return;
+                    if (Number.isInteger(state[key])){
                         if (object[key] === undefined) object[key] = state[key];
                         else object[key] += state[key]
                     }else {
                         object[key] = state[key];
                     }
                 });
-            }else { // Create new object
+            }else { // If no object was found - create one
+
                 var temp = {};
                 Object.keys(state).forEach(key => {
                     if (key == "id") temp.id = state.id[i];
                     else temp[key] = state[key];
                 });
 
-                // If the object is an element
-                if (temp.x && temp.y){
-                    // Add the defaults to the element
+                // If the object got x, y and a kind, apply the default for the kind and create a element
+                if (temp.x && temp.y && temp.kind){
                     Object.keys(defaults[temp.kind]).forEach(key => {
                         if (!temp[key]) temp[key] = defaults[temp.kind][key];
                     });
                     data.push(temp);
-                }else {
-                    // Add the defaults to the element
+
+                }else { // Else it most be an line - apply defaults and create the line
                     Object.keys(defaultLine).forEach(key => {
                         if (!temp[key]) temp[key] = defaultLine[key];
                     });
