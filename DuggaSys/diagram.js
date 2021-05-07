@@ -617,6 +617,7 @@ const keybinds = {
         ALT: {key: "alt", ctrl: false},
         META: {key: "meta", ctrl: false},
         HISTORY_STEPBACK: {key: "z", ctrl: true},
+        HISTORY_STEPFORWARD: {key: "y", ctrl: true},
         DELETE: {key: "delete", ctrl: false},
         ESCAPE: {key: "escape", ctrl: false},
         BOX_SELECTION: {key: "2", ctrl: false},
@@ -1086,6 +1087,7 @@ document.addEventListener('keyup', function (e)
         if (pressedKey == keybinds.META.key) ctrlPressed = false;
 
         if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) stateMachine.stepBack();
+        if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
             if (contextLine.length > 0) removeLines(contextLine);
@@ -2590,6 +2592,22 @@ function boxSelect_Draw(str)
 }
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
+/**
+ * @description Toggles stepforward in history.
+ */
+function toggleStepForward()
+{
+    stateMachine.stepForward();
+}
+
+/**
+ * @description Toggles stepbackwards in history.
+ */
+function toggleStepBack() 
+{
+    stateMachine.stepBack();
+}
+
 /**
  * @description Toggles the movement of elements ON/OFF.
  */
