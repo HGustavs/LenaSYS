@@ -50,15 +50,13 @@ function createSortableTable(data){
 			hash:"Hash",
 			password:"Password",
 			submitted:"Submission Date",
-            grade: "Grade",
-			link: "Link"
-
+            grade: "Grade"
 		},
 		tblbody: data,
 		tblfoot:{}
 	};
 
-	var colOrder = ["duggaName","hash", "password", "submitted", "grade", "link"];
+	var colOrder = ["duggaName","hash", "password", "submitted", "grade"];
 	myTable = new SortableTable({
 		data: tabledata,
 		tableElementId: tableName,
@@ -85,31 +83,31 @@ function createSortableTable(data){
 
 function renderCell(col, celldata, cellid) {
 	
-	if(col == "grade"){
-
-		str = "<div class='resultTableCell'>";
+	str = "<div class='resultTableCell'>";
+	if (col == "hash"){
+		str += "<div class='resultTableText'>";
+		str += "<a href='" + getLinkFromHash(celldata) + "'>" + celldata + "</a>";
+	}
+	else if(col == "grade"){
 		str += "<div class='gradeContainer resultTableText'>";
 		str += "<img id='korf' class='fist' src='../Shared/icons/FistV.png' onclick='clickResult("+celldata+")'/>";
-		str += "</div>";
-		str += "</div>";
-	}else if (col == "password") {
-		str = "<div class='resultTableCell'>";
-		str += "<div class='resultTableText'>";
-		str += "<div style='background-color:black;'>" + celldata +"</div>";
-		str += "</div>";
-		str += "</div>";
-	}else{
-		str = "<div class='resultTableCell'>";
+
+	}
+	else if (col == "password") {
+		str += "<div class='resultTableText passwordBlock'>";
+		str += celldata;
+	}
+	else {
 		str += "<div class='resultTableText'>";
 		str += "<div>" + celldata +"</div>";
-		str += "</div>";
-		str += "</div>";
 	}
+	str += "</div>";
+	str += "</div>";
 	
 	return str;
 }
 
-function renderSortOptions(col, status, colname){
+function renderSortOptions(col, status, colname) {
     str = "";
 
 	if(col == "duggaName" || col == "submitted"){
@@ -128,6 +126,10 @@ function renderSortOptions(col, status, colname){
 	}
     
     return str;
+}
+
+function getLinkFromHash(hash) {
+	return "";
 }
 
 function makeCustomFilter(filtername) {
@@ -163,9 +165,20 @@ function rowFilter(row) {
 }
 
 function clickedInternal(event, clickdobj){
-	console.log(event);
-	console.log(clickdobj);
+/* 	console.log(event);
+	console.log(clickdobj); */
 
+	if (clickdobj.classList.contains("resultTable-password")){
+		var textElement = clickdobj.childNodes[0].childNodes[0];
+		textElement.classList.toggle("passwordBlock");
+	}
+
+/* 	console.log(clickdobj); */
+
+
+/* 	for (var c of clickdobj.childNodes){
+		console.log(c)
+	} */
 }
 
 
