@@ -30,6 +30,9 @@ var clicks = 0;
 var locallystoredhash;
 var loadVariantFlag = false;	// Flag to decide if the 'Load Variant' button should be visable or not.
 var varArr;
+var latestKeyUsed;
+var latestTTLUsed;
+var latestLocalHash;
 
 
 $(function () {  // Used to set the position of the FAB above the cookie message
@@ -491,13 +494,11 @@ function setExpireCookieLogOut() {
     }
 }
 
-
-function changeVariant(){
-	//Call setExpireTime() but with a specific 'value' taken from varArr[].
-	//localStorage.remove(key);
-	//setExpireTime(key, "2", ttl, locallystoredhash);
+function changeVariant(intvalue){											//Call setExpireTime() but with a specific 'value' taken from varArr[].
+	const value = String(intvalue);											//Value can select from a span 1 to varArr.length, whereas each value is an existing variant of the active dugga.
+	setExpireTime(latestKeyUsed, value, latestTTLUsed, latestLocalHash);	//Sets new variant by only changing the 'value' attribute.
+	location.reload(); 														//Reloads the site to show correct new variant.
 }
-
 
 //Creates TTL for localstorage //TTL value is in milliseconds
 function setExpireTime(key, value, ttl, locallystoredhash){
@@ -537,15 +538,18 @@ function updateExpireTime(key, value, ttl, locallystoredhash){
 	}
 }
 //Lazily expiring the item (Its only checked when retrieved from storage)
+//Global variables 'latestKeyUsed', 'latestTTLUsed' and 'latestLocalHash' are written to keep track of the latest values of the local-storage attributes, which needs be re-used, with the same values, if teacher change variant locally (Load Variant button).
 function getExpireTime(key){
-	const itemString = localStorage.getItem(key)
-	console.log("key: "+itemString);
-;
+	latestKeyUsed = key;						
+	const itemString = localStorage.getItem(key);
 	
 	if(!itemString){
 		return null
 	}
 	const item = JSON.parse(itemString)
+	latestTTLUsed = item.expiry;				
+	latestLocalHash = item.locallystoredhash;	
+
 	const now = new Date()
 
 	if(now.getTime() > item.expiry){
@@ -2049,7 +2053,7 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		}
 
 		if(loadVariantFlag){	//If the 'Load Variant' button is set to be visable (Teachers only). 
-			str+="<div style='width:0px;'><input class='submit-button large-button' type='button' value='Load variant' onclick='showLoadVariantPopup();' /></div>";
+			str+="<div style='width:0px;'><input class='submit-button large-button' type='button' value='Load variant' onclick='showLoadVariantPopup();' /></div>"; //showLoadVariantPopup() changeVariant(2)
 		}
 
 		str+="</div>";
