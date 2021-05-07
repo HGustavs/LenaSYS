@@ -28,7 +28,7 @@ var variantvalue;
 var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
-var loadVariantFlag = false;	// Flag to decide if the 'Toggle variant' button should be visable or not.
+var loadVariantFlag = false;	// Flag to decide if the 'Next variant' button should be visable or not.
 var varArr;
 var nbrOfVariants;
 var latestKeyUsed;
@@ -555,7 +555,7 @@ function updateExpireTime(key, value, ttl, locallystoredhash){
 	}
 }
 //Lazily expiring the item (Its only checked when retrieved from storage)
-//Global variables 'latestKeyUsed', 'latestTTLUsed' and 'latestLocalHash' are written to keep track of the latest values of the local-storage attributes, which needs be re-used, with the same values, if teacher change variant locally (Toggle variant button).
+//Global variables 'latestKeyUsed', 'latestTTLUsed' and 'latestLocalHash' are written to keep track of the latest values of the local-storage attributes, which needs be re-used, with the same values, if teacher change variant locally (Next variant button).
 function getExpireTime(key){
 	latestKeyUsed = key;						
 	const itemString = localStorage.getItem(key);
@@ -1246,6 +1246,10 @@ function handleLocalStorage(data){
 	varArr = [];		
 	data['variants'].forEach(element => varArr.push(element.vid));
 	nbrOfVariants = varArr.length;
+	if(nbrOfVariants == 1){
+		document.getElementById("nextVariantBtn").style.display="none";
+		console.log("test");
+	}
 
 	// Check localstorage variants.
 	var newvariant = data['variantvalue'];
@@ -1571,7 +1575,7 @@ function setupLoginLogoutButton(isLoggedIn){
 	}
 }
 
-function toggleLoadVariant(setbool){	//setbool has a value of True or False. This decides if the Toggle variant button should be visable or not.
+function toggleLoadVariant(setbool){	//setbool has a value of True or False. This decides if the Next variant button should be visable or not.
 	loadVariantFlag = setbool;
 	console.log("Value: " + setbool);
 }
@@ -2063,8 +2067,8 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
 		}
 
-		if(loadVariantFlag){	//If the 'Toggle variant' button is set to be visable (Teachers only). 
-			str+="<div style='width:0px;'><input class='submit-button large-button' type='button' value='Toggle variant' onclick='selectNextVariant();' /></div>"; 
+		if(loadVariantFlag){	//If the 'Next variant' button is set to be visable (Teachers only). 
+			str+="<div id='nextVariantBtn' style='width:0px;'><input class='submit-button large-button' type='button' value='Next Variant' onclick='selectNextVariant();' /></div>"; 
 		}
 
 		str+="</div>";
