@@ -30,9 +30,11 @@ var clicks = 0;
 var locallystoredhash;
 var loadVariantFlag = false;	// Flag to decide if the 'Load Variant' button should be visable or not.
 var varArr;
+var nbrOfVariants;
 var latestKeyUsed;
 var latestTTLUsed;
 var latestLocalHash;
+var latestVariantSet;
 
 
 $(function () {  // Used to set the position of the FAB above the cookie message
@@ -498,6 +500,13 @@ function changeVariant(intvalue){											//Call setExpireTime() but with a sp
 	const value = String(intvalue);											//Value can select from a span 1 to varArr.length, whereas each value is an existing variant of the active dugga.
 	setExpireTime(latestKeyUsed, value, latestTTLUsed, latestLocalHash);	//Sets new variant by only changing the 'value' attribute.
 	location.reload(); 														//Reloads the site to show correct new variant.
+}
+
+function selectNextVariant(){
+	console.log("latest..."+latestVariantSet);
+	var nextVariant = (latestVariantSet + 1) % nbrOfVariants + 1;
+	console.log("next..."+nextVariant);
+	changeVariant(nextVariant);
 }
 
 //Creates TTL for localstorage //TTL value is in milliseconds
@@ -1225,13 +1234,15 @@ function handleHash(){
 	});
 }
 function handleLocalStorage(data){
-	varArr = [];
+	//Set value to nbrOfVariants, this is needed so a teacher can locally change variant.
+	varArr = [];		
 	data['variants'].forEach(element => varArr.push(element.vid));
-	console.log(varArr);
+	nbrOfVariants = varArr.length;
 
 	// Check localstorage variants.
 	var newvariant = data['variantvalue'];
 	console.log("newVariant: " + newvariant);
+	latestVariantSet = newvariant;
 
 	
 	if(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']) == null){
@@ -2053,7 +2064,7 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		}
 
 		if(loadVariantFlag){	//If the 'Load Variant' button is set to be visable (Teachers only). 
-			str+="<div style='width:0px;'><input class='submit-button large-button' type='button' value='Load variant' onclick='showLoadVariantPopup();' /></div>"; //showLoadVariantPopup() changeVariant(2)
+			str+="<div style='width:0px;'><input class='submit-button large-button' type='button' value='Toggle variant' onclick='selectNextVariant();' /></div>"; 
 		}
 
 		str+="</div>";

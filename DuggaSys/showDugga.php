@@ -337,12 +337,14 @@ if($hash!='UNK'){
 	<!-- Load Variant Popup (Change variant locally to check if the variant is presented. Teachers only) -->
 	<div id='loadVariantBox' class="loginBoxContainer" style="display:none">
 	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
-			<div class='loginBoxheader'><h3>Hämta variant av dugga</h3><div class='cursorPointer' onclick="hideLoadVariantPopup()">x</div></div>
+			<div class='loginBoxheader'><h3>Get variant of dugga</h3><div class='cursorPointer' onclick="hideLoadVariantPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
     		<div id='loadDuggaPopup' style="display:block">
-				<div class='inputwrapper'><span>Varianter:</span><br></div>
+				<div class='inputwrapper'><span>Next variant</span><br>
+					
+				</div>
 				<div class="button-row">
-					<input type='button' class='submit-button' onclick="loadDugga();" value='Load variant'>
+					<input type='button' class='submit-button' onclick="changeVariant(2);" value='Next variant'>
 					<input type='button' class='submit-button' onclick="hideLoadVariantPopup();" value='Close'>
 				</div>
     		</div>
