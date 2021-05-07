@@ -167,7 +167,7 @@ if($hash!='UNK' && !isSuperUser($userid)){
 			echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
 			echo "<div class='loginBoxheader'>";
 			echo "<h3>Login for Saved Dugga</h3>";
-			echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
+			echo "<div onclick='exitHashBox()' class='cursorPointer'>x</div>";
 			echo "</div>";
 			echo "<p id='passwordtext'>Enter your password for the hash:</p>";
 			echo "<p id='hash' style='font-weight: bold;'>$hash</p>";

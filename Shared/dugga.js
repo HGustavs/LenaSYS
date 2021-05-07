@@ -1589,9 +1589,13 @@ function copyHashtoCB() {
 	$temp.remove();
 }
 
-function hideHashBox(){
+function exitHashBox(){
     $("#hashBox").css("display","none");
 	window.location.href = localStorage.getItem("ls-redirect-last-url"); //Takes us to previous visited dugga
+}
+
+function hideHashBox(){
+    $("#hashBox").css("display","none");
 }
 
 function checkHashPassword(){
