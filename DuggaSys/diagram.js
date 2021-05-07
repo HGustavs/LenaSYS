@@ -1015,12 +1015,13 @@ function data_returned(ret)
 // --------------------------------------- Window Events    --------------------------------
 document.addEventListener('keydown', function (e)
 {
+    if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
+    if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
+    if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
+
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        
-        if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
-        if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
-        if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = false;
+
         if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
             escPressed = true;
             if(context.length > 0 || contextLine.length > 0) {
@@ -1066,15 +1067,14 @@ document.addEventListener('keydown', function (e)
 
 document.addEventListener('keyup', function (e)
 {
+    var pressedKey = e.key.toLowerCase();
+
+    if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
+    if (pressedKey == keybinds.ALT.key) altPressed = false;
+    if (pressedKey == keybinds.META.key) ctrlPressed = false;
+
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        
-        var pressedKey = e.key.toLowerCase();
-
-        //  TODO : Switch cases?
-        if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
-        if (pressedKey == keybinds.ALT.key) altPressed = false;
-        if (pressedKey == keybinds.META.key) ctrlPressed = false;
 
         if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) stateMachine.stepBack();
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
