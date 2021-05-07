@@ -1015,10 +1015,10 @@ function data_returned(ret)
 // --------------------------------------- Window Events    --------------------------------
 document.addEventListener('keydown', function (e)
 {
+    if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
         
-        if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
         if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
         if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = false;
         if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
@@ -1066,13 +1066,13 @@ document.addEventListener('keydown', function (e)
 
 document.addEventListener('keyup', function (e)
 {
+    if (e.key.toLowerCase() == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
         
         var pressedKey = e.key.toLowerCase();
 
         //  TODO : Switch cases?
-        if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
         if (pressedKey == keybinds.ALT.key) altPressed = false;
         if (pressedKey == keybinds.META.key) ctrlPressed = false;
 
