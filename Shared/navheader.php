@@ -259,7 +259,7 @@
 					echo "<td class='navButt'>";
 
 					if ($requestedService == "fileed.php") 
-						echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender(); sortAndFilterTogether();' type='button'>";
+						echo   "<button id='searchbutton' class='switchContent' type='button'>";
 					else
 						echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender();' type='button'>";
 
