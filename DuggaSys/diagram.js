@@ -1133,6 +1133,14 @@ document.addEventListener('keyup', function (e)
                 displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`)
             }
         }
+    } else {
+        if(document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)){
+            if(context.length == 1){
+                document.activeElement.value = context[0].name;
+                document.activeElement.blur();
+                fab_action();
+            }
+        }   
     }
 });
 
