@@ -733,7 +733,7 @@ var startNodeRight = false;
 var cursorStyle;
 var lastMousePos = getPoint(0,0);
 var dblPreviousTime = new Date().getTime(); ; // Used when determining if an element was doubleclicked.
-var dblClickInterval = 350; // 500 ms = if less than 500 ms between clicks -> Doubleclick was performed.
+var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Doubleclick was performed.
 var wasDblClicked = false;
 var targetDelta;
 
