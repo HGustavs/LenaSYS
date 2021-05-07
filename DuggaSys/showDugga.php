@@ -27,8 +27,6 @@
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
 
-	echo "<script>console.log('asdasdasdasdasdasdasdasdasd')</script>";
-
 	// Connect to database and start session
 	pdoConnect();
 

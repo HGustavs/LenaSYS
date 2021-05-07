@@ -931,8 +931,7 @@ function duggaChange() {
 	
 	if(clicks > ClickCounter.score){
 		ClickCounter.score = clicks;
-	}
-	else{
+	}else{
 		clicks = ClickCounter.score;
 	}
 	canSaveController();
