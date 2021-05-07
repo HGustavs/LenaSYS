@@ -27,6 +27,8 @@
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
 
+	echo "<script>console.log('asdasdasdasdasdasdasdasdasd')</script>";
+
 	// Connect to database and start session
 	pdoConnect();
 
@@ -203,7 +205,8 @@ if($hash!='UNK' && !isSuperUser($userid)){
 			if (isSuperUser($userid) && $hash!='UNK'){
 				$btnDisable = "btn-disable";
 			}
-
+			else if ($hash == 'UNK')
+				$btnDisable = "btn-disable";
 
 			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
