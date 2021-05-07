@@ -319,6 +319,19 @@
     background-color: #FEEFB3;
 }
 
+#zoom-message-box{
+    transform: translate(50px, 930px);
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 75px;
+    left: 50px;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    z-index: 100;
+    pointer-events: none;
+}
+
 /*tooltip*/
 
 .diagramIcons{
