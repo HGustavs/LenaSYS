@@ -1271,7 +1271,7 @@ function mouseMode_onMouseUp(event)
 {
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
-            if (ghostElement) {
+            if (ghostElement && event.button == 0) {
                 addObjectToData(ghostElement);
                 makeGhost();
                 showdata();
