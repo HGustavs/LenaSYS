@@ -2546,6 +2546,7 @@ function boxSelect_Draw(str)
  */
 function toggleEntityLocked()
 {
+    var lockbtn = document.getElementById("lockbtn");
     var locked = true;
     for(var i = 0; i < context.length; i++){
         if(!context[i].isLocked) {
@@ -2555,13 +2556,15 @@ function toggleEntityLocked()
     }
     for (var i = 0; i < context.length; i++){
         if(!locked) {
-            context[i].isLocked = true;  
+            context[i].isLocked = true;
+            lockbtn.value = "Unlock";
         } else {
             context[i].isLocked = false;
+            lockbtn.value = "Lock";
         }
     }
     showdata();
-    updatepos(0,0);
+    updatepos(0, 0);
 }
 
 /**
@@ -2839,8 +2842,15 @@ function generateContextProperties()
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
     }
 
-    if(context.length > 0) {
-        str += `<br></br><input type="submit" value="Lock" class="saveButton" onclick="toggleEntityLocked();">`;
+    if (context.length > 0) {
+        var locked = true;
+        for (var i = 0; i < context.length; i++) {
+            if (!context[i].isLocked) {
+                locked = false;
+                break;
+            }
+        }
+        str += `<br></br><input type="submit" id="lockbtn" value="${locked ? "Unlock" : "Lock"}" class="saveButton" onclick="toggleEntityLocked();">`;
     }
 
     propSet.innerHTML = str;
