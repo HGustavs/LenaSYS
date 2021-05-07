@@ -1307,7 +1307,7 @@ function mouseMode_onMouseUp(event)
 
         case mouseModes.BOX_SELECTION:
             boxSelect_End();
-            contextLine = [];
+            clearContextLine();
             generateContextProperties();
             break;
 
