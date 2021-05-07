@@ -86,7 +86,7 @@ class StateChange {
              * If the current key in the loop is a number, update the value or if it do not
              * exists, set the value. Else just set the value.
              */
-            if (Number.isInteger(changes[key])){
+            if (!isNaN(changes[key])){
                 if (this[key] === undefined) this[key] = changes[key];
                 else this[key] += changes[key]
             }else {
@@ -575,7 +575,7 @@ class StateMachine
                 // For every key, apply the changes
                 keys.forEach(key => {
                     if (key == "id") return;
-                    if (Number.isInteger(state[key])){
+                    if (!isNaN(state[key])){
                         if (object[key] === undefined) object[key] = state[key];
                         else object[key] += state[key]
                     }else {
