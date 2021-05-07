@@ -88,12 +88,12 @@ class StateChange {
              * If the current key in the loop is a number, update the value or if it do not
              * exists, set the value. Else just set the value.
              */
-            if (key == "time") return
+            if (key == "time") return;
 
-            if (Number.isInteger(changes[key])){
+            if (!isNaN(changes[key])) {
                 if (this[key] === undefined) this[key] = changes[key];
                 else this[key] += changes[key]
-            }else {
+            } else {
                 this[key] = changes[key];
             }
         });
@@ -394,7 +394,6 @@ class StateMachine
 
                     }
                 }else {
-                    console.log(stateChange.id, lastLog.id)
                     if (lastLog.id != stateChange.id) sameElements = false;
                 }
 
@@ -477,6 +476,35 @@ class StateMachine
         // If there is no history => return
         if (this.currentHistoryIndex == -1) return;
 
+        this.scrubHistory(this.currentHistoryIndex)
+
+        // Lower the historyIndex by one
+        this.currentHistoryIndex--;
+
+        clearContext();
+        showdata();
+        updatepos(0, 0);
+        displayMessage(messageTypes.SUCCESS, "Changes reverted!")
+    }
+    stepForward(){
+        // If there is no history => return
+        // If the current index is last index
+        if (this.currentHistoryIndex == -1 && this.historyLog.length -1 == this.currentHistoryIndex) return;
+
+        // Increase the currentHistoryIndex by one
+        this.currentHistoryIndex++;
+
+        // Restore the state
+        this.restoreState(this.historyLog[this.currentHistoryIndex]);
+
+        // Update diagram
+        clearContext();
+        showdata();
+        updatepos(0, 0);
+        displayMessage(messageTypes.SUCCESS, "Changes reverse reverted!")
+    }
+    scrubHistory(endIndex)
+    {
         // Set initial values to data and lines.
         data = [];
         lines = [];
@@ -492,106 +520,110 @@ class StateMachine
             lines.push(obj)
         });
 
-        // For every change that should be redone
-        for (var i = 0; i < this.currentHistoryIndex; i++) {
-            var state = this.historyLog[i];
-            var keys = Object.keys(state);
+        for (var i = 0; i < endIndex; i++) {
+            this.restoreState(this.historyLog[i]);
+        }
+    }
+    restoreState(state)
+    {
+        // Get all keys from the state.
+        var keys = Object.keys(state);
 
-            // If there is only an key that is ID in the state, delete those objects
-            if (keys.length == 1 && keys[0] == "id") {
-                var elementsToRemove = [];
-                var linesToRemove = [];
+        // If there is only an key that is ID in the state, delete those objects
+        // TODO: Change the delete key to "del" OR "delete"
+        if (keys.length == 1 && keys[0] == "id") {
+            var elementsToRemove = [];
+            var linesToRemove = [];
 
-                if (!Array.isArray(state.id)) state.id = [state.id];
-
-                state.id.forEach(objID => {
-                    if (data[findIndex(data, objID)] != undefined){
-                        elementsToRemove.push(data[findIndex(data, state.id)]);
-                    }else {
-                        linesToRemove.push(lines[findIndex(lines, state.id)]);
-                    }
-                });
-                if (linesToRemove.length != 0) removeLines(linesToRemove, false);
-                if (elementsToRemove.length != 0) removeElements(elementsToRemove, false);
-                continue;
-            }
-
-            if (state[0] != undefined && state[0].id != undefined){
-                Object.keys(state).forEach(index => {
-
-                    var temp = {};
-                    Object.keys(state[index]).forEach(key => {
-                        if (key == "id") temp.id = state[index][key];
-                        else temp[key] = state[index][key];
-                    });
-
-                    // If the object is an element
-                    if (state[index].x && state[index].y){
-                        // Add the defaults to the element
-                        Object.keys(defaults[temp.kind]).forEach(key => {
-                            if (!temp[key]) temp[key] = defaults[temp.kind][key];
-                        });
-                        data.push(temp);
-                    }else {
-                        // Add the defaults to the element
-                        Object.keys(defaultLine).forEach(key => {
-                            if (!temp[key]) temp[key] = defaultLine[key];
-                        });
-                        lines.push(temp);
-                    }
-                });
-                continue;
-            }
-            
+            // If the id is not an array, make it into an array
             if (!Array.isArray(state.id)) state.id = [state.id];
 
-            for (var i = 0; i < state.id.length; i++){
-                // Find object
-                var object;
-                if (data[findIndex(data, state.id)] != undefined) object = data[findIndex(data, state.id)];
-                else if (lines[findIndex(lines, state.id)] != undefined) object = lines[findIndex(lines, state.id)];
+            // For every id, find the object and add to the corresponding array
+            state.id.forEach(objID => {
+                if (data[findIndex(data, objID)] != undefined){
+                    elementsToRemove.push(data[findIndex(data, objID)]);
+                }else {
+                    linesToRemove.push(lines[findIndex(lines, objID)]);
+                }
+            });
+            // If the array is not empty remove the objects
+            if (linesToRemove.length != 0) removeLines(linesToRemove, false);
+            if (elementsToRemove.length != 0) removeElements(elementsToRemove, false);
+            return;
+        }
 
-                if (object){
-                    keys.forEach(key => {
-                        if (key != "id" && Number.isInteger(state[key])){
-                            if (object[key] === undefined) object[key] = state[key];
-                            else object[key] += state[key]
-                        }else {
-                            object[key] = state[key];
-                        }
-                    });
-                }else { // Create new object
-                    var temp = {};
-                    Object.keys(state).forEach(key => {
-                        if (key == "id") temp.id = state.id[i];
-                        else temp[key] = state[key];
-                    });
+        // If index 0 is an object and that object has an value of the key "id"
+        if (typeof state[0] === 'object' && state[0].id != undefined){
 
-                    // If the object is an element
-                    if (temp.x && temp.y){
-                        // Add the defaults to the element
-                        Object.keys(defaults[temp.kind]).forEach(key => {
-                            if (!temp[key]) temp[key] = defaults[temp.kind][key];
-                        });
-                        data.push(temp);
+            Object.keys(state).forEach(index => {
+                var temp = {};
+                Object.keys(state[index]).forEach(key => {
+                    if (key == "id") temp.id = state[index][key];
+                    else temp[key] = state[index][key];
+                });
+
+                // If the object is an element
+                if (state[index].x && state[index].y){
+                    // Add the defaults to the element
+                    Object.keys(defaults[temp.kind]).forEach(key => {
+                        if (!temp[key]) temp[key] = defaults[temp.kind][key];
+                    });
+                    data.push(temp);
+                }else {
+                    // Add the defaults to the element
+                    Object.keys(defaultLine).forEach(key => {
+                        if (!temp[key]) temp[key] = defaultLine[key];
+                    });
+                    lines.push(temp);
+                }
+            });
+            return;
+        }
+
+        if (!Array.isArray(state.id)) state.id = [state.id];
+
+        for (var i = 0; i < state.id.length; i++){
+
+            // Find object
+            var object;
+            if (data[findIndex(data, state.id[i])] != undefined) object = data[findIndex(data, state.id[i])];
+            else if (lines[findIndex(lines, state.id[i])] != undefined) object = lines[findIndex(lines, state.id[i])];
+
+            // If an object was found
+            if (object){
+                // For every key, apply the changes
+                keys.forEach(key => {
+                    if (key == "id") return;
+                    if (!isNaN(state[key])){
+                        if (object[key] === undefined) object[key] = state[key];
+                        else object[key] += state[key]
                     }else {
-                        // Add the defaults to the element
-                        Object.keys(defaultLine).forEach(key => {
-                            if (!temp[key]) temp[key] = defaultLine[key];
-                        });
-                        lines.push(temp);
+                        object[key] = state[key];
                     }
+                });
+            }else { // If no object was found - create one
+
+                var temp = {};
+                Object.keys(state).forEach(key => {
+                    if (key == "id") temp.id = state.id[i];
+                    else temp[key] = state[key];
+                });
+
+                // If the object got x, y and a kind, apply the default for the kind and create a element
+                if (temp.x && temp.y && temp.kind){
+                    Object.keys(defaults[temp.kind]).forEach(key => {
+                        if (!temp[key]) temp[key] = defaults[temp.kind][key];
+                    });
+                    data.push(temp);
+
+                }else { // Else it most be an line - apply defaults and create the line
+                    Object.keys(defaultLine).forEach(key => {
+                        if (!temp[key]) temp[key] = defaultLine[key];
+                    });
+                    lines.push(temp);
                 }
             }
         }
-
-        // Lower the historyIndex by one
-        this.currentHistoryIndex--;
-
-        clearContext();
-        showdata();
-        updatepos(0, 0);
-        displayMessage(messageTypes.SUCCESS, "Changes reverted!")
     }
 }
 //#endregion ===================================================================================
@@ -604,6 +636,7 @@ const keybinds = {
         ALT: {key: "alt", ctrl: false},
         META: {key: "meta", ctrl: false},
         HISTORY_STEPBACK: {key: "z", ctrl: true},
+        HISTORY_STEPFORWARD: {key: "y", ctrl: true},
         DELETE: {key: "delete", ctrl: false},
         ESCAPE: {key: "escape", ctrl: false},
         BOX_SELECTION: {key: "2", ctrl: false},
@@ -612,8 +645,8 @@ const keybinds = {
         PLACE_ENTITY: {key: "3", ctrl: false},
         PLACE_RELATION: {key: "4", ctrl: false},
         PLACE_ATTRIBUTE: {key: "5", ctrl: false},
-        ZOOM_IN: {key: "+", ctrl: true},
-        ZOOM_OUT: {key: "-", ctrl: true},
+        ZOOM_IN: {key: "+", ctrl: true, meta: true},
+        ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
@@ -672,6 +705,7 @@ const messageTypes = {
  */
 const attrState = {
     NORMAL: "normal",
+    WEAK: "weakKey",
     MULTIPLE: "multiple",
     KEY: "key",
     COMPUTED: "computed",
@@ -757,7 +791,7 @@ const zoom0_75 = -0.775;
 const zoom0_5 = -3;
 const zoom0_25 = -15.01;
 const zoom0_125 = -64;
-const zoomPower = 1 / 3;
+
 
 // Arrow drawing stuff - diagram elements and diagram lines
 var lines = [];
@@ -798,14 +832,30 @@ var pointerState = pointerStates.DEFAULT;
 
 var movingObject = false;
 var movingContainer = false;
-var isRulerActive = true;
+
 
 //Grid Settings
-const gridSize = 50;
-const origoWidth = 2;
-var snapToGrid = false;
-var randomidArray = []; // array for checking randomID
-var errorMsgMap = {};
+var settings = {
+    ruler: {
+        lineRatio: 10,
+        fullLineRatio: 10,
+        ZF: 100 * zoomfact,
+        zoomX: Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact)),
+        zoomY: Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact)),
+        isRulerActive: true,
+    },
+    grid: {
+        gridSize: 50,
+        origoWidth: 2,
+        snapToGrid: false,
+    },
+    misc: {
+        randomidArray: [], // array for checking randomID
+        errorMsgMap: {},
+    },
+    zoomPower: 1 / 3,
+};
+
 
 // Demo data - read / write from service later on
 var data = [];
@@ -902,7 +952,7 @@ function onSetup()
         { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", id: NumberDEPARTMENT_ID, isLocked: false, state: "key"},
         { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", id: Number_of_employees_ID, isLocked: false, state: "computed"},
     ];
-    
+
     const demoLines = [
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: Bdale_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: Ssn_ID, kind: "Normal" },
@@ -999,7 +1049,7 @@ document.addEventListener('keydown', function (e)
         
         if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
         if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
-        if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
+        if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = false;
         if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
             escPressed = true;
             if(context.length > 0 || contextLine.length > 0) {
@@ -1056,6 +1106,7 @@ document.addEventListener('keyup', function (e)
         if (pressedKey == keybinds.META.key) ctrlPressed = false;
 
         if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) stateMachine.stepBack();
+        if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
             if (contextLine.length > 0) removeLines(contextLine);
@@ -1505,9 +1556,9 @@ function mouseMode_onMouseMove(event)
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
 
                 // If not in EDGE_CREATION AND in snap to grid, calculate the closest snap-point
-                if (snapToGrid && mouseMode != mouseModes.EDGE_CREATION){
-                    ghostElement.x = Math.round(cords.x / gridSize) * gridSize - (ghostElement.width / 2);
-                    ghostElement.y = Math.round(cords.y / gridSize) * gridSize - (ghostElement.height / 2);
+                if (settings.grid.snapToGrid && mouseMode != mouseModes.EDGE_CREATION){
+                    ghostElement.x = Math.round(cords.x / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.width / 2);
+                    ghostElement.y = Math.round(cords.y / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.height / 2);
                 }else {
                     ghostElement.x = cords.x - (ghostElement.width / 2);
                     ghostElement.y = cords.y - (ghostElement.height / 2);
@@ -1659,16 +1710,16 @@ function makeRandomID()
             str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
         
-        if (randomidArray === undefined || randomidArray.length == 0) { //always add first id
-            randomidArray.push(str);
+        if (settings.misc.randomidArray === undefined || settings.misc.randomidArray.length == 0) { //always add first id
+            settings.misc.randomidArray.push(str);
             return str;
 
         } else {
-            var check = randomidArray.includes(str); //if check is true the id already exists
+            var check = settings.misc.randomidArray.includes(str); //if check is true the id already exists
             if(check == true){
                 str = "";
             } else {
-                randomidArray.push(str);
+                settings.misc.randomidArray.push(str);
                 return str;
             }
         }
@@ -1747,8 +1798,8 @@ function removeElements(elementArray, stateMachineShouldSave = true)
     }
 
     clearContext();
-    redrawArrows();
     showdata();
+    redrawArrows();
 }
 
 /**
@@ -1758,6 +1809,7 @@ function removeElements(elementArray, stateMachineShouldSave = true)
  */
 function removeLines(linesArray, stateMachineShouldSave = true)
 {
+
     var anyRemoved = false;
     for (var i = 0; i < linesArray.length; i++) {
         lines = lines.filter(function(line) {
@@ -1772,10 +1824,10 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     if (stateMachineShouldSave && anyRemoved) { 
         stateMachine.save(StateChangeFactory.LinesRemoved(linesArray), StateChange.ChangeTypes.LINE_DELETED);
     }
-    
+
     contextLine = [];
-    redrawArrows();
     showdata();
+    redrawArrows();
 }
 
 /**
@@ -2259,11 +2311,11 @@ function setPos(id, x, y)
     foundId = findIndex(data, id);
     if (foundId != -1) {
         var obj = data[foundId];
-        if (snapToGrid) {
+        if (settings.grid.snapToGrid) {
             if (!ctrlPressed) {
                 // Calculate nearest snap point
-                obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / gridSize) * gridSize;
-                obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / gridSize) * gridSize;
+                obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
 
                 // Set the new snap point to center of element
                 obj.x -= obj.width / 2
@@ -2281,7 +2333,7 @@ function setPos(id, x, y)
 
 function isKeybindValid(e, keybind)
 {
-    return e.key.toLowerCase() == keybind.key && e.ctrlKey == keybind.ctrl;
+    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || e.metaKey == keybind.meta);
 }
 
 function findEntityFromLine(lineObj)
@@ -2560,6 +2612,22 @@ function boxSelect_Draw(str)
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
 /**
+ * @description Toggles stepforward in history.
+ */
+function toggleStepForward()
+{
+    stateMachine.stepForward();
+}
+
+/**
+ * @description Toggles stepbackwards in history.
+ */
+function toggleStepBack() 
+{
+    stateMachine.stepBack();
+}
+
+/**
  * @description Toggles the movement of elements ON/OFF.
  */
 function toggleEntityLocked()
@@ -2573,11 +2641,13 @@ function toggleEntityLocked()
     }
     for (var i = 0; i < context.length; i++){
         if(!locked) {
-            context[i].isLocked = true;
+            context[i].isLocked = true;  
         } else {
             context[i].isLocked = false;
         }
     }
+    showdata();
+    updatepos(0,0);
 }
 
 /**
@@ -2623,7 +2693,7 @@ function toggleSnapToGrid()
     document.getElementById("rulerSnapToGrid").classList.toggle("active");
 
     // Toggle the boolean
-    snapToGrid = !snapToGrid;
+    settings.grid.snapToGrid = !settings.grid.snapToGrid;
 }
 
 /**
@@ -2636,13 +2706,13 @@ function toggleRuler()
     // Toggle active class on button
     document.getElementById("rulerToggle").classList.toggle("active");
 
-    if(isRulerActive){
+    if(settings.ruler.isRulerActive){
         ruler.style.display = "none";
     } else {
         ruler.style.display = "block";
     }
   
-    isRulerActive = !isRulerActive;
+    settings.ruler.isRulerActive = !settings.ruler.isRulerActive;
     drawRulerBars(scrollx,scrolly);
 }
 
@@ -2670,8 +2740,8 @@ function zoomin(scrollEvent = undefined)
             y: mouseCoordinates.y - zoomOrigo.y
         };
         if(zoomfact < 4.0) { // Only change zoomOrigo when not fully zoomed in.
-            zoomOrigo.x += delta.x * zoomPower;
-            zoomOrigo.y += delta.y * zoomPower;
+            zoomOrigo.x += delta.x * settings.zoomPower;
+            zoomOrigo.y += delta.y * settings.zoomPower;
         }
         
     }else { // Otherwise, set zoom target to origo.
@@ -2681,7 +2751,7 @@ function zoomin(scrollEvent = undefined)
 
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
-    
+
     if (zoomfact == 0.125) zoomfact = 0.25;
     else if (zoomfact == 0.25) zoomfact = 0.5;
     else if (zoomfact == 0.5) zoomfact = 0.75;
@@ -2690,6 +2760,8 @@ function zoomin(scrollEvent = undefined)
     else if (zoomfact == 1.25) zoomfact = 1.5;
     else if (zoomfact == 1.5) zoomfact = 2.0;
     else if (zoomfact == 2.0) zoomfact = 4.0;
+    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
+
     
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
@@ -2723,8 +2795,8 @@ function zoomout(scrollEvent = undefined)
             y: mouseCoordinates.y - zoomOrigo.y
         };
 
-        zoomOrigo.x -= delta.x * zoomPower;
-        zoomOrigo.y -= delta.y * zoomPower;
+        zoomOrigo.x -= delta.x * settings.zoomPower;
+        zoomOrigo.y -= delta.y * settings.zoomPower;
     } else { // Otherwise, set zoom target to origo.
         zoomOrigo.x = 0;
         zoomOrigo.y = 0;
@@ -2733,14 +2805,15 @@ function zoomout(scrollEvent = undefined)
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.25) zoomfact = 0.125;
-    else if (zoomfact == 0.5) zoomfact = 0.25;
-    else if (zoomfact == 0.75) zoomfact = 0.5;
-    else if (zoomfact == 1.0) zoomfact = 0.75;
-    else if (zoomfact == 1.25) zoomfact = 1.0;
-    else if (zoomfact == 1.5) zoomfact = 1.25;
-    else if (zoomfact == 2.0) zoomfact = 1.5;
+    if (zoomfact == 0.25)zoomfact = 0.125;
+    else if (zoomfact == 0.5)zoomfact = 0.25;
+    else if (zoomfact == 0.75)zoomfact = 0.5;
+    else if (zoomfact == 1.0)zoomfact = 0.75;
+    else if (zoomfact == 1.25)zoomfact = 1.0;
+    else if (zoomfact == 1.5)zoomfact = 1.25;
+    else if (zoomfact == 2.0)zoomfact = 1.5;
     else if (zoomfact == 4.0) zoomfact = 2.0;
+    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
 
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
@@ -2918,18 +2991,18 @@ function setRulerPosition(x, y)
 function updateGridSize()
 {
     var bLayer = document.getElementById("grid");
-    bLayer.setAttribute("width", gridSize * zoomfact + "px");
-    bLayer.setAttribute("height", gridSize * zoomfact + "px");
+    bLayer.setAttribute("width", settings.grid.gridSize * zoomfact + "px");
+    bLayer.setAttribute("height", settings.grid.gridSize * zoomfact + "px");
 
-    bLayer.children[0].setAttribute('d', `M ${gridSize * zoomfact} 0 L 0 0 0 ${gridSize * zoomfact}`);
+    bLayer.children[0].setAttribute('d', `M ${settings.grid.gridSize * zoomfact} 0 L 0 0 0 ${settings.grid.gridSize * zoomfact}`);
 
     // Set width of origo line on the x axis
     bLayer = document.getElementById("origoX");
-    bLayer.style.strokeWidth = origoWidth * zoomfact;
+    bLayer.style.strokeWidth = settings.grid.origoWidth * zoomfact;
 
     // Set width of origo line on the y axis
     bLayer = document.getElementById("origoY");
-    bLayer.style.strokeWidth = origoWidth * zoomfact;
+    bLayer.style.strokeWidth = settings.grid.origoWidth * zoomfact;
 
     updateGridPos();
 }
@@ -3024,17 +3097,17 @@ function setTimerToMessage(element, time = 5000)
 
     element.innerHTML += `<div class="timeIndicatorBar"></div>`;
     var timer = setInterval( function(){
-        var element = document.getElementById(errorMsgMap[timer].id); // TODO : SAME VARIABLE NAME AS OUTER SCOPE?????
-        errorMsgMap[timer].percent -= 1;
-        element.lastElementChild.style.width = `calc(${errorMsgMap[timer].percent - 1}% - 10px)`;
+        var element = document.getElementById(settings.misc.errorMsgMap[timer].id); // TODO : SAME VARIABLE NAME AS OUTER SCOPE?????
+        settings.misc.errorMsgMap[timer].percent -= 1;
+        element.lastElementChild.style.width = `calc(${settings.misc.errorMsgMap[timer].percent - 1}% - 10px)`;
 
         // If the time is out, remove the message
-        if(errorMsgMap[timer].percent === 0) removeMessage(element, timer);
+        if(settings.misc.errorMsgMap[timer].percent === 0) removeMessage(element, timer);
 
     }, time / 100);
 
     // Adds to map: TimerID: ElementID, Percent
-    errorMsgMap[timer] = {
+    settings.misc.errorMsgMap[timer] = {
         id: element.id,
         percent: 100
     };
@@ -3051,19 +3124,19 @@ function removeMessage(element, timer)
 {
     // If there is no timer in the parameter try find it by elementID in
     if (!timer) {
-        timer = Object.keys(errorMsgMap).find(key => {
-            return errorMsgMap[key].id === element.id
+        timer = Object.keys(settings.misc.errorMsgMap).find(key => {
+            return settings.misc.errorMsgMap[key].id === element.id
         });
     }
 
     if (timer) {
         clearInterval(timer); // Remove the timer
-        delete errorMsgMap[timer]; // Remove timer from the map
+        delete settings.misc.errorMsgMap[timer]; // Remove timer from the map
     }
 
     element.remove(); // Remove the element from DOM
     // Remove ID from randomidArray
-    randomidArray = randomidArray.filter(id => {
+    settings.misc.randomidArray = settings.misc.randomidArray.filter(id => {
         return element.id !== id;
     });
 }
@@ -3394,38 +3467,74 @@ function drawLine(line, targetGhost = false)
 
     // If the line got cardinality
     if(line.cardinality) {
-        var toCardinalityX = tx;
-        var toCardinalityY = ty;
-        var fromCardinalityX = fx;
-        var fromCardinalityY = fy;
 
-        if (line.ctype == "BT"){
-            toCardinalityX = tx + 10 * zoomfact;
-            toCardinalityY = ty - 18 * zoomfact;
-            fromCardinalityX = fx + 10 * zoomfact;
-            fromCardinalityY = fy + 25 * zoomfact;
-        }else if (line.ctype == "TB"){
-            toCardinalityX = tx + 10 * zoomfact;
-            toCardinalityY = ty + 18 * zoomfact;
-            fromCardinalityX = fx + 10 * zoomfact;
-            fromCardinalityY = fy - 18 * zoomfact;
-        }else if (line.ctype == "RL"){
-            toCardinalityX = tx - 18 * zoomfact;
-            toCardinalityY = ty - 10 * zoomfact;
-            fromCardinalityX = fx + 18 * zoomfact;
-            fromCardinalityY = fy - 10 * zoomfact;
-        }else if (line.ctype == "LR"){
-            toCardinalityX = tx + 18 * zoomfact;
-            toCardinalityY = ty - 10 * zoomfact;
-            fromCardinalityX = fx - 25 * zoomfact;
-            fromCardinalityY = fy - 10 * zoomfact;
+        const offsetOnLine = 20 * zoomfact;
+        var offset = Math.round(zoomfact * textheight / 2);
+        var posX, posY;
+        var distance = Math.sqrt(Math.pow((tx - fx), 2) + Math.pow((ty - fy), 2));
+
+        // Used to tweak the cardinality position when the line gets very short.
+        var tweakOffset = 0.30; 
+
+        if(findEntityFromLine(line) == -1){
+            if(offsetOnLine > distance *0.5){
+                posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
+                posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
+            }else{
+                // Set position on line for the given offset
+                posX = fx + (offsetOnLine * (tx - fx) / distance);
+                posY = fy + (offsetOnLine * (ty - fy) / distance);
+            }
+
+
+            /*
+            * Depending on the side of the element that the line is connected to
+            * and the number of lines from that side, set the offset.
+            * */
+            if (line.ctype == "TB") {
+                if (felem.top.indexOf(line.id) == 0) posX -= offset;
+                else posX += offset;
+            }else if(line.ctype == "BT"){
+                if (felem.bottom.indexOf(line.id) == 0) posX -= offset;
+                else posX += offset;
+            }else if(line.ctype == "RL"){
+                if (felem.right.indexOf(line.id) == 0) posY -= offset;
+                else if (felem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
+            }else if (line.ctype == "LR") {
+                if (felem.left.indexOf(line.id) == 0) posY -= offset;
+                else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
+            }
+        } else {
+            if(offsetOnLine > distance *0.5){
+                posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
+                posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
+            }else{
+                // Set position on line for the given offset
+                posX = fx + (offsetOnLine * (tx - fx) / distance);
+                posY = fy + (offsetOnLine * (ty - fy) / distance);
+            }
+
+            /*
+            * Depending on the side of the element that the line is connected to
+            * and the number of lines from that side, set the offset.
+            * */
+            if (line.ctype == "TB") {
+                if (telem.bottom.indexOf(line.id) == 0) posX -= offset;
+                else posX += offset;
+            }else if(line.ctype == "BT"){
+                if (telem.top.indexOf(line.id) == 0) posX -= offset;
+                else posX += offset;
+            }else if(line.ctype == "RL"){
+                if (telem.left.indexOf(line.id) == 0) posY -= offset;
+                else if (telem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
+            }else if (line.ctype == "LR") {
+                if (telem.right.indexOf(line.id) == 0) posY -= offset;
+                else if (telem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
+            }
         }
-        // If the entity is on the from side
-        if (findEntityFromLine(line) == -1){
-            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${fromCardinalityX}" y="${fromCardinalityY}">${lineCardinalitys[line.cardinality]}</text>`
-        }else {
-            str += `<text style="font-size:${Math.round(zoomfact * textheight)}px;" x="${toCardinalityX}" y="${toCardinalityY}">${lineCardinalitys[line.cardinality]}</text> `
-        }
+
+        // Add the line to the str
+        str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`
     }
     return str;
 }
@@ -3504,22 +3613,19 @@ function removeNodes()
 function drawRulerBars(X,Y)
 {
     //Get elements
-    if(!isRulerActive) return;
+    if(!settings.ruler.isRulerActive) return;
     
     svgX = document.getElementById("ruler-x-svg");
     svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
-    const lineRatio = 10;
-    const fullLineRatio = 10;
+
+
     var barY, barX = "";
     const color = "black";
     var cordY = 0;
     var cordX = 0;
-    var ZF = 100 * zoomfact;
-    var pannedY = (Y - ZF) / zoomfact;
-    var pannedX = (X - ZF) / zoomfact;
-    var zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact));
-    var zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
+    var pannedY = (Y - settings.ruler.ZF) / zoomfact;
+    var pannedX = (X - settings.ruler.ZF) / zoomfact;
 
     if(zoomfact < 0.5){
         var verticalText = "writing-mode= 'vertical-lr'";
@@ -3528,12 +3634,12 @@ function drawRulerBars(X,Y)
     }
     
     //Draw the Y-axis ruler positive side.
-    var lineNumber = (fullLineRatio - 1);
-    for (i = 100 + zoomY; i <= pannedY -(pannedY *2) + cheight ; i += (lineRatio*zoomfact)) {
+    var lineNumber = (settings.ruler.lineRatio - 1);
+    for (i = 100 + settings.ruler.zoomY; i <= pannedY -(pannedY *2) + cheight ; i += (settings.ruler.lineRatio*zoomfact)) {
         lineNumber++;
          
         //Check if a full line should be drawn
-        if (lineNumber === fullLineRatio) {
+        if (lineNumber === settings.ruler.lineRatio) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
             barY += "<text x='2' y='"+(pannedY+i+10)+"'style='font-size: 10px'>"+cordY+"</text>";
@@ -3544,13 +3650,13 @@ function drawRulerBars(X,Y)
     }
 
     //Draw the Y-axis ruler negative side.
-    lineNumber = (fullLineRatio - 11);
+    lineNumber = (settings.ruler.lineRatio - 11);
     cordY = -100;
-    for (i = -100 - zoomY; i <= pannedY; i += (lineRatio*zoomfact)) {
+    for (i = -100 - settings.ruler.zoomY; i <= pannedY; i += (settings.ruler.lineRatio*zoomfact)) {
         lineNumber++;
          
         //Check if a full line should be drawn
-        if (lineNumber === fullLineRatio) {
+        if (lineNumber === settings.ruler.lineRatio) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
             barY += "<text x='2' y='"+(pannedY-i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
@@ -3564,12 +3670,12 @@ function drawRulerBars(X,Y)
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
     
     //Draw the X-axis ruler positive side.
-    lineNumber = (fullLineRatio - 1);
-    for (i = 51 + zoomX; i <= pannedX - (pannedX *2) + cwidth; i += (lineRatio*zoomfact)) {
+    lineNumber = (settings.ruler.lineRatio - 1);
+    for (i = 51 + settings.ruler.zoomX; i <= pannedX - (pannedX *2) + cwidth; i += (settings.ruler.lineRatio*zoomfact)) {
         lineNumber++;
         
         //Check if a full line should be drawn
-        if (lineNumber === fullLineRatio) {
+        if (lineNumber === settings.ruler.lineRatio) {
             lineNumber = 0;
             barX += "<line x1='" +(i+pannedX)+"' y1='0' x2='" + (i+pannedX) + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
@@ -3580,13 +3686,13 @@ function drawRulerBars(X,Y)
     }
 
     //Draw the X-axis ruler negative side.
-    lineNumber = (fullLineRatio - 11);
+    lineNumber = (settings.ruler.lineRatio - 11);
     cordX = -100;
-    for (i = -51 - zoomX; i <= pannedX; i += (lineRatio*zoomfact)) {
+    for (i = -51 - settings.ruler.zoomX; i <= pannedX; i += (settings.ruler.lineRatio*zoomfact)) {
         lineNumber++;
         
         //Check if a full line should be drawn
-        if (lineNumber === fullLineRatio) {
+        if (lineNumber === settings.ruler.lineRatio) {
             lineNumber = 0;
             barX += "<line x1='" +(pannedX-i)+"' y1='0' x2='" + (pannedX-i) + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px'>"+cordX+"</text>";
@@ -3616,6 +3722,7 @@ function drawElement(element, ghosted = false)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
+
 
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
@@ -3650,7 +3757,6 @@ function drawElement(element, ghosted = false)
     }
     str += `'>`;
     str += `<svg width='${boxw}' height='${boxh}' >`;
-
     // Create svg 
     if (element.kind == "EREntity") {
         var weak = "";
@@ -3674,6 +3780,7 @@ function drawElement(element, ghosted = false)
         if (element.state == "computed") {
             dash = "stroke-dasharray='4 4'";
         }
+       
         if (element.state == "multiple") {
             multi = `
                     <path d="M${linew * multioffs},${hboxh} 
@@ -3682,7 +3789,7 @@ function drawElement(element, ghosted = false)
                     Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
                     Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
                     stroke='black' fill='#ffccdc' stroke-width='${linew}' />`;
-        }
+        }    
 
         str += `<path d="M${linew},${hboxh} 
                            Q${linew},${linew} ${hboxw},${linew} 
@@ -3694,12 +3801,20 @@ function drawElement(element, ghosted = false)
                     ${multi}
 
                     <text x='${xAnchor}' y='${hboxh}' `;
-
+        
         if(element.state == "key") {
             str += `class='underline'`;
-        }    
-            str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-            `;
+        }             
+        str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+        `;
+            
+        if(element.state == "weakKey") {
+            // Calculates how far to the left X starts
+            var diff = xAnchor - textWidth / 2;
+            diff = diff < 0 ? 0 - diff + 10 : 0;
+            str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="black" stroke-dasharray="5" stroke-width='2'/>`;
+        }
+        
     }
     else if (element.kind == "ERRelation") {
         var weak = "";
@@ -3716,7 +3831,10 @@ function drawElement(element, ghosted = false)
                    `;
 
     }
-    str += "</svg>"
+    str += "</svg>";
+    if (element.isLocked) {
+        str += `<img id="pad_lock" width='${zoomfact *20}' height='${zoomfact *25}' src="../Shared/icons/pad_lock.svg"/>`;     
+    }
     str += "</div>";
     return str;
 }
@@ -3855,11 +3973,11 @@ function updateCSSForAllElements()
             top -= deltaY;
         }
 
-        if (snapToGrid && useDelta) {
+        if (settings.grid.snapToGrid && useDelta) {
             if (elementData.id === targetElement.id) {
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / gridSize) * gridSize;
-                var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / gridSize) * gridSize;
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
 
                 // Add the scroll values
                 left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));

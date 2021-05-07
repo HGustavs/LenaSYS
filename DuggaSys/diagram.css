@@ -124,11 +124,16 @@
 .element {
     font-size: small;
     box-sizing: border-box;
-    overflow:hidden;
+    overflow: none;
     /* border:1px solid red;
      background:#fff;*/
     position:absolute;
     /*box-shadow:2px 2px 2px RGBA(0,0,0,0.3);*/
+}
+#pad_lock{
+    top: -45%;
+    display: block;
+    position: relative;
 }
 
 #canvasOverlay{
@@ -188,6 +193,15 @@
     position:absolute;
     width:40px;
     height:100%;
+}
+
+#rulerCorner {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    background-color: #e6e6e6;
+    z-index: 700;
+    top: 0px;
 }
 
 .diagramIcons{
@@ -303,6 +317,19 @@
 
 #diagram-message .warning {
     background-color: #FEEFB3;
+}
+
+#zoom-message-box{
+    transform: translate(50px, 930px);
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 75px;
+    left: 50px;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    z-index: 100;
+    pointer-events: none;
 }
 
 /*tooltip*/

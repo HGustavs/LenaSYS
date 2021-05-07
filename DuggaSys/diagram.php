@@ -117,12 +117,27 @@
                     <p>Enable/disable the A4 template</p><br>
                     <p id="tooltip-TOGGLE_A4" class="key_tooltip">Keybinding:</p>
                 </span>
-            </div>     
+            </div>
+            <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
+                <img src="../Shared/icons/diagram_stepforward.svg"/>
+                <span class="toolTipText"><b>Toggle step forward</b><br>
+                    <p>Click to step forward in history</p><br>
+                    <p id="tooltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+            <div id="stepBackToggle" class="diagramIcons" onclick="toggleStepBack()">
+                <img src="../Shared/icons/diagram_stepback.svg"/>
+                <span class="toolTipText"><b>Toggle step backward</b><br>
+                    <p>Click to step back in history</p><br>
+                    <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>            
         </fieldset>
     </div>
 
     <!-- Message prompt -->
     <div id="diagram-message"></div>
+    <div id ="zoom-message-box"><img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg"/><text id ="zoom-message">1x</text></div>
 
     <!-- Diagram drawing system canvas. -->
     <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
@@ -133,11 +148,13 @@
 	<canvas id='canvasOverlay'></canvas> 
     <!-- Diagram rules -->
     <div id="rulerOverlay">
+        <div id="rulerCorner"></div>
         <svg id="ruler-x-svg"></svg>
         <svg id="ruler-y-svg"></svg>
         <div id="ruler-x"></div>
         <div id="ruler-y"></div>
     </div>
+    
     <!-- Diagram grid -->
     <div id="svggrid" style="z-index:-11">
         <svg id="svgbacklayer">
