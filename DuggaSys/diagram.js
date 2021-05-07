@@ -807,14 +807,6 @@ var movingContainer = false;
 
 //Grid Settings
 var settings = {
-    ruler: {
-        lineRatio: 10,
-        fullLineRatio: 10,
-        ZF: 100 * zoomfact,
-        zoomX: Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact)),
-        zoomY: Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact)),
-        isRulerActive: true,
-    },
     grid: {
         gridSize: 50,
         origoWidth: 2,
@@ -1573,7 +1565,7 @@ function mmoving(event)
             updatepos(null, null);
 
             // Update the ruler
-            drawRulerBars(scrollx,scrolly);
+            drawRulerBars(scrollx, scrolly);
 
             calculateDeltaExceeded();
             break;
@@ -3562,6 +3554,17 @@ function removeNodes()
  */
 function drawRulerBars(X,Y)
 {
+    var settings = {
+        ruler: {
+            lineRatio: 10,
+            fullLineRatio: 10,
+            ZF: 100 * zoomfact,
+            zoomX: Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact)),
+            zoomY: Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact)),
+            isRulerActive: true,
+        },
+    };
+    
     //Get elements
     if(!settings.ruler.isRulerActive) return;
     
