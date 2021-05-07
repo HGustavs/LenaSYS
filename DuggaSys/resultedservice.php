@@ -28,7 +28,7 @@ if(!$query->execute()) {
     $error=$query->errorInfo();
 }
 
-$query2 = $pdo->prepare("SELECT entryname, kind, lid, moment FROM listentries WHERE cid=:cid AND vers=:vers AND (kind=3 OR kind=4)");
+$query2 = $pdo->prepare("SELECT entryname, kind, lid, moment FROM listentries WHERE cid=:cid AND vers=:vers AND (kind=3)");
 $query2->bindParam(':cid', $cid);
 $query2->bindParam(':vers', $coursevers);
 $query2->execute();
