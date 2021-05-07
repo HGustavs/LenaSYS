@@ -410,14 +410,8 @@ class StateMachine
                     var changeTypes = [changeType];
                 }
 
-                // Check if the change can be appended to last change
-                var canAppendToLast = true;
-                for (var index = 0; index < this.lastFlag.length && isSoft; index++) {
-                    canAppendToLast = this.lastFlag[index].canAppendTo;
-                }
-
                 // Find last change with the same ids
-                var timeLimit = 5; // Timelimit on history append in seconds
+                var timeLimit = 10; // Timelimit on history append in seconds
                 for (var index = this.historyLog.length - 1; index >= 0; index--){
 
                     var sameIds = true;
@@ -438,7 +432,7 @@ class StateMachine
                     }
                 }
                 // If NOT soft change, push new change onto history log
-                if (!isSoft || !canAppendToLast || !sameElements) {
+                if (!isSoft || !sameElements) {
 
                     this.historyLog.push(stateChange);
                     this.lastFlag = changeType;
