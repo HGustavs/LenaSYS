@@ -67,6 +67,8 @@ if ($course != "UNK") {
 		header("Location: {$serverRoot}/DuggaSys/sectioned.php?courseid={$cid}&coursevers={$activeversion}");
 		exit();
 	}
+} else {
+	header("Location: ../errorpages/404.php");
 }
 
 $q = queryToUrl($course, $assignment);
