@@ -15,14 +15,12 @@ function process(){
 		filterList = {};
 	}
 	makeCustomFilter("duggaFilter");
-   
 }
 
 function updateTable(){
 	
 	filterList["duggaFilter"] = document.getElementById("assignmentDropdown").value;
-	localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
-	
+	localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));	
 	myTable.renderTable();
 }
 
@@ -78,13 +76,8 @@ function createSortableTable(data){
 	}else{
 		myTable.toggleSortStatus("duggaName", 1); //Default ascending sort of dugga column
 	}
-	
-	
 
 	myTable.renderTable();
-
-	if (data['debug'] != "NONE!")
-		alert(data['debug']);
 }
 
 function renderCell(col, celldata, cellid) {
@@ -132,9 +125,7 @@ function makeCustomFilter(filtername) {
 	if (filterList[filtername] == null) {
 		filterList[filtername] = "none";
 	}
-	if (filtername == "duggaFilter") { //Saves the filter in local storage when opening resulted.php.
-		localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
-	}
+	localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList)); //Saves the filter in local storage when opening resulted.php.	
 }
 
 //for multiple filters, add more if statements
@@ -147,6 +138,6 @@ function rowFilter(row) {
 			returnVariable = false;
 		}
 	}
-	
+		
 	return returnVariable;
 }
