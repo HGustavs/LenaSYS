@@ -502,11 +502,17 @@ function changeVariant(intvalue){											//Call setExpireTime() but with a sp
 	location.reload(); 														//Reloads the site to show correct new variant.
 }
 
-function selectNextVariant(){
-	console.log("latest..."+latestVariantSet);
-	var nextVariant = (latestVariantSet + 1) % nbrOfVariants + 1;
-	console.log("next..."+nextVariant);
-	changeVariant(nextVariant);
+function selectNextVariant(){	//Selects next variant available and calls 'changeVariant' method with it.
+	var nextVariant;
+	console.log(latestVariantSet);
+	if(nbrOfVariants == 1){
+		nextVariant = latestVariantSet;
+	}
+	else{
+		nextVariant = (latestVariantSet + 1) % nbrOfVariants;
+		nextVariant = nextVariant + 1;
+		changeVariant(nextVariant);
+	} 
 }
 
 //Creates TTL for localstorage //TTL value is in milliseconds
