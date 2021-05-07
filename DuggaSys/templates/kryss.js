@@ -118,6 +118,11 @@ function getCheckedBoxes(){
 	}
 
 	function reset(){
+		Timer.stopTimer();
+		Timer.score=0;
+		Timer.startTimer();
+		ClickCounter.initialize();
+
 		var answers = document.getElementsByName("answers"+idunique);
 		for(i = 0; i < answers.length; i++){
 			answers[i].checked = false;
