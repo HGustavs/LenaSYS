@@ -2915,7 +2915,7 @@ function generateContextProperties()
             str += `</select></label>`;
         }
 
-        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
+        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
     }
 
     if(context.length > 0) {
