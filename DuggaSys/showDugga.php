@@ -201,13 +201,8 @@ if($hash!='UNK' && !isSuperUser($userid)){
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
-			$btnDisable = "";
-			if (isSuperUser($userid) && $hash!='UNK'){
-				$btnDisable = "btn-disable";
-			}
-			else if ($hash == 'UNK')
-				$btnDisable = "btn-disable";
-
+			$btnDisable = "btn-disable";
+			
 			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");

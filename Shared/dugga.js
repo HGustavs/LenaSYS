@@ -28,9 +28,7 @@ var variantvalue;
 var tempclicks = 0;
 
 var clicks = 0;
-var oldClicks = clicks;
 
-var hasClicked = false;
 var locallystoredhash;
 var isFileSubmitted;
 var isSuperUser;
@@ -42,36 +40,17 @@ $(function () {  // Used to set the position of the FAB above the cookie message
 	}
 })
 
-window.addEventListener("click", function() {
-
-	var testClick = oldClicks - 1;
-	if (clicks = (testClick + 2)){
-		console.log("QWEQWEQWE")
-	}
-	else{
-		console.log("ASDASDASD")
-	}
-	console.log(`clicks: ${clicks}`)
-	console.log(`oldClicks: ${oldClicks}`)
-	canSave();
-});
-
-function canSave() {
-
-/* 	console.log(`clicks: ${clicks}`)
-	console.log(`isFileSubmitted: ${isFileSubmitted}`) */
-
-	var canTeacherSave = ((isSuperUser && !ishashinurl) || !isSuperUser)? true : false;
+// Enables save and reset button after activity on assignments (save and reset always available for students on submitted assignments)
+function canSaveController() {
+	
 	var hasClicked = (clicks > 0)? true : false;
-
-    if (canTeacherSave && (hasClicked || isFileSubmitted)) {
-
+	if((isFileSubmitted || hasClicked || ishashinurl) && !isSuperUser){
 		var elems = document.querySelectorAll(".btn-disable");
 
 		for (var e of elems){
 			e.classList.remove("btn-disable");
 		}
-    }
+	}   
 }
 
 function sendGroupAjax(val) {
@@ -949,20 +928,21 @@ window.addEventListener('beforeunload', function (e) {
 
 //Check if score is above threshhold
 function duggaChange() {
+	
 	if(clicks > ClickCounter.score){
 		ClickCounter.score = clicks;
 	}
 	else{
 		clicks = ClickCounter.score;
 	}
-
+	canSaveController();
 	if(clicks>=tempclicks){
 		tempclicks=clicks;
 		return true;
 	}else{
 		return false;
 	}
-
+	
 }
 
 function getUrlParam(param){
@@ -1129,7 +1109,7 @@ function AJAXService(opt,apara,kind)
 				var phpData = JSON.parse(data);
 				isFileSubmitted = phpData.isFileSubmitted;
 				isSuperUser = (phpData.isSuperUser == 1) ? false : true; // Check if user is teacher or not, student == 1
-				canSave();
+				canSaveController();
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
 				if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 					handleHash();	//Makes sure hash is unique.
