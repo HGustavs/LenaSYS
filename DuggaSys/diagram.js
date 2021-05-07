@@ -469,9 +469,8 @@ class StateMachine
         displayMessage(messageTypes.SUCCESS, "Changes reverted!")
     }
     stepForward(){
-        // If there is no history => return
-        // If the current index is last index
-        if (this.currentHistoryIndex == -1 && this.historyLog.length -1 == this.currentHistoryIndex) return;
+        // If there is not anything to restore => return
+        if (this.historyLog.length == 0 || this.currentHistoryIndex == (this.historyLog.length -1)) return;
 
         // Increase the currentHistoryIndex by one
         this.currentHistoryIndex++;
