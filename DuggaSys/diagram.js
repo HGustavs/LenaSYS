@@ -983,7 +983,7 @@ document.addEventListener('keydown', function (e)
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
             e.preventDefault();
             selectAll();
-        }      
+        }
 
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
@@ -1006,7 +1006,11 @@ document.addEventListener('keyup', function (e)
         //  TODO : Switch cases?
         if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
         if (pressedKey == keybinds.ALT.key) altPressed = false;
-        if (pressedKey == keybinds.META.key) ctrlPressed = false;
+        if (pressedKey == keybinds.META.key) {
+            setTimeout(() => {
+                ctrlPressed = false;
+            }, 1000);
+        }
 
         if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) stateMachine.stepBack();
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
@@ -1044,8 +1048,8 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
         if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
-        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(clipboard)
-        
+        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(clipboard);
+
         if (isKeybindValid(e, keybinds.COPY)){
             clipboard = context;
             if (clipboard.length !== 0){
@@ -2234,7 +2238,7 @@ function setPos(id, x, y)
 
 function isKeybindValid(e, keybind)
 {
-    return e.key.toLowerCase() == keybind.key && e.ctrlKey == keybind.ctrl;
+    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
 
 function findEntityFromLine(lineObj)
