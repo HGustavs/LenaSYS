@@ -2447,8 +2447,10 @@ function showCourseDate(ddate, dialogid){
   var isCorrect = validateDate2(ddate,dialogid);
   var startdate = new Date(retdata['startdate']);;
   var enddate = new Date(retdata['enddate']);
+  var startdate = new String(startdate.getFullYear()+ "-" + startdate.getMonth() + "-" + startdate.getDate());
+  var enddate = new String(enddate.getFullYear()+ "-" + enddate.getMonth() + "-" + enddate.getDate());
   document.getElementById("dialog8").innerHTML =
-  "The date has to be between " + startdate + " and " +enddate ;
+  "The date has to be between " + startdate + " and " + enddate;
   return isCorrect;
 }
 
