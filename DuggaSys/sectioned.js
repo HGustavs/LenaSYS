@@ -742,7 +742,7 @@ function returnedSection(data) {
     str += "<div id='Sectionlistc'>";
 
     str += "<div id='statisticsSwimlanes'>";
-		str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
+    str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
 		str += "</div>";
 
 
@@ -1352,7 +1352,7 @@ function drawSwimlanes() {
 
   var deadlineEntries = [];
   var momentEntries = {};
- // var current = new Date(2021, 01, 15);
+  //var current = new Date(2015, 02, 19);
   var current = new Date();
 
   var momentno = 0;
@@ -1489,7 +1489,6 @@ function drawSwimlanes() {
   var newCurrent;
   var daySinceStart;
 
-
   if(enddate.getFullYear() < current.getFullYear()) { // Guesstimate deadline for current year if course not updated
     var yearDifference = current.getFullYear() - enddate.getFullYear();
     var tempYear = new Date(current); 
@@ -1503,11 +1502,32 @@ function drawSwimlanes() {
   }
 
 
+  var minDistance;
+  var index = -1;
+  for(var i = 0; i < deadlineEntries.length;i++) {
+      if(deadlineEntries[i].deadline >= current) {
+        if(deadlineEntries[i].deadline - current < minDistance || minDistance == undefined) {
+
+          minDistance = deadlineEntries[i].deadline - current;
+          index = i;
+          console.log(index);
+          console.log(minDistance);
+        }
+      }
+    }
+  
+  console.log(deadlineEntries[index]);
+  var myElement = document.getElementsByName(deadlineEntries[index]);
+  var topPos = myElement.offsetTop;
+  document.getElementById('statisticsSwimlanes').scrollTop = topPos;
+
+
 
   str += `<line opacity='0.7' x1='${(daySinceStart * daywidth)}'
   y1='${(15 + weekheight)}' x2='${(daySinceStart * daywidth) }'
   y2='${(((1 + deadlineEntries.length) * weekheight) + 15)}' stroke-width='4' stroke='red' />`;
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
+
   document.getElementById("swimlaneSVG").innerHTML = str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 800 " + svgHeight);
 
