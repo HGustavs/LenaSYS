@@ -28,7 +28,7 @@ var variantvalue;
 var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
-var loadVariantFlag = false;	// Flag to decide if the 'Load Variant' button should be visable or not.
+var loadVariantFlag = false;	// Flag to decide if the 'Toggle variant' button should be visable or not.
 var varArr;
 var nbrOfVariants;
 var latestKeyUsed;
@@ -502,17 +502,19 @@ function changeVariant(intvalue){											//Call setExpireTime() but with a sp
 	location.reload(); 														//Reloads the site to show correct new variant.
 }
 
-function selectNextVariant(){	//Selects next variant available and calls 'changeVariant' method with it.
-	var nextVariant;
-	console.log(latestVariantSet);
-	if(nbrOfVariants == 1){
-		nextVariant = latestVariantSet;
+//Selects next variant available and calls 'changeVariant' method.
+function selectNextVariant(){
+	if(nbrOfVariants != undefined){	//If no variants are available for this dugga.
+		var nextVariant;
+		if(nbrOfVariants == 1){
+			nextVariant = latestVariantSet;
+		}
+		else{
+			var tempIndex = (varArr.indexOf(latestVariantSet) + 1) % nbrOfVariants;
+			nextVariant = varArr[tempIndex];
+			changeVariant(nextVariant);
+		} 
 	}
-	else{
-		nextVariant = (latestVariantSet + 1) % nbrOfVariants;
-		nextVariant = nextVariant + 1;
-		changeVariant(nextVariant);
-	} 
 }
 
 //Creates TTL for localstorage //TTL value is in milliseconds
@@ -553,7 +555,7 @@ function updateExpireTime(key, value, ttl, locallystoredhash){
 	}
 }
 //Lazily expiring the item (Its only checked when retrieved from storage)
-//Global variables 'latestKeyUsed', 'latestTTLUsed' and 'latestLocalHash' are written to keep track of the latest values of the local-storage attributes, which needs be re-used, with the same values, if teacher change variant locally (Load Variant button).
+//Global variables 'latestKeyUsed', 'latestTTLUsed' and 'latestLocalHash' are written to keep track of the latest values of the local-storage attributes, which needs be re-used, with the same values, if teacher change variant locally (Toggle variant button).
 function getExpireTime(key){
 	latestKeyUsed = key;						
 	const itemString = localStorage.getItem(key);
@@ -1569,17 +1571,9 @@ function setupLoginLogoutButton(isLoggedIn){
 	}
 }
 
-function toggleLoadVariant(setbool){	//setbool has a value of True or False. This decides if the Load Variant button should be visable or not.
+function toggleLoadVariant(setbool){	//setbool has a value of True or False. This decides if the Toggle variant button should be visable or not.
 	loadVariantFlag = setbool;
 	console.log("Value: " + setbool);
-}
-
-function showLoadVariantPopup(){		//If 'Load variant' is clicked.
-	$("#loadVariantBox").css("display","flex");
-}
-
-function hideLoadVariantPopup(){		//'Load variant' window exit.
-	$("#loadVariantBox").css("display","none");
 }
 
 function showLoadDuggaPopup()
@@ -2069,7 +2063,7 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
 		}
 
-		if(loadVariantFlag){	//If the 'Load Variant' button is set to be visable (Teachers only). 
+		if(loadVariantFlag){	//If the 'Toggle variant' button is set to be visable (Teachers only). 
 			str+="<div style='width:0px;'><input class='submit-button large-button' type='button' value='Toggle variant' onclick='selectNextVariant();' /></div>"; 
 		}
 

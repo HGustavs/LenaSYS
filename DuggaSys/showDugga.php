@@ -334,25 +334,6 @@ if($hash!='UNK'){
 	</div>
 	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
 
-	<!-- Load Variant Popup (Change variant locally to check if the variant is presented. Teachers only) -->
-	<div id='loadVariantBox' class="loginBoxContainer" style="display:none">
-	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
-			<div class='loginBoxheader'><h3>Get variant of dugga</h3><div class='cursorPointer' onclick="hideLoadVariantPopup()">x</div></div>
-			<div id='loadDuggaInfo'></div>
-    		<div id='loadDuggaPopup' style="display:block">
-				<div class='inputwrapper'><span>Next variant</span><br>
-					
-				</div>
-				<div class="button-row">
-					<input type='button' class='submit-button' onclick="changeVariant(2);" value='Next variant'>
-					<input type='button' class='submit-button' onclick="hideLoadVariantPopup();" value='Close'>
-				</div>
-    		</div>
-      </div>
-	</div>
-	<!-- Load Variant Popup (Change variant locally to check if the variant is presented) End! -->
-
-
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
 	<?php 
