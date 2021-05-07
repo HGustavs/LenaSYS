@@ -41,7 +41,10 @@ function GetAssigment ($hash){
 if($assignment != "UNK"){
 	$assignmentURL = GetAssigment($assignment);
 	header("Location: {$assignmentURL}");
+} else {
+	header("Location: ../errorpages/404.php");
 }
+
 if ($course != "UNK") {
 	global $pdo;
 
