@@ -1214,7 +1214,7 @@ function mdown(event)
 function ddown(event)
 {
     // Used when determining time between clicks.
-    if((new Date().getTime() - dblPreviousTime) < dblClickInterval){
+    if((new Date().getTime() - dblPreviousTime) < dblClickInterval && event.button == 0){
 
         wasDblClicked = true; // General purpose bool. True when doubleclick was performed.
         
