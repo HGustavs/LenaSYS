@@ -3536,11 +3536,19 @@ function addNodes(element)
 {
     var elementDiv = document.getElementById(element.id)
     var nodes = "";
-
-    nodes += "<span class='node mr'></span>";
-    nodes += "<span class='node ml'></span>";
-
+    nodes += "<span id='mr' class='node mr'></span>";
+    nodes += "<span id='ml' class='node ml'></span>";
     elementDiv.innerHTML += nodes;
+
+    var nodeSize = 8*zoomfact;
+    var mrNode = document.getElementById("mr");
+    var mlNode = document.getElementById("ml");
+    mrNode.style.width = nodeSize+"px";
+    mlNode.style.width = nodeSize+"px";
+    mrNode.style.height = nodeSize+"px";
+    mlNode.style.height = nodeSize+"px";
+    mrNode.style.top = "calc(50% - "+(nodeSize/2)+"px)";
+    mlNode.style.top = "calc(50% - "+(nodeSize/2)+"px)";
 }
 /**
  * @description Remove all elements with the class "node"
