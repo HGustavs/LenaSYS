@@ -376,7 +376,7 @@ $js = array(
 <!-- Markdown-preview and edit file functionality END -->
 
 <!--Fab-button-->
-<div class="fixed-action-button" id="fabButton">
+<div class="fixed-action-button" id="fabButton" style = "padding-right: 100px;">
     <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
     <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed id='fab-btn-list'>
     <?php
