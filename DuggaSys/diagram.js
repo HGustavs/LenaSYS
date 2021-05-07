@@ -2013,6 +2013,7 @@ function selectAll()
 {   
     context = data;
     contextLine = lines;
+    generateContextProperties();
     showdata();
 }
 
