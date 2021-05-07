@@ -1502,27 +1502,6 @@ function drawSwimlanes() {
   }
 
 
-  var minDistance;
-  var index = -1;
-  for(var i = 0; i < deadlineEntries.length;i++) {
-      if(deadlineEntries[i].deadline >= current) {
-        if(deadlineEntries[i].deadline - current < minDistance || minDistance == undefined) {
-
-          minDistance = deadlineEntries[i].deadline - current;
-          index = i;
-          console.log(index);
-          console.log(minDistance);
-        }
-      }
-    }
-  
-  console.log(deadlineEntries[index]);
-  var myElement = document.getElementsByName(deadlineEntries[index]);
-  var topPos = myElement.offsetTop;
-  document.getElementById('statisticsSwimlanes').scrollTop = topPos;
-
-
-
   str += `<line opacity='0.7' x1='${(daySinceStart * daywidth)}'
   y1='${(15 + weekheight)}' x2='${(daySinceStart * daywidth) }'
   y2='${(((1 + deadlineEntries.length) * weekheight) + 15)}' stroke-width='4' stroke='red' />`;
@@ -1530,6 +1509,22 @@ function drawSwimlanes() {
 
   document.getElementById("swimlaneSVG").innerHTML = str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 800 " + svgHeight);
+
+
+  var minDistance;
+  var min_index = -1;
+  //Looks through all the deadline entries and finds the one with the shortest distance to current date
+  for(var i = 0; i < deadlineEntries.length;i++) {
+      if(deadlineEntries[i].deadline >= current) {
+        if(deadlineEntries[i].deadline - current < minDistance || minDistance == undefined) {
+          minDistance = deadlineEntries[i].deadline - current;
+          min_index = i;
+        }
+      }
+    }
+   //index * height = topPos
+  var topPos =  min_index * weekheight;  
+  document.getElementById('statisticsSwimlanes').scrollTop = topPos;
 
 }
 
