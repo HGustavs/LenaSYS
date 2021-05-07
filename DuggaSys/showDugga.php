@@ -20,6 +20,8 @@
 	<script src="timer.js"></script>
 	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
+	<script src="../DuggaSys/templates/generic_dugga_file_receive.js"></script>
+	
 <?php
 	date_default_timezone_set("Europe/Stockholm");
 
