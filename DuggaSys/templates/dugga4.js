@@ -131,6 +131,7 @@ function reset()
 		Timer.score=0;
 		Timer.startTimer();
 		ClickCounter.initialize();
+		document.getElementById("operationList").innerHTML="";	
     } else {
         
     } 
