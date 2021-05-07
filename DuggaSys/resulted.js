@@ -145,6 +145,17 @@
 	 return returnVariable;
  }
 
+ function compare(a, b) {
+    if (a.toLowerCase() < b.toLowerCase()){
+    	return 1;
+    }else if (a.toLowerCase() > b.toLowerCase()){
+		return -1;
+	}
+
+	return 0;	
+}
+
+
 
 
 /* var sessionkind = 0;
