@@ -1,7 +1,7 @@
 /********************************************************************************
  Globals
  *********************************************************************************/
- var tableName = "resultTable";
+var tableName = "resultTable";
 var filterList;
 var buttonFlag = true;
 var duggaFilter;
@@ -20,6 +20,7 @@ function process(){
 	makeCustomFilter("duggaFilter");
 }
 
+// Runs every time a new filter is picked
 function updateTable(){
 	
 	filterList["duggaFilter"] = document.getElementById("assignmentDropdown").value;
@@ -73,15 +74,16 @@ function createSortableTable(data){
 	var sortCol = localStorage.getItem("resultTable___sortcol");
 	var sortDir = parseInt(localStorage.getItem("resultTable___sortkind"));
 	if(sortCol != null && sortDir != null){
-		myTable.toggleSortStatus(sortCol, sortDir); //Set sort from localstorage
+		myTable.toggleSortStatus(sortCol, sortDir); // Set sort from localstorage
 	}else{
-		myTable.toggleSortStatus("duggaName", 1); //Default ascending sort of dugga column
+		myTable.toggleSortStatus("duggaName", 1); // Default ascending sort of dugga column
 	}
 
 	myTable.renderTable();
 }
 
-function renderCell(col, celldata, cellid) {
+// Displays different things depending on column
+function renderCell(col, celldata, cellid) { 
 	
 	str = "<div class='resultTableCell'>";
 	if (col == "hash"){
@@ -107,15 +109,15 @@ function renderCell(col, celldata, cellid) {
 	return str;
 }
 
-function renderSortOptions(col, status, colname) {
+function renderSortOptions(col, sortKind, colname) { // Which columns and how they are sorted
     str = "";
 
 	if(col == "duggaName" || col == "submitted"){
 		str += "<div style='white-space:nowrap;cursor:pointer'>"
-        if(status == 1){		
+        if(sortKind == 1){		
             str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "(ASC)" +"</span>";
 
-        }else if (status == 0){
+        }else if (sortKind == 0){
             str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "(DES)" + "</span>";
 			
         }else{
@@ -140,7 +142,7 @@ function makeCustomFilter(filtername) {
 	localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList)); //Saves the filter in local storage when opening resulted.php.	
 }
 
-//for multiple filters, add more if statements
+// How rows are filtered, for multiple filters add more if statements
 function rowFilter(row) {
 	var returnVariable = true;
 	if(filterList["duggaFilter"] != "none"){
@@ -154,7 +156,8 @@ function rowFilter(row) {
 	return returnVariable;
 }
 
- function compare(a, b) {
+// Basic ascending/descending order
+ function compare(a, b) { 
     if (a.toLowerCase() < b.toLowerCase()){
     	return 1;
     }else if (a.toLowerCase() > b.toLowerCase()){
@@ -163,7 +166,7 @@ function rowFilter(row) {
 
 	return 0;	
 }
-
+// Runs every time a cell in the table is clicked
 function clickedInternal(event, clickdobj){
 
 	if (clickdobj.classList.contains("resultTable-password")){
