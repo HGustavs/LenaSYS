@@ -144,6 +144,24 @@ function IsLatestHash($hash){
 		} else {
 			return false;
 		}
+
+		//Old function
+		/*
+		global $pdo;
+		$sql = "SELECT hash,password FROM userAnswer WHERE '" .$password. "' LIKE password AND '".$hash."' LIKE hash";
+		$query = $pdo->prepare($sql);
+		$query->execute();
+		$count = $query->rowCount();
+			if($count == 0){
+				echo '<script>console.log(false)</script>';
+				echo "<script>console.log('".$count."')</script>;";
+				return false;
+			} else{
+				echo '<script>console.log(true)</script>';
+				echo "<script>console.log('".$count."')</script>;";
+				return true;
+			}*/
+
 }
 echo "<script>console.log('".$hash."')</script>;";
 echo "<script>console.log('".$hashpassword."')</script>;";
