@@ -41,7 +41,10 @@ function GetAssigment ($hash){
 if($assignment != "UNK"){
 	$assignmentURL = GetAssigment($assignment);
 	header("Location: {$assignmentURL}");
+} else {
+	header("Location: ../errorpages/404.php");
 }
+
 if ($course != "UNK") {
 	global $pdo;
 
@@ -64,6 +67,8 @@ if ($course != "UNK") {
 		header("Location: {$serverRoot}/DuggaSys/sectioned.php?courseid={$cid}&coursevers={$activeversion}");
 		exit();
 	}
+} else {
+	header("Location: ../errorpages/404.php");
 }
 
 $q = queryToUrl($course, $assignment);

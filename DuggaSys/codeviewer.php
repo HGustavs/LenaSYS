@@ -133,7 +133,7 @@ Testing Link:
 			$cvers = getOPG('cvers');
 
 			// Fetch content from database
-			$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid';");
+			$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid;");
 			$query->bindParam(':exampleid', $exampleid);
 			$query-> execute();
 			$row = $query -> fetch(PDO::FETCH_ASSOC);

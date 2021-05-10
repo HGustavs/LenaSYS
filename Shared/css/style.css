@@ -1154,6 +1154,32 @@ p {
   color: #612;
 }
 
+#dugga3Container{
+  display:flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1050px){
+  #dugga3Container{
+    flex-direction: column;
+    justify-content: initial;
+    align-items: center;
+  }
+
+  #dugga3Container #toolbox{
+    margin: 15px 0;
+  }
+
+  #displayAnnouncements .announcementCard{
+    width: 100%;
+  }
+
+  #dugga3Container canvas{
+    min-width: 75%;
+    height: auto;
+  }
+}
+
 #dugga4Container{
   display:flex;
   justify-content: center;
@@ -1985,6 +2011,14 @@ div .navButt:hover {
   text-align: center;
 }
 
+.passwordBlock{
+  width: 50%;
+  padding: 4px 0px;
+  background-color: black;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
 #feedbacktablecontainer td input{
   float: none;
 }
@@ -2801,6 +2835,7 @@ div.submit-button:disabled {
   height: 48px !important;
   line-height: 48px !important;
 }
+
 
 /* Tooltip */
 
@@ -3703,6 +3738,10 @@ div.reset-pw:hover{
 
 }
 
+.btn-disable {
+  pointer-events: none;
+  background-color: var(--color-primary-light) !important;
+}
 
 #TopMenuStatic .submit-button {
   background-color: var(--color-primary-2);

@@ -60,6 +60,7 @@ $duggafeedback = "UNK";
 $variants=array();
 $variantsize;
 $ishashindb = false;
+$timesSubmitted = 0;
 
 
 $savedvariant="UNK";
@@ -120,9 +121,9 @@ $query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
 $query->bindParam(':cid', $courseid);
 $result = $query->execute();
 if($row = $query->fetch(PDO::FETCH_ASSOC)){
-		$cvisibility=$row['visibility'];
+	$cvisibility=$row['visibility'];
 }else{
-		$debug="Error reading course visibility";
+	error_log("Error reading course visibility", 0);
 }
 // Read visibility of dugga (listentry)
 $query = $pdo->prepare("SELECT visible FROM listentries WHERE cid=:cid and lid=:moment");
@@ -130,9 +131,9 @@ $query->bindParam(':cid', $courseid);
 $query->bindParam(':moment', $moment);
 $result = $query->execute();
 if($row = $query->fetch(PDO::FETCH_ASSOC)){
-		$dvisibility=$row['visible'];
-}else{
-		$debug="Error reading dugga visibility";
+	$dvisibility=$row['visible'];
+}else{	
+	error_log("Error reading course visibility", 0);
 }
 
 // Get type of dugga
@@ -163,7 +164,7 @@ foreach($query->fetchAll() as $row) {
 	$insertparam = true;
 }
 
-$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,feedback,grade,submitted,hash,password FROM userAnswer WHERE hash=:hash;");
+$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,feedback,grade,submitted,hash,password,timesSubmitted FROM userAnswer WHERE hash=:hash;");
 
     $query->bindParam(':hash', $hash);
     $result = $query->execute();
@@ -176,10 +177,12 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
         $grade = $row['grade'];
         $submitted = $row['submitted'];
         $marked = $row['marked'];
-		$password = $row['password'];
+		    $password = $row['password'];
 
-		// Sets the latestHashVisited for password promt function in showDugga.php
-		$_SESSION['latestHashVisited'] = $row['hash'];
+        // Sets the latestHashVisited for password promt function in showDugga.php
+        $_SESSION['latestHashVisited'] = $row['hash'];
+        $timesSubmitted = $row['timesSubmitted'];
+		
     }
 
 // -------------------------OLD FUNCTIONALITY WHERE WE CHECK IF USER IS LOGGED IN AND HAS ACESS-------------------
@@ -225,6 +228,7 @@ if($demo || $hr){
 		// if none has been chosen and there is a first one take that one.
 		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
 	}else{
+	
 		// There is a variant already -- do nothing!	
 	}
 	
@@ -309,6 +313,7 @@ if(checklogin()){
             $discription = $couseid." ".$duggaid." ".$moment." ".$answer;
             logUserEvent($userid, $username, EventTypes::DuggaFileupload,$discription);
 
+			$timesSubmitted = $timesSubmitted + 1;
 
             //Seperate timeUsed, stepsUsed and score from $answer
             $temp = explode("##!!##", $answer);
@@ -334,7 +339,7 @@ if(checklogin()){
             }else{
 
 			if(!$isIndb){ // If the dugga is not in database, insert into database
-				$query = $pdo->prepare("INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password);");
+				$query = $pdo->prepare("INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesSubmitted) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password,:timesSubmitted);");
 				$query->bindParam(':cid', $courseid);
 				$query->bindParam(':coursevers', $coursevers);
 				$query->bindParam(':did', $duggaid);
@@ -342,6 +347,7 @@ if(checklogin()){
 				$query->bindParam(':variant', $variantvalue);
 				$query->bindParam(':hash', $hash);
 				$query->bindParam(':password', $password);
+				$query->bindParam(':timesSubmitted', $timesSubmitted);
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
@@ -351,12 +357,13 @@ if(checklogin()){
 			}
 
               	// Update Dugga!
-              	$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score WHERE hash=:hash;");
+              	$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score, timesSubmitted=:timesSubmitted WHERE hash=:hash;");
               	$query->bindParam(':hash', $hash);
               	$query->bindParam(':useranswer', $answer);
               	$query->bindParam(':timeUsed', $timeUsed);
               	$query->bindParam(':stepsUsed', $stepsUsed);
               	$query->bindParam(':score', $score);
+				$query->bindParam(':timesSubmitted', $timesSubmitted);
                 if(!$query->execute()) {
                 	$error=$query->errorInfo();
                 	$debug="Error updating answer. (row ".__LINE__.") ".$query->rowCount()." row(s) were updated. Error code: ".$error[2];
@@ -502,6 +509,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			
 
 			$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
+			$isFileSubmitted = file_exists($ziptemp);
 			if(!file_exists($ziptemp)) {
 				$zipdir="UNK";
 			}else{				
@@ -626,6 +634,10 @@ $array = array(
 		"variantvalue" => $variantvalue,
 		"password" => $password,
 		"hashvariant" => $hashvariant,
+		"isFileSubmitted" => $isFileSubmitted,
+		"isSuperUser" => $userid,
+		"variants" => $variants,
+
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
