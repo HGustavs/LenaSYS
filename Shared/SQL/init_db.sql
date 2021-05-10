@@ -18,7 +18,7 @@ CREATE TABLE user(
 	securityquestionanswer	VARCHAR(256) DEFAULT NULL,
 	requestedpasswordchange	TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 
 INSERT INTO user(username,password,newpassword,creator,superuser) values ("Grimling","$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m",0,1,1);
 INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1); /* Password is Kong */
@@ -46,7 +46,7 @@ CREATE TABLE course(
 	courseHttpPage			VARCHAR(2000),
 	PRIMARY KEY (cid),
 	FOREIGN KEY (creator) REFERENCES user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 
 /* This table represents a many-to-many relation between courses, to illustrate pre-requirements for courses. */
 CREATE TABLE course_req(
@@ -55,7 +55,7 @@ CREATE TABLE course_req(
 	PRIMARY KEY (cid, req_cid),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (req_cid) REFERENCES course(cid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 
 /**
  * This table represents a many-to-many relation between users and courses. That is,
@@ -81,7 +81,7 @@ CREATE TABLE user_course(
 	PRIMARY KEY (uid, cid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 
 CREATE TABLE listentries (
 	lid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -107,7 +107,7 @@ CREATE TABLE listentries (
 	feedbackquestion		VARCHAR(512),
     PRIMARY KEY (lid),
 	FOREIGN KEY (creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid)REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /* Quiz tables */
 CREATE TABLE quiz (
@@ -127,7 +127,7 @@ CREATE TABLE quiz (
 	`group` 				TINYINT(1) DEFAULT 0,
 	PRIMARY KEY (id),
 	FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /**
  * A quiz tuple has a one-to-many relation with a tuple from thea variant table.
@@ -143,7 +143,7 @@ CREATE TABLE variant(
 	disabled				TINYINT(1) DEFAULT 0,
 	PRIMARY KEY 	(vid),
 	FOREIGN KEY (quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 CREATE TABLE userAnswer (
 	aid						INT(11) NOT NULL AUTO_INCREMENT,
@@ -178,7 +178,7 @@ CREATE TABLE userAnswer (
 	FOREIGN KEY (quiz) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid),
 	FOREIGN KEY (variant) REFERENCES variant(vid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /**
  * Removes entries from groupdugga when entries from useranswer are removed.
@@ -215,7 +215,7 @@ CREATE TABLE vers(
 	motd					VARCHAR(50),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	PRIMARY KEY (cid,vers)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 CREATE TABLE fileLink(
 	fileid					INT(11) NOT NULL AUTO_INCREMENT,
@@ -229,7 +229,7 @@ CREATE TABLE fileLink(
     vers 					VARCHAR(8),
 	PRIMARY KEY (fileid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /**
  * An entry in this table allow file locations to be related to specific courses.
@@ -241,7 +241,7 @@ CREATE TABLE template(
 	stylesheet 				VARCHAR(39) NOT NULL,
 	numbox					INTEGER NOT NULL,
 	PRIMARY KEY(templateid, stylesheet)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 
 /* Code Example contains a list of the code examples for a version of a course in the database
@@ -264,7 +264,7 @@ CREATE TABLE codeexample(
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (templateid) REFERENCES template (templateid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /* Table structure for sequence, holding the sequence order of a specific example sequence */
 CREATE TABLE sequence (
@@ -272,7 +272,7 @@ CREATE TABLE sequence (
 	cid 					INT(10) unsigned NOT NULL,
 	exampleseq 				text NOT NULL,
 	PRIMARY KEY (cid,seqid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE wordlist(
@@ -282,7 +282,7 @@ CREATE TABLE wordlist(
 	uid						INT UNSIGNED NOT NULL,
 	PRIMARY KEY (wordlistid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /**
  * Delete and update all foreign keys before deleting a wordlist
@@ -308,7 +308,7 @@ CREATE TABLE word(
 	PRIMARY KEY (wordid, wordlistid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (wordlistid) REFERENCES wordlist(wordlistid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /* boxes with information in a certain example */
 CREATE TABLE box(
@@ -323,7 +323,7 @@ CREATE TABLE box(
 	fontsize				INT NOT NULL DEFAULT '9',
 	PRIMARY KEY (boxid, exampleid),
 	FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
@@ -338,7 +338,7 @@ CREATE TABLE improw(
 	PRIMARY KEY (impid, exampleid, boxid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /* Wordlist contains a list of important words for a certain code example */
 CREATE TABLE impwordlist(
@@ -351,7 +351,7 @@ CREATE TABLE impwordlist(
 	PRIMARY KEY (wordid),
 	FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 CREATE TABLE submission(
 	subid					MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -370,7 +370,7 @@ CREATE TABLE submission(
     hash					VARCHAR(8),
 	updtime					TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (subid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 CREATE TABLE eventlog(
 	eid 					BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -381,14 +381,14 @@ CREATE TABLE eventlog(
 	user 					VARCHAR(128),
 	eventtext				TEXT NOT NULL,
 	PRIMARY KEY (eid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 CREATE TABLE playereditor_playbacks(
 	id						VARCHAR(32) NOT NULL,
 	type					SMALLINT(1) NOT NULL,
 	path	 				VARCHAR(256) NOT NULL,
 	PRIMARY KEY (id, type)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 CREATE TABLE class (
 	class 					VARCHAR(10) NOT NULL,
@@ -401,7 +401,7 @@ CREATE TABLE class (
 	hpProgress 	DECIMAL(3,1),
 	PRIMARY KEY (class,responsible),
 	FOREIGN KEY (responsible) REFERENCES user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /**
  * this table stores the different subparts of each course.
@@ -413,7 +413,7 @@ CREATE TABLE subparts(
 	difgrade				VARCHAR(10),
 	PRIMARY KEY (partname,cid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /**
  * this table is weak reslation to user and partcourse.
@@ -427,7 +427,7 @@ CREATE TABLE partresult (
 	PRIMARY KEY (partname, cid, uid),
 	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /**
  * this table many to many relation between class and course.
@@ -440,7 +440,7 @@ CREATE TABLE programcourse (
 	PRIMARY KEY (cid, class),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (class) REFERENCES class (class)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /**
  * This table seems to be intended to store student results from program courses.
@@ -457,7 +457,7 @@ CREATE TABLE studentresultat (
 	KEY anmkod (anmkod),
 	KEY pnr (pnr),
 	KEY kurskod (kurskod)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /*
 This table is used by the duggasys system to generate certificates.
@@ -474,7 +474,7 @@ CREATE TABLE list (
 	course 					INT,
 	listid 					INT AUTO_INCREMENT,
 	PRIMARY KEY (listid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=INNODB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=INNODB;
 
 /* This table holds configuration for the entire LenaSYS server */
 CREATE TABLE settings (
@@ -482,7 +482,7 @@ CREATE TABLE settings (
   motd varchar(4096) DEFAULT NULL,
   readonly tinyint(4) DEFAULT '0',
   PRIMARY KEY (`sid`)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=INNODB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=INNODB;
 
 
 CREATE TABLE user_push_registration (
@@ -497,7 +497,7 @@ CREATE TABLE user_push_registration (
 	PRIMARY KEY	(id),
 	KEY (endpoint),
 	FOREIGN KEY (uid) REFERENCES user(uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /* Usergroup and user_usergroup relation */
 CREATE TABLE `groups` (
@@ -506,7 +506,7 @@ CREATE TABLE `groups` (
     groupVal VARCHAR(8) NOT NULL,
     groupInt INTEGER NOT NULL,
     PRIMARY KEY (groupID)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 CREATE TABLE announcement(
     announcementid INT UNSIGNED NOT NULL AUTO_INCREMENT,
     secondannouncementid INT UNSIGNED NOT NULL,
@@ -524,7 +524,7 @@ CREATE TABLE announcement(
     FOREIGN KEY (recipient) REFERENCES user (uid),
     FOREIGN KEY (cid) REFERENCES course (cid)
     
-)CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+)CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 CREATE TABLE ANNOUNCEMENTLOG(
 	ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
     ANNOUNCEMENTID INT UNSIGNED NOT NULL,
@@ -537,13 +537,13 @@ CREATE TABLE ANNOUNCEMENTLOG(
     LOGACTION VARCHAR(20) NOT NULL,
     PRIMARY KEY(ID)
     
-)CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+)CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 CREATE TABLE groupdugga (
 	 hash VARCHAR(8),
      active_users INT(3) UNSIGNED,
      PRIMARY KEY(hash)
-)CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+)CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 DELIMITER //
  
@@ -628,7 +628,7 @@ CREATE TABLE user_participant (
   PRIMARY KEY (id),
   FOREIGN KEY (lid) REFERENCES listentries (lid),
   FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 
 /* Opponents table used to save opponents for seminars */
@@ -642,7 +642,7 @@ CREATE TABLE opponents (
 	FOREIGN KEY (lid) REFERENCES listentries(lid),
 	FOREIGN KEY (opponent1) REFERENCES user(uid),
 	FOREIGN KEY (opponent2) REFERENCES user(uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 CREATE TABLE options (
 	label					varchar(128),
@@ -669,7 +669,7 @@ CREATE TABLE timesheet(
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (did) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /* userDuggaFeedback table used for user feedback on duggor */
 CREATE TABLE userduggafeedback(
@@ -683,7 +683,7 @@ CREATE TABLE userduggafeedback(
 	FOREIGN KEY (username) REFERENCES user(username),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (lid) REFERENCES listentries(lid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /* Table for url shorthands, historic matches to ensure consistency */
 CREATE TABLE coursekeys(
@@ -693,7 +693,7 @@ CREATE TABLE coursekeys(
 	coursename				VARCHAR(80) NULL,
 	activeversion			VARCHAR(8),
 	PRIMARY KEY (urlkey)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
 
 /*
 	This view eases the process of determining how many hp a student with a specific uid
