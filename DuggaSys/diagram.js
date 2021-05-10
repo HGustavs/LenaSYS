@@ -633,8 +633,8 @@ const keybinds = {
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
         ENTER: {key: "enter", ctrl: false},
-        COPY: {key: "c", ctrl: true},
-        PASTE: {key: "v", ctrl: true},
+        COPY: {key: "c", ctrl: true, meta: true},
+        PASTE: {key: "v", ctrl: true, meta: true},
         SELECT_ALL: {key: "a", ctrl: true},
         DELETE_B: {key: "backspace", ctrl: false}
 };
@@ -2326,7 +2326,7 @@ function setPos(id, x, y)
 
 function isKeybindValid(e, keybind)
 {
-    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || e.metaKey == keybind.meta);
+    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
 
 function findEntityFromLine(lineObj)
