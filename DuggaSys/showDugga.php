@@ -348,7 +348,7 @@ if($hash!='UNK' && !isSuperUser($userid)){
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
 	<?php 
-	if(isSuperUser($userid)){
+	if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
     	echo '<script type="text/javascript">',
     	'displayDownloadIcon();', 'noUploadForTeacher();',
     	'</script>';
