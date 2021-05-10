@@ -20,6 +20,8 @@
 	<script src="timer.js"></script>
 	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
+	<script src="../DuggaSys/templates/generic_dugga_file_receive.js"></script>
+	
 <?php
 	date_default_timezone_set("Europe/Stockholm");
 
@@ -158,14 +160,14 @@ function hashPassword($password, $hash){
 echo "<script>console.log('".$hash."')</script>;";
 echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
-if($hash!='UNK'){
+if($hash!='UNK' && !isSuperUser($userid)){
 	if(!hashPassword($hashpassword, $hash)){
 		if($_SESSION['hasUploaded'] != 1){
 			echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
 			echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
 			echo "<div class='loginBoxheader'>";
 			echo "<h3>Login for Saved Dugga</h3>";
-			echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
+			echo "<div onclick='exitHashBox()' class='cursorPointer'>x</div>";
 			echo "</div>";
 			echo "<p id='passwordtext'>Enter your password for the hash:</p>";
 			echo "<p id='hash' style='font-weight: bold;'>$hash</p>";
@@ -199,6 +201,12 @@ if($hash!='UNK'){
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
+			$btnDisable = "";
+			if (isSuperUser($userid) && $hash!='UNK'){
+				$btnDisable = "btn-disable";
+			}
+
+
 			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
@@ -207,9 +215,9 @@ if($hash!='UNK'){
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='left'>";
-						echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
+						echo "<input id='saveDuggaButton' class='".$btnDisable." submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
 						if ($duggafile !== 'generic_dugga_file_receive') {
-							echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 						}
 						echo "</td>";
 						echo "<td align='right'>";

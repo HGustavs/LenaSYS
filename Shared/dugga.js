@@ -1281,7 +1281,6 @@ function getVariantValue(ajaxdata, opt, para){
 	}
 	//Converts the localstorage variant from string to int
 	var newInt = +localStorage.getItem('ls-highest-variant-quizid');
-	console.log("variantSize: " + newInt);
 	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
 	if(querystring['did'] <= newInt) {
 		if(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']) == null){
@@ -1463,7 +1462,7 @@ function processLogin() {
 			hideLoginPopup();
 
           	// was commented out before which resulted in the session to never end
-			  if(result['ls-security-question'] != null) {
+			if(result['ls-security-question'] != null) {
 				localStorage.setItem("ls-security-question", "set");
 			} else {
 				setSecurityNotifaction("on");
@@ -1515,6 +1514,7 @@ function processLogout() {
 		success:function(data) {
             localStorage.removeItem("ls-security-question");
             localStorage.removeItem("securitynotification");
+
             location.replace("../DuggaSys/courseed.php");
 		},
 		error:function() {
@@ -1583,6 +1583,7 @@ function toggleLoadVariant(setbool){	//setbool has a value of True or False. Thi
 function showLoadDuggaPopup()
 {
 	$("#loadDuggaBox").css("display","flex");
+	localStorage.setItem("ls-redirect-last-url", document.URL);
 }
 
 function hideLoadDuggaPopup()
@@ -1632,6 +1633,11 @@ function copyHashtoCB() {
     $temp.val(hash).select();
     document.execCommand("copy");
 	$temp.remove();
+}
+
+function exitHashBox(){
+    $("#hashBox").css("display","none");
+	window.location.href = localStorage.getItem("ls-redirect-last-url"); //Takes us to previous visited dugga
 }
 
 function hideHashBox(){
