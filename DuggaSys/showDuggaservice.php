@@ -164,7 +164,7 @@ foreach($query->fetchAll() as $row) {
 	$insertparam = true;
 }
 
-$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,feedback,grade,submitted,password,timesSubmitted FROM userAnswer WHERE hash=:hash;");
+$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,feedback,grade,submitted,hash,password,timesSubmitted FROM userAnswer WHERE hash=:hash;");
 
     $query->bindParam(':hash', $hash);
     $result = $query->execute();
@@ -177,8 +177,11 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
         $grade = $row['grade'];
         $submitted = $row['submitted'];
         $marked = $row['marked'];
-		$password = $row['password'];
-		$timesSubmitted = $row['timesSubmitted'];
+		    $password = $row['password'];
+
+        // Sets the latestHashVisited for password promt function in showDugga.php
+        $_SESSION['latestHashVisited'] = $row['hash'];
+        $timesSubmitted = $row['timesSubmitted'];
 		
     }
 
@@ -506,6 +509,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			
 
 			$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
+			$isFileSubmitted = file_exists($ziptemp);
 			if(!file_exists($ziptemp)) {
 				$zipdir="UNK";
 			}else{				
@@ -630,7 +634,10 @@ $array = array(
 		"variantvalue" => $variantvalue,
 		"password" => $password,
 		"hashvariant" => $hashvariant,
+		"isFileSubmitted" => $isFileSubmitted,
+		"isSuperUser" => $userid,
 		"variants" => $variants,
+
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 

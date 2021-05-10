@@ -20,6 +20,8 @@ Example seed
 */
 var idunique = 0;
 var variant = "UNK";
+var prevAnswer;
+
 function quiz(parameters) {
 	if(parameters != undefined) {
 		console.log("pram:" + parameters);
@@ -104,7 +106,26 @@ function returnedDugga(data)
 		}
 	}		
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+
+	// Get answer from previously saved dugga
+	if (data.answer != "UNK") {
+		// Get the id from answer string
+		var str = data.answer;
+		var res = str.split(" ");
+		var answer = res[res.length - 1];
+		answer = answer.slice(0, answer.length - 1);
+		setChecked(answer);
+	}
 }
+
+
+//----------------------------------------------------------------------------------
+// setChecked: sets an element by id property to "checked"
+//----------------------------------------------------------------------------------
+function setChecked(id) {
+	var element = document.getElementById(id).checked = true;
+}
+
 //----------------------------------------------------------------------------------
 // getCheckedBoxes: checks if all questions are answered and alerts each of them
 //----------------------------------------------------------------------------------
@@ -153,8 +174,9 @@ function saveClick()
 
 					var answer ="";
 					for(var t = 1;t <= idunique; t++){
-					answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
+						answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
 					}
+		
 					idunique = 0;
 					// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 					answer = variant + " " + answer;
@@ -174,7 +196,7 @@ function saveClick()
 
 				var answer ="";
 				for(var t = 1;t <= idunique; t++){
-				answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
+					answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
 				}
 				idunique = 0;
 				// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
