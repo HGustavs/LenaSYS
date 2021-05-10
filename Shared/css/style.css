@@ -1154,6 +1154,32 @@ p {
   color: #612;
 }
 
+#dugga3Container{
+  display:flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1050px){
+  #dugga3Container{
+    flex-direction: column;
+    justify-content: initial;
+    align-items: center;
+  }
+
+  #dugga3Container #toolbox{
+    margin: 15px 0;
+  }
+
+  #displayAnnouncements .announcementCard{
+    width: 100%;
+  }
+
+  #dugga3Container canvas{
+    min-width: 75%;
+    height: auto;
+  }
+}
+
 #dugga4Container{
   display:flex;
   justify-content: center;
