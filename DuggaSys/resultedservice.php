@@ -230,13 +230,13 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			echo json_encode($resultRows);*/
 
 			// log success and exit
-			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' completed successfully';
-			logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php", $userid, $info);
-			return;
-		}
-	}
+			//$info = $opt . ' ' . $cid . ' ' . $coursevers . ' completed successfully';
+			//logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php", $userid, $info);
+			//return;
+		//}
+	//}
 	// Check if opt == getunexported
-	if ($opt === getunexported_service_name) {
+	//if ($opt === getunexported_service_name) {
 		// Get all answers where the result has never been exported or has changed.
 		// This is the case when the result:
 		// * has never been graded
@@ -722,7 +722,7 @@ if(strcmp($opt,"CHGR")!==0){
 				}
 
 		}
-		*/
+		
 		$query = $pdo->prepare("SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class,user_course.access,user_course.examiner FROM user,user_course WHERE user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;");
 		//		$query = $pdo->prepare("select user_course.cid as cid,user.uid as uid,username,firstname,lastname,ssn,access from user,user_course where user.uid=user_course.uid and user_course.cid=:cid;");
 		$query->bindParam(':coursevers', $vers);
