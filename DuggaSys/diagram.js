@@ -1193,6 +1193,9 @@ function mdown(event)
         return;
     }
 
+    // If the right mouse button is pressed => return
+    if(event.button == 2) return;
+
     // React to mouse down on container
     if (event.target.id == "container") {
         switch (mouseMode) {
@@ -1256,6 +1259,9 @@ function ddown(event)
 
     // If the middle mouse button (mouse3) is pressed => return
     if(event.button == 1) return;
+
+    // If the right mouse button is pressed => return
+    if(event.button == 2) return;
 
     switch (mouseMode) {
         case mouseModes.POINTER:
