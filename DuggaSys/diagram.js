@@ -1026,7 +1026,6 @@ function data_returned(ret)
 document.addEventListener('keydown', function (e)
 {
     if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
-    if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
     if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
     if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
 
@@ -1082,7 +1081,6 @@ document.addEventListener('keyup', function (e)
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
     if (pressedKey == keybinds.META.key) ctrlPressed = false;
-    if (e.key.toLowerCase() == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
 
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
