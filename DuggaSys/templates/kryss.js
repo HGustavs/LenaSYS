@@ -117,6 +117,18 @@ function getCheckedBoxes(){
 
 	}
 
+	function reset(){
+		Timer.stopTimer();
+		Timer.score=0;
+		Timer.startTimer();
+		ClickCounter.initialize();
+
+		var answers = document.getElementsByName("answers"+idunique);
+		for(i = 0; i < answers.length; i++){
+			answers[i].checked = false;
+		}
+	}
+
 function saveClick()
 {
 	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
