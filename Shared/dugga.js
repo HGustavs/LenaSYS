@@ -23,11 +23,13 @@ var ishashinurl;
 var itemvalue;
 var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
-var isGroupDugga = true; // Set to false if you hate the popup
+var isGroupDugga = false; // Set to false if you hate the popup
 var variantvalue;
 var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
+var isFileSubmitted;
+var isSuperUser;
 var loadVariantFlag = false;	// Flag to decide if the 'Next variant' button should be visable or not.
 var varArr;
 var nbrOfVariants;
@@ -37,11 +39,25 @@ var latestLocalHash;
 var latestVariantSet;
 
 
+
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
 		$(".fixed-action-button").css("bottom", "64px");
 	}
 })
+
+// Enables save and reset button after activity on assignments (save and reset always available for students on submitted assignments)
+function canSaveController() {
+	
+	var hasClicked = (clicks > 0)? true : false;
+	if((isFileSubmitted || hasClicked || ishashinurl) && !isSuperUser){
+		var elems = document.querySelectorAll(".btn-disable");
+
+		for (var e of elems){
+			e.classList.remove("btn-disable");
+		}
+	}   
+}
 
 function sendGroupAjax(val) {
 	// val = 1: new user, val = 0: exit
@@ -943,18 +959,21 @@ window.addEventListener('beforeunload', function (e) {
 });
 
 //Check if score is above threshhold
-function duggaChange(){
+function duggaChange() {
+	
 	if(clicks > ClickCounter.score){
 		ClickCounter.score = clicks;
 	}else{
 		clicks = ClickCounter.score;
 	}
+	canSaveController();
 	if(clicks>=tempclicks){
 		tempclicks=clicks;
 		return true;
 	}else{
 		return false;
 	}
+	
 }
 
 function getUrlParam(param){
@@ -1118,6 +1137,10 @@ function AJAXService(opt,apara,kind)
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
 			datatype: "json",
 			success: function(data){
+				var phpData = JSON.parse(data);
+				isFileSubmitted = phpData.isFileSubmitted;
+				isSuperUser = (phpData.isSuperUser == 1) ? false : true; // Check if user is teacher or not, student == 1
+				canSaveController();
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
 				if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 					handleHash();	//Makes sure hash is unique.
