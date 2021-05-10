@@ -144,13 +144,13 @@
 
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
 
-		<!-- Delete button -->
+		<!-- Hide button -->
 		
-		<div class='fixed-action-button3 sectioned3'  id="DELStatic" style="display:none">
-			<input id='delElement'  type='button' value='-' style="top:-493px" class='submit-button-newitem' title='Delete marked items' onclick='confirmBox("openConfirmBox");'>
+		<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
+			<input id='hideElement'  type='button' value='-' style="top:-493px" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
 		</div>
 		
-		<!-- end delete button -->
+		<!-- end hide button -->
 
 		<!-- Small FAB Button in top in the header of sectioned -->
 		
@@ -248,7 +248,7 @@
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
-					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearDeleteItemList();' />
+					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearHideItemList();' />
 				</div>
 			</div>
 		</div>
@@ -271,6 +271,24 @@
 		</div>
 	</div>
 	<!-- Confirm Edit Section Dialog END -->
+
+	<!-- Confirm Section Hide Dialog START -->
+	<div id='sectionHideConfirmBox' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox' style='width:460px;'>
+			<div class='loginBoxheader'>
+					<h3>Confirm hiding</h3>
+					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+			</div>
+			<div style='text-align: center;'>
+					<h4>Are you sure you want to hide this item?</h4>
+			</div>
+			<div style='display:flex; align-items:center; justify-content: center;'>
+				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("hideItem");' />
+				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+			</div>
+		</div>
+	</div>
+	<!-- Confirm Edit Section Hide Dialog END -->
 
 	<!-- Confirm Missing Material Dialog START -->
 	<div id='noMaterialConfirmBox' class='loginBoxContainer' style='display:none;'>
