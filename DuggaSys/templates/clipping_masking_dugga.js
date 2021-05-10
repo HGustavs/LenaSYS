@@ -352,7 +352,7 @@ function startDuggaHighScore(){
 
 function newbutton()
 {
-	//ClickCounter.onClick();
+	ClickCounter.onClick();
 	var newOp = $('#ops > optgroup > option:selected').text();
 	var newOpCode = $("#ops").val();
 
