@@ -3912,8 +3912,8 @@ function updatepos(deltaX, deltaY)
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER) addNodes(context[0]);
-
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && context[0].kind != "ERRelation") addNodes(context[0]);
+    
 
 }
 /**
