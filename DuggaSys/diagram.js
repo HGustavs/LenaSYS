@@ -1135,7 +1135,7 @@ document.addEventListener('keyup', function (e)
             //pasteClipboard(clipboard);
             //console.log(localStorage.getItem('temp'));
             //console.log(clipboard);
-            pasteClipboard(JSON.parse(localStorage.getItem('copiedElems')));
+            pasteClipboard(JSON.parse(localStorage.getItem('copiedElems') || "[]"));
         } 
         
         if (isKeybindValid(e, keybinds.COPY)){
