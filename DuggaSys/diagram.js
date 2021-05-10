@@ -1131,14 +1131,22 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
         if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
-        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(clipboard)
+        if(isKeybindValid(e, keybinds.PASTE)){
+            //pasteClipboard(clipboard);
+            //console.log(localStorage.getItem('temp'));
+            //console.log(clipboard);
+            pasteClipboard(JSON.parse(localStorage.getItem('copiedElems')));
+        } 
         
         if (isKeybindValid(e, keybinds.COPY)){
-            clipboard = context;
-            if (clipboard.length !== 0){
-                displayMessage(messageTypes.SUCCESS, `You have copied ${clipboard.length} elements and its inner connected lines.`)
+            //clipboard = context;
+            if (context.length !== 0){
+                displayMessage(messageTypes.SUCCESS, `You have copied ${context.length} elements and its inner connected lines.`);
+                localStorage.clear();
+                localStorage.setItem('copiedElems',JSON.stringify(context));
             }else {
-                displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`)
+                displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`);
+                localStorage.clear();
             }
         }
     } else {
