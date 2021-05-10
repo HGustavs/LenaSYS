@@ -137,29 +137,19 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 
 <div id='login_popup'>
 <?php
-function hashPassword($password, $hash){
-		if($password == 'UNK')
+
+function IsLatestHash($hash){
+		if($hash == $_SESSION['latestHashVisited']){
+			return true;
+		} else {
 			return false;
-		global $pdo;
-		$sql = "SELECT hash,password FROM userAnswer WHERE '" .$password. "' LIKE password AND '".$hash."' LIKE hash";
-		$query = $pdo->prepare($sql);
-		$query->execute();
-		$count = $query->rowCount();
-			if($count == 0){
-				echo '<script>console.log(false)</script>';
-				echo "<script>console.log('".$count."')</script>;";
-				return false;
-			} else{
-				echo '<script>console.log(true)</script>';
-				echo "<script>console.log('".$count."')</script>;";
-				return true;
-			}
+		}
 }
 echo "<script>console.log('".$hash."')</script>;";
 echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
 if($hash!='UNK'){
-	if(!hashPassword($hashpassword, $hash)){
+	if(!IsLatestHash($hash)){
 		if($_SESSION['hasUploaded'] != 1){
 			echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
 			echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
