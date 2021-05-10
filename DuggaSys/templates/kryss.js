@@ -109,6 +109,7 @@ function returnedDugga(data)
 
 	// Get answer from previously saved dugga
 	if (data.answer != "UNK") {
+		// Get the id from answer string
 		var str = data.answer;
 		var res = str.split(" ");
 		var answer = res[res.length - 1];
