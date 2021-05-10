@@ -91,8 +91,6 @@ function setHash(h){
 		else{
 			hash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
 		}
-
-		
 		pwd = randomPassword();
 		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
 	}else{
@@ -1230,8 +1228,10 @@ function handleHash(){
 		success: function(data) {
 			returnedDugga(data);
 			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-			console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl);	//For debugging!
-			if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
+			//var getLocalStorageHash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
+
+			console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl + " lsHash= " + locallystoredhash);	//For debugging!
+			if(ishashindb==true && blockhashgen == false && ishashinurl == false && !locallystoredhash){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
 				recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
 			}
 		}
