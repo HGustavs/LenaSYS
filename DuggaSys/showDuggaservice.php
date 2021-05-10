@@ -121,9 +121,9 @@ $query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
 $query->bindParam(':cid', $courseid);
 $result = $query->execute();
 if($row = $query->fetch(PDO::FETCH_ASSOC)){
-		$cvisibility=$row['visibility'];
+	$cvisibility=$row['visibility'];
 }else{
-		$debug="Error reading course visibility";
+	error_log("Error reading course visibility", 0);
 }
 // Read visibility of dugga (listentry)
 $query = $pdo->prepare("SELECT visible FROM listentries WHERE cid=:cid and lid=:moment");
@@ -131,9 +131,9 @@ $query->bindParam(':cid', $courseid);
 $query->bindParam(':moment', $moment);
 $result = $query->execute();
 if($row = $query->fetch(PDO::FETCH_ASSOC)){
-		$dvisibility=$row['visible'];
-}else{
-		$debug="Error reading dugga visibility";
+	$dvisibility=$row['visible'];
+}else{	
+	error_log("Error reading course visibility", 0);
 }
 
 // Get type of dugga
