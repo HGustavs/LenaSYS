@@ -69,6 +69,8 @@ class StateChange {
                 this[key] = values[key]
             });
         }
+
+        this.time = new Date().getTime();
     }
 
     /**
@@ -86,10 +88,12 @@ class StateChange {
              * If the current key in the loop is a number, update the value or if it do not
              * exists, set the value. Else just set the value.
              */
-            if (!isNaN(changes[key])){
+            if (key == "time") return;
+
+            if (!isNaN(changes[key])) {
                 if (this[key] === undefined) this[key] = changes[key];
                 else this[key] += changes[key]
-            }else {
+            } else {
                 this[key] = changes[key];
             }
         });
@@ -405,14 +409,29 @@ class StateMachine
                     var changeTypes = [changeType];
                 }
 
-                // Check if the change can be appended to last change
-                var canAppendToLast = true;
-                for (var index = 0; index < this.lastFlag.length && isSoft; index++) {
-                    canAppendToLast = this.lastFlag[index].canAppendTo;
-                }
+                // Find last change with the same ids
+                var timeLimit = 10; // Timelimit on history append in seconds
+                for (var index = this.historyLog.length - 1; index >= 0; index--){
 
+                    var sameIds = true;
+                    if(stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
+
+                    for (var idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++){
+                        if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
+                    }
+
+                    // If the found element has the same ids.
+                    if (sameIds){
+                        // If this historyLog is within the timeLimit
+                        if(((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit){
+                            lastLog = this.historyLog[index];
+                            sameElements = true;
+                        }
+                        break;
+                    }
+                }
                 // If NOT soft change, push new change onto history log
-                if (!isSoft || !canAppendToLast || !sameElements) {
+                if (!isSoft || !sameElements) {
 
                     this.historyLog.push(stateChange);
                     this.lastFlag = changeType;
