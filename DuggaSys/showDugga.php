@@ -20,6 +20,8 @@
 	<script src="timer.js"></script>
 	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
+	<script src="../DuggaSys/templates/generic_dugga_file_receive.js"></script>
+	
 <?php
 	date_default_timezone_set("Europe/Stockholm");
 
@@ -165,7 +167,7 @@ if($hash!='UNK' && !isSuperUser($userid)){
 			echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
 			echo "<div class='loginBoxheader'>";
 			echo "<h3>Login for Saved Dugga</h3>";
-			echo "<div onclick='hideHashBox()' class='cursorPointer'>x</div>";
+			echo "<div onclick='exitHashBox()' class='cursorPointer'>x</div>";
 			echo "</div>";
 			echo "<p id='passwordtext'>Enter your password for the hash:</p>";
 			echo "<p id='hash' style='font-weight: bold;'>$hash</p>";
@@ -336,17 +338,18 @@ if($hash!='UNK' && !isSuperUser($userid)){
 	</div>
 	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
 
-
-
-
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
 	<?php 
 	if(isSuperUser($userid)){
+		if($hash == "UNK"){		//A teacher should not be able to change the variant (local) if they are grading an assignment.
+			echo '<script type="text/javascript">toggleLoadVariant(true);</script>';
+		}
     	echo '<script type="text/javascript">',
     	'displayDownloadIcon();', 'noUploadForTeacher();',
     	'</script>';
-	}?>
+	}
+	?>
 	
 	<!-- Timer START -->
 	<div id='scoreElement'>	
