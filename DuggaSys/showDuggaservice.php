@@ -121,9 +121,9 @@ $query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
 $query->bindParam(':cid', $courseid);
 $result = $query->execute();
 if($row = $query->fetch(PDO::FETCH_ASSOC)){
-		$cvisibility=$row['visibility'];
+	$cvisibility=$row['visibility'];
 }else{
-		$debug="Error reading course visibility";
+	error_log("Error reading course visibility", 0);
 }
 // Read visibility of dugga (listentry)
 $query = $pdo->prepare("SELECT visible FROM listentries WHERE cid=:cid and lid=:moment");
@@ -131,9 +131,9 @@ $query->bindParam(':cid', $courseid);
 $query->bindParam(':moment', $moment);
 $result = $query->execute();
 if($row = $query->fetch(PDO::FETCH_ASSOC)){
-		$dvisibility=$row['visible'];
-}else{
-		$debug="Error reading dugga visibility";
+	$dvisibility=$row['visible'];
+}else{	
+	error_log("Error reading course visibility", 0);
 }
 
 // Get type of dugga
@@ -225,6 +225,7 @@ if($demo || $hr){
 		// if none has been chosen and there is a first one take that one.
 		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
 	}else{
+	
 		// There is a variant already -- do nothing!	
 	}
 	
@@ -505,6 +506,7 @@ for ($i = 0; $i < $userCount; $i++) {
 			
 
 			$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
+			$isFileSubmitted = file_exists($ziptemp);
 			if(!file_exists($ziptemp)) {
 				$zipdir="UNK";
 			}else{				
@@ -629,6 +631,10 @@ $array = array(
 		"variantvalue" => $variantvalue,
 		"password" => $password,
 		"hashvariant" => $hashvariant,
+		"isFileSubmitted" => $isFileSubmitted,
+		"isSuperUser" => $userid,
+		"variants" => $variants,
+
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 

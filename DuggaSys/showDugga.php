@@ -201,11 +201,8 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
-			$btnDisable = "";
-			if (isSuperUser($userid) && $hash!='UNK' || hasAccess($userid, $cid, 'w') && $hash!='UNK'){
-				$btnDisable = "btn-disable";
-			}
 
+			$btnDisable = "btn-disable";
 
 			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
@@ -342,17 +339,18 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 	</div>
 	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
 
-
-
-
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
-	<?php 
+	<?php
 	if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
+		if($hash == "UNK"){		//A teacher should not be able to change the variant (local) if they are grading an assignment.
+			echo '<script type="text/javascript">toggleLoadVariant(true);</script>';
+		}
     	echo '<script type="text/javascript">',
     	'displayDownloadIcon();', 'noUploadForTeacher();',
     	'</script>';
-	}?>
+	}
+	?>
 	
 	<!-- Timer START -->
 	<div id='scoreElement'>	
