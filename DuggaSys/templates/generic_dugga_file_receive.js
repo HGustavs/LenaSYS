@@ -28,6 +28,7 @@ function setup()
 
 function returnedDugga(data)
 {
+	toggleLoadVariant(false);	//A submission doesn't have any variants. The Next variant button should be disabled.
 	dataV = data;
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
@@ -116,13 +117,14 @@ function returnedDugga(data)
 
 function reset()
 {
-	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-
-
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
-	ClickCounter.initialize();
+	if(confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.")){
+		Timer.stopTimer();
+		Timer.score=0;
+		Timer.startTimer();
+		ClickCounter.initialize();
+    } else {
+        
+    } 
 
 }
 

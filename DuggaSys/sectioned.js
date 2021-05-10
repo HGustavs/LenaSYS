@@ -199,7 +199,9 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
       }
     }
   }
+  
   $("#moment").html(str);
+  $("#editSectionDialogTitle").text(entryname);
 
   // Set Name
   $("#sectionname").val(entryname);
@@ -651,7 +653,7 @@ function returnedSection(data) {
 
   //data variable is put in localStorage which is then used in Codeviewer
 	//to get the right order when going backward and forward in code examples
-	localStorage.setItem("sectionData", JSON.stringify(data));
+	localStorage.setItem("ls-section-data", JSON.stringify(data));
 
   var now = new Date();
   var startdate = new Date(retdata['startdate']);
@@ -2495,6 +2497,59 @@ function validateSectName(name, dialogid){
 
 }
 
+/*recursive functions to retrieve the deepest DOM element */
+function unNestElement(node){
+  if(node == null)
+    return;
+  if(node.firstChild == null){
+    return node;
+  }
+  return unNestElement(node.firstChild);
+}
+
+function unNestElements(htmlArray){
+  let array = [];
+  for(var i = 0; i<htmlArray.length; i++){
+      var e = unNestElement(htmlArray[i]);
+      if(e != undefined)
+        array.push(e.textContent);
+  }
+  return array;
+}
+
+function removeGrade(string){
+  var str1 = "(U-G)";
+  var str2 = "(U-G-VG)";
+  var array = string.split(" ");
+  var result = [];
+  for(var i = 0; i<array.length; i++){
+    if(array[i] != str1 && str2){
+      result.push(array[i]);
+    }
+  }
+  result = result.join(' ');
+  result = result.slice(0, -1);
+  return result;
+}
+
+/* Write a function which gets all anchor elements of class "internal-link" */
+function getCourseElements(){
+  let list = [];
+  var duggor = Array.from(document.getElementsByClassName("ellipsis nowrap"));
+  var rubriker = Array.from(document.getElementsByClassName("ellipsis listentries-span"));
+  duggor = unNestElements(duggor);
+  rubriker = unNestElements(rubriker);
+  for(var i=0; i<duggor.length; i++){
+    var e = duggor[i];
+    list.push(e);
+  }
+  for(var i=0; i<rubriker.length; i++){
+    var e = removeGrade(rubriker[i]);
+    list.push(e);
+  }
+  return list;
+}
+
 /*Validates all forms*/
 
 function validateForm(formid) {
@@ -2503,14 +2558,27 @@ function validateForm(formid) {
   if (formid === 'editSection') {
     var sName = document.getElementById("sectionname").value;
     var deadDate = document.getElementById("setDeadlineValue").value;
+    var item = document.getElementById("editSectionDialogTitle").innerHTML;
 
     //If fields empty
     if (sName == null || sName == "") {
       alert("Fill in all fields");
 
     }
+
+    //Name is a duplicate
+    if(sName == item){ 
+      window.bool11 = true;
+    }
+    else if(getCourseElements().indexOf(sName) >= 0){
+      window.bool11 = false;      
+      alert('Name already exists, choose another one');
+    }else{ 
+      window.bool11 = true;
+    }
+
     // if all information is correct
-    if (window.bool8 === true && window.bool10 === true ) {
+    if (window.bool8 == true && window.bool10 == true && window.bool11 == true) {
       alert('The item is now updated');
       updateItem();
       updateDeadline();
