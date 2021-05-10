@@ -160,7 +160,7 @@ function hashPassword($password, $hash){
 echo "<script>console.log('".$hash."')</script>;";
 echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
-if($hash!='UNK' && !isSuperUser($userid)){
+if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 	if(!hashPassword($hashpassword, $hash)){
 		if($_SESSION['hasUploaded'] != 1){
 			echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
@@ -201,8 +201,9 @@ if($hash!='UNK' && !isSuperUser($userid)){
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
+
 			$btnDisable = "btn-disable";
-			
+
 			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
@@ -242,7 +243,7 @@ if($hash!='UNK' && !isSuperUser($userid)){
 			}
 
 			// Feedback area START
-			if(isSuperUser($userid) && $hash!='UNK'){
+			if(isSuperUser($userid) && $hash!='UNK' || hasAccess($userid, $cid, 'w') && $hash!='UNK'){
 				echo "<div id='container' style='margin:0px;'>";
 					echo "<div class='instructions-container'>";
 						echo "<div class='instructions-button' onclick='toggleFeedback()'><h3>Feedback</h3></div>";
@@ -340,8 +341,8 @@ if($hash!='UNK' && !isSuperUser($userid)){
 
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
-	<?php 
-	if(isSuperUser($userid)){
+	<?php
+	if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
 		if($hash == "UNK"){		//A teacher should not be able to change the variant (local) if they are grading an assignment.
 			echo '<script type="text/javascript">toggleLoadVariant(true);</script>';
 		}
