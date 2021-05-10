@@ -3540,7 +3540,10 @@ function addNodes(element)
     nodes += "<span id='ml' class='node ml'></span>";
     elementDiv.innerHTML += nodes;
 
-    var nodeSize = 8*zoomfact;
+    // This is the standard node size
+    const defaultNodeSize = 8;
+
+    var nodeSize = defaultNodeSize*zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
     mrNode.style.width = nodeSize+"px";
