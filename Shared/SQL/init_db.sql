@@ -172,6 +172,7 @@ CREATE TABLE userAnswer (
 	seen_status             TINYINT(1) NOT NULL DEFAULT 0,
 	hash					VARCHAR(8),
 	password				VARCHAR(7),
+    timesSubmitted			INT(5),
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (quiz) REFERENCES quiz(id),
