@@ -345,7 +345,7 @@ if($hash!='UNK' && !isSuperUser($userid)){
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
 	<?php 
-	if(isSuperUser($userid)){
+	if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
 		if($hash == "UNK"){		//A teacher should not be able to change the variant (local) if they are grading an assignment.
 			echo '<script type="text/javascript">toggleLoadVariant(true);</script>';
 		}
