@@ -193,9 +193,9 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     for (var i = 0; i < retdata['entries'].length; i++) {
       var item = retdata['entries'][i];
       if (item['kind'] == 4) {
-        if (parseInt(moment) == parseInt(item['lid'])) str += `<option selected='selected' " +
-          "value='${item['lid']}'>${item['entryname']}</option>`;
-        else str += `<option value='" + item['lid'] + "'>${item['entryname']}</option>`;
+        if (parseInt(moment) == parseInt(item['lid'])) str += "<option selected='selected' " +
+        "value='" + item['lid'] + "'>" + item['entryname'] + "</option>";
+      else str += "<option value='" + item['lid'] + "'>" + item['entryname'] + "</option>";
       }
     }
   }
@@ -203,11 +203,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
   // Set Name
   $("#sectionname").val(entryname);
-  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput' id='sectionname' value='${entryname}' style='width:448px;'/>`);
+  $("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='" + entryname + "' style='width:448px;'/>");
 
   // Set Comment
   $("#comments").val(comments);
-  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput' id='comments' value='${comments}' style='width:448px;'/>`);
+  $("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='comments' value='" + comments + "' style='width:448px;'/>");
 
   // Set Lid
   $("#lid").val(lid);
@@ -548,8 +548,7 @@ function createVersion() {
       AJAXService("NEWVRS", param, "COURSE");
     }
     $("#newCourseVersion").css("display", "none");
-    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] +
-    "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("cversid").value );
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("cversid").value );
   }
 }
 
@@ -576,21 +575,18 @@ function updateVersion() {
   AJAXService("UPDATEVRS", param, "SECTION");
 
   $("#editCourseVersion").css("display", "none");
-  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] +
-  "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("eversid").value );
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("eversid").value );
 }
 
 //queryString for coursename is added
 function goToVersion(courseDropDown) {
   var value = courseDropDown.options[courseDropDown.selectedIndex].value;
-  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] +
-  "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
 }
 
 function accessCourse() {
   var coursevers = $("#course-coursevers").text();
-  window.location.href = "accessed.php?cid=" + querystring['courseid'] +
-  "&coursevers=" + coursevers;
+  window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
 }
 
 //----------------------------------------
@@ -621,8 +617,7 @@ function returnedGroups(data) {
       if (grp != "") {
         str += "</tbody>";
         str += "</table>";
-        str += `<div style='text-align:right;border-top:2px solid #434343'>
-        <a style='white-space:nowrap' href='mailto:${grpemail}'>Email group</a></div>`
+        str += "<div style='text-align:right;border-top:2px solid #434343'><a style='white-space:nowrap' href='mailto:" + grpemail + "'>Email group</a></div>"
         grpemail = "";
       }
       grp = cgrp;
@@ -631,16 +626,14 @@ function returnedGroups(data) {
       str += "<thead><tr><th rowspan=2 style='text-align:left;'>Group " + cgrp[1] + "</th></tr></thead>";
       str += "<tbody>";
     }
-    str += "<tr><td>" + (j++) + `</td><td>
-    <a  style='white-space:nowrap' href='mailto:${member[3]}'>${member[1]} ${member[2]}</a></td></tr>`;
+    str += "<tr><td>" + (j++) + "</td><td><a  style='white-space:nowrap' href='mailto:" + member[3] + "'>" + member[1] + " " + member[2] + "</a></td></tr>";
     if (grpemail != "") grpemail += ",";
     grpemail += member[3];
   }
   if (grp != "") {
     str += "</tbody>";
     str += "</table>";
-    str += `<div style='text-align:right;border-top:2px solid #434343'>
-    <a href='mailto:${grpemail}'>Email group</a></div>`
+    str += "<div style='text-align:right;border-top:2px solid #434343'><a href='mailto:" + grpemail + "'>Email group</a></div>"
     grpemail = "";
   }
   if (str != "") {
@@ -706,7 +699,7 @@ function returnedSection(data) {
           if (retdata['coursevers'] == item['vers']) {
             bstr += " selected";
           }
-          bstr += `>${item['versname']} - ${item['vers']}</option>`;
+          bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
         }
         // save vers, versname and motd from table vers as global variables.
         versnme = versionname;
@@ -764,20 +757,17 @@ function returnedSection(data) {
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
         // New items added get the class glow to show they are new
         if(item['pos'] == "-1" || item['pos'] == "100"){
-          str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
-          class='${makeTextArray(item['kind'], valarr) +" glow"}' style='display:block'>`;
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
         }
         else{
-          str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
-          class='${makeTextArray(item['kind'], valarr)}' style='display:block'>`;
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
         }
 
         menuState.idCounter++;
         // All are visible according to database
 
         // Content table
-        str += `<table id='lid${item['lid']}' value='${item['lid']}' style='width:100%;table-layout:fixed;'>
-        <tr style='height:32px;' `;
+        str += "<table id='lid" + item['lid'] + "' value='" + item['lid'] + "' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
         if (kk % 2 == 0) {
           str += " class='hi' ";
         } else {
@@ -795,13 +785,11 @@ function returnedSection(data) {
         var itemKind = parseInt(item['kind']);
 
         if(itemKind === 2 || itemKind == 5){
-          str += `<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab'
-          class='tabs${item["tabs"]}'><div class='spacerRight'></div></td>`;
+          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
         }
 
         if(itemKind === 6 || itemKind == 7){
-          str += `<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab'
-          class='tabs${item["tabs"]}'><div class='spacerRight'></div></td>`;
+          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
         }
 
         if (itemKind === 3 || itemKind === 4) {
@@ -810,8 +798,7 @@ function returnedSection(data) {
           hasDuggs = true;
 
           // Styling for quiz row e.g. add a tab spacer
-          if (itemKind === 3) str += `<td style='width:0px'><div class='spacerLeft'></div></td>
-          <td id='indTab' class='tabs${item["tabs"]}'><div class='spacerRight'></div></td>`;
+          if (itemKind === 3) str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
           var grady = -1;
           var status = "";
           var marked;
@@ -885,41 +872,35 @@ function returnedSection(data) {
         // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
         if (itemKind === 0) {
           // Styling for header row
-          str += `</td><td class='header item${hideState}' placeholder='${momentexists}'
-          id='I${item['lid']}' `;
+          str += "</td><td class='header item" + hideState + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' ";
           kk = 0;
 
         } else if (itemKind === 1) {
           // Styling for Section row
-          str += `<td class='section item${hideState}' placeholder='${momentexists}'
-          id='I${item['lid']}' style='cursor:pointer;' `;
+          str += "<td class='section item" + hideState + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' style='cursor:pointer;' ";
           kk = 0;
 
         } else if (itemKind === 2) {
-          str += `<td class='example item${hideState}' placeholder='${momentexists}'
-          id='I${item['lid']}' `;
+          str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 
           kk++;
 
         } else if (itemKind === 3) {
           if (item['highscoremode'] != 0 && itemKind == 3) {
-            str += `<td style='width:20px;'><img style=';' title='Highscore'
-            src='../Shared/icons/top10.png' onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
+            str += "<td style='width:20px;'><img style=';' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\"" + item['link'] + "\",\"" + item['lid'] + "\")'/></td>";
           }
-          str += `<td class='example item${hideState}' placeholder='${momentexists}'
-          id='I${item['lid']}' `;
+          str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
 
         } else if (itemKind === 4) {
           //new moment bool equals true
           momentexists = item['lid'];
-          str += `<td class='moment item${hideState}' placeholder='${momentexists}'
-          id='I${item['lid']}' style='cursor:pointer;' `;
+          str += "<td class='moment item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' style='cursor:pointer;' ";
           kk = 0;
 
         } else if (itemKind === 5) { // Link
 
-          str += `<td class='example item' placeholder='${momentexists}' id='I${item['lid']}' `;
+          str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
 
         } else if (itemKind === 6) { //Group
@@ -942,17 +923,14 @@ function returnedSection(data) {
             }
           }
 
-          str += `<td style='width:32px;' onclick='getGroups(\"${grp}\");'>
-          <img src='../Shared/icons/group-iconDrk.svg'
-          style='display:block;margin-right:4.5px;max-width:32px;max-height:32px;overflow:hidden;'></td>`;
-          str += `<td class='section-message item' onclick='getGroups(\"${grp}\");'
-          placeholder='${momentexists}' id='I${item['lid']}' `;
+          str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin-right:4.5px;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+          str += "<td class='section-message item' onclick='getGroups(\"" + grp + "\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 
         } else if (itemKind === 7) { //Message
           if (!(item['link'] == "" || item['link'] == "---===######===---")) {
             str += "<td style='width:32px;'><img title='Important message' src='../Shared/icons/warningTriangle.svg'></td>";
           }
-          str += `<td class='section-message item' placeholder='${momentexists}' id='I${item['lid']}' `;
+          str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
         }
 
         // Close Information
@@ -960,25 +938,20 @@ function returnedSection(data) {
         // Content of Section Item
         if (itemKind == 0) {
           // Header
-          str += `<span style='margin-left:8px;' title='${item['entryname']}'>${item['entryname']}</span>`;
+          str += "<span style='margin-left:8px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
         } else if (itemKind == 1) {
           // Section
-          str += `<div class='nowrap${hideState}'
-          style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
-          str += `<span class='ellipsis listentries-span'>${item['entryname']}</span>`;
-          str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}'
-          class='arrowComp' style='display:inline-block;'>`;
-          str += `<img src='../Shared/icons/right_complement.svg' id='arrowRight${item['lid']}'
-          class='arrowRight' style='display:none;'></div>`;
+          str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
+          str += "<span class='ellipsis listentries-span'>" + item['entryname'] + "</span>";
+          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
         } else if (itemKind == 4) {
           // Moment
           var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
-          str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
-          str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
-          str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}'
-          class='arrowComp' style='display:inline-block;'>`;
-          str += `<img src='../Shared/icons/right_complement.svg' id='arrowRight${item['lid']}'
-          class='arrowRight' style='display:none;'>`;
+          str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
+          str += "<span class='ellipsis listentries-span'>" + item['entryname'] + " " + strz + " </span>";
+          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'>";
           str += "</div>";
         } else if (itemKind == 2) {
           // Code Example
@@ -989,8 +962,7 @@ function returnedSection(data) {
             'cvers': querystring['coursevers'],
             'lid': item['lid']
           };
-          str += `<div class='ellipsis nowrap'><span>${makeanchor("codeviewer.php",
-          hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+                    str += "<div class='ellipsis nowrap'><span>" + makeanchor("codeviewer.php", hideState, "margin-left:8px;", item['entryname'], false, param) + "</span></div>";
         } else if (itemKind == 3) {
           // Test / Dugga
           var param = {
@@ -1005,8 +977,7 @@ function returnedSection(data) {
             deadline: item['deadline'],
             'cid': querystring['courseid']
           };
-          str += `<div class='ellipsis nowrap'><span>${makeanchor("showDugga.php",
-          hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+          str += "<div class='ellipsis nowrap'><span>" + makeanchor("showDugga.php", hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, param) + "</span></div>";
         } else if (itemKind == 5) {
           // Link
           if (item['link'].substring(0, 4) === "http") {
@@ -1082,8 +1053,7 @@ function returnedSection(data) {
         // Userfeedback
         if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
           str += "<td style='width:32px;'>";
-          str += `<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback'
-          onclick='showUserFeedBack(\"${item['lid']}\",\"${item['feedbackquestion']}\");'>`;
+          str += "<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback' onclick='showUserFeedBack(\"" + item['lid']  + "\",\"" + item['feedbackquestion']  + "\");'>";
           str += "</td>";
         }
 
@@ -1106,8 +1076,7 @@ function returnedSection(data) {
         
         // trashcan
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
-          ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
+          str += "<td style='width:32px;' class='" + makeTextArray(itemKind, ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " " + hideState + "'>";
           str += "<img alt='trashcan icon' id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
           str += "</td>";
         }
@@ -1479,12 +1448,8 @@ function drawSwimlanes() {
         }
         var tempVariable = duggalength*daywidth;
 
-        str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='
-        ${(tempVariable)}' height='${weekheight}' fill='${fillcol}' />`;
-
-        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial'
-        font-size='12px' fill='${textcol}' text-anchor='left'> <title>${entry.text}
-        </title>${entry.text}</text>`;
+        str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
+        str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <title> " + entry.text + " </title>" + entry.text + "</text>";
       }
     }
   }
