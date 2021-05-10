@@ -246,7 +246,7 @@ if($hash!='UNK' && !isSuperUser($userid)){
 			}
 
 			// Feedback area START
-			if(isSuperUser($userid) && $hash!='UNK'){
+			if(isSuperUser($userid) || hasAccess($userid, $cid, 'w') && $hash!='UNK'){
 				echo "<div id='container' style='margin:0px;'>";
 					echo "<div class='instructions-container'>";
 						echo "<div class='instructions-button' onclick='toggleFeedback()'><h3>Feedback</h3></div>";
