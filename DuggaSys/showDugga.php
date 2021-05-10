@@ -342,17 +342,18 @@ if($hash!='UNK' && !isSuperUser($userid)){
 	</div>
 	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
 
-
-
-
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
 	<?php 
 	if(isSuperUser($userid)){
+		if($hash == "UNK"){		//A teacher should not be able to change the variant (local) if they are grading an assignment.
+			echo '<script type="text/javascript">toggleLoadVariant(true);</script>';
+		}
     	echo '<script type="text/javascript">',
     	'displayDownloadIcon();', 'noUploadForTeacher();',
     	'</script>';
-	}?>
+	}
+	?>
 	
 	<!-- Timer START -->
 	<div id='scoreElement'>	

@@ -225,6 +225,7 @@ if($demo || $hr){
 		// if none has been chosen and there is a first one take that one.
 		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
 	}else{
+	
 		// There is a variant already -- do nothing!	
 	}
 	
@@ -629,6 +630,7 @@ $array = array(
 		"variantvalue" => $variantvalue,
 		"password" => $password,
 		"hashvariant" => $hashvariant,
+		"variants" => $variants,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 

@@ -28,6 +28,13 @@ var variantvalue;
 var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
+var loadVariantFlag = false;	// Flag to decide if the 'Next variant' button should be visable or not.
+var varArr;
+var nbrOfVariants;
+var latestKeyUsed;
+var latestTTLUsed;
+var latestLocalHash;
+var latestVariantSet;
 
 
 $(function () {  // Used to set the position of the FAB above the cookie message
@@ -489,6 +496,27 @@ function setExpireCookieLogOut() {
     }
 }
 
+function changeVariant(intvalue){											//Call setExpireTime() but with a specific 'value' taken from varArr[].
+	const value = String(intvalue);											//Value can select from a span 1 to varArr.length, whereas each value is an existing variant of the active dugga.
+	setExpireTime(latestKeyUsed, value, latestTTLUsed, latestLocalHash);	//Sets new variant by only changing the 'value' attribute.
+	location.reload(); 														//Reloads the site to show correct new variant.
+}
+
+//Selects next variant available and calls 'changeVariant' method.
+function selectNextVariant(){
+	if(nbrOfVariants != undefined){	//If no variants are available for this dugga.
+		var nextVariant;
+		if(nbrOfVariants == 1){
+			nextVariant = latestVariantSet;
+		}
+		else{
+			var tempIndex = (varArr.indexOf(latestVariantSet) + 1) % nbrOfVariants;
+			nextVariant = varArr[tempIndex];
+			changeVariant(nextVariant);
+		} 
+	}
+}
+
 //Creates TTL for localstorage //TTL value is in milliseconds
 function setExpireTime(key, value, ttl, locallystoredhash){
 	const now = new Date();
@@ -496,7 +524,7 @@ function setExpireTime(key, value, ttl, locallystoredhash){
 	//Item is an object which contains the original value
 	//as well as the time when its supposed to expire
 	const item = {
-		value: value,
+		value: value,	//Här
 		expiry: now.getTime() + ttl,
 		locallystoredhash: locallystoredhash,
 	}
@@ -527,13 +555,18 @@ function updateExpireTime(key, value, ttl, locallystoredhash){
 	}
 }
 //Lazily expiring the item (Its only checked when retrieved from storage)
+//Global variables 'latestKeyUsed', 'latestTTLUsed' and 'latestLocalHash' are written to keep track of the latest values of the local-storage attributes, which needs be re-used, with the same values, if teacher change variant locally (Next variant button).
 function getExpireTime(key){
-	const itemString = localStorage.getItem(key)
+	latestKeyUsed = key;						
+	const itemString = localStorage.getItem(key);
 	
 	if(!itemString){
 		return null
 	}
 	const item = JSON.parse(itemString)
+	latestTTLUsed = item.expiry;				
+	latestLocalHash = item.locallystoredhash;	
+
 	const now = new Date()
 
 	if(now.getTime() > item.expiry){
@@ -1209,9 +1242,20 @@ function handleHash(){
 	});
 }
 function handleLocalStorage(data){
+	//Set value to nbrOfVariants, this is needed so a teacher can locally change variant.
+	varArr = [];		
+	data['variants'].forEach(element => varArr.push(element.vid));
+	nbrOfVariants = varArr.length;
+	if(nbrOfVariants == 1){
+		document.getElementById("nextVariantBtn").style.display="none";
+		console.log("test");
+	}
+
 	// Check localstorage variants.
 	var newvariant = data['variantvalue'];
 	console.log("newVariant: " + newvariant);
+	latestVariantSet = newvariant;
+
 	
 	if(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']) == null){
 		localStorage.setItem("ls-allocated-variant-dg"+querystring['did'], newvariant);
@@ -1468,7 +1512,6 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
-
             localStorage.removeItem("ls-security-question");
             localStorage.removeItem("securitynotification");
 
@@ -1532,6 +1575,11 @@ function setupLoginLogoutButton(isLoggedIn){
 	}
 }
 
+function toggleLoadVariant(setbool){	//setbool has a value of True or False. This decides if the Next variant button should be visable or not.
+	loadVariantFlag = setbool;
+	console.log("Value: " + setbool);
+}
+
 function showLoadDuggaPopup()
 {
 	$("#loadDuggaBox").css("display","flex");
@@ -1575,8 +1623,6 @@ function checkScroll(obj) {
 		obj.style.height = (parseInt(obj.style.height)+1) + 'em';
 	}
 }
-
-
 
 //----------------------------------------------------------------------------------
 // copyURLtoCB: Copy the url to user clipboard
@@ -2025,6 +2071,10 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		//If there is no name of the dugga.
 		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
 			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
+		}
+
+		if(loadVariantFlag){	//If the 'Next variant' button is set to be visable (Teachers only). 
+			str+="<div id='nextVariantBtn' style='width:0px;'><input class='submit-button large-button' type='button' value='Next Variant' onclick='selectNextVariant();' /></div>"; 
 		}
 
 		str+="</div>";
