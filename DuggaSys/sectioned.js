@@ -1200,13 +1200,26 @@ function showMOTD(){
   if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){
     if(motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
       document.getElementById("motdArea").style.display = "none";
+      $("#messagedialog").css("display", "none");
     }else{
+      $("#messagedialog").css("display", "none");
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
       document.getElementById("FABStatic2").style.top = "auto";
     }
   }
 }
+
+function DisplayMSGofTDY() {
+  // document.getElementById("messagedialog").style.display = "block";
+  $("#messagedialog").css("display", "none");
+  sessionStorage.setItem('show', 'true'); //store state in localStorage
+  document.getElementById("motdArea").style.display = "block";
+  document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
+  document.getElementById("FABStatic2").style.top = "auto";
+  showMOTD();
+}
+
 // Checks if the MOTD cookie already have the current vers and versname
 function ignoreMOTD(){
   var c_string = getCookie('MOTD');
@@ -1240,6 +1253,7 @@ function closeMOTD(){
   }else{
     setMOTDCookie();
   }
+  $("#messagedialog").css("display", "block");
   document.getElementById('motdArea').style.display='none';
   document.getElementById("FABStatic2").style.top = "auto";
 }
