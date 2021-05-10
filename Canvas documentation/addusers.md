@@ -17,5 +17,29 @@
 Then click on the "Add User" button to the bottom right.
 ![Picture1](Pictures/adduser3.png)
 
-5. To add the user into a course as a teacher or student, click on the "Kurser" tab and then click on the "+" sign on the course you want to add the user to.
+5. When you have added your new user you have to give that user a loginID and a password, find it in the list of users and click it.
 ![Picture1](Pictures/adduser4.png)
+
+6. Click the "Lägg till inloggning" button
+![Picture1](Pictures/adduser5.png)
+
+7. Enter the following user information.  
+**Logga in** = The username (*example, a99karka*)  
+**Konto** = Leave it as is  
+**Lösenord** = Create a new password  
+**Bekräfta Lösenord** = Enter your password again to confirm  
+At last click the "Add Login" button in the bottom right of the popup-window.  
+![Picture1](Pictures/adduser6.png)
+
+8. To add the user into a course as a teacher or student, click on the "Kurser" tab and then click on the "+" sign on the course you want to add the user to.
+![Picture1](Pictures/adduser7.png)
+
+9. You can add users with their Email addresses or Login ID's (*this example will use Login ID*)  
+Enter the Login ID's that you want to add to the course  
+Choose the role that you want to add (*choose only Login ID's that has the same role in the box above*)  
+Click the "Next" button in the bottom right.
+![Picture1](Pictures/adduser8.png)
+
+10. At last check that all users that you wanted to add to the course have been added in to the list.  
+Click on the "Add Users" button to confirm and add all the users to the course.
+![Picture1](Pictures/adduser9.png)
