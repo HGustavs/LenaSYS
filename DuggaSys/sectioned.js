@@ -2448,6 +2448,17 @@ function validateDate(startDate, endDate, dialogID) {
   }
 }
 
+function showCourseDate(ddate, dialogid){
+  var isCorrect = validateDate2(ddate,dialogid);
+  var startdate = new Date(retdata['startdate']);;
+  var enddate = new Date(retdata['enddate']);
+  var startdate = new String(startdate.getFullYear()+ "-" + startdate.getMonth() + "-" + startdate.getDate());
+  var enddate = new String(enddate.getFullYear()+ "-" + ("0" + enddate.getMonth()).slice(-2) + "-" + ("0" + enddate.getDate()).slice(-2));
+  document.getElementById("dialog8").innerHTML =
+  "The date has to be between " + startdate + " and " + enddate;
+  return isCorrect;
+}
+
 /*Validates if deadline is between start and end date*/
 function validateDate2(ddate, dialogid) {
   var inputDeadline = document.getElementById("inputwrapper-deadline");
