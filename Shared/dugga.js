@@ -791,7 +791,7 @@ function saveDuggaResult(citstr)
 				}
 
 			}
-      duggaFeedbackCheck();
+      		duggaFeedbackCheck();
 			showReceiptPopup();
 		}
 	});
