@@ -271,7 +271,7 @@
 						echo "<td class='navButt'>";
 						echo "    <div>";
 						echo "      <a id='downloadBTN' title='Download all content in a zip file' target='_blank' value='Download' href='downloadzip.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-						echo "        <img alt='download all icon' class='navButt' src='../Shared/icons/Diskett.svg'>";
+						echo "        <img alt='download all icon' class='navButt' src='../Shared/icons/file_download_white.svg'>";
 						echo "      </a>";
 						echo "    </div>";
 						echo "</td>";
