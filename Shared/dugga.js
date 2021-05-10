@@ -751,7 +751,7 @@ function saveDuggaResult(citstr)
 	
 	var url = createUrl(hash); //Create URL
 	console.log("pwd = "+pwd);
-	if(pwd.includes("undef")) pwd = randomPassword();
+	if(pwd == undefined || pwd.includes("undef")) pwd = randomPassword();
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
 
