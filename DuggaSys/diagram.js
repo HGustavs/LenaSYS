@@ -1285,6 +1285,7 @@ function mdown(event)
             event.preventDefault();
             return;
         } 
+    }
 
     // If the middle mouse button (mouse3) is pressed OR replay-mode is active, set scroll start values
     if(event.button == 1  || settings.replay.active) {
