@@ -20,7 +20,7 @@ if(isset($_SESSION['uid'])){
 	$lastname=$_SESSION['lastname'];
 	$firstname=$_SESSION['firstname'];
 }else{
-	$userid="1";		
+	$userid="student";		
 } 	
 
 $opt=getOP('opt');
@@ -61,7 +61,6 @@ $variants=array();
 $variantsize;
 $ishashindb = false;
 $timesSubmitted = 0;
-
 
 $savedvariant="UNK";
 $newvariant="UNK";
@@ -506,10 +505,12 @@ for ($i = 0; $i < $userCount; $i++) {
 			
 
 			$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
-			$isFileSubmitted = file_exists($ziptemp);
+
 			if(!file_exists($ziptemp)) {
+				$isFileSubmitted = false;
 				$zipdir="UNK";
-			}else{				
+			}else{	
+				$isFileSubmitted = true;			
 				if ($zip->open($ziptemp) == TRUE) {
 					for ($i = 0; $i < $zip->numFiles; $i++) {
 						$zipdir .= $zip->getNameIndex($i).'<br />';
@@ -611,6 +612,11 @@ if(strcmp($opt,"SENDFDBCK")==0){
 	}	
 }
 
+$isTeacher = false;
+if(hasAccess($userid, $courseid, 'w') || isSuperUser($userid)){
+	$isTeacher = true;
+}
+
 $array = array(
 		"debug" => $debug,
 		"param" => $param,
@@ -632,7 +638,7 @@ $array = array(
 		"password" => $password,
 		"hashvariant" => $hashvariant,
 		"isFileSubmitted" => $isFileSubmitted,
-		"isSuperUser" => $userid,
+		"isTeacher" => $isTeacher, // isTeacher is true for both teachers and superusers
 		"variants" => $variants,
 
 	);
