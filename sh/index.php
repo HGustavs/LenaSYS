@@ -16,7 +16,6 @@ $assignment = getOPG("a");
 pdoConnect();
 session_start();
 
-
 function GetAssignment ($hash){
 	global $pdo;
 
@@ -34,8 +33,7 @@ function GetAssignment ($hash){
 	// There should only be one match to the hash value in database as the hash is unique
 	foreach ($pdo->query($sql) as $row){
 		$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&&courseid={$row["cid"]}&cid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}&deadline={$row["deadline"]}&hash=$hash";
-	}	
-	
+	}
 	return $URL;
 }
 
@@ -53,6 +51,16 @@ function GetCourse($course){
 	exit();
 }
 
+function CourseAndAssignment($course, $assignment) {	
+	$courseArray = explode(" ", $course);
+	$versname = end($courseArray);
+	$coursecode = prev($courseArray);
+
+	error_log("versname: ".$versname);
+	error_log("coursecode: ".$coursecode);
+	error_log("assignment: ".$assignment);
+}
+
 if(($assignment != "UNK") &&($course == "UNK")){
 	$assignmentURL = GetAssignment($assignment);
 	header("Location: {$assignmentURL}");
@@ -61,8 +69,7 @@ if(($assignment != "UNK") &&($course == "UNK")){
 	GetCourse($course);
 	
 }else if(($assignment != "UNK") && ($course != "UNK")) {
-	$courseAndAssignmentURL = queryToUrl($course, $assignment);
-	header("Location: {$courseAndAssignmentURL}");
+	CourseAndAssignment($course, $assignment);
 }
 else {
 	header("Location: ../errorpages/404.php");
