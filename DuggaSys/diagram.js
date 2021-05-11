@@ -416,6 +416,9 @@ class StateMachine
 					var timeLimit = 10; // Timelimit on history append in seconds
 					for (var index = this.historyLog.length - 1; index >= 0; index--){
 
+					    // Check so if the changeState is not an created-object
+					    if (this.historyLog[index].created != undefined) continue;
+
 						var sameIds = true;
 						if(stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
 
