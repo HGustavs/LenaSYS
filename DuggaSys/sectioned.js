@@ -1203,6 +1203,7 @@ function showMOTD(){
       $("#messagedialog").css("display", "none");
     }else{
       $("#messagedialog").css("display", "none");
+	sessionStorage.setItem('show', 'true'); //store state in localStorage
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
       document.getElementById("FABStatic2").style.top = "auto";
@@ -1253,7 +1254,7 @@ function closeMOTD(){
   }else{
     setMOTDCookie();
   }
-  $("#messagedialog").css("display", "block");
+ $("#messagedialog").css("display", "content");
   document.getElementById('motdArea').style.display='none';
   document.getElementById("FABStatic2").style.top = "auto";
 }
