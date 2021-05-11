@@ -1255,7 +1255,6 @@ function handleLocalStorage(data){
 	nbrOfVariants = varArr.length;
 	if(nbrOfVariants == 1){
 		document.getElementById("nextVariantBtn").style.display="none";
-		console.log("test");
 	}
 
 	// Check localstorage variants.
