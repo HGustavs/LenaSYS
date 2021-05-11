@@ -184,41 +184,21 @@ function renderCommits(data) {
   var weekData = data['weeks'];
   console.log(weekData);
 
-  var weekCommits = [];
+  var allCommits =  [];
   //for each commit ID
   //X is commit order, Y is commit nesting
-  for(var i = 0; i < weekData.length;i++)
-  {  
-    weekCommits = weekData[i]['commits'];
-    console.log(weekCommits);
-  }
-
-
-
-/*   //get all commits for current year
-  for(var i = 0; i < data['count'].length;i++) {
-    if(data['count'][i].getFullYear() == currentYear) {
-      yearlyCommits.add(data['count'][i]);
+  for(var i = 0; i < weekData.length;i++) {  
+    for(var j= 0; j < weekData[i]['commits'].length;j++) {
+      allCommits.push(weekData[i]['commits'][j]);
     }
   }
-  var sortedByID = [[]];
-  var TEMP_ID_VARIABL_THAT_WE_DONT_HAVE;
-  //sort commits by their IDs, so we have a 
-  //x = ID
-  //y all commits for that ID
-  for(var i = 0; i < yearlyCommits.length;i++) {
-    if(!sortedByID.contains(TEMP_ID_VARIABL_THAT_WE_DONT_HAVE)) {
-      sortedByID.add(TEMP_ID_VARIABL_THAT_WE_DONT_HAVE);
-    }
-    else {
-      sortedByID[TEMP_ID_VARIABL_THAT_WE_DONT_HAVE].add(yearlyCommits[i]);
-    }
-  }
+  console.log(allCommits);
 
-  for(var i = 0; i < sortedByID.length;i++)
-  {
+  for(var i = 0; i < allCommits.length;i++){
     
-  } */
+  }
+
+
 }
 
 function renderLineDiagram(data) {
