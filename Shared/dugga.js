@@ -84,6 +84,7 @@ function setHash(h){
 
 		if((locallystoredhash == null) || (locallystoredhash == undefined) || (!locallystoredhash)){
 			hash = generateHash();
+			//hash = "vtmS2_kr";
 			//locallystoredhash has not been set at this point, but will be after this.
 			localStorage.setItem("ls-hash-dg"+(querystring['did']), hash);
 			hash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
@@ -97,6 +98,7 @@ function setHash(h){
 		hash = h;
 		ishashinurl = true;		//Hash is referenced in the url -> A resubmission, this dugga already have a hash in the database.
 	}
+	
 }
 
 function setPassword(p){
@@ -1311,8 +1313,14 @@ function getVariantValue(ajaxdata, opt, para){
 
 //If the first generated hash isn't unique this method is recursively called until a hash is unique.
 function recursiveAjax(){
+
 	hash = generateHash();						//A new hash is generated.
-	console.log("Not a unique hash! generating new hash => " + hash);
+	localStorage.setItem("ls-hash-dg"+(querystring['did']), hash);
+	hash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
+
+	var currentVariantValue = getExpireTime(latestKeyUsed);
+	setExpireTime(latestKeyUsed, currentVariantValue, latestTTLUsed, hash);
+	console.log("Not a unique hash! generating new hash => " + hash + ". Latest variant=" + currentVariantValue);
 	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
 		url: "showDuggaservice.php",
 		type: "POST",
