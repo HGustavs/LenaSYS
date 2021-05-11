@@ -182,9 +182,9 @@ function renderCommits(data) {
 
   var yearlyCommits = new Array();
   console.log(data);
+  //console.log(data['weeks']);
 
-
-  //get all commits for current year
+/*   //get all commits for current year
   for(var i = 0; i < data['count'].length;i++) {
     if(data['count'][i].getFullYear() == currentYear) {
       yearlyCommits.add(data['count'][i]);
@@ -207,7 +207,7 @@ function renderCommits(data) {
   for(var i = 0; i < sortedByID.length;i++)
   {
     
-  }
+  } */
 }
 
 function renderLineDiagram(data) {
