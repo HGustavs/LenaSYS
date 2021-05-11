@@ -1269,6 +1269,13 @@ function mwheel(event)
  */
 function mdown(event)
 {
+    // Prevent middle mouse panning when moving an object
+    if(event.button == 1) {
+        if (movingObject) {
+            event.preventDefault();
+            return;
+        } 
+
     // If the middle mouse button (mouse3) is pressed OR replay-mode is active, set scroll start values
     if(event.button == 1  || settings.replay.active) {
         pointerState = pointerStates.CLICKED_CONTAINER;
