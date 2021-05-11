@@ -250,7 +250,7 @@ if($demo || $hr){
 
 	error_log("!=UNK".$variantvalue);
 	if($variantvalue == "UNK") {
-		$query = $pdo->prepare("SELECT useranswer.variant FROM useranswer WHERE hash=:hash");
+		$query = $pdo->prepare("SELECT useranswer.variant FROM userAnswer WHERE hash=:hash");
 		$query->bindParam(':hash', $hash);
 		$query->execute();
 		$result = $query->fetch();
