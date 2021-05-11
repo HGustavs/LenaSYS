@@ -69,6 +69,8 @@ class StateChange {
                 this[key] = values[key]
             });
         }
+
+        this.time = new Date().getTime();
     }
 
     /**
@@ -86,10 +88,12 @@ class StateChange {
              * If the current key in the loop is a number, update the value or if it do not
              * exists, set the value. Else just set the value.
              */
-            if (!isNaN(changes[key])){
+            if (key == "time") return;
+
+            if (!isNaN(changes[key])) {
                 if (this[key] === undefined) this[key] = changes[key];
                 else this[key] += changes[key]
-            }else {
+            } else {
                 this[key] = changes[key];
             }
         });
@@ -405,14 +409,29 @@ class StateMachine
                     var changeTypes = [changeType];
                 }
 
-                // Check if the change can be appended to last change
-                var canAppendToLast = true;
-                for (var index = 0; index < this.lastFlag.length && isSoft; index++) {
-                    canAppendToLast = this.lastFlag[index].canAppendTo;
-                }
+                // Find last change with the same ids
+                var timeLimit = 10; // Timelimit on history append in seconds
+                for (var index = this.historyLog.length - 1; index >= 0; index--){
 
+                    var sameIds = true;
+                    if(stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
+
+                    for (var idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++){
+                        if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
+                    }
+
+                    // If the found element has the same ids.
+                    if (sameIds){
+                        // If this historyLog is within the timeLimit
+                        if(((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit){
+                            lastLog = this.historyLog[index];
+                            sameElements = true;
+                        }
+                        break;
+                    }
+                }
                 // If NOT soft change, push new change onto history log
-                if (!isSoft || !canAppendToLast || !sameElements) {
+                if (!isSoft || !sameElements) {
 
                     this.historyLog.push(stateChange);
                     this.lastFlag = changeType;
@@ -468,9 +487,8 @@ class StateMachine
         displayMessage(messageTypes.SUCCESS, "Changes reverted!")
     }
     stepForward(){
-        // If there is no history => return
-        // If the current index is last index
-        if (this.currentHistoryIndex == -1 && this.historyLog.length -1 == this.currentHistoryIndex) return;
+        // If there is not anything to restore => return
+        if (this.historyLog.length == 0 || this.currentHistoryIndex == (this.historyLog.length -1)) return;
 
         // Increase the currentHistoryIndex by one
         this.currentHistoryIndex++;
@@ -635,8 +653,8 @@ const keybinds = {
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
         ENTER: {key: "enter", ctrl: false},
-        COPY: {key: "c", ctrl: true},
-        PASTE: {key: "v", ctrl: true},
+        COPY: {key: "c", ctrl: true, meta: true},
+        PASTE: {key: "v", ctrl: true, meta: true},
         SELECT_ALL: {key: "a", ctrl: true},
         DELETE_B: {key: "backspace", ctrl: false}
 };
@@ -1067,7 +1085,7 @@ document.addEventListener('keydown', function (e)
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
             e.preventDefault();
             selectAll();
-        }      
+        }
 
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
@@ -1086,11 +1104,14 @@ document.addEventListener('keyup', function (e)
 
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
-    if (pressedKey == keybinds.META.key) ctrlPressed = false;
+    if (pressedKey == keybinds.META.key) {
+          setTimeout(() => {
+              ctrlPressed = false;
+          }, 1000);
+      }
 
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-
         if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) stateMachine.stepBack();
         if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
@@ -1129,8 +1150,8 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
         if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
-        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(clipboard)
-        
+        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(clipboard);
+
         if (isKeybindValid(e, keybinds.COPY)){
             clipboard = context;
             if (clipboard.length !== 0){
@@ -1229,11 +1250,19 @@ function mdown(event)
     if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT){
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
-        if (determinedLines){
+      
+        if (determinedLines) {
            pointerState=pointerStates.CLICKED_LINE;
-           
+
+            if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                wasDblClicked = true;
+                document.getElementById("options-pane").className = "show-options-pane";
+            }
         }
     }
+
+    dblPreviousTime = new Date().getTime();
+    wasDblClicked = false;
 }
 
 /**
@@ -2337,7 +2366,7 @@ function setPos(id, x, y)
 
 function isKeybindValid(e, keybind)
 {
-    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || e.metaKey == keybind.meta);
+    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
 
 function findEntityFromLine(lineObj)
@@ -3916,8 +3945,8 @@ function updatepos(deltaX, deltaY)
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER) addNodes(context[0]);
-
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && context[0].kind != "ERRelation") addNodes(context[0]);
+    
 
 }
 /**
