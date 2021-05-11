@@ -1254,8 +1254,17 @@ function mdown(event)
         determinedLines = determineLineSelect(event.clientX, event.clientY);
         if (determinedLines){
            pointerState=pointerStates.CLICKED_LINE;
+
+            if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                wasDblClicked = true;
+                document.getElementById("options-pane").className = "show-options-pane";
+
+            }
         }
     }
+
+    dblPreviousTime = new Date().getTime();
+    wasDblClicked = false;
 }
 
 /**
