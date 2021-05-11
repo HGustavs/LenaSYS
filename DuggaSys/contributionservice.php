@@ -18,7 +18,7 @@ $vers=$_SESSION['coursevers'];
 
 $debug="NONE!";
 
-$log_db = new PDO('sqlite:H:\data\BGHdata_2021_05.db');
+$log_db = new PDO('sqlite:C:\xampp\htdocs\GHdata_Projekt\BGHdata_2021_05.db');
 
 $opt = getOP('opt');
 $courseid=getOP('courseid');
