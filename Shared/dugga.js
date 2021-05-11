@@ -50,8 +50,9 @@ $(function () {  // Used to set the position of the FAB above the cookie message
 function canSaveController() {
 	
 	content=document.getElementById("content-window").value;
+	contentUrl=document.getElementById("url-input").value;
 	var hasClicked = (clicks > 0)? true : false;
-	if((isFileSubmitted || hasClicked || content || ishashinurl) && !isSuperUser){
+	if((isFileSubmitted || hasClicked || content || contentUrl || ishashinurl) && !isSuperUser){
 		var elems = document.querySelectorAll(".btn-disable");
 
 		for (var e of elems){
