@@ -1245,6 +1245,7 @@ function clearDuggaLocalStorage(){
 	window.localStorage.removeItem("ls-hash-dg"+(querystring['did']));
 	window.localStorage.removeItem("ls-highest-variant-quizid");
 	window.localStorage.removeItem("ls-allocated-variant-dg"+querystring['did']);
+	//window.localStorage.removeItem("ls-highscore-dg"+querystring['did']); //This is commented out since 'highscore' currently doesn't share any purpose.
 }
 
 function handleLocalStorage(data){
