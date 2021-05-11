@@ -39,7 +39,7 @@ CREATE TABLE userAnswer (
 	FOREIGN KEY (quiz) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid),
 	FOREIGN KEY (variant) REFERENCES variant(vid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 /* Associated with issue #10662 */
 DELIMITER //
