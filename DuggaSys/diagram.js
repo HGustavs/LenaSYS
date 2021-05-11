@@ -329,11 +329,6 @@ class StateMachine
         this.historyLog = [];
 
         /**
-         * @type Array<StateChange>
-         */
-        this.futureLog = [];
-
-        /**
          * Our initial data values
          */
         this.initialState = {
@@ -465,6 +460,8 @@ class StateMachine
         } else {
             console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
         }
+        // Change the sliders max to historyLogs length
+        document.getElementById("replay-range").setAttribute("max", this.historyLog.length.toString());
     }
 
     /**
@@ -504,25 +501,21 @@ class StateMachine
     }
     scrubHistory(endIndex)
     {
-        // Set initial values to data and lines.
-        data = [];
-        lines = [];
-
-        this.initialState.elements.forEach(element => {
-            var obj = {};
-            Object.assign(obj, element);
-            data.push(obj)
-        });
-        this.initialState.lines.forEach(line => {
-            var obj = {};
-            Object.assign(obj, line);
-            lines.push(obj)
-        });
+        this.gotoInitialState();
 
         for (var i = 0; i < endIndex; i++) {
             this.restoreState(this.historyLog[i]);
         }
+
+        // Update diagram
+        clearContext();
+        showdata();
+        updatepos(0, 0);
     }
+    /**
+     * @description Restore an given state
+     * @param {StateChange} state The state that should be restored
+     */
     restoreState(state)
     {
         // Get all keys from the state.
@@ -623,6 +616,69 @@ class StateMachine
                 }
             }
         }
+    }
+    /**
+     * @description Go back to the inital state in the diagram
+     */
+    gotoInitialState()
+    {
+        // Set initial values to data and lines.
+        data = [];
+        lines = [];
+
+        this.initialState.elements.forEach(element => {
+            var obj = {};
+            Object.assign(obj, element);
+            data.push(obj)
+        });
+        this.initialState.lines.forEach(line => {
+            var obj = {};
+            Object.assign(obj, line);
+            lines.push(obj)
+        });
+        clearContext();
+        showdata();
+        updatepos(0, 0);
+    }
+    /**
+     * @description Create a timers and go-through all states
+     * @param {Number} cri The starting index of the replay
+     */
+    replay(cri = parseInt(document.getElementById("replay-range").value))
+    {
+
+        // If no history exists => return
+        if (this.historyLog.length == 0) return;
+
+        // If cri (CurrentReplayIndex) is the last set to beginning
+        if(cri == this.historyLog.length) cri = 0;
+
+        setReplayRunning(true);
+        document.getElementById("replay-range").value = cri.toString();
+
+        // Go back to the beginning.
+        this.scrubHistory(cri);
+
+        var self = this;
+        this.replayTimer = setInterval(function() {
+
+            self.restoreState(self.historyLog[cri]);
+
+            // Update diagram
+            clearContext();
+            showdata();
+            updatepos(0, 0);
+
+            // Update current index for the replay
+            cri++;
+            document.getElementById("replay-range").value = cri;
+
+            if (self.historyLog.length == cri){
+                clearInterval(self.replayTimer);
+                setReplayRunning(false);
+            }
+        }, settings.replay.delay * 1000)
+
     }
 }
 //#endregion ===================================================================================
@@ -855,6 +911,10 @@ var settings = {
         errorMsgMap: {},
     },
     zoomPower: 1 / 3,
+    replay: {
+        active: false,
+        delay: 1,
+    }
 };
 
 
@@ -1054,7 +1114,11 @@ document.addEventListener('keydown', function (e)
 
         if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
             escPressed = true;
-            if(context.length > 0 || contextLine.length > 0) {
+            if (settings.replay.active){
+                toggleReplay();
+                setReplayRunning(false);
+                clearInterval(stateMachine.replayTimer);
+            }else if(context.length > 0 || contextLine.length > 0) {
                 clearContext();
                 clearContextLine();
             } else {
@@ -1205,8 +1269,8 @@ function mwheel(event)
  */
 function mdown(event)
 {
-    // If the middle mouse button (mouse3) is pressed set scroll start values
-    if(event.button == 1) {
+    // If the middle mouse button (mouse3) is pressed OR replay-mode is active, set scroll start values
+    if(event.button == 1  || settings.replay.active) {
         pointerState = pointerStates.CLICKED_CONTAINER;
         sscrollx = scrollx;
         sscrolly = scrolly;
@@ -1249,7 +1313,7 @@ function mdown(event)
     }
 
     // Check if not an element OR node has been clicked at the event
-    if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT){
+    if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT && !settings.replay.active){
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
         if (determinedLines){
@@ -1289,8 +1353,8 @@ function ddown(event)
         }
     }   
 
-    // If the middle mouse button (mouse3) is pressed => return
-    if(event.button == 1) return;
+    // If the middle mouse button (mouse3) is pressed OR replay-mode is active => return
+    if(event.button == 1 || settings.replay.active) return;
 
     // If the right mouse button is pressed => return
     if(event.button == 2) return;
@@ -2705,6 +2769,105 @@ function toggleGrid()
    }
 }
 
+/**
+ * @description Toggles the replay-mode, shows replay-panel, hides unused elements
+ */
+function toggleReplay()
+{
+    // If there is no history => display error and return
+    if (stateMachine.historyLog.length == 0){
+        displayMessage(messageTypes.ERROR, "Sorry, you need to make changes before enter the replay-mode");
+        return;
+    }
+
+    // Get DOM-elements for styling
+    var replayBox = document.getElementById("diagram-replay-box");
+    var optionsPane = document.getElementById("options-pane");
+    var fab = document.getElementById("fab");
+    var toolbar = document.getElementById("diagram-toolbar");
+    var ruler = document.getElementById("rulerOverlay");
+    var zoomIndicator = document.getElementById("zoom-message-box");
+    var replyMessage = document.getElementById("diagram-replay-message");
+
+    if (settings.replay.active) {
+        // Restore the diagram to state before replay-mode
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex + 1);
+
+        settings.ruler.zoomX -= 50;
+        // Change HTML DOM styling
+        replayBox.style.visibility = "hidden";
+        optionsPane.style.visibility = "visible";
+        fab.style.visibility = "visible";
+        toolbar.style.visibility = "visible";
+        ruler.style.left = "50px";
+        zoomIndicator.style.bottom = "5px";
+        zoomIndicator.style.left = "100px";
+        replyMessage.style.visibility = "hidden";
+    } else {
+        settings.ruler.zoomX += 50;
+        // Clear selected elements and lines
+        clearContext();
+        clearContextLine();
+
+        // Set mousemode to Pointer
+        setMouseMode(0);
+
+        stateMachine.scrubHistory(parseInt(document.getElementById("replay-range").value));
+
+        // Change HTML DOM styling
+        replayBox.style.visibility = "visible";
+        optionsPane.style.visibility = "hidden";
+        fab.style.visibility = "hidden";
+        toolbar.style.visibility = "hidden";
+        ruler.style.left = "0";
+        zoomIndicator.style.bottom = "55px";
+        zoomIndicator.style.left = "45px";
+        replyMessage.style.visibility = "visible";
+    }
+    drawRulerBars(scrollx, scrolly);
+
+    // Change the settings boolean for replay active
+    settings.replay.active = !settings.replay.active;
+}
+/**
+ * @description Sets the replay-delay value
+ */
+function setReplayDelay(value)
+{
+    var replayDelayMap = {
+        1: 0.1,
+        2: 0.25,
+        3: 0.50,
+        4: 0.75,
+        5: 1,
+        6: 1.25,
+        7: 1.5,
+        8: 1.75,
+        9: 2
+    }
+    settings.replay.delay = replayDelayMap[value];
+    document.getElementById("replay-time-label").innerHTML = `Delay (${settings.replay.delay}s)`;
+}
+/**
+ * @description Changes the play/pause button and locks/unlocks the sliders in replay-mode
+ * @param {boolean} state The state if the replay-mode is running
+ */
+function setReplayRunning(state)
+{
+    var button = document.getElementById("diagram-replay-switch");
+    var delaySlider = document.getElementById("replay-time");
+    var stateSlider = document.getElementById("replay-range");
+
+    if (state){
+        button.innerHTML = '<div class="diagramIcons" onclick="clearInterval(stateMachine.replayTimer);setReplayRunning(false)"><img src="../Shared/icons/pause.svg"></div>';
+        delaySlider.disabled = true;
+        stateSlider.disabled = true;
+    }else{
+        button.innerHTML = '<div class="diagramIcons" onclick="stateMachine.replay()"><img src="../Shared/icons/Play.svg"></div>';
+        delaySlider.disabled = false;
+        stateSlider.disabled = false;
+    }
+}
 /**
  * @description Toggles the A4 template ON/OFF.
  */
