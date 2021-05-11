@@ -49,8 +49,9 @@ $(function () {  // Used to set the position of the FAB above the cookie message
 // Enables save and reset button after activity on assignments (save and reset always available for students on submitted assignments)
 function canSaveController() {
 	
+	content=document.getElementById("content-window").value;
 	var hasClicked = (clicks > 0)? true : false;
-	if((isFileSubmitted || hasClicked || ishashinurl) && !isSuperUser){
+	if((isFileSubmitted || hasClicked || content || ishashinurl) && !isSuperUser){
 		var elems = document.querySelectorAll(".btn-disable");
 
 		for (var e of elems){
