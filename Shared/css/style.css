@@ -1388,16 +1388,7 @@ div .navButt:hover {
         margin-top: 14px;
 
     }
-    #GeneralStats{
-        display:none;
-    }
-    #CurrentlyOnline{
-        display:none;
-    }
-    #PasswordGuessing{
-        display:none;
-    }
-    #OSPercentage{
+    #GeneralStats, #CurrentlyOnline, #PasswordGuessing, #OSPercentage{
         display:none;
     }
 
@@ -1474,7 +1465,7 @@ div .navButt:hover {
     .access menuButton{
       width: 20px;
     }
-    #navHeading {
+    #navHeading, #announcement {
         display: none;
     }
     #mobileNavHeading {
