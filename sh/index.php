@@ -17,7 +17,7 @@ pdoConnect();
 session_start();
 
 
-function GetAssigment ($hash){
+function GetAssignment ($hash){
 	global $pdo;
 
 	// Defaults to 404 Error page if no there is no match in the database for the hash value
@@ -38,10 +38,43 @@ function GetAssigment ($hash){
 	
 	return $URL;
 }
-if($assignment != "UNK"){
-	$assignmentURL = GetAssigment($assignment);
+
+function GetCourse ($hash){
+	global $pdo;
+
+	// Defaults to 404 Error page if no there is no match in the database for the hash value
+	$URL = "../errorpages/404.php";
+
+	// Database request form
+	$sql =	
+	"SELECT userAnswer.cid, userAnswer.vers, userAnswer.quiz, userAnswer.moment, course.coursename, quiz.deadline
+	FROM userAnswer 
+	INNER JOIN course ON userAnswer.cid=course.cid
+	INNER JOIN quiz ON userAnswer.quiz=quiz.id
+	WHERE hash='{$hash}'";
+
+	// There should only be one match to the hash value in database as the hash is uniqe
+	foreach ($pdo->query($sql) as $row){
+		$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&&courseid={$row["cid"]}&cid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}&deadline={$row["deadline"]}&hash=$hash";
+	}	
+	
+	return $URL;
+}
+
+//Här vill vi ändra
+if(($assignment != "UNK") &&($course == "UNK")){
+	$assignmentURL = GetAssignment($assignment);
 	header("Location: {$assignmentURL}");
-} else {
+
+}else if(($course != "UNK") && ($assignment == "UNK")){
+	$courseURL = GetCourse($course);
+	header("Location: {$courseURL}");
+
+}else if(($assignment != "UNK") && ($course != "UNK")) {
+	$courseAndAssignmentURL = queryToUrl($course, $assignment);
+	header("Location: {$courseAndAssignmentURL}");
+}
+else {
 	header("Location: ../errorpages/404.php");
 }
 
@@ -66,8 +99,11 @@ if ($course != "UNK") {
 		$serverRoot = serverRoot();
 		header("Location: {$serverRoot}/DuggaSys/sectioned.php?courseid={$cid}&coursevers={$activeversion}");
 		exit();
-	}
-} else {
+	}//Här vill vi ändra
+
+} 
+
+else {
 	header("Location: ../errorpages/404.php");
 }
 
