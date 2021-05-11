@@ -1204,6 +1204,7 @@ function mdown(event)
 {
     // If the middle mouse button (mouse3) is pressed set scroll start values
     if(event.button == 1) {
+        if (movingObject) event.preventDefault(); return;
         pointerState = pointerStates.CLICKED_CONTAINER;
         sscrollx = scrollx;
         sscrolly = scrolly;
