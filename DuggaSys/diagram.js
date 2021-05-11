@@ -65,9 +65,14 @@ class StateChange {
         if(values != undefined){
             var keys = Object.keys(values);
 
-            keys.forEach(key => {
-                this[key] = values[key]
-            });
+            // If "values" is an array of objects, store all objects in the "state.created" array.
+            if(keys[0] == '0') {
+                this.created = values;
+            }else{
+                keys.forEach(key => {
+                    this[key] = values[key];
+                });
+            }
         }
 
         this.time = new Date().getTime();
@@ -366,7 +371,6 @@ class StateMachine
     save (stateChange, changeType)
     {
         if (stateChange instanceof StateChange) {
-
             // Remove the history entries that are after current index
             while(this.currentHistoryIndex + 1 != this.historyLog.length) {
                 this.historyLog.pop();
@@ -380,51 +384,57 @@ class StateMachine
 
                 // Check if the element is the same
                 var sameElements = true;
-                if (Array.isArray(lastLog.id)){
-                    if (stateChange.id.length != lastLog.id.length) sameElements = false;
-                    for (var index = 0; index < lastLog.id.length && sameElements; index++) {
-                        var id_found = lastLog.id[index];
-
-                        if (!stateChange.id.includes(id_found)) sameElements = false;
-
-                    }
-                }else {
-                    if (lastLog.id != stateChange.id) sameElements = false;
-                }
-
-                // Check if the current change is soft
                 var isSoft = true;
-                if (Array.isArray(changeType)){
+				
+				// Change is creation of elements, no need for history comparisions
+                if(stateChange.created != undefined) {
+                    sameElements = false;
+                } else { // Perform history comparisions
+                    if (Array.isArray(lastLog.id)){
+                        if (stateChange.id.length != lastLog.id.length) sameElements = false;
+                        for (var index = 0; index < lastLog.id.length && sameElements; index++) {
+                            var id_found = lastLog.id[index];
+    
+                            if (!stateChange.id.includes(id_found)) sameElements = false;
+    
+                        }
+                    }else {
+                        if (lastLog.id != stateChange.id) sameElements = false;
+                    }
+    
+                    if (Array.isArray(changeType)){
                     for (var index = 0; index < changeType.length && isSoft; index++) {
                         isSoft = changeType[index].isSoft;
                     }
                     var changeTypes = changeType;
-                }else {
-                    isSoft = changeType.isSoft;
-                    var changeTypes = [changeType];
+					}else {
+						isSoft = changeType.isSoft;
+						var changeTypes = [changeType];
+					}
+
+					// Find last change with the same ids
+					var timeLimit = 10; // Timelimit on history append in seconds
+					for (var index = this.historyLog.length - 1; index >= 0; index--){
+
+						var sameIds = true;
+						if(stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
+
+						for (var idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++){
+							if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
+						}
+
+						// If the found element has the same ids.
+						if (sameIds){
+							// If this historyLog is within the timeLimit
+							if(((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit){
+								lastLog = this.historyLog[index];
+								sameElements = true;
+							}
+							break;
+						}
+					}
                 }
-
-                // Find last change with the same ids
-                var timeLimit = 10; // Timelimit on history append in seconds
-                for (var index = this.historyLog.length - 1; index >= 0; index--){
-
-                    var sameIds = true;
-                    if(stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
-
-                    for (var idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++){
-                        if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
-                    }
-
-                    // If the found element has the same ids.
-                    if (sameIds){
-                        // If this historyLog is within the timeLimit
-                        if(((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit){
-                            lastLog = this.historyLog[index];
-                            sameElements = true;
-                        }
-                        break;
-                    }
-                }
+                
                 // If NOT soft change, push new change onto history log
                 if (!isSoft || !sameElements) {
 
@@ -545,17 +555,17 @@ class StateMachine
         }
 
         // If index 0 is an object and that object has an value of the key "id"
-        if (typeof state[0] === 'object' && state[0].id != undefined){
+        if (state.created != undefined && state.created[0].id != undefined){
 
-            Object.keys(state).forEach(index => {
+            Object.keys(state.created).forEach(index => {
                 var temp = {};
-                Object.keys(state[index]).forEach(key => {
-                    if (key == "id") temp.id = state[index][key];
-                    else temp[key] = state[index][key];
+                Object.keys(state.created[index]).forEach(key => {
+                    if (key == "id") temp.id = state.created[index][key];
+                    else temp[key] = state.created[index][key];
                 });
 
                 // If the object is an element
-                if (state[index].x && state[index].y){
+                if (state.created[index].x && state.created[index].y){
                     // Add the defaults to the element
                     Object.keys(defaults[temp.kind]).forEach(key => {
                         if (!temp[key]) temp[key] = defaults[temp.kind][key];
