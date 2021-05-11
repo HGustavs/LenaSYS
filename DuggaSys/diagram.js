@@ -2753,8 +2753,9 @@ function toggleReplay()
 
     if (settings.replay.active) {
         // Restore the diagram to state before replay-mode
-        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex + 1);
 
+        settings.ruler.zoomX -= 50;
         // Change HTML DOM styling
         replayBox.style.visibility = "hidden";
         optionsPane.style.visibility = "visible";
@@ -2765,6 +2766,7 @@ function toggleReplay()
         zoomIndicator.style.left = "100px";
         replyMessage.style.visibility = "hidden";
     } else {
+        settings.ruler.zoomX += 50;
         // Clear selected elements and lines
         clearContext();
         clearContextLine();
@@ -2784,6 +2786,8 @@ function toggleReplay()
         zoomIndicator.style.left = "45px";
         replyMessage.style.visibility = "visible";
     }
+    drawRulerBars(scrollx, scrolly);
+
     // Change the settings boolean for replay active
     settings.replay.active = !settings.replay.active;
 }
