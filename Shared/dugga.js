@@ -522,7 +522,7 @@ function changeVariant(intvalue){											//Call setExpireTime() but with a sp
 
 //Selects next variant available and calls 'changeVariant' method.
 function selectNextVariant(){
-	if(nbrOfVariants != undefined){	//If no variants are available for this dugga.
+	if(nbrOfVariants != undefined){	//If variants are available for this dugga.
 		var nextVariant;
 		if(nbrOfVariants == 1){
 			nextVariant = latestVariantSet;
@@ -2093,6 +2093,10 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 
 		if(loadVariantFlag){	//If the 'Next variant' button is set to be visable (Teachers only). 
 			str+="<div id='nextVariantBtn' style='width:0px;'><input class='submit-button large-button' type='button' value='Next Variant' onclick='selectNextVariant();' /></div>"; 
+		}
+
+		if(loadVariantFlag == false){	//If the 'Next variant' button is set to not be visable (Students). 
+			str+="<div id='nextVariantBtn' style='display:none;'><input class='submit-button large-button' type='button' value='Next Variant' /></div>"; 
 		}
 
 		str+="</div>";
