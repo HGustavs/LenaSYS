@@ -181,7 +181,7 @@ function saveClick()
 		dataType: "json",
 		success: function(data) {
 			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-			if(ishashindb==true){				//If the hash already exist in database.
+			if(ishashindb==true && blockhashgen ==true || ishashindb==true && blockhashgen ==false && ishashinurl==true || ishashindb==true && locallystoredhash != "null"){				//If the hash already exist in database.
 				if (confirm("You already have a saved version!")) {
   	Timer.stopTimer();
 
@@ -352,7 +352,7 @@ function startDuggaHighScore(){
 
 function newbutton()
 {
-	//ClickCounter.onClick();
+	ClickCounter.onClick();
 	var newOp = $('#ops > optgroup > option:selected').text();
 	var newOpCode = $("#ops").val();
 

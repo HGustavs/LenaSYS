@@ -48,12 +48,20 @@ $(function () {  // Used to set the position of the FAB above the cookie message
 
 // Enables save and reset button after activity on assignments (save and reset always available for students on submitted assignments)
 function canSaveController() {
+	
+	var content=document.getElementById("content-window");
+	var contentUrl=document.getElementById("url-input");
+	if(content != null || contentUrl != null)
+	{
+		content=document.getElementById("content-window").value;
+		contentUrl=document.getElementById("url-input").value;
+	}
 
 	var hasClicked = (clicks > 0)? true : false;
-	if((isFileSubmitted || hasClicked || ishashinurl) && !isTeacher){
-		var elems = document.querySelectorAll(".btn-disable");
+	if((isFileSubmitted || hasClicked || content || contentUrl || ishashinurl) && !isTeacher){
+		  var elems = document.querySelectorAll(".btn-disable");
 		
-		for (var e of elems){
+		  for (var e of elems){
 			e.classList.remove("btn-disable");
 		}
 	}   
@@ -93,10 +101,6 @@ function getHash(){
 function setHash(h){
 	// Check if hash is unknown
 	if(h == "UNK"){
-		
-		//hash = generateHash();
-
-		
 		//From localstorage we load what we have into our locallystoredhash variable, that is then compared against. 
 		//On the first dugga load, it will be undefined, and thereafter a hash value will be generated.
 		//If a hash is already stored in localstorage, we will load that hash instead.
@@ -111,8 +115,6 @@ function setHash(h){
 		else{
 			hash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
 		}
-
-		
 		pwd = randomPassword();
 		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
 	}else{
@@ -1142,9 +1144,9 @@ function AJAXService(opt,apara,kind)
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
-				if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
-					handleHash();	//Makes sure hash is unique.
-				}
+				//if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
+				handleHash();	//Makes sure hash is unique.
+				//}
 			}
 		})
 	}else if(kind=="RESULT"){
@@ -1257,13 +1259,26 @@ function handleHash(){
 		success: function(data) {
 			returnedDugga(data);
 			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-			console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl);	//For debugging!
-			if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
-				recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
+			//console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl + " lsHash= " + locallystoredhash);	//For debugging!
+
+			//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission AND we have not generated this dugga before => 1 : 5 000 000 000 chance...
+			if(ishashindb==true && blockhashgen == false && ishashinurl == false && !locallystoredhash){	
+				clearDuggaLocalStorage();		//Locally stored hash is 'null' again.
+				reloadPage();					//New hash will be generated.
 			}
 		}
 	});
 }
+
+//Clears all localstorage for this dugga.
+//Add rows if more localstorage keys are implemented.
+function clearDuggaLocalStorage(){
+	window.localStorage.removeItem("ls-hash-dg"+(querystring['did']));
+	window.localStorage.removeItem("ls-highest-variant-quizid");
+	window.localStorage.removeItem("ls-allocated-variant-dg"+querystring['did']);
+	//window.localStorage.removeItem("ls-highscore-dg"+querystring['did']); //This is commented out since 'highscore' currently doesn't share any purpose.
+}
+
 function handleLocalStorage(data){
 	//Set value to nbrOfVariants, this is needed so a teacher can locally change variant.
 	varArr = [];		
@@ -1271,7 +1286,6 @@ function handleLocalStorage(data){
 	nbrOfVariants = varArr.length;
 	if(nbrOfVariants == 1){
 		document.getElementById("nextVariantBtn").style.display="none";
-		console.log("test");
 	}
 
 	// Check localstorage variants.
@@ -1332,25 +1346,6 @@ function getVariantValue(ajaxdata, opt, para){
 			returnedDugga(data);
 			handleLocalStorage(data);		//Set localstorage lifespan.			
 			setPassword(data['password']);	//Sets the password retrieved from query.
-		}
-	});
-}
-
-//If the first generated hash isn't unique this method is recursively called until a hash is unique.
-function recursiveAjax(){
-	hash = generateHash();						//A new hash is generated.
-	console.log("Not a unique hash! generating new hash => " + hash);
-	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
-		url: "showDuggaservice.php",
-		type: "POST",
-		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
-		dataType: "json",
-		success: function(data) {
-			returnedDugga(data);
-			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-			if(ishashindb==true){				//If the hash already exist in database.
-				recursiveAjax();				//Call this method again.
-			}								
 		}
 	});
 }

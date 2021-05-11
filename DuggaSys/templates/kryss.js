@@ -99,7 +99,7 @@ function returnedDugga(data)
 	if(data['param']!="UNK"){
 		quiz(data['param']);
 		//Add onclick event 
-		if(querystring['highscoremode'] == 2) {
+		if(querystring['highscoremode'] == 2 ||querystring['highscoremode'] == 1) {
 			$("input:radio").click(function(){
 				ClickCounter.onClick();
 			});
@@ -159,7 +159,7 @@ function saveClick()
 		dataType: "json",
 		success: function(data) {
 			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-			if(ishashindb==true){				//If the hash already exist in database.
+			if(ishashindb==true && blockhashgen ==true || ishashindb==true && blockhashgen ==false && ishashinurl==true || ishashindb==true && locallystoredhash != "null"){				//If the hash already exist in database.
 				if (confirm("You already have a saved version!")) {
 					Timer.stopTimer();
 
@@ -249,6 +249,6 @@ function closeFacit(){
 //----------------------------------------------------------------------------------
 function toggleInstructions()
 {
-    $(".instructions-content").slideToggle("slow");
+	$(".instructions-content").slideToggle("slow");
 }
 
