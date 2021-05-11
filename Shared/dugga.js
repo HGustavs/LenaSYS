@@ -28,8 +28,6 @@ var variantvalue;
 var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
-var isFileSubmitted;
-var isSuperUser;
 var loadVariantFlag = false;	// Flag to decide if the 'Next variant' button should be visable or not.
 var varArr;
 var nbrOfVariants;
@@ -37,6 +35,8 @@ var latestKeyUsed;
 var latestTTLUsed;
 var latestLocalHash;
 var latestVariantSet;
+var isFileSubmitted;
+var isTeacher;
 
 
 
@@ -58,10 +58,10 @@ function canSaveController() {
 	}
 
 	var hasClicked = (clicks > 0)? true : false;
-	if((isFileSubmitted || hasClicked || content || contentUrl || ishashinurl) && !isSuperUser){
-		var elems = document.querySelectorAll(".btn-disable");
-
-		for (var e of elems){
+	if((isFileSubmitted || hasClicked || content || contentUrl || ishashinurl) && !isTeacher){
+		  var elems = document.querySelectorAll(".btn-disable");
+		
+		  for (var e of elems){
 			e.classList.remove("btn-disable");
 		}
 	}   
@@ -759,7 +759,7 @@ function saveDuggaResult(citstr)
 	
 	var url = createUrl(hash); //Create URL
 	console.log("pwd = "+pwd);
-	if(pwd.includes("undef")) pwd = randomPassword();
+	if(pwd == undefined || pwd.includes("undef")) pwd = randomPassword();
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
 
@@ -815,7 +815,7 @@ function saveDuggaResult(citstr)
 				}
 
 			}
-      duggaFeedbackCheck();
+      		duggaFeedbackCheck();
 			showReceiptPopup();
 		}
 	});
@@ -1146,9 +1146,9 @@ function AJAXService(opt,apara,kind)
 			datatype: "json",
 			success: function(data){
 				var phpData = JSON.parse(data);
+				isTeacher = phpData.isTeacher;
 				isFileSubmitted = phpData.isFileSubmitted;
-				isSuperUser = (phpData.isSuperUser == 1) ? false : true; // Check if user is teacher or not, student == 1
-				canSaveController();
+				canSaveController(); 
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
 				if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 					handleHash();	//Makes sure hash is unique.
