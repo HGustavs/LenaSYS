@@ -442,6 +442,10 @@ function renderCircleDiagram(data, day) {
 
   return str;
 }
+function renderContributionTree(data) {
+  console.log(data);
+
+ }
 
 function renderActivityPoints(activities) {
   var str = "";
@@ -778,7 +782,7 @@ function returnedSection(data) {
   document.getElementById('barchart').innerHTML = renderBarDiagram(data);
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(JSON.stringify(data['hourlyevents']));
-
+  renderContributionTree(data);
   document.getElementById('content').innerHTML = str;
 }
 
