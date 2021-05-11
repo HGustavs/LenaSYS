@@ -5216,7 +5216,8 @@ only screen and (max-device-width: 530px) {
 
   #searchBar,
   #testSearchContainer,
-  .tooltip-searchbar {
+  .tooltip-searchbar,
+  #searchbutton {
     display: none;
   }
 
