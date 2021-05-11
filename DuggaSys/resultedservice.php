@@ -18,7 +18,7 @@ $duggaName = "UNK";
 $subCourse = "UNK";
 
 // Get data to display in table rows
-$query = $pdo->prepare("SELECT hash, password, grade, submitted, moment FROM userAnswer WHERE cid=:cid AND vers=:vers");
+$query = $pdo->prepare("SELECT hash, password, grade, submitted, timesSubmitted, moment FROM userAnswer WHERE cid=:cid AND vers=:vers");
 $query->bindParam(':cid', $cid);
 $query->bindParam(':vers', $coursevers);
 
@@ -53,6 +53,7 @@ foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
         'password' => $row['password'],
         'grade' => $row['grade'],
         'submitted' => $row['submitted'],
+		'timesSubmitted' => $row['timesSubmitted'],
 		'subCourse' => $subCourse,
 		'link' => "UNK"
     );
