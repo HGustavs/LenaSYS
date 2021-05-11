@@ -176,6 +176,11 @@ function renderBarDiagram(data) {
 }
 
 function renderCommits(data) {
+  
+  //creating the svg to put the commit tree in
+  var str = "<h2>Commit tree</h2>";
+  str += "<svg id='commitTree' viewBox='0 0 600 250' style='background-color:#efefef;'width='100%' height='250' aria-labelledby='title desc' role='img'>";
+  str += "</svg>";
 
   var current = new Date();
   var currentYear = current.getFullYear();
@@ -198,7 +203,7 @@ function renderCommits(data) {
     
   }
 
-
+  return str;
 }
 
 function renderLineDiagram(data) {
@@ -804,7 +809,7 @@ function returnedSection(data) {
   document.getElementById('barchart').innerHTML = renderBarDiagram(data);
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(JSON.stringify(data['hourlyevents']));
-  renderCommits(data);
+  document.getElementById('commitDiagram').innerHTML = renderCommits(data);
   document.getElementById('content').innerHTML = str;
 }
 
