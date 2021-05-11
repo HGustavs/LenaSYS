@@ -1401,9 +1401,6 @@ div .navButt:hover {
         display:none;
     }
 
-    #back{
-        display:none;
-    }
     .navButt.show{
         display: flex;
     }
