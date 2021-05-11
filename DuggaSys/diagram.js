@@ -1437,23 +1437,8 @@ function mup(event)
                 mouseMode_onMouseUp(event);
 
             // Normal mode
-            } else if (deltaExceeded) {
-                var id_list = [];
-
-                if (context.length > 0) {
-                    context.forEach(item => // Move all selected items
-                    {
-                        if(!item.isLocked){
-                            eventElementId = event.target.parentElement.parentElement.id;
-                            setPos(item.id, deltaX, deltaY);
-
-                            if (deltaX > 0 || deltaX < 0 || deltaY > 0 || deltaY < 0)
-                                id_list.push(item.id);
-                        }
-                    });
-                }
-
-                stateMachine.save(StateChangeFactory.ElementsMoved(id_list, -(deltaX / zoomfact), -(deltaY / zoomfact)), StateChange.ChangeTypes.ELEMENT_MOVED);
+            } else if (deltaExceeded && context.length > 0) {
+                moveElements(context, deltaX, deltaY);
             }
             break;
         case pointerStates.CLICKED_NODE:
@@ -2342,37 +2327,6 @@ function rectsIntersect (left, right)
 }
 
 /**
- * @description Moves the first element with matching ID a certain coordinates along the x/y-axis.
- * @param {String} id Hexadecimal ID represented as a string.
- * @param {Number} x Coordinates along the x-axis to move
- * @param {Number} y Coordinates along the y-axis to move
- */
-function setPos(id, x, y)
-{
-    foundId = findIndex(data, id);
-    if (foundId != -1) {
-        var obj = data[foundId];
-        if (settings.grid.snapToGrid) {
-            if (!ctrlPressed) {
-                // Calculate nearest snap point
-                obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-
-                // Set the new snap point to center of element
-                obj.x -= obj.width / 2
-                obj.y -= obj.height / 2;
-            } else {
-                obj.x += (targetDelta.x / zoomfact);
-                obj.y += (targetDelta.y / zoomfact);
-            }
-        }else {
-            obj.x -= (x / zoomfact);
-            obj.y -= (y / zoomfact);
-        }
-    }
-}
-
-/**
  * @description Change the coordinates of data-objects
  * @param {Array<Object>} objects Array of objects that will be moved
  * @param {Number} x Coordinates along the x-axis to move
@@ -2382,6 +2336,9 @@ function moveElements(objects, x, y)
 {
     var idList = [];
     objects.forEach(obj => {
+
+        if (obj.isLocked) return;
+
         if (settings.grid.snapToGrid) {
             if (!ctrlPressed) {
                 // Calculate nearest snap point
@@ -2403,7 +2360,7 @@ function moveElements(objects, x, y)
         idList.push(obj.id);
     });
     updatepos(0, 0);
-    stateMachine.save(StateChangeFactory.ElementsMoved(idList, x, y), StateChange.ChangeTypes.ELEMENT_MOVED);
+    stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
 }
 
 
