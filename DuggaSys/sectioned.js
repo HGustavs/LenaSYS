@@ -625,23 +625,26 @@ function returnedGroups(data) {
       if (grp != "") {
         str += "</tbody>";
         str += "</table>";
-        str += "<div style='text-align:right;border-top:2px solid #434343'><a style='white-space:nowrap' href='mailto:" + grpemail + "'>Email group</a></div>"
+        str += `<div style='text-align:right;border-top:2px solid #434343'>
+        <a style='white-space:nowrap' href='mailto:${grpemail}'>Email group</a></div>`
         grpemail = "";
       }
       grp = cgrp;
       cgrp = cgrp.split('_');
       str += "<table>";
-      str += "<thead><tr><th rowspan=2 style='text-align:left;'>Group " + cgrp[1] + "</th></tr></thead>";
+      str += `<thead><tr><th rowspan=2 style='text-align:left;'>Group ${cgrp[1]}</th></tr></thead>`;
       str += "<tbody>";
     }
-    str += "<tr><td>" + (j++) + "</td><td><a  style='white-space:nowrap' href='mailto:" + member[3] + "'>" + member[1] + " " + member[2] + "</a></td></tr>";
+    str += `<tr><td>" + (j++) + "</td><td><a  style='white-space:nowrap' 
+    href='mailto:${member[3]}'>${member[1]} ${member[2]}</a></td></tr>`;
     if (grpemail != "") grpemail += ",";
     grpemail += member[3];
   }
   if (grp != "") {
     str += "</tbody>";
     str += "</table>";
-    str += "<div style='text-align:right;border-top:2px solid #434343'><a href='mailto:" + grpemail + "'>Email group</a></div>"
+    str += `<div style='text-align:right;border-top:2px solid #434343'><a 
+    href='mailto:${grpemail}'>Email group</a></div>`
     grpemail = "";
   }
   if (str != "") {
@@ -1104,7 +1107,8 @@ function returnedSection(data) {
         
         // trashcan
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
           str += `<img alt='trashcan icon' id='dorf' title='Delete item' class='' 
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
@@ -1605,7 +1609,8 @@ function mouseDown(e) {
 //----------------------------------------------------------------------------------
 
 function mouseUp(e) {
-  // if the target of the click isn't the container nor a descendant of the container or if we have clicked inside box and dragged it outside and released it
+  // if the target of the click isn't the container nor a descendant of the container, 
+  // or if we have clicked inside box and dragged it outside and released it
   if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) &&
   $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
 
@@ -2670,8 +2675,8 @@ function createUserFeedbackTable(data){
     if(data.userfeedback[i].username === null){
       str += "<td style='width:1px;'><input class='inactive-button' type='button' value='Contact student'></td>";
     }else{
-      str += `<td style='width:1px;'><input class='submit-button' type='button' value='Contact student' onclick='contactStudent(\"
-      ${data.userfeedback[i].entryname}\",\"${data.userfeedback[i].username}\")'></td>`;
+      str += `<td style='width:1px;'><input class='submit-button' type='button' value='Contact student' 
+      onclick='contactStudent(\"${data.userfeedback[i].entryname}\",\"${data.userfeedback[i].username}\")'></td>`;
     }
     str += "</tr>";
   }
