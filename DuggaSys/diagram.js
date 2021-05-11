@@ -1931,6 +1931,7 @@ function updateSelection(ctxelement) // TODO : Default null value since we use i
                 clearContext();
             }
             context.push(ctxelement);
+            showdata();
         }
     } else if (!altPressed && !ctrlPressed) {
         clearContext();
