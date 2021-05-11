@@ -26,9 +26,9 @@
             <div id="input-col" class="dugga-col">
                 <div style="width:100%; height:100%; position:relative;">
                     <div><h2 class='loginBoxheader'>Skriv/klistra in kod</h2></div>
-                    <div id="input-col-content"><textarea id="content-window" onkeyup="processpreview();"></textarea></div>
+                    <div id="input-col-content"><textarea id="content-window" onkeyup="processpreview(); canSaveController();"></textarea></div>
                     <div id="input-col-URL"><label>Adress (URL) till din publicerad version:</label><br>
-                        <input id="url-input" type="text" name="url" placeholder="http://wwwlab.iit.his.se/<ditt login>/<sökvägen till din dugga>">
+                        <input id="url-input" type="text" name="url" placeholder="http://wwwlab.iit.his.se/<ditt login>/<sökvägen till din dugga>" onkeyup="canSaveController();">
                         <a id="url-button" style="display:hidden" target="_blank" href="#">Visa externt</a>
                         <span  id="url-button"onclick="refreshdUrl()">Uppdatera URL</span></div>
                 </div>

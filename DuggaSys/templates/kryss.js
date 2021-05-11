@@ -99,7 +99,7 @@ function returnedDugga(data)
 	if(data['param']!="UNK"){
 		quiz(data['param']);
 		//Add onclick event 
-		if(querystring['highscoremode'] == 2) {
+		if(querystring['highscoremode'] == 2 ||querystring['highscoremode'] == 1) {
 			$("input:radio").click(function(){
 				ClickCounter.onClick();
 			});
@@ -249,6 +249,6 @@ function closeFacit(){
 //----------------------------------------------------------------------------------
 function toggleInstructions()
 {
-    $(".instructions-content").slideToggle("slow");
+	$(".instructions-content").slideToggle("slow");
 }
 
