@@ -3671,7 +3671,6 @@ function drawRulerBars(X,Y)
     //Settings - Ruler
 
     const lineRatio = 10;
-    const fullLineRatio = 10;
     
     var barY, barX = "";
     const color = "black";
