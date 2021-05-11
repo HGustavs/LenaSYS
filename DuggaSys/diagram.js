@@ -4018,7 +4018,7 @@ function updateCSSForAllElements()
     function updateElementDivCSS(elementData, divObject, useDelta = false)
     {
         var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
-            top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+            top = Math.round((((elementData.y - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
         if (useDelta){
             left -= deltaX;
@@ -4033,7 +4033,7 @@ function updateCSSForAllElements()
 
                 // Add the scroll values
                 left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-                top = Math.round(((objY - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
