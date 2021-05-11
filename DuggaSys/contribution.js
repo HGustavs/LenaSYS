@@ -181,8 +181,19 @@ function renderCommits(data) {
   var currentYear = current.getFullYear();
 
   var yearlyCommits = new Array();
-  console.log(data);
-  //console.log(data['weeks']);
+  var weekData = data['weeks'];
+  console.log(weekData);
+
+  var weekCommits = [];
+  //for each commit ID
+  //X is commit order, Y is commit nesting
+  for(var i = 0; i < weekData.length;i++)
+  {  
+    weekCommits = weekData[i]['commits'];
+    console.log(weekCommits);
+  }
+
+
 
 /*   //get all commits for current year
   for(var i = 0; i < data['count'].length;i++) {
@@ -477,10 +488,6 @@ function renderCircleDiagram(data, day) {
 
   return str;
 }
-function renderContributionTree(data) {
-  console.log(data);
-
- }
 
 function renderActivityPoints(activities) {
   var str = "";
@@ -817,7 +824,7 @@ function returnedSection(data) {
   document.getElementById('barchart').innerHTML = renderBarDiagram(data);
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(JSON.stringify(data['hourlyevents']));
-  renderContributionTree(data);
+  renderCommits(data);
   document.getElementById('content').innerHTML = str;
 }
 
