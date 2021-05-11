@@ -656,7 +656,11 @@ const keybinds = {
         COPY: {key: "c", ctrl: true},
         PASTE: {key: "v", ctrl: true},
         SELECT_ALL: {key: "a", ctrl: true},
-        DELETE_B: {key: "backspace", ctrl: false}
+        DELETE_B: {key: "backspace", ctrl: false},
+        MOVING_OBJECT_UP: {key: "ArrowUp", ctrl: false},
+        MOVING_OBJECT_DOWN: {key: "ArrowDown", ctrl: false},
+        MOVING_OBJECT_LEFT: {key: "ArrowLeft", ctrl: false},
+        MOVING_OBJECT_RIGHT: {key: "ArrowRight", ctrl: false},
 };
 
 /** 
@@ -1087,7 +1091,21 @@ document.addEventListener('keydown', function (e)
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
             e.preventDefault();
             selectAll();
-        }      
+        }
+
+        // Moving object with arrows
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP)){
+            moveElements(context, 0, 1);
+        }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN)){
+            moveElements(context, 0, -1);
+        }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT)){
+            moveElements(context, 1, 0);
+        }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT)){
+            moveElements(context, -1, 0);
+        }
 
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
@@ -2354,9 +2372,44 @@ function setPos(id, x, y)
     }
 }
 
+/**
+ * @description Change the coordinates of data-objects
+ * @param {Array<Object>} objects Array of objects that will be moved
+ * @param {Number} x Coordinates along the x-axis to move
+ * @param {Number} y Coordinates along the y-axis to move
+ */
+function moveElements(objects, x, y)
+{
+    var idList = [];
+    objects.forEach(obj => {
+        if (settings.grid.snapToGrid) {
+            if (!ctrlPressed) {
+                // Calculate nearest snap point
+                obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+
+                // Set the new snap point to center of element
+                obj.x -= obj.width / 2
+                obj.y -= obj.height / 2;
+            } else {
+                obj.x += (targetDelta.x / zoomfact);
+                obj.y += (targetDelta.y / zoomfact);
+            }
+        }else {
+            obj.x -= (x / zoomfact);
+            obj.y -= (y / zoomfact);
+        }
+        // Add the object-id to the idList
+        idList.push(obj.id);
+    });
+    updatepos(0, 0);
+    stateMachine.save(StateChangeFactory.ElementsMoved(idList, x, y), StateChange.ChangeTypes.ELEMENT_MOVED);
+}
+
+
 function isKeybindValid(e, keybind)
 {
-    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || e.metaKey == keybind.meta);
+    return e.key.toLowerCase() == keybind.key.toLowerCase() && (e.ctrlKey == keybind.ctrl || e.metaKey == keybind.meta);
 }
 
 function findEntityFromLine(lineObj)
@@ -3931,7 +3984,6 @@ function updatepos(deltaX, deltaY)
     // Updates nodes for resizing
     removeNodes();
     if (context.length === 1 && mouseMode == mouseModes.POINTER && context[0].kind != "ERRelation") addNodes(context[0]);
-    
 
 }
 /**
