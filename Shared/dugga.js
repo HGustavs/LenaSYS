@@ -2100,7 +2100,7 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			str+="<div id='nextVariantBtn' style='width:0px;'><input class='submit-button large-button' type='button' value='Next Variant' onclick='selectNextVariant();' /></div>"; 
 		}
 
-		if(loadVariantFlag == false){
+		if(loadVariantFlag == false){	//If the 'Next variant' button is set to not be visable (Students). 
 			str+="<div id='nextVariantBtn' style='display:none;'><input class='submit-button large-button' type='button' value='Next Variant' /></div>"; 
 		}
 
