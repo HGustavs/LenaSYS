@@ -931,6 +931,7 @@ function returnedSection(data) {
             str += "<td style='width:32px;'><img title='Important message' src='../Shared/icons/warningTriangle.svg'></td>";
           }
           str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += `<td class='section-message item' placeholder='${momentexists}' id='I${item['lid']}' `;
         }
 
         // Close Information
@@ -938,20 +939,28 @@ function returnedSection(data) {
         // Content of Section Item
         if (itemKind == 0) {
           // Header
-          str += "<span style='margin-left:8px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
+          str += "<span style='margin-left:8px;' title='" + item['entryname'] + "'>" + 
+          item['entryname'] + "</span>";
         } else if (itemKind == 1) {
           // Section
-          str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
+          str += "<div class='nowrap" + hideState + 
+          "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
           str += "<span class='ellipsis listentries-span'>" + item['entryname'] + "</span>";
-          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
+          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + 
+          item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + 
+          item['lid'] + "' class='arrowRight' style='display:none;'></div>";
         } else if (itemKind == 4) {
           // Moment
           var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
-          str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
-          str += "<span class='ellipsis listentries-span'>" + item['entryname'] + " " + strz + " </span>";
-          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'>";
+          str += "<div class='nowrap" + hideState +
+          "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
+          str += "<span class='ellipsis listentries-span'>" + 
+          item['entryname'] + " " + strz + " </span>";
+          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" +
+          item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight" + 
+          item['lid'] + "' class='arrowRight' style='display:none;'>";
           str += "</div>";
         } else if (itemKind == 2) {
           // Code Example
@@ -962,7 +971,8 @@ function returnedSection(data) {
             'cvers': querystring['coursevers'],
             'lid': item['lid']
           };
-                    str += "<div class='ellipsis nowrap'><span>" + makeanchor("codeviewer.php", hideState, "margin-left:8px;", item['entryname'], false, param) + "</span></div>";
+                    str += "<div class='ellipsis nowrap'><span>" + makeanchor("codeviewer.php", 
+                    hideState, "margin-left:8px;", item['entryname'], false, param) + "</span></div>";
         } else if (itemKind == 3) {
           // Test / Dugga
           var param = {
@@ -977,7 +987,8 @@ function returnedSection(data) {
             deadline: item['deadline'],
             'cid': querystring['courseid']
           };
-          str += "<div class='ellipsis nowrap'><span>" + makeanchor("showDugga.php", hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, param) + "</span></div>";
+          str += "<div class='ellipsis nowrap'><span>" + makeanchor("showDugga.php", 
+          hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, param) + "</span></div>";
         } else if (itemKind == 5) {
           // Link
           if (item['link'].substring(0, 4) === "http") {
@@ -1021,7 +1032,8 @@ function returnedSection(data) {
           var yearFormat = "0000-";
           var dateFormat = "00-00";
 
-          str += "<td class='dateSize' style='text-align:right;overflow:hidden;'><div class='' style='white-space:nowrap;'>";
+          str += "<td class='dateSize' style='text-align:right;overflow:hidden;'>"+
+          "<div class='' style='white-space:nowrap;'>";
 
           if (dl[1] == timeFilterAndFormat) {
             str += "<div class='dateField'>";
@@ -1045,7 +1057,8 @@ function returnedSection(data) {
           // create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
             if (hasGracetimeExpired(deadline, dateTimeSubmitted)) {
-              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submission after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+              str += "<td style='width:25px;'>"+
+              "<img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submission after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
             }
           }
         }
@@ -1076,7 +1089,8 @@ function returnedSection(data) {
         
         // trashcan
         if (data['writeaccess'] || data['studentteacher']) {
-          str += "<td style='width:32px;' class='" + makeTextArray(itemKind, ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " " + hideState + "'>";
+          str += "<td style='width:32px;' class='" + makeTextArray(itemKind, 
+            ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " " + hideState + "'>";
           str += "<img alt='trashcan icon' id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
           str += "</td>";
         }
@@ -1154,7 +1168,8 @@ function returnedSection(data) {
       }
     }
   } else {
-    str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'><span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
+    str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'>"+
+    "<span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML+= str;
     $("#newCourseVersion").css("display", "block");
@@ -1374,7 +1389,10 @@ function drawSwimlanes() {
 
   var str = "";
   // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not.
-  str += "<defs><linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextGrey'><stop offset='85%' stop-opacity='1' stop-color='#000000' /><stop offset='100%' stop-opacity='0'/> </linearGradient> <linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'><stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
+  str += "<defs><linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextGrey'>"+
+  "<stop offset='85%' stop-opacity='1' stop-color='#000000' /><stop offset='100%' stop-opacity='0'/> </linearGradient> "+
+  "<linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'>"+
+  "<stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
   for (var i = 0; i < weekLength; i++) {
     if(i==0){
@@ -1392,13 +1410,13 @@ function drawSwimlanes() {
     } else {
       str += "fill='#ffffff' />";
     }
-    str += "<text x='" + ((i * widthAdjuster) + (widthAdjuster * 0.5) + (tempNumb * 0.5)) + "' y='" +
-    (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
+    str += `<text x='${((i * widthAdjuster) + (widthAdjuster * 0.5) + (tempNumb * 0.5))}' y='${(33)}' 
+    font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>${(i + 1)}</text>`;
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
-    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" +
-    (weekLength * weekwidth + (addNumb*10)) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
+    str += `<line x1='0' y1='${((i * weekheight) + 15)}' x2='
+    ${(weekLength * weekwidth + (addNumb*10))}' y2='${((i * weekheight) + 15)}' stroke='black' />`;
   }
 
 
@@ -1448,8 +1466,10 @@ function drawSwimlanes() {
         }
         var tempVariable = duggalength*daywidth;
 
-        str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
-        str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <title> " + entry.text + " </title>" + entry.text + "</text>";
+        str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='
+        ${(tempVariable)}' height='${weekheight}' fill='${fillcol}' />`;
+        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='
+        ${textcol}' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
       }
     }
   }
@@ -1796,13 +1816,17 @@ function getStudents(cid, userid){
       success: function(data){
         var item = JSON.parse(data);
         $("#recipient").find('*').not(':first').remove();
-        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'></optgroup>");
+        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'>"+
+        "</optgroup>");
         $.each(item.finished_students, function(index,item) {        
-          $("#finishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+          $("#finishedStudents").append(`<option value=${item.uid}>${item.firstname} 
+          ${item.lastname}</option>`);
         });
-        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'></optgroup>");
-        $.each(item.non_finished_students, function(index,item) {        
-          $("#nonfinishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'>"+
+        "</optgroup>");
+        $.each(item.non_finished_students, function(index,item) {
+          $("#nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname} 
+          ${item.lastname}</option>`);
         });
         $(".selectLabels label input").attr("disabled", false);
         selectRecipients();
@@ -1880,7 +1904,8 @@ function retrieveAnnouncementsCards(){
       xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           var parsed_data = JSON.parse(this.response);
-          document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+          document.getElementById("announcementCards").innerHTML = 
+          parsed_data.retrievedAnnouncementCard;
           var unread_announcements = parsed_data.nRows;
           if(unread_announcements > 0){
             $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
@@ -1898,7 +1923,8 @@ function retrieveAnnouncementsCards(){
 
         }
       };
-      xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid+"&recipient="+uid,true);
+      xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+
+      "&versid="+versid+"&recipient="+uid,true);
       xmlhttp.send();
     }
   });
@@ -1912,7 +1938,8 @@ function updateannouncementForm(updateannouncementid, cid, versid, tempFuction){
         tempFuction(this, updateannouncementid, cid, versid);
     }
   };
-  xmlhttp.open("GET","../Shared/updateAnnouncement.php?updateannouncementid="+updateannouncementid,true);
+  xmlhttp.open("GET","../Shared/updateAnnouncement.php?updateannouncementid="+
+  updateannouncementid,true);
   xmlhttp.send();
 
 }
@@ -1947,8 +1974,10 @@ function handleResponse(xhttp, updateannouncementid, cid, versid){
 
 //announcement card grid and list view
 function displayListAndGrid(){
-  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i alt="list icon" class="fa fa-bars"></i> List</button>'+
-    '<button class="btn active gridBtn"><i alt="grid icon" class="fa fa-th-large"></i> Grid</button></div><br>');
+  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn">'+
+  '<i alt="list icon" class="fa fa-bars"></i> List</button>'+
+    '<button class="btn active gridBtn"><i alt="grid icon" class="fa fa-th-large">'+
+    '</i> Grid</button></div><br>');
 
   var announcementCard = document.getElementsByClassName("announcementCard");
   var i;
@@ -2069,7 +2098,8 @@ function showLessOrMoreAnnouncements(){
       $(".announcementCard:gt(5)").hide();
       $("#displayAnnouncements")
       .append('<div class="showmoreBtnContainer"><button class="showAllAnnouncement">'+
-        '<span class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i></span>'+
+        '<span class="hvr-icon-forward"><span class="showmore">Show more</span>'+
+        '<i class="fa fa-chevron-circle-right hvr-icon"></i></span>'+
         '</button></div>');
   }
    $('.showAllAnnouncement').on('click', function() {
@@ -2167,8 +2197,10 @@ function toggleFeedbacks(){
           duggaFeedback = data.duggaFeedback;
           $(".feedbackContent").html(duggaFeedback);
           if ($(".recentFeedbacks").length == 0) {
-             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedback to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
-             $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'><img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
+             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedback to view.</span>"+
+             "<span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
+             $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'>"+
+             "<img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
           }
           $(".oldFeedbacks").hide();                  
           feedbackComment = 'feedbackComment';
@@ -2191,7 +2223,9 @@ function toggleFeedbacks(){
   });
 
   if ($("#feedback").length > 0) {
-    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div><div class='feedbackContent'></div></div></div>");
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'>"+
+    "<div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div>"+
+    "<div class='feedbackContent'></div></div></div>");
 
   }
 
@@ -2621,7 +2655,8 @@ function createUserFeedbackTable(data){
     if(data.userfeedback[i].username === null){
       str += "<td style='width:1px;'><input class='inactive-button' type='button' value='Contact student'></td>";
     }else{
-      str += "<td style='width:1px;'><input class='submit-button' type='button' value='Contact student' onclick='contactStudent(\"" + data.userfeedback[i].entryname + "\",\"" + data.userfeedback[i].username + "\")'></td>";
+      str += `<td style='width:1px;'><input class='submit-button' type='button' value='Contact student' onclick='contactStudent(\"
+      ${data.userfeedback[i].entryname}\",\"${data.userfeedback[i].username}\")'></td>`;
     }
     str += "</tr>";
   }
@@ -2635,7 +2670,8 @@ function createUserFeedbackTable(data){
 //------------------------------------------------------------------------------
 function contactStudent(entryname,username){
   
-  window.location = "mailto:" + username + "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga "+entryname;
+  window.location = "mailto:" + username + 
+  "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga "+entryname;
 }
 //------------------------------------------------------------------------------
 //Displays the feedback question input on enable-button toggle. 
