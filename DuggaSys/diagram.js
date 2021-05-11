@@ -1181,6 +1181,11 @@ window.onfocus = function()
     ctrlPressed=false;
 }
 
+document.addEventListener("mouseleave", function(event){
+    if (event.toElement == null && event.relatedTarget == null) {
+        pointerState = pointerStates.DEFAULT;
+    }
+});
 // --------------------------------------- Mouse Events    --------------------------------
 /**
  * @description Event function triggered when the mousewheel reader has a value of grater or less than 0.
@@ -1390,7 +1395,7 @@ function mup(event)
         case pointerStates.CLICKED_CONTAINER:
             if (event.target.id == "container") {
                 movingContainer = false;
-
+                
                 if (!deltaExceeded) {
                     if (mouseMode == mouseModes.EDGE_CREATION) {
                         clearContext();
@@ -1400,6 +1405,7 @@ function mup(event)
                     if (!ctrlPressed) clearContextLine();
                 }
             }
+            
             break;
 
         case pointerStates.CLICKED_LINE:
