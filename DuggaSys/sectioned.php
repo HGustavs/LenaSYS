@@ -158,11 +158,6 @@
 				<img src="../Shared/icons/right_complement.svg" id="sectionList_arrowStatisticsOpen">
 				<img src="../Shared/icons/desc_complement.svg" id="sectionList_arrowStatisticsClosed">
 			</div>
-
-			<div id="messagedialog" onclick="DisplayMSGofTDY()">
-                    <img alt='section format icon'  src='../Shared/icons/MOTD.svg'>
-            </div>
-
 			<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
 				<input id='addElement'  type='button' value='+' style="top:-493px" class='submit-button-newitem' title='New Item' >
 				<ol class='fab-btn-list2' style='display: none;'  reversed id='fabBtnList2'>
