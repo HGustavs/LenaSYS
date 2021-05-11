@@ -39,38 +39,26 @@ function GetAssignment ($hash){
 	return $URL;
 }
 
-function GetCourse(){
+function GetCourse($course){
 	global $pdo;
 
-	$sql = "SELECT coursename FROM course";
-	
-	$courses = array();
+	$sql = "SELECT activeversion, cid FROM course WHERE cid='{$course}'";
 
-	foreach($pdo->query($sql) as $c) {
-		array_push($courses, str_replace($c["coursename"], " ", "_"));
+	foreach ($pdo->query($sql) as $row) {
+		$cid = $row["cid"];
+		$activeversion = $row["activeversion"];
 	}
-
-	if (in_array($course, $courses)) {
-		$course = str_replace($course, "_", " ");
-		$sql = "SELECT activeversion, cid FROM course WHERE coursename='".$course."'";
-		foreach ($pdo->query($sql) as $row) {
-			$cid = $row["cid"];
-			$activeversion = $row["activeversion"];
-		}
-		$serverRoot = serverRoot();
-		header("Location: {$serverRoot}/DuggaSys/sectioned.php?courseid={$cid}&coursevers={$activeversion}");
-		exit();
-	}
-	
+	$serverRoot = serverRoot();
+	header("Location: {$serverRoot}/lenasys/DuggaSys/sectioned.php?courseid={$cid}&coursevers={$activeversion}");
+	exit();
 }
 
-//Här vill vi ändra
 if(($assignment != "UNK") &&($course == "UNK")){
 	$assignmentURL = GetAssignment($assignment);
 	header("Location: {$assignmentURL}");
 
 }else if(($course != "UNK") && ($assignment == "UNK")){
-	GetCourse();
+	GetCourse($course);
 	
 }else if(($assignment != "UNK") && ($course != "UNK")) {
 	$courseAndAssignmentURL = queryToUrl($course, $assignment);
@@ -80,11 +68,7 @@ else {
 	header("Location: ../errorpages/404.php");
 }
 
-/*
-else {//Här vill vi ändra, tror jag... kanske...
-	header("Location: ../errorpages/404.php");
-}*/
-
 $pdo = null;
+
 ?>
 
