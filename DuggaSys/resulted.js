@@ -51,13 +51,14 @@ function createSortableTable(data){
 			hash:"Hash",
 			password:"Password",
 			submitted:"Submission Date",
+			timesSubmitted: "Times submitted",
             grade: "Grade"
 		},
 		tblbody: data,
 		tblfoot:{}
 	};
 
-	var colOrder = ["duggaName","hash", "password", "submitted", "grade"];
+	var colOrder = ["duggaName","hash", "password", "submitted", "timesSubmitted", "grade"];
 	myTable = new SortableTable({
 		data: tabledata,
 		tableElementId: tableName,
