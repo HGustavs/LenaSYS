@@ -231,8 +231,36 @@ function renderCommits(data) {
 
   return str;
 }
-function drawCommitTree(x1, x2, y1, y2, xmul, ymul){
 
+/* 
+  Function to draw the actuall comiit tree inside the SVG.
+  X is Commit order, Y is Commit nesting
+    Param x1 = cid's x coordinate
+    Param x1 = cid's y coordinate
+    Param y2 = parent id's x coordinate for lines
+    Param y2 = parent id's y coordinate for lines
+    Param xmul = good question, the fuuq is this?
+    Param ymul = good question, the fuuq is this?
+*/
+function drawCommitTree(x1, x2, y1, y2, xmul, ymul){
+  
+  var colors = ["#246","#26A","#4BA","#59C","#DE7","#FB5","#FD5","#E64","#85A","#45A"]; //collection of array to hold different colors? Maybe keep this in renderCommits() and sens as parameter based on the commits author?
+  var color = colors[y1%size(colors)]; // Reworks the colors array with % calcultation against y1. Leaves one color to use for lines between commits (MAYBE?!?)
+
+  var strokew = xmul * 0.1; //Guessing a calculation for stroke width for colored lines
+  var str = "";
+
+  //Draw the circle reptresenting each commit
+
+  //Draw the line between child- and parent commits
+  if(Math.abs(x2-x1)>1 && (y1 != y2)){ //Math.abs() returns the calculations absolute value
+    str += `<line x1='${(x1*xmul)}'  y1='${(y1*ymul)}' x2='${((x2-1)*xmul)}' y2='${(y1*ymul)}' stroke='${color}' style='stroke-width:${strokew}' />`;
+    str += `<line x1='${((x2-1)*xmul)}'  y1='${(y1*ymul)}' x2='${(x2*xmul)}' y2='${(y2*ymul)}' stroke='${color}' style='stroke-width:${strokew}' />`;
+  }else{
+    str +=`<line x1='${(x1*xmul)} + "'  y1='${(y1*ymul)}' x2='${(x2*xmul)}' y2='${(y2*ymul)}' stroke='${color}' style='stroke-width:${strokew}"' />`;
+  }
+
+  return str;
 }
 
 function renderLineDiagram(data) {
