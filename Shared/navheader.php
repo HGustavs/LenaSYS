@@ -202,7 +202,7 @@
 							echo "</td>";
 							echo "<input type='text' id='adminLoggedin' value='yes' style='display:none;'>";
 
-							//Dropdown menu for teachers
+							//Dropdown Menu For Teachers
 							echo "<div id='hamburgerBox'>";
 							echo "<div id='announcementBurger'><img alt='announcement icon'  class='burgerButt' src='../Shared/icons/new_announcement_icon.svg'><p>Announcements</p></div>";
 
