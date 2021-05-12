@@ -180,6 +180,7 @@ function renderCommits(data) {
   //creating the svg to put the commit tree in
   var str = "<h2>Commit tree</h2>";
   str += "<svg id='commitTree' viewBox='0 0 600 250' style='background-color:#efefef;'width='100%' height='250' aria-labelledby='title desc' role='img'>";
+  
 
   var current = new Date();
   var currentYear = current.getFullYear();
@@ -240,8 +241,8 @@ function renderCommits(data) {
     Param x1 = cid's y coordinate
     Param y2 = parent id's x coordinate for lines
     Param y2 = parent id's y coordinate for lines
-    Param xmul = good question, the fuuq is this?
-    Param ymul = good question, the fuuq is this?
+    Param xmul = multiplyer for x
+    Param ymul = multiplyer for y
 */
 function drawCommitTree(x1, x2, y1, y2, xmul, ymul){
   
@@ -255,11 +256,11 @@ function drawCommitTree(x1, x2, y1, y2, xmul, ymul){
 
   //Draw the line between child- and parent commits
   if(Math.abs(x2-x1)>1 && (y1 != y2)){ //Math.abs() returns the calculations absolute value
-    str += `<line x1='${(x1*xmul)}'  y1='${(y1*ymul)}' x2='${((x2-1)*xmul)}' y2='${(y1*ymul)}' stroke='${color}' style='stroke-width:${strokew}' />`;
-    str += `<line x1='${((x2-1)*xmul)}'  y1='${(y1*ymul)}' x2='${(x2*xmul)}' y2='${(y2*ymul)}' stroke='${color}' style='stroke-width:${strokew}' />`;
+    str += `<line x1=${(x1*xmul)} y1=${(y1*ymul)} x2=${((x2-1)*xmul)} y2=${(y1*ymul)} stroke='${color}' style='stroke-width:${strokew}' />`;
+    str += `<line x1=${((x2-1)*xmul)} y1=${(y1*ymul)} x2=${(x2*xmul)} y2=${(y2*ymul)} stroke='${color}' style='stroke-width:${strokew}' />`;
     
   }else{
-    str +=`<line x1='${(x1*xmul)} + "'  y1='${(y1*ymul)}' x2='${(x2*xmul)}' y2='${(y2*ymul)}' stroke='${color}' style='stroke-width:${strokew}"' />`;
+    str +=`<line x1=${(x1*xmul)}  y1=${(y1*ymul)} x2=${(x2*xmul)} y2=${(y2*ymul)} stroke='${color}' style='stroke-width:${strokew}"' />`;
   }
 
   return str;
