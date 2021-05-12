@@ -65,10 +65,17 @@ class StateChange {
         if(values != undefined){
             var keys = Object.keys(values);
 
-            keys.forEach(key => {
-                this[key] = values[key]
-            });
+            // If "values" is an array of objects, store all objects in the "state.created" array.
+            if(keys[0] == '0') {
+                this.created = values;
+            }else{
+                keys.forEach(key => {
+                    this[key] = values[key];
+                });
+            }
         }
+
+        this.time = new Date().getTime();
     }
 
     /**
@@ -86,10 +93,12 @@ class StateChange {
              * If the current key in the loop is a number, update the value or if it do not
              * exists, set the value. Else just set the value.
              */
-            if (!isNaN(changes[key])){
+            if (key == "time" || key == "id") return; // Ignore this keys.
+
+            if ((typeof changes[key]) == "number") {
                 if (this[key] === undefined) this[key] = changes[key];
                 else this[key] += changes[key]
-            }else {
+            } else {
                 this[key] = changes[key];
             }
         });
@@ -325,11 +334,6 @@ class StateMachine
         this.historyLog = [];
 
         /**
-         * @type Array<StateChange>
-         */
-        this.futureLog = [];
-
-        /**
          * Our initial data values
          */
         this.initialState = {
@@ -367,7 +371,6 @@ class StateMachine
     save (stateChange, changeType)
     {
         if (stateChange instanceof StateChange) {
-
             // Remove the history entries that are after current index
             while(this.currentHistoryIndex + 1 != this.historyLog.length) {
                 this.historyLog.pop();
@@ -381,38 +384,62 @@ class StateMachine
 
                 // Check if the element is the same
                 var sameElements = true;
-                if (Array.isArray(lastLog.id)){
-                    if (stateChange.id.length != lastLog.id.length) sameElements = false;
-                    for (var index = 0; index < lastLog.id.length && sameElements; index++) {
-                        var id_found = lastLog.id[index];
-
-                        if (!stateChange.id.includes(id_found)) sameElements = false;
-
-                    }
-                }else {
-                    if (lastLog.id != stateChange.id) sameElements = false;
-                }
-
-                // Check if the current change is soft
                 var isSoft = true;
-                if (Array.isArray(changeType)){
+				
+				// Change is creation of elements, no need for history comparisions
+                if(stateChange.created != undefined) {
+                    sameElements = false;
+                } else { // Perform history comparisions
+                    if (Array.isArray(lastLog.id)){
+                        if (stateChange.id.length != lastLog.id.length) sameElements = false;
+                        for (var index = 0; index < lastLog.id.length && sameElements; index++) {
+                            var id_found = lastLog.id[index];
+    
+                            if (!stateChange.id.includes(id_found)) sameElements = false;
+    
+                        }
+                    }else {
+                        if (lastLog.id != stateChange.id) sameElements = false;
+                    }
+    
+                    if (Array.isArray(changeType)){
                     for (var index = 0; index < changeType.length && isSoft; index++) {
                         isSoft = changeType[index].isSoft;
                     }
                     var changeTypes = changeType;
-                }else {
-                    isSoft = changeType.isSoft;
-                    var changeTypes = [changeType];
-                }
+					}else {
+						isSoft = changeType.isSoft;
+						var changeTypes = [changeType];
+					}
 
-                // Check if the change can be appended to last change
-                var canAppendToLast = true;
-                for (var index = 0; index < this.lastFlag.length && isSoft; index++) {
-                    canAppendToLast = this.lastFlag[index].canAppendTo;
-                }
+					// Find last change with the same ids
+					var timeLimit = 10; // Timelimit on history append in seconds
+					for (var index = this.historyLog.length - 1; index >= 0; index--){
 
+					    // Check so if the changeState is not an created-object
+					    if (this.historyLog[index].created != undefined) continue;
+
+						var sameIds = true;
+						if(stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
+
+						for (var idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++){
+							if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
+						}
+
+						// If the found element has the same ids.
+						if (sameIds){
+							// If this historyLog is within the timeLimit
+							if(((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit){
+								lastLog = this.historyLog[index];
+								sameElements = true;
+							}
+							break;
+						}
+					}
+                }
+                
                 // If NOT soft change, push new change onto history log
-                if (!isSoft || !canAppendToLast || !sameElements) {
+                if (!isSoft || !sameElements) {
 
                     this.historyLog.push(stateChange);
                     this.lastFlag = changeType;
@@ -446,6 +473,8 @@ class StateMachine
         } else {
             console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
         }
+        // Change the sliders max to historyLogs length
+        document.getElementById("replay-range").setAttribute("max", this.historyLog.length.toString());
     }
 
     /**
@@ -468,9 +497,8 @@ class StateMachine
         displayMessage(messageTypes.SUCCESS, "Changes reverted!")
     }
     stepForward(){
-        // If there is no history => return
-        // If the current index is last index
-        if (this.currentHistoryIndex == -1 && this.historyLog.length -1 == this.currentHistoryIndex) return;
+        // If there is not anything to restore => return
+        if (this.historyLog.length == 0 || this.currentHistoryIndex == (this.historyLog.length -1)) return;
 
         // Increase the currentHistoryIndex by one
         this.currentHistoryIndex++;
@@ -486,25 +514,21 @@ class StateMachine
     }
     scrubHistory(endIndex)
     {
-        // Set initial values to data and lines.
-        data = [];
-        lines = [];
-
-        this.initialState.elements.forEach(element => {
-            var obj = {};
-            Object.assign(obj, element);
-            data.push(obj)
-        });
-        this.initialState.lines.forEach(line => {
-            var obj = {};
-            Object.assign(obj, line);
-            lines.push(obj)
-        });
+        this.gotoInitialState();
 
         for (var i = 0; i < endIndex; i++) {
             this.restoreState(this.historyLog[i]);
         }
+
+        // Update diagram
+        clearContext();
+        showdata();
+        updatepos(0, 0);
     }
+    /**
+     * @description Restore an given state
+     * @param {StateChange} state The state that should be restored
+     */
     restoreState(state)
     {
         // Get all keys from the state.
@@ -534,17 +558,17 @@ class StateMachine
         }
 
         // If index 0 is an object and that object has an value of the key "id"
-        if (typeof state[0] === 'object' && state[0].id != undefined){
+        if (state.created != undefined && state.created[0].id != undefined){
 
-            Object.keys(state).forEach(index => {
+            Object.keys(state.created).forEach(index => {
                 var temp = {};
-                Object.keys(state[index]).forEach(key => {
-                    if (key == "id") temp.id = state[index][key];
-                    else temp[key] = state[index][key];
+                Object.keys(state.created[index]).forEach(key => {
+                    if (key == "id") temp.id = state.created[index][key];
+                    else temp[key] = state.created[index][key];
                 });
 
                 // If the object is an element
-                if (state[index].x && state[index].y){
+                if (state.created[index].x && state.created[index].y){
                     // Add the defaults to the element
                     Object.keys(defaults[temp.kind]).forEach(key => {
                         if (!temp[key]) temp[key] = defaults[temp.kind][key];
@@ -574,8 +598,8 @@ class StateMachine
             if (object){
                 // For every key, apply the changes
                 keys.forEach(key => {
-                    if (key == "id") return;
-                    if (!isNaN(state[key])){
+                    if (key == "id" || key == "time") return; // Ignore this keys.
+                    if ((typeof state[key]) == "number"){
                         if (object[key] === undefined) object[key] = state[key];
                         else object[key] += state[key]
                     }else {
@@ -606,6 +630,71 @@ class StateMachine
             }
         }
     }
+    /**
+     * @description Go back to the inital state in the diagram
+     */
+    gotoInitialState()
+    {
+        // Set initial values to data and lines.
+        data = [];
+        lines = [];
+
+        this.initialState.elements.forEach(element => {
+            var obj = {};
+            Object.assign(obj, element);
+            data.push(obj)
+        });
+        this.initialState.lines.forEach(line => {
+            var obj = {};
+            Object.assign(obj, line);
+            lines.push(obj)
+        });
+        clearContext();
+        showdata();
+        updatepos(0, 0);
+    }
+    /**
+     * @description Create a timers and go-through all states
+     * @param {Number} cri The starting index of the replay
+     */
+    replay(cri = parseInt(document.getElementById("replay-range").value))
+    {
+
+        // If no history exists => return
+        if (this.historyLog.length == 0) return;
+
+        clearInterval(this.replayTimer);
+
+        // If cri (CurrentReplayIndex) is the last set to beginning
+        if(cri == this.historyLog.length) cri = 0;
+
+        setReplayRunning(true);
+        document.getElementById("replay-range").value = cri.toString();
+
+        // Go back to the beginning.
+        this.scrubHistory(cri);
+
+        var self = this;
+        this.replayTimer = setInterval(function() {
+
+            self.restoreState(self.historyLog[cri]);
+
+            // Update diagram
+            clearContext();
+            showdata();
+            updatepos(0, 0);
+
+            // Update current index for the replay
+            cri++;
+            document.getElementById("replay-range").value = cri;
+
+            if (self.historyLog.length == cri){
+                clearInterval(self.replayTimer);
+                setReplayRunning(false);
+            }
+        }, settings.replay.delay * 1000)
+
+    }
 }
 //#endregion ===================================================================================
 //#region ================================ ENUMS                ================================
@@ -635,8 +724,8 @@ const keybinds = {
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
         ENTER: {key: "enter", ctrl: false},
-        COPY: {key: "c", ctrl: true},
-        PASTE: {key: "v", ctrl: true},
+        COPY: {key: "c", ctrl: true, meta: true},
+        PASTE: {key: "v", ctrl: true, meta: true},
         SELECT_ALL: {key: "a", ctrl: true},
         DELETE_B: {key: "backspace", ctrl: false}
 };
@@ -820,8 +909,6 @@ var movingContainer = false;
 //Grid Settings
 var settings = {
     ruler: {
-        lineRatio: 10,
-        fullLineRatio: 10,
         ZF: 100 * zoomfact,
         zoomX: Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact)),
         zoomY: Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact)),
@@ -837,6 +924,10 @@ var settings = {
         errorMsgMap: {},
     },
     zoomPower: 1 / 3,
+    replay: {
+        active: false,
+        delay: 1,
+    }
 };
 
 
@@ -907,7 +998,7 @@ function onSetup()
         { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", id: BdaleDependent_ID, isLocked: false, state: "Normal" },
         { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", id: Ssn_ID, isLocked: false, state: "key"},
         { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", id: Name_ID, isLocked: false },
-        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", id: NameDependent_ID, isLocked: false, state: "key"},
+        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", id: NameDependent_ID, isLocked: false, state: "weakKey"},
         { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", id: NameProject_ID, isLocked: false, state: "key"},
         { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", id: NameDEPARTMENT_ID, isLocked: false, state: "key"},
         { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", id: Address_ID, isLocked: false },
@@ -917,21 +1008,21 @@ function onSetup()
         { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID, isLocked: false },
         { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", id: Initial_ID, isLocked: false },
         { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID, isLocked: false },
-        { name: "SUPERVISIONS", x: 100, y: 400, width: 180, height: 120, kind: "ERRelation", id: SUPERVISION_ID, isLocked: false },
-        { name: "DEPENDENTS_OF", x: 270, y: 450, width: 180, height: 120, kind: "ERRelation", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak"},
+        { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", id: SUPERVISION_ID, isLocked: false },
+        { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak"},
         { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", id: DEPENDENT_ID, isLocked: false, state: "weak"},
         { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", id: Number_of_depends_ID, isLocked: false, state: "computed"},
-        { name: "WORKS_ON", x: 600, y: 470, width: 180, height: 120, kind: "ERRelation", id: WORKS_ON_ID, isLocked: false },
-        { name: "Hours", x: 750, y: 420, width: 90, height: 45, kind: "ERAttr", id: Hours_ID, isLocked: false },
+        { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", id: WORKS_ON_ID, isLocked: false },
+        { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", id: Hours_ID, isLocked: false },
         { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", id: PROJECT_ID, isLocked: false },
         { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", id: NumberProject_ID, isLocked: false, state: "key"},
         { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", id: Location_ID, isLocked: false},
-        { name: "MANAGES", x: 600, y: 300, width: 180, height: 120, kind: "ERRelation", id: MANAGES_ID, isLocked: false },
+        { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", id: MANAGES_ID, isLocked: false },
         { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", id: Start_date_ID, isLocked: false },
-        { name: "CONTROLS", x: 1010, y: 300, width: 180, height: 120, kind: "ERRelation", id: CONTROLS_ID, isLocked: false },
+        { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", id: CONTROLS_ID, isLocked: false },
         { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", id: DEPARTMENT_ID, isLocked: false },
         { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", id: Locations_ID, isLocked: false, state: "multiple" },
-        { name: "WORKS_FOR", x: 550, y: 60, width: 180, height: 120, kind: "ERRelation", id: WORKS_FOR_ID, isLocked: false },
+        { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", id: WORKS_FOR_ID, isLocked: false },
         { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", id: NumberDEPARTMENT_ID, isLocked: false, state: "key"},
         { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", id: Number_of_employees_ID, isLocked: false, state: "computed"},
     ];
@@ -945,7 +1036,6 @@ function onSetup()
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "MANY" },
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "ONE"},
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: DEPENDENTS_OF_ID, kind: "Normal", cardinality: "ONE" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: MANAGES_ID, kind: "Normal", cardinality: "ONE"},
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "MANY" },
 
         { id: makeRandomID(), fromID: Name_ID, toID: FNID, kind: "Normal" },
@@ -962,21 +1052,22 @@ function onSetup()
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_ON_ID, kind: "Double", cardinality: "MANY" },
         { id: makeRandomID(), fromID: Hours_ID, toID: WORKS_ON_ID, kind: "Normal"},
 
-        { id: makeRandomID(), fromID: WORKS_ON_ID, toID: PROJECT_ID, kind: "Double", cardinality: "MANY"},
+        { id: makeRandomID(), fromID: PROJECT_ID, toID: WORKS_ON_ID, kind: "Double", cardinality: "MANY"},
+        { id: makeRandomID(), fromID: PROJECT_ID, toID: CONTROLS_ID, kind: "Normal", cardinality: "MANY"},
         { id: makeRandomID(), fromID: NameProject_ID, toID: PROJECT_ID, kind: "Normal"},
         { id: makeRandomID(), fromID: NumberProject_ID, toID: PROJECT_ID, kind: "Normal"},
         { id: makeRandomID(), fromID: Location_ID, toID: PROJECT_ID, kind: "Normal"},
-        { id: makeRandomID(), fromID: CONTROLS_ID, toID: PROJECT_ID, kind: "Normal",cardinality: "MANY"},
         
         { id: makeRandomID(), fromID: MANAGES_ID, toID: Start_date_ID, kind: "Normal"},
+        { id: makeRandomID(), fromID: MANAGES_ID, toID: EMPLOYEE_ID, kind: "Normal", cardinality: "ONE"},
+        { id: makeRandomID(), fromID: MANAGES_ID, toID: DEPARTMENT_ID, kind: "Double", cardinality: "ONE"},
 
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Locations_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: CONTROLS_ID, kind: "Normal", cardinality: "ONE" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NameDEPARTMENT_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NumberDEPARTMENT_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: MANAGES_ID, kind: "Double", cardinality: "ONE" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Number_of_employees_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: WORKS_FOR_ID, toID: DEPARTMENT_ID, kind: "Double", cardinality: "ONE" },
+        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "ONE" },
     ];
 
     for(var i = 0; i < demoData.length; i++){
@@ -1031,9 +1122,14 @@ document.addEventListener('keydown', function (e)
     if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
     if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
 
+    if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true){
+        toggleReplay();
+        setReplayRunning(false);
+        clearInterval(stateMachine.replayTimer);
+    }
+
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-
         if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
             escPressed = true;
             if(context.length > 0 || contextLine.length > 0) {
@@ -1069,7 +1165,7 @@ document.addEventListener('keydown', function (e)
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
             e.preventDefault();
             selectAll();
-        }      
+        }
 
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
@@ -1085,22 +1181,29 @@ document.addEventListener('keydown', function (e)
 document.addEventListener('keyup', function (e)
 {
     var pressedKey = e.key.toLowerCase();
-
+  
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
-    if (pressedKey == keybinds.META.key) ctrlPressed = false;
+    if (pressedKey == keybinds.META.key) {
+          setTimeout(() => {
+              ctrlPressed = false;
+          }, 1000);
+      }
 
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-
         if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) stateMachine.stepBack();
         if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
+            
             if (contextLine.length > 0) removeLines(contextLine);
+            if (mouseMode == mouseModes.EDGE_CREATION) return;
             if (context.length > 0) removeElements(context);
-
+            
+    
             updateSelection();
+            
         }
         
         if(isKeybindValid(e, keybinds.POINTER)) setMouseMode(mouseModes.POINTER);
@@ -1131,8 +1234,8 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
         if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
-        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(clipboard)
-        
+        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(clipboard);
+
         if (isKeybindValid(e, keybinds.COPY)){
             clipboard = context;
             if (clipboard.length !== 0){
@@ -1163,6 +1266,11 @@ window.onfocus = function()
     ctrlPressed=false;
 }
 
+document.addEventListener("mouseleave", function(event){
+    if (event.toElement == null && event.relatedTarget == null) {
+        pointerState = pointerStates.DEFAULT;
+    }
+});
 // --------------------------------------- Mouse Events    --------------------------------
 /**
  * @description Event function triggered when the mousewheel reader has a value of grater or less than 0.
@@ -1184,8 +1292,16 @@ function mwheel(event)
  */
 function mdown(event)
 {
-    // If the middle mouse button (mouse3) is pressed set scroll start values
+    // Prevent middle mouse panning when moving an object
     if(event.button == 1) {
+        if (movingObject) {
+            event.preventDefault();
+            return;
+        } 
+    }
+
+    // If the middle mouse button (mouse3) is pressed OR replay-mode is active, set scroll start values
+    if(event.button == 1  || settings.replay.active) {
         pointerState = pointerStates.CLICKED_CONTAINER;
         sscrollx = scrollx;
         sscrolly = scrolly;
@@ -1228,13 +1344,22 @@ function mdown(event)
     }
 
     // Check if not an element OR node has been clicked at the event
-    if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT){
+    if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT && !settings.replay.active){
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
-        if (determinedLines){
+      
+        if (determinedLines) {
            pointerState=pointerStates.CLICKED_LINE;
+
+            if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                wasDblClicked = true;
+                document.getElementById("options-pane").className = "show-options-pane";
+            }
         }
     }
+
+    dblPreviousTime = new Date().getTime();
+    wasDblClicked = false;
 }
 
 /**
@@ -1259,8 +1384,8 @@ function ddown(event)
         }
     }   
 
-    // If the middle mouse button (mouse3) is pressed => return
-    if(event.button == 1) return;
+    // If the middle mouse button (mouse3) is pressed OR replay-mode is active => return
+    if(event.button == 1 || settings.replay.active) return;
 
     // If the right mouse button is pressed => return
     if(event.button == 2) return;
@@ -1372,7 +1497,7 @@ function mup(event)
         case pointerStates.CLICKED_CONTAINER:
             if (event.target.id == "container") {
                 movingContainer = false;
-
+                
                 if (!deltaExceeded) {
                     if (mouseMode == mouseModes.EDGE_CREATION) {
                         clearContext();
@@ -1382,6 +1507,7 @@ function mup(event)
                     if (!ctrlPressed) clearContextLine();
                 }
             }
+            
             break;
 
         case pointerStates.CLICKED_LINE:
@@ -2348,7 +2474,7 @@ function setPos(id, x, y)
 
 function isKeybindValid(e, keybind)
 {
-    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || e.metaKey == keybind.meta);
+    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
 
 function findEntityFromLine(lineObj)
@@ -2685,6 +2811,105 @@ function toggleGrid()
    }
 }
 
+/**
+ * @description Toggles the replay-mode, shows replay-panel, hides unused elements
+ */
+function toggleReplay()
+{
+    // If there is no history => display error and return
+    if (stateMachine.historyLog.length == 0){
+        displayMessage(messageTypes.ERROR, "Sorry, you need to make changes before enter the replay-mode");
+        return;
+    }
+
+    // Get DOM-elements for styling
+    var replayBox = document.getElementById("diagram-replay-box");
+    var optionsPane = document.getElementById("options-pane");
+    var fab = document.getElementById("fab");
+    var toolbar = document.getElementById("diagram-toolbar");
+    var ruler = document.getElementById("rulerOverlay");
+    var zoomIndicator = document.getElementById("zoom-message-box");
+    var replyMessage = document.getElementById("diagram-replay-message");
+
+    if (settings.replay.active) {
+        // Restore the diagram to state before replay-mode
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex + 1);
+
+        settings.ruler.zoomX -= 50;
+        // Change HTML DOM styling
+        replayBox.style.visibility = "hidden";
+        optionsPane.style.visibility = "visible";
+        fab.style.visibility = "visible";
+        toolbar.style.visibility = "visible";
+        ruler.style.left = "50px";
+        zoomIndicator.style.bottom = "5px";
+        zoomIndicator.style.left = "100px";
+        replyMessage.style.visibility = "hidden";
+    } else {
+        settings.ruler.zoomX += 50;
+        // Clear selected elements and lines
+        clearContext();
+        clearContextLine();
+
+        // Set mousemode to Pointer
+        setMouseMode(0);
+
+        stateMachine.scrubHistory(parseInt(document.getElementById("replay-range").value));
+
+        // Change HTML DOM styling
+        replayBox.style.visibility = "visible";
+        optionsPane.style.visibility = "hidden";
+        fab.style.visibility = "hidden";
+        toolbar.style.visibility = "hidden";
+        ruler.style.left = "0";
+        zoomIndicator.style.bottom = "55px";
+        zoomIndicator.style.left = "45px";
+        replyMessage.style.visibility = "visible";
+    }
+    drawRulerBars(scrollx, scrolly);
+
+    // Change the settings boolean for replay active
+    settings.replay.active = !settings.replay.active;
+}
+/**
+ * @description Sets the replay-delay value
+ */
+function setReplayDelay(value)
+{
+    var replayDelayMap = {
+        1: 0.1,
+        2: 0.25,
+        3: 0.50,
+        4: 0.75,
+        5: 1,
+        6: 1.25,
+        7: 1.5,
+        8: 1.75,
+        9: 2
+    }
+    settings.replay.delay = replayDelayMap[value];
+    document.getElementById("replay-time-label").innerHTML = `Delay (${settings.replay.delay}s)`;
+}
+/**
+ * @description Changes the play/pause button and locks/unlocks the sliders in replay-mode
+ * @param {boolean} state The state if the replay-mode is running
+ */
+function setReplayRunning(state)
+{
+    var button = document.getElementById("diagram-replay-switch");
+    var delaySlider = document.getElementById("replay-time");
+    var stateSlider = document.getElementById("replay-range");
+
+    if (state){
+        button.innerHTML = '<div class="diagramIcons" onclick="clearInterval(stateMachine.replayTimer);setReplayRunning(false)"><img src="../Shared/icons/pause.svg"></div>';
+        delaySlider.disabled = true;
+        stateSlider.disabled = true;
+    }else{
+        button.innerHTML = '<div class="diagramIcons" onclick="stateMachine.replay()"><img src="../Shared/icons/Play.svg"></div>';
+        delaySlider.disabled = false;
+        stateSlider.disabled = false;
+    }
+}
 /**
  * @description Toggles the A4 template ON/OFF.
  */
@@ -3030,8 +3255,9 @@ function generateToolTips()
  */
 function setRulerPosition(x, y) 
 {
-    document.getElementById("ruler-x").style.left = x - 51 + "px";
-    document.getElementById("ruler-y").style.top = y + "px";
+    //40 is the size of the actual ruler and 51 is the toolbar on the left side
+    if(x >= 40 + 51) document.getElementById("ruler-x").style.left = x - 51 + "px";
+    if(y >= 40) document.getElementById("ruler-y").style.top = y + "px";
 }
 
 /**
@@ -3673,7 +3899,7 @@ function removeNodes()
  * @description Draw and updates the rulers, depending on the window size and current position in the diagram.
  */
 function drawRulerBars(X,Y)
-{
+{ 
     //Get elements
     if(!settings.ruler.isRulerActive) return;
     
@@ -3681,13 +3907,18 @@ function drawRulerBars(X,Y)
     svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
 
-
+    const lineRatio = 10;
+    
     var barY, barX = "";
     const color = "black";
     var cordY = 0;
     var cordX = 0;
+    settings.ruler.ZF = 100 * zoomfact;
     var pannedY = (Y - settings.ruler.ZF) / zoomfact;
     var pannedX = (X - settings.ruler.ZF) / zoomfact;
+    settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact));
+    settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
+
 
     if(zoomfact < 0.5){
         var verticalText = "writing-mode= 'vertical-lr'";
@@ -3696,12 +3927,12 @@ function drawRulerBars(X,Y)
     }
     
     //Draw the Y-axis ruler positive side.
-    var lineNumber = (settings.ruler.lineRatio - 1);
-    for (i = 100 + settings.ruler.zoomY; i <= pannedY -(pannedY *2) + cheight ; i += (settings.ruler.lineRatio*zoomfact)) {
+    var lineNumber = (lineRatio - 1);
+    for (i = 100 + settings.ruler.zoomY; i <= pannedY -(pannedY *2) + cheight ; i += (lineRatio*zoomfact)) {
         lineNumber++;
          
         //Check if a full line should be drawn
-        if (lineNumber === settings.ruler.lineRatio) {
+        if (lineNumber === lineRatio) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
             barY += "<text x='2' y='"+(pannedY+i+10)+"'style='font-size: 10px'>"+cordY+"</text>";
@@ -3712,13 +3943,13 @@ function drawRulerBars(X,Y)
     }
 
     //Draw the Y-axis ruler negative side.
-    lineNumber = (settings.ruler.lineRatio - 11);
+    lineNumber = (lineRatio - 11);
     cordY = -100;
-    for (i = -100 - settings.ruler.zoomY; i <= pannedY; i += (settings.ruler.lineRatio*zoomfact)) {
+    for (i = -100 - settings.ruler.zoomY; i <= pannedY; i += (lineRatio*zoomfact)) {
         lineNumber++;
          
         //Check if a full line should be drawn
-        if (lineNumber === settings.ruler.lineRatio) {
+        if (lineNumber === lineRatio) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
             barY += "<text x='2' y='"+(pannedY-i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
@@ -3732,12 +3963,12 @@ function drawRulerBars(X,Y)
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
     
     //Draw the X-axis ruler positive side.
-    lineNumber = (settings.ruler.lineRatio - 1);
-    for (i = 51 + settings.ruler.zoomX; i <= pannedX - (pannedX *2) + cwidth; i += (settings.ruler.lineRatio*zoomfact)) {
+    lineNumber = (lineRatio - 1);
+    for (i = 51 + settings.ruler.zoomX; i <= pannedX - (pannedX *2) + cwidth; i += (lineRatio*zoomfact)) {
         lineNumber++;
         
         //Check if a full line should be drawn
-        if (lineNumber === settings.ruler.lineRatio) {
+        if (lineNumber === lineRatio) {
             lineNumber = 0;
             barX += "<line x1='" +(i+pannedX)+"' y1='0' x2='" + (i+pannedX) + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
@@ -3748,13 +3979,13 @@ function drawRulerBars(X,Y)
     }
 
     //Draw the X-axis ruler negative side.
-    lineNumber = (settings.ruler.lineRatio - 11);
+    lineNumber = (lineRatio - 11);
     cordX = -100;
-    for (i = -51 - settings.ruler.zoomX; i <= pannedX; i += (settings.ruler.lineRatio*zoomfact)) {
+    for (i = -51 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio*zoomfact)) {
         lineNumber++;
         
         //Check if a full line should be drawn
-        if (lineNumber === settings.ruler.lineRatio) {
+        if (lineNumber === lineRatio) {
             lineNumber = 0;
             barX += "<line x1='" +(pannedX-i)+"' y1='0' x2='" + (pannedX-i) + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px'>"+cordX+"</text>";
@@ -3922,8 +4153,8 @@ function updatepos(deltaX, deltaY)
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER) addNodes(context[0]);
-
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && context[0].kind != "ERRelation") addNodes(context[0]);
+    
 
 }
 /**
@@ -4025,9 +4256,9 @@ function drawSelectionBox(str)
  */
 function updateCSSForAllElements()
 {
+    
     function updateElementDivCSS(elementData, divObject, useDelta = false)
     {
-        
         var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
             top = Math.round((((elementData.y - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 

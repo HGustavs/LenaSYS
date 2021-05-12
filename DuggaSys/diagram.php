@@ -25,7 +25,7 @@
 <body onload="getData()" style="overflow: hidden;">
 
     <!-- Toolbar for diagram -->
-    <div id="diagram-toolbar" onmousedown='mdown(event)'>
+    <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='mup(event)'>
         <fieldset>
             <legend>Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
@@ -118,6 +118,9 @@
                     <p id="tooltip-TOGGLE_A4" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
+        </fieldset>
+        <fieldset>
+            <legend>History</legend>
             <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
                 <img src="../Shared/icons/diagram_stepforward.svg"/>
                 <span class="toolTipText"><b>Toggle step forward</b><br>
@@ -131,8 +134,14 @@
                     <p>Click to step back in history</p><br>
                     <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
                 </span>
-            </div>            
+            </div>
+            <div id="replayToggle" class="diagramIcons" onclick="toggleReplay()">
+                <img src="../Shared/icons/diagram_replay.svg"/>
+                <span class="toolTipText"><b>Toggle replay</b><br>
+                    <p>Click to start replay</p><br>
+                </span>
         </fieldset>
+
     </div>
 
     <!-- Message prompt -->
@@ -195,6 +204,34 @@
             </fieldset>
         </div>
     </div>
+    </div>
+    <!-- Replay-mode -->
+    <div id="diagram-replay-box">
+        <div style=";display: flex;">
+            <fieldset style="display: flex; justify-content: space-between">
+                <div id="diagram-replay-switch">
+                    <div class="diagramIcons" onclick="stateMachine.replay()">
+                        <img src="../Shared/icons/Play.svg">
+                    </div>
+                </div>
+                <div class="diagramIcons" onclick="stateMachine.replay(0)">
+                    <img src="../Shared/icons/ResetButton.svg">
+                </div>
+            </fieldset>
+            <div style="width: 250px">
+                <label id="replay-time-label" for="replay-time">Delay (1s)</label>
+                <input id="replay-time" onchange="setReplayDelay(this.value)" class="zoomSlider" type="range" min="1" max="9" value="5">
+            </div>
+
+            <div>
+                <label for="replay-range">Change</label>
+                <input id="replay-range" class="zoomSlider" onchange="stateMachine.scrubHistory(parseInt(this.value))" type="range" min="0" max="0">
+            </div>
+        </div>
+    </div>
+    <div id="diagram-replay-message">
+        <h2>Replay mode</h2>
+        <p>Press "Escape" to exit the replay-mode.</p>
     </div>
     <!-- content END -->
     <?php

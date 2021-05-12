@@ -177,9 +177,10 @@ hr {
 }
 
 .hidden {
-  /*opacity: 0.7;*/
-  /* border-radius:4px; */
   margin-left: 16px;
+text-decoration: line-through !important;
+ -webkit-text-decoration-color: var(--color-primary-2) !important;
+  text-decoration-color: var(--color-primary-2) !important;
 }
 
 p {
@@ -1154,6 +1155,32 @@ p {
   color: #612;
 }
 
+#dugga3Container{
+  display:flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1050px){
+  #dugga3Container{
+    flex-direction: column;
+    justify-content: initial;
+    align-items: center;
+  }
+
+  #dugga3Container #toolbox{
+    margin: 15px 0;
+  }
+
+  #displayAnnouncements .announcementCard{
+    width: 100%;
+  }
+
+  #dugga3Container canvas{
+    min-width: 75%;
+    height: auto;
+  }
+}
+
 #dugga4Container{
   display:flex;
   justify-content: center;
@@ -1311,9 +1338,10 @@ header td {
 }
 
 .burgerButt {
+  float:left;
   margin-left: 10px;
-  vertical-align: middle;
   height: 32px;
+  width: 32px;
   margin:auto 10px auto 0;
 }
 
@@ -1387,22 +1415,10 @@ div .navButt:hover {
         margin-top: 14px;
 
     }
-    #GeneralStats{
-        display:none;
-    }
-    #CurrentlyOnline{
-        display:none;
-    }
-    #PasswordGuessing{
-        display:none;
-    }
-    #OSPercentage{
+    #GeneralStats, #CurrentlyOnline, #PasswordGuessing, #OSPercentage{
         display:none;
     }
 
-    #back{
-        display:none;
-    }
     .navButt.show{
         display: flex;
     }
@@ -1983,6 +1999,14 @@ div .navButt:hover {
 
 #feedbacktablecontainer td{
   text-align: center;
+}
+
+.passwordBlock{
+  width: 50%;
+  padding: 4px 0px;
+  background-color: black;
+  border-radius: 3px;
+  cursor: pointer;
 }
 
 #feedbacktablecontainer td input{
@@ -2801,6 +2825,7 @@ div.submit-button:disabled {
   height: 48px !important;
   line-height: 48px !important;
 }
+
 
 /* Tooltip */
 
@@ -3703,6 +3728,10 @@ div.reset-pw:hover{
 
 }
 
+.btn-disable {
+  pointer-events: none;
+  background-color: var(--color-primary-light) !important;
+}
 
 #TopMenuStatic .submit-button {
   background-color: var(--color-primary-2);
@@ -4889,7 +4918,7 @@ only screen and (max-device-width: 800px) {
   #addElement {
     display: none;
   }
-  #delElement{
+  #hideElement{
     display: block;
   }
 
@@ -5096,14 +5125,17 @@ only screen and (max-device-width: 860px) {
     display: none;
     position: absolute;
     top: 50px;
-    width: 35px;
+    width: 250px;
     padding: 10px;
     background-color: var(--color-primary-2);
   }
   #hamburgerBox div {
+    width: 250px;
+    height: 32px;  
+    line-height: 32px;
     margin-bottom: 10px;
   }
-
+ 
   #versionCogBurger, #versionPlusBurger, #editStudentBurger,
   #testsBTNBurger, #editFilesBurger, #courseIMGBurger,
   #editCourseBurger, #announcementBurger{
@@ -5112,7 +5144,7 @@ only screen and (max-device-width: 860px) {
 
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
-  #editCourse{
+  #editCourse, #announcement{
     display: none;
   }
 }
@@ -5214,7 +5246,8 @@ only screen and (max-device-width: 530px) {
 
   #searchBar,
   #testSearchContainer,
-  .tooltip-searchbar {
+  .tooltip-searchbar,
+  #searchbutton {
     display: none;
   }
 
@@ -5330,7 +5363,7 @@ only screen and (max-device-width: 480px) {
     padding: 8px 10px 5px 10px;
   }
 
-  #delElement{
+  #hideElement{
     width: 20px;
     height: 20px;
   }
@@ -5352,7 +5385,7 @@ only screen and (max-device-width: 390px) {
 
   }
 
-  #delElement{
+  #hideElement{
     width: 20px;
     height: 20px;
   }
@@ -7718,9 +7751,6 @@ textarea#filecont {
     display: none;
   }
 
-  header #accessBTN img{
-    width: 20px;
-  }
 
   .navheader {
     height: 20px;
