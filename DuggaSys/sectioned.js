@@ -966,17 +966,15 @@ function returnedSection(data) {
           str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;
           ' title='${item['entryname']}'>`;
           str += `<span class='ellipsis listentries-span'>${item['entryname']}</span>`;
-          str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}' 
-          class='arrowComp' style='display:inline-block;'>`;
-          str += `<img src='../Shared/icons/right_complement.svg' id='arrowRight${item['lid']}' 
-          class='arrowRight' style='display:none;'></div>`;
+          str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}' class='arrowComp' style='display:inline-block;'>`;
+          str += `<img src='../Shared/icons/right_complement.svg' id='arrowRight${item['lid']}' class='arrowRight' style='display:none;'></div>`;
         } else if (itemKind == 4) {
           // Moment
           var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
           str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
           str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
-          str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}' class='arrowComp' style='display:inline-block;'>`;
-          str += `<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight${item['lid']}' class='arrowRight' style='display:none;'>`;
+          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
           str += "</div>";
         } else if (itemKind == 2) {
           // Code Example
