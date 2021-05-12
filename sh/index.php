@@ -59,11 +59,16 @@ function CourseAndAssignment($course, $assignment) {
 	global $pdo;
 
 	//Get vers.vers
-	$sql = "SELECT vers FROM vers WHERE versname='{$versname}' AND coursecode='{$coursecode}'";
+	$sql = "SELECT * FROM vers WHERE versname='{$versname}' AND coursecode='{$coursecode}'";
 	$query = $pdo->prepare($sql);
 	$query->execute();
-	$result = $query->fetch();
-	$vers = $result[0];
+	//$result = $query->fetch();
+	if($row = $query->fetch(PDO::FETCH_ASSOC)){
+		$cid = $row['cid'];
+		$coursename = $row['coursename'];
+		$coursecode = $row['coursecode'];
+	}
+	error_log("cid: ".$cid." coursename: ".$coursename." coursecode: ".$coursecode);
 	
 	//Get id.quiz
 	$sql = "SELECT id FROM quiz WHERE qname='{$assignment}' AND vers='{$vers}'";
