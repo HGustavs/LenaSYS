@@ -210,6 +210,8 @@ function renderCommits(data) {
     var x1 = allCommits[i]['space'];
     var y1 = allCommits[i]['thetimeh'];
 
+    str += drawCommitDots(x1, y1, 10, 10);
+
     var p1index = commitDict[allCommits[i]['p1id']];
     if(p1index != undefined) {
       var parent1 =  allCommits[p1index.index];
@@ -217,7 +219,7 @@ function renderCommits(data) {
       var y2 = parent1['thetimeh'];
 
     //  console.log(x1,x2,y1,y2,0.5,0.5)
-      str +=  drawCommitTree(x1,x2,y1,y2,10,10);
+      str +=  drawCommitLines(x1,x2,y1,y2,10,10);
     }
 
     var p2index = commitDict[allCommits[i]['p2id']];
@@ -226,7 +228,7 @@ function renderCommits(data) {
       var x2 = parent2['space'];
       var y2 = parent2['thetimeh'];
 
-      str +=  drawCommitTree(x1,x2,y1,y2,20,20);
+      str +=  drawCommitLines(x1,x2,y1,y2,10,10);
     }
   }
   str += "</svg>";
@@ -244,15 +246,17 @@ function renderCommits(data) {
     Param xmul = multiplyer for x
     Param ymul = multiplyer for y
 */
-function drawCommitTree(x1, x2, y1, y2, xmul, ymul){
+function drawCommitLines(x1, x2, y1, y2, xmul, ymul){
   
   var colors = ["#246","#26A","#4BA","#59C","#DE7","#FB5","#FD5","#E64","#85A","#45A"]; //collection of array to hold different colors? Maybe keep this in renderCommits() and sens as parameter based on the commits author?
   var color = colors[y1%colors.length]; // Reworks the colors array with % calcultation against y1. Leaves one color to use for lines between commits (MAYBE?!?)
 
   var strokew = xmul * 0.1; //Guessing a calculation for stroke width for colored lines
+  var cradius = xmul * 2;
   var str = "";
 
   //Draw the circle reptresenting each commit
+  str += `<circle cx='${x1*xmul}' cy='${y1*ymul}' r='${cradius}' />`;
 
   //Draw the line between child- and parent commits
   if(Math.abs(x2-x1)>1 && (y1 != y2)){ //Math.abs() returns the calculations absolute value
@@ -262,6 +266,16 @@ function drawCommitTree(x1, x2, y1, y2, xmul, ymul){
   }else{
     str +=`<line x1=${(x1*xmul)}  y1=${(y1*ymul)} x2=${(x2*xmul)} y2=${(y2*ymul)} stroke='${color}' style='stroke-width:${strokew}"' />`;
   }
+
+  return str;
+}
+
+function drawCommitDots(x1, y1, xmul, ymul){
+  var cradius = xmul * 2;
+  var str = "";
+
+  //Draw the circle reptresenting each commit
+  str += `<circle cx='${x1*xmul}' cy='${y1*ymul}' r='${cradius}' />`;
 
   return str;
 }
