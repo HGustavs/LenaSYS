@@ -177,9 +177,10 @@ hr {
 }
 
 .hidden {
-  /*opacity: 0.7;*/
-  /* border-radius:4px; */
   margin-left: 16px;
+text-decoration: line-through !important;
+ -webkit-text-decoration-color: var(--color-primary-2) !important;
+  text-decoration-color: var(--color-primary-2) !important;
 }
 
 p {
@@ -1337,9 +1338,10 @@ header td {
 }
 
 .burgerButt {
+  float:left;
   margin-left: 10px;
-  vertical-align: middle;
   height: 32px;
+  width: 32px;
   margin:auto 10px auto 0;
 }
 
@@ -1413,22 +1415,10 @@ div .navButt:hover {
         margin-top: 14px;
 
     }
-    #GeneralStats{
-        display:none;
-    }
-    #CurrentlyOnline{
-        display:none;
-    }
-    #PasswordGuessing{
-        display:none;
-    }
-    #OSPercentage{
+    #GeneralStats, #CurrentlyOnline, #PasswordGuessing, #OSPercentage{
         display:none;
     }
 
-    #back{
-        display:none;
-    }
     .navButt.show{
         display: flex;
     }
@@ -4928,7 +4918,7 @@ only screen and (max-device-width: 800px) {
   #addElement {
     display: none;
   }
-  #delElement{
+  #hideElement{
     display: block;
   }
 
@@ -5135,14 +5125,17 @@ only screen and (max-device-width: 860px) {
     display: none;
     position: absolute;
     top: 50px;
-    width: 35px;
+    width: 250px;
     padding: 10px;
     background-color: var(--color-primary-2);
   }
   #hamburgerBox div {
+    width: 250px;
+    height: 32px;  
+    line-height: 32px;
     margin-bottom: 10px;
   }
-
+ 
   #versionCogBurger, #versionPlusBurger, #editStudentBurger,
   #testsBTNBurger, #editFilesBurger, #courseIMGBurger,
   #editCourseBurger, #announcementBurger{
@@ -5151,7 +5144,7 @@ only screen and (max-device-width: 860px) {
 
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
-  #editCourse{
+  #editCourse, #announcement{
     display: none;
   }
 }
@@ -5253,7 +5246,8 @@ only screen and (max-device-width: 530px) {
 
   #searchBar,
   #testSearchContainer,
-  .tooltip-searchbar {
+  .tooltip-searchbar,
+  #searchbutton {
     display: none;
   }
 
@@ -5369,7 +5363,7 @@ only screen and (max-device-width: 480px) {
     padding: 8px 10px 5px 10px;
   }
 
-  #delElement{
+  #hideElement{
     width: 20px;
     height: 20px;
   }
@@ -5391,7 +5385,7 @@ only screen and (max-device-width: 390px) {
 
   }
 
-  #delElement{
+  #hideElement{
     width: 20px;
     height: 20px;
   }
@@ -7757,9 +7751,6 @@ textarea#filecont {
     display: none;
   }
 
-  header #accessBTN img{
-    width: 20px;
-  }
 
   .navheader {
     height: 20px;

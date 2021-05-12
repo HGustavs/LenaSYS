@@ -93,6 +93,10 @@
 				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
 
 			}if ($noup == 'COURSE' && checkLogin()) {
+				// add the messagedialog-to navbar
+				echo "<td style='display:none;' class='navButt' id='messagedialog' title='Message of the day 'onclick='DisplayMSGofTDY();'><img alt='announcement icon' src='../Shared/icons/MOTD.svg'></td>";
+	
+			}if ($noup == 'COURSE' && checkLogin()) {
 				echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
 
 			}if ($noup == 'COURSE' && checkLogin() && (isStudentUser($_SESSION['uid']))) {
@@ -200,34 +204,34 @@
 
 
 							echo "<div id='hamburgerBox'>";
-							echo "<div><img alt='announcement icon' id='announcementBurger' class='burgerButt' src='../Shared/icons/new_announcement_icon.svg'></div>";
-							echo "<div><img alt='settings icon' id='versionCogBurger' class='burgerButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'></div>";
-							echo "<div><img alt='plus sign icon' id='versionPlusBurger' value='New version' class='burgerButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'></div>";
-							echo "<div>";
-							echo "<a id='resultsBTNBurger' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "<img alt='edit results icon' id='editStudentBurger' class='navButt' src='../Shared/icons/marking_icon.svg'>";
+							echo "<div id='announcementBurger'><img alt='announcement icon'  class='burgerButt' src='../Shared/icons/new_announcement_icon.svg'><p>Announcements</p></div>";
+							echo "<div id='versionCogBurger'><img alt='settings icon'  class='burgerButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'><p>Edit selected version</p></div>";
+							echo "<div id='versionPlusBurger'><img alt='plus sign icon'  value='New version' class='burgerButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'><p>Create new courseversion</p></div>";
+							echo "<div id='editStudentBurger'>";
+							echo "<a id='resultsBTNBurger' class ='burgerButt' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
+							echo "<img alt='edit results icon'  class='burgerButt' src='../Shared/icons/marking_icon.svg'>";
 							echo "</a>";
-							echo "</div>";
-							echo "<div>";
-							echo "<a id='testsBTNBurger' title='Show tests' value='Tests' href='duggaed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "<img alt='show tests icon' id='testsBTNBurger' class='navButt' src='../Shared/icons/test_icon.svg'>";
+							echo "<p>Edit student results</p></div>";
+							echo "<div id='testsBTNBurger'>";
+							echo "<a id='testsBTNBurger' title='Show tests' class = 'burgerButt' value='Tests' href='duggaed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
+							echo "<img alt='show tests icon'  class='burgerButt' src='../Shared/icons/test_icon.svg'>";
 							echo "</a>";
-							echo "</div>";
-							echo "<div class='files menuButton'>";
+							echo "<p>Show tests</p></div>";
+							echo "<div id='editFilesBurger'>";
 							echo "<a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "<img alt='files icon' id='editFilesBurger' class='burgerButt' src='../Shared/icons/files_icon.svg'>";
+							echo "<img alt='files icon'  class='burgerButt' src='../Shared/icons/files_icon.svg'>";
 							echo "</a>";
-							echo "</div>";
-							echo "<div class='course menuButton'>";
+							echo "<p>Show files</p></div>";
+							echo "<div id='courseIMGBurger'>";
 							echo "<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
-							echo "<img alt='course page icon' id='courseIMGBurger' value='Course' class='burgerButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
+							echo "<img alt='course page icon'  value='Course' class='burgerButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
 							echo "</a>";
-							echo "</div>";
-							echo "<div class='access menuButton'>";
+							echo "<p>Course page</p></div>";
+							echo "<div id='editCourseBurger'>";
             			    echo "<a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "<img alt='give access icon' id='editCourseBurger' class='burgerButt' src='../Shared/icons/lock_symbol.svg'>";
+							echo "<img alt='give access icon'  class='burgerButt' src='../Shared/icons/lock_symbol.svg'>";
 							echo "</a>";
-							echo "</div>";
+							echo "<p>Change student access</p></div>";
 							echo "</div>";
 					}
 			}
@@ -259,7 +263,7 @@
 					echo "<td class='navButt'>";
 
 					if ($requestedService == "fileed.php") 
-						echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender(); sortAndFilterTogether();' type='button'>";
+						echo   "<button id='searchbutton' class='switchContent' type='button'>";
 					else
 						echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender();' type='button'>";
 
@@ -271,7 +275,7 @@
 						echo "<td class='navButt'>";
 						echo "    <div>";
 						echo "      <a id='downloadBTN' title='Download all content in a zip file' target='_blank' value='Download' href='downloadzip.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-						echo "        <img alt='download all icon' class='navButt' src='../Shared/icons/Diskett.svg'>";
+						echo "        <img alt='download all icon' class='navButt' src='../Shared/icons/file_download_white.svg'>";
 						echo "      </a>";
 						echo "    </div>";
 						echo "</td>";
