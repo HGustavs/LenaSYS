@@ -3237,8 +3237,9 @@ function generateToolTips()
  */
 function setRulerPosition(x, y) 
 {
-    document.getElementById("ruler-x").style.left = x - 51 + "px";
-    document.getElementById("ruler-y").style.top = y + "px";
+    //40 is the size of the actual ruler and 51 is the toolbar on the left side
+    if(x >= 40 + 51) document.getElementById("ruler-x").style.left = x - 51 + "px";
+    if(y >= 40) document.getElementById("ruler-y").style.top = y + "px";
 }
 
 /**
