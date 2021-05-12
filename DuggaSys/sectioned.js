@@ -17,6 +17,16 @@ var motd;
 var hideItemList = [];
 var hasDuggs = false;
 
+/*********
+-Ide, låt var dugg spara tiden som den skapas
+-Jämför sedan detta med dagens tid
+-Är skillnaden mindre än en vecka -> glow (rad 770ish)
+ 
+*********/
+//Function for fetching todays "time"
+var dateToday = new Date();
+var compareWeek = dateToday.getTime() *7;
+
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
   idCounter: 0,
@@ -434,6 +444,9 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
+  param.timeCreated = dateToday.getTime();
+
+  console.log("time created: " + param.timeCreated);
 
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
@@ -759,11 +772,16 @@ function returnedSection(data) {
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
         // New items added get the class glow to show they are new
-        if(item['pos'] == "-1" || item['pos'] == "100"){
+       // if(item['pos'] == "-1" || item['pos'] == "100"){'
+       var time = dateToday.getTime();
+       console.log(item['timeCreated'] - time);
+        if((item['pos'].timeCreated-time)< 0){
+          console.log("Glow");
           str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
           class='${makeTextArray(item['kind'], valarr) + "glow"}' style='display:block'>`;
         }
         else{
+          console.log("no glow");
           str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
           class='${makeTextArray(item['kind'], valarr)}' style='display:block'>`;
         }
