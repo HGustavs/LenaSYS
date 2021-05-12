@@ -179,12 +179,12 @@ function renderCommits(data) {
   
   //creating the svg to put the commit tree in
   var str = "<h2>Commit tree</h2>";
-  str += "<svg id='commitTree' viewBox='0 0 600 750' style='background-color:#efefef;'width='100%' height='750' aria-labelledby='title desc' role='img'>";
+  str += "<svg id='commitTree' viewBox='0 0 600 600' style='background-color:#efefef; width: 100%; min-width:600px; height:600px;' aria-labelledby='title desc' role='img'>";
   
 
   var current = new Date();
   var currentYear = current.getFullYear();
-
+console.log(currentYear);
   var yearlyCommits = new Array();
   var weekData = data['weeks'];
 
@@ -192,25 +192,35 @@ function renderCommits(data) {
   var commitDict = Object();
   var index = 0;
 
-  console.log(weekData);
  // for each commit ID
  // X is commit order, Y is commit nesting
   for(var i = 0; i < weekData.length;i++) {  
     for(var j= 0; j < weekData[i]['commits'].length;j++) 
     {
-      allCommits.push(weekData[i]['commits'][j]);
-      var commit_obj = {
-        index: index
+      var commitDate =  weekData[i]['commits'][j].thedate;
+      var newDate = "";
+      for(var x = 0; x < 10; x++)
+      {
+        newDate += commitDate[x];
       }
-      index++;
-      commitDict[weekData[i]['commits'][j].cid] = commit_obj;
+      var finalDate = new Date(newDate);
+
+      if(finalDate.getFullYear() == currentYear){
+        allCommits.push(weekData[i]['commits'][j]);
+        var commit_obj = {
+          index: index
+        }
+        index++;
+        commitDict[weekData[i]['commits'][j].cid] = commit_obj;
+      }
+
     }
   }
-  var xMul = 25;
-  var yMul = 25;
-  var x_spacing = 350;
+  var xMul = 20;
+  var yMul = 20;
+  var x_spacing = 150;
   var y_spacing = -50;
-  console.log(allCommits);
+
   for(var i = 0; i < allCommits.length;i++) { // each commit
     var x1 = allCommits[i]['space'];
     var y1 = allCommits[i]['thetimeh'];
@@ -222,21 +232,9 @@ function renderCommits(data) {
       var x2 = parent1['space'];
       var y2 = parent1['thetimeh'];
 
-    //  console.log(x1,x2,y1,y2,0.5,0.5)
       str +=  drawCommitLines(x1,x2,y1,y2,xMul,yMul, x_spacing, y_spacing);
-  //    str += drawCommitDots(x2, y2, xMul, yMul, x_spacing, y_spacing);
 
     }
-
-
-    // var p2index = commitDict[allCommits[i]['p2id']];
-    // if(p2index != undefined) {
-    //   var parent2 =  allCommits[p2index.index];
-    //   var x2 = parent2['space'];
-    //   var y2 = parent2['thetimeh'];
-    //   str += drawCommitDots(x2, y2, xMul, yMul, x_spacing, y_spacing);
-    //   str +=  drawCommitLines(x1,x2,y1,y2,xMul,yMul);
-    // }
   }
   str += "</svg>";
 
