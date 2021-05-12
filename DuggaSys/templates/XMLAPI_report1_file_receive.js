@@ -16,7 +16,6 @@ function setup()
 
 function returnedDugga(data) 
 {	
-
 	$("#content").css({"position":"relative","top":"50px"});
 
 	dataV = data;
@@ -35,8 +34,8 @@ function returnedDugga(data)
 			// No files uploaded.
 		}
 
-		findfilevers(data["files"], "Inl1Document","pdf");
-		findfilevers(data["files"], "Inl1ZipDocument","zip");
+/* 		findfilevers(data["files"], "Inl1Document","pdf");
+		findfilevers(data["files"], "Inl1ZipDocument","zip"); */
 //		findfilevers(data["files"], "Inl3Document","multi");
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {
@@ -113,8 +112,8 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 			alert("No files uploaded");
 		}
 
-		findfilevers(data["files"], "Inl1Document","pdf");
-		findfilevers(data["files"], "Inl1ZipDocument","zip");
+		//findfilevers(data["files"], "Inl1Document","pdf");
+		//findfilevers(data["files"], "Inl1ZipDocument","zip");
 //		findfilevers(data["files"], "Inl3Document","multi");
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {

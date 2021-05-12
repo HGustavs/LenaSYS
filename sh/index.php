@@ -68,7 +68,7 @@ if ($course != "UNK") {
 		exit();
 	}
 } else {
-	header("Location: ../errorpages/404.php");
+	//header("Location: ../errorpages/404.php");
 }
 
 $q = queryToUrl($course, $assignment);

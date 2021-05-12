@@ -39,7 +39,6 @@ var isFileSubmitted;
 var isTeacher;
 
 
-
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
 		$(".fixed-action-button").css("bottom", "64px");
@@ -1061,6 +1060,7 @@ function AJAXService(opt,apara,kind)
 			success: returnedanswersDugga
 		});
 	}else if(kind=="DUGGA"){
+		console.log("==== DUGGA ====")
 		$.ajax({
 			url: "duggaedservice.php",
 			type: "POST",
@@ -1257,7 +1257,6 @@ function handleHash(){
 		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
 		dataType: "json",
 		success: function(data) {
-			returnedDugga(data);
 			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
 			//console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl + " lsHash= " + locallystoredhash);	//For debugging!
 
@@ -1867,6 +1866,7 @@ function displayDownloadIcon(){
 // Latest version of any file in a field - unsure about naming of the function
 function findfilevers(filez,cfield,ctype,displaystate,group)
 {
+	console.log(`iconFlag: ${iconFlag}`)
 		// Iterate over elements in files array
 		var foundfile=null;
 		var oldfile="";
@@ -1917,19 +1917,28 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 	}
 
 		tab +="<tbody>";
+		console.log("1")
 		if (typeof filez !== "undefined"){
+			console.log("2")
 			for (var i=filez.length-1;i>=0;i--){
+				console.log("3")
 					if(cfield==filez[i].fieldnme){
+						console.log("4")
 							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
 							tab+="<tr'>"
 
 							// Button for making / viewing feedback - note - only button for given feedback to students.
 							if(iconFlag){
+								console.log("5")
+								console.log(`filelink: ${filelink}`)
+								console.log(`filezcontent: ${filez[i].content}`)
 								if (ctype == "link"){
+									console.log("6")
 									tab+="<td>";
 									tab+="<a href='"+filez[i].content+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";
 									tab+="</td>";
-								} else {								
+								} else {	
+									console.log("7")							
 									tab+="<td>";
 									tab+="<a href='"+filelink+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";										
 									// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
@@ -1995,7 +2004,9 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		}
 		tab+="</tbody>"
 		tab+="</table>"
-
+		console.log("last")
+		console.log(`tab: ${tab}`)
+		console.log(`id: ${cfield+"Prev"}`)
 		document.getElementById(cfield+"Prev").innerHTML=tab;
 	}
 
