@@ -135,7 +135,11 @@
                     <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-            <button class="diagramIcons" onclick="toggleReplay()">Replay</button>
+            <div id="replayToggle" class="diagramIcons" onclick="toggleReplay()">
+                <img src="../Shared/icons/diagram_replay.svg"/>
+                <span class="toolTipText"><b>Toggle replay</b><br>
+                    <p>Click to start replay</p><br>
+                </span>
         </fieldset>
 
     </div>
