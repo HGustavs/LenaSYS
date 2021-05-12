@@ -204,6 +204,7 @@
 
 
 							echo "<div id='hamburgerBox'>";
+							echo "<div  id='hamburgerBoxMSG' title='Message of the day 'onclick='DisplayMSGofTDY();'><img  class='burgerButt' alt='announcement icon' src='../Shared/icons/MOTD.svg'><p>Message Of The Day</p></div>";
 							echo "<div id='announcementBurger'><img alt='announcement icon'  class='burgerButt' src='../Shared/icons/new_announcement_icon.svg'><p>Announcements</p></div>";
 							echo "<div id='versionCogBurger'><img alt='settings icon'  class='burgerButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'><p>Edit selected version</p></div>";
 							echo "<div id='versionPlusBurger'><img alt='plus sign icon'  value='New version' class='burgerButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'><p>Create new courseversion</p></div>";
