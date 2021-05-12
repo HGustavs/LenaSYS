@@ -85,7 +85,7 @@ function returned(data)
 	retData = data;
 
 	//Stores the data that was sent from Section, which contains the ordering of the examples.
-	sectionData = JSON.parse(localStorage.getItem("sectionData"));
+	sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
 
 	//Creates a list of all the code examples sorted after the example ordering in Section.
 	for(i = 1; i < sectionData['entries'].length; i++){
