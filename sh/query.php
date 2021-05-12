@@ -119,5 +119,5 @@ function queryToUrl($course, $assignment){
 		$c->getCoursename() . "&coursevers=" .  
 		$c->getCourseserver();
 
-	return $url; 
+	return $url;
 }
