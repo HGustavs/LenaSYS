@@ -486,20 +486,20 @@ function movedownbutton()
 	var val;
 	var tex;
 
-	if (elSel.selectedIndex < elSel.length - 1) {
-
-		val = elSel.options[ind].value;
-		tex = elSel.options[ind].text;
-
-		elSel.options[ind].value = elSel.options[ind + 1].value;
-		elSel.options[ind].text = elSel.options[ind + 1].text;
-
-		elSel.options[ind + 1].value = val;
-		tex = elSel.options[ind + 1].text = tex;
-
-		elSel.selectedIndex++;
+	if(elSel.options[ind] == undefined){
+		//Do nothing, no index selected.
 	}
-
+	else{
+		if (elSel.selectedIndex < elSel.length - 1) {
+			val = elSel.options[ind].value;
+			tex = elSel.options[ind].text;
+			elSel.options[ind].value = elSel.options[ind + 1].value;
+			elSel.options[ind].text = elSel.options[ind + 1].text;
+			elSel.options[ind + 1].value = val;
+			tex = elSel.options[ind + 1].text = tex;
+			elSel.selectedIndex++;
+		}
+	}
 }
 
 function handler_mouseup(ev) 
