@@ -18,7 +18,7 @@ $vers=$_SESSION['coursevers'];
 
 $debug="NONE!";
 
-$log_db = new PDO('sqlite:H/data/BGHdata_2021_05.db');
+$log_db = new PDO('sqlite:C:\xampp\htdocs\GHdata_Projekt\BGHdata_2021_05.db');
 
 $opt = getOP('opt');
 $courseid=getOP('courseid');
@@ -398,7 +398,7 @@ if(strcmp($opt,"get")==0) {
 
 			// Number of commits made by the user during the interval
 			$commits=array();
-			$query = $log_db->prepare('SELECT message,cid,author,p1id,p2id,thetimeh FROM commitgit WHERE author=:gituser AND thedate>:eventfrom AND thedate<:eventto');
+			$query = $log_db->prepare('SELECT message,cid,author,p1id,p2id,thetimeh,space  FROM commitgit WHERE author=:gituser AND thedate>:eventfrom AND thedate<:eventto');
 			$query->bindParam(':gituser', $gituser);
 			$query->bindParam(':eventfrom', $currentweekdate);
 			$query->bindParam(':eventto', $currentweekenddate );
@@ -413,7 +413,8 @@ if(strcmp($opt,"get")==0) {
 						'cid' => $row['cid'],
 						'p1id' => $row['p1id'],
 						'p2id' => $row['p2id'],
-						'thetimeh' => $row['thetimeh']
+						'thetimeh' => $row['thetimeh'],
+						'space' => $row['space']
 
 					);
 					array_push($commits, $commit);
@@ -643,6 +644,6 @@ if(strcmp($opt,"get")==0) {
 	echo json_encode($array);
 }
 
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "contributionservice.php",$userid,$info);
+//logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "contributionservice.php",$userid,$info);
 
 ?>
