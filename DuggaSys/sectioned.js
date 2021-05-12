@@ -203,11 +203,14 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
   // Set Name
   $("#sectionname").val(entryname);
-  $("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='" + entryname + "' style='width:448px;'/>");
+  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput'  
+  id='sectionname' value='${entryname}' style='width:448px;'/>`);
+
 
   // Set Comment
   $("#comments").val(comments);
-  $("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='comments' value='" + comments + "' style='width:448px;'/>");
+  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput' 
+  id='comments' value='${comments}' style='width:448px;'/>`);
 
   // Set Lid
   $("#lid").val(lid);
@@ -266,7 +269,8 @@ function changedType(kind) {
 
 function showEditVersion() {
   var tempMotd = motd;
-	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
+	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g,
+  "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
   $("#eversname").val(versnme);
   $("#eMOTD").val(tempMotd);
   $("#eversid").val(querystring['coursevers']);
@@ -350,7 +354,8 @@ function markedItems(item = null){
     console.log(hideItemList);
 }
 
-// Clear array of checked items - used in fabbuttons and save to clear array. WIthout this the array will be populated but checkboxes will be reset.
+// Clear array of checked items - used in fabbuttons and in save to clear array. 
+// Without this, the array will be populated but checkboxes will not be reset.
 function clearHideItemList(){
   hideItemList = [];
 }
@@ -538,7 +543,8 @@ function createVersion() {
       AJAXService("NEWVRS", param, "COURSE");
     }
     $("#newCourseVersion").css("display", "none");
-    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("cversid").value );
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + 
+    querystring["coursename"] + "&coursevers=" +document.getElementById("cversid").value );
   }
 }
 
@@ -565,13 +571,15 @@ function updateVersion() {
   AJAXService("UPDATEVRS", param, "SECTION");
 
   $("#editCourseVersion").css("display", "none");
-  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("eversid").value );
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + 
+  querystring["coursename"] + "&coursevers=" +document.getElementById("eversid").value );
 }
 
 //queryString for coursename is added
 function goToVersion(courseDropDown) {
   var value = courseDropDown.options[courseDropDown.selectedIndex].value;
-  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + 
+  querystring["coursename"] + "&coursevers=" + value);
 }
 
 function accessCourse() {
@@ -607,23 +615,26 @@ function returnedGroups(data) {
       if (grp != "") {
         str += "</tbody>";
         str += "</table>";
-        str += "<div style='text-align:right;border-top:2px solid #434343'><a style='white-space:nowrap' href='mailto:" + grpemail + "'>Email group</a></div>"
+        str += `<div style='text-align:right;border-top:2px solid #434343'>
+        <a style='white-space:nowrap' href='mailto:${grpemail}'>Email group</a></div>`
         grpemail = "";
       }
       grp = cgrp;
       cgrp = cgrp.split('_');
       str += "<table>";
-      str += "<thead><tr><th rowspan=2 style='text-align:left;'>Group " + cgrp[1] + "</th></tr></thead>";
+      str += `<thead><tr><th rowspan=2 style='text-align:left;'>Group ${cgrp[1]}</th></tr></thead>`;
       str += "<tbody>";
     }
-    str += "<tr><td>" + (j++) + "</td><td><a  style='white-space:nowrap' href='mailto:" + member[3] + "'>" + member[1] + " " + member[2] + "</a></td></tr>";
+    str += `<tr><td>" + (j++) + "</td><td><a  style='white-space:nowrap' 
+    href='mailto:${member[3]}'>${member[1]} ${member[2]}</a></td></tr>`;
     if (grpemail != "") grpemail += ",";
     grpemail += member[3];
   }
   if (grp != "") {
     str += "</tbody>";
     str += "</table>";
-    str += "<div style='text-align:right;border-top:2px solid #434343'><a href='mailto:" + grpemail + "'>Email group</a></div>"
+    str += `<div style='text-align:right;border-top:2px solid #434343'><a 
+    href='mailto:${grpemail}'>Email group</a></div>`
     grpemail = "";
   }
   if (str != "") {
@@ -747,17 +758,21 @@ function returnedSection(data) {
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
         // New items added get the class glow to show they are new
         if(item['pos'] == "-1" || item['pos'] == "100"){
-          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
+          str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
+          class='${makeTextArray(item['kind'], valarr) + "glow"}' style='display:block'>`;
         }
         else{
-          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
+          str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
+          class='${makeTextArray(item['kind'], valarr)}' style='display:block'>`;
         }
 
         menuState.idCounter++;
         // All are visible according to database
 
         // Content table
-        str += "<table id='lid" + item['lid'] + "' value='" + item['lid'] + "' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
+        str += `<table id='lid${item['lid']}' value='${item['lid']}' 
+        style='width:100%;table-layout:fixed;'><tr style='height:32px;' `;
+
         if (kk % 2 == 0) {
           str += " class='hi' ";
         } else {
@@ -775,11 +790,13 @@ function returnedSection(data) {
         var itemKind = parseInt(item['kind']);
 
         if(itemKind === 2 || itemKind == 5){
-          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+          str += `<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' 
+          class='tabs${item["tabs"]}'><div class='spacerRight'></div></td>`;
         }
 
         if(itemKind === 6 || itemKind == 7){
-          str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+          str += `<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' 
+          class='tabs${item["tabs"]}'><div class='spacerRight'></div></td>`;
         }
 
         if (itemKind === 3 || itemKind === 4) {
@@ -788,7 +805,8 @@ function returnedSection(data) {
           hasDuggs = true;
 
           // Styling for quiz row e.g. add a tab spacer
-          if (itemKind === 3) str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
+          if (itemKind === 3) str += `<td style='width:0px'><div class='spacerLeft'>
+          </div></td><td id='indTab' class='tabs${item["tabs"]}'><div class='spacerRight'></div></td>`;
           var grady = -1;
           var status = "";
           var marked;
@@ -862,35 +880,36 @@ function returnedSection(data) {
         // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
         if (itemKind === 0) {
           // Styling for header row
-          str += "</td><td class='header item" + hideState + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' ";
+          str += `</td><td class='header item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' `;
           kk = 0;
 
         } else if (itemKind === 1) {
           // Styling for Section row
-          str += "<td class='section item" + hideState + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' style='cursor:pointer;' ";
+          str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 2) {
-          str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
           kk++;
 
         } else if (itemKind === 3) {
           if (item['highscoremode'] != 0 && itemKind == 3) {
-            str += "<td style='width:20px;'><img style=';' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\"" + item['link'] + "\",\"" + item['lid'] + "\")'/></td>";
+            str += `<td style='width:20px;'><img style=';' title='Highscore' src='../Shared/icons/top10.png' 
+            onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
           }
-          str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
           kk++;
 
         } else if (itemKind === 4) {
           //new moment bool equals true
           momentexists = item['lid'];
-          str += "<td class='moment item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' style='cursor:pointer;' ";
+          str += `<td class='moment item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 5) { // Link
 
-          str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += `<td class='example item' placeholder='${momentexists}' id='I${item['lid']}' `;
           kk++;
 
         } else if (itemKind === 6) { //Group
@@ -913,14 +932,17 @@ function returnedSection(data) {
             }
           }
 
-          str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin-right:4.5px;max-width:32px;max-height:32px;overflow:hidden;'></td>";
-          str += "<td class='section-message item' onclick='getGroups(\"" + grp + "\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += `<td style='width:32px;' onclick='getGroups(\"${grp}\");'><img src='../Shared/icons/group-iconDrk.svg' 
+          style='display:block;margin-right:4.5px;max-width:32px;max-height:32px;overflow:hidden;'></td>`;
+          str += `<td class='section-message item' onclick='getGroups(\"${grp}\");
+          ' placeholder='${momentexists}' id='I${item['lid']}' `;
 
         } else if (itemKind === 7) { //Message
           if (!(item['link'] == "" || item['link'] == "---===######===---")) {
-            str += "<td style='width:32px;'><img title='Important message' src='../Shared/icons/warningTriangle.svg'></td>";
+            str += `<td style='width:32px;'><img title='Important message' 
+            src='../Shared/icons/warningTriangle.svg'></td>`;
           }
-          str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += `<td class='section-message item' placeholder='${momentexists}' id='I${item['lid']}' `;
         }
 
         // Close Information
@@ -928,20 +950,21 @@ function returnedSection(data) {
         // Content of Section Item
         if (itemKind == 0) {
           // Header
-          str += "<span style='margin-left:8px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
+          str += `<span style='margin-left:8px;' title='${item['entryname']}'>${item['entryname']}</span>`;
         } else if (itemKind == 1) {
           // Section
-          str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
-          str += "<span class='ellipsis listentries-span'>" + item['entryname'] + "</span>";
-          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
+          str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;
+          ' title='${item['entryname']}'>`;
+          str += `<span class='ellipsis listentries-span'>${item['entryname']}</span>`;
+          str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}' class='arrowComp' style='display:inline-block;'>`;
+          str += `<img src='../Shared/icons/right_complement.svg' id='arrowRight${item['lid']}' class='arrowRight' style='display:none;'></div>`;
         } else if (itemKind == 4) {
           // Moment
           var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
-          str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
-          str += "<span class='ellipsis listentries-span'>" + item['entryname'] + " " + strz + " </span>";
+          str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
+          str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
           str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'>";
+          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
           str += "</div>";
         } else if (itemKind == 2) {
           // Code Example
@@ -952,7 +975,8 @@ function returnedSection(data) {
             'cvers': querystring['coursevers'],
             'lid': item['lid']
           };
-                    str += "<div class='ellipsis nowrap'><span>" + makeanchor("codeviewer.php", hideState, "margin-left:8px;", item['entryname'], false, param) + "</span></div>";
+                    str += `<div class='ellipsis nowrap'><span>${makeanchor("codeviewer.php", 
+                    hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
         } else if (itemKind == 3) {
           // Test / Dugga
           var param = {
@@ -967,7 +991,8 @@ function returnedSection(data) {
             deadline: item['deadline'],
             'cid': querystring['courseid']
           };
-          str += "<div class='ellipsis nowrap'><span>" + makeanchor("showDugga.php", hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, param) + "</span></div>";
+          str += `<div class='ellipsis nowrap'><span>${makeanchor("showDugga.php", hideState, 
+          "cursor:pointer;margin-left:8px;", item['entryname'], false, param)}</span></div>`;
         } else if (itemKind == 5) {
           // Link
           if (item['link'].substring(0, 4) === "http") {
@@ -1011,7 +1036,8 @@ function returnedSection(data) {
           var yearFormat = "0000-";
           var dateFormat = "00-00";
 
-          str += "<td class='dateSize' style='text-align:right;overflow:hidden;'><div class='' style='white-space:nowrap;'>";
+          str += "<td class='dateSize' style='text-align:right;overflow:hidden;'>"+
+          "<div class='' style='white-space:nowrap;'>";
 
           if (dl[1] == timeFilterAndFormat) {
             str += "<div class='dateField'>";
@@ -1035,7 +1061,9 @@ function returnedSection(data) {
           // create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
             if (hasGracetimeExpired(deadline, dateTimeSubmitted)) {
-              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submission after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+              str += `<td style='width:25px;'><img style='width:25px; padding-top:3px' 
+              title='This dugga is not guaranteed to be marked due to submission after deadline.' 
+              src='../Shared/icons/warningTriangle.svg'/></td>`;
             }
           }
         }
@@ -1043,7 +1071,8 @@ function returnedSection(data) {
         // Userfeedback
         if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
           str += "<td style='width:32px;'>";
-          str += "<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback' onclick='showUserFeedBack(\"" + item['lid']  + "\",\"" + item['feedbackquestion']  + "\");'>";
+          str += `<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback' 
+          onclick='showUserFeedBack(\"${item['lid']}\",\"${item['feedbackquestion']}\");'>`;
           str += "</td>";
         }
 
@@ -1066,8 +1095,10 @@ function returnedSection(data) {
         
         // trashcan
         if (data['writeaccess'] || data['studentteacher']) {
-          str += "<td style='width:32px;' class='" + makeTextArray(itemKind, ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " " + hideState + "'>";
-          str += "<img alt='trashcan icon' id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+          str += `<img alt='trashcan icon' id='dorf' title='Delete item' class='' 
+          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }
 
@@ -1144,7 +1175,8 @@ function returnedSection(data) {
       }
     }
   } else {
-    str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'><span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
+    str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'>"+
+    "<span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML+= str;
     $("#newCourseVersion").css("display", "block");
@@ -1379,7 +1411,10 @@ function drawSwimlanes() {
 
   var str = "";
   // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not.
-  str += "<defs><linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextGrey'><stop offset='85%' stop-opacity='1' stop-color='#000000' /><stop offset='100%' stop-opacity='0'/> </linearGradient> <linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'><stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
+  str += "<defs><linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextGrey'>"+
+  "<stop offset='85%' stop-opacity='1' stop-color='#000000' /><stop offset='100%' stop-opacity='0'/> </linearGradient> "+
+  "<linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'>"+
+  "<stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
   for (var i = 0; i < weekLength; i++) {
     if(i==0){
@@ -1397,13 +1432,13 @@ function drawSwimlanes() {
     } else {
       str += "fill='#ffffff' />";
     }
-    str += "<text x='" + ((i * widthAdjuster) + (widthAdjuster * 0.5) + (tempNumb * 0.5)) + "' y='" +
-    (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
+    str += `<text x='${((i * widthAdjuster) + (widthAdjuster * 0.5) + (tempNumb * 0.5))}' y='${(33)}' 
+    font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>${(i + 1)}</text>`;
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
-    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" +
-    (weekLength * weekwidth + (addNumb*10)) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
+    str += `<line x1='0' y1='${((i * weekheight) + 15)}' x2='
+    ${(weekLength * weekwidth + (addNumb*10))}' y2='${((i * weekheight) + 15)}' stroke='black' />`;
   }
 
 
@@ -1453,8 +1488,10 @@ function drawSwimlanes() {
         }
         var tempVariable = duggalength*daywidth;
 
-        str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
-        str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <title> " + entry.text + " </title>" + entry.text + "</text>";
+        str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='
+        ${(tempVariable)}' height='${weekheight}' fill='${fillcol}' />`;
+        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='
+        ${textcol}' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
       }
     }
   }
@@ -1575,7 +1612,8 @@ function mouseDown(e) {
 //----------------------------------------------------------------------------------
 
 function mouseUp(e) {
-  // if the target of the click isn't the container nor a descendant of the container or if we have clicked inside box and dragged it outside and released it
+  // if the target of the click isn't the container nor a descendant of the container, 
+  // or if we have clicked inside box and dragged it outside and released it
   if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) &&
   $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
 
@@ -1801,13 +1839,17 @@ function getStudents(cid, userid){
       success: function(data){
         var item = JSON.parse(data);
         $("#recipient").find('*').not(':first').remove();
-        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'></optgroup>");
+        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'>"+
+        "</optgroup>");
         $.each(item.finished_students, function(index,item) {        
-          $("#finishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+          $("#finishedStudents").append(`<option value=${item.uid}>${item.firstname} 
+          ${item.lastname}</option>`);
         });
-        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'></optgroup>");
-        $.each(item.non_finished_students, function(index,item) {        
-          $("#nonfinishedStudents").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'>"+
+        "</optgroup>");
+        $.each(item.non_finished_students, function(index,item) {
+          $("#nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname} 
+          ${item.lastname}</option>`);
         });
         $(".selectLabels label input").attr("disabled", false);
         selectRecipients();
@@ -1885,7 +1927,8 @@ function retrieveAnnouncementsCards(){
       xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           var parsed_data = JSON.parse(this.response);
-          document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+          document.getElementById("announcementCards").innerHTML = 
+          parsed_data.retrievedAnnouncementCard;
           var unread_announcements = parsed_data.nRows;
           if(unread_announcements > 0){
             $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
@@ -1903,7 +1946,8 @@ function retrieveAnnouncementsCards(){
 
         }
       };
-      xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid+"&recipient="+uid,true);
+      xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+
+      "&versid="+versid+"&recipient="+uid,true);
       xmlhttp.send();
     }
   });
@@ -1917,7 +1961,8 @@ function updateannouncementForm(updateannouncementid, cid, versid, tempFuction){
         tempFuction(this, updateannouncementid, cid, versid);
     }
   };
-  xmlhttp.open("GET","../Shared/updateAnnouncement.php?updateannouncementid="+updateannouncementid,true);
+  xmlhttp.open("GET","../Shared/updateAnnouncement.php?updateannouncementid="+
+  updateannouncementid,true);
   xmlhttp.send();
 
 }
@@ -1952,8 +1997,10 @@ function handleResponse(xhttp, updateannouncementid, cid, versid){
 
 //announcement card grid and list view
 function displayListAndGrid(){
-  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i alt="list icon" class="fa fa-bars"></i> List</button>'+
-    '<button class="btn active gridBtn"><i alt="grid icon" class="fa fa-th-large"></i> Grid</button></div><br>');
+  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn">'+
+  '<i alt="list icon" class="fa fa-bars"></i> List</button>'+
+    '<button class="btn active gridBtn"><i alt="grid icon" class="fa fa-th-large">'+
+    '</i> Grid</button></div><br>');
 
   var announcementCard = document.getElementsByClassName("announcementCard");
   var i;
@@ -2074,7 +2121,8 @@ function showLessOrMoreAnnouncements(){
       $(".announcementCard:gt(5)").hide();
       $("#displayAnnouncements")
       .append('<div class="showmoreBtnContainer"><button class="showAllAnnouncement">'+
-        '<span class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i></span>'+
+        '<span class="hvr-icon-forward"><span class="showmore">Show more</span>'+
+        '<i class="fa fa-chevron-circle-right hvr-icon"></i></span>'+
         '</button></div>');
   }
    $('.showAllAnnouncement').on('click', function() {
@@ -2172,8 +2220,10 @@ function toggleFeedbacks(){
           duggaFeedback = data.duggaFeedback;
           $(".feedbackContent").html(duggaFeedback);
           if ($(".recentFeedbacks").length == 0) {
-             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedback to view.</span><span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
-             $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'><img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
+             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedback to view.</span>"+
+             "<span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
+             $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'>"+
+             "<img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
           }
           $(".oldFeedbacks").hide();                  
           feedbackComment = 'feedbackComment';
@@ -2196,7 +2246,9 @@ function toggleFeedbacks(){
   });
 
   if ($("#feedback").length > 0) {
-    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'><div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div><div class='feedbackContent'></div></div></div>");
+    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'>"+
+    "<div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div>"+
+    "<div class='feedbackContent'></div></div></div>");
 
   }
 
@@ -2626,7 +2678,8 @@ function createUserFeedbackTable(data){
     if(data.userfeedback[i].username === null){
       str += "<td style='width:1px;'><input class='inactive-button' type='button' value='Contact student'></td>";
     }else{
-      str += "<td style='width:1px;'><input class='submit-button' type='button' value='Contact student' onclick='contactStudent(\"" + data.userfeedback[i].entryname + "\",\"" + data.userfeedback[i].username + "\")'></td>";
+      str += `<td style='width:1px;'><input class='submit-button' type='button' value='Contact student' 
+      onclick='contactStudent(\"${data.userfeedback[i].entryname}\",\"${data.userfeedback[i].username}\")'></td>`;
     }
     str += "</tr>";
   }
@@ -2640,7 +2693,8 @@ function createUserFeedbackTable(data){
 //------------------------------------------------------------------------------
 function contactStudent(entryname,username){
   
-  window.location = "mailto:" + username + "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga "+entryname;
+  window.location = "mailto:" + username + 
+  "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga "+entryname;
 }
 //------------------------------------------------------------------------------
 //Displays the feedback question input on enable-button toggle. 
