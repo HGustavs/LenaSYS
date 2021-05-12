@@ -38,19 +38,26 @@ function GetAssignment ($hash){
 }
 
 function GetCourse($course){
+	$courseArray = explode(" ", $course); //Transforms long string to array with a word in each element
+	$versname = end($courseArray); //Gets last element, ex: "HT15"
+	$coursecode = prev($courseArray); //Gets second-last element, ex: "IT118G"
 	global $pdo;
 
-	$sql = "SELECT activeversion, cid FROM course WHERE cid='{$course}'";
-
-	foreach ($pdo->query($sql) as $row) {
-		$cid = $row["cid"];
-		$activeversion = $row["activeversion"];
+	$sql = "SELECT cid,vers FROM vers WHERE versname='{$versname}' AND coursecode='{$coursecode}'";
+	$query = $pdo->prepare($sql);
+	$query->execute();
+	if($row = $query->fetch(PDO::FETCH_ASSOC)){
+		$cid = $row['cid'];
+		$vers = $row['vers'];
 	}
+		
 	$serverRoot = serverRoot();
-	header("Location: {$serverRoot}/lenasys/DuggaSys/sectioned.php?courseid={$cid}&coursevers={$activeversion}");
+	header("Location: {$serverRoot}/lenasys/DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}");
 	exit();
 }
 
+/*
+//This function doesn't currently work
 function CourseAndAssignment($course, $assignment) {	
 	$courseArray = explode(" ", $course); //Transforms long string to array with a word in each element
 	$versname = end($courseArray); //Gets last element, ex: "HT15"
@@ -81,13 +88,11 @@ function CourseAndAssignment($course, $assignment) {
 	}
 	error_log("id: ".$id." qname: ".$qname." qrelease: ".$qrelease);
 
-	//Create URL
-	//$URL = "../DuggaSys/showDugga.php?did=1&courseid=2&coursename=Webbutveckling%20-%20datorgrafik&coursevers=97732&moment=2002&segment=2001&highscoremode=1&comment=null&deadline=2015-01-30%2015:30:00&cid=2
-
 	//error_log("versname: ".$versname);
 	//error_log("coursecode: ".$coursecode);
 	//error_log("assignment: ".$assignment);
 }
+*/
 
 if(($assignment != "UNK") &&($course == "UNK")){
 	$assignmentURL = GetAssignment($assignment);
@@ -97,7 +102,7 @@ if(($assignment != "UNK") &&($course == "UNK")){
 	GetCourse($course);
 	
 }else if(($assignment != "UNK") && ($course != "UNK")) {
-	CourseAndAssignment($course, $assignment);
+	queryToUrl($course, $assignment); // ???????
 }
 else {
 	header("Location: ../errorpages/404.php");
