@@ -1465,7 +1465,7 @@ div .navButt:hover {
     .access menuButton{
       width: 20px;
     }
-    #navHeading, #announcement {
+    #navHeading {
         display: none;
     }
     #mobileNavHeading {
@@ -5104,7 +5104,7 @@ only screen and (max-device-width: 860px) {
 
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
-  #editCourse{
+  #editCourse, #announcement{
     display: none;
   }
 }
