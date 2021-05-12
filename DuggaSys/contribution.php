@@ -40,6 +40,8 @@ if (!$_SERVER['HTTP_REFERER']) {
 	<!-- content START -->
 	<div id="content"></div>
 
+	<div id='commitDiagram' style='margin-left: 12px; width:70%; white-space: nowrap; border: 1px solid black'></div>
+
 	<div class='group3 group1' id='personalRankTable' style='margin-left: 12px; width:50%; white-space: nowrap;'></div>
 
 	<div class='group2 group1' id='barchart' style='margin-left: 12px; white-space: nowrap;'></div>
