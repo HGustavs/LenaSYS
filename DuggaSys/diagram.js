@@ -1192,10 +1192,14 @@ document.addEventListener('keyup', function (e)
         if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
+            
             if (contextLine.length > 0) removeLines(contextLine);
+            if (mouseMode == mouseModes.EDGE_CREATION) return;
             if (context.length > 0) removeElements(context);
-
+            
+    
             updateSelection();
+            
         }
         
         if(isKeybindValid(e, keybinds.POINTER)) setMouseMode(mouseModes.POINTER);
