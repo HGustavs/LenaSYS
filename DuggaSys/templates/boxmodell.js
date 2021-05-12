@@ -152,19 +152,20 @@ function returnedDugga(data)
 function reset()
 {
 	// console.log(JSON.stringify(boxes));
-	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
+	if(confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.")){
+		boxes.length = 0; // Clear array.
+		for (var b=0; b<retdata["boxes"].length; b++) {
+			var box = retdata["boxes"][b];
+			boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+		}
 
-	boxes.length = 0; // Clear array.
-	for (var b=0; b<retdata["boxes"].length; b++) {
-		var box = retdata["boxes"][b];
-		boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+		Timer.stopTimer();
+		Timer.score=0;
+		Timer.startTimer();
+		ClickCounter.initialize();
+	} else {
+		
 	}
-
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
-	ClickCounter.initialize();
-
 }
 
 function saveClick() 

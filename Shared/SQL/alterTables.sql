@@ -50,3 +50,6 @@ DELETE FROM groupdugga
     WHERE OLD.hash = groupdugga.hash;
 END //
 DELIMITER ;
+
+/* Associated with issue #10776 */
+ALTER TABLE userAnswer ADD COLUMN timesSubmitted INT(5);

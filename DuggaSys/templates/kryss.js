@@ -20,6 +20,8 @@ Example seed
 */
 var idunique = 0;
 var variant = "UNK";
+var prevAnswer;
+
 function quiz(parameters) {
 	if(parameters != undefined) {
 		console.log("pram:" + parameters);
@@ -97,14 +99,33 @@ function returnedDugga(data)
 	if(data['param']!="UNK"){
 		quiz(data['param']);
 		//Add onclick event 
-		if(querystring['highscoremode'] == 2) {
+		if(querystring['highscoremode'] == 2 ||querystring['highscoremode'] == 1) {
 			$("input:radio").click(function(){
 				ClickCounter.onClick();
 			});
 		}
 	}		
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+
+	// Get answer from previously saved dugga
+	if (data.answer != "UNK") {
+		// Get the id from answer string
+		var str = data.answer;
+		var res = str.split(" ");
+		var answer = res[res.length - 1];
+		answer = answer.slice(0, answer.length - 1);
+		setChecked(answer);
+	}
 }
+
+
+//----------------------------------------------------------------------------------
+// setChecked: sets an element by id property to "checked"
+//----------------------------------------------------------------------------------
+function setChecked(id) {
+	var element = document.getElementById(id).checked = true;
+}
+
 //----------------------------------------------------------------------------------
 // getCheckedBoxes: checks if all questions are answered and alerts each of them
 //----------------------------------------------------------------------------------
@@ -117,6 +138,18 @@ function getCheckedBoxes(){
 
 	}
 
+	function reset(){
+		Timer.stopTimer();
+		Timer.score=0;
+		Timer.startTimer();
+		ClickCounter.initialize();
+
+		var answers = document.getElementsByName("answers"+idunique);
+		for(i = 0; i < answers.length; i++){
+			answers[i].checked = false;
+		}
+	}
+
 function saveClick()
 {
 	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
@@ -126,7 +159,7 @@ function saveClick()
 		dataType: "json",
 		success: function(data) {
 			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-			if(ishashindb==true){				//If the hash already exist in database.
+			if(ishashindb==true && blockhashgen ==true || ishashindb==true && blockhashgen ==false && ishashinurl==true || ishashindb==true && locallystoredhash != "null"){				//If the hash already exist in database.
 				if (confirm("You already have a saved version!")) {
 					Timer.stopTimer();
 
@@ -141,8 +174,9 @@ function saveClick()
 
 					var answer ="";
 					for(var t = 1;t <= idunique; t++){
-					answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
+						answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
 					}
+		
 					idunique = 0;
 					// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 					answer = variant + " " + answer;
@@ -162,7 +196,7 @@ function saveClick()
 
 				var answer ="";
 				for(var t = 1;t <= idunique; t++){
-				answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
+					answer+= ($("input[type='radio'][name='answers"+t+"']:checked").attr('id')) + ",";
 				}
 				idunique = 0;
 				// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
@@ -215,6 +249,6 @@ function closeFacit(){
 //----------------------------------------------------------------------------------
 function toggleInstructions()
 {
-    $(".instructions-content").slideToggle("slow");
+	$(".instructions-content").slideToggle("slow");
 }
 

@@ -25,7 +25,7 @@
 <body onload="getData()" style="overflow: hidden;">
 
     <!-- Toolbar for diagram -->
-    <div id="diagram-toolbar" onmousedown='mdown(event)'>
+    <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='mup(event)'>
         <fieldset>
             <legend>Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
@@ -117,12 +117,32 @@
                     <p>Enable/disable the A4 template</p><br>
                     <p id="tooltip-TOGGLE_A4" class="key_tooltip">Keybinding:</p>
                 </span>
-            </div>     
+            </div>
         </fieldset>
+        <fieldset>
+            <legend>History</legend>
+            <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
+                <img src="../Shared/icons/diagram_stepforward.svg"/>
+                <span class="toolTipText"><b>Toggle step forward</b><br>
+                    <p>Click to step forward in history</p><br>
+                    <p id="tooltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+            <div id="stepBackToggle" class="diagramIcons" onclick="toggleStepBack()">
+                <img src="../Shared/icons/diagram_stepback.svg"/>
+                <span class="toolTipText"><b>Toggle step backward</b><br>
+                    <p>Click to step back in history</p><br>
+                    <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+            <button class="diagramIcons" onclick="toggleReplay()">Replay</button>
+        </fieldset>
+
     </div>
 
     <!-- Message prompt -->
     <div id="diagram-message"></div>
+    <div id ="zoom-message-box"><img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg"/><text id ="zoom-message">1x</text></div>
 
     <!-- Diagram drawing system canvas. -->
     <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
@@ -133,11 +153,13 @@
 	<canvas id='canvasOverlay'></canvas> 
     <!-- Diagram rules -->
     <div id="rulerOverlay">
+        <div id="rulerCorner"></div>
         <svg id="ruler-x-svg"></svg>
         <svg id="ruler-y-svg"></svg>
         <div id="ruler-x"></div>
         <div id="ruler-y"></div>
     </div>
+    
     <!-- Diagram grid -->
     <div id="svggrid" style="z-index:-11">
         <svg id="svgbacklayer">
@@ -178,6 +200,34 @@
             </fieldset>
         </div>
     </div>
+    </div>
+    <!-- Replay-mode -->
+    <div id="diagram-replay-box">
+        <div style=";display: flex;">
+            <fieldset style="display: flex; justify-content: space-between">
+                <div id="diagram-replay-switch">
+                    <div class="diagramIcons" onclick="stateMachine.replay()">
+                        <img src="../Shared/icons/Play.svg">
+                    </div>
+                </div>
+                <div class="diagramIcons" onclick="stateMachine.replay(0)">
+                    <img src="../Shared/icons/ResetButton.svg">
+                </div>
+            </fieldset>
+            <div style="width: 250px">
+                <label id="replay-time-label" for="replay-time">Delay (1s)</label>
+                <input id="replay-time" onchange="setReplayDelay(this.value)" class="zoomSlider" type="range" min="1" max="9" value="5">
+            </div>
+
+            <div>
+                <label for="replay-range">Change</label>
+                <input id="replay-range" class="zoomSlider" onchange="stateMachine.scrubHistory(parseInt(this.value))" type="range" min="0" max="0">
+            </div>
+        </div>
+    </div>
+    <div id="diagram-replay-message">
+        <h2>Replay mode</h2>
+        <p>Press "Escape" to exit the replay-mode.</p>
     </div>
     <!-- content END -->
     <?php

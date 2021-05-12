@@ -79,7 +79,10 @@ $js = array(
     ?>
 	<!-- content START -->
     <div id="content">
-        <div id='searchBarMobile' style='margin-bottom:15px;'>
+    <div class='titles' style='padding-top:10px;'>
+			<h1 style='flex:1;text-align:left;'>Edit files</h1>
+        </div>
+        <div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
         <div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
                             <b>Keywords:</b> File name, File type <br> 
@@ -93,9 +96,7 @@ $js = array(
                 <img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
             </button>
         </div>
-        <div class='titles' style='padding-top:10px;'>
-			<h1 style='flex:1;text-align:left;margin-left:15px;'>Edit files</h1>
-        </div>
+        
         <!-- insert here -->
         <div class="err" id="fileerror0">
         <?php 
@@ -139,7 +140,7 @@ $js = array(
      
         ?>
         </div>
-        <div style='display:flex;justify-content:space-between;align-items:flex-end;'>
+        <div style='display:flex;justify-content:space-between;align-items:flex-end;margin-top:50px'>
             <div style='display:flex;flex-wrap:wrap;'>
                 <div style='white-space:nowrap'>
                     <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="filterFilesByKind('AllFiles');count=0;"/>
@@ -376,7 +377,7 @@ $js = array(
 <!-- Markdown-preview and edit file functionality END -->
 
 <!--Fab-button-->
-<div class="fixed-action-button" id="fabButton">
+<div class="fixed-action-button" id="fabButton" style = "margin-right: 100px;">
     <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
     <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed id='fab-btn-list'>
     <?php

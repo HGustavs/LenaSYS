@@ -50,7 +50,7 @@ function sortableInternalSort(a, b) {
 	//var colname = sortableTable.currentTable.getKeyByValue();
 	var colname = sortableTable.currentTable.getSortcolumn();
 
-	if ((sortableTable.currentTable.sortkind % 2) == 0) {
+	if ((sortableTable.currentTable.getSortkind() % 2) == 0) {
 		//alert("Compare: "+a+" "+b);
 		ret = compare(a[colname], b[colname]);
 	} else {
