@@ -57,7 +57,7 @@ function GetCourse($course){
 }
 
 /*
-//This function doesn't currently work
+//This function doesn't currently work, kept here because we'd like to work on it in next weeks branch
 function CourseAndAssignment($course, $assignment) {	
 	$courseArray = explode(" ", $course); //Transforms long string to array with a word in each element
 	$versname = end($courseArray); //Gets last element, ex: "HT15"
@@ -101,9 +101,9 @@ if(($assignment != "UNK") &&($course == "UNK")){
 }else if(($course != "UNK") && ($assignment == "UNK")){
 	GetCourse($course);
 	
-}else if(($assignment != "UNK") && ($course != "UNK")) {
-	queryToUrl($course, $assignment); // ???????
-}
+}/*else if(($assignment != "UNK") && ($course != "UNK")) {
+	queryToUrl($course, $assignment);  //This will be worked on in the next week's branch, we're merging our earlier implemented function since it works
+}*/
 else {
 	header("Location: ../errorpages/404.php");
 }
