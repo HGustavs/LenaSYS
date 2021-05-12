@@ -179,7 +179,7 @@ function renderCommits(data) {
   
   //creating the svg to put the commit tree in
   var str = "<h2>Commit tree</h2>";
-  str += "<svg id='commitTree' viewBox='0 0 600 450' style='background-color:#efefef;'width='100%' height='450' aria-labelledby='title desc' role='img'>";
+  str += "<svg id='commitTree' viewBox='0 0 600 750' style='background-color:#efefef;'width='100%' height='750' aria-labelledby='title desc' role='img'>";
   
 
   var current = new Date();
@@ -192,6 +192,7 @@ function renderCommits(data) {
   var commitDict = Object();
   var index = 0;
 
+  console.log(weekData);
  // for each commit ID
  // X is commit order, Y is commit nesting
   for(var i = 0; i < weekData.length;i++) {  
@@ -205,15 +206,14 @@ function renderCommits(data) {
       commitDict[weekData[i]['commits'][j].cid] = commit_obj;
     }
   }
-  var xMul = 15;
-  var yMul = 15;
+  var xMul = 25;
+  var yMul = 25;
   var x_spacing = 350;
   var y_spacing = -50;
-
+  console.log(allCommits);
   for(var i = 0; i < allCommits.length;i++) { // each commit
     var x1 = allCommits[i]['space'];
     var y1 = allCommits[i]['thetimeh'];
-    console.log(x1);
     str += drawCommitDots(x1, y1, xMul, yMul, x_spacing, y_spacing);
 
     var p1index = commitDict[allCommits[i]['p1id']];
@@ -224,16 +224,19 @@ function renderCommits(data) {
 
     //  console.log(x1,x2,y1,y2,0.5,0.5)
       str +=  drawCommitLines(x1,x2,y1,y2,xMul,yMul, x_spacing, y_spacing);
+  //    str += drawCommitDots(x2, y2, xMul, yMul, x_spacing, y_spacing);
+
     }
 
-    var p2index = commitDict[allCommits[i]['p2id']];
-    if(p2index != undefined) {
-      var parent2 =  allCommits[p2index.index];
-      var x2 = parent2['space'];
-      var y2 = parent2['thetimeh'];
 
-   //   str +=  drawCommitLines(x1,x2,y1,y2,xMul,yMul);
-    }
+    // var p2index = commitDict[allCommits[i]['p2id']];
+    // if(p2index != undefined) {
+    //   var parent2 =  allCommits[p2index.index];
+    //   var x2 = parent2['space'];
+    //   var y2 = parent2['thetimeh'];
+    //   str += drawCommitDots(x2, y2, xMul, yMul, x_spacing, y_spacing);
+    //   str +=  drawCommitLines(x1,x2,y1,y2,xMul,yMul);
+    // }
   }
   str += "</svg>";
 
@@ -255,7 +258,7 @@ function drawCommitLines(x1, x2, y1, y2, xmul, ymul, x_spacing, y_spacing){
   var colors = ["#246","#26A","#4BA","#59C","#DE7","#FB5","#FD5","#E64","#85A","#45A"]; //collection of array to hold different colors? Maybe keep this in renderCommits() and sens as parameter based on the commits author?
   var color = colors[y1%colors.length]; // Reworks the colors array with % calcultation against y1. Leaves one color to use for lines between commits (MAYBE?!?)
 
-  var strokew = xmul * 0.2; //Guessing a calculation for stroke width for colored lines
+  var strokew = xmul * 0.1; //Guessing a calculation for stroke width for colored lines
   var str = "";
 
 
@@ -272,7 +275,7 @@ function drawCommitLines(x1, x2, y1, y2, xmul, ymul, x_spacing, y_spacing){
 }
 
 function drawCommitDots(x1, y1, xmul, ymul, x_spacing, y_spacing){
-  var cradius = xmul * 0.35;
+  var cradius = xmul * 0.10;
   var str = "";
 
   //Draw the circle reptresenting each commit
