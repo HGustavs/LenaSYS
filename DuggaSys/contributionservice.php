@@ -18,7 +18,7 @@ $vers=$_SESSION['coursevers'];
 
 $debug="NONE!";
 
-$log_db = new PDO('sqlite:../../GHData/GHdata_2019_10.db');
+$log_db = new PDO('sqlite:H/data/BGHdata_2021_05.db');
 
 $opt = getOP('opt');
 $courseid=getOP('courseid');
@@ -398,7 +398,7 @@ if(strcmp($opt,"get")==0) {
 
 			// Number of commits made by the user during the interval
 			$commits=array();
-			$query = $log_db->prepare('SELECT message,cid,author FROM commitgit WHERE author=:gituser AND thedate>:eventfrom AND thedate<:eventto');
+			$query = $log_db->prepare('SELECT message,cid,author,p1id,p2id,thetimeh FROM commitgit WHERE author=:gituser AND thedate>:eventfrom AND thedate<:eventto');
 			$query->bindParam(':gituser', $gituser);
 			$query->bindParam(':eventfrom', $currentweekdate);
 			$query->bindParam(':eventto', $currentweekenddate );
@@ -410,7 +410,11 @@ if(strcmp($opt,"get")==0) {
 			foreach($rows as $row){
 					$commit=array(
 						'message' => $row['message'],
-						'cid' => $row['cid']
+						'cid' => $row['cid'],
+						'p1id' => $row['p1id'],
+						'p2id' => $row['p2id'],
+						'thetimeh' => $row['thetimeh']
+
 					);
 					array_push($commits, $commit);
 			}
