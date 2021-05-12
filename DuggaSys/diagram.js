@@ -93,9 +93,9 @@ class StateChange {
              * If the current key in the loop is a number, update the value or if it do not
              * exists, set the value. Else just set the value.
              */
-            if (key == "time") return;
+            if (key == "time" || key == "id") return; // Ignore this keys.
 
-            if (!isNaN(changes[key])) {
+            if ((typeof changes[key]) == "number") {
                 if (this[key] === undefined) this[key] = changes[key];
                 else this[key] += changes[key]
             } else {
@@ -598,8 +598,8 @@ class StateMachine
             if (object){
                 // For every key, apply the changes
                 keys.forEach(key => {
-                    if (key == "id") return;
-                    if (!isNaN(state[key])){
+                    if (key == "id" || key == "time") return; // Ignore this keys.
+                    if ((typeof state[key]) == "number"){
                         if (object[key] === undefined) object[key] = state[key];
                         else object[key] += state[key]
                     }else {
