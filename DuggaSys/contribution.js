@@ -180,7 +180,6 @@ function renderCommits(data) {
   //creating the svg to put the commit tree in
   var str = "<h2>Commit tree</h2>";
   str += "<svg id='commitTree' viewBox='0 0 600 250' style='background-color:#efefef;'width='100%' height='250' aria-labelledby='title desc' role='img'>";
-  str += "</svg>";
 
   var current = new Date();
   var currentYear = current.getFullYear();
@@ -216,8 +215,8 @@ function renderCommits(data) {
       var x2 = parent1['space'];
       var y2 = parent1['thetimeh'];
 
-      console.log(x1,x2,y1,y2,0.5,0.5)
-      str +=  drawCommitTree(x1,x2,y1,y2,0.5,0.5);
+    //  console.log(x1,x2,y1,y2,0.5,0.5)
+      str +=  drawCommitTree(x1,x2,y1,y2,10,10);
     }
 
     var p2index = commitDict[allCommits[i]['p2id']];
@@ -226,9 +225,10 @@ function renderCommits(data) {
       var x2 = parent2['space'];
       var y2 = parent2['thetimeh'];
 
-      str += drawCommitTree(x1,x2,y1,y2,0.5,0.5);
+      str +=  drawCommitTree(x1,x2,y1,y2,20,20);
     }
   }
+  str += "</svg>";
 
   return str;
 }
