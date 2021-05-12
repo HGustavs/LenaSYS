@@ -1389,16 +1389,7 @@ div .navButt:hover {
         margin-top: 14px;
 
     }
-    #GeneralStats{
-        display:none;
-    }
-    #CurrentlyOnline{
-        display:none;
-    }
-    #PasswordGuessing{
-        display:none;
-    }
-    #OSPercentage{
+    #GeneralStats, #CurrentlyOnline, #PasswordGuessing, #OSPercentage{
         display:none;
     }
 
@@ -5114,7 +5105,7 @@ only screen and (max-device-width: 860px) {
 
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
-  #editCourse{
+  #editCourse, #announcement{
     display: none;
   }
 }
