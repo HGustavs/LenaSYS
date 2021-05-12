@@ -58,27 +58,31 @@ function CourseAndAssignment($course, $assignment) {
 
 	global $pdo;
 
-	//Get vers.vers
+	//Get 
 	$sql = "SELECT * FROM vers WHERE versname='{$versname}' AND coursecode='{$coursecode}'";
 	$query = $pdo->prepare($sql);
 	$query->execute();
-	//$result = $query->fetch();
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$cid = $row['cid'];
 		$coursename = $row['coursename'];
 		$coursecode = $row['coursecode'];
+		$vers = $row['vers'];
 	}
 	error_log("cid: ".$cid." coursename: ".$coursename." coursecode: ".$coursecode);
 	
-	//Get id.quiz
-	$sql = "SELECT id FROM quiz WHERE qname='{$assignment}' AND vers='{$vers}'";
+	//Get 
+	$sql = "SELECT * FROM quiz WHERE qname='{$assignment}' AND vers='{$vers}'";
 	$query = $pdo->prepare($sql);
 	$query->execute();
-	$result = $query->fetch();
-	$did = $result[0];
+	if($row = $query->fetch(PDO::FETCH_ASSOC)){
+		$id = $row['id'];
+		$qname = $row['qname'];
+		$qrelease = $row['qrelease'];
+	}
+	error_log("id: ".$id." qname: ".$qname." qrelease: ".$qrelease);
 
 	//Create URL
-	//$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&&courseid={$row["cid"]}&cid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}&deadline={$row["deadline"]}&hash=$hash";
+	//$URL = "../DuggaSys/showDugga.php?did=1&courseid=2&coursename=Webbutveckling%20-%20datorgrafik&coursevers=97732&moment=2002&segment=2001&highscoremode=1&comment=null&deadline=2015-01-30%2015:30:00&cid=2
 
 	//error_log("versname: ".$versname);
 	//error_log("coursecode: ".$coursecode);
