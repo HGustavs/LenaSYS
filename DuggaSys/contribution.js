@@ -392,7 +392,7 @@ function lineDiagram() {
 
   for (i = 0; i < xNumber.length; i++) {
     str += `<circle onmouseover='showInfoText(this, \"${"LOC: " + (dailyCount[i][3])}\");' onmouseout='hideInfoText()'`;
-    str += `cx='"${xNumber[i]}' cy='${(dailyCount[i][3] / maxDayCount * graphHeight)}' r='3' fill='purple' />`;
+    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][3] / maxDayCount * graphHeight)}' r='3' fill='purple' />`;
   }
   str += "</g>";
 
