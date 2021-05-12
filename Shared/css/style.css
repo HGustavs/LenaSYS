@@ -1389,7 +1389,7 @@ div .navButt:hover {
         margin-top: 14px;
 
     }
-    #GeneralStats, #CurrentlyOnline, #PasswordGuessing, #OSPercentage{
+    #GeneralStats, #CurrentlyOnline, #PasswordGuessing, #OSPercentage,#hamburgerBoxMSG{
         display:none;
     }
 
@@ -5099,13 +5099,13 @@ only screen and (max-device-width: 860px) {
  
   #versionCogBurger, #versionPlusBurger, #editStudentBurger,
   #testsBTNBurger, #editFilesBurger, #courseIMGBurger,
-  #editCourseBurger, #announcementBurger{
+  #editCourseBurger, #announcementBurger,#hamburgerBoxMSG{
     display: block;
   }
 
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
-  #editCourse, #announcement{
+  #editCourse, #announcement,#messagedialog{
     display: none;
   }
 }
@@ -7704,7 +7704,7 @@ textarea#filecont {
     display: none;
   }
 
-  header #versionCog{
+  header #versionCog,#messagedialog{
     display: none;
   }
 
@@ -7838,7 +7838,7 @@ textarea#filecont {
 @media only screen and (min-width: 861px) {
   #versionCogBurger, #versionPlusBurger, #editStudentBurger,
   #testsBTNBurger, #editFilesBurger, #courseIMGBurger,
-  #editCourseBurger, #announcementBurger{
+  #editCourseBurger, #announcementBurger,#hamburgerBoxMSG{
     display: none;
   }
 
