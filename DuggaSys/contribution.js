@@ -187,23 +187,52 @@ function renderCommits(data) {
 
   var yearlyCommits = new Array();
   var weekData = data['weeks'];
-  console.log(weekData);
 
   var allCommits =  [];
-  //for each commit ID
-  //X is commit order, Y is commit nesting
+  var commitDict = Object();
+  var index = 0;
+  
+ // for each commit ID
+ // X is commit order, Y is commit nesting
   for(var i = 0; i < weekData.length;i++) {  
-    for(var j= 0; j < weekData[i]['commits'].length;j++) {
+    for(var j= 0; j < weekData[i]['commits'].length;j++) 
+    {
       allCommits.push(weekData[i]['commits'][j]);
+      var commit_obj = {
+        index: index
+      }
+      index++;
+      commitDict[weekData[i]['commits'][j].cid] = commit_obj;
     }
   }
-  console.log(allCommits);
 
-  for(var i = 0; i < allCommits.length;i++){
-    
+  for(var i = 0; i < allCommits.length;i++) { // each commit
+    var x1 = allCommits[i]['space'];
+    var y1 = allCommits[i]['time'];
+
+    var p1index = commitDict[allCommits[i]['p1id']];
+    if(p1index != undefined) {
+      var parent1 =  allCommits[p1index.index];
+      var x2 = parent1['space'];
+      var y2 = parent1['time'];
+
+      drawCommitTree(x1,x2,y1,y2,0.5,0.5);
+    }
+
+    var p2index = commitDict[allCommits[i]['p2id']];
+    if(p2index != undefined) {
+      var parent2 =  allCommits[p2index.index];
+      var x2 = parent2['space'];
+      var y2 = parent2['time'];
+
+      drawCommitTree(x1,x2,y1,y2,0.5,0.5);
+    }
   }
 
   return str;
+}
+function drawCommitTree(x1, x2, y1, y2, xmul, ymul){
+
 }
 
 function renderLineDiagram(data) {
