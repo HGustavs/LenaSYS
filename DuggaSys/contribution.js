@@ -179,7 +179,7 @@ function renderCommits(data) {
   
   //creating the svg to put the commit tree in
   var str = "<h2>Commit tree</h2>";
-  str += "<svg id='commitTree' viewBox='0 0 600 250' style='background-color:#efefef;'width='100%' height='250' aria-labelledby='title desc' role='img'>";
+  str += "<svg id='commitTree' viewBox='0 0 600 450' style='background-color:#efefef;'width='100%' height='450' aria-labelledby='title desc' role='img'>";
   
 
   var current = new Date();
@@ -205,12 +205,16 @@ function renderCommits(data) {
       commitDict[weekData[i]['commits'][j].cid] = commit_obj;
     }
   }
+  var xMul = 15;
+  var yMul = 15;
+  var x_spacing = 350;
+  var y_spacing = -50;
 
   for(var i = 0; i < allCommits.length;i++) { // each commit
     var x1 = allCommits[i]['space'];
     var y1 = allCommits[i]['thetimeh'];
-
-    str += drawCommitDots(x1, y1, 10, 10);
+    console.log(x1);
+    str += drawCommitDots(x1, y1, xMul, yMul, x_spacing, y_spacing);
 
     var p1index = commitDict[allCommits[i]['p1id']];
     if(p1index != undefined) {
@@ -219,7 +223,7 @@ function renderCommits(data) {
       var y2 = parent1['thetimeh'];
 
     //  console.log(x1,x2,y1,y2,0.5,0.5)
-      str +=  drawCommitLines(x1,x2,y1,y2,10,10);
+      str +=  drawCommitLines(x1,x2,y1,y2,xMul,yMul, x_spacing, y_spacing);
     }
 
     var p2index = commitDict[allCommits[i]['p2id']];
@@ -228,7 +232,7 @@ function renderCommits(data) {
       var x2 = parent2['space'];
       var y2 = parent2['thetimeh'];
 
-      str +=  drawCommitLines(x1,x2,y1,y2,10,10);
+   //   str +=  drawCommitLines(x1,x2,y1,y2,xMul,yMul);
     }
   }
   str += "</svg>";
@@ -246,36 +250,33 @@ function renderCommits(data) {
     Param xmul = multiplyer for x
     Param ymul = multiplyer for y
 */
-function drawCommitLines(x1, x2, y1, y2, xmul, ymul){
+function drawCommitLines(x1, x2, y1, y2, xmul, ymul, x_spacing, y_spacing){
   
   var colors = ["#246","#26A","#4BA","#59C","#DE7","#FB5","#FD5","#E64","#85A","#45A"]; //collection of array to hold different colors? Maybe keep this in renderCommits() and sens as parameter based on the commits author?
   var color = colors[y1%colors.length]; // Reworks the colors array with % calcultation against y1. Leaves one color to use for lines between commits (MAYBE?!?)
 
-  var strokew = xmul * 0.1; //Guessing a calculation for stroke width for colored lines
-  var cradius = xmul * 2;
+  var strokew = xmul * 0.2; //Guessing a calculation for stroke width for colored lines
   var str = "";
 
-  //Draw the circle reptresenting each commit
-  str += `<circle cx='${x1*xmul}' cy='${y1*ymul}' r='${cradius}' />`;
 
   //Draw the line between child- and parent commits
   if(Math.abs(x2-x1)>1 && (y1 != y2)){ //Math.abs() returns the calculations absolute value
-    str += `<line x1=${(x1*xmul)} y1=${(y1*ymul)} x2=${((x2-1)*xmul)} y2=${(y1*ymul)} stroke='${color}' style='stroke-width:${strokew}' />`;
-    str += `<line x1=${((x2-1)*xmul)} y1=${(y1*ymul)} x2=${(x2*xmul)} y2=${(y2*ymul)} stroke='${color}' style='stroke-width:${strokew}' />`;
+    str += `<line x1=${(x1*xmul - x_spacing)} y1=${(y1*ymul- y_spacing)} x2=${((x2-1)*xmul  - x_spacing)} y2=${(y1*ymul- y_spacing)} stroke='${color}' style='stroke-width:${strokew}' />`;
+    str += `<line x1=${((x2-1)*xmul  - x_spacing)} y1=${(y1*ymul- y_spacing)} x2=${(x2*xmul  - x_spacing)} y2=${(y2*ymul- y_spacing)} stroke='${color}' style='stroke-width:${strokew}' />`;
     
   }else{
-    str +=`<line x1=${(x1*xmul)}  y1=${(y1*ymul)} x2=${(x2*xmul)} y2=${(y2*ymul)} stroke='${color}' style='stroke-width:${strokew}"' />`;
+    str +=`<line x1=${(x1*xmul - x_spacing)}  y1=${(y1*ymul- y_spacing)} x2=${(x2*xmul - x_spacing)} y2=${(y2*ymul - y_spacing)} stroke='${color}' style='stroke-width:${strokew}"' />`;
   }
 
   return str;
 }
 
-function drawCommitDots(x1, y1, xmul, ymul){
-  var cradius = xmul * 2;
+function drawCommitDots(x1, y1, xmul, ymul, x_spacing, y_spacing){
+  var cradius = xmul * 0.35;
   var str = "";
 
   //Draw the circle reptresenting each commit
-  str += `<circle cx='${x1*xmul}' cy='${y1*ymul}' r='${cradius}' />`;
+  str += `<circle cx='${x1*xmul  - x_spacing}' cy='${y1*ymul - y_spacing}' r='${cradius}' />`;
 
   return str;
 }
