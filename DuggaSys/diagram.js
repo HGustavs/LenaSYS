@@ -663,6 +663,8 @@ class StateMachine
         // If no history exists => return
         if (this.historyLog.length == 0) return;
 
+        clearInterval(this.replayTimer);
+
         // If cri (CurrentReplayIndex) is the last set to beginning
         if(cri == this.historyLog.length) cri = 0;
 
