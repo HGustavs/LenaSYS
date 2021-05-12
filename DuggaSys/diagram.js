@@ -1124,7 +1124,6 @@ document.addEventListener('keydown', function (e)
 
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-
         if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
             escPressed = true;
             if (settings.replay.active){
@@ -1180,7 +1179,7 @@ document.addEventListener('keydown', function (e)
 document.addEventListener('keyup', function (e)
 {
     var pressedKey = e.key.toLowerCase();
-
+  
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
     if (pressedKey == keybinds.META.key) {
