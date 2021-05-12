@@ -52,13 +52,32 @@ function GetCourse($course){
 }
 
 function CourseAndAssignment($course, $assignment) {	
-	$courseArray = explode(" ", $course);
-	$versname = end($courseArray);
-	$coursecode = prev($courseArray);
+	$courseArray = explode(" ", $course); //Transforms long string to array with a word in each element
+	$versname = end($courseArray); //Gets last element, ex: "HT15"
+	$coursecode = prev($courseArray); //Gets second-last element, ex: "IT118G"
 
-	error_log("versname: ".$versname);
-	error_log("coursecode: ".$coursecode);
-	error_log("assignment: ".$assignment);
+	global $pdo;
+
+	//Get vers.vers
+	$sql = "SELECT vers FROM vers WHERE versname='{$versname}' AND coursecode='{$coursecode}'";
+	$query = $pdo->prepare($sql);
+	$query->execute();
+	$result = $query->fetch();
+	$vers = $result[0];
+	
+	//Get id.quiz
+	$sql = "SELECT id FROM quiz WHERE qname='{$assignment}' AND vers='{$vers}'";
+	$query = $pdo->prepare($sql);
+	$query->execute();
+	$result = $query->fetch();
+	$did = $result[0];
+
+	//Create URL
+	//$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&&courseid={$row["cid"]}&cid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}&deadline={$row["deadline"]}&hash=$hash";
+
+	//error_log("versname: ".$versname);
+	//error_log("coursecode: ".$coursecode);
+	//error_log("assignment: ".$assignment);
 }
 
 if(($assignment != "UNK") &&($course == "UNK")){
