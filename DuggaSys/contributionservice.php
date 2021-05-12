@@ -398,7 +398,7 @@ if(strcmp($opt,"get")==0) {
 
 			// Number of commits made by the user during the interval
 			$commits=array();
-			$query = $log_db->prepare('SELECT message,cid,author,p1id,p2id,thetime,space  FROM commitgit WHERE author=:gituser AND thedate>:eventfrom AND thedate<:eventto');
+			$query = $log_db->prepare('SELECT message,cid,author,p1id,p2id,thetimeh,space  FROM commitgit WHERE author=:gituser AND thedate>:eventfrom AND thedate<:eventto');
 			$query->bindParam(':gituser', $gituser);
 			$query->bindParam(':eventfrom', $currentweekdate);
 			$query->bindParam(':eventto', $currentweekenddate );
@@ -413,7 +413,7 @@ if(strcmp($opt,"get")==0) {
 						'cid' => $row['cid'],
 						'p1id' => $row['p1id'],
 						'p2id' => $row['p2id'],
-						'thetime' => $row['thetime'],
+						'thetimeh' => $row['thetimeh'],
 						'space' => $row['space']
 
 					);

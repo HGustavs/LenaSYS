@@ -191,7 +191,7 @@ function renderCommits(data) {
   var allCommits =  [];
   var commitDict = Object();
   var index = 0;
-  
+
  // for each commit ID
  // X is commit order, Y is commit nesting
   for(var i = 0; i < weekData.length;i++) {  
@@ -208,24 +208,25 @@ function renderCommits(data) {
 
   for(var i = 0; i < allCommits.length;i++) { // each commit
     var x1 = allCommits[i]['space'];
-    var y1 = allCommits[i]['time'];
+    var y1 = allCommits[i]['thetimeh'];
 
     var p1index = commitDict[allCommits[i]['p1id']];
     if(p1index != undefined) {
       var parent1 =  allCommits[p1index.index];
       var x2 = parent1['space'];
-      var y2 = parent1['time'];
+      var y2 = parent1['thetimeh'];
 
-      drawCommitTree(x1,x2,y1,y2,0.5,0.5);
+      console.log(x1,x2,y1,y2,0.5,0.5)
+      str +=  drawCommitTree(x1,x2,y1,y2,0.5,0.5);
     }
 
     var p2index = commitDict[allCommits[i]['p2id']];
     if(p2index != undefined) {
       var parent2 =  allCommits[p2index.index];
       var x2 = parent2['space'];
-      var y2 = parent2['time'];
+      var y2 = parent2['thetimeh'];
 
-      drawCommitTree(x1,x2,y1,y2,0.5,0.5);
+      str += drawCommitTree(x1,x2,y1,y2,0.5,0.5);
     }
   }
 
@@ -245,7 +246,7 @@ function renderCommits(data) {
 function drawCommitTree(x1, x2, y1, y2, xmul, ymul){
   
   var colors = ["#246","#26A","#4BA","#59C","#DE7","#FB5","#FD5","#E64","#85A","#45A"]; //collection of array to hold different colors? Maybe keep this in renderCommits() and sens as parameter based on the commits author?
-  var color = colors[y1%size(colors)]; // Reworks the colors array with % calcultation against y1. Leaves one color to use for lines between commits (MAYBE?!?)
+  var color = colors[y1%colors.length]; // Reworks the colors array with % calcultation against y1. Leaves one color to use for lines between commits (MAYBE?!?)
 
   var strokew = xmul * 0.1; //Guessing a calculation for stroke width for colored lines
   var str = "";
@@ -256,6 +257,7 @@ function drawCommitTree(x1, x2, y1, y2, xmul, ymul){
   if(Math.abs(x2-x1)>1 && (y1 != y2)){ //Math.abs() returns the calculations absolute value
     str += `<line x1='${(x1*xmul)}'  y1='${(y1*ymul)}' x2='${((x2-1)*xmul)}' y2='${(y1*ymul)}' stroke='${color}' style='stroke-width:${strokew}' />`;
     str += `<line x1='${((x2-1)*xmul)}'  y1='${(y1*ymul)}' x2='${(x2*xmul)}' y2='${(y2*ymul)}' stroke='${color}' style='stroke-width:${strokew}' />`;
+    
   }else{
     str +=`<line x1='${(x1*xmul)} + "'  y1='${(y1*ymul)}' x2='${(x2*xmul)}' y2='${(y2*ymul)}' stroke='${color}' style='stroke-width:${strokew}"' />`;
   }
