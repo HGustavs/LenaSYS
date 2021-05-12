@@ -283,6 +283,13 @@ function showEditVersion() {
   $("#editCourseVersion").css("display", "flex");
 }
 
+function showResulted(CID, CourseName, CourseVers){
+  var startString = 'resulted.php?courseid=';
+  startString += CID;
+  startString += '&coursename=' + CourseName;
+  startString += '&coursevers=' + CourseVers;
+  console.log(startString);
+}
 // Close the "edit course version" and "new course version" windows by pressing the ESC button
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {

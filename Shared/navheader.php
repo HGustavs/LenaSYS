@@ -202,11 +202,13 @@
 							echo "</td>";
 							echo "<input type='text' id='adminLoggedin' value='yes' style='display:none;'>";
 
-
+							$test = $_SESSION['courseid'];
+							$test2 = $_SESSION['coursename'];
+							$test3 = $_SESSION['coursevers'];
 							echo "<div id='hamburgerBox'>";
 							echo "<div id='announcementBurger'><img alt='announcement icon'  class='burgerButt' src='../Shared/icons/new_announcement_icon.svg'><p>Announcements</p></div>";
-							echo "<div id='versionCogBurger'><img alt='settings icon'  class='burgerButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'><p>Edit selected version</p></div>";
-							echo "<div id='versionPlusBurger'><img alt='plus sign icon'  value='New version' class='burgerButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'><p>Create new courseversion</p></div>";
+							echo "<div id='versionCogBurger' onclick=showEditVersion();><img alt='settings icon'  class='burgerButt' title='Edit the selected version'  src='../Shared/icons/CogwheelWhite.svg'><p>Edit selected version</p></div>";
+							echo "<div id='versionPlusBurger' onclick=showResulted($test, $test2, $test3);><img alt='plus sign icon'  value='New version' class='burgerButt' title='Create a new version of this course'  src='../Shared/icons/PlusS.svg'><p>Create new courseversion</p></div>";
 							echo "<div id='editStudentBurger'>";
 							echo "<a id='resultsBTNBurger' class ='burgerButt' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
 							echo "<img alt='edit results icon'  class='burgerButt' src='../Shared/icons/marking_icon.svg'>";
