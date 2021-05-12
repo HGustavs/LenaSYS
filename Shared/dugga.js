@@ -1257,7 +1257,6 @@ function handleHash(){
 		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
 		dataType: "json",
 		success: function(data) {
-			returnedDugga(data);
 			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
 			//console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl + " lsHash= " + locallystoredhash);	//For debugging!
 
