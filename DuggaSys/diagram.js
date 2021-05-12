@@ -1122,15 +1122,17 @@ document.addEventListener('keydown', function (e)
     if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
     if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
 
+    if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true){
+        toggleReplay();
+        setReplayRunning(false);
+        clearInterval(stateMachine.replayTimer);
+    }
+
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
         if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
             escPressed = true;
-            if (settings.replay.active){
-                toggleReplay();
-                setReplayRunning(false);
-                clearInterval(stateMachine.replayTimer);
-            }else if(context.length > 0 || contextLine.length > 0) {
+            if(context.length > 0 || contextLine.length > 0) {
                 clearContext();
                 clearContextLine();
             } else {
