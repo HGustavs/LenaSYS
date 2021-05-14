@@ -107,6 +107,12 @@ function hamburgerChange(operation = 'click') {
   }
 }
 
+$(document).on('click', function(e) {
+  if ($(e.target).closest("#hamburgerIcon").length === 0) {
+      $("#hamburgerBox").hide();
+  }
+});
+
 function toggleHamburger() {
 
   var x = document.getElementById("hamburgerBox");
