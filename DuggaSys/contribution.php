@@ -6,9 +6,6 @@ include_once "../Shared/basic.php";
 pdoConnect();
 $cid=getOPG('cid');
 $vers=getOPG('coursevers');
-if (!$_SERVER['HTTP_REFERER']) {
-	header('Location: sectioned.php?courseid='.$cid.'&coursevers='.$vers);
-}
 ?>
 
 <!DOCTYPE html>
@@ -39,6 +36,8 @@ if (!$_SERVER['HTTP_REFERER']) {
 
 	<!-- content START -->
 	<div id="content"></div>
+
+	<div id='commitDiagram' style='margin-left: 12px; width:70%; min-width:650px; white-space: nowrap;'></div>
 
 	<div class='group3 group1' id='personalRankTable' style='margin-left: 12px; width:50%; white-space: nowrap;'></div>
 

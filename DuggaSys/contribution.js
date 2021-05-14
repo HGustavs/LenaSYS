@@ -175,6 +175,113 @@ function renderBarDiagram(data) {
   return str;
 }
 
+function renderCommits(data) {
+  
+  //creating the svg to put the commit tree in
+  var str = "<h2>Commit tree</h2>";
+  str += "<svg id='commitTree' viewBox='0 0 600 600' style='background-color:#efefef; width: 100%; min-width:600px; height:600px;' aria-labelledby='title desc' role='img'>";
+  
+
+  var current = new Date();
+  var currentYear = current.getFullYear();
+console.log(currentYear);
+  var yearlyCommits = new Array();
+  var weekData = data['weeks'];
+
+  var allCommits =  [];
+  var commitDict = Object();
+  var index = 0;
+
+ // for each commit ID
+ // X is commit order, Y is commit nesting
+  for(var i = 0; i < weekData.length;i++) {  
+    for(var j= 0; j < weekData[i]['commits'].length;j++) 
+    {
+      var commitDate =  weekData[i]['commits'][j].thedate;
+      var newDate = "";
+      for(var x = 0; x < 10; x++)
+      {
+        newDate += commitDate[x];
+      }
+      var finalDate = new Date(newDate);
+
+      if(finalDate.getFullYear() == currentYear){
+        allCommits.push(weekData[i]['commits'][j]);
+        var commit_obj = {
+          index: index
+        }
+        index++;
+        commitDict[weekData[i]['commits'][j].cid] = commit_obj;
+      }
+
+    }
+  }
+  var xMul = 20;
+  var yMul = 20;
+  var x_spacing = 150;
+  var y_spacing = -50;
+
+  for(var i = 0; i < allCommits.length;i++) { // each commit
+    var x1 = allCommits[i]['space'];
+    var y1 = allCommits[i]['thetimeh'];
+    str += drawCommitDots(x1, y1, xMul, yMul, x_spacing, y_spacing);
+
+    var p1index = commitDict[allCommits[i]['p1id']];
+    if(p1index != undefined) {
+      var parent1 =  allCommits[p1index.index];
+      var x2 = parent1['space'];
+      var y2 = parent1['thetimeh'];
+
+      str +=  drawCommitLines(x1,x2,y1,y2,xMul,yMul, x_spacing, y_spacing);
+
+    }
+  }
+  str += "</svg>";
+
+  return str;
+}
+
+/* 
+  Function to draw the actuall comiit tree inside the SVG.
+  X is Commit order, Y is Commit nesting
+    Param x1 = cid's x coordinate
+    Param x1 = cid's y coordinate
+    Param y2 = parent id's x coordinate for lines
+    Param y2 = parent id's y coordinate for lines
+    Param xmul = multiplyer for x
+    Param ymul = multiplyer for y
+*/
+function drawCommitLines(x1, x2, y1, y2, xmul, ymul, x_spacing, y_spacing){
+  
+  var colors = ["#246","#26A","#4BA","#59C","#DE7","#FB5","#FD5","#E64","#85A","#45A"]; //collection of array to hold different colors? Maybe keep this in renderCommits() and sens as parameter based on the commits author?
+  var color = colors[y1%colors.length]; // Reworks the colors array with % calcultation against y1. Leaves one color to use for lines between commits (MAYBE?!?)
+
+  var strokew = xmul * 0.1; //Guessing a calculation for stroke width for colored lines
+  var str = "";
+
+
+  //Draw the line between child- and parent commits
+  if(Math.abs(x2-x1)>1 && (y1 != y2)){ //Math.abs() returns the calculations absolute value
+    str += `<line x1=${(x1*xmul - x_spacing)} y1=${(y1*ymul- y_spacing)} x2=${((x2-1)*xmul  - x_spacing)} y2=${(y1*ymul- y_spacing)} stroke='${color}' style='stroke-width:${strokew}' />`;
+    str += `<line x1=${((x2-1)*xmul  - x_spacing)} y1=${(y1*ymul- y_spacing)} x2=${(x2*xmul  - x_spacing)} y2=${(y2*ymul- y_spacing)} stroke='${color}' style='stroke-width:${strokew}' />`;
+    
+  }else{
+    str +=`<line x1=${(x1*xmul - x_spacing)}  y1=${(y1*ymul- y_spacing)} x2=${(x2*xmul - x_spacing)} y2=${(y2*ymul - y_spacing)} stroke='${color}' style='stroke-width:${strokew}"' />`;
+  }
+
+  return str;
+}
+
+function drawCommitDots(x1, y1, xmul, ymul, x_spacing, y_spacing){
+  var cradius = xmul * 0.10;
+  var str = "";
+
+  //Draw the circle reptresenting each commit
+  str += `<circle cx='${x1*xmul  - x_spacing}' cy='${y1*ymul - y_spacing}' r='${cradius}' />`;
+
+  return str;
+}
+
 function renderLineDiagram(data) {
 
   var weeks = data.weeks;
@@ -286,7 +393,7 @@ function lineDiagram() {
 
   for (i = 0; i < xNumber.length; i++) {
     str += `<circle onmouseover='showInfoText(this, \"${"LOC: " + (dailyCount[i][3])}\");' onmouseout='hideInfoText()'`;
-    str += `cx='"${xNumber[i]}' cy='${(dailyCount[i][3] / maxDayCount * graphHeight)}' r='3' fill='purple' />`;
+    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][3] / maxDayCount * graphHeight)}' r='3' fill='purple' />`;
   }
   str += "</g>";
 
@@ -668,6 +775,7 @@ function createTimeSheetTable(data) {
   if(tabledata.tblbody != null || tabledata.tblbody != undefined) {
     myTable.renderTable();
   }
+}
 
 function renderCell(col, celldata, cellid) {
   var str = "UNK";
@@ -777,7 +885,7 @@ function returnedSection(data) {
   document.getElementById('barchart').innerHTML = renderBarDiagram(data);
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(JSON.stringify(data['hourlyevents']));
-
+  document.getElementById('commitDiagram').innerHTML = renderCommits(data);
   document.getElementById('content').innerHTML = str;
 }
 
@@ -1377,3 +1485,5 @@ function hideTooltip() {
       }
     }
 }
+
+console.error
