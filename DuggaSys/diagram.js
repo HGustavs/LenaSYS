@@ -953,7 +953,7 @@ var defaults = {
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "White", Stroke: "Black", width: 5, height: 5 },
 }
-var defaultLine = { kind: "Normal", cardinality: "MANY" };
+var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
 //#region ================================ INIT AND SETUP       ================================
 /**
@@ -4376,14 +4376,45 @@ function saveDiagram()
 }
 function exportDiagram()
 {
-
     displayMessage(messageTypes.SUCCESS, "Generating the export file..");
-
-    // The content of the save file
     var objToSave = {
-        data: data,
-        lines: lines
+        data: [],
+        lines: [],
     };
+    var keysToIgnore = ["top", "left", "right", "bottom", "x1", "x2", "y1", "y2", "cx", "cy"];
+    data.forEach(obj => {
+        var filteredObj = {
+            kind: obj.kind
+        };
+
+        Object.keys(obj).forEach(objKey => {
+            // If they key is ignore => return
+            if (keysToIgnore.includes(objKey)) return;
+
+            // Ignore defaults
+            if (defaults[obj.kind][objKey] != obj[objKey]){
+                // Add to filterdObj
+                filteredObj[objKey] = obj[objKey];
+            }
+        });
+        objToSave.data.push(filteredObj);
+    });
+
+    keysToIgnore = ["dx", "dy", "ctype"]
+    lines.forEach(obj => {
+        var filteredObj = {};
+        Object.keys(obj).forEach(objKey => {
+            // If they key is ignore => return
+            if (keysToIgnore.includes(objKey)) return;
+
+            if (defaultLine[objKey] != obj[objKey]){
+                filteredObj[objKey] = obj[objKey];
+            }
+        });
+        objToSave.lines.push(filteredObj);
+    });
+    console.log(objToSave);
+
     // Download the file
     downloadFile("diagram", objToSave);
 }
@@ -4413,9 +4444,46 @@ async function loadDiagram()
     }
 
     if(temp.historyLog){
-        console.log("This is a save-file");
-    } else if(temp.data && temp.lines){ 
-        console.log("This is an export-file");
+        // Set the history and initalState to the values of the file
+        stateMachine.historyLog = temp.historyLog;
+        stateMachine.initialState = temp.initialState;
+
+        // Update the stateMachine to the latest current index
+        stateMachine.currentHistoryIndex = stateMachine.historyLog.length -1;
+
+        // Scrub to the latest point in the diagram
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
+
+        // Display success message for load
+        displayMessage(messageTypes.SUCCESS, "Save-file loaded");
+
+    } else if(temp.data && temp.lines){
+        // Set data and lines to the values of the export file
+        temp.data.forEach(element => {
+            var elDefault = defaults[element.kind];
+            Object.keys(elDefault).forEach(defaultKey => {
+                if (!element[defaultKey]){
+                    element[defaultKey] = elDefault[defaultKey];
+                }
+            });
+        });
+        temp.lines.forEach(line => {
+            Object.keys(defaultLine).forEach(defaultKey => {
+                if (!line[defaultKey]){
+                    line[defaultKey] = defaultLine[defaultKey];
+                }
+            });
+        });
+
+        data = temp.data;
+        lines = temp.lines;
+
+        // Update the diagram
+        showdata();
+        updatepos();
+
+        // Display success message for load
+        displayMessage(messageTypes.SUCCESS, "Export-file loaded");
     }
 }
 //#endregion =====================================================================================
