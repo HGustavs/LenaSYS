@@ -2444,7 +2444,7 @@ function rectsIntersect (left, right)
          var obj = data[foundId];
          if (settings.grid.snapToGrid) {
              if (!ctrlPressed) {
-                 //funkar inte
+                 //Different snap points for entity and others
                 if (elementTypeSelected.ENTITY) 
                 {
                     // Calculate nearest snap point
@@ -2469,7 +2469,6 @@ function rectsIntersect (left, right)
          }
      }
  }
-
 
 function isKeybindValid(e, keybind)
 {
@@ -4267,7 +4266,6 @@ function updateCSSForAllElements()
         }
 
         if (settings.grid.snapToGrid && useDelta) {
-
             if (element.kind == "EREntity"){
                 // The element coordinates with snap point
                 var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
