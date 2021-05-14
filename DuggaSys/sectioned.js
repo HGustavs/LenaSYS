@@ -444,7 +444,8 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-  param.timeCreated = dateToday.getTime();
+  //param.timeCreated = dateToday.getTime();
+  param.timeCreated = 1;
 
   console.log("time created: " + param.timeCreated);
 
@@ -774,8 +775,8 @@ function returnedSection(data) {
         // New items added get the class glow to show they are new
        // if(item['pos'] == "-1" || item['pos'] == "100"){'
        var time = dateToday.getTime();
-       console.log(item['timeCreated'] - time);
-        if((item['pos'].timeCreated-time)< 0){
+       console.log(item['timeCreated']);
+        if((item['param.timeCreated']-time)< 0){
           console.log("Glow");
           str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
           class='${makeTextArray(item['kind'], valarr) + "glow"}' style='display:block'>`;
