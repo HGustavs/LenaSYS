@@ -4389,18 +4389,33 @@ function exportDiagram()
 }
 function getFileContent(files)
 {
-    var reader = new FileReader();
-    reader.onload = function (event) {
-        return event.target.result;
-    };
-    reader.readAsText(file[0]);
+    return new Promise((resolve, reject) => {
+        var reader = new FileReader();
+    
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+    
+        reader.onerror = reject;
+    
+        reader.readAsText(files);
+      })
 }
-function loadDiagram()
+async function loadDiagram()
 {
-    // Get filepath
-    var file = document.getElementById("importDiagramFile").files;
+    try{
+        // Get filepath
+        var file1 = document.getElementById("importDiagramFile").files[0];
+        var temp = await getFileContent(file1);
+        temp = JSON.parse(temp);
+    } catch(error){
+        console.log(error);
+    }
 
-
-
+    if(temp.historyLog){
+        console.log("This is a save-file");
+    } else if(temp.data && temp.lines){ 
+        console.log("This is an export-file");
+    }
 }
 //#endregion =====================================================================================
