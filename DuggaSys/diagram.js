@@ -4019,8 +4019,8 @@ function drawElement(element, ghosted = false)
     var textWidth = canvasContext.measureText(element.name).width;
     
     // If calculated size is larger than element width
-    const margin = 10;
-    var tooBig = (textWidth >= (boxw - (margin * 2)))
+    const margin = 10 * zoomfact;
+    var tooBig = (textWidth >= (boxw - (margin * 2)));
     var xAnchor = tooBig ? margin : hboxw;
     var vAlignment = tooBig ? "left" : "middle";
 
