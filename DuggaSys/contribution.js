@@ -182,7 +182,7 @@ function renderCommits(data) {
   str += "<svg id='commitTree' viewBox='0 0 600 600' style='background-color:#efefef; width: 100%; min-width:600px; height:600px;' aria-labelledby='title desc' role='img'>";
   
 
-  var current = new Date();
+  var current = new Date("2019-04-02");
   var currentYear = current.getFullYear();
 console.log(currentYear);
   var yearlyCommits = new Array();
@@ -283,7 +283,7 @@ function drawCommitDots(x1, y1, xmul, ymul, x_spacing, y_spacing){
 }
 
 function renderLineDiagram(data) {
-
+  
   var weeks = data.weeks;
   daycounts = data['count'];
   var firstweek = data.weeks[0].weekstart;
@@ -497,6 +497,20 @@ function changeDay(date) {
   }, "CONTRIBUTION");
 }
 
+function changeDay2(date1,date2){
+
+  var time1 = date1.getTime();
+  var time2 = date2.getTime();
+  var difference = time2-time1;
+  var daysDifference = difference /(1000 *60*60*24);
+  daysDifference = daysDifference.toFixed(0);
+  console.log(daysDifference);
+  for(var i = 0; i<daysDifference; i++){
+    
+  }
+
+}
+
 function showAllDays() {
   var div = document.getElementById('hourlyGraph');
   div.innerHTML = renderCircleDiagram(JSON.stringify(retdata['hourlyevents']));
@@ -515,8 +529,12 @@ function renderCircleDiagram(data, day) {
     today = day;
   }
 
+  var date1 = new Date("2019-04-01");
+  var date2 = new Date("2019-04-05");
   var activities = JSON.parse(data);
   var str = "";
+  changeDay2(date1,date2);
+
   str += "<h2 style='padding:10px'>Hourly activities</h2>";
   str += "<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
   if (day) {
