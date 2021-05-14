@@ -4343,11 +4343,12 @@ function showdata()
  * @param {String} filename The name of the file that get generated
  * @param {*} dataObj The text content of the file
  */
-function downloadFile(filename, dataObj){
+function downloadFile(filename, dataObj)
+{
     // Create a "a"-element
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(dataObj)));
-    element.setAttribute('download', filename);
+    element.setAttribute('download', filename + ".json");
 
     element.style.display = 'none';
     document.body.appendChild(element);
@@ -4356,7 +4357,8 @@ function downloadFile(filename, dataObj){
 
     document.body.removeChild(element);
 }
-function saveDiagram(){
+function saveDiagram()
+{
 
     displayMessage(messageTypes.SUCCESS, "Generating the save file..");
 
@@ -4372,7 +4374,8 @@ function saveDiagram(){
     // Download the file
     downloadFile("diagram", objToSave);
 }
-function exportDiagram(){
+function exportDiagram()
+{
 
     displayMessage(messageTypes.SUCCESS, "Generating the export file..");
 
@@ -4383,5 +4386,21 @@ function exportDiagram(){
     };
     // Download the file
     downloadFile("diagram", objToSave);
+}
+function getFileContent(files)
+{
+    var reader = new FileReader();
+    reader.onload = function (event) {
+        return event.target.result;
+    };
+    reader.readAsText(file[0]);
+}
+function loadDiagram()
+{
+    // Get filepath
+    var file = document.getElementById("importDiagramFile").files;
+
+
+
 }
 //#endregion =====================================================================================

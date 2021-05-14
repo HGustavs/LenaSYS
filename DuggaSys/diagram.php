@@ -203,9 +203,13 @@
                 
             </fieldset>
             <fieldset>
-                <legend>Save / Export / Load</legend>
+                <legend>Export</legend>
                 <button onclick="saveDiagram();">Save</button>
                 <button onclick="exportDiagram();">Export</button>
+            </fieldset>
+            <fieldset>
+                <legend>Import</legend>
+                <input id="importDiagramFile" type="file">
                 <button onclick="loadDiagram();">Load</button>
             </fieldset>
         </div>
