@@ -202,6 +202,12 @@
             <fieldset id='propertyFieldset'>
                 
             </fieldset>
+            <fieldset>
+                <legend>Save / Export / Load</legend>
+                <button onclick="saveDiagram();">Save</button>
+                <button onclick="exportDiagram();">Export</button>
+                <button onclick="loadDiagram();">Load</button>
+            </fieldset>
         </div>
     </div>
     </div>

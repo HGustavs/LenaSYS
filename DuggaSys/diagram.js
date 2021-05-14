@@ -372,9 +372,7 @@ class StateMachine
     {
         if (stateChange instanceof StateChange) {
             // Remove the history entries that are after current index
-            while(this.currentHistoryIndex + 1 != this.historyLog.length) {
-                this.historyLog.pop();
-            }
+            this.removeFutureStates();
 
             // If history is present, perform soft/hard-check
             if (this.historyLog.length > 0) {
@@ -476,7 +474,12 @@ class StateMachine
         // Change the sliders max to historyLogs length
         document.getElementById("replay-range").setAttribute("max", this.historyLog.length.toString());
     }
-
+    removeFutureStates(){
+        // Remove the history entries that are after current index
+        while(this.currentHistoryIndex + 1 != this.historyLog.length) {
+            this.historyLog.pop();
+        }
+    }
     /**
      * @description Undoes the last stored history log changes. Determines what should be looked for by reading the state change flags.
      * @see StateChange For available flags.
@@ -4332,5 +4335,53 @@ function showdata()
     container.innerHTML = str;
     updatepos(null, null);
 
+}
+//#endregion =====================================================================================
+//#region ================================   LOAD AND EXPORTS    ==================================
+/**
+ * @description Create and download a file
+ * @param {String} filename The name of the file that get generated
+ * @param {*} dataObj The text content of the file
+ */
+function downloadFile(filename, dataObj){
+    // Create a "a"-element
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(dataObj)));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+function saveDiagram(){
+
+    displayMessage(messageTypes.SUCCESS, "Generating the save file..");
+
+    // Remove all future states to the history
+    stateMachine.removeFutureStates();
+
+    // The content of the save file
+    var objToSave = {
+        historyLog: stateMachine.historyLog,
+        initialState: stateMachine.initialState
+    };
+
+    // Download the file
+    downloadFile("diagram", objToSave);
+}
+function exportDiagram(){
+
+    displayMessage(messageTypes.SUCCESS, "Generating the export file..");
+
+    // The content of the save file
+    var objToSave = {
+        data: data,
+        lines: lines
+    };
+    // Download the file
+    downloadFile("diagram", objToSave);
 }
 //#endregion =====================================================================================
