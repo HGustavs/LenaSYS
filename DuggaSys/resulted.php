@@ -115,15 +115,6 @@ pdoConnect();
 			<?php }else{ ?>
 				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
-        <div class="resultedFormsFlex">
-				<label>Filter by...</label>
-				<select id="gradeFilterScale" onchange="updateTable();">
-					<option value="Filter-none" selected>none</option>
-					<option value="Filter-G">G</option>
-					<option value="Filter-VG">VG</option>
-					<option value="Filter-U">U</option>
-				</select>
-				</div>
 				<div class="resultedFormsFlex">
 					<label>Assignment</label>
 					<select id="assignmentDropdown" onchange="updateTable()"></select>
