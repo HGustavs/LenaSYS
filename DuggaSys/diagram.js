@@ -2437,39 +2437,38 @@ function rectsIntersect (left, right)
  * @param {Number} x Coordinates along the x-axis to move
  * @param {Number} y Coordinates along the y-axis to move
  */
-function setPos(id, x, y)
-{
-    foundId = findIndex(data, id);
-    if (foundId != -1) {
-        var obj = data[foundId];
-        if (settings.grid.snapToGrid) {
-            if (element.kind == "EREntity") { 
-                // Calculate nearest snap point
-                obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-
-                // Set the new snap point to center of element
-                obj.x -= obj.width / 2
-                obj.y -= obj.height / 2;
-            }
-            else if (!ctrlPressed){
-                // Calculate nearest snap point
-                obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                obj.y = Math.round((obj.y - ((y * 2) * (1.0 / zoomfact))) / settings.grid.gridSize*0.5) * settings.grid.gridSize*0.5;
-
-                // Set the new snap point to center of element
-                obj.x -= obj.width / 2
-                obj.y -= obj.height / 2;
-            }
-        } else {
-            obj.x += (targetDelta.x / zoomfact);
-            obj.y += (targetDelta.y / zoomfact) +25;
-        }
-    }else {
-            obj.x -= (x / zoomfact);
-            obj.y -= (y / zoomfact);
-    }
-}
+ function setPos(id, x, y)
+ {
+     foundId = findIndex(data, id);
+     if (foundId != -1) {
+         var obj = data[foundId];
+         if (settings.grid.snapToGrid) {
+             if (!ctrlPressed) {
+                 //funkar inte
+                if (elementTypeSelected.ENTITY) 
+                {
+                    // Calculate nearest snap point
+                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                     obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                }
+                else{
+                    obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                    obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
+                }
+                 // Set the new snap point to center of element
+                 obj.x -= obj.width / 2
+                 obj.y -= obj.height / 2;
+            
+             } else {
+                 obj.x += (targetDelta.x / zoomfact);
+                 obj.y += ((targetDelta.y / zoomfact)+25);
+             }
+         }else {
+             obj.x -= (x / zoomfact);
+             obj.y -= (y / zoomfact);
+         }
+     }
+ }
 
 
 function isKeybindValid(e, keybind)
@@ -4285,7 +4284,7 @@ function updateCSSForAllElements()
             else if (element.kind != "EREntity"){
                 // The element coordinates with snap point
                 var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                var objY = Math.round((elementData.y - ((deltaY * 2) * (1.0 / zoomfact))) / settings.grid.gridSize * 0.5) * settings.grid.gridSize * 0.5;
+                var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
 
                 // Add the scroll values
                 left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
