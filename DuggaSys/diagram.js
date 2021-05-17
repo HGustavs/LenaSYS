@@ -722,6 +722,7 @@ const keybinds = {
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
+        CENTER_CAMERA: {key:"home", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
         ENTER: {key: "enter", ctrl: false},
         COPY: {key: "c", ctrl: true, meta: true},
@@ -1166,6 +1167,9 @@ document.addEventListener('keydown', function (e)
             e.preventDefault();
             selectAll();
         }
+        if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
+            e.preventDefault();
+        }
 
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
@@ -1235,6 +1239,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
         if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
         if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(clipboard);
+        if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
 
         if (isKeybindValid(e, keybinds.COPY)){
             clipboard = context;
@@ -2963,6 +2968,7 @@ function setElementPlacementType(type = elementTypes.ENTITY)
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.
  */
+
 function zoomin(scrollEvent = undefined)
 {
     // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
@@ -4333,4 +4339,58 @@ function showdata()
     updatepos(null, null);
 
 }
+
+//#region ================================ Camera Functions     ================================
+/**
+ * @description Centers the camera between the highest and lowest x and y values of all elements
+ */
+ function centerCamera()
+ {
+     zoomfact = 1;
+     var maxX = undefined;
+     var maxY = undefined;
+     var minX = undefined;
+     var minY = undefined;
+     for (var i = 0; i < data.length; i++) {
+         if (maxX == undefined || data[i].x + data[i].width > maxX) maxX = data[i].x + data[i].width;
+         if (minX == undefined || data[i].x < minX) minX = data[i].x;
+         if (maxY == undefined || data[i].y + data[i].height > maxY) maxY = data[i].y + data[i].height;
+         if (minY == undefined || data[i].y < minY) minY = data[i].y;
+     }
+ 
+     // mitten av skärmen i pixlar
+     var centerScreen = {
+         x: window.innerWidth / 2,
+         y: window.innerHeight / 2
+     };
+ 
+     // center av diagrammet i koordinater
+     var centerDiagram = {
+         x: minX + (maxX - minX) / 2,
+         y: minY + (maxY - minY) / 2
+     };
+ 
+     // flytta kameran till mitten av diagrammet
+     scrollx = centerDiagram.x * zoomfact;
+     scrolly = centerDiagram.y * zoomfact;
+ 
+     var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+     console.log(middleCoordinate);
+ 
+     scrollx = middleCoordinate.x;
+     scrolly = middleCoordinate.y;
+ 
+     var finalCamera = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+ 
+     console.log(
+         `camera: {${middleCoordinate.x}, ${middleCoordinate.y}} `,
+         `centerDiagram: {${centerDiagram.x}, ${centerDiagram.y}}`,
+         `finalCamera: {${finalCamera.x}, ${finalCamera.y}}`);
+     // uppdatera skärmen
+     showdata();
+     updatepos();
+     updateGridPos();
+     updateGridSize();
+     drawRulerBars(scrollx, scrolly);
+ }
 //#endregion =====================================================================================
