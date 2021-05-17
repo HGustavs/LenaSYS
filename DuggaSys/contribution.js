@@ -17,6 +17,8 @@ AJAXService("get", {
   userid: "HGustavs"
 }, "CONTRIBUTION");
 
+var weeks;
+var activities;
 
 //sorting for multiple views
 //Restores all views when pressing the All button
@@ -283,8 +285,7 @@ function drawCommitDots(x1, y1, xmul, ymul, x_spacing, y_spacing){
 }
 
 function renderLineDiagram(data) {
-  
-  var weeks = data.weeks;
+  weeks = data.weeks;
   daycounts = data['count'];
   var firstweek = data.weeks[0].weekstart;
 
@@ -518,7 +519,8 @@ function showAllDays() {
 }
 
 function renderCircleDiagram(data, day) {
-  var today = new Date();
+console.log(data);
+  /* var today = new Date();
   if (!day) {
     var YYYY = today.getFullYear();
     var mm = today.getMonth() + 1;
@@ -528,26 +530,46 @@ function renderCircleDiagram(data, day) {
     today = YYYY + "-" + mm + "-" + dd;
   } else {
     today = day;
-  }
+  } */
 
   var date1 = new Date("2019-04-01");
   var date2 = new Date("2019-04-05");
-  var activities = JSON.parse(data);
+  if (data.hourlyevents != null){
+    activities = data.hourlyevents;
+  }
   var str = "";
   //changeDay(date1,date2);
-
-  str += "<h2 style='padding:10px'>Hourly activities</h2>";
-  str += "<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
-  if (day) {
-    str += "value=" + today + " ";
+  if (data.weeks != null){
+    weeks = data.weeks;
   }
+  daycounts = data['count'];
+  console.log(weeks[0]);
+  var firstweek = weeks[0].weekstart;
+
+  str = "<h2 style='padding-top:10px'>Hourly activities</h2>";
+  str += `<select class="group2" id="weekoption" value="0" style="margin-top:25px";
+  onchange='changeDay("2019-04-01", "2019-04-05")'>`;
+  str += '<option value="' + firstweek + '">All weeks</option>';
+
+  for (i = 0; i < weeks.length; i++) {
+    var week = weeks[i];
+    str += '<option value="' + week.weekstart + '">' + "Week " + week.weekno + `(${week.weekstart} - ${week.weekend})` + '</option>';
+  }
+
+  str += '</select>';
+  
+  //str += "<h2 style='padding:10px'>Hourly activities</h2>";
+  //str += "<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
+  /* if (day) {
+    str += "value=" + today + " ";
+  } */
   //str += `onchange='changeDay(${date1}, ${date2})' />`;
-  str += `onchange='changeDay("2019-04-01", "2019-04-05")' />`;
+  //str += `onchange='changeDay("2019-04-01", "2019-04-05")' />`;
   str += "<button style='margin-left: 20px' onclick='showAllDays()'>Show all</button>";
   if (day) {
-    str += "<p style='margin-left: 10px'>Showing activities for " + today + "</p>";
+    str += "<p style='margin-left: 10px'>Showing activities for </p>";
   } else {
-    str += "<p style='margin-left: 10px'>Showing activities for the period 2019-03-31 - " + today + "</p>";
+    str += "<p style='margin-left: 10px'>Showing activities for the period 2019-03-31 -</p>";
   }
   str += "<div class='circleGraph'>";
   str += `<div id='activityInfoBox'><span style='grid-row-start: -1' id='activityTime'>
@@ -852,9 +874,10 @@ var momentexists = 0;
 var resave = false;
 
 function returnedSection(data) {
+  console.log(data);
   if (Object.keys(data).length === 2) {
     var div = document.getElementById('hourlyGraph');
-    div.innerHTML = renderCircleDiagram(JSON.stringify(data['events']), data['day']);
+    div.innerHTML = renderCircleDiagram(data);
     return;
   }
   retdata = data;
@@ -904,7 +927,7 @@ function returnedSection(data) {
 
   document.getElementById('barchart').innerHTML = renderBarDiagram(data);
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
-  document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(JSON.stringify(data['hourlyevents']));
+  document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(data);
   document.getElementById('commitDiagram').innerHTML = renderCommits(data);
   document.getElementById('content').innerHTML = str;
 }
