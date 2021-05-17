@@ -24,8 +24,8 @@ var hasDuggs = false;
  
 *********/
 //Function for fetching todays "time"
-var dateToday = new Date();
-var compareWeek = dateToday.getTime() *7;
+var dateToday = new Date().getTime();
+var compareWeek = new Date().getTime() *7;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -444,8 +444,7 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-  //param.timeCreated = dateToday.getTime();
-  param.timeCreated = 1;
+  param.timeCreated = dateToday;
 
   console.log("time created: " + param.timeCreated);
 
@@ -773,18 +772,14 @@ function returnedSection(data) {
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
         // New items added get the class glow to show they are new
-       // if(item['pos'] == "-1" || item['pos'] == "100"){'
-       var time = dateToday.getTime();
-       console.log(item['timeCreated']);
-        if((item['param.timeCreated']-time)< 0){
+        console.log(item);
+        if((item['timeCreated'] - compareWeek)< 0){
           console.log("Glow");
-          str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
-          class='${makeTextArray(item['kind'], valarr) + "glow"}' style='display:block'>`;
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
         }
         else{
           console.log("no glow");
-          str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
-          class='${makeTextArray(item['kind'], valarr)}' style='display:block'>`;
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
         }
 
         menuState.idCounter++;

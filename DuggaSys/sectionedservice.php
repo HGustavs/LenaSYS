@@ -62,6 +62,7 @@ $feedbackenabled =getOP('feedback');
 $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
 $tabs=getOP('tabs');
+$timeCreated=getOP('timeCreated');
 $visbile = 0;
 
 
@@ -601,7 +602,8 @@ if($gradesys=="UNK") $gradesys=0;
 								'grptype' => $row['groupKind'],
 								'tabs' => $row['tabs'],
 								'feedbackenabled' => $row['feedbackenabled'],
-								'feedbackquestion' => $row['feedbackquestion']
+								'feedbackquestion' => $row['feedbackquestion'],
+								'timeCreated' => $row['timeCreated']
 							)
 						);
 				}
