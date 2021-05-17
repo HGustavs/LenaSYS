@@ -722,6 +722,7 @@ const keybinds = {
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
+        CENTER_CAMERA: {key:"home", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
         ENTER: {key: "enter", ctrl: false},
         COPY: {key: "c", ctrl: true, meta: true},
@@ -1163,6 +1164,9 @@ document.addEventListener('keydown', function (e)
             e.preventDefault();
             selectAll();
         }
+        if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
+            e.preventDefault();
+        }
 
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
@@ -1232,6 +1236,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
         if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
         if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
+        if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
 
         if (isKeybindValid(e, keybinds.COPY)){
             // Remove the preivous copy-paste data from localstorage.
@@ -2990,6 +2995,7 @@ function setElementPlacementType(type = elementTypes.ENTITY)
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.
  */
+
 function zoomin(scrollEvent = undefined)
 {
     // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
@@ -4371,4 +4377,52 @@ function showdata()
     updatepos(null, null);
 
 }
+
+//#region ================================ Camera Functions     ================================
+/**
+ * @description Centers the camera between the highest and lowest x and y values of all elements
+ */
+ function centerCamera()
+ {
+     // Calculate min and max x and y values for all elements combined, and then find their averages
+     zoomfact = 1;
+     var maxX = undefined;
+     var maxY = undefined;
+     var minX = undefined;
+     var minY = undefined;
+     for (var i = 0; i < data.length; i++) {
+         if (maxX == undefined || data[i].x + data[i].width > maxX) maxX = data[i].x + data[i].width;
+         if (minX == undefined || data[i].x < minX) minX = data[i].x;
+         if (maxY == undefined || data[i].y + data[i].height > maxY) maxY = data[i].y + data[i].height;
+         if (minY == undefined || data[i].y < minY) minY = data[i].y;
+     }
+ 
+     // Center of screen in pixels
+     var centerScreen = {
+         x: window.innerWidth / 2,
+         y: window.innerHeight / 2
+     };
+ 
+     // Center of diagram in coordinates
+     var centerDiagram = {
+         x: minX + (maxX - minX) / 2,
+         y: minY + (maxY - minY) / 2
+     };
+ 
+     // Move camera to center of diagram
+     scrollx = centerDiagram.x * zoomfact;
+     scrolly = centerDiagram.y * zoomfact;
+ 
+     var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+ 
+     scrollx = middleCoordinate.x;
+     scrolly = middleCoordinate.y;
+ 
+     // Update screen
+     showdata();
+     updatepos();
+     updateGridPos();
+     updateGridSize();
+     drawRulerBars(scrollx, scrolly);
+ }
 //#endregion =====================================================================================
