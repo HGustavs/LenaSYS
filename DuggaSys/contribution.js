@@ -545,7 +545,6 @@ function renderCircleDiagram(data, day) {
     weeks = data.weeks;
   }
 
-  daycounts = data['count'];
   //console.log(weeks[0]);
   var firstweek = weeks[0].weekstart;
 
