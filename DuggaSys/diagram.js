@@ -536,7 +536,7 @@ class StateMachine
 
         // If there is only an key that is ID in the state, delete those objects
         // TODO: Change the delete key to "del" OR "delete"
-        if (keys.length == 1 && keys[0] == "id") {
+        if (keys.length == 2 && keys[0] == "id") {
             var elementsToRemove = [];
             var linesToRemove = [];
 
