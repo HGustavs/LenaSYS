@@ -4375,17 +4375,12 @@ function showdata()
      scrolly = centerDiagram.y * zoomfact;
  
      var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
-     console.log(middleCoordinate);
  
      scrollx = middleCoordinate.x;
      scrolly = middleCoordinate.y;
  
      var finalCamera = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
  
-     console.log(
-         `camera: {${middleCoordinate.x}, ${middleCoordinate.y}} `,
-         `centerDiagram: {${centerDiagram.x}, ${centerDiagram.y}}`,
-         `finalCamera: {${finalCamera.x}, ${finalCamera.y}}`);
      // uppdatera skärmen
      showdata();
      updatepos();
