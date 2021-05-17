@@ -4346,6 +4346,7 @@ function showdata()
  */
  function centerCamera()
  {
+     // Calculate min and max x and y values for all elements combined, and then find their averages
      zoomfact = 1;
      var maxX = undefined;
      var maxY = undefined;
@@ -4358,19 +4359,19 @@ function showdata()
          if (minY == undefined || data[i].y < minY) minY = data[i].y;
      }
  
-     // mitten av skärmen i pixlar
+     // Center of screen in pixels
      var centerScreen = {
          x: window.innerWidth / 2,
          y: window.innerHeight / 2
      };
  
-     // center av diagrammet i koordinater
+     // Center of diagram in coordinates
      var centerDiagram = {
          x: minX + (maxX - minX) / 2,
          y: minY + (maxY - minY) / 2
      };
  
-     // flytta kameran till mitten av diagrammet
+     // Move camera to center of diagram
      scrollx = centerDiagram.x * zoomfact;
      scrolly = centerDiagram.y * zoomfact;
  
@@ -4379,9 +4380,7 @@ function showdata()
      scrollx = middleCoordinate.x;
      scrolly = middleCoordinate.y;
  
-     var finalCamera = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
- 
-     // uppdatera skärmen
+     // Update screen
      showdata();
      updatepos();
      updateGridPos();
