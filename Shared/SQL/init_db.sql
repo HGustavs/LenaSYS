@@ -173,6 +173,7 @@ CREATE TABLE userAnswer (
 	hash					VARCHAR(8),
 	password				VARCHAR(7),
     timesSubmitted			INT(5),
+	timesAccessed			INT(5),
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (quiz) REFERENCES quiz(id),
