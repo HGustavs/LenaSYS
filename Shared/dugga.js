@@ -24,19 +24,23 @@ var itemvalue;
 var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
 var isGroupDugga = false; // Set to false if you hate the popup
-var variantvalue;
 var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
-var loadVariantFlag = false;	// Flag to decide if the 'Next variant' button should be visable or not.
-var varArr;
-var nbrOfVariants;
 var latestKeyUsed;
 var latestTTLUsed;
 var latestLocalHash;
-var latestVariantSet;
 var isFileSubmitted;
 var isTeacher;
+var localStorageItemKey = "duggaData_" + querystring["did"];
+
+// Variant related
+var variantvalue;
+var loadVariantFlag = false;	// Flag to decide if the 'Next variant' button should be visable or not.
+var nbrOfVariants;
+var latestVariantSet;
+var varArr;
+var variantsArr;
 
 
 
@@ -514,25 +518,23 @@ function setExpireCookieLogOut() {
     }
 }
 
-function changeVariant(intvalue){											//Call setExpireTime() but with a specific 'value' taken from varArr[].
+function changeVariant(intvalue) {											//Call setExpireTime() but with a specific 'value' taken from varArr[].
 	const value = String(intvalue);											//Value can select from a span 1 to varArr.length, whereas each value is an existing variant of the active dugga.
-	setExpireTime(latestKeyUsed, value, latestTTLUsed, latestLocalHash);	//Sets new variant by only changing the 'value' attribute.
+	//setExpireTime(latestKeyUsed, value, latestTTLUsed, latestLocalHash);	//Sets new variant by only changing the 'value' attribute.
+	var test = JSON.parse(localStorage.getItem(localStorageItemKey));
+	test.variant = variantsArr[intvalue];
+	console.log(intvalue)
+	localStorage.setItem(localStorageItemKey, JSON.stringify(test))
+	//localStorage.setItem(localStorageItemKey)
 	location.reload(); 														//Reloads the site to show correct new variant.
 }
 
 //Selects next variant available and calls 'changeVariant' method.
 function selectNextVariant(){
-	if(nbrOfVariants != undefined){	//If variants are available for this dugga.
-		var nextVariant;
-		if(nbrOfVariants == 1){
-			nextVariant = latestVariantSet;
-		}
-		else{
-			var tempIndex = (varArr.indexOf(latestVariantSet) + 1) % nbrOfVariants;
-			nextVariant = varArr[tempIndex];
-			changeVariant(nextVariant);
-		} 
-	}
+ 	if(nbrOfVariants != undefined){	//If variants are available for this dugga.
+		var nextVariant = (latestVariantSet + 1) % nbrOfVariants;
+		changeVariant(nextVariant);
+	} 
 }
 
 //Creates TTL for localstorage //TTL value is in milliseconds
@@ -1143,8 +1145,16 @@ function AJAXService(opt,apara,kind)
 				isTeacher = phpData.isTeacher;
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
-				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
+				//getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
 				startLocalStorageASD(phpData);
+				var asd = JSON.parse(localStorage.getItem("duggaData_" + querystring['did']))
+
+				var datatest = JSON.parse(data);
+				datatest.param = asd.variant.param
+				data = datatest;
+
+				returnedDugga(data);
+				enableTeacherVariantChange(phpData);
 				//if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 				handleHash();	//Makes sure hash is unique.
 				//}
@@ -1344,7 +1354,6 @@ function getVariantValue(ajaxdata, opt, para){
 		data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +variantvalue, 
 		dataType: "json",
 		success: function (data) {
-			returnedDugga(data);
 			handleLocalStorage(data);		//Set localstorage lifespan.			
 			setPassword(data['password']);	//Sets the password retrieved from query.
 		}
@@ -1352,31 +1361,40 @@ function getVariantValue(ajaxdata, opt, para){
 }
 
 function startLocalStorageASD(ajaxdata) {
-
 	//var localStorageItem = JSON.parse(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']));
 	var did = querystring['did'];
-	var localStorageItemKey = `duggaData_${did}`;
 	var localStorageItem = localStorage.getItem(localStorageItemKey);
+	variantsArr = ajaxdata.variants;
 
 
-	// Check if variant exists in local storage
- 	if (localStorageItem == null) {
-		localStorage.setItem(localStorageItemKey, getDuggaLocalStorageData(ajaxdata));
-	}
-	else {
-		if (isDuggaExpiredCheck(localStorageItem))
-			clearLocalStorageItem(localStorageItem);
+	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
+	if (parseInt(querystring['did']) <= ajaxdata.variantsize) {
+		// Check if variant exists in local storage
+		if (localStorageItem == null) {
+			localStorage.setItem(localStorageItemKey, getDuggaLocalStorageData(ajaxdata));
+		}
+		else {
+			// Remove item if expired
+			if (isDuggaExpiredCheck(localStorageItem))
+				clearLocalStorageItem(localStorageItem);
+		}
 	}
 }
 
 function getDuggaLocalStorageData(ajaxdata) {
  	var data = {
-		variant: ajaxdata.variant,
+		variant: getRandomVariant(ajaxdata),
 		hash: hash,
 		expireTime: getExpireTimeASD()
 	};
 
 	return JSON.stringify(data);
+}
+
+function getRandomVariant(ajaxdata) {
+	var rand = Math.round(Math.random() * (ajaxdata.variants.length - 1))
+
+	return ajaxdata.variants[rand];
 }
 
 function getExpireTimeASD() {
@@ -1389,15 +1407,28 @@ function getExpireTimeASD() {
 	expireDate.setDate(expireDate.getDate() + expireTot);
 	console.log(expireDate)
 
-	return expireDate
+	return expireDate;
 }
 
 function isDuggaExpiredCheck(localStorageItem) {
+	// Compare stored date with current date
 	var parsed = JSON.parse(localStorageItem)
 	var expireDate = new Date(parsed.expireTime)
 	var curDate = new Date();
 
 	return curDate >= expireDate;
+}
+
+function enableTeacherVariantChange(data) {
+	//Set value to nbrOfVariants, this is needed so a teacher can locally change variant.
+	latestVariantSet = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
+	console.log(`latestVariantSet: ${latestVariantSet}`)
+	varArr = [];		
+	data['variants'].forEach(element => varArr.push(element.vid));
+	nbrOfVariants = varArr.length;
+	if(nbrOfVariants == 1) {
+		document.getElementById("nextVariantBtn").style.display="none";
+	}
 }
 
 function clearLocalStorageItem(item) {
@@ -2125,6 +2156,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 }
 
 function displayDuggaStatus(answer,grade,submitted,marked){
+	console.log("asdasdasdasdsadasdsad")
 		var str="<div style='display:flex;justify-content:center;align-items:center;'><div id='duggaTitleSibling' class='LightBox'>";
 		// Get proper dates
 		if(submitted!=="UNK") {
@@ -2148,8 +2180,7 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		if(loadVariantFlag){	//If the 'Next variant' button is set to be visable (Teachers only). 
 			str+="<div id='nextVariantBtn' style='width:0px;'><input class='submit-button large-button' type='button' value='Next Variant' onclick='selectNextVariant();' /></div>"; 
 		}
-
-		if(loadVariantFlag == false){	//If the 'Next variant' button is set to not be visable (Students). 
+		else{	//If the 'Next variant' button is set to not be visable (Students). 
 			str+="<div id='nextVariantBtn' style='display:none;'><input class='submit-button large-button' type='button' value='Next Variant' /></div>"; 
 		}
 
