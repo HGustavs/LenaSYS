@@ -3272,8 +3272,8 @@ function updateGridSize()
     var rect = document.getElementById("a4Rect");
     var vRect = document.getElementById("vRect");
 
-    vRect.setAttribute("width", 1588 * zoomfact + "px");
-    vRect.setAttribute("height", 561 * zoomfact + "px");
+    vRect.setAttribute("width", 1122 * zoomfact + "px");
+    vRect.setAttribute("height", 794 * zoomfact + "px");
     rect.setAttribute("width", 794 * zoomfact + "px");
     rect.setAttribute("height", 1122 * zoomfact + "px");
     updateA4Pos();
