@@ -18,7 +18,7 @@ $vers=$_SESSION['coursevers'];
 
 $debug="NONE!";
 
-$log_db = new PDO('sqlite:C:\xampp\htdocs\LenaSYS\BGHdata_2021_05.db');
+$log_db = new PDO('sqlite:C:\xampp\htdocs\LenaSYS\LenaSYS\BGHdata_2021_05.db');
 
 $opt = getOP('opt');
 $courseid=getOP('courseid');
@@ -604,13 +604,15 @@ if(strcmp($opt,"get")==0) {
 	echo json_encode($array);
 } else if (strcmp($opt, "updateday")==0) {
 	$today = getOP('today');
+	$secondday = getOP('secondday');
 	$gituser = getOP('userid');
 	$todaysevents = array();
 
 	// Events and issues by the user today
-	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>"2019-03-31" and eventtime!="undefined" and eventtime<"2019-04-05" AND kind IN ("comment", "commit");');
+	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>:today and eventtime!="undefined" and eventtime<:secondday AND kind IN ("comment", "commit");');
 	$query->bindParam(':gituser', $gituser);
-	//$query->bindParam(':today', $today);
+	$query->bindParam(':today', $today);
+	$query->bindParam(':secondday', $secondday);
 	if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries\n".$error[2];
@@ -624,9 +626,10 @@ if(strcmp($opt,"get")==0) {
 			array_push($todaysevents, $event);
 	}
 	$commits = array();
-	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>"2019-03-31" and issuetime!="undefined" and issuetime<"2019-04-05";');
+	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>:today and issuetime!="undefined" and issuetime<:secondday;');
 	$query->bindParam(':gituser', $gituser);
-	//$query->bindParam(':today', $today);
+	$query->bindParam(':today', $today);
+	$query->bindParam(':secondday', $secondday);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];

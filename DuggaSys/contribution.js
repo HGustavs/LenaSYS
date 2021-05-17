@@ -490,10 +490,11 @@ function toRadians(angle) {
   return angle * (Math.PI / 180);
 }
 
-function changeDay(date) {
+function changeDay(date, date2) {
   AJAXService("updateday", {
     userid: "HGustavs",
-    today: date
+    today: date,
+    secondday: date2
   }, "CONTRIBUTION");
 }
 
@@ -533,14 +534,15 @@ function renderCircleDiagram(data, day) {
   var date2 = new Date("2019-04-05");
   var activities = JSON.parse(data);
   var str = "";
-  changeDay2(date1,date2);
+  //changeDay(date1,date2);
 
   str += "<h2 style='padding:10px'>Hourly activities</h2>";
   str += "<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
   if (day) {
     str += "value=" + today + " ";
   }
-  str += "onchange='changeDay(this.value)' />";
+  //str += `onchange='changeDay(${date1}, ${date2})' />`;
+  str += `onchange='changeDay("2019-04-01", "2019-04-05")' />`;
   str += "<button style='margin-left: 20px' onclick='showAllDays()'>Show all</button>";
   if (day) {
     str += "<p style='margin-left: 10px'>Showing activities for " + today + "</p>";
