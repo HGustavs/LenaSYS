@@ -1429,13 +1429,16 @@ function mouseMode_onMouseUp(event)
 {
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
+            if(event.target.id == "container") {
+
+            
             if (ghostElement && event.button == 0) {
                 addObjectToData(ghostElement);
                 makeGhost();
                 showdata();
             }
             break;
-
+        }
         case mouseModes.EDGE_CREATION:
             if (context.length > 1) {
                 // TODO: Change the static variable to make it possible to create different lines.
