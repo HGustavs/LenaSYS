@@ -1541,6 +1541,7 @@ function mup(event)
                                 id_list.push(item.id);
                         }
                     });
+
                 }
 
                 stateMachine.save(StateChangeFactory.ElementsMoved(id_list, -(deltaX / zoomfact), -(deltaY / zoomfact)), StateChange.ChangeTypes.ELEMENT_MOVED);
@@ -2069,18 +2070,27 @@ function changeLineProperties()
     var radio2 = document.getElementById("lineRadio2");
     var line = contextLine[0];
 
-    if(radio1.checked) {
+    if(radio1.checked && line.kind != radio1.value) {
         line.kind = radio1.value;
-    } else {
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    } else if(radio2.checked && line.kind != radio2.value){
         line.kind = radio2.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
 
-    // Change line - cardinality
-    var cardinalityInputValue = document.getElementById('propertyCardinality').value
-    if (cardinalityInputValue == ""){
-        delete line.cardinality;
-    } else {
-        line.cardinality = cardinalityInputValue
+    // Check if this element exists
+    if (!!document.getElementById('propertyCardinality')){
+
+        // Change line - cardinality
+        var cardinalityInputValue = document.getElementById('propertyCardinality').value;
+
+        if (line.cardinality != undefined && cardinalityInputValue == ""){
+            delete line.cardinality;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { cardinality: undefined }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        } else if (line.cardinality != cardinalityInputValue && cardinalityInputValue != ""){
+            line.cardinality = cardinalityInputValue;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { cardinality: cardinalityInputValue }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
     }
 
     showdata();
@@ -2763,6 +2773,7 @@ function toggleStepBack()
  */
 function toggleEntityLocked()
 {
+    var ids = []
     var lockbtn = document.getElementById("lockbtn");
     var locked = true;
     for(var i = 0; i < context.length; i++){
@@ -2779,7 +2790,9 @@ function toggleEntityLocked()
             context[i].isLocked = false;
             lockbtn.value = "Lock";
         }
+        ids.push(context[i].id);
     }
+    stateMachine.save(StateChangeFactory.ElementAttributesChanged(ids, { isLocked: !locked }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
     updatepos(0, 0);
 }
