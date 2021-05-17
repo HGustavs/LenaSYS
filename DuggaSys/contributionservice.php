@@ -608,9 +608,9 @@ if(strcmp($opt,"get")==0) {
 	$todaysevents = array();
 
 	// Events and issues by the user today
-	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND DATE(eventtime)=:today AND kind IN ("comment", "commit");');
+	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>"2019-03-31" and eventtime!="undefined" and eventtime<"2019-04-05" AND kind IN ("comment", "commit");');
 	$query->bindParam(':gituser', $gituser);
-	$query->bindParam(':today', $today);
+	//$query->bindParam(':today', $today);
 	if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries\n".$error[2];
@@ -624,9 +624,9 @@ if(strcmp($opt,"get")==0) {
 			array_push($todaysevents, $event);
 	}
 	$commits = array();
-	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND DATE(issuetime)=:today;');
+	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>"2019-03-31" and issuetime!="undefined" and issuetime<"2019-04-05";');
 	$query->bindParam(':gituser', $gituser);
-	$query->bindParam(':today', $today);
+	//$query->bindParam(':today', $today);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
