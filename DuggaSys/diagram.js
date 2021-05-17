@@ -880,9 +880,6 @@ var targetElementDiv;
 
 const maxDeltaBeforeExceeded = 2;
 
-// Clipboard
-var clipboard = [];
-
 // Currently hold down buttons
 var ctrlPressed = false;
 var altPressed = false;
@@ -1234,14 +1231,29 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
         if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
-        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(clipboard);
+        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
 
         if (isKeybindValid(e, keybinds.COPY)){
-            clipboard = context;
-            if (clipboard.length !== 0){
-                displayMessage(messageTypes.SUCCESS, `You have copied ${clipboard.length} elements and its inner connected lines.`)
+            // Remove the preivous copy-paste data from localstorage.
+            if(localStorage.key('copiedElements')) localStorage.removeItem('copiedElements');
+            if(localStorage.key('copiedLines')) localStorage.removeItem('copiedLines');
+
+            if (context.length !== 0){
+                
+                // Filter - keeps only the lines that are connectet to and from selected elements.
+                var contextConnectedLines = getLines().filter(line => {
+                    return (context.filter(element => {
+                        return line.toID == element.id || line.fromID == element.id
+                    })).length > 1
+                });
+
+                // Store new copy-paste data in local storage
+                localStorage.setItem('copiedElements', JSON.stringify(context));
+                localStorage.setItem('copiedLines', JSON.stringify(contextConnectedLines));
+                
+                displayMessage(messageTypes.SUCCESS, `You have copied ${context.length} elements and its inner connected lines.`);
             }else {
-                displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`)
+                displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`);
             }
         }
     } else {
@@ -2182,7 +2194,7 @@ function selectAll()
  * Places a copy of all elements into the data array centered around the current mouse position.
  * @param {Array<Object>} elements List of all elements to paste into the data array.
  */
-function pasteClipboard(elements)
+function pasteClipboard(elements, elementsLines)
 {
 
     // If elements does is empty, display error and return null
@@ -2206,32 +2218,23 @@ function pasteClipboard(elements)
     var cx = (x2 - x1) / 2;
     var cy = (y2 - y1) / 2;
     var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
-
-    // Get all lines
-    var allLines = getLines();
+    
     var connectedLines = [];
-
-    // Filter - keeps only the lines that are connectet to and from selected elements.
-    allLines = allLines.filter(line => {
-        return (elements.filter(element => {
-            return line.toID == element.id || line.fromID == element.id
-        })).length > 1
-    });
-
     /*
     * For every line that shall be copied, create a temp object,
     * for kind and connection tracking
     * */
-    allLines.forEach(line => {
+    elementsLines.forEach(line => {
         var temp = {
             id: line.id,
             fromID: line.fromID,
             toID: line.toID,
-            kind: line.kind
+            kind: line.kind,
+            cardinality: line.cardinality
         }
         connectedLines.push(temp);
     });
-
+    
     // An mapping between oldElement ID and the new element ID
     var idMap = {};
 
@@ -2266,7 +2269,7 @@ function pasteClipboard(elements)
     // Create the new lines but do not saved in stateMachine
     connectedLines.forEach(line => {
         newLines.push(
-            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false, false)
+            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false, false, line.cardinality)
         );
     });
 
@@ -3623,7 +3626,7 @@ function sortElementAssociations(element)
  * @param {String} kind The kind of line that should be added.
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
-function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true){
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
@@ -3651,9 +3654,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                 kind: kind
             };
 
-            // If the new line has an entity FROM or TO, add default cardinality
+            // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
             if (findEntityFromLine(newLine) != null) {
-                newLine.cardinality = "MANY";
+                if(cardinal != undefined){
+                    newLine.cardinality = cardinal;
+                }
             }
             
             addObjectToLines(newLine, stateMachineShouldSave);
