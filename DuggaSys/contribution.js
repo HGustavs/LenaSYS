@@ -180,12 +180,11 @@ function renderCommits(data) {
   //creating the svg to put the commit tree in
   var str = "<h2>Commit tree</h2>";
   str += "<div id='innerCommitTree'>";
-  str += "<svg id='commitTree' viewBox='0 0 600 600' style='background-color:#efefef; width: 1200; min-width:600px; height:300px;' aria-labelledby='title desc' role='img'>";
+  str += "<svg id='commitTree' viewBox='0 0 600 300' style='background-color:#efefef; width: 1200px; height:300px;' aria-labelledby='title desc' role='img'>";
   
 
   var current = new Date(2019,02,01);
   var currentYear = current.getFullYear();
-  var yearlyCommits = new Array();
   var weekData = data['weeks'];
 
   var allCommits =  [];
@@ -216,8 +215,8 @@ function renderCommits(data) {
 
     }
   }
-  var xMul = 30;
-  var yMul = 15;
+  var xMul = 25;
+  var yMul = 10;
   var x_spacing = 250;
   var y_spacing = -50;
 
