@@ -1531,7 +1531,9 @@ function mup(event)
                     {
                         if(!item.isLocked){
                             eventElementId = event.target.parentElement.parentElement.id;
-                            setPos(item.id, deltaX, deltaY);
+                            if(!entityIsOverlapping(item.id, deltaX, deltaY)){
+                                setPos(item.id, deltaX, deltaY);
+                            }
 
                             if (deltaX > 0 || deltaX < 0 || deltaY > 0 || deltaY < 0)
                                 id_list.push(item.id);
@@ -2472,6 +2474,77 @@ function findEntityFromLine(lineObj)
     }
     return null;
 }
+
+function entityIsOverlapping(id, x, y, isRecursive = false)
+{   
+    let isOverlapping = false;
+    const foundIndex = findIndex(data, id);
+    if(foundIndex > -1){
+        var element = data[foundIndex];
+        let targetX;
+        let targetY;
+
+        if(isRecursive){
+            targetX = element.x;
+            targetY = element.y;
+        } else {
+            targetX = element.x - (x / zoomfact);
+            targetY = element.y - (y / zoomfact);
+        }
+
+        let minX = Number.MAX_SAFE_INTEGER;
+        let maxX = Number.MIN_SAFE_INTEGER;
+        let minY = Number.MAX_SAFE_INTEGER;
+        let maxY = Number.MIN_SAFE_INTEGER;
+
+        for(var i = 0; i < data.length; i++){
+            if(data[i].id === element.id) continue;
+
+            const compX1 = data[i].x; //Compared element
+            const compY1 = data[i].y;
+            const compX2 = data[i].x + data[i].width;
+            const compY2 = data[i].y + data[i].height;
+
+            if( (targetX < compX2) && (targetX + element.width) > data[i].x &&
+                (targetY < compY2) && (targetY + element.height) > data[i].y){
+                
+                isOverlapping = true;
+                if(compX1 < minX) minX = compX1;
+                if(compX2 > maxX) maxX = compX2;
+                if(compY1 < minY) minY = compY1;
+                if(compY2 > maxY) maxY = compY2;
+            }
+        }
+        if(isOverlapping){
+            const elementMiddleX = targetX + (element.width / 2);
+            const elementMiddleY = targetY + (element.height / 2);
+
+            const distToXMin = Math.abs(minX - elementMiddleX);
+            const distToXMax = Math.abs(maxX - elementMiddleX);
+
+            const distToYMin = Math.abs(minY - elementMiddleY);
+            const distToYMax = Math.abs(maxY - elementMiddleY);
+
+            console.log(distToXMin, distToXMax);
+
+            if(distToXMin < distToXMax){
+                data[foundIndex].x = minX - element.width;
+            } else {
+                data[foundIndex].x = maxX;
+            }
+
+            if(distToYMin < distToYMax){
+                data[foundIndex].y = minY - element.height;
+            } else {
+                data[foundIndex].y = maxY;
+            }
+            
+            //entityIsOverlapping(id, data[foundIndex].x, data[foundIndex].y, true);
+        }
+        return isOverlapping;
+    }
+}
+
 //#endregion =====================================================================================
 //#region ================================ MOUSE MODE FUNCS     ================================
 /**
