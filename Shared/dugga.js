@@ -1363,9 +1363,10 @@ function startLocalStorageASD(ajaxdata) {
  	if (localStorageItem == null) {
 		localStorage.setItem(localStorageItemKey, getDuggaLocalStorageData(ajaxdata));
 	}
-
-	testasdasd();
-
+	else {
+		if (isDuggaExpiredCheck(localStorageItem))
+			clearLocalStorageItem(localStorageItem);
+	}
 }
 
 function getDuggaLocalStorageData(ajaxdata) {
@@ -1379,42 +1380,28 @@ function getDuggaLocalStorageData(ajaxdata) {
 }
 
 function getExpireTimeASD() {
-
-	return "temp"
-}
-
-function testasdasd(){
-/* 	
-	var asd = date.getDate(); */
-	var date = new Date();
-/* 	var expireDays = 30*3*10;
-	var dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-	var dayOfExpire = (dayOfYear + expireDays) % 365;
-	console.log(dayOfExpire) */
+	// Expire time set to 3 months where 1 month represent 30 days
 	var expireInMonths = 3;
 	var expireDaysInMonth = 30;
+	var expireTot = expireInMonths * expireDaysInMonth;
 
-	var curMonth = date.getMonth();
-	var curYear = date.getFullYear();
 	var expireDate = new Date();
-	var expireDay = date.getDate();
+	expireDate.setDate(expireDate.getDate() + expireTot);
+	console.log(expireDate)
 
-	for (var i = 0; i < expireInMonths; i++) {
-		var month = date.getMonth() + 2 + i;
-		var year = date.getFullYear();
-		var daysInMonth = new Date(year, month, 0).getDate();
-		
-		expireDay += expireDaysInMonth;
-		expireDay = expireDay % (daysInMonth);
-	}
+	return expireDate
+}
 
-	expireDate.setMonth((curMonth + 3) % 12);
-	if (curMonth > (11-3)) {
-		expireDate.setFullYear(curYear + 1)
-	}
+function isDuggaExpiredCheck(localStorageItem) {
+	var parsed = JSON.parse(localStorageItem)
+	var expireDate = new Date(parsed.expireTime)
+	var curDate = new Date();
 
+	return curDate >= expireDate;
+}
 
-	//return expireDate
+function clearLocalStorageItem(item) {
+	localStorage.removeItem(item);
 }
 
 //Will handle enter key pressed when loginbox is showing
