@@ -164,7 +164,7 @@ foreach($query->fetchAll() as $row) {
 	$insertparam = true;
 }
 
-$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,feedback,grade,submitted,hash,password,timesSubmitted, timesAccessed FROM userAnswer WHERE hash=:hash;");
+$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,feedback,grade,submitted,hash,password,timesSubmitted FROM userAnswer WHERE hash=:hash;");
 
     $query->bindParam(':hash', $hash);
     $result = $query->execute();
@@ -182,7 +182,6 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
         // Sets the latestHashVisited for password promt function in showDugga.php
         $_SESSION['latestHashVisited'] = $row['hash'];
         $timesSubmitted = $row['timesSubmitted'];
-		$timesAccessed = $row['timesAccessed'];
 		
     }
 
