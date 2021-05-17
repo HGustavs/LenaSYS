@@ -2445,7 +2445,7 @@ function rectsIntersect (left, right)
          if (settings.grid.snapToGrid) {
              if (!ctrlPressed) {
                  //Different snap points for entity and others
-                if (elementTypeSelected.ENTITY) 
+                if (obj.kind == "EREntity") 
                 {
                     // Calculate nearest snap point
                      obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
