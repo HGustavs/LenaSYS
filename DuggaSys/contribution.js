@@ -179,12 +179,12 @@ function renderCommits(data) {
   
   //creating the svg to put the commit tree in
   var str = "<h2>Commit tree</h2>";
-  str += "<svg id='commitTree' viewBox='0 0 600 600' style='background-color:#efefef; width: 100%; min-width:600px; height:600px;' aria-labelledby='title desc' role='img'>";
+  str += "<svg id='commitTree' viewBox='0 0 600 600' style='background-color:#efefef; width: 700px; min-width:600px; height:600px;' aria-labelledby='title desc' role='img'>";
   
 
-  var current = new Date();
+  var current = new Date(2019,02,01);
   var currentYear = current.getFullYear();
-console.log(currentYear);
+  console.log(currentYear);
   var yearlyCommits = new Array();
   var weekData = data['weeks'];
 
