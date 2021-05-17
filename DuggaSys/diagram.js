@@ -361,7 +361,6 @@ class StateMachine
         */
         this.currentHistoryIndex = -1;
     }
-
     /**
      * @description Stores the passed state change into the state machine. If the change is hard it will be pushed onto the history log. A soft change will modify the previously stored state IF that state allows it. The soft state will otherwise be pushed into the history log instead. StateChanges REQUIRE flags to be identified by the stepBack and stepForward methods!
      * @param {StateChange} stateChange All changes to be logged.
@@ -4357,6 +4356,9 @@ function downloadFile(filename, dataObj)
 
     document.body.removeChild(element);
 }
+/**
+ * @description Prepares data for file creation, retrieves history and initialState
+ */
 function saveDiagram()
 {
 
@@ -4374,6 +4376,9 @@ function saveDiagram()
     // Download the file
     downloadFile("diagram", objToSave);
 }
+/**
+ * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
+ */
 function exportDiagram()
 {
     displayMessage(messageTypes.SUCCESS, "Generating the export file..");
@@ -4418,6 +4423,11 @@ function exportDiagram()
     // Download the file
     downloadFile("diagram", objToSave);
 }
+/**
+ * @description Gets the content of the file in parameter.
+ * @param {File} files The file to get the content of
+ * @return The content of the file
+ */
 function getFileContent(files)
 {
     return new Promise((resolve, reject) => {
@@ -4432,6 +4442,9 @@ function getFileContent(files)
         reader.readAsText(files);
       })
 }
+/**
+ * @description Load the content of a file to the diagram-data. This will remove previous data
+ */
 async function loadDiagram()
 {
     try{
