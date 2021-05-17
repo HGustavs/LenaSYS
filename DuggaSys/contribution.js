@@ -519,7 +519,6 @@ function showAllDays() {
 }
 
 function renderCircleDiagram(data, day) {
-console.log(data);
   /* var today = new Date();
   if (!day) {
     var YYYY = today.getFullYear();
@@ -534,16 +533,20 @@ console.log(data);
 
   var date1 = new Date("2019-04-01");
   var date2 = new Date("2019-04-05");
-  if (data.hourlyevents != null){
-    activities = data.hourlyevents;
-  }
   var str = "";
   //changeDay(date1,date2);
+  if (data.hourlyevents == null){
+    activities = data.events;
+  }else if (data.events == null){
+    activities = data.hourlyevents;
+  }
+
   if (data.weeks != null){
     weeks = data.weeks;
   }
+
   daycounts = data['count'];
-  console.log(weeks[0]);
+  //console.log(weeks[0]);
   var firstweek = weeks[0].weekstart;
 
   str = "<h2 style='padding-top:10px'>Hourly activities</h2>";
@@ -593,6 +596,7 @@ console.log(data);
 }
 
 function renderActivityPoints(activities) {
+  console.log(activities);
   var str = "";
   var hours = {};
   activities.forEach(entry => {
