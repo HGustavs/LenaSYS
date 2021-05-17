@@ -895,11 +895,14 @@ p {
 }
 
 @media only screen and (max-width: 400px) {
-  #swimlaneSVG {
-    overflow: auto;
-    width: 90%;
-    margin: auto;
-  }
+    #swimlaneSVG {
+        overflow: auto;
+        width: 70%;
+        margin: auto;
+    }
+    #swimlaneSVG text {
+        font-size: 16px;
+    }
 }
 
 /*Swimlane styling Ends*/
