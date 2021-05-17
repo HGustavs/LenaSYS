@@ -4488,12 +4488,17 @@ async function loadDiagram()
             });
         });
 
-        data = temp.data;
-        lines = temp.lines;
+        // Set the vaules of the intialState to the JSON-file
+        stateMachine.initialState.elements = temp.data;
+        stateMachine.initialState.lines = temp.lines;
 
-        // Update the diagram
-        showdata();
-        updatepos();
+        // Goto the beginning of the diagram
+        stateMachine.gotoInitialState();
+
+        // Remove the previous history
+        stateMachine.currentHistoryIndex = -1;
+        stateMachine.lastFlag = {};
+        stateMachine.removeFutureStates();
 
         // Display success message for load
         displayMessage(messageTypes.SUCCESS, "Export-file loaded");
