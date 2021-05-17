@@ -56,7 +56,8 @@ function GetCourse($course){
 	exit();
 }
 
-/*
+
+
 //This function doesn't currently work, kept here because we'd like to work on it in next weeks branch
 function CourseAndAssignment($course, $assignment) {	
 	$courseArray = explode(" ", $course); //Transforms long string to array with a word in each element
@@ -92,7 +93,7 @@ function CourseAndAssignment($course, $assignment) {
 	//error_log("coursecode: ".$coursecode);
 	//error_log("assignment: ".$assignment);
 }
-*/
+
 
 if(($assignment != "UNK") &&($course == "UNK")){
 	$assignmentURL = GetAssignment($assignment);
@@ -101,9 +102,9 @@ if(($assignment != "UNK") &&($course == "UNK")){
 }else if(($course != "UNK") && ($assignment == "UNK")){
 	GetCourse($course);
 	
-}/*else if(($assignment != "UNK") && ($course != "UNK")) {
-	queryToUrl($course, $assignment);  //This will be worked on in the next week's branch, we're merging our earlier implemented function since it works
-}*/
+}else if(($assignment != "UNK") && ($course != "UNK")) {
+	CourseAndAssignment($course, $assignment);  //This will be worked on in the next week's branch, we're merging our earlier implemented function since it works
+}
 else {
 	header("Location: ../errorpages/404.php");
 }
