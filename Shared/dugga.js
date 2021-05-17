@@ -108,18 +108,18 @@ function setHash(h){
 		//From localstorage we load what we have into our locallystoredhash variable, that is then compared against. 
 		//On the first dugga load, it will be undefined, and thereafter a hash value will be generated.
 		//If a hash is already stored in localstorage, we will load that hash instead.
-		locallystoredhash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
-
-		if((locallystoredhash == null) || (locallystoredhash == undefined) || (!locallystoredhash)){
+		var parsedVariant = JSON.parse(localStorage.getItem(localStorageItemKey));
+		
+		locallystoredhash = localStorage.getItem(localStorageItemKey +(querystring['did']));
+		if(parsedVariant == null){
 			hash = generateHash();
-			//locallystoredhash has not been set at this point, but will be after this.
-			localStorage.setItem("ls-hash-dg"+(querystring['did']), hash);
-			hash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
+			pwd = randomPassword();
 		}
 		else{
-			hash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
+			hash = parse.hash;
+			console.log(hash);
 		}
-		pwd = randomPassword();
+	
 		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
 	}else{
 		hash = h;
@@ -518,15 +518,12 @@ function setExpireCookieLogOut() {
     }
 }
 
-function changeVariant(intvalue) {											//Call setExpireTime() but with a specific 'value' taken from varArr[].
-	const value = String(intvalue);											//Value can select from a span 1 to varArr.length, whereas each value is an existing variant of the active dugga.
-	//setExpireTime(latestKeyUsed, value, latestTTLUsed, latestLocalHash);	//Sets new variant by only changing the 'value' attribute.
+// Changes the variant in local storage to the next in available variants array
+function changeVariant(intvalue) {
 	var test = JSON.parse(localStorage.getItem(localStorageItemKey));
 	test.variant = variantsArr[intvalue];
-	console.log(intvalue)
 	localStorage.setItem(localStorageItemKey, JSON.stringify(test))
-	//localStorage.setItem(localStorageItemKey)
-	location.reload(); 														//Reloads the site to show correct new variant.
+	location.reload(); 	//Reloads the site to show correct new variant.
 }
 
 //Selects next variant available and calls 'changeVariant' method.
@@ -537,70 +534,6 @@ function selectNextVariant(){
 	} 
 }
 
-//Creates TTL for localstorage //TTL value is in milliseconds
-function setExpireTime(key, value, ttl, locallystoredhash){
-	const now = new Date();
-
-	//Item is an object which contains the original value
-	//as well as the time when its supposed to expire
-	const item = {
-		value: value,	//Här
-		expiry: now.getTime() + ttl,
-		locallystoredhash: locallystoredhash,
-	}
-	
-	localStorage.setItem(key, JSON.stringify(item))
-}
-//Saves the expiry time if we change variant with hash
-function updateExpireTime(key, value, ttl, locallystoredhash){
-	const now = new Date();
-	const itemString = localStorage.getItem(key)
-	const itemParse = JSON.parse(itemString)
-
-	if(itemParse != null) {
-		const item = {
-			value: value,
-			expiry: itemParse.expiry,
-			locallystoredhash: locallystoredhash,
-		}
-		localStorage.setItem(key, JSON.stringify(item));
-	} else {
-		console.log("expiry");
-		const item = {
-			value: value,
-			expiry: now.getTime() + ttl,
-			locallystoredhash: locallystoredhash,
-		}
-		localStorage.setItem(key, JSON.stringify(item));
-	}
-}
-//Lazily expiring the item (Its only checked when retrieved from storage)
-//Global variables 'latestKeyUsed', 'latestTTLUsed' and 'latestLocalHash' are written to keep track of the latest values of the local-storage attributes, which needs be re-used, with the same values, if teacher change variant locally (Next variant button).
-function getExpireTime(key){
-	latestKeyUsed = key;						
-	const itemString = localStorage.getItem(key);
-	
-	if(!itemString){
-		return null
-	}
-	const item = JSON.parse(itemString)
-	latestTTLUsed = item.expiry;				
-	latestLocalHash = item.locallystoredhash;	
-
-	const now = new Date()
-
-	if(now.getTime() > item.expiry){
-		console.log(key+"has expired");
-		localStorage.removeItem(key);
-		location.reload(); //Reloads the site to show correct new variant
-		return null
-	}
-	itemvalue = item.value;
-	return item.value;
-}
-
-
-//----------------------------------------------------------------------------------
 function closeWindows(){
 	var index_highest = 0;
 	var e;
@@ -1138,26 +1071,22 @@ function AJAXService(opt,apara,kind)
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
-			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para,
 			datatype: "json",
 			success: function(data){
 				var phpData = JSON.parse(data);
 				isTeacher = phpData.isTeacher;
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
-				//getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
-				startLocalStorageASD(phpData);
-				var asd = JSON.parse(localStorage.getItem("duggaData_" + querystring['did']))
+				localStorageHandler(phpData);
+				
+				var localVariant = JSON.parse(localStorage.getItem("duggaData_" + querystring['did']))
+				phpData.param = localVariant.variant.param
 
-				var datatest = JSON.parse(data);
-				datatest.param = asd.variant.param
-				data = datatest;
-
-				returnedDugga(data);
+				returnedDugga(phpData);
 				enableTeacherVariantChange(phpData);
-				//if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 				handleHash();	//Makes sure hash is unique.
-				//}
+
 			}
 		})
 	}else if(kind=="RESULT"){
@@ -1289,103 +1218,34 @@ function clearDuggaLocalStorage(){
 	//window.localStorage.removeItem("ls-highscore-dg"+querystring['did']); //This is commented out since 'highscore' currently doesn't share any purpose.
 }
 
-function handleLocalStorage(data){
-	//Set value to nbrOfVariants, this is needed so a teacher can locally change variant.
-	varArr = [];		
-	data['variants'].forEach(element => varArr.push(element.vid));
-	nbrOfVariants = varArr.length;
-	if(nbrOfVariants == 1){
-		document.getElementById("nextVariantBtn").style.display="none";
-	}
 
-	// Check localstorage variants.
-	var newvariant = data['variantvalue'];
-	console.log("newVariant: " + newvariant);
-	console.log(data['variants']);
-	console.log("hashvariant: " + data['hashvariant']);
-	latestVariantSet = newvariant;
-
-	
-	if(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']) == null){
-		localStorage.setItem("ls-allocated-variant-dg"+querystring['did'], newvariant);
-		//The big number below represents 30 days in milliseconds
-		setExpireTime("ls-allocated-variant-dg"+querystring['did'], localStorage.getItem("ls-allocated-variant-dg"+querystring['did']), 2592000000, hash);
-	}
-	//If locallystoragehash doesn't exist, it will set it to correct hash.
-	var itemString = localStorage.getItem("ls-allocated-variant-dg"+querystring['did']);
-	var itemParse = JSON.parse(itemString);
-	localStorage.setItem("ls-hash-dg"+(querystring['did']), itemParse.locallystoredhash);
-
-	getExpireTime("ls-allocated-variant-dg"+querystring['did']);
-	var variantsize = data['variantsize'];
-	localStorage.setItem("ls-highest-variant-quizid", variantsize);
-						
-}
-
-function getVariantValue(ajaxdata, opt, para){
-	//Checks if the variantSize variant is set in localstorage. When its not, its set.
-	if(localStorage.getItem("ls-highest-variant-quizid") == null) {
-		localStorage.setItem("ls-highest-variant-quizid", 100);
-	}
-	//Converts the localstorage variant from string to int
-	var newInt = +localStorage.getItem('ls-highest-variant-quizid');
-	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
-	if(querystring['did'] <= newInt) {
-		if(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']) == null){
-			//If we don't have a variant in localstorage
-			returndata = JSON.parse(ajaxdata);
-			variantvalue = returndata.variant;
-		} else {
-			//If we have a variant in localstorage
-			var test = JSON.parse(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']));
-			variantvalue = test.value;
-		}
-		//Will overrule localstorage variant if we use hash url
-		var dbvariant = JSON.parse(ajaxdata);
-		if(dbvariant.hashvariant != null){
-			variantvalue = dbvariant.hashvariant;
-			updateExpireTime("ls-allocated-variant-dg"+querystring['did'], dbvariant.hashvariant, 2592000000, hash);
-		}
-	}
-
-	$.ajax({ 	
-		url: "showDuggaservice.php",
-		type: "POST",
-		data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para+"&hash="+hash+"&password="+pwd +"&variant=" +variantvalue, 
-		dataType: "json",
-		success: function (data) {
-			handleLocalStorage(data);		//Set localstorage lifespan.			
-			setPassword(data['password']);	//Sets the password retrieved from query.
-		}
-	});
-}
-
-function startLocalStorageASD(ajaxdata) {
-	//var localStorageItem = JSON.parse(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']));
-	var did = querystring['did'];
+function localStorageHandler(ajaxdata) {
 	var localStorageItem = localStorage.getItem(localStorageItemKey);
 	variantsArr = ajaxdata.variants;
-
 
 	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
 	if (parseInt(querystring['did']) <= ajaxdata.variantsize) {
 		// Check if variant exists in local storage
 		if (localStorageItem == null) {
-			localStorage.setItem(localStorageItemKey, getDuggaLocalStorageData(ajaxdata));
+			localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(ajaxdata));
 		}
 		else {
 			// Remove item if expired
-			if (isDuggaExpiredCheck(localStorageItem))
-				clearLocalStorageItem(localStorageItem);
+			if (isDuggaExpiredCheck(localStorageItem)){
+				console.log(localStorageItem);
+				clearLocalStorageItem(localStorageItemKey);
+				reloadPage();
+			}
+				
 		}
 	}
 }
 
-function getDuggaLocalStorageData(ajaxdata) {
+function createDuggaLocalStorageData(ajaxdata) {
  	var data = {
 		variant: getRandomVariant(ajaxdata),
 		hash: hash,
-		expireTime: getExpireTimeASD()
+		expireTime: createExpireTime()
 	};
 
 	return JSON.stringify(data);
@@ -1397,15 +1257,12 @@ function getRandomVariant(ajaxdata) {
 	return ajaxdata.variants[rand];
 }
 
-function getExpireTimeASD() {
-	// Expire time set to 3 months where 1 month represent 30 days
-	var expireInMonths = 3;
-	var expireDaysInMonth = 30;
-	var expireTot = expireInMonths * expireDaysInMonth;
+function createExpireTime() {
 
+	
+	var expireInDays = 90;
 	var expireDate = new Date();
-	expireDate.setDate(expireDate.getDate() + expireTot);
-	console.log(expireDate)
+	expireDate.setDate(expireDate.getDate() + expireInDays);
 
 	return expireDate;
 }
@@ -1422,7 +1279,6 @@ function isDuggaExpiredCheck(localStorageItem) {
 function enableTeacherVariantChange(data) {
 	//Set value to nbrOfVariants, this is needed so a teacher can locally change variant.
 	latestVariantSet = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
-	console.log(`latestVariantSet: ${latestVariantSet}`)
 	varArr = [];		
 	data['variants'].forEach(element => varArr.push(element.vid));
 	nbrOfVariants = varArr.length;
@@ -1431,8 +1287,8 @@ function enableTeacherVariantChange(data) {
 	}
 }
 
-function clearLocalStorageItem(item) {
-	localStorage.removeItem(item);
+function clearLocalStorageItem(key) {
+	localStorage.removeItem(key);
 }
 
 //Will handle enter key pressed when loginbox is showing
@@ -2156,7 +2012,6 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 }
 
 function displayDuggaStatus(answer,grade,submitted,marked){
-	console.log("asdasdasdasdsadasdsad")
 		var str="<div style='display:flex;justify-content:center;align-items:center;'><div id='duggaTitleSibling' class='LightBox'>";
 		// Get proper dates
 		if(submitted!=="UNK") {

@@ -306,7 +306,7 @@ if($demo || $hr){
 if(checklogin()){
 		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions			
 			*/
-        if(strcmp($opt,"SAVDU")==0){	
+        if(strcmp($opt,"SAVDU")==0){
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
             $discription = $couseid." ".$duggaid." ".$moment." ".$answer;
