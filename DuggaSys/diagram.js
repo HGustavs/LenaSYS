@@ -1122,7 +1122,7 @@ document.addEventListener('keydown', function (e)
     if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
     if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
 
-    if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true){
+    if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true && settings.replay.active){
         toggleReplay();
         setReplayRunning(false);
         clearInterval(stateMachine.replayTimer);
