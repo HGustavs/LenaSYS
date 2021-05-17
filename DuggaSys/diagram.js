@@ -1159,8 +1159,13 @@ document.addEventListener('keydown', function (e)
         }
 
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
-            e.preventDefault();
-            selectAll();
+            if(mouseMode == mouseModes.EDGE_CREATION){
+                e.preventDefault();
+                return false;
+            } else {
+                e.preventDefault();
+                selectAll();
+            }
         }
         if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
             e.preventDefault();
