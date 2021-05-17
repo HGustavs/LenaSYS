@@ -61,7 +61,7 @@ $variants=array();
 $variantsize;
 $ishashindb = false;
 $timesSubmitted = 0;
-$timesAccessed;
+$timesAccessed = 0;
 
 $savedvariant="UNK";
 $newvariant="UNK";
@@ -358,14 +358,13 @@ if(checklogin()){
 			}
 
               	// Update Dugga!
-              	$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score, timesSubmitted=:timesSubmitted, timesAccessed=:timesAccessed WHERE hash=:hash;");
+              	$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score, timesSubmitted=:timesSubmitted WHERE hash=:hash;");
               	$query->bindParam(':hash', $hash);
               	$query->bindParam(':useranswer', $answer);
               	$query->bindParam(':timeUsed', $timeUsed);
               	$query->bindParam(':stepsUsed', $stepsUsed);
               	$query->bindParam(':score', $score);
 				$query->bindParam(':timesSubmitted', $timesSubmitted);
-				$query->bindParam(':timesAccessed', $timesAccessed);
                 if(!$query->execute()) {
                 	$error=$query->errorInfo();
                 	$debug="Error updating answer. (row ".__LINE__.") ".$query->rowCount()." row(s) were updated. Error code: ".$error[2];
