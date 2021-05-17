@@ -179,7 +179,8 @@ function renderCommits(data) {
   
   //creating the svg to put the commit tree in
   var str = "<h2>Commit tree</h2>";
-  str += "<svg id='commitTree' viewBox='0 0 600 600' style='background-color:#efefef; width: 700px; min-width:600px; height:600px;' aria-labelledby='title desc' role='img'>";
+  str += "<div id='innerCommitTree'>";
+  str += "<svg id='commitTree' viewBox='0 0 600 600' style='background-color:#efefef; width: 1000px; min-width:600px; height:600px;' aria-labelledby='title desc' role='img'>";
   
 
   var current = new Date(2019,02,01);
@@ -237,6 +238,7 @@ function renderCommits(data) {
     }
   }
   str += "</svg>";
+  str += "</div>";
 
   return str;
 }

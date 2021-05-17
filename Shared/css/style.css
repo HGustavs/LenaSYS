@@ -4186,7 +4186,7 @@ div.reset-pw:hover{
 /*styling for contribution.php*/
 
 /*this was inline-CSS before, only moved it to the right file*/
-#commitDiagram{
+#innerCommitTree{
   min-width:650px;
   overflow: auto;
   white-space: nowrap;
