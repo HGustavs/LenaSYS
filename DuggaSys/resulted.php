@@ -109,19 +109,9 @@ pdoConnect();
 	  </div>
 			</div>
 			<div style="display: flex;">
-			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
-			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
-				<button class="resultedbuttons" onclick="mail();">Mail students</button>
-			<?php }else{ ?>
-				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
-			<?php } ?>
 				<div class="resultedFormsFlex">
 					<label>Assignment</label>
 					<select id="assignmentDropdown" onchange="updateTable()"></select>
-				</div>
-				<div class="resultedFormsFlex">
-					<label>Examinator</label>
-					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
 				</div>
 			</div>
     </div>

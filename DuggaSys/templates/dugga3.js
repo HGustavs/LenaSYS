@@ -486,18 +486,24 @@ function movedownbutton()
 	var val;
 	var tex;
 
-	if (elSel.selectedIndex < elSel.length - 1) {
+	if(elSel.options[ind] == undefined){
+		//Do nothing, no index selected.
+	}
+	else{
 
-		val = elSel.options[ind].value;
-		tex = elSel.options[ind].text;
+		if (elSel.selectedIndex < elSel.length - 1) {
 
-		elSel.options[ind].value = elSel.options[ind + 1].value;
-		elSel.options[ind].text = elSel.options[ind + 1].text;
+			val = elSel.options[ind].value;
+			tex = elSel.options[ind].text;
 
-		elSel.options[ind + 1].value = val;
-		tex = elSel.options[ind + 1].text = tex;
+			elSel.options[ind].value = elSel.options[ind + 1].value;
+			elSel.options[ind].text = elSel.options[ind + 1].text;
 
-		elSel.selectedIndex++;
+			elSel.options[ind + 1].value = val;
+			tex = elSel.options[ind + 1].text = tex;
+
+			elSel.selectedIndex++;
+		}
 	}
 
 }
