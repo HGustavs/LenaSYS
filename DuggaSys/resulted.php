@@ -133,8 +133,6 @@ pdoConnect();
 	<!-- -------------------=============####### Result Popover #######=============------------------- -->
 
 	<div id='resultpopover' class='resultPopover' style='display: none'>
-	<?php if(isSuperUser($_SESSION['uid'])){echo '<script type="text/javascript">','displayDownloadIcon();','</script>';}?>
-	<?php if(isSuperUser($_SESSION['uid'])){echo '<script type="text/javascript">','noUploadForTeacher();','</script>';}?>
 		<div class='loginBoxheader'>
 			<span id="hoverRes" ></span>
 			<h3 style='width:100%;' id='Nameof' onmouseover="hoverResult();"
