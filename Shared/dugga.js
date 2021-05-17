@@ -717,22 +717,24 @@ function randomPassword()
 //----------------------------------------------------------------------------------
 
 function createUrl(hash) {
-	var realUrl = window.location + "?a=" + hash;
-	var localhostUrl="http://localhost/LenaSYS/sh/?a=" + hash;
+	
+    var pathProtocol = window.location.protocol;
+    var pathHostName = window.location.hostname;
+    var pathArray = window.location.pathname.split('/');
 
-	// temporary solution, if exist in database use real url
-	var realUrlInDatabase = false;
-	var url;
+    pathArray.pop();
+    pathArray.pop();
 
+    var url = pathProtocol + "//" + pathHostName;
+    for(var i = 0; i < pathArray.length; i++){
+        url += pathArray[i];
+        url += "/";
+    }
 
-	if (realUrlInDatabase){
-		url = realUrl;
-	}
-	else{
-		url = localhostUrl;
-	}
+    url += "sh/?a=" + hash;
+    console.log(url);
 
-	return url;
+    return url;
 }
 
 
