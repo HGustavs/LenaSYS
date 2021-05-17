@@ -863,8 +863,6 @@ const zoom4 = 0.9375;
 const zoom0_75 = -0.775;
 const zoom0_5 = -3;
 const zoom0_25 = -15.01;
-const zoom0_125 = -64;
-
 
 // Arrow drawing stuff - diagram elements and diagram lines
 var lines = [];
@@ -2348,7 +2346,6 @@ function screenToDiagramCoordinates(mouseX, mouseY)
     if (zoomfact == 0.75) zoomX = zoom0_75;
     if (zoomfact == 0.5) zoomX = zoom0_5;
     if (zoomfact == 0.25) zoomX = zoom0_25;
-    if (zoomfact == 0.125) zoomX = zoom0_125;
 
     return new Point(Math.round( ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
                     Math.round(((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
@@ -3018,8 +3015,7 @@ function zoomin(scrollEvent = undefined)
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.125) zoomfact = 0.25;
-    else if (zoomfact == 0.25) zoomfact = 0.5;
+    if (zoomfact == 0.25) zoomfact = 0.5;
     else if (zoomfact == 0.5) zoomfact = 0.75;
     else if (zoomfact == 0.75) zoomfact = 1.0;
     else if (zoomfact == 1.0) zoomfact = 1.25;
@@ -3054,7 +3050,7 @@ function zoomin(scrollEvent = undefined)
 function zoomout(scrollEvent = undefined)
 {
     // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
-    if (scrollEvent && zoomfact != 0.125) {
+    if (scrollEvent && zoomfact != 0.25) {
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
             x: mouseCoordinates.x - zoomOrigo.x,
@@ -3071,8 +3067,7 @@ function zoomout(scrollEvent = undefined)
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.25)zoomfact = 0.125;
-    else if (zoomfact == 0.5)zoomfact = 0.25;
+    if (zoomfact == 0.5)zoomfact = 0.25;
     else if (zoomfact == 0.75)zoomfact = 0.5;
     else if (zoomfact == 1.0)zoomfact = 0.75;
     else if (zoomfact == 1.25)zoomfact = 1.0;
