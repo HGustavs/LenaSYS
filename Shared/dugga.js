@@ -73,6 +73,10 @@ function sendGroupAjax(val) {
 	AJAXService("UPDATEAU", {}, "GROUPTOKEN");
 }
 
+function saveTimesAccessed(){
+	AJAXService("ACCDUGGA", {}, "ACCESSEDDUGGA");
+}
+
 		// Loades a dugga from hash and redirects to index.php that then continues to redirect to the specified dugga
 function loadDugga(){
 	var hash = document.getElementById('hash');
@@ -1247,6 +1251,13 @@ function AJAXService(opt,apara,kind)
 			data:"AUtoken="+groupTokenValue+"&hash="+hash+"&opt="+opt+para,
 			dataType: "json"
 		});
+	} else if(kind=="ACCESSEDDUGGA") {
+		$.ajax({
+			url: "showDuggaservice.php",
+			type:"POST",
+			data: "hash="+hash+"&opt="+opt+para,
+			dataType: "json"
+		});
 	}
 }
 
@@ -1673,17 +1684,19 @@ function checkHashPassword(){
         type: "POST",
         success: function(data){
         	var d = JSON.parse(data);
-            var auth = d.auth
+			var auth = d.auth
             if(auth){
         		console.log('Success!');
         		hideHashBox();
 				passwordReload = true;
 				sendGroupAjax(1);
-        		reloadPage();
+				reloadPage();
+				saveTimesAccessed();
         	}else{
         		$('#passwordtext').text('Wrong password, try again!');
         		$('#passwordtext').css('color','red');
-        		console.log('Fail!');
+				console.log('Fail!');
+				saveTimesAccessed();
         	}
 		}
 	});

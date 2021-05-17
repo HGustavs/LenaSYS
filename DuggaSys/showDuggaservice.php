@@ -61,7 +61,7 @@ $variants=array();
 $variantsize;
 $ishashindb = false;
 $timesSubmitted = 0;
-$timesAccessed = 0;
+$timesAccessed;
 
 $savedvariant="UNK";
 $newvariant="UNK";
@@ -480,6 +480,13 @@ if(strcmp($opt,"GRPDUGGA")==0){
 		}
 	}
 	$userCount += count($usersInGroup);
+}
+
+if(strcmp($opt,"ACCDUGGA")==0){
+	$query = $pdo->prepare("UPDATE userAnswer SET timesAccessed= timesAccessed + 1 WHERE hash=:hash;");
+	$query->bindParam(':hash', $hash);
+	$query->execute();
+	
 }
 
 $files= array();
