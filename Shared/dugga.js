@@ -1691,12 +1691,10 @@ function checkHashPassword(){
 				passwordReload = true;
 				sendGroupAjax(1);
 				reloadPage();
-				saveTimesAccessed();
         	}else{
         		$('#passwordtext').text('Wrong password, try again!');
         		$('#passwordtext').css('color','red');
 				console.log('Fail!');
-				saveTimesAccessed();
         	}
 		}
 	});
