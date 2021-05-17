@@ -1144,6 +1144,7 @@ function AJAXService(opt,apara,kind)
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
+				startLocalStorageASD(phpData);
 				//if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 				handleHash();	//Makes sure hash is unique.
 				//}
@@ -1290,6 +1291,8 @@ function handleLocalStorage(data){
 	// Check localstorage variants.
 	var newvariant = data['variantvalue'];
 	console.log("newVariant: " + newvariant);
+	console.log(data['variants']);
+	console.log("hashvariant: " + data['hashvariant']);
 	latestVariantSet = newvariant;
 
 	
@@ -1310,7 +1313,6 @@ function handleLocalStorage(data){
 }
 
 function getVariantValue(ajaxdata, opt, para){
-	
 	//Checks if the variantSize variant is set in localstorage. When its not, its set.
 	if(localStorage.getItem("ls-highest-variant-quizid") == null) {
 		localStorage.setItem("ls-highest-variant-quizid", 100);
@@ -1347,6 +1349,72 @@ function getVariantValue(ajaxdata, opt, para){
 			setPassword(data['password']);	//Sets the password retrieved from query.
 		}
 	});
+}
+
+function startLocalStorageASD(ajaxdata) {
+
+	//var localStorageItem = JSON.parse(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']));
+	var did = querystring['did'];
+	var localStorageItemKey = `duggaData_${did}`;
+	var localStorageItem = localStorage.getItem(localStorageItemKey);
+
+
+	// Check if variant exists in local storage
+ 	if (localStorageItem == null) {
+		localStorage.setItem(localStorageItemKey, getDuggaLocalStorageData(ajaxdata));
+	}
+
+	testasdasd();
+
+}
+
+function getDuggaLocalStorageData(ajaxdata) {
+ 	var data = {
+		variant: ajaxdata.variant,
+		hash: hash,
+		expireTime: getExpireTimeASD()
+	};
+
+	return JSON.stringify(data);
+}
+
+function getExpireTimeASD() {
+
+	return "temp"
+}
+
+function testasdasd(){
+/* 	
+	var asd = date.getDate(); */
+	var date = new Date();
+/* 	var expireDays = 30*3*10;
+	var dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+	var dayOfExpire = (dayOfYear + expireDays) % 365;
+	console.log(dayOfExpire) */
+	var expireInMonths = 3;
+	var expireDaysInMonth = 30;
+
+	var curMonth = date.getMonth();
+	var curYear = date.getFullYear();
+	var expireDate = new Date();
+	var expireDay = date.getDate();
+
+	for (var i = 0; i < expireInMonths; i++) {
+		var month = date.getMonth() + 2 + i;
+		var year = date.getFullYear();
+		var daysInMonth = new Date(year, month, 0).getDate();
+		
+		expireDay += expireDaysInMonth;
+		expireDay = expireDay % (daysInMonth);
+	}
+
+	expireDate.setMonth((curMonth + 3) % 12);
+	if (curMonth > (11-3)) {
+		expireDate.setFullYear(curYear + 1)
+	}
+
+
+	//return expireDate
 }
 
 //Will handle enter key pressed when loginbox is showing
