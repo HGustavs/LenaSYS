@@ -61,6 +61,7 @@ $variants=array();
 $variantsize;
 $ishashindb = false;
 $timesSubmitted = 0;
+$timesAccessed = 0;
 
 $savedvariant="UNK";
 $newvariant="UNK";
@@ -163,7 +164,7 @@ foreach($query->fetchAll() as $row) {
 	$insertparam = true;
 }
 
-$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,feedback,grade,submitted,hash,password,timesSubmitted FROM userAnswer WHERE hash=:hash;");
+$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,marked,feedback,grade,submitted,hash,password,timesSubmitted, timesAccessed FROM userAnswer WHERE hash=:hash;");
 
     $query->bindParam(':hash', $hash);
     $result = $query->execute();
@@ -181,6 +182,7 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
         // Sets the latestHashVisited for password promt function in showDugga.php
         $_SESSION['latestHashVisited'] = $row['hash'];
         $timesSubmitted = $row['timesSubmitted'];
+		$timesAccessed = $row['timesAccessed'];
 		
     }
 
@@ -338,7 +340,7 @@ if(checklogin()){
             }else{
 
 			if(!$isIndb){ // If the dugga is not in database, insert into database
-				$query = $pdo->prepare("INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesSubmitted) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password,:timesSubmitted);");
+				$query = $pdo->prepare("INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesAccessed) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password,:timesSubmitted, :timesAccessed);");
 				$query->bindParam(':cid', $courseid);
 				$query->bindParam(':coursevers', $coursevers);
 				$query->bindParam(':did', $duggaid);
@@ -347,6 +349,7 @@ if(checklogin()){
 				$query->bindParam(':hash', $hash);
 				$query->bindParam(':password', $password);
 				$query->bindParam(':timesSubmitted', $timesSubmitted);
+				$query->bindParam(':timesAccessed', $timesAccessed);
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
@@ -356,13 +359,14 @@ if(checklogin()){
 			}
 
               	// Update Dugga!
-              	$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score, timesSubmitted=:timesSubmitted WHERE hash=:hash;");
+              	$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score, timesSubmitted=:timesSubmitted, timesAccessed=:timesAccessed WHERE hash=:hash;");
               	$query->bindParam(':hash', $hash);
               	$query->bindParam(':useranswer', $answer);
               	$query->bindParam(':timeUsed', $timeUsed);
               	$query->bindParam(':stepsUsed', $stepsUsed);
               	$query->bindParam(':score', $score);
 				$query->bindParam(':timesSubmitted', $timesSubmitted);
+				$query->bindParam(':timesAccessed', $timesAccessed);
                 if(!$query->execute()) {
                 	$error=$query->errorInfo();
                 	$debug="Error updating answer. (row ".__LINE__.") ".$query->rowCount()." row(s) were updated. Error code: ".$error[2];
