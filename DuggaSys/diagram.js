@@ -862,8 +862,6 @@ const zoom4 = 0.9375;
 const zoom0_75 = -0.775;
 const zoom0_5 = -3;
 const zoom0_25 = -15.01;
-const zoom0_125 = -64;
-
 
 // Arrow drawing stuff - diagram elements and diagram lines
 var lines = [];
