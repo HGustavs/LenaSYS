@@ -2478,6 +2478,16 @@ function findEntityFromLine(lineObj)
     }
     return null;
 }
+
+/**
+ * @description Gets the extension of an filename
+ * @param {String} filename The name of the file
+ * @return The extension
+ */
+function getExtension(filename) {
+    var parts = filename.split('.');
+    return parts[parts.length - 1];
+}
 //#endregion =====================================================================================
 //#region ================================ MOUSE MODE FUNCS     ================================
 /**
@@ -4447,16 +4457,24 @@ function getFileContent(files)
  */
 async function loadDiagram()
 {
+    var fileInput = document.getElementById("importDiagramFile");
+
+    // If not an json-file is inputted => return
+    if (getExtension(fileInput.value) != "json"){
+        displayMessage(messageTypes.ERROR, "Sorry, you cant load that type of file. Only json-files is allowed");
+        return;
+    }
+
     try{
         // Get filepath
-        var file1 = document.getElementById("importDiagramFile").files[0];
+        var file1 = fileInput.files[0];
         var temp = await getFileContent(file1);
         temp = JSON.parse(temp);
     } catch(error){
         console.log(error);
     }
 
-    if(temp.historyLog){
+    if(temp.historyLog && temp.initialState){
         // Set the history and initalState to the values of the file
         stateMachine.historyLog = temp.historyLog;
         stateMachine.initialState = temp.initialState;
@@ -4502,6 +4520,8 @@ async function loadDiagram()
 
         // Display success message for load
         displayMessage(messageTypes.SUCCESS, "Export-file loaded");
+    }else{
+        displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
 }
 //#endregion =====================================================================================
