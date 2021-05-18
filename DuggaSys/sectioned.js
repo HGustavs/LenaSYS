@@ -1144,15 +1144,6 @@ function returnedSection(data) {
       resave = false;
     }
 
-    if(navigator.userAgent.indexOf("Safari") != -1)
-    {
-      $("#statisticsList").hide();
-      $("#swimlaneSVG").hide();
-      $("#statisticsSwimlanes").hide();
-      $("#sectionList_arrowStatisticsOpen").hide();
-      $("#sectionList_arrowStatisticsClosed").hide();
-    }
-
     if (hasDuggs === false){
       $("#statisticsSwimlanes").hide();
     }
