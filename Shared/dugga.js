@@ -32,13 +32,17 @@ var isTeacher;
 var localStorageItemKey = "duggaData_" + querystring["did"];
 
 // Variant related
-var variantValue;
+
+
 var loadVariantFlag = false;	// Flag to decide if the 'Next variant' button should be visable or not.
 var nbrOfVariants;
 var latestVariantSet;
 var varArr;
 var variantsArr;
-
+var variantValue;
+if(localStorage.getItem(localStorageItemKey)){
+	variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
+}
 
 
 $(function () {  // Used to set the position of the FAB above the cookie message
@@ -1067,7 +1071,7 @@ function AJAXService(opt,apara,kind)
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
-			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para,
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para+"&variant="+variantValue,
 			datatype: "json",
 			success: function(data){
 				var phpData = JSON.parse(data);
@@ -1076,7 +1080,7 @@ function AJAXService(opt,apara,kind)
 				canSaveController(); 
 				localStorageHandler(phpData);
 	
-				enforceVariant();
+				returnedDugga(phpData);
 				setPassword(phpData.password); 
 				enableTeacherVariantChange(phpData);
 				handleHash();	//Makes sure hash is unique.
@@ -1182,15 +1186,6 @@ function AJAXService(opt,apara,kind)
 			dataType: "json"
 		});
 	}
-	else if(kind=="ENFORCEVARIANT") {
-		$.ajax({
-			url: "showDuggaservice.php",
-			type:"POST",
-			data:"courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para+"&variant="+variantValue,
-			dataType: "json",
-			success: returnedDugga
-		});
-	}
 }
 
 function handleHash(){
@@ -1233,11 +1228,6 @@ function localStorageHandler(ajaxdata) {
 				
 		}
 	}
-}
-
-function enforceVariant(){
-	variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
-	AJAXService( "", {}, "ENFORCEVARIANT");
 }
 
 function createDuggaLocalStorageData(ajaxVid, ajaxVariantArr) {
