@@ -2475,7 +2475,7 @@ function findEntityFromLine(lineObj)
     return null;
 }
 
-function entityIsOverlapping(id, x, y, isRecursive = false)
+function entityIsOverlapping(id, x, y)
 {   
     let isOverlapping = false;
     const foundIndex = findIndex(data, id);
@@ -2484,62 +2484,23 @@ function entityIsOverlapping(id, x, y, isRecursive = false)
         let targetX;
         let targetY;
 
-        if(isRecursive){
-            targetX = element.x;
-            targetY = element.y;
-        } else {
-            targetX = element.x - (x / zoomfact);
-            targetY = element.y - (y / zoomfact);
-        }
-
-        let minX = Number.MAX_SAFE_INTEGER;
-        let maxX = Number.MIN_SAFE_INTEGER;
-        let minY = Number.MAX_SAFE_INTEGER;
-        let maxY = Number.MIN_SAFE_INTEGER;
+        targetX = element.x - (x / zoomfact);
+        targetY = element.y - (y / zoomfact);
 
         for(var i = 0; i < data.length; i++){
-            if(data[i].id === element.id) continue;
-
-            const compX1 = data[i].x; //Compared element
-            const compY1 = data[i].y;
+            if(context.includes(data[i])) continue;
+            
+            //COMPARED ELEMENT
             const compX2 = data[i].x + data[i].width;
             const compY2 = data[i].y + data[i].height;
 
             if( (targetX < compX2) && (targetX + element.width) > data[i].x &&
                 (targetY < compY2) && (targetY + element.height) > data[i].y){
                 
+                displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
                 isOverlapping = true;
-                if(compX1 < minX) minX = compX1;
-                if(compX2 > maxX) maxX = compX2;
-                if(compY1 < minY) minY = compY1;
-                if(compY2 > maxY) maxY = compY2;
+                break;
             }
-        }
-        if(isOverlapping){
-            const elementMiddleX = targetX + (element.width / 2);
-            const elementMiddleY = targetY + (element.height / 2);
-
-            const distToXMin = Math.abs(minX - elementMiddleX);
-            const distToXMax = Math.abs(maxX - elementMiddleX);
-
-            const distToYMin = Math.abs(minY - elementMiddleY);
-            const distToYMax = Math.abs(maxY - elementMiddleY);
-
-            console.log(distToXMin, distToXMax);
-
-            if(distToXMin < distToXMax){
-                data[foundIndex].x = minX - element.width;
-            } else {
-                data[foundIndex].x = maxX;
-            }
-
-            if(distToYMin < distToYMax){
-                data[foundIndex].y = minY - element.height;
-            } else {
-                data[foundIndex].y = maxY;
-            }
-            
-            //entityIsOverlapping(id, data[foundIndex].x, data[foundIndex].y, true);
         }
         return isOverlapping;
     }
