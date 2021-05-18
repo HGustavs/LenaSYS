@@ -308,6 +308,17 @@ function renderLineDiagram(data) {
   str += weekchoice(firstweek);
   str += '</div>';
 
+  str += '<div class="group2" id="lineDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
+  str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Commits:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#F44336;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Events:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#4DB6AC;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Comments:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#43A047;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex; align-items:center;margin-left:30px;margin-right:30px;"><p>LOC:</p>';
+  str += '<div style="width:15px; height:15px; background-color:Purple;margin-left:10px;"></div></div>';
+  str += '</div>';
+
 
   return str;
 }
