@@ -1071,7 +1071,6 @@ function AJAXService(opt,apara,kind)
 			datatype: "json",
 			success: function(data){
 				var phpData = JSON.parse(data);
-				console.log(phpData);
 				isTeacher = phpData.isTeacher;
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
@@ -1082,8 +1081,6 @@ function AJAXService(opt,apara,kind)
 				setPassword(phpData.password); 
 				returnedDugga(phpData);
 				enableTeacherVariantChange(phpData);
-				console.log(locallystoredhash);
-				console.log(!locallystoredhash);
 				handleHash();	//Makes sure hash is unique.
 
 			}
