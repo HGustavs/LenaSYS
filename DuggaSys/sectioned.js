@@ -16,6 +16,8 @@ var versnr;
 var motd;
 var hideItemList = [];
 var hasDuggs = false;
+var dateToday = new Date().getTime();
+var compareWeek = -604800000;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -442,6 +444,7 @@ function prepareItem() {
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
 
+
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
     param.feedbackquestion = $("#fdbckque").val();
@@ -608,6 +611,7 @@ function returnedCourse(data) {
   }, 1000);
 }
 
+
 function returnedGroups(data) {
   if (data['debug'] != "NONE!") alert(data['debug']);
   var grpmembers = data['grplst'];
@@ -766,13 +770,11 @@ function returnedSection(data) {
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
         // New items added get the class glow to show they are new
-        if(item['pos'] == "-1" || item['pos'] == "100"){
-          str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
-          class='${makeTextArray(item['kind'], valarr) + "glow"}' style='display:block'>`;
+        if((Date.parse(item['ts']) - dateToday) > compareWeek){
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
         }
         else{
-          str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
-          class='${makeTextArray(item['kind'], valarr)}' style='display:block'>`;
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
         }
 
         menuState.idCounter++;
