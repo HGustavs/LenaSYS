@@ -3243,7 +3243,7 @@ function generateContextProperties()
         }
 
         // Cardinality
-        // If FROM or TO has an entity, print option for change
+        // If FROM or TO has an entity, print option for change if its not connected to an attribute
         if (findAttributeFromLine(contextLine[0]) == null){
         if (findEntityFromLine(contextLine[0]) != null){
             str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
