@@ -227,9 +227,9 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 						}
 						echo "</td>";
-						echo "<td align='right'>";
-						echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
-						echo "</td>";
+						//echo "<td align='right'>";
+						//echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
+						//echo "</td>";
 						echo "</tr>";
 						echo "</table>";
 					}
