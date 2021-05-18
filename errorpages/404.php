@@ -4,6 +4,7 @@ session_start();
 //include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
+
 pdoConnect();
 /*
 $noup="NONE";
@@ -26,6 +27,8 @@ $info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
 $service = "404:".$_SERVER['REQUEST_URI'];
 logServiceEvent($log_uuid, EventTypes::PageNotFound ,$service ,$userid,$info);
 
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -45,6 +48,7 @@ logServiceEvent($log_uuid, EventTypes::PageNotFound ,$service ,$userid,$info);
 </head>
 <body>
 <h1>404 - File not found</h1>
-	<a href="/LenaSYS/DuggaSys/courseed.php">Go to start</a>
+<!-- The link might break in live version, in that case simply remove the first lenasys -->
+	<a href="/lenasys/LenaSYS/DuggaSys/courseed.php">Go to start</a>
 </body>
 </html>
