@@ -65,6 +65,13 @@
 		$userid="UNK";
 	}
 
+	if(!isset($_SESSION['hasUploaded'])){
+		$_SESSION['hasUploaded'] = "UNK";
+	}
+
+	if(!isset($_SESSION['latestHashVisited'])){
+		$_SESSION['latestHashVisited'] = "UNK";
+	}
 	//logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
 
 if($cid != "UNK") $_SESSION['courseid'] = $cid;
