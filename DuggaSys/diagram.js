@@ -538,7 +538,7 @@ class StateMachine
 
         // If there is only an key that is ID in the state, delete those objects
         // TODO: Change the delete key to "del" OR "delete"
-        if (keys.length == 1 && keys[0] == "id") {
+        if (keys.length == 2 && keys[0] == "id") {
             var elementsToRemove = [];
             var linesToRemove = [];
 
@@ -724,6 +724,7 @@ const keybinds = {
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
+        CENTER_CAMERA: {key:"home", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
         ENTER: {key: "enter", ctrl: false},
         COPY: {key: "c", ctrl: true, meta: true},
@@ -864,8 +865,6 @@ const zoom4 = 0.9375;
 const zoom0_75 = -0.775;
 const zoom0_5 = -3;
 const zoom0_25 = -15.01;
-const zoom0_125 = -64;
-
 
 // Arrow drawing stuff - diagram elements and diagram lines
 var lines = [];
@@ -881,9 +880,6 @@ var targetElement = null;
 var targetElementDiv;
 
 const maxDeltaBeforeExceeded = 2;
-
-// Clipboard
-var clipboard = [];
 
 // Currently hold down buttons
 var ctrlPressed = false;
@@ -1124,7 +1120,7 @@ document.addEventListener('keydown', function (e)
     if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
     if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
 
-    if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true){
+    if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true && settings.replay.active){
         toggleReplay();
         setReplayRunning(false);
         clearInterval(stateMachine.replayTimer);
@@ -1167,6 +1163,9 @@ document.addEventListener('keydown', function (e)
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
             e.preventDefault();
             selectAll();
+        }
+        if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
+            e.preventDefault();
         }
 
     } else { 
@@ -1236,14 +1235,30 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
         if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
-        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(clipboard);
+        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
+        if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
 
         if (isKeybindValid(e, keybinds.COPY)){
-            clipboard = context;
-            if (clipboard.length !== 0){
-                displayMessage(messageTypes.SUCCESS, `You have copied ${clipboard.length} elements and its inner connected lines.`)
+            // Remove the preivous copy-paste data from localstorage.
+            if(localStorage.key('copiedElements')) localStorage.removeItem('copiedElements');
+            if(localStorage.key('copiedLines')) localStorage.removeItem('copiedLines');
+
+            if (context.length !== 0){
+                
+                // Filter - keeps only the lines that are connectet to and from selected elements.
+                var contextConnectedLines = getLines().filter(line => {
+                    return (context.filter(element => {
+                        return line.toID == element.id || line.fromID == element.id
+                    })).length > 1
+                });
+
+                // Store new copy-paste data in local storage
+                localStorage.setItem('copiedElements', JSON.stringify(context));
+                localStorage.setItem('copiedLines', JSON.stringify(contextConnectedLines));
+                
+                displayMessage(messageTypes.SUCCESS, `You have copied ${context.length} elements and its inner connected lines.`);
             }else {
-                displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`)
+                displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`);
             }
         }
     } else {
@@ -1431,13 +1446,16 @@ function mouseMode_onMouseUp(event)
 {
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
+            if(event.target.id == "container") {
+
+            
             if (ghostElement && event.button == 0) {
                 addObjectToData(ghostElement);
                 makeGhost();
                 showdata();
             }
             break;
-
+        }
         case mouseModes.EDGE_CREATION:
             if (context.length > 1) {
                 // TODO: Change the static variable to make it possible to create different lines.
@@ -1537,12 +1555,15 @@ function mup(event)
                     {
                         if(!item.isLocked){
                             eventElementId = event.target.parentElement.parentElement.id;
-                            setPos(item.id, deltaX, deltaY);
+                            if(!entityIsOverlapping(item.id, deltaX, deltaY)){
+                                setPos(item.id, deltaX, deltaY);
+                            }
 
                             if (deltaX > 0 || deltaX < 0 || deltaY > 0 || deltaY < 0)
                                 id_list.push(item.id);
                         }
                     });
+
                 }
 
                 stateMachine.save(StateChangeFactory.ElementsMoved(id_list, -(deltaX / zoomfact), -(deltaY / zoomfact)), StateChange.ChangeTypes.ELEMENT_MOVED);
@@ -2071,18 +2092,27 @@ function changeLineProperties()
     var radio2 = document.getElementById("lineRadio2");
     var line = contextLine[0];
 
-    if(radio1.checked) {
+    if(radio1.checked && line.kind != radio1.value) {
         line.kind = radio1.value;
-    } else {
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    } else if(radio2.checked && line.kind != radio2.value){
         line.kind = radio2.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
 
-    // Change line - cardinality
-    var cardinalityInputValue = document.getElementById('propertyCardinality').value
-    if (cardinalityInputValue == ""){
-        delete line.cardinality;
-    } else {
-        line.cardinality = cardinalityInputValue
+    // Check if this element exists
+    if (!!document.getElementById('propertyCardinality')){
+
+        // Change line - cardinality
+        var cardinalityInputValue = document.getElementById('propertyCardinality').value;
+
+        if (line.cardinality != undefined && cardinalityInputValue == ""){
+            delete line.cardinality;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { cardinality: undefined }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        } else if (line.cardinality != cardinalityInputValue && cardinalityInputValue != ""){
+            line.cardinality = cardinalityInputValue;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { cardinality: cardinalityInputValue }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
     }
 
     showdata();
@@ -2139,6 +2169,7 @@ function updateSelection(ctxelement) // TODO : Default null value since we use i
         // The element is not already selected
         if (!context.includes(ctxelement)) {
             context.push(ctxelement);
+            showdata();
         }
         // The element is already selected
     } else if (altPressed && ctxelement != null) {
@@ -2155,11 +2186,13 @@ function updateSelection(ctxelement) // TODO : Default null value since we use i
         // Element not already in context
         if (!context.includes(ctxelement) && context.length < 1) {
             context.push(ctxelement);
+            showdata();
         } else {
             if (mouseMode != mouseModes.EDGE_CREATION) {
                 clearContext();
             }
             context.push(ctxelement);
+            showdata();
         }
     } else if (!altPressed && !ctrlPressed) {
         clearContext();
@@ -2184,7 +2217,7 @@ function selectAll()
  * Places a copy of all elements into the data array centered around the current mouse position.
  * @param {Array<Object>} elements List of all elements to paste into the data array.
  */
-function pasteClipboard(elements)
+function pasteClipboard(elements, elementsLines)
 {
 
     // If elements does is empty, display error and return null
@@ -2208,32 +2241,23 @@ function pasteClipboard(elements)
     var cx = (x2 - x1) / 2;
     var cy = (y2 - y1) / 2;
     var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
-
-    // Get all lines
-    var allLines = getLines();
+    
     var connectedLines = [];
-
-    // Filter - keeps only the lines that are connectet to and from selected elements.
-    allLines = allLines.filter(line => {
-        return (elements.filter(element => {
-            return line.toID == element.id || line.fromID == element.id
-        })).length > 1
-    });
-
     /*
     * For every line that shall be copied, create a temp object,
     * for kind and connection tracking
     * */
-    allLines.forEach(line => {
+    elementsLines.forEach(line => {
         var temp = {
             id: line.id,
             fromID: line.fromID,
             toID: line.toID,
-            kind: line.kind
+            kind: line.kind,
+            cardinality: line.cardinality
         }
         connectedLines.push(temp);
     });
-
+    
     // An mapping between oldElement ID and the new element ID
     var idMap = {};
 
@@ -2268,7 +2292,7 @@ function pasteClipboard(elements)
     // Create the new lines but do not saved in stateMachine
     connectedLines.forEach(line => {
         newLines.push(
-            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false, false)
+            addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false, false, line.cardinality)
         );
     });
 
@@ -2329,7 +2353,6 @@ function screenToDiagramCoordinates(mouseX, mouseY)
     if (zoomfact == 0.75) zoomX = zoom0_75;
     if (zoomfact == 0.5) zoomX = zoom0_5;
     if (zoomfact == 0.25) zoomX = zoom0_25;
-    if (zoomfact == 0.125) zoomX = zoom0_125;
 
     return new Point(Math.round( ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
                     Math.round(((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
@@ -2439,30 +2462,38 @@ function rectsIntersect (left, right)
  * @param {Number} x Coordinates along the x-axis to move
  * @param {Number} y Coordinates along the y-axis to move
  */
-function setPos(id, x, y)
-{
-    foundId = findIndex(data, id);
-    if (foundId != -1) {
-        var obj = data[foundId];
-        if (settings.grid.snapToGrid) {
-            if (!ctrlPressed) {
-                // Calculate nearest snap point
-                obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-
-                // Set the new snap point to center of element
-                obj.x -= obj.width / 2
-                obj.y -= obj.height / 2;
-            } else {
-                obj.x += (targetDelta.x / zoomfact);
-                obj.y += (targetDelta.y / zoomfact);
-            }
-        }else {
-            obj.x -= (x / zoomfact);
-            obj.y -= (y / zoomfact);
-        }
-    }
-}
+ function setPos(id, x, y)
+ {
+     foundId = findIndex(data, id);
+     if (foundId != -1) {
+         var obj = data[foundId];
+         if (settings.grid.snapToGrid) {
+             if (!ctrlPressed) {
+                 //Different snap points for entity and others
+                if (obj.kind == "EREntity") 
+                {
+                    // Calculate nearest snap point
+                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                     obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                }
+                else{
+                    obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                    obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
+                }
+                 // Set the new snap point to center of element
+                 obj.x -= obj.width / 2
+                 obj.y -= obj.height / 2;
+            
+             } else {
+                 obj.x += (targetDelta.x / zoomfact);
+                 obj.y += ((targetDelta.y / zoomfact)+25);
+             }
+         }else {
+             obj.x -= (x / zoomfact);
+             obj.y -= (y / zoomfact);
+         }
+     }
+ }
 
 function isKeybindValid(e, keybind)
 {
@@ -2488,6 +2519,38 @@ function getExtension(filename) {
     var parts = filename.split('.');
     return parts[parts.length - 1];
 }
+
+function entityIsOverlapping(id, x, y)
+{   
+    let isOverlapping = false;
+    const foundIndex = findIndex(data, id);
+    if(foundIndex > -1){
+        var element = data[foundIndex];
+        let targetX;
+        let targetY;
+
+        targetX = element.x - (x / zoomfact);
+        targetY = element.y - (y / zoomfact);
+
+        for(var i = 0; i < data.length; i++){
+            if(context.includes(data[i])) continue;
+            
+            //COMPARED ELEMENT
+            const compX2 = data[i].x + data[i].width;
+            const compY2 = data[i].y + data[i].height;
+
+            if( (targetX < compX2) && (targetX + element.width) > data[i].x &&
+                (targetY < compY2) && (targetY + element.height) > data[i].y){
+                
+                displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+                isOverlapping = true;
+                break;
+            }
+        }
+        return isOverlapping;
+    }
+}
+
 //#endregion =====================================================================================
 //#region ================================ MOUSE MODE FUNCS     ================================
 /**
@@ -2775,6 +2838,7 @@ function toggleStepBack()
  */
 function toggleEntityLocked()
 {
+    var ids = []
     var lockbtn = document.getElementById("lockbtn");
     var locked = true;
     for(var i = 0; i < context.length; i++){
@@ -2791,7 +2855,9 @@ function toggleEntityLocked()
             context[i].isLocked = false;
             lockbtn.value = "Lock";
         }
+        ids.push(context[i].id);
     }
+    stateMachine.save(StateChangeFactory.ElementAttributesChanged(ids, { isLocked: !locked }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
     updatepos(0, 0);
 }
@@ -2975,6 +3041,7 @@ function setElementPlacementType(type = elementTypes.ENTITY)
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.
  */
+
 function zoomin(scrollEvent = undefined)
 {
     // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
@@ -2997,8 +3064,7 @@ function zoomin(scrollEvent = undefined)
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.125) zoomfact = 0.25;
-    else if (zoomfact == 0.25) zoomfact = 0.5;
+    if (zoomfact == 0.25) zoomfact = 0.5;
     else if (zoomfact == 0.5) zoomfact = 0.75;
     else if (zoomfact == 0.75) zoomfact = 1.0;
     else if (zoomfact == 1.0) zoomfact = 1.25;
@@ -3033,7 +3099,7 @@ function zoomin(scrollEvent = undefined)
 function zoomout(scrollEvent = undefined)
 {
     // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
-    if (scrollEvent && zoomfact != 0.125) {
+    if (scrollEvent && zoomfact != 0.25) {
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
             x: mouseCoordinates.x - zoomOrigo.x,
@@ -3050,8 +3116,7 @@ function zoomout(scrollEvent = undefined)
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.25)zoomfact = 0.125;
-    else if (zoomfact == 0.5)zoomfact = 0.25;
+    if (zoomfact == 0.5)zoomfact = 0.25;
     else if (zoomfact == 0.75)zoomfact = 0.5;
     else if (zoomfact == 1.0)zoomfact = 0.75;
     else if (zoomfact == 1.25)zoomfact = 1.0;
@@ -3294,6 +3359,10 @@ function updateGridSize()
  function updateA4Size()
  {
     var rect = document.getElementById("a4Rect");
+    var vRect = document.getElementById("vRect");
+
+    vRect.setAttribute("width", 1122 * zoomfact + "px");
+    vRect.setAttribute("height", 794 * zoomfact + "px");
     rect.setAttribute("width", 794 * zoomfact + "px");
     rect.setAttribute("height", 1122 * zoomfact + "px");
     updateA4Pos();
@@ -3329,9 +3398,15 @@ function updateGridPos()
     var OffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
     var OffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
     var rect = document.getElementById("a4Rect");
+    var vRect = document.getElementById("vRect");
     var text = document.getElementById("a4Text");
+
+    vRect.setAttribute('x', OffsetX);
+    vRect.setAttribute('y', OffsetY);
+
     rect.setAttribute('x', OffsetX);
     rect.setAttribute('y', OffsetY);
+
     text.setAttribute('x',(OffsetX + (780 *zoomfact)));
     text.setAttribute('y',(OffsetY - 5));
  }
@@ -3627,7 +3702,7 @@ function sortElementAssociations(element)
  * @param {String} kind The kind of line that should be added.
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
-function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true){
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
@@ -3655,9 +3730,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                 kind: kind
             };
 
-            // If the new line has an entity FROM or TO, add default cardinality
+            // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
             if (findEntityFromLine(newLine) != null) {
-                newLine.cardinality = "MANY";
+                if(cardinal != undefined){
+                    newLine.cardinality = cardinal;
+                }
             }
             
             addObjectToLines(newLine, stateMachineShouldSave);
@@ -4031,8 +4108,8 @@ function drawElement(element, ghosted = false)
     var textWidth = canvasContext.measureText(element.name).width;
     
     // If calculated size is larger than element width
-    const margin = 10;
-    var tooBig = (textWidth >= (boxw - (margin * 2)))
+    const margin = 10 * zoomfact;
+    var tooBig = (textWidth >= (boxw - (margin * 2)));
     var xAnchor = tooBig ? margin : hboxw;
     var vAlignment = tooBig ? "left" : "middle";
 
@@ -4044,6 +4121,9 @@ function drawElement(element, ghosted = false)
 						width:${boxw}px;
 						height:${boxh}px;
 						font-size:${texth}px;`;
+    if(context.includes(element)){
+        str += `z-index: 1;`;
+    }
     if (ghosted) {
         str += `
             pointer-events: none;
@@ -4260,9 +4340,9 @@ function updateCSSForAllElements()
 {
     
     function updateElementDivCSS(elementData, divObject, useDelta = false)
-    { 
+    {
         var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
-            top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+            top = Math.round((((elementData.y - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
         if (useDelta){
             left -= deltaX;
@@ -4270,24 +4350,33 @@ function updateCSSForAllElements()
         }
 
         if (settings.grid.snapToGrid && useDelta) {
-            if (elementData.id === targetElement.id) {
+            if (element.kind == "EREntity"){
                 // The element coordinates with snap point
                 var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
 
                 // Add the scroll values
                 left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-                top = Math.round(((objY - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
                 top -= ((elementData.height * zoomfact) / 2);
-            } else if (ctrlPressed) {
-                left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))) + targetDelta.x;
-                top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact))) + targetDelta.y; 
+            } 
+            else if (element.kind != "EREntity"){
+                // The element coordinates with snap point
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
+
+                // Add the scroll values
+                left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+
+                // Set the new snap point to center of element
+                left -= ((elementData.width * zoomfact) / 2);
+                top -= ((elementData.height * zoomfact) / 2);
             }
         }
-
         divObject.style.left = left + "px";
         divObject.style.top = top + "px";
     }
@@ -4345,6 +4434,54 @@ function showdata()
     updatepos(null, null);
 
 }
+
+//#region ================================ Camera Functions     ================================
+/**
+ * @description Centers the camera between the highest and lowest x and y values of all elements
+ */
+ function centerCamera()
+ {
+     // Calculate min and max x and y values for all elements combined, and then find their averages
+     zoomfact = 1;
+     var maxX = undefined;
+     var maxY = undefined;
+     var minX = undefined;
+     var minY = undefined;
+     for (var i = 0; i < data.length; i++) {
+         if (maxX == undefined || data[i].x + data[i].width > maxX) maxX = data[i].x + data[i].width;
+         if (minX == undefined || data[i].x < minX) minX = data[i].x;
+         if (maxY == undefined || data[i].y + data[i].height > maxY) maxY = data[i].y + data[i].height;
+         if (minY == undefined || data[i].y < minY) minY = data[i].y;
+     }
+ 
+     // Center of screen in pixels
+     var centerScreen = {
+         x: window.innerWidth / 2,
+         y: window.innerHeight / 2
+     };
+ 
+     // Center of diagram in coordinates
+     var centerDiagram = {
+         x: minX + (maxX - minX) / 2,
+         y: minY + (maxY - minY) / 2
+     };
+ 
+     // Move camera to center of diagram
+     scrollx = centerDiagram.x * zoomfact;
+     scrolly = centerDiagram.y * zoomfact;
+ 
+     var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+ 
+     scrollx = middleCoordinate.x;
+     scrolly = middleCoordinate.y;
+ 
+     // Update screen
+     showdata();
+     updatepos();
+     updateGridPos();
+     updateGridSize();
+     drawRulerBars(scrollx, scrolly);
+ }
 //#endregion =====================================================================================
 //#region ================================   LOAD AND EXPORTS    ==================================
 /**
