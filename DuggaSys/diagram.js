@@ -2298,7 +2298,9 @@ function pasteClipboard(elements, elementsLines)
     stateMachine.save(StateChangeFactory.ElementsAndLinesCreated(newElements, newLines), StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED);
     displayMessage(messageTypes.SUCCESS, `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
     clearContext(); // Deselect old selected elements
+    clearContextLine();
     context = newElements; // Set context to the pasted elements
+    contextLine = newLines; // Set contextline to the pasted lines
     showdata();
 }
 
