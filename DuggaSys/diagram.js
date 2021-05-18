@@ -475,8 +475,8 @@ class StateMachine
     }
     removeFutureStates(){
         // Remove the history entries that are after current index
-        while(this.currentHistoryIndex + 1 != this.historyLog.length) {
-            this.historyLog.pop();
+        if (this.currentHistoryIndex != this.historyLog.length - 1) {
+            this.historyLog.splice(this.currentHistoryIndex + 1, (this.historyLog.length - this.currentHistoryIndex - 1));
         }
     }
     /**
