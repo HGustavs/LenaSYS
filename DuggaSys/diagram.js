@@ -1553,7 +1553,9 @@ function mup(event)
                     {
                         if(!item.isLocked){
                             eventElementId = event.target.parentElement.parentElement.id;
-                            setPos(item.id, deltaX, deltaY);
+                            if(!entityIsOverlapping(item.id, deltaX, deltaY)){
+                                setPos(item.id, deltaX, deltaY);
+                            }
 
                             if (deltaX > 0 || deltaX < 0 || deltaY > 0 || deltaY < 0)
                                 id_list.push(item.id);
@@ -2502,6 +2504,38 @@ function findEntityFromLine(lineObj)
     }
     return null;
 }
+
+function entityIsOverlapping(id, x, y)
+{   
+    let isOverlapping = false;
+    const foundIndex = findIndex(data, id);
+    if(foundIndex > -1){
+        var element = data[foundIndex];
+        let targetX;
+        let targetY;
+
+        targetX = element.x - (x / zoomfact);
+        targetY = element.y - (y / zoomfact);
+
+        for(var i = 0; i < data.length; i++){
+            if(context.includes(data[i])) continue;
+            
+            //COMPARED ELEMENT
+            const compX2 = data[i].x + data[i].width;
+            const compY2 = data[i].y + data[i].height;
+
+            if( (targetX < compX2) && (targetX + element.width) > data[i].x &&
+                (targetY < compY2) && (targetY + element.height) > data[i].y){
+                
+                displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+                isOverlapping = true;
+                break;
+            }
+        }
+        return isOverlapping;
+    }
+}
+
 //#endregion =====================================================================================
 //#region ================================ MOUSE MODE FUNCS     ================================
 /**
