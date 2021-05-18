@@ -172,6 +172,7 @@ echo "<script>console.log('".$hashpassword."')</script>;";
 if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 	if(!IsLatestHash($hash)){
 		if($_SESSION['hasUploaded'] != 1){
+			echo '<script type="text/javascript"> saveTimesAccessed(); </script>';
 			echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
 			echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
 			echo "<div class='loginBoxheader'>";

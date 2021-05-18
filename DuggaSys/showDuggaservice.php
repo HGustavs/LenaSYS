@@ -61,6 +61,7 @@ $variants=array();
 $variantsize;
 $ishashindb = false;
 $timesSubmitted = 0;
+$timesAccessed = 0;
 
 $savedvariant="UNK";
 $newvariant="UNK";
@@ -338,7 +339,7 @@ if(checklogin()){
             }else{
 
 			if(!$isIndb){ // If the dugga is not in database, insert into database
-				$query = $pdo->prepare("INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesSubmitted) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password,:timesSubmitted);");
+				$query = $pdo->prepare("INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password,:timesSubmitted, :timesAccessed);");
 				$query->bindParam(':cid', $courseid);
 				$query->bindParam(':coursevers', $coursevers);
 				$query->bindParam(':did', $duggaid);
@@ -347,6 +348,7 @@ if(checklogin()){
 				$query->bindParam(':hash', $hash);
 				$query->bindParam(':password', $password);
 				$query->bindParam(':timesSubmitted', $timesSubmitted);
+				$query->bindParam(':timesAccessed', $timesAccessed);
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
@@ -477,6 +479,13 @@ if(strcmp($opt,"GRPDUGGA")==0){
 		}
 	}
 	$userCount += count($usersInGroup);
+}
+
+if(strcmp($opt,"ACCDUGGA")==0){
+	$query = $pdo->prepare("UPDATE userAnswer SET timesAccessed= timesAccessed + 1 WHERE hash=:hash;");
+	$query->bindParam(':hash', $hash);
+	$query->execute();
+	
 }
 
 $files= array();
