@@ -66,32 +66,48 @@ function CourseAndAssignment($course, $assignment) {
 
 	global $pdo;
 
-	//Get 
-	$sql = "SELECT * FROM vers WHERE versname='{$versname}' AND coursecode='{$coursecode}'";
+	//Get cid and vers
+	$sql = "SELECT cid,vers FROM vers WHERE versname='{$versname}' AND coursecode='{$coursecode}'";
 	$query = $pdo->prepare($sql);
 	$query->execute();
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$cid = $row['cid'];
-		$coursename = $row['coursename'];
-		$coursecode = $row['coursecode'];
 		$vers = $row['vers'];
 	}
-	error_log("cid: ".$cid." coursename: ".$coursename." coursecode: ".$coursecode);
+	error_log("cid: ".$cid." vers: ".$vers);
 	
-	//Get 
-	$sql = "SELECT * FROM quiz WHERE qname='{$assignment}' AND vers='{$vers}'";
+	//Get coursename
+	$sql = "SELECT coursename FROM course WHERE activeversion='{$vers}'";
 	$query = $pdo->prepare($sql);
 	$query->execute();
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
-		$id = $row['id'];
-		$qname = $row['qname'];
-		$qrelease = $row['qrelease'];
+		$coursename = $row['coursename'];
 	}
-	error_log("id: ".$id." qname: ".$qname." qrelease: ".$qrelease);
+	error_log("coursename: ".$coursename);
 
-	//error_log("versname: ".$versname);
-	//error_log("coursecode: ".$coursecode);
-	//error_log("assignment: ".$assignment);
+	//Get moment(lid), did(link), highscoremode
+	$sql = "SELECT * FROM listentries WHERE entryname='{$assignment}'";
+	$query = $pdo->prepare($sql);
+	$query->execute();
+	if($row = $query->fetch(PDO::FETCH_ASSOC)){
+		$moment = $row['lid'];
+		$did = $row['link'];
+		$highscoremode = $row['highscoremode'];
+	}
+	error_log("moment: ".$moment." did: ".$did." highscoremode: ".$highscoremode);
+
+	//Get deadline
+	$sql = "SELECT deadline FROM quiz WHERE id='{$did}'";
+	$query = $pdo->prepare($sql);
+	$query->execute();
+	if($row = $query->fetch(PDO::FETCH_ASSOC)){
+		$deadline = $row['deadline'];
+	}
+	error_log("deadline: ".$deadline);
+
+	$serverRoot = serverRoot();
+	header("Location: {$serverRoot}/lenasys/DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}");
+	exit();
 }
 
 
