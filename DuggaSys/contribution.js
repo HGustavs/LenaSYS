@@ -543,7 +543,7 @@ function renderCircleDiagram(data, day) {
 
   str = "<h2 style='padding-top:10px'>Hourly activities</h2>";
   str += `<select class="group2" id="firstWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,1)"'>`;
-  str += '<option value="' + firstweek + '">All weeks</option>';
+  str += '<option value="' + firstweek + '">Select first week</option>';
 
   for (i = 0; i < weeks.length; i++) {
     var week = weeks[i];
@@ -553,7 +553,7 @@ function renderCircleDiagram(data, day) {
   str += '</select>';
   
   str += `<select class="group2" id="secondWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,2)"'>`;
-  str += '<option value="' + firstweek + '">All weeks</option>';
+  str += '<option value="' + firstweek + '">Select second week</option>';
   
   for (i = 0; i < weeks.length; i++) {
     var week = weeks[i];
@@ -567,7 +567,6 @@ function renderCircleDiagram(data, day) {
     str += "<p style='margin-left: 10px'>Showing all activities</p>";
     updateShowAct = false;
   } else {
-
     str += "<p style='margin-left: 10px'>Showing activities for the period " + firstSelWeek + " - " + secondSelWeek + "</p>";
   }
   str += "<div class='circleGraph'>";
