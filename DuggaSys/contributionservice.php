@@ -604,13 +604,15 @@ if(strcmp($opt,"get")==0) {
 	echo json_encode($array);
 } else if (strcmp($opt, "updateday")==0) {
 	$today = getOP('today');
+	$secondday = getOP('secondday');
 	$gituser = getOP('userid');
 	$todaysevents = array();
 
 	// Events and issues by the user today
-	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND DATE(eventtime)=:today AND kind IN ("comment", "commit");');
+	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>:today and eventtime!="undefined" and eventtime<:secondday AND kind IN ("comment", "commit");');
 	$query->bindParam(':gituser', $gituser);
 	$query->bindParam(':today', $today);
+	$query->bindParam(':secondday', $secondday);
 	if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries\n".$error[2];
@@ -624,9 +626,10 @@ if(strcmp($opt,"get")==0) {
 			array_push($todaysevents, $event);
 	}
 	$commits = array();
-	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND DATE(issuetime)=:today;');
+	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>:today and issuetime!="undefined" and issuetime<:secondday;');
 	$query->bindParam(':gituser', $gituser);
 	$query->bindParam(':today', $today);
+	$query->bindParam(':secondday', $secondday);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];

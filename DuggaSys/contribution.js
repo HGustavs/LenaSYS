@@ -17,6 +17,11 @@ AJAXService("get", {
   userid: "HGustavs"
 }, "CONTRIBUTION");
 
+var weeks;
+var activities;
+var firstSelWeek;
+var secondSelWeek;
+var updateShowAct = true;
 
 //sorting for multiple views
 //Restores all views when pressing the All button
@@ -287,8 +292,7 @@ function drawCommitDots(x1, y1, xmul, ymul, x_spacing, y_spacing){
 }
 
 function renderLineDiagram(data) {
-
-  var weeks = data.weeks;
+  weeks = data.weeks;
   daycounts = data['count'];
   var firstweek = data.weeks[0].weekstart;
 
@@ -505,44 +509,84 @@ function toRadians(angle) {
   return angle * (Math.PI / 180);
 }
 
-function changeDay(date) {
-  AJAXService("updateday", {
-    userid: "HGustavs",
-    today: date
-  }, "CONTRIBUTION");
+function changeDay() {
+  if(firstSelWeek != null && secondSelWeek != null){  
+    if (firstSelWeek > secondSelWeek){
+      alert("Second week can't be earlier than first week");
+    } else {
+      AJAXService("updateday", {
+        userid: "HGustavs",
+        today: firstSelWeek,
+        secondday: secondSelWeek
+      }, "CONTRIBUTION");
+    }
+  }
 }
+
 
 function showAllDays() {
   var div = document.getElementById('hourlyGraph');
   div.innerHTML = renderCircleDiagram(JSON.stringify(retdata['hourlyevents']));
 }
 
-function renderCircleDiagram(data, day) {
-  var today = new Date();
-  if (!day) {
-    var YYYY = today.getFullYear();
-    var mm = today.getMonth() + 1;
-    var dd = today.getDate();
+
+function selectWeek(week, selBoxOrigin){
+  if(selBoxOrigin == 1){
+    firstSelWeek = week;
+  } else if (selBoxOrigin == 2){
+    secondSelWeek = new Date(week);
+    secondSelWeek = new Date(secondSelWeek.getTime()+1000*60*60*24*6);
+    var YYYY = secondSelWeek.getFullYear();
+    var mm = secondSelWeek.getMonth() + 1;
+    var dd = secondSelWeek.getDate();
     if (dd < 10) dd = '0' + dd;
     if (mm < 10) mm = '0' + mm;
-    today = YYYY + "-" + mm + "-" + dd;
-  } else {
-    today = day;
+    secondSelWeek = YYYY + "-" + mm + "-" + dd;
+  }
+}
+
+function renderCircleDiagram(data, day) {
+
+  var str = "";
+  if (data.hourlyevents == null){
+    activities = data.events;
+  }else if (data.events == null){
+    activities = data.hourlyevents;
   }
 
-  var activities = JSON.parse(data);
-  var str = "";
-  str += "<h2 style='padding:10px'>Hourly activities</h2>";
-  str += "<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
-  if (day) {
-    str += "value=" + today + " ";
+  if (data.weeks != null){
+    weeks = data.weeks;
   }
-  str += "onchange='changeDay(this.value)' />";
-  str += "<button style='margin-left: 20px' onclick='showAllDays()'>Show all</button>";
-  if (day) {
-    str += "<p style='margin-left: 10px'>Showing activities for " + today + "</p>";
+
+  var firstweek = weeks[0].weekstart;
+
+  str = "<h2 style='padding-top:10px'>Hourly activities</h2>";
+  str += `<select class="group2" id="firstWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,1)"'>`;
+  str += '<option value="' + firstweek + '">Select start week</option>';
+
+  for (i = 0; i < weeks.length; i++) {
+    var week = weeks[i];
+    str += '<option value="' + week.weekstart + '">' + "Week " + week.weekno + `(${week.weekstart} - ${week.weekend})` + '</option>';
+  }
+
+  str += '</select>';
+  
+  str += `<select class="group2" id="secondWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,2)"'>`;
+  str += '<option value="' + firstweek + '">Select end week</option>';
+  
+  for (i = 0; i < weeks.length; i++) {
+    var week = weeks[i];
+    str += '<option value="' + week.weekstart + '">' + "Week " + week.weekno + `(${week.weekstart} - ${week.weekend})` + '</option>';
+  }
+
+  str += '</select>';
+  
+  str += `<button style='margin-left: 20px' onclick='changeDay()'>Show selected dates</button>`;
+  if (updateShowAct) {
+    str += "<p style='margin-left: 10px'>Showing all activities</p>";
+    updateShowAct = false;
   } else {
-    str += "<p style='margin-left: 10px'>Showing activities for the period 2019-03-31 - " + today + "</p>";
+    str += "<p style='margin-left: 10px'>Showing activities for the period " + firstSelWeek + " - " + secondSelWeek + "</p>";
   }
   str += "<div class='circleGraph'>";
   str += `<div id='activityInfoBox'><span style='grid-row-start: -1' id='activityTime'>
@@ -849,7 +893,7 @@ var resave = false;
 function returnedSection(data) {
   if (Object.keys(data).length === 2) {
     var div = document.getElementById('hourlyGraph');
-    div.innerHTML = renderCircleDiagram(JSON.stringify(data['events']), data['day']);
+    div.innerHTML = renderCircleDiagram(data);
     return;
   }
   retdata = data;
@@ -899,7 +943,7 @@ function returnedSection(data) {
 
   document.getElementById('barchart').innerHTML = renderBarDiagram(data);
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
-  document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(JSON.stringify(data['hourlyevents']));
+  document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(data);
   document.getElementById('commitDiagram').innerHTML = renderCommits(data);
   document.getElementById('content').innerHTML = str;
 }
