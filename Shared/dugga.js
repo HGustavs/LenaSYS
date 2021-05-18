@@ -1067,7 +1067,7 @@ function AJAXService(opt,apara,kind)
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
-			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para+"&variant="+variantValue,
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para,
 			datatype: "json",
 			success: function(data){
 				var phpData = JSON.parse(data);
@@ -1075,11 +1075,9 @@ function AJAXService(opt,apara,kind)
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
 				localStorageHandler(phpData);
-				
-				var localVariant = JSON.parse(localStorage.getItem(localStorageItemKey));
-				phpData.param = localVariant.variant.param // Param data needs to be inserted into data before returnedDugga
+	
+				enforceVariant();
 				setPassword(phpData.password); 
-				returnedDugga(phpData);
 				enableTeacherVariantChange(phpData);
 				handleHash();	//Makes sure hash is unique.
 
@@ -1184,6 +1182,15 @@ function AJAXService(opt,apara,kind)
 			dataType: "json"
 		});
 	}
+	else if(kind=="ENFORCEVARIANT") {
+		$.ajax({
+			url: "showDuggaservice.php",
+			type:"POST",
+			data:"courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para+"&variant="+variantValue,
+			dataType: "json",
+			success: returnedDugga
+		});
+	}
 }
 
 function handleHash(){
@@ -1213,7 +1220,7 @@ function localStorageHandler(ajaxdata) {
 	if (parseInt(querystring['did']) <= ajaxdata.variantsize) {
 		// Check if variant exists in local storage
 		if (localStorageItem == null) {
-			localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(ajaxdata));
+			localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(ajaxdata.variant, ajaxdata.variants));
 		}
 		else {
 			variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
@@ -1228,9 +1235,14 @@ function localStorageHandler(ajaxdata) {
 	}
 }
 
-function createDuggaLocalStorageData(ajaxdata) {
+function enforceVariant(){
+	variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
+	AJAXService( "", {}, "ENFORCEVARIANT");
+}
+
+function createDuggaLocalStorageData(ajaxVid, ajaxVariantArr) {
  	var data = {
-		variant: getRandomVariant(ajaxdata),
+		variant: getVariant(ajaxVid,ajaxVariantArr),
 		hash: hash,
 		expireTime: createExpireTime()
 	};
@@ -1238,11 +1250,15 @@ function createDuggaLocalStorageData(ajaxdata) {
 	return JSON.stringify(data);
 }
 
-function getRandomVariant(ajaxdata) {
-	var rand = Math.round(Math.random() * (ajaxdata.variants.length - 1))
-	variantValue = ajaxdata.variants[rand].vid;
-	return ajaxdata.variants[rand];
+function getVariant(ajaxVid, ajaxVariantArr){
+	for (var variant of ajaxVariantArr){	
+		if(variant.vid == ajaxVid){
+			return variant;
+		}
+	}
+
 }
+
 
 function createExpireTime() {
 
