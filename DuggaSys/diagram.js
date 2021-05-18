@@ -4459,6 +4459,8 @@ function showdata()
      scrolly = centerDiagram.y * zoomfact;
  
      var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+     document.getElementById("zoom-message").innerHTML = zoomfact + "x";
+
  
      scrollx = middleCoordinate.x;
      scrolly = middleCoordinate.y;
