@@ -128,6 +128,8 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 <script type="text/javascript">
 
 	setHash("<?php echo $hash ?>");
+	console.log("<?php echo getcwd()?>");
+	"<?php echo getcwd()?>"
 
 </script>
 
