@@ -118,6 +118,17 @@
                     <p id="tooltip-TOGGLE_A4" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
+
+        </fieldset>   
+        <fieldset>
+            <legend>Camera</legend>
+            <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera()">
+                <img src="../Shared/icons/screenUpdate.svg"/>
+                <span class="toolTipText"><b>Click to redirect camera to center</b><br>
+                    <p>Redirect camera to center of all elements</p><br>
+                    <p id="tooltip-CENTER_CAMERA" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
         </fieldset>
         <fieldset>
             <legend>History</legend>
@@ -135,7 +146,11 @@
                     <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-            <button class="diagramIcons" onclick="toggleReplay()">Replay</button>
+            <div id="replayToggle" class="diagramIcons" onclick="toggleReplay()">
+                <img src="../Shared/icons/diagram_replay.svg"/>
+                <span class="toolTipText"><b>Toggle replay</b><br>
+                    <p>Click to start replay</p><br>
+                </span>
         </fieldset>
 
     </div>
