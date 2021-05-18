@@ -2609,6 +2609,90 @@ function getElementsInsideCoordinateBox(selectionRect)
     return elements;
 }
 
+function getLinesInsideCoordinateBox(selectionRect)
+{
+    var allLines = document.getElementById("svgbacklayer").children;
+
+    /*Array.prototype.forEach.call(allLines, line => {
+        lineA = line.getAttribute("y2") - line.getAttribute("y1");
+        lineB = line.getAttribute("x1") - line.getAttribute("x2");
+        lineC = (lineA * line.getAttribute("x1")) + (lineB * line.getAttribute("y1"));
+
+        var det1 = (boxA1 * lineB) - (lineA * boxB1);
+        var det2 = (boxA2 * lineB) - (lineA * boxB2);
+        if (det1 != 0) { // else lines are parallel
+            var x = (lineB * boxC1 - boxB1 * lineC) / det1;
+            var y = (boxA1 * lineC - lineA * boxC1) / det1;
+            console.log(x + " " + y);
+        } else if (det2 != 0) {
+            var x = (lineB * boxC2 - boxB2 * lineC) / det2;
+            var y = (boxA2 * lineC - lineA * boxC2) / det2;
+            console.log(x + " " + y);
+        }
+    });*/
+    
+    var tempCoords1 = screenToDiagramCoordinates(
+        allLines[0].getAttribute("x1"),
+        allLines[0].getAttribute("y1")
+    );
+    var tempCoords2 = screenToDiagramCoordinates(
+        allLines[0].getAttribute("x2"),
+        allLines[0].getAttribute("y2")
+    );
+    var lineCoords = {
+        x1: tempCoords1.x,
+        y1: tempCoords1.y,
+        x2: tempCoords2.x,
+        y2: tempCoords2.y
+    };
+
+    var lineCoordComp = {
+        highX: (lineCoords.x1 > lineCoords.x2) ? lineCoords.x1 : lineCoords.x2,
+        lowX:  (lineCoords.x1 < lineCoords.x2) ? lineCoords.x1 : lineCoords.x2,
+        highY: (lineCoords.y1 > lineCoords.y2) ? lineCoords.y1 : lineCoords.y2,
+        lowY:  (lineCoords.y1 < lineCoords.y2) ? lineCoords.y1 : lineCoords.y2
+    };
+
+    var boxCoordComp = {
+        highX: selectionRect.x + selectionRect.width,
+        lowX:  selectionRect.x,
+        highY: selectionRect.y + selectionRect.height,
+        lowY:  selectionRect.y        
+    }
+
+    // For calculating the left-leaning hypotenuse of the box-selection
+    boxA1 = boxCoordComp.highY - boxCoordComp.lowY;
+    boxB1 = boxCoordComp.lowX - boxCoordComp.highX;
+    boxC1 = (boxA1 * boxCoordComp.lowX) + (boxB1 * boxCoordComp.lowY);
+
+    // For calculating the right-leaning hypotenuse of the box-selection
+    boxA2 = boxCoordComp.highY - boxCoordComp.lowY;
+    boxB2 = boxCoordComp.lowX - boxCoordComp.highX;
+    boxC2 = (boxA2 * boxCoordComp.lowX) + (boxB2 * boxCoordComp.lowY);
+
+    lineA = lineCoords.y2 - lineCoords.y1;
+    lineB = lineCoords.x1 - lineCoords.x2;
+    lineC = (lineA * lineCoordComp.lowX) + (lineB * lineCoordComp.lowY);
+
+    var det1 = (boxA1 * lineB) - (lineA * boxB1);
+    var det2 = (boxA2 * lineB) - (lineA * boxB2);
+    if (det1 != 0) {
+        var x = (lineB * boxC1 - boxB1 * lineC) / det1;
+        var y = (boxA1 * lineC - lineA * boxC1) / det1;
+        if (x < lineCoordComp.highX && x > lineCoordComp.lowX && y < lineCoordComp.highY && y > lineCoordComp.lowY) {
+            console.log(x);
+            contextLine.push(allLines[0]);
+        }
+    } else if (det2 != 0) {
+        var x = (lineB * boxC2 - boxB2 * lineC) / det2;
+        var y = (boxA2 * lineC - lineA * boxC2) / det2;
+        if (x < lineCoordComp.highX && x > lineCoordComp.lowX && y < lineCoordComp.highY && y > lineCoordComp.lowY) {
+            console.log(x);
+            contextLine.push(allLines[0]);
+        }
+    }
+}
+
 function getBoxSelectionPoints()
 {
     return {
@@ -2695,6 +2779,7 @@ function boxSelect_Update(mouseX, mouseY)
 
         }else {
             context = getElementsInsideCoordinateBox(rect);
+            getLinesInsideCoordinateBox(rect);
         }
     }
 }
