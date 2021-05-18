@@ -3344,6 +3344,10 @@ function updateGridSize()
  function updateA4Size()
  {
     var rect = document.getElementById("a4Rect");
+    var vRect = document.getElementById("vRect");
+
+    vRect.setAttribute("width", 1122 * zoomfact + "px");
+    vRect.setAttribute("height", 794 * zoomfact + "px");
     rect.setAttribute("width", 794 * zoomfact + "px");
     rect.setAttribute("height", 1122 * zoomfact + "px");
     updateA4Pos();
@@ -3379,9 +3383,15 @@ function updateGridPos()
     var OffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
     var OffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
     var rect = document.getElementById("a4Rect");
+    var vRect = document.getElementById("vRect");
     var text = document.getElementById("a4Text");
+
+    vRect.setAttribute('x', OffsetX);
+    vRect.setAttribute('y', OffsetY);
+
     rect.setAttribute('x', OffsetX);
     rect.setAttribute('y', OffsetY);
+
     text.setAttribute('x',(OffsetX + (780 *zoomfact)));
     text.setAttribute('y',(OffsetY - 5));
  }
