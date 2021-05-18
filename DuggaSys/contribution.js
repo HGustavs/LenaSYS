@@ -183,7 +183,7 @@ function renderCommits(data) {
   str += "<svg id='commitTree' viewBox='0 0 600 300' style='background-color:#efefef; width: 1200px; height:300px;' aria-labelledby='title desc' role='img'>";
   
 
-  var current = new Date(2019,02,01);
+  var current = new Date();
   var currentYear = current.getFullYear();
   var weekData = data['weeks'];
 
