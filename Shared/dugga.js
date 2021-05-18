@@ -27,15 +27,12 @@ var isGroupDugga = false; // Set to false if you hate the popup
 var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
-var latestKeyUsed;
-var latestTTLUsed;
-var latestLocalHash;
 var isFileSubmitted;
 var isTeacher;
 var localStorageItemKey = "duggaData_" + querystring["did"];
 
 // Variant related
-var variantvalue;
+var variantValue;
 var loadVariantFlag = false;	// Flag to decide if the 'Next variant' button should be visable or not.
 var nbrOfVariants;
 var latestVariantSet;
@@ -109,14 +106,13 @@ function setHash(h){
 		//On the first dugga load, it will be undefined, and thereafter a hash value will be generated.
 		//If a hash is already stored in localstorage, we will load that hash instead.
 		var parsedVariant = JSON.parse(localStorage.getItem(localStorageItemKey));
-		
-		locallystoredhash = localStorage.getItem(localStorageItemKey +(querystring['did']));
 		if(parsedVariant == null){
 			hash = generateHash();
 			pwd = randomPassword();
 		}
 		else{
-			hash = parse.hash;
+			hash = parsedVariant.hash;
+			locallystoredhash = hash;
 			console.log(hash);
 		}
 	
@@ -125,6 +121,7 @@ function setHash(h){
 		hash = h;
 		ishashinurl = true;		//Hash is referenced in the url -> A resubmission, this dugga already have a hash in the database.
 	}
+	
 }
 
 function setPassword(p){
@@ -695,7 +692,6 @@ function saveDuggaResult(citstr)
 	var scores = JSON.parse(localStorage.getItem("ls-highscore-dg"+querystring['did']) || '[]');
 	scores.push(score);
 	localStorage.setItem("ls-highscore-dg"+querystring['did'], JSON.stringify(scores));
-
 	var readonly;
 	$.ajax({
 		url: "courseedservice.php",
@@ -1071,20 +1067,23 @@ function AJAXService(opt,apara,kind)
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
-			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para,
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para+"&variant="+variantValue,
 			datatype: "json",
 			success: function(data){
 				var phpData = JSON.parse(data);
+				console.log(phpData);
 				isTeacher = phpData.isTeacher;
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
 				localStorageHandler(phpData);
 				
-				var localVariant = JSON.parse(localStorage.getItem("duggaData_" + querystring['did']))
-				phpData.param = localVariant.variant.param
-
+				var localVariant = JSON.parse(localStorage.getItem(localStorageItemKey));
+				phpData.param = localVariant.variant.param // Param data needs to be inserted into data before returnedDugga
+				setPassword(phpData.password); 
 				returnedDugga(phpData);
 				enableTeacherVariantChange(phpData);
+				console.log(locallystoredhash);
+				console.log(!locallystoredhash);
 				handleHash();	//Makes sure hash is unique.
 
 			}
@@ -1202,22 +1201,12 @@ function handleHash(){
 
 			//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission AND we have not generated this dugga before => 1 : 5 000 000 000 chance...
 			if(ishashindb==true && blockhashgen == false && ishashinurl == false && !locallystoredhash){	
-				clearDuggaLocalStorage();		//Locally stored hash is 'null' again.
+				clearLocalStorageItem(localStorageItemKey);		//Locally stored hash is 'null' again.
 				reloadPage();					//New hash will be generated.
 			}
 		}
 	});
 }
-
-//Clears all localstorage for this dugga.
-//Add rows if more localstorage keys are implemented.
-function clearDuggaLocalStorage(){
-	window.localStorage.removeItem("ls-hash-dg"+(querystring['did']));
-	window.localStorage.removeItem("ls-highest-variant-quizid");
-	window.localStorage.removeItem("ls-allocated-variant-dg"+querystring['did']);
-	//window.localStorage.removeItem("ls-highscore-dg"+querystring['did']); //This is commented out since 'highscore' currently doesn't share any purpose.
-}
-
 
 function localStorageHandler(ajaxdata) {
 	var localStorageItem = localStorage.getItem(localStorageItemKey);
@@ -1230,6 +1219,7 @@ function localStorageHandler(ajaxdata) {
 			localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(ajaxdata));
 		}
 		else {
+			variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 			// Remove item if expired
 			if (isDuggaExpiredCheck(localStorageItem)){
 				console.log(localStorageItem);
@@ -1253,13 +1243,12 @@ function createDuggaLocalStorageData(ajaxdata) {
 
 function getRandomVariant(ajaxdata) {
 	var rand = Math.round(Math.random() * (ajaxdata.variants.length - 1))
-
+	variantValue = ajaxdata.variants[rand].vid;
 	return ajaxdata.variants[rand];
 }
 
 function createExpireTime() {
 
-	
 	var expireInDays = 90;
 	var expireDate = new Date();
 	expireDate.setDate(expireDate.getDate() + expireInDays);
