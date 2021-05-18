@@ -1155,6 +1155,12 @@ function returnedSection(data) {
       $("#statisticsSwimlanes").hide();
     }
 
+    if (navigator.vendor == ("Apple Computer, Inc.")) {
+      $("#statisticsSwimlanes").hide();
+      $("#sectionList_arrowStatisticsOpen").hide();
+      $("#sectionList_arrowStatisticsClosed").hide();
+    } 
+
     if (data['writeaccess']) {
       // Enable sorting always if we are superuser as we refresh list on update
 
@@ -1212,7 +1218,11 @@ function returnedSection(data) {
   if(versionname){
     document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
 
-    drawSwimlanes(); // Create the swimlane used in the statistics section.
+    // If safari this will not load in
+    if (navigator.vendor != ("Apple Computer, Inc.")) {
+      drawSwimlanes(); // Create the swimlane used in the statistics section.
+      }
+    
 
     // Change the scroll position to where the user was last time.
     $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
