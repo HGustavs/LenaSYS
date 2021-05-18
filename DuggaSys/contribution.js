@@ -212,8 +212,10 @@ function renderCommits(data) {
         index++;
         commitDict[weekData[i]['commits'][j].cid] = commit_obj;
       }
-
     }
+    
+    str += `<rect x='${(-300 + 120 * i)}' y='0%' width='120' height='100%'  style='fill:${(i % 2 == 1 ? "#cccccc" : "#efefef")};' />`
+  
   }
   var xMul = 25;
   var yMul = 10;
