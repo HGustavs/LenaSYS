@@ -3032,21 +3032,18 @@ function setElementPlacementType(type = elementTypes.ENTITY)
 
 function zoomin(scrollEvent = undefined)
 {
-    // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
-    if (scrollEvent && zoomfact <= 4.0) {
+    // If mousewheel is not used, we zoom towards origo (0, 0)
+    if (!scrollEvent){
+        zoomOrigo.x = 0;
+        zoomOrigo.y = 0;
+    }else if (zoomfact < 4.0){ // ELSE zoom towards mouseCoordinates
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
             x: mouseCoordinates.x - zoomOrigo.x,
             y: mouseCoordinates.y - zoomOrigo.y
         };
-        if(zoomfact < 4.0) { // Only change zoomOrigo when not fully zoomed in.
-            zoomOrigo.x += delta.x * settings.zoomPower;
-            zoomOrigo.y += delta.y * settings.zoomPower;
-        }
-        
-    }else { // Otherwise, set zoom target to origo.
-        zoomOrigo.x = 0;
-        zoomOrigo.y = 0;
+        zoomOrigo.x += delta.x * settings.zoomPower;
+        zoomOrigo.y += delta.y * settings.zoomPower;
     }
 
     scrollx = scrollx / zoomfact;
@@ -3086,19 +3083,18 @@ function zoomin(scrollEvent = undefined)
  */
 function zoomout(scrollEvent = undefined)
 {
-    // If zoomed with mouse wheel, change zoom target into new mouse position on screen.
-    if (scrollEvent && zoomfact != 0.25) {
+    // If mousewheel is not used, we zoom towards origo (0, 0)
+    if (!scrollEvent){
+        zoomOrigo.x = 0;
+        zoomOrigo.y = 0;
+    }else if (zoomfact > 0.25) { // ELSE zoom towards mouseCoordinates
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
             x: mouseCoordinates.x - zoomOrigo.x,
             y: mouseCoordinates.y - zoomOrigo.y
         };
-
         zoomOrigo.x -= delta.x * settings.zoomPower;
         zoomOrigo.y -= delta.y * settings.zoomPower;
-    } else { // Otherwise, set zoom target to origo.
-        zoomOrigo.x = 0;
-        zoomOrigo.y = 0;
     }
 
     scrollx = scrollx / zoomfact;
