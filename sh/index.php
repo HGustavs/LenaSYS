@@ -16,6 +16,8 @@ $assignment = getOPG("a");
 pdoConnect();
 session_start();
 
+//To test this function, try and enter the following:
+//http://localhost/lenasys/LenaSYS/sh/?a=<hash>
 function GetAssignment ($hash){
 	global $pdo;
 
@@ -36,7 +38,8 @@ function GetAssignment ($hash){
 	}
 	return $URL;
 }
-
+//To test this function, try and enter the following:
+//http://localhost/lenasys/LenaSYS/sh/?c=Webbutveckling - datorgrafik IT118G HT15
 function GetCourse($course){
 	$courseArray = explode(" ", $course); //Transforms long string to array with a word in each element
 	$versname = end($courseArray); //Gets last element, ex: "HT15"
@@ -55,10 +58,8 @@ function GetCourse($course){
 	header("Location: {$serverRoot}/lenasys/DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}");
 	exit();
 }
-
-
-
-//This function doesn't currently work, kept here because we'd like to work on it in next weeks branch
+//To test this function, try and enter the following:
+//http://localhost/lenasys/LenaSYS/sh/?c=Webbutveckling - datorgrafik IT118G HT15&a=Biträkningsdugga 1
 function CourseAndAssignment($course, $assignment) {	
 	$courseArray = explode(" ", $course); //Transforms long string to array with a word in each element
 	$versname = end($courseArray); //Gets last element, ex: "HT15"
@@ -74,7 +75,7 @@ function CourseAndAssignment($course, $assignment) {
 		$cid = $row['cid'];
 		$vers = $row['vers'];
 	}
-	error_log("cid: ".$cid." vers: ".$vers);
+	//error_log("cid: ".$cid." vers: ".$vers);
 	
 	//Get coursename
 	$sql = "SELECT coursename FROM course WHERE activeversion='{$vers}'";
@@ -83,7 +84,7 @@ function CourseAndAssignment($course, $assignment) {
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$coursename = $row['coursename'];
 	}
-	error_log("coursename: ".$coursename);
+	//error_log("coursename: ".$coursename);
 
 	//Get moment(lid), did(link), highscoremode
 	$sql = "SELECT * FROM listentries WHERE entryname='{$assignment}'";
@@ -94,7 +95,7 @@ function CourseAndAssignment($course, $assignment) {
 		$did = $row['link'];
 		$highscoremode = $row['highscoremode'];
 	}
-	error_log("moment: ".$moment." did: ".$did." highscoremode: ".$highscoremode);
+	//error_log("moment: ".$moment." did: ".$did." highscoremode: ".$highscoremode);
 
 	//Get deadline
 	$sql = "SELECT deadline FROM quiz WHERE id='{$did}'";
@@ -103,7 +104,7 @@ function CourseAndAssignment($course, $assignment) {
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$deadline = $row['deadline'];
 	}
-	error_log("deadline: ".$deadline);
+	//error_log("deadline: ".$deadline);
 
 	$serverRoot = serverRoot();
 	header("Location: {$serverRoot}/lenasys/DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}");
@@ -119,7 +120,7 @@ if(($assignment != "UNK") &&($course == "UNK")){
 	GetCourse($course);
 	
 }else if(($assignment != "UNK") && ($course != "UNK")) {
-	CourseAndAssignment($course, $assignment);  //This will be worked on in the next week's branch, we're merging our earlier implemented function since it works
+	CourseAndAssignment($course, $assignment);
 }
 else {
 	header("Location: ../errorpages/404.php");
