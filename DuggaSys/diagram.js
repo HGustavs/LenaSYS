@@ -907,8 +907,6 @@ var movingContainer = false;
 //Grid Settings
 var settings = {
     ruler: {
-        lineRatio: 10,
-        fullLineRatio: 10,
         ZF: 100 * zoomfact,
         zoomX: Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact)),
         zoomY: Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact)),
@@ -1124,7 +1122,6 @@ document.addEventListener('keydown', function (e)
 
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-
         if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
             escPressed = true;
             if (settings.replay.active){
@@ -1180,7 +1177,7 @@ document.addEventListener('keydown', function (e)
 document.addEventListener('keyup', function (e)
 {
     var pressedKey = e.key.toLowerCase();
-
+  
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
     if (pressedKey == keybinds.META.key) {
@@ -1195,10 +1192,14 @@ document.addEventListener('keyup', function (e)
         if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
+            
             if (contextLine.length > 0) removeLines(contextLine);
+            if (mouseMode == mouseModes.EDGE_CREATION) return;
             if (context.length > 0) removeElements(context);
-
+            
+    
             updateSelection();
+            
         }
         
         if(isKeybindValid(e, keybinds.POINTER)) setMouseMode(mouseModes.POINTER);
@@ -1261,6 +1262,11 @@ window.onfocus = function()
     ctrlPressed=false;
 }
 
+document.addEventListener("mouseleave", function(event){
+    if (event.toElement == null && event.relatedTarget == null) {
+        pointerState = pointerStates.DEFAULT;
+    }
+});
 // --------------------------------------- Mouse Events    --------------------------------
 /**
  * @description Event function triggered when the mousewheel reader has a value of grater or less than 0.
@@ -1337,13 +1343,13 @@ function mdown(event)
     if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT && !settings.replay.active){
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
-        if (determinedLines){
+      
+        if (determinedLines) {
            pointerState=pointerStates.CLICKED_LINE;
 
             if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                 wasDblClicked = true;
                 document.getElementById("options-pane").className = "show-options-pane";
-
             }
         }
     }
@@ -1487,7 +1493,7 @@ function mup(event)
         case pointerStates.CLICKED_CONTAINER:
             if (event.target.id == "container") {
                 movingContainer = false;
-
+                
                 if (!deltaExceeded) {
                     if (mouseMode == mouseModes.EDGE_CREATION) {
                         clearContext();
@@ -1497,6 +1503,7 @@ function mup(event)
                     if (!ctrlPressed) clearContextLine();
                 }
             }
+            
             break;
 
         case pointerStates.CLICKED_LINE:
@@ -3234,8 +3241,9 @@ function generateToolTips()
  */
 function setRulerPosition(x, y) 
 {
-    document.getElementById("ruler-x").style.left = x - 51 + "px";
-    document.getElementById("ruler-y").style.top = y + "px";
+    //40 is the size of the actual ruler and 51 is the toolbar on the left side
+    if(x >= 40 + 51) document.getElementById("ruler-x").style.left = x - 51 + "px";
+    if(y >= 40) document.getElementById("ruler-y").style.top = y + "px";
 }
 
 /**
@@ -3887,7 +3895,7 @@ function removeNodes()
  * @description Draw and updates the rulers, depending on the window size and current position in the diagram.
  */
 function drawRulerBars(X,Y)
-{
+{ 
     //Get elements
     if(!settings.ruler.isRulerActive) return;
     
@@ -3895,13 +3903,18 @@ function drawRulerBars(X,Y)
     svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
 
-
+    const lineRatio = 10;
+    
     var barY, barX = "";
     const color = "black";
     var cordY = 0;
     var cordX = 0;
+    settings.ruler.ZF = 100 * zoomfact;
     var pannedY = (Y - settings.ruler.ZF) / zoomfact;
     var pannedX = (X - settings.ruler.ZF) / zoomfact;
+    settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact));
+    settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
+
 
     if(zoomfact < 0.5){
         var verticalText = "writing-mode= 'vertical-lr'";
@@ -3910,12 +3923,12 @@ function drawRulerBars(X,Y)
     }
     
     //Draw the Y-axis ruler positive side.
-    var lineNumber = (settings.ruler.lineRatio - 1);
-    for (i = 100 + settings.ruler.zoomY; i <= pannedY -(pannedY *2) + cheight ; i += (settings.ruler.lineRatio*zoomfact)) {
+    var lineNumber = (lineRatio - 1);
+    for (i = 100 + settings.ruler.zoomY; i <= pannedY -(pannedY *2) + cheight ; i += (lineRatio*zoomfact)) {
         lineNumber++;
          
         //Check if a full line should be drawn
-        if (lineNumber === settings.ruler.lineRatio) {
+        if (lineNumber === lineRatio) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
             barY += "<text x='2' y='"+(pannedY+i+10)+"'style='font-size: 10px'>"+cordY+"</text>";
@@ -3926,13 +3939,13 @@ function drawRulerBars(X,Y)
     }
 
     //Draw the Y-axis ruler negative side.
-    lineNumber = (settings.ruler.lineRatio - 11);
+    lineNumber = (lineRatio - 11);
     cordY = -100;
-    for (i = -100 - settings.ruler.zoomY; i <= pannedY; i += (settings.ruler.lineRatio*zoomfact)) {
+    for (i = -100 - settings.ruler.zoomY; i <= pannedY; i += (lineRatio*zoomfact)) {
         lineNumber++;
          
         //Check if a full line should be drawn
-        if (lineNumber === settings.ruler.lineRatio) {
+        if (lineNumber === lineRatio) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
             barY += "<text x='2' y='"+(pannedY-i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
@@ -3946,12 +3959,12 @@ function drawRulerBars(X,Y)
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
     
     //Draw the X-axis ruler positive side.
-    lineNumber = (settings.ruler.lineRatio - 1);
-    for (i = 51 + settings.ruler.zoomX; i <= pannedX - (pannedX *2) + cwidth; i += (settings.ruler.lineRatio*zoomfact)) {
+    lineNumber = (lineRatio - 1);
+    for (i = 51 + settings.ruler.zoomX; i <= pannedX - (pannedX *2) + cwidth; i += (lineRatio*zoomfact)) {
         lineNumber++;
         
         //Check if a full line should be drawn
-        if (lineNumber === settings.ruler.lineRatio) {
+        if (lineNumber === lineRatio) {
             lineNumber = 0;
             barX += "<line x1='" +(i+pannedX)+"' y1='0' x2='" + (i+pannedX) + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
@@ -3962,13 +3975,13 @@ function drawRulerBars(X,Y)
     }
 
     //Draw the X-axis ruler negative side.
-    lineNumber = (settings.ruler.lineRatio - 11);
+    lineNumber = (lineRatio - 11);
     cordX = -100;
-    for (i = -51 - settings.ruler.zoomX; i <= pannedX; i += (settings.ruler.lineRatio*zoomfact)) {
+    for (i = -51 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio*zoomfact)) {
         lineNumber++;
         
         //Check if a full line should be drawn
-        if (lineNumber === settings.ruler.lineRatio) {
+        if (lineNumber === lineRatio) {
             lineNumber = 0;
             barX += "<line x1='" +(pannedX-i)+"' y1='0' x2='" + (pannedX-i) + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px'>"+cordX+"</text>";
@@ -4239,8 +4252,9 @@ function drawSelectionBox(str)
  */
 function updateCSSForAllElements()
 {
+    
     function updateElementDivCSS(elementData, divObject, useDelta = false)
-    {
+    { 
         var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
             top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 

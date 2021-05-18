@@ -23,11 +23,21 @@ var ishashinurl;
 var itemvalue;
 var groupTokenValue = 1;
 var passwordReload = false; // Bool turns true when reloading in combination with logging in to dugga
-var isGroupDugga = true; // Set to false if you hate the popup
+var isGroupDugga = false; // Set to false if you hate the popup
 var variantvalue;
 var tempclicks = 0;
 var clicks = 0;
 var locallystoredhash;
+var loadVariantFlag = false;	// Flag to decide if the 'Next variant' button should be visable or not.
+var varArr;
+var nbrOfVariants;
+var latestKeyUsed;
+var latestTTLUsed;
+var latestLocalHash;
+var latestVariantSet;
+var isFileSubmitted;
+var isTeacher;
+
 
 
 $(function () {  // Used to set the position of the FAB above the cookie message
@@ -35,6 +45,27 @@ $(function () {  // Used to set the position of the FAB above the cookie message
 		$(".fixed-action-button").css("bottom", "64px");
 	}
 })
+
+// Enables save and reset button after activity on assignments (save and reset always available for students on submitted assignments)
+function canSaveController() {
+	
+	var content=document.getElementById("content-window");
+	var contentUrl=document.getElementById("url-input");
+	if(content != null || contentUrl != null)
+	{
+		content=document.getElementById("content-window").value;
+		contentUrl=document.getElementById("url-input").value;
+	}
+
+	var hasClicked = (clicks > 0)? true : false;
+	if((isFileSubmitted || hasClicked || content || contentUrl || ishashinurl) && !isTeacher){
+		  var elems = document.querySelectorAll(".btn-disable");
+		
+		  for (var e of elems){
+			e.classList.remove("btn-disable");
+		}
+	}   
+}
 
 function sendGroupAjax(val) {
 	// val = 1: new user, val = 0: exit
@@ -70,26 +101,20 @@ function getHash(){
 function setHash(h){
 	// Check if hash is unknown
 	if(h == "UNK"){
-		
-		//hash = generateHash();
-
-		
 		//From localstorage we load what we have into our locallystoredhash variable, that is then compared against. 
 		//On the first dugga load, it will be undefined, and thereafter a hash value will be generated.
 		//If a hash is already stored in localstorage, we will load that hash instead.
-		locallystoredhash = localStorage.getItem("locallystoredhash"+(querystring['did']));
+		locallystoredhash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
 
 		if((locallystoredhash == null) || (locallystoredhash == undefined) || (!locallystoredhash)){
 			hash = generateHash();
 			//locallystoredhash has not been set at this point, but will be after this.
-			localStorage.setItem("locallystoredhash"+(querystring['did']), hash);
-			hash = localStorage.getItem("locallystoredhash"+(querystring['did']));
+			localStorage.setItem("ls-hash-dg"+(querystring['did']), hash);
+			hash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
 		}
 		else{
-			hash = localStorage.getItem("locallystoredhash"+(querystring['did']));
+			hash = localStorage.getItem("ls-hash-dg"+(querystring['did']));
 		}
-
-		
 		pwd = randomPassword();
 		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
 	}else{
@@ -104,7 +129,7 @@ function setPassword(p){
 
 //Set the localstorage item securitynotifaction to on or off
 function setSecurityNotifaction(param){
-    localStorage.setItem("securitynotification", param);
+    localStorage.setItem("ls-security-notification", param);
 }
 
 function resetLoginStatus(){
@@ -466,7 +491,7 @@ function removeYearFromDate(date){
 //----------------------------------------------------------------------------------
 
 function setExpireCookie(){
-    if(localStorage.getItem("securityquestion") == "set") {
+    if(localStorage.getItem("ls-security-question") == "set") {
 				var expireDate = new Date();
 				// A test date so you dont have to actually wait 1 hour and 45 minutes.
 				// Don't forget to change the one below (setExpireCookieLogOut()) too.
@@ -481,12 +506,33 @@ function setExpireCookie(){
 //----------------------------------------------------------------------------------
 
 function setExpireCookieLogOut() {
-    if (localStorage.getItem("securityquestion") == "set") {
+    if (localStorage.getItem("ls-security-question") == "set") {
 				var expireDate = new Date();
 				//expireDate.setMinutes(expireDate.getMinutes() + 2);	// For testing
 				expireDate.setMinutes(expireDate.getMinutes() + 120);	// For actual use
         document.cookie = "sessionEndTimeLogOut=expireC; expires=" + expireDate.toUTCString() + "; path=/";
     }
+}
+
+function changeVariant(intvalue){											//Call setExpireTime() but with a specific 'value' taken from varArr[].
+	const value = String(intvalue);											//Value can select from a span 1 to varArr.length, whereas each value is an existing variant of the active dugga.
+	setExpireTime(latestKeyUsed, value, latestTTLUsed, latestLocalHash);	//Sets new variant by only changing the 'value' attribute.
+	location.reload(); 														//Reloads the site to show correct new variant.
+}
+
+//Selects next variant available and calls 'changeVariant' method.
+function selectNextVariant(){
+	if(nbrOfVariants != undefined){	//If variants are available for this dugga.
+		var nextVariant;
+		if(nbrOfVariants == 1){
+			nextVariant = latestVariantSet;
+		}
+		else{
+			var tempIndex = (varArr.indexOf(latestVariantSet) + 1) % nbrOfVariants;
+			nextVariant = varArr[tempIndex];
+			changeVariant(nextVariant);
+		} 
+	}
 }
 
 //Creates TTL for localstorage //TTL value is in milliseconds
@@ -496,7 +542,7 @@ function setExpireTime(key, value, ttl, locallystoredhash){
 	//Item is an object which contains the original value
 	//as well as the time when its supposed to expire
 	const item = {
-		value: value,
+		value: value,	//Här
 		expiry: now.getTime() + ttl,
 		locallystoredhash: locallystoredhash,
 	}
@@ -527,13 +573,18 @@ function updateExpireTime(key, value, ttl, locallystoredhash){
 	}
 }
 //Lazily expiring the item (Its only checked when retrieved from storage)
+//Global variables 'latestKeyUsed', 'latestTTLUsed' and 'latestLocalHash' are written to keep track of the latest values of the local-storage attributes, which needs be re-used, with the same values, if teacher change variant locally (Next variant button).
 function getExpireTime(key){
-	const itemString = localStorage.getItem(key)
+	latestKeyUsed = key;						
+	const itemString = localStorage.getItem(key);
 	
 	if(!itemString){
 		return null
 	}
 	const item = JSON.parse(itemString)
+	latestTTLUsed = item.expiry;				
+	latestLocalHash = item.locallystoredhash;	
+
 	const now = new Date()
 
 	if(now.getTime() > item.expiry){
@@ -702,13 +753,13 @@ function saveDuggaResult(citstr)
 	
 	var url = createUrl(hash); //Create URL
 	console.log("pwd = "+pwd);
-	if(pwd.includes("undef")) pwd = randomPassword();
+	if(pwd == undefined || pwd.includes("undef")) pwd = randomPassword();
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
 
-	var scores = JSON.parse(localStorage.getItem("scores"+querystring['did']) || '[]');
+	var scores = JSON.parse(localStorage.getItem("ls-highscore-dg"+querystring['did']) || '[]');
 	scores.push(score);
-	localStorage.setItem("scores"+querystring['did'], JSON.stringify(scores));
+	localStorage.setItem("ls-highscore-dg"+querystring['did'], JSON.stringify(scores));
 
 	var readonly;
 	$.ajax({
@@ -758,7 +809,7 @@ function saveDuggaResult(citstr)
 				}
 
 			}
-      duggaFeedbackCheck();
+      		duggaFeedbackCheck();
 			showReceiptPopup();
 		}
 	});
@@ -910,18 +961,21 @@ window.addEventListener('beforeunload', function (e) {
 });
 
 //Check if score is above threshhold
-function duggaChange(){
+function duggaChange() {
+	
 	if(clicks > ClickCounter.score){
 		ClickCounter.score = clicks;
 	}else{
 		clicks = ClickCounter.score;
 	}
+	canSaveController();
 	if(clicks>=tempclicks){
 		tempclicks=clicks;
 		return true;
 	}else{
 		return false;
 	}
+	
 }
 
 function getUrlParam(param){
@@ -1085,10 +1139,14 @@ function AJAXService(opt,apara,kind)
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
 			datatype: "json",
 			success: function(data){
+				var phpData = JSON.parse(data);
+				isTeacher = phpData.isTeacher;
+				isFileSubmitted = phpData.isFileSubmitted;
+				canSaveController(); 
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
-				if(!localStorage.getItem("locallystoredhash"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
-					handleHash();	//Makes sure hash is unique.
-				}
+				//if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
+				handleHash();	//Makes sure hash is unique.
+				//}
 			}
 		})
 	}else if(kind=="RESULT"){
@@ -1201,58 +1259,81 @@ function handleHash(){
 		success: function(data) {
 			returnedDugga(data);
 			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-			console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl);	//For debugging!
-			if(ishashindb==true && blockhashgen == false && ishashinurl == false){	//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission.
-				recursiveAjax();													//This recursive method will generate a hash until it is unique. One in a billion chance of not being unique...
+			//console.log("Hash="+hash+". isHashInDB="+ishashindb + ". ClickedSave=" +blockhashgen + ". isHashInURL="+ishashinurl + " lsHash= " + locallystoredhash);	//For debugging!
+
+			//If the hash already exist in database AND the save button hasn't been pressed yet AND this isn't a resubmission AND we have not generated this dugga before => 1 : 5 000 000 000 chance...
+			if(ishashindb==true && blockhashgen == false && ishashinurl == false && !locallystoredhash){	
+				clearDuggaLocalStorage();		//Locally stored hash is 'null' again.
+				reloadPage();					//New hash will be generated.
 			}
 		}
 	});
 }
+
+//Clears all localstorage for this dugga.
+//Add rows if more localstorage keys are implemented.
+function clearDuggaLocalStorage(){
+	window.localStorage.removeItem("ls-hash-dg"+(querystring['did']));
+	window.localStorage.removeItem("ls-highest-variant-quizid");
+	window.localStorage.removeItem("ls-allocated-variant-dg"+querystring['did']);
+	//window.localStorage.removeItem("ls-highscore-dg"+querystring['did']); //This is commented out since 'highscore' currently doesn't share any purpose.
+}
+
 function handleLocalStorage(data){
+	//Set value to nbrOfVariants, this is needed so a teacher can locally change variant.
+	varArr = [];		
+	data['variants'].forEach(element => varArr.push(element.vid));
+	nbrOfVariants = varArr.length;
+	if(nbrOfVariants == 1){
+		document.getElementById("nextVariantBtn").style.display="none";
+	}
+
 	// Check localstorage variants.
 	var newvariant = data['variantvalue'];
 	console.log("newVariant: " + newvariant);
+	latestVariantSet = newvariant;
+
 	
-	if(localStorage.getItem(querystring['did']) == null){
-		localStorage.setItem(querystring['did'], newvariant);
+	if(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']) == null){
+		localStorage.setItem("ls-allocated-variant-dg"+querystring['did'], newvariant);
 		//The big number below represents 30 days in milliseconds
-		setExpireTime(querystring['did'], localStorage.getItem(querystring['did']), 2592000000, hash);
+		setExpireTime("ls-allocated-variant-dg"+querystring['did'], localStorage.getItem("ls-allocated-variant-dg"+querystring['did']), 2592000000, hash);
 	}
 	//If locallystoragehash doesn't exist, it will set it to correct hash.
-	var itemString = localStorage.getItem(querystring['did']);
+	var itemString = localStorage.getItem("ls-allocated-variant-dg"+querystring['did']);
 	var itemParse = JSON.parse(itemString);
-	localStorage.setItem("locallystoredhash"+(querystring['did']), itemParse.locallystoredhash);
+	localStorage.setItem("ls-hash-dg"+(querystring['did']), itemParse.locallystoredhash);
 
-	getExpireTime(querystring['did']);
+	getExpireTime("ls-allocated-variant-dg"+querystring['did']);
 	var variantsize = data['variantsize'];
-	localStorage.setItem("variantSize", variantsize);
+	localStorage.setItem("ls-highest-variant-quizid", variantsize);
 						
 }
 
 function getVariantValue(ajaxdata, opt, para){
 	
 	//Checks if the variantSize variant is set in localstorage. When its not, its set.
-	if(localStorage.getItem("variantSize") == null) {
-		localStorage.setItem("variantSize", 100);
+	if(localStorage.getItem("ls-highest-variant-quizid") == null) {
+		localStorage.setItem("ls-highest-variant-quizid", 100);
 	}
 	//Converts the localstorage variant from string to int
-	var newInt = +localStorage.getItem('variantSize');
+	var newInt = +localStorage.getItem('ls-highest-variant-quizid');
 	//Checks if the dugga id is within scope (Not bigger than the largest dugga variant)
 	if(querystring['did'] <= newInt) {
-		if(localStorage.getItem(querystring['did']) == null){
+		if(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']) == null){
 			//If we don't have a variant in localstorage
 			returndata = JSON.parse(ajaxdata);
 			variantvalue = returndata.variant;
 		} else {
 			//If we have a variant in localstorage
-			var test = JSON.parse(localStorage.getItem(querystring['did']));
+			var test = JSON.parse(localStorage.getItem("ls-allocated-variant-dg"+querystring['did']));
 			variantvalue = test.value;
 		}
 		//Will overrule localstorage variant if we use hash url
 		var dbvariant = JSON.parse(ajaxdata);
 		if(dbvariant.hashvariant != null){
 			variantvalue = dbvariant.hashvariant;
-			updateExpireTime(querystring['did'], dbvariant.hashvariant, 2592000000, hash);
+			updateExpireTime("ls-allocated-variant-dg"+querystring['did'], dbvariant.hashvariant, 2592000000, hash);
 		}
 	}
 
@@ -1265,25 +1346,6 @@ function getVariantValue(ajaxdata, opt, para){
 			returnedDugga(data);
 			handleLocalStorage(data);		//Set localstorage lifespan.			
 			setPassword(data['password']);	//Sets the password retrieved from query.
-		}
-	});
-}
-
-//If the first generated hash isn't unique this method is recursively called until a hash is unique.
-function recursiveAjax(){
-	hash = generateHash();						//A new hash is generated.
-	console.log("Not a unique hash! generating new hash => " + hash);
-	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
-		url: "showDuggaservice.php",
-		type: "POST",
-		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
-		dataType: "json",
-		success: function(data) {
-			returnedDugga(data);
-			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-			if(ishashindb==true){				//If the hash already exist in database.
-				recursiveAjax();				//Call this method again.
-			}								
 		}
 	});
 }
@@ -1312,7 +1374,7 @@ function addSecurityQuestionProfile(username) {
 		success:function(data) {
 			var result = JSON.parse(data);
 			if(result['getname'] == "success") {
-				$("#challengeQuestion").html(result['securityquestion']);
+				$("#challengeQuestion").html(result['ls-security-question']);
 			}else{
 				if(typeof result.reason != "undefined") {
 					$("#changeChallengeQuestion #securityQuestionError").html("<div class='alert danger'>" + result.reason + "</div>");
@@ -1346,7 +1408,7 @@ function processResetPasswordCheckUsername() {
 			var result = JSON.parse(data);
 				//It is worth to note that getname should probably be named status/error since thats basically what it is
 			if(result['getname'] == "success") {
-				$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
+				$("#showsecurityquestion #displaysecurityquestion").html(result['ls-security-question']);
 				status = 2;
 				toggleloginnewpass();
 			}else if(result['getname'] == "limit"){
@@ -1418,8 +1480,8 @@ function processLogin() {
 			hideLoginPopup();
 
           	// was commented out before which resulted in the session to never end
-			if(result['securityquestion'] != null) {
-				localStorage.setItem("securityquestion", "set");
+			if(result['ls-security-question'] != null) {
+				localStorage.setItem("ls-security-question", "set");
 			} else {
 				setSecurityNotifaction("on");
 			}
@@ -1468,8 +1530,9 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
-            localStorage.removeItem("securityquestion");
+            localStorage.removeItem("ls-security-question");
             localStorage.removeItem("securitynotification");
+
             location.replace("../DuggaSys/courseed.php");
 		},
 		error:function() {
@@ -1530,9 +1593,15 @@ function setupLoginLogoutButton(isLoggedIn){
 	}
 }
 
+function toggleLoadVariant(setbool){	//setbool has a value of True or False. This decides if the Next variant button should be visable or not.
+	loadVariantFlag = setbool;
+	console.log("Value: " + setbool);
+}
+
 function showLoadDuggaPopup()
 {
 	$("#loadDuggaBox").css("display","flex");
+	localStorage.setItem("ls-redirect-last-url", document.URL);
 }
 
 function hideLoadDuggaPopup()
@@ -1573,8 +1642,6 @@ function checkScroll(obj) {
 	}
 }
 
-
-
 //----------------------------------------------------------------------------------
 // copyURLtoCB: Copy the url to user clipboard
 //----------------------------------------------------------------------------------
@@ -1584,6 +1651,11 @@ function copyHashtoCB() {
     $temp.val(hash).select();
     document.execCommand("copy");
 	$temp.remove();
+}
+
+function exitHashBox(){
+    $("#hashBox").css("display","none");
+	window.location.href = localStorage.getItem("ls-redirect-last-url"); //Takes us to previous visited dugga
 }
 
 function hideHashBox(){
@@ -2017,6 +2089,14 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		//If there is no name of the dugga.
 		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
 			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
+		}
+
+		if(loadVariantFlag){	//If the 'Next variant' button is set to be visable (Teachers only). 
+			str+="<div id='nextVariantBtn' style='width:0px;'><input class='submit-button large-button' type='button' value='Next Variant' onclick='selectNextVariant();' /></div>"; 
+		}
+
+		if(loadVariantFlag == false){	//If the 'Next variant' button is set to not be visable (Students). 
+			str+="<div id='nextVariantBtn' style='display:none;'><input class='submit-button large-button' type='button' value='Next Variant' /></div>"; 
 		}
 
 		str+="</div>";

@@ -117,7 +117,7 @@ function saveClick()
 		dataType: "json",
 		success: function(data) {
 			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-			if(ishashindb==true){				//If the hash already exist in database.
+			if(ishashindb==true && blockhashgen ==true || ishashindb==true && blockhashgen ==false && ishashinurl==true || ishashindb==true && locallystoredhash != "null"){
 				if (confirm("You already have a saved version!")) {
 					Timer.stopTimer();
 
@@ -184,15 +184,18 @@ function saveClick()
 
 function reset()
 {
-	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
-	ClickCounter.initialize();
+	if(confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.")){
+		Timer.stopTimer();
+		Timer.score=0;
+		Timer.startTimer();
+		ClickCounter.initialize();
 
-	resetBitstring();
-	document.getElementById('H0').innerHTML="0";
-	document.getElementById('H1').innerHTML="0";
+		resetBitstring();
+		document.getElementById('H0').innerHTML="0";
+		document.getElementById('H1').innerHTML="0";
+	} else {
+		
+	}
 }
 
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
