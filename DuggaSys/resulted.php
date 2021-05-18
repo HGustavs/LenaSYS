@@ -110,7 +110,7 @@ pdoConnect();
 			</div>
 			<div style="display: flex;">
 				<div class="resultedFormsFlex">
-					<label>Assignment</label>
+					<label for="assignmentDropdown">Assignment</label>
 					<select id="assignmentDropdown" onchange="updateTable()"></select>
 				</div>
 			</div>
