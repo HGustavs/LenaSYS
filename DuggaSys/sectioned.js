@@ -16,16 +16,8 @@ var versnr;
 var motd;
 var hideItemList = [];
 var hasDuggs = false;
-
-/*********
--Ide, låt var dugg spara tiden som den skapas
--Jämför sedan detta med dagens tid
--Är skillnaden mindre än en vecka -> glow (rad 770ish)
- 
-*********/
-//Function for fetching todays "time"
 var dateToday = new Date().getTime();
-var compareWeek = new Date().getTime() *7;
+var compareWeek = new Date().getTime();
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -444,9 +436,8 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-  param.timeCreated = dateToday;
 
-  console.log("time created: " + param.timeCreated);
+  //console.log("time created: " + param.timeCreated);
 
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
@@ -614,6 +605,7 @@ function returnedCourse(data) {
   }, 1000);
 }
 
+
 function returnedGroups(data) {
   if (data['debug'] != "NONE!") alert(data['debug']);
   var grpmembers = data['grplst'];
@@ -772,10 +764,16 @@ function returnedSection(data) {
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
         // New items added get the class glow to show they are new
-        console.log(item);
-        if((item['timeCreated'] - compareWeek)< 0){
-          console.log("Glow");
-          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
+        console.log(item['entryname'] + " " + item['ts']);
+        var time = item['ts'];
+        
+        //var time = compareWeek.toLocaleString();
+        console.log("Time: " + time);
+        if(item['timeCreated'] !=null){
+          if((item['timeCreated'] - compareWeek)< 0){
+            console.log("Glow");
+            str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
+          }
         }
         else{
           console.log("no glow");

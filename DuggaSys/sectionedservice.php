@@ -62,7 +62,6 @@ $feedbackenabled =getOP('feedback');
 $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
 $tabs=getOP('tabs');
-$timeCreated=getOP('timeCreated');
 $visbile = 0;
 
 
@@ -568,8 +567,8 @@ if($gradesys=="UNK") $gradesys=0;
 		$entries=array();
 
 		if($cvisibility){
-			$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind,
-					listentries.gradesystem as tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id 
+			$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind, 
+			timeCreated, ts, listentries.gradesystem as tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id 
 					WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursevers', $coursevers);
@@ -603,7 +602,8 @@ if($gradesys=="UNK") $gradesys=0;
 								'tabs' => $row['tabs'],
 								'feedbackenabled' => $row['feedbackenabled'],
 								'feedbackquestion' => $row['feedbackquestion'],
-								'timeCreated' => $row['timeCreated']
+								'timeCreated' => $row['timeCreated'],
+								'ts' => $row['ts'],
 							)
 						);
 				}
