@@ -190,7 +190,7 @@ function renderCommits(data) {
   var allCommits =  [];
   var commitDict = Object();
   var index = 0;
-  
+
  // for each commit ID
  // X is commit order, Y is commit nesting
   for(var i = 0; i < weekData.length;i++) {  
@@ -213,10 +213,12 @@ function renderCommits(data) {
         commitDict[weekData[i]['commits'][j].cid] = commit_obj;
       }
     }
-    //render grey bars
+    
     str += `<rect x='${(-300 + 120 * i)}' y='0%' width='120' height='100%'  style='fill:${(i % 2 == 1 ? "#cccccc" : "#efefef")};' />`
     str += "<text x='" + (120 * i + -260) + "' y='20'>week " + (i + 1) + "</text>";
   }
+  str += "<line style='stroke:#000;' x1='-300' x2='200%' y1='25' y2='25'></line>";
+
   var xMul = 25;
   var yMul = 10;
   var x_spacing = 250;
