@@ -188,7 +188,7 @@ function renderCommits(data) {
   str += "<svg id='commitTree' viewBox='0 0 600 300' style='background-color:#efefef; width: 1200px; height:300px;' aria-labelledby='title desc' role='img'>";
   
 
-  var current = new Date(2019,02,01);
+  var current = new Date();
   var currentYear = current.getFullYear();
   var weekData = data['weeks'];
 
@@ -217,9 +217,13 @@ function renderCommits(data) {
         index++;
         commitDict[weekData[i]['commits'][j].cid] = commit_obj;
       }
-
     }
+    
+    str += `<rect x='${(-300 + 120 * i)}' y='0%' width='120' height='100%'  style='fill:${(i % 2 == 1 ? "#cccccc" : "#efefef")};' />`
+    str += "<text x='" + (120 * i + -260) + "' y='20'>week " + (i + 1) + "</text>";
   }
+  str += "<line style='stroke:#000;' x1='-300' x2='200%' y1='25' y2='25'></line>";
+
   var xMul = 25;
   var yMul = 10;
   var x_spacing = 250;
@@ -306,6 +310,17 @@ function renderLineDiagram(data) {
   str += '</select>';
   str += '<div class="group2" id="lineDiagramDiv">';
   str += weekchoice(firstweek);
+  str += '</div>';
+
+  str += '<div class="group2" id="lineDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
+  str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Commits:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#F44336;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Events:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#4DB6AC;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Comments:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#43A047;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex; align-items:center;margin-left:30px;margin-right:30px;"><p>LOC:</p>';
+  str += '<div style="width:15px; height:15px; background-color:Purple;margin-left:10px;"></div></div>';
   str += '</div>';
 
 
