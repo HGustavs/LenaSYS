@@ -738,7 +738,7 @@ function returnedSection(data) {
     }
 
 
-    //Swimlane and load dugga
+    //Swimlane and 'Load Dugga' button.
 
     str += "<div id='Sectionlistc'>";
 
