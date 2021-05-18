@@ -738,7 +738,7 @@ function returnedSection(data) {
     }
 
 
-    
+    //Swimlane and load dugga
 
     str += "<div id='Sectionlistc'>";
 
