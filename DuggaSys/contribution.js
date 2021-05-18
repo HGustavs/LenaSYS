@@ -19,6 +19,9 @@ AJAXService("get", {
 
 var weeks;
 var activities;
+var firstSelWeek;
+var secondSelWeek;
+var updateShowAct = true;
 
 //sorting for multiple views
 //Restores all views when pressing the All button
@@ -491,31 +494,29 @@ function toRadians(angle) {
   return angle * (Math.PI / 180);
 }
 
-function changeDay(date, date2) {
-  AJAXService("updateday", {
-    userid: "HGustavs",
-    today: date,
-    secondday: date2
-  }, "CONTRIBUTION");
-}
-
-function changeDay2(date1,date2){
-
-  var time1 = date1.getTime();
-  var time2 = date2.getTime();
-  var difference = time2-time1;
-  var daysDifference = difference /(1000 *60*60*24);
-  daysDifference = daysDifference.toFixed(0);
-  console.log(daysDifference);
-  for(var i = 0; i<daysDifference; i++){
-    
+function changeDay() {
+  if(firstSelWeek != null && secondSelWeek != null){  
+    AJAXService("updateday", {
+      userid: "HGustavs",
+      today: firstSelWeek,
+      secondday: secondSelWeek
+    }, "CONTRIBUTION");
   }
-
 }
+
 
 function showAllDays() {
   var div = document.getElementById('hourlyGraph');
   div.innerHTML = renderCircleDiagram(JSON.stringify(retdata['hourlyevents']));
+}
+
+
+function selectWeek(week, selBoxOrigin){
+  if(selBoxOrigin == 1){
+    firstSelWeek = week;
+  } else if (selBoxOrigin == 2){
+    secondSelWeek = week;
+  }
 }
 
 function renderCircleDiagram(data, day) {
@@ -531,8 +532,7 @@ function renderCircleDiagram(data, day) {
     today = day;
   } */
 
-  var date1 = new Date("2019-04-01");
-  var date2 = new Date("2019-04-05");
+
   var str = "";
   //changeDay(date1,date2);
   if (data.hourlyevents == null){
@@ -549,8 +549,7 @@ function renderCircleDiagram(data, day) {
   var firstweek = weeks[0].weekstart;
 
   str = "<h2 style='padding-top:10px'>Hourly activities</h2>";
-  str += `<select class="group2" id="weekoption" value="0" style="margin-top:25px";
-  onchange='changeDay("2019-04-01", "2019-04-05")'>`;
+  str += `<select class="group2" id="firstWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,1)"'>`;
   str += '<option value="' + firstweek + '">All weeks</option>';
 
   for (i = 0; i < weeks.length; i++) {
@@ -560,6 +559,18 @@ function renderCircleDiagram(data, day) {
 
   str += '</select>';
   
+  str += `<select class="group2" id="secondWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,2)"'>`;
+  str += '<option value="' + firstweek + '">All weeks</option>';
+  
+  for (i = 0; i < weeks.length; i++) {
+    var week = weeks[i];
+    str += '<option value="' + week.weekstart + '">' + "Week " + week.weekno + `(${week.weekstart} - ${week.weekend})` + '</option>';
+  }
+
+  str += '</select>';
+  
+  
+
   //str += "<h2 style='padding:10px'>Hourly activities</h2>";
   //str += "<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
   /* if (day) {
@@ -567,9 +578,9 @@ function renderCircleDiagram(data, day) {
   } */
   //str += `onchange='changeDay(${date1}, ${date2})' />`;
   //str += `onchange='changeDay("2019-04-01", "2019-04-05")' />`;
-  str += "<button style='margin-left: 20px' onclick='showAllDays()'>Show all</button>";
-  if (day) {
-    str += "<p style='margin-left: 10px'>Showing activities for </p>";
+  str += `<button style='margin-left: 20px' onclick='changeDay()'>Show selected dates</button>`;
+  if (updateShowAct) {
+    str += "<p style='margin-left: 10px'>Showing activities for the period </p>";
   } else {
     str += "<p style='margin-left: 10px'>Showing activities for the period 2019-03-31 -</p>";
   }
@@ -595,7 +606,6 @@ function renderCircleDiagram(data, day) {
 }
 
 function renderActivityPoints(activities) {
-  console.log(activities);
   var str = "";
   var hours = {};
   activities.forEach(entry => {
@@ -877,7 +887,6 @@ var momentexists = 0;
 var resave = false;
 
 function returnedSection(data) {
-  console.log(data);
   if (Object.keys(data).length === 2) {
     var div = document.getElementById('hourlyGraph');
     div.innerHTML = renderCircleDiagram(data);
