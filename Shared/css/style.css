@@ -895,11 +895,14 @@ p {
 }
 
 @media only screen and (max-width: 400px) {
-  #swimlaneSVG {
-    overflow: auto;
-    width: 90%;
-    margin: auto;
-  }
+    #swimlaneSVG {
+        overflow: auto;
+        width: 70%;
+        margin: auto;
+    }
+    #swimlaneSVG text {
+        font-size: 16px;
+    }
 }
 
 /*Swimlane styling Ends*/
@@ -1343,6 +1346,11 @@ header td {
   height: 32px;
   width: 32px;
   margin:auto 10px auto 0;
+}
+
+.burgerButtText {
+  text-decoration:none;
+  font-size:16px;Color:white;
 }
 
 .navButt:hover {
@@ -4186,6 +4194,11 @@ div.reset-pw:hover{
 /*styling for contribution.php*/
 
 /*this was inline-CSS before, only moved it to the right file*/
+#innerCommitTree{
+  min-width:650px;
+  overflow: auto;
+  white-space: nowrap;
+}
 
 .contributionSort {
   height: 90px;

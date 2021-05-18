@@ -107,6 +107,12 @@ function hamburgerChange(operation = 'click') {
   }
 }
 
+$(document).on('click', function(e) {
+  if ($(e.target).closest("#hamburgerIcon").length === 0) {
+      $("#hamburgerBox").hide();
+  }
+});
+
 function toggleHamburger() {
 
   var x = document.getElementById("hamburgerBox");
@@ -282,6 +288,7 @@ function showEditVersion() {
   if (edate !== null) $("#eenddate").val(edate.substr(0, 10));
   $("#editCourseVersion").css("display", "flex");
 }
+
 
 // Close the "edit course version" and "new course version" windows by pressing the ESC button
 document.addEventListener('keydown', function (event) {
@@ -1477,7 +1484,7 @@ function drawSwimlanes() {
         //If deadline is older than current, red text for late assigment should be displayed as blue instead
         var deadlineYear = new Date(entry.deadline).getFullYear();
         if(deadlineYear < current.getFullYear()) {
-           textcol = "#5072C7";
+           textcol = "#7b5a96";
        
            var yearDifference = current.getFullYear() - deadlineYear;
            var newYear = new Date(entry.deadline);

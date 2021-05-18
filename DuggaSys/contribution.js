@@ -184,13 +184,12 @@ function renderCommits(data) {
   
   //creating the svg to put the commit tree in
   var str = "<h2>Commit tree</h2>";
-  str += "<svg id='commitTree' viewBox='0 0 600 600' style='background-color:#efefef; width: 100%; min-width:600px; height:600px;' aria-labelledby='title desc' role='img'>";
+  str += "<div id='innerCommitTree'>";
+  str += "<svg id='commitTree' viewBox='0 0 600 300' style='background-color:#efefef; width: 1200px; height:300px;' aria-labelledby='title desc' role='img'>";
   
 
-  var current = new Date("2019-04-02");
+  var current = new Date(2019,02,01);
   var currentYear = current.getFullYear();
-console.log(currentYear);
-  var yearlyCommits = new Array();
   var weekData = data['weeks'];
 
   var allCommits =  [];
@@ -221,9 +220,9 @@ console.log(currentYear);
 
     }
   }
-  var xMul = 20;
-  var yMul = 20;
-  var x_spacing = 150;
+  var xMul = 25;
+  var yMul = 10;
+  var x_spacing = 250;
   var y_spacing = -50;
 
   for(var i = 0; i < allCommits.length;i++) { // each commit
@@ -242,6 +241,7 @@ console.log(currentYear);
     }
   }
   str += "</svg>";
+  str += "</div>";
 
   return str;
 }
@@ -261,7 +261,7 @@ function drawCommitLines(x1, x2, y1, y2, xmul, ymul, x_spacing, y_spacing){
   var colors = ["#246","#26A","#4BA","#59C","#DE7","#FB5","#FD5","#E64","#85A","#45A"]; //collection of array to hold different colors? Maybe keep this in renderCommits() and sens as parameter based on the commits author?
   var color = colors[y1%colors.length]; // Reworks the colors array with % calcultation against y1. Leaves one color to use for lines between commits (MAYBE?!?)
 
-  var strokew = xmul * 0.1; //Guessing a calculation for stroke width for colored lines
+  var strokew = xmul * 0.05; //Guessing a calculation for stroke width for colored lines
   var str = "";
 
 
