@@ -496,11 +496,15 @@ function toRadians(angle) {
 
 function changeDay() {
   if(firstSelWeek != null && secondSelWeek != null){  
-    AJAXService("updateday", {
-      userid: "HGustavs",
-      today: firstSelWeek,
-      secondday: secondSelWeek
-    }, "CONTRIBUTION");
+    if (firstSelWeek > secondSelWeek){
+      alert("Second week can't be earlier than first week");
+    } else {
+      AJAXService("updateday", {
+        userid: "HGustavs",
+        today: firstSelWeek,
+        secondday: secondSelWeek
+      }, "CONTRIBUTION");
+    }
   }
 }
 
@@ -543,7 +547,7 @@ function renderCircleDiagram(data, day) {
 
   str = "<h2 style='padding-top:10px'>Hourly activities</h2>";
   str += `<select class="group2" id="firstWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,1)"'>`;
-  str += '<option value="' + firstweek + '">Select first week</option>';
+  str += '<option value="' + firstweek + '">Select start week</option>';
 
   for (i = 0; i < weeks.length; i++) {
     var week = weeks[i];
@@ -553,7 +557,7 @@ function renderCircleDiagram(data, day) {
   str += '</select>';
   
   str += `<select class="group2" id="secondWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,2)"'>`;
-  str += '<option value="' + firstweek + '">Select second week</option>';
+  str += '<option value="' + firstweek + '">Select end week</option>';
   
   for (i = 0; i < weeks.length; i++) {
     var week = weeks[i];
