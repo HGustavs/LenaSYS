@@ -721,22 +721,25 @@ function randomPassword()
 //----------------------------------------------------------------------------------
 
 function createUrl(hash) {
-	var realUrl = window.location + "?a=" + hash;
-	var localhostUrl="http://localhost/LenaSYS/sh/?a=" + hash;
+	
+	// Gets the protocol (http: or https:), the hostname (localhost, project.webug.his.se) and the filepath as an array that is split with slashes.
+    var pathProtocol = window.location.protocol;
+    var pathHostName = window.location.hostname;
+    var pathArray = window.location.pathname.split('/');
 
-	// temporary solution, if exist in database use real url
-	var realUrlInDatabase = false;
-	var url;
+	// Pops the last two elements in the filepath array, these will be "showdugga.php" and "DuggaSys".
+    pathArray.pop();
+    pathArray.pop();
 
+	// Create the URL
+    var url = pathProtocol + "//" + pathHostName;
+    for(var i = 0; i < pathArray.length; i++){
+        url += pathArray[i];
+        url += "/";
+    }
+    url += "sh/?a=" + hash;
 
-	if (realUrlInDatabase){
-		url = realUrl;
-	}
-	else{
-		url = localhostUrl;
-	}
-
-	return url;
+    return url;
 }
 
 

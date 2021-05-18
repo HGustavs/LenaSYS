@@ -88,8 +88,9 @@ function renderCell(col, celldata, cellid) {
 	
 	str = "<div class='resultTableCell'>";
 	if (col == "hash"){
+		var url = createUrl(celldata);
 		str += "<div class='resultTableText'>";
-		str += "<a href='http://localhost/LenaSYS/sh/?a=" + celldata + "'>" + celldata + "</a>";
+		str += "<a href='" + url + "'>" + celldata + "</a>";
 	}
 	else if(col == "grade"){
 		str += "<div class='gradeContainer resultTableText'>";
