@@ -183,7 +183,7 @@ function renderCommits(data) {
   str += "<svg id='commitTree' viewBox='0 0 600 300' style='background-color:#efefef; width: 1200px; height:300px;' aria-labelledby='title desc' role='img'>";
   
 
-  var current = new Date(2019,02,01);
+  var current = new Date();
   var currentYear = current.getFullYear();
   var weekData = data['weeks'];
 
@@ -212,9 +212,13 @@ function renderCommits(data) {
         index++;
         commitDict[weekData[i]['commits'][j].cid] = commit_obj;
       }
-
     }
+    
+    str += `<rect x='${(-300 + 120 * i)}' y='0%' width='120' height='100%'  style='fill:${(i % 2 == 1 ? "#cccccc" : "#efefef")};' />`
+    str += "<text x='" + (120 * i + -260) + "' y='20'>week " + (i + 1) + "</text>";
   }
+  str += "<line style='stroke:#000;' x1='-300' x2='200%' y1='25' y2='25'></line>";
+
   var xMul = 25;
   var yMul = 10;
   var x_spacing = 250;
