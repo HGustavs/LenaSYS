@@ -1654,7 +1654,8 @@ function copyHashtoCB() {
 
 function exitHashBox(){
     $("#hashBox").css("display","none");
-	window.location.href = localStorage.getItem("ls-redirect-last-url"); //Takes us to previous visited dugga
+	//window.location.href = localStorage.getItem("ls-redirect-last-url"); //Takes us to previous visited dugga
+	window.history.go(-1);
 }
 
 function hideHashBox(){
