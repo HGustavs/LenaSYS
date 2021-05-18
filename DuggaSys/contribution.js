@@ -515,26 +515,20 @@ function selectWeek(week, selBoxOrigin){
   if(selBoxOrigin == 1){
     firstSelWeek = week;
   } else if (selBoxOrigin == 2){
-    secondSelWeek = week;
+    secondSelWeek = new Date(week);
+    secondSelWeek = new Date(secondSelWeek.getTime()+1000*60*60*24*6);
+    var YYYY = secondSelWeek.getFullYear();
+    var mm = secondSelWeek.getMonth() + 1;
+    var dd = secondSelWeek.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    secondSelWeek = YYYY + "-" + mm + "-" + dd;
   }
 }
 
 function renderCircleDiagram(data, day) {
-  /* var today = new Date();
-  if (!day) {
-    var YYYY = today.getFullYear();
-    var mm = today.getMonth() + 1;
-    var dd = today.getDate();
-    if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;
-    today = YYYY + "-" + mm + "-" + dd;
-  } else {
-    today = day;
-  } */
-
 
   var str = "";
-  //changeDay(date1,date2);
   if (data.hourlyevents == null){
     activities = data.events;
   }else if (data.events == null){
@@ -545,7 +539,6 @@ function renderCircleDiagram(data, day) {
     weeks = data.weeks;
   }
 
-  //console.log(weeks[0]);
   var firstweek = weeks[0].weekstart;
 
   str = "<h2 style='padding-top:10px'>Hourly activities</h2>";
@@ -569,20 +562,13 @@ function renderCircleDiagram(data, day) {
 
   str += '</select>';
   
-  
-
-  //str += "<h2 style='padding:10px'>Hourly activities</h2>";
-  //str += "<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
-  /* if (day) {
-    str += "value=" + today + " ";
-  } */
-  //str += `onchange='changeDay(${date1}, ${date2})' />`;
-  //str += `onchange='changeDay("2019-04-01", "2019-04-05")' />`;
   str += `<button style='margin-left: 20px' onclick='changeDay()'>Show selected dates</button>`;
   if (updateShowAct) {
-    str += "<p style='margin-left: 10px'>Showing activities for the period </p>";
+    str += "<p style='margin-left: 10px'>Showing all activities</p>";
+    updateShowAct = false;
   } else {
-    str += "<p style='margin-left: 10px'>Showing activities for the period 2019-03-31 -</p>";
+
+    str += "<p style='margin-left: 10px'>Showing activities for the period " + firstSelWeek + " - " + secondSelWeek + "</p>";
   }
   str += "<div class='circleGraph'>";
   str += `<div id='activityInfoBox'><span style='grid-row-start: -1' id='activityTime'>
