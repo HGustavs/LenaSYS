@@ -194,9 +194,13 @@
 		<div id='courseList'>
 
 		<!-- Section List -->
+
 		<div id='Sectionlisti'>
+		
 		</div>
+		
 	</div>
+	
 	<div class="course">
 		<span style="text-align: center;">
 			<a href="../Shared/calendar.php?courseid=<?php echo $_GET['courseid']; ?>&coursevers=<?php echo $_GET['coursevers']; ?>" style="color:#fff">Subscribe for deadlines in your personal calendar</a>
@@ -406,6 +410,23 @@
       </div>
     </div>
     <!-- User Feedback Dialog END -->
+
+	
+	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
+	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
+	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
+			<div class='loginBoxheader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
+			<div id='loadDuggaInfo'></div>
+    		<div id='loadDuggaPopup' style="display:block">
+				<div class='inputwrapper'><span>Enter your hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value=''/></div>
+				<div class="button-row">
+					<input type='button' class='submit-button' onclick="loadDugga();" value='Load Dugga'>
+					<input type='button' class='submit-button' onclick="hideLoadDuggaPopup();" value='Close'>
+				</div>
+    		</div>
+      </div>
+	</div>
+	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
 
 </body>
 
