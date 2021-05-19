@@ -92,9 +92,9 @@
 			}if($noup=='COURSE' && checklogin() && ((isSuperUser($_SESSION['uid'])) || isTeacher($_SESSION['uid']))){
 				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
 
-			}if ($noup == 'COURSE' && checkLogin()) {
+			}if ($noup == 'COURSE') {
 				// add the messagedialog-to navbar
-				echo "<td style='display:none;' class='navButt' id='messagedialog' title='Message of the day 'onclick='DisplayMSGofTDY();'><img alt='announcement icon' src='../Shared/icons/MOTD.svg'></td>";
+				echo "<td class='navButt' id='messagedialog' title='Message of the day 'onclick='DisplayMSGofTDY();'><img alt='announcement icon' src='../Shared/icons/MOTD.svg'></td>";
 	
 			}if ($noup == 'COURSE' && checkLogin()) {
 				echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
@@ -204,7 +204,6 @@
 
 
 							echo "<div id='hamburgerBox'>";
-							echo "<div  id='hamburgerBoxMSG' title='Message of the day 'onclick='DisplayMSGofTDY();'><img  class='burgerButt' alt='announcement icon' src='../Shared/icons/MOTD.svg'><p>Message Of The Day</p></div>";
 							echo "<div id='announcementBurger'><img alt='announcement icon'  class='burgerButt' src='../Shared/icons/new_announcement_icon.svg'><p>Announcements</p></div>";
 							echo "<div id='versionCogBurger'><img alt='settings icon'  class='burgerButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'><p>Edit selected version</p></div>";
 							echo "<div id='versionPlusBurger'><img alt='plus sign icon'  value='New version' class='burgerButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'><p>Create new courseversion</p></div>";
