@@ -1,0 +1,22 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <title>Layer 1</title>
+  <line stroke="#ffffff" stroke-width="9" fill="none" x1="85.5" y1="294.49999" x2="85.5" y2="601.06115" id="svg_4" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line stroke-width="9" fill="none" x1="725.5" y1="287.50001" x2="725.5" y2="604.13823" id="svg_5" stroke-linejoin="undefined" stroke-linecap="undefined" stroke="#ffffff"/>
+  <line stroke="#ffffff" stroke-width="9" fill="none" x1="87.49999" y1="600.5" x2="359.50287" y2="600.5" id="svg_6" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line stroke="#ffffff" stroke-width="9" fill="none" x1="728.5" y1="600.5" x2="497.5" y2="600.5" id="svg_7" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line stroke-width="9" fill="none" stroke="#ffffff" x1="495.5" y1="539.5" x2="495.5" y2="599.70797" id="svg_8" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line stroke-width="9" fill="none" stroke="#ffffff" x1="494.5" y1="538.5" x2="356.44204" y2="538.5" id="svg_10" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line stroke-width="9" fill="none" stroke="#ffffff" x1="357.5" y1="538.5" x2="357.5" y2="599.53278" id="svg_14" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line stroke="#ffffff" stroke-width="9" fill="none" x1="410.49999" y1="33.50001" x2="52.57628" y2="318.42372" id="svg_18" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line stroke="#ffffff" stroke-width="9" fill="none" x1="53.5" y1="288.5" x2="53.5" y2="318.86445" id="svg_25" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line stroke="#ffffff" stroke-width="8" fill="none" x1="761.5" y1="283.5" x2="761.5" y2="314.5" id="svg_26" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line stroke="#ffffff" stroke-width="9" fill="none" x1="762.5" y1="315.5" x2="407.3889" y2="32.3889" id="svg_28" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <rect stroke-width="9" fill="#ffffff" stroke="#ffffff" opacity="NaN" x="295.5" y="300.5" width="90" height="77" id="svg_33"/>
+  <line stroke-width="5" fill="none" stroke="#ffffff" x1="295.5" y1="336.5" x2="385.52222" y2="336.5" id="svg_36" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line stroke-width="5" fill="none" stroke="#ffffff" x1="339.5" y1="300.5" x2="339.5" y2="377.5" id="svg_37" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line stroke="#ffffff" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_1" y2="6.12325" x2="408.37676" y1="288" x1="52.5" stroke-width="9" fill="none"/>
+  <line stroke="#ffffff" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_2" y2="8.59828" x2="410.0983" y1="285" x1="758.5" stroke-width="8" fill="none"/>
+ </g>
+
+</svg>
