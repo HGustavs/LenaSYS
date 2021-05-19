@@ -72,6 +72,10 @@
 	if(!isset($_SESSION['latestHashVisited'])){
 		$_SESSION['latestHashVisited'] = "UNK";
 	}
+
+	if(!isset($_SESSION['pwdentrance'])){
+		$_SESSION['pwdentrance'] = 0;
+	}
 	//logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
 
 if($cid != "UNK") $_SESSION['courseid'] = $cid;
@@ -177,7 +181,7 @@ echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
 
 if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
-	if(!IsLatestHash($hash)){
+	if($_SESSION['pwdentrance'] != 1){
 		if($_SESSION['hasUploaded'] != 1){
 			echo '<script type="text/javascript"> saveTimesAccessed(); </script>';
 			echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
@@ -367,6 +371,9 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
     	'displayDownloadIcon();', 'noUploadForTeacher();',
     	'</script>';
 	}
+
+	$_SESSION['pwdentrance'] = 0;
+
 	?>
 	
 	<!-- Timer START -->
