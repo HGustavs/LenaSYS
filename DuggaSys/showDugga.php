@@ -65,6 +65,13 @@
 		$userid="UNK";
 	}
 
+	if(!isset($_SESSION['hasUploaded'])){
+		$_SESSION['hasUploaded'] = "UNK";
+	}
+
+	if(!isset($_SESSION['pwdentrance'])){
+		$_SESSION['pwdentrance'] = 0;
+	}
 	//logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
 
 if($cid != "UNK") $_SESSION['courseid'] = $cid;
@@ -140,12 +147,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 <div id='login_popup'>
 <?php
 
-function IsLatestHash($hash){
-		if($hash == $_SESSION['latestHashVisited']){
-			return true;
-		} else {
-			return false;
-		}
 
 		//Old function
 		/*
@@ -164,14 +165,15 @@ function IsLatestHash($hash){
 				return true;
 			}*/
 
-}
+
 echo "<script>console.log('".$hash."')</script>;";
 echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
 
 if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
-	if(!IsLatestHash($hash)){
+	if($_SESSION['pwdentrance'] != 1){
 		if($_SESSION['hasUploaded'] != 1){
+			echo '<script type="text/javascript"> saveTimesAccessed(); </script>';
 			echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
 			echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
 			echo "<div class='loginBoxheader'>";
@@ -225,9 +227,6 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 						if ($duggafile !== 'generic_dugga_file_receive') {
 							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 						}
-						echo "</td>";
-						echo "<td align='right'>";
-						echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
 						echo "</td>";
 						echo "</tr>";
 						echo "</table>";
@@ -331,27 +330,10 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 	</div>
 	<!-- Login Box (receipt&Feedback-box ) End! -->
 
-
-	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
-	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
-	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
-			<div class='loginBoxheader'><h3>Hämta dugga genom hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
-			<div id='loadDuggaInfo'></div>
-    		<div id='loadDuggaPopup' style="display:block">
-				<div class='inputwrapper'><span>Ange din hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value=''/></div>
-				<div class="button-row">
-					<input type='button' class='submit-button' onclick="loadDugga();" value='Load Dugga'>
-					<input type='button' class='submit-button' onclick="hideLoadDuggaPopup();" value='Close'>
-				</div>
-    		</div>
-      </div>
-	</div>
-	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
-
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
 	<?php
-	if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
+	if(isSuperUser($userid) || hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st')){
 		if($hash == "UNK"){		//A teacher should not be able to change the variant (local) if they are grading an assignment.
 			echo '<script type="text/javascript">toggleLoadVariant(true);</script>';
 		}
@@ -359,6 +341,9 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
     	'displayDownloadIcon();', 'noUploadForTeacher();',
     	'</script>';
 	}
+
+	$_SESSION['pwdentrance'] = 0;
+
 	?>
 	
 	<!-- Timer START -->

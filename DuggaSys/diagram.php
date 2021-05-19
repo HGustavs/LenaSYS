@@ -214,6 +214,18 @@
             <fieldset id='propertyFieldset'>
                 
             </fieldset>
+            <div style="position: absolute; bottom: 20px">
+                <fieldset>
+                    <legend>Export</legend>
+                    <button class="saveButton" onclick="saveDiagram();">Save</button>
+                    <button class="saveButton" onclick="exportDiagram();">Export</button>
+                </fieldset>
+                <fieldset>
+                    <legend>Import</legend>
+                    <input style="width: 100%" id="importDiagramFile" type="file">
+                    <button class="saveButton" onclick="loadDiagram();">Load</button>
+                </fieldset>
+            </div>
         </div>
     </div>
     </div>

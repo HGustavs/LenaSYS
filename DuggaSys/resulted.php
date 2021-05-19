@@ -109,33 +109,28 @@ pdoConnect();
 	  </div>
 			</div>
 			<div style="display: flex;">
-			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
-			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
-				<button class="resultedbuttons" onclick="mail();">Mail students</button>
-			<?php }else{ ?>
-				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
-			<?php } ?>
-        <div class="resultedFormsFlex">
-				<label>Filter by...</label>
-				<select id="gradeFilterScale" onchange="updateTable();">
-					<option value="Filter-none" selected>none</option>
-					<option value="Filter-G">G</option>
-					<option value="Filter-VG">VG</option>
-					<option value="Filter-U">U</option>
-				</select>
-				</div>
 				<div class="resultedFormsFlex">
-					<label>Assignment</label>
+					<label for="assignmentDropdown">Assignment</label>
 					<select id="assignmentDropdown" onchange="updateTable()"></select>
-				</div>
-				<div class="resultedFormsFlex">
-					<label>Examinator</label>
-					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
 				</div>
 			</div>
     </div>
 
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
+		
+		<div class="search-filer-container">
+			<div id="select-date-interval">
+				<div>
+					<label for="">Date 1</label>
+					<input class="date-interval-selector" type="date" id="datepicker-interval-1">
+				</div>
+				<div>
+					<label for="">Date 2</label>
+					<input class="date-interval-selector" type="date" id="datepicker-interval-2">
+				</div>
+			</div>
+			<div id="btn-apply-filter" onclick="updateFilterInterval()">Search</div>
+		</div>
 		<div id="resultTable"></div>
 	</div>
 	<!-- content END -->
@@ -143,8 +138,6 @@ pdoConnect();
 	<!-- -------------------=============####### Result Popover #######=============------------------- -->
 
 	<div id='resultpopover' class='resultPopover' style='display: none'>
-	<?php if(isSuperUser($_SESSION['uid'])){echo '<script type="text/javascript">','displayDownloadIcon();','</script>';}?>
-	<?php if(isSuperUser($_SESSION['uid'])){echo '<script type="text/javascript">','noUploadForTeacher();','</script>';}?>
 		<div class='loginBoxheader'>
 			<span id="hoverRes" ></span>
 			<h3 style='width:100%;' id='Nameof' onmouseover="hoverResult();"

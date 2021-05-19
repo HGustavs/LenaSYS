@@ -15,6 +15,7 @@ function hashPassword($password, $hash){
 		if($count == 0){
 			return false;
 		} else{
+			$_SESSION['pwdentrance'] = 1;
 			return true;
 		}
 	}

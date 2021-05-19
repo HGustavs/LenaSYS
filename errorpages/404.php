@@ -4,6 +4,7 @@ session_start();
 //include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
+
 pdoConnect();
 /*
 $noup="NONE";
@@ -26,6 +27,10 @@ $info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
 $service = "404:".$_SERVER['REQUEST_URI'];
 logServiceEvent($log_uuid, EventTypes::PageNotFound ,$service ,$userid,$info);
 
+
+$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$startURL = str_replace("errorpages/404.php","", $actual_link) . "DuggaSys/courseed.php";
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -45,6 +50,7 @@ logServiceEvent($log_uuid, EventTypes::PageNotFound ,$service ,$userid,$info);
 </head>
 <body>
 <h1>404 - File not found</h1>
-	<a href="/LenaSYS/DuggaSys/courseed.php">Go to start</a>
+
+        <a href="<?php echo $startURL; ?>">Go to start</a>
 </body>
 </html>
