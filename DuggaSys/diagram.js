@@ -2512,6 +2512,15 @@ function findEntityFromLine(lineObj)
     return null;
 }
 
+function findAttributeFromLine(lineObj)
+{
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ATTRIBUTE).data.kind){
+        return -1;
+    }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.ATTRIBUTE).data.kind) {
+        return 1;
+    }
+    return null;
+
 /**
  * @description Gets the extension of an filename
  * @param {String} filename The name of the file
@@ -3245,7 +3254,8 @@ function generateContextProperties()
         }
 
         // Cardinality
-        // If FROM or TO has an entity, print option for change
+        // If FROM or TO has an entity, print option for change if its not connected to an attribute
+        if (findAttributeFromLine(contextLine[0]) == null){
         if (findEntityFromLine(contextLine[0]) != null){
             str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
             str  += `<option value=''>None</option>`
@@ -3258,6 +3268,7 @@ function generateContextProperties()
             });
             str += `</select></label>`;
         }
+    }
 
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
     }
