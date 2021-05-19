@@ -50,7 +50,7 @@ if(isset($_SESSION['uid'])){
 	$lastname=$_SESSION['lastname'];
 	$firstname=$_SESSION['firstname'];
 }else{
-	$userid="0";
+	$userid="UNK";
 }
 
 // Gets username based on uid. USED FOR LOGGING
