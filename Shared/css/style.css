@@ -1423,7 +1423,7 @@ div .navButt:hover {
         margin-top: 14px;
 
     }
-    #GeneralStats, #CurrentlyOnline, #PasswordGuessing, #OSPercentage{
+    #GeneralStats, #CurrentlyOnline, #PasswordGuessing, #OSPercentage,#hamburgerBoxMSG{
         display:none;
     }
 
