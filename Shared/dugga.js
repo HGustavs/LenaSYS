@@ -1139,7 +1139,7 @@ function AJAXService(opt,apara,kind)
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
 			datatype: "json",
 			success: function(data){
-				var phpData = JSON.parse(data);
+				//var phpData = JSON.parse(data);
 				isTeacher = phpData.isTeacher;
 				//isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
