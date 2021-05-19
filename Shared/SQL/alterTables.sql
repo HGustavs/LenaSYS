@@ -56,3 +56,6 @@ ALTER TABLE userAnswer ADD COLUMN timesSubmitted INT(5);
 
 /* Associated with issue #10980 */
 ALTER TABLE userAnswer ADD COLUMN timesAccessed INT(5);
+
+/* Associated with issue #10980 */
+ALTER TABLE userAnswer ADD COLUMN timesAccessed INT(5);
