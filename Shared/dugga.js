@@ -534,7 +534,7 @@ function changeVariant(intvalue) {
 //Selects next variant available and calls 'changeVariant' method.
 function selectNextVariant(){
  	if(nbrOfVariants != undefined){	//If variants are available for this dugga.
-		var nextVariant = (latestVariantSet + 1) % nbrOfVariants;
+		var nextVariant = (latestVariantSet) % nbrOfVariants;
 		changeVariant(nextVariant);
 	} 
 }
