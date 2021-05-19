@@ -4,6 +4,11 @@ Keep in mind that Greasemonkey is open source while unlike the chrome version of
 [ go to Greasemoneky´s website and install the plugin](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)
 
 
+With the Greasemonkey extension installed a button with the symbol of a monkey should appear in the top right of your browser window.
+Picture I guess
+
+Left click on the monkey button to access this menu. To create a script simply click on New user script...
+Picture I guess
 
 
 
