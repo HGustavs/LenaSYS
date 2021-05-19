@@ -2472,13 +2472,11 @@ function rectsIntersect (left, right)
 
              if (!ctrlPressed) {
                  //Different snap points for entity and others
-                 if (obj.kind == "EREntity")
-                 {
+                 if (obj.kind == "EREntity") {
                      // Calculate nearest snap point
                      obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
                      obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                 }
-                 else{
+                 } else{
                      obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
                      obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
                  }
