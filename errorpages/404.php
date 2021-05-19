@@ -50,7 +50,7 @@ $startURL = str_replace("errorpages/404.php","", $actual_link) . "DuggaSys/cours
 </head>
 <body>
 <h1>404 - File not found</h1>
-<!-- The link might break in live version, in that case simply remove the first lenasys -->
+
         <a href="<?php echo $startURL; ?>">Go to start</a>
 </body>
 </html>
