@@ -177,10 +177,7 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
         $grade = $row['grade'];
         $submitted = $row['submitted'];
         $marked = $row['marked'];
-		    $password = $row['password'];
-
-        // Sets the latestHashVisited for password promt function in showDugga.php
-        $_SESSION['latestHashVisited'] = $row['hash'];
+		$password = $row['password'];
         $timesSubmitted = $row['timesSubmitted'];
 		
     }
