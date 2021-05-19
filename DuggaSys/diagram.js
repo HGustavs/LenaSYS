@@ -4378,18 +4378,34 @@ function drawElement(element, ghosted = false)
         
     }
     else if (element.kind == "ERRelation") {
+
+        var numOfLetters = element.name.length;
+        if (tooBig) {
+            var tempName = "";
+            var maxTextWidth = boxw - margin;
+
+            if (element.state == "weak") maxTextWidth -= (linew * multioffs) * 2;
+
+            for (var i = 0; i < element.name.length; i++){
+                tempName += element.name[i];
+                if (canvasContext.measureText(tempName).width > maxTextWidth){
+                    numOfLetters = tempName.length - 1;
+                    break;
+                }
+            }
+        }
+
         var weak = "";
         if (element.state == "weak") {
-
             weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
                 stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                 `;
+            xAnchor += linew * multioffs;
         }
         str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
                    stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
-                   ${weak}
-                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-                   `;
+                   ${weak}`;
+        str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
 
     }
     str += "</svg>";
