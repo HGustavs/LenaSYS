@@ -17,6 +17,11 @@ AJAXService("get", {
   userid: "HGustavs"
 }, "CONTRIBUTION");
 
+var weeks;
+var activities;
+var firstSelWeek;
+var secondSelWeek;
+var updateShowAct = true;
 
 //sorting for multiple views
 //Restores all views when pressing the All button
@@ -169,15 +174,133 @@ function renderBarDiagram(data) {
     str += "<text x='" + (120 * i + 100) + "' y='240'>week " + (i + 1) + "</text>";
     str += "</g>";
   }
-
+  str += '<div class="group2" id="lineDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
+  str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Commits:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#F44336;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Events:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#4DB6AC;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Comments:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#43A047;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex; align-items:center;margin-left:30px;margin-right:30px;"><p>LOC:</p>';
+  str += '<div style="width:15px; height:15px; background-color:Purple;margin-left:10px;"></div></div>';
   str += "</svg>";
   str += "</div>";
   return str;
 }
 
-function renderLineDiagram(data) {
+function renderCommits(data) {
+  
+  //creating the svg to put the commit tree in
+  var str = "<h2>Commit tree</h2>";
+  str += "<div id='innerCommitTree'>";
+  str += "<svg id='commitTree' viewBox='0 0 600 300' style='background-color:#efefef; width: 1200px; height:300px;' aria-labelledby='title desc' role='img'>";
+  
 
-  var weeks = data.weeks;
+  var current = new Date();
+  var currentYear = current.getFullYear();
+  var weekData = data['weeks'];
+
+  var allCommits =  [];
+  var commitDict = Object();
+  var index = 0;
+
+ // for each commit ID
+ // X is commit order, Y is commit nesting
+  for(var i = 0; i < weekData.length;i++) {  
+    for(var j= 0; j < weekData[i]['commits'].length;j++) 
+    {
+      var commitDate =  weekData[i]['commits'][j].thedate;
+      var newDate = "";
+      for(var x = 0; x < 10; x++)
+      {
+        newDate += commitDate[x];
+      }
+      var finalDate = new Date(newDate);
+
+      if(finalDate.getFullYear() == currentYear){
+        allCommits.push(weekData[i]['commits'][j]);
+        var commit_obj = {
+          index: index
+        }
+        index++;
+        commitDict[weekData[i]['commits'][j].cid] = commit_obj;
+      }
+    }
+    
+    str += `<rect x='${(-300 + 120 * i)}' y='0%' width='120' height='100%'  style='fill:${(i % 2 == 1 ? "#cccccc" : "#efefef")};' />`
+    str += "<text x='" + (120 * i + -260) + "' y='20'>week " + (i + 1) + "</text>";
+  }
+  str += "<line style='stroke:#000;' x1='-300' x2='200%' y1='25' y2='25'></line>";
+
+  var xMul = 25;
+  var yMul = 10;
+  var x_spacing = 250;
+  var y_spacing = -50;
+
+  for(var i = 0; i < allCommits.length;i++) { // each commit
+    var x1 = allCommits[i]['space'];
+    var y1 = allCommits[i]['thetimeh'];
+    str += drawCommitDots(x1, y1, xMul, yMul, x_spacing, y_spacing);
+
+    var p1index = commitDict[allCommits[i]['p1id']];
+    if(p1index != undefined) {
+      var parent1 =  allCommits[p1index.index];
+      var x2 = parent1['space'];
+      var y2 = parent1['thetimeh'];
+
+      str +=  drawCommitLines(x1,x2,y1,y2,xMul,yMul, x_spacing, y_spacing);
+
+    }
+  }
+  str += "</svg>";
+  str += "</div>";
+
+  return str;
+}
+
+/* 
+  Function to draw the actuall comiit tree inside the SVG.
+  X is Commit order, Y is Commit nesting
+    Param x1 = cid's x coordinate
+    Param x1 = cid's y coordinate
+    Param y2 = parent id's x coordinate for lines
+    Param y2 = parent id's y coordinate for lines
+    Param xmul = multiplyer for x
+    Param ymul = multiplyer for y
+*/
+function drawCommitLines(x1, x2, y1, y2, xmul, ymul, x_spacing, y_spacing){
+  
+  var colors = ["#246","#26A","#4BA","#59C","#DE7","#FB5","#FD5","#E64","#85A","#45A"]; //collection of array to hold different colors? Maybe keep this in renderCommits() and sens as parameter based on the commits author?
+  var color = colors[y1%colors.length]; // Reworks the colors array with % calcultation against y1. Leaves one color to use for lines between commits (MAYBE?!?)
+
+  var strokew = xmul * 0.05; //Guessing a calculation for stroke width for colored lines
+  var str = "";
+
+
+  //Draw the line between child- and parent commits
+  if(Math.abs(x2-x1)>1 && (y1 != y2)){ //Math.abs() returns the calculations absolute value
+    str += `<line x1=${(x1*xmul - x_spacing)} y1=${(y1*ymul- y_spacing)} x2=${((x2-1)*xmul  - x_spacing)} y2=${(y1*ymul- y_spacing)} stroke='${color}' style='stroke-width:${strokew}' />`;
+    str += `<line x1=${((x2-1)*xmul  - x_spacing)} y1=${(y1*ymul- y_spacing)} x2=${(x2*xmul  - x_spacing)} y2=${(y2*ymul- y_spacing)} stroke='${color}' style='stroke-width:${strokew}' />`;
+    
+  }else{
+    str +=`<line x1=${(x1*xmul - x_spacing)}  y1=${(y1*ymul- y_spacing)} x2=${(x2*xmul - x_spacing)} y2=${(y2*ymul - y_spacing)} stroke='${color}' style='stroke-width:${strokew}"' />`;
+  }
+
+  return str;
+}
+
+function drawCommitDots(x1, y1, xmul, ymul, x_spacing, y_spacing){
+  var cradius = xmul * 0.10;
+  var str = "";
+
+  //Draw the circle reptresenting each commit
+  str += `<circle cx='${x1*xmul  - x_spacing}' cy='${y1*ymul - y_spacing}' r='${cradius}' />`;
+
+  return str;
+}
+
+function renderLineDiagram(data) {
+  weeks = data.weeks;
   daycounts = data['count'];
   var firstweek = data.weeks[0].weekstart;
 
@@ -195,6 +318,17 @@ function renderLineDiagram(data) {
   str += '</select>';
   str += '<div class="group2" id="lineDiagramDiv">';
   str += weekchoice(firstweek);
+  str += '</div>';
+
+  str += '<div class="group2" id="lineDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
+  str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Commits:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#F44336;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Events:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#4DB6AC;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Comments:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#43A047;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex; align-items:center;margin-left:30px;margin-right:30px;"><p>LOC:</p>';
+  str += '<div style="width:15px; height:15px; background-color:Purple;margin-left:10px;"></div></div>';
   str += '</div>';
 
 
@@ -286,7 +420,7 @@ function lineDiagram() {
 
   for (i = 0; i < xNumber.length; i++) {
     str += `<circle onmouseover='showInfoText(this, \"${"LOC: " + (dailyCount[i][3])}\");' onmouseout='hideInfoText()'`;
-    str += `cx='"${xNumber[i]}' cy='${(dailyCount[i][3] / maxDayCount * graphHeight)}' r='3' fill='purple' />`;
+    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][3] / maxDayCount * graphHeight)}' r='3' fill='purple' />`;
   }
   str += "</g>";
 
@@ -383,44 +517,84 @@ function toRadians(angle) {
   return angle * (Math.PI / 180);
 }
 
-function changeDay(date) {
-  AJAXService("updateday", {
-    userid: "HGustavs",
-    today: date
-  }, "CONTRIBUTION");
+function changeDay() {
+  if(firstSelWeek != null && secondSelWeek != null){  
+    if (firstSelWeek > secondSelWeek){
+      alert("Second week can't be earlier than first week");
+    } else {
+      AJAXService("updateday", {
+        userid: "HGustavs",
+        today: firstSelWeek,
+        secondday: secondSelWeek
+      }, "CONTRIBUTION");
+    }
+  }
 }
+
 
 function showAllDays() {
   var div = document.getElementById('hourlyGraph');
   div.innerHTML = renderCircleDiagram(JSON.stringify(retdata['hourlyevents']));
 }
 
-function renderCircleDiagram(data, day) {
-  var today = new Date();
-  if (!day) {
-    var YYYY = today.getFullYear();
-    var mm = today.getMonth() + 1;
-    var dd = today.getDate();
+
+function selectWeek(week, selBoxOrigin){
+  if(selBoxOrigin == 1){
+    firstSelWeek = week;
+  } else if (selBoxOrigin == 2){
+    secondSelWeek = new Date(week);
+    secondSelWeek = new Date(secondSelWeek.getTime()+1000*60*60*24*6);
+    var YYYY = secondSelWeek.getFullYear();
+    var mm = secondSelWeek.getMonth() + 1;
+    var dd = secondSelWeek.getDate();
     if (dd < 10) dd = '0' + dd;
     if (mm < 10) mm = '0' + mm;
-    today = YYYY + "-" + mm + "-" + dd;
-  } else {
-    today = day;
+    secondSelWeek = YYYY + "-" + mm + "-" + dd;
+  }
+}
+
+function renderCircleDiagram(data, day) {
+
+  var str = "";
+  if (data.hourlyevents == null){
+    activities = data.events;
+  }else if (data.events == null){
+    activities = data.hourlyevents;
   }
 
-  var activities = JSON.parse(data);
-  var str = "";
-  str += "<h2 style='padding:10px'>Hourly activities</h2>";
-  str += "<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
-  if (day) {
-    str += "value=" + today + " ";
+  if (data.weeks != null){
+    weeks = data.weeks;
   }
-  str += "onchange='changeDay(this.value)' />";
-  str += "<button style='margin-left: 20px' onclick='showAllDays()'>Show all</button>";
-  if (day) {
-    str += "<p style='margin-left: 10px'>Showing activities for " + today + "</p>";
+
+  var firstweek = weeks[0].weekstart;
+
+  str = "<h2 style='padding-top:10px'>Hourly activities</h2>";
+  str += `<select class="group2" id="firstWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,1)"'>`;
+  str += '<option value="' + firstweek + '">Select start week</option>';
+
+  for (i = 0; i < weeks.length; i++) {
+    var week = weeks[i];
+    str += '<option value="' + week.weekstart + '">' + "Week " + week.weekno + `(${week.weekstart} - ${week.weekend})` + '</option>';
+  }
+
+  str += '</select>';
+  
+  str += `<select class="group2" id="secondWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,2)"'>`;
+  str += '<option value="' + firstweek + '">Select end week</option>';
+  
+  for (i = 0; i < weeks.length; i++) {
+    var week = weeks[i];
+    str += '<option value="' + week.weekstart + '">' + "Week " + week.weekno + `(${week.weekstart} - ${week.weekend})` + '</option>';
+  }
+
+  str += '</select>';
+  
+  str += `<button style='margin-left: 20px' onclick='changeDay()'>Show selected dates</button>`;
+  if (updateShowAct) {
+    str += "<p style='margin-left: 10px'>Showing all activities</p>";
+    updateShowAct = false;
   } else {
-    str += "<p style='margin-left: 10px'>Showing activities for the period 2019-03-31 - " + today + "</p>";
+    str += "<p style='margin-left: 10px'>Showing activities for the period " + firstSelWeek + " - " + secondSelWeek + "</p>";
   }
   str += "<div class='circleGraph'>";
   str += `<div id='activityInfoBox'><span style='grid-row-start: -1' id='activityTime'>
@@ -668,6 +842,7 @@ function createTimeSheetTable(data) {
   if(tabledata.tblbody != null || tabledata.tblbody != undefined) {
     myTable.renderTable();
   }
+}
 
 function renderCell(col, celldata, cellid) {
   var str = "UNK";
@@ -726,7 +901,7 @@ var resave = false;
 function returnedSection(data) {
   if (Object.keys(data).length === 2) {
     var div = document.getElementById('hourlyGraph');
-    div.innerHTML = renderCircleDiagram(JSON.stringify(data['events']), data['day']);
+    div.innerHTML = renderCircleDiagram(data);
     return;
   }
   retdata = data;
@@ -776,8 +951,8 @@ function returnedSection(data) {
 
   document.getElementById('barchart').innerHTML = renderBarDiagram(data);
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
-  document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(JSON.stringify(data['hourlyevents']));
-
+  document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(data);
+  document.getElementById('commitDiagram').innerHTML = renderCommits(data);
   document.getElementById('content').innerHTML = str;
 }
 
@@ -1377,3 +1552,5 @@ function hideTooltip() {
       }
     }
 }
+
+console.error
