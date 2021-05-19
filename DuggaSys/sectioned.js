@@ -749,13 +749,14 @@ function returnedSection(data) {
     }
 
 
-    
+    //Swimlane and 'Load Dugga' button.
 
     str += "<div id='Sectionlistc'>";
 
     str += "<div id='statisticsSwimlanes'>";
     str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
 		str += "</div>";
+    str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
 
 
     // For now we only have two kinds of sections

@@ -238,9 +238,9 @@
 							echo "</div>";
 					}
 			}
-
-			// Sort dialog - accessed / resulted /fileed
-      if($requestedService=="accessed.php" || $requestedService=="resulted.php" ||$requestedService=="fileed.php" ){
+			// Sort dialog - accessed / resulted /fileed					
+			//old search bar for resulted
+      if($requestedService=="accessed.php" /*|| $requestedService=="resulted.php"*/ ||$requestedService=="fileed.php" ){
 					echo "<td id='testSearchContainer' class='navButt'>";
 
 					if ($requestedService == "fileed.php")
@@ -252,9 +252,10 @@
 					if($requestedService=="accessed.php"){
 						echo    "<p aria-live='polite'><b>Keywords:</b> Username, first/lastname, date <br> <b>Ex:</b> Webug13h, 2020-02-29 13:37</p>";
 					}
-					if($requestedService=="resulted.php"){
+					//old search bar for resulted
+					/*if($requestedService=="resulted.php"){
 						echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
-					}
+					}*/
 					if($requestedService=="fileed.php"){
 						echo    "<p aria-live='polite'><b>Keywords:</b> File name, File type <br> <b>Ex:</b> html, example1</p>";
 					}

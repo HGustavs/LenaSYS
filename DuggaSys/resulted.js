@@ -5,6 +5,25 @@ var tableName = "resultTable";
 var filterList;
 var buttonFlag = true;
 var duggaFilter;
+var filerByDate = {
+	date1: null,
+	date2: null
+}
+
+/* $( function() {
+    $("#datepicker-interval-1").datepicker({dateFormat: "yy-mm-dd"});
+	$("#datepicker-interval-2").datepicker({dateFormat: "yy-mm-dd"});
+} ); */
+
+function updateFilterInterval() {
+	// Date object requires string to not apply random time zone.
+	var dateElement = document.querySelectorAll(".date-interval-selector");
+	filerByDate.date1 = new Date(JSON.stringify(dateElement[0].value));
+	filerByDate.date2 = new Date(JSON.stringify(dateElement[1].value));
+
+	updateTable();
+}
+
 
 function setup(){
   
@@ -21,7 +40,7 @@ function process(){
 }
 
 // Runs every time a new filter is picked
-function updateTable(){
+function updateTable() {
 	
 	filterList["duggaFilter"] = document.getElementById("assignmentDropdown").value;
 	localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));	
@@ -34,9 +53,9 @@ function returnedResults(data){
 
 	var assignmentList;
 	var duggaFilterOptions = data['duggaFilterOptions'];
-	assignmentList += "<option value='none'>none</option>";
+	assignmentList += "<option value='All' selected>All</option>";
 	for(var i = 0; i < duggaFilterOptions.length; i++){
-		assignmentList += "<option value='"+ duggaFilterOptions[i].entryname +"' selected>"+ duggaFilterOptions[i].entryname + "</option>";
+		assignmentList += "<option value='"+ duggaFilterOptions[i].entryname +"'>"+ duggaFilterOptions[i].entryname + "</option>";
 	}
 	document.getElementById("assignmentDropdown").innerHTML = assignmentList; 
 		
@@ -52,12 +71,13 @@ function createSortableTable(data){
 			password:"Password",
 			submitted:"Submission Date",
 			timesSubmitted: "Times submitted",
+			timesAccessed: "Times accessed",
 		},
 		tblbody: data,
 		tblfoot:{}
 	};
 
-	var colOrder = ["duggaName","hash", "password", "submitted", "timesSubmitted"];
+	var colOrder = ["duggaName","hash", "password", "submitted", "timesSubmitted", "timesAccessed"];
 
 	myTable = new SortableTable({
 		data: tabledata,
@@ -88,8 +108,9 @@ function renderCell(col, celldata, cellid) {
 	
 	str = "<div class='resultTableCell'>";
 	if (col == "hash"){
+		var url = createUrl(celldata);
 		str += "<div class='resultTableText'>";
-		str += "<a href='http://localhost/LenaSYS/sh/?a=" + celldata + "'>" + celldata + "</a>";
+		str += "<a href='" + url + "'>" + celldata + "</a>";
 	}
 	else if(col == "grade"){
 		str += "<div class='gradeContainer resultTableText'>";
@@ -138,23 +159,32 @@ function getLinkFromHash(hash) {
 function makeCustomFilter(filtername) {
 	
 	if (filterList[filtername] == null) {
-		filterList[filtername] = "none";
+		filterList[filtername] = "All";
 	}
 	localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList)); //Saves the filter in local storage when opening resulted.php.	
 }
 
 // How rows are filtered, for multiple filters add more if statements
+// Add new variable to each type filter
 function rowFilter(row) {
-	var returnVariable = true;
-	if(filterList["duggaFilter"] != "none"){
+	var isDuggaFilterMatch = true;
+	var isFilterDateMatch = true;
+  
+	if(filterList["duggaFilter"] != "All"){
     	if(row["duggaName"] == filterList["duggaFilter"] || row["subCourse"] == filterList["duggaFilter"]){
-        	returnVariable = true;            
+        	isDuggaFilterMatch = true;            
    		}else{
-			returnVariable = false;
+			isDuggaFilterMatch = false;
 		}
 	}
-		
-	return returnVariable;
+	if (filerByDate.date1 != null && filerByDate.date2 != null)	{
+		// Datepicker does not contain hours, minutes and seconds. Submitted date is adjusted to match datepicker format
+		var date = new Date(row["submitted"])
+		var newdate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0); 
+		isFilterDateMatch = (newdate >= filerByDate.date1 && newdate <= filerByDate.date2);
+	}
+
+	return (isDuggaFilterMatch && isFilterDateMatch);
 }
 
 // Basic ascending/descending order

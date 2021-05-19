@@ -3355,6 +3355,40 @@ span.arrow {
   background-color: var(--color-sectioned-table-lo);
 }
 
+.search-filer-container {
+  display: flex;
+  align-items: flex-end;
+}
+
+#btn-apply-filter {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  display: inline-block;
+  padding: 8px 25px;
+  background-color: var(--color-primary);
+  color: white;
+  font-size: 16px;
+  font-weight: 300;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#btn-apply-filter:hover{
+  background-color: var(--color-primary-hover);
+}
+
+#select-date-interval {
+  display: flex;
+}
+
+#select-date-interval > *{
+  margin: 0px 10px;
+}
+
+.date-interval-selector {
+  display: block;
+
+}
+
 .resultTableCell {
   margin: 2px;
 }
