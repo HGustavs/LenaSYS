@@ -621,7 +621,7 @@ if(strcmp($opt,"SENDFDBCK")==0){
 }
 
 $isTeacher = false;
-if(hasAccess($userid, $courseid, 'w') || isSuperUser($userid)){
+if(hasAccess($userid, $courseid, 'w') || hasAccess($userid, $courseid, 'st') || isSuperUser($userid)){
 	$isTeacher = true;
 }
 
