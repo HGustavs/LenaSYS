@@ -1139,16 +1139,16 @@ function AJAXService(opt,apara,kind)
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd,
 			datatype: "json",
 			success: function(data){
-				//var phpData = JSON.parse(data);
+				var phpData = JSON.parse(data);
 				isTeacher = phpData.isTeacher;
-				//isFileSubmitted = phpData.isFileSubmitted;
+				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
 				getVariantValue(data, opt, para);	//Get variant, set localstorage lifespan and set password.
 				//if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 				handleHash();	//Makes sure hash is unique.
 				//}
 			}
-		})
+		});
 	}else if(kind=="RESULT"){
 			$.ajax({
 				url: "resultedservice.php",
