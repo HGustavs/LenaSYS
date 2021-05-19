@@ -117,6 +117,20 @@ pdoConnect();
     </div>
 
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
+		
+		<div class="search-filer-container">
+			<div id="select-date-interval">
+				<div>
+					<label for="">Date 1</label>
+					<input class="date-interval-selector" type="date" id="datepicker-interval-1">
+				</div>
+				<div>
+					<label for="">Date 2</label>
+					<input class="date-interval-selector" type="date" id="datepicker-interval-2">
+				</div>
+			</div>
+			<div id="btn-apply-filter" onclick="updateFilterInterval()">Search</div>
+		</div>
 		<div id="resultTable"></div>
 	</div>
 	<!-- content END -->
