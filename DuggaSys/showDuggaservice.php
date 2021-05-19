@@ -61,6 +61,7 @@ $variants=array();
 $variantsize;
 $ishashindb = false;
 $timesSubmitted = 0;
+$timesAccessed = 0;
 
 $savedvariant="UNK";
 $newvariant="UNK";
@@ -176,10 +177,7 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
         $grade = $row['grade'];
         $submitted = $row['submitted'];
         $marked = $row['marked'];
-		    $password = $row['password'];
-
-        // Sets the latestHashVisited for password promt function in showDugga.php
-        $_SESSION['latestHashVisited'] = $row['hash'];
+		$password = $row['password'];
         $timesSubmitted = $row['timesSubmitted'];
 		
     }
@@ -196,7 +194,7 @@ if(checklogin()){
 $demo=false;
 if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
-if($demo || $hr){
+if($demo || $hr && !strcmp($opt,"SAVDU")==0){
 		
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
@@ -207,7 +205,6 @@ if($demo || $hr){
 	if($foundvar==-1){
 			$savedvariant="UNK";
 	}
-
 	// If there are many variants, randomize
 	if($savedvariant==""||$savedvariant=="UNK"){
 		// Randomize at most 8 times
@@ -226,19 +223,19 @@ if($demo || $hr){
 		
 		// if none has been chosen and there is a first one take that one.
 		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
+
+		$savedvariant=$newvariant;
 	}else{
 	
 		// There is a variant already -- do nothing!	
 	}
-	
-	$savedvariant=$newvariant;
 	
 	// Retrieve variant
 	if($insertparam == false){
 			$param="NONE!";
 	}
 	foreach ($variants as $variant) {
-		if($variant["vid"] == $variantvalue){
+		if($variant["vid"] == $savedvariant){
 			$param=html_entity_decode($variant['param']);
 		}
 	}
@@ -264,7 +261,7 @@ if($demo || $hr){
 	}
 
 	//Makes sure that the localstorage variant is set before retrieving data from database
-	if(isset($variantvalue)) {
+	if($variantvalue != "undefined") {
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
 		$query->bindParam(':vid', $variantvalue);
 		$query->execute();
@@ -306,7 +303,7 @@ if($demo || $hr){
 if(checklogin()){
 		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions			
 			*/
-        if(strcmp($opt,"SAVDU")==0){	
+        if(strcmp($opt,"SAVDU")==0){
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
             $discription = $couseid." ".$duggaid." ".$moment." ".$answer;
@@ -338,15 +335,16 @@ if(checklogin()){
             }else{
 
 			if(!$isIndb){ // If the dugga is not in database, insert into database
-				$query = $pdo->prepare("INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesSubmitted) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password,:timesSubmitted);");
+				$query = $pdo->prepare("INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password,:timesSubmitted, :timesAccessed);");
 				$query->bindParam(':cid', $courseid);
 				$query->bindParam(':coursevers', $coursevers);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':moment', $moment);
-				$query->bindParam(':variant', $variantvalue);
+				$query->bindParam(':variant', $savedvariant);
 				$query->bindParam(':hash', $hash);
 				$query->bindParam(':password', $password);
 				$query->bindParam(':timesSubmitted', $timesSubmitted);
+				$query->bindParam(':timesAccessed', $timesAccessed);
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
@@ -477,6 +475,13 @@ if(strcmp($opt,"GRPDUGGA")==0){
 		}
 	}
 	$userCount += count($usersInGroup);
+}
+
+if(strcmp($opt,"ACCDUGGA")==0){
+	$query = $pdo->prepare("UPDATE userAnswer SET timesAccessed= timesAccessed + 1 WHERE hash=:hash;");
+	$query->bindParam(':hash', $hash);
+	$query->execute();
+	
 }
 
 $files= array();
@@ -616,7 +621,7 @@ if(strcmp($opt,"SENDFDBCK")==0){
 }
 
 $isTeacher = false;
-if(hasAccess($userid, $courseid, 'w') || isSuperUser($userid)){
+if(hasAccess($userid, $courseid, 'w') || hasAccess($userid, $courseid, 'st') || isSuperUser($userid)){
 	$isTeacher = true;
 }
 

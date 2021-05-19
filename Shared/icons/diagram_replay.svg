@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="449.085 117.091 232.071 265.119" xmlns="http://www.w3.org/2000/svg">
+  <g transform="matrix(3.87425, 0, 0, 3.544084, 565.138135, 249.650045)" style="">
+    <g style="" vector-effect="non-scaling-stroke">
+      <g transform="matrix(1 0 0 1 0.27 -20.49)">
+        <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,251,251); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke" transform=" translate(-50.27, -29.51)" d="M 48.033 46.42 L 79.946 42.322 L 67.76 12.597 L 63.553000000000004 22.595 C 38.251000000000005 17.569 31.149 21.34 20.603 36.967999999999996 C 34.919000000000004 29.917999999999996 44.208 27.349999999999994 55.793 34.18 L 48.033 46.42 z" stroke-linecap="round"/>
+      </g>
+      <g transform="matrix(1 0 0 1 -0.31 20.49)">
+        <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,251,251); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke" transform=" translate(-49.7, -70.49)" d="M 51.913 53.581 L 20.054999999999996 57.67700000000001 L 32.242999999999995 87.403 L 36.449 77.403 C 61.696 82.433 68.85499999999999 78.661 79.344 63.032000000000004 C 65.03 70.084 55.739999999999995 72.65100000000001 44.208999999999996 65.765 L 51.913 53.581 z" stroke-linecap="round"/>
+      </g>
+    </g>
+  </g>
+</svg>

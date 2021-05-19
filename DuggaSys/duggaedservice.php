@@ -51,7 +51,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php",
 // Services
 //------------------------------------------------------------------------------------------------
 $writeaccess = false;
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st'))){
   $writeaccess = true;
 
   if(strcmp($opt,"SAVDUGGA")===0){
@@ -166,7 +166,7 @@ if($query->execute()) {
 }
 
 
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st'))){
 
 	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qstart,deadline,qrelease,modified,vers,jsondeadline FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;");
 	$query->bindParam(':cid', $cid);
