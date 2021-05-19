@@ -1652,6 +1652,9 @@ function copyHashtoCB() {
 	$temp.remove();
 }
 
+//----------------------------------------------------------------------------------
+// getParameters: extract the value of any parameter in the URL
+//----------------------------------------------------------------------------------
 function getParameters(parameterName){
 	let parameters = new URLSearchParams(window.location.search);
 	return parameters.get(parameterName);
