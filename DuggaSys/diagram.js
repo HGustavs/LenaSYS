@@ -2983,10 +2983,9 @@ function toggleA4Template()
 }
 
 function setA4SizeFactor(e){
-    //convert the string into a number
-    var num = 1 * e.target.value;
     //store 1 + increased procent amount
-    settings.grid.a4SizeFactor = 1 + (num / 100);
+    settings.grid.a4SizeFactor = parseInt(e.target.value)/100;
+
 
     updateA4Size();
 }
@@ -3196,15 +3195,12 @@ function generateContextProperties()
 
     var propSet = document.getElementById("propertyFieldset");
     var str = "<legend>Properties</legend>";
-
     //a4 propteries
     if (document.getElementById("a4Template").style.display === "block") {
         str += `<text>Change the size of the A4</text>`;
-        str += `<input type="range" onchange="setA4SizeFactor(event)" min="1" max="100" value="1" id="slider">`;
+        str += `<input type="range" onchange="setA4SizeFactor(event)" min="100" max="200" value ="${settings.grid.a4SizeFactor*100}" id="slider">`;
         str += `<br><button onclick="toggleA4Vertical()">Vertical</button>`;
         str += `<button onclick="toggleA4Horizontal()">Horizontal</button>`;
-        str +=`<br><input type="submit" value="Save" class='saveButton'`;
-        str += `<span id="sliderOutput"><span>`
     }
 
     //more than one element selected
@@ -3383,10 +3379,12 @@ function updateGridSize()
     var rect = document.getElementById("a4Rect");
     var vRect = document.getElementById("vRect");
 
-    vRect.setAttribute("width", 1122 * zoomfact * settings.grid.a4SizeFactor + "px");
-    vRect.setAttribute("height", 794 * zoomfact * settings.grid.a4SizeFactor + "px");
-    rect.setAttribute("width", 794 * zoomfact * settings.grid.a4SizeFactor + "px");
-    rect.setAttribute("height", 1122 * zoomfact * settings.grid.a4SizeFactor + "px");
+    const a4Width = 794, a4Height = 1122;
+
+    vRect.setAttribute("width", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
+    vRect.setAttribute("height", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
+    rect.setAttribute("width", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
+    rect.setAttribute("height", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
     updateA4Pos();
  }
 
