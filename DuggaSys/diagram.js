@@ -361,7 +361,6 @@ class StateMachine
         */
         this.currentHistoryIndex = -1;
     }
-
     /**
      * @description Stores the passed state change into the state machine. If the change is hard it will be pushed onto the history log. A soft change will modify the previously stored state IF that state allows it. The soft state will otherwise be pushed into the history log instead. StateChanges REQUIRE flags to be identified by the stepBack and stepForward methods!
      * @param {StateChange} stateChange All changes to be logged.
@@ -372,9 +371,7 @@ class StateMachine
     {
         if (stateChange instanceof StateChange) {
             // Remove the history entries that are after current index
-            while(this.currentHistoryIndex + 1 != this.historyLog.length) {
-                this.historyLog.pop();
-            }
+            this.removeFutureStates();
 
             // If history is present, perform soft/hard-check
             if (this.historyLog.length > 0) {
@@ -476,7 +473,12 @@ class StateMachine
         // Change the sliders max to historyLogs length
         document.getElementById("replay-range").setAttribute("max", this.historyLog.length.toString());
     }
-
+    removeFutureStates(){
+        // Remove the history entries that are after current index
+        if (this.currentHistoryIndex != this.historyLog.length - 1) {
+            this.historyLog.splice(this.currentHistoryIndex + 1, (this.historyLog.length - this.currentHistoryIndex - 1));
+        }
+    }
     /**
      * @description Undoes the last stored history log changes. Determines what should be looked for by reading the state change flags.
      * @see StateChange For available flags.
@@ -946,7 +948,7 @@ var defaults = {
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "White", Stroke: "Black", width: 5, height: 5 },
 }
-var defaultLine = { kind: "Normal", cardinality: "MANY" };
+var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
 //#region ================================ INIT AND SETUP       ================================
 /**
@@ -2508,6 +2510,16 @@ function findEntityFromLine(lineObj)
         return 1;
     }
     return null;
+}
+
+/**
+ * @description Gets the extension of an filename
+ * @param {String} filename The name of the file
+ * @return The extension
+ */
+function getExtension(filename) {
+    var parts = filename.split('.');
+    return parts[parts.length - 1];
 }
 
 function entityIsOverlapping(id, x, y)
@@ -4470,4 +4482,183 @@ function showdata()
      updateGridSize();
      drawRulerBars(scrollx, scrolly);
  }
+//#endregion =====================================================================================
+//#region ================================   LOAD AND EXPORTS    ==================================
+/**
+ * @description Create and download a file
+ * @param {String} filename The name of the file that get generated
+ * @param {*} dataObj The text content of the file
+ */
+function downloadFile(filename, dataObj)
+{
+    // Create a "a"-element
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(dataObj)));
+    element.setAttribute('download', filename + ".json");
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+/**
+ * @description Prepares data for file creation, retrieves history and initialState
+ */
+function saveDiagram()
+{
+
+    displayMessage(messageTypes.SUCCESS, "Generating the save file..");
+
+    // Remove all future states to the history
+    stateMachine.removeFutureStates();
+
+    // The content of the save file
+    var objToSave = {
+        historyLog: stateMachine.historyLog,
+        initialState: stateMachine.initialState
+    };
+
+    // Download the file
+    downloadFile("diagram", objToSave);
+}
+/**
+ * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
+ */
+function exportDiagram()
+{
+    displayMessage(messageTypes.SUCCESS, "Generating the export file..");
+    var objToSave = {
+        data: [],
+        lines: [],
+    };
+    var keysToIgnore = ["top", "left", "right", "bottom", "x1", "x2", "y1", "y2", "cx", "cy"];
+    data.forEach(obj => {
+        var filteredObj = {
+            kind: obj.kind
+        };
+
+        Object.keys(obj).forEach(objKey => {
+            // If they key is ignore => return
+            if (keysToIgnore.includes(objKey)) return;
+
+            // Ignore defaults
+            if (defaults[obj.kind][objKey] != obj[objKey]){
+                // Add to filterdObj
+                filteredObj[objKey] = obj[objKey];
+            }
+        });
+        objToSave.data.push(filteredObj);
+    });
+
+    keysToIgnore = ["dx", "dy", "ctype"]
+    lines.forEach(obj => {
+        var filteredObj = {};
+        Object.keys(obj).forEach(objKey => {
+            // If they key is ignore => return
+            if (keysToIgnore.includes(objKey)) return;
+
+            if (defaultLine[objKey] != obj[objKey]){
+                filteredObj[objKey] = obj[objKey];
+            }
+        });
+        objToSave.lines.push(filteredObj);
+    });
+    console.log(objToSave);
+
+    // Download the file
+    downloadFile("diagram", objToSave);
+}
+/**
+ * @description Gets the content of the file in parameter.
+ * @param {File} files The file to get the content of
+ * @return The content of the file
+ */
+function getFileContent(files)
+{
+    return new Promise((resolve, reject) => {
+        var reader = new FileReader();
+    
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+    
+        reader.onerror = reject;
+    
+        reader.readAsText(files);
+      })
+}
+/**
+ * @description Load the content of a file to the diagram-data. This will remove previous data
+ */
+async function loadDiagram()
+{
+    var fileInput = document.getElementById("importDiagramFile");
+
+    // If not an json-file is inputted => return
+    if (getExtension(fileInput.value) != "json"){
+        displayMessage(messageTypes.ERROR, "Sorry, you cant load that type of file. Only json-files is allowed");
+        return;
+    }
+
+    try{
+        // Get filepath
+        var file1 = fileInput.files[0];
+        var temp = await getFileContent(file1);
+        temp = JSON.parse(temp);
+    } catch(error){
+        console.log(error);
+    }
+
+    if(temp.historyLog && temp.initialState){
+        // Set the history and initalState to the values of the file
+        stateMachine.historyLog = temp.historyLog;
+        stateMachine.initialState = temp.initialState;
+
+        // Update the stateMachine to the latest current index
+        stateMachine.currentHistoryIndex = stateMachine.historyLog.length -1;
+
+        // Scrub to the latest point in the diagram
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
+
+        // Display success message for load
+        displayMessage(messageTypes.SUCCESS, "Save-file loaded");
+
+    } else if(temp.data && temp.lines){
+        // Set data and lines to the values of the export file
+        temp.data.forEach(element => {
+            var elDefault = defaults[element.kind];
+            Object.keys(elDefault).forEach(defaultKey => {
+                if (!element[defaultKey]){
+                    element[defaultKey] = elDefault[defaultKey];
+                }
+            });
+        });
+        temp.lines.forEach(line => {
+            Object.keys(defaultLine).forEach(defaultKey => {
+                if (!line[defaultKey]){
+                    line[defaultKey] = defaultLine[defaultKey];
+                }
+            });
+        });
+
+        // Set the vaules of the intialState to the JSON-file
+        stateMachine.initialState.elements = temp.data;
+        stateMachine.initialState.lines = temp.lines;
+
+        // Goto the beginning of the diagram
+        stateMachine.gotoInitialState();
+
+        // Remove the previous history
+        stateMachine.currentHistoryIndex = -1;
+        stateMachine.lastFlag = {};
+        stateMachine.removeFutureStates();
+
+        // Display success message for load
+        displayMessage(messageTypes.SUCCESS, "Export-file loaded");
+    }else{
+        displayMessage(messageTypes.ERROR, "Error, cant load the given file");
+    }
+}
 //#endregion =====================================================================================
