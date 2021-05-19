@@ -874,6 +874,7 @@ var elements = [];
 var context = [];
 var previousContext = [];
 var contextLine = []; // Contains the currently selected line(s).
+var previousContextLine = [];
 var determinedLines = null; //Last calculated line(s) clicked.
 var deltaExceeded = false;
 var targetElement = null;
@@ -1491,7 +1492,6 @@ function mouseMode_onMouseUp(event)
 
         case mouseModes.BOX_SELECTION:
             boxSelect_End();
-            clearContextLine();
             generateContextProperties();
             break;
 
@@ -2701,6 +2701,122 @@ function getElementsInsideCoordinateBox(selectionRect)
     return elements;
 }
 
+/**
+ * @description Checks whether the lines in the diagram touch the coordinate box
+ * @param {Rect} selectionRect returned from the getRectFromPoints() function
+ * @returns {Array<Object>} containing all of the lines that are currently touching the coordinate box
+ */
+function getLinesInsideCoordinateBox(selectionRect)
+{
+    var allLines = document.getElementById("svgbacklayer").children;
+    var tempLines = [];
+    var bLayerLineIDs = [];
+    for (var i = 0; i < allLines.length; i++) {
+        if (intersectsBox(selectionRect, allLines[i]) || pointIsInsideRect(selectionRect, allLines[i])) {
+            bLayerLineIDs[i] = allLines[i].id;
+            bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
+            bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
+            tempLines.push(lines.find(line => line.id == bLayerLineIDs[i]));
+        }
+    }
+    return tempLines;
+}
+
+/**
+ * @description Checks if a given point is inside of the coordinate box
+ * @param {Rect} selectionRect returned from the getRectFromPoints() function
+ * @param {Object} line following the format of the lines contained within the children of svgbacklayer
+ * @returns {Boolean} Returns true if the point is within the coordinate box, else false
+ */
+function pointIsInsideRect(selectionRect, line)
+{
+    var lineCoord1 = screenToDiagramCoordinates(
+        line.getAttribute("x1"),
+        line.getAttribute("y1")
+    );
+    var lineCoord2 = screenToDiagramCoordinates(
+        line.getAttribute("x2"),
+        line.getAttribute("y2")
+    );
+
+    var leftX = selectionRect.x;
+    var topY = selectionRect.y;
+    var rightX = selectionRect.x + selectionRect.width;
+    var bottomY = selectionRect.y + selectionRect.height;
+
+    // Return true if any of the end points of the line are inside of the rect
+    if (lineCoord1.x > leftX && lineCoord1.x < rightX && lineCoord1.y > topY && lineCoord1.y < bottomY) {
+        return true;
+    } else if (lineCoord2.x > leftX && lineCoord2.x < rightX && lineCoord2.y > topY && lineCoord2.y < bottomY) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * @description Checks if a line intersects with any of the lines on the coordinate box
+ * @param {Rect} selectionRect returned from the getRectFromPoints() function
+ * @param {Object} line following the format of the lines contained within the children of svgbacklayer
+ * @returns {Boolean} Returns true if the line intersects with any of the sides of the coordinate box, else false
+ */
+function intersectsBox(selectionRect, line)
+{
+    var tempCoords1 = screenToDiagramCoordinates(
+        line.getAttribute("x1"),
+        line.getAttribute("y1")
+    );
+    var tempCoords2 = screenToDiagramCoordinates(
+        line.getAttribute("x2"),
+        line.getAttribute("y2")
+    );
+
+    var x1 = tempCoords1.x;
+    var y1 = tempCoords1.y;
+    var x2 = tempCoords2.x;
+    var y2 = tempCoords2.y;
+
+    var leftX = selectionRect.x;
+    var topY = selectionRect.y;
+    var rightX = selectionRect.x + selectionRect.width;
+    var bottomY = selectionRect.y + selectionRect.height;
+
+    var left = false;
+    var right = false;
+    var top = false;
+    var bottom = false;
+
+    // Check intersection with the individual sides of the rect
+    left = intersectsLine(x1, y1, x2, y2, leftX, topY, leftX, bottomY);
+    right = intersectsLine(x1, y1, x2, y2, rightX, topY, rightX, bottomY);
+    top = intersectsLine(x1, y1, x2, y2, leftX, topY, rightX, topY);
+    bottom = intersectsLine(x1, y1, x2, y2, leftX, bottomY, rightX, bottomY);
+
+    // return true if the line intersects with any of the sides
+    if (left || right || top || bottom) return true;
+
+    return false;
+}
+
+/**
+ * @description Checks if a line intersects with another line
+ * @param {Number} xy x1 - y2 are for the first line and the rest are for the second line
+ * @returns {Boolean} Returns true if lines intersect, else false
+ */
+function intersectsLine(x1, y1, x2, y2, x3, y3, x4, y4)
+{
+    // calc line direction
+    var uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) /
+        ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+    var uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) /
+        ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+
+    // if uA and uB are within the interval 0-1, the lines are intersecting
+    if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) return true;
+
+    return false;
+}
+
 function getBoxSelectionPoints()
 {
     return {
@@ -2726,7 +2842,7 @@ function boxSelect_Start(mouseX, mouseY)
 {
     // Store previous context
     previousContext = context;
-
+    previousContextLine = contextLine;
     // Set starting position
     startX = mouseX;
     startY = mouseY;
@@ -2774,19 +2890,33 @@ function boxSelect_Update(mouseX, mouseY)
             // Remove entity from previous context is the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
+            var markedLines = getLinesInsideCoordinateBox(rect);
+            previousContextLine = previousContextLine.filter(line => !markedLines.includes(line));
+
             clearContext();
             context = context.concat(markedEntities);
             context = context.concat(previousContext);
+
+            clearContextLine();
+            contextLine = contextLine.concat(markedLines);
+            contextLine = contextLine.concat(previousContextLine);
+
         }else if (altPressed) {
             var markedEntities = getElementsInsideCoordinateBox(rect);
             // Remove entity from previous context is the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
+            var markedLines = getLinesInsideCoordinateBox(rect);
+            previousContextLine = previousContextLine.filter(line => !markedLines.includes(line));
+
             context = [];
             context = previousContext;
+            clearContextLine();
+            contextLine = previousContextLine;
 
         }else {
             context = getElementsInsideCoordinateBox(rect);
+            contextLine = getLinesInsideCoordinateBox(rect);
         }
     }
 }
