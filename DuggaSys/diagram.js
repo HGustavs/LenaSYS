@@ -916,6 +916,7 @@ var settings = {
         gridSize: 50,
         origoWidth: 2,
         snapToGrid: false,
+        a4SizeFactor: 1,
     },
     misc: {
         randomidArray: [], // array for checking randomID
@@ -3004,6 +3005,31 @@ function toggleA4Template()
      } else {
         template.style.display = "block";
    }
+   generateContextProperties();
+}
+
+function setA4SizeFactor(e){
+    //store 1 + increased procent amount
+    settings.grid.a4SizeFactor = parseInt(e.target.value)/100;
+
+
+    updateA4Size();
+}
+
+function toggleA4Horizontal()
+{
+    document.getElementById("vRect").style.display = "block";
+    if(document.getElementById("a4Rect").style.display = "block"){
+        document.getElementById("a4Rect").style.display = "none";
+    }
+}
+
+function toggleA4Vertical()
+{
+    document.getElementById("a4Rect").style.display = "block";
+    if(document.getElementById("vRect").style.display = "block"){
+        document.getElementById("vRect").style.display = "none";
+    }
 }
 
 /**
@@ -3191,6 +3217,13 @@ function generateContextProperties()
 
     var propSet = document.getElementById("propertyFieldset");
     var str = "<legend>Properties</legend>";
+    //a4 propteries
+    if (document.getElementById("a4Template").style.display === "block") {
+        str += `<text>Change the size of the A4</text>`;
+        str += `<input type="range" onchange="setA4SizeFactor(event)" min="100" max="200" value ="${settings.grid.a4SizeFactor*100}" id="slider">`;
+        str += `<br><button onclick="toggleA4Vertical()">Vertical</button>`;
+        str += `<button onclick="toggleA4Horizontal()">Horizontal</button>`;
+    }
 
     //more than one element selected
 
@@ -3370,10 +3403,12 @@ function updateGridSize()
     var rect = document.getElementById("a4Rect");
     var vRect = document.getElementById("vRect");
 
-    vRect.setAttribute("width", 1122 * zoomfact + "px");
-    vRect.setAttribute("height", 794 * zoomfact + "px");
-    rect.setAttribute("width", 794 * zoomfact + "px");
-    rect.setAttribute("height", 1122 * zoomfact + "px");
+    const a4Width = 794, a4Height = 1122;
+
+    vRect.setAttribute("width", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
+    vRect.setAttribute("height", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
+    rect.setAttribute("width", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
+    rect.setAttribute("height", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
     updateA4Pos();
  }
 
