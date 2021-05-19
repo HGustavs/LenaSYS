@@ -9,21 +9,35 @@ var filerByDate = {
 	date1: null,
 	date2: null
 }
+var duggasArr = [];
 
-/* $( function() {
-    $("#datepicker-interval-1").datepicker({dateFormat: "yy-mm-dd"});
-	$("#datepicker-interval-2").datepicker({dateFormat: "yy-mm-dd"});
-} ); */
 
 function updateFilterInterval() {
+	var showDuggaFilterElement = document.querySelector(".show-dugga-filter-popup");
+	showDuggaFilterElement.classList.add("hidden");
+
 	// Date object requires string to not apply random time zone.
 	var dateElement = document.querySelectorAll(".date-interval-selector");
-	filerByDate.date1 = new Date(JSON.stringify(dateElement[0].value));
-	filerByDate.date2 = new Date(JSON.stringify(dateElement[1].value));
+	if (dateElement[0].value != "" && dateElement[1].value != ""){
+		filerByDate.date1 = new Date(JSON.stringify(dateElement[0].value));
+		filerByDate.date2 = new Date(JSON.stringify(dateElement[1].value));
+	}
+
+	duggasArr = [];
+	var checkboxElements = document.getElementsByName("duggaEntryname");
+
+	for (var element of checkboxElements){
+		if (element.checked)
+			duggasArr.push(element.value)
+	}
 
 	updateTable();
 }
 
+function showAvaiableDuggaFilter() {
+	var showDuggaFilterElement = document.querySelector(".show-dugga-filter-popup");
+	showDuggaFilterElement.classList.toggle("hidden")
+}
 
 function setup(){
   
@@ -49,15 +63,24 @@ function updateTable() {
 
 function returnedResults(data){
     console.log(data);
+
     process();
 
 	var assignmentList;
+	var duggaEntrynameCheckbox = "";
 	var duggaFilterOptions = data['duggaFilterOptions'];
 	assignmentList += "<option value='All' selected>All</option>";
 	for(var i = 0; i < duggaFilterOptions.length; i++){
 		assignmentList += "<option value='"+ duggaFilterOptions[i].entryname +"'>"+ duggaFilterOptions[i].entryname + "</option>";
+		duggaEntrynameCheckbox += `
+		<div class="dugga-entry-box toggle-${i%2}">
+			<input type="checkbox" name="duggaEntryname" value="${duggaFilterOptions[i].entryname}">
+			<label>${duggaFilterOptions[i].entryname}</label>
+		</div>
+		`;
 	}
-	document.getElementById("assignmentDropdown").innerHTML = assignmentList; 
+	document.getElementById("assignmentDropdown").innerHTML = assignmentList;
+	document.querySelector(".show-dugga-filter-popup").innerHTML = duggaEntrynameCheckbox;
 		
     createSortableTable(data['tableInfo']);
 }
@@ -170,13 +193,16 @@ function rowFilter(row) {
 	var isDuggaFilterMatch = true;
 	var isFilterDateMatch = true;
   
-	if(filterList["duggaFilter"] != "All"){
-    	if(row["duggaName"] == filterList["duggaFilter"] || row["subCourse"] == filterList["duggaFilter"]){
-        	isDuggaFilterMatch = true;            
-   		}else{
+	for (var duggaName of duggasArr) {
+		if (duggaName == row["duggaName"]) {
+			isDuggaFilterMatch = true;
+			break;
+		}
+		else{
 			isDuggaFilterMatch = false;
 		}
 	}
+
 	if (filerByDate.date1 != null && filerByDate.date2 != null)	{
 		// Datepicker does not contain hours, minutes and seconds. Submitted date is adjusted to match datepicker format
 		var date = new Date(row["submitted"])
