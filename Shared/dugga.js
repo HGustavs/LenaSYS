@@ -1075,6 +1075,7 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
+		newSubmission();
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
@@ -1199,6 +1200,15 @@ function AJAXService(opt,apara,kind)
 			data: "hash="+hash+"&opt="+opt+para,
 			dataType: "json"
 		});
+	}
+}
+
+function newSubmission() {
+	if((localStorage.getItem(localStorageItemKey)) != null) {
+		var newsubmission = confirm("You already have a save assignment, want to continue?")
+		if(newsubmission == false) {
+			console.log("We want a new submission");
+		}
 	}
 }
 
