@@ -218,8 +218,6 @@ function SortableTable(param) {
 	var filterid = getparam(param.filterElementId, "UNK");
 	var caption = getparam(param.tableCaption, "UNK");
 	var renderCell = getparam(param.renderCellCallback, null);
-	var exportCell = getparam(param.exportCellCallback, null);
-	var exportColumnHeading = getparam(param.exportColumnHeadingCallback, null);
 	var renderSortOptions = getparam(param.renderSortOptionsCallback, null);
 	var renderColumnFilter = getparam(param.renderColumnFilterCallback, null);
 	var rowFilter = getparam(param.rowFilterCallback, defaultRowFilter);
@@ -773,46 +771,6 @@ function SortableTable(param) {
 		*/ 
 }
 
-	this.export = function (format, del, gradeData = "NONE") {
-		var str = "";
-
-		if (del === "undefined" || del === null) {
-			del = ",";
-		}
-
-		// Export visible columns
-		var rendcnt = 0;
-		for (let columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
-			var colname = columnOrder[columnOrderIdx];
-			var col = tbl.tblhead[colname];
-			if (columnfilter[columnOrderIdx] !== null) {
-				if (rendcnt !== 0)
-					str += del;
-				str += exportColumnHeading(format, tbl.tblhead[columnOrder[columnOrderIdx]], columnOrder[columnOrderIdx]);
-				rendcnt++;
-			}
-		}
-		str += "\n";
-
-		// Export data for visible columns
-		for (let i = 0; i < tbl.tblbody.length; i++) {
-			let row = tbl.tblbody[i];
-			rendcnt = 0;
-			for (let columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
-				var colname = columnOrder[columnOrderIdx];
-				var col = tbl.tblhead[colname];
-				if (columnfilter[columnOrderIdx] !== null) {
-					if (rendcnt !== 0)
-						str += del;
-					str += exportCell(format, row[colname], colname, gradeData);
-					rendcnt++;
-				}
-			}
-			str += "\n";
-		}
-
-		return str;
-	}
 }
 
 
