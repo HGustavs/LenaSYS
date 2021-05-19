@@ -197,7 +197,7 @@ function renderCommits(data) {
   
 
   var current = new Date();
-  var currentYear = current.getFullYear();
+  var currentYear = 2019;
   var weekData = data['weeks'];
 
   var allCommits =  [];
@@ -241,6 +241,7 @@ function renderCommits(data) {
     var x1 = allCommits[i]['space'];
     var y1 = allCommits[i]['thetimeh'];
     str += drawCommitDots(x1, y1, xMul, yMul, x_spacing, y_spacing);
+    str += drawCommitOutline(x1, y1, xMul, yMul, x_spacing, y_spacing);
 
     var p1index = commitDict[allCommits[i]['p1id']];
     if(p1index != undefined) {
@@ -295,6 +296,15 @@ function drawCommitDots(x1, y1, xmul, ymul, x_spacing, y_spacing){
 
   //Draw the circle reptresenting each commit
   str += `<circle cx='${x1*xmul  - x_spacing}' cy='${y1*ymul - y_spacing}' r='${cradius}' />`;
+  
+  return str;
+}
+function drawCommitOutline(x1, y1, xmul, ymul, x_spacing, y_spacing){
+  var cradius = xmul * 0.20;
+  var str = "";
+
+  //Create an outline around each commit-dot
+  str += `<circle cx='${x1*xmul  - x_spacing}' cy='${y1*ymul - y_spacing}' r='${cradius}'  fill='none' stroke='black'; />`;
 
   return str;
 }
