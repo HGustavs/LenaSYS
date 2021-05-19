@@ -4185,10 +4185,21 @@ function drawElement(element, ghosted = false)
                 stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                 `;
         }
+        var numOfLetters = element.name.length;
+        if (tooBig) {
+            var tempName = "";
+            for (var i = 0; i < element.name.length; i++){
+                tempName += element.name[i];
+                if (canvasContext.measureText(tempName).width > boxw - margin){
+                    numOfLetters = tempName.length - 1;
+                    break;
+                }
+            }
+        }
         str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
                    stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
                    ${weak}
-                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>
                    `;
 
     }
