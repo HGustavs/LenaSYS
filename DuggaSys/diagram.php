@@ -160,10 +160,10 @@
     <div id ="zoom-message-box"><img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg"/><text id ="zoom-message">1x</text></div>
 
     <!-- Diagram drawing system canvas. -->
+    <svg id="svgoverlay" preserveAspectRatio="none"></svg>
     <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
      <!-- One svg layer for background stuff and one for foreground stuff -->
     <svg id="svgbacklayer" preserveAspectRatio="none"></svg>
-    <svg id="svgoverlay" preserveAspectRatio="none"></svg>
 
 	<canvas id='canvasOverlay'></canvas> 
     <!-- Diagram rules -->
