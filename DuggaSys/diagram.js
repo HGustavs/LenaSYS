@@ -4356,7 +4356,7 @@ function drawElement(element, ghosted = false)
                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
                            Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
                            Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                    stroke='black' fill='#ffccdc' ${dash} stroke-width='${linew}' />
+                    stroke='black' fill='#ffccdc' ${dash} stroke-width='${linew}'/>
                     
                     ${multi}
 
@@ -4372,7 +4372,7 @@ function drawElement(element, ghosted = false)
             // Calculates how far to the left X starts
             var diff = xAnchor - textWidth / 2;
             diff = diff < 0 ? 0 - diff + 10 : 0;
-            str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="black" stroke-dasharray="5" stroke-width='2'/>`;
+            str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="black" stroke-dasharray="${5*zoomfact}" stroke-width="${linew}"/>`;
         }
         
     }
