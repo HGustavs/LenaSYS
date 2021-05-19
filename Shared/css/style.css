@@ -895,11 +895,14 @@ p {
 }
 
 @media only screen and (max-width: 400px) {
-  #swimlaneSVG {
-    overflow: auto;
-    width: 90%;
-    margin: auto;
-  }
+    #swimlaneSVG {
+        overflow: auto;
+        width: 70%;
+        margin: auto;
+    }
+    #swimlaneSVG text {
+        font-size: 16px;
+    }
 }
 
 /*Swimlane styling Ends*/
@@ -1345,6 +1348,11 @@ header td {
   margin:auto 10px auto 0;
 }
 
+.burgerButtText {
+  text-decoration:none;
+  font-size:16px;Color:white;
+}
+
 .navButt:hover {
   cursor: pointer;
 }
@@ -1415,7 +1423,7 @@ div .navButt:hover {
         margin-top: 14px;
 
     }
-    #GeneralStats, #CurrentlyOnline, #PasswordGuessing, #OSPercentage{
+    #GeneralStats, #CurrentlyOnline, #PasswordGuessing, #OSPercentage,#hamburgerBoxMSG{
         display:none;
     }
 
@@ -4186,6 +4194,11 @@ div.reset-pw:hover{
 /*styling for contribution.php*/
 
 /*this was inline-CSS before, only moved it to the right file*/
+#innerCommitTree{
+  min-width:650px;
+  overflow: auto;
+  white-space: nowrap;
+}
 
 .contributionSort {
   height: 90px;
@@ -4203,7 +4216,7 @@ div.reset-pw:hover{
 }
 
 .contribheading {
-  background: #FFF8A5;
+  background: #f5e7ff;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
   border-radius: 5px;
   max-width: 400px;

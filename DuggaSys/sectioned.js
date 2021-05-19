@@ -16,6 +16,8 @@ var versnr;
 var motd;
 var hideItemList = [];
 var hasDuggs = false;
+var dateToday = new Date().getTime();
+var compareWeek = -604800000;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -106,6 +108,12 @@ function hamburgerChange(operation = 'click') {
     toggleHamburger();
   }
 }
+
+$(document).on('click', function(e) {
+  if ($(e.target).closest("#hamburgerIcon").length === 0) {
+      $("#hamburgerBox").hide();
+  }
+});
 
 function toggleHamburger() {
 
@@ -283,6 +291,7 @@ function showEditVersion() {
   $("#editCourseVersion").css("display", "flex");
 }
 
+
 // Close the "edit course version" and "new course version" windows by pressing the ESC button
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
@@ -434,6 +443,7 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
+
 
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
@@ -601,6 +611,7 @@ function returnedCourse(data) {
   }, 1000);
 }
 
+
 function returnedGroups(data) {
   if (data['debug'] != "NONE!") alert(data['debug']);
   var grpmembers = data['grplst'];
@@ -759,13 +770,11 @@ function returnedSection(data) {
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
         // New items added get the class glow to show they are new
-        if(item['pos'] == "-1" || item['pos'] == "100"){
-          str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
-          class='${makeTextArray(item['kind'], valarr) + "glow"}' style='display:block'>`;
+        if((Date.parse(item['ts']) - dateToday) > compareWeek){
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
         }
         else{
-          str += `<div id='${makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode}'
-          class='${makeTextArray(item['kind'], valarr)}' style='display:block'>`;
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
         }
 
         menuState.idCounter++;
@@ -1148,6 +1157,12 @@ function returnedSection(data) {
       $("#statisticsSwimlanes").hide();
     }
 
+    if (navigator.vendor == ("Apple Computer, Inc.")) {
+      $("#statisticsSwimlanes").hide();
+      $("#sectionList_arrowStatisticsOpen").hide();
+      $("#sectionList_arrowStatisticsClosed").hide();
+    } 
+
     if (data['writeaccess']) {
       // Enable sorting always if we are superuser as we refresh list on update
 
@@ -1205,7 +1220,11 @@ function returnedSection(data) {
   if(versionname){
     document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
 
-    drawSwimlanes(); // Create the swimlane used in the statistics section.
+    // If safari this will not load in
+    if (navigator.vendor != ("Apple Computer, Inc.")) {
+      drawSwimlanes(); // Create the swimlane used in the statistics section.
+      }
+    
 
     // Change the scroll position to where the user was last time.
     $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
@@ -1477,7 +1496,7 @@ function drawSwimlanes() {
         //If deadline is older than current, red text for late assigment should be displayed as blue instead
         var deadlineYear = new Date(entry.deadline).getFullYear();
         if(deadlineYear < current.getFullYear()) {
-           textcol = "#5072C7";
+           textcol = "#7b5a96";
        
            var yearDifference = current.getFullYear() - deadlineYear;
            var newYear = new Date(entry.deadline);

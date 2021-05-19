@@ -9,3 +9,5 @@ vendor/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
+*.db
+BGHdata_2021_05.db
