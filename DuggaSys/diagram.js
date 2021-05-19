@@ -1341,6 +1341,11 @@ function mdown(event)
                 sscrolly = scrolly;
                 startX = event.clientX;
                 startY = event.clientY;
+
+                if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                    wasDblClicked = true;
+                    document.getElementById("options-pane").className = "hide-options-pane";
+                }
                 break;
             
             case mouseModes.BOX_SELECTION:
