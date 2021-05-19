@@ -1,3 +1,4 @@
 <?php 
-	header("Location: DuggaSys/courseed.php");
+	php.info();
+	//header("Location: DuggaSys/courseed.php");
  ?>
