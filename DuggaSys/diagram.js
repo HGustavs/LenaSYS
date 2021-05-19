@@ -730,7 +730,11 @@ const keybinds = {
         COPY: {key: "c", ctrl: true, meta: true},
         PASTE: {key: "v", ctrl: true, meta: true},
         SELECT_ALL: {key: "a", ctrl: true},
-        DELETE_B: {key: "backspace", ctrl: false}
+        DELETE_B: {key: "backspace", ctrl: false},
+        MOVING_OBJECT_UP: {key: "ArrowUp", ctrl: false},
+        MOVING_OBJECT_DOWN: {key: "ArrowDown", ctrl: false},
+        MOVING_OBJECT_LEFT: {key: "ArrowLeft", ctrl: false},
+        MOVING_OBJECT_RIGHT: {key: "ArrowRight", ctrl: false},
 };
 
 /** 
@@ -1170,6 +1174,20 @@ document.addEventListener('keydown', function (e)
             e.preventDefault();
         }
 
+        // Moving object with arrows
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid){
+            setPos(context, 0, 1);
+        }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid){
+            setPos(context, 0, -1);
+        }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid){
+            setPos(context, 1, 0);
+        }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid){
+            setPos(context, -1, 0);
+        }
+
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
             var propField = document.getElementById("elementProperty_name");
@@ -1554,25 +1572,7 @@ function mup(event)
 
             // Normal mode
             } else if (deltaExceeded) {
-                var id_list = [];
-
-                if (context.length > 0) {
-                    context.forEach(item => // Move all selected items
-                    {
-                        if(!item.isLocked){
-                            eventElementId = event.target.parentElement.parentElement.id;
-                            if(!entityIsOverlapping(item.id, deltaX, deltaY)){
-                                setPos(item.id, deltaX, deltaY);
-                            }
-
-                            if (deltaX > 0 || deltaX < 0 || deltaY > 0 || deltaY < 0)
-                                id_list.push(item.id);
-                        }
-                    });
-
-                }
-
-                stateMachine.save(StateChangeFactory.ElementsMoved(id_list, -(deltaX / zoomfact), -(deltaY / zoomfact)), StateChange.ChangeTypes.ELEMENT_MOVED);
+                if (context.length > 0) setPos(context, deltaX, deltaY);
             }
             break;
         case pointerStates.CLICKED_NODE:
@@ -2465,33 +2465,35 @@ function rectsIntersect (left, right)
 }
 
 /**
- * @description Moves the first element with matching ID a certain coordinates along the x/y-axis.
- * @param {String} id Hexadecimal ID represented as a string.
+ * @description Change the coordinates of data-objects
+ * @param {Array<Object>} objects Array of objects that will be moved
  * @param {Number} x Coordinates along the x-axis to move
  * @param {Number} y Coordinates along the y-axis to move
  */
- function setPos(id, x, y)
+ function setPos(objects, x, y)
  {
-     foundId = findIndex(data, id);
-     if (foundId != -1) {
-         var obj = data[foundId];
+     var idList = [];
+     objects.forEach(obj => {
+
+         if (obj.isLocked) return;
+         if(entityIsOverlapping(obj.id, deltaX, deltaY)) return;
+
          if (settings.grid.snapToGrid) {
+
              if (!ctrlPressed) {
                  //Different snap points for entity and others
-                if (obj.kind == "EREntity") 
-                {
-                    // Calculate nearest snap point
+                 if (obj.kind == "EREntity") {
+                     // Calculate nearest snap point
                      obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
                      obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                }
-                else{
-                    obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                    obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
-                }
+                 } else{
+                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                     obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
+                 }
                  // Set the new snap point to center of element
                  obj.x -= obj.width / 2
                  obj.y -= obj.height / 2;
-            
+
              } else {
                  obj.x += (targetDelta.x / zoomfact);
                  obj.y += ((targetDelta.y / zoomfact)+25);
@@ -2500,12 +2502,16 @@ function rectsIntersect (left, right)
              obj.x -= (x / zoomfact);
              obj.y -= (y / zoomfact);
          }
-     }
+         // Add the object-id to the idList
+         idList.push(obj.id);
+     });
+     updatepos(0, 0);
+     if (idList.length != 0) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
  }
 
 function isKeybindValid(e, keybind)
 {
-    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
+    return e.key.toLowerCase() == keybind.key.toLowerCase() && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
 
 function findEntityFromLine(lineObj)
