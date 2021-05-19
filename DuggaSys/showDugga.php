@@ -69,10 +69,6 @@
 		$_SESSION['hasUploaded'] = "UNK";
 	}
 
-	if(!isset($_SESSION['latestHashVisited'])){
-		$_SESSION['latestHashVisited'] = "UNK";
-	}
-
 	if(!isset($_SESSION['pwdentrance'])){
 		$_SESSION['pwdentrance'] = 0;
 	}
@@ -151,12 +147,6 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 <div id='login_popup'>
 <?php
 
-function IsLatestHash($hash){
-		if($hash == $_SESSION['latestHashVisited']){
-			return true;
-		} else {
-			return false;
-		}
 
 		//Old function
 		/*
@@ -175,7 +165,7 @@ function IsLatestHash($hash){
 				return true;
 			}*/
 
-}
+
 echo "<script>console.log('".$hash."')</script>;";
 echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
