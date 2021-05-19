@@ -5138,13 +5138,13 @@ only screen and (max-device-width: 860px) {
  
   #versionCogBurger, #versionPlusBurger, #editStudentBurger,
   #testsBTNBurger, #editFilesBurger, #courseIMGBurger,
-  #editCourseBurger, #announcementBurger,#hamburgerBoxMSG{
+  #editCourseBurger, #announcementBurger{
     display: block;
   }
 
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
-  #editCourse, #announcement,#messagedialog{
+  #editCourse, #announcement{
     display: none;
   }
 }
@@ -7743,7 +7743,7 @@ textarea#filecont {
     display: none;
   }
 
-  header #versionCog,#messagedialog{
+  header #versionCog{
     display: none;
   }
 
@@ -7877,7 +7877,7 @@ textarea#filecont {
 @media only screen and (min-width: 861px) {
   #versionCogBurger, #versionPlusBurger, #editStudentBurger,
   #testsBTNBurger, #editFilesBurger, #courseIMGBurger,
-  #editCourseBurger, #announcementBurger,#hamburgerBoxMSG{
+  #editCourseBurger, #announcementBurger{
     display: none;
   }
 
