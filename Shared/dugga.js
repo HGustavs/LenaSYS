@@ -1600,9 +1600,20 @@ function copyHashtoCB() {
 	$temp.remove();
 }
 
+//----------------------------------------------------------------------------------
+// getParameters: extract the value of any parameter in the URL
+//----------------------------------------------------------------------------------
+function getParameters(parameterName){
+	let parameters = new URLSearchParams(window.location.search);
+	return parameters.get(parameterName);
+}
+
 function exitHashBox(){
     $("#hashBox").css("display","none");
-	window.location.href = localStorage.getItem("ls-redirect-last-url"); //Takes us to previous visited dugga
+	window.location.href = "../DuggaSys/sectioned.php?courseid=" + getParameters("courseid") + "&coursename=" +
+	 getParameters("coursename") + "&coursevers=" + getParameters("coursevers"); //redirect to the course page
+	 
+  //window.location.href = localStorage.getItem("ls-redirect-last-url"); //Takes us to previous visited dugga
 }
 
 function hideHashBox(){
