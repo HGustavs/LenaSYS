@@ -2532,7 +2532,8 @@ function findAttributeFromLine(lineObj)
         return 1;
     }
     return null;
-
+}
+    
 /**
  * @description Gets the extension of an filename
  * @param {String} filename The name of the file
