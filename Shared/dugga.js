@@ -1147,7 +1147,11 @@ function AJAXService(opt,apara,kind)
 				//if(!localStorage.getItem("ls-hash-dg"+(querystring['did']))){ //If hash exists in local storage, don't create a new one
 				handleHash();	//Makes sure hash is unique.
 				//}
-			}
+			},
+		error: function(req, textStatus, errorThrown) {
+        //this is going to happen when you send something different from a 200 OK HTTP
+        alert('Ooops, something happened: ' + textStatus + ' ' +errorThrown);
+    	}
 		});
 	}else if(kind=="RESULT"){
 			$.ajax({
