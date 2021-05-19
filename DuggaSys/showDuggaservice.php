@@ -197,7 +197,7 @@ if(checklogin()){
 $demo=false;
 if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
-if($demo || $hr){
+if($demo || $hr && !strcmp($opt,"SAVDU")==0){
 		
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
@@ -208,7 +208,6 @@ if($demo || $hr){
 	if($foundvar==-1){
 			$savedvariant="UNK";
 	}
-
 	// If there are many variants, randomize
 	if($savedvariant==""||$savedvariant=="UNK"){
 		// Randomize at most 8 times
@@ -227,19 +226,19 @@ if($demo || $hr){
 		
 		// if none has been chosen and there is a first one take that one.
 		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
+
+		$savedvariant=$newvariant;
 	}else{
 	
 		// There is a variant already -- do nothing!	
 	}
-	
-	$savedvariant=$newvariant;
 	
 	// Retrieve variant
 	if($insertparam == false){
 			$param="NONE!";
 	}
 	foreach ($variants as $variant) {
-		if($variant["vid"] == $variantvalue){
+		if($variant["vid"] == $savedvariant){
 			$param=html_entity_decode($variant['param']);
 		}
 	}
@@ -265,7 +264,7 @@ if($demo || $hr){
 	}
 
 	//Makes sure that the localstorage variant is set before retrieving data from database
-	if(isset($variantvalue)) {
+	if($variantvalue != "undefined") {
 		$query = $pdo->prepare("SELECT param FROM variant WHERE vid=:vid");
 		$query->bindParam(':vid', $variantvalue);
 		$query->execute();
@@ -307,7 +306,7 @@ if($demo || $hr){
 if(checklogin()){
 		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions			
 			*/
-        if(strcmp($opt,"SAVDU")==0){	
+        if(strcmp($opt,"SAVDU")==0){
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
             $discription = $couseid." ".$duggaid." ".$moment." ".$answer;
@@ -344,7 +343,7 @@ if(checklogin()){
 				$query->bindParam(':coursevers', $coursevers);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':moment', $moment);
-				$query->bindParam(':variant', $variantvalue);
+				$query->bindParam(':variant', $savedvariant);
 				$query->bindParam(':hash', $hash);
 				$query->bindParam(':password', $password);
 				$query->bindParam(':timesSubmitted', $timesSubmitted);

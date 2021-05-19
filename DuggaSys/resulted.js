@@ -53,9 +53,9 @@ function returnedResults(data){
 
 	var assignmentList;
 	var duggaFilterOptions = data['duggaFilterOptions'];
-	assignmentList += "<option value='none'>none</option>";
+	assignmentList += "<option value='All' selected>All</option>";
 	for(var i = 0; i < duggaFilterOptions.length; i++){
-		assignmentList += "<option value='"+ duggaFilterOptions[i].entryname +"' selected>"+ duggaFilterOptions[i].entryname + "</option>";
+		assignmentList += "<option value='"+ duggaFilterOptions[i].entryname +"'>"+ duggaFilterOptions[i].entryname + "</option>";
 	}
 	document.getElementById("assignmentDropdown").innerHTML = assignmentList; 
 		
@@ -159,7 +159,7 @@ function getLinkFromHash(hash) {
 function makeCustomFilter(filtername) {
 	
 	if (filterList[filtername] == null) {
-		filterList[filtername] = "none";
+		filterList[filtername] = "All";
 	}
 	localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList)); //Saves the filter in local storage when opening resulted.php.	
 }
@@ -169,8 +169,8 @@ function makeCustomFilter(filtername) {
 function rowFilter(row) {
 	var isDuggaFilterMatch = true;
 	var isFilterDateMatch = true;
-
-	if(filterList["duggaFilter"] != "none"){
+  
+	if(filterList["duggaFilter"] != "All"){
     	if(row["duggaName"] == filterList["duggaFilter"] || row["subCourse"] == filterList["duggaFilter"]){
         	isDuggaFilterMatch = true;            
    		}else{
