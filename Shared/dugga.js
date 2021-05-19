@@ -1659,15 +1659,10 @@ function getParameters(parameterName){
 
 function exitHashBox(){
     $("#hashBox").css("display","none");
-	//window.location.href = localStorage.getItem("ls-redirect-last-url"); //Takes us to previous visited dugga
-	//window.history.go(-2);
-	window.location.href = "../DuggaSys/sectioned.php?courseid=2&coursename=Webbutveckling - datorgrafik&coursevers=97732"
-	/*var courseid = document.getElementById('courseid').value;
-	var coursename = document.getElementById('coursename').value; 
-	var coursevers = document.getElementById('coursevers').value;*/
-	
- 	
-
+	window.location.href = "../DuggaSys/sectioned.php?courseid=" + getParameters("courseid") + "&coursename=" +
+	 getParameters("coursename") + "&coursevers=" + getParameters("coursevers"); //redirect to the course page
+	 
+  //window.location.href = localStorage.getItem("ls-redirect-last-url"); //Takes us to previous visited dugga
 }
 
 function hideHashBox(){
