@@ -2180,6 +2180,7 @@ function hideServerMessage() {
 		top: -$containerHeight.outerHeight()
 	},200, "easeInOutSine", () => {});
 	$("#messagedialog").css("display", "content");
+	sessionStorage.setItem('show','false');
 }
 
 function hideCookieMessage() {
@@ -2198,6 +2199,7 @@ function showServerMessage(){
 		top: 50
 	},200, "easeInOutSine", () => {});
 	$("#servermsgcontainer").css("display","content");
+	sessionStorage.setItem('show','true');
 }
 
 //----------------------------------------------------------------------------------
