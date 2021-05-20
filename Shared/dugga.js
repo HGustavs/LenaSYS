@@ -1226,7 +1226,7 @@ function newSubmission(){
 				isTeacher = phpData.isTeacher;
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
-				localStorageHandler(phpData);
+				localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(variantValue, phpData.variants));
 	
 				//returnedDugga(phpData);
 				setPassword(phpData.password); 
