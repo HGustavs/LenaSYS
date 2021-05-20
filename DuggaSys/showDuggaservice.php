@@ -182,6 +182,21 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
 		
     }
 
+
+error_log("hash: ".$hash);
+// Check if $duggaid
+$query = $pdo->prepare("SELECT quiz FROM useranswer WHERE hash=:hash;");
+$query->bindParam(':hash', $hash);
+$result=$query->execute();
+foreach($query->fetchAll() as $row) {
+	$quizzz = $row['quiz'];
+	error_log("quiz: ".$quizzz);
+}
+error_log("quiz: ".$quizzz);
+
+
+
+
 // -------------------------OLD FUNCTIONALITY WHERE WE CHECK IF USER IS LOGGED IN AND HAS ACESS-------------------
 
 

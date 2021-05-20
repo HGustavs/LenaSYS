@@ -87,13 +87,22 @@ function saveTimesAccessed(){
 function loadDugga(){
 	var hash = document.getElementById('hash');
 	window.location.href = "../sh/?a="+hash.value;
-	
 }
 
 function loadDuggaType(){
-
 	var hash = document.getElementById('hash');
-	window.location.href = "../sh/?a="+hash.value;
+	var did = querystring["did"];
+	console.log(querystring["did"]+hash.value);
+
+	$.ajax({
+		url: "showDuggaservice.php",
+		type: "POST",
+		data: "&hash="+hash+"&did="+did,
+		dataType: "json",
+		success: function(data) {
+			
+		}
+	});
 
 }
 
