@@ -1075,7 +1075,7 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
-		newSubmission();
+		//newSubmission();
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
@@ -1202,16 +1202,47 @@ function AJAXService(opt,apara,kind)
 		});
 	}
 }
+function newSubmission(){
 
-function newSubmission() {
-	if((localStorage.getItem(localStorageItemKey)) != null) {
-		var newsubmission = confirm("You already have a save assignment, want to continue?")
-		if(newsubmission == false) {
-			console.log("We want a new submission");
-		}
+	if(confirm("If you want to make a new submission")){
+
+		clearLocalStorageItem(localStorageItemKey);
+		reloadPage();
+		console.log("Confurm");
+		
+		//Fixa ny hash/lösenord
+		//använd reset funktionen som finns i reset knappen
+		//clearLocalStorageItem(localStorageItemKey);
+		//Lägg in hashen i localStorageItemKey
+		//Stringify localStorageItemKey
+
+	}else{
+		//Cancel making a new submission
+		console.log("cancul");
 	}
 }
 
+/*
+function newSubmission() {
+	if((localStorage.getItem(localStorageItemKey)) != null) {
+		var newsubmission = confirm("You already have a saved assignment, want to continue?")
+		if(newsubmission == false) {
+			console.log("We want a new submission");
+		
+			//Fixa ny hash/lösenord
+			//använd reset funktionen som finns i reset knappen
+			//clearLocalStorageItem(localStorageItemKey);
+			//Lägg in hashen i localStorageItemKey
+			//Stringify localStorageItemKey
+
+			console.log(localStorage.getItem(localStorageItemKey));
+			localStorage.setItem('localStorageItemKey', JSON.stringify(localStorageItemKey));
+			hash = generateHash();
+			pwd = randomPassword();
+		}
+	}
+}
+*/
 function handleHash(){
 	$.ajax({									//Ajax call to see if the hash have a match with any hash in the database.
 		url: "showDuggaservice.php",

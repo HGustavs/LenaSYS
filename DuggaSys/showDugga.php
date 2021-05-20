@@ -226,7 +226,9 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 						echo "<input id='saveDuggaButton' class='".$btnDisable." submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
 						if ($duggafile !== 'generic_dugga_file_receive') {
 							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
 						}
+
 						echo "</td>";
 						echo "</tr>";
 						echo "</table>";
