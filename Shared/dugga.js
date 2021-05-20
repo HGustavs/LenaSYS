@@ -1207,7 +1207,7 @@ function AJAXService(opt,apara,kind)
 
 function newSubmission(){
 	localStorage.setItem("tempValue", variantValue); //Temporarily stores the variant so we can load it below
-	if(confirm("If you want to make a new submission")){
+	if(confirm("Do you want to start a new submission?")){
 		variantValue = localStorage.getItem("tempValue"); //Removes the localStorage item
 		localStorage.removeItem("tempValue");
 		hash = generateHash(); 
