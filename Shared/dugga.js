@@ -1229,6 +1229,7 @@ function newSubmission(){
 				handleHash();	//Makes sure hash is unique.
 			}
 		});
+		reloadPage();
 	}
 }
 
