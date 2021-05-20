@@ -3998,7 +3998,6 @@ function drawLine(line, targetGhost = false)
     } else if ((fy > ty) && (line.ctype == "TB") ){
         y1Offset = lengthConstant;
         y2Offset = -lengthConstant;   
-    
     } else if ((fy < ty) && (line.ctype == "BT") ){
         y1Offset = -lengthConstant;
         y2Offset = lengthConstant;   
