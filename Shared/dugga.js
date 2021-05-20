@@ -1148,7 +1148,7 @@ function AJAXService(opt,apara,kind)
 				handleHash();	//Makes sure hash is unique.
 				//}
 			}
-		});
+		})
 	}else if(kind=="RESULT"){
 			$.ajax({
 				url: "resultedservice.php",
