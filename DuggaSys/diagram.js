@@ -1187,6 +1187,18 @@ document.addEventListener('keydown', function (e)
         if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid){
             setPos(context, -1, 0);
         }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && settings.grid.snapToGrid){
+            setPos(context, -50, -25);
+        }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && settings.grid.snapToGrid){
+            setPos(context, -50, -25);
+        }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && settings.grid.snapToGrid){
+            setPos(context, -50, -25);
+        }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && settings.grid.snapToGrid){
+            setPos(context, -50, -25);
+        }
 
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
@@ -2490,9 +2502,16 @@ function rectsIntersect (left, right)
                      obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
                      obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
                  }
+                 console.log(obj.y);
                  // Set the new snap point to center of element
-                 obj.x -= obj.width / 2
-                 obj.y -= obj.height / 2;
+                 obj.x -= (obj.width * zoomfact) / 2
+                 obj.y -= (obj.height * zoomfact) / 2;
+
+                  // The element coordinates with snap point
+
+                // Add the scroll values
+                //left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+                //top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
              } else {
                  obj.x += (targetDelta.x / zoomfact);
