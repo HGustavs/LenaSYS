@@ -102,7 +102,7 @@ if(checklogin() && $hasAccess) {
 				$query->bindParam(':cid', $cid);
 		}
 
-		//if($prop=="firstname"||$prop=="lastname"||$prop=="ssn"||$prop=="username"||$prop=="class"||$prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
+		if(/*$prop=="firstname"||$prop=="lastname"||$prop=="ssn"||*/$prop=="username"||$prop=="class"||$prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
 				$query->bindParam(':uid', $uid);
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
@@ -294,7 +294,7 @@ $submissions=array();
 
 if(checklogin() && $hasAccess) {
 	
-	//$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid AND user_course.access = 'W'" );
+	$query = $pdo->prepare("SELECT user.uid as uid,username,access,/*firstname,lastname,ssn,*/class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid AND user_course.access = 'W'" );
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -326,7 +326,7 @@ if(checklogin() && $hasAccess) {
 		array_push($entries, $entry);
 	}
 
-	//$query = $pdo->prepare("SELECT user.firstname,user.uid, user.lastname FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP by user.firstname,user.lastname, user.uid ORDER BY user.firstname, user.lastname;");
+	$query = $pdo->prepare("SELECT /*user.firstname*/,user.uid, /*user.lastname*/ FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP by /*user.firstname,user.lastname,*/ user.uid /*ORDER BY user.firstname, user.lastname;*/");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
