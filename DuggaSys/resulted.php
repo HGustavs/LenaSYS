@@ -119,6 +119,10 @@ pdoConnect();
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
 		
 		<div class="search-filer-container">
+			<div id="searchbar" style="margin-left:10px;">
+				<label for="">Search</label><br>
+				<input type="text" name="search" placeholder="Search" onchange="" onkeyup="">
+			</div>
 			<div id="select-date-interval">
 				<div>
 					<label for="">Date 1</label>
