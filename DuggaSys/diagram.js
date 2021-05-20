@@ -812,7 +812,8 @@ const relationState = {
  */
 const lineKind = {
     NORMAL: "Normal",
-    DOUBLE: "Double"
+    DOUBLE: "Double",
+    RECURSIVE: "Recursive",
 };
 
 /**
@@ -2094,16 +2095,21 @@ function changeLineProperties()
 {
     // TODO : DOES NOT STORE ANYTHING TO THE STATE MACHINE, VERY BAD!
     // Set lineKind
-    var radio1  = document.getElementById("lineRadio1");
-    var radio2 = document.getElementById("lineRadio2");
+    var radio1  = document.getElementById("lineRadio0");
+    var radio2 = document.getElementById("lineRadio1");
+    var radio3 = document.getElementById("lineRadio2");
+    
     var line = contextLine[0];
 
     if(radio1.checked && line.kind != radio1.value) {
         line.kind = radio1.value;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    } else if(radio2.checked && line.kind != radio2.value){
+    } else if(radio2.checked && line.kind != radio2.value && radio2){
         line.kind = radio2.value;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    } else if(radio3.checked && line.kind != radio3.value){
+        line.kind = radio3.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio3.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
 
     // Check if this element exists
@@ -3416,15 +3422,16 @@ function generateContextProperties()
         var selected = contextLine[0].kind;
         if(selected == undefined) selected = normal;
         
+        
         value = Object.values(lineKind);
         str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
         for(var i = 0; i < value.length; i++){
             if(selected == value[i]){
-                str += `<input type="radio" id="lineRadio1" name="lineKind" value='${value[i]}' checked>`
-                str += `<label for='${value[i]}'>${value[i]}</label><br>`
-            }else {
-                str += `<input type="radio" id="lineRadio2" name="lineKind" value='${value[i]}'>`
-                str += `<label for='${value[i]}'>${value[i]}</label><br>` 
+                str += `<input type="radio" id="lineRadio`+i+`" name="lineKind" value='${value[i]}' checked>`;
+                str += `<label for='${value[i]}'>${value[i]}</label><br>`;
+            }else{
+                str += `<input type="radio" id="lineRadio`+i+`" name="lineKind" value='${value[i]}'>`;
+                str += `<label for='${value[i]}'>${value[i]}</label><br>` ;
             }
         }
 
@@ -3946,6 +3953,7 @@ function drawLine(line, targetGhost = false)
 {   
     var felem, telem, dx, dy;
     var str = "";
+    var fx2,tx2,fy2,ty2; // coordinates for the second recursive line
     
     var lineColor = '#A000DC';
     if(contextLine.includes(line)){
@@ -3998,6 +4006,65 @@ function drawLine(line, targetGhost = false)
         str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
 
         str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    }else if (line.kind == "Recursive"){
+        var fwidth = (felem.width / 2) * zoomfact;
+        var twidth = (telem.width / 2) * zoomfact;
+        
+        // Recaluclate coordinates for the lines on ERRelation side
+        if(telem.kind == "EREntity"){
+            if (line.ctype == "BT"){
+                fy -= fwidth;
+                fx += fwidth;
+                fy2 = fy;
+                fx2 = fx - fwidth*2;
+            }else if (line.ctype == "TB"){
+                fy += fwidth;
+                fx += fwidth;
+                fy2 = fy;
+                fx2 = fx -fwidth*2;
+                    
+            }else if (line.ctype == "RL"){
+                fy += fwidth;
+                fx -= fwidth;
+                fx2 = fx;
+                fy2 = fy - fwidth*2;
+            }else if (line.ctype == "LR"){
+                fy += fwidth;
+                fx += fwidth;
+                fx2 = fx;
+                fy2 = fy - fwidth*2;
+            }
+    
+            str += `<line id='${line.id}-1' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-2' x1='${fx2}' y1='${fy2}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+        }else {
+
+            if (line.ctype == "BT"){
+                ty += twidth;
+                tx += twidth;
+                ty2 = ty;
+                tx2 = tx - twidth*2;
+            }else if (line.ctype == "TB"){
+                ty -= twidth;
+                tx += twidth;
+                ty2 = ty;
+                tx2 = tx - twidth*2;
+                
+            }else if (line.ctype == "RL"){
+                ty += twidth;
+                tx += twidth;
+                tx2 = tx;
+                ty2 = ty - twidth*2;
+            }else if (line.ctype == "LR"){
+                ty += twidth;
+                tx -= twidth;
+                tx2 = tx;
+                ty2 = ty - twidth*2;
+            }
+    
+            str += `<line id='${line.id}-1' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-2' x1='${fx}' y1='${fy}' x2='${tx2}' y2='${ty2}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+        }
     }
 
     if(contextLine.includes(line)){
@@ -4005,6 +4072,17 @@ function drawLine(line, targetGhost = false)
         var x = (fx + tx) /2;
         var y = (fy + ty) /2;
         str += `<rect x="${x-(2 * zoomfact)}" y="${y-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' stroke="black" stroke-width="3"/>`;
+
+        // If the selected line is of a Recursive kind. Draw two squares 
+        if((line.kind == "Recursive") && (telem.kind == "EREntity")){
+            var x2 = (fx2 + tx) /2;
+            var y2 = (fy2 + ty) /2;
+            str += `<rect x="${x2-(2 * zoomfact)}" y="${y2-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' stroke="black" stroke-width="3"/>`;
+        }else if((line.kind == "Recursive") && (telem.kind != "EREntity")){
+            var x2 = (fx + tx2) /2;
+            var y2 = (fy + ty2) /2;
+            str += `<rect x="${x2-(2 * zoomfact)}" y="${y2-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' stroke="black" stroke-width="3"/>`;
+        }
     }
 
     // If the line got cardinality
@@ -4492,7 +4570,10 @@ function drawSelectionBox(str)
                 if (contextLine[i].kind === lineKind.DOUBLE) {
                     tempLines.push(document.getElementById(contextLine[i].id + "-1"));
                     tempLines.push(document.getElementById(contextLine[i].id + "-2"));
-                } else {
+                }else if (contextLine[i].kind === lineKind.RECURSIVE){
+                    tempLines.push(document.getElementById(contextLine[i].id + "-1"));
+                    tempLines.push(document.getElementById(contextLine[i].id + "-2"));
+                }else {
                     tempLines.push(document.getElementById(contextLine[i].id));
                 }
             }
