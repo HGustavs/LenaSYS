@@ -1086,6 +1086,8 @@ function AJAXService(opt,apara,kind)
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
 				localStorageHandler(phpData);
+
+				console.log(phpData);
 	
 				returnedDugga(phpData);
 				setPassword(phpData.password); 
@@ -1232,7 +1234,6 @@ function localStorageHandler(ajaxdata) {
 			localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(ajaxdata.variant, ajaxdata.variants));
 		}
 		else {
-			variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 			// Remove item if expired
 			if (isDuggaExpiredCheck(localStorageItem)){
 				console.log(localStorageItem);
@@ -1241,6 +1242,7 @@ function localStorageHandler(ajaxdata) {
 			}
 				
 		}
+		variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 	}
 }
 
@@ -2052,11 +2054,10 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		}
 
 		if(loadVariantFlag && variantsArr.length > 1){	//If the 'Next variant' button is set to be visable (Teachers only). 
-			str+="<div id='nextVariantBtn' style='width:0px;'><input class='submit-button large-button' style='width:auto;' type='button' value='"+duggaTitle+" V:"+variantValue+"' onclick='selectNextVariant();' /></div>"; 
+			str+="<div id='nextVariantBtn' ><input class='submit-button large-button' style='width:auto;' type='button' value='"+duggaTitle+" V:"+variantValue+"' onclick='selectNextVariant();' /></div>"; 
 		}
-		else{	//If the 'Next variant' button is set to not be visable (Students). 
-			console.log("else");
-			str+="<div id='nextVariantBtn'><input class='submit-button large-button' style='width:auto;' type='button' value='"+duggaTitle+"' /></div>"; 
+		else{	//If the 'Next variant' button is set to not be visable (Students).
+			str+="<div>"+duggaTitle+"</div>";
 		}
 
 		str+="</div>";
