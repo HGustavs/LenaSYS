@@ -198,26 +198,6 @@ function reset()
 	}
 }
 
-function newSubmission(){
-
-	if(confirm("If you want to make a new submission")){
-
-		clearLocalStorageItem(localStorageItemKey);
-		reloadPage();
-		console.log("Confurm");
-		
-		//Fixa ny hash/lösenord
-		//använd reset funktionen som finns i reset knappen
-		//clearLocalStorageItem(localStorageItemKey);
-		//Lägg in hashen i localStorageItemKey
-		//Stringify localStorageItemKey
-
-	}else{
-		//Cancel making a new submission
-		console.log("cancul");
-	}
-}
-
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
 	if (userStats != null){

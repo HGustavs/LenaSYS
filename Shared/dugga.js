@@ -1210,6 +1210,7 @@ function newSubmission(){
 		reloadPage();
 		console.log("Confurm");
 		
+		
 		//Fixa ny hash/lösenord
 		//använd reset funktionen som finns i reset knappen
 		//clearLocalStorageItem(localStorageItemKey);
