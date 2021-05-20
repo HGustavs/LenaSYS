@@ -140,7 +140,7 @@ if($gradesys=="UNK") $gradesys=0;
 		                    if(is_null($email)){
 		                        $email=$row['username']."@student.his.se";
 		                    }
-		                    array_push($grplst, array($grp,$row['firstname'],$row['lastname'],$email));
+		                //    array_push($grplst, array($grp,$row['firstname'],$row['lastname'],$email));
 		                    $idx=strpos($grpmembershp,$showgrp,$idx+1);
 		                }
 		            }
