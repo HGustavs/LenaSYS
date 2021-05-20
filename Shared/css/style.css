@@ -3360,7 +3360,7 @@ span.arrow {
   align-items: flex-end;
 }
 
-#btn-apply-filter {
+.filter-btn{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   display: inline-block;
   padding: 8px 25px;
@@ -3372,8 +3372,44 @@ span.arrow {
   cursor: pointer;
 }
 
-#btn-apply-filter:hover{
+.filter-btn:hover{
   background-color: var(--color-primary-hover);
+}
+
+.dugga-filter-container { 
+  position: relative;
+}
+
+.show-dugga-filter-popup {
+  position: absolute;
+  left: 15%;
+  min-width: 250px;
+  background-color: var(--color-background-3);
+  border: 1px solid black;
+}
+
+.dugga-entry-box {
+  padding: 2px 2px 2px 5px;
+}
+
+.toggle-dugganame-filter-box {
+  padding: 10px 0px 5px 5px;
+}
+
+.toggle-dugganame-filter-box > label{
+ 
+}
+
+.toggle-0 {
+  background-color: var(--color-background-3);
+}
+
+.toggle-1 {
+  background-color: #fff;
+}
+
+.show-dugga-filter-popup.hidden {
+  display: none;
 }
 
 #select-date-interval {
