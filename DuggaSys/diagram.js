@@ -3947,7 +3947,7 @@ function drawLine(line, targetGhost = false)
     var felem, telem, dx, dy;
     var str = "";
 
-    var lengthConstant = 7; // Determines how "far inwards" on the entity the line should have its origin and its end points.
+    var lengthConstant = 7; // Determines how "far inwards" on the element the line should have its origin and its end points.
     var x1Offset = 0;
     var x2Offset = 0;
     var y1Offset = 0;
@@ -4017,7 +4017,6 @@ function drawLine(line, targetGhost = false)
         var cstmOffSet = 1.4;
 
        	str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-
         str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
     }
 
