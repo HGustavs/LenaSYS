@@ -83,10 +83,18 @@ function saveTimesAccessed(){
 	AJAXService("ACCDUGGA", {}, "ACCESSEDDUGGA");
 }
 
-		// Loades a dugga from hash and redirects to index.php that then continues to redirect to the specified dugga
+		// Loads a dugga from hash and redirects to index.php that then continues to redirect to the specified dugga
 function loadDugga(){
 	var hash = document.getElementById('hash');
 	window.location.href = "../sh/?a="+hash.value;
+	
+}
+
+function loadDuggaType(){
+
+	var hash = document.getElementById('hash');
+	window.location.href = "../sh/?a="+hash.value;
+
 }
 
 //----------------------------------------------------------------------------------

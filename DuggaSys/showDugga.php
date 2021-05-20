@@ -226,7 +226,11 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 						echo "<input id='saveDuggaButton' class='".$btnDisable." submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
 						if ($duggafile !== 'generic_dugga_file_receive') {
 							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+							echo "<td align='right'>";
 							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
+							echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
+							echo "</td>";
+							
 						}
 
 						echo "</td>";
@@ -355,6 +359,21 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 	<div id='groupAssignment'>
 		<p id='clicks'><p>	
 	</div>
+
+	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
+	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
+			<div class='loginBoxheader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
+			<div id='loadDuggaInfo'></div>
+    		<div id='loadDuggaPopup' style="display:block">
+				<div class='inputwrapper'><span>Enter your hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value=''/></div>
+				<div class="button-row">
+					<input type='button' class='submit-button' onclick="loadDuggaType();" value='Load Dugga'>
+					<input type='button' class='submit-button' onclick="hideLoadDuggaPopup();" value='Close'>
+				</div>
+    		</div>
+      </div>
+	</div>
+
 	<!-- content END -->
 	<?php
 		include '../Shared/loginbox.php';
