@@ -1289,7 +1289,7 @@ function enableTeacherVariantChange(data) {
 	data['variants'].forEach(element => varArr.push(element.vid));
 	nbrOfVariants = varArr.length;
 	if(nbrOfVariants == 1) {
-		document.getElementById("nextVariantBtn").style.display="none";
+		//document.getElementById("nextVariantBtn").style.display="none";
 	}
 }
 
@@ -2040,20 +2040,23 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
 		}
 
-		//If duggaTitle variable have a value set. 
-		if(duggaTitle) {	
-			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>"+duggaTitle+"</div>";
-		}
+
+
+		str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div>";
+
+		console.log("duggatitle = "+duggaTitle);
+		console.log("variantValue = "+variantValue);
 		//If there is no name of the dugga.
-		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
-			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
+		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){
+			duggaTitle = "Untitled dugga";
 		}
 
-		if(loadVariantFlag){	//If the 'Next variant' button is set to be visable (Teachers only). 
-			str+="<div id='nextVariantBtn' style='width:0px;'><input class='submit-button large-button' type='button' value='Next Variant' onclick='selectNextVariant();' /></div>"; 
+		if(loadVariantFlag && variantsArr.length > 1){	//If the 'Next variant' button is set to be visable (Teachers only). 
+			str+="<div id='nextVariantBtn' style='width:0px;'><input class='submit-button large-button' style='width:auto;' type='button' value='"+duggaTitle+" V:"+variantValue+"' onclick='selectNextVariant();' /></div>"; 
 		}
 		else{	//If the 'Next variant' button is set to not be visable (Students). 
-			str+="<div id='nextVariantBtn' style='display:none;'><input class='submit-button large-button' type='button' value='Next Variant' /></div>"; 
+			console.log("else");
+			str+="<div id='nextVariantBtn'><input class='submit-button large-button' style='width:auto;' type='button' value='"+duggaTitle+"' /></div>"; 
 		}
 
 		str+="</div>";
