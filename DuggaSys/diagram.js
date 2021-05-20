@@ -4685,6 +4685,8 @@ function showdata()
      updateGridPos();
      updateGridSize();
      drawRulerBars(scrollx, scrolly);
+     updateA4Pos();
+     updateA4Size();
  }
 //#endregion =====================================================================================
 //#region ================================   LOAD AND EXPORTS    ==================================
