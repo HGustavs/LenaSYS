@@ -1210,7 +1210,7 @@ function newSubmission(){
 	if(confirm("If you want to make a new submission")){
 		variantValue = localStorage.getItem("tempValue"); //Removes the localStorage item
 		localStorage.removeItem("tempValue");
-		hash = generateHash(); //Möjligtvis överflödiga
+		hash = generateHash(); 
 		pwd = randomPassword();
 		opt = "SAVDU";
 		localStorage.removeItem("duggaData_" + querystring["did"]);
