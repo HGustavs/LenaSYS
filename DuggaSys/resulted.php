@@ -120,7 +120,7 @@ pdoConnect();
 		<div class="search-filer-container">
 			<div class="select-dugga-filter">
 				<div class="dugga-filter-container">
-					<div class="filter-btn" onclick="showAvaiableDuggaFilter()">Show dugga filter</div>
+					<div class="filter-btn filter-btn-duggaName" onclick="showAvaiableDuggaFilter()">Show dugga filter</div>
 					<div class="show-dugga-filter-popup hidden"></div>
 				</div>
 			</div>

@@ -10,12 +10,12 @@ var filerByDate = {
 	date2: null
 }
 var duggasArr = [];
+var showDuggaFilterElement;
+var toggleElement;
+var checkboxElements;
 
 
 function updateFilterInterval() {
-	var showDuggaFilterElement = document.querySelector(".show-dugga-filter-popup");
-	showDuggaFilterElement.classList.add("hidden");
-
 	// Date object requires string to not apply random time zone.
 	var dateElement = document.querySelectorAll(".date-interval-selector");
 	if (dateElement[0].value != "" && dateElement[1].value != ""){
@@ -26,16 +26,56 @@ function updateFilterInterval() {
 	duggasArr = [];
 	var checkboxElements = document.getElementsByName("duggaEntryname");
 
-	for (var element of checkboxElements){
-		if (element.checked)
+	for (var element of checkboxElements) {
+		if (element.checked) {
 			duggasArr.push(element.value)
+		}
 	}
 
 	updateTable();
 }
 
+document.addEventListener("DOMContentLoaded", loadHTMLelements);
+document.addEventListener("click", function(e) {
+	var child = e.target;
+	var parent = showDuggaFilterElement;
+	var bool = (!parent.classList.contains("hidden") && (child.classList.contains("filter-btn-duggaName") || parent.contains(child)));
+
+	if (bool) parent.classList.remove("hidden")
+	else parent.classList.add("hidden")
+});
+
+function loadHTMLelements() {
+	showDuggaFilterElement = document.querySelector(".show-dugga-filter-popup");
+	toggleElement = document.getElementById("toggle-dugganame-filter");
+	checkboxElements = document.getElementsByName("duggaEntryname");
+}
+
+function checkboxDuggaNameClicked(thisElement) {
+	// When unchecking toggle should also uncheck
+	if (toggleElement.checked && !thisElement.checked)
+		toggleElement.checked = false;
+}
+
+function toggleDuggaNameFilter() {
+	var toggleStatus = toggleElement.checked;
+	var isAnyChecked = false;
+	var isAnyUnChecked = false;
+
+	for (var element of checkboxElements) {
+		if (element.checked) isAnyChecked = true;
+		else isAnyUnChecked = true
+	}
+
+	for (var element of checkboxElements) {
+		if (isAnyChecked && isAnyUnChecked) element.checked = false;
+		else element.checked = toggleStatus
+	}
+
+	if (isAnyChecked && isAnyUnChecked) toggleElement.checked = false;
+}
+
 function showAvaiableDuggaFilter() {
-	var showDuggaFilterElement = document.querySelector(".show-dugga-filter-popup");
 	showDuggaFilterElement.classList.toggle("hidden")
 }
 
@@ -61,28 +101,36 @@ function updateTable() {
 	myTable.renderTable();
 }
 
-function returnedResults(data){
-    console.log(data);
-
+function returnedResults(data) {
     process();
 
 	var assignmentList;
 	var duggaEntrynameCheckbox = "";
 	var duggaFilterOptions = data['duggaFilterOptions'];
 	assignmentList += "<option value='All' selected>All</option>";
-	for(var i = 0; i < duggaFilterOptions.length; i++){
+	var lasti;
+	for(var i = 0; i < duggaFilterOptions.length; i++) {
 		assignmentList += "<option value='"+ duggaFilterOptions[i].entryname +"'>"+ duggaFilterOptions[i].entryname + "</option>";
 		duggaEntrynameCheckbox += `
 		<div class="dugga-entry-box toggle-${i%2}">
-			<input type="checkbox" name="duggaEntryname" value="${duggaFilterOptions[i].entryname}">
+			<input type="checkbox" name="duggaEntryname" value="${duggaFilterOptions[i].entryname}" onclick="checkboxDuggaNameClicked(this)">
 			<label>${duggaFilterOptions[i].entryname}</label>
 		</div>
 		`;
+
+		lasti = i;
 	}
+	duggaEntrynameCheckbox += `
+	<div class="toggle-dugganame-filter-box toggle-${(lasti + 1)%2}">
+		<input type="checkbox" id="toggle-dugganame-filter" onclick="toggleDuggaNameFilter()">
+		<label>Select all</label>
+	</div>`
+
 	document.getElementById("assignmentDropdown").innerHTML = assignmentList;
 	document.querySelector(".show-dugga-filter-popup").innerHTML = duggaEntrynameCheckbox;
 		
     createSortableTable(data['tableInfo']);
+	loadHTMLelements();
 }
 
 function createSortableTable(data){
