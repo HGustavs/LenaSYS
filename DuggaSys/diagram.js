@@ -3946,6 +3946,12 @@ function drawLine(line, targetGhost = false)
 {   
     var felem, telem, dx, dy;
     var str = "";
+
+    var lengthConstant = 7; // Determines how "far inwards" on the entity the line should have its origin and its end points.
+    var x1Offset = 0;
+    var x2Offset = 0;
+    var y1Offset = 0;
+    var y2Offset = 0;
     
     var lineColor = '#A000DC';
     if(contextLine.includes(line)){
@@ -3982,9 +3988,25 @@ function drawLine(line, targetGhost = false)
         tx = telem.x2;
     }
 
+    // Used to draw the lines a bit longer to get rid of white-spaces.
+    if ((fx > tx) && (line.ctype == "LR")){
+        x1Offset = lengthConstant;
+        x2Offset = -lengthConstant;
+    } else if ((fx < tx) && (line.ctype == "RL")){
+        x1Offset = -lengthConstant;
+        x2Offset = lengthConstant;
+    } else if ((fy > ty) && (line.ctype == "TB") ){
+        y1Offset = lengthConstant;
+        y2Offset = -lengthConstant;   
+    
+    } else if ((fy < ty) && (line.ctype == "BT") ){
+        y1Offset = -lengthConstant;
+        y2Offset = lengthConstant;   
+    }
+
     if (line.kind == "Normal"){
 
-        str += `<line id='${line.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+        str += `<line id='${line.id}' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
     
     }else if (line.kind == "Double"){
         // We mirror the line vector
@@ -3995,9 +4017,9 @@ function drawLine(line, targetGhost = false)
         dx = dx / len;
         var cstmOffSet = 1.4;
 
-        str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+       	str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
 
-        str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+        str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
     }
 
     if(contextLine.includes(line)){
