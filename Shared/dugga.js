@@ -2181,6 +2181,8 @@ function hideServerMessage() {
 	}, 200, "easeInOutSine", () => {
 		$containerHeight.css(opacity, 1);
 	});
+
+	$("#messagedialog").css("display", "content");
 }
 
 function hideCookieMessage() {
@@ -2190,6 +2192,11 @@ function hideCookieMessage() {
 		$("#cookiemsg").css("display", "none");
 		$("#cookiemsg").css("opacity", "1");
 	}, 200);
+}
+
+function showServerMessage(){
+	$("#motdNav").css("display","none");
+	$("#servermsgcontainer").css("display","block");
 }
 
 //----------------------------------------------------------------------------------
