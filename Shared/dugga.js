@@ -30,6 +30,7 @@ var locallystoredhash;
 var isFileSubmitted;
 var isTeacher;
 var localStorageItemKey = "duggaData_" + querystring["did"];
+var tryingToStorePara;
 
 // Variant related
 
@@ -984,6 +985,7 @@ function AJAXService(opt,apara,kind)
 				// Informs the user that his input contained nothing.
 				console.log("Your input contained nothing in " + key);
 		}
+		tryingToStorePara = para; //TEST
 	}
 
 	if(kind=="COURSE"){
@@ -1075,7 +1077,7 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
-		//newSubmission();
+		
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
@@ -1203,26 +1205,41 @@ function AJAXService(opt,apara,kind)
 	}
 }
 function newSubmission(){
-
+	console.log(variantValue);
+	localStorage.setItem("tempValue", variantValue); //Temporarily stores the variant so we can load it below
 	if(confirm("If you want to make a new submission")){
-
-		clearLocalStorageItem(localStorageItemKey);
-		reloadPage();
-		console.log("Confurm");
-		
-		
-		//Fixa ny hash/lösenord
-		//använd reset funktionen som finns i reset knappen
-		//clearLocalStorageItem(localStorageItemKey);
-		//Lägg in hashen i localStorageItemKey
-		//Stringify localStorageItemKey
-
-	}else{
-		//Cancel making a new submission
-		console.log("cancul");
+		variantValue = localStorage.getItem("tempValue"); //Removes the localStorage item 
+		console.log(variantValue);
+		localStorage.removeItem("tempValue");
+		hash = generateHash(); //Möjligtvis överflödiga
+		pwd = randomPassword();
+		opt = "SAVDU";
+		localStorage.removeItem("duggaData_" + querystring["did"]);
+		$.ajax({
+			url: "showDuggaservice.php",
+			type: "POST",
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+tryingToStorePara+"&variant="+variantValue,//tryingToStorePara may not be what we want?
+			datatype: "json",
+			success: function(data){
+				console.log(variantValue);
+				var phpData = JSON.parse(data);
+				isTeacher = phpData.isTeacher;
+				isFileSubmitted = phpData.isFileSubmitted;
+				canSaveController(); 
+				localStorageHandler(phpData);
+	
+				//returnedDugga(phpData);
+				setPassword(phpData.password); 
+				enableTeacherVariantChange(phpData);
+				handleHash();	//Makes sure hash is unique.
+				console.log(variantValue);
+			}
+			
+		});
+		console.log(variantValue);
 	}
 }
-
+	
 /*
 function newSubmission() {
 	if((localStorage.getItem(localStorageItemKey)) != null) {
