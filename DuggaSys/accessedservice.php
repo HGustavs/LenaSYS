@@ -102,7 +102,7 @@ if(checklogin() && $hasAccess) {
 				$query->bindParam(':cid', $cid);
 		}
 
-		if($prop=="firstname"||$prop=="lastname"||$prop=="ssn"||$prop=="username"||$prop=="class"||$prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
+		//if($prop=="firstname"||$prop=="lastname"||$prop=="ssn"||$prop=="username"||$prop=="class"||$prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
 				$query->bindParam(':uid', $uid);
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
@@ -160,9 +160,9 @@ if(checklogin() && $hasAccess) {
 					
             if (count($user) == 1&&strcmp($user[0],"")!==0) {
                 // See if we have added with username or SSN
-                $userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:usernameorssn1 or ssn=:usernameorssn2");
+                //$userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:usernameorssn1 or ssn=:usernameorssn2");
                 $userquery->bindParam(':usernameorssn1', $user[0]);
-                $userquery->bindParam(':usernameorssn2', $user[0]);
+                //$userquery->bindParam(':usernameorssn2', $user[0]);
 
                 if(!$userquery->execute()) {
                   $error=$userquery->errorInfo();
@@ -178,13 +178,13 @@ if(checklogin() && $hasAccess) {
             } else if (count($user) > 1){
               $ssn = $user[0];
               // Check if user has an account
-              $userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
-              $userquery->bindParam(':ssn', $ssn);
+              //$userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
+              //$userquery->bindParam(':ssn', $ssn);
 
               if ($userquery->execute() && $userquery->rowCount() <= 0) {
 								
-                  $firstname = $user[1];
-                  $lastname = $user[2];
+                  //$firstname = $user[1];
+                  //$lastname = $user[2];
                   $className = $user[count($user)-2];
                   $saveemail = $user[3];
                   $regstatus = $user[count($user)-1];
@@ -294,7 +294,7 @@ $submissions=array();
 
 if(checklogin() && $hasAccess) {
 	
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid AND user_course.access = 'W'" );
+	//$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid AND user_course.access = 'W'" );
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -313,8 +313,8 @@ if(checklogin() && $hasAccess) {
 		$entry = array(
 			'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
 			/*'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),*/
-			'firstname' => json_encode(['firstname' => $row['firstname'], 'uid' => $row['uid']]),
-			'lastname' => json_encode(['lastname' => $row['lastname'], 'uid' => $row['uid']]),
+			//'firstname' => json_encode(['firstname' => $row['firstname'], 'uid' => $row['uid']]),
+			//'lastname' => json_encode(['lastname' => $row['lastname'], 'uid' => $row['uid']]),
 			'class' => json_encode(['class' => $row['class'], 'uid' => $row['uid']]),
 			'modified' => $row['modified'],
 			'examiner' => json_encode(['examiner' => $row['examiner'], 'uid' => $row['uid']]),
@@ -326,7 +326,7 @@ if(checklogin() && $hasAccess) {
 		array_push($entries, $entry);
 	}
 
-	$query = $pdo->prepare("SELECT user.firstname,user.uid, user.lastname FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP by user.firstname,user.lastname, user.uid ORDER BY user.firstname, user.lastname;");
+	//$query = $pdo->prepare("SELECT user.firstname,user.uid, user.lastname FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP by user.firstname,user.lastname, user.uid ORDER BY user.firstname, user.lastname;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -334,7 +334,7 @@ if(checklogin() && $hasAccess) {
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$teacher = array(
-			'name' => $row['firstname']." ".$row['lastname'],
+			//'name' => $row['firstname']." ".$row['lastname'],
 			'uid' => $row['uid']
 		);
 		array_push($teachers, $teacher);
