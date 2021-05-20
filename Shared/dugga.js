@@ -2174,14 +2174,11 @@ function generateTimeSheetOptions(course, moment, selected) {
 //----------------------------------------------------------------------------------
 
 function hideServerMessage() {
+	$("#motdNav").css("display","inline-block");
 	var $containerHeight = $("#servermsgcontainer");
-	$containerHeight.animate({ 
-		opacity: 0, 
-		top: -$containerHeight.outerHeight() 
-	}, 200, "easeInOutSine", () => {
-		$containerHeight.css(opacity, 1);
-	});
-
+	$containerHeight.animate({
+		top: -$containerHeight.outerHeight()
+	},200, "easeInOutSine", () => {});
 	$("#messagedialog").css("display", "content");
 }
 
@@ -2196,7 +2193,11 @@ function hideCookieMessage() {
 
 function showServerMessage(){
 	$("#motdNav").css("display","none");
-	$("#servermsgcontainer").css("display","block");
+	var $containerHeight = $("#servermsgcontainer");
+	$containerHeight.animate({ 
+		top: 50
+	},200, "easeInOutSine", () => {});
+	$("#servermsgcontainer").css("display","content");
 }
 
 //----------------------------------------------------------------------------------

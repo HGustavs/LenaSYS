@@ -30,7 +30,7 @@
 
 			// Always show home button which links to course homepage
 			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img alt='home button icon' src='../Shared/icons/Home.svg'></a></td>";
-			echo "<td class='navButt' id='motdNav' title='Message of the day 'onclick='showServerMessage();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
+			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
