@@ -58,7 +58,7 @@ class StateChange {
      * @param {Array<String>} id_list Array of all elements affected by this state change. This is used for merging changes on the same elements.
      * @param {Object} passed_values Map of all values that this change contains. Each property represents a change.
      */
-    constructor(id, values)
+    constructor(id, values, timestamp)
     {
         if (id != null) this.id = id;
 
@@ -75,7 +75,8 @@ class StateChange {
             }
         }
 
-        this.time = new Date().getTime();
+        if (timestamp != undefined) this.time = timestamp;
+        else this.time = new Date().getTime();
     }
 
     /**
@@ -90,18 +91,12 @@ class StateChange {
         propertys.forEach(key => {
 
             /**
-             * If the current key in the loop is a number, update the value or if it do not
-             * exists, set the value. Else just set the value.
+             * If the key is not blacklisted, set to the new value
              */
-            if (key == "time" || key == "id") return; // Ignore this keys.
-
-            if ((typeof changes[key]) == "number") {
-                if (this[key] === undefined) this[key] = changes[key];
-                else this[key] += changes[key]
-            } else {
+            if (key == "id") return; // Ignore this keys.
                 this[key] = changes[key];
-            }
         });
+
     }
 }
 
@@ -152,18 +147,26 @@ class StateChangeFactory
      * @param {List<String>} elementIDs List of IDs for all elements that were moved.
      * @param {Number} moveX Amount of coordinates along the x-axis the elements have moved.
      * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
-     * @returns {StateChange} A new instance of the StateChange class.
+     * @returns {Array<StateChange>} A new instance of the StateChange class.
      */
     static ElementsMoved(elementIDs, moveX, moveY)
     {
-        var values = {};
+        var changesArr = [];
+        var timeStamp = new Date().getTime();
 
-        // If moveX or Y is 0, the value should not be applied
-        if (moveX != 0) values.x = moveX;
-        if (moveY != 0) values.y = moveY;
-        if (moveX == 0 && moveY == 0) return null;
+        if (moveX == 0 && moveY == 0) return;
 
-        return new StateChange(elementIDs, values);
+        elementIDs.forEach(id => {
+            var values = {};
+           var obj = data[findIndex(data, id)];
+           if (obj === undefined) return;
+
+            if (moveX != 0) values.x = obj.x;
+            if (moveY != 0) values.y = obj.y;
+            changesArr.push(new StateChange(obj.id, values, timeStamp))
+        });
+
+        return changesArr;
     }
 
     /**
@@ -367,74 +370,81 @@ class StateMachine
      * @see StateChangeFactory For constructing new state changes more easily.
      * @see StateChange For available flags.
      */
-    save (stateChange, changeType)
+    save (stateChangeArray, changeType)
     {
-        if (stateChange instanceof StateChange) {
-            // Remove the history entries that are after current index
-            this.removeFutureStates();
+        if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
-            // If history is present, perform soft/hard-check
-            if (this.historyLog.length > 0) {
+        for (var i = 0; i < stateChangeArray.length; i++) {
 
-                // Get the last state in historyLog
-                var lastLog = this.historyLog[this.historyLog.length - 1];
+            var stateChange = stateChangeArray[i];
 
-                // Check if the element is the same
-                var sameElements = true;
-                var isSoft = true;
-				
-				// Change is creation of elements, no need for history comparisions
-                if(stateChange.created != undefined) {
-                    sameElements = false;
-                } else { // Perform history comparisions
-                    if (Array.isArray(lastLog.id)){
-                        if (stateChange.id.length != lastLog.id.length) sameElements = false;
-                        for (var index = 0; index < lastLog.id.length && sameElements; index++) {
-                            var id_found = lastLog.id[index];
-    
-                            if (!stateChange.id.includes(id_found)) sameElements = false;
-    
+            if (stateChange instanceof StateChange) {
+
+                // Remove the history entries that are after current index
+                this.removeFutureStates();
+
+                // If history is present, perform soft/hard-check
+                if (this.historyLog.length > 0) {
+
+                    // Get the last state in historyLog
+                    var lastLog = this.historyLog[this.historyLog.length - 1];
+
+                    // Check if the element is the same
+                    var sameElements = true;
+                    var isSoft = true;
+
+                    // Change is creation of elements, no need for history comparisions
+                    if(stateChange.created != undefined) {
+                        sameElements = false;
+                    } else { // Perform history comparisions
+                        if (Array.isArray(lastLog.id)){
+                            if (stateChange.id.length != lastLog.id.length) sameElements = false;
+                            for (var index = 0; index < lastLog.id.length && sameElements; index++) {
+                                var id_found = lastLog.id[index];
+
+                                if (!stateChange.id.includes(id_found)) sameElements = false;
+
+                            }
+                        }else {
+                            if (lastLog.id != stateChange.id) sameElements = false;
                         }
-                    }else {
-                        if (lastLog.id != stateChange.id) sameElements = false;
+
+                        if (Array.isArray(changeType)){
+                            for (var index = 0; index < changeType.length && isSoft; index++) {
+                                isSoft = changeType[index].isSoft;
+                            }
+                            var changeTypes = changeType;
+                        }else {
+                            isSoft = changeType.isSoft;
+                            var changeTypes = [changeType];
+                        }
+
+                    // Find last change with the same ids
+                    var timeLimit = 10; // Timelimit on history append in seconds
+                    for (var index = this.historyLog.length - 1; index >= 0; index--){
+
+                        // Check so if the changeState is not an created-object
+                        if (this.historyLog[index].created != undefined) continue;
+
+                        var sameIds = true;
+                        if(stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
+
+                        for (var idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++){
+                            if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
+                        }
+
+                        // If the found element has the same ids.
+                        if (sameIds){
+                            // If this historyLog is within the timeLimit
+                            if(((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit){
+                                lastLog = this.historyLog[index];
+                                sameElements = true;
+                            }
+                            break;
+                        }
                     }
-    
-                    if (Array.isArray(changeType)){
-                    for (var index = 0; index < changeType.length && isSoft; index++) {
-                        isSoft = changeType[index].isSoft;
-                    }
-                    var changeTypes = changeType;
-					}else {
-						isSoft = changeType.isSoft;
-						var changeTypes = [changeType];
-					}
-
-					// Find last change with the same ids
-					var timeLimit = 10; // Timelimit on history append in seconds
-					for (var index = this.historyLog.length - 1; index >= 0; index--){
-
-					    // Check so if the changeState is not an created-object
-					    if (this.historyLog[index].created != undefined) continue;
-
-						var sameIds = true;
-						if(stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
-
-						for (var idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++){
-							if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
-						}
-
-						// If the found element has the same ids.
-						if (sameIds){
-							// If this historyLog is within the timeLimit
-							if(((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit){
-								lastLog = this.historyLog[index];
-								sameElements = true;
-							}
-							break;
-						}
-					}
                 }
-                
+
                 // If NOT soft change, push new change onto history log
                 if (!isSoft || !sameElements) {
 
@@ -447,13 +457,14 @@ class StateMachine
                     for (var index = 0; index < changeTypes.length; index++) {
 
                         var changeType = changeTypes[index];
-                        
+
                         switch (changeType) {
                             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                             case StateChange.ChangeTypes.ELEMENT_MOVED:
                             case StateChange.ChangeTypes.ELEMENT_RESIZED:
                             case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
                                 lastLog.appendValuesFrom(stateChange);
+                                this.historyLog.push(this.historyLog.splice(this.historyLog.indexOf(lastLog), 1)[0]);
                                 break;
 
                             default:
@@ -470,8 +481,18 @@ class StateMachine
         } else {
             console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
         }
+    };
+        settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
+        this.historyLog.forEach(historyEntry => {
+
+            var lastKeyIndex = Object.keys(settings.replay.timestamps).length-1;
+            var lastKey = Object.keys(settings.replay.timestamps)[lastKeyIndex];
+            if (settings.replay.timestamps[lastKey] != historyEntry.time) {
+                settings.replay.timestamps[this.historyLog.indexOf(historyEntry)] = historyEntry.time
+            }
+        });
         // Change the sliders max to historyLogs length
-        document.getElementById("replay-range").setAttribute("max", this.historyLog.length.toString());
+        document.getElementById("replay-range").setAttribute("max", Object.keys(settings.replay.timestamps).length.toString());
     }
     removeFutureStates(){
         // Remove the history entries that are after current index
@@ -488,25 +509,40 @@ class StateMachine
         // If there is no history => return
         if (this.currentHistoryIndex == -1) return;
 
-        this.scrubHistory(this.currentHistoryIndex)
+        var time = this.historyLog[this.currentHistoryIndex - 1].time
 
-        // Lower the historyIndex by one
-        this.currentHistoryIndex--;
+        do {
+            // Lower the historyIndex by one
+            this.currentHistoryIndex--;
+
+        }while(this.historyLog[this.currentHistoryIndex] && time == this.historyLog[this.currentHistoryIndex].time);
+
+        this.scrubHistory(this.currentHistoryIndex);
 
         clearContext();
         showdata();
         updatepos(0, 0);
         displayMessage(messageTypes.SUCCESS, "Changes reverted!")
     }
-    stepForward(){
+    stepForward()
+    {
         // If there is not anything to restore => return
         if (this.historyLog.length == 0 || this.currentHistoryIndex == (this.historyLog.length -1)) return;
 
-        // Increase the currentHistoryIndex by one
-        this.currentHistoryIndex++;
+        // Go one step forward, if the next state in the history has the same time, do that too
+        do {
 
-        // Restore the state
-        this.restoreState(this.historyLog[this.currentHistoryIndex]);
+            // Increase the currentHistoryIndex by one
+            this.currentHistoryIndex++;
+
+            // Restore the state
+            this.restoreState(this.historyLog[this.currentHistoryIndex]);
+
+            var doNextState = false;
+            if (this.historyLog[this.currentHistoryIndex + 1]){
+                doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time)
+            }
+        }while(doNextState);
 
         // Update diagram
         clearContext();
@@ -601,12 +637,7 @@ class StateMachine
                 // For every key, apply the changes
                 keys.forEach(key => {
                     if (key == "id" || key == "time") return; // Ignore this keys.
-                    if ((typeof state[key]) == "number"){
-                        if (object[key] === undefined) object[key] = state[key];
-                        else object[key] += state[key]
-                    }else {
                         object[key] = state[key];
-                    }
                 });
             }else { // If no object was found - create one
 
@@ -656,41 +687,48 @@ class StateMachine
         updatepos(0, 0);
     }
     /**
-     * @description Create a timers and go-through all states
-     * @param {Number} cri The starting index of the replay
+     * @description Create a timers and go-through all states grouped by time.
+     * @param {Number} cri The starting index of timestamp-map to start on.
      */
     replay(cri = parseInt(document.getElementById("replay-range").value))
     {
-
         // If no history exists => return
         if (this.historyLog.length == 0) return;
+
+        var tsIndexArr = Object.keys(settings.replay.timestamps);
 
         clearInterval(this.replayTimer);
 
         // If cri (CurrentReplayIndex) is the last set to beginning
-        if(cri == this.historyLog.length) cri = 0;
+        if(cri == tsIndexArr.length) cri = 0;
 
         setReplayRunning(true);
         document.getElementById("replay-range").value = cri.toString();
 
         // Go back to the beginning.
-        this.scrubHistory(cri);
+        this.scrubHistory(tsIndexArr[cri]);
 
         var self = this;
         this.replayTimer = setInterval(function() {
 
-            self.restoreState(self.historyLog[cri]);
+            var temp = tsIndexArr[cri];
+
+            if (tsIndexArr.length - 1 == cri) var stopStateIndex = self.historyLog.length;
+            else var stopStateIndex = tsIndexArr[cri+1];
+
+            for (var i = tsIndexArr[cri]; i < stopStateIndex; i++){
+                self.restoreState(self.historyLog[i]);
+            }
 
             // Update diagram
             clearContext();
             showdata();
             updatepos(0, 0);
 
-            // Update current index for the replay
             cri++;
             document.getElementById("replay-range").value = cri;
 
-            if (self.historyLog.length == cri){
+            if (tsIndexArr.length == cri){
                 clearInterval(self.replayTimer);
                 setReplayRunning(false);
             }
@@ -931,6 +969,7 @@ var settings = {
     replay: {
         active: false,
         delay: 1,
+        timestamps: {}
     }
 };
 
@@ -2971,6 +3010,18 @@ function boxSelect_Draw(str)
 }
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
+/**
+ * @description Change the state in replay-mode with the slider
+ * @param {Number} sliderValue The value of the slider
+ */
+function changeReplayState(sliderValue)
+{
+    var timestampKeys = Object.keys(settings.replay.timestamps);
+
+    // If the last timestamp is selected, goto the last state in the diagram.
+    if (timestampKeys.length == sliderValue) stateMachine.scrubHistory(stateMachine.historyLog.length)
+    else stateMachine.scrubHistory(timestampKeys[sliderValue]);
+}
 /**
  * @description Toggles stepforward in history.
  */
