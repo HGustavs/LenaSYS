@@ -97,6 +97,13 @@ function showInfoText(object, displayText) {
   }
 }
 
+function holidays() {
+  var holidays = new Array();
+  var pask = new Date("2019-05-01");
+  holidays.push(pask);
+  return holidays;
+}
+
 function renderBarDiagram(data) {
   // Creates array from data for easier access
   var dailyCount = new Array(70);
