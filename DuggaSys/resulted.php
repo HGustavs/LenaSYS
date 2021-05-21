@@ -78,36 +78,6 @@ pdoConnect();
 	<div class="titles" style="justify-content:flex-start;">
 			<h1>Edit student results</h1>
     </div>
-      <div id="ladexportContainer">
-      <div class="resultedFormsFlex">
-        <label>Subcourse</label>
-        <select id="ladselect"></select>
-      </div>
-      <div class="resultedFormsFlex">
-        <label>Grading scale</label>
-        <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
-        <select id="ladgradescale">
-          <option value="U-G-VG" selected>U-G-VG</option>
-          <option value="U-G">U-G</option>
-       	  <!-- <option value="U-3-4-5">U-3-4-5</option> -->
-        </select>
-      </div>
-      <div class="resultedFormsFlex">
-        <label>Date of grading</label>
-        <input id="laddate" type="date" style="font-size:12px;">
-        </div>
-		<div class="resultedFormsFlex">
-			<label>Export...</label>
-			<select id="exportType">
-				<option value="restricted">Unexported</option>
-				<option value="all">All</option>
-			</select>
-		</div>
-		<div class="resultedFormsFlex">
-      <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
-	  <span id="lastExportedDate"></span>
-	  </div>
-			</div>
 			<div style="display: flex;">
 				<div class="resultedFormsFlex">
 					<label for="assignmentDropdown">Assignment</label>
