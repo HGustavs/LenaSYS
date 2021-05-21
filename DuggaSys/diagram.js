@@ -2095,21 +2095,16 @@ function changeLineProperties()
 {
     // TODO : DOES NOT STORE ANYTHING TO THE STATE MACHINE, VERY BAD!
     // Set lineKind
-    var radio1  = document.getElementById("lineRadio0");
-    var radio2 = document.getElementById("lineRadio1");
-    var radio3 = document.getElementById("lineRadio2");
-    
     var line = contextLine[0];
-
-    if(radio1.checked && line.kind != radio1.value) {
-        line.kind = radio1.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    } else if(radio2.checked && line.kind != radio2.value && radio2){
-        line.kind = radio2.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    } else if(radio3.checked && line.kind != radio3.value){
-        line.kind = radio3.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio3.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    var radio = document.getElementById("propertyFieldset").childNodes;
+    
+    for(i =0;i<radio.length;i++){
+        if(radio[i].type == "radio"){
+            if(radio[i].checked && line.kind != radio[i].value) {
+                line.kind = radio[i].value;
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio[i].value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            }
+        }
     }
 
     // Check if this element exists
@@ -3421,7 +3416,8 @@ function generateContextProperties()
         var value;
         var selected = contextLine[0].kind;
         if(selected == undefined) selected = normal;
-        
+        var fromEntity = data[findIndex(data, contextLine[0].fromID)].kind;
+        var toEntity = data[findIndex(data, contextLine[0].toID)].kind;
         
         value = Object.values(lineKind);
         str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
@@ -3429,7 +3425,7 @@ function generateContextProperties()
             if(selected == value[i]){
                 str += `<input type="radio" id="lineRadio`+i+`" name="lineKind" value='${value[i]}' checked>`;
                 str += `<label for='${value[i]}'>${value[i]}</label><br>`;
-            }else{
+            }else if(fromEntity == "ERRelation" && toEntity == "EREntity" || fromEntity == "EREntity" && toEntity == "ERRelation"){
                 str += `<input type="radio" id="lineRadio`+i+`" name="lineKind" value='${value[i]}'>`;
                 str += `<label for='${value[i]}'>${value[i]}</label><br>` ;
             }
