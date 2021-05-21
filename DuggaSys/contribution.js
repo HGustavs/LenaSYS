@@ -221,6 +221,8 @@ function renderBarDiagram(data) {
   str += '<div style="width:15px; height:15px; background-color:#43A047;margin-left:10px;"></div></div>';
   str += '<div style="display:flex; align-items:center;margin-left:30px;margin-right:30px;"><p>LOC:</p>';
   str += '<div style="width:15px; height:15px; background-color:Purple;margin-left:10px;"></div></div>';
+  str += '<div style="display:flex; align-items:center;margin-left:30px;margin-right:30px;"><p>Holidays:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#f1c0cb;margin-left:10px;"></div></div>';
   str += "</svg>";
   str += "</div>";
   return str;
