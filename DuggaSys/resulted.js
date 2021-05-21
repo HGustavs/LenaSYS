@@ -10,12 +10,13 @@ var filerByDate = {
 	date2: null
 }
 var duggasArr = [];
+var searchTerms = [];
 var showDuggaFilterElement;
 var toggleElement;
 var checkboxElements;
 
 
-function updateFilterInterval() {
+function searchByFilter() {
 	// Date object requires string to not apply random time zone.
 	var dateElement = document.querySelectorAll(".date-interval-selector");
 	if (dateElement[0].value != "" && dateElement[1].value != ""){
@@ -32,7 +33,14 @@ function updateFilterInterval() {
 		}
 	}
 
+	setSearchTerms();
+
 	updateTable();
+}
+
+function setSearchTerms() {
+	var searchBarElement = document.querySelector(".searchbar-filter");
+	searchTerms = searchBarElement.value.split("&&");
 }
 
 document.addEventListener("DOMContentLoaded", loadHTMLelements);
