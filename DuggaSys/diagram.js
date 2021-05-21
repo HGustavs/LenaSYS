@@ -4869,24 +4869,29 @@ function getFileContent(files)
 /**
  * @description Load the content of a file to the diagram-data. This will remove previous data
  */
-async function loadDiagram()
+async function loadDiagram(file = null)
 {
-    var fileInput = document.getElementById("importDiagramFile");
+    if (file === null){
+        var fileInput = document.getElementById("importDiagramFile");
 
-    // If not an json-file is inputted => return
-    if (getExtension(fileInput.value) != "json"){
-        displayMessage(messageTypes.ERROR, "Sorry, you cant load that type of file. Only json-files is allowed");
-        return;
+        // If not an json-file is inputted => return
+        if (getExtension(fileInput.value) != "json"){
+            displayMessage(messageTypes.ERROR, "Sorry, you cant load that type of file. Only json-files is allowed");
+            return;
+        }
+
+        try{
+            // Get filepath
+            var file1 = fileInput.files[0];
+            var temp = await getFileContent(file1);
+            temp = JSON.parse(temp);
+        } catch(error){
+            console.log(error);
+        }
+    }else {
+        temp = file;
     }
 
-    try{
-        // Get filepath
-        var file1 = fileInput.files[0];
-        var temp = await getFileContent(file1);
-        temp = JSON.parse(temp);
-    } catch(error){
-        console.log(error);
-    }
 
     if(temp.historyLog && temp.initialState){
         // Set the history and initalState to the values of the file

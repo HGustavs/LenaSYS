@@ -5,7 +5,7 @@ function setup()
 {
     inParams = parseGet();
     AJAXService("GETPARAM", { }, "PDUGGA");
-    generateSubmitForm();
+    document.getElementById("saveDuggaButton").onclick  = function() { uploadFile(); }
 }
 /**
  * @description Load latest diagram from hash
@@ -49,12 +49,28 @@ function uploadFile()
             kind: 4,
             moment: inParams["moment"]
         }
-    })
-        .done(function( msg ) {
-            alert( "Data Saved: " + msg );
-        });
+    }).done(function() {
+        saveClick();
+    });
 }
 function returnedDugga(para)
 {
-    console.log(para);
+    var files = para.files
+    var lastKeyIndex = Object.keys(files).length-1;
+    var lastKey = Object.keys(files)[lastKeyIndex];
+    var lastFile = files[lastKey]
+    var lastKeyIndex2 = Object.keys(lastFile).length-1;
+    var lastKey2 = Object.keys(lastFile)[lastKeyIndex2];
+    var lastFile2 = lastFile[lastKey2]
+
+    var filePath = lastFile2.filepath + lastFile2.filename + lastFile2.seq + "." + lastFile2.extension;
+
+    $.ajax({
+        method: "GET",
+        url: filePath,
+
+    }).done(function(file) {
+        document.getElementById("diagram-iframe").contentWindow.loadDiagram(file);
+    });
+
 }

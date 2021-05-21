@@ -285,11 +285,15 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 				$seq++;
 
 				$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/";
+				if ($fieldkind = 4) {
+					$extension = "json";
+					$mime = "json";
+				}
+				$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$fname.$seq.".".$extension;
+
 				if ($fieldkind = 4){ // JSON-data
-					$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$fname.$seq.".json";
 					file_put_contents($movname, $inputtext);
 				}else{
-					$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$fname.$seq.".".$extension;
 					file_put_contents($movname, htmlentities($inputtext, ENT_QUOTES | ENT_IGNORE, "UTF-8"));
 				}
 
