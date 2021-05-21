@@ -484,9 +484,10 @@ class StateMachine
     };
         settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
         this.historyLog.forEach(historyEntry => {
-            // settings.replay.timestamps[Object.keys(settings.replay.timestamps[Object.keys(settings.replay.timestamps).length - 1])]
 
-            if (settings.replay.timestamps[Object.keys(settings.replay.timestamps)[Object.keys(settings.replay.timestamps).length-1]] != historyEntry.time) {
+            var lastKeyIndex = Object.keys(settings.replay.timestamps).length-1;
+            var lastKey = Object.keys(settings.replay.timestamps)[lastKeyIndex];
+            if (settings.replay.timestamps[lastKey] != historyEntry.time) {
                 settings.replay.timestamps[this.historyLog.indexOf(historyEntry)] = historyEntry.time
             }
         });
@@ -538,7 +539,9 @@ class StateMachine
             this.restoreState(this.historyLog[this.currentHistoryIndex]);
 
             var doNextState = false;
-            if (this.historyLog[this.currentHistoryIndex + 1]) doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time)
+            if (this.historyLog[this.currentHistoryIndex + 1]){
+                doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time)
+            }
         }while(doNextState);
 
         // Update diagram
