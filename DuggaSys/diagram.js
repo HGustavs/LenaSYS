@@ -4009,7 +4009,8 @@ function drawLine(line, targetGhost = false)
     }else if (line.kind == "Recursive"){
         var fwidth = (felem.width / 2) * zoomfact;
         var twidth = (telem.width / 2) * zoomfact;
-        
+        var linespaceX = 0;
+        var linespaceY = 0;
         // Recaluclate coordinates for the lines on ERRelation side
         if(telem.kind == "EREntity"){
             if (line.ctype == "BT"){
@@ -4017,26 +4018,29 @@ function drawLine(line, targetGhost = false)
                 fx += fwidth;
                 fy2 = fy;
                 fx2 = fx - fwidth*2;
+                linespaceX = 5*zoomfact;
             }else if (line.ctype == "TB"){
                 fy += fwidth;
                 fx += fwidth;
                 fy2 = fy;
                 fx2 = fx -fwidth*2;
-                    
+                linespaceX = 5*zoomfact;
             }else if (line.ctype == "RL"){
                 fy += fwidth;
                 fx -= fwidth;
                 fx2 = fx;
                 fy2 = fy - fwidth*2;
+                linespaceY = 5*zoomfact;
             }else if (line.ctype == "LR"){
                 fy += fwidth;
                 fx += fwidth;
                 fx2 = fx;
                 fy2 = fy - fwidth*2;
+                linespaceY = 5*zoomfact;
             }
     
-            str += `<line id='${line.id}-1' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            str += `<line id='${line.id}-2' x1='${fx2}' y1='${fy2}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-1' x1='${fx}' y1='${fy}' x2='${tx+linespaceX}' y2='${ty+linespaceY}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-2' x1='${fx2}' y1='${fy2}' x2='${tx-linespaceX}' y2='${ty-linespaceY}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         }else {
 
             if (line.ctype == "BT"){
@@ -4044,26 +4048,29 @@ function drawLine(line, targetGhost = false)
                 tx += twidth;
                 ty2 = ty;
                 tx2 = tx - twidth*2;
+                linespaceX = 5*zoomfact;
             }else if (line.ctype == "TB"){
                 ty -= twidth;
                 tx += twidth;
                 ty2 = ty;
                 tx2 = tx - twidth*2;
-                
+                linespaceX = 5*zoomfact;
             }else if (line.ctype == "RL"){
                 ty += twidth;
                 tx += twidth;
                 tx2 = tx;
                 ty2 = ty - twidth*2;
+                linespaceY = 5*zoomfact;
             }else if (line.ctype == "LR"){
                 ty += twidth;
                 tx -= twidth;
                 tx2 = tx;
                 ty2 = ty - twidth*2;
+                linespaceY = 5*zoomfact;
             }
     
-            str += `<line id='${line.id}-1' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            str += `<line id='${line.id}-2' x1='${fx}' y1='${fy}' x2='${tx2}' y2='${ty2}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-1' x1='${fx+linespaceX}' y1='${fy+linespaceY}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-2' x1='${fx-linespaceX}' y1='${fy+linespaceY}' x2='${tx2}' y2='${ty2}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         }
     }
 
