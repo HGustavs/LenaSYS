@@ -14,6 +14,7 @@ var searchTerms = [];
 var showDuggaFilterElement;
 var toggleElement;
 var checkboxElements;
+var searchBarElement;
 
 
 function searchByFilter() {
@@ -39,7 +40,7 @@ function searchByFilter() {
 }
 
 function setSearchTerms() {
-	var searchBarElement = document.querySelector(".searchbar-filter");
+
 	searchTerms = searchBarElement.value.split("&&");
 }
 
@@ -53,10 +54,17 @@ document.addEventListener("click", function(e) {
 	else parent.classList.add("hidden")
 });
 
+
 function loadHTMLelements() {
+	searchBarElement = document.querySelector(".searchbar-filter");
 	showDuggaFilterElement = document.querySelector(".show-dugga-filter-popup");
 	toggleElement = document.getElementById("toggle-dugganame-filter");
 	checkboxElements = document.getElementsByName("duggaEntryname");
+
+	searchBarElement.addEventListener("keyup", function(e){
+		searchByFilter();
+	});
+	
 }
 
 function checkboxDuggaNameClicked(thisElement) {
@@ -248,6 +256,7 @@ function makeCustomFilter(filtername) {
 function rowFilter(row) {
 	var isDuggaFilterMatch = true;
 	var isFilterDateMatch = true;
+	var isSearchMatch = true;
   
 	for (var duggaName of duggasArr) {
 		if (duggaName == row["duggaName"]) {
@@ -266,7 +275,25 @@ function rowFilter(row) {
 		isFilterDateMatch = (newdate >= filerByDate.date1 && newdate <= filerByDate.date2);
 	}
 
-	return (isDuggaFilterMatch && isFilterDateMatch);
+	for(var term of searchTerms){
+		if(term != ""){
+			for(var column in row){
+			
+				if(row[column] == null){
+					isSearchMatch = false;
+				} 
+				else if(row[column].toLowerCase().includes(term.toLowerCase())){
+					isSearchMatch = true;
+					break;
+				}else{
+					isSearchMatch = false;
+				}
+			}
+
+		}
+	}
+
+	return (isDuggaFilterMatch && isFilterDateMatch && isSearchMatch);
 }
 
 // Basic ascending/descending order
