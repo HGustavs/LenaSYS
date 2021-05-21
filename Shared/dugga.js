@@ -2042,11 +2042,13 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 
 		//If duggaTitle variable have a value set. 
 		if(duggaTitle) {	
-			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>"+duggaTitle+"</div>";
+			//str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>"+duggaTitle+"</div>";
+			str+="<div class='' style='margin:4px;'></div></div><div>"+duggaTitle+"</div>";
 		}
 		//If there is no name of the dugga.
 		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
-			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
+			//str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
+			str+="<div class='' style='margin:4px;'></div></div><div>Untitled dugga</div>";
 		}
 
 		if(loadVariantFlag){	//If the 'Next variant' button is set to be visable (Teachers only). 

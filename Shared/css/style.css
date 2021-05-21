@@ -1130,7 +1130,7 @@ p {
   background-color: var(--color-primary);
 }
 
-.StopLight {
+/* .StopLight {
   vertical-align: middle;
   overflow: hidden;
   border: 1px solid yellow;
@@ -1139,7 +1139,7 @@ p {
   margin: 2px 2px 2px 2px;
   border-radius: 14px;
   border: 1px solid #000;
-}
+} */
 
 .WhiteLight {
   background: radial-gradient(white, grey, white);
