@@ -205,7 +205,7 @@ function renderCell(col, celldata, cellid) {
 function renderSortOptions(col, sortKind, colname) { // Which columns and how they are sorted
     str = "";
 
-	if(col == "duggaName" || col == "submitted" || col == "timesSubmitted"){
+	if(col == "duggaName" || col == "submitted" || col == "timesSubmitted" || col == "timesAccessed"){
 		str += "<div style='white-space:nowrap;cursor:pointer'>"
         if(sortKind == 1){		
             str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "(ASC)" +"</span>";
