@@ -97,11 +97,31 @@ function showInfoText(object, displayText) {
   }
 }
 
-function holidays() {
+function getHolidays() {
   var holidays = new Array();
-  var pask = new Date("2019-05-01");
+  var pask = getYYYYMMDD(new Date("2019-05-01"));
   holidays.push(pask);
   return holidays;
+}
+
+function isHoliday(date){
+  var holiday = getHolidays();
+  for(i = 0; i<holiday.length; i++){
+    if(date == holiday[i]){
+      return true;
+    }
+  }
+  return false;
+}
+
+function getYYYYMMDD(date){
+  var YYYY = date.getFullYear();
+    var mm = date.getMonth() + 1;
+    var dd = date.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    var correctDate = YYYY + "-" + mm + "-" + dd;
+    return correctDate;
 }
 
 function renderBarDiagram(data) {
@@ -158,6 +178,9 @@ function renderBarDiagram(data) {
     str += "<g class='bar'>";
     for (var j = 0; j < 7; j++) {
       var day = dailyCount[i * 7 + j];
+      if(isHoliday(day[0])){
+        console.log("Success");
+      }
       var yOffset = 0;
       str += `<g width='10' onmouseover='showInfoText(this, \"${(day[0] + `<br />commits: ${day[1]}<br />
       Events: ${day[2]}<br />Comments: ${day[3]}<br />LOC: ` + day[4])}\");' onmouseout='hideInfoText()'>`;
