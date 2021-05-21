@@ -287,7 +287,7 @@
 			}
 
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
-					echo "<td id='select' class='navButt' onmouseover='hoverc();' onmouseleave='leavec();'>";
+					echo "<td id='select' class='navButt'>";
 					echo   "<span id='filterButton'>";
 					echo     "<img alt='filter icon' class='navButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
@@ -300,7 +300,7 @@
 			}
 
 	    if($requestedService=="resulted.php" ){
-					echo "<td id='sort' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
+					echo "<td id='sort' class='navButt'>";
 					echo   "<span id='sortButton'>";
 					echo     "<img alt='sort icon' class='navButt' src='../Shared/icons/sort_white.svg'>";
 					echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
