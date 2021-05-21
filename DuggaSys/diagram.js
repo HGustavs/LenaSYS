@@ -4066,7 +4066,7 @@ function drawLine(line, targetGhost = false)
             }
     
             str += `<line id='${line.id}-1' x1='${fx+linespaceX}' y1='${fy+linespaceY}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            str += `<line id='${line.id}-2' x1='${fx-linespaceX}' y1='${fy+linespaceY}' x2='${tx2}' y2='${ty2}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-2' x1='${fx-linespaceX}' y1='${fy-linespaceY}' x2='${tx2}' y2='${ty2}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         }
     }
 
