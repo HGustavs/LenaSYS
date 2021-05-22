@@ -789,10 +789,10 @@ const mouseModes = {
  * @see constructElementOfType() For creating elements out dof this enum.
  */
 const elementTypes = {
-    ENTITY: 0,
-    RELATION: 1,
-    ATTRIBUTE: 2,
-    GHOSTENTITY: 3
+    EREntity: 0,
+    ERRelation: 1,
+    ERAttr: 2,
+    Ghost: 3
 };
 
 /**
@@ -897,7 +897,9 @@ const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
 const avgcharwidth = 6;
-const colors = ["white", "Gold", "#ffccdc", "yellow", "CornflowerBlue"];
+const colors = ["white", "gold", "#ffccdc", "yellow", "cornflowerBlue", "#FF4D4D"];
+const selectedColors = ["#cccccc", "#ce7f00", "#ff66b3", "#d2cf00", "#505E95", "#A45A5A"];
+const strokeColors = ["black", "white", "grey", "red"];
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -940,12 +942,11 @@ var previousMouseMode;
 
 // All different element types that can be placed by the user.
 
-var elementTypeSelected = elementTypes.ENTITY;
+var elementTypeSelected = elementTypes.EREntity;
 var pointerState = pointerStates.DEFAULT;
 
 var movingObject = false;
 var movingContainer = false;
-
 
 //Grid Settings
 var settings = {
@@ -988,10 +989,10 @@ var ghostLine = null;
  * @see constructElementOfType() For creating new elements with default values.
  */
 var defaults = {
-    EREntity: { name: "Entity",kind: "EREntity", fill: "White", Stroke: "Black", width: 200, height: 50 },
-    ERRelation: { name: "Relation", kind: "ERRelation", fill: "White", Stroke: "Black", width: 60, height: 60 },
-    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 },
-    Ghost: { name: "Ghost", kind: "ERAttr", fill: "White", Stroke: "Black", width: 5, height: 5 },
+    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50 },
+    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60 },
+    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45 },
+    Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5 },
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1036,38 +1037,38 @@ function onSetup()
     const Number_of_employees_ID = makeRandomID();
 
     const demoData = [
-        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", id: EMPLOYEE_ID, isLocked: false },
-        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", id: Bdale_ID, isLocked: false, state: "Normal" },
-        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", id: BdaleDependent_ID, isLocked: false, state: "Normal" },
-        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", id: Ssn_ID, isLocked: false, state: "key"},
-        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", id: Name_ID, isLocked: false },
-        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", id: NameDependent_ID, isLocked: false, state: "weakKey"},
-        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", id: NameProject_ID, isLocked: false, state: "key"},
-        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", id: NameDEPARTMENT_ID, isLocked: false, state: "key"},
-        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", id: Address_ID, isLocked: false },
-        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", id: AddressDependent_ID, isLocked: false },
-        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", id: Relationship_ID, isLocked: false },
-        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", id: Salary_ID, isLocked: false },
-        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID, isLocked: false },
-        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", id: Initial_ID, isLocked: false },
-        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID, isLocked: false },
-        { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", id: SUPERVISION_ID, isLocked: false },
-        { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak"},
-        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", id: DEPENDENT_ID, isLocked: false, state: "weak"},
-        { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", id: Number_of_depends_ID, isLocked: false, state: "computed"},
-        { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", id: WORKS_ON_ID, isLocked: false },
-        { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", id: Hours_ID, isLocked: false },
-        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", id: PROJECT_ID, isLocked: false },
-        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", id: NumberProject_ID, isLocked: false, state: "key"},
-        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", id: Location_ID, isLocked: false},
-        { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", id: MANAGES_ID, isLocked: false },
-        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", id: Start_date_ID, isLocked: false },
-        { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", id: CONTROLS_ID, isLocked: false },
-        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", id: DEPARTMENT_ID, isLocked: false },
-        { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", id: Locations_ID, isLocked: false, state: "multiple" },
-        { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", id: WORKS_FOR_ID, isLocked: false },
-        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", id: NumberDEPARTMENT_ID, isLocked: false, state: "key"},
-        { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", id: Number_of_employees_ID, isLocked: false, state: "computed"},
+        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: EMPLOYEE_ID, isLocked: false },
+        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Bdale_ID, isLocked: false, state: "Normal" },
+        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: BdaleDependent_ID, isLocked: false, state: "Normal" },
+        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Ssn_ID, isLocked: false, state: "key"},
+        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Name_ID, isLocked: false },
+        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDependent_ID, isLocked: false, state: "weakKey"},
+        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameProject_ID, isLocked: false, state: "key"},
+        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDEPARTMENT_ID, isLocked: false, state: "key"},
+        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Address_ID, isLocked: false },
+        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: AddressDependent_ID, isLocked: false },
+        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Relationship_ID, isLocked: false },
+        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Salary_ID, isLocked: false },
+        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: FNID, isLocked: false },
+        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Initial_ID, isLocked: false },
+        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: LNID, isLocked: false },
+        { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: SUPERVISION_ID, isLocked: false },
+        { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak"},
+        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: DEPENDENT_ID, isLocked: false, state: "weak"},
+        { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Number_of_depends_ID, isLocked: false, state: "computed"},
+        { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: WORKS_ON_ID, isLocked: false },
+        { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Hours_ID, isLocked: false },
+        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: PROJECT_ID, isLocked: false },
+        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NumberProject_ID, isLocked: false, state: "key"},
+        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Location_ID, isLocked: false},
+        { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: MANAGES_ID, isLocked: false },
+        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Start_date_ID, isLocked: false },
+        { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: CONTROLS_ID, isLocked: false },
+        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: DEPARTMENT_ID, isLocked: false },
+        { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Locations_ID, isLocked: false, state: "multiple" },
+        { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: WORKS_FOR_ID, isLocked: false },
+        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NumberDEPARTMENT_ID, isLocked: false, state: "key"},
+        { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Number_of_employees_ID, isLocked: false, state: "computed"},
     ];
 
     const demoLines = [
@@ -1275,17 +1276,17 @@ document.addEventListener('keyup', function (e)
         }
 
         if(isKeybindValid(e, keybinds.PLACE_ENTITY)){
-            setElementPlacementType(elementTypes.ENTITY);
+            setElementPlacementType(elementTypes.EREntity);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
         if(isKeybindValid(e, keybinds.PLACE_RELATION)){
-            setElementPlacementType(elementTypes.RELATION);
+            setElementPlacementType(elementTypes.ERRelation);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
         if(isKeybindValid(e, keybinds.PLACE_ATTRIBUTE)){
-            setElementPlacementType(elementTypes.ATTRIBUTE);
+            setElementPlacementType(elementTypes.ERAttr);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
@@ -1534,7 +1535,7 @@ function mouseMode_onMouseUp(event)
                 updatepos(0,0);
             }else if (context.length === 1){
                 if (event.target.id != "container"){   
-                    elementTypeSelected = elementTypes.GHOSTENTITY;
+                    elementTypeSelected = elementTypes.Ghost;
                     makeGhost();
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
@@ -2043,17 +2044,20 @@ function getLines() // TODO : Replace all lines[i] with getLines()[i], or event 
  */
 function makeGhost()
 {
-    var entityType = constructElementOfType(elementTypeSelected);
+    ghostElement = constructElementOfType(elementTypeSelected);
     var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
-    ghostElement = {
-        name: entityType.name,
+    /*ghostElement = {
+        name: entityType.name, X
         x: lastMouseCoords.x - entityType.data.width * 0.5,
         y: lastMouseCoords.y - entityType.data.height * 0.5,
-        width: entityType.data.width,
-        height: entityType.data.height,
-        kind: entityType.data.kind,
+        width: entityType.data.width, X
+        height: entityType.data.height, X
+        kind: entityType.data.kind, X
         id: makeRandomID()
-    };
+    };*/
+    ghostElement.x = lastMouseCoords.x - ghostElement.width * 0.5;
+    ghostElement.y = lastMouseCoords.y - ghostElement.height * 0.5;
+    ghostElement.id = makeRandomID();
 
     showdata();
 }
@@ -2066,17 +2070,23 @@ function makeGhost()
  */
 function constructElementOfType(type)
 {
-    var elementTemplates = [
-        {data: defaults.EREntity, name: "Entity"},
-        {data: defaults.ERRelation, name: "Relation"},
-        {data: defaults.ERAttr, name: "Attribute"},
-        {data: defaults.Ghost, name: "Ghost"}
-    ]
-
-    if (enumContainsPropertyValue(type, elementTypes)){
-        return elementTemplates[type];
+    var typeName = undefined;
+    for (const name in elementTypes) {
+        if (elementTypes[name] == type) {
+            typeName = name;
+            break;
+        }
     }
-    // TODO : No return value if INVALID type.
+    if (typeName) {
+        var defaultElement = defaults[typeName];
+        var newElement = {};
+        for (const property in defaultElement) {
+            newElement[property] = defaultElement[property];
+        }
+        return newElement;
+    }
+
+    return undefined;
 }
 
 /**
@@ -2555,9 +2565,9 @@ function isKeybindValid(e, keybind)
 
 function findEntityFromLine(lineObj)
 {
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ENTITY).data.kind){
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.EREntity).kind){
         return -1;
-    }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.ENTITY).data.kind) {
+    }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.EREntity).kind) {
         return 1;
     }
     return null;
@@ -2565,9 +2575,9 @@ function findEntityFromLine(lineObj)
 
 function findAttributeFromLine(lineObj)
 {
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ATTRIBUTE).data.kind){
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ERAttr).kind){
         return -1;
-    }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.ATTRIBUTE).data.kind) {
+    }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.ERAttr).kind) {
         return 1;
     }
     return null;
@@ -3262,7 +3272,7 @@ function toggleRuler()
  * @param {Number} type What kind of element to place.
  * @see constructElementOfType
  */
-function setElementPlacementType(type = elementTypes.ENTITY)
+function setElementPlacementType(type = elementTypes.EREntity)
 {
     elementTypeSelected = type;
 }
@@ -3456,7 +3466,16 @@ function generateContextProperties()
                 }
             }
         str += '</select>'; 
-        str +=`<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+
+        str += `<div style="color: white">BG Color</div>`;
+        str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+            `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+        str += `<div style="color: white">Stroke Color</div>`;
+        str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
+            `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+
+        // Creates button for selecting element background color
     } 
 
     // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
@@ -3499,6 +3518,15 @@ function generateContextProperties()
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
     }
 
+    if (context.length > 1) {
+        str += `<div style="color: white">BG Color</div>`;
+        str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+            `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+        str += `<div style="color: white">Stroke Color</div>`;
+        str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
+            `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
+    }
+
     if (context.length > 0) {
         var locked = true;
         for (var i = 0; i < context.length; i++) {
@@ -3511,6 +3539,8 @@ function generateContextProperties()
     }
 
     propSet.innerHTML = str;
+
+    multipleColorsTest();
 }
 
 /**
@@ -3731,6 +3761,102 @@ function removeMessage(element, timer)
         return element.id !== id;
     });
 }
+
+function toggleColorMenu(buttonID)
+{
+    var button = document.getElementById(buttonID);
+    var menu = undefined;
+    var width = 0;
+    if (button.children[0].innerHTML == "") {
+        menu = button.children[0];
+        menu.style.visibility = "visible";
+        if (menu.id === "BGColorMenu") {
+            for (var i = 0; i < colors.length; i++) {
+                menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
+            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colors[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke="black" stroke-width="2"/>
+            </svg>`;
+                width += 50;
+            }
+        } else {
+            for (var i = 0; i < strokeColors.length; i++) {
+                menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
+            <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke="black" stroke-width="2"/>
+            </svg>`;
+                width += 50;
+            }
+        }
+
+        menu.style.width = width + "px";
+        var buttonWidth = button.offsetWidth;
+        var offsetWidth = window.innerWidth - button.getBoundingClientRect().x - (buttonWidth);
+        var offsetHeight = button.getBoundingClientRect().y;
+        //menu.style.left = -buttonWidth - offsetWidth + "px";
+        menu.style.top = offsetHeight + "px";
+        var menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
+        menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
+        console.log(menu.style.left);
+
+    } else {
+        var menu = button.children[0];
+        menu.innerHTML = "";
+        menu.style.visibility = "hidden";
+        showdata();
+    }
+
+}
+
+function setElementColors(clickedCircleID)
+{
+    var id = clickedCircleID;
+    var menu = document.getElementById(clickedCircleID).parentElement.parentElement;
+    if (menu.id == "BGColorMenu") {
+        var index = id.replace("BGColorCircle", "") * 1;
+        var color = colors[index];
+        for (var i = 0; i < context.length; i++) {
+            context[i].fill = color;
+        }
+    } else if (menu.id == "StrokeColorMenu") {
+        var index = id.replace("strokeColorCircle", "") * 1;
+        var color = strokeColors[index];
+        for (var i = 0; i < context.length; i++) {
+            context[i].stroke = color;
+        }
+    } else {
+        console.error(`${menu.id} is not a valid ID`);
+    }
+    
+    generateContextProperties();
+    showdata();
+    toggleColorMenu(menu.parentElement.id);
+}
+
+function multipleColorsTest()
+{
+    if (context.length > 1) {
+        var fill = context[0].fill;
+        var stroke = context[0].stroke;
+        var varyingFills = false;
+        var varyingStrokes = false;
+        for (var i = 0; i < context.length; i++) {
+            if (fill != context[i].fill && !varyingFills) {
+                var button = document.getElementById("colorMenuButton1");
+                button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
+                var textNode = document.createTextNode("Multiple Color Values");
+                button.insertBefore(textNode, button.firstChild);
+                varyingFills = true;
+            }
+            if (stroke != context[i].stroke && !varyingStrokes) {
+                var button = document.getElementById("colorMenuButton2");
+                button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
+                var textNode = document.createTextNode("Multiple Color Values");
+                button.insertBefore(textNode, button.firstChild);
+                varyingStrokes = true;
+            }
+            if (varyingFills && varyingStrokes) break;
+        }
+    }
+}
+
 //#endregion =====================================================================================
 //#region ================================ ELEMENT CALCULATIONS ==================================
 /**
@@ -4395,12 +4521,12 @@ function drawElement(element, ghosted = false)
 
         if(element.state == "weak") {
             weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
-            stroke-width='${linew}' stroke='black' fill='#ffccdc' /> 
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' /> 
             `;         
         }
         
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-                   stroke-width='${linew}' stroke='black' fill='#ffccdc' />
+                   stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
                    ${weak}
                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                    `;
@@ -4420,7 +4546,7 @@ function drawElement(element, ghosted = false)
                     Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
                     Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
                     Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
-                    stroke='black' fill='#ffccdc' stroke-width='${linew}' />`;
+                    stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
         }    
 
         str += `<path d="M${linew},${hboxh} 
@@ -4428,7 +4554,7 @@ function drawElement(element, ghosted = false)
                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
                            Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
                            Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                    stroke='black' fill='#ffccdc' ${dash} stroke-width='${linew}'/>
+                    stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}'/>
                     
                     ${multi}
 
@@ -4444,7 +4570,7 @@ function drawElement(element, ghosted = false)
             // Calculates how far to the left X starts
             var diff = xAnchor - textWidth / 2;
             diff = diff < 0 ? 0 - diff + 10 : 0;
-            str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="black" stroke-dasharray="${5*zoomfact}" stroke-width="${linew}"/>`;
+            str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="${element.stroke}" stroke-dasharray="${5*zoomfact}" stroke-width="${linew}"/>`;
         }
         
     }
@@ -4469,12 +4595,12 @@ function drawElement(element, ghosted = false)
         var weak = "";
         if (element.state == "weak") {
             weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
-                stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
+                stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
                 `;
             xAnchor += linew * multioffs;
         }
         str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
-                   stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
+                   stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
                    ${weak}`;
         str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
 
@@ -4670,8 +4796,11 @@ function updateCSSForAllElements()
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
 
-            // Handle colouring
-            elementDiv.children[0].children[0].style.fill = inContext ? "#ff66b3" : "#ffccdc";
+            // Handle coloring
+            var sColor = selectedColors[colors.indexOf(element.fill)];
+            var grandChild = elementDiv.children[0].children[0];
+            grandChild.style.fill = inContext ? `${sColor}` : `${element.fill}`;
+            grandChild.style.stroke = data[i].stroke;
         }
     }
 

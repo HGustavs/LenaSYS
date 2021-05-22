@@ -357,8 +357,52 @@
     z-index: 2;
 }
 
+
 .diagramIcons:hover .toolTipText{
     visibility: visible;
+}
+
+.colorMenu{
+    visibility: hidden;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 230px;
+    height: 50px;
+    z-index: 5;
+    float: left;
+}
+
+@keyframes colorMenuAnim {
+    0% {
+        width: 0px;
+    }
+
+    100% {
+        width: 50px;
+    }
+}
+
+.colorCircle {
+    animation-name: colorMenuAnim;
+    animation-duration: 0.5s;
+}
+
+.colorCircle:hover{
+    stroke: white;
+    cursor: pointer;
+}
+
+.colorMenuButton {
+    background-color: #614875;
+    border: 0px;
+    color: #fff;
+    cursor: pointer;
+    width: 100%;
+    height: 25px;
+    transition: 1s background-color;
 }
 
 #options-pane-button .toolTipText{
