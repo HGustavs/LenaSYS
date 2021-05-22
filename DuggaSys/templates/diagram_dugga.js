@@ -1,38 +1,32 @@
+var lastFile = null;
+var diagramWindow;
 /**
  * @description Setup the dugga, this is the first thing that happens
  * */
 function setup()
 {
+    diagramWindow = document.getElementById("diagram-iframe");
     inParams = parseGet();
     AJAXService("GETPARAM", { }, "PDUGGA");
-    document.getElementById("saveDuggaButton").onclick  = function() { uploadFile(); }
+    document.getElementById("saveDuggaButton").onclick = function (){ uploadFile();};
+    diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
 }
-/**
- * @description Load latest diagram from hash
- * */
-function getPreviusSumbit()
-{
-    $.ajax({
-        url: "showDuggaservice.php",
-        data: { hash: "hash" }
-    }).done(function(result) {
-        console.log(result);
-    });
-}
+
 /**
  * @description Get the iframe data to submit
  * @return An stringify json object.
  * */
 function getDiagramData()
 {
-    var diagramWindow = document.getElementById("diagram-iframe");
-
     return JSON.stringify(dataToSave = {
         initialState: diagramWindow.contentWindow.stateMachine.initialState,
         historyLog: diagramWindow.contentWindow.stateMachine.historyLog
     });
 }
-
+/**
+ * @description Makes an ajax-call to filereceive_dugga.php to generate the file on the server,
+ * depending on the data in the diagram-editor.
+ * */
 function uploadFile()
 {
     $.ajax({
@@ -50,27 +44,73 @@ function uploadFile()
             moment: inParams["moment"]
         }
     }).done(function() {
+        AJAXService("GETPARAM", { }, "PDUGGA");
         saveClick();
     });
 }
-function returnedDugga(para)
+/**
+ * @description If the user has previus submissions to the current
+ * assigment, get the last file and load it in the diagram-editor
+ * @see dugga.js for the call to this function
+ * */
+function returnedDugga(data)
 {
-    var files = para.files
-    var lastKeyIndex = Object.keys(files).length-1;
-    var lastKey = Object.keys(files)[lastKeyIndex];
-    var lastFile = files[lastKey]
-    var lastKeyIndex2 = Object.keys(lastFile).length-1;
-    var lastKey2 = Object.keys(lastFile)[lastKeyIndex2];
-    var lastFile2 = lastFile[lastKey2]
+    if (Object.keys(data.files).length == 0) return;
 
-    var filePath = lastFile2.filepath + lastFile2.filename + lastFile2.seq + "." + lastFile2.extension;
+    var momentFiles = data.files[inParams["moment"]]
+    var lastKeyIndex = Object.keys(momentFiles).length-1;
+    var lastKey = Object.keys(momentFiles)[lastKeyIndex];
+    var lastFile = momentFiles[lastKey]
+    var filePath = lastFile.filepath + lastFile.filename + lastFile.seq + "." + lastFile.extension;
 
     $.ajax({
         method: "GET",
         url: filePath,
-
     }).done(function(file) {
-        document.getElementById("diagram-iframe").contentWindow.loadDiagram(file);
+        setLastFile(file);
+        diagramWindow.contentWindow.loadDiagram(file);
     });
+}
+/**
+ * @description Resets the diagram iframe to the state the user made changes,
+ * this can be to the point of an import for previous submit or the initial state of the assigment.
+ * */
+function reset()
+{
+    if (lastFile == null)
+    {
+        diagramWindow.contentWindow.stateMachine.gotoInitialState();
+        diagramWindow.contentWindow.stateMachine.currentHistoryIndex = -1;
+        diagramWindow.contentWindow.stateMachine.lastFlag = {};
+        diagramWindow.contentWindow.stateMachine.removeFutureStates();
+    }else{
+        diagramWindow.contentWindow.loadDiagram(lastFile, false);
+    }
+}
+/**
+ * @description Sets the value of lastFile
+ * @param {File} lf The file that lastFile should have as value
+ * */
+function setLastFile(lf)
+{
+    lastFile = lf
+}
+/**
+ * @description Check if changes has been done to the diagram and it
+ * is possible to save.
+ * Keep in mind this Override this function in dugga.js
+ * */
+function canSaveController()
+{
+    // If there is any changes to the history => enable buttons and remove EventListener
+    if (diagramWindow.contentWindow.stateMachine.historyLog.length != 0){
 
+        var elems = document.querySelectorAll(".btn-disable");
+        diagramWindow.contentWindow.removeEventListener('mouseup', canSaveController);
+
+        // For every disable remove the class
+        elems.forEach(e => {
+            e.classList.remove("btn-disable");
+        });
+    }
 }

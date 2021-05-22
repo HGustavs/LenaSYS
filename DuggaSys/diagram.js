@@ -4869,14 +4869,14 @@ function getFileContent(files)
 /**
  * @description Load the content of a file to the diagram-data. This will remove previous data
  */
-async function loadDiagram(file = null)
+async function loadDiagram(file = null, shouldDisplayMessage = true)
 {
     if (file === null){
         var fileInput = document.getElementById("importDiagramFile");
 
         // If not an json-file is inputted => return
         if (getExtension(fileInput.value) != "json"){
-            displayMessage(messageTypes.ERROR, "Sorry, you cant load that type of file. Only json-files is allowed");
+            if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Sorry, you cant load that type of file. Only json-files is allowed");
             return;
         }
 
@@ -4902,10 +4902,10 @@ async function loadDiagram(file = null)
         stateMachine.currentHistoryIndex = stateMachine.historyLog.length -1;
 
         // Scrub to the latest point in the diagram
-        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex + 1);
 
         // Display success message for load
-        displayMessage(messageTypes.SUCCESS, "Save-file loaded");
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Save-file loaded");
 
     } else if(temp.data && temp.lines){
         // Set data and lines to the values of the export file
@@ -4938,9 +4938,9 @@ async function loadDiagram(file = null)
         stateMachine.removeFutureStates();
 
         // Display success message for load
-        displayMessage(messageTypes.SUCCESS, "Export-file loaded");
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Export-file loaded");
     }else{
-        displayMessage(messageTypes.ERROR, "Error, cant load the given file");
+        if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
 }
 //#endregion =====================================================================================
