@@ -55,21 +55,26 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-    if (Object.keys(data.files).length == 0) return;
+    if (data.param){
+        var param = JSON.parse(data.param);
+        document.getElementById("assigment-instructions").innerHTML = param.instructions;
+    }
 
-    var momentFiles = data.files[inParams["moment"]]
-    var lastKeyIndex = Object.keys(momentFiles).length-1;
-    var lastKey = Object.keys(momentFiles)[lastKeyIndex];
-    var lastFile = momentFiles[lastKey]
-    var filePath = lastFile.filepath + lastFile.filename + lastFile.seq + "." + lastFile.extension;
+    if (Object.keys(data.files).length != 0) {
+        var momentFiles = data.files[inParams["moment"]]
+        var lastKeyIndex = Object.keys(momentFiles).length-1;
+        var lastKey = Object.keys(momentFiles)[lastKeyIndex];
+        var lastFile = momentFiles[lastKey]
+        var filePath = lastFile.filepath + lastFile.filename + lastFile.seq + "." + lastFile.extension;
 
-    $.ajax({
-        method: "GET",
-        url: filePath,
-    }).done(function(file) {
-        setLastFile(file);
-        diagramWindow.contentWindow.loadDiagram(file);
-    });
+        $.ajax({
+            method: "GET",
+            url: filePath,
+        }).done(function(file) {
+            setLastFile(file);
+            diagramWindow.contentWindow.loadDiagram(file);
+        });
+    }
 }
 /**
  * @description Resets the diagram iframe to the state the user made changes,
