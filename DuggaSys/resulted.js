@@ -2,9 +2,6 @@
  Globals
  *********************************************************************************/
 var tableName = "resultTable";
-var filterList;
-var buttonFlag = true;
-var duggaFilter;
 var filerByDate = {
 	date1: null,
 	date2: null
@@ -84,25 +81,13 @@ function setup(){
     AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
-function process(){
 
-    filterList = JSON.parse(localStorage.getItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers']));
-    if (filterList == null) {
-		filterList = {};
-	}
-	makeCustomFilter("duggaFilter");
-}
-
-// Runs every time a new filter is picked
 function updateTable() {
-	
-	filterList["duggaFilter"] = document.getElementById("assignmentDropdown").value;
-	localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));	
+		
 	myTable.renderTable();
 }
 
 function returnedResults(data) {
-    process();
 
 	var assignmentList;
 	var duggaEntrynameCheckbox = "";
@@ -126,7 +111,6 @@ function returnedResults(data) {
 		<label>Select all</label>
 	</div>`
 
-	document.getElementById("assignmentDropdown").innerHTML = assignmentList;
 	document.querySelector(".show-dugga-filter-popup").innerHTML = duggaEntrynameCheckbox;
 		
     createSortableTable(data['tableInfo']);
@@ -171,7 +155,7 @@ function createSortableTable(data){
 		myTable.toggleSortStatus("duggaName", 1); // Default ascending sort of dugga column
 	}
 
-	myTable.renderTable();
+	updateTable();
 }
 
 // Displays different things depending on column
@@ -221,18 +205,6 @@ function renderSortOptions(col, sortKind, colname) { // Which columns and how th
 	}
     
     return str;
-}
-
-function getLinkFromHash(hash) {
-	return "";
-}
-
-function makeCustomFilter(filtername) {
-	
-	if (filterList[filtername] == null) {
-		filterList[filtername] = "All";
-	}
-	localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList)); //Saves the filter in local storage when opening resulted.php.	
 }
 
 // How rows are filtered, for multiple filters add more if statements
