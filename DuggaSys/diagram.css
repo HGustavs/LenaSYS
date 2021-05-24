@@ -402,7 +402,7 @@
     cursor: pointer;
     width: 100%;
     height: 25px;
-    transition: 1s background-color;
+    transition: 1s;
 }
 
 #options-pane-button .toolTipText{
