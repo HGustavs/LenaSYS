@@ -4629,12 +4629,13 @@ function updateCSSForAllElements()
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
 
                 // Add the scroll values
-                left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-                top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+                left = Math.round((((objX - zoomOrigo.x)+50)* zoomfact) + (scrollx * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y)-5) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
                 top -= ((elementData.height * zoomfact) / 2);
+                
             } 
             else if (element.kind != "EREntity"){
                 // The element coordinates with snap point
@@ -4642,12 +4643,13 @@ function updateCSSForAllElements()
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
 
                 // Add the scroll values
-                left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-                top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+                left = Math.round((((objX - zoomOrigo.x)+50) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y)-5) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
                 // Set the new snap point to center of element
-                left -= ((elementData.width * zoomfact) / 2);
-                top -= ((elementData.height * zoomfact) / 2);
+                left -= ((elementData.width * zoomfact) / 1);
+                top -= ((elementData.height * zoomfact) / 1);
+                
             }
         }
         divObject.style.left = left + "px";
