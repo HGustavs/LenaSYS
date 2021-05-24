@@ -105,7 +105,7 @@ function loadDuggaType(){
 				window.location.href = "../sh/?a="+hash.value;
 			}
 			else{
-				confirm("The corresponding hash does not match the dugga type!\nYou entered a hash for quiz: " + phpData + " when on quiz: " + did); 
+				confirm("The corresponding hash does not match the dugga type!\nYou entered a hash for dugga: " + phpData + " when on dugga: " + did); 
 			}
 		}
 	});
