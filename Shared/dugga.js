@@ -97,10 +97,14 @@ function loadDuggaType(){
 	$.ajax({
 		url: "showDuggaservice.php",
 		type: "POST",
-		data: "&hash="+hash+"&did="+did,
+		data: "&hash="+hash.value+"&did="+did,
 		dataType: "json",
 		success: function(data) {
-			
+			// Will redirect you if you are using correct hash for correct dugga
+			phpData = data['useranswerquiz'];
+			if(phpData == did) {
+				window.location.href = "../sh/?a="+hash.value;
+			}
 		}
 	});
 
