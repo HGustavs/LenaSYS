@@ -1298,7 +1298,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
         if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
-        if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
+        if(isKeybindValid(e, keybinds.OPTIONS)) toggleOptionsPane();
         if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
 
@@ -1330,7 +1330,7 @@ document.addEventListener('keyup', function (e)
             if(context.length == 1){
                 document.activeElement.value = context[0].name;
                 document.activeElement.blur();
-                fab_action();
+                toggleOptionsPane();
             }
         }   
     }
@@ -3118,7 +3118,6 @@ function toggleReplay()
     // Get DOM-elements for styling
     var replayBox = document.getElementById("diagram-replay-box");
     var optionsPane = document.getElementById("options-pane");
-    var fab = document.getElementById("fab");
     var toolbar = document.getElementById("diagram-toolbar");
     var ruler = document.getElementById("rulerOverlay");
     var zoomIndicator = document.getElementById("zoom-message-box");
@@ -3132,7 +3131,6 @@ function toggleReplay()
         // Change HTML DOM styling
         replayBox.style.visibility = "hidden";
         optionsPane.style.visibility = "visible";
-        fab.style.visibility = "visible";
         toolbar.style.visibility = "visible";
         ruler.style.left = "50px";
         zoomIndicator.style.bottom = "5px";
@@ -3152,7 +3150,6 @@ function toggleReplay()
         // Change HTML DOM styling
         replayBox.style.visibility = "visible";
         optionsPane.style.visibility = "hidden";
-        fab.style.visibility = "hidden";
         toolbar.style.visibility = "hidden";
         ruler.style.left = "0";
         zoomIndicator.style.bottom = "55px";
@@ -3536,7 +3533,7 @@ function generateContextProperties()
 /**
  * @description Toggles the option menu being open or closed.
  */
-function fab_action()
+function toggleOptionsPane()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
         document.getElementById('optmarker').innerHTML = "&#9660;Options";
