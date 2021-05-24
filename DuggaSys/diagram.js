@@ -284,8 +284,8 @@ class StateChangeFactory
      */
     static ElementsAndLinesCreated(elements, lines)
     {
-        // Array containing all new added elements
-        var allObj = [];
+        var changesArr = [];
+        var timeStamp = new Date().getTime();
 
         // Filter out defaults from each element and add them to allObj
         elements.forEach(elem => {
@@ -298,7 +298,7 @@ class StateChangeFactory
             });
 
             uniqueKeysArr.forEach(key => values[key] = elem[key]);
-            allObj.push(values);
+            changesArr.push(new StateChange(elem.id, values, timeStamp));
         });
 
         // Filter out defaults from each line and add them to allObj
@@ -312,10 +312,10 @@ class StateChangeFactory
             });
 
             uniqueKeysArr.forEach(key => values[key] = line[key]);
-            allObj.push(values);
+            changesArr.push(new StateChange(line.id, values, timeStamp));
         });
 
-        return new StateChange(null, allObj);
+        return changesArr;
     }
 }
 
