@@ -2046,15 +2046,6 @@ function makeGhost()
 {
     ghostElement = constructElementOfType(elementTypeSelected);
     var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
-    /*ghostElement = {
-        name: entityType.name, X
-        x: lastMouseCoords.x - entityType.data.width * 0.5,
-        y: lastMouseCoords.y - entityType.data.height * 0.5,
-        width: entityType.data.width, X
-        height: entityType.data.height, X
-        kind: entityType.data.kind, X
-        id: makeRandomID()
-    };*/
     ghostElement.x = lastMouseCoords.x - ghostElement.width * 0.5;
     ghostElement.y = lastMouseCoords.y - ghostElement.height * 0.5;
     ghostElement.id = makeRandomID();
