@@ -1293,7 +1293,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
         if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
-        if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
+        if(isKeybindValid(e, keybinds.OPTIONS)) toggleOptionsPane();
         if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
 
@@ -1325,7 +1325,7 @@ document.addEventListener('keyup', function (e)
             if(context.length == 1){
                 document.activeElement.value = context[0].name;
                 document.activeElement.blur();
-                fab_action();
+                toggleOptionsPane();
             }
         }   
     }
@@ -3513,7 +3513,7 @@ function generateContextProperties()
 /**
  * @description Toggles the option menu being open or closed.
  */
-function fab_action()
+function toggleOptionsPane()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
         document.getElementById('optmarker').innerHTML = "&#9660;Options";
