@@ -522,8 +522,7 @@ if(strcmp($opt,"get")==0) {
 		$commentcount = $query->fetchAll();
 
 		//Commits
-		$query = $log_db->prepare('SELECT count(*) FROM commitgit WHERE author=:gituser AND Date(thedate)=:currentdate');
-		$query->bindParam(':gituser', $gituser);
+		$query = $log_db->prepare('SELECT count(*) FROM Bfile,Blame where Blame.fileid=Bfile.id and blameuser=:gituser and Date(blamedate)=:currentdate');		$query->bindParam(':gituser', $gituser);
 		$query->bindParam(':currentdate', $currentdate);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
