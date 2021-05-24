@@ -92,8 +92,7 @@ function loadDugga(){
 function loadDuggaType(){
 	var hash = document.getElementById('hash');
 	var did = querystring["did"];
-	console.log(querystring["did"]+hash.value);
-
+	
 	$.ajax({
 		url: "showDuggaservice.php",
 		type: "POST",
@@ -104,6 +103,9 @@ function loadDuggaType(){
 			phpData = data['useranswerquiz'];
 			if(phpData == did) {
 				window.location.href = "../sh/?a="+hash.value;
+			}
+			else{
+				confirm("The corresponding hash does not match the dugga type!"); 
 			}
 		}
 	});
