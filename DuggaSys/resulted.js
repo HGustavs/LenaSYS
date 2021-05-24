@@ -15,6 +15,7 @@ var showDuggaFilterElement;
 var toggleElement;
 var checkboxElements;
 var searchBarElement;
+var searchDelayTimeout;
 
 
 function searchByFilter() {
@@ -35,7 +36,6 @@ function searchByFilter() {
 	}
 
 	setSearchTerms();
-
 	updateTable();
 }
 
@@ -61,10 +61,14 @@ function loadHTMLelements() {
 	toggleElement = document.getElementById("toggle-dugganame-filter");
 	checkboxElements = document.getElementsByName("duggaEntryname");
 
-	searchBarElement.addEventListener("keyup", function(e){
-		searchByFilter();
+	// Whenever user presses key in searchbar filter is applied automatically
+	// Timeout used so search is only applied if they user hasnt pressed a key for a while (not make 100 searches if user types a 10 letter keyword/search term)
+	searchBarElement.addEventListener("keyup", function(e) {
+		clearTimeout(searchDelayTimeout);
+		searchDelayTimeout = setTimeout(function() {
+			searchByFilter();
+		}, 300)
 	});
-	
 }
 
 function checkboxDuggaNameClicked(thisElement) {
