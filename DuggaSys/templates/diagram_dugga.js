@@ -55,13 +55,13 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-    if (data.param){
+    if (data.param.length!=0){
         var param = JSON.parse(data.param);
         document.getElementById("assigment-instructions").innerHTML = param.instructions;
     }
 
-    if (Object.keys(data.files).length != 0) {
-        var momentFiles = data.files[inParams["moment"]]
+    if (data.files[inParams["moment"]] && Object.keys(data.files[inParams["moment"]]).length != 0) {
+        var momentFiles = data.files[inParams["moment"]];
         var lastKeyIndex = Object.keys(momentFiles).length-1;
         var lastKey = Object.keys(momentFiles)[lastKeyIndex];
         var lastFile = momentFiles[lastKey]
@@ -118,4 +118,11 @@ function canSaveController()
             e.classList.remove("btn-disable");
         });
     }
+}
+/**
+ * @description Shows the correct answers to the dugga when viewed in the dugga editor
+ * Keep in mind that this is currently not supported in the diagram dugga
+ */
+function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
+{
 }
