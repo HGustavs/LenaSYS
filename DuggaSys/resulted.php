@@ -87,7 +87,7 @@ pdoConnect();
     </div>
 
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
-		<div class="search-filer-container">
+		<div class="resulted-filter-container">
 			<div class="search-filter-container">
 				<label class="filter-label" for="">Search</label>
 				<input class="searchbar-filter" type="text">
@@ -98,7 +98,7 @@ pdoConnect();
 					<div class="show-dugga-filter-popup hidden"></div>
 				</div>
 			</div>
-			<div id="select-date-interval">
+			<div class="select-date-interval">
 				<div>
 					<label class="filter-label" for="">Date 1</label>
 					<input class="date-interval-selector" type="date" id="datepicker-interval-1">
