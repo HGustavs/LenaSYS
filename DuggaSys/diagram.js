@@ -1079,7 +1079,7 @@ function onSetup()
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "MANY" },
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "ONE"},
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: DEPENDENTS_OF_ID, kind: "Normal", cardinality: "ONE" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "MANY", label: "Cool boi" },
+        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "MANY"},
 
         { id: makeRandomID(), fromID: Name_ID, toID: FNID, kind: "Normal" },
         { id: makeRandomID(), fromID: Name_ID, toID: Initial_ID, kind: "Normal" },
@@ -4161,13 +4161,9 @@ function drawLine(line, targetGhost = false)
     if(line.label && line.label != ""){
         var centerX = (tx + fx) / 2;
         var centerY = (ty + fy) / 2;
-
-        var diffX = Math.abs(tx - fx);
-        var diffY = Math.abs(ty - fy);
-
-        
-        str += `<rect x="${ centerX/zoomfact }" y="${centerY-textheight+5}" width="${(9 * line.label.length) * zoomfact}" height="${textheight * zoomfact}" style="fill:rgb(0,255,255);" />`
-        
+        //add background
+        str += `<rect x="${ centerX - ((9 * line.label.length) * zoomfact)/2 }" y="${centerY - ((textheight / 2) * zoomfact + 4)}" width="${(9 * line.label.length) * zoomfact}" height="${textheight * zoomfact}" style="fill:rgb(255,255,255);" />`
+        //add label
         str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)}" y="${centerY-(2 * zoomfact)}">${line.label}</text>`;
     }
 
