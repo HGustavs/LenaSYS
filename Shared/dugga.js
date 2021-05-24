@@ -1229,18 +1229,16 @@ function AJAXService(opt,apara,kind)
 }
 
 function newSubmission(){
-	localStorage.setItem("tempValue", variantValue); //Temporarily stores the variant so we can load it below
+	
 	if(confirm("Do you want to start a new submission?")){
-		variantValue = localStorage.getItem("tempValue"); //Removes the localStorage item
-		localStorage.removeItem("tempValue");
 		hash = generateHash(); 
 		pwd = randomPassword();
-		opt = "SAVDU";
+		opt = "SAVDU";/////////
 		localStorage.removeItem("duggaData_" + querystring["did"]);
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
-			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+globallystorepara+"&variant="+variantValue,
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+globallystorepara+"&variant="+variantValue,
 			datatype: "json",
 			success: function(data){
 				var phpData = JSON.parse(data);
