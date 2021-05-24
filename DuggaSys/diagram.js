@@ -3467,15 +3467,16 @@ function generateContextProperties()
             }
         str += '</select>'; 
 
+        // Creates button for selecting element background color
         str += `<div style="color: white">BG Color</div>`;
         str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
             `<span id="BGColorMenu" class="colorMenu"></span></button>`;
         str += `<div style="color: white">Stroke Color</div>`;
         str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
             `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
+
         str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
 
-        // Creates button for selecting element background color
     } 
 
     // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
@@ -3762,22 +3763,30 @@ function removeMessage(element, timer)
     });
 }
 
+/**
+ * @description Opens the color menu for selecting element color
+ * @param {String} buttonID containing the ID of the button that was pressed
+ */
 function toggleColorMenu(buttonID)
 {
     var button = document.getElementById(buttonID);
     var menu = undefined;
     var width = 0;
+
+    // If the color menu's inner html is empty
     if (button.children[0].innerHTML == "") {
         menu = button.children[0];
         menu.style.visibility = "visible";
         if (menu.id === "BGColorMenu") {
-            for (var i = 0; i < colors.length; i++) {
+            // Create svg circles for each element in the "colors" array
+            for (var i = 0; i < colors.length; i++) { 
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
             <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colors[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke="black" stroke-width="2"/>
             </svg>`;
                 width += 50;
             }
         } else {
+            // Create svg circles for each element in the "strokeColors" array
             for (var i = 0; i < strokeColors.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
             <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke="black" stroke-width="2"/>
@@ -3786,50 +3795,64 @@ function toggleColorMenu(buttonID)
             }
         }
 
+        // Menu position relative to button
         menu.style.width = width + "px";
         var buttonWidth = button.offsetWidth;
         var offsetWidth = window.innerWidth - button.getBoundingClientRect().x - (buttonWidth);
         var offsetHeight = button.getBoundingClientRect().y;
-        //menu.style.left = -buttonWidth - offsetWidth + "px";
         menu.style.top = offsetHeight + "px";
         var menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
         menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
-        console.log(menu.style.left);
 
-    } else {
+    } else {    // if the color menu's inner html is not empty, remove the content
         var menu = button.children[0];
         menu.innerHTML = "";
         menu.style.visibility = "hidden";
         showdata();
     }
-
 }
 
+/**
+ * @description Sets the fill and/or stroke color of all elements in context
+ * @param {String} clickedCircleID containing the ID of the svg circle that was pressed
+ */
 function setElementColors(clickedCircleID)
 {
     var id = clickedCircleID;
     var menu = document.getElementById(clickedCircleID).parentElement.parentElement;
+    var elementIDs = [];
+
+    // If fill button was pressed
     if (menu.id == "BGColorMenu") {
         var index = id.replace("BGColorCircle", "") * 1;
         var color = colors[index];
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
+            elementIDs[i] = context[i].id;
         }
-    } else if (menu.id == "StrokeColorMenu") {
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
+        StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    } else if (menu.id == "StrokeColorMenu") {  // If stroke button was pressed
         var index = id.replace("strokeColorCircle", "") * 1;
         var color = strokeColors[index];
         for (var i = 0; i < context.length; i++) {
             context[i].stroke = color;
+            elementIDs[i] = context[i].id;
         }
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { stroke: color }),
+        StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     } else {
         console.error(`${menu.id} is not a valid ID`);
     }
     
     generateContextProperties();
     showdata();
-    toggleColorMenu(menu.parentElement.id);
+    toggleColorMenu(menu.parentElement.id); // toggle color menu off when a color is selected
 }
 
+/**
+ * @description Tests if there are varying fill and/or stroke colors in the selected elements
+ */
 function multipleColorsTest()
 {
     if (context.length > 1) {
@@ -3838,6 +3861,8 @@ function multipleColorsTest()
         var varyingFills = false;
         var varyingStrokes = false;
         for (var i = 0; i < context.length; i++) {
+
+            // Checks if there are varying fill colors, but not if varying colors have already been detected
             if (fill != context[i].fill && !varyingFills) {
                 var button = document.getElementById("colorMenuButton1");
                 button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
@@ -3845,6 +3870,7 @@ function multipleColorsTest()
                 button.insertBefore(textNode, button.firstChild);
                 varyingFills = true;
             }
+            // Checks if there are varying stroke colors, but not if varying colors have already been detected
             if (stroke != context[i].stroke && !varyingStrokes) {
                 var button = document.getElementById("colorMenuButton2");
                 button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
@@ -3852,6 +3878,7 @@ function multipleColorsTest()
                 button.insertBefore(textNode, button.firstChild);
                 varyingStrokes = true;
             }
+            // If varying colors have been detected in both of the above, there is no reason to continue the test
             if (varyingFills && varyingStrokes) break;
         }
     }
