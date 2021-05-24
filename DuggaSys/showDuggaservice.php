@@ -39,7 +39,6 @@ $entryname=getOP('entryname');
 $hash=getOP('hash');
 $password=getOP('password');
 $AUtoken=getOP('AUtoken');
-//$localStorageVariant= getOP('variant');
 $variantvalue= getOP('variant');
 $hashvariant;
 
@@ -189,8 +188,6 @@ $query->bindParam(':hash', $hash);
 $result=$query->execute();
 foreach($query->fetchAll() as $row) {
 	$useranswerquiz = $row['quiz'];
-	error_log("quiz: ".$quizzz);
-	error_log("hash: ".$hash);
 }
 
 

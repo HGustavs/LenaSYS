@@ -30,7 +30,7 @@ var locallystoredhash;
 var isFileSubmitted;
 var isTeacher;
 var localStorageItemKey = "duggaData_" + querystring["did"];
-var globallystorepara;
+
 
 // Variant related
 
@@ -1008,7 +1008,6 @@ function AJAXService(opt,apara,kind)
 				// Informs the user that his input contained nothing.
 				console.log("Your input contained nothing in " + key);
 		}
-		globallystorepara = para; //Temporarily stores para
 	}
 
 	if(kind=="COURSE"){
