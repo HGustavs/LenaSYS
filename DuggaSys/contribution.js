@@ -212,7 +212,8 @@ function renderBarDiagram(data) {
     str += "<text x='" + (120 * i + 100) + "' y='240'>week " + (i + 1) + "</text>";
     str += "</g>";
   }
-  str += '<div class="group2" id="lineDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
+  str += '</svg>';
+  str += '<div class="group2" id="barDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Commits:</p>';
   str += '<div style="width:15px; height:15px; background-color:#F44336;margin-left:10px;"></div></div>';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Events:</p>';
@@ -221,8 +222,9 @@ function renderBarDiagram(data) {
   str += '<div style="width:15px; height:15px; background-color:#43A047;margin-left:10px;"></div></div>';
   str += '<div style="display:flex; align-items:center;margin-left:30px;margin-right:30px;"><p>LOC:</p>';
   str += '<div style="width:15px; height:15px; background-color:Purple;margin-left:10px;"></div></div>';
-  str += "</svg>";
-  str += "</div>";
+  str += '<div style="display:flex; align-items:center;margin-left:30px;margin-right:30px;"><p>Holidays:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#f1c0cb;margin-left:10px;"></div></div>';
+  str += '</div>';
   return str;
 }
 

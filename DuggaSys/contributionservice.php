@@ -51,8 +51,8 @@ if(strcmp($opt,"get")==0) {
 		if(isset($_SESSION['uid'])){
 			$userid=$_SESSION['uid'];
 			$loginname=$_SESSION['loginname'];
-			$lastname=$_SESSION['lastname'];
-			$firstname=$_SESSION['firstname'];
+			// $lastname=$_SESSION['lastname'];		Unused var
+			// $firstname=$_SESSION['firstname'];	Unused var
 		}
 		$gituser=$loginname;
 	}
@@ -60,8 +60,8 @@ if(strcmp($opt,"get")==0) {
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 		$loginname=$_SESSION['loginname'];
-		$lastname=$_SESSION['lastname'];
-		$firstname=$_SESSION['firstname'];
+		// $lastname=$_SESSION['lastname'];		Unused var
+		// $firstname=$_SESSION['firstname'];	Unused var
 	}else{
 		$userid=1;
 		$loginname="UNK";
@@ -522,7 +522,8 @@ if(strcmp($opt,"get")==0) {
 		$commentcount = $query->fetchAll();
 
 		//Commits
-		$query = $log_db->prepare('SELECT count(*) FROM Bfile,Blame where Blame.fileid=Bfile.id and blameuser=:gituser and Date(blamedate)=:currentdate');		$query->bindParam(':gituser', $gituser);
+		$query = $log_db->prepare('SELECT count(*) FROM Bfile,Blame where Blame.fileid=Bfile.id and blameuser=:gituser and Date(blamedate)=:currentdate');
+		$query->bindParam(':gituser', $gituser);
 		$query->bindParam(':currentdate', $currentdate);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();

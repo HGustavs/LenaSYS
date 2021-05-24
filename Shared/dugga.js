@@ -2178,13 +2178,13 @@ function generateTimeSheetOptions(course, moment, selected) {
 //----------------------------------------------------------------------------------
 
 function hideServerMessage() {
+	$("#motdNav").css("display","inline-block");
 	var $containerHeight = $("#servermsgcontainer");
-	$containerHeight.animate({ 
-		opacity: 0, 
-		top: -$containerHeight.outerHeight() 
-	}, 200, "easeInOutSine", () => {
-		$containerHeight.css(opacity, 1);
-	});
+	$containerHeight.animate({
+		top: -$containerHeight.outerHeight()
+	},200, "easeInOutSine", () => {});
+	$("#messagedialog").css("display", "content");
+	sessionStorage.setItem('show','false');
 }
 
 function hideCookieMessage() {
@@ -2194,6 +2194,16 @@ function hideCookieMessage() {
 		$("#cookiemsg").css("display", "none");
 		$("#cookiemsg").css("opacity", "1");
 	}, 200);
+}
+
+function showServerMessage(){
+	$("#motdNav").css("display","none");
+	var $containerHeight = $("#servermsgcontainer");
+	$containerHeight.animate({ 
+		top: 50
+	},200, "easeInOutSine", () => {});
+	$("#servermsgcontainer").css("display","content");
+	sessionStorage.setItem('show','true');
 }
 
 //----------------------------------------------------------------------------------
