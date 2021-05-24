@@ -1500,17 +1500,23 @@ function mouseMode_onMouseUp(event)
             break;
     }
 }
+/**
+ * @description Event function triggered when any mouse button is released on top of the toolbar.
+ * @param {MouseEvent} event Triggered mouse event.
+ * @see pointerStates For all available states.
+ */
+
+ function tup(event) 
+ {
+     pointerState = pointerStates.DEFAULT;
+     deltaExceeded = false;
+ }
 
 /**
  * @description Event function triggered when any mouse button is released on top of the container. Logic is handled depending on the current pointer state.
  * @param {MouseEvent} event Triggered mouse event.
  * @see pointerStates For all available states.
  */
- function tup(event) 
- {
-     pointerState = pointerStates.DEFAULT;
-     deltaExceeded = false;
- }
 
 function mup(event)
 {
