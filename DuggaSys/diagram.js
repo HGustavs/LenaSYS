@@ -1206,8 +1206,13 @@ document.addEventListener('keydown', function (e)
         }
 
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
-            e.preventDefault();
-            selectAll();
+            if(mouseMode == mouseModes.EDGE_CREATION){
+                e.preventDefault();
+                return false;
+            } else {
+                e.preventDefault();
+                selectAll();
+            }
         }
         if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
             e.preventDefault();
@@ -1560,12 +1565,24 @@ function mouseMode_onMouseUp(event)
             break;
     }
 }
+/**
+ * @description Event function triggered when any mouse button is released on top of the toolbar.
+ * @param {MouseEvent} event Triggered mouse event.
+ * @see pointerStates For all available states.
+ */
+
+ function tup(event) 
+ {
+     pointerState = pointerStates.DEFAULT;
+     deltaExceeded = false;
+ }
 
 /**
  * @description Event function triggered when any mouse button is released on top of the container. Logic is handled depending on the current pointer state.
  * @param {MouseEvent} event Triggered mouse event.
  * @see pointerStates For all available states.
  */
+
 function mup(event)
 {
     targetElement = null;
@@ -2683,7 +2700,10 @@ function onMouseModeEnabled()
             makeGhost();
             break;
 
-        case mouseModes.EDGE_CREATION:  
+        case mouseModes.EDGE_CREATION:
+            clearContext();
+            clearContextLine();
+            updatepos(0,0);
             break;
 
         case mouseModes.BOX_SELECTION:

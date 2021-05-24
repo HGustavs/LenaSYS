@@ -25,7 +25,7 @@
 <body onload="getData()" style="overflow: hidden;">
 
     <!-- Toolbar for diagram -->
-    <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='mup(event)'>
+    <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'>
         <fieldset>
             <legend>Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
@@ -63,7 +63,7 @@
                         <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='setMouseMode(3); clearContext();'>
+                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg"/>
                     <span class="toolTipText"><b>Line</b><br>
                         <p>Make a line between objects</p><br>
