@@ -1247,7 +1247,7 @@ function newSubmission(){
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
 
-				clearLocalStorageItem(localStorageItemKey);	 //Makes localStorageItemKey null
+				localStorage.removeItem(localStorageItemKey); //clearLocalStorageItem(localStorageItemKey);	 //Makes localStorageItemKey null
 				localStorageHandler(phpData);
 				//localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(variantValue, phpData.variants));
 				console.log(variantValue);
