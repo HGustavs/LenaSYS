@@ -1233,19 +1233,24 @@ function newSubmission(){
 	if(confirm("Do you want to start a new submission?")){
 		hash = generateHash(); 
 		pwd = randomPassword();
-		opt = "SAVDU";/////////
-		localStorage.removeItem("duggaData_" + querystring["did"]);
+		
+		localStorage.removeItem("duggaData_" + querystring["did"]); //Skapar detta problem?
+		console.log(variantValue);
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
-			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+globallystorepara+"&variant="+variantValue,
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&variant="+variantValue,
 			datatype: "json",
 			success: function(data){
 				var phpData = JSON.parse(data);
 				isTeacher = phpData.isTeacher;
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
-				localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(variantValue, phpData.variants));
+
+				clearLocalStorageItem(localStorageItemKey);	 //Makes localStorageItemKey null
+				localStorageHandler(phpData);
+				//localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(variantValue, phpData.variants));
+				console.log(variantValue);
 				setPassword(phpData.password);
 				handleHash();	//Makes sure hash is unique.
 			}
@@ -1282,7 +1287,7 @@ function localStorageHandler(ajaxdata) {
 		// Check if variant exists in local storage
 		if (localStorageItem == null) {
 			localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(ajaxdata.variant, ajaxdata.variants));
-		}
+		} 
 		else {
 			variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 			// Remove item if expired
