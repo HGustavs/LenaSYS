@@ -205,7 +205,7 @@ function renderCell(col, celldata, cellid) {
 function renderSortOptions(col, sortKind, colname) { // Which columns and how they are sorted
     str = "";
 
-	if(col == "duggaName" || col == "submitted" || col == "timesSubmitted"){
+	if(col == "duggaName" || col == "submitted" || col == "timesSubmitted" || col == "timesAccessed"){
 		str += "<div style='white-space:nowrap;cursor:pointer'>"
         if(sortKind == 1){		
             str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "(ASC)" +"</span>";
@@ -263,12 +263,21 @@ function rowFilter(row) {
 
 // Basic ascending/descending order
  function compare(a, b) { 
-    if (a.toLowerCase() < b.toLowerCase()){
-    	return 1;
-    }else if (a.toLowerCase() > b.toLowerCase()){
-		return -1;
+	if(isNaN(a) && isNaN(b)){
+		if (a.toLowerCase() < b.toLowerCase()){
+			return 1;
+		}else if (a.toLowerCase() > b.toLowerCase()){
+			return -1;
+		}
+	}else{
+		var numA = parseInt(a);
+		var numB = parseInt(b);
+		if (numA < numB){
+			return 1;
+		}else if (numA > numB){
+			return -1;
+		}
 	}
-
 	return 0;	
 }
 // Runs every time a cell in the table is clicked
