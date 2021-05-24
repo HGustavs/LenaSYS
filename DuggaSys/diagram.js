@@ -1506,6 +1506,12 @@ function mouseMode_onMouseUp(event)
  * @param {MouseEvent} event Triggered mouse event.
  * @see pointerStates For all available states.
  */
+ function tup(event) 
+ {
+     pointerState = pointerStates.DEFAULT;
+     deltaExceeded = false;
+ }
+
 function mup(event)
 {
     targetElement = null;

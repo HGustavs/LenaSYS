@@ -25,7 +25,7 @@
 <body onload="getData()" style="overflow: hidden;">
 
     <!-- Toolbar for diagram -->
-    <div id="diagram-toolbar" onmousedown='mdown(event)'>
+    <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'>
         <fieldset>
             <legend>Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
