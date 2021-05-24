@@ -66,6 +66,8 @@ function returnedDugga(data)
 		retdata=jQuery.parseJSON(data['param']);
 		$("#fargnamn").html(retdata['colorname']);
 		$("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
+		var dbug = retdata['color'];
+		console.log("Color: " + dbug);	//HÄR
 		// Add our previous answer
 		if (data['answer'] != null){
 			var previous = data['answer'].split(' ');

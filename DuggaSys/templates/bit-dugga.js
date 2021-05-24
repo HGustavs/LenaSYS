@@ -66,6 +66,8 @@ function returnedDugga(data)
 		}else{		
 			retdata=jQuery.parseJSON(data['param']);
 			$("#talet").html(retdata['tal']);
+			var dbug = retdata['tal'];
+			console.log("Tal: " + dbug);	//HÄR
 			// Add our previous answer
 			if(data['answer'] != null && data['answer'] != "UNK"){
 				resetBitstring();

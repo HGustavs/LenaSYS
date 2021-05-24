@@ -2205,6 +2205,7 @@ function sendFeedback(entryname){
 		}else{
 			param.contactable = 0;
 		}
+		console.log("get this: "+param);
 		AJAXService("SENDFDBCK",param,"SENDDUGGAFEEDBACK");
 	}else {
 		$('#submitstatus').css({'color':'var(--color-red)',"display": "inline-block"}).text("Select a rating before saving it.");
