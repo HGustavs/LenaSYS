@@ -3355,15 +3355,21 @@ span.arrow {
   background-color: var(--color-sectioned-table-lo);
 }
 
-.search-filer-container {
+.resulted-filter-container {
+  padding: 5px 0px 5px 20px;
   display: flex;
   align-items: flex-end;
+}
+
+.resulted-filter-container > *{
+  margin-right: 20px;
 }
 
 .filter-btn{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   display: inline-block;
   padding: 8px 25px;
+  margin-left: 10px;
   background-color: var(--color-primary);
   color: white;
   font-size: 16px;
@@ -3412,17 +3418,16 @@ span.arrow {
   display: none;
 }
 
-#select-date-interval {
+.select-date-interval {
   display: flex;
 }
 
-#select-date-interval > *{
+.select-date-interval > *{
   margin: 0px 10px;
 }
 
-.date-interval-selector {
+.filter-label {
   display: block;
-
 }
 
 .resultTableCell {

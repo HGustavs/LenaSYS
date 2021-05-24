@@ -7,12 +7,15 @@ var filerByDate = {
 	date2: null
 }
 var duggasArr = [];
+var searchTerms = [];
 var showDuggaFilterElement;
 var toggleElement;
 var checkboxElements;
+var searchBarElement;
+var searchDelayTimeout;
 
 
-function updateFilterInterval() {
+function searchByFilter() {
 	// Date object requires string to not apply random time zone.
 	var dateElement = document.querySelectorAll(".date-interval-selector");
 	if (dateElement[0].value != "" && dateElement[1].value != ""){
@@ -29,7 +32,13 @@ function updateFilterInterval() {
 		}
 	}
 
+	setSearchTerms();
 	updateTable();
+}
+
+function setSearchTerms() {
+
+	searchTerms = searchBarElement.value.split("&&");
 }
 
 document.addEventListener("DOMContentLoaded", loadHTMLelements);
@@ -42,10 +51,21 @@ document.addEventListener("click", function(e) {
 	else parent.classList.add("hidden")
 });
 
+
 function loadHTMLelements() {
+	searchBarElement = document.querySelector(".searchbar-filter");
 	showDuggaFilterElement = document.querySelector(".show-dugga-filter-popup");
 	toggleElement = document.getElementById("toggle-dugganame-filter");
 	checkboxElements = document.getElementsByName("duggaEntryname");
+
+	// Whenever user presses key in searchbar filter is applied automatically
+	// Timeout used so search is only applied if they user hasnt pressed a key for a while (not make 100 searches if user types a 10 letter keyword/search term)
+	searchBarElement.addEventListener("keyup", function(e) {
+		clearTimeout(searchDelayTimeout);
+		searchDelayTimeout = setTimeout(function() {
+			searchByFilter();
+		}, 300)
+	});
 }
 
 function checkboxDuggaNameClicked(thisElement) {
@@ -212,6 +232,7 @@ function renderSortOptions(col, sortKind, colname) { // Which columns and how th
 function rowFilter(row) {
 	var isDuggaFilterMatch = true;
 	var isFilterDateMatch = true;
+	var isSearchMatch = true;
   
 	for (var duggaName of duggasArr) {
 		if (duggaName == row["duggaName"]) {
@@ -230,7 +251,25 @@ function rowFilter(row) {
 		isFilterDateMatch = (newdate >= filerByDate.date1 && newdate <= filerByDate.date2);
 	}
 
-	return (isDuggaFilterMatch && isFilterDateMatch);
+	for(var term of searchTerms){
+		if(term != ""){
+			for(var column in row){
+			
+				if(row[column] == null){
+					isSearchMatch = false;
+				} 
+				else if(row[column].toLowerCase().includes(term.toLowerCase())){
+					isSearchMatch = true;
+					break;
+				}else{
+					isSearchMatch = false;
+				}
+			}
+
+		}
+	}
+
+	return (isDuggaFilterMatch && isFilterDateMatch && isSearchMatch);
 }
 
 // Basic ascending/descending order
