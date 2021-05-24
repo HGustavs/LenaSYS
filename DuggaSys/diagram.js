@@ -1079,7 +1079,7 @@ function onSetup()
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "MANY" },
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "ONE"},
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: DEPENDENTS_OF_ID, kind: "Normal", cardinality: "ONE" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "MANY" },
+        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "MANY"},
 
         { id: makeRandomID(), fromID: Name_ID, toID: FNID, kind: "Normal" },
         { id: makeRandomID(), fromID: Name_ID, toID: Initial_ID, kind: "Normal" },
@@ -2152,6 +2152,7 @@ function changeLineProperties()
     // Set lineKind
     var radio1  = document.getElementById("lineRadio1");
     var radio2 = document.getElementById("lineRadio2");
+    var label = document.getElementById("lineLabel");
     var line = contextLine[0];
 
     if(radio1.checked && line.kind != radio1.value) {
@@ -2175,6 +2176,10 @@ function changeLineProperties()
             line.cardinality = cardinalityInputValue;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { cardinality: cardinalityInputValue }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
+    }
+
+    if(line.label != label.value){
+        line.label = label.value
     }
 
     showdata();
@@ -3511,7 +3516,10 @@ function generateContextProperties()
             });
             str += `</select></label>`;
         }
-    }
+        str += `<input id="lineLabel" type="text" placeholder="Label..."`;
+        if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
+        str += `/>`;
+    }   
 
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
     }
@@ -4166,6 +4174,16 @@ function drawLine(line, targetGhost = false)
         // Add the line to the str
         str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`
     }
+
+    if(line.label && line.label != ""){
+        var centerX = (tx + fx) / 2;
+        var centerY = (ty + fy) / 2;
+        //add background
+        str += `<rect x="${ centerX - ((9 * line.label.length) * zoomfact)/2 }" y="${centerY - ((textheight / 2) * zoomfact + 4)}" width="${(9 * line.label.length) * zoomfact}" height="${textheight * zoomfact}" style="fill:rgb(255,255,255);" />`
+        //add label
+        str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)}" y="${centerY-(2 * zoomfact)}">${line.label}</text>`;
+    }
+
     return str;
 }
 /**
