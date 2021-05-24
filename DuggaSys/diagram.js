@@ -3098,7 +3098,6 @@ function toggleReplay()
     // Get DOM-elements for styling
     var replayBox = document.getElementById("diagram-replay-box");
     var optionsPane = document.getElementById("options-pane");
-    var fab = document.getElementById("fab");
     var toolbar = document.getElementById("diagram-toolbar");
     var ruler = document.getElementById("rulerOverlay");
     var zoomIndicator = document.getElementById("zoom-message-box");
@@ -3112,7 +3111,6 @@ function toggleReplay()
         // Change HTML DOM styling
         replayBox.style.visibility = "hidden";
         optionsPane.style.visibility = "visible";
-        fab.style.visibility = "visible";
         toolbar.style.visibility = "visible";
         ruler.style.left = "50px";
         zoomIndicator.style.bottom = "5px";
@@ -3132,7 +3130,6 @@ function toggleReplay()
         // Change HTML DOM styling
         replayBox.style.visibility = "visible";
         optionsPane.style.visibility = "hidden";
-        fab.style.visibility = "hidden";
         toolbar.style.visibility = "hidden";
         ruler.style.left = "0";
         zoomIndicator.style.bottom = "55px";
