@@ -113,7 +113,7 @@ if($gradesys=="UNK") $gradesys=0;
 		    $isSuperUserVar=isSuperUser($userid);
 		    $ha = $haswrite || $isSuperUserVar;
 		    if(strcmp($opt,"GRP")===0) {
-		        $query = $pdo->prepare("SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers");
+		        $query = $pdo->prepare("SELECT user.uid,user.username,/*user.firstname,user.lastname,*/user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers");
 		        $query->bindParam(':cid', $courseid);
 		        $query->bindParam(':vers', $coursevers);
 		        /*
