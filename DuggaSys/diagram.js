@@ -2543,6 +2543,10 @@ function rectsIntersect (left, right)
          }
          // Add the object-id to the idList
          idList.push(obj.id);
+
+         // Make the coordinates without decimals
+         obj.x = Math.round(obj.x);
+         obj.y = Math.round(obj.y);
      });
      updatepos(0, 0);
      if (idList.length != 0) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
