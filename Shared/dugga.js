@@ -1102,15 +1102,7 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	}else if(kind=="GEXPORT"){
-		$.ajax({
-			url: "resultedservice.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedExportedGrades
-		});
-}else if(kind=="GROUP"){
+	}else if(kind=="GROUP"){
 			$.ajax({
 				url: "groupedservice.php",
 				type: "POST",
