@@ -78,12 +78,7 @@ pdoConnect();
 	<div class="titles" style="justify-content:flex-start;">
 			<h1>Edit student results</h1>
     </div>
-			<div style="display: flex;">
-				<div class="resultedFormsFlex">
-					<label for="assignmentDropdown">Assignment</label>
-					<select id="assignmentDropdown" onchange="updateTable()"></select>
-				</div>
-			</div>
+	
     </div>
 
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
