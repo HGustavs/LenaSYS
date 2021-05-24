@@ -2576,7 +2576,10 @@ function onMouseModeEnabled()
             makeGhost();
             break;
 
-        case mouseModes.EDGE_CREATION:  
+        case mouseModes.EDGE_CREATION:
+            clearContext();
+            clearContextLine();
+            updatepos(0,0);
             break;
 
         case mouseModes.BOX_SELECTION:
