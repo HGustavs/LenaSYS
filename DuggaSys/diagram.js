@@ -372,6 +372,7 @@ class StateMachine
      */
     save (stateChangeArray, changeType)
     {
+        
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
         for (var i = 0; i < stateChangeArray.length; i++) {
@@ -435,11 +436,13 @@ class StateMachine
 
                         // If the found element has the same ids.
                         if (sameIds){
+                            var temp = false;
                             // If this historyLog is within the timeLimit
                             if(((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit){
                                 lastLog = this.historyLog[index];
-                                sameElements = true;
+                                temp = true;
                             }
+                            sameElements = temp;
                             break;
                         }
                     }
@@ -465,6 +468,7 @@ class StateMachine
                             case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
                                 lastLog.appendValuesFrom(stateChange);
                                 this.historyLog.push(this.historyLog.splice(this.historyLog.indexOf(lastLog), 1)[0]);
+                                this.currentHistoryIndex = this.historyLog.length -1;
                                 break;
 
                             default:
@@ -509,13 +513,13 @@ class StateMachine
         // If there is no history => return
         if (this.currentHistoryIndex == -1) return;
 
-        var time = this.historyLog[this.currentHistoryIndex - 1].time
-
         do {
             // Lower the historyIndex by one
             this.currentHistoryIndex--;
 
-        }while(this.historyLog[this.currentHistoryIndex] && time == this.historyLog[this.currentHistoryIndex].time);
+        }while(this.currentHistoryIndex > 0
+            && this.historyLog[this.currentHistoryIndex] 
+            && this.historyLog[this.currentHistoryIndex - 1].time == this.historyLog[this.currentHistoryIndex].time);
 
         this.scrubHistory(this.currentHistoryIndex);
 
@@ -554,7 +558,7 @@ class StateMachine
     {
         this.gotoInitialState();
 
-        for (var i = 0; i < endIndex; i++) {
+        for (var i = 0; i <= endIndex; i++) {
             this.restoreState(this.historyLog[i]);
         }
 
@@ -4842,7 +4846,7 @@ function exportDiagram()
         });
         objToSave.lines.push(filteredObj);
     });
-    console.log(objToSave);
+    
 
     // Download the file
     downloadFile("diagram", objToSave);
@@ -4886,7 +4890,7 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
             var temp = await getFileContent(file1);
             temp = JSON.parse(temp);
         } catch(error){
-            console.log(error);
+            console.error(error);
         }
     }else {
         temp = file;
