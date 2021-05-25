@@ -1269,7 +1269,6 @@ function localStorageHandler(ajaxdata) {
 function createDuggaLocalStorageData(ajaxVid, ajaxVariantArr) {
  	var data = {
 		variant: getVariant(ajaxVid,ajaxVariantArr),
-		hash: hash,
 		expireTime: createExpireTime()
 	};
 
@@ -2283,7 +2282,10 @@ function updateLoginPopup() {
 	}
 	else if(localStorage.getItem(localStorageItemKey)) {
 		var localstorageHash = JSON.parse(localStorage.getItem(localStorageItemKey)).hash;
-		hashElement.innerHTML=localstorageHash;
+		if(localstorageHash != null){
+			hashElement.innerHTML=localstorageHash;
+		}
+
 	}
 }
 
