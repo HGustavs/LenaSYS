@@ -595,34 +595,6 @@ class StateMachine
             return;
         }
 
-        // If index 0 is an object and that object has an value of the key "id"
-        if (state.created != undefined && state.created[0].id != undefined){
-
-            Object.keys(state.created).forEach(index => {
-                var temp = {};
-                Object.keys(state.created[index]).forEach(key => {
-                    if (key == "id") temp.id = state.created[index][key];
-                    else temp[key] = state.created[index][key];
-                });
-
-                // If the object is an element
-                if (state.created[index].x && state.created[index].y){
-                    // Add the defaults to the element
-                    Object.keys(defaults[temp.kind]).forEach(key => {
-                        if (!temp[key]) temp[key] = defaults[temp.kind][key];
-                    });
-                    data.push(temp);
-                }else {
-                    // Add the defaults to the element
-                    Object.keys(defaultLine).forEach(key => {
-                        if (!temp[key]) temp[key] = defaultLine[key];
-                    });
-                    lines.push(temp);
-                }
-            });
-            return;
-        }
-
         if (!Array.isArray(state.id)) state.id = [state.id];
 
         for (var i = 0; i < state.id.length; i++){
