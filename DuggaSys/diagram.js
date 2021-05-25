@@ -2180,6 +2180,7 @@ function changeLineProperties()
     }
 
     if(line.label != label.value){
+        label.value = label.value.trim();
         line.label = label.value
     }
 
