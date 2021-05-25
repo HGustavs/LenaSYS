@@ -417,8 +417,9 @@ function SortableTable(param) {
 				mhvstr += "<tr id='" + this.tableid + DELIMITER + i + DELIMITER + "mhv' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 
 				// Add Counter cell to the row. The class <tableid>_counter can be used to style the counterText
+				//str += "<input type='checkbox' name='arrayCheckBox' >"; //onclick='markedItems(this)'
 				if (this.hasCounter) {
-					str += "<td style='white-space:nowrap;' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex + "</span></td>";
+					str += "<td style='white-space:nowrap;' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex + "</span><input type='checkbox' name='arrayCheckBox'></td>"; 
 					mhvstr += "<td style='white-space:nowrap;' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex++ + "</span></td>";
 				}
 				result++;

@@ -152,7 +152,7 @@ function createSortableTable(data){
 		tblfoot:{}
 	};
 
-	var colOrder = ["duggaName","hash", "password", "submitted", "timesSubmitted", "timesAccessed"];
+	var colOrder = ["duggaName","hash", "password", "submitted", "timesSubmitted", "timesAccessed"];	//HÄR
 
 	myTable = new SortableTable({
 		data: tabledata,
@@ -179,8 +179,7 @@ function createSortableTable(data){
 }
 
 // Displays different things depending on column
-function renderCell(col, celldata, cellid) { 
-	
+function renderCell(col, celldata, cellid) { //HÄR TYP
 	str = "<div class='resultTableCell'>";
 	if (col == "hash"){
 		var url = createUrl(celldata);

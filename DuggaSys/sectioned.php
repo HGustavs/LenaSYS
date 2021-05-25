@@ -146,7 +146,7 @@
 
 		<!-- Hide button -->
 		
-		<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
+		<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">	<!--HÄR--->
 			<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
 		</div>
 		

@@ -110,7 +110,6 @@ pdoConnect();
 	<!-- content END -->
 
 	<!-- -------------------=============####### Result Popover #######=============------------------- -->
-
 	<div id='resultpopover' class='resultPopover' style='display: none'>
 		<div class='loginBoxheader'>
 			<span id="hoverRes" ></span>
