@@ -3516,7 +3516,7 @@ function generateContextProperties()
             });
             str += `</select></label>`;
         }
-        str += `<input id="lineLabel" type="text" placeholder="Label..."`;
+        str += `<input id="lineLabel" maxlength="20" type="text" placeholder="Label..."`;
         if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
         str += `/>`;
     }   
