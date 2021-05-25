@@ -2523,10 +2523,10 @@ function rectsIntersect (left, right)
                  //Different snap points for entity and others
                  if (obj.kind == "EREntity") {
                      // Calculate nearest snap point
-                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+100) / settings.grid.gridSize) * settings.grid.gridSize;
                      obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
                  } else{
-                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+50) / settings.grid.gridSize) * settings.grid.gridSize;
                      obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
                  }
                  // Set the new snap point to center of element
@@ -4625,12 +4625,12 @@ function updateCSSForAllElements()
         if (settings.grid.snapToGrid && useDelta) {
             if (element.kind == "EREntity"){
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-150) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-
+                
                 // Add the scroll values
-                left = Math.round((((objX - zoomOrigo.x)+50)* zoomfact) + (scrollx * (1.0 / zoomfact)));
-                top = Math.round((((objY - zoomOrigo.y)-5) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+                left = Math.round((((objX - zoomOrigo.x)+250)* zoomfact) + (scrollx * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
@@ -4639,16 +4639,16 @@ function updateCSSForAllElements()
             } 
             else if (element.kind != "EREntity"){
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-150) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
-
+                
                 // Add the scroll values
-                left = Math.round((((objX - zoomOrigo.x)+50) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-                top = Math.round((((objY - zoomOrigo.y)-5) * zoomfact) + (scrolly * (1.0 / zoomfact)));
-
+                left = Math.round((((objX - zoomOrigo.x)+200) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+            
                 // Set the new snap point to center of element
-                left -= ((elementData.width * zoomfact) / 1);
-                top -= ((elementData.height * zoomfact) / 1);
+                left -= ((elementData.width * zoomfact) / 2);
+                top -= ((elementData.height * zoomfact) / 2);
                 
             }
         }
