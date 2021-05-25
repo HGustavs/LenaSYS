@@ -4225,7 +4225,7 @@ function drawLine(line, targetGhost = false)
             
             // Used to tweak the cardinality position when the line gets very short.
             var tweakOffset = 0.30; 
-            console.log(findEntityFromLine(line));
+            
             if(findEntityFromLine(line) == -1){
                 if(offsetOnLine > distance2 *0.5){
                     posX2 = fx + (offsetOnLine * (tx2 - fx) / distance2) * tweakOffset;
