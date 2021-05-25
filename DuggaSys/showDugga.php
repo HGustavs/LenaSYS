@@ -186,6 +186,7 @@ if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 				echo "<input id='hashfield' name='hash' class='textinput' type='text' placeholder='Hash'>";
 			echo "<input id='passwordfield' name='password' class='textinput' type='password' placeholder='Password'>";
 			echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
+			echo "<input class='".$btnDisable." submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
 			echo "</div>";
 			echo "</div>";
 			echo '<script type="text/javascript"> updateLoginPopup(); </script>';
