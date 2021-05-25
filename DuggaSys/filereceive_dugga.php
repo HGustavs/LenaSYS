@@ -285,8 +285,17 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 				$seq++;
 
 				$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/";
-			  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$fname.$seq.".".$extension;
-			  file_put_contents($movname, htmlentities($inputtext, ENT_QUOTES | ENT_IGNORE, "UTF-8"));
+				if ($fieldkind = 4) {
+					$extension = "json";
+					$mime = "json";
+				}
+				$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$fname.$seq.".".$extension;
+
+				if ($fieldkind = 4){ // JSON-data
+					file_put_contents($movname, $inputtext);
+				}else{
+					file_put_contents($movname, htmlentities($inputtext, ENT_QUOTES | ENT_IGNORE, "UTF-8"));
+				}
 
 				$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now(),:hash);");
 

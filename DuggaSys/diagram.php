@@ -243,7 +243,7 @@
 
             <div>
                 <label for="replay-range">Change</label>
-                <input id="replay-range" class="zoomSlider" onchange="changeReplayState(parseInt(this.value))" type="range" min="0" max="0">
+                <input id="replay-range" class="zoomSlider" onchange="changeReplayState(parseInt(this.value))" type="range" min="-1" max="-1">
             </div>
         </div>
     </div>

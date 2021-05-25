@@ -372,6 +372,7 @@ class StateMachine
      */
     save (stateChangeArray, changeType)
     {
+        
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
         for (var i = 0; i < stateChangeArray.length; i++) {
@@ -435,11 +436,13 @@ class StateMachine
 
                         // If the found element has the same ids.
                         if (sameIds){
+                            var temp = false;
                             // If this historyLog is within the timeLimit
                             if(((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit){
                                 lastLog = this.historyLog[index];
-                                sameElements = true;
+                                temp = true;
                             }
+                            sameElements = temp;
                             break;
                         }
                     }
@@ -465,6 +468,7 @@ class StateMachine
                             case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
                                 lastLog.appendValuesFrom(stateChange);
                                 this.historyLog.push(this.historyLog.splice(this.historyLog.indexOf(lastLog), 1)[0]);
+                                this.currentHistoryIndex = this.historyLog.length -1;
                                 break;
 
                             default:
@@ -481,18 +485,8 @@ class StateMachine
         } else {
             console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
         }
-    };
-        settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
-        this.historyLog.forEach(historyEntry => {
+    }
 
-            var lastKeyIndex = Object.keys(settings.replay.timestamps).length-1;
-            var lastKey = Object.keys(settings.replay.timestamps)[lastKeyIndex];
-            if (settings.replay.timestamps[lastKey] != historyEntry.time) {
-                settings.replay.timestamps[this.historyLog.indexOf(historyEntry)] = historyEntry.time
-            }
-        });
-        // Change the sliders max to historyLogs length
-        document.getElementById("replay-range").setAttribute("max", Object.keys(settings.replay.timestamps).length.toString());
     }
     removeFutureStates(){
         // Remove the history entries that are after current index
@@ -509,13 +503,13 @@ class StateMachine
         // If there is no history => return
         if (this.currentHistoryIndex == -1) return;
 
-        var time = this.historyLog[this.currentHistoryIndex - 1].time
-
         do {
             // Lower the historyIndex by one
             this.currentHistoryIndex--;
 
-        }while(this.historyLog[this.currentHistoryIndex] && time == this.historyLog[this.currentHistoryIndex].time);
+        }while(this.currentHistoryIndex > 0
+            && this.historyLog[this.currentHistoryIndex] 
+            && this.historyLog[this.currentHistoryIndex - 1].time == this.historyLog[this.currentHistoryIndex].time);
 
         this.scrubHistory(this.currentHistoryIndex);
 
@@ -554,7 +548,7 @@ class StateMachine
     {
         this.gotoInitialState();
 
-        for (var i = 0; i < endIndex; i++) {
+        for (var i = 0; i <= endIndex; i++) {
             this.restoreState(this.historyLog[i]);
         }
 
@@ -700,7 +694,7 @@ class StateMachine
         clearInterval(this.replayTimer);
 
         // If cri (CurrentReplayIndex) is the last set to beginning
-        if(cri == tsIndexArr.length) cri = 0;
+        if(cri == tsIndexArr.length -1) cri = -1;
 
         setReplayRunning(true);
         document.getElementById("replay-range").value = cri.toString();
@@ -711,13 +705,24 @@ class StateMachine
         var self = this;
         this.replayTimer = setInterval(function() {
 
-            var temp = tsIndexArr[cri];
+            cri++;
+            var startStateIndex = tsIndexArr[cri];
+            var stopStateIndex;
 
-            if (tsIndexArr.length - 1 == cri) var stopStateIndex = self.historyLog.length;
-            else var stopStateIndex = tsIndexArr[cri+1];
+            if(tsIndexArr.length - 1 == cri){
+                stopStateIndex = self.historyLog.length -1;
+            }else if(tsIndexArr[cri+1] - 1 == tsIndexArr[cri]){
+                stopStateIndex = startStateIndex;
+            }else{
+                stopStateIndex = tsIndexArr[cri+1] -1;
+            } 
+            if(stopStateIndex == -1){
+                stopStateIndex = 0; 
+            } 
 
-            for (var i = tsIndexArr[cri]; i < stopStateIndex; i++){
+            for (var i = startStateIndex; i <= stopStateIndex; i++){
                 self.restoreState(self.historyLog[i]);
+ 
             }
 
             // Update diagram
@@ -725,10 +730,10 @@ class StateMachine
             showdata();
             updatepos(0, 0);
 
-            cri++;
+            
             document.getElementById("replay-range").value = cri;
 
-            if (tsIndexArr.length == cri){
+            if (tsIndexArr.length -1 == cri){
                 clearInterval(self.replayTimer);
                 setReplayRunning(false);
             }
@@ -3136,7 +3141,7 @@ function toggleReplay()
 
     if (settings.replay.active) {
         // Restore the diagram to state before replay-mode
-        stateMachine.scrubHistory(stateMachine.currentHistoryIndex + 1);
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
 
         settings.ruler.zoomX -= 50;
         // Change HTML DOM styling
@@ -3148,6 +3153,18 @@ function toggleReplay()
         zoomIndicator.style.left = "100px";
         replyMessage.style.visibility = "hidden";
     } else {
+        settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
+        stateMachine.historyLog.forEach(historyEntry => {
+
+            var lastKeyIndex = Object.keys(settings.replay.timestamps).length-1;
+            var lastKey = Object.keys(settings.replay.timestamps)[lastKeyIndex];
+            if (settings.replay.timestamps[lastKey] != historyEntry.time) {
+                settings.replay.timestamps[stateMachine.historyLog.indexOf(historyEntry)] = historyEntry.time
+            }
+        });
+        // Change the sliders max to historyLogs length
+        document.getElementById("replay-range").setAttribute("max", (Object.keys(settings.replay.timestamps).length -1).toString());
+
         settings.ruler.zoomX += 50;
         // Clear selected elements and lines
         clearContext();
@@ -5031,7 +5048,7 @@ function exportDiagram()
         });
         objToSave.lines.push(filteredObj);
     });
-    console.log(objToSave);
+    
 
     // Download the file
     downloadFile("diagram", objToSave);
@@ -5058,24 +5075,29 @@ function getFileContent(files)
 /**
  * @description Load the content of a file to the diagram-data. This will remove previous data
  */
-async function loadDiagram()
+async function loadDiagram(file = null, shouldDisplayMessage = true)
 {
-    var fileInput = document.getElementById("importDiagramFile");
+    if (file === null){
+        var fileInput = document.getElementById("importDiagramFile");
 
-    // If not an json-file is inputted => return
-    if (getExtension(fileInput.value) != "json"){
-        displayMessage(messageTypes.ERROR, "Sorry, you cant load that type of file. Only json-files is allowed");
-        return;
+        // If not an json-file is inputted => return
+        if (getExtension(fileInput.value) != "json"){
+            if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Sorry, you cant load that type of file. Only json-files is allowed");
+            return;
+        }
+
+        try{
+            // Get filepath
+            var file1 = fileInput.files[0];
+            var temp = await getFileContent(file1);
+            temp = JSON.parse(temp);
+        } catch(error){
+            console.error(error);
+        }
+    }else {
+        temp = file;
     }
 
-    try{
-        // Get filepath
-        var file1 = fileInput.files[0];
-        var temp = await getFileContent(file1);
-        temp = JSON.parse(temp);
-    } catch(error){
-        console.log(error);
-    }
 
     if(temp.historyLog && temp.initialState){
         // Set the history and initalState to the values of the file
@@ -5089,7 +5111,7 @@ async function loadDiagram()
         stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
 
         // Display success message for load
-        displayMessage(messageTypes.SUCCESS, "Save-file loaded");
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Save-file loaded");
 
     } else if(temp.data && temp.lines){
         // Set data and lines to the values of the export file
@@ -5122,9 +5144,9 @@ async function loadDiagram()
         stateMachine.removeFutureStates();
 
         // Display success message for load
-        displayMessage(messageTypes.SUCCESS, "Export-file loaded");
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Export-file loaded");
     }else{
-        displayMessage(messageTypes.ERROR, "Error, cant load the given file");
+        if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
 }
 //#endregion =====================================================================================
