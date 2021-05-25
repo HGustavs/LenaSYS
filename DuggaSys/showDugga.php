@@ -250,7 +250,6 @@ if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w') && $isNewDugga != "tr
 						if ($duggafile !== 'generic_dugga_file_receive') {
 							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 							echo "<td align='right'>";
-							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
 							echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
 							echo "</td>";
 							

@@ -693,6 +693,8 @@ function saveDuggaResult(citstr)
 	if(pwd == undefined || pwd.includes("undef")) pwd = randomPassword();
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
+	updateLocalStorageItem();
+
 
 	var scores = JSON.parse(localStorage.getItem("ls-highscore-dg"+querystring['did']) || '[]');
 	scores.push(score);
@@ -1215,11 +1217,6 @@ function AJAXService(opt,apara,kind)
 
 function newSubmission(){
 	if(confirm("Do you want to start a new submission?")){
-		var oldItem = JSON.parse(localStorage.getItem(localStorageItemKey));
-		oldItem.hash = generateHash();
-		oldItem.expireTime = createExpireTime();
-		localStorage.setItem(localStorageItemKey, JSON.stringify(oldItem));
-
 		var curUrl = window.location.href;
 		var newUrl = `${curUrl}&newDugga=true`;
 		location.replace(newUrl);
@@ -2287,5 +2284,14 @@ function updateLoginPopup() {
 	else if(localStorage.getItem(localStorageItemKey)) {
 		var localstorageHash = JSON.parse(localStorage.getItem(localStorageItemKey)).hash;
 		hashElement.innerHTML=localstorageHash;
+	}
+}
+
+function updateLocalStorageItem() {
+	if (localStorage.getItem(localStorageItemKey)){
+		var item = JSON.parse(localStorage.getItem(localStorageItemKey));
+		item.hash = hash;
+		item.expireTime = createExpireTime();
+		localStorage.setItem(localStorageItemKey, JSON.stringify(item));
 	}
 }
