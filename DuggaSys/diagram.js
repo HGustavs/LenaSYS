@@ -485,18 +485,8 @@ class StateMachine
         } else {
             console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
         }
-    };
-        settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
-        this.historyLog.forEach(historyEntry => {
+    }
 
-            var lastKeyIndex = Object.keys(settings.replay.timestamps).length-1;
-            var lastKey = Object.keys(settings.replay.timestamps)[lastKeyIndex];
-            if (settings.replay.timestamps[lastKey] != historyEntry.time) {
-                settings.replay.timestamps[this.historyLog.indexOf(historyEntry)] = historyEntry.time
-            }
-        });
-        // Change the sliders max to historyLogs length
-        document.getElementById("replay-range").setAttribute("max", (Object.keys(settings.replay.timestamps).length -1).toString());
     }
     removeFutureStates(){
         // Remove the history entries that are after current index
@@ -3134,6 +3124,18 @@ function toggleReplay()
         zoomIndicator.style.left = "100px";
         replyMessage.style.visibility = "hidden";
     } else {
+        settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
+        stateMachine.historyLog.forEach(historyEntry => {
+
+            var lastKeyIndex = Object.keys(settings.replay.timestamps).length-1;
+            var lastKey = Object.keys(settings.replay.timestamps)[lastKeyIndex];
+            if (settings.replay.timestamps[lastKey] != historyEntry.time) {
+                settings.replay.timestamps[stateMachine.historyLog.indexOf(historyEntry)] = historyEntry.time
+            }
+        });
+        // Change the sliders max to historyLogs length
+        document.getElementById("replay-range").setAttribute("max", (Object.keys(settings.replay.timestamps).length -1).toString());
+
         settings.ruler.zoomX += 50;
         // Clear selected elements and lines
         clearContext();
