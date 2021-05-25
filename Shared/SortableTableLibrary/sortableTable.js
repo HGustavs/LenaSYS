@@ -402,26 +402,11 @@ function SortableTable(param) {
 				str += "<tr id='" + this.tableid + DELIMITER + i + "'";
 				if (this.hasRowHighlight) str += " onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
 
-				/*
-				//Check if row contains requestedpasswordchange & set styling accordingly
-				if (row["requestedpasswordchange"] != null) {
-					obj = JSON.parse(row["requestedpasswordchange"])
-					if (obj.requested == 1) {
-						str += " style='box-sizing:border-box; background-color: #ff3f4c'>";
-					} else {
-						str += " style='box-sizing:border-box'>";
-					}
-				} else {
-					str += " style='box-sizing:border-box'>";
-				}*/
-
 				// Highlights the rows with a value in timesaccessed column greater than the threshold
 				if(document.getElementById("highlight-checkbox").checked){
 					var threshold = parseInt(document.getElementById("highlight-entry").value);
 					
 					if(row["timesAccessed"] >= threshold){
-						console.log("Threshold = "+threshold);
-						console.log("Value = "+row["timesAccessed"]);
 						str += " style='box-sizing:border-box; background-color: #ff3f4c'>";
 					}else{
 						str += " style='box-sizing:border-box'>";
