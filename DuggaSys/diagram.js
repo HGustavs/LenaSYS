@@ -2122,6 +2122,20 @@ function changeLineProperties()
         }
     }
 
+    if (!!document.getElementById('propertyCardinality2')){
+
+        // Change line - cardinality
+        var cardinalityInputValue2 = document.getElementById('propertyCardinality2').value;
+
+        if (line.cardinality2 != undefined && cardinalityInputValue2 == ""){
+            delete line.cardinality2;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { cardinality2: undefined }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        } else if (line.cardinality2 != cardinalityInputValue2 && cardinalityInputValue2 != ""){
+            line.cardinality2 = cardinalityInputValue2;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { cardinality2: cardinalityInputValue2 }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+    }
+
     showdata();
 }
 
@@ -3434,21 +3448,39 @@ function generateContextProperties()
         // Cardinality
         // If FROM or TO has an entity, print option for change if its not connected to an attribute
         if (findAttributeFromLine(contextLine[0]) == null){
-        if (findEntityFromLine(contextLine[0]) != null){
-            str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
-            str  += `<option value=''>None</option>`
-            Object.keys(lineCardinalitys).forEach(cardinality => {
-                if (contextLine[0].cardinality != undefined && contextLine[0].cardinality == cardinality){
-                    str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
-                }else {
-                    str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+            if (findEntityFromLine(contextLine[0]) != null){
+                
+                str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
+                str  += `<option value=''>None</option>`
+                
+                Object.keys(lineCardinalitys).forEach(cardinality => {
+                    if (contextLine[0].cardinality != undefined && contextLine[0].cardinality == cardinality){
+                        str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+                    }else {
+                        str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+                    }
+                });
+                
+                str += `</select></label>`;
+                if(contextLine[0].kind == "Recursive"){
+                    str += `<label style="display: block">Cardinality: <select id='propertyCardinality2'>`;
+                    str  += `<option value=''>None</option>`
+                
+                    Object.keys(lineCardinalitys).forEach(cardinality => {
+                        if (contextLine[0].cardinality2 != undefined && contextLine[0].cardinality2 == cardinality){
+                            str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+                        }else {
+                            str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+                        }
+                    });
+                    
+                    str += `</select></label>`;
+                    
                 }
-            });
-            str += `</select></label>`;
+            }
         }
-    }
 
-        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved');generateContextProperties()">`;
     }
 
     if (context.length > 0) {
@@ -3911,7 +3943,6 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
         // If there is no existing lines or is a special case
         if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
-
             var newLine = {
                 id: makeRandomID(),
                 fromID: fromElement.id,
@@ -4005,8 +4036,11 @@ function drawLine(line, targetGhost = false)
     }else if (line.kind == "Recursive"){
         var fwidth = (felem.width / 2) * zoomfact;
         var twidth = (telem.width / 2) * zoomfact;
+
+        //The space between the lines
         var linespaceX = 0;
         var linespaceY = 0;
+
         // Recaluclate coordinates for the lines on ERRelation side
         if(telem.kind == "EREntity"){
             if (line.ctype == "BT"){
@@ -4014,25 +4048,25 @@ function drawLine(line, targetGhost = false)
                 fx += fwidth;
                 fy2 = fy;
                 fx2 = fx - fwidth*2;
-                linespaceX = 5*zoomfact;
+                linespaceX = 10*zoomfact;
             }else if (line.ctype == "TB"){
                 fy += fwidth;
                 fx += fwidth;
                 fy2 = fy;
                 fx2 = fx -fwidth*2;
-                linespaceX = 5*zoomfact;
+                linespaceX = 10*zoomfact;
             }else if (line.ctype == "RL"){
                 fy += fwidth;
                 fx -= fwidth;
                 fx2 = fx;
                 fy2 = fy - fwidth*2;
-                linespaceY = 5*zoomfact;
+                linespaceY = 10*zoomfact;
             }else if (line.ctype == "LR"){
                 fy += fwidth;
                 fx += fwidth;
                 fx2 = fx;
                 fy2 = fy - fwidth*2;
-                linespaceY = 5*zoomfact;
+                linespaceY = 10*zoomfact;
             }
     
             str += `<line id='${line.id}-1' x1='${fx}' y1='${fy}' x2='${tx+linespaceX}' y2='${ty+linespaceY}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -4044,25 +4078,25 @@ function drawLine(line, targetGhost = false)
                 tx += twidth;
                 ty2 = ty;
                 tx2 = tx - twidth*2;
-                linespaceX = 5*zoomfact;
+                linespaceX = 10*zoomfact;
             }else if (line.ctype == "TB"){
                 ty -= twidth;
                 tx += twidth;
                 ty2 = ty;
                 tx2 = tx - twidth*2;
-                linespaceX = 5*zoomfact;
+                linespaceX = 10*zoomfact;
             }else if (line.ctype == "RL"){
                 ty += twidth;
                 tx += twidth;
                 tx2 = tx;
                 ty2 = ty - twidth*2;
-                linespaceY = 5*zoomfact;
+                linespaceY = 10*zoomfact;
             }else if (line.ctype == "LR"){
                 ty += twidth;
                 tx -= twidth;
                 tx2 = tx;
                 ty2 = ty - twidth*2;
-                linespaceY = 5*zoomfact;
+                linespaceY = 10*zoomfact;
             }
     
             str += `<line id='${line.id}-1' x1='${fx+linespaceX}' y1='${fy+linespaceY}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -4096,6 +4130,9 @@ function drawLine(line, targetGhost = false)
         var posX, posY;
         var distance = Math.sqrt(Math.pow((tx - fx), 2) + Math.pow((ty - fy), 2));
 
+        // Used to move the cardinality if its a recursive line
+        var movePos = 17 * zoomfact;
+
         // Used to tweak the cardinality position when the line gets very short.
         var tweakOffset = 0.30; 
 
@@ -4108,7 +4145,6 @@ function drawLine(line, targetGhost = false)
                 posX = fx + (offsetOnLine * (tx - fx) / distance);
                 posY = fy + (offsetOnLine * (ty - fy) / distance);
             }
-
 
             /*
             * Depending on the side of the element that the line is connected to
@@ -4156,10 +4192,115 @@ function drawLine(line, targetGhost = false)
             }
         }
 
+        if (felem.kind == "ERRelation" && line.kind == "Recursive"){
+            if (line.ctype == "TB" || line.ctype == "BT") {
+                posX += movePos;
+            }else if (line.ctype == "RL" || line.ctype == "LR"){
+                posY += movePos;
+            }
+        }else if (telem.kind == "ERRelation" && line.kind == "Recursive"){
+            if (line.ctype == "TB" || line.ctype == "BT") {
+                posX -= movePos;
+            }else if (line.ctype == "RL" || line.ctype == "LR"){
+                posY -= movePos;
+            }
+        }
+        
         // Add the line to the str
-        str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`
+        str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`;
+    }
+    if(line.cardinality2) {
+        if(line.kind != "Recursive"){
+            line.cardinality2 = "";
+        }else{
+            var lineSpacingX =0;
+            var lineSpacingY = 0;
+            const offsetOnLine = 20 * zoomfact;
+            var offset = Math.round(zoomfact * textheight / 2);
+            var posX2,posY2;
+            var distance2 = Math.sqrt(Math.pow((tx - fx), 2) + Math.pow((ty - fy), 2));
+
+            // Used to move the cardinality if its a recursive line
+            var movePos = 17 * zoomfact;
+            
+            // Used to tweak the cardinality position when the line gets very short.
+            var tweakOffset = 0.30; 
+            console.log(findEntityFromLine(line));
+            if(findEntityFromLine(line) == -1){
+                if(offsetOnLine > distance2 *0.5){
+                    posX2 = fx + (offsetOnLine * (tx2 - fx) / distance2) * tweakOffset;
+                    posY2 = fy + (offsetOnLine * (ty2 - fy) / distance2) * tweakOffset;
+                }else{
+                    // Set position on line for the given offset
+                    posX2 = fx + (offsetOnLine * (tx2 - fx) / distance2);
+                    posY2 = fy + (offsetOnLine * (ty2 - fy) / distance2);
+                }
+        
+                /*
+                * Depending on the side of the element that the line is connected to
+                * and the number of lines from that side, set the offset.
+                * */
+                if (line.ctype == "TB") {
+                    lineSpacingX = 30*zoomfact;
+                    if (felem.top.indexOf(line.id) == 0) posX2 -= offset;
+                    else posX2 += offset;
+                }else if(line.ctype == "BT"){
+                    lineSpacingX = 30*zoomfact;
+                    if (felem.bottom.indexOf(line.id) == 0) posX2 -= offset;
+                    else posX2 += offset;
+                }else if(line.ctype == "RL"){
+                    lineSpacingY = 30*zoomfact;
+                    if (felem.right.indexOf(line.id) == 0) posY2 -= offset;
+                    else if (felem.right.indexOf(line.id) == felem.right.length - 1) posY2 += offset;
+                }else if (line.ctype == "LR") {
+                    lineSpacingY = 30*zoomfact;
+                    if (felem.left.indexOf(line.id) == 0) posY2 -= offset;
+                    else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY2 += offset;
+                }
+                    
+            } else {
+                if(offsetOnLine > distance2 *0.5){
+                    posX2 = fx2 + (offsetOnLine * (tx - fx2) / distance2) * tweakOffset;
+                    posY2 = fy2 + (offsetOnLine * (ty - fy2) / distance2) * tweakOffset;
+                }else{
+                    // Set position on line for the given offset
+                    posX2 = fx2 + (offsetOnLine * (tx - fx2) / distance2);
+                    posY2 = fy2 + (offsetOnLine * (ty - fy2) / distance2);
+                }
+        
+                    /*
+                    * Depending on the side of the element that the line is connected to
+                    * and the number of lines from that side, set the offset.
+                    * */
+                if (line.ctype == "TB") {
+                    lineSpacingX = 20*zoomfact;
+                    posX2-= movePos;
+                    if (telem.bottom.indexOf(line.id) == 0) posX2 -= offset;
+                    else posX2 += offset;
+                }else if(line.ctype == "BT"){
+                    lineSpacingX = 20*zoomfact;
+                    posX2-= movePos;
+                    if (telem.top.indexOf(line.id) == 0) posX2 -= offset;
+                    else posX2 += offset;
+                }else if(line.ctype == "RL"){
+                    posY2-= movePos; 
+                    lineSpacingY = 20*zoomfact;
+                    if (telem.left.indexOf(line.id) == 0) posY2 -= offset;
+                    else if (telem.left.indexOf(line.id) == felem.left.length - 1) posY2 += offset;
+                }else if (line.ctype == "LR") {
+                    posY2-= movePos; 
+                    lineSpacingY = 20*zoomfact;
+                    if (telem.right.indexOf(line.id) == 0) posY2 -= offset;
+                    else if (telem.right.indexOf(line.id) == felem.right.length - 1) posY2 += offset;
+                }
+                    
+            }
+                
+            str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX2+lineSpacingX}" y="${posY2+lineSpacingY}">${lineCardinalitys[line.cardinality2]}</text>`;
+        }
     }
     return str;
+
 }
 /**
  * @description Removes all existing lines and draw them again
