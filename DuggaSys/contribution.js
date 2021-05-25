@@ -431,7 +431,13 @@ function lineDiagram() {
   str += "'/>";
   for (i = 0; i < xNumber.length; i++) {
     str += `<circle onmouseover='showInfoText(this, \"${"Commits: : " + (dailyCount[i][1])}\");' onmouseout='hideInfoText()'`;
-    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][1] / maxDayCount * graphHeight)}' r='3' fill='#F44336'/>`;
+    var radius = dailyCount[i][3] / dailyCount[i][1] * 2;
+    if (radius > 7) {
+      radius = 7
+    } else if (radius < 3) {
+      radius = 3
+    }
+    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][1] / maxDayCount * graphHeight)}' r='${radius}' fill='#F44336'/>`;
   }
   str += "</g>";
 
