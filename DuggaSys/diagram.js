@@ -2357,7 +2357,9 @@ function pasteClipboard(elements, elementsLines)
             height: element.height,
             kind: element.kind,
             id: idMap[element.id],
-            state: element.state
+            state: element.state,
+            fill: "#ffccdc",
+            stroke: "black"
         };
         newElements.push(elementObj)
         addObjectToData(elementObj, false);
