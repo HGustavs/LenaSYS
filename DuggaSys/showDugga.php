@@ -202,7 +202,8 @@ if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w') && $isNewDugga != "tr
 			echo "</div>";
 			echo "<div class='hash-submit-btn-container'>";
 			echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
-			echo "<input class='submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
+			if ($hash == "UNK")
+				echo "<input class='submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
 			echo "</div>";
 			echo "</div>";
 			echo "</div>";

@@ -1653,7 +1653,8 @@ function checkHashPassword() {
 	}
 	else {
 		loginHash = document.getElementById('hashfield').value;
-		url += `&hash=${hash}`;
+		url += `&hash=${loginHash}`;
+		console.log(`hash: ${loginHash}`)
 	}
 	var password = document.getElementById('passwordfield').value;
 	
