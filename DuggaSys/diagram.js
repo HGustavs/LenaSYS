@@ -1241,9 +1241,13 @@ document.addEventListener('keydown', function (e)
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
             var propField = document.getElementById("elementProperty_name");
-            changeState(); 
-            saveProperties(); 
-            propField.blur();
+            if(!!document.getElementById("lineLabel")){
+                changeLineProperties();
+            }else{
+                changeState();
+                saveProperties(); 
+                propField.blur();
+            }
             displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
         }
     }
@@ -2168,7 +2172,7 @@ function changeLineProperties()
         line.kind = radio2.value;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-
+    
     // Check if this element exists
     if (!!document.getElementById('propertyCardinality')){
 
