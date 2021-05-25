@@ -1154,15 +1154,11 @@ function returnedSection(data) {
       resave = false;
     }
 
-    if (hasDuggs === false){
-      $("#statisticsSwimlanes").hide();
-    }
-
-    if (navigator.vendor == ("Apple Computer, Inc.")) {
+    if (hasDuggs === false || navigator.vendor == ("Apple Computer, Inc.")){
       $("#statisticsSwimlanes").hide();
       $("#sectionList_arrowStatisticsOpen").hide();
       $("#sectionList_arrowStatisticsClosed").hide();
-    } 
+    }
 
     if (data['writeaccess']) {
       // Enable sorting always if we are superuser as we refresh list on update
