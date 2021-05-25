@@ -2191,6 +2191,7 @@ function changeLineProperties()
     if(line.label != label.value){
         label.value = label.value.trim();
         line.label = label.value
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
 
     showdata();
