@@ -496,7 +496,7 @@ class StateMachine
             }
         });
         // Change the sliders max to historyLogs length
-        document.getElementById("replay-range").setAttribute("max", Object.keys(settings.replay.timestamps).length.toString());
+        document.getElementById("replay-range").setAttribute("max", (Object.keys(settings.replay.timestamps).length -1).toString());
     }
     removeFutureStates(){
         // Remove the history entries that are after current index
@@ -704,7 +704,7 @@ class StateMachine
         clearInterval(this.replayTimer);
 
         // If cri (CurrentReplayIndex) is the last set to beginning
-        if(cri == tsIndexArr.length) cri = 0;
+        if(cri == tsIndexArr.length -1) cri = -1;
 
         setReplayRunning(true);
         document.getElementById("replay-range").value = cri.toString();
@@ -715,13 +715,24 @@ class StateMachine
         var self = this;
         this.replayTimer = setInterval(function() {
 
-            var temp = tsIndexArr[cri];
+            cri++;
+            var startStateIndex = tsIndexArr[cri];
+            var stopStateIndex;
 
-            if (tsIndexArr.length - 1 == cri) var stopStateIndex = self.historyLog.length;
-            else var stopStateIndex = tsIndexArr[cri+1];
+            if(tsIndexArr.length - 1 == cri){
+                stopStateIndex = self.historyLog.length -1;
+            }else if(tsIndexArr[cri+1] - 1 == tsIndexArr[cri]){
+                stopStateIndex = startStateIndex;
+            }else{
+                stopStateIndex = tsIndexArr[cri+1] -1;
+            } 
+            if(stopStateIndex == -1){
+                stopStateIndex = 0; 
+            } 
 
-            for (var i = tsIndexArr[cri]; i < stopStateIndex; i++){
+            for (var i = startStateIndex; i <= stopStateIndex; i++){
                 self.restoreState(self.historyLog[i]);
+ 
             }
 
             // Update diagram
@@ -729,10 +740,10 @@ class StateMachine
             showdata();
             updatepos(0, 0);
 
-            cri++;
+            
             document.getElementById("replay-range").value = cri;
 
-            if (tsIndexArr.length == cri){
+            if (tsIndexArr.length -1 == cri){
                 clearInterval(self.replayTimer);
                 setReplayRunning(false);
             }
@@ -3110,7 +3121,7 @@ function toggleReplay()
 
     if (settings.replay.active) {
         // Restore the diagram to state before replay-mode
-        stateMachine.scrubHistory(stateMachine.currentHistoryIndex + 1);
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
 
         settings.ruler.zoomX -= 50;
         // Change HTML DOM styling
@@ -4906,7 +4917,7 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
         stateMachine.currentHistoryIndex = stateMachine.historyLog.length -1;
 
         // Scrub to the latest point in the diagram
-        stateMachine.scrubHistory(stateMachine.currentHistoryIndex + 1);
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
 
         // Display success message for load
         if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Save-file loaded");
