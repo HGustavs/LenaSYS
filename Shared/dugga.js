@@ -1602,7 +1602,6 @@ function copyUrltoCB() {
 	$copyUrl.val($('#url').text()).select();
 	document.execCommand("copy");
 	$copyUrl.remove();
-  	console.log("Copied the text: " + $copyUrl);
 }
 
 //----------------------------------------------------------------------------------
