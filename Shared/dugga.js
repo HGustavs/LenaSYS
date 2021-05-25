@@ -1085,7 +1085,6 @@ function AJAXService(opt,apara,kind)
 				setPassword(phpData.password); 
 				enableTeacherVariantChange(phpData);
 				handleHash();	//Makes sure hash is unique.
-				AJAXService("", {}, "LOGINPOPUP");
 			}
 		})
 	}else if(kind=="RESULT"){
@@ -1220,7 +1219,11 @@ function newSubmission(){
 		oldItem.hash = generateHash();
 		oldItem.expireTime = createExpireTime();
 		localStorage.setItem(localStorageItemKey, JSON.stringify(oldItem));
-		reloadPage();
+
+		var curUrl = window.location.href;
+		var newUrl = `${curUrl}&newDugga=true`;
+		location.replace(newUrl);
+		//reloadPage();
 	}
 }
 
@@ -1645,10 +1648,14 @@ function hideHashBox(){
 function checkHashPassword(){
 	
 	var hash;
-	if(ishashinurl) 
+	var url = window.location.href;
+	if(ishashinurl){
 		hash = document.getElementById("hash").value
-	else 
+	}
+	else {
 		hash = document.getElementById('hashfield').value;
+		url += `&hash=${hash}`;
+	}
 	var password = document.getElementById('passwordfield').value;
 	
 	$.ajax({
@@ -1663,7 +1670,9 @@ function checkHashPassword(){
         		hideHashBox();
 				passwordReload = true;
 				sendGroupAjax(1);
-				reloadPage();
+
+				location.replace(url);
+				//reloadPage();
         	}else{
         		$('#passwordtext').text('Wrong password, try again!');
         		$('#passwordtext').css('color','red');

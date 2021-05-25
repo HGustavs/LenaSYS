@@ -39,7 +39,7 @@
 	$comments=getOPG('comments');
 	$hash = getOPG("hash");
 	$test=getOPG('test');
-	
+	$isNewDugga=getOPG("newDugga");
 	
 	$duggatitle="UNK";
 	$duggafile="UNK";
@@ -166,27 +166,40 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			}*/
 
 
-echo "<script>console.log('".$hash."')</script>;";
-echo "<script>console.log('".$hashpassword."')</script>;";
+echo "<script>console.log('asd: ".$isNewDugga."')</script>";
+echo "<script>console.log('".$hashpassword."')</script>";
 //Saved Dugga Login
 
-if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
+if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w') && $isNewDugga != "true"){
 	if($_SESSION['pwdentrance'] != 1){
 		if($_SESSION['hasUploaded'] != 1){
 			echo '<script type="text/javascript"> saveTimesAccessed(); </script>';
-			echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
-			echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
+			echo "<div class='loginHashContainer' id='hashBox'>";	
+			echo "<div class='loginHashBox'>";
+			echo "<div class='loginHashContent'>";
+			echo "<div class='w100'>";
 			echo "<div class='loginBoxheader'>";
 			echo "<h3>Login for Saved Dugga</h3>";
 			echo "<div onclick='exitHashBox()' class='cursorPointer'>x</div>";
 			echo "</div>";
-			echo "<p id='passwordtext'>Enter your password for the hash:</p>";
+			echo "</div>";
+			echo "<div class='prev-hash-container'>";
+			echo "<label class='login-label'>Previously used hash:</label>";
 			echo "<p id='hash' style='font-weight: bold;'></p>";
-			if($hash == "UNK")
-				echo "<input id='hashfield' name='hash' class='textinput' type='text' placeholder='Hash'>";
-			echo "<input id='passwordfield' name='password' class='textinput' type='password' placeholder='Password'>";
+			echo "</div>";
+			if($hash == "UNK") {
+				echo "<div class='login-input-container'>";
+				echo "<input id='hashfield' class='textinput hash-login-input' type='text' placeholder='Hash'>";
+				echo "</div>";
+			}
+			echo "<div class='login-input-container'>";
+			echo "<input id='passwordfield' class='textinput form-control hash-login-input' type='password' autocomplete='new-password' placeholder='Password'>";
+			echo "</div>";
+			echo "<div class='hash-submit-btn-container'>";
 			echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
-			echo "<input class='".$btnDisable." submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
+			echo "<input class='submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
+			echo "</div>";
+			echo "</div>";
 			echo "</div>";
 			echo "</div>";
 			echo '<script type="text/javascript"> updateLoginPopup(); </script>';
