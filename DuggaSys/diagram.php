@@ -97,18 +97,18 @@
                     <p id="tooltip-TOGGLE_GRID" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-            <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
-                <img src="../Shared/icons/diagram_ruler.svg"/>
-                <span class="toolTipText"><b>Toggle Ruler</b><br>
-                    <p>Enable/disable the ruler</p><br>
-                    <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
             <div id="rulerSnapToGrid" class="diagramIcons" onclick="toggleSnapToGrid()">
                 <img src="../Shared/icons/diagram_gridmagnet.svg"/>
                 <span class="toolTipText"><b>Toggle Snap To Grid</b><br>
                     <p>Enable/disable the Snap To Grid</p><br>
                     <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+            <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
+                <img src="../Shared/icons/diagram_ruler.svg"/>
+                <span class="toolTipText"><b>Toggle Ruler</b><br>
+                    <p>Enable/disable the ruler</p><br>
+                    <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="a4TemplateToggle" class="diagramIcons" onclick="toggleA4Template()">
