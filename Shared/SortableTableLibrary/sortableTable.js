@@ -419,7 +419,7 @@ function SortableTable(param) {
 				// Add Counter cell to the row. The class <tableid>_counter can be used to style the counterText
 				//str += "<input type='checkbox' name='arrayCheckBox' >"; //onclick='markedItems(this)'
 				if (this.hasCounter) {
-					str += "<td style='white-space:nowrap;' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex + "</span><input type='checkbox' name='arrayCheckBox'></td>"; 
+					str += "<td style='white-space:nowrap;' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex + "</span><input type='checkbox' name='arrayCheckBox' onclick='markedItems(this)'></td>"; 
 					mhvstr += "<td style='white-space:nowrap;' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex++ + "</span></td>";
 				}
 				result++;

@@ -13,6 +13,7 @@ var toggleElement;
 var checkboxElements;
 var searchBarElement;
 var searchDelayTimeout;
+var hideResultList = [];
 
 
 function searchByFilter() {
@@ -177,6 +178,31 @@ function createSortableTable(data){
 
 	updateTable();
 }
+
+function markedItems(item){
+	console.log("Clicked " + item);
+	/*
+	var removed = false;
+	  active_lid = item ? $(item).parents('table').attr('value') : null;
+	  if (hideResultList.length != 0){
+		for( var i = 0; i < hideResultList.length; i++){ 
+		  if ( hideResultList[i] === active_lid) { 
+			hideResultList.splice(i, 1);
+			i--;
+			var removed = true;
+			console.log("Removed from list");
+		  }   
+		} if(removed != true){
+		  hideResultList.push(active_lid);
+		  console.log("Adding !empty list");
+		}
+	  } else {
+		hideResultList.push(active_lid);
+		console.log("Added");
+	  } 
+	  console.log(hideResultList);
+	  */
+  }
 
 // Displays different things depending on column
 function renderCell(col, celldata, cellid) { //HÄR TYP
