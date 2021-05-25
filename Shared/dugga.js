@@ -121,14 +121,16 @@ function setHash(h){
 		//If a hash is already stored in localstorage, we will load that hash instead.
 		var parsedVariant = JSON.parse(localStorage.getItem(localStorageItemKey));
 		if(parsedVariant == null){
-			hash = generateHash();
-			pwd = randomPassword();
+
 		}
-		else{
+		hash = generateHash();
+		pwd = randomPassword();
+		
+		/*else{
 			hash = parsedVariant.hash;
 			locallystoredhash = hash;
 			console.log(hash);
-		}
+		}*/
 	
 		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
 	}else{
