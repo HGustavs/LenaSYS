@@ -156,6 +156,7 @@ function renderBarDiagram(data) {
 
   var str = "<div style='width:100%;overflow-x:scroll;'>";
   str += "<h2 style='padding-top:10px'>Weekly bar chart</h2>";
+  str += "<p style 'padding-top:10px'>Showing activities for " + dailyCount[0][0] + " - " + dailyCount[7*numOfWeeks-1][0] + " </p>";
   str += `<svg  class='chart fumho'  style='background-color:#efefef;'
   width='1300' height='250' aria-labelledby='title desc' role='img'>`;
   for (var i = 0; i < numOfWeeks; i++) {
