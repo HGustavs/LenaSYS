@@ -1583,7 +1583,7 @@ function checkScroll(obj) {
 }
 
 //----------------------------------------------------------------------------------
-// copyURLtoCB: Copy the url to user clipboard
+// copyhashtoCB: Copy the hash to user clipboard
 //----------------------------------------------------------------------------------
 function copyHashtoCB() {
 	var $temp = $("<input>");
@@ -1591,6 +1591,18 @@ function copyHashtoCB() {
     $temp.val(hash).select();
     document.execCommand("copy");
 	$temp.remove();
+}
+
+//----------------------------------------------------------------------------------
+// copyURLtoCB: Copy the url to user clipboard
+//----------------------------------------------------------------------------------
+function copyUrltoCB() {
+	var $copyUrl = $("<input>");
+	$("body").append($copyUrl);
+	$copyUrl.val($('#url').text()).select();
+	document.execCommand("copy");
+	$copyUrl.remove();
+  	console.log("Copied the text: " + $copyUrl);
 }
 
 //----------------------------------------------------------------------------------
