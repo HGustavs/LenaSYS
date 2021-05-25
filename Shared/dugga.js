@@ -723,6 +723,7 @@ function saveDuggaResult(citstr)
 			citstr+= "##!!##" + timeUsed;
 			citstr+= "##!!##" + stepsUsed;
 			//citstr+= "##!!##" + score;
+			variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 			AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
 			var dateTime = new Date(); 				//Get the current date and time
