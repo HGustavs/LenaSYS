@@ -166,13 +166,18 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			}*/
 
 
-echo "<script>console.log('asd: ".$isNewDugga."')</script>";
-echo "<script>console.log('".$hashpassword."')</script>";
 //Saved Dugga Login
 
 if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w') && $isNewDugga != "true"){
 	if($_SESSION['pwdentrance'] != 1){
 		if($_SESSION['hasUploaded'] != 1){
+
+			$hashLabelText;
+			if ($hash == "UNK")
+				$hashLabelText = "Previously used hash:";
+			else 
+				$hashLabelText = "Logging in with hash:";
+
 			echo '<script type="text/javascript"> saveTimesAccessed(); </script>';
 			echo "<div class='loginHashContainer' id='hashBox'>";	
 			echo "<div class='loginHashBox'>";
@@ -184,7 +189,7 @@ if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w') && $isNewDugga != "tr
 			echo "</div>";
 			echo "</div>";
 			echo "<div class='prev-hash-container'>";
-			echo "<label class='login-label'>Previously used hash:</label>";
+			echo "<label class='login-label'>" . $hashLabelText . "</label>";
 			echo "<p id='hash' style='font-weight: bold;'></p>";
 			echo "</div>";
 			if($hash == "UNK") {

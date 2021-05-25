@@ -2280,9 +2280,12 @@ function setDuggaTitle(title) {
 }
 
 function updateLoginPopup() {
-	if(localStorage.getItem(localStorageItemKey)){
+	var hashElement = document.getElementById("hash");
+	if (ishashinurl){
+		hashElement.innerHTML = hash;
+	}
+	else if(localStorage.getItem(localStorageItemKey)) {
 		var localstorageHash = JSON.parse(localStorage.getItem(localStorageItemKey)).hash;
-		console.log("asdasd"+localstorageHash);
-		document.getElementById("hash").innerHTML=localstorageHash;
+		hashElement.innerHTML=localstorageHash;
 	}
 }
