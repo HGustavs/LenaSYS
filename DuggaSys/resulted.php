@@ -107,7 +107,7 @@ pdoConnect();
 		</div>
 		<div class="resulted-filter-container">
 			<div>
-				<label class="filter-label" for="">Highlight threshold</label>
+				<label class="filter-label" for="">Highlight threshold (Times Accessed)</label>
 				<input class="searchbar-filter" id="highlight-entry" type="text" value="20" onkeyup="updateTable()">
 			</div>
 			<div>
