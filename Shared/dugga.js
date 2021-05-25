@@ -116,28 +116,14 @@ function getHash(){
 function setHash(h){
 	// Check if hash is unknown
 	if(h == "UNK"){
-		//From localstorage we load what we have into our locallystoredhash variable, that is then compared against. 
-		//On the first dugga load, it will be undefined, and thereafter a hash value will be generated.
-		//If a hash is already stored in localstorage, we will load that hash instead.
-		var parsedVariant = JSON.parse(localStorage.getItem(localStorageItemKey));
-		if(parsedVariant == null){
-
-		}
 		hash = generateHash();
 		pwd = randomPassword();
-		
-		/*else{
-			hash = parsedVariant.hash;
-			locallystoredhash = hash;
-			console.log(hash);
-		}*/
 	
 		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
 	}else{
 		hash = h;
 		ishashinurl = true;		//Hash is referenced in the url -> A resubmission, this dugga already have a hash in the database.
 	}
-	
 }
 
 function setPassword(p){
