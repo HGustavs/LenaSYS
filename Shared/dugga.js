@@ -90,26 +90,8 @@ function loadDugga(){
 }
 
 function loadDuggaType(){
-	var hash = document.getElementById('hash');
-	var did = querystring["did"];
-	
-	$.ajax({
-		url: "showDuggaservice.php",
-		type: "POST",
-		data: "&hash="+hash.value+"&did="+did,
-		dataType: "json",
-		success: function(data) {
-			// Will redirect you if you are using correct hash for correct dugga
-			phpData = data['useranswerquiz'];
-			if(phpData == did) {
-				window.location.href = "../sh/?a="+hash.value;
-			}
-			else{
-				confirm("The corresponding hash does not match the dugga type!\nYou entered a hash for dugga: " + phpData + " when on dugga: " + did); 
-			}
-		}
-	});
-
+	hash = document.getElementById('hash').value;
+	AJAXService("",{}, "INPUTCHECK");
 }
 
 //----------------------------------------------------------------------------------
@@ -1111,7 +1093,6 @@ function AJAXService(opt,apara,kind)
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
 				localStorageHandler(phpData);
-	
 				returnedDugga(phpData);
 				setPassword(phpData.password); 
 				enableTeacherVariantChange(phpData);
@@ -1225,24 +1206,32 @@ function AJAXService(opt,apara,kind)
 			dataType: "json"
 		});
 	}
+	else if(kind=="INPUTCHECK") {
+		$.ajax({
+			url: "showDuggaservice.php",
+			type: "POST",
+			data: "&hash="+hash+"&did="+querystring["did"]+"&opt="+opt+para,
+			dataType: "json",
+			success: function(data) {
+			// Will redirect you if you are using correct hash for correct dugga
+			var phpData = data;
+			if(phpData["duggaTitle"] == duggaTitle) {
+				window.location.href = "../sh/?a="+hash;
+			}
+			else{
+				confirm("The corresponding hash does not match the dugga type!\nYou entered a hash for dugga: " + phpData["duggaTitle"] + " when on dugga: " + duggaTitle); 
+			}
+		}
+		});
+	}
 }
 
 function newSubmission(){
 	if(confirm("Do you want to start a new submission?")){
-		if(localStorage.getItem(localStorageItemKey)){
-			variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
-		}
-		hash = generateHash();
-		$.ajax({
-			url: "showDuggaservice.php",
-			type: "POST",
-			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&variant="+variantValue,
-			datatype: "json",
-			success: function(data){
-				var phpData = JSON.parse(data);
-				localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(variantValue, phpData.variants));
-			}
-		});
+		var oldItem = JSON.parse(localStorage.getItem(localStorageItemKey));
+		oldItem.hash = generateHash();
+		oldItem.expireTime = createExpireTime();
+		localStorage.setItem(localStorageItemKey, JSON.stringify(oldItem));
 		reloadPage();
 	}
 }
