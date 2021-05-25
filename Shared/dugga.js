@@ -1645,22 +1645,21 @@ function hideHashBox(){
     $("#hashBox").css("display","none");
 }
 
-function checkHashPassword(){
-	
-	var hash;
+function checkHashPassword() {
+	var loginHash;
 	var url = window.location.href;
-	if(ishashinurl){
-		hash = document.getElementById("hash").value
+	if(ishashinurl) {
+		loginHash = hash;
 	}
 	else {
-		hash = document.getElementById('hashfield').value;
+		loginHash = document.getElementById('hashfield').value;
 		url += `&hash=${hash}`;
 	}
 	var password = document.getElementById('passwordfield').value;
 	
 	$.ajax({
         url: "../Shared/hashpasswordauth.php",
-        data: {password:password, hash:hash},
+        data: {password:password, hash:loginHash},
         type: "POST",
         success: function(data){
         	var d = JSON.parse(data);
