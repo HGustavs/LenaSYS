@@ -280,7 +280,13 @@ function rowFilter(row) {
 		}else if (a.toLowerCase() > b.toLowerCase()){
 			return -1;
 		}
-	}else{
+	}else if (a == null || b == null){
+		if (a == null){
+			return 1;
+		}else if (b == null){
+			return -1;
+		}
+	} else {
 		var numA = parseInt(a);
 		var numB = parseInt(b);
 		if (numA < numB){
