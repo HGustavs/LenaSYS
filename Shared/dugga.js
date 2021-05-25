@@ -1085,7 +1085,7 @@ function AJAXService(opt,apara,kind)
 				setPassword(phpData.password); 
 				enableTeacherVariantChange(phpData);
 				handleHash();	//Makes sure hash is unique.
-
+				AJAXService("", {}, "LOGINPOPUP");
 			}
 		})
 	}else if(kind=="RESULT"){
@@ -1644,7 +1644,11 @@ function hideHashBox(){
 
 function checkHashPassword(){
 	
-	var hash = $('#hash').text();
+	var hash;
+	if(ishashinurl) 
+		hash = document.getElementById("hash").value
+	else 
+		hash = document.getElementById('hashfield').value;
 	var password = document.getElementById('passwordfield').value;
 	
 	$.ajax({
@@ -2264,4 +2268,12 @@ function returnedSubmitFeedback(){
 
 function setDuggaTitle(title) {
 	duggaTitle = title;
+}
+
+function updateLoginPopup() {
+	if(localStorage.getItem(localStorageItemKey)){
+		var localstorageHash = JSON.parse(localStorage.getItem(localStorageItemKey)).hash;
+		console.log("asdasd"+localstorageHash);
+		document.getElementById("hash").innerHTML=localstorageHash;
+	}
 }

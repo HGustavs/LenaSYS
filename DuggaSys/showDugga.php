@@ -170,7 +170,7 @@ echo "<script>console.log('".$hash."')</script>;";
 echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
 
-if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
+if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 	if($_SESSION['pwdentrance'] != 1){
 		if($_SESSION['hasUploaded'] != 1){
 			echo '<script type="text/javascript"> saveTimesAccessed(); </script>';
@@ -181,11 +181,14 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 			echo "<div onclick='exitHashBox()' class='cursorPointer'>x</div>";
 			echo "</div>";
 			echo "<p id='passwordtext'>Enter your password for the hash:</p>";
-			echo "<p id='hash' style='font-weight: bold;'>$hash</p>";
+			echo "<p id='hash' style='font-weight: bold;'></p>";
+			if($hash == "UNK")
+				echo "<input id='hashfield' name='hash' class='textinput' type='text' placeholder='Hash'>";
 			echo "<input id='passwordfield' name='password' class='textinput' type='password' placeholder='Password'>";
 			echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
 			echo "</div>";
 			echo "</div>";
+			echo '<script type="text/javascript"> updateLoginPopup(); </script>';
 			exit();
 		}
 		
