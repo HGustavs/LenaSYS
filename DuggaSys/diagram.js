@@ -3957,6 +3957,29 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                             fromElement.kind === "EREntity" &&
                             toElement.kind === "ERRelation");
 
+        // Check rules for Recursive relations
+        if(fromElement.kind === "ERRelation" || toElement.kind === "ERRelation") {
+            var relationID;
+            if (fromElement.kind === "ERRelation") relationID = fromElement.id;
+            else relationID = toElement.id;
+
+            var linesFromRelation = lines.filter(line => {
+                return line.fromID == relationID || line.toID == relationID
+            });
+
+            var connElemsIds = [];
+            linesFromRelation.forEach(line => {
+                if (line.fromID == relationID) connElemsIds.push(line.toID);
+                else connElemsIds.push(line.fromID);
+            });
+            var hasRecursive = (connElemsIds.length == 2 && connElemsIds[0] == connElemsIds[1]);
+            var hasOtherLines = (numOfExistingLines == 1 && connElemsIds.length >= 2);
+            if (hasRecursive || hasOtherLines){
+                displayMessage(messageTypes.ERROR, "Sorry, that is not possible");
+                return;
+            }
+        }
+
         // If there is no existing lines or is a special case
         if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
 
