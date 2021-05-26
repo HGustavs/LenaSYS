@@ -1553,4 +1553,3 @@ function hideTooltip() {
     }
 }
 
-console.error
