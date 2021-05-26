@@ -1204,11 +1204,16 @@ function AJAXService(opt,apara,kind)
 			success: function(data) {
 			// Will redirect you if you are using correct hash for correct dugga
 			var phpData = data;
+			console.log(data);
 			if(phpData["duggaTitle"] == duggaTitle) {
 				window.location.href = "../sh/?a="+hash;
 			}
-			else{
+			else if(data['ishashindb']){
+				
 				confirm("The corresponding hash does not match the dugga type!\nYou entered a hash for dugga: " + phpData["duggaTitle"] + " when on dugga: " + duggaTitle); 
+		
+			}else{
+				confirm("The hash "+hash+" does not exist in the database"); 
 			}
 		}
 		});
