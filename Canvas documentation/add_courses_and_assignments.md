@@ -1,4 +1,5 @@
 # Add course to Canvas
+# (Note that you can duplicate an already existing course)
 
 1. Log in to canvas as an administrator. <br/>
 
@@ -39,4 +40,3 @@ At last click the "Add Course" button.<br/>
 
 6. If you want to publish the assingment at a later stage, simply click on the button marked in the picture for the corresponding assingment you want to publish.<br/>
 ![Picture1](Pictures/addassignment4.png)
-

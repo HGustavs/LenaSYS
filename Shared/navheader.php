@@ -289,8 +289,8 @@
 					}
 			}
 
-      if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
-					echo "<td id='select' class='navButt' onmouseover='hoverc();' onmouseleave='leavec();'>";
+      if($requestedService=="accessed.php"){
+					echo "<td id='select' class='navButt'>";
 					echo   "<span id='filterButton'>";
 					echo     "<img alt='filter icon' class='navButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
@@ -301,19 +301,6 @@
 					echo   "</span>";
 					echo "</td>";
 			}
-
-	    if($requestedService=="resulted.php" ){
-					echo "<td id='sort' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
-					echo   "<span id='sortButton'>";
-					echo     "<img alt='sort icon' class='navButt' src='../Shared/icons/sort_white.svg'>";
-					echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
-					echo     "</div>";
-					echo   "</span>";
-					echo "</td>";
-					echo "<td id='menuHook' class='navSpacer'>";
-					echo "</td>";
-			}
-
 
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){

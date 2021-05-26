@@ -31,6 +31,7 @@ var isFileSubmitted;
 var isTeacher;
 var localStorageItemKey = "duggaData_" + querystring["did"];
 
+
 // Variant related
 
 
@@ -82,10 +83,15 @@ function saveTimesAccessed(){
 	AJAXService("ACCDUGGA", {}, "ACCESSEDDUGGA");
 }
 
-		// Loades a dugga from hash and redirects to index.php that then continues to redirect to the specified dugga
+		// Loads a dugga from hash and redirects to index.php that then continues to redirect to the specified dugga
 function loadDugga(){
 	var hash = document.getElementById('hash');
 	window.location.href = "../sh/?a="+hash.value;
+}
+
+function loadDuggaType(){
+	hash = document.getElementById('hash').value;
+	AJAXService("",{}, "INPUTCHECK");
 }
 
 //----------------------------------------------------------------------------------
@@ -110,26 +116,14 @@ function getHash(){
 function setHash(h){
 	// Check if hash is unknown
 	if(h == "UNK"){
-		//From localstorage we load what we have into our locallystoredhash variable, that is then compared against. 
-		//On the first dugga load, it will be undefined, and thereafter a hash value will be generated.
-		//If a hash is already stored in localstorage, we will load that hash instead.
-		var parsedVariant = JSON.parse(localStorage.getItem(localStorageItemKey));
-		if(parsedVariant == null){
-			hash = generateHash();
-			pwd = randomPassword();
-		}
-		else{
-			hash = parsedVariant.hash;
-			locallystoredhash = hash;
-			console.log(hash);
-		}
+		hash = generateHash();
+		pwd = randomPassword();
 	
 		ishashinurl = false;	//Hash is not referenced in the url -> Not a resubmission.
 	}else{
 		hash = h;
 		ishashinurl = true;		//Hash is referenced in the url -> A resubmission, this dugga already have a hash in the database.
 	}
-	
 }
 
 function setPassword(p){
@@ -699,6 +693,8 @@ function saveDuggaResult(citstr)
 	if(pwd == undefined || pwd.includes("undef")) pwd = randomPassword();
 	document.getElementById('url').innerHTML = url;
 	document.getElementById('pwd').innerHTML = pwd;
+	updateLocalStorageItem();
+
 
 	var scores = JSON.parse(localStorage.getItem("ls-highscore-dg"+querystring['did']) || '[]');
 	scores.push(score);
@@ -723,6 +719,7 @@ function saveDuggaResult(citstr)
 			citstr+= "##!!##" + timeUsed;
 			citstr+= "##!!##" + stepsUsed;
 			//citstr+= "##!!##" + score;
+			variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 			AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
 			var dateTime = new Date(); 				//Get the current date and time
@@ -1075,6 +1072,7 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
+		
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
@@ -1086,14 +1084,10 @@ function AJAXService(opt,apara,kind)
 				isFileSubmitted = phpData.isFileSubmitted;
 				canSaveController(); 
 				localStorageHandler(phpData);
-
-				console.log(phpData);
-	
 				returnedDugga(phpData);
 				setPassword(phpData.password); 
 				enableTeacherVariantChange(phpData);
 				handleHash();	//Makes sure hash is unique.
-
 			}
 		})
 	}else if(kind=="RESULT"){
@@ -1104,15 +1098,7 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	}else if(kind=="GEXPORT"){
-		$.ajax({
-			url: "resultedservice.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedExportedGrades
-		});
-}else if(kind=="GROUP"){
+	}else if(kind=="GROUP"){
 			$.ajax({
 				url: "groupedservice.php",
 				type: "POST",
@@ -1202,6 +1188,38 @@ function AJAXService(opt,apara,kind)
 			dataType: "json"
 		});
 	}
+	else if(kind=="INPUTCHECK") {
+		$.ajax({
+			url: "showDuggaservice.php",
+			type: "POST",
+			data: "&hash="+hash+"&did="+querystring["did"]+"&opt="+opt+para,
+			dataType: "json",
+			success: function(data) {
+			// Will redirect you if you are using correct hash for correct dugga
+			var phpData = data;
+			console.log(data);
+			if(phpData["duggaTitle"] == duggaTitle) {
+				window.location.href = "../sh/?a="+hash;
+			}
+			else if(data['ishashindb']){
+				
+				confirm("The corresponding hash does not match the dugga type!\nYou entered a hash for dugga: " + phpData["duggaTitle"] + " when on dugga: " + duggaTitle); 
+		
+			}else{
+				confirm("The hash "+hash+" does not exist in the database"); 
+			}
+		}
+		});
+	}
+}
+
+function newSubmission(){
+	if(confirm("Do you want to start a new submission?")){
+		var curUrl = window.location.href;
+		var newUrl = `${curUrl}&newDugga=true`;
+		location.replace(newUrl);
+		//reloadPage();
+	}
 }
 
 function handleHash(){
@@ -1232,7 +1250,7 @@ function localStorageHandler(ajaxdata) {
 		// Check if variant exists in local storage
 		if (localStorageItem == null) {
 			localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(ajaxdata.variant, ajaxdata.variants));
-		}
+		} 
 		else {
 			// Remove item if expired
 			if (isDuggaExpiredCheck(localStorageItem)){
@@ -1249,7 +1267,6 @@ function localStorageHandler(ajaxdata) {
 function createDuggaLocalStorageData(ajaxVid, ajaxVariantArr) {
  	var data = {
 		variant: getVariant(ajaxVid,ajaxVariantArr),
-		hash: hash,
 		expireTime: createExpireTime()
 	};
 
@@ -1592,7 +1609,7 @@ function checkScroll(obj) {
 }
 
 //----------------------------------------------------------------------------------
-// copyURLtoCB: Copy the url to user clipboard
+// copyhashtoCB: Copy the hash to user clipboard
 //----------------------------------------------------------------------------------
 function copyHashtoCB() {
 	var $temp = $("<input>");
@@ -1600,6 +1617,17 @@ function copyHashtoCB() {
     $temp.val(hash).select();
     document.execCommand("copy");
 	$temp.remove();
+}
+
+//----------------------------------------------------------------------------------
+// copyURLtoCB: Copy the url to user clipboard
+//----------------------------------------------------------------------------------
+function copyUrltoCB() {
+	var $copyUrl = $("<input>");
+	$("body").append($copyUrl);
+	$copyUrl.val($('#url').text()).select();
+	document.execCommand("copy");
+	$copyUrl.remove();
 }
 
 //----------------------------------------------------------------------------------
@@ -1622,14 +1650,22 @@ function hideHashBox(){
     $("#hashBox").css("display","none");
 }
 
-function checkHashPassword(){
-	
-	var hash = $('#hash').text();
+function checkHashPassword() {
+	var loginHash;
+	var url = window.location.href;
+	if(ishashinurl) {
+		loginHash = hash;
+	}
+	else {
+		loginHash = document.getElementById('hashfield').value;
+		url += `&hash=${loginHash}`;
+		console.log(`hash: ${loginHash}`)
+	}
 	var password = document.getElementById('passwordfield').value;
 	
 	$.ajax({
         url: "../Shared/hashpasswordauth.php",
-        data: {password:password, hash:hash},
+        data: {password:password, hash:loginHash},
         type: "POST",
         success: function(data){
         	var d = JSON.parse(data);
@@ -1639,7 +1675,9 @@ function checkHashPassword(){
         		hideHashBox();
 				passwordReload = true;
 				sendGroupAjax(1);
-				reloadPage();
+
+				location.replace(url);
+				//reloadPage();
         	}else{
         		$('#passwordtext').text('Wrong password, try again!');
         		$('#passwordtext').css('color','red');
@@ -2042,16 +2080,12 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
 		}
 
-
-
-		str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div>";
-
-		console.log("duggatitle = "+duggaTitle);
-		console.log("variantValue = "+variantValue);
 		//If there is no name of the dugga.
-		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){
+		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
 			duggaTitle = "Untitled dugga";
 		}
+  
+		str+="<div class='' style='margin:4px;'></div></div><div>"+duggaTitle+"</div>";
 
 		if(loadVariantFlag && variantsArr.length > 1){	//If the 'Next variant' button is set to be visable (Teachers only). 
 			str+="<div id='nextVariantBtn' ><input class='submit-button large-button' style='width:auto;' type='button' value='"+duggaTitle+" V:"+variantValue+"' onclick='selectNextVariant();' /></div>"; 
@@ -2256,4 +2290,27 @@ function returnedSubmitFeedback(){
 
 function setDuggaTitle(title) {
 	duggaTitle = title;
+}
+
+function updateLoginPopup() {
+	var hashElement = document.getElementById("hash");
+	if (ishashinurl){
+		hashElement.innerHTML = hash;
+	}
+	else if(localStorage.getItem(localStorageItemKey)) {
+		var localstorageHash = JSON.parse(localStorage.getItem(localStorageItemKey)).hash;
+		if(localstorageHash != null){
+			hashElement.innerHTML=localstorageHash;
+		}
+
+	}
+}
+
+function updateLocalStorageItem() {
+	if (localStorage.getItem(localStorageItemKey)){
+		var item = JSON.parse(localStorage.getItem(localStorageItemKey));
+		item.hash = hash;
+		item.expireTime = createExpireTime();
+		localStorage.setItem(localStorageItemKey, JSON.stringify(item));
+	}
 }

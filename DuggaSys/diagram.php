@@ -20,12 +20,18 @@
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
+    <script src="../Shared/markdown.js"></script>
     <script src="diagram.js"></script>
 </head>
 <body onload="getData()" style="overflow: hidden;">
 
+    <!-- Markdown document with keybinds -->
+    <div id="markdownKeybinds" style="display: none">
+
+    </div>
+
     <!-- Toolbar for diagram -->
-    <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='mup(event)'>
+    <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'>
         <fieldset>
             <legend>Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
@@ -63,7 +69,7 @@
                         <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='setMouseMode(3); clearContext();'>
+                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg"/>
                     <span class="toolTipText"><b>Line</b><br>
                         <p>Make a line between objects</p><br>
@@ -97,18 +103,18 @@
                     <p id="tooltip-TOGGLE_GRID" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-            <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
-                <img src="../Shared/icons/diagram_ruler.svg"/>
-                <span class="toolTipText"><b>Toggle Ruler</b><br>
-                    <p>Enable/disable the ruler</p><br>
-                    <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
             <div id="rulerSnapToGrid" class="diagramIcons" onclick="toggleSnapToGrid()">
                 <img src="../Shared/icons/diagram_gridmagnet.svg"/>
                 <span class="toolTipText"><b>Toggle Snap To Grid</b><br>
                     <p>Enable/disable the Snap To Grid</p><br>
                     <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+            <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
+                <img src="../Shared/icons/diagram_ruler.svg"/>
+                <span class="toolTipText"><b>Toggle Ruler</b><br>
+                    <p>Enable/disable the ruler</p><br>
+                    <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="a4TemplateToggle" class="diagramIcons" onclick="toggleA4Template()">
@@ -160,10 +166,10 @@
     <div id ="zoom-message-box"><img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg"/><text id ="zoom-message">1x</text></div>
 
     <!-- Diagram drawing system canvas. -->
+    <svg id="svgoverlay" preserveAspectRatio="none"></svg>
     <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
      <!-- One svg layer for background stuff and one for foreground stuff -->
     <svg id="svgbacklayer" preserveAspectRatio="none"></svg>
-    <svg id="svgoverlay" preserveAspectRatio="none"></svg>
 
 	<canvas id='canvasOverlay'></canvas> 
     <!-- Diagram rules -->
@@ -193,18 +199,12 @@
     <div id="a4Template" style="z-index:-11">
         <svg id="svgA4Template">
             <rect id="a4Rect" x="100" y="100" width="794" height="1122" style="stroke:rgb(50, 50, 50);stroke-width:2" stroke-dasharray="5 3" fill="#ffffee" fill-opacity="0.4"/>
-            <rect id="vRect" x="100" y="100" width="1122" height="794" style="stroke:rgb(50, 50, 50);stroke-width:2" stroke-dasharray="5 3" fill="#ffffee" fill-opacity="0.4"/>
+            <rect id="vRect" x="100" y="100" width="1122" height="794" style=" display:none; stroke:rgb(50, 50, 50);stroke-width:2" stroke-dasharray="5 3" fill="#ffffee" fill-opacity="0.4"/>
             <text id="a4Text" x="880" y="90">A4</text>
         </svg>  
     </div>  
-    <div id="fab" onclick="fab_action();" onmousedown='mdown(event)'>+ <!-- Big (+) button -->
-        <span class="toolTipText"><b>Show Option Panel</b><br>
-            <p>Enable/disable the Option Panel</p><br>
-            <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
-        </span>
-    </div>
     <div id="options-pane" class="hide-options-pane" onmousedown='mdown(event)'> <!-- Yellow menu on right side of screen -->
-        <div id="options-pane-button" onclick="fab_action();"><span id='optmarker'>&#9660;Options</span>
+        <div id="options-pane-button" onclick="toggleOptionsPane();"><span id='optmarker'>&#9660;Options</span>
             <span class="toolTipText"><b>Show Option Panel</b><br>
                 <p>Enable/disable the Option Panel</p><br>
                 <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
@@ -214,6 +214,18 @@
             <fieldset id='propertyFieldset'>
                 
             </fieldset>
+            <div style="position: absolute; bottom: 20px">
+                <fieldset>
+                    <legend>Export</legend>
+                    <button class="saveButton" onclick="saveDiagram();">Save</button>
+                    <button class="saveButton" onclick="exportDiagram();">Export</button>
+                </fieldset>
+                <fieldset>
+                    <legend>Import</legend>
+                    <input style="width: 100%" id="importDiagramFile" type="file">
+                    <button class="saveButton" onclick="loadDiagram();">Load</button>
+                </fieldset>
+            </div>
         </div>
     </div>
     </div>
@@ -237,7 +249,7 @@
 
             <div>
                 <label for="replay-range">Change</label>
-                <input id="replay-range" class="zoomSlider" onchange="stateMachine.scrubHistory(parseInt(this.value))" type="range" min="0" max="0">
+                <input id="replay-range" class="zoomSlider" onchange="changeReplayState(parseInt(this.value))" type="range" min="-1" max="-1">
             </div>
         </div>
     </div>

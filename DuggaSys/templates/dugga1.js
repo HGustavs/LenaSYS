@@ -54,7 +54,7 @@ function returnedDugga(data)
 	} else if (querystring['highscoremode'] == 2) {
 		if(data['score'] > 0){
 			ClickCounter.score = data['score'];
-			console.log(ClickCounter.score);
+			//console.log(ClickCounter.score);
 		}
 		ClickCounter.showClicker();
 	}
@@ -74,16 +74,21 @@ function returnedDugga(data)
 					var bitstring = previous[3];
 					var hexvalue1 = previous[4];
 					var hexvalue2 = previous[5]; 
-				}			
-				// NB: LSB is now on the highest string index
-				for (var i=bitstring.length;i>=0;i--){
-					if (bitstring[i]==1){
-						bitClick("B"+(7-i));
-						//console.log("B"+(7-i)+":"+bitstring[i]);
-					}				
+				}		
+					
+				try {
+					// NB: LSB is now on the highest string index
+					for (var i=bitstring.length;i>=0;i--){
+						if (bitstring[i]==1){
+							bitClick("B"+(7-i));
+							//console.log("B"+(7-i)+":"+bitstring[i]);
+						}				
+					}
+					document.getElementById('H0').innerHTML=hexvalue1;
+					document.getElementById('H1').innerHTML=hexvalue2;					
+				} catch (error) {
+					console.log("Harmless error bitstring.length = undefined");
 				}
-				document.getElementById('H0').innerHTML=hexvalue1;
-				document.getElementById('H1').innerHTML=hexvalue2;
 			}
 		}		
 		// Teacher feedback

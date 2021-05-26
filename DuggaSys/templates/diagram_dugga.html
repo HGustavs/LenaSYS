@@ -11,41 +11,14 @@
             <p style="margin-left: 4px;">Diagram-duggan går ut på att producera det diagrammet som beskrivs i beskrivningen.</p>
             <p style="margin-left: 4px;">Lägg till element med hjälp av att byta till respective läge och klicka på canvasen.</p>
             <p style="margin-left: 4px;"><strong>Uppgiftsbeskrivning:</strong></p>
-            <p style="margin-left: 4px;">Per-olof tar hand om gravar på flera olika kyrkogårdar, för att han ska kunna hålla koll på vilken kund så behöver
-                han införskaffa en databas som håller koll på samtliga detaljer. Gravskötsel firman "Per-olof Gravunderhållning aktiebolag" hanterar många
-                gravar på flera olika kyrkogårdar. Gravarna identifieras med hjälp av ett id men har även en plats på kyrkogården och text på gravstenen.
-            </p>
-            <p style="margin-left: 4px;">För att underlätta för arbetarna så sparas även namnet på den som ligger begraven på platsen.
-                För att kunna faktuera arbetet på en grav så finns det även information om vem som äger graven och är kund till aktiebolaget.
-            </p>
-            <p style="margin-left: 4px;">Kunden har en e-postadress dit fakturan skickas samt faktureringsinformation såsom namn, kundnummer och adress samt
-                ett personnummer. För att ha unika kunder så används kundnummret som identiferare. En kyrkogård har ett antal begravda personer samt ett namn,
-                även en adress finns lagrat för att lättate kunna hitta till platsen på GPSen.</p>
-            <p style="margin-left: 4px">Per-olof är mycket rädd för spöken som finns på dem olika kyrogårdarna så om han träffar på ett spöke så
-                loggar han detta, informationen som han sparar är hur läsktigt spöket var, vad han kallar spöket samt vilken tid som han träffade på spöket.
-                Beroende på hur många spöken och hur läskiga dem är så rankas kyrkogårdens hemsökningsfaktor.
-            </p>
+            <p style="margin-left: 4px;" id="assigment-instructions"></p>
         </div>
     </div>
 
     <div id="container" style="display:flex; justify-content:space-around;">
 
-        <iframe width="80%" height="800px" src="./diagram.php" title="Diagram"></iframe>
+        <iframe onclick="canSaveController()" id="diagram-iframe" width="80%" height="800px" src="./diagram.php" title="Diagram"></iframe>
 
     </div>
-
-    <div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
-        <div class='loginBoxheader'>
-            <h3>Dugga Stats</h3>
-            <div class='cursorPointer' onclick="hideDuggaStatsPopup()">x</div>
-        </div>
-        <div class="table-wrap">
-            <table>
-                <tr><th></th><th>Highscore</th><th>Total</th></tr>
-                <tr><td>Clicks</td><td id="duggaClicks"></td><td id="duggaTotalClicks"></td></tr>
-                <tr><td>Time</td><td id="duggaTime"></td><td id="duggaTotalTime"></td></tr>
-                <tr><td>Submissions</td><td></td><td id="duggaTotalSubmissions"></td></tr>
-            </table>
-        </div>
-    </div>
+    <div id="nextVariantBtn"></div>
 </div>
