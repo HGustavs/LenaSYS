@@ -163,8 +163,7 @@ function createSortableTable(data){
         rowFilterCallback: rowFilter,
 		columnOrder: colOrder,
 		hasRowHighlight: true,
-		hasMagicHeadings: true,
-		hasCounterColumn: true
+		hasCounterColumn: true,
 	});
 
 	var sortCol = localStorage.getItem("resultTable___sortcol");
