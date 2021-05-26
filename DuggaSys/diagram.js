@@ -3044,8 +3044,10 @@ function changeReplayState(sliderValue)
     var timestampKeys = Object.keys(settings.replay.timestamps);
 
     // If the last timestamp is selected, goto the last state in the diagram.
-    if (timestampKeys.length == sliderValue) stateMachine.scrubHistory(stateMachine.historyLog.length)
-    else stateMachine.scrubHistory(timestampKeys[sliderValue]);
+    if (timestampKeys.length - 1 == sliderValue){
+        stateMachine.scrubHistory(stateMachine.historyLog.length - 1);
+    } else stateMachine.scrubHistory(timestampKeys[sliderValue+1] -1);
+
 }
 /**
  * @description Toggles stepforward in history.
