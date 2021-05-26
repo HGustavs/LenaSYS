@@ -412,7 +412,7 @@ class StateMachine
 
                         if (Array.isArray(changeType)){
                             for (var index = 0; index < changeType.length && isSoft; index++) {
-                                isSoft = changeType[index].isSoft;
+                                isSoft = cha<ngeType[index].isSoft;
                             }
                             var changeTypes = changeType;
                         }else {
@@ -3967,6 +3967,10 @@ function sortvectors(a, b, ends, elementid, axis) // TODO : Replace variable nam
         toElementB = data[findIndex(data, lineB.fromID)];
     }
 
+    if (toElementA.id === toElementB.id) {
+        return 0;
+    }
+
     if (navigator.userAgent.indexOf("Chrome") !== -1) {
         sortval = 1;
     } else {
@@ -4063,6 +4067,7 @@ function clearLinesForElement(element)
     element.right = [];
     element.top = [];
     element.bottom = [];
+    element.neighbours = {};
 
     // Get data from dom elements
     var domelement = document.getElementById(element.id);
@@ -4121,6 +4126,12 @@ function determineLine(line, targetGhost = false)
     }else if (line.ctype == "BT"){
         if (felem.kind == "EREntity") felem.bottom.push(line.id);
         if (telem.kind == "EREntity") telem.top.push(line.id);
+    }
+
+    if (felem.neighbours[telem.id] == undefined) {
+        felem.neighbours[telem.id] = [line];
+    } else {
+        felem.neighbours[telem.id].push(line);
     }
 }
 /**
@@ -4267,7 +4278,63 @@ function drawLine(line, targetGhost = false)
         tx = telem.x2;
     }
 
-    // Used to draw the lines a bit longer to get rid of white-spaces.
+    // Overwrite line positioning on recursive relations (2 lines pointing to same EREntity)
+    var connections = felem.neighbours[telem.id].length;
+    if (connections === 2) {
+        var isFirst = felem.neighbours[telem.id][0].id === line.id;
+        var fromRelation = felem.kind === "ERRelation";
+        lengthConstant = 0;
+
+        if (fromRelation) {            
+            if (line.ctype == "BT") {
+                fy = felem.cy;
+                fx = (isFirst) ? felem.x1: felem.x2;
+                
+            } else if (line.ctype == "TB") {
+                fy = felem.cy;
+                fx = (isFirst) ? felem.x1: felem.x2;
+            } else if (line.ctype == "RL") {
+                fx = felem.cx;
+                fy = (isFirst) ? felem.y1: felem.y2;
+            } else if (line.ctype == "LR") {
+                fx = felem.cx;
+                fy = (isFirst) ? felem.y1: felem.y2;
+            }
+
+            if (isFirst) {
+                telem.recursivePos = getPoint(tx, ty);
+            } else {
+                tx = telem.recursivePos.x;
+                ty = telem.recursivePos.y;
+                delete telem.recursivePos;
+            }
+
+        } else {
+            if (line.ctype == "BT") {
+                ty = telem.cy;
+                tx = (isFirst) ? telem.x1: telem.x2;
+            } else if (line.ctype == "TB") {
+                ty = telem.cy;
+                tx = (isFirst) ? telem.x1: telem.x2;
+            } else if (line.ctype == "RL") {
+                tx = telem.cx;
+                ty = (isFirst) ? telem.y1: telem.y2;
+            } else if (line.ctype == "LR") {
+                tx = telem.cx;
+                ty = (isFirst) ? telem.y1: telem.y2;
+            }
+
+            if (isFirst) {
+                felem.recursivePos = getPoint(fx, fy);
+            } else {
+                fx = felem.recursivePos.x;
+                fy = felem.recursivePos.y;
+                delete felem.recursivePos;
+            }
+        }
+    }
+
+     // Used to draw the lines a bit longer to get rid of white-spaces.
     if ((fx > tx) && (line.ctype == "LR")){
         x1Offset = lengthConstant;
         x2Offset = -lengthConstant;
@@ -4281,12 +4348,10 @@ function drawLine(line, targetGhost = false)
         y1Offset = -lengthConstant;
         y2Offset = lengthConstant;   
     }
-
-    if (line.kind == "Normal"){
-
-        str += `<line id='${line.id}' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
     
-    }else if (line.kind == "Double"){
+    if (line.kind == "Normal"){
+        str += `<line id='${line.id}' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`; 
+    } else if (line.kind == "Double") {
         // We mirror the line vector
         dy = -(tx - fx);
         dx = ty - fy;
@@ -4299,7 +4364,7 @@ function drawLine(line, targetGhost = false)
         str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
     }
 
-    if(contextLine.includes(line)){
+    if (contextLine.includes(line)) {
 
         var x = (fx + tx) /2;
         var y = (fy + ty) /2;
@@ -4307,7 +4372,7 @@ function drawLine(line, targetGhost = false)
     }
 
     // If the line got cardinality
-    if(line.cardinality) {
+    if (line.cardinality) {
 
         const offsetOnLine = 20 * zoomfact;
         var offset = Math.round(zoomfact * textheight / 2);
@@ -4378,7 +4443,7 @@ function drawLine(line, targetGhost = false)
         str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`
     }
 
-    if(line.label && line.label != ""){
+    if (line.label && line.label != ""){
         var centerX = (tx + fx) / 2;
         var centerY = (ty + fy) / 2;
         //add background
@@ -4427,6 +4492,12 @@ function redrawArrows(str)
     if (ghostLine && ghostElement){
         str += drawLine(ghostLine, true);
     }
+
+    // Remove all neighbour maps from elements
+    for (var i = 0; i < data.length; i++){
+        delete data[i].neighbours;
+    }
+
     return str;
 }
 /**
