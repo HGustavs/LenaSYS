@@ -54,7 +54,7 @@ function returnedDugga(data)
 	} else if (querystring['highscoremode'] == 2) {
 		if(data['score'] > 0){
 			ClickCounter.score = data['score'];
-			console.log(ClickCounter.score);
+			//console.log(ClickCounter.score);
 		}
 		ClickCounter.showClicker();
 	}
