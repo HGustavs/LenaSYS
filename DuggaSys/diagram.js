@@ -3575,6 +3575,7 @@ function generateToolTips()
     }
 }
 
+
 /**
  * @description Modified the current ruler position to respective x and y coordinate. This DOM-element has an absolute position and does not change depending on other elements.
  * @param {Number} x Absolute x-position in pixels from the left of the inner window.
