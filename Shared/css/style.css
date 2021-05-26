@@ -1717,6 +1717,46 @@ div .navButt:hover {
   margin:0 auto;
 }
 
+.loginHashContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 8000;
+}
+
+.loginHashBox {
+  position: absolute;
+  min-width: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 4px;
+}
+
+.loginHashContent {
+  position: relative;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.w100 {
+  width: 100%;
+}
+
+.hash-submit-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px 0px;
+}
+
 .loginBox,
 .logoutBox{
   padding: 4px;
@@ -2213,6 +2253,19 @@ input {
 
 .loginBoxheader div:hover, .logoutBoxheader div:hover {
   background-color: #ce3d3d;
+}
+
+label.login-label {
+  display: block;
+}
+
+.login-input-container {
+  position: relative;
+  width: 100%;
+  margin: 10px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .loginBoxbody {
@@ -8010,4 +8063,13 @@ textarea#filecont {
   border-left: 1px solid #a6a6a6;
   width:50%;
   overflow: hidden;
+}
+
+.hash-login-input{
+  width: 80%;
+}
+
+.prev-hash-container {
+  width: 80%;
+  margin: 15px 0px 8px 0px
 }
