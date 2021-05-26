@@ -14,7 +14,6 @@ var checkboxElements;
 var searchBarElement;
 var searchDelayTimeout;
 
-
 function searchByFilter() {
 	// Date object requires string to not apply random time zone.
 	var dateElement = document.querySelectorAll(".date-interval-selector");
@@ -108,7 +107,6 @@ function updateTable() {
 }
 
 function returnedResults(data) {
-
 	var assignmentList;
 	var duggaEntrynameCheckbox = "";
 	var duggaFilterOptions = data['duggaFilterOptions'];
@@ -134,6 +132,7 @@ function returnedResults(data) {
 	document.querySelector(".show-dugga-filter-popup").innerHTML = duggaEntrynameCheckbox;
 		
     createSortableTable(data['tableInfo']);
+	setDateIntervals(data)
 	loadHTMLelements();
 }
 
@@ -306,3 +305,33 @@ function clickedInternal(event, clickdobj){
 	}
 }
 
+/**
+ * @description Sets the earliest and latest dates for the collected 
+ * submissions in the filter date inputs.
+ * */
+function setDateIntervals(data){
+	// iterate tableinfo and get the highest and lowest date
+	for (var objects of data.tableInfo){
+		var temp, lowest, highest;
+		temp = objects.submitted;
+		if(!lowest){
+			lowest = temp;
+		}
+		if(temp <= lowest){
+			lowest = temp;
+		}
+		if(!highest){
+			highest = temp;
+		}
+		if(temp >= highest){
+			highest = temp;
+		}
+	}
+	// Remove the timestamp that makes the string incompatible with date value
+	lowest = lowest.substr(0,10);
+	highest = highest.substr(0,10);
+	// Sets the default value of the datepickers
+	document.querySelector("#datepicker-interval-1").value = lowest;
+	document.querySelector("#datepicker-interval-2").value = highest;
+
+}

@@ -95,11 +95,11 @@ pdoConnect();
 			</div>
 			<div class="select-date-interval">
 				<div>
-					<label class="filter-label" for="">Date 1</label>
+					<label class="filter-label" for="">Earliest Submission</label>
 					<input class="date-interval-selector" type="date" id="datepicker-interval-1">
 				</div>
 				<div>
-					<label class="filter-label" for="">Date 2</label>
+					<label class="filter-label" for="">Latest Submission</label>
 					<input class="date-interval-selector" type="date" id="datepicker-interval-2">
 				</div>
 			</div>
