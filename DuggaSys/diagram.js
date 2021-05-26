@@ -245,6 +245,7 @@ class StateChangeFactory
      */
     static LinesRemoved(lines)
     {
+        console.log("TEST");
         var lineIDs = [];
 
         // For every object in the lines array, add them to lineIDs
@@ -510,7 +511,6 @@ class StateMachine
         }while(this.currentHistoryIndex > 0
             && this.historyLog[this.currentHistoryIndex] 
             && this.historyLog[this.currentHistoryIndex - 1].time == this.historyLog[this.currentHistoryIndex].time);
-
             
         clearContext();
         clearContextLine();
@@ -1248,10 +1248,12 @@ document.addEventListener('keyup', function (e)
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
             
-            if (contextLine.length > 0) removeLines(contextLine);
             if (mouseMode == mouseModes.EDGE_CREATION) return;
-            if (context.length > 0) removeElements(context);
-            
+            if (context.length > 0) {
+                removeElements(context);
+            } else if (contextLine.length > 0) {
+                 removeLines(contextLine);
+            }            
     
             updateSelection();
             
@@ -2348,6 +2350,7 @@ function pasteClipboard(elements, elementsLines)
             fill: element.fill,
             stroke: element.stroke
         };
+
         newElements.push(elementObj)
         addObjectToData(elementObj, false);
     });
