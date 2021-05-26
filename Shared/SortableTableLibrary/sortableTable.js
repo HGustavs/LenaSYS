@@ -231,7 +231,7 @@ function SortableTable(param) {
 	this.deHighlightRow = getparam(param.rowHighlightOffCallback, defaultRowHighlightOff);
 	this.showEditCell = getparam(param.displayCellEditCallback, null);
 	this.updateCell = getparam(param.updateCellCallback, null);
-	this.hasMagicHeadings = getparam(param.hasMagicHeadings, false);
+	this.hasMagicHeadings = getparam(param.hasMagicHeadings, false); // Mini table option
 	this.hasCounter = getparam(param.hasCounterColumn, false);
 	this.hasFooter = getparam(param.hasFooter, false);
 	
@@ -619,28 +619,29 @@ function SortableTable(param) {
 					// If top is negative and top+height is positive draw mh otherwise hide
 
 					// Vertical
-					if (thetabhead.top < 50 && thetab.bottom > 0) {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.left = thetab.left + "px";
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.top = 50 + "px";
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.display = "table";
-					} else {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.display = "none";
-					}
+						if (thetabhead.top < 50 && thetab.bottom > 0) {
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.left = thetab.left + "px";
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.top = 50 + "px";
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.display = "table";
+						} else {
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.display = "none";
+						}
+
 					// Horizontal
-					if (thetab.left < 0 && thetab.right > 0) {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = tabheadsize + "px";
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.left = -1 + "px";
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "table";
-					} else {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "none";
-					}
+						if (thetab.left < 0 && thetab.right > 0) {
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = tabheadsize + "px";
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.left = -1 + "px";
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "table";
+						} else {
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "none";
+						}
 
 					// Fixed
-					if (thetab.left < 0 && thetab.right > 0 && thetabhead.top < 0 && thetab.bottom > 0) {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhf").style.display = "table";
-					} else {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhf").style.display = "none";
-					}
+						if (thetab.left < 0 && thetab.right > 0 && thetabhead.top < 0 && thetab.bottom > 0) {
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhf").style.display = "table";
+						} else {
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhf").style.display = "none";
+						}
 				}
 			}
 		}
