@@ -243,8 +243,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 				}
 			}
 
-			$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now(),:hash);");
-			$query->bindParam(':uid', $userid);
+			$query = $pdo->prepare("INSERT INTO submission(fieldnme,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now(),:hash);");
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':vers', $vers);
 			$query->bindParam(':did', $duggaid);
@@ -288,9 +287,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 			  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$fname.$seq.".".$extension;
 			  file_put_contents($movname, htmlentities($inputtext, ENT_QUOTES | ENT_IGNORE, "UTF-8"));
 
-				$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now(),:hash);");
+				$query = $pdo->prepare("INSERT INTO submission(fieldnme,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now(),:hash);");
 
-				$query->bindParam(':uid', $userid);
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':vers', $vers);
 				$query->bindParam(':did', $duggaid);
@@ -328,9 +326,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 				$movname = $currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$md5_filename.$seq;
 				file_put_contents($movname, $link);
 
-				$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,null,null,:kind,:seq,:segment,now(),:hash);");
+				$query = $pdo->prepare("INSERT INTO submission(fieldnme,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:cid,:vers,:did,:filepath,:filename,null,null,:kind,:seq,:segment,now(),:hash);");
 
-				$query->bindParam(':uid', $userid);
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':vers', $vers);
 				$query->bindParam(':did', $duggaid);
@@ -400,11 +397,10 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 										// check if upload is successful
 										if(move_uploaded_file($filea["tmp_name"],$movname)){
 
-														$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now(),:hash);");
+														$query = $pdo->prepare("INSERT INTO submission(fieldnme,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now(),:hash);");
 
 														$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/";
 
-														$query->bindParam(':uid', $userid);
 														$query->bindParam(':cid', $cid);
 														$query->bindParam(':vers', $vers);
 														$query->bindParam(':did', $duggaid);

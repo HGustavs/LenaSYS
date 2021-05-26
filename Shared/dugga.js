@@ -528,7 +528,7 @@ function changeVariant(intvalue) {
 //Selects next variant available and calls 'changeVariant' method.
 function selectNextVariant(){
  	if(nbrOfVariants != undefined){	//If variants are available for this dugga.
-		var nextVariant = (latestVariantSet + 1) % nbrOfVariants;
+		var nextVariant = (latestVariantSet) % nbrOfVariants;
 		changeVariant(nextVariant);
 	} 
 }
@@ -719,6 +719,7 @@ function saveDuggaResult(citstr)
 			citstr+= "##!!##" + timeUsed;
 			citstr+= "##!!##" + stepsUsed;
 			//citstr+= "##!!##" + score;
+			variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 			AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
 			var dateTime = new Date(); 				//Get the current date and time
@@ -1097,15 +1098,7 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	}else if(kind=="GEXPORT"){
-		$.ajax({
-			url: "resultedservice.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedExportedGrades
-		});
-}else if(kind=="GROUP"){
+	}else if(kind=="GROUP"){
 			$.ajax({
 				url: "groupedservice.php",
 				type: "POST",
@@ -1616,7 +1609,7 @@ function checkScroll(obj) {
 }
 
 //----------------------------------------------------------------------------------
-// copyURLtoCB: Copy the url to user clipboard
+// copyhashtoCB: Copy the hash to user clipboard
 //----------------------------------------------------------------------------------
 function copyHashtoCB() {
 	var $temp = $("<input>");
@@ -1624,6 +1617,17 @@ function copyHashtoCB() {
     $temp.val(hash).select();
     document.execCommand("copy");
 	$temp.remove();
+}
+
+//----------------------------------------------------------------------------------
+// copyURLtoCB: Copy the url to user clipboard
+//----------------------------------------------------------------------------------
+function copyUrltoCB() {
+	var $copyUrl = $("<input>");
+	$("body").append($copyUrl);
+	$copyUrl.val($('#url').text()).select();
+	document.execCommand("copy");
+	$copyUrl.remove();
 }
 
 //----------------------------------------------------------------------------------
@@ -2078,11 +2082,13 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 
 		//If duggaTitle variable have a value set. 
 		if(duggaTitle) {	
-			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>"+duggaTitle+"</div>";
+			//str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>"+duggaTitle+"</div>";
+			str+="<div class='' style='margin:4px;'></div></div><div>"+duggaTitle+"</div>";
 		}
 		//If there is no name of the dugga.
 		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
-			str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
+			//str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
+			str+="<div class='' style='margin:4px;'></div></div><div>Untitled dugga</div>";
 		}
 
 		if(loadVariantFlag){	//If the 'Next variant' button is set to be visable (Teachers only). 

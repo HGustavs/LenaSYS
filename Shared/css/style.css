@@ -1130,7 +1130,7 @@ p {
   background-color: var(--color-primary);
 }
 
-.StopLight {
+/* .StopLight {
   vertical-align: middle;
   overflow: hidden;
   border: 1px solid yellow;
@@ -1139,7 +1139,7 @@ p {
   margin: 2px 2px 2px 2px;
   border-radius: 14px;
   border: 1px solid #000;
-}
+} */
 
 .WhiteLight {
   background: radial-gradient(white, grey, white);
@@ -3408,15 +3408,21 @@ span.arrow {
   background-color: var(--color-sectioned-table-lo);
 }
 
-.search-filer-container {
+.resulted-filter-container {
+  padding: 5px 0px 5px 20px;
   display: flex;
   align-items: flex-end;
 }
 
-#btn-apply-filter {
+.resulted-filter-container > *{
+  margin-right: 20px;
+}
+
+.filter-btn{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   display: inline-block;
   padding: 8px 25px;
+  margin-left: 10px;
   background-color: var(--color-primary);
   color: white;
   font-size: 16px;
@@ -3425,21 +3431,56 @@ span.arrow {
   cursor: pointer;
 }
 
-#btn-apply-filter:hover{
+.filter-btn:hover{
   background-color: var(--color-primary-hover);
 }
 
-#select-date-interval {
+.dugga-filter-container { 
+  position: relative;
+}
+
+.show-dugga-filter-popup {
+  position: absolute;
+  left: 15%;
+  min-width: 250px;
+  background-color: var(--color-background-3);
+  border: 1px solid black;
+}
+
+.dugga-entry-box {
+  padding: 2px 2px 2px 5px;
+}
+
+.toggle-dugganame-filter-box {
+  padding: 10px 0px 5px 5px;
+}
+
+.toggle-dugganame-filter-box > label{
+ 
+}
+
+.toggle-0 {
+  background-color: var(--color-background-3);
+}
+
+.toggle-1 {
+  background-color: #fff;
+}
+
+.show-dugga-filter-popup.hidden {
+  display: none;
+}
+
+.select-date-interval {
   display: flex;
 }
 
-#select-date-interval > *{
+.select-date-interval > *{
   margin: 0px 10px;
 }
 
-.date-interval-selector {
+.filter-label {
   display: block;
-
 }
 
 .resultTableCell {

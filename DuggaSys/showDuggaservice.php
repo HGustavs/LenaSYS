@@ -202,7 +202,7 @@ if(checklogin()){
 $demo=false;
 if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
-if($demo || $hr && !strcmp($opt,"SAVDU")==0){
+if($demo || $hr){
 		
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
