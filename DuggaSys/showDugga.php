@@ -323,6 +323,7 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 				
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
+					<input type='button' class='submit-button' onclick="copyUrltoCB();" value='Copy URL'>
 					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
 				</div>
     		</div>
