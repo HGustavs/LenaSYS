@@ -407,7 +407,7 @@ function SortableTable(param) {
 					var threshold = parseInt(document.getElementById("highlight-entry").value);
 					
 					if(row["timesAccessed"] >= threshold){
-						str += " style='box-sizing:border-box; background-color: #ff3f4c'>";
+						str += " style='box-sizing:border-box; background-color: #fecc56'>";
 					}else{
 						str += " style='box-sizing:border-box'>";
 					}
