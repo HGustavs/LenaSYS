@@ -1329,6 +1329,7 @@ document.addEventListener('keyup', function (e)
         }
 
         if (isKeybindValid(e, keybinds.TOGGLE_KEYBINDLIST)) {
+            e.preventDefault();
             toggleKeybindList();
         }
 
@@ -3174,6 +3175,9 @@ function toggleReplay()
     settings.replay.active = !settings.replay.active;
 }
 
+/**
+ * @description Toggles the list of keybinds.
+ */
 function toggleKeybindList()
 {
     var element = document.getElementById("markdownKeybinds");
@@ -3594,6 +3598,9 @@ function generateToolTips()
     }
 }
 
+/**
+ * @description Generates a markdown file with a list of keybinds from file diagramkeybinds.md for all keybinds that are available in the diagram.
+ */
 function generateKeybindList()
 {
     $.ajax({
