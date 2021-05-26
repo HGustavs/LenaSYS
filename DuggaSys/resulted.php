@@ -105,6 +105,16 @@ pdoConnect();
 			</div>
 			<div class="filter-btn" onclick="searchByFilter()">Search</div>
 		</div>
+		<div class="resulted-filter-container">
+			<div>
+				<label class="filter-label" for="">Highlight threshold (Times Accessed)</label>
+				<input class="searchbar-filter" id="highlight-entry" type="text" value="20" onkeyup="updateTable()">
+			</div>
+			<div>
+				<label class="filter-label" for="">Enabled</label>
+				<input type="checkbox" id="highlight-checkbox" onclick="updateTable()">
+			</div>
+		</div>
 		<div id="resultTable"></div>
 	</div>
 	<!-- content END -->
