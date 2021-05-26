@@ -24,7 +24,7 @@ var prevAnswer;
 
 function quiz(parameters) {
 	if(parameters != undefined) {
-		console.log("pram:" + parameters);
+	//console.log("pram:" + parameters);
 		parameters = parameters.replace(/NONE!/g, '');
 		parameters = parameters.replace(/{/g, '');
 		var qeustionsplit = parameters.split("}");
@@ -92,7 +92,7 @@ function returnedDugga(data)
 		ClickCounter.initialize();
 	}
 
-	console.log(data['param']);
+	//console.log(data['param']);
 	var output ="";
 	if(data['debug']!="NONE!") alert(data['debug']);
 

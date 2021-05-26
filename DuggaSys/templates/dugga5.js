@@ -66,9 +66,9 @@ function setup()
 
 	})
 	.fail(function( jqxhr, settings, exception ) {
-	  	console.log(jqxhr);
-	  	console.log(settings);
-	  	console.log(exception);	    
+	  	//console.log(jqxhr);
+	  	//console.log(settings);
+	  	//console.log(exception);	    
 	});
 
 }
@@ -140,8 +140,8 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	createTextures();
 
 	ans = JSON.parse(danswer);
-	console.log(ans.vertex);
-	console.log(ans.triangle);
+	//console.log(ans.vertex);
+	//console.log(ans.triangle);
 
 	// Setup code
 	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
@@ -194,9 +194,9 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 
 	})
 	.fail(function( jqxhr, settings, exception ) {
-	  	console.log(jqxhr);
-	  	console.log(settings);
-	  	console.log(exception);	    
+	  	//console.log(jqxhr);
+	  	//console.log(settings);
+	  	//console.log(exception);	    
 	});
 
   // Teacher feedback
@@ -319,7 +319,7 @@ function newTriangle()
 		renderTriangleTable();
 		ClickCounter.onClick();
 	} else {
-		console.log("tv undefined");
+		//console.log("tv undefined");
 	}
 
 	updateGeometry();
