@@ -25,6 +25,11 @@
 </head>
 <body onload="getData()" style="overflow: hidden;">
 
+    <!-- Markdown document with keybinds -->
+    <div id="markdownKeybinds" style="display: none">
+
+    </div>
+
     <!-- Toolbar for diagram -->
     <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'>
         <fieldset>

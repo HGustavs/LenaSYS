@@ -1,40 +1,39 @@
 
-# **LenaSYS Diagram keybindings**. <br>
+# **LenaSYS Diagram keybindings**
 
-___
 
-## Modes <br>
+## Modes
 
 - Mouse Pointer = "1"
 - Box selection = "2"
 - Entity = "3"
 - Relation = "4"
 - Attribute = "5" 
-- Line creation = "6" <br><br>
+- Line creation = "6" 
 
-## Zoom <br>
+## Zoom
 
 - Zoom in = Mouse wheel/ CTRL/CMD(MacOS) + "-"
-- Zoom out = Mouse wheel/ CTRL/CMD(MacOS) + "+" <br><br>
+- Zoom out = Mouse wheel/ CTRL/CMD(MacOS) + "+" 
 
-## Toggle <br>
+## Toggle
 
 - Toggle grid = "G"
 - Toggle ruler = "T"
 - Toggle snap to grid = "S"
-- Toggle A4 template = "A" <br><br>
+- Toggle A4 template = "A"
 
-## Camera <br>
+## Camera
 
-- Click to redirect camera to center = "HOME" <br><br>
+- Click to redirect camera to center = "HOME" 
 
-## History <br>
+## History
 
 - Toggle step forward = CTRL + ”Y”
 - Toggle step backward = CTRL + ”Z”
-- Toggle replay = Klick to start replay <br><br>
+- Toggle replay = Klick to start replay 
 
-## Other <br>
+## Other
 
 - Copy elements or lines = CTRL + ”C”
 - Paste elements or lines = CTRL + ”V”
