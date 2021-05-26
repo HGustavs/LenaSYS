@@ -39,9 +39,9 @@ $entryname=getOP('entryname');
 $hash=getOP('hash');
 $password=getOP('password');
 $AUtoken=getOP('AUtoken');
-//$localStorageVariant= getOP('variant');
 $variantvalue= getOP('variant');
 $hashvariant;
+$duggatitle;
 
 $showall="true";
 $param = "UNK";
@@ -169,6 +169,8 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
     $query->bindParam(':hash', $hash);
     $result = $query->execute();
 
+	
+
     if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         $savedvariant=$row['variant'];
         $savedanswer=$row['useranswer'];
@@ -179,8 +181,14 @@ $query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers
         $marked = $row['marked'];
 		$password = $row['password'];
         $timesSubmitted = $row['timesSubmitted'];
-		
+		$tempmoment = $row['moment'];
     }
+	$query = $pdo->prepare("SELECT entryname FROM listentries WHERE lid=:moment;");
+	$query->bindParam(':moment', $tempmoment);
+	$result = $query->execute();
+	if($row = $query->fetch(PDO::FETCH_ASSOC)){
+		$duggatitle=$row['entryname'];
+	} 
 
 // -------------------------OLD FUNCTIONALITY WHERE WE CHECK IF USER IS LOGGED IN AND HAS ACESS-------------------
 
@@ -194,7 +202,7 @@ if(checklogin()){
 $demo=false;
 if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
-if($demo || $hr && !strcmp($opt,"SAVDU")==0){
+if($demo || $hr){
 		
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
@@ -257,7 +265,7 @@ if($demo || $hr && !strcmp($opt,"SAVDU")==0){
 			$variantvalue = $result['variant'];
 			$hashvariant = $result['variant'];
 		}
-		error_log("==UNK".$result['variant']);
+		//error_log("==UNK".$result['variant']);
 	}
 
 	//Makes sure that the localstorage variant is set before retrieving data from database
@@ -267,7 +275,7 @@ if($demo || $hr && !strcmp($opt,"SAVDU")==0){
 		$query->execute();
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
-		error_log("!=UNK".$variantvalue);
+		//error_log("!=UNK".$variantvalue);
 	}
 } 
 // else if ($hr){
@@ -648,6 +656,7 @@ $array = array(
 		"isFileSubmitted" => $isFileSubmitted,
 		"isTeacher" => $isTeacher, // isTeacher is true for both teachers and superusers
 		"variants" => $variants,
+		"duggaTitle" => $duggatitle,
 
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;

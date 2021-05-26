@@ -78,58 +78,42 @@ pdoConnect();
 	<div class="titles" style="justify-content:flex-start;">
 			<h1>Edit student results</h1>
     </div>
-      <div id="ladexportContainer">
-      <div class="resultedFormsFlex">
-        <label>Subcourse</label>
-        <select id="ladselect"></select>
-      </div>
-      <div class="resultedFormsFlex">
-        <label>Grading scale</label>
-        <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
-        <select id="ladgradescale">
-          <option value="U-G-VG" selected>U-G-VG</option>
-          <option value="U-G">U-G</option>
-       	  <!-- <option value="U-3-4-5">U-3-4-5</option> -->
-        </select>
-      </div>
-      <div class="resultedFormsFlex">
-        <label>Date of grading</label>
-        <input id="laddate" type="date" style="font-size:12px;">
-        </div>
-		<div class="resultedFormsFlex">
-			<label>Export...</label>
-			<select id="exportType">
-				<option value="restricted">Unexported</option>
-				<option value="all">All</option>
-			</select>
-		</div>
-		<div class="resultedFormsFlex">
-      <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
-	  <span id="lastExportedDate"></span>
-	  </div>
-			</div>
-			<div style="display: flex;">
-				<div class="resultedFormsFlex">
-					<label for="assignmentDropdown">Assignment</label>
-					<select id="assignmentDropdown" onchange="updateTable()"></select>
-				</div>
-			</div>
+	
     </div>
 
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
-		
-		<div class="search-filer-container">
-			<div id="select-date-interval">
+		<div class="resulted-filter-container">
+			<div class="search-filter-container">
+				<label class="filter-label" for="">Search</label>
+				<input class="searchbar-filter" type="text">
+			</div>
+			<div class="select-dugga-filter">
+				<div class="dugga-filter-container">
+					<div class="filter-btn filter-btn-duggaName" onclick="showAvaiableDuggaFilter()">Show dugga filter</div>
+					<div class="show-dugga-filter-popup hidden"></div>
+				</div>
+			</div>
+			<div class="select-date-interval">
 				<div>
-					<label for="">Date 1</label>
+					<label class="filter-label" for="">Earliest Submission</label>
 					<input class="date-interval-selector" type="date" id="datepicker-interval-1">
 				</div>
 				<div>
-					<label for="">Date 2</label>
+					<label class="filter-label" for="">Latest Submission</label>
 					<input class="date-interval-selector" type="date" id="datepicker-interval-2">
 				</div>
 			</div>
-			<div id="btn-apply-filter" onclick="updateFilterInterval()">Search</div>
+			<div class="filter-btn" onclick="searchByFilter()">Search</div>
+		</div>
+		<div class="resulted-filter-container">
+			<div>
+				<label class="filter-label" for="">Highlight threshold (Times Accessed)</label>
+				<input class="searchbar-filter" id="highlight-entry" type="text" value="20" onkeyup="updateTable()">
+			</div>
+			<div>
+				<label class="filter-label" for="">Enabled</label>
+				<input type="checkbox" id="highlight-checkbox" onclick="updateTable()">
+			</div>
 		</div>
 		<div id="resultTable"></div>
 	</div>
