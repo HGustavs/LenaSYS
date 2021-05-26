@@ -511,10 +511,11 @@ class StateMachine
             && this.historyLog[this.currentHistoryIndex] 
             && this.historyLog[this.currentHistoryIndex - 1].time == this.historyLog[this.currentHistoryIndex].time);
 
-        this.scrubHistory(this.currentHistoryIndex);
-
+            
         clearContext();
+        clearContextLine();
         showdata();
+        this.scrubHistory(this.currentHistoryIndex);
         updatepos(0, 0);
         displayMessage(messageTypes.SUCCESS, "Changes reverted!")
     }
@@ -554,6 +555,7 @@ class StateMachine
 
         // Update diagram
         clearContext();
+        clearContextLine();
         showdata();
         updatepos(0, 0);
     }
