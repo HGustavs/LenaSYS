@@ -750,6 +750,7 @@ const keybinds = {
         MOVING_OBJECT_DOWN: {key: "ArrowDown", ctrl: false},
         MOVING_OBJECT_LEFT: {key: "ArrowLeft", ctrl: false},
         MOVING_OBJECT_RIGHT: {key: "ArrowRight", ctrl: false},
+        TOGGLE_KEYBINDLIST: {key: "F1", ctrl: false},
 };
 
 /** 
@@ -1117,6 +1118,7 @@ function getData()
     updateA4Pos();
     updateGridSize();
     setCursorStyles(mouseMode);
+    generateKeybindList();
 }
 
 /**
@@ -1307,6 +1309,12 @@ document.addEventListener('keyup', function (e)
                 displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`);
             }
         }
+
+        if (isKeybindValid(e, keybinds.TOGGLE_KEYBINDLIST)) {
+            e.preventDefault();
+            toggleKeybindList();
+        }
+
     } else {
         if(document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)){
             if(context.length == 1){
@@ -3168,6 +3176,21 @@ function toggleReplay()
     // Change the settings boolean for replay active
     settings.replay.active = !settings.replay.active;
 }
+
+/**
+ * @description Toggles the list of keybinds.
+ */
+function toggleKeybindList()
+{
+    var element = document.getElementById("markdownKeybinds");
+    if (element.style.display == "block") {
+        element.style.display = "none";
+    }
+    else {
+        element.style.display = "block";
+    }
+}
+
 /**
  * @description Sets the replay-delay value
  */
@@ -3598,6 +3621,18 @@ function generateToolTips()
     }
 }
 
+/**
+ * @description Generates a markdown file with a list of keybinds from file diagramkeybinds.md for all keybinds that are available in the diagram.
+ */
+function generateKeybindList()
+{
+    $.ajax({
+        method: "GET",
+        url: "diagramkeybinds.md",
+    }).done(function(file) {
+        document.getElementById("markdownKeybinds").innerHTML=parseMarkdown(file);
+    });
+}
 /**
  * @description Modified the current ruler position to respective x and y coordinate. This DOM-element has an absolute position and does not change depending on other elements.
  * @param {Number} x Absolute x-position in pixels from the left of the inner window.

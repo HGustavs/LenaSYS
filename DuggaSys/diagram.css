@@ -430,6 +430,22 @@
     margin-left: 20px;
 }
 
+/* Markdown document*/
+
+#markdownKeybinds {
+    position: absolute;
+    display: block;
+    z-index: 1000;
+    background-color: var(--color-background-4);
+    height: 75%;
+    width: 30%;
+    overflow: scroll;
+    border: 2px solid black;
+    top: 100px;
+    left: 33%;
+    padding-left: 10px;
+}
+
 /*Cardinality stuff*/
 
 .propertyCardinality{
