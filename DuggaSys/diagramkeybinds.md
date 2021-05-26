@@ -15,6 +15,7 @@
 
 - Zoom in = Mouse wheel/ CTRL/CMD(MacOS) + "-"
 - Zoom out = Mouse wheel/ CTRL/CMD(MacOS) + "+" 
+- Zoom reset = CTRL + "0"
 
 ## Toggle
 
@@ -38,4 +39,5 @@
 - Copy elements or lines = CTRL + ”C”
 - Paste elements or lines = CTRL + ”V”
 - Mark all elements and lines = CTRL + ”A”
+- Toggle keybindlist - ”F1”
 
