@@ -412,7 +412,7 @@ class StateMachine
 
                         if (Array.isArray(changeType)){
                             for (var index = 0; index < changeType.length && isSoft; index++) {
-                                isSoft = changeType[index].isSoft;
+                                isSoft = cha<ngeType[index].isSoft;
                             }
                             var changeTypes = changeType;
                         }else {
@@ -4248,32 +4248,17 @@ function drawLine(line, targetGhost = false)
         tx = telem.x2;
     }
 
-    // Used to draw the lines a bit longer to get rid of white-spaces.
-    if ((fx > tx) && (line.ctype == "LR")){
-        x1Offset = lengthConstant;
-        x2Offset = -lengthConstant;
-    } else if ((fx < tx) && (line.ctype == "RL")){
-        x1Offset = -lengthConstant;
-        x2Offset = lengthConstant;
-    } else if ((fy > ty) && (line.ctype == "TB") ){
-        y1Offset = lengthConstant;
-        y2Offset = -lengthConstant;   
-    } else if ((fy < ty) && (line.ctype == "BT") ){
-        y1Offset = -lengthConstant;
-        y2Offset = lengthConstant;   
-    }
-
     // Overwrite line positioning on recursive relations (2 lines pointing to same EREntity)
     var connections = felem.neighbours[telem.id].length;
     if (connections === 2) {
         var isFirst = felem.neighbours[telem.id][0].id === line.id;
         var fromRelation = felem.kind === "ERRelation";
+        lengthConstant = 0;
 
         if (fromRelation) {            
             if (line.ctype == "BT") {
                 fy = felem.cy;
                 fx = (isFirst) ? felem.x1: felem.x2;
-
                 
             } else if (line.ctype == "TB") {
                 fy = felem.cy;
@@ -4317,6 +4302,21 @@ function drawLine(line, targetGhost = false)
                 delete felem.recursivePos;
             }
         }
+    }
+
+     // Used to draw the lines a bit longer to get rid of white-spaces.
+    if ((fx > tx) && (line.ctype == "LR")){
+        x1Offset = lengthConstant;
+        x2Offset = -lengthConstant;
+    } else if ((fx < tx) && (line.ctype == "RL")){
+        x1Offset = -lengthConstant;
+        x2Offset = lengthConstant;
+    } else if ((fy > ty) && (line.ctype == "TB") ){
+        y1Offset = lengthConstant;
+        y2Offset = -lengthConstant;   
+    } else if ((fy < ty) && (line.ctype == "BT") ){
+        y1Offset = -lengthConstant;
+        y2Offset = lengthConstant;   
     }
     
     if (line.kind == "Normal"){
