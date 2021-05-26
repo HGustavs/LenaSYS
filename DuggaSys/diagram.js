@@ -4320,7 +4320,7 @@ function drawLine(line, targetGhost = false)
     }
     
     if (line.kind == "Normal"){
-        str += `<line id='${line.id}' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;    
+        str += `<line id='${line.id}' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`; 
     } else if (line.kind == "Double") {
         // We mirror the line vector
         dy = -(tx - fx);
@@ -4462,6 +4462,12 @@ function redrawArrows(str)
     if (ghostLine && ghostElement){
         str += drawLine(ghostLine, true);
     }
+
+    // Remove all neighbour maps from elements
+    for (var i = 0; i < data.length; i++){
+        delete data[i].neighbours;
+    }
+
     return str;
 }
 /**
