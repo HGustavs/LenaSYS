@@ -30,6 +30,7 @@
 
 			// Always show home button which links to course homepage
 			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img alt='home button icon' src='../Shared/icons/Home.svg'></a></td>";
+			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
@@ -89,7 +90,7 @@
 				echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
 				echo "<td class='navButt' id='messagedialog' title='Message of the day 'onclick='DisplayMSGofTDY();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
-			}if($noup=='COURSE' && checklogin() && ((isSuperUser($_SESSION['uid'])) || isTeacher($_SESSION['uid']))){
+			}if($noup=='COURSE' && checklogin() && (isTeacher($_SESSION['uid']))){
 				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
 
 			}if ($noup == 'COURSE' && checkLogin()) {
@@ -108,7 +109,9 @@
 			if($noup=='COURSE'){
 					// Course specific navbar buttons moved from "static" to navheader
 					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv'))) {
-							echo "<td style='display: inline-block;' title='Choose course version'>";
+						echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
+						echo "</td>";
+						echo "<td style='display: inline-block;' title='Choose course version'>";
 							echo "    <div class='course-dropdown-div'>";
 							echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
 							echo "    </div>";
@@ -286,8 +289,8 @@
 					}
 			}
 
-      if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
-					echo "<td id='select' class='navButt' onmouseover='hoverc();' onmouseleave='leavec();'>";
+      if($requestedService=="accessed.php"){
+					echo "<td id='select' class='navButt'>";
 					echo   "<span id='filterButton'>";
 					echo     "<img alt='filter icon' class='navButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
@@ -298,19 +301,6 @@
 					echo   "</span>";
 					echo "</td>";
 			}
-
-	    if($requestedService=="resulted.php" ){
-					echo "<td id='sort' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
-					echo   "<span id='sortButton'>";
-					echo     "<img alt='sort icon' class='navButt' src='../Shared/icons/sort_white.svg'>";
-					echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
-					echo     "</div>";
-					echo   "</span>";
-					echo "</td>";
-					echo "<td id='menuHook' class='navSpacer'>";
-					echo "</td>";
-			}
-
 
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){

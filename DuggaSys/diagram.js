@@ -58,7 +58,7 @@ class StateChange {
      * @param {Array<String>} id_list Array of all elements affected by this state change. This is used for merging changes on the same elements.
      * @param {Object} passed_values Map of all values that this change contains. Each property represents a change.
      */
-    constructor(id, values)
+    constructor(id, values, timestamp)
     {
         if (id != null) this.id = id;
 
@@ -75,7 +75,8 @@ class StateChange {
             }
         }
 
-        this.time = new Date().getTime();
+        if (timestamp != undefined) this.time = timestamp;
+        else this.time = new Date().getTime();
     }
 
     /**
@@ -90,18 +91,12 @@ class StateChange {
         propertys.forEach(key => {
 
             /**
-             * If the current key in the loop is a number, update the value or if it do not
-             * exists, set the value. Else just set the value.
+             * If the key is not blacklisted, set to the new value
              */
-            if (key == "time" || key == "id") return; // Ignore this keys.
-
-            if ((typeof changes[key]) == "number") {
-                if (this[key] === undefined) this[key] = changes[key];
-                else this[key] += changes[key]
-            } else {
+            if (key == "id") return; // Ignore this keys.
                 this[key] = changes[key];
-            }
         });
+
     }
 }
 
@@ -152,18 +147,26 @@ class StateChangeFactory
      * @param {List<String>} elementIDs List of IDs for all elements that were moved.
      * @param {Number} moveX Amount of coordinates along the x-axis the elements have moved.
      * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
-     * @returns {StateChange} A new instance of the StateChange class.
+     * @returns {Array<StateChange>} A new instance of the StateChange class.
      */
     static ElementsMoved(elementIDs, moveX, moveY)
     {
-        var values = {};
+        var changesArr = [];
+        var timeStamp = new Date().getTime();
 
-        // If moveX or Y is 0, the value should not be applied
-        if (moveX != 0) values.x = moveX;
-        if (moveY != 0) values.y = moveY;
-        if (moveX == 0 && moveY == 0) return null;
+        if (moveX == 0 && moveY == 0) return;
 
-        return new StateChange(elementIDs, values);
+        elementIDs.forEach(id => {
+            var values = {};
+           var obj = data[findIndex(data, id)];
+           if (obj === undefined) return;
+
+            if (moveX != 0) values.x = obj.x;
+            if (moveY != 0) values.y = obj.y;
+            changesArr.push(new StateChange(obj.id, values, timeStamp))
+        });
+
+        return changesArr;
     }
 
     /**
@@ -242,6 +245,7 @@ class StateChangeFactory
      */
     static LinesRemoved(lines)
     {
+        console.log("TEST");
         var lineIDs = [];
 
         // For every object in the lines array, add them to lineIDs
@@ -281,8 +285,8 @@ class StateChangeFactory
      */
     static ElementsAndLinesCreated(elements, lines)
     {
-        // Array containing all new added elements
-        var allObj = [];
+        var changesArr = [];
+        var timeStamp = new Date().getTime();
 
         // Filter out defaults from each element and add them to allObj
         elements.forEach(elem => {
@@ -295,7 +299,7 @@ class StateChangeFactory
             });
 
             uniqueKeysArr.forEach(key => values[key] = elem[key]);
-            allObj.push(values);
+            changesArr.push(new StateChange(elem.id, values, timeStamp));
         });
 
         // Filter out defaults from each line and add them to allObj
@@ -309,10 +313,10 @@ class StateChangeFactory
             });
 
             uniqueKeysArr.forEach(key => values[key] = line[key]);
-            allObj.push(values);
+            changesArr.push(new StateChange(line.id, values, timeStamp));
         });
 
-        return new StateChange(null, allObj);
+        return changesArr;
     }
 }
 
@@ -361,83 +365,90 @@ class StateMachine
         */
         this.currentHistoryIndex = -1;
     }
-
     /**
      * @description Stores the passed state change into the state machine. If the change is hard it will be pushed onto the history log. A soft change will modify the previously stored state IF that state allows it. The soft state will otherwise be pushed into the history log instead. StateChanges REQUIRE flags to be identified by the stepBack and stepForward methods!
      * @param {StateChange} stateChange All changes to be logged.
      * @see StateChangeFactory For constructing new state changes more easily.
      * @see StateChange For available flags.
      */
-    save (stateChange, changeType)
+    save (stateChangeArray, changeType)
     {
-        if (stateChange instanceof StateChange) {
-            // Remove the history entries that are after current index
-            while(this.currentHistoryIndex + 1 != this.historyLog.length) {
-                this.historyLog.pop();
-            }
+        
+        if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
-            // If history is present, perform soft/hard-check
-            if (this.historyLog.length > 0) {
+        for (var i = 0; i < stateChangeArray.length; i++) {
 
-                // Get the last state in historyLog
-                var lastLog = this.historyLog[this.historyLog.length - 1];
+            var stateChange = stateChangeArray[i];
 
-                // Check if the element is the same
-                var sameElements = true;
-                var isSoft = true;
-				
-				// Change is creation of elements, no need for history comparisions
-                if(stateChange.created != undefined) {
-                    sameElements = false;
-                } else { // Perform history comparisions
-                    if (Array.isArray(lastLog.id)){
-                        if (stateChange.id.length != lastLog.id.length) sameElements = false;
-                        for (var index = 0; index < lastLog.id.length && sameElements; index++) {
-                            var id_found = lastLog.id[index];
-    
-                            if (!stateChange.id.includes(id_found)) sameElements = false;
-    
+            if (stateChange instanceof StateChange) {
+
+                // Remove the history entries that are after current index
+                this.removeFutureStates();
+
+                // If history is present, perform soft/hard-check
+                if (this.historyLog.length > 0) {
+
+                    // Get the last state in historyLog
+                    var lastLog = this.historyLog[this.historyLog.length - 1];
+
+                    // Check if the element is the same
+                    var sameElements = true;
+                    var isSoft = true;
+
+                    // Change is creation of elements, no need for history comparisions
+                    if(stateChange.created != undefined) {
+                        sameElements = false;
+                    } else { // Perform history comparisions
+                        if (Array.isArray(lastLog.id)){
+                            if (stateChange.id.length != lastLog.id.length) sameElements = false;
+                            for (var index = 0; index < lastLog.id.length && sameElements; index++) {
+                                var id_found = lastLog.id[index];
+
+                                if (!stateChange.id.includes(id_found)) sameElements = false;
+
+                            }
+                        }else {
+                            if (lastLog.id != stateChange.id) sameElements = false;
                         }
-                    }else {
-                        if (lastLog.id != stateChange.id) sameElements = false;
+
+                        if (Array.isArray(changeType)){
+                            for (var index = 0; index < changeType.length && isSoft; index++) {
+                                isSoft = cha<ngeType[index].isSoft;
+                            }
+                            var changeTypes = changeType;
+                        }else {
+                            isSoft = changeType.isSoft;
+                            var changeTypes = [changeType];
+                        }
+
+                    // Find last change with the same ids
+                    var timeLimit = 10; // Timelimit on history append in seconds
+                    for (var index = this.historyLog.length - 1; index >= 0; index--){
+
+                        // Check so if the changeState is not an created-object
+                        if (this.historyLog[index].created != undefined) continue;
+
+                        var sameIds = true;
+                        if(stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
+
+                        for (var idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++){
+                            if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
+                        }
+
+                        // If the found element has the same ids.
+                        if (sameIds){
+                            var temp = false;
+                            // If this historyLog is within the timeLimit
+                            if(((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit){
+                                lastLog = this.historyLog[index];
+                                temp = true;
+                            }
+                            sameElements = temp;
+                            break;
+                        }
                     }
-    
-                    if (Array.isArray(changeType)){
-                    for (var index = 0; index < changeType.length && isSoft; index++) {
-                        isSoft = changeType[index].isSoft;
-                    }
-                    var changeTypes = changeType;
-					}else {
-						isSoft = changeType.isSoft;
-						var changeTypes = [changeType];
-					}
-
-					// Find last change with the same ids
-					var timeLimit = 10; // Timelimit on history append in seconds
-					for (var index = this.historyLog.length - 1; index >= 0; index--){
-
-					    // Check so if the changeState is not an created-object
-					    if (this.historyLog[index].created != undefined) continue;
-
-						var sameIds = true;
-						if(stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
-
-						for (var idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++){
-							if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
-						}
-
-						// If the found element has the same ids.
-						if (sameIds){
-							// If this historyLog is within the timeLimit
-							if(((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit){
-								lastLog = this.historyLog[index];
-								sameElements = true;
-							}
-							break;
-						}
-					}
                 }
-                
+
                 // If NOT soft change, push new change onto history log
                 if (!isSoft || !sameElements) {
 
@@ -450,13 +461,15 @@ class StateMachine
                     for (var index = 0; index < changeTypes.length; index++) {
 
                         var changeType = changeTypes[index];
-                        
+
                         switch (changeType) {
                             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                             case StateChange.ChangeTypes.ELEMENT_MOVED:
                             case StateChange.ChangeTypes.ELEMENT_RESIZED:
                             case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
                                 lastLog.appendValuesFrom(stateChange);
+                                this.historyLog.push(this.historyLog.splice(this.historyLog.indexOf(lastLog), 1)[0]);
+                                this.currentHistoryIndex = this.historyLog.length -1;
                                 break;
 
                             default:
@@ -473,10 +486,15 @@ class StateMachine
         } else {
             console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
         }
-        // Change the sliders max to historyLogs length
-        document.getElementById("replay-range").setAttribute("max", this.historyLog.length.toString());
     }
 
+    }
+    removeFutureStates(){
+        // Remove the history entries that are after current index
+        if (this.currentHistoryIndex != this.historyLog.length - 1) {
+            this.historyLog.splice(this.currentHistoryIndex + 1, (this.historyLog.length - this.currentHistoryIndex - 1));
+        }
+    }
     /**
      * @description Undoes the last stored history log changes. Determines what should be looked for by reading the state change flags.
      * @see StateChange For available flags.
@@ -486,25 +504,42 @@ class StateMachine
         // If there is no history => return
         if (this.currentHistoryIndex == -1) return;
 
-        this.scrubHistory(this.currentHistoryIndex)
+        do {
+            // Lower the historyIndex by one
+            this.currentHistoryIndex--;
+            console.log(this.currentHistoryIndex);
 
-        // Lower the historyIndex by one
-        this.currentHistoryIndex--;
+        }while(this.currentHistoryIndex === 0 ||
+            this.currentHistoryIndex > 0
+            && this.historyLog[this.currentHistoryIndex] 
+            && this.historyLog[this.currentHistoryIndex - 1].time == this.historyLog[this.currentHistoryIndex].time);
 
         clearContext();
+        clearContextLine();
         showdata();
+        this.scrubHistory(this.currentHistoryIndex);
         updatepos(0, 0);
         displayMessage(messageTypes.SUCCESS, "Changes reverted!")
     }
-    stepForward(){
+    stepForward()
+    {
         // If there is not anything to restore => return
         if (this.historyLog.length == 0 || this.currentHistoryIndex == (this.historyLog.length -1)) return;
 
-        // Increase the currentHistoryIndex by one
-        this.currentHistoryIndex++;
+        // Go one step forward, if the next state in the history has the same time, do that too
+        do {
 
-        // Restore the state
-        this.restoreState(this.historyLog[this.currentHistoryIndex]);
+            // Increase the currentHistoryIndex by one
+            this.currentHistoryIndex++;
+
+            // Restore the state
+            this.restoreState(this.historyLog[this.currentHistoryIndex]);
+
+            var doNextState = false;
+            if (this.historyLog[this.currentHistoryIndex + 1]){
+                doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time)
+            }
+        }while(doNextState);
 
         // Update diagram
         clearContext();
@@ -516,12 +551,13 @@ class StateMachine
     {
         this.gotoInitialState();
 
-        for (var i = 0; i < endIndex; i++) {
+        for (var i = 0; i <= endIndex; i++) {
             this.restoreState(this.historyLog[i]);
         }
 
         // Update diagram
         clearContext();
+        clearContextLine();
         showdata();
         updatepos(0, 0);
     }
@@ -557,34 +593,6 @@ class StateMachine
             return;
         }
 
-        // If index 0 is an object and that object has an value of the key "id"
-        if (state.created != undefined && state.created[0].id != undefined){
-
-            Object.keys(state.created).forEach(index => {
-                var temp = {};
-                Object.keys(state.created[index]).forEach(key => {
-                    if (key == "id") temp.id = state.created[index][key];
-                    else temp[key] = state.created[index][key];
-                });
-
-                // If the object is an element
-                if (state.created[index].x && state.created[index].y){
-                    // Add the defaults to the element
-                    Object.keys(defaults[temp.kind]).forEach(key => {
-                        if (!temp[key]) temp[key] = defaults[temp.kind][key];
-                    });
-                    data.push(temp);
-                }else {
-                    // Add the defaults to the element
-                    Object.keys(defaultLine).forEach(key => {
-                        if (!temp[key]) temp[key] = defaultLine[key];
-                    });
-                    lines.push(temp);
-                }
-            });
-            return;
-        }
-
         if (!Array.isArray(state.id)) state.id = [state.id];
 
         for (var i = 0; i < state.id.length; i++){
@@ -599,12 +607,7 @@ class StateMachine
                 // For every key, apply the changes
                 keys.forEach(key => {
                     if (key == "id" || key == "time") return; // Ignore this keys.
-                    if ((typeof state[key]) == "number"){
-                        if (object[key] === undefined) object[key] = state[key];
-                        else object[key] += state[key]
-                    }else {
                         object[key] = state[key];
-                    }
                 });
             }else { // If no object was found - create one
 
@@ -654,41 +657,59 @@ class StateMachine
         updatepos(0, 0);
     }
     /**
-     * @description Create a timers and go-through all states
-     * @param {Number} cri The starting index of the replay
+     * @description Create a timers and go-through all states grouped by time.
+     * @param {Number} cri The starting index of timestamp-map to start on.
      */
     replay(cri = parseInt(document.getElementById("replay-range").value))
     {
-
         // If no history exists => return
         if (this.historyLog.length == 0) return;
+
+        var tsIndexArr = Object.keys(settings.replay.timestamps);
 
         clearInterval(this.replayTimer);
 
         // If cri (CurrentReplayIndex) is the last set to beginning
-        if(cri == this.historyLog.length) cri = 0;
+        if(cri == tsIndexArr.length -1) cri = -1;
 
         setReplayRunning(true);
         document.getElementById("replay-range").value = cri.toString();
 
         // Go back to the beginning.
-        this.scrubHistory(cri);
+        this.scrubHistory(tsIndexArr[cri]);
 
         var self = this;
         this.replayTimer = setInterval(function() {
 
-            self.restoreState(self.historyLog[cri]);
+            cri++;
+            var startStateIndex = tsIndexArr[cri];
+            var stopStateIndex;
+
+            if(tsIndexArr.length - 1 == cri){
+                stopStateIndex = self.historyLog.length -1;
+            }else if(tsIndexArr[cri+1] - 1 == tsIndexArr[cri]){
+                stopStateIndex = startStateIndex;
+            }else{
+                stopStateIndex = tsIndexArr[cri+1] -1;
+            } 
+            if(stopStateIndex == -1){
+                stopStateIndex = 0; 
+            } 
+
+            for (var i = startStateIndex; i <= stopStateIndex; i++){
+                self.restoreState(self.historyLog[i]);
+ 
+            }
 
             // Update diagram
             clearContext();
             showdata();
             updatepos(0, 0);
 
-            // Update current index for the replay
-            cri++;
+            
             document.getElementById("replay-range").value = cri;
 
-            if (self.historyLog.length == cri){
+            if (tsIndexArr.length -1 == cri){
                 clearInterval(self.replayTimer);
                 setReplayRunning(false);
             }
@@ -728,7 +749,12 @@ const keybinds = {
         COPY: {key: "c", ctrl: true, meta: true},
         PASTE: {key: "v", ctrl: true, meta: true},
         SELECT_ALL: {key: "a", ctrl: true},
-        DELETE_B: {key: "backspace", ctrl: false}
+        DELETE_B: {key: "backspace", ctrl: false},
+        MOVING_OBJECT_UP: {key: "ArrowUp", ctrl: false},
+        MOVING_OBJECT_DOWN: {key: "ArrowDown", ctrl: false},
+        MOVING_OBJECT_LEFT: {key: "ArrowLeft", ctrl: false},
+        MOVING_OBJECT_RIGHT: {key: "ArrowRight", ctrl: false},
+        TOGGLE_KEYBINDLIST: {key: "F1", ctrl: false},
 };
 
 /** 
@@ -745,10 +771,10 @@ const mouseModes = {
  * @see constructElementOfType() For creating elements out dof this enum.
  */
 const elementTypes = {
-    ENTITY: 0,
-    RELATION: 1,
-    ATTRIBUTE: 2,
-    GHOSTENTITY: 3
+    EREntity: 0,
+    ERRelation: 1,
+    ERAttr: 2,
+    Ghost: 3
 };
 
 /**
@@ -850,10 +876,12 @@ var camera = new Point(0, 0); // Relative to coordinate system origo
 const elementwidth = 200;
 const elementheight = 50;
 const textheight = 18;
-const strokewidth = 1.5;
+const strokewidth = 2.0;
 const baseline = 10;
 const avgcharwidth = 6;
-const colors = ["white", "Gold", "#ffccdc", "yellow", "CornflowerBlue"];
+const colors = ["white", "gold", "#ffccdc", "yellow", "cornflowerBlue", "#FF4D4D"];
+const selectedColors = ["#cccccc", "#ce7f00", "#ff66b3", "#d2cf00", "#505E95", "#A45A5A"];
+const strokeColors = ["black", "white", "grey", "red"];
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -872,6 +900,7 @@ var elements = [];
 var context = [];
 var previousContext = [];
 var contextLine = []; // Contains the currently selected line(s).
+var previousContextLine = [];
 var determinedLines = null; //Last calculated line(s) clicked.
 var deltaExceeded = false;
 var targetElement = null;
@@ -895,12 +924,11 @@ var previousMouseMode;
 
 // All different element types that can be placed by the user.
 
-var elementTypeSelected = elementTypes.ENTITY;
+var elementTypeSelected = elementTypes.EREntity;
 var pointerState = pointerStates.DEFAULT;
 
 var movingObject = false;
 var movingContainer = false;
-
 
 //Grid Settings
 var settings = {
@@ -914,6 +942,7 @@ var settings = {
         gridSize: 50,
         origoWidth: 2,
         snapToGrid: false,
+        a4SizeFactor: 1,
     },
     misc: {
         randomidArray: [], // array for checking randomID
@@ -923,6 +952,7 @@ var settings = {
     replay: {
         active: false,
         delay: 1,
+        timestamps: {}
     }
 };
 
@@ -941,12 +971,12 @@ var ghostLine = null;
  * @see constructElementOfType() For creating new elements with default values.
  */
 var defaults = {
-    EREntity: { name: "Entity",kind: "EREntity", fill: "White", Stroke: "Black", width: 200, height: 50 },
-    ERRelation: { name: "Relation", kind: "ERRelation", fill: "White", Stroke: "Black", width: 60, height: 60 },
-    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "White", Stroke: "Black", width: 90, height: 45 },
-    Ghost: { name: "Ghost", kind: "ERAttr", fill: "White", Stroke: "Black", width: 5, height: 5 },
+    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50 },
+    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60 },
+    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45 },
+    Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5 },
 }
-var defaultLine = { kind: "Normal", cardinality: "MANY" };
+var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
 //#region ================================ INIT AND SETUP       ================================
 /**
@@ -989,38 +1019,38 @@ function onSetup()
     const Number_of_employees_ID = makeRandomID();
 
     const demoData = [
-        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", id: EMPLOYEE_ID, isLocked: false },
-        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", id: Bdale_ID, isLocked: false, state: "Normal" },
-        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", id: BdaleDependent_ID, isLocked: false, state: "Normal" },
-        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", id: Ssn_ID, isLocked: false, state: "key"},
-        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", id: Name_ID, isLocked: false },
-        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", id: NameDependent_ID, isLocked: false, state: "weakKey"},
-        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", id: NameProject_ID, isLocked: false, state: "key"},
-        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", id: NameDEPARTMENT_ID, isLocked: false, state: "key"},
-        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", id: Address_ID, isLocked: false },
-        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", id: AddressDependent_ID, isLocked: false },
-        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", id: Relationship_ID, isLocked: false },
-        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", id: Salary_ID, isLocked: false },
-        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", id: FNID, isLocked: false },
-        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", id: Initial_ID, isLocked: false },
-        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", id: LNID, isLocked: false },
-        { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", id: SUPERVISION_ID, isLocked: false },
-        { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak"},
-        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", id: DEPENDENT_ID, isLocked: false, state: "weak"},
-        { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", id: Number_of_depends_ID, isLocked: false, state: "computed"},
-        { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", id: WORKS_ON_ID, isLocked: false },
-        { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", id: Hours_ID, isLocked: false },
-        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", id: PROJECT_ID, isLocked: false },
-        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", id: NumberProject_ID, isLocked: false, state: "key"},
-        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", id: Location_ID, isLocked: false},
-        { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", id: MANAGES_ID, isLocked: false },
-        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", id: Start_date_ID, isLocked: false },
-        { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", id: CONTROLS_ID, isLocked: false },
-        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", id: DEPARTMENT_ID, isLocked: false },
-        { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", id: Locations_ID, isLocked: false, state: "multiple" },
-        { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", id: WORKS_FOR_ID, isLocked: false },
-        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", id: NumberDEPARTMENT_ID, isLocked: false, state: "key"},
-        { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", id: Number_of_employees_ID, isLocked: false, state: "computed"},
+        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: EMPLOYEE_ID, isLocked: false },
+        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Bdale_ID, isLocked: false, state: "Normal" },
+        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: BdaleDependent_ID, isLocked: false, state: "Normal" },
+        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Ssn_ID, isLocked: false, state: "key"},
+        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Name_ID, isLocked: false },
+        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDependent_ID, isLocked: false, state: "weakKey"},
+        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameProject_ID, isLocked: false, state: "key"},
+        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDEPARTMENT_ID, isLocked: false, state: "key"},
+        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Address_ID, isLocked: false },
+        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: AddressDependent_ID, isLocked: false },
+        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Relationship_ID, isLocked: false },
+        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Salary_ID, isLocked: false },
+        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: FNID, isLocked: false },
+        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Initial_ID, isLocked: false },
+        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: LNID, isLocked: false },
+        { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: SUPERVISION_ID, isLocked: false },
+        { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak"},
+        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: DEPENDENT_ID, isLocked: false, state: "weak"},
+        { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Number_of_depends_ID, isLocked: false, state: "computed"},
+        { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: WORKS_ON_ID, isLocked: false },
+        { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Hours_ID, isLocked: false },
+        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: PROJECT_ID, isLocked: false },
+        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NumberProject_ID, isLocked: false, state: "key"},
+        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Location_ID, isLocked: false},
+        { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: MANAGES_ID, isLocked: false },
+        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Start_date_ID, isLocked: false },
+        { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: CONTROLS_ID, isLocked: false },
+        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: DEPARTMENT_ID, isLocked: false },
+        { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Locations_ID, isLocked: false, state: "multiple" },
+        { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: WORKS_FOR_ID, isLocked: false },
+        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NumberDEPARTMENT_ID, isLocked: false, state: "key"},
+        { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Number_of_employees_ID, isLocked: false, state: "computed"},
     ];
 
     const demoLines = [
@@ -1032,7 +1062,7 @@ function onSetup()
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "MANY" },
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "ONE"},
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: DEPENDENTS_OF_ID, kind: "Normal", cardinality: "ONE" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "MANY" },
+        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "MANY"},
 
         { id: makeRandomID(), fromID: Name_ID, toID: FNID, kind: "Normal" },
         { id: makeRandomID(), fromID: Name_ID, toID: Initial_ID, kind: "Normal" },
@@ -1092,6 +1122,7 @@ function getData()
     updateA4Pos();
     updateGridSize();
     setCursorStyles(mouseMode);
+    generateKeybindList();
 }
 
 /**
@@ -1159,19 +1190,42 @@ document.addEventListener('keydown', function (e)
         }
 
         if (isKeybindValid(e, keybinds.SELECT_ALL)){
-            e.preventDefault();
-            selectAll();
+            if(mouseMode == mouseModes.EDGE_CREATION){
+                e.preventDefault();
+                return false;
+            } else {
+                e.preventDefault();
+                selectAll();
+            }
         }
         if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
             e.preventDefault();
         }
 
+        // Moving object with arrows
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid){
+            setPos(context, 0, 1);
+        }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid){
+            setPos(context, 0, -1);
+        }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid){
+            setPos(context, 1, 0);
+        }
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid){
+            setPos(context, -1, 0);
+        }
+
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
             var propField = document.getElementById("elementProperty_name");
-            changeState(); 
-            saveProperties(); 
-            propField.blur();
+            if(!!document.getElementById("lineLabel")){
+                changeLineProperties();
+            }else{
+                changeState();
+                saveProperties(); 
+                propField.blur();
+            }
             displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
         }
     }
@@ -1196,10 +1250,12 @@ document.addEventListener('keyup', function (e)
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
             
-            if (contextLine.length > 0) removeLines(contextLine);
             if (mouseMode == mouseModes.EDGE_CREATION) return;
-            if (context.length > 0) removeElements(context);
-            
+            if (context.length > 0) {
+                removeElements(context);
+            } else if (contextLine.length > 0) {
+                 removeLines(contextLine);
+            }            
     
             updateSelection();
             
@@ -1214,17 +1270,17 @@ document.addEventListener('keyup', function (e)
         }
 
         if(isKeybindValid(e, keybinds.PLACE_ENTITY)){
-            setElementPlacementType(elementTypes.ENTITY);
+            setElementPlacementType(elementTypes.EREntity);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
         if(isKeybindValid(e, keybinds.PLACE_RELATION)){
-            setElementPlacementType(elementTypes.RELATION);
+            setElementPlacementType(elementTypes.ERRelation);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
         if(isKeybindValid(e, keybinds.PLACE_ATTRIBUTE)){
-            setElementPlacementType(elementTypes.ATTRIBUTE);
+            setElementPlacementType(elementTypes.ERAttr);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
@@ -1232,7 +1288,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
         if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
-        if(isKeybindValid(e, keybinds.OPTIONS)) fab_action();
+        if(isKeybindValid(e, keybinds.OPTIONS)) toggleOptionsPane();
         if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
 
@@ -1259,12 +1315,18 @@ document.addEventListener('keyup', function (e)
                 displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`);
             }
         }
+
+        if (isKeybindValid(e, keybinds.TOGGLE_KEYBINDLIST)) {
+            e.preventDefault();
+            toggleKeybindList();
+        }
+
     } else {
         if(document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)){
             if(context.length == 1){
                 document.activeElement.value = context[0].name;
                 document.activeElement.blur();
-                fab_action();
+                toggleOptionsPane();
             }
         }   
     }
@@ -1338,6 +1400,11 @@ function mdown(event)
                 sscrolly = scrolly;
                 startX = event.clientX;
                 startY = event.clientY;
+
+                if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                    wasDblClicked = true;
+                    document.getElementById("options-pane").className = "hide-options-pane";
+                }
                 break;
             
             case mouseModes.BOX_SELECTION:
@@ -1468,7 +1535,7 @@ function mouseMode_onMouseUp(event)
                 updatepos(0,0);
             }else if (context.length === 1){
                 if (event.target.id != "container"){   
-                    elementTypeSelected = elementTypes.GHOSTENTITY;
+                    elementTypeSelected = elementTypes.Ghost;
                     makeGhost();
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
@@ -1483,7 +1550,6 @@ function mouseMode_onMouseUp(event)
 
         case mouseModes.BOX_SELECTION:
             boxSelect_End();
-            clearContextLine();
             generateContextProperties();
             break;
 
@@ -1495,12 +1561,24 @@ function mouseMode_onMouseUp(event)
             break;
     }
 }
+/**
+ * @description Event function triggered when any mouse button is released on top of the toolbar.
+ * @param {MouseEvent} event Triggered mouse event.
+ * @see pointerStates For all available states.
+ */
+
+ function tup(event) 
+ {
+     pointerState = pointerStates.DEFAULT;
+     deltaExceeded = false;
+ }
 
 /**
  * @description Event function triggered when any mouse button is released on top of the container. Logic is handled depending on the current pointer state.
  * @param {MouseEvent} event Triggered mouse event.
  * @see pointerStates For all available states.
  */
+
 function mup(event)
 {
     targetElement = null;
@@ -1546,25 +1624,7 @@ function mup(event)
 
             // Normal mode
             } else if (deltaExceeded) {
-                var id_list = [];
-
-                if (context.length > 0) {
-                    context.forEach(item => // Move all selected items
-                    {
-                        if(!item.isLocked){
-                            eventElementId = event.target.parentElement.parentElement.id;
-                            if(!entityIsOverlapping(item.id, deltaX, deltaY)){
-                                setPos(item.id, deltaX, deltaY);
-                            }
-
-                            if (deltaX > 0 || deltaX < 0 || deltaY > 0 || deltaY < 0)
-                                id_list.push(item.id);
-                        }
-                    });
-
-                }
-
-                stateMachine.save(StateChangeFactory.ElementsMoved(id_list, -(deltaX / zoomfact), -(deltaY / zoomfact)), StateChange.ChangeTypes.ELEMENT_MOVED);
+                if (context.length > 0) setPos(context, deltaX, deltaY);
             }
             break;
         case pointerStates.CLICKED_NODE:
@@ -1996,17 +2056,11 @@ function getLines() // TODO : Replace all lines[i] with getLines()[i], or event 
  */
 function makeGhost()
 {
-    var entityType = constructElementOfType(elementTypeSelected);
+    ghostElement = constructElementOfType(elementTypeSelected);
     var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
-    ghostElement = {
-        name: entityType.name,
-        x: lastMouseCoords.x - entityType.data.width * 0.5,
-        y: lastMouseCoords.y - entityType.data.height * 0.5,
-        width: entityType.data.width,
-        height: entityType.data.height,
-        kind: entityType.data.kind,
-        id: makeRandomID()
-    };
+    ghostElement.x = lastMouseCoords.x - ghostElement.width * 0.5;
+    ghostElement.y = lastMouseCoords.y - ghostElement.height * 0.5;
+    ghostElement.id = makeRandomID();
 
     showdata();
 }
@@ -2019,17 +2073,23 @@ function makeGhost()
  */
 function constructElementOfType(type)
 {
-    var elementTemplates = [
-        {data: defaults.EREntity, name: "Entity"},
-        {data: defaults.ERRelation, name: "Relation"},
-        {data: defaults.ERAttr, name: "Attribute"},
-        {data: defaults.Ghost, name: "Ghost"}
-    ]
-
-    if (enumContainsPropertyValue(type, elementTypes)){
-        return elementTemplates[type];
+    var typeName = undefined;
+    for (const name in elementTypes) {
+        if (elementTypes[name] == type) {
+            typeName = name;
+            break;
+        }
     }
-    // TODO : No return value if INVALID type.
+    if (typeName) {
+        var defaultElement = defaults[typeName];
+        var newElement = {};
+        for (const property in defaultElement) {
+            newElement[property] = defaultElement[property];
+        }
+        return newElement;
+    }
+
+    return undefined;
 }
 
 /**
@@ -2088,6 +2148,7 @@ function changeLineProperties()
     // Set lineKind
     var radio1  = document.getElementById("lineRadio1");
     var radio2 = document.getElementById("lineRadio2");
+    var label = document.getElementById("lineLabel");
     var line = contextLine[0];
 
     if(radio1.checked && line.kind != radio1.value) {
@@ -2097,7 +2158,7 @@ function changeLineProperties()
         line.kind = radio2.value;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-
+    
     // Check if this element exists
     if (!!document.getElementById('propertyCardinality')){
 
@@ -2111,6 +2172,12 @@ function changeLineProperties()
             line.cardinality = cardinalityInputValue;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { cardinality: cardinalityInputValue }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
+    }
+
+    if(line.label != label.value){
+        label.value = label.value.trim();
+        line.label = label.value
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
 
     showdata();
@@ -2281,8 +2348,11 @@ function pasteClipboard(elements, elementsLines)
             height: element.height,
             kind: element.kind,
             id: idMap[element.id],
-            state: element.state
+            state: element.state,
+            fill: element.fill,
+            stroke: element.stroke
         };
+
         newElements.push(elementObj)
         addObjectToData(elementObj, false);
     });
@@ -2451,39 +2521,41 @@ function rectsIntersect (left, right)
     return (
         (left.x + left.width >= right.x) && 
         (left.x <= right.x + right.width) &&
-        (left.y + left.height >= right.y) &&
-        (left.y <= right.y + right.height)
+        (left.y + (right.height / 2) + left.height >= right.y) &&
+        (left.y <= right.y - (right.height / 2) + right.height)
     );
 }
 
 /**
- * @description Moves the first element with matching ID a certain coordinates along the x/y-axis.
- * @param {String} id Hexadecimal ID represented as a string.
+ * @description Change the coordinates of data-objects
+ * @param {Array<Object>} objects Array of objects that will be moved
  * @param {Number} x Coordinates along the x-axis to move
  * @param {Number} y Coordinates along the y-axis to move
  */
- function setPos(id, x, y)
+ function setPos(objects, x, y)
  {
-     foundId = findIndex(data, id);
-     if (foundId != -1) {
-         var obj = data[foundId];
+     var idList = [];
+     objects.forEach(obj => {
+
+         if (obj.isLocked) return;
+         if(entityIsOverlapping(obj.id, deltaX, deltaY)) return;
+
          if (settings.grid.snapToGrid) {
+
              if (!ctrlPressed) {
                  //Different snap points for entity and others
-                if (obj.kind == "EREntity") 
-                {
-                    // Calculate nearest snap point
-                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                 if (obj.kind == "EREntity") {
+                     // Calculate nearest snap point
+                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+100) / settings.grid.gridSize) * settings.grid.gridSize;
                      obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                }
-                else{
-                    obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                    obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
-                }
+                 } else{
+                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+50) / settings.grid.gridSize) * settings.grid.gridSize;
+                     obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
+                 }
                  // Set the new snap point to center of element
                  obj.x -= obj.width / 2
                  obj.y -= obj.height / 2;
-            
+
              } else {
                  obj.x += (targetDelta.x / zoomfact);
                  obj.y += ((targetDelta.y / zoomfact)+25);
@@ -2492,22 +2564,50 @@ function rectsIntersect (left, right)
              obj.x -= (x / zoomfact);
              obj.y -= (y / zoomfact);
          }
-     }
+         // Add the object-id to the idList
+         idList.push(obj.id);
+
+         // Make the coordinates without decimals
+         obj.x = Math.round(obj.x);
+         obj.y = Math.round(obj.y);
+     });
+     updatepos(0, 0);
+     if (idList.length != 0) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
  }
 
 function isKeybindValid(e, keybind)
 {
-    return e.key.toLowerCase() == keybind.key && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
+    return e.key.toLowerCase() == keybind.key.toLowerCase() && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
 
 function findEntityFromLine(lineObj)
 {
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ENTITY).data.kind){
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.EREntity).kind){
         return -1;
-    }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.ENTITY).data.kind) {
+    }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.EREntity).kind) {
         return 1;
     }
     return null;
+}
+
+function findAttributeFromLine(lineObj)
+{
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ERAttr).kind){
+        return -1;
+    }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.ERAttr).kind) {
+        return 1;
+    }
+    return null;
+}
+    
+/**
+ * @description Gets the extension of an filename
+ * @param {String} filename The name of the file
+ * @return The extension
+ */
+function getExtension(filename) {
+    var parts = filename.split('.');
+    return parts[parts.length - 1];
 }
 
 function entityIsOverlapping(id, x, y)
@@ -2610,7 +2710,10 @@ function onMouseModeEnabled()
             makeGhost();
             break;
 
-        case mouseModes.EDGE_CREATION:  
+        case mouseModes.EDGE_CREATION:
+            clearContext();
+            clearContextLine();
+            updatepos(0,0);
             break;
 
         case mouseModes.BOX_SELECTION:
@@ -2674,6 +2777,122 @@ function getElementsInsideCoordinateBox(selectionRect)
     return elements;
 }
 
+/**
+ * @description Checks whether the lines in the diagram touch the coordinate box
+ * @param {Rect} selectionRect returned from the getRectFromPoints() function
+ * @returns {Array<Object>} containing all of the lines that are currently touching the coordinate box
+ */
+function getLinesInsideCoordinateBox(selectionRect)
+{
+    var allLines = document.getElementById("svgbacklayer").children;
+    var tempLines = [];
+    var bLayerLineIDs = [];
+    for (var i = 0; i < allLines.length; i++) {
+        if (intersectsBox(selectionRect, allLines[i]) || pointIsInsideRect(selectionRect, allLines[i])) {
+            bLayerLineIDs[i] = allLines[i].id;
+            bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
+            bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
+            tempLines.push(lines.find(line => line.id == bLayerLineIDs[i]));
+        }
+    }
+    return tempLines;
+}
+
+/**
+ * @description Checks if a given point is inside of the coordinate box
+ * @param {Rect} selectionRect returned from the getRectFromPoints() function
+ * @param {Object} line following the format of the lines contained within the children of svgbacklayer
+ * @returns {Boolean} Returns true if the point is within the coordinate box, else false
+ */
+function pointIsInsideRect(selectionRect, line)
+{
+    var lineCoord1 = screenToDiagramCoordinates(
+        line.getAttribute("x1"),
+        line.getAttribute("y1")
+    );
+    var lineCoord2 = screenToDiagramCoordinates(
+        line.getAttribute("x2"),
+        line.getAttribute("y2")
+    );
+
+    var leftX = selectionRect.x;
+    var topY = selectionRect.y;
+    var rightX = selectionRect.x + selectionRect.width;
+    var bottomY = selectionRect.y + selectionRect.height;
+
+    // Return true if any of the end points of the line are inside of the rect
+    if (lineCoord1.x > leftX && lineCoord1.x < rightX && lineCoord1.y > topY && lineCoord1.y < bottomY) {
+        return true;
+    } else if (lineCoord2.x > leftX && lineCoord2.x < rightX && lineCoord2.y > topY && lineCoord2.y < bottomY) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * @description Checks if a line intersects with any of the lines on the coordinate box
+ * @param {Rect} selectionRect returned from the getRectFromPoints() function
+ * @param {Object} line following the format of the lines contained within the children of svgbacklayer
+ * @returns {Boolean} Returns true if the line intersects with any of the sides of the coordinate box, else false
+ */
+function intersectsBox(selectionRect, line)
+{
+    var tempCoords1 = screenToDiagramCoordinates(
+        line.getAttribute("x1"),
+        line.getAttribute("y1")
+    );
+    var tempCoords2 = screenToDiagramCoordinates(
+        line.getAttribute("x2"),
+        line.getAttribute("y2")
+    );
+
+    var x1 = tempCoords1.x;
+    var y1 = tempCoords1.y;
+    var x2 = tempCoords2.x;
+    var y2 = tempCoords2.y;
+
+    var leftX = selectionRect.x;
+    var topY = selectionRect.y;
+    var rightX = selectionRect.x + selectionRect.width;
+    var bottomY = selectionRect.y + selectionRect.height;
+
+    var left = false;
+    var right = false;
+    var top = false;
+    var bottom = false;
+
+    // Check intersection with the individual sides of the rect
+    left = intersectsLine(x1, y1, x2, y2, leftX, topY, leftX, bottomY);
+    right = intersectsLine(x1, y1, x2, y2, rightX, topY, rightX, bottomY);
+    top = intersectsLine(x1, y1, x2, y2, leftX, topY, rightX, topY);
+    bottom = intersectsLine(x1, y1, x2, y2, leftX, bottomY, rightX, bottomY);
+
+    // return true if the line intersects with any of the sides
+    if (left || right || top || bottom) return true;
+
+    return false;
+}
+
+/**
+ * @description Checks if a line intersects with another line
+ * @param {Number} xy x1 - y2 are for the first line and the rest are for the second line
+ * @returns {Boolean} Returns true if lines intersect, else false
+ */
+function intersectsLine(x1, y1, x2, y2, x3, y3, x4, y4)
+{
+    // calc line direction
+    var uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) /
+        ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+    var uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) /
+        ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+
+    // if uA and uB are within the interval 0-1, the lines are intersecting
+    if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) return true;
+
+    return false;
+}
+
 function getBoxSelectionPoints()
 {
     return {
@@ -2699,7 +2918,7 @@ function boxSelect_Start(mouseX, mouseY)
 {
     // Store previous context
     previousContext = context;
-
+    previousContextLine = contextLine;
     // Set starting position
     startX = mouseX;
     startY = mouseY;
@@ -2747,19 +2966,33 @@ function boxSelect_Update(mouseX, mouseY)
             // Remove entity from previous context is the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
+            var markedLines = getLinesInsideCoordinateBox(rect);
+            previousContextLine = previousContextLine.filter(line => !markedLines.includes(line));
+
             clearContext();
             context = context.concat(markedEntities);
             context = context.concat(previousContext);
+
+            clearContextLine();
+            contextLine = contextLine.concat(markedLines);
+            contextLine = contextLine.concat(previousContextLine);
+
         }else if (altPressed) {
             var markedEntities = getElementsInsideCoordinateBox(rect);
             // Remove entity from previous context is the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
+            var markedLines = getLinesInsideCoordinateBox(rect);
+            previousContextLine = previousContextLine.filter(line => !markedLines.includes(line));
+
             context = [];
             context = previousContext;
+            clearContextLine();
+            contextLine = previousContextLine;
 
         }else {
             context = getElementsInsideCoordinateBox(rect);
+            contextLine = getLinesInsideCoordinateBox(rect);
         }
     }
 }
@@ -2807,6 +3040,20 @@ function boxSelect_Draw(str)
 }
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
+/**
+ * @description Change the state in replay-mode with the slider
+ * @param {Number} sliderValue The value of the slider
+ */
+function changeReplayState(sliderValue)
+{
+    var timestampKeys = Object.keys(settings.replay.timestamps);
+
+    // If the last timestamp is selected, goto the last state in the diagram.
+    if (timestampKeys.length - 1 == sliderValue){
+        stateMachine.scrubHistory(stateMachine.historyLog.length - 1);
+    } else stateMachine.scrubHistory(timestampKeys[sliderValue+1] -1);
+
+}
 /**
  * @description Toggles stepforward in history.
  */
@@ -2883,7 +3130,6 @@ function toggleReplay()
     // Get DOM-elements for styling
     var replayBox = document.getElementById("diagram-replay-box");
     var optionsPane = document.getElementById("options-pane");
-    var fab = document.getElementById("fab");
     var toolbar = document.getElementById("diagram-toolbar");
     var ruler = document.getElementById("rulerOverlay");
     var zoomIndicator = document.getElementById("zoom-message-box");
@@ -2891,19 +3137,30 @@ function toggleReplay()
 
     if (settings.replay.active) {
         // Restore the diagram to state before replay-mode
-        stateMachine.scrubHistory(stateMachine.currentHistoryIndex + 1);
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
 
         settings.ruler.zoomX -= 50;
         // Change HTML DOM styling
         replayBox.style.visibility = "hidden";
         optionsPane.style.visibility = "visible";
-        fab.style.visibility = "visible";
         toolbar.style.visibility = "visible";
         ruler.style.left = "50px";
         zoomIndicator.style.bottom = "5px";
         zoomIndicator.style.left = "100px";
         replyMessage.style.visibility = "hidden";
     } else {
+        settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
+        stateMachine.historyLog.forEach(historyEntry => {
+
+            var lastKeyIndex = Object.keys(settings.replay.timestamps).length-1;
+            var lastKey = Object.keys(settings.replay.timestamps)[lastKeyIndex];
+            if (settings.replay.timestamps[lastKey] != historyEntry.time) {
+                settings.replay.timestamps[stateMachine.historyLog.indexOf(historyEntry)] = historyEntry.time
+            }
+        });
+        // Change the sliders max to historyLogs length
+        document.getElementById("replay-range").setAttribute("max", (Object.keys(settings.replay.timestamps).length -1).toString());
+
         settings.ruler.zoomX += 50;
         // Clear selected elements and lines
         clearContext();
@@ -2917,7 +3174,6 @@ function toggleReplay()
         // Change HTML DOM styling
         replayBox.style.visibility = "visible";
         optionsPane.style.visibility = "hidden";
-        fab.style.visibility = "hidden";
         toolbar.style.visibility = "hidden";
         ruler.style.left = "0";
         zoomIndicator.style.bottom = "55px";
@@ -2929,6 +3185,21 @@ function toggleReplay()
     // Change the settings boolean for replay active
     settings.replay.active = !settings.replay.active;
 }
+
+/**
+ * @description Toggles the list of keybinds.
+ */
+function toggleKeybindList()
+{
+    var element = document.getElementById("markdownKeybinds");
+    if (element.style.display == "block") {
+        element.style.display = "none";
+    }
+    else {
+        element.style.display = "block";
+    }
+}
+
 /**
  * @description Sets the replay-delay value
  */
@@ -2983,6 +3254,31 @@ function toggleA4Template()
      } else {
         template.style.display = "block";
    }
+   generateContextProperties();
+}
+
+function setA4SizeFactor(e){
+    //store 1 + increased procent amount
+    settings.grid.a4SizeFactor = parseInt(e.target.value)/100;
+
+
+    updateA4Size();
+}
+
+function toggleA4Horizontal()
+{
+    document.getElementById("vRect").style.display = "block";
+    if(document.getElementById("a4Rect").style.display = "block"){
+        document.getElementById("a4Rect").style.display = "none";
+    }
+}
+
+function toggleA4Vertical()
+{
+    document.getElementById("a4Rect").style.display = "block";
+    if(document.getElementById("vRect").style.display = "block"){
+        document.getElementById("vRect").style.display = "none";
+    }
 }
 
 /**
@@ -3022,7 +3318,7 @@ function toggleRuler()
  * @param {Number} type What kind of element to place.
  * @see constructElementOfType
  */
-function setElementPlacementType(type = elementTypes.ENTITY)
+function setElementPlacementType(type = elementTypes.EREntity)
 {
     elementTypeSelected = type;
 }
@@ -3170,6 +3466,13 @@ function generateContextProperties()
 
     var propSet = document.getElementById("propertyFieldset");
     var str = "<legend>Properties</legend>";
+    //a4 propteries
+    if (document.getElementById("a4Template").style.display === "block") {
+        str += `<text>Change the size of the A4</text>`;
+        str += `<input type="range" onchange="setA4SizeFactor(event)" min="100" max="200" value ="${settings.grid.a4SizeFactor*100}" id="slider">`;
+        str += `<br><button onclick="toggleA4Vertical()">Vertical</button>`;
+        str += `<button onclick="toggleA4Horizontal()">Horizontal</button>`;
+    }
 
     //more than one element selected
 
@@ -3209,7 +3512,17 @@ function generateContextProperties()
                 }
             }
         str += '</select>'; 
-        str +=`<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+
+        // Creates button for selecting element background color
+        str += `<div style="color: white">BG Color</div>`;
+        str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+            `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+        str += `<div style="color: white">Stroke Color</div>`;
+        str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
+            `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
+
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+
     } 
 
     // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
@@ -3233,7 +3546,8 @@ function generateContextProperties()
         }
 
         // Cardinality
-        // If FROM or TO has an entity, print option for change
+        // If FROM or TO has an entity, print option for change if its not connected to an attribute
+        if (findAttributeFromLine(contextLine[0]) == null){
         if (findEntityFromLine(contextLine[0]) != null){
             str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
             str  += `<option value=''>None</option>`
@@ -3246,8 +3560,21 @@ function generateContextProperties()
             });
             str += `</select></label>`;
         }
+        str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
+        if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
+        str += `/>`;
+    }   
 
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+    }
+
+    if (context.length > 1) {
+        str += `<div style="color: white">BG Color</div>`;
+        str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+            `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+        str += `<div style="color: white">Stroke Color</div>`;
+        str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
+            `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
     }
 
     if (context.length > 0) {
@@ -3262,12 +3589,14 @@ function generateContextProperties()
     }
 
     propSet.innerHTML = str;
+
+    multipleColorsTest();
 }
 
 /**
  * @description Toggles the option menu being open or closed.
  */
-function fab_action()
+function toggleOptionsPane()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
         document.getElementById('optmarker').innerHTML = "&#9660;Options";
@@ -3301,6 +3630,18 @@ function generateToolTips()
     }
 }
 
+/**
+ * @description Generates a markdown file with a list of keybinds from file diagramkeybinds.md for all keybinds that are available in the diagram.
+ */
+function generateKeybindList()
+{
+    $.ajax({
+        method: "GET",
+        url: "diagramkeybinds.md",
+    }).done(function(file) {
+        document.getElementById("markdownKeybinds").innerHTML=parseMarkdown(file);
+    });
+}
 /**
  * @description Modified the current ruler position to respective x and y coordinate. This DOM-element has an absolute position and does not change depending on other elements.
  * @param {Number} x Absolute x-position in pixels from the left of the inner window.
@@ -3347,10 +3688,12 @@ function updateGridSize()
     var rect = document.getElementById("a4Rect");
     var vRect = document.getElementById("vRect");
 
-    vRect.setAttribute("width", 1122 * zoomfact + "px");
-    vRect.setAttribute("height", 794 * zoomfact + "px");
-    rect.setAttribute("width", 794 * zoomfact + "px");
-    rect.setAttribute("height", 1122 * zoomfact + "px");
+    const a4Width = 794, a4Height = 1122;
+
+    vRect.setAttribute("width", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
+    vRect.setAttribute("height", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
+    rect.setAttribute("width", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
+    rect.setAttribute("height", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
     updateA4Pos();
  }
 
@@ -3480,6 +3823,128 @@ function removeMessage(element, timer)
         return element.id !== id;
     });
 }
+
+/**
+ * @description Opens the color menu for selecting element color
+ * @param {String} buttonID containing the ID of the button that was pressed
+ */
+function toggleColorMenu(buttonID)
+{
+    var button = document.getElementById(buttonID);
+    var menu = undefined;
+    var width = 0;
+
+    // If the color menu's inner html is empty
+    if (button.children[0].innerHTML == "") {
+        menu = button.children[0];
+        menu.style.visibility = "visible";
+        if (menu.id === "BGColorMenu") {
+            // Create svg circles for each element in the "colors" array
+            for (var i = 0; i < colors.length; i++) { 
+                menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
+            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colors[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke="black" stroke-width="2"/>
+            </svg>`;
+                width += 50;
+            }
+        } else {
+            // Create svg circles for each element in the "strokeColors" array
+            for (var i = 0; i < strokeColors.length; i++) {
+                menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
+            <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke="black" stroke-width="2"/>
+            </svg>`;
+                width += 50;
+            }
+        }
+
+        // Menu position relative to button
+        menu.style.width = width + "px";
+        var buttonWidth = button.offsetWidth;
+        var offsetWidth = window.innerWidth - button.getBoundingClientRect().x - (buttonWidth);
+        var offsetHeight = button.getBoundingClientRect().y;
+        menu.style.top = offsetHeight + "px";
+        var menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
+        menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
+
+    } else {    // if the color menu's inner html is not empty, remove the content
+        var menu = button.children[0];
+        menu.innerHTML = "";
+        menu.style.visibility = "hidden";
+        showdata();
+    }
+}
+
+/**
+ * @description Sets the fill and/or stroke color of all elements in context
+ * @param {String} clickedCircleID containing the ID of the svg circle that was pressed
+ */
+function setElementColors(clickedCircleID)
+{
+    var id = clickedCircleID;
+    var menu = document.getElementById(clickedCircleID).parentElement.parentElement;
+    var elementIDs = [];
+
+    // If fill button was pressed
+    if (menu.id == "BGColorMenu") {
+        var index = id.replace("BGColorCircle", "") * 1;
+        var color = colors[index];
+        for (var i = 0; i < context.length; i++) {
+            context[i].fill = color;
+            elementIDs[i] = context[i].id;
+        }
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
+        StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    } else if (menu.id == "StrokeColorMenu") {  // If stroke button was pressed
+        var index = id.replace("strokeColorCircle", "") * 1;
+        var color = strokeColors[index];
+        for (var i = 0; i < context.length; i++) {
+            context[i].stroke = color;
+            elementIDs[i] = context[i].id;
+        }
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { stroke: color }),
+        StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    } else {
+        console.error(`${menu.id} is not a valid ID`);
+    }
+    
+    generateContextProperties();
+    showdata();
+    toggleColorMenu(menu.parentElement.id); // toggle color menu off when a color is selected
+}
+
+/**
+ * @description Tests if there are varying fill and/or stroke colors in the selected elements
+ */
+function multipleColorsTest()
+{
+    if (context.length > 1) {
+        var fill = context[0].fill;
+        var stroke = context[0].stroke;
+        var varyingFills = false;
+        var varyingStrokes = false;
+        for (var i = 0; i < context.length; i++) {
+
+            // Checks if there are varying fill colors, but not if varying colors have already been detected
+            if (fill != context[i].fill && !varyingFills) {
+                var button = document.getElementById("colorMenuButton1");
+                button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
+                var textNode = document.createTextNode("Multiple Color Values");
+                button.insertBefore(textNode, button.firstChild);
+                varyingFills = true;
+            }
+            // Checks if there are varying stroke colors, but not if varying colors have already been detected
+            if (stroke != context[i].stroke && !varyingStrokes) {
+                var button = document.getElementById("colorMenuButton2");
+                button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
+                var textNode = document.createTextNode("Multiple Color Values");
+                button.insertBefore(textNode, button.firstChild);
+                varyingStrokes = true;
+            }
+            // If varying colors have been detected in both of the above, there is no reason to continue the test
+            if (varyingFills && varyingStrokes) break;
+        }
+    }
+}
+
 //#endregion =====================================================================================
 //#region ================================ ELEMENT CALCULATIONS ==================================
 /**
@@ -3509,6 +3974,10 @@ function sortvectors(a, b, ends, elementid, axis) // TODO : Replace variable nam
         toElementB = (lineB == ghostLine) ? ghostElement : data[findIndex(data, lineB.toID)];
     } else {
         toElementB = data[findIndex(data, lineB.fromID)];
+    }
+
+    if (toElementA.id === toElementB.id) {
+        return 0;
     }
 
     if (navigator.userAgent.indexOf("Chrome") !== -1) {
@@ -3607,6 +4076,7 @@ function clearLinesForElement(element)
     element.right = [];
     element.top = [];
     element.bottom = [];
+    element.neighbours = {};
 
     // Get data from dom elements
     var domelement = document.getElementById(element.id);
@@ -3666,6 +4136,12 @@ function determineLine(line, targetGhost = false)
         if (felem.kind == "EREntity") felem.bottom.push(line.id);
         if (telem.kind == "EREntity") telem.top.push(line.id);
     }
+
+    if (felem.neighbours[telem.id] == undefined) {
+        felem.neighbours[telem.id] = [line];
+    } else {
+        felem.neighbours[telem.id].push(line);
+    }
 }
 /**
  * @description Sort the associations for each side of an element.
@@ -3705,6 +4181,29 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                             toElement.kind === "EREntity" ||
                             fromElement.kind === "EREntity" &&
                             toElement.kind === "ERRelation");
+
+        // Check rules for Recursive relations
+        if(fromElement.kind === "ERRelation" || toElement.kind === "ERRelation") {
+            var relationID;
+            if (fromElement.kind === "ERRelation") relationID = fromElement.id;
+            else relationID = toElement.id;
+
+            var linesFromRelation = lines.filter(line => {
+                return line.fromID == relationID || line.toID == relationID
+            });
+
+            var connElemsIds = [];
+            linesFromRelation.forEach(line => {
+                if (line.fromID == relationID) connElemsIds.push(line.toID);
+                else connElemsIds.push(line.fromID);
+            });
+            var hasRecursive = (connElemsIds.length == 2 && connElemsIds[0] == connElemsIds[1]);
+            var hasOtherLines = (numOfExistingLines == 1 && connElemsIds.length >= 2);
+            if (hasRecursive || hasOtherLines){
+                displayMessage(messageTypes.ERROR, "Sorry, that is not possible");
+                return;
+            }
+        }
 
         // If there is no existing lines or is a special case
         if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
@@ -3746,6 +4245,12 @@ function drawLine(line, targetGhost = false)
 {   
     var felem, telem, dx, dy;
     var str = "";
+
+    var lengthConstant = 7; // Determines how "far inwards" on the element the line should have its origin and its end points.
+    var x1Offset = 0;
+    var x2Offset = 0;
+    var y1Offset = 0;
+    var y2Offset = 0;
     
     var lineColor = '#A000DC';
     if(contextLine.includes(line)){
@@ -3782,11 +4287,80 @@ function drawLine(line, targetGhost = false)
         tx = telem.x2;
     }
 
-    if (line.kind == "Normal"){
+    // Overwrite line positioning on recursive relations (2 lines pointing to same EREntity)
+    var connections = felem.neighbours[telem.id].length;
+    if (connections === 2) {
+        var isFirst = felem.neighbours[telem.id][0].id === line.id;
+        var fromRelation = felem.kind === "ERRelation";
+        lengthConstant = 0;
 
-        str += `<line id='${line.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+        if (fromRelation) {            
+            if (line.ctype == "BT") {
+                fy = felem.cy;
+                fx = (isFirst) ? felem.x1: felem.x2;
+                
+            } else if (line.ctype == "TB") {
+                fy = felem.cy;
+                fx = (isFirst) ? felem.x1: felem.x2;
+            } else if (line.ctype == "RL") {
+                fx = felem.cx;
+                fy = (isFirst) ? felem.y1: felem.y2;
+            } else if (line.ctype == "LR") {
+                fx = felem.cx;
+                fy = (isFirst) ? felem.y1: felem.y2;
+            }
+
+            if (isFirst) {
+                telem.recursivePos = getPoint(tx, ty);
+            } else {
+                tx = telem.recursivePos.x;
+                ty = telem.recursivePos.y;
+                delete telem.recursivePos;
+            }
+
+        } else {
+            if (line.ctype == "BT") {
+                ty = telem.cy;
+                tx = (isFirst) ? telem.x1: telem.x2;
+            } else if (line.ctype == "TB") {
+                ty = telem.cy;
+                tx = (isFirst) ? telem.x1: telem.x2;
+            } else if (line.ctype == "RL") {
+                tx = telem.cx;
+                ty = (isFirst) ? telem.y1: telem.y2;
+            } else if (line.ctype == "LR") {
+                tx = telem.cx;
+                ty = (isFirst) ? telem.y1: telem.y2;
+            }
+
+            if (isFirst) {
+                felem.recursivePos = getPoint(fx, fy);
+            } else {
+                fx = felem.recursivePos.x;
+                fy = felem.recursivePos.y;
+                delete felem.recursivePos;
+            }
+        }
+    }
+
+     // Used to draw the lines a bit longer to get rid of white-spaces.
+    if ((fx > tx) && (line.ctype == "LR")){
+        x1Offset = lengthConstant;
+        x2Offset = -lengthConstant;
+    } else if ((fx < tx) && (line.ctype == "RL")){
+        x1Offset = -lengthConstant;
+        x2Offset = lengthConstant;
+    } else if ((fy > ty) && (line.ctype == "TB") ){
+        y1Offset = lengthConstant;
+        y2Offset = -lengthConstant;   
+    } else if ((fy < ty) && (line.ctype == "BT") ){
+        y1Offset = -lengthConstant;
+        y2Offset = lengthConstant;   
+    }
     
-    }else if (line.kind == "Double"){
+    if (line.kind == "Normal"){
+        str += `<line id='${line.id}' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`; 
+    } else if (line.kind == "Double") {
         // We mirror the line vector
         dy = -(tx - fx);
         dx = ty - fy;
@@ -3795,12 +4369,11 @@ function drawLine(line, targetGhost = false)
         dx = dx / len;
         var cstmOffSet = 1.4;
 
-        str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-
-        str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+       	str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+        str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
     }
 
-    if(contextLine.includes(line)){
+    if (contextLine.includes(line)) {
 
         var x = (fx + tx) /2;
         var y = (fy + ty) /2;
@@ -3808,7 +4381,7 @@ function drawLine(line, targetGhost = false)
     }
 
     // If the line got cardinality
-    if(line.cardinality) {
+    if (line.cardinality) {
 
         const offsetOnLine = 20 * zoomfact;
         var offset = Math.round(zoomfact * textheight / 2);
@@ -3878,6 +4451,16 @@ function drawLine(line, targetGhost = false)
         // Add the line to the str
         str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`
     }
+
+    if (line.label && line.label != ""){
+        var centerX = (tx + fx) / 2;
+        var centerY = (ty + fy) / 2;
+        //add background
+        str += `<rect x="${ centerX - ((9 * line.label.length) * zoomfact)/2 }" y="${centerY - ((textheight / 2) * zoomfact + 4)}" width="${(9 * line.label.length) * zoomfact}" height="${textheight * zoomfact}" style="fill:rgb(255,255,255);" />`
+        //add label
+        str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)}" y="${centerY-(2 * zoomfact)}">${line.label}</text>`;
+    }
+
     return str;
 }
 /**
@@ -3918,6 +4501,12 @@ function redrawArrows(str)
     if (ghostLine && ghostElement){
         str += drawLine(ghostLine, true);
     }
+
+    // Remove all neighbour maps from elements
+    for (var i = 0; i < data.length; i++){
+        delete data[i].neighbours;
+    }
+
     return str;
 }
 /**
@@ -4124,12 +4713,12 @@ function drawElement(element, ghosted = false)
 
         if(element.state == "weak") {
             weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
-            stroke-width='${linew}' stroke='black' fill='#ffccdc' /> 
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' /> 
             `;         
         }
         
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-                   stroke-width='${linew}' stroke='black' fill='#ffccdc' />
+                   stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
                    ${weak}
                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                    `;
@@ -4149,7 +4738,7 @@ function drawElement(element, ghosted = false)
                     Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
                     Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
                     Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
-                    stroke='black' fill='#ffccdc' stroke-width='${linew}' />`;
+                    stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
         }    
 
         str += `<path d="M${linew},${hboxh} 
@@ -4157,7 +4746,7 @@ function drawElement(element, ghosted = false)
                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
                            Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
                            Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                    stroke='black' fill='#ffccdc' ${dash} stroke-width='${linew}' />
+                    stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}'/>
                     
                     ${multi}
 
@@ -4173,23 +4762,39 @@ function drawElement(element, ghosted = false)
             // Calculates how far to the left X starts
             var diff = xAnchor - textWidth / 2;
             diff = diff < 0 ? 0 - diff + 10 : 0;
-            str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="black" stroke-dasharray="5" stroke-width='2'/>`;
+            str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="${element.stroke}" stroke-dasharray="${5*zoomfact}" stroke-width="${linew}"/>`;
         }
         
     }
     else if (element.kind == "ERRelation") {
+
+        var numOfLetters = element.name.length;
+        if (tooBig) {
+            var tempName = "";
+            var maxTextWidth = boxw - margin;
+
+            if (element.state == "weak") maxTextWidth -= (linew * multioffs) * 2;
+
+            for (var i = 0; i < element.name.length; i++){
+                tempName += element.name[i];
+                if (canvasContext.measureText(tempName).width > maxTextWidth){
+                    numOfLetters = tempName.length - 1;
+                    break;
+                }
+            }
+        }
+
         var weak = "";
         if (element.state == "weak") {
-
             weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
-                stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
+                stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
                 `;
+            xAnchor += linew * multioffs;
         }
         str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
-                   stroke-width='${linew}' stroke='black' fill='#ffccdc'/>
-                   ${weak}
-                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-                   `;
+                   stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
+                   ${weak}`;
+        str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
 
     }
     str += "</svg>";
@@ -4338,29 +4943,31 @@ function updateCSSForAllElements()
         if (settings.grid.snapToGrid && useDelta) {
             if (element.kind == "EREntity"){
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-150) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-
+                
                 // Add the scroll values
-                left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+                left = Math.round((((objX - zoomOrigo.x)+250)* zoomfact) + (scrollx * (1.0 / zoomfact)));
                 top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
                 top -= ((elementData.height * zoomfact) / 2);
+                
             } 
             else if (element.kind != "EREntity"){
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-150) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
-
+                
                 // Add the scroll values
-                left = Math.round(((objX - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+                left = Math.round((((objX - zoomOrigo.x)+200) * zoomfact) + (scrollx * (1.0 / zoomfact)));
                 top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
-
+            
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
                 top -= ((elementData.height * zoomfact) / 2);
+                
             }
         }
         divObject.style.left = left + "px";
@@ -4383,8 +4990,11 @@ function updateCSSForAllElements()
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
 
-            // Handle colouring
-            elementDiv.children[0].children[0].style.fill = inContext ? "#ff66b3" : "#ffccdc";
+            // Handle coloring
+            var sColor = selectedColors[colors.indexOf(element.fill)];
+            var grandChild = elementDiv.children[0].children[0];
+            grandChild.style.fill = inContext ? `${sColor}` : `${element.fill}`;
+            grandChild.style.stroke = data[i].stroke;
         }
     }
 
@@ -4469,5 +5079,191 @@ function showdata()
      updateGridPos();
      updateGridSize();
      drawRulerBars(scrollx, scrolly);
+     updateA4Pos();
+     updateA4Size();
  }
+//#endregion =====================================================================================
+//#region ================================   LOAD AND EXPORTS    ==================================
+/**
+ * @description Create and download a file
+ * @param {String} filename The name of the file that get generated
+ * @param {*} dataObj The text content of the file
+ */
+function downloadFile(filename, dataObj)
+{
+    // Create a "a"-element
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(dataObj)));
+    element.setAttribute('download', filename + ".json");
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+/**
+ * @description Prepares data for file creation, retrieves history and initialState
+ */
+function saveDiagram()
+{
+
+    displayMessage(messageTypes.SUCCESS, "Generating the save file..");
+
+    // Remove all future states to the history
+    stateMachine.removeFutureStates();
+
+    // The content of the save file
+    var objToSave = {
+        historyLog: stateMachine.historyLog,
+        initialState: stateMachine.initialState
+    };
+
+    // Download the file
+    downloadFile("diagram", objToSave);
+}
+/**
+ * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
+ */
+function exportDiagram()
+{
+    displayMessage(messageTypes.SUCCESS, "Generating the export file..");
+    var objToSave = {
+        data: [],
+        lines: [],
+    };
+    var keysToIgnore = ["top", "left", "right", "bottom", "x1", "x2", "y1", "y2", "cx", "cy"];
+    data.forEach(obj => {
+        var filteredObj = {
+            kind: obj.kind
+        };
+
+        Object.keys(obj).forEach(objKey => {
+            // If they key is ignore => return
+            if (keysToIgnore.includes(objKey)) return;
+
+            // Ignore defaults
+            if (defaults[obj.kind][objKey] != obj[objKey]){
+                // Add to filterdObj
+                filteredObj[objKey] = obj[objKey];
+            }
+        });
+        objToSave.data.push(filteredObj);
+    });
+
+    keysToIgnore = ["dx", "dy", "ctype"]
+    lines.forEach(obj => {
+        var filteredObj = {};
+        Object.keys(obj).forEach(objKey => {
+            // If they key is ignore => return
+            if (keysToIgnore.includes(objKey)) return;
+
+            if (defaultLine[objKey] != obj[objKey]){
+                filteredObj[objKey] = obj[objKey];
+            }
+        });
+        objToSave.lines.push(filteredObj);
+    });
+    
+
+    // Download the file
+    downloadFile("diagram", objToSave);
+}
+/**
+ * @description Gets the content of the file in parameter.
+ * @param {File} files The file to get the content of
+ * @return The content of the file
+ */
+function getFileContent(files)
+{
+    return new Promise((resolve, reject) => {
+        var reader = new FileReader();
+    
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+    
+        reader.onerror = reject;
+    
+        reader.readAsText(files);
+      })
+}
+/**
+ * @description Load the content of a file to the diagram-data. This will remove previous data
+ */
+async function loadDiagram(file = null, shouldDisplayMessage = true)
+{
+    if (file === null){
+        var fileInput = document.getElementById("importDiagramFile");
+
+        // If not an json-file is inputted => return
+        if (getExtension(fileInput.value) != "json"){
+            if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Sorry, you cant load that type of file. Only json-files is allowed");
+            return;
+        }
+
+        try{
+            // Get filepath
+            var file1 = fileInput.files[0];
+            var temp = await getFileContent(file1);
+            temp = JSON.parse(temp);
+        } catch(error){
+            console.error(error);
+        }
+    }else {
+        temp = file;
+    }
+
+
+    if(temp.historyLog && temp.initialState){
+        // Set the history and initalState to the values of the file
+        stateMachine.historyLog = temp.historyLog;
+        stateMachine.initialState = temp.initialState;
+
+        // Update the stateMachine to the latest current index
+        stateMachine.currentHistoryIndex = stateMachine.historyLog.length -1;
+
+        // Scrub to the latest point in the diagram
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
+
+        // Display success message for load
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Save-file loaded");
+
+    } else if(temp.data && temp.lines){
+        // Set data and lines to the values of the export file
+        temp.data.forEach(element => {
+            var elDefault = defaults[element.kind];
+            Object.keys(elDefault).forEach(defaultKey => {
+                if (!element[defaultKey]){
+                    element[defaultKey] = elDefault[defaultKey];
+                }
+            });
+        });
+        temp.lines.forEach(line => {
+            Object.keys(defaultLine).forEach(defaultKey => {
+                if (!line[defaultKey]){
+                    line[defaultKey] = defaultLine[defaultKey];
+                }
+            });
+        });
+
+        // Set the vaules of the intialState to the JSON-file
+        stateMachine.initialState.elements = temp.data;
+        stateMachine.initialState.lines = temp.lines;
+
+        // Goto the beginning of the diagram
+        stateMachine.gotoInitialState();
+
+        // Remove the previous history
+        stateMachine.currentHistoryIndex = -1;
+        stateMachine.lastFlag = {};
+        stateMachine.removeFutureStates();
+
+        // Display success message for load
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Export-file loaded");
+    }else{
+        if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
+    }
+}
 //#endregion =====================================================================================

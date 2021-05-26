@@ -139,8 +139,8 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	createTextures();
 
 	ans = JSON.parse(danswer);
-	console.log(ans.vertex);
-	console.log(ans.triangle);
+	//console.log(ans.vertex);
+	//console.log(ans.triangle);
 
   // Setup code
   /*
@@ -378,7 +378,7 @@ function newTriangle()
 		renderTriangleTable();
 		ClickCounter.onClick();
 	} else {
-		console.log("tv undefined");
+		//console.log("tv undefined");
 	}
 
 	updateGeometry();

@@ -329,7 +329,7 @@ function confirmBox(operation, item = null) {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionHideConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
-  } else if (operation == "deleteItem" && hideItemList.length == 0) {
+  } else if (operation == "deleteItem") {
     deleteItem(active_lid);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "hideItem" && !hideItemList.length == 0) {
@@ -1154,15 +1154,11 @@ function returnedSection(data) {
       resave = false;
     }
 
-    if (hasDuggs === false){
-      $("#statisticsSwimlanes").hide();
-    }
-
-    if (navigator.vendor == ("Apple Computer, Inc.")) {
+    if (hasDuggs === false || navigator.vendor == ("Apple Computer, Inc.")){
       $("#statisticsSwimlanes").hide();
       $("#sectionList_arrowStatisticsOpen").hide();
       $("#sectionList_arrowStatisticsClosed").hide();
-    } 
+    }
 
     if (data['writeaccess']) {
       // Enable sorting always if we are superuser as we refresh list on update
@@ -1247,7 +1243,6 @@ function showMOTD(){
       $("#messagedialog").css("display", "none");
     }else{
       $("#messagedialog").css("display", "none");
-	sessionStorage.setItem('show', 'true'); //store state in localStorage
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
       document.getElementById("FABStatic2").style.top = "auto";
@@ -1258,7 +1253,6 @@ function showMOTD(){
 function DisplayMSGofTDY() {
   // document.getElementById("messagedialog").style.display = "block";
   $("#messagedialog").css("display", "none");
-  sessionStorage.setItem('show', 'true'); //store state in localStorage
   document.getElementById("motdArea").style.display = "block";
   document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
   document.getElementById("FABStatic2").style.top = "auto";

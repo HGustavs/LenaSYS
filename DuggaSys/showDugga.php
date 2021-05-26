@@ -39,7 +39,7 @@
 	$comments=getOPG('comments');
 	$hash = getOPG("hash");
 	$test=getOPG('test');
-	
+	$isNewDugga=getOPG("newDugga");
 	
 	$duggatitle="UNK";
 	$duggafile="UNK";
@@ -166,26 +166,49 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			}*/
 
 
-echo "<script>console.log('".$hash."')</script>;";
-echo "<script>console.log('".$hashpassword."')</script>;";
 //Saved Dugga Login
 
-if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
+if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w') && $isNewDugga != "true"){
 	if($_SESSION['pwdentrance'] != 1){
 		if($_SESSION['hasUploaded'] != 1){
+
+			$hashLabelText;
+			if ($hash == "UNK")
+				$hashLabelText = "Previously used hash:";
+			else 
+				$hashLabelText = "Logging in with hash:";
+
 			echo '<script type="text/javascript"> saveTimesAccessed(); </script>';
-			echo "<div class='loginBoxContainer' id='hashBox' style='display:block;'>";	
-			echo "<div class='loginBox' style='max-width:400px; margin: 20% auto;'>";
+			echo "<div class='loginHashContainer' id='hashBox'>";	
+			echo "<div class='loginHashBox'>";
+			echo "<div class='loginHashContent'>";
+			echo "<div class='w100'>";
 			echo "<div class='loginBoxheader'>";
 			echo "<h3>Login for Saved Dugga</h3>";
 			echo "<div onclick='exitHashBox()' class='cursorPointer'>x</div>";
 			echo "</div>";
-			echo "<p id='passwordtext'>Enter your password for the hash:</p>";
-			echo "<p id='hash' style='font-weight: bold;'>$hash</p>";
-			echo "<input id='passwordfield' name='password' class='textinput' type='password' placeholder='Password'>";
+			echo "</div>";
+			echo "<div class='prev-hash-container'>";
+			echo "<label class='login-label'>" . $hashLabelText . "</label>";
+			echo "<p id='hash' style='font-weight: bold;'></p>";
+			echo "</div>";
+			if($hash == "UNK") {
+				echo "<div class='login-input-container'>";
+				echo "<input id='hashfield' class='textinput hash-login-input' type='text' placeholder='Hash'>";
+				echo "</div>";
+			}
+			echo "<div class='login-input-container'>";
+			echo "<input id='passwordfield' class='textinput form-control hash-login-input' type='password' autocomplete='new-password' placeholder='Password'>";
+			echo "</div>";
+			echo "<div class='hash-submit-btn-container'>";
 			echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
+			if ($hash == "UNK")
+				echo "<input class='submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
 			echo "</div>";
 			echo "</div>";
+			echo "</div>";
+			echo "</div>";
+			echo '<script type="text/javascript"> updateLoginPopup(); </script>';
 			exit();
 		}
 		
@@ -226,7 +249,12 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 						echo "<input id='saveDuggaButton' class='".$btnDisable." submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
 						if ($duggafile !== 'generic_dugga_file_receive') {
 							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+							echo "<td align='right'>";
+							echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
+							echo "</td>";
+							
 						}
+
 						echo "</td>";
 						echo "</tr>";
 						echo "</table>";
@@ -323,6 +351,7 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 				
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
+					<input type='button' class='submit-button' onclick="copyUrltoCB();" value='Copy URL'>
 					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
 				</div>
     		</div>
@@ -353,6 +382,21 @@ if($hash!='UNK' && !isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 	<div id='groupAssignment'>
 		<p id='clicks'><p>	
 	</div>
+
+	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
+	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
+			<div class='loginBoxheader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
+			<div id='loadDuggaInfo'></div>
+    		<div id='loadDuggaPopup' style="display:block">
+				<div class='inputwrapper'><span>Enter your hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value=''/></div>
+				<div class="button-row">
+					<input type='button' class='submit-button' onclick="loadDuggaType();" value='Load Dugga'>
+					<input type='button' class='submit-button' onclick="hideLoadDuggaPopup();" value='Close'>
+				</div>
+    		</div>
+      </div>
+	</div>
+
 	<!-- content END -->
 	<?php
 		include '../Shared/loginbox.php';

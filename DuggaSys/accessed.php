@@ -118,29 +118,6 @@
 	</div>
 
 	<!-- Add User Dialog END -->
-	<!-- Edit User Dialog START -->
-	<div id='editUsers' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:464px;'>
-			<div class='loginBoxheader'>
-				<h3>Edit Users</h3>
-				<div class='cursorPointer' onclick='closeWindows();'>x</div>
-			</div>
-
-			<div style='padding:5px;'>
-				<input type='hidden' id='uid' value='Toddler' />
-				<div class='inputwrapper'><span>UserName:</span><input class='textinput' type='text' id='usrnme' value='User Name' /></div>
-				<div class='inputwrapper'><span>SSN:</span><input class='textinput' type='text' id='ussn' value='SSN' /></div>
-				<div class='inputwrapper'><span>First Name:</span><input class='textinput' type='text' id='firstname' value='First Name' /></div>
-				<div class='inputwrapper'><span>Last Name:</span><input class='textinput' type='text' id='lastname' value='Last Name' /></div>
-				<!--<div class='inputwrapper'><span>Teacher:</span><select  id='teacher' value='Teacher' ></select></div>-->
-				<div class='inputwrapper'><span>Study program, Start year:</span><select id='class' value='Class'></select></div>
-			</div>
-			<div style='padding:5px;'>
-				<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateUser();' />
-			</div>
-		</div>
-	</div>
-	<!-- Edit User Dialog END -->
 
 	<div class="fixed-action-button" id="fabButtonAcc">
 		<a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>

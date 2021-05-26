@@ -218,8 +218,6 @@ function SortableTable(param) {
 	var filterid = getparam(param.filterElementId, "UNK");
 	var caption = getparam(param.tableCaption, "UNK");
 	var renderCell = getparam(param.renderCellCallback, null);
-	var exportCell = getparam(param.exportCellCallback, null);
-	var exportColumnHeading = getparam(param.exportColumnHeadingCallback, null);
 	var renderSortOptions = getparam(param.renderSortOptionsCallback, null);
 	var renderColumnFilter = getparam(param.renderColumnFilterCallback, null);
 	var rowFilter = getparam(param.rowFilterCallback, defaultRowFilter);
@@ -233,7 +231,7 @@ function SortableTable(param) {
 	this.deHighlightRow = getparam(param.rowHighlightOffCallback, defaultRowHighlightOff);
 	this.showEditCell = getparam(param.displayCellEditCallback, null);
 	this.updateCell = getparam(param.updateCellCallback, null);
-	this.hasMagicHeadings = getparam(param.hasMagicHeadings, false);
+	this.hasMagicHeadings = getparam(param.hasMagicHeadings, false); // Mini table option
 	this.hasCounter = getparam(param.hasCounterColumn, false);
 	this.hasFooter = getparam(param.hasFooter, false);
 	
@@ -404,15 +402,16 @@ function SortableTable(param) {
 				str += "<tr id='" + this.tableid + DELIMITER + i + "'";
 				if (this.hasRowHighlight) str += " onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
 
-				//Check if row contains requestedpasswordchange & set styling accordingly
-				if (row["requestedpasswordchange"] != null) {
-					obj = JSON.parse(row["requestedpasswordchange"])
-					if (obj.requested == 1) {
-						str += " style='box-sizing:border-box; background-color: #ff3f4c'>";
-					} else {
+				// Highlights the rows with a value in timesaccessed column greater than the threshold
+				if(document.getElementById("highlight-checkbox").checked){
+					var threshold = parseInt(document.getElementById("highlight-entry").value);
+					
+					if(row["timesAccessed"] >= threshold){
+						str += " style='box-sizing:border-box; background-color: #fecc56'>";
+					}else{
 						str += " style='box-sizing:border-box'>";
 					}
-				} else {
+				}else{
 					str += " style='box-sizing:border-box'>";
 				}
 
@@ -620,28 +619,29 @@ function SortableTable(param) {
 					// If top is negative and top+height is positive draw mh otherwise hide
 
 					// Vertical
-					if (thetabhead.top < 50 && thetab.bottom > 0) {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.left = thetab.left + "px";
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.top = 50 + "px";
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.display = "table";
-					} else {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.display = "none";
-					}
+						if (thetabhead.top < 50 && thetab.bottom > 0) {
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.left = thetab.left + "px";
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.top = 50 + "px";
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.display = "table";
+						} else {
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.display = "none";
+						}
+
 					// Horizontal
-					if (thetab.left < 0 && thetab.right > 0) {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = tabheadsize + "px";
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.left = -1 + "px";
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "table";
-					} else {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "none";
-					}
+						if (thetab.left < 0 && thetab.right > 0) {
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = tabheadsize + "px";
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.left = -1 + "px";
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "table";
+						} else {
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "none";
+						}
 
 					// Fixed
-					if (thetab.left < 0 && thetab.right > 0 && thetabhead.top < 0 && thetab.bottom > 0) {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhf").style.display = "table";
-					} else {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhf").style.display = "none";
-					}
+						if (thetab.left < 0 && thetab.right > 0 && thetabhead.top < 0 && thetab.bottom > 0) {
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhf").style.display = "table";
+						} else {
+							document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhf").style.display = "none";
+						}
 				}
 			}
 		}
@@ -773,46 +773,6 @@ function SortableTable(param) {
 		*/ 
 }
 
-	this.export = function (format, del, gradeData = "NONE") {
-		var str = "";
-
-		if (del === "undefined" || del === null) {
-			del = ",";
-		}
-
-		// Export visible columns
-		var rendcnt = 0;
-		for (let columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
-			var colname = columnOrder[columnOrderIdx];
-			var col = tbl.tblhead[colname];
-			if (columnfilter[columnOrderIdx] !== null) {
-				if (rendcnt !== 0)
-					str += del;
-				str += exportColumnHeading(format, tbl.tblhead[columnOrder[columnOrderIdx]], columnOrder[columnOrderIdx]);
-				rendcnt++;
-			}
-		}
-		str += "\n";
-
-		// Export data for visible columns
-		for (let i = 0; i < tbl.tblbody.length; i++) {
-			let row = tbl.tblbody[i];
-			rendcnt = 0;
-			for (let columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
-				var colname = columnOrder[columnOrderIdx];
-				var col = tbl.tblhead[colname];
-				if (columnfilter[columnOrderIdx] !== null) {
-					if (rendcnt !== 0)
-						str += del;
-					str += exportCell(format, row[colname], colname, gradeData);
-					rendcnt++;
-				}
-			}
-			str += "\n";
-		}
-
-		return str;
-	}
 }
 
 
