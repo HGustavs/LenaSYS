@@ -284,8 +284,8 @@ class StateChangeFactory
      */
     static ElementsAndLinesCreated(elements, lines)
     {
-        // Array containing all new added elements
-        var allObj = [];
+        var changesArr = [];
+        var timeStamp = new Date().getTime();
 
         // Filter out defaults from each element and add them to allObj
         elements.forEach(elem => {
@@ -298,7 +298,7 @@ class StateChangeFactory
             });
 
             uniqueKeysArr.forEach(key => values[key] = elem[key]);
-            allObj.push(values);
+            changesArr.push(new StateChange(elem.id, values, timeStamp));
         });
 
         // Filter out defaults from each line and add them to allObj
@@ -312,10 +312,10 @@ class StateChangeFactory
             });
 
             uniqueKeysArr.forEach(key => values[key] = line[key]);
-            allObj.push(values);
+            changesArr.push(new StateChange(line.id, values, timeStamp));
         });
 
-        return new StateChange(null, allObj);
+        return changesArr;
     }
 }
 
@@ -586,34 +586,6 @@ class StateMachine
             // If the array is not empty remove the objects
             if (linesToRemove.length != 0) removeLines(linesToRemove, false);
             if (elementsToRemove.length != 0) removeElements(elementsToRemove, false);
-            return;
-        }
-
-        // If index 0 is an object and that object has an value of the key "id"
-        if (state.created != undefined && state.created[0].id != undefined){
-
-            Object.keys(state.created).forEach(index => {
-                var temp = {};
-                Object.keys(state.created[index]).forEach(key => {
-                    if (key == "id") temp.id = state.created[index][key];
-                    else temp[key] = state.created[index][key];
-                });
-
-                // If the object is an element
-                if (state.created[index].x && state.created[index].y){
-                    // Add the defaults to the element
-                    Object.keys(defaults[temp.kind]).forEach(key => {
-                        if (!temp[key]) temp[key] = defaults[temp.kind][key];
-                    });
-                    data.push(temp);
-                }else {
-                    // Add the defaults to the element
-                    Object.keys(defaultLine).forEach(key => {
-                        if (!temp[key]) temp[key] = defaultLine[key];
-                    });
-                    lines.push(temp);
-                }
-            });
             return;
         }
 
