@@ -311,18 +311,17 @@ function clickedInternal(event, clickdobj){
  * */
 function setDateIntervals(data){
 	// iterate tableinfo and get the highest and lowest date
+	var temp, lowest, highest;
+	// fill comparison vars with the values of the first submission
+	lowest = data.tableInfo[0].submitted;
+	highest = data.tableInfo[0].submitted;
 	for (var objects of data.tableInfo){
-		var temp, lowest, highest;
 		temp = objects.submitted;
-		if(!lowest){
-			lowest = temp;
-		}
+		
 		if(temp <= lowest){
 			lowest = temp;
 		}
-		if(!highest){
-			highest = temp;
-		}
+		
 		if(temp >= highest){
 			highest = temp;
 		}
