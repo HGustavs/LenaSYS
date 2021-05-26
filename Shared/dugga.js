@@ -2055,7 +2055,15 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			str+="<div class='' style='margin:4px;'></div></div><div>Untitled dugga</div>";
 		}
 
-		if(loadVariantFlag){	//If the 'Next variant' button is set to be visable (Teachers only). 
+		if(loadVariantFlag){	//If the 'Next variant' button is set to be visable (Teachers only).
+			var mobileMediaQuery = window.matchMedia("(max-width: 800px)");
+			var mediumMediaQuery = window.matchMedia("(min-width: 801px) and (max-width: 1200px)"); 
+			if(mobileMediaQuery.matches){
+
+			}
+			else if(mediumMediaQuery.matches) {
+
+			}
 			str+="<div id='nextVariantBtn' style='width:0px;'><input class='submit-button large-button' type='button' value='Next Variant' onclick='selectNextVariant();' /></div>"; 
 		}
 		else{	//If the 'Next variant' button is set to not be visable (Students). 
