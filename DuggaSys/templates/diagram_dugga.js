@@ -18,9 +18,12 @@ function setup()
  * */
 function getDiagramData()
 {
-    return JSON.stringify(dataToSave = {
-        initialState: diagramWindow.contentWindow.stateMachine.initialState,
-        historyLog: diagramWindow.contentWindow.stateMachine.historyLog
+    // Remove the changes that is after the current change.
+    diagramWindow.contentWindow.stateMachine.removeFutureStates();
+
+    return JSON.stringify({
+        historyLog: diagramWindow.contentWindow.stateMachine.historyLog,
+        initialState: diagramWindow.contentWindow.stateMachine.initialState
     });
 }
 /**
