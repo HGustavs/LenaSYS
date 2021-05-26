@@ -3978,20 +3978,47 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
  */
 function drawLine(line, targetGhost = false)
 {   
-    var felem, telem, dx, dy;
+    var felem = null;
+    var telem = null;
+    var dx, dy;
     var str = "";
     var fx2,tx2,fy2,ty2; // coordinates for the second recursive line
-    
+    var numberOfLines = 0; // how many lines that is connected between the targets
+    var firstLine = null; // the first line between the targets
+    var secondLine = null; // the second line between the targets
     var lineColor = '#A000DC';
     if(contextLine.includes(line)){
         lineColor = '#F0D11C';
     }
-
+    
+    
     felem = data[findIndex(data, line.fromID)];
 
     // Telem should be our ghost if argument targetGhost is true. Otherwise look through data array.
     telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
-
+    var first = false;
+    for(i=0; i < lines.length;i++){
+        if( felem.kind == "ERRelation" || telem.kind == "ERRelation"){
+        if((lines[i].fromID == felem.id && lines[i].toID == telem.id ) || (lines[i].fromID == telem.id && lines[i].toID == felem.id)){
+            if(first == false && line.id != lines[i].id ){
+                firstLine = document.getElementById(lines[i].id);
+                
+                
+                numberOfLines ++;
+                first = true;
+            }else{
+                secondLine = document.getElementById(lines[i].id);
+                
+                numberOfLines ++;
+                
+            }
+            
+        }
+        }
+    }
+    
+    
+    
     // Draw each line - compute end coordinate from position in list compared to list count
     fx = felem.cx;
     fy = felem.cy;
@@ -4017,8 +4044,8 @@ function drawLine(line, targetGhost = false)
         tx = telem.x2;
     }
 
-    if (line.kind == "Normal"){
-
+    if (line.kind == "Normal" && firstLine == null ){
+        
         str += `<line id='${line.id}' x1='${fx}' y1='${fy}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
     
     }else if (line.kind == "Double"){
@@ -4033,10 +4060,13 @@ function drawLine(line, targetGhost = false)
         str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.2) - cstmOffSet}' y1='${fy + (dy * strokewidth * 1.2) - cstmOffSet}' x2='${tx + (dx * strokewidth * 1.8) + cstmOffSet}' y2='${ty + (dy * strokewidth * 1.8) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
 
         str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.8) - cstmOffSet}' y1='${fy - (dy * strokewidth * 1.8) - cstmOffSet}' x2='${tx - (dx * strokewidth * 1.2) + cstmOffSet}' y2='${ty - (dy * strokewidth * 1.2) + cstmOffSet}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-    }else if (line.kind == "Recursive"){
+    }else if (numberOfLines ==2 ){
         var fwidth = (felem.width / 2) * zoomfact;
         var twidth = (telem.width / 2) * zoomfact;
-
+        ty2=0;
+        tx2=0;
+        fx2=0;
+        fy2=0;
         //The space between the lines
         var linespaceX = 0;
         var linespaceY = 0;
@@ -4068,9 +4098,26 @@ function drawLine(line, targetGhost = false)
                 fy2 = fy - fwidth*2;
                 linespaceY = 10*zoomfact;
             }
-    
-            str += `<line id='${line.id}-1' x1='${fx}' y1='${fy}' x2='${tx+linespaceX}' y2='${ty+linespaceY}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            str += `<line id='${line.id}-2' x1='${fx2}' y1='${fy2}' x2='${tx-linespaceX}' y2='${ty-linespaceY}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            if(firstLine != null){
+            /*firstLine.setAttribute("x1",`${fx}`);
+            firstLine.setAttribute("y1",`${fy}`);
+            firstLine.setAttribute("x2",`${tx+linespaceX}`);
+            firstLine.setAttribute("y2",`${ty+linespaceY}`);*/
+            str = str.replace(firstLine.outerHTML, `<line id='${firstLine.id}-1' x1='${fx}' y1='${fy}' x2='${tx+linespaceX}' y2='${ty+linespaceY}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`);
+            }
+            if (secondLine != null){
+                /*secondLine.setAttribute("x1",`${fx2}`);
+                secondLine.setAttribute("y1",`${fy2}`);
+                secondLine.setAttribute("x2",`${tx-linespaceX}`);
+                secondLine.setAttribute("y2",`${ty-linespaceY}`);*/
+                str = str.replace(secondLine.outerHTML, `<line id='${line.id}' x1='${fx2}' y1='${fy2}' x2='${tx-linespaceX}' y2='${ty-linespaceY}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`);
+            }else{
+                //str += `<line id='${line.id}-1' x1='${fx}' y1='${fy}' x2='${tx+linespaceX}' y2='${ty+linespaceY}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            
+                str += `<line id='${line.id}' x1='${fx2}' y1='${fy2}' x2='${tx-linespaceX}' y2='${ty-linespaceY}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            }
+            console.log(firstLine.id);
+            
         }else {
 
             if (line.ctype == "BT"){
@@ -4098,9 +4145,27 @@ function drawLine(line, targetGhost = false)
                 ty2 = ty - twidth*2;
                 linespaceY = 10*zoomfact;
             }
-    
-            str += `<line id='${line.id}-1' x1='${fx+linespaceX}' y1='${fy+linespaceY}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            str += `<line id='${line.id}-2' x1='${fx-linespaceX}' y1='${fy-linespaceY}' x2='${tx2}' y2='${ty2}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            
+            if(firstLine != null){
+            /*firstLine.setAttribute("x1",`${fx+linespaceX}`);
+            firstLine.setAttribute("y1",`${fy+linespaceY}`);
+            firstLine.setAttribute("x2",`${tx}`);
+            firstLine.setAttribute("y2",`${ty}`);*/
+            str = str.replace(firstLine.outerHTML, `<line id='${firstLine.id}-1' x1='${fx+linespaceX}' y1='${fy+linespaceY}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`);
+            
+            }
+            if (secondLine != null){
+                /*secondLine.setAttribute("x1",`${fx-linespaceX}`);
+                secondLine.setAttribute("y1",`${fy-linespaceY}`);
+                secondLine.setAttribute("x2",`${tx2}`);
+                secondLine.setAttribute("y2",`${ty2}`);
+                secondLine.setAttribute("stroke",`blue`);*/
+                str = str.replace(secondLine.outerHTML, `<line id='${line.id}' x1='${fx-linespaceX}' y1='${fy-linespaceY}' x2='${tx2}' y2='${ty2}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`);
+            }else{
+                //str += `<line id='${line.id}-1' x1='${fx+linespaceX}' y1='${fy+linespaceY}' x2='${tx}' y2='${ty}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                str += `<line id='${line.id}' x1='${fx-linespaceX}' y1='${fy-linespaceY}' x2='${tx2}' y2='${ty2}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            }
+            console.log(secondLine.outerHTML);
         }
     }
 
@@ -4111,7 +4176,7 @@ function drawLine(line, targetGhost = false)
         str += `<rect x="${x-(2 * zoomfact)}" y="${y-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' stroke="black" stroke-width="3"/>`;
 
         // If the selected line is of a Recursive kind. Draw two squares 
-        if((line.kind == "Recursive") && (telem.kind == "EREntity")){
+        /*if((line.kind == "Recursive") && (telem.kind == "EREntity")){
             var x2 = (fx2 + tx) /2;
             var y2 = (fy2 + ty) /2;
             str += `<rect x="${x2-(2 * zoomfact)}" y="${y2-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' stroke="black" stroke-width="3"/>`;
@@ -4119,7 +4184,7 @@ function drawLine(line, targetGhost = false)
             var x2 = (fx + tx2) /2;
             var y2 = (fy + ty2) /2;
             str += `<rect x="${x2-(2 * zoomfact)}" y="${y2-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' stroke="black" stroke-width="3"/>`;
-        }
+        }*/
     }
 
     // If the line got cardinality
@@ -4712,9 +4777,6 @@ function drawSelectionBox(str)
         if (contextLine.length > 0) {
             for (var i = 0; i < contextLine.length; i++) {
                 if (contextLine[i].kind === lineKind.DOUBLE) {
-                    tempLines.push(document.getElementById(contextLine[i].id + "-1"));
-                    tempLines.push(document.getElementById(contextLine[i].id + "-2"));
-                }else if (contextLine[i].kind === lineKind.RECURSIVE){
                     tempLines.push(document.getElementById(contextLine[i].id + "-1"));
                     tempLines.push(document.getElementById(contextLine[i].id + "-2"));
                 }else {
