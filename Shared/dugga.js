@@ -1252,7 +1252,6 @@ function localStorageHandler(ajaxdata) {
 			localStorage.setItem(localStorageItemKey, createDuggaLocalStorageData(ajaxdata.variant, ajaxdata.variants));
 		} 
 		else {
-			variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 			// Remove item if expired
 			if (isDuggaExpiredCheck(localStorageItem)){
 				console.log(localStorageItem);
@@ -1261,6 +1260,7 @@ function localStorageHandler(ajaxdata) {
 			}
 				
 		}
+		variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 	}
 }
 
@@ -1308,7 +1308,7 @@ function enableTeacherVariantChange(data) {
 	data['variants'].forEach(element => varArr.push(element.vid));
 	nbrOfVariants = varArr.length;
 	if(nbrOfVariants == 1) {
-		document.getElementById("nextVariantBtn").style.display="none";
+		//document.getElementById("nextVariantBtn").style.display="none";
 	}
 }
 
@@ -2080,22 +2080,18 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
 		}
 
-		//If duggaTitle variable have a value set. 
-		if(duggaTitle) {	
-			//str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>"+duggaTitle+"</div>";
-			str+="<div class='' style='margin:4px;'></div></div><div>"+duggaTitle+"</div>";
-		}
 		//If there is no name of the dugga.
 		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
-			//str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Untitled dugga</div>";
-			str+="<div class='' style='margin:4px;'></div></div><div>Untitled dugga</div>";
+			duggaTitle = "Untitled dugga";
 		}
+  
+		str+="<div class='' style='margin:4px;'></div></div><div>"+duggaTitle+"</div>";
 
-		if(loadVariantFlag){	//If the 'Next variant' button is set to be visable (Teachers only). 
-			str+="<div id='nextVariantBtn' style='width:0px;'><input class='submit-button large-button' type='button' value='Next Variant' onclick='selectNextVariant();' /></div>"; 
+		if(loadVariantFlag && variantsArr.length > 1){	//If the 'Next variant' button is set to be visable (Teachers only). 
+			str+="<div id='nextVariantBtn' ><input class='submit-button large-button' style='width:auto;' type='button' value='"+duggaTitle+" V:"+variantValue+"' onclick='selectNextVariant();' /></div>"; 
 		}
-		else{	//If the 'Next variant' button is set to not be visable (Students). 
-			str+="<div id='nextVariantBtn' style='display:none;'><input class='submit-button large-button' type='button' value='Next Variant' /></div>"; 
+		else{	//If the 'Next variant' button is set to not be visable (Students).
+			str+="<div>"+duggaTitle+"</div>";
 		}
 
 		str+="</div>";
@@ -2216,13 +2212,13 @@ function generateTimeSheetOptions(course, moment, selected) {
 //----------------------------------------------------------------------------------
 
 function hideServerMessage() {
+	$("#motdNav").css("display","inline-block");
 	var $containerHeight = $("#servermsgcontainer");
-	$containerHeight.animate({ 
-		opacity: 0, 
-		top: -$containerHeight.outerHeight() 
-	}, 200, "easeInOutSine", () => {
-		$containerHeight.css(opacity, 1);
-	});
+	$containerHeight.animate({
+		top: -$containerHeight.outerHeight()
+	},200, "easeInOutSine", () => {});
+	$("#messagedialog").css("display", "content");
+	sessionStorage.setItem('show','false');
 }
 
 function hideCookieMessage() {
@@ -2232,6 +2228,16 @@ function hideCookieMessage() {
 		$("#cookiemsg").css("display", "none");
 		$("#cookiemsg").css("opacity", "1");
 	}, 200);
+}
+
+function showServerMessage(){
+	$("#motdNav").css("display","none");
+	var $containerHeight = $("#servermsgcontainer");
+	$containerHeight.animate({ 
+		top: 50
+	},200, "easeInOutSine", () => {});
+	$("#servermsgcontainer").css("display","content");
+	sessionStorage.setItem('show','true');
 }
 
 //----------------------------------------------------------------------------------

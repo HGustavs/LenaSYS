@@ -449,11 +449,16 @@ function returnedCourse(data)
 	readonly = parseInt(data["readonly"]);
 	
 	if(motd!=="UNK"){
-		document.getElementById("servermsg").innerHTML=data["motd"];
-		document.getElementById("servermsgcontainer").style.display="flex";
-	} else {
-		document.getElementById("servermsgcontainer").style.display="none";
-	}
+        document.getElementById("servermsg").innerHTML=data["motd"];
+        if(sessionStorage.getItem('show')=='false'){
+            document.getElementById("servermsgcontainer").style.display="none";
+            document.getElementById("motdNav").style.display="inline-block";
+        }else {
+            document.getElementById("servermsgcontainer").style.display="flex";
+            document.getElementById("motdNav").style.display="none";
+        }
+
+    }
 
 	resetinputs();
 	//resets all inputs

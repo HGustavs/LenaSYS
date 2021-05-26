@@ -97,6 +97,38 @@ function showInfoText(object, displayText) {
   }
 }
 
+function getHolidays() {
+  var holidays = new Array();
+  var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
+  var redDay2 = getYYYYMMDD(new Date("2019-04-22"));
+  var redDay3 = getYYYYMMDD(new Date("2019-05-01"));
+  var redDay4 = getYYYYMMDD(new Date("2019-05-30"));
+  var redDay5 = getYYYYMMDD(new Date("2019-06-06"));
+  var redDay6 = getYYYYMMDD(new Date("2019-06-21"));
+  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6);
+  return holidays;
+}
+
+function isHoliday(date){
+  var holiday = getHolidays();
+  for(i = 0; i<holiday.length; i++){
+    if(date == holiday[i]){
+      return true;
+    }
+  }
+  return false;
+}
+
+function getYYYYMMDD(date){
+  var YYYY = date.getFullYear();
+    var mm = date.getMonth() + 1;
+    var dd = date.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    var correctDate = YYYY + "-" + mm + "-" + dd;
+    return correctDate;
+}
+
 function renderBarDiagram(data) {
   // Creates array from data for easier access
   var dailyCount = new Array(70);
@@ -124,6 +156,7 @@ function renderBarDiagram(data) {
 
   var str = "<div style='width:100%;overflow-x:scroll;'>";
   str += "<h2 style='padding-top:10px'>Weekly bar chart</h2>";
+  str += "<p style 'padding-top:10px'>Showing activities for " + dailyCount[0][0] + " - " + dailyCount[7*numOfWeeks-1][0] + " </p>";
   str += `<svg  class='chart fumho'  style='background-color:#efefef;'
   width='1300' height='250' aria-labelledby='title desc' role='img'>`;
   for (var i = 0; i < numOfWeeks; i++) {
@@ -151,11 +184,17 @@ function renderBarDiagram(data) {
     str += "<g class='bar'>";
     for (var j = 0; j < 7; j++) {
       var day = dailyCount[i * 7 + j];
+      
       var yOffset = 0;
       str += `<g width='10' onmouseover='showInfoText(this, \"${(day[0] + `<br />commits: ${day[1]}<br />
       Events: ${day[2]}<br />Comments: ${day[3]}<br />LOC: ` + day[4])}\");' onmouseout='hideInfoText()'>`;
+      if(isHoliday(day[0])){
+        str += `<rect style='fill:#ffc0cb;' width='15'; height='88%'; opacity='0.7';
+        x='${(j * 15 + 120 * i + 73)}'></rect>`;
+      }
       for (var k = 1; k < day.length; k++) {
         var height = (day[k] / highRange) * 200;
+
         yOffset += height;
         var color = "#F44336";
         if (k == 2) {
@@ -166,15 +205,16 @@ function renderBarDiagram(data) {
           color = "purple";
         }
         str += `<rect style='fill:${color};' width='10' height='${height}'
-        x='${(j * 15 + 120 * i + 75)}' y='${(220 - yOffset)}'></rect>`;
+          x='${(j * 15 + 120 * i + 75)}' y='${(220 - yOffset)}'></rect>`;
       }
       str += "</g>";
     }
-
+    
     str += "<text x='" + (120 * i + 100) + "' y='240'>week " + (i + 1) + "</text>";
     str += "</g>";
   }
-  str += '<div class="group2" id="lineDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
+  str += '</svg>';
+  str += '<div class="group2" id="barDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Commits:</p>';
   str += '<div style="width:15px; height:15px; background-color:#F44336;margin-left:10px;"></div></div>';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Events:</p>';
@@ -183,8 +223,9 @@ function renderBarDiagram(data) {
   str += '<div style="width:15px; height:15px; background-color:#43A047;margin-left:10px;"></div></div>';
   str += '<div style="display:flex; align-items:center;margin-left:30px;margin-right:30px;"><p>LOC:</p>';
   str += '<div style="width:15px; height:15px; background-color:Purple;margin-left:10px;"></div></div>';
-  str += "</svg>";
-  str += "</div>";
+  str += '<div style="display:flex; align-items:center;margin-left:30px;margin-right:30px;"><p>Holidays:</p>';
+  str += '<div style="width:15px; height:15px; background-color:#f1c0cb;margin-left:10px;"></div></div>';
+  str += '</div>';
   return str;
 }
 
@@ -391,7 +432,13 @@ function lineDiagram() {
   str += "'/>";
   for (i = 0; i < xNumber.length; i++) {
     str += `<circle onmouseover='showInfoText(this, \"${"Commits: : " + (dailyCount[i][1])}\");' onmouseout='hideInfoText()'`;
-    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][1] / maxDayCount * graphHeight)}' r='3' fill='#F44336'/>`;
+    var radius = dailyCount[i][3] / dailyCount[i][1] * 2;
+    if (radius > 7) {
+      radius = 7
+    } else if (radius < 3) {
+      radius = 3
+    }
+    str += `cx='${xNumber[i]}' cy='${(dailyCount[i][1] / maxDayCount * graphHeight)}' r='${radius}' fill='#F44336'/>`;
   }
   str += "</g>";
 
