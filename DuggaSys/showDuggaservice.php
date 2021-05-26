@@ -257,7 +257,7 @@ if($demo || $hr){
 			$variantvalue = $result['variant'];
 			$hashvariant = $result['variant'];
 		}
-		error_log("==UNK".$result['variant']);
+		//error_log("==UNK".$result['variant']);
 	}
 
 	//Makes sure that the localstorage variant is set before retrieving data from database
@@ -267,7 +267,7 @@ if($demo || $hr){
 		$query->execute();
 		$result = $query->fetch();
 		$param=html_entity_decode($result['param']);
-		error_log("!=UNK".$variantvalue);
+		//error_log("!=UNK".$variantvalue);
 	}
 } 
 // else if ($hr){
