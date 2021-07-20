@@ -455,11 +455,11 @@ function prepareItem() {
 
 // Places new items at appropriate places by measuring the space between FABStatic2 and the top of the scrren
   var elementBtnTop = document.getElementById("FABStatic2").getBoundingClientRect();
-  screenPos = Math.round((-1 * elementBtnTop.top)/350);
-  if(screenPos < 1){
-    screenPos = 5;
+  screenPos = elementBtnTop.top;
+  if(screenPos < 0){
+    screenPos = 100;
   }else{
-    screenPos = 4 * screenPos;
+    screenPos = 0;
   }
   param.pos = screenPos;
 
