@@ -47,9 +47,10 @@ function GetCourse($course){
 	global $pdo;
 
 
-	$sql = "SELECT cid,activeversion AS vers FROM course WHERE coursecode=:coursecode;";
+	//$sql = "SELECT cid,activeversion AS vers FROM course WHERE coursecode=:coursecode;";
+	$sql = "SELECT cid,activeversion AS vers FROM course WHERE coursename LIKE CONCAT('%', :coursename, '%') LIMIT 1;";
 	$query = $pdo->prepare($sql);
-	$query->bindParam(':coursecode', $coursecode);
+	$query->bindParam(':coursename', $course);
 	$query->execute();
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$cid = $row['cid'];
