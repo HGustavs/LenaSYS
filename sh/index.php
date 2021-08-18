@@ -14,8 +14,6 @@ $assignment = getOPG("a");
 $submission = getOPG("s");
 $submission_code = getOPG("sc");
 
-echo "$course||$assignment";
-
 // Connect to database and start session
 pdoConnect();
 session_start();
@@ -43,15 +41,10 @@ function GetAssignment ($hash){
 	return $URL;
 }
 //To test this function, try and enter the following:
-//http://localhost/lenasys/LenaSYS/sh/?c=Webbutveckling - datorgrafik IT118G HT15
+//http://localhost/DuggaSYS/sh/?c=datorgrafik
 function GetCourse($course){
-	$courseArray = explode(" ", $course); //Transforms long string to array with a word in each element
-	$versname = end($courseArray); //Gets last element, ex: "HT15"
-	$coursecode = prev($courseArray); //Gets second-last element, ex: "IT118G"
 	global $pdo;
 
-
-	//$sql = "SELECT cid,activeversion AS vers FROM course WHERE coursecode=:coursecode;";
 	$sql = "SELECT cid,activeversion AS vers FROM course WHERE coursename LIKE CONCAT('%', :coursename, '%') LIMIT 1;";
 	$query = $pdo->prepare($sql);
 	$query->bindParam(':coursename', $course);
@@ -68,16 +61,13 @@ function GetCourse($course){
 		header("Location: ../errorpages/404.php");
 	}
 }
-//To test this function, try and enter the following:
-//http://localhost/lenasys/LenaSYS/sh/?c=Webbutveckling - datorgrafik IT118G HT15&a=Biträkningsdugga 1
-function CourseAndAssignment($course, $assignment) {	
-	$courseArray = explode(" ", $course); //Transforms long string to array with a word in each element
-	$versname = end($courseArray); //Gets last element, ex: "HT15"
-	$coursecode = prev($courseArray); //Gets second-last element, ex: "IT118G"
 
+//To test this function, try and enter the following:
+//http://localhost/DuggaSYS/sh/?c=datorgrafik&a=bit-dugga, lvl 1
+function CourseAndAssignment($course, $assignment) {	
 	global $pdo;
 
-	//Get cid and vers
+	// Get current course version
 	$sql = "SELECT cid,activeversion AS vers,coursename FROM course WHERE coursename LIKE CONCAT('%', :coursename, '%') LIMIT 1;";
 	$query = $pdo->prepare($sql);
 	$query->bindParam(':coursename', $course);
@@ -87,19 +77,8 @@ function CourseAndAssignment($course, $assignment) {
 		$vers = $row['vers'];
 		$coursename=$row['coursename'];
 	}
-	//error_log("cid: ".$cid." vers: ".$vers);
-	
-	//Get coursename
-	// $sql = "SELECT coursename FROM course WHERE activeversion='{$vers}'";
-	// $query = $pdo->prepare($sql);
-	// $query->execute();
-	// if($row = $query->fetch(PDO::FETCH_ASSOC)){
-	// 	$coursename = $row['coursename'];
-	// }
-	//error_log("coursename: ".$coursename);
 
-	//Get moment(lid), did(link), highscoremode
-	//$sql = "SELECT * FROM listentries WHERE entryname='{$assignment}'";
+	// Get assignment for current course
 	if(isset($cid)&&isset($vers)&&isset($coursename)){
 		$sql = "SELECT lid,link,highscoremode,quiz.deadline AS deadline FROM listentries LEFT JOIN quiz ON listentries.link=quiz.id WHERE entryname LIKE CONCAT('%', :assignment, '%') AND listentries.vers=:vers LIMIT 1;";
 		$query = $pdo->prepare($sql);
@@ -113,23 +92,12 @@ function CourseAndAssignment($course, $assignment) {
 			$deadline = $row['deadline'];
 		}	
 	}
-	//error_log("moment: ".$moment." did: ".$did." highscoremode: ".$highscoremode);
-
-	//Get deadline
-	// $sql = "SELECT deadline FROM quiz WHERE id='{$did}'";
-	// $query = $pdo->prepare($sql);
-	// $query->execute();
-	// if($row = $query->fetch(PDO::FETCH_ASSOC)){
-	// 	$deadline = $row['deadline'];
-	// }
-	//error_log("deadline: ".$deadline);
 
 	if(isset($cid)&&isset($vers)&&isset($coursename)&&isset($moment)&&isset($deadline)){		
 		header("Location: /DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}");
 		exit();	
 	}else{
-		echo "DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}";
-		//header("Location: ../errorpages/404.php");
+		header("Location: ../errorpages/404.php");
 	}
 }
 
