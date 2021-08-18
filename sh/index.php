@@ -11,6 +11,10 @@ require 'query.php';
 //Gets the parameter from the URL. If the parameter is not availble then return UNK
 $course = getOPG("c");
 $assignment = getOPG("a");
+$submission = getOPG("s");
+$submission_code = getOPG("sc");
+
+echo "$course||$assignment";
 
 // Connect to database and start session
 pdoConnect();
@@ -74,47 +78,59 @@ function CourseAndAssignment($course, $assignment) {
 	global $pdo;
 
 	//Get cid and vers
-	$sql = "SELECT cid,vers FROM vers WHERE versname='{$versname}' AND coursecode='{$coursecode}'";
+	$sql = "SELECT cid,activeversion AS vers,coursename FROM course WHERE coursename LIKE CONCAT('%', :coursename, '%') LIMIT 1;";
 	$query = $pdo->prepare($sql);
+	$query->bindParam(':coursename', $course);
 	$query->execute();
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$cid = $row['cid'];
 		$vers = $row['vers'];
+		$coursename=$row['coursename'];
 	}
 	//error_log("cid: ".$cid." vers: ".$vers);
 	
 	//Get coursename
-	$sql = "SELECT coursename FROM course WHERE activeversion='{$vers}'";
-	$query = $pdo->prepare($sql);
-	$query->execute();
-	if($row = $query->fetch(PDO::FETCH_ASSOC)){
-		$coursename = $row['coursename'];
-	}
+	// $sql = "SELECT coursename FROM course WHERE activeversion='{$vers}'";
+	// $query = $pdo->prepare($sql);
+	// $query->execute();
+	// if($row = $query->fetch(PDO::FETCH_ASSOC)){
+	// 	$coursename = $row['coursename'];
+	// }
 	//error_log("coursename: ".$coursename);
 
 	//Get moment(lid), did(link), highscoremode
-	$sql = "SELECT * FROM listentries WHERE entryname='{$assignment}'";
-	$query = $pdo->prepare($sql);
-	$query->execute();
-	if($row = $query->fetch(PDO::FETCH_ASSOC)){
-		$moment = $row['lid'];
-		$did = $row['link'];
-		$highscoremode = $row['highscoremode'];
+	//$sql = "SELECT * FROM listentries WHERE entryname='{$assignment}'";
+	if(isset($cid)&&isset($vers)&&isset($coursename)){
+		$sql = "SELECT lid,link,highscoremode,quiz.deadline AS deadline FROM listentries LEFT JOIN quiz ON listentries.link=quiz.id WHERE entryname LIKE CONCAT('%', :assignment, '%') AND listentries.vers=:vers LIMIT 1;";
+		$query = $pdo->prepare($sql);
+		$query->bindParam(':assignment', $assignment);
+		$query->bindParam(':vers', $vers);
+		$query->execute();
+		if($row = $query->fetch(PDO::FETCH_ASSOC)){
+			$moment = $row['lid'];
+			$did = $row['link'];
+			$highscoremode = $row['highscoremode'];
+			$deadline = $row['deadline'];
+		}	
 	}
 	//error_log("moment: ".$moment." did: ".$did." highscoremode: ".$highscoremode);
 
 	//Get deadline
-	$sql = "SELECT deadline FROM quiz WHERE id='{$did}'";
-	$query = $pdo->prepare($sql);
-	$query->execute();
-	if($row = $query->fetch(PDO::FETCH_ASSOC)){
-		$deadline = $row['deadline'];
-	}
+	// $sql = "SELECT deadline FROM quiz WHERE id='{$did}'";
+	// $query = $pdo->prepare($sql);
+	// $query->execute();
+	// if($row = $query->fetch(PDO::FETCH_ASSOC)){
+	// 	$deadline = $row['deadline'];
+	// }
 	//error_log("deadline: ".$deadline);
 
-	$serverRoot = serverRoot();
-	header("Location: {$serverRoot}/lenasys/DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}");
-	exit();
+	if(isset($cid)&&isset($vers)&&isset($coursename)&&isset($moment)&&isset($deadline)){		
+		header("Location: /DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}");
+		exit();	
+	}else{
+		echo "DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}";
+		//header("Location: ../errorpages/404.php");
+	}
 }
 
 
