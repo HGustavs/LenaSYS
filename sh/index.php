@@ -46,17 +46,22 @@ function GetCourse($course){
 	$coursecode = prev($courseArray); //Gets second-last element, ex: "IT118G"
 	global $pdo;
 
-	$sql = "SELECT cid,vers FROM vers WHERE versname='{$versname}' AND coursecode='{$coursecode}'";
+
+	$sql = "SELECT cid,activeversion AS vers FROM course WHERE coursecode=:coursecode;";
 	$query = $pdo->prepare($sql);
+	$query->bindParam(':coursecode', $coursecode);
 	$query->execute();
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$cid = $row['cid'];
 		$vers = $row['vers'];
 	}
-		
-	$serverRoot = serverRoot();
-	header("Location: {$serverRoot}/lenasys/DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}");
-	exit();
+	
+	if(isset($cid)&&isset($vers)){
+		header("Location: /DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}");
+		exit();			
+	}else{
+		header("Location: ../errorpages/404.php");
+	}
 }
 //To test this function, try and enter the following:
 //http://localhost/lenasys/LenaSYS/sh/?c=Webbutveckling - datorgrafik IT118G HT15&a=Biträkningsdugga 1
