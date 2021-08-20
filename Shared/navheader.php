@@ -1,4 +1,10 @@
-<header>
+<?php
+			if (isset($_GET['embed'])){
+				echo "<header style='display:none;'>";
+			}	else {
+				echo "<header>";
+			}		
+?>
        <?php
 			$requestedService = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
 			$requestedService = substr($requestedService,strrpos ( $requestedService , "/")+1);

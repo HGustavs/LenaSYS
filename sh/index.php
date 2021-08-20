@@ -55,7 +55,7 @@ function GetCourse($course){
 	}
 	
 	if(isset($cid)&&isset($vers)){
-		header("Location: /DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}");
+		header("Location: /DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}&embed");
 		exit();			
 	}else{
 		header("Location: ../errorpages/404.php");
@@ -94,7 +94,7 @@ function CourseAndAssignment($course, $assignment) {
 	}
 
 	if(isset($cid)&&isset($vers)&&isset($coursename)&&isset($moment)&&isset($deadline)){		
-		header("Location: /DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}");
+		header("Location: /DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed");
 		exit();	
 	}else{
 		header("Location: ../errorpages/404.php");
