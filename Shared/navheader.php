@@ -1,8 +1,10 @@
 <?php
 			if (isset($_GET['embed'])){
 				echo "<header style='display:none;'>";
+				echo "<div style='display:none;'></div>";
 			}	else {
 				echo "<header>";
+				echo "<div style='margin:65px 0 15px 0;'></div>";
 			}		
 ?>
        <?php
