@@ -1,10 +1,8 @@
 <?php
 			if (isset($_GET['embed'])){
 				echo "<header style='display:none;'>";
-				echo "<div style='display:none;'></div>";
 			}	else {
 				echo "<header>";
-				echo "<div style='margin:65px 0 15px 0;'></div>";
 			}		
 ?>
        <?php
@@ -364,6 +362,13 @@
 			echo "<div id='cookiemsg' class='alertmsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' onclick='cookieMessage()'/></div>";
 	    ?>
 </header>
+<?php
+			if (isset($_GET['embed'])){
+				echo "<div style='display:none;'></div>";
+			}	else {
+				echo "<div style='height:50px;'></div>";
+			}		
+?>
 <?php
 	include '../Shared/logoutbox.php';
 ?>
