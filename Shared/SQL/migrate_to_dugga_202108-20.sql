@@ -1,0 +1,5 @@
+ALTER TABLE listentries ADD COLUMN feedbackenabled TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE listentries ADD COLUMN feedbackquestion VARCHAR(512);
+
+ALTER TABLE userAnswer ADD COLUMN hash VARCHAR(8);
+ALTER TABLE userAnswer ADD COLUMN password VARCHAR(7);
