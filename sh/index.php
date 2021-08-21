@@ -63,17 +63,15 @@ function GetCourse($course){
 		$sql .= " AND coursename LIKE CONCAT('%', :param{$i}, '%')";
 	}
 	$sql .= " ORDER BY coursename LIMIT 1;";
-
 	$query = $pdo->prepare($sql);
 	foreach($tmparr as $i => $param){
-		$query->bindParam(":param{$i}", $param);
+		$query->bindParam(":param{$i}", $tmparr[$i],PDO::PARAM_STR);
 	}
 	$query->execute();
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$cid = $row['cid'];
 		$vers = $row['vers'];
 	}
-	
 	if(isset($cid)&&isset($vers)){
 		header("Location: /DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}&embed");
 		exit();			
@@ -99,48 +97,78 @@ function GetCourse($course){
 //------------------------------------------------------------------------------------------------
 function CourseAndAssignment($course, $assignment) {	
 	global $pdo;
-	$tmparr=explode(" ",$course);
+	$sql="SELECT course.cid AS cid,course.activeversion AS vers, course.coursename AS coursename, listentries.entryname AS entryname, listentries.lid AS lid,listentries.link AS link,listentries.highscoremode AS highscoremode,quiz.deadline AS deadline FROM listentries JOIN course ON listentries.vers=course.activeversion AND listentries.cid=course.cid LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind=3";
+	$tmpcoursearr=explode(" ",$course);
+	$tmpassignmentarr=explode(" ",$assignment);
+	foreach($tmpcoursearr as $i => $cparam){
+		$sql .= " AND coursename LIKE CONCAT('%', :cparam{$i}, '%')";
+	}
+	foreach($tmpassignmentarr as $i => $aparam){
+		$sql .= " AND entryname LIKE CONCAT('%', :aparam{$i}, '%')";
+	}
+	$sql .= " ORDER BY coursename,entryname;";
 
-	// Get current course version
-	$sql="SELECT cid,activeversion AS vers,coursename FROM course WHERE visibility=1";
-	foreach($tmparr as $i => $param){
-		$sql .= " AND coursename LIKE CONCAT('%', :param{$i}, '%')";
-	}
-	$sql .= " ORDER BY coursename LIMIT 1;";
 	$query = $pdo->prepare($sql);
-	foreach($tmparr as $i => $param){
-		$query->bindParam(":param{$i}", $param);
+	foreach($tmpcoursearr as $i => $cparam){
+		$query->bindParam(":cparam{$i}", $tmpcoursearr[$i],PDO::PARAM_STR);
 	}
+	foreach($tmpassignmentarr as $i => $aparam){
+		$query->bindParam(":aparam{$i}", $tmpassignmentarr[$i],PDO::PARAM_STR);
+	}
+
 	$query->execute();
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$cid = $row['cid'];
 		$vers = $row['vers'];
 		$coursename=$row['coursename'];
+		$moment = $row['lid'];
+		$did = $row['link'];
+		$highscoremode = $row['highscoremode'];
+		$deadline = $row['deadline'];
 	}
 
-	// Get assignment for current course
-	if(isset($cid)&&isset($vers)&&isset($coursename)){
-		$tmparr=explode(" ",$assignment);
-		$sql="SELECT lid,link,highscoremode,quiz.deadline AS deadline FROM listentries LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind=3 AND listentries.vers=:vers";
-		foreach($tmparr as $i => $param){
-			$sql .= " AND entryname LIKE CONCAT('%', :param{$i}, '%')";
-		}
-		$sql .= " ORDER BY entryname LIMIT 1;";
+	// $tmparr=explode(" ",$course);
+
+	// // Get current course version
+	// $sql="SELECT cid,activeversion AS vers,coursename FROM course WHERE visibility=1";
+	// foreach($tmparr as $i => $param){
+	// 	$sql .= " AND coursename LIKE CONCAT('%', :param{$i}, '%')";
+	// }
+	// $sql .= " ORDER BY coursename LIMIT 1;";
+	// $query = $pdo->prepare($sql);
+	// foreach($tmparr as $i => $param){
+	// 	$query->bindParam(":param{$i}", $param);
+	// }
+	// $query->execute();
+	// if($row = $query->fetch(PDO::FETCH_ASSOC)){
+	// 	$cid = $row['cid'];
+	// 	$vers = $row['vers'];
+	// 	$coursename=$row['coursename'];
+	// }
+
+	// // Get assignment for current course
+	// if(isset($cid)&&isset($vers)&&isset($coursename)){
+	// 	$tmparr=explode(" ",$assignment);
+	// 	$sql="SELECT lid,link,highscoremode,quiz.deadline AS deadline FROM listentries LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind=3 AND listentries.vers=:vers";
+	// 	foreach($tmparr as $i => $param){
+	// 		$sql .= " AND entryname LIKE CONCAT('%', :param{$i}, '%')";
+	// 	}
+	// 	$sql .= " ORDER BY entryname LIMIT 1;";
 	
-		$query = $pdo->prepare($sql);
-		$query->bindParam(':vers', $vers);
-		foreach($tmparr as $i => $param){
-			$query->bindParam(":param{$i}", $param);
-		}
+	// 	$query = $pdo->prepare($sql);
+	// 	$query->bindParam(':vers', $vers);
+	// 	foreach($tmparr as $i => $param){
+	// 		$query->bindParam(":param{$i}", $param);
+	// 	}
 	
-		$query->execute();
-		if($row = $query->fetch(PDO::FETCH_ASSOC)){
-			$moment = $row['lid'];
-			$did = $row['link'];
-			$highscoremode = $row['highscoremode'];
-			$deadline = $row['deadline'];
-		}	
-	}
+	// 	$query->execute();
+	// 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
+	// 		$moment = $row['lid'];
+	// 		$did = $row['link'];
+	// 		$highscoremode = $row['highscoremode'];
+	// 		$deadline = $row['deadline'];
+	// 	}	
+	// }
 
 	if(isset($cid)&&isset($vers)&&isset($coursename)&&isset($moment)&&isset($deadline)){		
 		header("Location: /DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed");
