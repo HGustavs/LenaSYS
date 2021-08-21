@@ -1769,7 +1769,7 @@ $(window).load(function () {
     sessionStorage.setItem('closeUpdateForm', true);
   });
 
-  retrieveAnnouncementAuthor();
+  //retrieveAnnouncementAuthor();
   retrieveAnnouncementsCards();
   displayListAndGrid();
   displayAnnouncementBoxOverlay();

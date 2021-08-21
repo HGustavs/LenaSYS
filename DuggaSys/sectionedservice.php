@@ -63,7 +63,7 @@ $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
 $tabs=getOP('tabs');
 $visbile = 0;
-
+$avgfeedbackscore = 0;
 
 $grpmembershp="UNK";
 $unmarked = 0;
@@ -848,12 +848,14 @@ if($gradesys=="UNK") $gradesys=0;
 			$query = $pdo->prepare("SELECT AVG(score) FROM userduggafeedback WHERE lid=:lid AND cid=:cid");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':lid', $moment);
+
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error reading courses".$error[2];
 			} else{
-				$row = $query->fetch();
-				$avgfeedbackscore = $row[0];
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+					$avgfeedbackscore = $row[0];
+				}				
 			}
 		}
 		$array = array(
