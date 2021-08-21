@@ -12,7 +12,6 @@ require 'query.php';
 $course = getOPG("c");
 $assignment = getOPG("a");
 $submission = getOPG("s");
-$submission_code = getOPG("sc");
 
 // Connect to database and start session
 pdoConnect();
@@ -40,14 +39,35 @@ function GetAssignment ($hash){
 	}
 	return $URL;
 }
-//To test this function, try and enter the following:
-//http://localhost/DuggaSYS/sh/?c=datorgrafik
+
+//------------------------------------------------------------------------------------------------
+//
+// GetCourse($course)
+//
+// Redirect to the active course that best reflects the input string $course. The input string is 
+// split on SPACE and all substrings must be matched in the course name. If multiple courses matches
+// the the function redirects to the first course in alphabetical order.
+// 
+// To test this function, try and enter the following:
+// https://[your LenaSYS installation host]/DuggaSYS/sh/?c=datorgrafik
+// https://[your LenaSYS installation host]/DuggaSYS/sh/?c=mobil prog
+//
+//------------------------------------------------------------------------------------------------
 function GetCourse($course){
 	global $pdo;
+	$tmparr=explode(" ",$course);
 
-	$sql = "SELECT cid,activeversion AS vers FROM course WHERE coursename LIKE CONCAT('%', :coursename, '%') LIMIT 1;";
+	// Get current course version
+	$sql="SELECT cid,activeversion AS vers,coursename FROM course WHERE visibility=1";
+	foreach($tmparr as $i => $param){
+		$sql .= " AND coursename LIKE CONCAT('%', :param{$i}, '%')";
+	}
+	$sql .= " ORDER BY coursename LIMIT 1;";
+
 	$query = $pdo->prepare($sql);
-	$query->bindParam(':coursename', $course);
+	foreach($tmparr as $i => $param){
+		$query->bindParam(":param{$i}", $param);
+	}
 	$query->execute();
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$cid = $row['cid'];
@@ -62,15 +82,35 @@ function GetCourse($course){
 	}
 }
 
-//To test this function, try and enter the following:
-//http://localhost/DuggaSYS/sh/?c=datorgrafik&a=bit-dugga, lvl 1
+//------------------------------------------------------------------------------------------------
+//
+// CourseAndAssignment($course, $assignment)
+//
+// Redirect to assignment and active course that best reflects the input strings $assignment and 
+// $course. The input strings is split on SPACE and all substrings must be matched in the respective 
+// parameters. If multiple courses matches the the function uses the first course in 
+// alphabetical order in the redirection, likewise if multiple assignments matches the first 
+// assignment in alphabetical order is used in the redirection.
+// 
+// To test this function, try and enter the following:
+// https://[your LenaSYS installation host]/DuggaSYS/sh/?c=datorgrafik&a=bit 1
+// https://[your LenaSYS installation host]/DuggaSYS/sh/?c=datorgrafik&a=bit 2
+//
+//------------------------------------------------------------------------------------------------
 function CourseAndAssignment($course, $assignment) {	
 	global $pdo;
+	$tmparr=explode(" ",$course);
 
 	// Get current course version
-	$sql = "SELECT cid,activeversion AS vers,coursename FROM course WHERE coursename LIKE CONCAT('%', :coursename, '%') LIMIT 1;";
+	$sql="SELECT cid,activeversion AS vers,coursename FROM course WHERE visibility=1";
+	foreach($tmparr as $i => $param){
+		$sql .= " AND coursename LIKE CONCAT('%', :param{$i}, '%')";
+	}
+	$sql .= " ORDER BY coursename LIMIT 1;";
 	$query = $pdo->prepare($sql);
-	$query->bindParam(':coursename', $course);
+	foreach($tmparr as $i => $param){
+		$query->bindParam(":param{$i}", $param);
+	}
 	$query->execute();
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$cid = $row['cid'];
@@ -80,10 +120,19 @@ function CourseAndAssignment($course, $assignment) {
 
 	// Get assignment for current course
 	if(isset($cid)&&isset($vers)&&isset($coursename)){
-		$sql = "SELECT lid,link,highscoremode,quiz.deadline AS deadline FROM listentries LEFT JOIN quiz ON listentries.link=quiz.id WHERE entryname LIKE CONCAT('%', :assignment, '%') AND listentries.vers=:vers LIMIT 1;";
+		$tmparr=explode(" ",$assignment);
+		$sql="SELECT lid,link,highscoremode,quiz.deadline AS deadline FROM listentries LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind=3 AND listentries.vers=:vers";
+		foreach($tmparr as $i => $param){
+			$sql .= " AND entryname LIKE CONCAT('%', :param{$i}, '%')";
+		}
+		$sql .= " ORDER BY entryname LIMIT 1;";
+	
 		$query = $pdo->prepare($sql);
-		$query->bindParam(':assignment', $assignment);
 		$query->bindParam(':vers', $vers);
+		foreach($tmparr as $i => $param){
+			$query->bindParam(":param{$i}", $param);
+		}
+	
 		$query->execute();
 		if($row = $query->fetch(PDO::FETCH_ASSOC)){
 			$moment = $row['lid'];
@@ -102,21 +151,16 @@ function CourseAndAssignment($course, $assignment) {
 }
 
 
-if(($assignment != "UNK") &&($course == "UNK")){
+if($submission != "UNK"){
 	$assignmentURL = GetAssignment($assignment);
 	header("Location: {$assignmentURL}");
-
 }else if(($course != "UNK") && ($assignment == "UNK")){
 	GetCourse($course);
-	
 }else if(($assignment != "UNK") && ($course != "UNK")) {
 	CourseAndAssignment($course, $assignment);
 }
 else {
 	header("Location: ../errorpages/404.php");
 }
-
 $pdo = null;
-
-?>
 
