@@ -1976,7 +1976,7 @@ div .navButt:hover {
 #urlAndPwd{
   border: 1px solid grey;
   background-color: #fff;
-  height: 95px;
+  /*height: 95px;*/
   padding: 9px 0px;
   padding-left: 9px;
   margin-bottom: 15px;

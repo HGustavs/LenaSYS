@@ -370,7 +370,7 @@
 			}		
 ?>
 <?php
-	include '../Shared/logoutbox.php';
+	//include '../Shared/logoutbox.php';
 ?>
 <script type="text/javascript">
 		if(localStorage.getItem("ls-cookie-message")=="off"){
