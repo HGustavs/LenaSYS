@@ -7810,8 +7810,18 @@ textarea#filecont {
   border: 2px solid var(--color-primary);
 }
 
+.previewTable tr {
+	padding: 10px 0px;
+  border-bottom:1px solid rgba(0,0,0,0.6)
+}
+
 .previewTable tr:nth-child(even) {
   background-color: #dad8db;
+}
+
+.previewTable td {
+  vertical-align: top;
+	padding: 4px 10px;
 }
 
 .list td.personalRankTable-grpranking,
