@@ -116,6 +116,126 @@ if(strcmp($opt,"UPDATEAU")==0){
 	}
 }
 
+function processDuggaFiles()
+{
+	global $courseid;
+	global $coursevers;
+	global $duggaid;
+	global $duggainfo;
+	global $files;
+	global $pdo;
+$files= array();
+//for ($i = 0; $i < $userCount; $i++) {
+	// if ($showall==="true"){
+	// 	$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash AND vers=:vers AND cid=:cid ORDER BY subid,fieldnme,updtime asc;");  
+	// } else {
+	// 	$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash AND vers=:vers AND cid=:cid AND did=:did ORDER BY subid,fieldnme,updtime asc;");  
+	// 	$query->bindParam(':did', $duggaid);
+	// }
+	// if ($i == 0) {
+	// 	$query->bindParam(':hash', $hash);
+	// }
+	// $query->bindParam(':cid', $courseid);
+	// $query->bindParam(':vers', $coursevers);
+	if(	isset($_SESSION["submission-$courseid-$coursevers-$duggaid"]) && 
+	isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid"]) && 
+	isset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid"])){
+
+	$tmphash=$_SESSION["submission-$courseid-$coursevers-$duggaid"];
+	$tmphashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid"];
+	$tmpvariant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid"];
+		
+	$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash ORDER BY subid,fieldnme,updtime asc;");  
+	$query->bindParam(':hash', $tmphash);
+	$result = $query->execute();
+	
+	// Store current day in string
+	$today = date("Y-m-d H:i:s");
+	
+	foreach($query->fetchAll() as $row) {
+			
+			$content = "UNK";
+			$feedback = "UNK";
+			$zipdir = "";
+			$zip = new ZipArchive;
+			$currcvd=getcwd();
+			
+
+			$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
+
+			if(!file_exists($ziptemp)) {
+				$isFileSubmitted = false;
+				$zipdir="UNK";
+			}else{	
+				$isFileSubmitted = true;			
+				if ($zip->open($ziptemp) == TRUE) {
+					for ($i = 0; $i < $zip->numFiles; $i++) {
+						$zipdir .= $zip->getNameIndex($i).'<br />';
+					}
+				}
+			}
+			
+			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
+			if(!file_exists($fedbname)) {
+					$feedback="UNK";
+			} else {
+				if($today > $duggainfo['qrelease']  || is_null($duggainfo['qrelease'])){
+					$feedback=file_get_contents($fedbname);				
+				}
+			}			
+			
+			if($row['kind']=="3"){
+					// Read file contents
+					$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
+
+					if(!file_exists($movname)) {
+							$content="UNK!";
+					} else {
+							$content=file_get_contents($movname);
+					}
+			}	else if($row['kind']=="2"){
+					// File content is an URL
+					$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'];
+	
+					if(!file_exists($movname)) {
+							$content="UNK URL!";
+					} else {
+							$content=file_get_contents($movname);
+					}
+			}else{
+					$content="Not a text-submit or URL";
+			}
+			$entry = array(
+				'subid' => $row['subid'],
+				'vers' => $row['vers'],
+				'did' => $row['did'],
+				'fieldnme' => $row['fieldnme'],
+				'filename' => $row['filename'],	
+				'filepath' => $row['filepath'],	
+				'extension' => $row['extension'],
+				'mime' => $row['mime'],
+				'updtime' => $row['updtime'],
+				'kind' => $row['kind'],	
+				'seq' => $row['seq'],	
+				'segment' => $row['segment'],	
+				'content' => $content,
+				'feedback' => $feedback,
+				'username' => $$tmphash,
+				'zipdir' => $zipdir
+			);
+	
+			// If the filednme key isn't set, create it now
+			 if (!isset($files[$row['segment']])) $files[$row['segment']] = array();
+	
+			array_push($files[$row['segment']], $entry);	
+	}
+//}
+
+	}
+if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be object
+
+}
+
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
@@ -215,6 +335,7 @@ if(strcmp($opt,"UPDATEAU")==0){
 					$_SESSION["submission-password-$courseid-$newcoursevers-$newduggaid"]=$hashpwd;
 					$_SESSION["submission-variant-$courseid-$newcoursevers-$newduggaid"]=$variant;
 					$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
+					processDuggaFiles();
 				}else{
 					$debug="[Superuser] Could not load dugga! Incorrect hash/password! $hash/$hashpwd";
 					$variant="UNK";
@@ -255,6 +376,7 @@ if(strcmp($opt,"UPDATEAU")==0){
 					$_SESSION["submission-password-$courseid-$newcoursevers-$newduggaid"]=$hashpwd;
 					$_SESSION["submission-variant-$courseid-$newcoursevers-$newduggaid"]=$variant;
 					$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
+					processDuggaFiles();
 				}else{
 					$debug="[Guest] Could not load dugga! Incorrect hash/password submitted! $hash/$hashpwd";
 					$variant="UNK";
@@ -290,8 +412,7 @@ if(strcmp($opt,"UPDATEAU")==0){
 					}
 			
 					if(isset($param)){
-			
-			
+						processDuggaFiles();
 					}else{
 						$debug="[Guest] Missing hash/password/variant! Not found in db.";
 						$variant="UNK";
