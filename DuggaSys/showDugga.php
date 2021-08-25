@@ -1,4 +1,5 @@
 <?php
+	include_once "../Shared/sessions.php";
  	session_start();
 ?>
 <!DOCTYPE html>
@@ -20,14 +21,11 @@
 	<script src="timer.js"></script>
 	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
-	<!--<script src="../DuggaSys/templates/generic_dugga_file_receive.js"></script>-->
-	
 <?php
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services!
 	include_once "../Shared/basic.php";
-	include_once "../Shared/sessions.php";
 
 	// Connect to database and start session
 	pdoConnect();
@@ -53,35 +51,35 @@
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
 
-	if(isset($_SESSION['hashpassword'])){
-		$hashpassword=$_SESSION['hashpassword'];
-	}else{
-		$hashpassword='UNK';
-	}	
+	// if(isset($_SESSION['hashpassword'])){
+	// 	$hashpassword=$_SESSION['hashpassword'];
+	// }else{
+	// 	$hashpassword='UNK';
+	// }	
 
-	if(isset($_SESSION['uid'])){
-		$userid=$_SESSION['uid'];
-	}else{
-		$userid="UNK";
-	}
+	// if(isset($_SESSION['uid'])){
+	// 	$userid=$_SESSION['uid'];
+	// }else{
+	// 	$userid="UNK";
+	// }
 
-	if(!isset($_SESSION['hasUploaded'])){
-		$_SESSION['hasUploaded'] = "UNK";
-	}
+	// if(!isset($_SESSION['hasUploaded'])){
+	// 	$_SESSION['hasUploaded'] = "UNK";
+	// }
 
-	if(!isset($_SESSION['pwdentrance'])){
-		$_SESSION['pwdentrance'] = 0;
-	}
+	// if(!isset($_SESSION['pwdentrance'])){
+	// 	$_SESSION['pwdentrance'] = 0;
+	// }
 	//logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
 
-if($cid != "UNK") $_SESSION['courseid'] = $cid;
-	$hr=false;
-	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
-	$query->bindParam(':cid', $cid);
-	$result = $query->execute();
-	if($row = $query->fetch(PDO::FETCH_ASSOC)){
-			$visibility=$row['visibility'];
-	}
+// if($cid != "UNK") $_SESSION['courseid'] = $cid;
+// 	$hr=false;
+// 	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
+// 	$query->bindParam(':cid', $cid);
+// 	$result = $query->execute();
+// 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
+// 			$visibility=$row['visibility'];
+// 	}
 	
 /*
 		//Give permit if the user is logged in and has access to the course or if it is public
@@ -170,6 +168,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 
 
 // Check if we have a hash/hashpwd and dugga variant
+echo "|". print_r($_SESSION)."|<br>";
 if(!isset($_SESSION["submission-$cid-$vers-$duggaid"])){
 	$bytes = random_bytes(4);
 	$hash=bin2hex($bytes);
