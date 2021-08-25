@@ -1,23 +1,15 @@
 <?php
-
-// Set cookie life length and start session
-ini_set('session.gc_maxlifetime', 18000);
-session_set_cookie_params('18000');
-
-// Start session using parameters above
+include_once "../Shared/sessions.php";
 session_start();
 
 // Includes
-include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 include_once "../../coursesyspw.php";
 
 $opt = getOP('opt');
 
 if($opt=="REFRESH"){	
-	ini_set('session.gc_maxlifetime', 18000);
 	session_regenerate_id(true);
-	session_set_cookie_params('18000');
 }else if($opt=="LOGIN"){
 	// If not login we assume logout	
 	$username=getOP('username');

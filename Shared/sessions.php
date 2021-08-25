@@ -1,6 +1,27 @@
 <?php
 require_once(dirname(__FILE__) . '/../Shared/database.php');
 require_once(dirname(__FILE__) . '/constants.php');
+$maxlifetime = 18000;
+$path = '/';
+$domain = '';
+$secure = true;
+$httponly = false;
+$samesite = 'none'; 
+
+if(PHP_VERSION_ID < 70300) {
+    session_set_cookie_params($maxlifetime, $path.'; samesite='.$samesite, $domain, $secure, $httponly);
+} else {
+    // note I use `array()` instead of `[]` to allow support of php <5.4
+    session_set_cookie_params(array(
+        'lifetime' => $maxlifetime,
+        'path' => $path,
+        'domain' => $domain,
+        'secure' => $secure,
+        'httponly' => $httponly,
+        'samesite' => $samesite
+    ));
+}
+
 //---------------------------------------------------------------------------------------------------------------
 // checklogin - Checks Login Credentials and initiates the kind session variable that holds the credentials
 //---------------------------------------------------------------------------------------------------------------
