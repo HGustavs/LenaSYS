@@ -1941,7 +1941,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 			for (var i=filez.length-1;i>=0;i--){
 					if(cfield==filez[i].fieldnme){
 							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
-							tab+="<tr'>"
+							tab+="<tr>"
 
 							// Button for making / viewing feedback - note - only button for given feedback to students.
 							if(iconFlag){
