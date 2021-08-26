@@ -17,10 +17,17 @@ $submission = getOPG("s");
 pdoConnect();
 session_start();
 
+if(isset($_SESSION['uid'])){
+	$userid=$_SESSION['uid'];
+}else{
+	$userid="student";		
+} 
+
 //To test this function, try and enter the following:
 //http://localhost/lenasys/LenaSYS/sh/?a=<hash>
 function GetAssignment ($hash){
 	global $pdo;
+	global $userid;
 
 	// Defaults to 404 Error page if no there is no match in the database for the hash value
 	//$URL = "../errorpages/404.php";
@@ -44,18 +51,19 @@ function GetAssignment ($hash){
 		$hashpwd = $row['password'];
 	}
 	
-	// Redirect if no password is stored in session or if hash/hashpwd is incorrect
-	if(	!isset($_SESSION["submission-password-$cid-$vers-$did"]) || 
-		(isset($_SESSION["submission-password-$cid-$vers-$did"]) && $_SESSION["submission-password-$cid-$vers-$did"]!=$hashpwd)){
+	// Redirect if no password is stored in session or if hash/hashpwd is incorrect 
+	if(isSuperUser($userid)){
+		// Never ask for pwd
+	}else if(!isset($_SESSION["submission-password-$cid-$vers-$did-$moment"]) || (isset($_SESSION["submission-password-$cid-$vers-$did-$moment"]) && $_SESSION["submission-password-$cid-$vers-$did-$moment"]!=$hashpwd)){
 		$_SESSION['checkhash']=$hash;
 		header("Location: ../DuggaSys/validateHash.php");
 		exit();	
 	}
 
 	if(isset($cid)&&isset($coursename)&&isset($vers)&&isset($moment)&&isset($deadline)){	
-		$_SESSION["submission-$cid-$vers-$did"]=$hash;
-		$_SESSION["submission-password-$cid-$vers-$did"]=$hashpwd;
-		$_SESSION["submission-variant-$cid-$vers-$did"]=$variant;	
+		$_SESSION["submission-$cid-$vers-$did-$moment"]=$hash;
+		$_SESSION["submission-password-$cid-$vers-$did-$moment"]=$hashpwd;
+		$_SESSION["submission-variant-$cid-$vers-$did-$moment"]=$variant;	
 		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed<br>";
 		echo "|$hash|$hashpwd|<br>";
 		header("Location: ../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed");

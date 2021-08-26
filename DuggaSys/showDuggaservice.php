@@ -84,10 +84,10 @@ $isFileSubmitted="UNK";
 
 $debug="NONE!";	
 
-if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK"){
-	$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid"];
-	$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid"];
-	$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid"];	
+if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK" && $moment != "UNK"){
+	$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
+	$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
+	$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];	
 }else{
 	$debug="Could not find the requested dugga!";
 }
@@ -123,27 +123,17 @@ function processDuggaFiles()
 	global $duggaid;
 	global $duggainfo;
 	global $files;
+	global $moment;
 	global $pdo;
-$files= array();
-//for ($i = 0; $i < $userCount; $i++) {
-	// if ($showall==="true"){
-	// 	$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash AND vers=:vers AND cid=:cid ORDER BY subid,fieldnme,updtime asc;");  
-	// } else {
-	// 	$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash AND vers=:vers AND cid=:cid AND did=:did ORDER BY subid,fieldnme,updtime asc;");  
-	// 	$query->bindParam(':did', $duggaid);
-	// }
-	// if ($i == 0) {
-	// 	$query->bindParam(':hash', $hash);
-	// }
-	// $query->bindParam(':cid', $courseid);
-	// $query->bindParam(':vers', $coursevers);
-	if(	isset($_SESSION["submission-$courseid-$coursevers-$duggaid"]) && 
-	isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid"]) && 
-	isset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid"])){
+	$files= array();
 
-	$tmphash=$_SESSION["submission-$courseid-$coursevers-$duggaid"];
-	$tmphashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid"];
-	$tmpvariant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid"];
+	if(	isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
+	isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]) && 
+	isset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"])){
+
+	$tmphash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
+	$tmphashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
+	$tmpvariant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
 		
 	$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash ORDER BY subid,fieldnme,updtime asc;");  
 	$query->bindParam(':hash', $tmphash);
@@ -228,11 +218,10 @@ $files= array();
 			 if (!isset($files[$row['segment']])) $files[$row['segment']] = array();
 	
 			array_push($files[$row['segment']], $entry);	
-	}
-//}
+		}
 
 	}
-if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be object
+	if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be object
 
 }
 
@@ -240,7 +229,11 @@ if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be o
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
-
+if(isSuperUser($userid)){
+	$isTeacher=1;
+}else{
+	$isTeacher=0;
+}
 
 //------------------------------------------------------------------------------------------------
 // Services
@@ -252,11 +245,12 @@ if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be o
             $discription = $courseid." ".$duggaid." ".$moment." ".$answer;
             //logUserEvent($userid, $username, EventTypes::DuggaFileupload,$discription);
 
-			if(	isset($_SESSION["submission-$courseid-$coursevers-$duggaid"]) && 
-				isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid"])){
-				$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid"];
-				$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid"];
-				$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid"];	
+			if(	!isSuperUser($userid) && // Teachers cannot submit
+				isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
+				isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"])){
+				$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
+				$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
+				$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];	
 				$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
 
 				$query = $pdo->prepare("SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=:hash;");
@@ -388,13 +382,13 @@ if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be o
 					// unset($_SESSION["submission-variant-$cid-$vers-$duggaid"]);
 				}
 			}else{
-				if(	isset($_SESSION["submission-$courseid-$coursevers-$duggaid"]) && 
-					isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid"]) && 
-					isset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid"])){
+				if(	isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
+					isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]) && 
+					isset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"])){
 			
-					$tmphash=$_SESSION["submission-$courseid-$coursevers-$duggaid"];
-					$tmphashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid"];
-					$tmpvariant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid"];
+					$tmphash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
+					$tmphashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
+					$tmpvariant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
 				
 					//$sql="SELECT variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param FROM variant LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=:hash AND password=:hashpwd WHERE vid=:variant LIMIT 1;";
 					$sql="SELECT quiz.*, variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param FROM quiz LEFT JOIN variant ON quiz.id=variant.quizID LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=:hash AND password=:hashpwd WHERE quiz.id=:did AND vid=:variant LIMIT 1;";
@@ -419,9 +413,9 @@ if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be o
 						$answer="UNK";
 						$variantanswer="UNK";
 						$param=html_entity_decode('{}');
-						unset($_SESSION["submission-$courseid-$coursevers-$duggaid"]);
-						unset($_SESSION["submission-password-$courseid-$coursevers-$duggaid"]);
-						unset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid"]);	
+						unset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]);
+						unset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]);
+						unset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"]);	
 					}
 				}else{
 					$debug="[Guest] Missing hash/password/variant!";
@@ -429,9 +423,9 @@ if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be o
 					$answer="UNK";
 					$variantanswer="UNK";
 					$param=html_entity_decode('{}');
-					unset($_SESSION["submission-$courseid-$coursevers-$duggaid"]);
-					unset($_SESSION["submission-password-$courseid-$coursevers-$duggaid"]);
-					unset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid"]);
+					unset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]);
+					unset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]);
+					unset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"]);
 				}
 			}
 		}		

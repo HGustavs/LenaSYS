@@ -169,13 +169,13 @@
 
 // Check if we have a hash/hashpwd and dugga variant
 echo "|". print_r($_SESSION)."|<br>";
-if(!isset($_SESSION["submission-$cid-$vers-$duggaid"])){
+if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	$bytes = random_bytes(4);
 	$hash=bin2hex($bytes);
-	$_SESSION["submission-$cid-$vers-$duggaid"]=$hash;
+	$_SESSION["submission-$cid-$vers-$duggaid-$moment"]=$hash;
 	$bytes = random_bytes(4);
 	$hashpwd=bin2hex($bytes);
-	$_SESSION["submission-password-$cid-$vers-$duggaid"]=$hashpwd;
+	$_SESSION["submission-password-$cid-$vers-$duggaid-$moment"]=$hashpwd;
 
 	// Randomly select variant from available variants
 	$versarr=array();
@@ -193,15 +193,15 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid"])){
 	}else{
 		$variant=$versarr[$rand_idx];
 	}
-	$_SESSION["submission-variant-$cid-$vers-$duggaid"]=$variant;
-	echo "<br>submission-$cid-$vers-$duggaid<br>";
-	echo "|$hash|$hashpwd|$variant|<br>";
+	$_SESSION["submission-variant-$cid-$vers-$duggaid-$moment"]=$variant;
+	echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
+	echo "|$hash|$hashpwd|$variant|$moment|<br>";
 }else{
-	$hash=$_SESSION["submission-$cid-$vers-$duggaid"];
-	$hashpwd=$_SESSION["submission-password-$cid-$vers-$duggaid"];
-	$variant=$_SESSION["submission-variant-$cid-$vers-$duggaid"];
-	echo "<br>submission-$cid-$vers-$duggaid<br>";
-	echo "|$hash|$hashpwd|$variant|<br>";
+	$hash=$_SESSION["submission-$cid-$vers-$duggaid-$moment"];
+	$hashpwd=$_SESSION["submission-password-$cid-$vers-$duggaid-$moment"];
+	$variant=$_SESSION["submission-variant-$cid-$vers-$duggaid-$moment"];
+	echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
+	echo "|$hash|$hashpwd|$variant|$moment|<br>";
 }
 // if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 // 	if($_SESSION['pwdentrance'] != 1){
@@ -272,7 +272,11 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid"])){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 
-					if ($duggafile !== 'contribution') {						
+					if(isSuperUser($userid)){
+						// A teacher may not submit any duggas
+						echo "<table id='submitButtonTable' class='navheader'>";
+						echo "</table>";
+					}else if ($duggafile !== 'contribution') {						
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='left'>";

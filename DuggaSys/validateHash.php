@@ -14,7 +14,7 @@
     echo "$hashpwd <br>";
     if($hashpwd!="UNK"){
         echo "Checking $hash/$hashpwd <br>";
-        $sql="SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=:hash AND password=:hashpwd";
+        $sql="SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz,moment FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=:hash AND password=:hashpwd";
         $query = $pdo->prepare($sql);
         $query->bindParam(':hash', $hash);
         $query->bindParam(':hashpwd', $hashpwd);
@@ -27,11 +27,12 @@
             $newcourseid=$row['cid'];
             $newcoursevers=$row['vers'];
             $newduggaid=$row['quiz'];
+            $newmoment=$row['moment'];
         }
-        if(isset($variant)){
-            $_SESSION["submission-$newcourseid-$newcoursevers-$newduggaid"]=$hash;
-            $_SESSION["submission-password-$newcourseid-$newcoursevers-$newduggaid"]=$hashpwd;
-            $_SESSION["submission-variant-$newcourseid-$newcoursevers-$newduggaid"]=$variant;
+        if(isset($param)){
+            $_SESSION["submission-$newcourseid-$newcoursevers-$newduggaid-$moment"]=$hash;
+            $_SESSION["submission-password-$newcourseid-$newcoursevers-$newduggaid-$moment"]=$hashpwd;
+            $_SESSION["submission-variant-$newcourseid-$newcoursevers-$newduggaid-$moment"]=$variant;
             $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
             header("Location: $link");
             exit();	

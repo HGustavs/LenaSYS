@@ -1554,6 +1554,15 @@ function hideLoginPopup()
 		window.removeEventListener("keypress", loginEventHandler, false);
 }
 
+function showLogoutPopup()
+{
+	$("#logoutBox").show();
+	/*$("#logoutBox").css('display', 'block');
+	$(".buttonLogoutCancelBox").click(function(){
+		$("#logoutBox").hide();
+	});
+	*/
+}
 //----------------------------------------------------------------------------------
 // setupLoginLogoutButton: Set button to login or logout functionality when navheader loads
 //----------------------------------------------------------------------------------
