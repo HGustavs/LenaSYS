@@ -29,6 +29,9 @@ function setup()
 function returnedDugga(data)
 {
 	toggleLoadVariant(false);	//A submission doesn't have any variants. The Next variant button should be disabled.
+	if(data['isTeacher']==1){
+		noUploadForTeacher();
+	}
 	dataV = data;
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
@@ -44,6 +47,7 @@ function returnedDugga(data)
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
+		$(".submit-button").removeClass("btn-disable");
 		duggaParams = jQuery.parseJSON(data['param']);
 
 		if(duggaParams["type"]==="pdf"){
