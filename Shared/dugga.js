@@ -13,8 +13,8 @@ var inParams = "UNK";
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 var pressTimer;
-var hash;
-var pwd;
+var hash="UNK";
+var pwd="UNK";
 var duggaTitle;
 var iconFlag = false;
 var ishashindb;
@@ -90,8 +90,13 @@ function loadDugga(){
 }
 
 function loadDuggaType(){
+	// hideLoadDuggaPopup();
 	hash = document.getElementById('hash').value;
-	AJAXService("",{}, "INPUTCHECK");
+	// hashpwd = document.getElementById('hashpwd').value;
+	// AJAXService("LOADDUGGA",{}, "INPUTCHECK");
+	//console.log(`https://dugga.iit.his.se/sh/?s=${hash}`)
+	window.location.href = `https://dugga.iit.his.se/sh/?s=${hash}`;
+	//https://dugga.iit.his.se/sh/?s=9b4ea96a
 }
 
 //----------------------------------------------------------------------------------
@@ -686,72 +691,80 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 //----------------------------------------------------------------------------------
 function saveDuggaResult(citstr)
 {	
-	blockhashgen = true; //Block-Hash-Generation: No new hash should be generated if 'Save' is clicked more than once per dugga session.
-	
-	var url = createUrl(hash); //Create URL
-	console.log("pwd = "+pwd);
-	if(pwd == undefined || pwd.includes("undef")) pwd = randomPassword();
-	document.getElementById('url').innerHTML = url;
-	document.getElementById('pwd').innerHTML = pwd;
-	updateLocalStorageItem();
+	citstr=querystring['moment']+" "+citstr;
+	citstr=querystring['coursevers']+" "+citstr;
+	citstr=querystring['cid']+" "+citstr;
+	// citstr+= "##!!##" + timeUsed;
+	// citstr+= "##!!##" + stepsUsed;
+	//citstr+= "##!!##" + score;
+	//variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
+	AJAXService("SAVDU",{answer:citstr},"PDUGGA");
+
+	//blockhashgen = true; //Block-Hash-Generation: No new hash should be generated if 'Save' is clicked more than once per dugga session.
+	// var url = createUrl(hash); //Create URL
+	// console.log("pwd = "+pwd);
+	// if(pwd == undefined || pwd.includes("undef")) pwd = randomPassword();
+	// document.getElementById('url').innerHTML = url;
+	// document.getElementById('pwd').innerHTML = pwd;
+	// updateLocalStorageItem();
 
 
-	var scores = JSON.parse(localStorage.getItem("ls-highscore-dg"+querystring['did']) || '[]');
-	scores.push(score);
-	localStorage.setItem("ls-highscore-dg"+querystring['did'], JSON.stringify(scores));
-	var readonly;
-	$.ajax({
-		url: "courseedservice.php",
-		dataType: "json"
-	}).done(response => {
-		readonly=response.readonly;
-		//Read-only is active
-		if(readonly == 1)
-		{
-			console.log("Read-only is active, duggas cannot be submitted at this time");
-		}
-		//Read-only is not active
-		else
-		{
-			citstr=querystring['moment']+" "+citstr;
-			citstr=querystring['coursevers']+" "+citstr;
-			citstr=querystring['cid']+" "+citstr;
-			citstr+= "##!!##" + timeUsed;
-			citstr+= "##!!##" + stepsUsed;
-			//citstr+= "##!!##" + score;
-			variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
-			AJAXService("SAVDU",{answer:citstr},"PDUGGA");
+	// var scores = JSON.parse(localStorage.getItem("ls-highscore-dg"+querystring['did']) || '[]');
+	// scores.push(score);
+	// localStorage.setItem("ls-highscore-dg"+querystring['did'], JSON.stringify(scores));
+	// var readonly;
+	// $.ajax({
+	// 	url: "courseedservice.php",
+	// 	dataType: "json"
+	// }).done(response => {
+	// 	readonly=response.readonly;
+	// 	//Read-only is active
+	// 	if(readonly == 1)
+	// 	{
+	// 		console.log("Read-only is active, duggas cannot be submitted at this time");
+	// 	}
+	// 	//Read-only is not active
+	// 	else
+	// 	{
+	// 		citstr=querystring['moment']+" "+citstr;
+	// 		citstr=querystring['coursevers']+" "+citstr;
+	// 		citstr=querystring['cid']+" "+citstr;
+	// 		citstr+= "##!!##" + timeUsed;
+	// 		citstr+= "##!!##" + stepsUsed;
+	// 		//citstr+= "##!!##" + score;
+	// 		variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
+	// 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
-			var dateTime = new Date(); 				//Get the current date and time
-			var comment = querystring['comment']; 	//Get the comment. 'comment' will be null by default. A not-null/not-undefined value of comment will appear only if deadline has been passed.
-			var deadline = querystring['deadline']; //Get deadlinedate from URL
+	// 		var dateTime = new Date(); 				//Get the current date and time
+	// 		var comment = querystring['comment']; 	//Get the comment. 'comment' will be null by default. A not-null/not-undefined value of comment will appear only if deadline has been passed.
+	// 		var deadline = querystring['deadline']; //Get deadlinedate from URL
 			
-			Number.prototype.padLeft = function(base,chr){
-				var  len = (String(base || 10).length - String(this).length)+1;
-				return len > 0? new Array(len).join(chr || '0')+this : this;
-			}
+	// 		Number.prototype.padLeft = function(base,chr){
+	// 			var  len = (String(base || 10).length - String(this).length)+1;
+	// 			return len > 0? new Array(len).join(chr || '0')+this : this;
+	// 		}
 			
-			dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');
-			console.log("deadline: " + deadline + " > dateTimeFormat: " + dateTimeFormat);
+	// 		dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');
+	// 		console.log("deadline: " + deadline + " > dateTimeFormat: " + dateTimeFormat);
 			
-			if(deadline > dateTimeFormat){	
-				//Deadline has not been passed.
-				document.getElementById('receiptInfo').innerHTML = "<p>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.\n\n</p><p>Successfully submitted before deadline.</p>";
-			}
-			else{ 
-				//Deadline has passed.
-				if(comment == "UNK" || comment == undefined || comment == "null"){
-					document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>OBS! This assignment has passed its deadline. The teacher will grade this assignment during the next ordinary grading occation OR when time allows.</p>";
-				}
-				else{
-					document.getElementById('receiptInfo').innerHTML = "<p>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>"+comment+"</p>";
-				}
+	// 		if(deadline > dateTimeFormat){	
+	// 			//Deadline has not been passed.
+	// 			document.getElementById('receiptInfo').innerHTML = "<p>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.\n\n</p><p>Successfully submitted before deadline.</p>";
+	// 		}
+	// 		else{ 
+	// 			//Deadline has passed.
+	// 			if(comment == "UNK" || comment == undefined || comment == "null"){
+	// 				document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>OBS! This assignment has passed its deadline. The teacher will grade this assignment during the next ordinary grading occation OR when time allows.</p>";
+	// 			}
+	// 			else{
+	// 				document.getElementById('receiptInfo').innerHTML = "<p>Hash and password can be used to return to the dugga in the future. Make sure to store it on a secure place.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>"+comment+"</p>";
+	// 			}
 
-			}
-      		duggaFeedbackCheck();
-			showReceiptPopup();
-		}
-	});
+	// 		}
+    //   		duggaFeedbackCheck();
+	// 		showReceiptPopup();
+	// 	}
+	// });
 }
 
 
@@ -1078,17 +1091,19 @@ function AJAXService(opt,apara,kind)
 			type: "POST",
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para+"&variant="+variantValue,
 			datatype: "json",
-			success: function(data){
-				var phpData = JSON.parse(data);
-				isTeacher = phpData.isTeacher;
-				isFileSubmitted = phpData.isFileSubmitted;
-				canSaveController(); 
-				localStorageHandler(phpData);
-				returnedDugga(phpData);
-				setPassword(phpData.password); 
-				enableTeacherVariantChange(phpData);
-				handleHash();	//Makes sure hash is unique.
-			}
+			success: returnedDugga
+			// success: function(data){
+			// 	console.log(data);
+			// 	var phpData = JSON.parse(data);
+			// 	isTeacher = phpData.isTeacher;
+			// 	isFileSubmitted = phpData.isFileSubmitted;
+			// 	canSaveController(); 
+			// 	localStorageHandler(phpData);
+			// 	returnedDugga(phpData);
+			// 	setPassword(phpData.password); 
+			// 	enableTeacherVariantChange(phpData);
+			// 	handleHash();	//Makes sure hash is unique.
+			// }
 		})
 	}else if(kind=="RESULT"){
 			$.ajax({
@@ -1189,26 +1204,36 @@ function AJAXService(opt,apara,kind)
 		});
 	}
 	else if(kind=="INPUTCHECK") {
+		alert(JSON.stringify(querystring));
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
-			data: "&hash="+hash+"&did="+querystring["did"]+"&opt="+opt+para,
+			data: "hash="+hash+"&password="+hashpwd+"&opt="+opt+para,
 			dataType: "json",
 			success: function(data) {
-			// Will redirect you if you are using correct hash for correct dugga
-			var phpData = data;
-			console.log(data);
-			if(phpData["duggaTitle"] == duggaTitle) {
-				window.location.href = "../sh/?a="+hash;
+				console.log(data);
+				alert(data['debug']);
+				if(data['debug']!="NONE!"){
+					alert(data['debug']);
+				}else{
+					returnedDugga(data);
+				}				
 			}
-			else if(data['ishashindb']){
-				
-				confirm("The corresponding hash does not match the dugga type!\nYou entered a hash for dugga: " + phpData["duggaTitle"] + " when on dugga: " + duggaTitle); 
-		
-			}else{
-				confirm("The hash "+hash+" does not exist in the database"); 
-			}
-		}
+			// success: function(data) {
+			// 	// Will redirect you if you are using correct hash for correct dugga
+			// 	var phpData = data;
+			// 	console.log(data);
+			// 	if(phpData["duggaTitle"] == duggaTitle) {
+			// 		window.location.href = "../sh/?a="+hash;
+			// 	}
+			// 	else if(data['ishashindb']){
+					
+			// 		confirm("The corresponding hash does not match the dugga type!\nYou entered a hash for dugga: " + phpData["duggaTitle"] + " when on dugga: " + duggaTitle); 
+			
+			// 	}else{
+			// 		confirm("The hash "+hash+" does not exist in the database"); 
+			// 	}
+			// }
 		});
 	}
 }
@@ -1532,6 +1557,15 @@ function hideLoginPopup()
 		window.removeEventListener("keypress", loginEventHandler, false);
 }
 
+function showLogoutPopup()
+{
+	$("#logoutBox").show();
+	/*$("#logoutBox").css('display', 'block');
+	$(".buttonLogoutCancelBox").click(function(){
+		$("#logoutBox").hide();
+	});
+	*/
+}
 //----------------------------------------------------------------------------------
 // setupLoginLogoutButton: Set button to login or logout functionality when navheader loads
 //----------------------------------------------------------------------------------
@@ -1919,7 +1953,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 			for (var i=filez.length-1;i>=0;i--){
 					if(cfield==filez[i].fieldnme){
 							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
-							tab+="<tr'>"
+							tab+="<tr>"
 
 							// Button for making / viewing feedback - note - only button for given feedback to students.
 							if(iconFlag){

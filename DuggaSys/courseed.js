@@ -370,7 +370,7 @@ function returnedCourse(data)
 	}
 
 	// Course Name
-	str += "<div id='Courselistc'>";
+	str += "<div id='Courselistc' style='margin:auto;'>";
 
 	// Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
 	str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;''><a href='https://github.com/HGustavs/LenaSYS'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div class='ellipsis'> Course Organization System</div>"

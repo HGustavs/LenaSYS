@@ -17,27 +17,64 @@ $submission = getOPG("s");
 pdoConnect();
 session_start();
 
+if(isset($_SESSION['uid'])){
+	$userid=$_SESSION['uid'];
+}else{
+	$userid="student";		
+} 
+
 //To test this function, try and enter the following:
 //http://localhost/lenasys/LenaSYS/sh/?a=<hash>
 function GetAssignment ($hash){
 	global $pdo;
+	global $userid;
 
 	// Defaults to 404 Error page if no there is no match in the database for the hash value
-	$URL = "../errorpages/404.php";
+	//$URL = "../errorpages/404.php";
 
 	// Database request form
-	$sql =	
-	"SELECT userAnswer.cid, userAnswer.vers, userAnswer.quiz, userAnswer.moment, course.coursename, quiz.deadline
-	FROM userAnswer 
-	INNER JOIN course ON userAnswer.cid=course.cid
-	INNER JOIN quiz ON userAnswer.quiz=quiz.id
-	WHERE hash='{$hash}'";
-
+	$sql = "select * from userAnswer left join quiz on userAnswer.quiz=quiz.id left join course on course.cid=userAnswer.cid where hash=:hash;";
+	$query = $pdo->prepare($sql);
+	$query->bindParam(":hash", $hash,PDO::PARAM_STR);
+	$query->execute();
+	
 	// There should only be one match to the hash value in database as the hash is unique
-	foreach ($pdo->query($sql) as $row){
-		$URL = "../DuggaSys/showDugga.php?coursename={$row["coursename"]}&&courseid={$row["cid"]}&cid={$row["cid"]}&coursevers={$row["vers"]}&did={$row["quiz"]}&moment={$row["moment"]}&deadline={$row["deadline"]}&hash=$hash";
+	foreach ($query->fetchAll() as $row){
+		$cid = $row['cid'];
+		$vers = $row['vers'];
+		$coursename=$row['coursename'];
+		$moment = $row['moment'];
+		$did = $row['quiz'];
+		//$highscoremode = $row['highscoremode'];
+		$deadline = $row['deadline'];
+		$variant = $row['variant'];
+		$hashpwd = $row['password'];
 	}
-	return $URL;
+	
+	// Redirect if no password is stored in session or if hash/hashpwd is incorrect 
+	if(isSuperUser($userid)){
+		// Never ask for pwd
+	}else if(!isset($_SESSION["submission-password-$cid-$vers-$did-$moment"]) || (isset($_SESSION["submission-password-$cid-$vers-$did-$moment"]) && $_SESSION["submission-password-$cid-$vers-$did-$moment"]!=$hashpwd)){
+		$_SESSION['checkhash']=$hash;
+		header("Location: ../DuggaSys/validateHash.php");
+		exit();	
+	}
+
+	if(isset($cid)&&isset($coursename)&&isset($vers)&&isset($moment)&&isset($deadline)){	
+		$_SESSION["submission-$cid-$vers-$did-$moment"]=$hash;
+		$_SESSION["submission-password-$cid-$vers-$did-$moment"]=$hashpwd;
+		$_SESSION["submission-variant-$cid-$vers-$did-$moment"]=$variant;	
+		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed<br>";
+		echo "|$hash|$hashpwd|<br>";
+		header("Location: ../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed");
+		exit();	
+	}else{
+		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed<br>";
+		echo "|$hash|$hashpwd|<br>";
+//		header("Location: ../errorpages/404.php");
+		exit();	
+	}
+	
 }
 
 //------------------------------------------------------------------------------------------------
@@ -180,8 +217,7 @@ function CourseAndAssignment($course, $assignment) {
 
 
 if($submission != "UNK"){
-	$assignmentURL = GetAssignment($assignment);
-	header("Location: {$assignmentURL}");
+	$assignmentURL = GetAssignment($submission);
 }else if(($course != "UNK") && ($assignment == "UNK")){
 	GetCourse($course);
 }else if(($assignment != "UNK") && ($course != "UNK")) {

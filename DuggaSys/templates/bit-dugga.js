@@ -43,7 +43,18 @@ function setup()
 //----------------------------------------------------------------------------------
 
 function returnedDugga(data)
-{
+{	
+	if(data['debug']!="NONE!") alert(data['debug']);
+
+	if(data['opt']=="SAVDU"){
+		console.log(data['hash'],data['hashpwd']);
+		$('#url_receipt').html(data['link'])
+		$('#url_receipt').attr("href",data['link'])
+		$('#hash_receipt').html(data['hash'])
+		$('#pwd_receipt').html(data['hashpwd'])
+		showReceiptPopup();
+	}
+
 	Timer.startTimer();
 	ClickCounter.initialize();
 	if(querystring['highscoremode'] == 1) {
@@ -58,15 +69,18 @@ function returnedDugga(data)
 		}
 		ClickCounter.showClicker();
 	}
+
 	
-	  if(data['debug']!="NONE!") alert(data['debug']);
 
 		if(data['param']=="UNK"){
 				alert("UNKNOWN DUGGA!");
 		}else{		
+			console.log("data", data)
+			console.log("parameteras", data['param'])
 			retdata=jQuery.parseJSON(data['param']);
 			$("#talet").html(retdata['tal']);
 			// Add our previous answer
+			console.log(data['answer']);
 			if(data['answer'] != null && data['answer'] != "UNK"){
 				resetBitstring();
 				var previous = data['answer'].split(' ');
@@ -265,6 +279,7 @@ function bitClick(divid)
 			$("#"+divid).addClass("ett" );
 			$("#"+divid).removeClass("noll");
 	}
+	$(".submit-button").removeClass("btn-disable");
 }
 
 function hexClick(divid)
@@ -296,6 +311,7 @@ function hexClick(divid)
 	$("#pop").addClass(popclass);
 	
 	hc=divid;
+	$(".submit-button").removeClass("btn-disable");
 }
 
 function setval(sval)

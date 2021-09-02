@@ -1758,11 +1758,11 @@ $(window).load(function () {
   });
 
   //retrieveAnnouncementAuthor();
-  retrieveAnnouncementsCards();
+  //retrieveAnnouncementsCards();
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
   multiSelect();
-  toggleFeedbacks();
+  //toggleFeedbacks();
 });
 
 

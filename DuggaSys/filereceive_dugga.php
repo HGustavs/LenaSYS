@@ -53,6 +53,48 @@ if(isset($_SESSION['uid'])){
 	$userid="UNK";
 }
 
+if(	isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"]) && 
+	isset($_SESSION["submission-password-$cid-$vers-$duggaid-$moment"])){
+		$hash=$_SESSION["submission-$cid-$vers-$duggaid-$moment"];
+		$hashpwd=$_SESSION["submission-password-$cid-$vers-$duggaid-$moment"];
+		$variant=$_SESSION["submission-variant-$cid-$vers-$duggaid-$moment"];
+
+		// Make sure there is an assignment
+		$query = $pdo->prepare("SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=:hash;");
+		$query->bindParam(':hash', $hash);			
+		$query->execute();
+		foreach($query->fetchAll() as $row){
+			$grade = $row['grade'];
+			$dbpwd = $row['password'];
+			// $timesSubmitted = $row['timesSubmitted'];
+			// $timesAccessed = $row['timesAccessed'];
+		}
+
+		if(isset($grade)&&($grade > 1)){
+			//if grade equal G, VG, 3, 4, 5, or 6
+			$debug="You have already passed this dugga. You are not required/allowed to submit anything new to this dugga.";
+		}else if (isset($grade)&&($grade == 0)){
+			// Assignment exist in db ... NOOP
+		}else{
+			// Assignment does not exist in db ... insert 
+			$query = $pdo->prepare("INSERT INTO userAnswer(cid,quiz,vers,variant,moment,hash,password,timesSubmitted,timesAccessed,submitted) VALUES(:cid,:did,:coursevers,:variant,:moment,:hash,:password,1,1,now());");
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':coursevers', $vers);
+			$query->bindParam(':did', $duggaid);
+			$query->bindParam(':moment', $moment);
+			$query->bindParam(':variant', $variant);
+			$query->bindParam(':hash', $hash);
+			$query->bindParam(':password', $hashpwd);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
+			}	
+		}
+}else{
+	header("Location: ../errorpages/404.php");
+	exit();	
+}
+
 // Gets username based on uid. USED FOR LOGGING
 $query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
 $query->bindParam(':uid', $userid);
@@ -104,7 +146,14 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 		}
 
 		// Create a file area with format Lastname-Firstname-Login
-		$userdir = $lastname."_".$firstname."_".$loginname;
+		// Use hash if no userid exists.
+		if($userid!="UNK"){
+			$userdir = $lastname."_".$firstname."_".$loginname;
+		}else if($userid=="UNK" && isset($hash)){
+			$userdir=$hash;
+		}else{
+			$userdir="UNK";
+		}
 
 		// First replace a predefined list of national characters
 		// Then replace any additional character that is not a-z, a number, period or underscore
@@ -439,7 +488,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 									$error=true;
 								}
                          $discription = $filetype." ".$fname;
-                         logUserEvent($userid, $username, EventTypes::DuggaFileupload,$discription);
+                         //logUserEvent($userid, $username, EventTypes::DuggaFileupload,$discription);
+												 logUserEvent($userid, $hash, EventTypes::DuggaFileupload,$discription);
 						}
 				}
 
@@ -454,8 +504,14 @@ if(!$error){
 }*/
 
 //Sets hasUploaded variable so we do not get prompted for password when we upload a file.
-$_SESSION['hasUploaded'] = 1;
-echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?courseid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0&cid=".$cid."&hash=".$hash."' />";  //update page, redirect to "showDugga.php" with the variables sent for course id and version id and extension
+//$_SESSION['hasUploaded'] = 1;
+//echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?courseid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0&cid=".$cid."&hash=".$hash."' />";  //update page, redirect to "showDugga.php" with the variables sent for course id and version id and extension
+
+// echo "{$hash}|";
+// echo "{$hashpwd}|";
+// echo "{$variant}|<br>";
+header("Location: /sh/?s=$hash");
+exit();	
 
 
 function formatTimeSheetInput(){

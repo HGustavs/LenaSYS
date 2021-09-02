@@ -348,10 +348,10 @@
 
 			if(checklogin()) {
 				echo "<td class='navName' id='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
-				echo "<td id='loginbutton' class='loggedin'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
+				echo "<td id='loginbutton' class='loggedin' onclick='showLogoutPopup();'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
 			}else{
 				echo "<td class='navName' id='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
-				echo "<td id='loginbutton' class='loggedout'><img alt='login icon' id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
+				echo "<td id='loginbutton' class='loggedout' onclick='showLoginPopup();'><img alt='login icon' id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
 			}
 
 			echo "</tr></table>";
@@ -369,16 +369,36 @@
 				echo "<div style='height:50px;'></div>";
 			}		
 ?>
-<?php
-	include '../Shared/logoutbox.php';
-?>
+<div id="overlay" style="display: none;"></div>
+<div id='logoutBox' class="logoutBoxContainer" style="display: none">
+	<div id='logout' class="logoutBox">
+		<div class='logoutBoxheader'>
+			<h3>Sign out</h3>
+			<div class="cursorPointer" onclick="$('#logoutBox').hide();" title="Close window">x</div>
+		</div>
+		<form action="" id="logoutForm" method="post">
+			<div>
+				<p>Are you sure you want to log out?</p>
+			</div>
+			<table class="logoutBoxTable">
+				<tr class="logoutboxTr">
+					<td>
+						<input type='button' class='buttonLogoutBox' onclick='processLogout();' value='Log out' title='Log out'>
+					</td>
+					<td>
+						<input type='button' class='buttonLogoutBox buttonLogoutCancelBox' onclick="$('#logoutBox').hide();" value='Cancel' title='CancelLogout'>
+					</td>						
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
 <script type="text/javascript">
 		if(localStorage.getItem("ls-cookie-message")=="off"){
 			$("#cookiemsg").css("display", "none");
 		}else{
 			$("#cookiemsg").css("display", "flex");
 		}
-	setupLoginLogoutButton('<?PHP echo json_encode(checklogin()) ?>');
 	function cookieMessage(){
 		hideCookieMessage();
 		localStorage.setItem("ls-cookie-message", "off");

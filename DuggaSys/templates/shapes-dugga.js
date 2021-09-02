@@ -65,11 +65,21 @@ function returnedDugga(data)
 	
 	if(data['debug']!="NONE!") alert(data['debug']);
 
+	if(data['opt']=="SAVDU"){
+		console.log(data['hash'],data['hashpwd']);
+		$('#url_receipt').html(data['link'])
+		$('#url_receipt').attr("href",data['link'])
+		$('#hash_receipt').html(data['hash'])
+		$('#pwd_receipt').html(data['hashpwd'])
+		showReceiptPopup();
+	}
+
 	if(data['param']=="UNK"){
 		alert("UNKNOWN DUGGA!");
 	}else{		
 		dta=jQuery.parseJSON(data['param']);
-		if (data['answer'] !== "UNK") {
+		$(".submit-button").removeClass("btn-disable");
+		if (data['answer'] !== "UNK") {			
 			var previousAnswer = data['answer'].split(' ');
 			bitarray=previousAnswer[3].split(',');
 			for (var i=0;i<bitarray.length;i++) bitarray[i]=parseInt(bitarray[i]); 
