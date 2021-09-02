@@ -151,7 +151,8 @@ function processDuggaFiles()
 			$currcvd=getcwd();
 			
 
-			$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
+			//$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
+			$ziptemp = $row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
 
 			if(!file_exists($ziptemp)) {
 				$isFileSubmitted = false;
