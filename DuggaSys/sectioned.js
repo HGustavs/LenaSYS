@@ -403,7 +403,6 @@ function createFABItem(kind, itemtitle, comment) {
 
 function addColorsToTabSections(kind, visible, spkind) {
   var retStr = "<td style='width:32px;overflow:hidden;";
-
   if (spkind == "E") {
     retStr += "'><div class='spacerEnd'></div></td>";
   } else {
@@ -800,25 +799,11 @@ function returnedSection(data) {
 
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment || 7 Message
         var itemKind = parseInt(item['kind']);
-
-        if(itemKind === 2 || itemKind == 5){
-          str += `<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' 
-          class='tabs${item["tabs"]}'><div class='spacerRight'></div></td>`;
-        }
-
-        if(itemKind === 6 || itemKind == 7){
-          str += `<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' 
-          class='tabs${item["tabs"]}'><div class='spacerRight'></div></td>`;
-        }
-
         if (itemKind === 3 || itemKind === 4) {
           
           //If there exists atleast one test or moment swimlanes shall be hidden
           hasDuggs = true;
 
-          // Styling for quiz row e.g. add a tab spacer
-          if (itemKind === 3) str += `<td style='width:0px'><div class='spacerLeft'>
-          </div></td><td id='indTab' class='tabs${item["tabs"]}'><div class='spacerRight'></div></td>`;
           var grady = -1;
           var status = "";
           var marked;
@@ -878,11 +863,14 @@ function returnedSection(data) {
               str += addColorsToTabSections(itemKind, itemVisible, "L");
             }
           } else if (itemGradesys == 4) {
+            str += addColorsToTabSections(itemKind, itemVisible, "L");
             str += addColorsToTabSections(itemKind, itemVisible, "E");
           } else if (itemGradesys == 5) {
+            str += addColorsToTabSections(itemKind, itemVisible, "L");            
             str += addColorsToTabSections(itemKind, itemVisible, "L");
             str += addColorsToTabSections(itemKind, itemVisible, "E");
           } else if (itemGradesys == 6) {
+            str += addColorsToTabSections(itemKind, itemVisible, "L");
             str += addColorsToTabSections(itemKind, itemVisible, "L");
             str += addColorsToTabSections(itemKind, itemVisible, "L");
             str += addColorsToTabSections(itemKind, itemVisible, "E");
