@@ -168,7 +168,7 @@
 
 
 // Check if we have a hash/hashpwd and dugga variant
-echo "|". print_r($_SESSION)."|<br>";
+//echo "|". print_r($_SESSION)."|<br>";
 if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	$bytes = random_bytes(4);
 	$hash=bin2hex($bytes);
@@ -194,14 +194,14 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		$variant=$versarr[$rand_idx];
 	}
 	$_SESSION["submission-variant-$cid-$vers-$duggaid-$moment"]=$variant;
-	echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
-	echo "|$hash|$hashpwd|$variant|$moment|<br>";
+	//echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
+	//echo "|$hash|$hashpwd|$variant|$moment|<br>";
 }else{
 	$hash=$_SESSION["submission-$cid-$vers-$duggaid-$moment"];
 	$hashpwd=$_SESSION["submission-password-$cid-$vers-$duggaid-$moment"];
 	$variant=$_SESSION["submission-variant-$cid-$vers-$duggaid-$moment"];
-	echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
-	echo "|$hash|$hashpwd|$variant|$moment|<br>";
+	//echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
+	//echo "|$hash|$hashpwd|$variant|$moment|<br>";
 }
 // if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
 // 	if($_SESSION['pwdentrance'] != 1){
@@ -423,7 +423,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 			<div id='loadDuggaInfo'></div>
     		<div id='loadDuggaPopup' style="display:block">
 				<div class='inputwrapper'><span>Enter hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value='' autocomplete="off"/></div>
-				<div class='inputwrapper'><span>Enter hash password:</span><input class='textinput' type='text' id='hashpwd' placeholder='Hash password' value='' autocomplete="off"/></div>
+				<!--<div class='inputwrapper'><span>Enter hash password:</span><input class='textinput' type='text' id='hashpwd' placeholder='Hash password' value='' autocomplete="off"/></div>-->
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="loadDuggaType();" value='Load Dugga'>
 				</div>

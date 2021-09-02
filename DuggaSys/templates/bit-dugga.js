@@ -43,8 +43,7 @@ function setup()
 //----------------------------------------------------------------------------------
 
 function returnedDugga(data)
-{
-	alert("SNUS")
+{	
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	if(data['opt']=="SAVDU"){

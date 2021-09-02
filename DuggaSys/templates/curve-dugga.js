@@ -96,9 +96,20 @@ function returnedDugga(data) {
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
 
+
+	if(data['opt']=="SAVDU"){
+		console.log(data['hash'],data['hashpwd']);
+		$('#url_receipt').html(data['link'])
+		$('#url_receipt').attr("href",data['link'])
+		$('#hash_receipt').html(data['hash'])
+		$('#pwd_receipt').html(data['hashpwd'])
+		showReceiptPopup();
+	}	
+
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
+		$(".submit-button").removeClass("btn-disable");
 		if (canvas) {
 			var studentPreviousAnswer = "UNK";
 			retdata = jQuery.parseJSON(data['param']);
@@ -297,6 +308,7 @@ function ev_touchmove(event) {
 
 function getMousePos(evt) {	
 	var rect = canvas.getBoundingClientRect();
+
 	return {
 		x : (evt.clientX - rect.left),
 		y : (evt.clientY - rect.top)
@@ -675,15 +687,15 @@ function init(quizGoal, studentPreviousAnswer)
 function fitToContainer() 
 {
 	// Make it visually fill the positioned parent
-	divw = $("#content").width();
-	if (divw > 500){ divw -= 248; }
-	if (divw < window.innerHeight) {
-		canvas.width = divw;
-		canvas.height = divw;
-	} else {
-		canvas.width = window.innerHeight - 150;
-		canvas.height = canvas.width;
-	}
+	// divw = $("#content").width();
+	// if (divw > 500){ divw -= 248; }
+	// if (divw < window.innerHeight) {
+	// 	canvas.width = divw;
+	// 	canvas.height = divw;
+	// } else {
+	// 	canvas.width = window.innerHeight - 150;
+	// 	canvas.height = canvas.width;
+	// }
 
 	sf = canvas.width / 100;
 }

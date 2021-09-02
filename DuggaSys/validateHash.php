@@ -30,9 +30,9 @@
             $newmoment=$row['moment'];
         }
         if(isset($param)){
-            $_SESSION["submission-$newcourseid-$newcoursevers-$newduggaid-$moment"]=$hash;
-            $_SESSION["submission-password-$newcourseid-$newcoursevers-$newduggaid-$moment"]=$hashpwd;
-            $_SESSION["submission-variant-$newcourseid-$newcoursevers-$newduggaid-$moment"]=$variant;
+            $_SESSION["submission-$newcourseid-$newcoursevers-$newduggaid-$newmoment"]=$hash;
+            $_SESSION["submission-password-$newcourseid-$newcoursevers-$newduggaid-$newmoment"]=$hashpwd;
+            $_SESSION["submission-variant-$newcourseid-$newcoursevers-$newduggaid-$newmoment"]=$variant;
             $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
             header("Location: $link");
             exit();	

@@ -11,3 +11,5 @@ ALTER TABLE userAnswer DROP FOREIGN KEY fk_useranswer_joins_user;
 DROP INDEX fk_useranswer_joins_user ON userAnswer;
 ALTER TABLE userAnswer MODIFY COLUMN uid INTEGER UNSIGNED DEFAULT NULL;
 ALTER TABLE userAnswer ADD CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+ALTER TABLE submission ADD COLUMN hash CHAR(8);

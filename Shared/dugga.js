@@ -90,10 +90,13 @@ function loadDugga(){
 }
 
 function loadDuggaType(){
-	hideLoadDuggaPopup();
+	// hideLoadDuggaPopup();
 	hash = document.getElementById('hash').value;
-	hashpwd = document.getElementById('hashpwd').value;
-	AJAXService("LOADDUGGA",{}, "INPUTCHECK");
+	// hashpwd = document.getElementById('hashpwd').value;
+	// AJAXService("LOADDUGGA",{}, "INPUTCHECK");
+	//console.log(`https://dugga.iit.his.se/sh/?s=${hash}`)
+	window.location.href = `https://dugga.iit.his.se/sh/?s=${hash}`;
+	//https://dugga.iit.his.se/sh/?s=9b4ea96a
 }
 
 //----------------------------------------------------------------------------------
