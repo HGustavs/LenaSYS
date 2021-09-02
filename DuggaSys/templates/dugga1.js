@@ -44,6 +44,17 @@ function setup()
 
 function returnedDugga(data)
 {
+	if(data['debug']!="NONE!") alert(data['debug']);
+
+	if(data['opt']=="SAVDU"){
+		console.log(data['hash'],data['hashpwd']);
+		$('#url_receipt').html(data['link'])
+		$('#url_receipt').attr("href",data['link'])
+		$('#hash_receipt').html(data['hash'])
+		$('#pwd_receipt').html(data['hashpwd'])
+		showReceiptPopup();
+	}
+
 	Timer.startTimer();
 	ClickCounter.initialize();
 	if(querystring['highscoremode'] == 1) {
@@ -58,15 +69,18 @@ function returnedDugga(data)
 		}
 		ClickCounter.showClicker();
 	}
+
 	
-	  if(data['debug']!="NONE!") alert(data['debug']);
 
 		if(data['param']=="UNK"){
 				alert("UNKNOWN DUGGA!");
 		}else{		
+			console.log("data", data)
+			console.log("parameteras", data['param'])
 			retdata=jQuery.parseJSON(data['param']);
 			$("#talet").html(retdata['tal']);
 			// Add our previous answer
+			console.log(data['answer']);
 			if(data['answer'] != null && data['answer'] != "UNK"){
 				resetBitstring();
 				var previous = data['answer'].split(' ');
@@ -74,21 +88,16 @@ function returnedDugga(data)
 					var bitstring = previous[3];
 					var hexvalue1 = previous[4];
 					var hexvalue2 = previous[5]; 
-				}		
-					
-				try {
-					// NB: LSB is now on the highest string index
-					for (var i=bitstring.length;i>=0;i--){
-						if (bitstring[i]==1){
-							bitClick("B"+(7-i));
-							//console.log("B"+(7-i)+":"+bitstring[i]);
-						}				
-					}
-					document.getElementById('H0').innerHTML=hexvalue1;
-					document.getElementById('H1').innerHTML=hexvalue2;					
-				} catch (error) {
-					console.log("Harmless error bitstring.length = undefined");
+				}			
+				// NB: LSB is now on the highest string index
+				for (var i=bitstring.length;i>=0;i--){
+					if (bitstring[i]==1){
+						bitClick("B"+(7-i));
+						//console.log("B"+(7-i)+":"+bitstring[i]);
+					}				
 				}
+				document.getElementById('H0').innerHTML=hexvalue1;
+				document.getElementById('H1').innerHTML=hexvalue2;
 			}
 		}		
 		// Teacher feedback
@@ -96,15 +105,18 @@ function returnedDugga(data)
 				// No feedback
 		} else {
 				var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-	  		var feedbackArr = data["feedback"].split("||");
-	  		for (var k=feedbackArr.length-1;k>=0;k--){
-	  			var fb_tmp = feedbackArr[k].split("%%");
-	  			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-	  		} 		
-	  		fb += "</tbody></table>";
-				document.getElementById('feedbackTable').innerHTML = fb;
-				$(".feedback-container").css("display","block");
+				var feedbackArr = data["feedback"].split("||");
+				for (var k=feedbackArr.length-1;k>=0;k--){
+					var fb_tmp = feedbackArr[k].split("%%");
+					fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+				} 		
+				fb += "</tbody></table>";
+				document.getElementById('feedbackTable').innerHTML = fb;		
+				document.getElementById('feedbackBox').style.display = "block";
+				$("#showFeedbackButton").css("display","block");
 		}
+		$("#submitButtonTable").appendTo("#content");
+		$("#lockedDuggaInfo").prependTo("#content");
 		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
@@ -115,76 +127,34 @@ function returnedDugga(data)
 
 function saveClick()
 {
-	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
-		url: "showDuggaservice.php",
-		type: "POST",
-		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
-		dataType: "json",
-		success: function(data) {
-			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-			if(ishashindb==true && blockhashgen ==true || ishashindb==true && blockhashgen ==false && ishashinurl==true || ishashindb==true && locallystoredhash != "null"){
-				if (confirm("You already have a saved version!")) {
-					Timer.stopTimer();
+	Timer.stopTimer();
 
-					timeUsed = Timer.score;
-					stepsUsed = ClickCounter.score;
+	timeUsed = Timer.score;
+	stepsUsed = ClickCounter.score;
 
-					if (querystring['highscoremode'] == 1) {	
-						score = Timer.score;
-					} else if (querystring['highscoremode'] == 2) {
-						score = ClickCounter.score;
-					}
+	if (querystring['highscoremode'] == 1) {	
+		score = Timer.score;
+	} else if (querystring['highscoremode'] == 2) {
+		score = ClickCounter.score;
+	}
 
-					// Loop through all bits
-					bitstr="";
-					$(".bit").each(function( index ) {
-							bitstr=bitstr+this.innerHTML;
-					});
-					
-					bitstr+=" "+$("#H0").html();
-					bitstr+=" "+$("#H1").html();
-					
-					bitstr+=" "+screen.width;
-					bitstr+=" "+screen.height;
-					
-					bitstr+=" "+$(window).width();
-					bitstr+=" "+$(window).height();
-					
-					// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-					saveDuggaResult(bitstr);
-				}
-			} else {                            //If it's the first time we save with this hash
-				Timer.stopTimer();
-
-				timeUsed = Timer.score;
-				stepsUsed = ClickCounter.score;
-
-				if (querystring['highscoremode'] == 1) {	
-					score = Timer.score;
-				} else if (querystring['highscoremode'] == 2) {
-					score = ClickCounter.score;
-				}
-
-				// Loop through all bits
-				bitstr="";
-				$(".bit").each(function( index ) {
-						bitstr=bitstr+this.innerHTML;
-				});
-				
-				bitstr+=" "+$("#H0").html();
-				bitstr+=" "+$("#H1").html();
-				
-				bitstr+=" "+screen.width;
-				bitstr+=" "+screen.height;
-				
-				bitstr+=" "+$(window).width();
-				bitstr+=" "+$(window).height();
-				
-				// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-				saveDuggaResult(bitstr);
-			}
-		}
+	// Loop through all bits
+	bitstr="";
+	$(".bit").each(function( index ) {
+			bitstr=bitstr+this.innerHTML;
 	});
+	
+	bitstr+=" "+$("#H0").html();
+	bitstr+=" "+$("#H1").html();
+	
+	bitstr+=" "+screen.width;
+	bitstr+=" "+screen.height;
+	
+	bitstr+=" "+$(window).width();
+	bitstr+=" "+$(window).height();
+	
+	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+	saveDuggaResult(bitstr);
 }
 
 function reset()
@@ -199,7 +169,7 @@ function reset()
 		document.getElementById('H0').innerHTML="0";
 		document.getElementById('H1').innerHTML="0";
 	} else {
-		
+
 	}
 }
 
@@ -309,6 +279,7 @@ function bitClick(divid)
 			$("#"+divid).addClass("ett" );
 			$("#"+divid).removeClass("noll");
 	}
+	$(".submit-button").removeClass("btn-disable");
 }
 
 function hexClick(divid)
@@ -319,7 +290,7 @@ function hexClick(divid)
 	dpos=$("#"+divid).position();
 	dwid=$("#"+divid).width();
 	dhei=$("#"+divid).height();
-	bw=Math.round(dwid)*1.1;
+	bw=Math.round(dwid)*1.10;
 	if(bw<180) bw=180;	// Ensure minimum width of the HEX-box
 	
 	lpos=dpos.left;
@@ -340,6 +311,7 @@ function hexClick(divid)
 	$("#pop").addClass(popclass);
 	
 	hc=divid;
+	$(".submit-button").removeClass("btn-disable");
 }
 
 function setval(sval)
@@ -380,6 +352,7 @@ function toggleInstructions()
 {
     $(".instructions-content").slideToggle("slow");
 }
+
 function toggleFeedback()
 {
     $(".feedback-content").slideToggle("slow");

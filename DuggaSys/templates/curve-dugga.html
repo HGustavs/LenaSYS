@@ -4,37 +4,38 @@
 				<div id="feedbackTable" style="margin-top: -3px;"></div>	
 		</div>
 </div>
-<div id="container" class="curveContainer" style="display:flex; justify-content:flex-start;">
-    <div id='curveInfoBox'>
-        <div class='loginBoxheader'>
-            <h3>Kurv-duggan</h3>
-        </div>
-        <p style="margin-left: 4px;">Kurv-duggan går ut på att fylla i det gråa streck som är ritat med hjälp av linjer och kurvor.</p> 
-        <p style="margin-left: 4px;">Till ert förfogande finns 3 typer av grafiska element: <i>linje</i>, <i>kvadratisk kurva</i> och <i>kubisk kurva</i>.</p>
-        <p style="margin-left: 4px;">Rita från röd prick till blå prick. Röda kryss indikerar slut/början på en linje/kurva. Det finns en lösning där linjen ritas exakt så som den grå linjen.</p>
-        <p style="margin-left: 4px;">Lycka till och glöm inte att spara duggan! En gul lampa betyder att duggan är inlämnad.</p>
-    </div>
-    <canvas id='a' style='background-color:#FFFFFF; border:2px solid black; cursor:none; display:block;'></canvas>
-    <div id="infobox" style="padding:4px;">
-        <div id="quizInstructions"></div>
-        <div class='loginBoxheader'>
-            <h3>Ritverktyg</h3>
-        </div>
-
-        <div style="display:flex">
-            <input type="button" class="submit-button" value="Linje" onclick="newOp('L 10 20','Linje');">
-            <input type="button" class="submit-button" value="Kvadrat. kurva" onclick="newOp('Q 20 30 40 20','Kvadratisk kurva');">                    
-            <input type="button" class="submit-button" value="Kubisk kurva" onclick="newOp('C 50 10 20 50 30 50','Kubisk kurva');">                    
-        </div>
-
-        <select style="width:100%; margin-left: 4px;" size="10" id="operations" name="operations"></select>
-        <div style="display:flex">
-          <input type="button" class="submit-button" value="FLYTTA UPP" onclick="moveupbutton();">                
-          <input type="button" class="submit-button" value="FLYTTA NER" onclick="movedownbutton();">                
-          <input type="button" class="submit-button" value="TA BORT" onclick="deletebutton();">
-        </div>
-    </div>
+<div id='curveInfoBox'>
+	<div class='loginBoxheader'>
+			<h3>Kurv-duggan</h3>
+	</div>
+	<p style="margin-left: 4px;">Kurv-duggan går ut på att fylla i det gråa streck som är ritat med hjälp av linjer och kurvor.</p> 
+	<p style="margin-left: 4px;">Till ert förfogande finns 3 typer av grafiska element: <i>linje</i>, <i>kvadratisk kurva</i> och <i>kubisk kurva</i>.</p>
+	<p style="margin-left: 4px;">Rita från röd prick till blå prick. Röda kryss indikerar slut/början på en linje/kurva. Det finns en lösning där linjen ritas exakt så som den grå linjen.</p>
+	<p style="margin-left: 4px;">Lycka till och glöm inte att spara duggan! En gul lampa betyder att duggan är inlämnad.</p>
 </div>
+<canvas id='a' style='background-color:#FFFFFF; border:2px solid black; cursor:none; display:inline-block;vertical-align:top;' width="400" height="400"></canvas>
+<div id="infobox" style="padding:4px;display:inline-block;vertical-align:top;">
+	<div id="quizInstructions"></div>
+	<div class='loginBoxheader'>
+			<h3>Ritverktyg</h3>
+	</div>
+
+	<div style="display:flex">
+			<input type="button" class="submit-button" value="Linje" onclick="newOp('L 10 20','Linje');">
+			<input type="button" class="submit-button" value="Kvadrat. kurva" onclick="newOp('Q 20 30 40 20','Kvadratisk kurva');">                    
+			<input type="button" class="submit-button" value="Kubisk kurva" onclick="newOp('C 50 10 20 50 30 50','Kubisk kurva');">                    
+	</div>
+
+	<select style="width:100%; margin-left: 4px;" size="10" id="operations" name="operations"></select>
+	<div style="display:flex">
+		<input type="button" class="submit-button" value="FLYTTA UPP" onclick="moveupbutton();">                
+		<input type="button" class="submit-button" value="FLYTTA NER" onclick="movedownbutton();">                
+		<input type="button" class="submit-button" value="TA BORT" onclick="deletebutton();">
+	</div>
+</div>
+
+<!--<div id="container" class="curveContainer" style="display:flex; justify-content:flex-start;">
+</div>-->
 
 
 <div id="debug" style="display:none; font-size: 8px; position: fixed; bottom: 20px; left: 90%;">

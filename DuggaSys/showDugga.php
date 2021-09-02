@@ -1,4 +1,5 @@
 <?php
+	include_once "../Shared/sessions.php";
  	session_start();
 ?>
 <!DOCTYPE html>
@@ -20,14 +21,11 @@
 	<script src="timer.js"></script>
 	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
-	<script src="../DuggaSys/templates/generic_dugga_file_receive.js"></script>
-	
 <?php
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services!
 	include_once "../Shared/basic.php";
-	include_once "../Shared/sessions.php";
 
 	// Connect to database and start session
 	pdoConnect();
@@ -53,35 +51,35 @@
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
 
-	if(isset($_SESSION['hashpassword'])){
-		$hashpassword=$_SESSION['hashpassword'];
-	}else{
-		$hashpassword='UNK';
-	}	
+	// if(isset($_SESSION['hashpassword'])){
+	// 	$hashpassword=$_SESSION['hashpassword'];
+	// }else{
+	// 	$hashpassword='UNK';
+	// }	
 
-	if(isset($_SESSION['uid'])){
-		$userid=$_SESSION['uid'];
-	}else{
-		$userid="UNK";
-	}
+	// if(isset($_SESSION['uid'])){
+	// 	$userid=$_SESSION['uid'];
+	// }else{
+	// 	$userid="UNK";
+	// }
 
-	if(!isset($_SESSION['hasUploaded'])){
-		$_SESSION['hasUploaded'] = "UNK";
-	}
+	// if(!isset($_SESSION['hasUploaded'])){
+	// 	$_SESSION['hasUploaded'] = "UNK";
+	// }
 
-	if(!isset($_SESSION['pwdentrance'])){
-		$_SESSION['pwdentrance'] = 0;
-	}
+	// if(!isset($_SESSION['pwdentrance'])){
+	// 	$_SESSION['pwdentrance'] = 0;
+	// }
 	//logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
 
-if($cid != "UNK") $_SESSION['courseid'] = $cid;
-	$hr=false;
-	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
-	$query->bindParam(':cid', $cid);
-	$result = $query->execute();
-	if($row = $query->fetch(PDO::FETCH_ASSOC)){
-			$visibility=$row['visibility'];
-	}
+// if($cid != "UNK") $_SESSION['courseid'] = $cid;
+// 	$hr=false;
+// 	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
+// 	$query->bindParam(':cid', $cid);
+// 	$result = $query->execute();
+// 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
+// 			$visibility=$row['visibility'];
+// 	}
 	
 /*
 		//Give permit if the user is logged in and has access to the course or if it is public
@@ -107,7 +105,8 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	  $query->bindParam(':quizid', $quizid);
 	  $result = $query->execute();
 
-		if($row = $query->fetch(PDO::FETCH_ASSOC)){
+//		foreach($result->fetch(PDO::FETCH_ASSOC) as $row){
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$duggatitle=$row['entryname'];
 			$duggafile=$row['quizFile'];
 			$duggarel=$row['qrelease'];
@@ -121,7 +120,9 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			} else {
 				$output = str_replace('%TITLE%', 'Dugga viewer - ' . $duggatitle, $output);
 			}
-			echo "<script>setDuggaTitle('" . $duggatitle . "');</script>";
+		}
+		if($duggatitle!="UNK"){
+			//echo "<script>setDuggaTitle('" . $duggatitle . "');</script>";
 			echo $output;
 			
 			echo "<script src='templates/".$duggafile.".js'></script>";
@@ -132,11 +133,11 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			echo "<body>";
 		}
 ?>
-<script type="text/javascript">
+<!--<script type="text/javascript">
 
-	setHash("<?php echo $hash ?>");
+	setHash("<?php /*echo $hash*/ ?>");
 
-</script>
+</script>-->
 
 
 	<?php
@@ -166,67 +167,96 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 			}*/
 
 
-//Saved Dugga Login
+// Check if we have a hash/hashpwd and dugga variant
+//echo "|". print_r($_SESSION)."|<br>";
+if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
+	$bytes = random_bytes(4);
+	$hash=bin2hex($bytes);
+	$_SESSION["submission-$cid-$vers-$duggaid-$moment"]=$hash;
+	$bytes = random_bytes(4);
+	$hashpwd=bin2hex($bytes);
+	$_SESSION["submission-password-$cid-$vers-$duggaid-$moment"]=$hashpwd;
 
-if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w') && $isNewDugga != "true"){
-	if($_SESSION['pwdentrance'] != 1){
-		if($_SESSION['hasUploaded'] != 1){
-
-			$hashLabelText;
-			if ($hash == "UNK")
-				$hashLabelText = "Previously used hash:";
-			else 
-				$hashLabelText = "Logging in with hash:";
-
-			echo '<script type="text/javascript"> saveTimesAccessed(); </script>';
-			echo "<div class='loginHashContainer' id='hashBox'>";	
-			echo "<div class='loginHashBox'>";
-			echo "<div class='loginHashContent'>";
-			echo "<div class='w100'>";
-			echo "<div class='loginBoxheader'>";
-			echo "<h3>Login for Saved Dugga</h3>";
-			echo "<div onclick='exitHashBox()' class='cursorPointer'>x</div>";
-			echo "</div>";
-			echo "</div>";
-			echo "<div class='prev-hash-container'>";
-			echo "<label class='login-label'>" . $hashLabelText . "</label>";
-			echo "<p id='hash' style='font-weight: bold;'></p>";
-			echo "</div>";
-			if($hash == "UNK") {
-				echo "<div class='login-input-container'>";
-				echo "<input id='hashfield' class='textinput hash-login-input' type='text' placeholder='Hash'>";
-				echo "</div>";
-			}
-			echo "<div class='login-input-container'>";
-			echo "<input id='passwordfield' class='textinput form-control hash-login-input' type='password' autocomplete='new-password' placeholder='Password'>";
-			echo "</div>";
-			echo "<div class='hash-submit-btn-container'>";
-			echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
-			if ($hash == "UNK")
-				echo "<input class='submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
-			echo "</div>";
-			echo "</div>";
-			echo "</div>";
-			echo "</div>";
-			echo '<script type="text/javascript"> updateLoginPopup(); </script>';
-			exit();
-		}
-		
+	// Randomly select variant from available variants
+	$versarr=array();
+	$sql="SELECT * FROM variant LEFT JOIN quiz ON quiz.id=variant.quizID WHERE disabled=0 AND quizID=:duggaid;";
+	$query = $pdo->prepare($sql);
+	$query->bindParam(':duggaid', $duggaid);
+	$query->execute();
+	foreach($query->fetchAll() as $row){
+		array_push($versarr,$row['vid']);
 	}
+	$rand_idx = array_rand($versarr, 1);		
+
+	if($rand_idx===null){
+		$debug=$variant="This dugga does not have any variants enabled!";
+	}else{
+		$variant=$versarr[$rand_idx];
+	}
+	$_SESSION["submission-variant-$cid-$vers-$duggaid-$moment"]=$variant;
+	//echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
+	//echo "|$hash|$hashpwd|$variant|$moment|<br>";
+}else{
+	$hash=$_SESSION["submission-$cid-$vers-$duggaid-$moment"];
+	$hashpwd=$_SESSION["submission-password-$cid-$vers-$duggaid-$moment"];
+	$variant=$_SESSION["submission-variant-$cid-$vers-$duggaid-$moment"];
+	//echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
+	//echo "|$hash|$hashpwd|$variant|$moment|<br>";
 }
+// if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
+// 	if($_SESSION['pwdentrance'] != 1){
+// 		if($_SESSION['hasUploaded'] != 1){
 
+// 			$hashLabelText;
+// 			if ($hash == "UNK")
+// 				$hashLabelText = "Previously used hash:";
+// 			else 
+// 				$hashLabelText = "Logging in with hash:";
 
-
+// 			//echo '<script type="text/javascript"> saveTimesAccessed(); </script>';
+// 			echo "<div class='loginHashContainer' id='hashBox'>";	
+// 			echo "<div class='loginHashBox'>";
+// 			echo "<div class='loginHashContent'>";
+// 			echo "<div class='w100'>";
+// 			echo "<div class='loginBoxheader'>";
+// 			echo "<h3>Login for Saved Dugga</h3>";
+// 			echo "<div onclick='exitHashBox()' class='cursorPointer'>x</div>";
+// 			echo "</div>";
+// 			echo "</div>";
+// 			echo "<div class='prev-hash-container'>";
+// 			echo "<label class='login-label'>" . $hashLabelText . "</label>";
+// 			echo "<p id='hash' style='font-weight: bold;'></p>";
+// 			echo "</div>";
+// 			if($hash == "UNK") {
+// 				echo "<div class='login-input-container'>";
+// 				echo "<input id='hashfield' class='textinput hash-login-input' type='text' placeholder='Hash'>";
+// 				echo "</div>";
+// 			}
+// 			echo "<div class='login-input-container'>";
+// 			echo "<input id='passwordfield' class='textinput form-control hash-login-input' type='password' autocomplete='new-password' placeholder='Password'>";
+// 			echo "</div>";
+// 			echo "<div class='hash-submit-btn-container'>";
+// 			echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
+// 			if ($hash == "UNK")
+// 				echo "<input class='submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
+// 			echo "</div>";
+// 			echo "</div>";
+// 			echo "</div>";
+// 			echo "</div>";
+// 			//echo '<script type="text/javascript"> updateLoginPopup(); </script>';
+// 			//exit();
+// 		}
+		
+// 	}
+// }
 //Remove if you want the password to be persistent.
 //$_SESSION['hashpassword'] = 'UNK';
-
 ?>
-
 </div>
 	<!-- content START -->
 	<div id="content">
 		<?php
-		echo "<script>console.log('".$duggafile."');</script>";
+		//echo "<script>console.log('".$duggafile."');</script>";
 			// Log USERID for Dugga Access
 			// commented out because we are unsure about the usage of logs
 			//makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
@@ -242,7 +272,11 @@ if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w') && $isNewDugga != "tr
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 
-					if ($duggafile !== 'contribution') {						
+					if(isSuperUser($userid)){
+						// A teacher may not submit any duggas
+						echo "<table id='submitButtonTable' class='navheader'>";
+						echo "</table>";
+					}else if ($duggafile !== 'contribution') {						
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='left'>";
@@ -261,7 +295,7 @@ if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w') && $isNewDugga != "tr
 					}
 
 				}else{
-					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
+					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The dugga you asked for does not currently exist!</div>";
 				}
 			}else if ($visibility==1){
 				if(file_exists ( "templates/".$duggafile.".html")){
@@ -344,9 +378,11 @@ if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w') && $isNewDugga != "tr
 			<div id='receiptInfo'></div>
 
     		<div id='emailPopup' style="display:block">
+				<p>Your dugga has been saved. Besure to store the hash and hash password in a safe place before submitting the dugga in canvas! <em>There is <strong>no way</strong> to restore a submission without the hash and hash password.</p>
 				<div id='urlAndPwd'>
-					<div class="testasd"><p class="bold">URL</p><p id='url'></p></div>
-					<div class="testasd"><p class="bold">Password</p><p id='pwd'></p></div>
+					<div class="testasd"><p class="bold">Direct link (to be submitted in canvas)</p><a id='url_receipt' target="_blank"></a></div>
+					<div class="testasd"><p class="bold">Hash</p><p id='hash_receipt'></p></div>
+					<div class="testasd"><p class="bold">Hash password</p><p id='pwd_receipt'></p></div>
 				</div>
 				
 				<div class="button-row">
@@ -364,11 +400,9 @@ if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w') && $isNewDugga != "tr
 	<?php
 	if(isSuperUser($userid) || hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st')){
 		if($hash == "UNK"){		//A teacher should not be able to change the variant (local) if they are grading an assignment.
-			echo '<script type="text/javascript">toggleLoadVariant(true);</script>';
+			//echo '<script type="text/javascript">toggleLoadVariant(true);</script>';
 		}
-    	echo '<script type="text/javascript">',
-    	'displayDownloadIcon();', 'noUploadForTeacher();',
-    	'</script>';
+    	//echo '<script type="text/javascript">','displayDownloadIcon();', 'noUploadForTeacher();','</script>';
 	}
 
 	$_SESSION['pwdentrance'] = 0;
@@ -388,10 +422,10 @@ if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w') && $isNewDugga != "tr
 			<div class='loginBoxheader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
     		<div id='loadDuggaPopup' style="display:block">
-				<div class='inputwrapper'><span>Enter your hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value=''/></div>
+				<div class='inputwrapper'><span>Enter hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value='' autocomplete="off"/></div>
+				<!--<div class='inputwrapper'><span>Enter hash password:</span><input class='textinput' type='text' id='hashpwd' placeholder='Hash password' value='' autocomplete="off"/></div>-->
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="loadDuggaType();" value='Load Dugga'>
-					<input type='button' class='submit-button' onclick="hideLoadDuggaPopup();" value='Close'>
 				</div>
     		</div>
       </div>
