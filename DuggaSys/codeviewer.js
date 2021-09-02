@@ -94,14 +94,16 @@ function returned(data)
 		}
 	}
 
-	//Adds examplename from sectionData to codeExamples.
+/*  
+	//Adds examplename from sectionData to codeExamples. -- 
 	for(i = 0; i < codeExamples.length; i++){
 		for(j = 0; j < codeExamples.length; j++)
 			if(codeExamples[i]['link'] == sectionData['codeexamples'][j + 1]['exampleid']){
 				codeExamples[i]['examplename'] = sectionData['codeexamples'][j + 1]['examplename'];
 				break;
-			}
+		}
 	}
+*/
 
 	//Checks current example name with all the examples in codeExamples[] to find a match
 	//and determine current position.
@@ -115,7 +117,6 @@ function returned(data)
 	var j = 0;
 	for(i = currentPos + 1; i < codeExamples.length; i++){
 		if(j < 5){
-			
 			retData['after'][j][1] = codeExamples[currentPos + 1 + j]['entryname'];
 			retData['after'][j][0] = (String)(codeExamples[currentPos + 1 + j]['link']);
 			for(k = 1; k < sectionData['codeexamples'].length; k++){
