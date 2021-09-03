@@ -50,12 +50,13 @@ var goal = [];
 var pointColor = "#880";
 var	dashedLineColor = "#F8F";
 //			lineColor = "#49f";
-var targetLineColor = "#aaa";
-var studentLineColor = "#49f";
+var targetLineColor = "#888";
+//var studentLineColor = "#49f";
+var studentLineColor = "rgb(68,153,255,0.5)";
 var selectedPointColor = "#F2F";
 
-var startx = 10;
-var starty = 30;
+var startx = currentx = 10;
+var starty = currenty = 30;
 var elapsedTime = 0;
 var previousSync = 0;
 
@@ -98,13 +99,10 @@ function returnedDugga(data) {
 
 
 	if(data['opt']=="SAVDU"){
-		console.log(data['hash'],data['hashpwd']);
-		$('#url_receipt').html(data['link'])
-		$('#url_receipt').attr("href",data['link'])
-		$('#hash_receipt').html(data['hash'])
-		$('#pwd_receipt').html(data['hashpwd'])
+		$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
-	}	
+	}
+	
 
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
@@ -387,14 +385,47 @@ function saveClick()
 	saveDuggaResult(bitstr);
 }
 
+function getRandomIntInclusive(min, max) {
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+  }
+  
+
 function newOp(operation, operationText) 
 {
 	ClickCounter.onClick();
-	
-	var oplist;
+	const drawOp=operation.substring(0,1);
+	const min=gridsize;
+	const max=(canvas.width-gridsize)/gridsize;
+	let drawOpParams=drawOp;
 
-	oplist = document.getElementById('operations');
-	oplist.innerHTML += "<option id='op" + (objectCounter++) + "' value='" + operation + "'>" + operationText + "</option>";
+	if(drawOp=="L"){
+		// L 85 165
+		let x=Math.floor(getRandomIntInclusive(min,max)/gridsize)*gridsize;
+		let y=Math.floor(getRandomIntInclusive(min,max)/gridsize)*gridsize;
+		drawOpParams+=` ${x} ${y}`; 
+	}else if(drawOp=="Q"){
+		// Q 20 30 40 20
+		let x=Math.floor(getRandomIntInclusive(min,max)/gridsize)*gridsize;
+		let y=Math.floor(getRandomIntInclusive(min,max)/gridsize)*gridsize;
+		let qx=Math.floor(getRandomIntInclusive(min,max)/gridsize)*gridsize;
+		let qy=Math.floor(getRandomIntInclusive(min,max)/gridsize)*gridsize;
+		drawOpParams+=` ${x} ${y} ${qx} ${qy}`; 
+	}else if(drawOp=="C"){
+		// C 50 10 20 50 30 50
+		let x=Math.floor(getRandomIntInclusive(min,max)/gridsize)*gridsize;
+		let y=Math.floor(getRandomIntInclusive(min,max)/gridsize)*gridsize;
+		let q1x=Math.floor(getRandomIntInclusive(min,max)/gridsize)*gridsize;
+		let q1y=Math.floor(getRandomIntInclusive(min,max)/gridsize)*gridsize;
+		let q2x=Math.floor(getRandomIntInclusive(min,max)/gridsize)*gridsize;
+		let q2y=Math.floor(getRandomIntInclusive(min,max)/gridsize)*gridsize;
+		drawOpParams+=` ${x} ${y} ${q1x} ${q1y} ${q2x} ${q2y}`; 
+	}else{
+		alert('Unknown draw operation:"'+drawOp+'"');
+	}
+
+	document.getElementById('operations').innerHTML += "<option id='op" + (objectCounter++) + "' value='" + drawOpParams + "'>" + operationText + "</option>";
 
 }
 
@@ -570,10 +601,14 @@ function makeString()
 	return s;
 }
 
-function drawSPoint(x, y, lcolor, fcolor, selected) 
+function drawSPoint(x, y, lcolor, fcolor, selected,lwidth) 
 {
 	context.strokeStyle = lcolor;
-	context.lineWidth = 1.5;
+	if(lwidth){
+		context.lineWidth = lwidth;
+	}else{
+		context.lineWidth = 1.5;
+	}
 
 	context.fillStyle = fcolor;
 	if (selected){
@@ -585,10 +620,14 @@ function drawSPoint(x, y, lcolor, fcolor, selected)
 	}
 }
 
-function drawSLine(x1, y1, x2, y2, lcolor, guideLines, selected) 
+function drawSLine(x1, y1, x2, y2, lcolor, guideLines, selected,lwidth) 
 {
 	context.strokeStyle = lcolor;
-	context.lineWidth = 1.5;
+	if(lwidth){
+		context.lineWidth = lwidth;
+	}else{
+		context.lineWidth = 1.5;
+	}
 	context.beginPath();
 	context.moveTo(x1 * sf, y1 * sf);
 	context.lineTo(x2 * sf, y2 * sf);
@@ -605,10 +644,14 @@ function drawSLine(x1, y1, x2, y2, lcolor, guideLines, selected)
 	}
 }
 
-function drawSQuadratic(x1, y1, x2, y2, x3, y3, lcolor, guideLines, selected) 
+function drawSQuadratic(x1, y1, x2, y2, x3, y3, lcolor, guideLines, selected,lwidth) 
 {
 	context.strokeStyle = lcolor;
-	context.lineWidth = 1.5;
+	if(lwidth){
+		context.lineWidth = lwidth;
+	}else{
+		context.lineWidth = 1.5;
+	}
 	context.beginPath();
 	context.moveTo(x1 * sf, y1 * sf);
 	context.quadraticCurveTo(x2 * sf, y2 * sf, x3 * sf, y3 * sf);
@@ -628,10 +671,14 @@ function drawSQuadratic(x1, y1, x2, y2, x3, y3, lcolor, guideLines, selected)
 	}
 }
 
-function drawSCubic(x1, y1, x2, y2, x3, y3, x4, y4, lcolor, guideLines, selected) 
+function drawSCubic(x1, y1, x2, y2, x3, y3, x4, y4, lcolor, guideLines, selected,lwidth) 
 {
 	context.strokeStyle = lcolor;
-	context.lineWidth = 1.5;
+	if(lwidth){
+		context.lineWidth = lwidth;
+	}else{
+		context.lineWidth = 1.5;
+	}
 	context.beginPath();
 	context.moveTo(x1 * sf, y1 * sf);
 	context.bezierCurveTo(x2 * sf, y2 * sf, x3 * sf, y3 * sf, x4 * sf, y4 * sf);
@@ -700,18 +747,18 @@ function fitToContainer()
 	sf = canvas.width / 100;
 }
 
-function drawOp(sx, sy, opArr, lineColor, guideLines, selected) 
+function drawOp(sx, sy, opArr, lineColor, guideLines, selected,lwidth) 
 {
 
 
 	if (opArr[0] === "L" || opArr[0] === "81") {
-		drawSLine(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), lineColor, guideLines, selected);
+		drawSLine(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), lineColor, guideLines, selected,lwidth);
 
 	} else if (opArr[0] === "Q" || opArr[0] === "63") {
-		drawSQuadratic(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), parseInt(opArr[3]), parseInt(opArr[4]), lineColor, guideLines, selected);
+		drawSQuadratic(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), parseInt(opArr[3]), parseInt(opArr[4]), lineColor, guideLines, selected,lwidth);
 
 	} else if (opArr[0] === "C" || opArr[0] === "19") {
-		drawSCubic(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), parseInt(opArr[3]), parseInt(opArr[4]), parseInt(opArr[5]), parseInt(opArr[6]), lineColor, guideLines, selected);
+		drawSCubic(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), parseInt(opArr[3]), parseInt(opArr[4]), parseInt(opArr[5]), parseInt(opArr[6]), lineColor, guideLines, selected,lwidth);
 		sx = parseInt(opArr[5]);
 		sy = parseInt(opArr[6]);
 
@@ -746,13 +793,13 @@ function drawPath()
 		if (this.id == selectedObjId) {
 				opArr[selectedPoint * 2 - 1] = gridx;
 				opArr[selectedPoint * 2] = gridy;
-				drawOp(sx, sy, opArr, studentLineColor, true, true);	
+				drawOp(sx, sy, opArr, studentLineColor, true, true,8.0);	
 		} else {
-				drawOp(sx, sy, opArr, studentLineColor, true, false);	
+				drawOp(sx, sy, opArr, studentLineColor, true, false,8.0);	
 		}
 		
-		sx = parseInt(opArr[opArr.length - 2]);
-		sy = parseInt(opArr[opArr.length - 1]);
+		sx = currentx = parseInt(opArr[opArr.length - 2]);
+		sy = currenty= parseInt(opArr[opArr.length - 1]);
 	});
 
 }

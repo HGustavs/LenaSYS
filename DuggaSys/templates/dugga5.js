@@ -85,6 +85,12 @@ function returnedDugga(data)
 
 	if (data['debug'] != "NONE!") {alert(data['debug']);}
 
+	if(data['opt']=="SAVDU"){
+		$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
+		showReceiptPopup();
+	}
+
+
 	if (data['param'] == "UNK") { 
 		alert("UNKNOWN DUGGA!");	
 	} else {
@@ -124,7 +130,7 @@ function returnedDugga(data)
 	  document.getElementById('feedbackBox').style.display = "block";
 	  $("#showFeedbackButton").css("display","block");
   }
-  displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+  displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)

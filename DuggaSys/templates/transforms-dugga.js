@@ -43,15 +43,23 @@ function setup()
 
 		AJAXService("GETPARAM", { }, "PDUGGA");
 	}
-	canvas.addEventListener('click', function() { 
-			if (running) {
-					running = false;
-			} else {
-					running = true;
-					foo();
-			}
+	// canvas.addEventListener('click', function() { 
+	// 		if (running) {
+	// 				running = false;
+	// 		} else {
+	// 				running = true;
+	// 				foo();
+	// 		}
 	
-	}, false);
+	// }, false);
+}
+function toggleAnimation()
+{
+	if (running) {
+		renderId = requestAnimationFrame(foo);
+	} else {
+		cancelAnimationFrame(renderId);
+	}
 }
 
 function returnedDugga(data) 
@@ -61,11 +69,7 @@ function returnedDugga(data)
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
 	if(data['opt']=="SAVDU"){
-		console.log(data['hash'],data['hashpwd']);
-		$('#url_receipt').html(data['link'])
-		$('#url_receipt').attr("href",data['link'])
-		$('#hash_receipt').html(data['hash'])
-		$('#pwd_receipt').html(data['hashpwd'])
+		$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
 	}
 
@@ -127,7 +131,8 @@ function returnedDugga(data)
 	}
 	$("#submitButtonTable").appendTo("#content");
 	$("#lockedDuggaInfo").appendTo("#content");
-	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
+	$(".submit-button").removeClass("btn-disable");
 }
 
 function reset()

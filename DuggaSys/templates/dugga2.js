@@ -60,6 +60,11 @@ function returnedDugga(data)
 	
 	if(data['debug']!="NONE!") alert(data['debug']);
 
+	if(data['opt']=="SAVDU"){
+		$('#submission-receipt').html(`Direct link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
+		showReceiptPopup();
+	}
+	
 	if(data['param']=="UNK"){
 			alert("UNKNOWN DUGGA!");
 	}else{

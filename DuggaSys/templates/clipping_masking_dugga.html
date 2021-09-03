@@ -1,96 +1,134 @@
-<div class='feedback-container' style="display: none;">
-	<div class='feedback-button' onclick='toggleFeedback()'><h3>Feedback</h3></div>	
-		<div class="feedback-content">	
-				<div id="feedbackTable" style="margin-top: -3px;"></div>	
-		</div>
+<div class='instructions-button' onclick='toggleInstructions()'>
+    <h3>Instructions</h3>
 </div>
-<div class='instructions-container'>
-    <div class='instructions-button' onclick='toggleInstructions()'><h3>Instructions</h3></div>
-    <div class="instructions-content">
-        <p style="margin-left: 4px;">Klipping-duggan går ut på att producera den bild som ni ser med hjälp av de olika operationerna som finns tillgängliga, Fylla färg/mönster, klippa mönster och restore.</p>
-        <p style="margin-left: 4px;">Lägg till operationer genom att välja en operation och tryck på "Add Op.". Ni kan byta ordning på operationerna med pilarna upp och ner för respektive operation. Ta bort en operation genom att klicka på "X" för önskad operation. Genom att klicka på en befintlig operation så kan man ändra dess innehåll.</p>
-        <p style="margin-left: 4px;">Lycka till och glöm inte att spara duggan! En gul lampa betyder att duggan är inlämnad.</p>
-    </div>
+<div class="instructions-content">
+    <p style="margin-left: 4px;">Klipping-duggan går ut på att producera den bild som ni ser med hjälp av de olika
+        operationerna som finns tillgängliga, Fylla färg/mönster, klippa mönster och restore.</p>
+    <p style="margin-left: 4px;">Lägg till operationer genom att välja en operation och tryck på "Add Op.". Ni kan byta
+        ordning på operationerna med pilarna upp och ner för respektive operation. Ta bort en operation genom att klicka
+        på "X" för önskad operation. Genom att klicka på en befintlig operation så kan man ändra dess innehåll.</p>
+    <p style="margin-left: 4px;">Lycka till och glöm inte att spara duggan! En gul lampa betyder att duggan är inlämnad.
+    </p>
 </div>
-<div class="clippingLayout">
-    <div id='clippingInfoBox2'>
-      
-          <div class='loginBoxheader'><h3>Målbild</h3></div>
-                <p style="margin-left: 4px;">Rita följande:</p>
-          <img id="target-img" src="" style="width:100%;">
-            
-    </div>
 
-    <div id="drawingArea">
-          <div class='loginBoxheader'><h3>Rityta</h3></div>
-          <p style="margin-left: 4px;">Mitt verk:</p>
-          <canvas id='a'></canvas>
+<!-- <div id='duggaInfoBox2' style="min-width:170px;margin:0 4px 0 4px;">
+    <div class='loginBoxheader'>
+        <h3>Transformations-dugga</h3>
     </div>
-
-    <div id="toolbox" >
-      <div style="flex-grow: 1">
-        <div class='loginBoxheader'><h3>Ritverktyg</h3></div>
-     	  <div style="display:flex;justify-content:center;">
-            <select id="ops" name="function" >
-              <optgroup label="Misc.">    
-                  <option value="Restore">Restore</option>
-              </optgroup>
-              <optgroup label="Fill color">    
-                  <option value="White">White</option>
-                  <option value="Pink">Pink</option>
-                  <option value="Brown">Brown</option>
-                  <option value="Green">Green</option>
-              </optgroup>
-              <optgroup label="Fill pattern">    
-                  <option value="Polka">Polka</option>
-                  <option value="Dots">Dots</option>
-                  <option value="Stars">Stars</option>
-                  <option value="Crosses">Crosses</option>
-                  <option value="Gradient">Gradient</option>
-              </optgroup>
-              <optgroup label="Clipping styles">    
-                  <option value="Rect1">Clip Rect 1</option>
-                  <option value="Rect2">Clip Rect 2</option>
-                  <option value="Rect3">Clip Rect 3</option>
-                  <option value="Heart">Clip Heart</option>
-                  <option value="CapsuleH">Clip Capsule Horiz</option>
-                  <option value="CapsuleV">Clip Capsule Vert</option>
-                  <option value="Cross">Clip Cross</option>
-                  <option value="Diamond">Clip Diamond</option>
-              </optgroup>
-            </select>			
-            
-                <input id="addOpButton" class='submit-button' type='button' value='Add Op.' onclick="newbutton();" />
+</div> -->
+<div style="width:1000px;margin: auto;">
+    <div id='duggaInfoBox3' style="margin:0 4px 0 4px;width:300px;display: inline-block;vertical-align: top;">
+        <div class='loginBoxheader'>
+            <h3>Målbild</h3>
+        </div>
+        <p style="margin-left: 4px;">Rita följande:</p>
+        <img id="target-img" src="" style="display:block;width:100%;height:300px;overflow: hidden;">
+    </div>
+    <div style="margin:0 4px 0 4px;width:300px;display: inline-block;vertical-align: top;">
+        <div class='loginBoxheader'>
+            <h3>Rityta</h3>
+        </div>
+        <p style="margin-left: 4px;">&nbsp;</p>
+        <canvas id='a'
+            style='background-color:#FFFFFF; border:2px solid black; display:block;box-sizing: border-box;margin: auto;width: 300px;'
+            width="300" height="300"></canvas>
+    </div>
+    <div id="toolbox" style="width:350px;display: inline-block;vertical-align: top;">
+        <div class='loginBoxheader'>
+            <h3>Ritverktyg</h3>
+        </div>
+        <p style="margin-left: 4px;">&nbsp;</p>
+        <div style="margin:0 4px 0 4px;display: flex;flex-direction: column;justify-content: flex-start;">
+            <div>
+                <div style="display:flex;justify-content:center;align-items:baseline;">
+                    <select id="ops" name="function" style="height: 30px;">
+                        <optgroup label="Misc.">
+                            <option value="Restore">Restore</option>
+                        </optgroup>
+                        <optgroup label="Fill color">
+                            <option value="White">White</option>
+                            <option value="Pink">Pink</option>
+                            <option value="Brown">Brown</option>
+                            <option value="Green">Green</option>
+                        </optgroup>
+                        <optgroup label="Fill pattern">
+                            <option value="Polka">Polka</option>
+                            <option value="Dots">Dots</option>
+                            <option value="Stars">Stars</option>
+                            <option value="Crosses">Crosses</option>
+                            <option value="Gradient">Gradient</option>
+                        </optgroup>
+                        <optgroup label="Clipping styles">
+                            <option value="Rect1">Clip Rect 1</option>
+                            <option value="Rect2">Clip Rect 2</option>
+                            <option value="Rect3">Clip Rect 3</option>
+                            <option value="Heart">Clip Heart</option>
+                            <option value="CapsuleH">Clip Capsule Horiz</option>
+                            <option value="CapsuleV">Clip Capsule Vert</option>
+                            <option value="Cross">Clip Cross</option>
+                            <option value="Diamond">Clip Diamond</option>
+                        </optgroup>
+                    </select>
+                    <input id="addOpButton" class='submit-button' type='button' value='Add Op.'
+                        onclick="newbutton();" />
+                </div>
+                <div id="opTableContainer" style="min-height:300px;background-color:#FFF; overflow-y:scroll;">
+                    <table id="opTable" style="width:100%;">
+                        <caption>Operations</caption>
+                        <thead>
+                            <tr>
+                                <th>Op#</th>
+                                <th>Operation</th>
+                                <th colspan="3">Modify</th>
+                            </tr>
+                        </thead>
+                        <tbody id="operationList"></tbody>
+                    </table>
+                </div>
             </div>
-    		<div id="opTableContainer">
-                <table id="opTable" style="width:100%;">
-                    <caption>Operations</caption>
-                    <thead>
-                        <tr>
-                            <th>Op#</th>
-                            <th>Operation</th>
-                            <th colspan="3">Modify</th>
-                        </tr>
-                    </thead>
-                    <tbody id="operationList" ></tbody>
-                </table>			
-    		</div>
+        </div>
+    </div>
+    <div id="feedback" class="loginBox" style="display:none;flex-grow: 1">
+        <div class='loginBoxheader'>
+            <h3>Feedback Log</h3>
+        </div>
+        <div class="table-wrap" id="feedbackTable">
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Feedback</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
+        <div class='loginBoxheader'>
+            <h3>Dugga Stats</h3>
+            <div onclick="hideReceiptPopup()">x</div>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Highscore</th>
+                    <th>Total</th>
+                </tr>
+                <tr>
+                    <td>Clicks</td>
+                    <td id="duggaClicks"></td>
+                    <td id="duggaTotalClicks"></td>
+                </tr>
+                <tr>
+                    <td>Time</td>
+                    <td id="duggaTime"></td>
+                    <td id="duggaTotalTime"></td>
+                </tr>
+                <tr>
+                    <td>Submissions</td>
+                    <td></td>
+                    <td id="duggaTotalSubmissions"></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
-
-<div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
-    <div class='loginBoxheader'>
-        <h3>Dugga Stats</h3>
-        <div onclick="hideReceiptPopup()">x</div>
-    </div>
-    <div class="table-wrap">
-        <table>
-            <tr><th></th><th>Highscore</th><th>Total</th></tr>
-            <tr><td>Clicks</td><td id="duggaClicks"></td><td id="duggaTotalClicks"></td></tr>
-            <tr><td>Time</td><td id="duggaTime"></td><td id="duggaTotalTime"></td></tr>
-            <tr><td>Submissions</td><td></td><td id="duggaTotalSubmissions"></td></tr>
-        </table>
-    </div>
-</div>
-

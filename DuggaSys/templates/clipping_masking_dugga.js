@@ -140,6 +140,11 @@ function returnedDugga(data)
 		} else {
 				duggaParams = jQuery.parseJSON(data['param']);
 		}
+
+    if(data['opt']=="SAVDU"){
+        $('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
+        showReceiptPopup();
+    }
     if(data["feedback"] !== null && data["feedback"] !== "" && data["feedback"] !== "UNK") {
         hasFeedback=true;
         feedback=data["feedback"];
@@ -149,7 +154,8 @@ function returnedDugga(data)
         hasSavedAnswer=true;
         savedAnswer=data['answer'];
     }
-    displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+    displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
+    $(".submit-button").removeClass("btn-disable");
     show();
 }
 
@@ -287,17 +293,17 @@ function closeFacit()
 
 function fitToContainer()
 {
-	divw = $("#content").width();
-	if (divw > 500){ divw -= 248; }
-	if (divw < window.innerHeight) {
-      canvas.width = divw;
-  		canvas.height = divw;
-	} else {
-      canvas.width = window.innerHeight - 180;
-  		canvas.height = canvas.width;
-	}
+	// divw = $("#content").width();
+	// if (divw > 500){ divw -= 248; }
+	// if (divw < window.innerHeight) {
+    //   canvas.width = divw;
+  	// 	canvas.height = divw;
+	// } else {
+    //   canvas.width = window.innerHeight - 180;
+  	// 	canvas.height = canvas.width;
+	// }
 
-	document.getElementById("opTableContainer").style.maxHeight=(canvas.height-25-38)+"px";
+	// document.getElementById("opTableContainer").style.maxHeight=(canvas.height-25-38)+"px";
 }
 
 
@@ -372,10 +378,10 @@ function newbutton()
 		i++;
 		var newTableBody = "<tr id='v" + i +"'>";
 		newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-		newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+i+'" style="display:none">'+newOpCode+'</span></td>';
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';
+		newTableBody += '<td><span style="width:100%; padding:0; margin:0 10px; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+i+'" style="display:none">'+newOpCode+'</span></td>';
+		newTableBody += '<td style="text-align:center"><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
+		newTableBody += '<td style="text-align:center"><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
+		newTableBody += '<td style="text-align:center"><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';
 		newTableBody += "</tr>";
 
 		$("#operationList").append(newTableBody);
@@ -688,7 +694,7 @@ function goMofo(txt)
     }
     function render(){
         canvas.width = canvas.width;
-        context.scale(canvas.width/600,canvas.height/700);
+        // context.scale(canvas.width/600,canvas.height/700);
         $("*[id*=opCode_]").each(function (){
             goMofo(this.innerHTML);
         });

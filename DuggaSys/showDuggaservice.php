@@ -392,14 +392,17 @@ if(isSuperUser($userid)){
 					$tmpvariant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
 				
 					//$sql="SELECT variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param FROM variant LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=:hash AND password=:hashpwd WHERE vid=:variant LIMIT 1;";
-					$sql="SELECT quiz.*, variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param FROM quiz LEFT JOIN variant ON quiz.id=variant.quizID LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=:hash AND password=:hashpwd WHERE quiz.id=:did AND vid=:variant LIMIT 1;";
+					//$sql="SELECT quiz.*, variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param FROM quiz LEFT JOIN variant ON quiz.id=variant.quizID LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=:hash AND password=:hashpwd WHERE quiz.id=:did AND vid=:variant LIMIT 1;";
+					$sql="SELECT quiz.*, variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param,l.entryname AS dugga_title FROM quiz LEFT JOIN variant ON quiz.id=variant.quizID LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=:hash AND password=:hashpwd LEFT JOIN (select cid,link,entryname from listentries) as l ON l.cid=l.cid AND l.link=quiz.id WHERE quiz.id=:did AND vid=:variant AND l.cid=:cid LIMIT 1;";
 					$query = $pdo->prepare($sql);
+					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':did', $duggaid);
 					$query->bindParam(':variant', $tmpvariant);
 					$query->bindParam(':hash', $tmphash);
 					$query->bindParam(':hashpwd', $tmphashpwd);	
 					$query->execute();
 					foreach($query->fetchAll() as $row){
+						$duggatitle=$row['dugga_title'];
 						$variant=$row['vid'];
 						$answer=$row['useranswer'];
 						$variantanswer=$row['variantanswer'];
