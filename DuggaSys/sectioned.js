@@ -13,7 +13,7 @@ var momentexists = 0;
 var resave = false;
 var versnme = "UNKz";
 var versnr;
-var motd;
+var motd="UNK";
 var hideItemList = [];
 var hasDuggs = false;
 var dateToday = new Date().getTime();
@@ -698,7 +698,7 @@ function returnedSection(data) {
     document.getElementById("course-versname").innerHTML = versionname;
 
     // Set motd before if-statement, so it's displayed for everyone, not just studentteachers and those with writeaccess
-    motd = retdata['versions'].find(v => v.vers == querystring["coursevers"]).motd;
+    motd = retdata['versions'].find(v => v.vers == querystring["coursevers"]).motd || 'UNK';
 
     var str = "";
     // Build dropdown and showing FAB-buttons for studentteacher and writeaccess users
@@ -716,8 +716,8 @@ function returnedSection(data) {
         }
         // save vers, versname and motd from table vers as global variables.
         versnme = versionname;
-        if (querystring['coursevers'] == item['vers']) motd = item['motd'];
-        if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
+        if (querystring['coursevers'] == item['vers']) motd = item['motd'] ||'UNK';
+        if (querystring['coursevers'] == item['vers']) versnr = item['vers'] || 'UNK';
       }
 
       document.getElementById("courseDropdownTop").innerHTML = bstr;
