@@ -184,7 +184,7 @@ function validateDuggaName() {
 	var retValue = false;
 	var nme = document.getElementById("name");
 
-	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)) {
+	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
 		$('#tooltipTxt').fadeOut();
 		$('#saveDugga').removeAttr('disabled');
 		$('#submitDugga').removeAttr('disabled');
