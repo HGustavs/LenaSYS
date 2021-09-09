@@ -164,7 +164,6 @@ Testing Link:
 					// Cookie for guest username is not present, send a guest cookie to user.
 					$username = "Guest" . $userid . rand(0,50000);  // Guests have a random number between 0 and 50k added, this means there's a very small chance some guests have the same ID. These are only used for logging at the moment so this should not be an issue
 					setcookie("cookie_guest", $username, time() + 3600, "/");
-
 				}
 			}
 			else{
@@ -178,7 +177,8 @@ Testing Link:
 			//echo "<script>console.log('Debug Objects: " . $_COOKIE["cookie_guest"] . "' );</script>";
 
 			// Logs users who view example, along with the example they have viewed
-			if ($userid == "00") {
+/*
+      if ($userid == "00") {
 				$description=$exampleid." ".$courseID." ".$cvers;
 				logUserEvent($_COOKIE["cookie_guest"], "guest", EventTypes::DuggaRead, $description);
 			}
@@ -186,7 +186,7 @@ Testing Link:
 				$description=$exampleid." ".$courseID." ".$cvers;
 				logUserEvent($userid, $username, EventTypes::DuggaRead, $description);
 			}
-
+*/
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
 			if($courseID!="UNK"&&$exampleid!="UNK"){
 				//checks if $courseid exists.

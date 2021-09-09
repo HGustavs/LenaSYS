@@ -85,7 +85,9 @@ function returned(data)
 	retData = data;
 
 	//Stores the data that was sent from Section, which contains the ordering of the examples.
-	sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
+/*  
+
+  sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
 
 	//Creates a list of all the code examples sorted after the example ordering in Section.
 	for(i = 1; i < sectionData['entries'].length; i++){
@@ -94,7 +96,6 @@ function returned(data)
 		}
 	}
 
-/*  
 	//Adds examplename from sectionData to codeExamples. -- 
 	for(i = 0; i < codeExamples.length; i++){
 		for(j = 0; j < codeExamples.length; j++)
@@ -1220,9 +1221,9 @@ function tokenize(instring, inprefix, insuffix) {
 		from = i;
 		if (currentCharacter <= ' ') { // White space and carriage return
  			if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
-				maketoken('newline', "", i, i, row);
-				currentStr = "";
-				row++;
+//				maketoken('newline', "", i, i, row);
+//				currentStr = "";
+//				row++;
 			} else {
 				currentStr = currentCharacter;
 			}
@@ -1232,8 +1233,9 @@ function tokenize(instring, inprefix, insuffix) {
 				currentCharacter = instring.charAt(i);
 				if (currentCharacter > ' ' || !currentCharacter) break;
 				if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
-					maketoken('whitespace', currentStr, from, i, row);
-					currentStr = "";
+          maketoken('newline', "", i, i, row);
+          currentStr = "";
+          row++;
 				} else {
 					currentStr += currentCharacter;
 				}
@@ -1478,6 +1480,7 @@ function tokenize(instring, inprefix, insuffix) {
 			currentCharacter = instring.charAt(i);
 		}
 	}
+  alert(row);
 }
 
 //----------------------------------------------------------------------------------
