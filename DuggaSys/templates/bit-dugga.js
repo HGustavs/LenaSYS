@@ -21,6 +21,7 @@ var retdata=null;
 var hc=null;
 var score = -1;
 var activehex;
+var response;
 //----------------------------------------------------------------------------------
 // Setup
 //----------------------------------------------------------------------------------
@@ -44,6 +45,7 @@ function setup()
 
 function returnedDugga(data)
 {	
+	response=data;
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	if(data['opt']=="SAVDU"){
@@ -95,6 +97,9 @@ function returnedDugga(data)
 				}
 				document.getElementById('H0').innerHTML=hexvalue1;
 				document.getElementById('H1').innerHTML=hexvalue2;
+				if(response.danswer!="UNK"){
+					showFacit(response.param, response.answer, response.danswer, null, null, null, null)
+				}
 			}
 		}		
 		// Teacher feedback

@@ -319,7 +319,7 @@ if(isSuperUser($userid)){
 				foreach($query->fetchAll() as $row){
 					$variant=$row['vid'];
 					$answer=$row['useranswer'];
-					$variantanswer=$row['variantanswer'];
+					$variantanswer=html_entity_decode($row['variantanswer']);
 					$param=html_entity_decode($row['param']);
 					$newcourseid=$row['cid'];
 					$newcoursevers=$row['vers'];
@@ -360,7 +360,7 @@ if(isSuperUser($userid)){
 				foreach($query->fetchAll() as $row){
 					$variant=$row['vid'];
 					$answer=$row['useranswer'];
-					$variantanswer=$row['variantanswer'];
+					$variantanswer="UNK";
 					$param=html_entity_decode($row['param']);
 					$newcourseid=$row['cid'];
 					$newcoursevers=$row['vers'];
@@ -405,7 +405,8 @@ if(isSuperUser($userid)){
 						$duggatitle=$row['dugga_title'];
 						$variant=$row['vid'];
 						$answer=$row['useranswer'];
-						$variantanswer=$row['variantanswer'];
+						//$variantanswer=html_entity_decode($row['variantanswer']);
+						$variantanswer="UNK";
 						$param=html_entity_decode($row['param']);
 					}
 			
@@ -439,6 +440,7 @@ $array = array(
 		"debug" => $debug,
 		"param" => $param,
 		"answer" => $answer,
+		"danswer" => $variantanswer,
 		"score" => $score,
 		"highscoremode" => $highscoremode,
 		"grade" => $grade,
