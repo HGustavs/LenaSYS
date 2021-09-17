@@ -21,6 +21,7 @@ var retdata=null;
 var hc=null;
 var score = -1;
 var activehex;
+var response;
 //----------------------------------------------------------------------------------
 // Setup
 //----------------------------------------------------------------------------------
@@ -44,16 +45,14 @@ function setup()
 
 function returnedDugga(data)
 {	
+	response=data;
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	if(data['opt']=="SAVDU"){
-		console.log(data['hash'],data['hashpwd']);
-		$('#url_receipt').html(data['link'])
-		$('#url_receipt').attr("href",data['link'])
-		$('#hash_receipt').html(data['hash'])
-		$('#pwd_receipt').html(data['hashpwd'])
+		$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
 	}
+
 
 	Timer.startTimer();
 	ClickCounter.initialize();
@@ -98,6 +97,9 @@ function returnedDugga(data)
 				}
 				document.getElementById('H0').innerHTML=hexvalue1;
 				document.getElementById('H1').innerHTML=hexvalue2;
+				if(response.danswer!="UNK"){
+					showFacit(response.param, response.answer, response.danswer, null, null, null, null)
+				}
 			}
 		}		
 		// Teacher feedback
@@ -117,7 +119,7 @@ function returnedDugga(data)
 		}
 		$("#submitButtonTable").appendTo("#content");
 		$("#lockedDuggaInfo").prependTo("#content");
-		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
 //--------------------================############================--------------------

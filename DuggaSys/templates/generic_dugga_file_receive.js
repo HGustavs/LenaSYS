@@ -36,11 +36,7 @@ function returnedDugga(data)
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
 	if(data['opt']=="SAVDU"){
-		console.log(data['hash'],data['hashpwd']);
-		$('#url_receipt').html(data['link'])
-		$('#url_receipt').attr("href",data['link'])
-		$('#hash_receipt').html(data['hash'])
-		$('#pwd_receipt').html(data['hashpwd'])
+		$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
 	}
 
@@ -49,6 +45,7 @@ function returnedDugga(data)
 	} else {
 		$(".submit-button").removeClass("btn-disable");
 		duggaParams = jQuery.parseJSON(data['param']);
+		//console.log(duggaParams);
 
 		if(duggaParams["type"]==="pdf"){
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
@@ -91,8 +88,9 @@ function returnedDugga(data)
 			for (var k=0; k < duggaParams["submissions"].length; k++){
 				findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0);
 	    		if (duggaParams["submissions"][k].instruction && duggaParams["submissions"][k].fieldname){
-					document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
-				}
+						//console.log(duggaParams["submissions"][k].fieldname+"Instruction")
+						document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
+					}
 
 			}
 			if (typeof duggaFiles !== "undefined"){
@@ -125,7 +123,7 @@ function returnedDugga(data)
 
 
 	}
-	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
 function reset()
@@ -373,7 +371,7 @@ function createFileUploadArea(fileuploadfileds){
 		} else if (type === "text"){
 			str += "<h4>Text Submission</h4>";
 			str += "</div>";
-            str +="<div id='"+fieldname+"Prev' style='min-height:100px;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'><span style='font-style:italic;M'>Submission History</span></div>";
+      str +="<div id='"+fieldname+"Prev' style='min-height:100px;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'><span style='font-style:italic;M'>Submission History</span></div>";
 			str += "<div style='padding:10px;'>";
 			str +="<table style='width:100%;'>";
 			str +="<tr>";
@@ -401,6 +399,9 @@ function createFileUploadArea(fileuploadfileds){
 			str +="<tr>";
 			str +="<td id='"+fieldname+"'>";
 			str += form;
+		}else{
+			str +="<h4>Instructions</h4>";
+			str +="<div id='"+fieldname+"Instruction' style='font-style: italic;padding:0px;'></div>"
 		}
 		str += "</td>";
 //      Until I can figure out what these do, except mess with the design, I'll have them commented, for the sake of the design

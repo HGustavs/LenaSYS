@@ -4,19 +4,18 @@
 				<div id="feedbackTable" style="margin-top: -3px;"></div>	
 		</div>
 </div>
-<div id="container" class="transformContainer" style="display:flex; justify-content:flex-start;">
-    <div id='transformInfoBox'>
-      
-          <div class='loginBoxheader'>
-                <h3>Transformations-dugga</h3>
-          </div>
-                <p style="margin-left: 4px;">Transformationsduggan går ut på att skapa samma animation som ni redan ser framför er. 
-                    Till ert förfogande finns de klassiska transformationerna: transelera (T), rotera (R) och skala (S). För att rita ut planeter så väljer ni draw R/G/B beroende på vilken färg som önskas.</p>
-                <p style="margin-left: 4px;">Lägg till operationer genom att välja en operation och tryck på "Add Op.". Ni kan byta ordning på operationerna med pilarna upp och ner. Ta bort en operation genom att klicka på "X" för önskad operation. Genom att klicka på en befintlig operation så kan man ändra dess innehåll.</p>
-								<p style="margin-left: 4px;">Pausa/starta animationen genom att klicka i animationen.</p>
-                <p style="margin-left: 4px;">Lycka till och glöm inte att spara duggan! En gul lampa betyder att duggan är inlämnad.</p>
-            
-    </div>
+<div class='instructions-button' onclick='toggleInstructions()'>
+    <h3>Instructions</h3>
+</div>
+<div class="instructions-content">
+    <p style="margin-left: 4px;">Transformationsduggan går ut på att skapa samma animation som ni redan ser framför er. 
+        Till ert förfogande finns de klassiska transformationerna: transelera (T), rotera (R) och skala (S). För att rita ut planeter så väljer ni draw R/G/B beroende på vilken färg som önskas.</p>
+    <p style="margin-left: 4px;">Lägg till operationer genom att välja en operation och tryck på "Add Op.". Ni kan byta ordning på operationerna med pilarna upp och ner. Ta bort en operation genom att klicka på "X" för önskad operation. Genom att klicka på en befintlig operation så kan man ändra dess innehåll.</p>
+                    <p style="margin-left: 4px;">Pausa/starta animationen genom att klicka i animationen.</p>
+    <p style="margin-left: 4px;">Lycka till och glöm inte att spara duggan! En gul lampa betyder att duggan är inlämnad.</p>
+</div>
+<div id="container" class="transformContainer" style="display:flex; justify-content:flex-start;width: 1000px;margin: auto;">
+
 
     <canvas id='a' style='background-color:#FFFFFF; border:2px solid black; display:block;'></canvas>
 
@@ -26,8 +25,8 @@
             <div class='loginBoxheader'>
                 <h3>Ritverktyg</h3>
             </div>
-            <div style="display:flex;justify-content:center;">
-                <select id="function" name="function" >
+            <div style="display:flex;justify-content:center;align-items: baseline;">
+                <select id="function" name="function" style="height:30px;" >
                     <optgroup label="Planets">
                         <option value="D1">Draw R</option>
                         <option value="D2">Draw G</option>

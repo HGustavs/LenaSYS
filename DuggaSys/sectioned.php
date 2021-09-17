@@ -128,7 +128,7 @@
 				$_SESSION['courseid'] = $_GET['courseid'];
 				$_SESSION['coursename'] = $_GET['coursename'];
 				$_SESSION['coursevers'] = $_GET['coursevers'];
-				include "../Shared/announcementBox.php"; 
+				//include "../Shared/announcementBox.php"; 
 
 				?>
 				</div>
@@ -202,11 +202,11 @@
 		
 	</div>
 	
-	<div class="course">
+	<!-- <div class="course">
 		<span style="text-align: center;">
 			<a href="../Shared/calendar.php?courseid=<?php echo $_GET['courseid']; ?>&coursevers=<?php echo $_GET['coursevers']; ?>" style="color:#fff">Subscribe for deadlines in your personal calendar</a>
 		</span>
-	</div>
+	</div> -->
 	<!-- content END -->
 
 	<?php

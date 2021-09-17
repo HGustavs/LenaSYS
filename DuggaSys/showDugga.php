@@ -331,7 +331,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	<!-- LoginBox (receipt&Feedback-box ) Start! -->
 	<div id='receiptBox' class="loginBoxContainer" style="display:none">
 	  <div class="receiptBox loginBox" style="max-width:400px; overflow-y:visible;">
-			<div class='loginBoxheader'><h3>Kvitto och feedback - Duggasvar</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
+			<div class='loginBoxheader'><h3>Dugga Submission Receipt</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
 			<div id='feedbackbox'>
 				<span id='feedbackquestion'></span>
 					<div id="ratingbox">
@@ -379,15 +379,17 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 
     		<div id='emailPopup' style="display:block">
 				<p>Your dugga has been saved. Besure to store the hash and hash password in a safe place before submitting the dugga in canvas! <em>There is <strong>no way</strong> to restore a submission without the hash and hash password.</p>
-				<div id='urlAndPwd'>
-					<div class="testasd"><p class="bold">Direct link (to be submitted in canvas)</p><a id='url_receipt' target="_blank"></a></div>
+				<textarea readonly id="submission-receipt" rows="15" cols="50" style="height: 180px;resize: none;"></textarea>
+				<!-- <div id='urlAndPwd'>					 -->
+					<!-- <div class="testasd"><p class="bold">Direct link (to be submitted in canvas)</p><a id='url_receipt' target="_blank"></a></div>
 					<div class="testasd"><p class="bold">Hash</p><p id='hash_receipt'></p></div>
-					<div class="testasd"><p class="bold">Hash password</p><p id='pwd_receipt'></p></div>
-				</div>
+					<div class="testasd"><p class="bold">Hash password</p><p id='pwd_receipt'></p></div> -->
+				<!-- </div> -->
 				
 				<div class="button-row">
-					<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>
-					<input type='button' class='submit-button' onclick="copyUrltoCB();" value='Copy URL'>
+					<input type='button' class='submit-button' onclick="copySubmissionReceiptToClipboard();" value='Copy Receipt'>
+					<!--<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>-->
+					<!--<input type='button' class='submit-button' onclick="copyUrltoCB();" value='Copy URL'>-->
 					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
 				</div>
     		</div>

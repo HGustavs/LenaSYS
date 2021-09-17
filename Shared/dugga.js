@@ -1643,6 +1643,14 @@ function checkScroll(obj) {
 }
 
 //----------------------------------------------------------------------------------
+// copySubmissionReceiptToClipboard: Copy the hash to user clipboard
+//----------------------------------------------------------------------------------
+function copySubmissionReceiptToClipboard() {
+	$('#submission-receipt').select();
+	document.execCommand('copy');
+}
+
+//----------------------------------------------------------------------------------
 // copyhashtoCB: Copy the hash to user clipboard
 //----------------------------------------------------------------------------------
 function copyHashtoCB() {
@@ -1905,48 +1913,55 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		var mobileMediaQuery = window.matchMedia("(max-width: 800px)");
 		var mediumMediaQuery = window.matchMedia("(min-width: 801px) and (max-width: 1200px)");
 		var tab="<table class='previewTable'>";
-  // Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
-  	if(iconFlag){
 		if (group) {
-			if (mobileMediaQuery.matches) {
-				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
-			} else {
-				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
-			}
-		} else if(ctype == "zip" || ctype == "rar"){
-			if(mobileMediaQuery.matches){
-				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
-			} else {
-				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
-			}
-		} else {
-			if (mobileMediaQuery.matches) {
-				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
-			} else {
-				tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
-			}
-		}
-	} else {
-		if (group) {
-			if (mobileMediaQuery.matches) {
 			tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
-			} else {
-					tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
-			}
 		} else if(ctype == "zip" || ctype == "rar"){
-			if(mobileMediaQuery.matches){
-				tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
-			} else {
-				tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
-			}
+			tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
 		} else {
-			if (mobileMediaQuery.matches) {
-				tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
-			} else {
-				tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
-			}
+			tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
 		}
-	}
+  // Currently only displays Filename and upload date. Teacher feedback will be re-integrated through canvas later.
+  	// if(iconFlag){
+	// 	if (group) {
+	// 		if (mobileMediaQuery.matches) {
+	// 			tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+	// 		} else {
+	// 			tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+	// 		}
+	// 	} else if(ctype == "zip" || ctype == "rar"){
+	// 		if(mobileMediaQuery.matches){
+	// 			tab+="<thead><tr><th>Download</th><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+	// 		} else {
+	// 			tab+="<thead><tr><th>Download</th><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+	// 		}
+	// 	} else {
+	// 		if (mobileMediaQuery.matches) {
+	// 			tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+	// 		} else {
+	// 			tab+="<thead><tr><th>Download</th><th>Filename</th><th>Upload date</th></tr></thead>";
+	// 		}
+	// 	}
+	// } else {
+	// 	if (group) {
+	// 		if (mobileMediaQuery.matches) {
+	// 		tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+	// 		} else {
+	// 				tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+	// 		}
+	// 	} else if(ctype == "zip" || ctype == "rar"){
+	// 		if(mobileMediaQuery.matches){
+	// 			tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+	// 		} else {
+	// 			tab+="<thead><tr><th>Filename</th><th>Ziparchive</th><th>Upload date</th></tr></thead>";
+	// 		}
+	// 	} else {
+	// 		if (mobileMediaQuery.matches) {
+	// 			tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+	// 		} else {
+	// 			tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>";
+	// 		}
+	// 	}
+	// }
 
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
@@ -1981,19 +1996,19 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
               				if (ctype == "link"){							
 								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
 								if (mediumMediaQuery.matches) {
-									tab+=filez[i].content.substring(0,32)+"&#8230;</span>";
+									tab+=filez[i].content+"</span>";
 								} else if (mobileMediaQuery.matches) {
-									tab+=filez[i].content.substring(0,8)+"&#8230;</span>";
+									tab+=filez[i].content+"</span>";
 								} else {
 									tab+=filez[i].content+"</span>";
 								}
 							}else if(ctype == "zip" || ctype == "rar"){ 
 								tab+="<span>";
 								if (mediumMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension;
+									tab+=filez[i].filename+filez[i].extension;
 									tab+="<td>"+filez[i].zipdir+"</td></span>";
 								} else if (mobileMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension;
+									tab+=filez[i].filename+filez[i].extension;
 									tab+="<td>"+filez[i].zipdir+"</td></span>";
 								} else {
 									tab+=filez[i].filename+"."+filez[i].extension;
@@ -2007,9 +2022,9 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+="<span>";
 								}
 								if (mediumMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
+									tab+=filez[i].filename+filez[i].extension+"</span>";
 								} else if (mobileMediaQuery.matches) {
-									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</span>";
+									tab+=filez[i].filename+filez[i].extension+"</span>";
 								} else {
 									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
 								}
@@ -2102,7 +2117,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 
 }
 
-function displayDuggaStatus(answer,grade,submitted,marked){
+function displayDuggaStatus(answer,grade,submitted,marked,duggatitle){
 		var str="<div style='display:flex;justify-content:center;align-items:center;'><div id='duggaTitleSibling' class='LightBox'>";
 		// Get proper dates
 		if(submitted!=="UNK") {
@@ -2115,9 +2130,9 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		}
 
 		//If there is no name of the dugga.
-		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
-			duggaTitle = "Untitled dugga";
-		}
+		// if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
+		// 	duggaTitle = "Untitled dugga";
+		// }
   
 		str+="<div class='' style='margin:4px;'></div></div>";
 
@@ -2133,7 +2148,7 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
 
 		// Adds dugga title next to the text "Instructions"
-		$('h3:contains("Instructions")').text(duggaTitle + " - Instructions");
+		$('h3:contains("Instructions")').html(duggatitle + " - Instructions");
 }
 
 function FABMouseOver(e) {

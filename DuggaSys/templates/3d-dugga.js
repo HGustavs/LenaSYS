@@ -38,6 +38,7 @@ var material, goalMaterial;
 var rotateObjects = true;
 var backsideCulling = false;
 var highlightVerticies = true; // Used to highlight vertices in the geometry
+let needInit=true;
 
 // lvl 1
 // {"vertice":[{"x":"200","y":"200","z":"0"},{"x":"-400","y":"-400","z":"0"},{"x":"400","y":"-400","z":"0"}],"triangles":["0,1,2"]}
@@ -58,8 +59,11 @@ function setup()
 {
     acanvas = document.getElementById('foo');
     renderer = new THREE.WebGLRenderer();
-    acanvas.addEventListener('click', toggleRotate, false);
-		AJAXService("GETPARAM", { }, "PDUGGA");
+	if(acanvas.getAttribute('has-toggle-rotate') !== 'true'){
+		acanvas.addEventListener('click', toggleRotate, false);
+	}    
+	
+	AJAXService("GETPARAM", { }, "PDUGGA");
 }
 
 //----------------------------------------------------------------------------------
@@ -73,6 +77,11 @@ function returnedDugga(data)
 	dataV = data;
 
 	if (data['debug'] != "NONE!") {alert(data['debug']);}
+
+	if(data['opt']=="SAVDU"){
+		$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
+		showReceiptPopup();
+	}
 
 	if (data['param'] == "UNK") { 
 		alert("UNKNOWN DUGGA!");	
@@ -99,12 +108,21 @@ function returnedDugga(data)
             fov=params.camera.fov;
         }
     }
+    
+	if(needInit){
+		init();
+		needInit=false;
+	}
+	createGoalObject(params);
+	updateGeometry();
 
-    init();
-		createGoalObject(params);
-		updateGeometry();
+	if(renderId){
+		
+	}else{
 		animate();
+	}
 
+		$(".submit-button").removeClass("btn-disable");
 	}
   // Teacher feedback
 	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
@@ -123,7 +141,7 @@ function returnedDugga(data)
   }
   $("#submitButtonTable").appendTo("#content");
 	$("#lockedDuggaInfo").prependTo("#content");
-  displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
@@ -200,7 +218,9 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 */
 acanvas = document.getElementById('container');
 renderer = new THREE.WebGLRenderer();
-acanvas.addEventListener('click', toggleRotate, false);
+if(acanvas.getAttribute('has-toggle-rotate') !== 'true'){
+	acanvas.addEventListener('click', toggleRotate, false);
+}
 
 // Parse student answer and dugga answer
 var studentPreviousAnswer = "";
@@ -474,9 +494,9 @@ function renderVertexTable()
 	for (var i=0; i<vertexL.length;i++){
 		newTableBody += "<tr id='v" + i +"'>";
 		newTableBody += '<td style="font-size:11px; text-align: right;">v'+i+'</td>';
-		newTableBody += '<td><input style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_x" type="text" maxlength="4" size="4" value="' + vertexL[i].x + '" onchange="vertexUpdate('+i+');" /></td>';
-		newTableBody += '<td><input style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_y" type="text" maxlength="4" size="4" value="' + vertexL[i].y + '" onchange="vertexUpdate('+i+');" /></td>';
-		newTableBody += '<td><input style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_z" type="text" maxlength="4" size="4" value="' + vertexL[i].z + '" onchange="vertexUpdate('+i+');" /></td>';
+		newTableBody += '<td><input style="text-align: center;width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_x" type="text" maxlength="4" size="4" value="' + vertexL[i].x + '" onchange="vertexUpdate('+i+');" /></td>';
+		newTableBody += '<td><input style="text-align: center;width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_y" type="text" maxlength="4" size="4" value="' + vertexL[i].y + '" onchange="vertexUpdate('+i+');" /></td>';
+		newTableBody += '<td><input style="text-align: center;width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_z" type="text" maxlength="4" size="4" value="' + vertexL[i].z + '" onchange="vertexUpdate('+i+');" /></td>';
 		if (i === 0){
 			newTableBody += '<td><button disabled onclick="moveVertexUp('+i+');">&uarr;</button></td>';
 		} else {
@@ -597,8 +617,9 @@ function moveTriangleDown(index)
 }
 
 
-function toggleRotate() 
+function toggleRotate(e) 
 {
+	e.target.setAttribute('has-toggle-rotate', 'true');
 	if (rotateObjects) { rotateObjects = false; } else { rotateObjects = true; }
 }
 
@@ -847,15 +868,17 @@ function highlightVertices(){
 function animate() {
 	fitToContainer();
 
-  if (rotateObjects){
-    timer += 0.05;  
-  }
+	if (rotateObjects){
+		timer += 0.05;  
+	}else{
+		timer += 0.0;  
+	}
 
-  rotateAllObjects();
+	rotateAllObjects();
 
 	renderer.render(scene, camera);
 
-  renderId=requestAnimationFrame(animate);
+	renderId=requestAnimationFrame(animate);
 
 }
 

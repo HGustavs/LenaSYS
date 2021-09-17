@@ -117,30 +117,34 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 
 		// Create folder if link textinput or file
 		$currcvd=getcwd();
-		if(!file_exists($currcvd."/submissions")) {
-				if(!mkdir($currcvd."/submissions",0775,true)) {
-						echo "Error creating folder: ".$currcvd."/submissions";
+		$submissionpath=$currcvd."/../../submissions";
+		if(!file_exists($submissionpath)) {
+				if(!mkdir($submissionpath,0775,true)) {
+						echo "Error creating folder: ".$submissionpath;
 						$error=true;
 				}
 		}
 
-		if(!file_exists ($currcvd."/submissions/".$cid)){
-				if(!mkdir($currcvd."/submissions/".$cid,0775,true)){
-						echo "Error creating folder: ".$currcvd."/submissions/cid";
+		$submissionpath.="/".$cid;
+		if(!file_exists ($submissionpath)){
+				if(!mkdir($submissionpath,0775,true)){
+						echo "Error creating folder: ".$submissionpath;
 						$error=true;
 				}
 		}
 
-		if(!file_exists ($currcvd."/submissions/".$cid."/".$vers)){
-				if(!mkdir($currcvd."/submissions/".$cid."/".$vers,0775,true)){
-						echo "Error creating folder: ".$currcvd."/submissions/cid/vers";
+		$submissionpath.="/".$vers;
+		if(!file_exists ($submissionpath)){
+				if(!mkdir($submissionpath,0775,true)){
+						echo "Error creating folder: ".$submissionpath;
 						$error=true;
 				}
 		}
 
-		if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid)){
-				if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid,0775,true)){
-						echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid";
+		$submissionpath.="/".$duggaid;
+		if(!file_exists ($submissionpath)){
+				if(!mkdir($submissionpath,0775,true)){
+						echo "Error creating folder: ".$submissionpath;
 						$error=true;
 				}
 		}
@@ -162,9 +166,10 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 		$userdir = str_replace($national, $nationalReplace, $userdir);
 		$userdir=preg_replace("/[^a-zA-Z0-9._]/", "", $userdir);
 
-		if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash)){
-				if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash)){
-						echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid/".$hash;
+		$submissionpath.="/".$hash;
+		if(!file_exists ($submissionpath)){
+				if(!mkdir($submissionpath)){
+						echo "Error creating folder: ".$submissionpath;
 						$error=true;
 				}
 		}
@@ -194,8 +199,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 			}
 			$seq++;
 
-			$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/";
-			$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$fname.$seq.".".$extension;
+			$filepath=$submissionpath;
+			$movname=$submissionpath."/".$fname.$seq.".".$extension;
 			file_put_contents($movname, $formattedInput);
 
 			// Save POST values in an array to loop over them
@@ -332,12 +337,12 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 				}
 				$seq++;
 
-				$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/";
+				$filepath=$submissionpath;
 				if ($fieldkind = 4) {
 					$extension = "json";
 					$mime = "json";
 				}
-				$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$fname.$seq.".".$extension;
+				$movname=$submissionpath."/".$fname.$seq.".".$extension;
 
 				if ($fieldkind = 4){ // JSON-data
 					file_put_contents($movname, $inputtext);
@@ -379,9 +384,9 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 				}
 				$seq++;
 
-				$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/";
+				$filepath=$submissionpath."/";
 
-				$movname = $currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$md5_filename.$seq;
+				$movname = $submissionpath.$md5_filename.$seq;
 				file_put_contents($movname, $link);
 
 				$query = $pdo->prepare("INSERT INTO submission(fieldnme,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:cid,:vers,:did,:filepath,:filename,null,null,:kind,:seq,:segment,now(),:hash);");
@@ -450,14 +455,14 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 													$seq=$row['Dusty']+1;
 										}
 
-									  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/".$fname.$seq.".".$extension;
+									  $movname=$submissionpath."/".$fname.$seq.".".$extension;
 
 										// check if upload is successful
 										if(move_uploaded_file($filea["tmp_name"],$movname)){
 
 														$query = $pdo->prepare("INSERT INTO submission(fieldnme,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now(),:hash);");
 
-														$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$hash."/";
+														$filepath=$submissionpath."/";
 
 														$query->bindParam(':cid', $cid);
 														$query->bindParam(':vers', $vers);
