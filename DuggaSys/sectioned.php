@@ -4,26 +4,12 @@
 	//include_once "../../coursesyspw.php";
 	pdoConnect();
 
-
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 	}else{
 		$userid="00";
 	}
 
-	if($userid == "00"){
-		if (!isset($_COOKIE["cookie_guest"])) {
-			// Cookie for guest username is not present, send a guest cookie to user.
-			$username = "Guest" . $userid . rand(0,50000);  // Guests have a random number between 0 and 50k added, this means there's a very small chance some guests have the same ID. These are only used for logging at the moment so this should not be an issue
-			setcookie("cookie_guest", $username, time() + 3600, "/");
-		}
-	}
-	else{
-		// refreshes session cookies, thereby extending the time before users sees the alert or get logged out
-		// refreshes takes place when navigating to codeviewer.php, courseed.php, and sectioned.php
-		setcookie("sessionEndTime", "expireC", time() + 2700, "/"); // Alerts user in 45min
-		setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends session in 60min, user gets logged out
-	}
 ?>
 
 <!DOCTYPE html>

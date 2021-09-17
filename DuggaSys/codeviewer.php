@@ -160,26 +160,13 @@ Testing Link:
 			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 				$username = $row['username'];
 			}
-			if($userid == "00"){
-				if (!isset($_COOKIE["cookie_guest"])) {
-					// Cookie for guest username is not present, send a guest cookie to user.
-					$username = "Guest" . $userid . rand(0,50000);  // Guests have a random number between 0 and 50k added, this means there's a very small chance some guests have the same ID. These are only used for logging at the moment so this should not be an issue
-					setcookie("cookie_guest", $username, time() + 3600, "/");
-
-				}
-			}
-			else{
-				// refreshes session cookies, thereby extending the time before users sees the alert or get logged out
-				// refreshes takes place when navigating to codeviewer.php, courseed.php, and sectioned.php
-				setcookie("sessionEndTime", "expireC", time() + 2700, "/"); // Alerts user in 45min
-				setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends session in 60min, user gets logged out
-			}
 
 			//	FOR TESTING:	uncomment line below to see log output of #username,
 			//echo "<script>console.log('Debug Objects: " . $_COOKIE["cookie_guest"] . "' );</script>";
 
 			// Logs users who view example, along with the example they have viewed
-			if ($userid == "00") {
+/*
+      if ($userid == "00") {
 				$description=$exampleid." ".$courseID." ".$cvers;
 				logUserEvent($_COOKIE["cookie_guest"], "guest", EventTypes::DuggaRead, $description);
 			}
@@ -187,7 +174,7 @@ Testing Link:
 				$description=$exampleid." ".$courseID." ".$cvers;
 				logUserEvent($userid, $username, EventTypes::DuggaRead, $description);
 			}
-
+*/
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
 			if($courseID!="UNK"&&$exampleid!="UNK"){
 				//checks if $courseid exists.
