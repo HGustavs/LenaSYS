@@ -386,7 +386,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 
 				$filepath=$submissionpath."/";
 
-				$movname = $submissionpath.$md5_filename.$seq;
+				$movname = $submissionpath."/".$md5_filename.$seq;
 				file_put_contents($movname, $link);
 
 				$query = $pdo->prepare("INSERT INTO submission(fieldnme,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime,hash) VALUES(:field,:cid,:vers,:did,:filepath,:filename,null,null,:kind,:seq,:segment,now(),:hash);");
@@ -511,10 +511,11 @@ if(!$error){
 //Sets hasUploaded variable so we do not get prompted for password when we upload a file.
 //$_SESSION['hasUploaded'] = 1;
 //echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?courseid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0&cid=".$cid."&hash=".$hash."' />";  //update page, redirect to "showDugga.php" with the variables sent for course id and version id and extension
-
-// echo "{$hash}|";
-// echo "{$hashpwd}|";
-// echo "{$variant}|<br>";
+//echo "{$link}|<br>";
+//echo "{$movname}|<br>";
+//echo "{$hash}|";
+//echo "{$hashpwd}|";
+//echo "{$variant}|<br>";
 header("Location: /sh/?s=$hash");
 exit();	
 
