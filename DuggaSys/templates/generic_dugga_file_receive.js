@@ -30,7 +30,10 @@ function returnedDugga(data)
 {
 	toggleLoadVariant(false);	//A submission doesn't have any variants. The Next variant button should be disabled.
 	if(data['isTeacher']==1){
+		isTeacher=1;
 		noUploadForTeacher();
+	}else{
+		isTeacher=0;
 	}
 	dataV = data;
 	if (data['debug'] != "NONE!") { alert(data['debug']); }

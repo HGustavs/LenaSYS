@@ -1970,64 +1970,79 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
 							tab+="<tr>"
 
-							// Button for making / viewing feedback - note - only button for given feedback to students.
-							if(iconFlag){
-								if (ctype == "link"){
-									tab+="<td>";
-									tab+="<a href='"+filez[i].content+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";
-									tab+="</td>";
-								} else {								
-									tab+="<td>";
-									tab+="<a href='"+filelink+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";										
-									// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
-									if (ctype == "pdf") {
-										tab +="\t<tab><a href='"+filelink+"' target='_blank'><img alt='open in new tab icon' title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
-										tab+="</td>";
-									}
-									else{
-										tab+="</td>";
-									}
-								}
-							}
+							// // Button for making / viewing feedback - note - only button for given feedback to students.
+							// if(iconFlag){
+							// 	if (ctype == "link"){
+							// 		tab+="<td>";
+							// 		tab+="<a href='"+filez[i].content+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";
+							// 		tab+="</td>";
+							// 	} else {								
+							// 		tab+="<td>";
+							// 		tab+="<a href='"+filelink+"' ><img alt='download icon' title='Download' src='../Shared/icons/file_download.svg' /></a>";										
+							// 		// if type is pdf, add an extenral_open icon to open in new tab next to download icon.
+							// 		if (ctype == "pdf") {
+							// 			tab +="\t<tab><a href='"+filelink+"' target='_blank'><img alt='open in new tab icon' title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
+							// 			tab+="</td>";
+							// 		}
+							// 		else{
+							// 			tab+="</td>";
+							// 		}
+							// 	}
+							// }
               				if (group) {
 								tab+="<td>"+filez[i].username+"</td>";
 							}
 							tab+="<td>";
               				if (ctype == "link"){							
-								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
-								if (mediumMediaQuery.matches) {
-									tab+=filez[i].content+"</span>";
-								} else if (mobileMediaQuery.matches) {
-									tab+=filez[i].content+"</span>";
-								} else {
-									tab+=filez[i].content+"</span>";
-								}
+								//tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
+								tab+="<a target='_blank' href='"+filez[i].content+"'>";
+								tab+=filez[i].content+"</a>";
+								// if (mediumMediaQuery.matches) {
+								// 	tab+=filez[i].content+"</span>";
+								// } else if (mobileMediaQuery.matches) {
+								// 	tab+=filez[i].content+"</span>";
+								// } else {
+								// 	tab+=filez[i].content+"</span>";
+								// }
 							}else if(ctype == "zip" || ctype == "rar"){ 
-								tab+="<span>";
-								if (mediumMediaQuery.matches) {
-									tab+=filez[i].filename+filez[i].extension;
-									tab+="<td>"+filez[i].zipdir+"</td></span>";
-								} else if (mobileMediaQuery.matches) {
-									tab+=filez[i].filename+filez[i].extension;
-									tab+="<td>"+filez[i].zipdir+"</td></span>";
-								} else {
-									tab+=filez[i].filename+"."+filez[i].extension;
-									tab+="<td>"+filez[i].zipdir+"</td></span>";
-								}
-							} else {
-								if(iconFlag){
-									tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
+								console.log("teacherstatus", isTeacher);
+								if(isTeacher){
+									//tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
+									tab+=`<span><a href="showdoc.php?sub=${filez[i].subid}">`;
 								}
 								else{
 									tab+="<span>";
 								}
-								if (mediumMediaQuery.matches) {
-									tab+=filez[i].filename+filez[i].extension+"</span>";
-								} else if (mobileMediaQuery.matches) {
-									tab+=filez[i].filename+filez[i].extension+"</span>";
-								} else {
-									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
+								tab+=filez[i].filename+"."+filez[i].extension;+"</a>";
+								tab+="<td>"+filez[i].zipdir+"</td></span>";
+
+								// if (mediumMediaQuery.matches) {
+								// 	tab+=filez[i].filename+filez[i].extension;
+								// 	tab+="<td>"+filez[i].zipdir+"</td></span>";
+								// } else if (mobileMediaQuery.matches) {
+								// 	tab+=filez[i].filename+filez[i].extension;
+								// 	tab+="<td>"+filez[i].zipdir+"</td></span>";
+								// } else {
+								// 	tab+=filez[i].filename+"."+filez[i].extension;
+								// 	tab+="<td>"+filez[i].zipdir+"</td></span>";
+								// }
+							} else {
+								console.log("teacherstatus", isTeacher);
+								if(isTeacher){
+									//tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
+									tab+=`<span><a href="showdoc.php?sub=${filez[i].subid}">`;
 								}
+								else{
+									tab+="<span>";
+								}
+								tab+=filez[i].filename+"."+filez[i].extension+"</span>";
+								// if (mediumMediaQuery.matches) {
+								// 	tab+=filez[i].filename+filez[i].extension+"</span>";
+								// } else if (mobileMediaQuery.matches) {
+								// 	tab+=filez[i].filename+filez[i].extension+"</span>";
+								// } else {
+								// 	tab+=filez[i].filename+"."+filez[i].extension+"</span>";
+								// }
 							}
 							tab+="</td><td>";
 							if (mobileMediaQuery.matches) {
