@@ -1220,28 +1220,30 @@ function tokenize(instring, inprefix, insuffix) {
 	while (currentCharacter) { // currentCharacter == first character in each word
 		from = i;
 		if (currentCharacter <= ' ') { // White space and carriage return
- 			if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
-//				maketoken('newline', "", i, i, row);
-//				currentStr = "";
-//				row++;
-			} else {
-				currentStr = currentCharacter;
+			if((currentCharacter=='\n')||(currentCharacter=='\r')||(currentCharacter =='')){
+				maketoken('newline',"",i,i,row);
+				currentStr="";
+				row++;
+			}else{
+				currentStr=currentCharacter;
 			}
-
-			i++; 
-			while (true) {
-				currentCharacter = instring.charAt(i);
-				if (currentCharacter > ' ' || !currentCharacter) break;
-				if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
-          maketoken('newline', "", i, i, row);
-          currentStr = "";
-          row++;
-				} else {
+				
+			i++;
+			while(true){
+				currentCharacter=instring.charAt(i);
+				if(currentCharacter>' '||!currentCharacter) break;
+				if((currentCharacter=='\n')||(currentCharacter=='\r')||(currentCharacter =='')){
+					maketoken('whitespace',currentStr,from,i,row);				                
+					maketoken('newline',"",i,i,row);
+					currentStr="";
+					// White space Row (so we get one white space token for each new row) also increase row number
+					row++;
+				}else{
 					currentStr += currentCharacter;
 				}
 				i++;
 			}
-			if (currentStr != "") maketoken('whitespace', currentStr, from, i, row);
+			if(currentStr!="") maketoken('whitespace',currentStr,from,i,row);
 		} else if ((currentCharacter >= 'a' && currentCharacter <= 'z') || (currentCharacter >= 'A' && currentCharacter <= 'Z')) { // Names i.e. Text
 			currentStr = currentCharacter;
 			i++;
@@ -1480,7 +1482,9 @@ function tokenize(instring, inprefix, insuffix) {
 			currentCharacter = instring.charAt(i);
 		}
 	}
-  alert(row);
+  
+  // alert(row);
+  console.log(tokens);
 }
 
 //----------------------------------------------------------------------------------
