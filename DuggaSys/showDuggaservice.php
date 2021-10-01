@@ -166,7 +166,8 @@ function processDuggaFiles()
 				}
 			}
 			
-			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
+			//$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
+			$fedbname=$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
 			if(!file_exists($fedbname)) {
 					$feedback="UNK";
 			} else {
@@ -177,7 +178,8 @@ function processDuggaFiles()
 			
 			if($row['kind']=="3"){
 					// Read file contents
-					$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
+					//$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
+					$movname=$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
 
 					if(!file_exists($movname)) {
 							$content="UNK!";
@@ -186,7 +188,8 @@ function processDuggaFiles()
 					}
 			}	else if($row['kind']=="2"){
 					// File content is an URL
-					$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'];
+					//$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'];
+					$movname=$row['filepath']."/".$row['filename'].$row['seq'];
 	
 					if(!file_exists($movname)) {
 							$content="UNK URL!";

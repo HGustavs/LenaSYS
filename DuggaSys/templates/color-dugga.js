@@ -21,6 +21,7 @@ var dw,dpos,dwid,dhei,bw,lpos,popclass;
 var hc=null;
 var score = -1;
 var activehex;
+var response;
 
 //----------------------------------------------------------------------------------
 // Setup
@@ -43,6 +44,7 @@ function setup()
 
 function returnedDugga(data)
 {
+	response=data;
 	if(querystring['highscoremode'] == 1) {
 		Timer.startTimer();
 		if(data['score'] > 0){
@@ -88,23 +90,27 @@ function returnedDugga(data)
 		}			
 	}	  
 	// Teacher feedback
-		if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
-			// No feedback
-	} else {
-			var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-			var feedbackArr = data["feedback"].split("||");
-			for (var k=feedbackArr.length-1;k>=0;k--){
-				var fb_tmp = feedbackArr[k].split("%%");
-				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-			} 		
-			fb += "</tbody></table>";
-			document.getElementById('feedbackTable').innerHTML = fb;		
-			document.getElementById('feedbackBox').style.display = "block";
-			$("#showFeedbackButton").css("display","block");
+	// if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
+	// 		// No feedback
+	// } else {
+	// 		var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+	// 		var feedbackArr = data["feedback"].split("||");
+	// 		for (var k=feedbackArr.length-1;k>=0;k--){
+	// 			var fb_tmp = feedbackArr[k].split("%%");
+	// 			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+	// 		} 		
+	// 		fb += "</tbody></table>";
+	// 		document.getElementById('feedbackTable').innerHTML = fb;		
+	// 		document.getElementById('feedbackBox').style.display = "block";
+	// 		$("#showFeedbackButton").css("display","block");
+	// }
+	// $("#submitButtonTable").appendTo("#content");
+	// $("#lockedDuggaInfo").prependTo("#content");
+	// displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
+
+	if(response.danswer!="UNK"){
+		showFacit(response.param, response.answer, response.danswer, null, null, null, null)
 	}
-	$("#submitButtonTable").appendTo("#content");
-	$("#lockedDuggaInfo").prependTo("#content");
-	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
 //----------------------------------------------------------------------------------
@@ -196,18 +202,18 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	}			
 	
 	// Teacher feedback
-	var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-	if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
-		var feedbackArr = feedback.split("||");
-		for (var k=feedbackArr.length-1;k>=0;k--){
-			var fb_tmp = feedbackArr[k].split("%%");
-			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-		} 		
-	}
-	fb += "</tbody></table>";
-	if (feedback !== undefined){
-			document.getElementById('teacherFeedbackTable').innerHTML = fb;
-	}
+	// var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+	// if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
+	// 	var feedbackArr = feedback.split("||");
+	// 	for (var k=feedbackArr.length-1;k>=0;k--){
+	// 		var fb_tmp = feedbackArr[k].split("%%");
+	// 		fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+	// 	} 		
+	// }
+	// fb += "</tbody></table>";
+	// if (feedback !== undefined){
+	// 		document.getElementById('teacherFeedbackTable').innerHTML = fb;
+	// }
 	
 	$('.fouter').css("background","#"+previous[4]+previous[5]+previous[6]+previous[7]+previous[8]+previous[8]);
 		

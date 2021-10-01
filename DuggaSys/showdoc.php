@@ -16,6 +16,7 @@
 		$fname=getOPG('fname');
 		$coursevers=getOPG('coursevers');
 		$preview = getOPG('read');
+		$submission = getOPG('sub');
 
 		$hdrs=getOPG('headers');
 
@@ -341,6 +342,25 @@
 				return $instring;		
 		}
 
+		if($submission != "UNK" && $_SESSION["superuser"]==1){
+			$query = $pdo->prepare("SELECT * FROM submission WHERE subid=:subid");
+			$query->bindParam(':subid', $submission);
+			$result = $query->execute();
+			if($row = $query->fetch(PDO::FETCH_ASSOC)){
+				$attachment_location = $row['filepath'].$row['filename'].$row['seq'].'.'.$row['extension'];
+				header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
+				header("Cache-Control: public"); // needed for internet explorer
+				//header("Content-Type: application/zip");
+				header("Content-Type: application/octet-stream");
+				header("Content-Transfer-Encoding: Binary");
+				header("Content-Length:".filesize($attachment_location));
+				header("Content-Disposition: attachment; filename=".$row['filename'].'.'.$row['extension']);
+				readfile($attachment_location);
+				die();        				
+			}
+
+			exit;
+		}
 		
 		// If no course version is given, read course version from session
 		if($cid=="UNK"){

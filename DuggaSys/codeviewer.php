@@ -24,7 +24,8 @@
         'codeviewer.css',
         'style.css',
         'jquery-ui-1.10.4.min.css',
-				'blackTheme.css'
+		'whiteTheme.css',
+		'blackTheme.css'
     );
 
     $js = array(
