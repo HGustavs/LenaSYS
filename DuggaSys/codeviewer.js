@@ -1593,7 +1593,8 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		} else if (tokens[i].kind == "blockcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "string") {
-
+      cont+="<span class='string'>"+tokenvalue+"</span>";
+/*
 			var splitString = tokens[i].val.split(" ");
 			
 			for(j = 0; j < splitString.length; j++){
@@ -1684,7 +1685,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					}
 				}
 			}
-
+*/
 		} else if (tokens[i].kind == "number") {
 			cont += "<span class='number'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "name") {
