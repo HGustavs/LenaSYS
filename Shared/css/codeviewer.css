@@ -339,12 +339,12 @@
     position: absolute;
     top: 0px;
     margin-left: 32px;
-    padding: 5px 0px 0px 5px;
+    padding: 0px 0px 0px 0px;
 }
 
 .normtext {
 
-    line-height: 15px;
+    height: 15px;
 }
 
 .normtextend {
