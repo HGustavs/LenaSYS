@@ -99,7 +99,7 @@ function GetCourse($course){
 	foreach($tmparr as $i => $param){
 		$sql .= " AND coursename LIKE CONCAT('%', :param{$i}, '%')";
 	}
-	$sql .= " ORDER BY coursename LIMIT 1;";
+	$sql .= " ORDER BY LENGTH(coursename) LIMIT 1;";
 	$query = $pdo->prepare($sql);
 	foreach($tmparr as $i => $param){
 		$query->bindParam(":param{$i}", $tmparr[$i],PDO::PARAM_STR);
