@@ -1423,8 +1423,6 @@ function drawSwimlanes() {
   var weekwidth = daywidth * 7;
   var colwidth = 60;
   var weekheight = 25;
-  var addNumb = 2;
-  var tempNumb = 2;
 
   var str = "";
   // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not.
@@ -1432,26 +1430,6 @@ function drawSwimlanes() {
   "<stop offset='85%' stop-opacity='1' stop-color='#000000' /><stop offset='100%' stop-opacity='0'/> </linearGradient> "+
   "<linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'>"+
   "<stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
-
-  // for (var i = 0; i < weekLength; i++) {
-  //   if(i==0){
-  //     addNumb = 0;
-  //     tempNumb = 2;
-  //   }else if(i > 0){
-  //     tempNumb = 2;
-  //     addNumb = 2;
-  //   }
-  //   var widthAdjuster = weekwidth+addNumb;
-  //   str += "<rect x='" + (i * widthAdjuster) + "' y='" + (15) + "' width='" +
-  //   (widthAdjuster+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
-  //   if ((i % 2) == 0) {
-  //     str += "fill='#ededed' />";
-  //   } else {
-  //     str += "fill='#ffffff' />";
-  //   }
-  //   str += `<text x='${((i * widthAdjuster) + (widthAdjuster * 0.5) + (tempNumb * 0.5))}' y='${(33)}' 
-  //   font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>${(i + 1)}</text>`;
-  // }
 
   for (var i = 0; i < weekLength; i++) {
     str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" +
@@ -1470,7 +1448,6 @@ function drawSwimlanes() {
     ${(weekLength * weekwidth )}' y2='${((i * weekheight) + 15)}' stroke='black' />`;
   }
 
-
   var weeky = 15;
   for (var k = 0; k < momentEntries.length;k++) {
     const obj=momentEntries[k];
@@ -1479,8 +1456,6 @@ function drawSwimlanes() {
       if (obj.moment == entry.moment) {
         weeky += weekheight;
         // Now we generate a SVG element for this
-        //startweek=weeksBetween(startdate, entry.start);
-        //deadlineweek=weeksBetween(startdate, entry.deadline);
         startday = Math.floor((entry.start - startdate) / (24 * 60 * 60 * 1000));
         let duggastart=new Date(entry.start).toLocaleDateString('sv-SE','YYYY-MM-DD');
         let duggaend=new Date(entry.deadline).toLocaleDateString('sv-SE','YYYY-MM-DD');
@@ -1505,23 +1480,6 @@ function drawSwimlanes() {
           textcol = `url("#fadeTextRed")`;
         }
         
-        //Code to compare deadlines to current year. 
-        //If deadline is older than current, red text for late assigment should be displayed as blue instead
-        // var deadlineYear = new Date(entry.deadline).getFullYear();
-        // if(deadlineYear < current.getFullYear()) {
-        //    textcol = "#7b5a96";
-       
-        //    var yearDifference = current.getFullYear() - deadlineYear;
-        //    var newYear = new Date(entry.deadline);
-        //    newYear.setFullYear(entry.deadline.getFullYear() + yearDifference +1);
-        //    entry.deadline = newYear;
-        //  }
-       
-        // if(duggalength < 0){
-        //   duggalength = duggalength * -1;
-        // }
-        // var tempVariable = duggalength*daywidth;        
-
         str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}' fill='${fillcol}' />`;
         str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='${textcol}' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
       }
