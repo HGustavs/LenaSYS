@@ -1366,7 +1366,7 @@ function drawSwimlanes() {
   var enddate = new Date(retdata['enddate']);
 
   var deadlineEntries = [];
-  var momentEntries = {};
+  var momentEntries = [];
   //var current = new Date(2015, 02, 19);
   var current = new Date();
 
@@ -1393,14 +1393,27 @@ function drawSwimlanes() {
         'moment': retdata['entries'][i].moment,
         'marked': marked,
         'submitted': submitted,
-        'grade': grade
+        'grade': grade,
+        'pos':parseInt(retdata['entries'][i].pos)
       });
     } else if (retdata['entries'][i].kind == 4) {
-      momentEntries[retdata['entries'][i].lid] = retdata['entries'][i].entryname;
+      momentEntries.push({
+        'moment':retdata['entries'][i].moment,
+        'momentname':retdata['entries'][i].entryname,
+        'pos':retdata['entries'][i].pos,
+      });
       momentno++;
     }
   }
 
+  console.log(deadlineEntries,momentEntries);
+  deadlineEntries.sort(function(a,b){
+    return a.pos-b.pos;
+  });
+
+  momentEntries.sort(function(a,b){
+    return a.pos-b.pos;
+  });
 
 
   //var weekLength = weeksBetween(startdate, enddate);
@@ -1420,55 +1433,72 @@ function drawSwimlanes() {
   "<linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'>"+
   "<stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
+  // for (var i = 0; i < weekLength; i++) {
+  //   if(i==0){
+  //     addNumb = 0;
+  //     tempNumb = 2;
+  //   }else if(i > 0){
+  //     tempNumb = 2;
+  //     addNumb = 2;
+  //   }
+  //   var widthAdjuster = weekwidth+addNumb;
+  //   str += "<rect x='" + (i * widthAdjuster) + "' y='" + (15) + "' width='" +
+  //   (widthAdjuster+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
+  //   if ((i % 2) == 0) {
+  //     str += "fill='#ededed' />";
+  //   } else {
+  //     str += "fill='#ffffff' />";
+  //   }
+  //   str += `<text x='${((i * widthAdjuster) + (widthAdjuster * 0.5) + (tempNumb * 0.5))}' y='${(33)}' 
+  //   font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>${(i + 1)}</text>`;
+  // }
+
   for (var i = 0; i < weekLength; i++) {
-    if(i==0){
-      addNumb = 0;
-      tempNumb = 2;
-    }else if(i > 0){
-      tempNumb = 2;
-      addNumb = 2;
-    }
-    var widthAdjuster = weekwidth+addNumb;
-    str += "<rect x='" + (i * widthAdjuster) + "' y='" + (15) + "' width='" +
-    (widthAdjuster+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
+    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" +
+    (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
       str += "fill='#ededed' />";
     } else {
       str += "fill='#ffffff' />";
     }
-    str += `<text x='${((i * widthAdjuster) + (widthAdjuster * 0.5) + (tempNumb * 0.5))}' y='${(33)}' 
+    str += `<text x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}' 
     font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>${(i + 1)}</text>`;
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
     str += `<line x1='0' y1='${((i * weekheight) + 15)}' x2='
-    ${(weekLength * weekwidth + (addNumb*10))}' y2='${((i * weekheight) + 15)}' stroke='black' />`;
+    ${(weekLength * weekwidth )}' y2='${((i * weekheight) + 15)}' stroke='black' />`;
   }
 
 
   var weeky = 15;
-  for (obj in momentEntries) {
-    for (var i = 0; i < deadlineEntries.length; i++) {
-      
-      entry = deadlineEntries[i];
-      if (obj == entry.moment) {
+  for (var k = 0; k < momentEntries.length;k++) {
+    const obj=momentEntries[k];
+    for (var i = 0; i < deadlineEntries.length; i++) {      
+      const entry = deadlineEntries[i];
+      if (obj.moment == entry.moment) {
         weeky += weekheight;
         // Now we generate a SVG element for this
         //startweek=weeksBetween(startdate, entry.start);
         //deadlineweek=weeksBetween(startdate, entry.deadline);
         startday = Math.floor((entry.start - startdate) / (24 * 60 * 60 * 1000));
-        duggalength = Math.ceil((entry.deadline - entry.start) / (24 * 60 * 60 * 1000));
+        let duggastart=new Date(entry.start).toLocaleDateString('sv-SE','YYYY-MM-DD');
+        let duggaend=new Date(entry.deadline).toLocaleDateString('sv-SE','YYYY-MM-DD');
+        duggalength = Math.ceil((new Date(duggaend) - new Date(duggastart)) / (24 * 60 * 60 * 1000));
+        duggalength += 1; // A dugga will have at least 1 day of duration, i.e., if dugga starts and ends on the same day we want a duration of 1 day.
 
         // Yellow backgroundcolor if the dugga have been submitted but grade is pending.
         // Green backgroundcolor if the dugga have been submitted and the grade is passed.
         // Red backgroundcolor if the dugga have been submitted and the grade is failed.
-        var fillcol = "#BDBDBD";
+        // Since we no longer keep track of graded dugas coloring is obsolete! Sholud be removed!
+        var fillcol = "#620C5B80";
         if ((entry.submitted != null) && (entry.grade == undefined)) fillcol = "#FFEB3B"
         else if ((entry.submitted != null) && (entry.grade > 1)) fillcol = "#00E676"
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
 
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = `url("#fadeTextGrey")`;
+        //var textcol = `#FFFFFF`;
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
           textcol = `url("#fadeTextRed")`;
         } else if((fillcol == "#FFEB3B") && (entry.deadline - current < 0) && (entry.submitted != null)) {
@@ -1477,25 +1507,23 @@ function drawSwimlanes() {
         
         //Code to compare deadlines to current year. 
         //If deadline is older than current, red text for late assigment should be displayed as blue instead
-        var deadlineYear = new Date(entry.deadline).getFullYear();
-        if(deadlineYear < current.getFullYear()) {
-           textcol = "#7b5a96";
+        // var deadlineYear = new Date(entry.deadline).getFullYear();
+        // if(deadlineYear < current.getFullYear()) {
+        //    textcol = "#7b5a96";
        
-           var yearDifference = current.getFullYear() - deadlineYear;
-           var newYear = new Date(entry.deadline);
-           newYear.setFullYear(entry.deadline.getFullYear() + yearDifference +1);
-           entry.deadline = newYear;
-         }
+        //    var yearDifference = current.getFullYear() - deadlineYear;
+        //    var newYear = new Date(entry.deadline);
+        //    newYear.setFullYear(entry.deadline.getFullYear() + yearDifference +1);
+        //    entry.deadline = newYear;
+        //  }
        
-        if(duggalength < 0){
-          duggalength = duggalength * -1;
-        }
-        var tempVariable = duggalength*daywidth;
+        // if(duggalength < 0){
+        //   duggalength = duggalength * -1;
+        // }
+        // var tempVariable = duggalength*daywidth;        
 
-        str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='
-        ${(tempVariable)}' height='${weekheight}' fill='${fillcol}' />`;
-        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='
-        ${textcol}' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
+        str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}' fill='${fillcol}' />`;
+        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='${textcol}' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
       }
     }
   }
