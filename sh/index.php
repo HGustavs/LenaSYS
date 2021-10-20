@@ -143,7 +143,7 @@ function CourseAndAssignment($course, $assignment) {
 	foreach($tmpassignmentarr as $i => $aparam){
 		$sql .= " AND entryname LIKE CONCAT('%', :aparam{$i}, '%')";
 	}
-	$sql .= " ORDER BY coursename,entryname;";
+	$sql .= " ORDER BY LENGTH(coursename),LENGTH(entryname);";
 
 	$query = $pdo->prepare($sql);
 	foreach($tmpcoursearr as $i => $cparam){
