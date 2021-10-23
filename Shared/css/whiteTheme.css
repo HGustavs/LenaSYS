@@ -88,10 +88,10 @@
     color: #D8D8D8;
     padding-left: 4px;
     padding-right: 6px;
-    width: 22px;
-    float: left;
-		background-color: #614875;
-		font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+    width: 22px;    
+	background-color: #614875;
+	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+    line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
 }
 
 .codeborder .impono {
@@ -100,7 +100,8 @@
     background-color: #9569BD;
     padding-left: 4px;
     padding-right: 6px;
-		font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+    line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
 }
 
 .normtextwrapper{

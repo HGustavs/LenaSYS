@@ -1741,16 +1741,18 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
+				//str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
+				str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px' ><span class='blockBtnSlot'></span>" + cont + "</div>";
 			} else {
 				// Print out important lines
 				for (var kp = 0; kp < improws.length; kp++) {
 					if (lineno >= parseInt(improws[kp][1]) && lineno <= parseInt(improws[kp][2])) {
-						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'><span class='blockBtnSlot'></span>" + cont + "</div>";
+						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo' style='line-height:21px'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
+							//str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
+							str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						}
 					}
 				}
@@ -1871,16 +1873,18 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
+				//str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
+				str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px'><span class='blockBtnSlot'></span>" + cont + "</div>";
 			} else {
 				// Print out important lines
 				for (var kp = 0; kp < improws.length; kp++) {
 					if (lineno >= parseInt(improws[kp][1]) && lineno <= parseInt(improws[kp][2])) {
-						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'><span class='blockBtnSlot'></span>" + cont + "</div>";
+						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo' style='line-height:21px'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
+							//str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
+							str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px' ><span class='blockBtnSlot'></span>" + cont + "</div>";
 						}
 					}
 				}

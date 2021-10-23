@@ -179,16 +179,17 @@
     padding-left: 4px;
     padding-right: 6px;
     width: 22px;
-    float: left;
+    line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
 	background-color: #614875;
 }
 
 .codeborder .impono {
     color: white;
-     width: 22px;
+    width: 22px;
     background-color: #9569BD;
     padding-left: 4px;
     padding-right: 6px;
+    line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
 }
 
 .header {
