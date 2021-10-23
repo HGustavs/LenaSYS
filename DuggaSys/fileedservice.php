@@ -200,7 +200,8 @@ $gfiles = array();
 $access = False;
 
 if (checklogin() && $hasAccess) {
-    $query = $pdo->prepare("SELECT fileid,filename,kind, filesize, uploaddate FROM fileLink WHERE ((cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) OR isGlobal='1') ORDER BY filename;");
+    //$query = $pdo->prepare("SELECT fileid,filename,kind, filesize, uploaddate FROM fileLink WHERE ((cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) OR isGlobal='1') ORDER BY filename;");
+    $query = $pdo->prepare("SELECT * FROM fileLink WHERE kind=2 OR (cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) ORDER BY kind,filename;");
     $query->bindParam(':cid', $cid);
     $query->bindParam(':vers', $coursevers);
 

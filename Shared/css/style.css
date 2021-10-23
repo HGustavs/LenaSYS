@@ -7001,35 +7001,59 @@ only screen and (max-device-width: 320px) {
 }
 
 .markdownPart {
+  /*
   height: 100%;
     position: relative;
+  */
+  height: 100%;
+  box-sizing: border-box;
+  display:flex;
+  align-items:stretch;
 }
 
 .markdown {
   border: solid var(--color-border-4);
   background-color: var(--color-background-4);
+  flex-grow:1;
+  max-width: 50%;
+  /*
   width: 38%;
   height: 80%;
   position: relative;
   margin: 2% 1% 1% 1%;
   float: left;
+  */
 }
 
 #markset {
+  /*
   height: 93%;
+  */
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 #markPrevSet {
+  /*
   height: 93%;
+  */
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .markdownPrev {
   border: solid var(--color-border-4);
+  flex-grow:1;
+  max-width: 50%;
+  /*
   width: 56%;
   height: 80%;
   position: relative;
   margin: 2% 1% 1% 1%;
   float: right;
+  */
 }
 
 #editForm {
@@ -7103,7 +7127,9 @@ legend {
 .prevSpan {
   max-width: 100%;
   padding: 10px;
-  height: 85%;
+  /*height: 85%;*/
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .prevHead {
@@ -7131,28 +7157,35 @@ legend {
 }
 
 .markText {
-  height: 135%;
-  width: 92%;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .markTextPrev {
   height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 #mrkdwntxt {
   resize: none;
   width: 100%;
   height: 100%;
-  margin: 2%;
+  /*margin: 2%;*/
   word-wrap: break-word;
   overflow-y: scroll;
+  box-sizing: border-box;
+  font-size: 16px;
 }
 
 textarea#mrkdwntxt {
+  /*
   width: 100%;
   height: 60%;
   display: block;
   padding: 10px;
+  */
 }
 
 #boldText {

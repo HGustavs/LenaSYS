@@ -1040,7 +1040,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "fileedservice.php",
 				type: "POST",
-				data: "coursevers="+querystring['coursevers']+"&opt="+opt+para,
+				data: "cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedFile
 			})
