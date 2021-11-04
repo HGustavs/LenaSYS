@@ -274,12 +274,12 @@ function returned(data)
 			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
 
 			// Set scrollbars to hidden if the content in the box takes up less space than the size of the box.
-			var contentHeight = 15 * (lineno / 2);
-			if(contentHeight < $("#box" + boxid).height()){
-				$("#box" + boxid).css("overflow", "hidden");
-			}else{
-				$("#box" + boxid).css("overflow", "auto");
-			}
+			// var contentHeight = 15 * (lineno / 2);
+			// if(contentHeight < $("#box" + boxid).height()){
+			// 	$("#box" + boxid).css("overflow", "hidden");
+			// }else{
+			// 	$("#box" + boxid).css("overflow", "auto");
+			// }
 
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
@@ -330,11 +330,11 @@ function returned(data)
 			}
 			$("#" + contentid).css("margin-top", boxmenuheight);
 
-			if(document.querySelector('#box' + boxid).firstChild.childElementCount * 15 < $('#box' + boxid).height()){
-				$('#box' + boxid).css("overflow", "hidden");
-			}else{
-				$('#box' + boxid).css("overflow", "auto");
-			}
+			// if(document.querySelector('#box' + boxid).firstChild.childElementCount * 15 < $('#box' + boxid).height()){
+			// 	$('#box' + boxid).css("overflow", "hidden");
+			// }else{
+			// 	$('#box' + boxid).css("overflow", "auto");
+			// }
 
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype);
@@ -4577,17 +4577,17 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 
 function hideShowScrollbars(boxValArray, box){
 	if(document.querySelector('#box' + box).className == 'box codebox'){
-		if(document.querySelector('#textwrapper' + box).childElementCount * 15 > $(boxValArray['box' + box]['id']).height() - 44){
-			$("#box" + box).css("overflow", "auto");
-		}else{
-			$("#box" + box).css("overflow", "hidden");
-		}
+		// if(document.querySelector('#textwrapper' + box).childElementCount * 15 > $(boxValArray['box' + box]['id']).height() - 44){
+		// 	$("#box" + box).css("overflow", "auto");
+		// }else{
+		// 	$("#box" + box).css("overflow", "hidden");
+		// }
 	}else if(document.querySelector('#box' + box).className == 'box descbox'){
-		if(document.querySelector('#box' + box).firstChild.childElementCount * 15 > $(boxValArray['box' + box]['id']).height() - 44){
-			$("#box" + box).css("overflow", "auto");
-		}else{
-			$("#box" + box).css("overflow", "hidden");
-		}
+		// if(document.querySelector('#box' + box).firstChild.childElementCount * 15 > $(boxValArray['box' + box]['id']).height() - 44){
+		// 	$("#box" + box).css("overflow", "auto");
+		// }else{
+		// 	$("#box" + box).css("overflow", "hidden");
+		// }
 	}
 }
 
