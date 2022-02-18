@@ -99,7 +99,7 @@ function GetCourse($course){
 	foreach($tmparr as $i => $param){
 		$sql .= " AND coursename LIKE CONCAT('%', :param{$i}, '%')";
 	}
-	$sql .= " ORDER BY coursename LIMIT 1;";
+	$sql .= " ORDER BY LENGTH(coursename) LIMIT 1;";
 	$query = $pdo->prepare($sql);
 	foreach($tmparr as $i => $param){
 		$query->bindParam(":param{$i}", $tmparr[$i],PDO::PARAM_STR);
@@ -143,7 +143,7 @@ function CourseAndAssignment($course, $assignment) {
 	foreach($tmpassignmentarr as $i => $aparam){
 		$sql .= " AND entryname LIKE CONCAT('%', :aparam{$i}, '%')";
 	}
-	$sql .= " ORDER BY coursename,entryname;";
+	$sql .= " ORDER BY LENGTH(coursename),LENGTH(entryname);";
 
 	$query = $pdo->prepare($sql);
 	foreach($tmpcoursearr as $i => $cparam){
@@ -207,8 +207,8 @@ function CourseAndAssignment($course, $assignment) {
 	// 	}	
 	// }
 
-	if(isset($cid)&&isset($vers)&&isset($coursename)&&isset($moment)&&isset($deadline)){		
-		header("Location: /DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed");
+	if(isset($cid)&&isset($vers)&&isset($did)&&isset($moment)){		
+    header("Location: /DuggaSys/showDugga.php?courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&embed");
 		exit();	
 	}else{
 		header("Location: ../errorpages/404.php");
