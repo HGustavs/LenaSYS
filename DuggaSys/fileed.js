@@ -32,7 +32,7 @@ var editor;
 var filedata;
 
 function setup() {
-    AJAXService("GET", { cid: querystring['courseid'] }, "FILE");
+    AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
 }
 
 window.onresize = function () {

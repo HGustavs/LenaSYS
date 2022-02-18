@@ -22,11 +22,12 @@ session_start();
 
 pdoConnect(); // Connect to database and start session
 
-$cid = $_SESSION['courseid'];
+$cid = getOP('courseid');
 $vers = getOP('coursevers');
 $kind = getOP('kind');
 $link = getOP('link');
 $selectedfile = getOP('selectedfile');
+
 $error = false;
 
 if (isset($_SESSION['uid'])) {
@@ -422,5 +423,6 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filereceive.php", $use
 if (!$error) {
     echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }*/
+
 echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id;
 ?>

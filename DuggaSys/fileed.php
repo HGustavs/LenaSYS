@@ -64,8 +64,8 @@ $js = array(
         $filemtime = filemtime('fileed.js');
 		echo "<script type='text/javascript' src='fileed.js?$filemtime'></script>";
     
-        $filemtime = filemtime('ace.js');
-		echo "<script type='text/javascript' src='ace.js?$filemtime'></script>";
+        //$filemtime = filemtime('ace.js');
+		//echo "<script type='text/javascript' src='ace.js?$filemtime'></script>";
 	?>
     
 </head>
@@ -281,60 +281,59 @@ $js = array(
                 <div class="markdown">
                     <fieldset id="markset">
                         <legend>Markdown</legend>
-                        <div class="markdown-icon-div">
-                        <span class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></span>
-                        <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>
-                        <span class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
-                        <span class="markdown-icons" onclick="lists()" title="lists"><img src="../Shared/icons/list-symbol.svg"></span>
-                        <span class="markdown-icons" onclick="linkYoutube()" title="link Youtube"><b>Yt</b></span>
-                        <span class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</span>
-                        <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></span>
-                        <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></span>
-                        <span class="markdown-icons headerType" id="headerIcon" title="Header">aA&#9663;</span>
+                        <div style="display:flex;flex-direction:column;justify-content: flex-start; height:100%; box-sizing:border-box;">
+                            <div class="markdown-icon-div">
+                                <span class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></span>
+                                <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>
+                                <span class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
+                                <span class="markdown-icons" onclick="lists()" title="lists"><img src="../Shared/icons/list-symbol.svg"></span>
+                                <span class="markdown-icons" onclick="linkYoutube()" title="link Youtube"><b>Yt</b></span>
+                                <span class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</span>
+                                <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></span>
+                                <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></span>
+                                <span class="markdown-icons headerType" id="headerIcon" title="Header">aA&#9663;</span>
 
-                        <select name=";" onchange="chooseFile(this.options[this.selectedIndex].value);" >
-                        <option value='defaultOption'>Choose file</option>
-                        <?php
-                            while($row = $query->FETCH(PDO::FETCH_ASSOC)){
-                                $fileName = $row['filename'];
-                                $cid = $row['cid'];
-                                $fileInfo = $fileName . ',' . $cid;
-                                if(preg_match('/(\.jpg|\.png|\.bmp)$/i', $fileName)){
-                                    echo "<option value='$fileInfo'>$fileName</option>";
-                                }
-                            }
-                        ?>
-                        </select>
+                                <select name=";" onchange="chooseFile(this.options[this.selectedIndex].value);" >
+                                <option value='defaultOption'>Choose file</option>
+                                <?php
+                                    while($row = $query->FETCH(PDO::FETCH_ASSOC)){
+                                        $fileName = $row['filename'];
+                                        $cid = $row['cid'];
+                                        $fileInfo = $fileName . ',' . $cid;
+                                        if(preg_match('/(\.jpg|\.png|\.bmp)$/i', $fileName)){
+                                            echo "<option value='$fileInfo'>$fileName</option>";
+                                        }
+                                    }
+                                ?>
+                                </select>
 
-                        <select name="test" onchange="codeLink(this.options[this.selectedIndex].value);" >
-                        <option value='defaultOption'>Choose file</option>
-                        <?php
-                            while($row = $codeLinkQuery->FETCH(PDO::FETCH_ASSOC)){
-                                $fileName = $row['filename'];
-                                $cid = $row['cid'];
-                                $fileid = $row['fileid'];
-                                $fileOption = $fileid . ',' . $cid . ',' . $fileName;
-                                if(preg_match('/(\.txt|\.html|\.js|\.css)$/i', $fileName)){
-                                    echo "<option value='$fileOption'>$fileName</option>";
-                                }
-                            }
-                        ?>
-                        </select>
+                                <select name="test" onchange="codeLink(this.options[this.selectedIndex].value);" >
+                                <option value='defaultOption'>Choose file</option>
+                                <?php
+                                    while($row = $codeLinkQuery->FETCH(PDO::FETCH_ASSOC)){
+                                        $fileName = $row['filename'];
+                                        $cid = $row['cid'];
+                                        $fileid = $row['fileid'];
+                                        $fileOption = $fileid . ',' . $cid . ',' . $fileName;
+                                        if(preg_match('/(\.txt|\.html|\.js|\.css)$/i', $fileName)){
+                                            echo "<option value='$fileOption'>$fileName</option>";
+                                        }
+                                    }
+                                ?>
+                                </select>
+                                <div class="selectHeader" id="select-header">
+                                    <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
+                                    <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
+                                    <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
+                                    <span id="headerType4" onclick="selected();headerVal4()" value="H4">Header 4</span>
+                                    <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
+                                    <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
+                                </div>
+                            </div>
 
-                        <div class="selectHeader" id="select-header">
-                            <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
-                            <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
-                            <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
-                            <span id="headerType4" onclick="selected();headerVal4()" value="H4">Header 4</span>
-                            <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
-                            <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
-                        </div>
-
-
-
-                        </div>
-                        <div class="markText">
-                            <textarea id="mrkdwntxt" style="font-family:monospace;" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
+                            <div class="markText" style="flex-grow:1;">
+                                <textarea id="mrkdwntxt" style="font-family:monospace;" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
+                            </div>
                         </div>
                     </fieldset>
                 </div>
@@ -344,17 +343,16 @@ $js = array(
                         <legend id="markPrev">Markdown preview</legend>
                         <div class="markTextPrev">
                             <div class="prevSpan">
-                                <div id="mdtarget" class="descbox">
+                                <div id="mdtarget" class="descbox" style="height: 100%;box-sizing: border-box;">
                                 </div>
                             </div>
                         </div>
                     </fieldset>
                 </div>
-               
+            </div>
+            <div>
                 <button class="save-button-md" type="submit" onclick="saveMarkdown()">Save</button>
                 <button class="close-button-md" onclick="cancelPreview()">Close</button>
-           
-
             </div>
             <div class="editFilePart">
                 <div class="editFileWindow">
