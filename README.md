@@ -5,7 +5,7 @@ University of Skövde Code Viewer and Course Organization System
 
 # Install Instructions
 
-Make sure you have a working install of apache2 and other needed packages. Look at the wiki page for this at [Configuring web server for LenaSYS installation](https://github.com/HGustavs/LenaSYS/wiki/Configuring-web-server-for-LenaSYS-installation) for further information.
+Make sure you have a working install of apache2 and other needed packages. Look at the wiki page for this at [Configuring web server for LenaSYS installation](https://github.com/HGustavs/LenaSYS/wiki/Configuring-web-server-for-LenaSYS-installation) for further information testcommit.
 
 To install a fresh copy of LenaSYS on your system an installer has been created called 'install.php'.
 This installer is located in the LenaSYS directory.
