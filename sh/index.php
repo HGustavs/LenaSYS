@@ -183,7 +183,7 @@ function CourseAndAssignment($course, $assignment) {
 	// 	$coursename=$row['coursename'];
 	// }
 
-	// // Get assignment for current course
+	// // Get assignment for current course 
 	// if(isset($cid)&&isset($vers)&&isset($coursename)){
 	// 	$tmparr=explode(" ",$assignment);
 	// 	$sql="SELECT lid,link,highscoremode,quiz.deadline AS deadline FROM listentries LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind=3 AND listentries.vers=:vers";
