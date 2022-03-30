@@ -1,5 +1,5 @@
 <?php
-
+/*testar en kommentar*/
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
