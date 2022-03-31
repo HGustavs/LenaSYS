@@ -1,6 +1,8 @@
 LenaSYS
 ==============
 
+Test that commit works by simon of grupp 3
+
 University of Skövde Code Viewer and Course Organization System
 
 # Install Instructions
