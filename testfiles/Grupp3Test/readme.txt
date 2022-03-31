@@ -18,4 +18,12 @@ add a new file to the directory.
 
 iterate the below number by one:
 
+<<<<<<< HEAD
 	101
+=======
+	102
+    200
+    300
+
+    301
+>>>>>>> 46536b2d7ad9f88dec48bd06cec1d52424f0cf74
