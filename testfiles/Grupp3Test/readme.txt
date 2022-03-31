@@ -21,4 +21,8 @@ iterate the below number by one:
 	101
     200
     300
+<<<<<<< HEAD
     400
+=======
+    678
+>>>>>>> d5cd2234b4e9e963ed8cd1780f963a22884e7036
