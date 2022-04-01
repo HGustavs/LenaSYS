@@ -186,7 +186,9 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	foreach($query->fetchAll() as $row){
 		array_push($versarr,$row['vid']);
 	}
-	$rand_idx = array_rand($versarr, 1);		
+	if(!empty($versarr)){
+		$rand_idx = array_rand($versarr, 1);
+		}		
 
 	if($rand_idx===null){
 		$debug=$variant="This dugga does not have any variants enabled!";
