@@ -1,0 +1,26 @@
+   All code in the install folder that has problems with following code standard. 
+   
+    install.php
+        *Breaks the rule that {} are supposed to be on the line bellowe the function decleration.
+        *There are a few other minor mistakes here or there but they are one off's and really minor
+
+    install_defer.js
+        *Breaks the rule that {} are supposed to be on the line bellowe the function decleration.
+        *uses */comment/* inside functions witch is not allowed acording to code_standard
+
+    install_entery.js
+        *Breaks the rule that {} are supposed to be on the line bellowe the function decleration.
+        *uses */comment/* inside functions witch is not allowed acording to code_standard
+
+    SQL
+        *every single file in the SQL folder appears to follow code standards.
+
+    md 
+        *Everything seams fine in this mess. What are these weird files even for.
+
+    courses
+        *All the code files here are incorectly formated. However that really probably dosent matter because they are all identical 
+         hello world filles that franklly look really uninportant.
+    
+    
+all in all changes are probably unnecesary because everything important seams very redable already.
