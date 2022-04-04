@@ -2492,33 +2492,30 @@ function showCopyButtons(templateid) {
 	}
 }
 
+//-----------------------------------------------------------------------------
+// updateBoxes: returns nr of boxes for given template (cases were strings, updated and working)
+//-----------------------------------------------------------------------------
 function getTotalBoxes(template) {
 	var totalBoxes;
 	switch (template) {
-		case '10': totalBoxes = 1;
+		case 10: totalBoxes = 1;
 		break;
-		case '1': 
-		//fall through
-		case '2': totalBoxes = 2;
+		case 1: 
+		case 2: totalBoxes = 2;
 		break;
-		case '3': 
-		//fall through
-		case '4':
-		//fall through
-		case '8': totalBoxes = 3;
+		case 3: 
+		case 4:
+		case 8: totalBoxes = 3;
 		break;
-		case '5':
-		//fall through
-		case '6':
-		//fall through
-		case '7': totalBoxes = 4;
+		case 5:
+		case 6:
+		case 7: totalBoxes = 4;
 		break;
-		case '9': totalBoxes = 5;
+		case 9: totalBoxes = 5;
 		break;
 	}
 	return totalBoxes;
 }
-
 //-----------------------------------------------------------------------------
 // maximizeBoxes: Adding maximize functionality for the boxes
 //					Is called with onclick() by maximizeButton
@@ -3189,238 +3186,94 @@ function hideMaximizeAndResetButton() {
 	}
 }
 
-//reset boxes
-function resetBoxes() 
-{
+//-----------------------------------------------------------------------------
+// updateBoxes: function used in resetBoxes() to remove hidden objects
+//-----------------------------------------------------------------------------
+function updateBoxes(id) {
+	var boxes = getTotalBoxes(id);
+    for(var i = 1; i <= boxes; i++) {
+        thisBox = document.querySelector('#box' + i + 'wrapper #boxtitlewrapper');
+		thisBox.classList.remove('hidden');
+		thisBox.classList.remove('visuallyhidden');
+	}	
+}
+//-----------------------------------------------------------------------------
+// resetBoxes: Resets the boxes depending on relevant template
+//-----------------------------------------------------------------------------
+function resetBoxes() {
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
 	var templateid = retData['templateid'];
     var boxid = boxid;
-
 	showCopyButtons(templateid);
-
-	if (templateid == 1) {
-        thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
-        thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-         thisBox.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox2.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox2.classList.remove('visuallyhidden');
-            }, 20);
-	}
-	
-	if (templateid == 2) {
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "50%";
-	}
-
-	if (templateid == 3) {
-        thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
-        thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-        thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
-        thisBox.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox2.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox2.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox3.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox3.classList.remove('visuallyhidden');
-            }, 20);
-	}
-
-	if (templateid == 4) {
-        thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
-        thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-        thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "100%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
-        thisBox.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox2.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox2.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox3.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox3.classList.remove('visuallyhidden');
-            }, 20);
-	}
-
-	if (templateid == 5) {
-        thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
-        thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-        thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-        thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "50%";
-        thisBox.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox2.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox2.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox3.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox3.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox4.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox4.classList.remove('visuallyhidden');
-            }, 20);
-	}
-
-	if (templateid == 6) {
-        thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
-        thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-        thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-        thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "40%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "30%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "30%";
-		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-        thisBox.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox2.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox2.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox3.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox3.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox4.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox4.classList.remove('visuallyhidden');
-            }, 20);
-	}
-
-	if (templateid == 7) {
-        thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
-        thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-        thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-        thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "40%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "30%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "30%";
-		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-        thisBox.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox2.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox2.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox3.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox3.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox4.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox4.classList.remove('visuallyhidden');
-            }, 20);
-	}
-
-	if (templateid == 8) {
-        thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
-        thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-        thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
-        thisBox.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox2.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox2.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox3.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox3.classList.remove('visuallyhidden');
-            }, 20);
-	}
-	if (templateid == 9) {
-        thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
-        thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-        thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-        thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
-        thisBox5 = document.querySelector('#box' + 5 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "25%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "25%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "25%";
-		document.querySelector(boxValArray['box' + 5]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 5]['id']).style.height = "25%";
-		alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
-       thisBox.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox2.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox2.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox3.classList.remove('hidden');
-            setTimeout(function () {
-        thisBox4.classList.remove('visuallyhidden');
-            }, 20);
-                thisBox4.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox3.classList.remove('visuallyhidden');
-            }, 20);
-        thisBox5.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox5.classList.remove('visuallyhidden');
-            }, 20);
+	updateBoxes(templateid);
+	switch (templateid) {
+		case 1:
+	 		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
+			break;
+		case 2:
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
+			document.querySelector(boxValArray['box' + 1]['id']).style.height = "50%"; 
+		break;
+		case 3: 
+			document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
+			document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
+		break;
+		case 4:
+			document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 3]['id']).style.width = "100%";
+			document.querySelector(boxValArray['box' + 1]['id']).style.height = "50%";
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
+			document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
+			break;
+		case 5:
+			document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 1]['id']).style.height = "50%";
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
+			document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
+			document.querySelector(boxValArray['box' + 4]['id']).style.height = "50%";
+		break;
+		case 6:
+		case 7:
+			document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
+			document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "40%";
+			document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 3]['id']).style.height = "30%";
+			document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 4]['id']).style.height = "30%";
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		break;
+		case 8:
+			document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
+			document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%"; 
+		break;
+		case 9: 
+			document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
+			document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 2]['id']).style.height = "25%";
+			document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 3]['id']).style.height = "25%";
+			document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 4]['id']).style.height = "25%";
+			document.querySelector(boxValArray['box' + 5]['id']).style.width = "50%";
+			document.querySelector(boxValArray['box' + 5]['id']).style.height = "25%";
+			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		break;	
 	}
 }
 
