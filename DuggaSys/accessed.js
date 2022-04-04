@@ -354,16 +354,6 @@ function changeOptDivStudent(e,value){
   shouldReRender = true;
 }
 
-/*function changeOpt(e) {
-	var paramlist = e.target.id.split("_");
-	obj = {
-		uid: paramlist[1],
-	}
-	obj[paramlist[0]] = e.target.value;
-	updateDropdownInTable(e.target.parentElement, obj);
-	changeProperty(paramlist[1], paramlist[0], e.target.value);
-}*/
-
 function changeProperty(targetobj, propertyname, propertyvalue) {
 	AJAXService("UPDATE", {
 		courseid: querystring['courseid'],
@@ -395,7 +385,6 @@ function renderCell(col, celldata, cellid) {
 	}
 
 	if (col == "username" || col == "ssn" || col == "firstname" || col == "lastname") {
-		//str = "<div style='display:flex;'><input id='"+col+"_"+obj.uid+"' onKeyDown='if(event.keyCode==13) changeOpt(event)' value=\""+obj[col]+"\" style='margin:0 4px;flex-grow:1;font-size:11px;' size=" + obj[col].toString().length +"></div>";
 		if (col == "ssn") {
 			str = `<div style='display:flex;'><span id='${col}_${obj.uid}' style='margin:0 4px;flex-grow:1;'>
 			${hideSSN(obj[col])}</span></div>`;
@@ -690,22 +679,15 @@ function returnedAccess(data) {
 
 		tblhead: {
 			username: "User",
-			/*ssn: "SSN",*/
 			firstname: "First name",
 			lastname: "Last name",
-			/*class: "Class",*/
 			modified: "Last Modified",
-			/*examiner: "Examiner",*/
-			/*vers: "Version",*/
-			/*access: "Access",*/
-			/*groups: "Group(s)",*/
 			requestedpasswordchange: "Password"
 		},
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
-	//myTable = undefined;
-	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", /*"class",*/ "modified", /*"examiner", "vers", "access", "groups",*/ "requestedpasswordchange"]
+	var colOrder = ["username","firstname", "lastname", "modified", "requestedpasswordchange"]
 	if (typeof myTable === "undefined") { // only create a table if none exists
 		myTable = new SortableTable({
 			data: tabledata,
@@ -950,42 +932,18 @@ document.addEventListener("keyup", function(event)
   }
 });
 
-/*
-//----------------------------------------------------------------------------------
-// searchTable - Search the table and filter its contents
-//----------------------------------------------------------------------------------
-function searchTable() {
-	searchterm=document.getElementById("searchinput").value;
-	searchKeyUp(event);
-	myTable.reRender();
-}
-*/
-
 //----------------------------------------------------------------------------------
 // filterAccess - Filter by teachers/students (write access/read access)
 //----------------------------------------------------------------------------------
 function filterAccess() {
 	toggleTeachers = document.getElementById("filterAccess1");
-	/*
-	toggleStudents = document.getElementById("filterAccess2");
-	toggleStudentTeachers = document.getElementById("filterAccess3");
-	*/
+
 	accessFilter = "";
 
 	if (toggleTeachers.checked) {
 		accessFilter += "W";
 	}
 
-	/*
-	if (toggleStudents.checked) {
-		accessFilter += "R";
-	}
-	if (toggleStudentTeachers.checked) {
-		accessFilter += "ST";
-	}
-	*/
-
-	//console.log(accessFilter);
 	// Save to local storage to remember the filtering. Add the course ID to key to allow for different filterings for each course
 	localStorage.setItem("accessFilter"+querystring['courseid'], accessFilter);
 	myTable.reRender();
@@ -1002,8 +960,6 @@ function createCheckboxes() {
 		str += "<div class='checkbox-dugga checkmoment'>";
 		str += `<input id='filterAccess${(i+1)}' type='checkbox' value='${(i+1)}' onchange='filterAccess()' `;
 		if (i == 0 && accessFilter.indexOf("W") > -1) str += "checked";
-		//else if (i == 1 && accessFilter.indexOf("R") > -1) str += "checked";
-		//else if (i == 2 && accessFilter.indexOf("ST") > -1) str += "checked";
 		str += "></input>";
 		str += "<label for='filterAccess" + (i+1) + "' class='headerlabel'>" + labels[i] + "</label>";
 		str += "</div>";
