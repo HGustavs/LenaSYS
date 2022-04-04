@@ -194,7 +194,7 @@ function validateDuggaName() {
 		$('#tooltipTxt').fadeIn();
 		$('#submitDugga').attr('disabled', 'disabled');
 		$('#saveDugga').attr('disabled', 'disabled');
-		nme.style.backgroundColor = "#f57";
+		nme.style.backgroundColor = "#f57";					// HÄR ÄR KODEN SOM SKA ÄNDRAS I DEN HÄR FÖR ISSUE #8528
 	}
 	return retValue;
 }

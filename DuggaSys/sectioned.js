@@ -2519,21 +2519,28 @@ function validateDate2(ddate, dialogid) {
   }
 }
 
-function validateSectName(name, dialogid){
+function validateSectName(name){        // HÄR ÄR KODEN SOM SKA ÄNDRAS I DEN HÄR FÖR ISSUE #8528
   var emotd = document.getElementById(name);
   var Emotd = /^[^"']+$/;
+  var tooltipTxt = document.getElementById("dialog10");
   // var EmotdRange = /^.{0,50}$/;
-  var x4 = document.getElementById(dialogid);
-  if (emotd.value.match(Emotd)) {
-    emotd.style.borderColor = "#383";
-    emotd.style.borderWidth = "2px";
-    x4.style.display = "none";
-    window.bool10 = true;
-  } else {
-    emotd.style.borderColor = "#E54";
-    x4.style.display = "block";
+  //var x4 = document.getElementById(dialogid);
+  if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {              //Lagt till denna (/^[A-Za-zÅÄÖåäö\s\d():_-]+$/))
+    emotd.style.borderColor = "black";
+    emotd.style.backgroundColor = "white";
+    //x4.style.display = "block";
     emotd.style.borderWidth = "2px";
     window.bool10 = false;
+    $('#dialog10').fadeOut();     //Lagt till denna
+  } else {
+    emotd.style.borderColor = "red";
+    emotd.style.borderWidth = "2px";
+   // x4.style.display = "none";
+    window.bool10 = true;
+    tooltipTxt.style.left = 50 + "px";      // Lagt till denna
+    tooltipTxt.style.top = -50 + "px";      // Lagt till denna
+    emotd.style.backgroundColor = "#f57";
+    $('#dialog10').fadeIn();              // Lagt till denna
   }
 
 }
