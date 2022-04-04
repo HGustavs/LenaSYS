@@ -104,35 +104,7 @@ if(checklogin()){
 			else $query->bindParam(':startdate', $startdate);
 			if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
 			else $query->bindParam(':enddate', $enddate);
-			
-			/*
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating entries".$error[2];
-			} else {
-				// Add default groups
-				$defaultGroups = array(
-					"I", "II", "III", "IV", "V", "VI", "VII", "VIII",
-					"1", "2", "3", "4", "5", "6", "7", "8",
-					"A", "B", "C", "D", "E", "F", "G", "H",
-				);
-				
 
-				foreach($defaultGroups as $group) {
-					$stmt = $pdo->prepare("INSERT INTO groups(courseID, vers, groupName) VALUES(:courseID, :vers, :groupName)");
-					
-					$stmt->bindParam(':courseID', $courseID);
-					$stmt->bindParam(':vers', $versid);
-					$stmt->bindParam(':groupName', $group);
-
-					if (!$stmt->execute()) {
-						$error = $stmt->errorInfo();
-						$debug = "Error adding group " . $error[2];
-					}
-				}
-			}
-
-			*/
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error inserting entries\n".$error[2];
