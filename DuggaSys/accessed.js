@@ -385,7 +385,6 @@ function renderCell(col, celldata, cellid) {
 	}
 
 	if (col == "username" || col == "ssn" || col == "firstname" || col == "lastname") {
-		//str = "<div style='display:flex;'><input id='"+col+"_"+obj.uid+"' onKeyDown='if(event.keyCode==13) changeOpt(event)' value=\""+obj[col]+"\" style='margin:0 4px;flex-grow:1;font-size:11px;' size=" + obj[col].toString().length +"></div>";
 		if (col == "ssn") {
 			str = `<div style='display:flex;'><span id='${col}_${obj.uid}' style='margin:0 4px;flex-grow:1;'>
 			${hideSSN(obj[col])}</span></div>`;
@@ -680,22 +679,15 @@ function returnedAccess(data) {
 
 		tblhead: {
 			username: "User",
-			/*ssn: "SSN",*/
 			firstname: "First name",
 			lastname: "Last name",
-			/*class: "Class",*/
 			modified: "Last Modified",
-			/*examiner: "Examiner",*/
-			/*vers: "Version",*/
-			/*access: "Access",*/
-			/*groups: "Group(s)",*/
 			requestedpasswordchange: "Password"
 		},
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
-	//myTable = undefined;
-	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", /*"class",*/ "modified", /*"examiner", "vers", "access", "groups",*/ "requestedpasswordchange"]
+	var colOrder = ["username","firstname", "lastname", "modified", "requestedpasswordchange"]
 	if (typeof myTable === "undefined") { // only create a table if none exists
 		myTable = new SortableTable({
 			data: tabledata,
