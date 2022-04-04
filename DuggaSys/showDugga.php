@@ -51,47 +51,6 @@
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
 
-	// if(isset($_SESSION['hashpassword'])){
-	// 	$hashpassword=$_SESSION['hashpassword'];
-	// }else{
-	// 	$hashpassword='UNK';
-	// }	
-
-	// if(isset($_SESSION['uid'])){
-	// 	$userid=$_SESSION['uid'];
-	// }else{
-	// 	$userid="UNK";
-	// }
-
-	// if(!isset($_SESSION['hasUploaded'])){
-	// 	$_SESSION['hasUploaded'] = "UNK";
-	// }
-
-	// if(!isset($_SESSION['pwdentrance'])){
-	// 	$_SESSION['pwdentrance'] = 0;
-	// }
-	//logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
-
-// if($cid != "UNK") $_SESSION['courseid'] = $cid;
-// 	$hr=false;
-// 	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
-// 	$query->bindParam(':cid', $cid);
-// 	$result = $query->execute();
-// 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
-// 			$visibility=$row['visibility'];
-// 	}
-	
-/*
-		//Give permit if the user is logged in and has access to the course or if it is public
-		$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0  && $userid != "UNK");
-
-		if(!$hr){
-			if (checklogin()){
-				$hr = isSuperUser($userid);$hr;
-			}
-		}
-*/
-
   // can see all duggas and deleted ones
   if(isSuperUser($userid)){
 	$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
@@ -149,24 +108,6 @@
 <?php
 
 
-		//Old function
-		/*
-		global $pdo;
-		$sql = "SELECT hash,password FROM userAnswer WHERE '" .$password. "' LIKE password AND '".$hash."' LIKE hash";
-		$query = $pdo->prepare($sql);
-		$query->execute();
-		$count = $query->rowCount();
-			if($count == 0){
-				echo '<script>console.log(false)</script>';
-				echo "<script>console.log('".$count."')</script>;";
-				return false;
-			} else{
-				echo '<script>console.log(true)</script>';
-				echo "<script>console.log('".$count."')</script>;";
-				return true;
-			}*/
-
-
 // Check if we have a hash/hashpwd and dugga variant
 //echo "|". print_r($_SESSION)."|<br>";
 if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
@@ -203,52 +144,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	//echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
 	//echo "|$hash|$hashpwd|$variant|$moment|<br>";
 }
-// if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
-// 	if($_SESSION['pwdentrance'] != 1){
-// 		if($_SESSION['hasUploaded'] != 1){
 
-// 			$hashLabelText;
-// 			if ($hash == "UNK")
-// 				$hashLabelText = "Previously used hash:";
-// 			else 
-// 				$hashLabelText = "Logging in with hash:";
-
-// 			//echo '<script type="text/javascript"> saveTimesAccessed(); </script>';
-// 			echo "<div class='loginHashContainer' id='hashBox'>";	
-// 			echo "<div class='loginHashBox'>";
-// 			echo "<div class='loginHashContent'>";
-// 			echo "<div class='w100'>";
-// 			echo "<div class='loginBoxheader'>";
-// 			echo "<h3>Login for Saved Dugga</h3>";
-// 			echo "<div onclick='exitHashBox()' class='cursorPointer'>x</div>";
-// 			echo "</div>";
-// 			echo "</div>";
-// 			echo "<div class='prev-hash-container'>";
-// 			echo "<label class='login-label'>" . $hashLabelText . "</label>";
-// 			echo "<p id='hash' style='font-weight: bold;'></p>";
-// 			echo "</div>";
-// 			if($hash == "UNK") {
-// 				echo "<div class='login-input-container'>";
-// 				echo "<input id='hashfield' class='textinput hash-login-input' type='text' placeholder='Hash'>";
-// 				echo "</div>";
-// 			}
-// 			echo "<div class='login-input-container'>";
-// 			echo "<input id='passwordfield' class='textinput form-control hash-login-input' type='password' autocomplete='new-password' placeholder='Password'>";
-// 			echo "</div>";
-// 			echo "<div class='hash-submit-btn-container'>";
-// 			echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
-// 			if ($hash == "UNK")
-// 				echo "<input class='submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
-// 			echo "</div>";
-// 			echo "</div>";
-// 			echo "</div>";
-// 			echo "</div>";
-// 			//echo '<script type="text/javascript"> updateLoginPopup(); </script>';
-// 			//exit();
-// 		}
-		
-// 	}
-// }
 //Remove if you want the password to be persistent.
 //$_SESSION['hashpassword'] = 'UNK';
 ?>
