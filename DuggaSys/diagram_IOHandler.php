@@ -1,4 +1,11 @@
 <?php
+/********************************************************************************
+   Documentation
+*********************************************************************************
+
+
+
+-------------==============######## Documentation End ###########==============-------------*/
   session_start();
   include_once "../../coursesyspw.php";
   include_once "../Shared/sessions.php";
@@ -165,14 +172,7 @@
       <!-- content END -->
       <?php
       include '../Shared/loginbox.php';
-      ?>
-          <?php
-          function createNewestFolder($ad) {
-              $value = $ad.value;
-              redirect($ad);
-          }
-          ?>
-      <?php
+     
       if(isset($_POST["folderName"])) {
           $name = $_POST["folderName"];
           $projectName = $_POST["projectName"];
