@@ -932,17 +932,6 @@ document.addEventListener("keyup", function(event)
   }
 });
 
-/*
-//----------------------------------------------------------------------------------
-// searchTable - Search the table and filter its contents
-//----------------------------------------------------------------------------------
-function searchTable() {
-	searchterm=document.getElementById("searchinput").value;
-	searchKeyUp(event);
-	myTable.reRender();
-}
-*/
-
 //----------------------------------------------------------------------------------
 // filterAccess - Filter by teachers/students (write access/read access)
 //----------------------------------------------------------------------------------
