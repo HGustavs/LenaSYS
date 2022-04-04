@@ -93,6 +93,12 @@
                     <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
+            <div class="diagramIcons" onclick="zoomreset()">
+                <img src="../Shared/icons/diagram_replay.svg"/>
+                <span class="toolTipText"><b>Reset zoom</b><br>
+                    <p>Reset size of all elements</p><br>
+                </span>
+            </div>
         </fieldset>
         <fieldset>
             <legend>Toggle</legend>
