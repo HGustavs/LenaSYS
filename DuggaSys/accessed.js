@@ -354,16 +354,6 @@ function changeOptDivStudent(e,value){
   shouldReRender = true;
 }
 
-/*function changeOpt(e) {
-	var paramlist = e.target.id.split("_");
-	obj = {
-		uid: paramlist[1],
-	}
-	obj[paramlist[0]] = e.target.value;
-	updateDropdownInTable(e.target.parentElement, obj);
-	changeProperty(paramlist[1], paramlist[0], e.target.value);
-}*/
-
 function changeProperty(targetobj, propertyname, propertyvalue) {
 	AJAXService("UPDATE", {
 		courseid: querystring['courseid'],
