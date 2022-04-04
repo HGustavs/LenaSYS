@@ -128,7 +128,7 @@
         </fieldset>   
         <fieldset>
             <legend>Camera</legend>
-            <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera()">
+            <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
                 <img src="../Shared/icons/screenUpdate.svg"/>
                 <span class="toolTipText"><b>Click to redirect camera to center</b><br>
                     <p>Redirect camera to center of all elements</p><br>
