@@ -3461,10 +3461,13 @@ function propFieldSelected(isSelected)
  */
 function generateContextProperties()
 {
-    // Return if double clicking the same element.
-    if(wasDblClicked)return;
-
     var propSet = document.getElementById("propertyFieldset");
+
+    //Adds double click event which instantly returns. Makes double clicks on two different elements act as single clicks.
+    propSet.addEventListener("dblclick", function(){
+        return;
+    });
+
     var str = "<legend>Properties</legend>";
     //a4 propteries
     if (document.getElementById("a4Template").style.display === "block") {
