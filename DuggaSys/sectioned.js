@@ -2620,7 +2620,6 @@ function validateForm(formid) {
 
     // if all information is correct
     if (window.bool8 == true && window.bool10 == true && window.bool11 == true) {
-      alert('The item is now updated');
       updateItem();
       updateDeadline();
 
