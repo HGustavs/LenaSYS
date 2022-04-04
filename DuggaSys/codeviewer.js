@@ -2482,10 +2482,10 @@ function hideCopyButtons(templateid, boxid) {
 	}
 }
 
-function showCopyButtons(templateid) {
+function showCopyButtons(templateid) {	
 	var totalBoxes = getTotalBoxes(templateid);
-	
-	for (var i = 1; i <= totalBoxes; i++) {
+
+		for (var i = 1; i <= totalBoxes; i++) {
 		if (document.querySelector('#box' + i).className == 'box codebox') {
 		document.querySelector('#box' + i + 'wrapper #copyClipboard').style.display = 'block'
 		}
@@ -2494,27 +2494,36 @@ function showCopyButtons(templateid) {
 
 function getTotalBoxes(template) {
 	var totalBoxes;
-	switch (template) {
-		case '10': totalBoxes = 1;
-		break;
-		case '1': 
-		//fall through
-		case '2': totalBoxes = 2;
-		break;
-		case '3': 
-		//fall through
-		case '4':
-		//fall through
-		case '8': totalBoxes = 3;
-		break;
-		case '5':
-		//fall through
-		case '6':
-		//fall through
-		case '7': totalBoxes = 4;
-		break;
-		case '9': totalBoxes = 5;
-		break;
+
+	if(template == 1){
+		totalBoxes = 2;
+	}
+	if(template == 2){
+		totalboxes = 2;
+	}
+	if(template == 3){
+		totalboxes = 3;
+	}
+	if(template == 4){
+		totalboxes = 3;
+	}
+	if(template == 5){
+		totalBoxes = 4;
+	}
+	if(template == 6){
+		totalBoxes = 4;
+	}
+	if(template == 7){
+		totalboxes = 4;
+	}
+	if(template == 8){
+		totalboxes = 3;
+	}
+	if(template == 9){
+		totalboxes = 5;
+	}
+	if(template == 10){
+		totalboxes = 1;
 	}
 	return totalBoxes;
 }
@@ -2533,6 +2542,7 @@ function maximizeBoxes(boxid)
 
 	getLocalStorageProperties(boxValArray);
 	hideCopyButtons(templateid, boxid);
+	showCopyButtons(templateid);
 	saveInitialBoxValues();
 
 	//For template 1
