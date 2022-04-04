@@ -2058,6 +2058,13 @@ function createCodeborder(lineno, improws) {
 
 function changetemplate(templateno) 
 {
+		
+	//Warns the user that previous changes could be overrwritten
+	
+	let confirmAction = confirm("Warning: Changing template may overwrite previous changes!");
+	
+	if (confirmAction) {
+
 	$(".tmpl").each(function (index) {
 		$(this).css("background", "#ccc");
 	});
@@ -2116,6 +2123,7 @@ function changetemplate(templateno)
 	templateOptions.innerHTML = str;
 	for (var i = 0; i < boxes; i++) {
 		changeDirectory(document.querySelector('#boxcontent_' + i));
+	}
 	}
 }
 
