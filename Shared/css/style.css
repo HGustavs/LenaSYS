@@ -1520,7 +1520,6 @@ div .navButt:hover {
     }
     .burgerOption {
         padding: 15px 15px 15px 15px;
-        cursor: pointer;
     }
     .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2, .PF2, .UI2{display:none;}
 
