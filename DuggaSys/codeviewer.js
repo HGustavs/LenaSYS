@@ -4781,7 +4781,7 @@ function copyCodeToClipboard(boxid) {
 	selection.removeAllRanges();
 
 	// Notification animation
-	$("#notificationbox" + boxid).css("display", "flex").hide().fadeIn("fast", function () {
+	$("#notificationbox" + boxid).css("display", "flex").css("overflow", "hidden").hide().fadeIn("fast", function () {
 		setTimeout(function () {
 			$("#notificationbox" + boxid).fadeOut("fast");
 		}, 500);
