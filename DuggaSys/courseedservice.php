@@ -478,13 +478,6 @@ if(checklogin()){
 //------------------------------------------------------------------------------------------------
 
 $entries=array();
-/*
-if($ha){
-	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility<3 ORDER BY coursename");
-}else{
-	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>0 and visibility<3 ORDER BY coursename");
-}
-*/
 
 $queryreg = $pdo->prepare("SELECT cid FROM user_course WHERE uid=:uid");
 $queryreg->bindParam(':uid', $userid);
