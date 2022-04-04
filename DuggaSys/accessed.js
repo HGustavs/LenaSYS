@@ -960,8 +960,6 @@ function createCheckboxes() {
 		str += "<div class='checkbox-dugga checkmoment'>";
 		str += `<input id='filterAccess${(i+1)}' type='checkbox' value='${(i+1)}' onchange='filterAccess()' `;
 		if (i == 0 && accessFilter.indexOf("W") > -1) str += "checked";
-		//else if (i == 1 && accessFilter.indexOf("R") > -1) str += "checked";
-		//else if (i == 2 && accessFilter.indexOf("ST") > -1) str += "checked";
 		str += "></input>";
 		str += "<label for='filterAccess" + (i+1) + "' class='headerlabel'>" + labels[i] + "</label>";
 		str += "</div>";
