@@ -1428,6 +1428,7 @@ div .navButt:hover {
 
     .navButt.show{
         display: flex;
+      
     }
     .bugerButt {
       display:flex;
@@ -1648,8 +1649,9 @@ div .navButt:hover {
 
 @media screen and (max-width: 600px) {
   .navheader {
-    float: none;
+    float: left;
     width: 100%;
+    
   }
   .logoutBox{
     width: 300px;
@@ -1666,9 +1668,10 @@ div .navButt:hover {
   }
   #iconButton{
     display: block;
+    
   }
   .listentries img{
-    width: 20px;
+    width: 10px;
     height: 20.8‬px;
   }
   .entryname{
