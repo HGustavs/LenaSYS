@@ -1536,7 +1536,8 @@ div .navButt:hover {
         overflow: hidden;
     }
     .maximizebtn, .minimizebtn, .resetbtn{
-        display: none;
+      
+      vertical-align: middle;
     }
     .buttomenu2{
         height: 35px;
@@ -3120,8 +3121,6 @@ div.submit-button:disabled {
 
 #plorf,
 #dorf {
-  padding: 4px;
-  border-radius: 2px;
   display: block;
   margin: auto;
 }
