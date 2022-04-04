@@ -937,26 +937,13 @@ document.addEventListener("keyup", function(event)
 //----------------------------------------------------------------------------------
 function filterAccess() {
 	toggleTeachers = document.getElementById("filterAccess1");
-	/*
-	toggleStudents = document.getElementById("filterAccess2");
-	toggleStudentTeachers = document.getElementById("filterAccess3");
-	*/
+
 	accessFilter = "";
 
 	if (toggleTeachers.checked) {
 		accessFilter += "W";
 	}
 
-	/*
-	if (toggleStudents.checked) {
-		accessFilter += "R";
-	}
-	if (toggleStudentTeachers.checked) {
-		accessFilter += "ST";
-	}
-	*/
-
-	//console.log(accessFilter);
 	// Save to local storage to remember the filtering. Add the course ID to key to allow for different filterings for each course
 	localStorage.setItem("accessFilter"+querystring['courseid'], accessFilter);
 	myTable.reRender();
