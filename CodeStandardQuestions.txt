@@ -1,4 +1,62 @@
+Fråga 1
 i filen lenaSYS/shared/dugga.js 
     function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
-Är en rads function tillåtet?
-Borde alla functioner som bara är ett return statment vara en rad.
+Är 1 rads function tillåtet?
+Borde alla functioner som bara är ett return statment vara 1 rad.
+
+Fråga 2
+i filen lenaSYS/shared/dugga.js 
+    function loginButtonHover(status) {
+	if(status == "online"){
+		document.getElementById("loginbutton").addEventListener("mouseover", function() {
+			document.getElementById("loginbuttonIcon").src="../Shared/icons/logout_button.svg";
+		}, false);
+		document.getElementById("loginbutton").addEventListener("mouseout", function() {
+			document.getElementById("loginbuttonIcon").src="../Shared/icons/Man.svg";
+		}, false);
+	}
+	if(status == "offline"){
+		document.getElementById("loginbutton").addEventListener("mouseover", function() {
+			document.getElementById("loginbuttonIcon").src="../Shared/icons/login_button.svg";
+		}, false);
+		document.getElementById("loginbutton").addEventListener("mouseout", function() {
+			document.getElementById("loginbuttonIcon").src="../Shared/icons/Man.svg";
+		}, false);
+	}
+}
+Coden är väldigt packad utan några spaces mellan rader.
+is samma fil 
+    function sessionExpireLogOut() {
+
+	if(document.cookie.indexOf('sessionEndTimeLogOut=expireC') > -1){
+		var intervalId = setInterval(function() {
+			checkIfExpired();
+		}, 2000);
+	}
+
+	function checkIfExpired() {
+
+			if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
+				$(".expiremessagebox").css("display","none");
+				$(".endsessionmessagebox").css("display","block");
+				processLogout();
+				clearInterval(intervalId);
+			}
+
+	}
+}
+Här ser vi många tomma rader mellan cod raderna. code_standard.md är otydlig på vad som ska göras. Men normalt set har kod standard 
+hårda regler för sånt. Ska det finnas tomma utrymen mellan kod och vart/hur många ska de vara.
+
+Fråga 3
+I code_standard.md står det följande 
+		element.innerHTML=str;  <-- we use innerHTML to change document and not DOM createElement and appendChild which is hard to read
+		
+		var hotdogmenu = document.createElement("span");    <-- we use innerhtml and strings instead
+		content.appendChild(hotdogmenu);                    <-- we use innerhtml and strings instead
+Bettyder detta att inga document.stuff får användas nånsin och element.innerHTML ska användas för allt, 
+eller är detta bara för specifikt document.createElement.
+
+Fråga 4
+Behöver vi fixa de hemska oläsbara fillerna i LenaSYS/Shared/js de är alla helt oläsbara och många tusentals rader långa. Att fixa dem 
+kommer att ta veckor av arbete.
