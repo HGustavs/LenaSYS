@@ -3333,8 +3333,9 @@ function zoomin(scrollEvent = undefined)
 {
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent){
-        zoomOrigo.x = 0;
-        zoomOrigo.y = 0;
+        // Origo set to center of screen in pixels
+        zoomOrigo.x = window.innerWidth / 2;
+        zoomOrigo.y = window.innerHeight / 2;
     }else if (zoomfact < 4.0){ // ELSE zoom towards mouseCoordinates
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
@@ -3384,8 +3385,9 @@ function zoomout(scrollEvent = undefined)
 {
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent){
-        zoomOrigo.x = 0;
-        zoomOrigo.y = 0;
+        // Origin set to center of screen in pixels
+        zoomOrigo.x = window.innerWidth / 2;
+        zoomOrigo.y = window.innerHeight / 2;
     }else if (zoomfact > 0.25) { // ELSE zoom towards mouseCoordinates
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
