@@ -866,6 +866,7 @@ var wasDblClicked = false;
 var targetDelta;
 
 // Zoom variables
+var lastZoomfact = 1.0;
 var zoomfact = 1.0;
 var scrollx = 100;
 var scrolly = 100;
@@ -878,7 +879,7 @@ const elementheight = 50;
 const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
-const avgcharwidth = 6;
+const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
 const colors = ["white", "gold", "#ffccdc", "yellow", "cornflowerBlue", "#FF4D4D"];
 const selectedColors = ["#cccccc", "#ce7f00", "#ff66b3", "#d2cf00", "#505E95", "#A45A5A"];
 const strokeColors = ["black", "white", "grey", "red"];
@@ -3447,6 +3448,34 @@ function zoomreset()
 }
 
 /**
+ * 
+ * @description Zooms to lastZoomfactor from center of diagram.
+ */
+function zoomCenter(centerDiagram)
+{
+    zoomOrigo.x = centerDiagram.x;
+    zoomOrigo.y = centerDiagram.y;
+
+    scrollx = scrollx / zoomfact;
+    scrolly = scrolly / zoomfact;
+   
+    zoomfact = lastZoomfact;
+    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
+
+    scrollx = scrollx * zoomfact;
+    scrolly = scrolly * zoomfact;
+   
+    updateGridSize();
+    updateA4Size();
+    
+    // Update scroll position - missing code for determining that center of screen should remain at new zoom factor
+    showdata();
+
+    // Draw new rules to match the new zoomfact
+    drawRulerBars(scrollx,scrolly);
+}
+
+/**
  * @description Event function triggered whenever a property field is pressed in the options panel. This will appropriatly update the current propFieldState variable.
  * @param {Boolean} isSelected Boolean value representing if the selection was ACTIVATED or DEACTIVATED.
  * @see propFieldState For seeing if any fieldset is currently selected.
@@ -3461,11 +3490,10 @@ function propFieldSelected(isSelected)
  */
 function generateContextProperties()
 {
-    // Return if double clicking the same element.
-    if(wasDblClicked)return;
 
     var propSet = document.getElementById("propertyFieldset");
     var str = "<legend>Properties</legend>";
+    
     //a4 propteries
     if (document.getElementById("a4Template").style.display === "block") {
         str += `<text>Change the size of the A4</text>`;
@@ -4165,6 +4193,7 @@ function sortElementAssociations(element)
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
+
      // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
      if (toElement.kind == "EREntity"){
         var tempElement = toElement;
@@ -4460,11 +4489,21 @@ function drawLine(line, targetGhost = false)
     }
 
     if (line.label && line.label != ""){
+        //Get width of label's text through canvas 
+        var height = Math.round(zoomfact * textheight);
+        var canvas = document.getElementById('canvasOverlay');
+        var canvasContext = canvas.getContext('2d');
+
+        var font = canvasContext.font;
+        font = `${height}px ${font.split('px')[1]}`;
+        canvasContext.font = font;
+        var textWidth = canvasContext.measureText(line.label).width;
+        
         var centerX = (tx + fx) / 2;
         var centerY = (ty + fy) / 2;
-        //add background
-        str += `<rect x="${ centerX - ((9 * line.label.length) * zoomfact)/2 }" y="${centerY - ((textheight / 2) * zoomfact + 4)}" width="${(9 * line.label.length) * zoomfact}" height="${textheight * zoomfact}" style="fill:rgb(255,255,255);" />`
-        //add label
+        //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
+        str += `<rect x="${centerX - ((textWidth) + zoomfact * 8)/2}" y="${centerY - ((textheight / 2) * zoomfact + zoomfact * 4)}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`
+        //Add label
         str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)}" y="${centerY-(2 * zoomfact)}">${line.label}</text>`;
     }
 
@@ -5045,6 +5084,7 @@ function showdata()
  function centerCamera()
  {
      // Calculate min and max x and y values for all elements combined, and then find their averages
+     lastZoomfact = zoomfact;
      zoomfact = 1;
      var maxX = undefined;
      var maxY = undefined;
@@ -5088,6 +5128,7 @@ function showdata()
      drawRulerBars(scrollx, scrolly);
      updateA4Pos();
      updateA4Size();
+     zoomCenter(centerDiagram);
  }
 //#endregion =====================================================================================
 //#region ================================   LOAD AND EXPORTS    ==================================
