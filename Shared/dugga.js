@@ -1085,11 +1085,12 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
-		
+		//for testing
+		console.log("dugga.js (kind=='PDUGGA')\n"+"courseid="+querystring['courseid']+"\ndid="+querystring['did']+"\ncoursevers="+querystring['coursevers']+"\nmoment="+querystring['moment']+"\nsegment="+querystring['segment']);
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
-			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para+"&variant="+variantValue,
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+"&variant="+querystring['variantValue']+opt+para,
 			datatype: "json",
 			success: returnedDugga
 			// success: function(data){
@@ -1104,7 +1105,7 @@ function AJAXService(opt,apara,kind)
 			// 	enableTeacherVariantChange(phpData);
 			// 	handleHash();	//Makes sure hash is unique.
 			// }
-		})
+		});
 	}else if(kind=="RESULT"){
 			$.ajax({
 				url: "resultedservice.php",
