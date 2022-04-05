@@ -367,7 +367,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 						</label>
 					</div>
 					<div>
-						<label for='contactable'><input type='checkbox' id='contactable' value='true'>Det går bra att kontakta mig	
+						<label for='contactable'><input type='checkbox' id='contactable' value='true'>It is okay to contact me	
 						</label>
 					</div>
 					<div>
