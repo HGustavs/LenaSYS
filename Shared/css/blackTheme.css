@@ -24,7 +24,7 @@
 }
 
 #docucontent h1 {
-		color:#000
+	color:#000;
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -181,6 +181,10 @@
     width: 22px;
     line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
 	background-color: #614875;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .codeborder .impono {

@@ -218,6 +218,10 @@
     width: 22px;
 	background-color: #614875;
 	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .codeborder .impono {
