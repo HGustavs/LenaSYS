@@ -1,0 +1,76 @@
+
+    markdown.js
+        *Many  functions do not follow the rule that {} has to start one row down on the same level as the function decleration.
+         Some functions are however written correctly.
+
+        *There are several functions that amount to a if() statment and could easily be converted to single line functions.
+         Assuming that the teach want's single line functions.
+
+        *All document editing appears to use DOM instead of innerHTML all the file.
+
+    dugga.js
+        *Many  functions do not follow the rule that {} has to start one row down on the same level as the function decleration.
+         Some functions are however written correctly.
+
+        *The function isNumber is a single line function. It is unclear if this is allowed or not. Doing this is allowed for short if() 
+         statments but the code standard does not explicitly state that it's allowed for short functions. If this is allowed then there
+         is a large number of functions that could be made single line in dugga.js
+
+        *All commented out code in this file uses //Comment even while inside a function. Code standard states that its supposed to
+         be */comment/* when commenting out code inside a function. There are however a few that do it correctly.
+
+        *Many violations of the rule to use innerHTML instead of DOM createElement and appendChild when apending a document. Some 
+        document apending is however done correctly.
+
+    SortTableLibrary
+        sortTableLibrary.js
+            *Many  functions do not follow the rule that {} has to start one row down on the same level as the function decleration.
+             Some functions are however written correctly.
+
+            *All commented out code in this file uses //Comment even while inside a function. Code standard states that its supposed to
+             be */comment/* when commenting out code inside a function. There is not that much commented out code.
+
+        sortTableLibrary.js.bak 
+            *i really dont think we need to fix a bakupp file. But in case we do.
+
+            *All functions do not follow the rule that {} has to start one row down on the same level as the function decleration.
+        
+            *All commented out code in this file uses //Comment even while inside a function. Code standard states that its supposed to
+             be */comment/* when commenting out code inside a function.
+
+            *There are several functions that amount to a if() statment and could easily be converted to single line functions.
+             Assuming that the teach want's single line functions.
+
+            *Many violations of the rule to use innerHTML instead of DOM createElement and appendChild when apending a document. Some 
+            document apending is however done correctly.
+    js
+        jquery-1.11.0.min.js
+            *#!@!?* 
+
+            *Vad i helsike är denna gallenskapen. Allt är fell precis allt. Hur skrev någon allt detta utan att få error. Det
+            är helt oläsbart. 
+        jquery-ui-1.10.4.min.js
+            *--||--
+
+        three.min.js
+            *--||--
+
+    BenchmarkLogging
+        glMatrix-0.9.5.min.js
+            *Tekniskt set bryter detta inte code standard. Det är desvärre väldigt blockigt. 
+
+        httpAjax.js
+            *All  functions do not follow the rule that {} has to start one row down on the same level as the function decleration.
+
+            *All commented out code in this file uses //Comment even while inside a function. Code standard states that its supposed to
+             be */comment/* when commenting out code inside a function. There is not that much commented out code.
+
+        webgl-helpers.js
+            *All  functions do not follow the rule that {} has to start one row down on the same level as the function decleration.
+
+        webgl-utils.js
+            *All  functions do not follow the rule that {} has to start one row down on the same level as the function decleration.
+
+            *All commented out code in this file uses //Comment even while inside a function. Code standard states that its supposed to
+             be */comment/* when commenting out code inside a function. There is not that much commented out code.
+        
