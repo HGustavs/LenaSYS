@@ -12,7 +12,7 @@ CREATE TABLE user(
 	creator					INT UNSIGNED NULL,
 	superuser				TINYINT(1) NULL,
 	email					VARCHAR(256) DEFAULT NULL,
-	class 					VARCHAR(10) DEFAULT NULL REFERENCES class (class),
+	class 					VARCHAR(10) DEFAULT NULL,
 	totalHp					decimal(4,1),
 	securityquestion		VARCHAR(256) DEFAULT NULL,
 	securityquestionanswer	VARCHAR(256) DEFAULT NULL,
@@ -424,7 +424,7 @@ CREATE TABLE partresult (
 	uid						INT UNSIGNED NOT NULL,
 	partname				VARCHAR(50),
 	grade 					VARCHAR(1) DEFAULT NULL,
-	hp						DECIMAL(3,1) REFERENCES subparts (parthp),
+	hp						DECIMAL(3,1),
 	PRIMARY KEY (partname, cid, uid),
 	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
