@@ -40,6 +40,8 @@
 	?>
 
 	<!-- content START -->
+	<!-- Div that appear as an alert when a New Item has create -->
+	<div style="z-index: 1;" id="createAlert"></div>
 	<div id="content">
 
 		<!-- FAB Start -->
