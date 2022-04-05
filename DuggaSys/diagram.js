@@ -4194,14 +4194,12 @@ function sortElementAssociations(element)
  */
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
 
-    //swaps the initial fromElement and toElement if the initial node is an relational node. Makes sure lines are connected in the right place and cardinalities are placed in the right end.
-    if(fromElement.kind == "ERRelation") {
-        var tempFrom = fromElement;
-        var tempTo = toElement;
-        
-        fromElement = tempTo;
-        toElement = tempFrom;
-    }
+     // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
+     if (toElement.kind == "EREntity"){
+        var tempElement = toElement;
+        toElement = fromElement;
+        fromElement = tempElement;
+    } 
 
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
