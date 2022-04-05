@@ -3,6 +3,7 @@
    Documentation
 *********************************************************************************
 UI for creating and finding, folders to save diagrams in.
+The folders only go 2 layers deep.
 Requesting a diagram folder will send a request to diagram.php 
 of which folder in the repository [save] to load.
 
