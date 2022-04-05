@@ -1,0 +1,4 @@
+i filen lenaSYS/shared/dugga.js 
+    function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
+Är en rads function tillåtet?
+Borde alla functioner som bara är ett return statment vara en rad.
