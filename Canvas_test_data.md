@@ -12,10 +12,12 @@
 
 
 # Teachers (Name, Email, UserID, Password)
-G1-Joey Stenhus, joey.s@his.se, stei, password<br>
-G1-Leif GW Persson, leif.gw@his.se, leifgw, password<br>
-G1 - Morgan Freeman, mofre@student.his.se, mofre, password<br>
-G1 - Martin Brobygge, martin.b@his.se, brom, password<br>
+|Name|Email|UserID|Password|
+| ----- | ------- | -------- | ----------- |
+|G1-Joey Stenhus| joey.s@his.se| stei |password|
+|G1-Leif GW Persson| leif.gw@his.se| leifgw| password|
+|G1 - Morgan Freeman| mofre@student.his.se| mofre| password|
+|G1 - Martin Brobygge| martin.b@his.se| brom| password|
 
 # Teacher assistent (Name, Email, UserID, Password)
 G1 - Keanu Reeves, keree@student.his.se, keree, password<br>
