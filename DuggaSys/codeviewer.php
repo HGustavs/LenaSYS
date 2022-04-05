@@ -164,17 +164,7 @@ Testing Link:
 			//	FOR TESTING:	uncomment line below to see log output of #username,
 			//echo "<script>console.log('Debug Objects: " . $_COOKIE["cookie_guest"] . "' );</script>";
 
-			// Logs users who view example, along with the example they have viewed
-/*
-      if ($userid == "00") {
-				$description=$exampleid." ".$courseID." ".$cvers;
-				logUserEvent($_COOKIE["cookie_guest"], "guest", EventTypes::DuggaRead, $description);
-			}
-			else{
-				$description=$exampleid." ".$courseID." ".$cvers;
-				logUserEvent($userid, $username, EventTypes::DuggaRead, $description);
-			}
-*/
+			
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
 			if($courseID!="UNK"&&$exampleid!="UNK"){
 				//checks if $courseid exists.
