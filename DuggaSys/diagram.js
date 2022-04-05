@@ -774,7 +774,8 @@ const elementTypes = {
     EREntity: 0,
     ERRelation: 1,
     ERAttr: 2,
-    Ghost: 3
+    Ghost: 3,
+    ERLabel: 4
 };
 
 /**
@@ -896,6 +897,9 @@ const zoom0_25 = -15.01;
 var lines = [];
 var elements = [];
 
+// Line Label variabels
+var lineLabelList = [];
+
 // Currently clicked object list
 var context = [];
 var previousContext = [];
@@ -975,6 +979,7 @@ var defaults = {
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60 },
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45 },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5 },
+    ERLabel: { name: "Label", kind: "ERLabel", fill: "#ffffff", stroke: "white", width: 10, height: 5 },
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -2179,7 +2184,7 @@ function changeLineProperties()
         line.label = label.value
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-
+    addLabelData(line);
     showdata();
 }
 
@@ -4456,12 +4461,76 @@ function drawLine(line, targetGhost = false)
         var centerX = (tx + fx) / 2;
         var centerY = (ty + fy) / 2;
         //add background
-        str += `<rect x="${ centerX - ((9 * line.label.length) * zoomfact)/2 }" y="${centerY - ((textheight / 2) * zoomfact + 4)}" width="${(9 * line.label.length) * zoomfact}" height="${textheight * zoomfact}" style="fill:rgb(255,255,255);" />`
+        //str += `<rect x="${ labelPosX }" y="${labelPosY}" width="${labelWidth}" height="${labelHeight}" style="fill:rgb(255,255,255);" />`
         //add label
-        str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)}" y="${centerY-(2 * zoomfact)}">${line.label}</text>`;
+        //str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)}" y="${centerY-(2 * zoomfact)}">${line.label}</text>`;
     }
-
     return str;
+}
+// function to add label data to linelabellist
+function addLabelData(line){
+    if(data[findIndex(data, line.toID)].cx>data[findIndex(data, line.fromID)].cx){
+        var labelLowX = data[findIndex(data, line.fromID)].cx;
+        var labelHighX = data[findIndex(data, line.toID)].cx;
+    }
+    else{
+        var labelLowX = data[findIndex(data, line.toID)].cx;
+        var labelHighX = data[findIndex(data, line.fromID)].cx;
+    }
+    if(data[findIndex(data, line.toID)].cy>data[findIndex(data, line.fromID)].cy){
+        var labelLowY = data[findIndex(data, line.fromID)].cy;
+        var labelHighY = data[findIndex(data, line.toID)].cy;
+    }
+    else{
+        var labelLowY = data[findIndex(data, line.toID)].cy;
+        var labelHighY = data[findIndex(data, line.fromID)].cy;
+    }
+    var labelPosX = (labelHighX+labelLowX)/2 - ((12 * line.label.length) * zoomfact)/2;
+    var labelPosY = (labelHighY+labelLowY)/2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
+    var labelWidth = (12 * line.label.length) * zoomfact;
+    var labelHeight = textheight * zoomfact;
+    lineLabel={id: line.id+"Label",lineName: line.id, labelLowX: labelLowX, labelHighX: labelHighX, centerX: (labelHighX+labelLowX)/2, x: labelPosX, labelLowY: labelLowY, labelHighY: labelHighY, centerY: (labelHighY+labelLowY)/2, y: labelPosY, width: labelWidth, height: labelHeight};
+    for(var i=0;i<lineLabelList.length;i++){
+        if(lineLabelList[i].lineName==line.id){
+            lineLabelList.splice(i,1);
+        }
+    }
+    lineLabelList.push(lineLabel);
+}
+/** 
+* @description function to change or add a label objekt 
+*/
+function changeLabel(){
+    var label = document.getElementById("lineLabel");
+
+    for(var i=0;i<lineLabelList.length;i++){       
+        var exists=false;
+        for (let index = 0; index < data.length; index++) {
+            if(data[index].id==lineLabelList[i].id){
+                if(!!label){
+                    data[index].name=label.value
+                }
+                data[index].x=lineLabelList[i].x-scrollx;
+                data[index].y=lineLabelList[i].y-scrolly+lineLabelList[i].height*1.5;
+                data[index].width=lineLabelList[i].width;
+                exists=true;
+            }            
+        }
+        if (exists == false) {
+            var elementObj = {
+                name: label.value,
+                x: lineLabelList[i].x-scrollx,
+                y: lineLabelList[i].y-scrolly+lineLabelList[i].height*1.5,
+                width: lineLabelList[i].width,
+                height: lineLabelList[i].height,
+                kind: "ERLabel",
+                id: lineLabelList[i].id,
+                fill: "#ffffff",
+                stroke: "2px"
+            };
+            addObjectToData(elementObj, false);
+        }
+    }
 }
 /**
  * @description Removes all existing lines and draw them again
@@ -4797,6 +4866,12 @@ function drawElement(element, ghosted = false)
         str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
 
     }
+    else if (element.kind == "ERLabel") {      
+        str +=  `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+                    stroke-width='${linew}' stroke='#ffffff' fill='${element.fill}' />
+                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
+                    `;
+    }
     str += "</svg>";
     if (element.isLocked) {
         str += `<img id="pad_lock" width='${zoomfact *20}' height='${zoomfact *25}' src="../Shared/icons/pad_lock.svg"/>`;     
@@ -4939,6 +5014,41 @@ function updateCSSForAllElements()
             left -= deltaX;
             top -= deltaY;
         }
+        // uppdating the label data for all labels from the lines connected to the selected element
+        if(!!lines[findIndex(data, element.id)].fromID){
+            for (let index = 0; index < lines.length; index++) {
+                if(lines[index].fromID==element.id){
+                    if(!!lines[index].label){
+                        addLabelData(lines[index]);
+                    }
+                }
+            }
+        }
+        // uppdating the label data for all labels to the lines connected to the selected element
+        if(!!lines[findIndex(data, element.id)].toID){
+            for (let index = 0; index < lines.length; index++) {
+                if(lines[index].toID==element.id){
+                    if(!!lines[index].label){
+                        addLabelData(lines[index]);
+                    }
+                }
+            }
+        }
+        //constraining labels to line (or rather a box using the center of the entitys the line are connected to's coordinates)
+        if(element.kind=="ERLabel"){
+            if(((lineLabelList[findIndex(lineLabelList, element.id)].labelLowX - zoomOrigo.x) * zoomfact) - 100 + (scrollx * (1.0 / zoomfact)) >= left - element.width / 2){
+                left=((lineLabelList[findIndex(lineLabelList, element.id)].labelLowX - zoomOrigo.x) * zoomfact) + element.width / 2 - 100 + (scrollx * (1.0 / zoomfact));
+            }
+            else if(((lineLabelList[findIndex(lineLabelList, element.id)].labelHighX - zoomOrigo.x) * zoomfact) - 100 + (scrollx * (1.0 / zoomfact)) <= left + element.width / 2){
+                left=((lineLabelList[findIndex(lineLabelList, element.id)].labelHighX - zoomOrigo.x) * zoomfact) - element.width / 2 - 100 + (scrollx * (1.0 / zoomfact));
+            }
+            if(((lineLabelList[findIndex(lineLabelList, element.id)].labelLowY - zoomOrigo.x) * zoomfact) - 100 + (scrolly * (1.0 / zoomfact)) >= top - element.height){
+                top=((lineLabelList[findIndex(lineLabelList, element.id)].labelLowY - zoomOrigo.x) * zoomfact) + element.height - 100 + (scrolly * (1.0 / zoomfact));
+            }
+            else if(((lineLabelList[findIndex(lineLabelList, element.id)].labelHighY - zoomOrigo.x) * zoomfact) - 100 + (scrolly * (1.0 / zoomfact)) <= top + element.height){
+                top=((lineLabelList[findIndex(lineLabelList, element.id)].labelHighY - zoomOrigo.x) * zoomfact) - element.height - 100 + (scrolly * (1.0 / zoomfact));
+            }
+        }
 
         if (settings.grid.snapToGrid && useDelta) {
             if (element.kind == "EREntity"){
@@ -5012,6 +5122,7 @@ function updateCSSForAllElements()
  */
 function showdata()
 {
+    changeLabel();
     updateContainerBounds();
 
     var str = "";
