@@ -161,7 +161,7 @@ of which folder in the repository [save] to load.
           <div id="adsds" style="position:fixed;height:100vh;width:160px;border-right:1px solid black;">
               <?php
             //---------------------------------------------
-            // Go through the selected folder in [save] directory to find valid files
+            // Go through the selected folder in [save] directory to find valid subfolders
             // to be listed
             //---------------------------------------------
               if (isset($_POST["answer"]) && !empty($_POST)) {
