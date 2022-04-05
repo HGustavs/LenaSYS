@@ -192,7 +192,7 @@ of which folder in the repository [save] to load.
         //This looks like lost javascript code.
         function createNewestFolder($ad) {
             $value = $ad.value;
-            redirect($ad); //method found in diagram_IOHanlder.js
+            redirect($ad); //method found in diagram_IOHandler.js
         }
 
 
