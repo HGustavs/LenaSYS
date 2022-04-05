@@ -2,10 +2,9 @@
 /********************************************************************************
    Documentation
 *********************************************************************************
-UI for creating and finding, folders and files.
-The files in question is diagram.json files.
-Requesting a diagram will send a request to diagram.php 
-of which diagram in repository [save] to load.
+UI for creating and finding, folders to save diagrams in.
+Requesting a diagram folder will send a request to diagram.php 
+of which folder in the repository [save] to load.
 
 
 -------------==============######## Documentation End ###########==============-------------*/
