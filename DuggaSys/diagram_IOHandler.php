@@ -5,7 +5,7 @@
 UI for creating and finding, folders and files.
 The files in question is diagram.json files are
 The folders cannot have a folder in them, only diagrams.
-Requesting the diagram will send a request to diagram.php.
+Requesting a diagram will send a request to diagram.php of which diagram in which folder in repository [save].
 
 
 -------------==============######## Documentation End ###########==============-------------*/
