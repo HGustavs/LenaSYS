@@ -2,7 +2,10 @@
 /********************************************************************************
    Documentation
 *********************************************************************************
-
+UI for creating and finding, folders and files.
+The files in question is diagram.json files are
+The folders cannot have a folder in them, only diagrams.
+Requesting the diagram will send a request to diagram.php.
 
 
 -------------==============######## Documentation End ###########==============-------------*/
@@ -54,6 +57,10 @@
       <div id='showStored' style="display:none;position:absolute;left:190px;top:50px">
           <div id="b" style="position:fixed;height:100vh;width:150px;border-right:1px solid black;">
               <?php
+            //---------------------------------------------
+            // Go through the [save] directory to find valid folders
+            // to be listed
+            //---------------------------------------------
                 if ($handle = opendir('Save/')) {
                   $blacklist = array('.', '..', 'Save', 'id.txt');
                   while (false !== ($file = readdir($handle))) {
@@ -91,6 +98,10 @@
              <br>
               <hr>
              <?php
+             //---------------------------------------------
+            // Go through the [save] directory to find valid folders
+            // to be listed
+            //---------------------------------------------
              if ($handle = opendir('Save/')) {
                  $blacklist = array('.', '..', 'Save', 'id.txt');
                  while (false !== ($file = readdir($handle))) {
@@ -145,9 +156,14 @@
           </div>
       </div>
 
+
       <div id='showStoredFolders' style="display:none;position:absolute;left:360px;top:50px">
           <div id="adsds" style="position:fixed;height:100vh;width:160px;border-right:1px solid black;">
               <?php
+            //---------------------------------------------
+            // Go through the selected folder in [save] directory to find valid files
+            // to be listed
+            //---------------------------------------------
               if (isset($_POST["answer"]) && !empty($_POST)) {
                   $newFolder = $_POST['answer'];
                   if ($handle = opendir("Save/$newFolder/")) {
@@ -173,6 +189,13 @@
       <?php
       include '../Shared/loginbox.php';
      
+        //This looks like lost javascript code.
+        function createNewestFolder($ad) {
+            $value = $ad.value;
+            redirect($ad); //method found in diagram_IOHanlder.js
+        }
+
+
       if(isset($_POST["folderName"])) {
           $name = $_POST["folderName"];
           $projectName = $_POST["projectName"];
