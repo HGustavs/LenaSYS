@@ -16,7 +16,7 @@
         *every single file in the SQL folder appears to follow code standards.
 
     md 
-        *Everything seams fine in this mess. What are these weird files even for.
+        *Everything seams fine in this mess.
 
     courses
         *All the code files here are incorectly formated. However that really probably dosent matter because they are all identical 
