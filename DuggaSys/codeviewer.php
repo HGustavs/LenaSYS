@@ -228,7 +228,7 @@ Testing Link:
 		<!-- Dropdowns END -->
 		<!-- Example Content Cog Wheel Dialog START -->
 		<div id='editContentContainer' class="loginBoxContainer" style="display:none;">
-				<div id='editContent' class='loginBox' style='width:510px;'>
+				<div id='editContent' class='loginBox, DarkModeBackgrounds' style='width:510px;'>
 					<div class='loginBoxheader'>
 						<h3>Edit Content</h3>
 						<div class='cursorPointer' onclick='closeEditContent();'>x</div>
@@ -281,7 +281,7 @@ Testing Link:
 		<!-- Example Content Cog Wheel Dialog END -->
 		<!-- Code Example Cog Wheel Dialog START -->
 		<div id='editExampleContainer' class="loginBoxContainer" style="display:none;">
-				<div id='editExample' class='loginBox' style='width:650px;'>
+				<div id='editExample' class='loginBox, DarkModeBackgrounds' style='width:650px;'>
 					<div class='loginBoxheader'>
 						<h3>Edit Example</h3>
 						<div class='cursorPointer' onclick='closeEditExample();'>x</div>
@@ -313,7 +313,7 @@ Testing Link:
 		</div>
 		<!-- Code Example Cog Wheel Dialog END -->
 		<div id='chooseTemplateContainer' class="loginBoxContainer" style="display:none;">
-				<div id='chooseTemplate' class='loginBox' style='width:464px;'>
+				<div id='chooseTemplate' class='loginBox, DarkModeBackgrounds' style='width:464px;'>
 					<div class='loginBoxheader'>
 						<h3>Choose Template</h3>
 						<div class='cursorPointer' onclick='closeTemplateWindow();'>x</div>

@@ -1,442 +1,447 @@
 @media (prefers-color-scheme: dark){
-#div2{
-	background-color: #FFF;
-}
+    #div2{
+        background-color: #FFF;
+    }
 
-#picktemplate{
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
-	background-color: white;
-}
+    #picktemplate{
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        background-color: white;
+    }
 
-#picktemplate img{
-	width: 140px;
-	height: 140px;
-}
+    #picktemplate img{
+        width: 140px;
+        height: 140px;
+    }
 
-#picktemplate h1{
-	text-align: center;
-  font-family: Arial, Sans-Serif;
-	color: #000;
-}
+    #picktemplate h1{
+        text-align: center;
+    font-family: Arial, Sans-Serif;
+        color: #000;
+    }
 
-#docucontent h1 {
-		color:#000
-    display: block;
-    font-family: Arial,Sans-Serif;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-}
+    #docucontent h1 {
+        color:#000;
+        display: block;
+        font-family: Arial,Sans-Serif;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        font-style: italic;
+    }
 
-#content {
-    background-color: #2c2c2c;
-    margin: 5px 10px 15px 10px;
-		color: #fff;
-}
+    #content {
+        background-color: #2c2c2c;
+        margin: 5px 10px 15px 10px;
+            color: #fff;
+    }
 
-.docucontentStyle h1 {
+    .docucontentStyle h1 {
+        color: white;
+    }
+
+    .box {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        overflow-y: auto;
+        overflow-x: auto;
+        font-family: Arial,Sans-Serif;
+        font-size: 14px;
+        outline: 0 none;
+        background-color: #2c2c2c;
+        color: #FFF;
+    }
+
+    .box iframe {
+        background-color: white;
+        width:100%;
+        height: 99%;
+    }
+
+    .docucontentStyle {
+        background-color: #272822;
+        color: white;
+
+    }
+    .box1Style {
+        background-color: #272822;
+        color: white;
+    }
+    .codeboxStyle {
+        background-color: #272822;
+    }
+
+    .box2Style {
+        background-color: #272822;
+    }
+
+    .temp3Style{
+        background-color: #272822;
+    }
+
+    .temp4Style{
+        background-color: #272822;
+    }
+
+    .buttomenuStyle {
+        background-color: #614875;
+    }
+
+    .mbuttoStyle {
+        background-color: #614875;
+    }
+
+    .mbuttoStyleLight {
+        background-color: #9868bd;
+    }
+
+    .mbuttoStyle:hover{
+        background-color: #7D5CA0;
+    }
+
+    .menutextStyle {
+        color: white;
+    }
+
+    .hotdogdropStyle{
+        color: white;
+    }
+    .hotdogdropStyle table td{
+        color: white;
+    }
+
+    .dropdownStyle {
+        color: white;
+        /*background: #614875;*/
+    }
+
+    .dropdownbackStyle {
+        background-color: #614875;
+        color: #fff;
+    }
+
+    .codedropStyle {
+        background-color: #614875;
+        border-color: rgb(0,0,0) transparent;
+    }
+
+    .docudropStyle {
+        background-color: #614875;
+        background: rgb(0, 0, 0) transparent;
+    }
+
+    .themedropStyle {
+        background-color: #614875;
+    }
+
+    .imgdropStyle{
+        background-color: #614875;
+    }
+    .imgdropStyle img:hover{
+        border-style:solid;
+        border-width:1px;
+        border-color: white;
+        padding: 4px;
+    }
+
+    .dropdownitemStyle {
+        background: #614875;
+        color: white;
+    }
+
+    .dropdownitem:hover {
+        background-color: #7D5CA0;
+    }
+
+    .codeborder{
+        position: absolute;
+        top:0px;
+        bottom: 0px;
+        left:0px;
+        margin: 0px !important;
+        padding: 0px !important;
+        background-color: #614875;
+        text-align: right;
+
+        /* Width of .no and .impo */
+        width: 32px !important;
+
+    }
+
+    .codeborder .no {
+        color: #D8D8D8;
+        padding-left: 4px;
+        padding-right: 6px;
+        width: 22px;
+        line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
+        background-color: #614875;
+    }
+
+    .codeborder .impono {
+        color: white;
+        width: 22px;
+        background-color: #9569BD;
+        padding-left: 4px;
+        padding-right: 6px;
+        line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
+    }
+
+    .header {
+        padding: 30px;
+        text-align: center;
+        background: #5A5757;
+        color: white;
+        font-size: 28px;
+        margin-top: 50px;
+    }
+
+    .normtextwrapper{
+        /* Width of codeborder */
+        margin-left: 32px;
+    }
+
+    .normtext {
+        color: #fff;
+        background-color: #2c2c2c;
+        white-space:nowrap;
+    }
+
+    .impo {
+        color: #fff;
+        background-color: #270c27;
+        white-space:nowrap;
+        min-width: 660px;
+    }
+
+    .comment {
+        color: #888;
+    }
+
+    .normtext .oper {
+        color: white;
+        font-weight: bold;
+        line-height: 15px;
+    }
+
+    .impo .oper {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .normtext .string {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .impo .string {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .normtext .number {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .impo .number {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .normtext .hi {
+        background-color: #5d5d5d;
+        color: #fff;
+    }
+
+    .impo .hi {
+        background-color: #272822;
+        color: #fed;
+    }
+
+
+    .keywordA {
+        color: rgba(255, 77, 77, 1);
+    }
+
+    .keywordB {
+        color: rgba(49, 211, 255, 1);
+    }
+
+    .keywordC {
+        color: #00d30d;
+    }
+
+    .keywordD {
+        color: #eb7504;
+    }
+
+    .normtext .impword {
+        color: white;
+            background-color: #2c2c2c;
+    }
+
+    .normtext:hover {
+        background-color: rgba(98, 30, 98,0.3);
+        white-space: nowrap;
+    }
+
+    .impo .impword {
+        color: #000000;
+        background-color: #fff;
+        border: 1px solid #f44;
+    }
+
+    .descbox .impword {
+        color: #000000;
+        background-color: #fff;
+        border: 1px solid #f44;
+    }
+
+    .normtext .imphi {
+        background-color: #5d5d5d;
+        color: #fff;
+
+    }
+
+    .impo .imphi {
+        background-color: #272822;
+        color: #fed;
+    }
+
+    .tooltip{
+        color:orange;
+    }
+
+    .errormsg{
+        color: red;
+    }
+
+    .playlinkErrorMsgStyle{
+        color: red;
+    }
+
+    .settingsTabMenuStyle li{
+        background-color: #7D5CA0;
+    }
+    .settingsTabMenuStyle .activeSetMenuLink{
+        border-bottom-color: #614875;
+        border-bottom-width:3px;
+        background-color: #614875;
+    }
+
+    .templatethumbicon:hover{
+        background-color: #7D5CA0;
+    }
+
+    .themeicon:hover {
+        background-color: #7D5CA0;
+    }
+
+    .codebox{
+        padding: 0px;
+    font-family:Hack;
+    }
+
+    .descbox{
+        padding-top: 4px;
+        padding-left: 4px;
+        background-color: #2c2c2c;
+        color: #fff;
+    }
+
+    /* BOXMENU STYLING START */
+    .buttomenu2Style{
+        background-color: #5C5A5A;
+    }
+
+    .buttomenu2Style .wordlistselect{
+        color: white;
+
+    background: url("../new icons/expand_button.svg") no-repeat 50px #5C5A5A;
+    background-size:15px 15px;
+    border: 1px solid #ccc;
+    }
+
+    .buttomenu2Style .boxcontentselect{
     color: white;
-}
 
-.box {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    overflow-y: auto;
-    overflow-x: auto;
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
-    background-color: #2c2c2c;
-    color: #FFF;
-}
-
-.box iframe {
-    background-color: white;
-    width:100%;
-    height: 99%;
-}
-
-.docucontentStyle {
-     background-color: #272822;
-     color: white;
-
-}
-.box1Style {
-     background-color: #272822;
-     color: white;
-}
-.codeboxStyle {
-    background-color: #272822;
-}
-
-.box2Style {
-    background-color: #272822;
-}
-
-.temp3Style{
-	background-color: #272822;
-}
-
-.temp4Style{
-	background-color: #272822;
-}
-
-.buttomenuStyle {
-    background-color: #614875;
-}
-
-.mbuttoStyle {
-    background-color: #614875;
-}
-
-.mbuttoStyleLight {
-    background-color: #9868bd;
-}
-
-.mbuttoStyle:hover{
-	background-color: #7D5CA0;
-}
-
-.menutextStyle {
-   	color: white;
-}
-
-.hotdogdropStyle{
-	color: white;
-}
-.hotdogdropStyle table td{
-	color: white;
-}
-
-.dropdownStyle {
+    background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
+    background-size:15px 15px;
+    border: 1px solid #ccc;
+    }
+    .buttomenu2Style .chooseContentSelect{
     color: white;
-    /*background: #614875;*/
-}
+    background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
+    background-size:15px 15px;
+    border: 1px solid #ccc;
+    }
 
-.dropdownbackStyle {
-	background-color: #614875;
-    color: #fff;
-}
-
-.codedropStyle {
-    background-color: #614875;
-    border-color: rgb(0,0,0) transparent;
-}
-
-.docudropStyle {
-    background-color: #614875;
-    background: rgb(0, 0, 0) transparent;
-}
-
-.themedropStyle {
-	background-color: #614875;
-}
-
-.imgdropStyle{
-	background-color: #614875;
-}
-.imgdropStyle img:hover{
-	border-style:solid;
-	border-width:1px;
-	border-color: white;
-	padding: 4px;
-}
-
-.dropdownitemStyle {
-    background: #614875;
-    color: white;
-}
-
-.dropdownitem:hover {
-	background-color: #7D5CA0;
-}
-
-.codeborder{
-	position: absolute;
-	top:0px;
-	bottom: 0px;
-	left:0px;
-	margin: 0px !important;
-	padding: 0px !important;
-	background-color: #614875;
-	text-align: right;
-
-	/* Width of .no and .impo */
-	width: 32px !important;
-
-}
-
-.codeborder .no {
-    color: #D8D8D8;
-    padding-left: 4px;
-    padding-right: 6px;
-    width: 22px;
-    line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
-	background-color: #614875;
-}
-
-.codeborder .impono {
-    color: white;
-    width: 22px;
-    background-color: #9569BD;
-    padding-left: 4px;
-    padding-right: 6px;
-    line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
-}
-
-.header {
-    padding: 30px;
-    text-align: center;
-    background: #5A5757;
-    color: white;
-    font-size: 28px;
-    margin-top: 50px;
-}
-
-.normtextwrapper{
-	 /* Width of codeborder */
-  	 margin-left: 32px;
-}
-
-.normtext {
-    color: #fff;
-    background-color: #2c2c2c;
-    white-space:nowrap;
-}
-
-.impo {
-    color: #fff;
-    background-color: #270c27;
-    white-space:nowrap;
-    min-width: 660px;
-}
-
-.comment {
-    color: #888;
-}
-
-.normtext .oper {
-    color: white;
-    font-weight: bold;
-    line-height: 15px;
-}
-
-.impo .oper {
-    color: #fff;
-    font-weight: bold;
-}
-
-.normtext .string {
-    color: #fff;
-    font-weight: bold;
-}
-
-.impo .string {
-    color: #fff;
-    font-weight: bold;
-}
-
-.normtext .number {
-    color: #fff;
-    font-weight: bold;
-}
-
-.impo .number {
-    color: #fff;
-    font-weight: bold;
-}
-
-.normtext .hi {
-    background-color: #5d5d5d;
-    color: #fff;
-}
-
-.impo .hi {
-    background-color: #272822;
-    color: #fed;
-}
-
-
-.keywordA {
-    color: rgba(255, 77, 77, 1);
-}
-
-.keywordB {
-    color: rgba(49, 211, 255, 1);
-}
-
-.keywordC {
-    color: #00d30d;
-}
-
-.keywordD {
-    color: #eb7504;
-}
-
-.normtext .impword {
-    color: white;
-		background-color: #2c2c2c;
-}
-
-.normtext:hover {
-    background-color: rgba(98, 30, 98,0.3);
-		white-space: nowrap;
-}
-
-.impo .impword {
-    color: #000000;
-    background-color: #fff;
-    border: 1px solid #f44;
-}
-
-.descbox .impword {
-    color: #000000;
-    background-color: #fff;
-    border: 1px solid #f44;
-}
-
-.normtext .imphi {
-    background-color: #5d5d5d;
-    color: #fff;
-
-}
-
-.impo .imphi {
-    background-color: #272822;
-    color: #fed;
-}
-
-.tooltip{
-	color:orange;
-}
-
-.errormsg{
-	color: red;
-}
-
-.playlinkErrorMsgStyle{
-	color: red;
-}
-
-.settingsTabMenuStyle li{
-	background-color: #7D5CA0;
-}
-.settingsTabMenuStyle .activeSetMenuLink{
-	border-bottom-color: #614875;
-	border-bottom-width:3px;
-	background-color: #614875;
-}
-
-.templatethumbicon:hover{
-    background-color: #7D5CA0;
-}
-
-.themeicon:hover {
-	background-color: #7D5CA0;
-}
-
-.codebox{
-	padding: 0px;
-  font-family:Hack;
-}
-
-.descbox{
-	padding-top: 4px;
-	padding-left: 4px;
-	background-color: #2c2c2c;
-	color: #fff;
-}
-
-/* BOXMENU STYLING START */
-.buttomenu2Style{
-	background-color: #5C5A5A;
-}
-
-.buttomenu2Style .wordlistselect{
-	color: white;
-
-   background: url("../new icons/expand_button.svg") no-repeat 50px #5C5A5A;
-   background-size:15px 15px;
-   border: 1px solid #ccc;
-}
-
-.buttomenu2Style .boxcontentselect{
-   color: white;
-
-   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
-   background-size:15px 15px;
-   border: 1px solid #ccc;
-}
-.buttomenu2Style .chooseContentSelect{
-   color: white;
-   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
-   background-size:15px 15px;
-   border: 1px solid #ccc;
-}
-
-.buttomenu2Style select:hover{
-  background-color: #938C8C;
-  cursor: pointer;
-}
-
-.butto2:hover{
+    .buttomenu2Style select:hover{
     background-color: #938C8C;
     cursor: pointer;
-}
-.boxtitleEditable{
-	color: white;
-	cursor:text;
-    font-family: Arial, Sans-Serif;
-}
-.boxtitle{
-	font-family: Arial, Sans-Serif !important;
-	cursor:default !important;
-	color: white !important;
-}
+    }
 
-/* ========================
-	COLOR SCHEME FOR TABLES
-	======================*/
+    .butto2:hover{
+        background-color: #938C8C;
+        cursor: pointer;
+    }
+    .boxtitleEditable{
+        color: white;
+        cursor:text;
+        font-family: Arial, Sans-Serif;
+    }
+    .boxtitle{
+        font-family: Arial, Sans-Serif !important;
+        cursor:default !important;
+        color: white !important;
+    }
 
-.list {
-	  width: 100%;
-	  padding: 1px;
-	  border-bottom: 2px solid #614875;
-	  margin-top: 20px;
-   	font-size: 16px;
-}
+    /* ========================
+        COLOR SCHEME FOR TABLES
+        ======================*/
 
-.list td {
-    border-left: 2px solid #614875;
-    border-right: 2px solid #614875;
-    padding: 0 8px 0 8px;
-}
+    .list {
+        width: 100%;
+        padding: 1px;
+        border-bottom: 2px solid #614875;
+        margin-top: 20px;
+        font-size: 16px;
+    }
 
-.list tbody tr:nth-child(odd) {
-  background-color: #271d2f;
-}
+    .list td {
+        border-left: 2px solid #614875;
+        border-right: 2px solid #614875;
+        padding: 0 8px 0 8px;
+    }
 
-.list tbody tr:nth-child(even) {
-  background-color: #34273f;
-}
+    .list tbody tr:nth-child(odd) {
+        background-color: #271d2f;
+    }
 
-body {
-  font-family: 'Roboto', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  width: 100%;
-  height: 100%;
-  background-color: #2c2c2c;
-	color: white;
-}
+    .list tbody tr:nth-child(even) {
+        background-color: #34273f;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        width: 100%;
+        height: 100%;
+        background-color: #2c2c2c;
+        color: white;
+    }
+
+    /*A global styling for darkmode, added the class where there needed darkbackgrounds*/
+    .DarkModeBackgrounds{
+        background-color: #2c2c2c;
+    }    
 
 }
 /* BOXMENU STYLING STOP */
