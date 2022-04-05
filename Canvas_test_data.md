@@ -20,15 +20,23 @@
 |G1 - Martin Brobygge| martin.b@his.se| brom| password|
 
 # Teacher assistent (Name, Email, UserID, Password)
-G1 - Keanu Reeves, keree@student.his.se, keree, password<br>
+|Name|Email|UserID|Password|
+| ----- | ------- | -------- | ----------- |
+|G1 - Keanu Reeves| keree@student.his.se| keree| password|
 
 # Designer (Name, Email, UserID, Password)
-G1 - Meryl Streep, mestr@student.his.se, mestr, password<br>
+|Name|Email|UserID|Password|
+| ----- | ------- | -------- | ----------- |
+|G1 - Meryl Streep| mestr@student.his.se| mestr|password|
 
 # Observer (Name, Email, UserID, Password)
-G1 - Alicia Vikander, alvik@student.his.se, alvik, password<br>
+|Name|Email|UserID|Password|
+| ----- | ------- | -------- | ----------- |
+|G1 - Alicia Vikander| alvik@student.his.se| alvik| password|
 
 # Courses (Coursename, CourseID)
-G1 - Webbutveckling - datorgrafik, IT118G<br>
-MasterBranch - Webbutveckling - datorgrafik, IT118G<br>
+|Coursename|CourseID|
+| ----- | ------- |
+|G1 - Webbutveckling - datorgrafik| IT118G|
+|MasterBranch - Webbutveckling - datorgrafik| IT118G|
 
