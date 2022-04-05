@@ -4164,6 +4164,16 @@ function sortElementAssociations(element)
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
+
+    //swaps the initial fromElement and toElement if the initial node is an relational node. Makes sure lines are connected in the right place and cardinalities are placed in the right end.
+    if(fromElement.kind == "ERRelation") {
+        var tempFrom = fromElement;
+        var tempTo = toElement;
+        
+        fromElement = tempTo;
+        toElement = tempFrom;
+    }
+
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
