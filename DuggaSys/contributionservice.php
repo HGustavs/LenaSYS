@@ -51,8 +51,6 @@ if(strcmp($opt,"get")==0) {
 		if(isset($_SESSION['uid'])){
 			$userid=$_SESSION['uid'];
 			$loginname=$_SESSION['loginname'];
-			// $lastname=$_SESSION['lastname'];		Unused var
-			// $firstname=$_SESSION['firstname'];	Unused var
 		}
 		$gituser=$loginname;
 	}
@@ -60,20 +58,12 @@ if(strcmp($opt,"get")==0) {
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 		$loginname=$_SESSION['loginname'];
-		// $lastname=$_SESSION['lastname'];		Unused var
-		// $firstname=$_SESSION['firstname'];	Unused var
 	}else{
 		$userid=1;
 		$loginname="UNK";
 		$lastname="UNK";
 		$firstname="UNK";
 	}
-
-	// $log_uuid = getOP('log_uuid');
-	// $info=$opt." ".$courseid." ".$coursename;
-	// logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "contributionservice.php",$userid,$info);
-
-	//$debug=print_r($_SESSION,true);
 
 	$startweek = strtotime('2019-04-01');									// First monday in january
 	$currentweek=$startweek;
@@ -305,32 +295,6 @@ if(strcmp($opt,"get")==0) {
       $j++;
     }
 	}
-
-
-	/*
-	$overallrank="NOT FOUND";
-	$overallrankno="NOT FOUND";
-	$i=1;
-	$query = $log_db->prepare('SELECT sum(rowk) as davegrowl,author FROM (SELECT count(*) as rowk, author FROM event where eventtime>"2017-03-03" and eventtime!="undefined" group by author having count(*)>4 UNION SELECT COUNT(*) as rowk,author FROM comment where commenttime>"2017-03-03" group by author UNION SELECT count(*) as rowk, author FROM issue where issuetime>"2017-03-01" and issuetime!="undefined" group by author order by rowk desc ) group by author order by davegrowl desc;');
-	if(!$query->execute()) {
-		$error=$query->errorInfo();
-		$debug="Error reading entries".$error[2];
-	}
-	$rows = $query->fetchAll();
-	foreach($rows as $row){
-		if($row['author']==$gituser){
-			$overallrank=$i;
-			$overallrankno=$row['davegrowl'];
-		}
-
-		if($draught) array_push($alltotalranks, $row);
-
-		$i++;
-	}
-
-
-	SELECT sum(rowk),author FROM (SELECT count(*) as rowk, author FROM event where eventtime>"2017-03-03" group by author UNION SELECT COUNT(*) as rowk,author FROM comment where commenttime>"2017-03-03" group by author UNION SELECT count(*) as rowk,author from issue where issuetime>"2017-03-03" group by author ) group by author order by rowk desc;
-	*/
 
 	do{
 
@@ -648,7 +612,5 @@ if(strcmp($opt,"get")==0) {
 	);
 	echo json_encode($array);
 }
-
-//logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "contributionservice.php",$userid,$info);
 
 ?>
