@@ -11,7 +11,7 @@ var hoverMenuTimer;
 var xelink;
 var momentexists = 0;
 var resave = false;
-var versnme = "UNKz";
+var versnme = "UNK";
 var versnr;
 var motd="UNK";
 var hideItemList = [];
