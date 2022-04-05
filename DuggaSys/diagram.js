@@ -866,6 +866,7 @@ var wasDblClicked = false;
 var targetDelta;
 
 // Zoom variables
+var lastZoomfact = 1.0;
 var zoomfact = 1.0;
 var scrollx = 100;
 var scrolly = 100;
@@ -3447,6 +3448,34 @@ function zoomreset()
 }
 
 /**
+ * 
+ * @description Zooms to lastZoomfactor from center of diagram.
+ */
+function zoomCenter(centerDiagram)
+{
+    zoomOrigo.x = centerDiagram.x;
+    zoomOrigo.y = centerDiagram.y;
+
+    scrollx = scrollx / zoomfact;
+    scrolly = scrolly / zoomfact;
+   
+    zoomfact = lastZoomfact;
+    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
+
+    scrollx = scrollx * zoomfact;
+    scrolly = scrolly * zoomfact;
+   
+    updateGridSize();
+    updateA4Size();
+    
+    // Update scroll position - missing code for determining that center of screen should remain at new zoom factor
+    showdata();
+
+    // Draw new rules to match the new zoomfact
+    drawRulerBars(scrollx,scrolly);
+}
+
+/**
  * @description Event function triggered whenever a property field is pressed in the options panel. This will appropriatly update the current propFieldState variable.
  * @param {Boolean} isSelected Boolean value representing if the selection was ACTIVATED or DEACTIVATED.
  * @see propFieldState For seeing if any fieldset is currently selected.
@@ -5057,6 +5086,7 @@ function showdata()
  function centerCamera()
  {
      // Calculate min and max x and y values for all elements combined, and then find their averages
+     lastZoomfact = zoomfact;
      zoomfact = 1;
      var maxX = undefined;
      var maxY = undefined;
@@ -5100,6 +5130,7 @@ function showdata()
      drawRulerBars(scrollx, scrolly);
      updateA4Pos();
      updateA4Size();
+     zoomCenter(centerDiagram);
  }
 //#endregion =====================================================================================
 //#region ================================   LOAD AND EXPORTS    ==================================
