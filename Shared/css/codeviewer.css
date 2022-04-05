@@ -977,7 +977,7 @@
 }
 .blockBtnSlot {
     min-width: 11px;
-    display: inline-block;
+    display: inline;
     text-align: center;
     line-height: 8px;
     max-height: 11px;
