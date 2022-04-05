@@ -116,17 +116,6 @@ if($gradesys=="UNK") $gradesys=0;
 		        $query = $pdo->prepare("SELECT user.uid,user.username,/*user.firstname,user.lastname,*/user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers");
 		        $query->bindParam(':cid', $courseid);
 		        $query->bindParam(':vers', $coursevers);
-		        /*
-		        $glst=array();
-		        if($showgrp!="UNK"){
-		            foreach($groups as $grptype){
-		                if(in_array($showgrp,$grptype)){
-		                    $glst=$grptype;
-		                    break;
-		                }
-		            }
-		        }
-		        */
 		        if($query->execute()) {
 		            $showgrps=explode(',',$showgrps);
 		            $showgrp=$showgrps[0];
@@ -140,36 +129,10 @@ if($gradesys=="UNK") $gradesys=0;
 		                    if(is_null($email)){
 		                        $email=$row['username']."@student.his.se";
 		                    }
-		                //    array_push($grplst, array($grp,$row['firstname'],$row['lastname'],$email));
 		                    $idx=strpos($grpmembershp,$showgrp,$idx+1);
 		                }
 		            }
 		            sort($grplst);
-		            /*
-		            foreach($query->fetchAll() as $row) {
-		                if(isset($row['groups'])){
-		                    $grpmembershp = explode(" ", $row['groups']);
-
-		                    foreach($grpmembershp as $member){
-		                        if($ha||in_array($member,$glst)){
-		                          foreach($groups as $groupKind=>$group){
-		                            if(in_array($member,$group)){
-		                                if(!isset($grplst[$groupKind])){
-		                                    $grplst[$groupKind]=array();
-		                                }
-		                                if(!isset($grplst[$groupKind][$member])){
-		                                    $grplst[$groupKind][$member]=array();
-		                                }
-		                                array_push($grplst[$groupKind][$member], array($row['firstname'],$row['lastname'],$row['email']));
-		                            }
-		                          }
-
-		                        }
-
-		                    }
-		                }
-		            }
-		            */
 		        }else{
 		            $debug="Failed to get group members!";
 		        }
@@ -376,7 +339,6 @@ if($gradesys=="UNK") $gradesys=0;
 						$query->bindParam(':coursecode', $coursecode);
 						$query->bindParam(':vers', $versid);
 						$query->bindParam(':versname', $versname);
-						//$query->bindParam(':motd', $motd);
 		        // if start and end dates are null, insert mysql null value into database
 
 						if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
@@ -500,9 +462,6 @@ if($gradesys=="UNK") $gradesys=0;
 		    }else{
 		        $grpmembershp=$row['groups'];
 		    }
-
-		    //$grpmembershp=trim($row['groups']);
-		    //$grpmembershp=explode(" ", $grpmembershp);
 		}
 
 		$resulties=array();
@@ -519,25 +478,6 @@ if($gradesys=="UNK") $gradesys=0;
 
 		$today_dt=new DateTime($today);
 		foreach($query->fetchAll() as $row) {
-		    /*
-		    if(isset($releases[$row['quiz']])){
-		        if(is_null($releases[$row['quiz']]['release'])){
-		            $release_dt=new DateTime();
-		            $debug=$release_dt->format('Y-m-d\TH:i:s.u');
-		        }else{
-		            $release_dt=new DateTime($releases[$row['quiz']]['release']);
-		        }
-		        if($release_dt<$today_dt){
-		            $resulty=$row['grade'];
-		            $markedy=$row['marked'];
-		        }else{
-		            $resulty=-1;
-		            $markedy=null;
-		        }
-		    }else{
-		        $resulty=$row['grade'];
-		        $markedy=$row['marked'];
-		    }*/
 
 		    $resulty=$row['grade'];
 		    $markedy=$row['marked'];
