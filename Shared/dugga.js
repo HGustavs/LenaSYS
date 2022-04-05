@@ -984,9 +984,12 @@ function AJAXService(opt,apara,kind)
 					apara[key] = old;
 
 					// Informs the user that his input contained illegal characters that were removed after parsing.
+				
+				/*	Commented out due to statement below will always be false due to used variables being set to the same directly above
 					if(old != apara[key]) {
 						alert("Illegal characters removed in " + key);
 					}
+				*/
 					para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 			}
 		}
