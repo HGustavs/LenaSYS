@@ -3461,6 +3461,9 @@ function propFieldSelected(isSelected)
  */
 function generateContextProperties()
 {
+    // Return if double clicking the same element.
+    if(wasDblClicked)return;
+
     var propSet = document.getElementById("propertyFieldset");
     var str = "<legend>Properties</legend>";
     //a4 propteries
