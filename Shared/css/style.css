@@ -7249,6 +7249,19 @@ textarea#mrkdwntxt {
   filter: invert(100%);
 }
 
+.createAlertToggle{  
+  position: fixed;
+  width: 100%;
+  margin: auto;
+  padding: 20px;
+  background-color: #50a750;
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition: 0.2s;
+}
+
 .selectHeader>span {
   display: block;
   cursor: pointer;
