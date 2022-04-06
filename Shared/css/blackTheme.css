@@ -64,6 +64,10 @@
     height: 99%;
 }
 
+.box h1 {
+    color: white;
+}
+
 .docucontentStyle {
      background-color: #272822;
      color: white;
