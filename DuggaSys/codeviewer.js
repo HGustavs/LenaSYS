@@ -84,10 +84,30 @@ function returned(data)
 {
 	retData = data;
 
+	sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
+
+	//Creates a list of all the code examples sorted after the example ordering in Section.
+	for(i = 1; i < sectionData['entries'].length; i++){
+		if(sectionData['entries'][i]["kind"] == 2){
+			codeExamples.push(sectionData['entries'][i]);
+		}
+	}
+	//Adds examplename from sectionData to codeExamples. -- 
+	for(i = 0; i < codeExamples.length; i++){
+		for(j = 0; j < codeExamples.length; j++)
+			if(codeExamples[i]['link'] == sectionData['codeexamples'][j + 1]['exampleid']){
+				codeExamples[i]['examplename'] = sectionData['codeexamples'][j + 1]['examplename'];
+				break;
+		}
+	}
 	//Checks current example name with all the examples in codeExamples[] to find a match
 	//and determine current position.
+
 	for(i = 0; i < codeExamples.length; i++){
 		if(retData['examplename'] == codeExamples[i]['examplename'] && retData['sectionname'] == codeExamples[i]['entryname']){
+			currentPos = i;
+		}
+		else if(codeExamples[i]['link'] == exampleid){
 			currentPos = i;
 		}
 	}
