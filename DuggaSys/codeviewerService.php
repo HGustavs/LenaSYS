@@ -491,8 +491,7 @@
 						array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
 					}
 				}
-				//if($row['kind']!=1) array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
-				//array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
+				
 		}
 		array_push($directories, $codeDir);
 		array_push($directories, $descDir);

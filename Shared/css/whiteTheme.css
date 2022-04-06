@@ -92,6 +92,10 @@
 	background-color: #614875;
 	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
     line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .codeborder .impono {
