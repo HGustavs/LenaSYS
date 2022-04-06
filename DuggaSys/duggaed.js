@@ -20,7 +20,7 @@ var isClickedElementBox = false;
 var searchterm = "";
 
 function setup() {
-
+	/* Replaced by search bar in navheader.php. Remove this code when the new search bar has been properly tested
 	var filt = "";
 
 	filt += `<td id='testSearchContainer' class='navButt'>`
@@ -35,10 +35,21 @@ function setup() {
     filt += `<script> function duggaSearchMouseOver() {var obj = document.getElementById("duggaSearch"); if(obj != null){obj.removeAttribute('readonly');}}</script>`;
 
 	$("#menuHook").before(filt);
-
+	*/
 	AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
+//displays dropdown when hovering search bar
+function hoverSearch() {
+	$('#dropdownSearch').css({display:'block'});
+	$('#dropdowns').css('display', 'none');
+	$('#dropdownc').css('display', 'none');
+}
+
+//stops displaying the dropdown when removing cursor from search bar
+function leaveSearch() {
+	$('#dropdownSearch').css({display:'none'});
+}
 
 // Detects clicks
 $(document).mousedown(function (e) {
