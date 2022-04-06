@@ -258,6 +258,19 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Canvas Link Dialog -->
+	<div id='canvasLinkBox' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox' style='min-width:250px;'>
+			<div class='loginBoxheader'>
+					<h3 style='text-align: center;'>Link Copied To Clipboard</h3>
+					<div class="cursorPointer" onclick='showCanvasLinkBox("close");' title="Close window">x</div>
+			</div>
+			<div style='text-align: center; padding-top:25px;'>
+					<input type="text" id="canvasLinkText" readonly value="">
+			</div>
+		</div>
+	</div>
 	<!-- Confirm Edit Section Dialog END -->
 
 	<!-- Confirm Section Hide Dialog START -->
