@@ -137,12 +137,13 @@ function returnedResults(data) {
 }
 
 function createSortableTable(data){
-
+	//Added teacher_visited in tblhead object
     var tabledata = {
 		tblhead:{
 			duggaName: "Dugga",
 			hash:"Hash",
 			password:"Password",
+			teacher_visited: "teacher visited",
 			submitted:"Submission Date",
 			timesSubmitted: "Times submitted",
 			timesAccessed: "Times accessed",
@@ -151,7 +152,8 @@ function createSortableTable(data){
 		tblfoot:{}
 	};
 
-	var colOrder = ["duggaName","hash", "password", "submitted", "timesSubmitted", "timesAccessed"];
+	//Added Teacher_visited
+	var colOrder = ["duggaName","hash", "password","teacher_visited", "submitted", "timesSubmitted", "timesAccessed"];
 
 	myTable = new SortableTable({
 		data: tabledata,
