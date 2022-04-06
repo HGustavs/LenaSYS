@@ -872,6 +872,8 @@ var scrollx = 100;
 var scrolly = 100;
 var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
 var camera = new Point(0, 0); // Relative to coordinate system origo
+var lastZoomPos = new Point(0, 0);
+var lastMousePosCoords = new Point(0, 0);
 
 // Constants
 const elementwidth = 200;
@@ -3337,13 +3339,42 @@ function zoomin(scrollEvent = undefined)
         zoomOrigo.x = window.innerWidth / 2;
         zoomOrigo.y = window.innerHeight / 2;
     }else if (zoomfact < 4.0){ // ELSE zoom towards mouseCoordinates
-        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
+       var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
+
+       if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) {
+          
+        var delta = {
+               x: mouseCoordinates.x - zoomOrigo.x,
+               y: mouseCoordinates.y - zoomOrigo.y
+           }
+
+           scrollx = scrollx / zoomfact;
+           scrolly = scrolly / zoomfact;
+           scrollx += delta.x;
+           scrolly += delta.y;
+           scrollx = scrollx * zoomfact;
+           scrolly = scrolly * zoomfact;
+
+           zoomOrigo.x = mouseCoordinates.x;
+           zoomOrigo.y = mouseCoordinates.y;
+           lastMousePosCoords = mouseCoordinates;
+
+           lastZoomPos.x = scrollEvent.clientX;
+           lastZoomPos.y = scrollEvent.clientY;
+       }
+       else if (scrollEvent.clientX == lastZoomPos.x && scrollEvent.clientY == lastZoomPos.y) {
+
+            zoomOrigo.x = lastMousePosCoords.x;
+            zoomOrigo.y = lastMousePosCoords.y;
+       }
+       
+        /* var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
             x: mouseCoordinates.x - zoomOrigo.x,
             y: mouseCoordinates.y - zoomOrigo.y
         };
         zoomOrigo.x += delta.x * settings.zoomPower;
-        zoomOrigo.y += delta.y * settings.zoomPower;
+        zoomOrigo.y += delta.y * settings.zoomPower; */
     }
 
     scrollx = scrollx / zoomfact;
@@ -3361,6 +3392,8 @@ function zoomin(scrollEvent = undefined)
     
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
+
+
 
     camera = {
         x: (window.innerWidth * 0.5 - (scrollx / zoomfact) + 1) / zoomfact,
@@ -3390,12 +3423,41 @@ function zoomout(scrollEvent = undefined)
         zoomOrigo.y = window.innerHeight / 2;
     }else if (zoomfact > 0.25) { // ELSE zoom towards mouseCoordinates
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
+
+        if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) {
+           
+         var delta = {
+                x: mouseCoordinates.x - zoomOrigo.x,
+                y: mouseCoordinates.y - zoomOrigo.y
+            }
+ 
+            scrollx = scrollx / zoomfact;
+            scrolly = scrolly / zoomfact;
+            scrollx += delta.x;
+            scrolly += delta.y;
+            scrollx = scrollx * zoomfact;
+            scrolly = scrolly * zoomfact;
+ 
+            zoomOrigo.x = mouseCoordinates.x;
+            zoomOrigo.y = mouseCoordinates.y;
+            lastMousePosCoords = mouseCoordinates;
+
+            lastZoomPos.x = scrollEvent.clientX;
+            lastZoomPos.y = scrollEvent.clientY;
+        }
+        else if (scrollEvent.clientX == lastZoomPos.x && scrollEvent.clientY == lastZoomPos.y) {
+ 
+             zoomOrigo.x = lastMousePosCoords.x;
+             zoomOrigo.y = lastMousePosCoords.y;
+        }
+        
+        /*var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
             x: mouseCoordinates.x - zoomOrigo.x,
             y: mouseCoordinates.y - zoomOrigo.y
         };
         zoomOrigo.x -= delta.x * settings.zoomPower;
-        zoomOrigo.y -= delta.y * settings.zoomPower;
+        zoomOrigo.y -= delta.y * settings.zoomPower;*/
     }
 
     scrollx = scrollx / zoomfact;
@@ -3412,6 +3474,9 @@ function zoomout(scrollEvent = undefined)
 
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
+
+    //lastZoomPos.x = scrollEvent.clientX;
+    //lastZoomPos.y = scrollEvent.clientY;
 
     updateGridSize();
     updateA4Size();
