@@ -48,7 +48,7 @@ function returnedDugga(data)
 	} else {
 		$(".submit-button").removeClass("btn-disable");
 		duggaParams = jQuery.parseJSON(data['param']);
-		//console.log(duggaParams);
+		console.log(duggaParams); //for git testing person
 
 		if(duggaParams["type"]==="pdf"){
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
@@ -91,7 +91,7 @@ function returnedDugga(data)
 			for (var k=0; k < duggaParams["submissions"].length; k++){
 				findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0);
 	    		if (duggaParams["submissions"][k].instruction && duggaParams["submissions"][k].fieldname){
-						//console.log(duggaParams["submissions"][k].fieldname+"Instruction")
+						console.log(duggaParams["submissions"][k].fieldname+"Instruction")//for git testing person
 						document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
 					}
 
