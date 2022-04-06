@@ -1076,15 +1076,6 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        // Generate Canvas Link Button
-        if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
-          str += `<img alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
-          src='../Shared/icons/link-icon.svg' onclick='showCanvasLinkBox(\"open\");'>`;
-          str += "</td>";
-        }
-
         // Cog Wheel
         if (data['writeaccess'] || data['studentteacher']) {
           str += "<td style='width:32px;' ";
@@ -1232,18 +1223,6 @@ function returnedSection(data) {
     showMOTD();
   }
 }
-
-function showCanvasLinkBox(operation){
-  if(operation == "open"){
-    $("#canvasLinkBox").css("display", "flex");
-    $('#close-item-button').focus();
-
-    document.getElementById("canvasLinkText").value = "www.ThisIsADemoLink.com"; // replace this string with the actuall link.
-  }else if(operation == "close"){
-    $("#canvasLinkBox").css("display", "none");
-  }
-}
-
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
   if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){
