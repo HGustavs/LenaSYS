@@ -112,14 +112,12 @@
     // Check if its an ordered list
 		function isOrderdList($item) {
   			// return 1 if ordered list
-        //return preg_match('/^\s*\d+\.\s(.*)/', $item);
         return preg_match('/^\s*\d\.\s.*$/', $item);
 		}
 
 		// Check if its an unordered list
 		function isUnorderdList($item) {
   			// return 1 if unordered list
-        //return preg_match('/^\s*(\-|\*)\s+[^|]/', $item); // doesn't support dash like markdown!
         return preg_match('/^\s*[\-\*]\s.*$/', $item);
 		}
 
@@ -133,9 +131,7 @@
     function handleLists($currentLine, $prevLine, $nextLine) {
 		    global $openedSublists;
         $markdown = "";
-        $value = "";
-        //$currentLineIndentation = substr_count($currentLine, ' ');
-        //$nextLineIndentation = substr_count($nextLine, ' ');          
+        $value = "";    
         $currentLineIndentation = strlen($currentLine)-strlen(ltrim($currentLine));
         $nextLineIndentation = strlen($nextLine)-strlen(ltrim($nextLine));
         // decide value
@@ -285,10 +281,6 @@
 				//Regular expression for line
 				$instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
 
-				// Hard line break support
-				//$instring= preg_replace ("/(\r\n|\n|\r){3}/","<br><br>",$instring);
-				//$instring= preg_replace ("/(\r\n|\n|\r)/","<br>",$instring);
-
 				// Fix for swedish characters
 				$instring= str_replace ("å","&aring;",$instring);				
 				$instring= str_replace ("Å","&Aring;",$instring);				
@@ -302,8 +294,7 @@
 				$instring = preg_replace("/\!{3}(.*?\S),(.*?\S)\!{3}/","<a href='$1' target='_blank'>$2</a>",$instring);
 
 				// External img src !!!
-				// |||src|||	
-				//$instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);        
+				// |||src|||	      
         $instring = preg_replace("/\|{3}(.+),([0-9]+)?,([0-9]+)?\|{3}/","<img class='imgzoom' src='$1' onmouseover='originalImg(this, $3)' onmouseout='thumbnailImg(this, $2)' width='$2px' style='border: 3px solid #614875;' />",$instring);
         $instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);
 

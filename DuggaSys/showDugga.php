@@ -186,6 +186,10 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	foreach($query->fetchAll() as $row){
 		array_push($versarr,$row['vid']);
 	}
+	
+	if(!empty($versarr)){
+		$rand_idx = array_rand($versarr, 1);
+	}	
 
 	if(sizeof($versarr) > 0){ //fixed error where 'array_rand' would give fatal error due to empty array
 		$variant=$versarr[array_rand($versarr, 1)];

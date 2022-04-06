@@ -104,35 +104,7 @@ if(checklogin()){
 			else $query->bindParam(':startdate', $startdate);
 			if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
 			else $query->bindParam(':enddate', $enddate);
-			
-			/*
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating entries".$error[2];
-			} else {
-				// Add default groups
-				$defaultGroups = array(
-					"I", "II", "III", "IV", "V", "VI", "VII", "VIII",
-					"1", "2", "3", "4", "5", "6", "7", "8",
-					"A", "B", "C", "D", "E", "F", "G", "H",
-				);
-				
 
-				foreach($defaultGroups as $group) {
-					$stmt = $pdo->prepare("INSERT INTO groups(courseID, vers, groupName) VALUES(:courseID, :vers, :groupName)");
-					
-					$stmt->bindParam(':courseID', $courseID);
-					$stmt->bindParam(':vers', $versid);
-					$stmt->bindParam(':groupName', $group);
-
-					if (!$stmt->execute()) {
-						$error = $stmt->errorInfo();
-						$debug = "Error adding group " . $error[2];
-					}
-				}
-			}
-
-			*/
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error inserting entries\n".$error[2];
@@ -444,31 +416,7 @@ if(checklogin()){
               $debug="Error updating entries\n".$error[2];
             }
 		}
-		
-			// Create groups when copying
 
-			// Add default groups
-			/*
-			$defaultGroups = array(
-				"I", "II", "III", "IV", "V", "VI", "VII", "VIII",
-				"1", "2", "3", "4", "5", "6", "7", "8",
-				"A", "B", "C", "D", "E", "F", "G", "H",
-			);
-			
-
-			foreach($defaultGroups as $group) {
-					$stmt = $pdo->prepare("INSERT INTO `groups`(courseID, vers, groupName) VALUES(:courseID, :vers, :groupName)");
-					
-					$stmt->bindParam(':courseID', $cid);
-					$stmt->bindParam(':vers', $versid);
-					$stmt->bindParam(':groupName', $group);
-
-					if (!$stmt->execute()) {
-							$error = $stmt->errorInfo();
-							$debug = "Error adding groups " . $error[2];
-					}
-			}
-			*/
 			if(allOperationsSucceeded){
 				$pdo->commit();
 			}else{
@@ -530,13 +478,6 @@ if(checklogin()){
 //------------------------------------------------------------------------------------------------
 
 $entries=array();
-/*
-if($ha){
-	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility<3 ORDER BY coursename");
-}else{
-	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>0 and visibility<3 ORDER BY coursename");
-}
-*/
 
 $queryreg = $pdo->prepare("SELECT cid FROM user_course WHERE uid=:uid");
 $queryreg->bindParam(':uid', $userid);

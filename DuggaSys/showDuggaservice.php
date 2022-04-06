@@ -151,7 +151,6 @@ function processDuggaFiles()
 			$currcvd=getcwd();
 			
 
-			//$ziptemp = $currcvd."/".$row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
 			$ziptemp = $row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
 
 			if(!file_exists($ziptemp)) {
@@ -165,8 +164,7 @@ function processDuggaFiles()
 					}
 				}
 			}
-			
-			//$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
+						
 			$fedbname=$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
 			if(!file_exists($fedbname)) {
 					$feedback="UNK";
@@ -178,7 +176,6 @@ function processDuggaFiles()
 			
 			if($row['kind']=="3"){
 					// Read file contents
-					//$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
 					$movname=$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
 
 					if(!file_exists($movname)) {
@@ -188,7 +185,6 @@ function processDuggaFiles()
 					}
 			}	else if($row['kind']=="2"){
 					// File content is an URL
-					//$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'];
 					$movname=$row['filepath']."/".$row['filename'].$row['seq'];
 	
 					if(!file_exists($movname)) {
@@ -247,7 +243,6 @@ if(isSuperUser($userid)){
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
             $discription = $courseid." ".$duggaid." ".$moment." ".$answer;
-            //logUserEvent($userid, $username, EventTypes::DuggaFileupload,$discription);
 
 			if(	!isSuperUser($userid) && // Teachers cannot submit
 				isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
@@ -263,8 +258,6 @@ if(isSuperUser($userid)){
 				foreach($query->fetchAll() as $row){
 					$grade = $row['grade'];
 					$dbpwd = $row['password'];
-					// $timesSubmitted = $row['timesSubmitted'];
-					// $timesAccessed = $row['timesAccessed'];
 				}
 
 				if(isset($grade)&&($grade > 1)){
@@ -272,14 +265,10 @@ if(isSuperUser($userid)){
 					$debug="You have already passed this dugga. You are not required/allowed to submit anything new to this dugga.";
 				}else{
 					if(isset($dbpwd) && strcmp($hashpwd,$dbpwd) === 0){
-						//$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score, timesSubmitted=timesSubmitted+1 WHERE hash=:hash;");
 						$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timesSubmitted=timesSubmitted+1 WHERE hash=:hash AND password=:hashpwd;");
 						$query->bindParam(':hash', $hash);
 						$query->bindParam(':hashpwd', $hashpwd);
 						$query->bindParam(':useranswer', $answer);
-//						$query->bindParam(':timeUsed', $timeUsed);
-//						$query->bindParam(':stepsUsed', $stepsUsed);
-//						$query->bindParam(':score', $score);
 						if(!$query->execute()) {
 							$error=$query->errorInfo();
 							$debug="Error updating variant (row ".__LINE__.") Error code: ".$error[2];
@@ -344,9 +333,6 @@ if(isSuperUser($userid)){
 					$answer="UNK";
 					$variantanswer="UNK";
 					$param=html_entity_decode('{}');
-					// unset($_SESSION["submission-$cid-$vers-$duggaid"]);
-					// unset($_SESSION["submission-password-$cid-$vers-$duggaid"]);
-					// unset($_SESSION["submission-variant-$cid-$vers-$duggaid"]);
 				}
 			} else {
 				$debug="[Superuser] Could not load dugga! Incorrect hash/password! $hash";
@@ -356,8 +342,6 @@ if(isSuperUser($userid)){
 				$param=html_entity_decode('{}');
 			}
 		}else{
-			//getOP('hash');
-			//getOP('password');
 			if(getOP('hash')!="UNK" && getOP('password')!="UNK"){
 				$sql="SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=:hash AND password=:hashpwd";
 				$query = $pdo->prepare($sql);
@@ -385,9 +369,6 @@ if(isSuperUser($userid)){
 					$answer="UNK";
 					$variantanswer="UNK";
 					$param=html_entity_decode('{}');
-					// unset($_SESSION["submission-$cid-$vers-$duggaid"]);
-					// unset($_SESSION["submission-password-$cid-$vers-$duggaid"]);
-					// unset($_SESSION["submission-variant-$cid-$vers-$duggaid"]);
 				}
 			}else{
 				if(	isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
@@ -397,9 +378,7 @@ if(isSuperUser($userid)){
 					$tmphash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
 					$tmphashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
 					$tmpvariant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
-				
-					//$sql="SELECT variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param FROM variant LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=:hash AND password=:hashpwd WHERE vid=:variant LIMIT 1;";
-					//$sql="SELECT quiz.*, variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param FROM quiz LEFT JOIN variant ON quiz.id=variant.quizID LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=:hash AND password=:hashpwd WHERE quiz.id=:did AND vid=:variant LIMIT 1;";
+
 					$sql="SELECT quiz.*, variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param,l.entryname AS dugga_title FROM quiz LEFT JOIN variant ON quiz.id=variant.quizID LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=:hash AND password=:hashpwd LEFT JOIN (select cid,link,entryname from listentries) as l ON l.cid=l.cid AND l.link=quiz.id WHERE quiz.id=:did AND vid=:variant AND l.cid=:cid LIMIT 1;";
 					$query = $pdo->prepare($sql);
 					$query->bindParam(':cid', $courseid);
@@ -412,7 +391,6 @@ if(isSuperUser($userid)){
 						$duggatitle=$row['dugga_title'];
 						$variant=$row['vid'];
 						$answer=$row['useranswer'];
-						//$variantanswer=html_entity_decode($row['variantanswer']);
 						$variantanswer="UNK";
 						$param=html_entity_decode($row['param']);
 					}

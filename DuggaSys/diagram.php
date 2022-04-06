@@ -83,14 +83,21 @@
                 <img src="../Shared/icons/diagram_zoomin.svg"/>
                 <span class="toolTipText"><b>Zoom IN</b><br>
                     <p>Increase size of all elements</p><br>
-                    <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
+                    <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div class="diagramIcons" onclick='zoomout();'>
                 <img src="../Shared/icons/diagram_zoomout.svg"/>
                 <span class="toolTipText"><b>Zoom OUT</b><br>
                     <p>Decrease size of all elements</p><br>
-                    <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
+                    <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+            <div class="diagramIcons" onclick="zoomreset()">
+                <img src="../Shared/icons/fullscreen.svg"/>
+                <span class="toolTipText"><b>Zoom RESET</b><br>
+                    <p>Reset size of all elements</p><br>
+                    <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
         </fieldset>
@@ -128,7 +135,7 @@
         </fieldset>   
         <fieldset>
             <legend>Camera</legend>
-            <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera()">
+            <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
                 <img src="../Shared/icons/screenUpdate.svg"/>
                 <span class="toolTipText"><b>Click to redirect camera to center</b><br>
                     <p>Redirect camera to center of all elements</p><br>

@@ -1,6 +1,6 @@
 /************************************************************************
 
-    THIS FILE HANDLES THE SAVE, DOWNLOAD AND EXPORT FUNCTIONALITY
+    THIS FILE HANDLES THE SAVE, DOWNLOAD AND EXPORT FUNCTIONALITY OF THE GRAPH CREATED IN DIAGRAM DUGGA
 
 ************************************************************************/
 
