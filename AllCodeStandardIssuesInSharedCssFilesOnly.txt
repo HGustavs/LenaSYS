@@ -1,0 +1,70 @@
+    css
+        analytics.css
+            *Most files use dubble space rather than tab for layering. Some to it correctly.
+        
+        blackTheme.css
+            *a couple instances of dubbel space instad of tab for layering. It's mostly done correctly.
+
+            *side note this file contains 7 errors and most likely does not work.
+
+        blank.css
+            *This is blank and almost certainly pointless.
+
+        codeviewer.css
+            *a couple instances of dubbel space instad of tab for layering. It's mostly done correctly.
+
+            *one insance on line 974 of one to many tabs.
+
+        colorblind.css
+            *several diffrent problems with layering.
+        
+        dugga.css
+            *mostly perfect but a few layering problems here and there.
+
+        jquery-ui-1.10.4.min.css
+            *Everything is just a unreadable wall of text madness. Everything is wrong.
+
+        jquery.datetimepicker.css
+            *mostly perfect but a few layering problems here and there.
+
+        markdown.css
+            *a few instances of dubbel tab instead of single tab
+
+        style.css
+            *mostly perfect but a few layering problems here and there.
+
+        template1.css
+            *boxwraper1 and boxwraper2 on lines 40 an 54 are not tabed like they should be.
+
+        template2.css
+            *perfect
+        
+        template3.css
+            *perfect
+        
+        template4.css
+            *problem with boxwraper1 boxwraper2 and boxwraper3 everyting under the headers should be indented by one tab.
+        
+        template5.css
+            *problem with boxwraper1 boxwraper2 boxwraper3 and boxwraper4 everyting under the headers should be indented by one tab.
+
+        template6.css
+            *problem with boxwraper1 boxwraper2 boxwraper3 and boxwraper4 everyting under the headers should be indented by one tab.
+
+        template7.css
+            *problem with boxwraper1 boxwraper2 boxwraper3 and boxwraper4 everyting under the headers should be indented by one tab.
+
+        template8.css
+            *problem with boxwraper1 boxwraper2 and boxwraper3 everyting under the headers should be indented by one tab.
+
+        template9.css
+            *problem with boxwraper1 boxwraper2 boxwraper3 boxwraper 4and boxwraper5 everyting under the headers should be indented by one tab.
+
+        template10.css
+            *perfect
+
+        whiteTheme.css
+            *Alot of the code uses two spaces rather than a tab allong with numerus minor spacing issues.
+
+Alot of really minor stuff in what apears to be mostly duplicate pages. With the exeption of jquery-ui-1.10.4.min.css witch would 
+take ages to fix because its garbage.
