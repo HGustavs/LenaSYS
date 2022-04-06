@@ -4838,7 +4838,7 @@ function fillBurger() {
 	var burgerMenu = document.querySelector('#burgerMenu');
 	var str = "";
 	boxes.forEach(box => {
-		str += "<div class='burgerOption' onclick='setShowPane("+box[0]+");'>"+box[4]+"</div>";
+		str += "<div class='burgerOption DarkModeBackgrounds' onclick='setShowPane("+box[0]+");'>"+box[4]+"</div>";
 	});
 	burgerMenu.innerHTML = str;
 }
