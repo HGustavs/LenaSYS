@@ -5,7 +5,7 @@ Test that commit works by simon of grupp 3
 
 University of Skövde Code Viewer and Course Organization System
 
-# Install Instructions  
+# Install Instructions
 
 Make sure you have a working install of apache2 and other needed packages. Look at the wiki page for this at [Configuring web server for LenaSYS installation](https://github.com/HGustavs/LenaSYS/wiki/Configuring-web-server-for-LenaSYS-installation) for further information.
 

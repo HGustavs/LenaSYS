@@ -18,20 +18,6 @@ add a new file to the directory.
 
 iterate the below number by one:
 
-
 	101
-
-	102
     200
     300
-
-    301
-
-    313
-
-
-	777
-
-    778
-    779
-
