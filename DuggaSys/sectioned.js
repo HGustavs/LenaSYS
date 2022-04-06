@@ -1080,8 +1080,8 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
-          str += `<img alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
-          src='../Shared/icons/link-icon.svg' onclick='showCanvasLinkBox(\"open\");'>`;
+          str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
+          src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\");'>`;
           str += "</td>";
         }
 
@@ -1235,10 +1235,14 @@ function returnedSection(data) {
 
 function showCanvasLinkBox(operation){
   if(operation == "open"){
+    var canvasLink = "ERROR: Failed to get canvas link.";//temporary link to be replaced with the actuall link
+
+    //todo somehow get the real link
+
     $("#canvasLinkBox").css("display", "flex");
     $('#close-item-button').focus();
-
-    document.getElementById("canvasLinkText").value = "www.ThisIsADemoLink.com"; // replace this string with the actuall link.
+    navigator.clipboard.writeText(canvasLink);
+    document.getElementById("canvasLinkText").value = canvasLink;
   }else if(operation == "close"){
     $("#canvasLinkBox").css("display", "none");
   }
