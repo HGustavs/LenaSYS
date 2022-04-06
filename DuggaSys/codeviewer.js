@@ -687,6 +687,7 @@ function changeDirectory(kind) {
 		wordlist.disabled = false;
 	} else if ($(kind).val() == "IFRAME") {
 		dir = retData['directory'][2];
+		wordlist.value = '4';
 		wordlist.disabled = 'disabled';
 	} else if ($(kind).val() == "DOCUMENT") {
 		dir = retData['directory'][1];
