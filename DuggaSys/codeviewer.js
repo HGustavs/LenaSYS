@@ -665,6 +665,7 @@ function changeDirectory(kind) {
 		wordlist.disabled = false;
 	} else if ($(kind).val() == "IFRAME") {
 		dir = retData['directory'][2];
+		wordlist.value = '4';
 		wordlist.disabled = 'disabled';
 	} else if ($(kind).val() == "DOCUMENT") {
 		dir = retData['directory'][1];
@@ -882,7 +883,7 @@ function createboxmenu(contentid, boxid, type) {
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Maximize box' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Minimize box' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
 		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
-    str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><p> <img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'> </p></div>";
+    str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
 
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
@@ -2460,10 +2461,10 @@ function hideCopyButtons(templateid, boxid) {
 	}
 }
 
-function showCopyButtons(templateid) {
+function showCopyButtons(templateid) {	
 	var totalBoxes = getTotalBoxes(templateid);
-	
-	for (var i = 1; i <= totalBoxes; i++) {
+
+		for (var i = 1; i <= totalBoxes; i++) {
 		if (document.querySelector('#box' + i).className == 'box codebox') {
 		document.querySelector('#box' + i + 'wrapper #copyClipboard').style.display = 'block'
 		}
@@ -2472,27 +2473,36 @@ function showCopyButtons(templateid) {
 
 function getTotalBoxes(template) {
 	var totalBoxes;
-	switch (template) {
-		case '10': totalBoxes = 1;
-		break;
-		case '1': 
-		//fall through
-		case '2': totalBoxes = 2;
-		break;
-		case '3': 
-		//fall through
-		case '4':
-		//fall through
-		case '8': totalBoxes = 3;
-		break;
-		case '5':
-		//fall through
-		case '6':
-		//fall through
-		case '7': totalBoxes = 4;
-		break;
-		case '9': totalBoxes = 5;
-		break;
+
+	if(template == 1){
+		totalBoxes = 2;
+	}
+	if(template == 2){
+		totalboxes = 2;
+	}
+	if(template == 3){
+		totalboxes = 3;
+	}
+	if(template == 4){
+		totalboxes = 3;
+	}
+	if(template == 5){
+		totalBoxes = 4;
+	}
+	if(template == 6){
+		totalBoxes = 4;
+	}
+	if(template == 7){
+		totalboxes = 4;
+	}
+	if(template == 8){
+		totalboxes = 3;
+	}
+	if(template == 9){
+		totalboxes = 5;
+	}
+	if(template == 10){
+		totalboxes = 1;
 	}
 	return totalBoxes;
 }
@@ -2511,6 +2521,7 @@ function maximizeBoxes(boxid)
 
 	getLocalStorageProperties(boxValArray);
 	hideCopyButtons(templateid, boxid);
+	showCopyButtons(templateid);
 	saveInitialBoxValues();
 
 	//For template 1
@@ -4759,7 +4770,7 @@ function copyCodeToClipboard(boxid) {
 	selection.removeAllRanges();
 
 	// Notification animation
-	$("#notificationbox" + boxid).css("display", "flex").hide().fadeIn("fast", function () {
+	$("#notificationbox" + boxid).css("display", "flex").css("overflow", "hidden").hide().fadeIn("fast", function () {
 		setTimeout(function () {
 			$("#notificationbox" + boxid).fadeOut("fast");
 		}, 500);

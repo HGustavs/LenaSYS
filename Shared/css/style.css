@@ -133,6 +133,10 @@ body {
 table {
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 h1 {
@@ -1521,6 +1525,7 @@ div .navButt:hover {
     }
     .burgerOption {
         padding: 15px 15px 15px 15px;
+        cursor: pointer;
     }
     .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2, .PF2, .UI2{display:none;}
 
@@ -1537,7 +1542,8 @@ div .navButt:hover {
         overflow: hidden;
     }
     .maximizebtn, .minimizebtn, .resetbtn{
-        display: none;
+      
+      vertical-align: middle;
     }
     .buttomenu2{
         height: 35px;
@@ -3121,8 +3127,6 @@ div.submit-button:disabled {
 
 #plorf,
 #dorf {
-  padding: 4px;
-  border-radius: 2px;
   display: block;
   margin: auto;
 }
