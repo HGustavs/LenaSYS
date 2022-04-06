@@ -186,15 +186,17 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	foreach($query->fetchAll() as $row){
 		array_push($versarr,$row['vid']);
 	}
+	
 	if(!empty($versarr)){
 		$rand_idx = array_rand($versarr, 1);
-		}		
+	}	
 
-	if($rand_idx===null){
-		$debug=$variant="This dugga does not have any variants enabled!";
+	if(sizeof($versarr) > 0){ //fixed error where 'array_rand' would give fatal error due to empty array
+		$variant=$versarr[array_rand($versarr, 1)];
 	}else{
-		$variant=$versarr[$rand_idx];
+		$debug=$variant="This dugga does not have any variants enabled!";
 	}
+	
 	$_SESSION["submission-variant-$cid-$vers-$duggaid-$moment"]=$variant;
 	//echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
 	//echo "|$hash|$hashpwd|$variant|$moment|<br>";
@@ -369,7 +371,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 						</label>
 					</div>
 					<div>
-						<label for='contactable'><input type='checkbox' id='contactable' value='true'>Det går bra att kontakta mig	
+						<label for='contactable'><input type='checkbox' id='contactable' value='true'>It is okay to contact me	
 						</label>
 					</div>
 					<div>

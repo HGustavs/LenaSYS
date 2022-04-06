@@ -304,9 +304,13 @@ if(isSuperUser($userid)){
 		unset($param);
 		if (isSuperUser($userid)){
 			if($hash!="UNK"){
-				$sql="SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=:hash";
+				//changed WHERE key to moment instead of hash since hash isn't working correctly. It appears to work so long as their is an entry for that moment in userAnswer
+				$sql="SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz 
+				FROM userAnswer 
+				LEFT JOIN variant ON userAnswer.variant=variant.vid 
+				WHERE moment=:moment";
 				$query = $pdo->prepare($sql);
-				$query->bindParam(':hash', $hash);
+				$query->bindParam(':moment', $moment);
 				$query->execute();
 				foreach($query->fetchAll() as $row){
 					$variant=$row['vid'];
@@ -324,7 +328,7 @@ if(isSuperUser($userid)){
 					$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
 					processDuggaFiles();
 				}else{
-					$debug="[Superuser] Could not load dugga! Incorrect hash/password! $hash/$hashpwd";
+					$debug="[Superuser] Could not load dugga! no userAnswer entries with moment: $moment \nline 338 showDuggaservice.php";
 					$variant="UNK";
 					$answer="UNK";
 					$variantanswer="UNK";
@@ -451,3 +455,4 @@ $array = array(
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 header('Content-Type: application/json');
 echo json_encode($array);
+?>

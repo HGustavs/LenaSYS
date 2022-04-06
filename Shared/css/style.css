@@ -1446,7 +1446,8 @@ div .navButt:hover {
 }
 
 .loggedout {
-  background-color: var(--color-red);
+  /* Original --  background-color: var(--color-red);*/
+  background-color: var(--color-border-primary2);
 }
 
 .loggedout:hover {

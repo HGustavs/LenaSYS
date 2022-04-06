@@ -984,9 +984,12 @@ function AJAXService(opt,apara,kind)
 					apara[key] = old;
 
 					// Informs the user that his input contained illegal characters that were removed after parsing.
+				
+				/*	Commented out due to statement below will always be false due to used variables being set to the same directly above
 					if(old != apara[key]) {
 						alert("Illegal characters removed in " + key);
 					}
+				*/
 					para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 			}
 		}
@@ -1085,11 +1088,12 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
-		
+		//for testing
+		console.log("dugga.js (kind=='PDUGGA')\n"+"courseid="+querystring['courseid']+"\ndid="+querystring['did']+"\ncoursevers="+querystring['coursevers']+"\nmoment="+querystring['moment']+"\nsegment="+querystring['segment']);
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
-			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para+"&variant="+variantValue,
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+"&variant="+querystring['variantValue']+opt+para,
 			datatype: "json",
 			success: returnedDugga
 			// success: function(data){
@@ -1104,7 +1108,7 @@ function AJAXService(opt,apara,kind)
 			// 	enableTeacherVariantChange(phpData);
 			// 	handleHash();	//Makes sure hash is unique.
 			// }
-		})
+		});
 	}else if(kind=="RESULT"){
 			$.ajax({
 				url: "resultedservice.php",
