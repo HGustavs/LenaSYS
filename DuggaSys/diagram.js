@@ -3482,6 +3482,7 @@ function zoomreset()
     scrolly = scrolly / zoomfact;
    
     zoomfact = 1.0;
+    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
 
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
