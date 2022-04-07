@@ -54,7 +54,7 @@ $js = array(
 
 		$filemtime = filemtime('../Shared/dugga.js');
 		echo "<script type='text/javascript' src='../Shared/dugga.js?$filemtime'></script>";
-				
+	
 		$filemtime = filemtime('../Shared/markdown.js');
 		echo "<script type='text/javascript' src='../Shared/markdown.js?$filemtime'></script>";
     
@@ -63,9 +63,10 @@ $js = array(
     
         $filemtime = filemtime('fileed.js');
 		echo "<script type='text/javascript' src='fileed.js?$filemtime'></script>";
-    
-        //$filemtime = filemtime('ace.js');
-		//echo "<script type='text/javascript' src='ace.js?$filemtime'></script>";
+        
+        //unsure what ace.js actually does
+        $filemtime = filemtime('ace.js');
+		echo "<script type='text/javascript' src='ace.js?$filemtime'></script>";
 	?>
     
 </head>
