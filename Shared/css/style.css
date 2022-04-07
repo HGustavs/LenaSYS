@@ -3446,7 +3446,7 @@ span.arrow {
   position: relative;
 }
 
-.show-dugga-filter-popup {
+.show-dugga-filter-popup, .show-column-filter-popup {
   position: absolute;
   left: 15%;
   min-width: 250px;
@@ -3474,7 +3474,7 @@ span.arrow {
   background-color: #fff;
 }
 
-.show-dugga-filter-popup.hidden {
+.show-dugga-filter-popup.hidden, .show-column-filter-popup.hidden {
   display: none;
 }
 

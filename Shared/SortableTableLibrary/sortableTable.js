@@ -526,6 +526,10 @@ function SortableTable(param)
         return sortkind;
     }
 
+    this.getColumnNames = function() {
+        return tbl.tblhead;
+    }
+    
     this.magicHeader = function() {
     	// Assign table and magic headings table(s)
     	if (this.hasMagicHeadings) {
