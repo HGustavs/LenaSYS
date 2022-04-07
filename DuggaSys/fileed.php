@@ -64,7 +64,6 @@ $js = array(
         $filemtime = filemtime('fileed.js');
 		echo "<script type='text/javascript' src='fileed.js?$filemtime'></script>";
         
-        //unsure what ace.js actually does
         //$filemtime = filemtime('ace.js');
 		//echo "<script type='text/javascript' src='ace.js?$filemtime'></script>";
 	?>
