@@ -144,17 +144,8 @@
 				<img src="../Shared/icons/desc_complement.svg" id="sectionList_arrowStatisticsClosed">
 			</div>
 			<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
-				<input id='addElement'  type='button' value='+' style="top:-493px" class='submit-button-newitem' title='New Item' >
-				<ol class='fab-btn-list2' style='display: none;'  reversed id='fabBtnList2'>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img alt='moment format icon' class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Test' onclick='createFABItem("3","New Test","TOP");'><img alt='test document icon' class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img alt='code tag icon' class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img alt='multiple users icon' class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i alt='quotation mark icon' class='material-icons'>format_quote</i></a></li>
-					</ol>
+				<input id='addElement' style="display:none" class='submit-button-newitem'>
+				
 			</div>
 				<div style='flex-grow:1'>
 						<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
@@ -228,7 +219,7 @@
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput'' id='fdbckque' value='How would you grade the dugga?'></input></div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput'' id='fdbckque' value='Hur skulle du betygsätta duggan?'></input></div>
 				</div>
 
 				<!-- Error message, no duggas present-->
@@ -386,9 +377,9 @@
         </div>
 		<h2 id="duggaFeedbackQuestion"></h2>
 		<div id="statscontainer">
-			<div class="statsdiv"><p id="avg-feedback"></p>Average value</div>
-			<div class="statsdiv"><p id="median-feedback"></p>Highest/lowest</div>
-			<div class="statsdiv"><p id="total-feedback"></p>Amount of feedbacks</div>
+			<div class="statsdiv"><p id="avg-feedback"></p>Medelvärde</div>
+			<div class="statsdiv"><p id="median-feedback"></p>Högsta/Lägsta</div>
+			<div class="statsdiv"><p id="total-feedback"></p>Antal feedback</div>
 		</div>
 		<div id="feedbacktablecontainer">
 		</div>

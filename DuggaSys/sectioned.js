@@ -732,8 +732,8 @@ function returnedSection(data) {
       document.getElementById("addElement").style.display = "Block";
     } else {
       // Hide FAB / Menu
-      document.getElementById("FABStatic").style.display = "None";
-      document.getElementById("FABStatic2").style.display = "None";
+      //document.getElementById("FABStatic").style.display = "None";
+      //document.getElementById("FABStatic2").style.display = "None";
     }
 
     // hide som elements if to narrow
@@ -1406,7 +1406,7 @@ function drawSwimlanes() {
     }
   }
 
-  console.log(deadlineEntries,momentEntries);
+  //console.log(deadlineEntries,momentEntries);
   deadlineEntries.sort(function(a,b){
     return a.pos-b.pos;
   });
