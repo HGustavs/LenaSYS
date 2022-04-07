@@ -570,7 +570,7 @@ function rowFilter(row) {
             tempSearchTerm = splitSearch[i].trim();
             for (var key in row) {
                 //it is possible that (row[key].typeOfItem == String) is pointless if key is always string
-                if ((row[key] != null) && (row[key].typeOfItem == String)) {
+                if ((row[key] != null)) {
                     // Special search criteria for Size column
                     if (key == "filesize") {
                         if (fileSizeSearch(row, key, tempSearchTerm) &&
