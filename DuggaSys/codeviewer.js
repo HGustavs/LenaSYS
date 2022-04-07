@@ -84,7 +84,6 @@ function returned(data)
 {
 	retData = data;
 	sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
-	console.log(sectionData['entries']);
 
 	// User can choose template if no template has been chosen and the user has write access.
 	if ((retData['templateid'] == 0)) {
@@ -97,7 +96,8 @@ function returned(data)
 			return;
 		}
 	}
-		changeCSS("../Shared/css/" + retData['stylesheet']);
+	changeCSS("../Shared/css/" + retData['stylesheet']);
+
 	//Checks current example name with all the examples in codeExamples[] to find a match
 	//and determine current position.
 	for(i = 0; i < sectionData['entries'].length; i++){
@@ -111,23 +111,32 @@ function returned(data)
 
 	//Fixes the five next code examples in retData to match the order that was assigned in Section.
 	var j = 0;
-	for(i = currentPos + 1; i < sectionData['entries'].length; i++){
+	var posAfter = currentPos+1;
+	for(i = currentPos; i <= sectionData['entries'].length-1; i++){
 		if(j < 5){
-			if(sectionData['entries'][currentPos + 1 +j]['kind'] == 1){
+			if(currentPos == sectionData['entries'].length-1 && posAfter + j == sectionData['entries'].length){
+				retData['after'] = [];
 				break;
 			}
-				retData['after'][j][1] = sectionData['entries'][currentPos + 1 + j]['entryname'];
-				retData['after'][j][0] = (String)(sectionData['entries'][currentPos + 1 + j]['link']);
-
+			if(posAfter + j == sectionData['entries'].length){
+				//Not ideal to have this here but this is needed to not get an arrayOutOfBounds Error.
+				break;
+			}
+			if(sectionData['entries'][posAfter + j]['kind'] == 1){
+				posAfter++;
+				continue;
+			}
+			retData['after'][j][1] = sectionData['entries'][posAfter + j]['entryname'];
+			retData['after'][j][0] = (String)(sectionData['entries'][posAfter + j]['link']);
 			for(k = 1; k < sectionData['codeexamples'].length; k++){
 				if(retData['after'][j][0] == sectionData['codeexamples'][k]['exampleid']){
 					retData['after'][j][2] = sectionData['codeexamples'][k]['examplename'];
-					break;
+					continue;
 				}
 			}
 			
-			retData['exampleno'] = currentPos
-			j++
+			retData['exampleno'] = posAfter;
+			j++;
 		}else{
 			break
 		}
@@ -135,29 +144,31 @@ function returned(data)
 
 	//Fixes the five code examples before the current one in retData to match the order that was assigned in Section.
 	j = 0;
-	for(i = currentPos - 1; i >= 0; i--){
+	var posBefore = currentPos-1;
+	for(i = currentPos; i > 0; i--){
 		if(j < 5){
-			if(currentPos - 1 - j == 0 && currentPos == 1){
+			if(currentPos==1 && posBefore - j == 0){
 				retData['before'] = [];
-			}
-			if(sectionData['entries'][currentPos - 1 - j]['kind'] == 1){
 				break;
 			}
-			retData['before'][j][1] = sectionData['entries'][currentPos - 1 - j]['entryname'];
-			retData['before'][j][0] = (String)(sectionData['entries'][currentPos - 1 - j]['link']);
+			if(sectionData['entries'][posBefore - j]['kind']== 1){
+				posBefore--;
+				continue;
+			}
+			retData['before'][j][1] = sectionData['entries'][posBefore - j]['entryname'];
+			retData['before'][j][0] = (String)(sectionData['entries'][posBefore - j]['link']);
 			for(k = 0; k < sectionData['entries'].length; k++){
 				if(retData['before'][j][0] == sectionData['entries'][k]['link']){
 					retData['before'][j][2] = sectionData['entries']['examplename'];
-					break
+					continue;
 				}
 			}
-			retData['exampleno'] = currentPos
-			j++
+			retData['exampleno'] = posBefore;
+			j++;
 		}else{
 			break
 		}
 	}
-	
 	if (retData['deleted']) {
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
 	}
@@ -173,12 +184,12 @@ function returned(data)
 	// Works by checking if the current example is last or first in the order of examples.
 	//If there are no examples this disables being able to jump through (the non-existsing) examples
 
-	if (retData['before'].length != 0 && retData['after'].length != 0 || retData['before'].length == 0) {
+	if (retData['before'].length != 0 && retData['after'].length != 0 || retData['before'].length == 0 || retData['after'].length == 0) {
 		if (retData['exampleno'] == 0 || retData['before'].length == 0) {
 			document.querySelector("#beforebutton").style.opacity = "0.4";
 			document.querySelector("#beforebutton").style.pointerEvents = "none";
 		}
-		if (retData['exampleno'] == sectionData['entries'].length - 1 || retData['after'].length == 0) {
+		if (retData['exampleno'] == sectionData['entries'].length || retData['after'].length == 0) {
 			document.querySelector("#afterbutton").style.opacity = "0.4";
 			document.querySelector("#afterbutton").style.pointerEvents = "none";
 		}
