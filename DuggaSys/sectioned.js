@@ -518,13 +518,13 @@ function newItem(itemtitle) {
 
   AJAXService("NEW", prepareItem(), "SECTION");
   $("#editSection").css("display", "none");
-  
+
   //Toggle for alert when create a New Item
   var element = document.getElementById("createAlert");
   element.classList.toggle("createAlertToggle");
   //Set text for the alert when create a New Item
   document.getElementById("createAlert").innerHTML = itemtitle + " has been created!";
-
+  console.log("test");
   //Duration time for the alert before remove
   setTimeout(function(){
     $("#createAlert").removeClass("createAlertToggle");
