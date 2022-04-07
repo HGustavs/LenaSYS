@@ -3496,7 +3496,7 @@ function resizeBoxes(parent, templateId)
 
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
-			handles: "e,s",
+			handles: "e",
 			start: function (event, ui) {
 				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
@@ -3519,7 +3519,6 @@ function resizeBoxes(parent, templateId)
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
-				alignBoxesWidth(boxValArray, 2, 1);
 				document.getElementById("box2wrapper").style.left = " ";
 			},
 			stop: function (e, ui) {
