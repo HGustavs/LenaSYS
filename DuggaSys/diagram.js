@@ -872,8 +872,8 @@ var scrollx = 100;
 var scrolly = 100;
 var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
 var camera = new Point(0, 0); // Relative to coordinate system origo
-var lastZoomPos = new Point(0, 0);
-var lastMousePosCoords = new Point(0, 0);
+var lastZoomPos = new Point(0, 0); //placeholder for the previous zoom position relative to the screen (Screen position for previous zoom)
+var lastMousePosCoords = new Point(0, 0); //placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom) 
 
 // Constants
 const elementwidth = 200;
@@ -3341,13 +3341,14 @@ function zoomin(scrollEvent = undefined)
     }else if (zoomfact < 4.0){ // ELSE zoom towards mouseCoordinates
        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
-       if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) {
+       if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) { //IF mouse has moved since last zoom, then zoom towards new position
           
-        var delta = {
+        var delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
                x: mouseCoordinates.x - zoomOrigo.x,
                y: mouseCoordinates.y - zoomOrigo.y
            }
 
+           //Update scroll variables with delta in order to move the screen to the new zoom position
            scrollx = scrollx / zoomfact;
            scrolly = scrolly / zoomfact;
            scrollx += delta.x;
@@ -3355,28 +3356,24 @@ function zoomin(scrollEvent = undefined)
            scrollx = scrollx * zoomfact;
            scrolly = scrolly * zoomfact;
 
+           //Set new zoomOrigo to the current mouse coordinates
            zoomOrigo.x = mouseCoordinates.x;
            zoomOrigo.y = mouseCoordinates.y;
            lastMousePosCoords = mouseCoordinates;
 
+           //Save current mouse position (Position on the SCREEN, not coordinates in the diagram)
            lastZoomPos.x = scrollEvent.clientX;
            lastZoomPos.y = scrollEvent.clientY;
        }
-       else if (scrollEvent.clientX == lastZoomPos.x && scrollEvent.clientY == lastZoomPos.y) {
+       else if (scrollEvent.clientX == lastZoomPos.x && scrollEvent.clientY == lastZoomPos.y) { //ELSE IF mouse has not moved, zoom towards same position as before.
 
             zoomOrigo.x = lastMousePosCoords.x;
             zoomOrigo.y = lastMousePosCoords.y;
        }
-       
-        /* var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
-        var delta = {
-            x: mouseCoordinates.x - zoomOrigo.x,
-            y: mouseCoordinates.y - zoomOrigo.y
-        };
-        zoomOrigo.x += delta.x * settings.zoomPower;
-        zoomOrigo.y += delta.y * settings.zoomPower; */
     }
 
+
+    //Update scroll variables to match the new zoomfact
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
@@ -3393,17 +3390,10 @@ function zoomin(scrollEvent = undefined)
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
 
-
-
-    camera = {
-        x: (window.innerWidth * 0.5 - (scrollx / zoomfact) + 1) / zoomfact,
-        y: (window.innerHeight * 0.5 - (scrolly / zoomfact) + 1) / zoomfact
-    };
+    //Note: scroll variables (scrollx, scrolly) does not scale properly sometimes, not sure what causes it. zoomout() has the same problem.
 
     updateGridSize();
     updateA4Size();
-
-    // Update scroll position - missing code for determining that center of screen should remain at nevw zoom factor
     showdata();
 
     // Draw new rules to match the new zoomfact
@@ -3424,42 +3414,38 @@ function zoomout(scrollEvent = undefined)
     }else if (zoomfact > 0.25) { // ELSE zoom towards mouseCoordinates
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
-        if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) {
+        if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) { //IF mouse has moved since last zoom, then zoom towards new position
            
-         var delta = {
+         var delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
                 x: mouseCoordinates.x - zoomOrigo.x,
                 y: mouseCoordinates.y - zoomOrigo.y
             }
  
+            //Update scroll variables with delta in order to move the screen to the new zoom position
             scrollx = scrollx / zoomfact;
             scrolly = scrolly / zoomfact;
             scrollx += delta.x;
             scrolly += delta.y;
             scrollx = scrollx * zoomfact;
             scrolly = scrolly * zoomfact;
- 
+            
+            //Set new zoomOrigo to the current mouse coordinates
             zoomOrigo.x = mouseCoordinates.x;
             zoomOrigo.y = mouseCoordinates.y;
             lastMousePosCoords = mouseCoordinates;
 
+            //Save current mouse position (Position on the SCREEN, not coordinates in the diagram)
             lastZoomPos.x = scrollEvent.clientX;
             lastZoomPos.y = scrollEvent.clientY;
         }
-        else if (scrollEvent.clientX == lastZoomPos.x && scrollEvent.clientY == lastZoomPos.y) {
+        else if (scrollEvent.clientX == lastZoomPos.x && scrollEvent.clientY == lastZoomPos.y) { //ELSE IF mouse has not moved, zoom towards same position as before.
  
              zoomOrigo.x = lastMousePosCoords.x;
              zoomOrigo.y = lastMousePosCoords.y;
         }
-        
-        /*var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
-        var delta = {
-            x: mouseCoordinates.x - zoomOrigo.x,
-            y: mouseCoordinates.y - zoomOrigo.y
-        };
-        zoomOrigo.x -= delta.x * settings.zoomPower;
-        zoomOrigo.y -= delta.y * settings.zoomPower;*/
     }
 
+    //Update scroll variables to match the new zoomfact
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
@@ -3475,13 +3461,10 @@ function zoomout(scrollEvent = undefined)
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
 
-    //lastZoomPos.x = scrollEvent.clientX;
-    //lastZoomPos.y = scrollEvent.clientY;
+    //Note: scroll variables (scrollx, scrolly) does not scale properly sometimes, not sure what causes it. zoomin() has the same problem.
 
     updateGridSize();
     updateA4Size();
-    
-    // Update scroll position - missing code for determining that center of screen should remain at new zoom factor
     showdata();
 
     // Draw new rules to match the new zoomfact
