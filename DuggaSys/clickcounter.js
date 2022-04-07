@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------
 // Click counter - Used by highscore system implementations in dugga's to count the number of button clicks
 //---------------------------------------------------------------------------------------------------------------
+/*
 var ClickCounter = {
 	// Used to count clicks
 	score: 0,
@@ -40,3 +41,4 @@ var ClickCounter = {
 		}
 	}
 }
+*/
