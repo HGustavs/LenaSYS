@@ -694,7 +694,8 @@ function renderActivityPoints(activities) {
   const BASELINE = 75;
   const MIDDLE = 243;
   activities.forEach(entry => {
-    var hourString = (entry.time).toString();
+    //Cast integer to string
+    var hourString = entry.time.toString();
     var hour = hourString.substr(0, 2);
     var houroffset = parseInt(hour) + 6;
     var type = entry.type;
