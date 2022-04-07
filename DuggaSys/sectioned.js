@@ -728,12 +728,12 @@ function returnedSection(data) {
       document.getElementById("FABStatic").style.display = "Block";
       document.getElementById("FABStatic2").style.display = "Block";
       document.getElementById("HIDEStatic").style.display = "Block";
-      // Show addElement Button
-      document.getElementById("addElement").style.display = "Block";
+      
+     
     } else {
       // Hide FAB / Menu
-      //document.getElementById("FABStatic").style.display = "None";
-      //document.getElementById("FABStatic2").style.display = "None";
+      document.getElementById("FABStatic").style.display = "None";
+      document.getElementById("FABStatic2").style.display = "None";
     }
 
     // hide som elements if to narrow

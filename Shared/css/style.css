@@ -5063,9 +5063,7 @@ only screen and (max-device-width: 1085px) {
 
 @media only screen and (max-width: 800px),
 only screen and (max-device-width: 800px) {
-  #addElement {
-    display: none;
-  }
+  
   #hideElement{
     display: block;
   }

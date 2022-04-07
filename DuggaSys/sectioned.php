@@ -143,8 +143,9 @@
 				<img src="../Shared/icons/right_complement.svg" id="sectionList_arrowStatisticsOpen">
 				<img src="../Shared/icons/desc_complement.svg" id="sectionList_arrowStatisticsClosed">
 			</div>
+			
 			<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
-				<input id='addElement' style="display:none" class='submit-button-newitem'>
+			
 				
 			</div>
 				<div style='flex-grow:1'>
