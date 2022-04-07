@@ -81,6 +81,7 @@
     margin: 0;
     overflow: hidden;
     z-index: 2;
+    height: 40px;
 }
 
 .buttomenu2 table td img {
