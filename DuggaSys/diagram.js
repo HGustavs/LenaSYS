@@ -787,6 +787,7 @@ const pointerStates = {
     CLICKED_ELEMENT: 2,
     CLICKED_NODE: 3,
     CLICKED_LINE: 4,
+    CLICKED_LABEL: 5,
 };
 
 /**
@@ -893,9 +894,10 @@ const zoom0_75 = -0.775;
 const zoom0_5 = -3;
 const zoom0_25 = -15.01;
 
-// Arrow drawing stuff - diagram elements and diagram lines
+// Arrow drawing stuff - diagram elements, diagram lines and labels 
 var lines = [];
 var elements = [];
+var lineLabelList = [];
 
 // Currently clicked object list
 var context = [];
@@ -1430,13 +1432,17 @@ function mdown(event)
     if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT && !settings.replay.active){
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
-      
-        if (determinedLines) {
-           pointerState=pointerStates.CLICKED_LINE;
-
-            if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
-                wasDblClicked = true;
-                document.getElementById("options-pane").className = "show-options-pane";
+        if(determinedLines){
+            if (determinedLines.id.length == 6) {
+               pointerState=pointerStates.CLICKED_LINE;
+    
+                if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                    wasDblClicked = true;
+                    document.getElementById("options-pane").className = "show-options-pane";
+                }
+            }
+            else if(determinedLines.id.length > 6){
+                console.log("pointerState=pointerStates.CLICKED_LABEL");
             }
         }
     }
@@ -1648,7 +1654,7 @@ function mup(event)
 }
 
 /**
- * @description Calculates if any line is present on x/y position in pixels.
+ * @description Calculates if any line or label is present on x/y position in pixels.
  * @param {Number} mouseX
  * @param {Number} mouseY
  */
@@ -1669,7 +1675,8 @@ function determineLineSelect(mouseX, mouseY)
     var lineData = {};
     var lineCoeffs = {};
     var highestX, lowestX, highestY , lowestY;
-    var lineWasHit = false; 
+    var lineWasHit = false;
+    var labelWasHit = false;
 
     // Position and radius of the circle hitbox that is used when 
     var circleHitBox = {
@@ -1713,19 +1720,37 @@ function determineLineSelect(mouseX, mouseY)
             b: (currentline.x2 - currentline.x1),
             c: ((currentline.x1 - currentline.x2)*currentline.y1 + (currentline.y2-currentline.y1)*currentline.x1)
         }
+        if (document.getElementById(bLayerLineIDs[i]+"Label")) {
+            var centerPoint = {
+                x: (highestX+lowestX)/2,
+                y: (highestY+lowestY)/2
+            }
+            var labelWidth = lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].width;
+            var labelHeight = lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].height;
+            centerPoint.x += lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].labelMovedX;
+            centerPoint.y += lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].labelMovedY;
+            labelWasHit = didClickLabel(centerPoint, labelWidth, labelHeight, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius);
+        }
         
+
         // Determines if a line was clicked
         lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
-        
         // --- Used when debugging ---
         // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
         //document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke="black" stroke-width="3" fill="red" /> '
         // ---------------------------
 
-        if(lineWasHit == true) {
+        if(lineWasHit == true && labelWasHit == false) {
             // Return the current line that registered as a "hit".
             return lines.filter(function(line) {
                 return line.id == bLayerLineIDs[i];
+            })[0];
+        }
+        else if(labelWasHit == true)
+        {
+
+            return lineLabelList.filter(function(label) {
+                return label.id == bLayerLineIDs[i]+"Label";
             })[0];
         }
     }
@@ -1755,6 +1780,25 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
         return false;
     }
 }
+
+/**
+ * @description Performs a circle detection algorithm on a certain point in pixels to decide if a label was clicked.
+ */
+ function didClickLabel(c, lw, lh, circle_x, circle_y, circle_radius)
+ {
+     // Adding and subtracting with the circle radius to allow for bigger margin of error when clicking.
+     // Check if we are clicking withing the span.
+     if( (circle_x < (c.x + lw / 2 + circle_radius)) &&
+      (circle_x > (c.x - lw / 2 - circle_radius)) && 
+      (circle_y < (c.y + lh / 2 + circle_radius)) && 
+      (circle_y > (c.y - lh / 2 - circle_radius))
+     ) {
+        return true;
+     }
+     else{
+         return false
+     }
+ }
 
 /**
  * @description Called on mouse moving if no pointer state has blocked the event in mmoving()-function.
@@ -1826,6 +1870,15 @@ function mmoving(event)
                 calculateDeltaExceeded();
                 mouseMode_onMouseMove(mouseMode);
             }
+            break;
+
+        case pointerState.CLICKED_LABEL:     
+
+            deltaX = startX - event.clientX;
+            deltaY = startY - event.clientY;
+
+            updateLabelPos(deltaX, deltaY);
+
             break;
 
         case pointerStates.CLICKED_ELEMENT:
@@ -4503,8 +4556,20 @@ function drawLine(line, targetGhost = false)
         
         var centerX = (tx + fx) / 2;
         var centerY = (ty + fy) / 2;
+        
+        var labelPosX = (tx+fx)/2 - ((12 * line.label.length) * zoomfact)/2;
+        var labelPosY = (ty+fy)/2 - ((textheight / 2) * zoomfact + 4 * zoomfact);    
+        lineLabel={id: line.id+"Label",labelLineID: line.id, centerX: centerX, x: labelPosX, centerY: centerY, y: labelPosY, width: textWidth + zoomfact * 4, height: textheight * zoomfact + zoomfact * 3, labelMovedX: 0, labelMovedY: 0};
+        for(var i=0;i<lineLabelList.length;i++){
+            if(lineLabelList[i].labelLineID==line.id){
+                lineLabel.labelMovedX = lineLabelList[i].labelMovedX;
+                lineLabel.labelMovedY = lineLabelList[i].labelMovedY;
+                lineLabelList.splice(i,1);
+            }
+        }
+        lineLabelList.push(lineLabel);
         //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-        str += `<rect x="${centerX - ((textWidth) + zoomfact * 8)/2}" y="${centerY - ((textheight / 2) * zoomfact + zoomfact * 4)}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`
+        str += `<rect id=${line.id + "Label"} x="${labelPosX}" y="${labelPosY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`
         //Add label
         str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)}" y="${centerY-(2 * zoomfact)}">${line.label}</text>`;
     }
