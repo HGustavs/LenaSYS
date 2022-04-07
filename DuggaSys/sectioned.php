@@ -41,7 +41,7 @@
 
 	<!-- content START -->
 	<!-- Div that apper as an alert when a New Item has been created -->
-	<div style="z-index: 1;" id="createAlert"></div>
+	<div style="z-index: 1500;" id="createAlert"></div>
 	<div id="content">
 
 		<!-- FAB Start -->
