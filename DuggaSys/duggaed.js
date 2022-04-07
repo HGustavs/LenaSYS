@@ -18,6 +18,7 @@ var typeOfItem;
 var duggaPages;
 var isClickedElementBox = false;
 var searchterm = "";
+var dropArea;
 
 function setup() {
 
@@ -37,6 +38,7 @@ function setup() {
 	$("#menuHook").before(filt);
 
 	AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "DUGGA");
+	initFileDropZone();
 }
 
 
@@ -218,7 +220,6 @@ function newVariant() {
 		document.querySelector('#instruction0').value = '';
 		document.querySelector('#instruction0').placeholder = 'Upload instruction';
 	}
-
 }
 
 function createVariant() {
@@ -1004,4 +1005,46 @@ function compare(a, b) {
 	} else {
 		return 0;
 	}	
+}
+
+
+/*	----------------------------------------------- WORK IN PROGRESS: Functionality -> teachers should be able to add diagram to dugga in form of JSON file ----------------------------------*/
+//init magic that needs to happen
+function initFileDropZone()
+{
+	let dropArea = document.getElementById('drop-area');
+
+	['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => 
+		{
+		  dropArea.addEventListener(eventName, preventDefaults, false);
+		})
+	
+		;['dragenter', 'dragover'].forEach(eventName => 
+		{
+		  dropArea.addEventListener(eventName, highlight, false)
+		})
+	
+		;['dragleave', 'drop'].forEach(eventName => 
+		{
+		  dropArea.addEventListener(eventName, unhighlight, false)
+		})
+}
+
+//prevent bad magic
+function preventDefaults (e)
+{
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+//light magic
+function highlight(e) 
+{
+  dropArea.classList.add('highlight');
+}
+
+//dark magic
+function unhighlight(e) 
+{
+  dropArea.classList.remove('highlight');
 }

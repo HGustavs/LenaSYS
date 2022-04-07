@@ -8123,3 +8123,24 @@ textarea#filecont {
   width: 80%;
   margin: 15px 0px 8px 0px
 }
+
+#drop-area {
+  margin-top: 5px;
+  border-radius: 1000px;
+}
+
+#uploadDiagramBtn {
+  color: white;
+  display: inline-block; 
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px; 
+  background: #614875; 
+  cursor: pointer; 
+  border-radius: 10px; 
+  border: 3px solid #ccc;
+}
+
+#uploadDiagramBtn:hover {
+  background: #7b5a96;
+}

@@ -174,6 +174,17 @@ session_start();
                       </fieldset>
                     </div>
                   </div>
+                      <!-- Teacher Submission for Dugga Diagram -->
+                  <div id="drop-area">
+                    <fieldset style="width:90%">
+                      <legends style="float: left;"> Add diagram to dugga</legend>
+                      <form id="my-form">
+                        <p style=>Select Json diagram to upload</p>
+                        <input type="file" id="fileElem" multiple access="image/*" style="display: none" onchange="handleFiles(this.files)">
+                        <label id="uploadDiagramBtn" class="button" for="fileElem">Select JSON diagram file</label>
+                      </form>
+                    </fieldset>
+                  </div>
                       <!-- Submissions for dugga -->
                   <div>
                     <div id="duggaSubmissionForm">
@@ -184,7 +195,6 @@ session_start();
                       <input type="button" class="submit-button" name="addfieldname" id="addfieldname" value="+" style="width:32px;" onclick="addVariantSubmissionRow();" />
                     </div>
                   </div>
-                    <!-- Submissions for dugga -->
                   <!-- End of leftDivDialog -->
                 </form>
               </div>
@@ -232,6 +242,5 @@ session_start();
         <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
         </ol>
 	</div>
-
 </body>
 </html>
