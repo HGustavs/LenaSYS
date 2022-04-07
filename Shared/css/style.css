@@ -4367,10 +4367,13 @@ div.reset-pw:hover{
  -ms-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
  -o-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
  transition: height 0.2s cubic-bezier(0,1.4, 0.8, 1);
- height:0px;
- overflow:hidden;
  display: flex;
  flex-direction: column;
+
+ height: auto;
+ font-size: 0;
+ transition: font-size 0.15s ease-out;
+ overflow:hidden;
 }
 
 .contribcontent span {
@@ -4380,7 +4383,8 @@ div.reset-pw:hover{
 }
 
 .contribcontentToggle {
-  height: auto;
+  font-size: 1em;
+  transition: font-size 0.25s ease-in;
 }
 
 .contrib {
