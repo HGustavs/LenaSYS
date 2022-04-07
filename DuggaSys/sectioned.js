@@ -528,6 +528,7 @@ function newItem(itemtitle) {
   //Duration time for the alert before remove
   setTimeout(function(){
     $("#createAlert").removeClass("createAlertToggle");
+    document.getElementById("createAlert").innerHTML = "";
   },3000);
 
   //setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
