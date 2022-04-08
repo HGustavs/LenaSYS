@@ -246,7 +246,7 @@
                     </div>
                 </div>
                 <div class="diagramIcons" onclick="stateMachine.replay(0)">
-                    <img src="../Shared/icons/ResetButton.svg">
+                    <img src="../Shared/icons/replay.svg">
                 </div>
             </fieldset>
             <div style="width: 250px">
