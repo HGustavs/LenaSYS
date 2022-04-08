@@ -112,6 +112,8 @@ function returned(data)
 	//Fixes the five next code examples in retData to match the order that was assigned in Section.
 	var j = 0;
 	var posAfter = currentPos+1;
+
+	retData['after'] = [];
 	for(i = currentPos; i <= sectionData['entries'].length-1; i++){
 		if(j < 5){
 			if(currentPos == sectionData['entries'].length-1 && posAfter + j == sectionData['entries'].length){
@@ -126,9 +128,8 @@ function returned(data)
 				posAfter++;
 				continue;
 			}
-			if(retData['after'].length == j){
-					retData['after'].push(sectionData['entries'][posAfter + j]);
-			}
+
+			retData['after'].push(sectionData['entries'][posAfter + j]);
 			retData['after'][j][1] = sectionData['entries'][posAfter + j]['entryname'];
 			retData['after'][j][0] = (String)(sectionData['entries'][posAfter + j]['link']);
 			for(k = 1; k < sectionData['codeexamples'].length; k++){
@@ -148,6 +149,7 @@ function returned(data)
 	//Fixes the five code examples before the current one in retData to match the order that was assigned in Section.
 	j = 0;
 	var posBefore = currentPos-1;
+	retData['before'] = [];
 	for(i = currentPos; i > 0; i--){
 		if(j < 5){
 			if(currentPos==1 && posBefore - j == 0){
@@ -158,9 +160,8 @@ function returned(data)
 				posBefore--;
 				continue;
 			}
-			if(retData['before'].length == j){
-				retData['before'].push(sectionData['entries'][posBefore - j]);
-			}
+
+			retData['before'].push(sectionData['entries'][posBefore - j]);
 			retData['before'][j][1] = sectionData['entries'][posBefore - j]['entryname'];
 			retData['before'][j][0] = (String)(sectionData['entries'][posBefore - j]['link']);
 			for(k = 0; k < sectionData['entries'].length; k++){
