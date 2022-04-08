@@ -1025,10 +1025,10 @@ function onSetup()
 
     //---------------Work to be done: add functionality for dynamic loading of diagram (loadInitDiagram), depending on dugga-assigned JSON file---------------
     loadInitDiagram();
-    if(fileData != null && fileLines != null)
+    if(fileData || fileLines)
     {
         const demoData = [
-            { name: "JGJYDFKGHJDSKGHDFLYDFJDKJGDNKFGBNFDLHJDFJDF", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: EMPLOYEE_ID, isLocked: false },
+            { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: EMPLOYEE_ID, isLocked: false },
             { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Bdale_ID, isLocked: false, state: "Normal" },
             { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: BdaleDependent_ID, isLocked: false, state: "Normal" },
             { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Ssn_ID, isLocked: false, state: "key"},
