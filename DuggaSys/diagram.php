@@ -37,42 +37,42 @@
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg"/>
                     <span class="toolTipText"><b>Pointer</b><br>
-                        <p>Allows you to press the different entities and move around the diagram</p><br>
+                        <p>(Select elements or pan around the canvas)</p><br>
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_select.svg"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
-                        <p>Select everything withing a certain area</p><br>
+                        <p>(Select elements within rectangular area)</p><br>
                         <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <div id="elementPlacement0" class="diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_entity.svg"/>
                     <span class="toolTipText"><b>Entity</b><br>
-                        <p>Add an entity to the diagram</p><br>
+                        <p>(Add type Entity to the canvas)</p><br>
                         <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <div id="elementPlacement1" class="diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_relation.svg"/>
                     <span class="toolTipText"><b>Relation</b><br>
-                        <p>Add a relation between entities</p><br>
+                        <p>(Add Relations between entities)</p><br>
                         <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_attribute.svg"/>
                     <span class="toolTipText"><b>Attribute</b><br>
-                        <p>Create an Attribute to an entity</p><br>
+                        <p>(Add Attributes to entities)</p><br>
                         <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg"/>
                     <span class="toolTipText"><b>Line</b><br>
-                        <p>Make a line between objects</p><br>
+                        <p>(Connect elements with edges)</p><br>
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -82,21 +82,21 @@
             <div class="diagramIcons" onclick='zoomin();'>
                 <img src="../Shared/icons/diagram_zoomin.svg"/>
                 <span class="toolTipText"><b>Zoom IN</b><br>
-                    <p>Increase size of all elements</p><br>
+                    <p>(Increase size of envionment)</p><br>
                     <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div class="diagramIcons" onclick='zoomout();'>
                 <img src="../Shared/icons/diagram_zoomout.svg"/>
                 <span class="toolTipText"><b>Zoom OUT</b><br>
-                    <p>Decrease size of all elements</p><br>
+                    <p>(Decrease size of environment)</p><br>
                     <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div class="diagramIcons" onclick="zoomreset()">
                 <img src="../Shared/icons/fullscreen.svg"/>
                 <span class="toolTipText"><b>Zoom RESET</b><br>
-                    <p>Reset size of all elements</p><br>
+                    <p>(Reset environment size)</p><br>
                     <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
@@ -106,28 +106,28 @@
             <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
                 <img src="../Shared/icons/diagram_grid.svg"/>
                 <span class="toolTipText"><b>Toggle grid</b><br>
-                    <p>Enable/disable the grid</p><br>
+                    <p>(Show/Hide grid pattern)</p><br>
                     <p id="tooltip-TOGGLE_GRID" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="rulerSnapToGrid" class="diagramIcons" onclick="toggleSnapToGrid()">
                 <img src="../Shared/icons/diagram_gridmagnet.svg"/>
                 <span class="toolTipText"><b>Toggle Snap To Grid</b><br>
-                    <p>Enable/disable the Snap To Grid</p><br>
+                    <p>(Enable/disable Snap To Grid)</p><br>
                     <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
                 <img src="../Shared/icons/diagram_ruler.svg"/>
                 <span class="toolTipText"><b>Toggle Ruler</b><br>
-                    <p>Enable/disable the ruler</p><br>
+                    <p>(Show/Hide Ruler)</p><br>
                     <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="a4TemplateToggle" class="diagramIcons" onclick="toggleA4Template()">
                 <img src="../Shared/icons/diagram_a4.svg"/>
                 <span class="toolTipText"><b>Toggle A4 template</b><br>
-                    <p>Enable/disable the A4 template</p><br>
+                    <p>(Show/Hide A4 template)</p><br>
                     <p id="tooltip-TOGGLE_A4" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
@@ -138,7 +138,7 @@
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
                 <img src="../Shared/icons/screenUpdate.svg"/>
                 <span class="toolTipText"><b>Click to redirect camera to center</b><br>
-                    <p>Redirect camera to center of all elements</p><br>
+                    <p>(Move view to default position))</p><br>
                     <p id="tooltip-CENTER_CAMERA" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
@@ -148,21 +148,21 @@
             <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
                 <img src="../Shared/icons/diagram_stepforward.svg"/>
                 <span class="toolTipText"><b>Toggle step forward</b><br>
-                    <p>Click to step forward in history</p><br>
-                    <p id="tooltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
+                    <p>(Revert previous Undo/Step backward)</p><br>
+                    <p id="toltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="stepBackToggle" class="diagramIcons" onclick="toggleStepBack()">
                 <img src="../Shared/icons/diagram_stepback.svg"/>
                 <span class="toolTipText"><b>Toggle step backward</b><br>
-                    <p>Click to step back in history</p><br>
+                    <p>(Undo previous change in history)</p><br>
                     <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="replayToggle" class="diagramIcons" onclick="toggleReplay()">
                 <img src="../Shared/icons/diagram_replay.svg"/>
                 <span class="toolTipText"><b>Toggle replay</b><br>
-                    <p>Click to start replay</p><br>
+                    <p>(Start replay)</p><br>
                 </span>
         </fieldset>
 
