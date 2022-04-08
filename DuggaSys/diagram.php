@@ -69,6 +69,15 @@
                         <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+                <div>
+                    <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='alert("What?"); setMouseMode(2);'>
+                        <img src="../Shared/icons/diagram_uml.svg"/>
+                        <span class="toolTipText"><b>UML</b><br>
+                            <p>Create an UML element</p><br>
+                            <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Testo</p>
+                        </span>
+                    </div>
+                </div>
                 <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg"/>
                     <span class="toolTipText"><b>Line</b><br>
