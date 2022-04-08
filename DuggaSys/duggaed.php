@@ -187,12 +187,12 @@ session_start();
                   </div>
                       <!-- Submissions for dugga -->
                   <div>
-                    <div id="duggaSubmissionForm">
+                    <div id="duggaSubmissionForm" style='margin-left: 20px;width:95.7%; margin-top:-2%;'>
                       <fieldset style="width:90%">
                         <legend>Submission types</legend>
                         <div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;overflow:auto;"></div>
                       </fieldset>
-                      <input type="button" class="submit-button" name="addfieldname" id="addfieldname" value="+" style="width:32px;" onclick="addVariantSubmissionRow();" />
+                      <input type="button" class="submit-button" name="addfieldname" id="addfieldname" value="+" style="width:32px;" onclick="addVariantSubmissionRow();"/>
                     </div>
                   </div>
                   <!-- End of leftDivDialog -->

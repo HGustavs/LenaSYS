@@ -220,6 +220,8 @@ function newVariant() {
 		document.querySelector('#instruction0').value = '';
 		document.querySelector('#instruction0').placeholder = 'Upload instruction';
 	}
+	//micke
+	document.getElementById
 }
 
 function createVariant() {
@@ -1037,25 +1039,30 @@ function initFileDropZone()
 function handleDrop(e)
 {
 	let dt = e.dataTransfer;
-	let file = dt.files;
+	let file = dt.files[0];
 
-	handleFiles(file[0]);
+	var tempString = e.dataTransfer.getData('text');
+
+	handleFiles(file);
 }
 
 //Logic to extract data from file WORK NEEDED!
 function handleFiles(file)
 {
+	reader = new FileReader();
+	reader.onload = function(event) {
+		console.log(event.target.result);
+	}
+
+	//This thing activates the onload function, once, somehow. I don't understand this stuff at all.
+	console.log(reader.readAsText(file));
+
 	if(file.type === "application/json")
 	{
-		alert('The file is a JSON file');
+		console.log('The file is a JSON file');
 	}
 	else{
-		alert('Invalid File Type: Please enter a valid JSON file.');
-	}
-	var data = fetch(file);
-	if(data != null)
-	{
-		alert(data);
+		console.log('Invalid File Type: Please enter a valid JSON file.');
 	}
 }
 

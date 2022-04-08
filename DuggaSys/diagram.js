@@ -1023,91 +1023,94 @@ function onSetup()
     const NumberDEPARTMENT_ID = makeRandomID();
     const Number_of_employees_ID = makeRandomID();
 
+    //---------------Work to be done: add functionality for dynamic loading of diagram (loadInitDiagram), depending on dugga-assigned JSON file---------------
+    loadInitDiagram();
+    if(fileData != null && fileLines != null)
+    {
+        const demoData = [
+            { name: "JGJYDFKGHJDSKGHDFLYDFJDKJGDNKFGBNFDLHJDFJDF", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: EMPLOYEE_ID, isLocked: false },
+            { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Bdale_ID, isLocked: false, state: "Normal" },
+            { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: BdaleDependent_ID, isLocked: false, state: "Normal" },
+            { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Ssn_ID, isLocked: false, state: "key"},
+            { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Name_ID, isLocked: false },
+            { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDependent_ID, isLocked: false, state: "weakKey"},
+            { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameProject_ID, isLocked: false, state: "key"},
+            { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDEPARTMENT_ID, isLocked: false, state: "key"},
+            { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Address_ID, isLocked: false },
+            { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: AddressDependent_ID, isLocked: false },
+            { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Relationship_ID, isLocked: false },
+            { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Salary_ID, isLocked: false },
+            { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: FNID, isLocked: false },
+            { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Initial_ID, isLocked: false },
+            { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: LNID, isLocked: false },
+            { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: SUPERVISION_ID, isLocked: false },
+            { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak"},
+            { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: DEPENDENT_ID, isLocked: false, state: "weak"},
+            { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Number_of_depends_ID, isLocked: false, state: "computed"},
+            { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: WORKS_ON_ID, isLocked: false },
+            { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Hours_ID, isLocked: false },
+            { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: PROJECT_ID, isLocked: false },
+            { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NumberProject_ID, isLocked: false, state: "key"},
+            { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Location_ID, isLocked: false},
+            { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: MANAGES_ID, isLocked: false },
+            { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Start_date_ID, isLocked: false },
+            { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: CONTROLS_ID, isLocked: false },
+            { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: DEPARTMENT_ID, isLocked: false },
+            { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Locations_ID, isLocked: false, state: "multiple" },
+            { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: WORKS_FOR_ID, isLocked: false },
+            { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NumberDEPARTMENT_ID, isLocked: false, state: "key"},
+            { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Number_of_employees_ID, isLocked: false, state: "computed"},
+        ];
 
+        const demoLines = [
+            { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: Bdale_ID, kind: "Normal" },
+            { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: Ssn_ID, kind: "Normal" },
+            { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: Name_ID, kind: "Normal" },
+            { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: Address_ID, kind: "Normal" },
+            { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: Salary_ID, kind: "Normal" },
+            { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "MANY" },
+            { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "ONE"},
+            { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: DEPENDENTS_OF_ID, kind: "Normal", cardinality: "ONE" },
+            { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "MANY"},
 
-    const demoData = [
-        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: EMPLOYEE_ID, isLocked: false },
-        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Bdale_ID, isLocked: false, state: "Normal" },
-        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: BdaleDependent_ID, isLocked: false, state: "Normal" },
-        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Ssn_ID, isLocked: false, state: "key"},
-        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Name_ID, isLocked: false },
-        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDependent_ID, isLocked: false, state: "weakKey"},
-        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameProject_ID, isLocked: false, state: "key"},
-        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDEPARTMENT_ID, isLocked: false, state: "key"},
-        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Address_ID, isLocked: false },
-        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: AddressDependent_ID, isLocked: false },
-        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Relationship_ID, isLocked: false },
-        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Salary_ID, isLocked: false },
-        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: FNID, isLocked: false },
-        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Initial_ID, isLocked: false },
-        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: LNID, isLocked: false },
-        { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: SUPERVISION_ID, isLocked: false },
-        { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak"},
-        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: DEPENDENT_ID, isLocked: false, state: "weak"},
-        { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Number_of_depends_ID, isLocked: false, state: "computed"},
-        { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: WORKS_ON_ID, isLocked: false },
-        { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Hours_ID, isLocked: false },
-        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: PROJECT_ID, isLocked: false },
-        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NumberProject_ID, isLocked: false, state: "key"},
-        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Location_ID, isLocked: false},
-        { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: MANAGES_ID, isLocked: false },
-        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Start_date_ID, isLocked: false },
-        { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: CONTROLS_ID, isLocked: false },
-        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: DEPARTMENT_ID, isLocked: false },
-        { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Locations_ID, isLocked: false, state: "multiple" },
-        { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", fill: "#ffccdc", stroke: "black", id: WORKS_FOR_ID, isLocked: false },
-        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NumberDEPARTMENT_ID, isLocked: false, state: "key"},
-        { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Number_of_employees_ID, isLocked: false, state: "computed"},
-    ];
-
-    const demoLines = [
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: Bdale_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: Ssn_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: Name_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: Address_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: Salary_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "MANY" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "ONE"},
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: DEPENDENTS_OF_ID, kind: "Normal", cardinality: "ONE" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "MANY"},
-
-        { id: makeRandomID(), fromID: Name_ID, toID: FNID, kind: "Normal" },
-        { id: makeRandomID(), fromID: Name_ID, toID: Initial_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: Name_ID, toID: LNID, kind: "Normal" },
-     
-        { id: makeRandomID(), fromID: DEPENDENT_ID, toID: DEPENDENTS_OF_ID, kind: "Double", cardinality: "MANY" },
-        { id: makeRandomID(), fromID: DEPENDENT_ID, toID: Number_of_depends_ID, kind: "Normal"},
-        { id: makeRandomID(), fromID: DEPENDENT_ID, toID: NameDependent_ID, kind: "Normal"},
-        { id: makeRandomID(), fromID: DEPENDENT_ID, toID: AddressDependent_ID, kind: "Normal"},
-        { id: makeRandomID(), fromID: DEPENDENT_ID, toID: BdaleDependent_ID, kind: "Normal"},
-        { id: makeRandomID(), fromID: DEPENDENT_ID, toID: Relationship_ID, kind: "Normal"},
-
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_ON_ID, kind: "Double", cardinality: "MANY" },
-        { id: makeRandomID(), fromID: Hours_ID, toID: WORKS_ON_ID, kind: "Normal"},
-
-        { id: makeRandomID(), fromID: PROJECT_ID, toID: WORKS_ON_ID, kind: "Double", cardinality: "MANY"},
-        { id: makeRandomID(), fromID: PROJECT_ID, toID: CONTROLS_ID, kind: "Normal", cardinality: "MANY"},
-        { id: makeRandomID(), fromID: NameProject_ID, toID: PROJECT_ID, kind: "Normal"},
-        { id: makeRandomID(), fromID: NumberProject_ID, toID: PROJECT_ID, kind: "Normal"},
-        { id: makeRandomID(), fromID: Location_ID, toID: PROJECT_ID, kind: "Normal"},
+            { id: makeRandomID(), fromID: Name_ID, toID: FNID, kind: "Normal" },
+            { id: makeRandomID(), fromID: Name_ID, toID: Initial_ID, kind: "Normal" },
+            { id: makeRandomID(), fromID: Name_ID, toID: LNID, kind: "Normal" },
         
-        { id: makeRandomID(), fromID: MANAGES_ID, toID: Start_date_ID, kind: "Normal"},
-        { id: makeRandomID(), fromID: MANAGES_ID, toID: EMPLOYEE_ID, kind: "Normal", cardinality: "ONE"},
-        { id: makeRandomID(), fromID: MANAGES_ID, toID: DEPARTMENT_ID, kind: "Double", cardinality: "ONE"},
+            { id: makeRandomID(), fromID: DEPENDENT_ID, toID: DEPENDENTS_OF_ID, kind: "Double", cardinality: "MANY" },
+            { id: makeRandomID(), fromID: DEPENDENT_ID, toID: Number_of_depends_ID, kind: "Normal"},
+            { id: makeRandomID(), fromID: DEPENDENT_ID, toID: NameDependent_ID, kind: "Normal"},
+            { id: makeRandomID(), fromID: DEPENDENT_ID, toID: AddressDependent_ID, kind: "Normal"},
+            { id: makeRandomID(), fromID: DEPENDENT_ID, toID: BdaleDependent_ID, kind: "Normal"},
+            { id: makeRandomID(), fromID: DEPENDENT_ID, toID: Relationship_ID, kind: "Normal"},
 
-        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Locations_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: CONTROLS_ID, kind: "Normal", cardinality: "ONE" },
-        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NameDEPARTMENT_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NumberDEPARTMENT_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Number_of_employees_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "ONE" },
-    ];
+            { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_ON_ID, kind: "Double", cardinality: "MANY" },
+            { id: makeRandomID(), fromID: Hours_ID, toID: WORKS_ON_ID, kind: "Normal"},
 
-    for(var i = 0; i < demoData.length; i++){
-        addObjectToData(demoData[i], false);
-    }
-    for(var i = 0; i < demoLines.length; i++){
-        addObjectToLines(demoLines[i], false);
+            { id: makeRandomID(), fromID: PROJECT_ID, toID: WORKS_ON_ID, kind: "Double", cardinality: "MANY"},
+            { id: makeRandomID(), fromID: PROJECT_ID, toID: CONTROLS_ID, kind: "Normal", cardinality: "MANY"},
+            { id: makeRandomID(), fromID: NameProject_ID, toID: PROJECT_ID, kind: "Normal"},
+            { id: makeRandomID(), fromID: NumberProject_ID, toID: PROJECT_ID, kind: "Normal"},
+            { id: makeRandomID(), fromID: Location_ID, toID: PROJECT_ID, kind: "Normal"},
+            
+            { id: makeRandomID(), fromID: MANAGES_ID, toID: Start_date_ID, kind: "Normal"},
+            { id: makeRandomID(), fromID: MANAGES_ID, toID: EMPLOYEE_ID, kind: "Normal", cardinality: "ONE"},
+            { id: makeRandomID(), fromID: MANAGES_ID, toID: DEPARTMENT_ID, kind: "Double", cardinality: "ONE"},
+
+            { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Locations_ID, kind: "Normal" },
+            { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: CONTROLS_ID, kind: "Normal", cardinality: "ONE" },
+            { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NameDEPARTMENT_ID, kind: "Normal" },
+            { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NumberDEPARTMENT_ID, kind: "Normal" },
+            { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Number_of_employees_ID, kind: "Normal" },
+            { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "ONE" },
+        ];
+
+        for(var i = 0; i < demoData.length; i++){
+            addObjectToData(demoData[i], false);
+        }
+        for(var i = 0; i < demoLines.length; i++){
+            addObjectToLines(demoLines[i], false);
+        }
     }
 
     // Global statemachine init
@@ -5321,5 +5324,12 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }else{
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
+}
+
+
+//------------WORK TO BE DONE: IMPLEMENT LOADING OF DUGGA-CONNECTED DIAGRAM ON PAGE LOAD, RATHER THAN TEST-DATA------------
+function loadInitDiagram()
+{
+
 }
 //#endregion =====================================================================================
