@@ -2496,7 +2496,7 @@ function showCopyButtons(templateid) {
 
 		for (var i = 1; i <= totalBoxes; i++) {
 		if (document.querySelector('#box' + i).className == 'box codebox') {
-		document.querySelector('#box' + i + 'wrapper #copyClipboard').style.display = 'block'
+		document.querySelector('#box' + i + 'wrapper #copyClipboard').style.display = 'table-cell'
 		}
 	}
 }
