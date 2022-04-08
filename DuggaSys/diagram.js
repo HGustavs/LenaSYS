@@ -730,12 +730,13 @@ const keybinds = {
         HISTORY_STEPFORWARD: {key: "y", ctrl: true},
         DELETE: {key: "delete", ctrl: false},
         ESCAPE: {key: "escape", ctrl: false},
-        BOX_SELECTION: {key: "2", ctrl: false},
         POINTER: {key: "1", ctrl: false},
-        EDGE_CREATION: {key: "6", ctrl: false},
+        BOX_SELECTION: {key: "2", ctrl: false},
         PLACE_ENTITY: {key: "3", ctrl: false},
         PLACE_RELATION: {key: "4", ctrl: false},
         PLACE_ATTRIBUTE: {key: "5", ctrl: false},
+        PLACE_UMLENTITY: {key: "6", ctrl: false},
+        EDGE_CREATION: {key: "7", ctrl: false},
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},
@@ -774,7 +775,8 @@ const elementTypes = {
     EREntity: 0,
     ERRelation: 1,
     ERAttr: 2,
-    Ghost: 3
+    Ghost: 3,
+    UMLEntity: 4,
 };
 
 /**
@@ -808,6 +810,14 @@ const attrState = {
     MULTIPLE: "multiple",
     KEY: "key",
     COMPUTED: "computed",
+};
+
+/**
+ * @description Available types of entity, ie ER, IE, UML This affect how the entity is drawn and which menu is displayed 
+ */
+const entityType = {
+    UML: "UML",
+    ER: "ER",
 };
 
 /**
@@ -976,6 +986,7 @@ var defaults = {
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60 },
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45 },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5 },
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50}
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1020,7 +1031,7 @@ function onSetup()
     const Number_of_employees_ID = makeRandomID();
 
     const demoData = [
-        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: EMPLOYEE_ID, isLocked: false },
+        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: EMPLOYEE_ID , isLocked: false },
         { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Bdale_ID, isLocked: false, state: "Normal" },
         { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: BdaleDependent_ID, isLocked: false, state: "Normal" },
         { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Ssn_ID, isLocked: false, state: "key"},
@@ -1284,6 +1295,14 @@ document.addEventListener('keyup', function (e)
             setElementPlacementType(elementTypes.ERAttr);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
+
+        //===================================================
+        //Temp for UML functionality
+        if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
+            setElementPlacementType(elementTypes.UMLEntity)
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
+        //======================================================
 
         if(isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
         if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
@@ -3508,31 +3527,48 @@ function generateContextProperties()
 
     if (context.length == 1 && contextLine.length == 0) {
         var element = context[0];
+        var value;
+        var selected;
+
+        //If it is a UML type
+        if (element.type == "UML") {
+
+            selected = context[0].type;
+            if(element.kind == "UMLEntity") {
+                value = Object.values(entityType);
+            }       
+        }
+
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
         for (const property in element) {
             switch (property.toLowerCase()) {
                 case "name":
                     str += `<input id="elementProperty_${property}" type="text" value="${element[property]}" onfocus="propFieldSelected(true)" onblur="propFieldSelected(false)"> `;
                     break;
-            
+                case "type":
+                    // Attempt for learning how the dynamic properties panel is created.
+                    // str += `<input id="elementProperty_${property}" type="text" value="${element[property]}" onfocus="propFieldSelected(true)" onblur="propFieldSelecred(false)">`;
+                    break;
                 default:
                     break;
             }
         }
 
         //Creates drop down for changing state of ER elements
-        var value;
-        var selected = context[0].state;
-        if(selected == undefined) {
-            selected = "normal"
+        if(element.type == "ER") {
+            var selected = context[0].state;
+            if(selected == undefined) {
+                selected = "normal"
+            }
+            if(element.kind=="ERAttr") {
+                value = Object.values(attrState);
+            } else if(element.kind=="EREntity") {
+                value = Object.values(entityState);
+            } else if(element.kind=="ERRelation") {
+                value = Object.values(relationState);
+            }
         }
-        if(element.kind=="ERAttr") {
-            value = Object.values(attrState);
-        } else if(element.kind=="EREntity") {
-            value = Object.values(entityState);
-        } else if(element.kind=="ERRelation") {
-            value = Object.values(relationState);
-        }
+
         str += '<select id="propertySelect">';
             for (i = 0; i < value.length; i++) {
                 if (selected != value[i]) {
@@ -4754,9 +4790,25 @@ function drawElement(element, ghosted = false)
         `;
     }
     str += `'>`;
-    str += `<svg width='${boxw}' height='${boxh}' >`;
+    str += `<svg width='${boxw}' height='${boxh * 2}' >`;
+
+    //===============================================
+    if (element.kind == "UMLEntity") {
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+        <rect x='${linew}' y='${linew + boxh - (linew * 2)}' width='${boxw - (linew * 2)}' height='${boxh / 2}'
+        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+        <rect x='${linew}' y='${linew + boxh - (linew * 2)}' width='${boxw - (linew * 2)}' height='${boxh / 2}'
+        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+        <rect x='${linew}' y='${linew + boxh - (linew * 2) + boxh / 2}' width='${boxw - (linew * 2)}' height='${boxh / 2}'
+        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+        <text x='${xAnchor}' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>Texto</text> 
+        <text x='${xAnchor}' y='${hboxh + boxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>Another texto</text>  
+        `;
+    }
     // Create svg 
-    if (element.kind == "EREntity") {
+    else if (element.kind == "EREntity") {
         var weak = "";
 
         if(element.state == "weak") {
