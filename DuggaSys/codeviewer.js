@@ -3188,6 +3188,7 @@ function resetBoxes()
 	showCopyButtons(templateid);
 
 	if (templateid == 1) {
+
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
 		//Reset css attributes to default. Surely there has to be an easier way to do this.
@@ -3261,6 +3262,7 @@ function resetBoxes()
 	}
 
 	if (templateid == 3) {
+
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
 		thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
@@ -3310,11 +3312,11 @@ function resetBoxes()
 	}
 
 	if (templateid == 4) {
+
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
 
-		
 		//Reset css attributes to default. Surely there has to be an easier way to do this.
 		//Width
 		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
@@ -3360,6 +3362,7 @@ function resetBoxes()
 	}
 
 	if (templateid == 5) {
+		
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
