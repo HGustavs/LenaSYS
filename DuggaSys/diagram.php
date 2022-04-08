@@ -242,11 +242,14 @@
             <fieldset style="display: flex; justify-content: space-between">
                 <div id="diagram-replay-switch">
                     <div class="diagramIcons" onclick="stateMachine.replay()">
-                        <img src="../Shared/icons/Play.svg">
+                        <img src="../Shared/icons/Play.svg" title="Play">
                     </div>
                 </div>
                 <div class="diagramIcons" onclick="stateMachine.replay(0)">
-                    <img src="../Shared/icons/replay.svg">
+                    <img src="../Shared/icons/replay.svg"  title="Replay">
+                </div>
+                <div class="diagramIcons">
+                    <img src="../Shared/icons/exit.svg"  title="Exit out from replay mode">
                 </div>
             </fieldset>
             <div style="width: 250px">
