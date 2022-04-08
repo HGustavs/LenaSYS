@@ -162,7 +162,7 @@
             <div id="replayToggle" class="diagramIcons" onclick="toggleReplay()">
                 <img src="../Shared/icons/diagram_replay.svg"/>
                 <span class="toolTipText"><b>Toggle replay</b><br>
-                    <p>(Start replay)</p><br>
+                    <p>(Start replay mode)</p><br>
                 </span>
         </fieldset>
 
