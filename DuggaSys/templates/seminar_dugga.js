@@ -137,23 +137,24 @@ function closeFacit()
 //                                  Local Functions
 //--------------------================############================--------------------
 
-function registerForSeminar(elem)
+function registerForSeminar()
 {
-	var uname = document.getElementById('userName').innerHTML;	// Get current user
-	if(uname == "Guest" || uname == ""){	// Invalid username
-		//alert("You must be logged in to use this feature");	// alert() doesn't seem to work for some reason
-		confirm("You must be logged in to use this feature");
-	}
-	else{	// Register user
+	var uname = document.getElementById('input_uname').value;	// Get username from input
+	if(uname == ""){	// Invalid username - more restrictions may be necessary
+		//alert("Please enter a valid username");	// alert() doesn't seem to work for some reason
+		confirm("Please enter a valid username");
+	} else {	// Register user
 		if(confirm("Register " + uname + " for seminar?")){
-			elem.hidden = true;	// Hide button
-			
-			// To-do:
-			// Enter username into database?
-			// Register entire group?
-			// Save pdf file to group?
+			document.getElementById('input_prompt').style.display = 'none'; // Hide input to avoid duplicate entries
 
-			elem = document.getElementById("confirm_text").innerHTML = uname + " registered successfully!";	// User feedback
+			/*
+				To-do:
+				* Enter username into database?
+				* Register entire group?
+				* Save pdf file to group?
+			*/
+
+			document.getElementById("confirm_text").innerHTML = uname + " registered successfully!";	// Provide confirmation to user
 		}
 	}
 }

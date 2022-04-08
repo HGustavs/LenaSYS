@@ -6,8 +6,15 @@
 		</div>
 	</div>
 
-	<input type="button" class="submit-button" value="Register" onclick="registerForSeminar(this);">
-	<div id = confirm_text></div>
+	<!-- Input username to register -->
+	<div style='margin-left: 25px;margin-bottom: 25px;'>
+		<form id = input_prompt>
+			<label for="uname">Username:</label>
+			<input type="input" id="input_uname" name="uname"><br>
+			<input type="button" class="submit-button" value="Register" onclick="registerForSeminar();">
+		  </form>
+		<div id = confirm_text></div>
+	</div>
 
 	<div class='instructions-container'>
 		<div class='instructions-button' onclick='toggleInstructions()'><h3>Upload PDF of Presentation</h3></div>	
