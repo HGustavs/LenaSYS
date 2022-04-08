@@ -227,7 +227,7 @@ session_start();
     </div>
   	<!-- Edit Variant Dialog END -->
 
-    <div class="fixed-action-button" style = "padding-right: 150px;" id="fabButtonAcc">
+    <div class="fixed-action-button" style = "margin-right: 150px;" id="fabButtonAcc">
         <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
         <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
         </ol>
