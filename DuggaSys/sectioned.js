@@ -1081,7 +1081,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
           str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
-          src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\");'>`;
+          src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
           str += "</td>";
         }
 
@@ -1233,14 +1233,16 @@ function returnedSection(data) {
   }
 }
 
-function showCanvasLinkBox(operation){
+function showCanvasLinkBox(operation,btnobj){
   if(operation == "open"){
-    var canvasLink = "ERROR: Failed to get canvas link.";//temporary link to be replaced with the actuall link
-
-    //todo somehow get the real link
+    var canvasLink = "<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('.internal-link').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
+    if(canvasLink == null){
+      canvasLink = "ERROR: Failed to get canvas link.";
+    }
 
     $("#canvasLinkBox").css("display", "flex");
     $('#close-item-button').focus();
+
     navigator.clipboard.writeText(canvasLink);
     document.getElementById("canvasLinkText").value = canvasLink;
   }else if(operation == "close"){

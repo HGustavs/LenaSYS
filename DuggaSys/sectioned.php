@@ -264,7 +264,7 @@
 		<div class='loginBox' style='min-width:250px;'>
 			<div class='loginBoxheader'>
 					<h3 style='text-align: center;'>Link Copied To Clipboard</h3>
-					<div class="cursorPointer" onclick='showCanvasLinkBox("close");' title="Close window">x</div>
+					<div class="cursorPointer" onclick='showCanvasLinkBox("close",this);' title="Close window">x</div>
 			</div>
 			<div style='text-align: center; padding-top:25px;'>
 					<input type="text" id="canvasLinkText" readonly value="">
