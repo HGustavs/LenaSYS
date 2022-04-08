@@ -126,6 +126,9 @@ function returned(data)
 				posAfter++;
 				continue;
 			}
+			if(retData['after'].length == j){
+					retData['after'].push(sectionData['entries'][posAfter + j]);
+			}
 			retData['after'][j][1] = sectionData['entries'][posAfter + j]['entryname'];
 			retData['after'][j][0] = (String)(sectionData['entries'][posAfter + j]['link']);
 			for(k = 1; k < sectionData['codeexamples'].length; k++){
@@ -154,6 +157,9 @@ function returned(data)
 			if(sectionData['entries'][posBefore - j]['kind']== 1){
 				posBefore--;
 				continue;
+			}
+			if(retData['before'].length == j){
+				retData['before'].push(sectionData['entries'][posBefore - j]);
 			}
 			retData['before'][j][1] = sectionData['entries'][posBefore - j]['entryname'];
 			retData['before'][j][0] = (String)(sectionData['entries'][posBefore - j]['link']);
