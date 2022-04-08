@@ -149,7 +149,7 @@
                 <img src="../Shared/icons/diagram_stepforward.svg"/>
                 <span class="toolTipText"><b>Toggle step forward</b><br>
                     <p>(Revert previous Undo/Step backward)</p><br>
-                    <p id="toltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
+                    <p id="tooltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="stepBackToggle" class="diagramIcons" onclick="toggleStepBack()">
