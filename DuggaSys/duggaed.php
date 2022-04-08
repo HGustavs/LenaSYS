@@ -174,14 +174,13 @@ session_start();
                       </fieldset>
                     </div>
                   </div>
-                      <!-- Teacher Submission for Dugga Diagram -->
+                      <!-- Teacher Submission for Dugga Diagram - Work Needed: Change To Drop Down Menu, Choosing Between Existing Files.-->
                   <div id="drop-area">
                     <fieldset style="width:90%">
                       <legends id="addDiagramLegend"> Add diagram to dugga</legend>
                       <form id="my-form">
-                        <p style=>Select Json diagram to upload</p>
                         <input type="file" id="fileElem" multiple access="image/*" style="display: none" onchange="handleFiles(this.files)">
-                        <label id="uploadDiagramBtn" class="button" for="fileElem">Select JSON diagram file</label>
+                        <label id="uploadDiagramBtn" class="button" for="fileElem">Drop JSON File Here</label>
                       </form>
                     </fieldset>
                   </div>

@@ -220,8 +220,6 @@ function newVariant() {
 		document.querySelector('#instruction0').value = '';
 		document.querySelector('#instruction0').placeholder = 'Upload instruction';
 	}
-	//micke
-	document.getElementById
 }
 
 function createVariant() {
@@ -1041,8 +1039,6 @@ function handleDrop(e)
 	let dt = e.dataTransfer;
 	let file = dt.files[0];
 
-	var tempString = e.dataTransfer.getData('text');
-
 	handleFiles(file);
 }
 
@@ -1054,16 +1050,18 @@ function handleFiles(file)
 		console.log(event.target.result);
 	}
 
-	//This thing activates the onload function, once, somehow. I don't understand this stuff at all.
-	console.log(reader.readAsText(file));
-
 	if(file.type === "application/json")
 	{
-		console.log('The file is a JSON file');
+		//This thing activates the onload function, once, somehow. I don't understand this stuff at all.
+		console.log(reader.readAsText(file));
+		alert('The file is a JSON file');
 	}
 	else{
-		console.log('Invalid File Type: Please enter a valid JSON file.');
+		alert('Invalid File Type: Please enter a valid JSON file.');
 	}
+
+	//----------------Work In Progress: Handle File
+	//getVariantPreview( 24, 27);
 }
 
 //prevent default browser behaviour which is to open the file rather than submit file.

@@ -1025,7 +1025,7 @@ function onSetup()
 
     //---------------Work to be done: add functionality for dynamic loading of diagram (loadInitDiagram), depending on dugga-assigned JSON file---------------
     loadInitDiagram();
-    if(fileData || fileLines)
+    if(!(fileData[0] && fileLines[0]))
     {
         const demoData = [
             { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: EMPLOYEE_ID, isLocked: false },
