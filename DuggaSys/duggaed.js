@@ -1009,10 +1009,10 @@ function compare(a, b) {
 
 
 /*	----------------------------------------------- WORK IN PROGRESS: Functionality -> teachers should be able to add diagram to dugga in form of JSON file ----------------------------------*/
-//init magic that needs to happen
+//Init ran on startup, defines dropArea from html and adds aapropriate event listeners, based on type of event.
 function initFileDropZone()
 {
-	let dropArea = document.getElementById('drop-area');
+	dropArea = document.getElementById('drop-area');
 
 	['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => 
 		{
@@ -1028,23 +1028,53 @@ function initFileDropZone()
 		{
 		  dropArea.addEventListener(eventName, unhighlight, false)
 		})
+
+		dropArea.addEventListener('drop', handleDrop, false);
 }
 
-//prevent bad magic
+//-----------------------------------WORK IN PROGRESS: ADD FEATURE TO HANDLE DROP-DOWN & CHOOSE BETWEEN EXISTING JSON DIAGRAM FILES-----------------------------
+//Handles the drag & drop event, extracts data from dropped files.
+function handleDrop(e)
+{
+	let dt = e.dataTransfer;
+	let file = dt.files;
+
+	handleFiles(file[0]);
+}
+
+//Logic to extract data from file WORK NEEDED!
+function handleFiles(file)
+{
+	if(file.type === "application/json")
+	{
+		alert('The file is a JSON file');
+	}
+	else{
+		alert('Invalid File Type: Please enter a valid JSON file.');
+	}
+	var data = fetch(file);
+	if(data != null)
+	{
+		alert(data);
+	}
+}
+
+//prevent default browser behaviour which is to open the file rather than submit file.
 function preventDefaults (e)
 {
   e.preventDefault();
   e.stopPropagation();
 }
 
-//light magic
+
+//Supposed to highligt area when dragging file over drop-area: NOT WORKING CURRENTLY. - probably style.css related.
 function highlight(e) 
 {
-  dropArea.classList.add('highlight');
+	dropArea.classList.add('highlight');
 }
 
-//dark magic
+//Supposed to darken the area when removing dragged file from drop-area: NOT WORKING CURRENTLY. - probably style.css related.
 function unhighlight(e) 
 {
-  dropArea.classList.remove('highlight');
+	dropArea.classList.remove('highlight');
 }

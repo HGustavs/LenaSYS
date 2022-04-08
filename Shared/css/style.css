@@ -8144,3 +8144,16 @@ textarea#filecont {
 #uploadDiagramBtn:hover {
   background: #7b5a96;
 }
+
+.highlight {
+  background: light-red;
+}
+
+#addDiagramLegend {
+  padding-inline-start: 2px;
+  padding-inline-end: 2px;
+  display: block;
+  padding-left: 0%;
+  padding-right: 0%;
+  border: none;
+}

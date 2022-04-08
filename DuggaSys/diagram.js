@@ -957,6 +957,10 @@ var settings = {
     }
 };
 
+//Demo start Diagram file params. If JSON file assigned to a given dugga, should load from these rather than test data.
+//----------------------WORK IN PROGRESS: ADD CONDITIONAL LOADING OF fileData AND fileLines, ON START-UP, IF DUGGA-CONNECTED JSON FILE EXISTS------------------------
+var fileData = [];
+var fileLines = [];
 
 // Demo data - read / write from service later on
 var data = [];
@@ -1018,6 +1022,8 @@ function onSetup()
     const NameDEPARTMENT_ID = makeRandomID();
     const NumberDEPARTMENT_ID = makeRandomID();
     const Number_of_employees_ID = makeRandomID();
+
+
 
     const demoData = [
         { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffccdc", stroke: "black", id: EMPLOYEE_ID, isLocked: false },

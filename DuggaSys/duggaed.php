@@ -177,7 +177,7 @@ session_start();
                       <!-- Teacher Submission for Dugga Diagram -->
                   <div id="drop-area">
                     <fieldset style="width:90%">
-                      <legends style="float: left;"> Add diagram to dugga</legend>
+                      <legends id="addDiagramLegend"> Add diagram to dugga</legend>
                       <form id="my-form">
                         <p style=>Select Json diagram to upload</p>
                         <input type="file" id="fileElem" multiple access="image/*" style="display: none" onchange="handleFiles(this.files)">
