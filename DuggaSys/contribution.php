@@ -37,7 +37,7 @@ $vers=getOPG('coursevers');
 	<!-- content START -->
 	<div id="content"></div>
 
-	<div id='commitDiagram' style='margin-left: 12px; width:100%;'></div>
+	<div id='commitDiagram' style='margin-left: 12px; width:70%;'></div>
 
 	<div class='group3 group1' id='personalRankTable' style='margin-left: 12px; width:50%; white-space: nowrap;'></div>
 
