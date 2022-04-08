@@ -1489,7 +1489,7 @@ function ddown(event)
         case mouseModes.EDGE_CREATION:
             if(event.button == 2) return;
             var element = data[findIndex(data, event.currentTarget.id)];
-            if (element != null && !context.includes(element) || !ctrlPressed){
+            if (element != null){
                 updateSelection(element);
             }
             break;
@@ -2193,8 +2193,12 @@ function updateSelectedLine(selectedLine)
     // This function works almost exaclty as updateSelection but for lines instead.
 
     // If CTRL is pressed and an element is selected
-    if(selectedLine != null && ctrlPressed && !contextLine.includes(selectedLine)) {
-        contextLine.push(selectedLine);
+    if(selectedLine != null && ctrlPressed) {
+        if(!contextLine.includes(selectedLine)){
+            contextLine.push(selectedLine);
+        } else {    //If element is already selcted
+            contextLine = contextLine.filter(function (line) { return line !== selectedLine;});
+        }
 
     // If ALT is pressed while selecting a line -> deselects that line
     } else if(selectedLine != null && altPressed) {
@@ -2236,7 +2240,14 @@ function updateSelection(ctxelement) // TODO : Default null value since we use i
         if (!context.includes(ctxelement)) {
             context.push(ctxelement);
             showdata();
+        // The element is already selected    
+        } else {
+            context = context.filter(function (element)
+            {
+                return element !== ctxelement;
+            });
         }
+
         // The element is already selected
     } else if (altPressed && ctxelement != null) {
         if (context.includes(ctxelement)) {
@@ -2964,7 +2975,7 @@ function boxSelect_Update(mouseX, mouseY)
 
         if (ctrlPressed) {
             var markedEntities = getElementsInsideCoordinateBox(rect);
-            // Remove entity from previous context is the element is marked
+            // Remove entity from previous context if the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
             var markedLines = getLinesInsideCoordinateBox(rect);
@@ -2980,7 +2991,7 @@ function boxSelect_Update(mouseX, mouseY)
 
         }else if (altPressed) {
             var markedEntities = getElementsInsideCoordinateBox(rect);
-            // Remove entity from previous context is the element is marked
+            // Remove entity from previous context if the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
             var markedLines = getLinesInsideCoordinateBox(rect);
