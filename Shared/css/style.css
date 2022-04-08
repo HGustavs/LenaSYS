@@ -3436,6 +3436,7 @@ span.arrow {
   font-weight: 300;
   border-radius: 5px;
   cursor: pointer;
+  min-width: max-content;
 }
 
 .filter-btn:hover{
@@ -3453,7 +3454,15 @@ span.arrow {
   background-color: var(--color-background-3);
   border: 1px solid black;
 }
+.show-column-filter-popup {
+  left: inherit;
+  min-width:170px;
+}
 
+.select-dugga-filter {
+  display:flex;
+}
+ 
 .dugga-entry-box {
   padding: 2px 2px 2px 5px;
 }
