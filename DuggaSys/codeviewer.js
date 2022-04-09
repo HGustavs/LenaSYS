@@ -508,11 +508,9 @@ function editImpWords(editType)
 //
 //----------------------------------------------------------------------------------
 
-function displayEditExample(boxid) 
-{
+function displayEditExample() {
 	document.getElementById("title").value = $('<textarea />').html(retData['examplename']).text();
 	document.getElementById("secttitle").value = $('<textarea />').html(retData['sectionname']).text();
-	document.getElementById("boxcontent").value = retData['box'][1][1];
 	changeDirectory(document.getElementById("boxcontent"));
 	document.getElementById("playlink").value = retData['playlink'];
 
