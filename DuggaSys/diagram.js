@@ -889,9 +889,8 @@ const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
 const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
-const colors = ["white", "gold", "#ffccdc", "yellow", "cornflowerBlue", "#FF4D4D"];
-const selectedColors = ["#cccccc", "#ce7f00", "#ff66b3", "#d2cf00", "#505E95", "#A45A5A"];
-const strokeColors = ["black", "white", "grey", "red"];
+const colors = ["white", "gold", "#ffccdc", "yellow", "cornflowerBlue", "#CDF5F6"];
+const strokeColors = ["black", "white", "grey", "#614875"];
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -5328,11 +5327,9 @@ function updateCSSForAllElements()
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
 
-            // Handle coloring
-            var sColor = selectedColors[colors.indexOf(element.fill)];
+            // Opacity on selected elements
             var grandChild = elementDiv.children[0].children[0];
-            grandChild.style.fill = inContext ? `${sColor}` : `${element.fill}`;
-            grandChild.style.stroke = data[i].stroke;
+            grandChild.style.opacity = inContext ? `${0.3}` : `${1.0}`;
         }
     }
 
