@@ -1371,8 +1371,6 @@ function renderCellForghContibTable(col, celldata, cellid) {
     var alphaPlus = new Date();
     var holidayList = getHolidays(alphaPlus);
 
-    str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[1]}</span></div>`
     
     //Get a list of all red days this year and check if they belong on the current row
     //Based on row number
