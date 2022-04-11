@@ -132,13 +132,13 @@ function returned(data)
 			retData['after'].push(sectionData['entries'][posAfter + j]);
 			retData['after'][j][1] = sectionData['entries'][posAfter + j]['entryname'];
 			retData['after'][j][0] = (String)(sectionData['entries'][posAfter + j]['link']);
-			for(k = 1; k < sectionData['codeexamples'].length; k++){
-				if(retData['after'][j][0] == sectionData['codeexamples'][k]['exampleid']){
-					retData['after'][j][2] = sectionData['codeexamples'][k]['examplename'];
-					continue;
+
+			for(k = 0; k < retData['beforeafter'].length; k++){
+				if(retData['beforeafter'][k][0] == retData['after'][j][0]){			
+					retData['after'][j][2] = retData['beforeafter'][k][2]
+					break;
 				}
 			}
-			
 			retData['exampleno'] = posAfter;
 			j++;
 		}else{
@@ -164,10 +164,11 @@ function returned(data)
 			retData['before'].push(sectionData['entries'][posBefore - j]);
 			retData['before'][j][1] = sectionData['entries'][posBefore - j]['entryname'];
 			retData['before'][j][0] = (String)(sectionData['entries'][posBefore - j]['link']);
-			for(k = 0; k < sectionData['entries'].length; k++){
-				if(retData['before'][j][0] == sectionData['entries'][k]['link']){
-					retData['before'][j][2] = sectionData['entries']['examplename'];
-					continue;
+
+			for(k = 0; k < retData['beforeafter'].length; k++){
+				if(retData['beforeafter'][k][0] == retData['before'][j][0] ){					
+					retData['before'][j][2] = retData['beforeafter'][k][2]
+					break;
 				}
 			}
 			retData['exampleno'] = posBefore;
