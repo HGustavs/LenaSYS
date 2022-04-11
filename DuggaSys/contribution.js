@@ -1372,7 +1372,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
     var holidayList = getHolidays(alphaPlus);
 
     str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[2]}</span></div>`
+        ${holidayList[5]}</span></div>`
     
     //Get a list of all red days this year and check if they belong on the current row
     //Based on row number
@@ -1381,6 +1381,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
     while(holidayList.length > i){ 
       var MM = holidayList[i].substr(5,2);
       var DD = holidayList[i].substr(8,2);
+
       
       if(MM == 4 && DD >= 1 && DD <= 8 && rowNr == 0){
         str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
