@@ -97,20 +97,136 @@ function showInfoText(object, displayText) {
   }
 }
 
-function getHolidays() {
+//A hilariously complicated way to find the date of easter every year. Why so complicated you ask. Because the date of easter
+//is detirmined by lunnar cycles thats why.
+function getEaster(date)
+{
+  var Y = date.getFullYear();
+  var A, B, C, P, Q,
+      M, N, D, E;
+
+  A = Y % 19;
+  B = Y % 4;
+  C = Y % 7;
+  P = Math.floor(Y / 100);
+  Q = Math.floor((13 + 8 * P) / 25);
+  M = (15 - Q + P - P / 4) % 30;
+  N = (4 + P - P / 4) % 7;
+  D = (19 * A + M) % 30;
+  E = (2 * B + 4 * C + 6 * D + N) % 7;
+  var days = (22 + D + E);
+  var easterDate
+
+  if ((D == 29) && (E == 6)) {
+    easterDate = Y + "-04" + "-19";
+    return easterDate;
+  }else if ((D == 28) && (E == 6)) {
+    easterDate = Y + "-04" + "-18";
+    return easterDate;
+  }else {
+    if (days > 31) {
+    easterDate = Y + "-04-" + (days - 31);
+    return easterDate;
+    }else {
+      easterDate = Y + "-03-" + days;
+      return easterDate;
+    }
+  }
+}
+
+function getGoodFriday(easterDate)
+{
+  var YYYY = easterDate.substr(0,4);
+  var MM = easterDate.substr(5,2);
+  var DD = easterDate.substr(8,2);
+  if((Number(DD) - 2) <= 0){
+    MM = "03"
+    return (YYYY + "-" + MM + "-" + DD);
+  }
+  else{
+    return (YYYY + "-" + MM + "-" + String(Number(DD) - 2));
+  }
+}
+
+function getEasterMonday(easterDate)
+{
+  var YYYY = easterDate.substr(0,4);
+  var MM = easterDate.substr(5,2);
+  var DD = easterDate.substr(8,2);
+  if((Number(DD) + 1) >= 31){
+    MM = "04"
+    return (YYYY + "-" + MM + "-" + DD);
+  }
+  else{
+    return (YYYY + "-" + MM + "-" + String(Number(DD) + 1));
+  }
+}
+
+function getAscensionDay(easterDate)
+{
+  var YYYY = easterDate.substr(0,4);
+  var MM = easterDate.substr(5,2);
+  var DD = easterDate.substr(8,2);
+
+  //There are four possiblities 
+  //Easter was in mars and ascension day is in april
+  //Easter was in mars and ascension day is in may
+  //Easter was in april and ascension day is in may
+  //Easter was in april and ascension day is in june
+  if(((Number(DD) + 40) <= 61) && (MM == "03")){
+    DD = String(Number(DD) + 40 - 31);
+    return (YYYY + "-04-" + DD);
+  }else if(((Number(DD) + 40) > 61) && (MM == "03")){
+    DD = String(Number(DD) + 40 - 61);
+    return (YYYY + "-05-" + DD);
+  }else if(((Number(DD) + 40) <= 61) && (MM == "04")){
+    DD = String(Number(DD) + 40 - 30);
+    return (YYYY + "-05-" + DD);
+  }else if(((Number(DD) + 40) > 61) && (MM == "04")){
+    DD = String(Number(DD) + 40 - 61);
+    return (YYYY + "-06-" + DD);
+  }
+
+}
+
+function getMidsummer(date)
+{
+  var year = date.getFullYear();
+  var day = 19;
+  while(day <= 26){
+    const d = new Date("July " + day + ", " + year + " 01:15:00");
+    var weekday = d.getDay();
+    if(weekday == 5){
+      return (year + "-06-" + day)
+    }
+    day++;
+  }
+}
+
+function getHolidays(date) 
+{
   var holidays = new Array();
-  var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
-  var redDay2 = getYYYYMMDD(new Date("2019-04-22"));
-  var redDay3 = getYYYYMMDD(new Date("2019-05-01"));
-  var redDay4 = getYYYYMMDD(new Date("2019-05-30"));
-  var redDay5 = getYYYYMMDD(new Date("2019-06-06"));
-  var redDay6 = getYYYYMMDD(new Date("2019-06-21"));
-  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6);
+  var easterDate = getEaster(date);
+  var goodFridayDate = getGoodFriday(easterDate);
+  var easterMondayDate = getEasterMonday(easterDate);
+  var ascensionDayDate = getAscensionDay(easterDate);
+  var midsummerDate = getMidsummer(date);
+  var Y = date.getFullYear();
+
+  var redDay1 = getYYYYMMDD(new Date(goodFridayDate));
+  var redDay2 = getYYYYMMDD(new Date(easterDate));
+  var redDay3 = getYYYYMMDD(new Date(easterMondayDate));
+  var redDay4 = getYYYYMMDD(new Date(ascensionDayDate));
+  var redDay5 = getYYYYMMDD(new Date(Y + "-05-01"));
+  var redDay6 = getYYYYMMDD(new Date(Y + "-06-06"));
+  var redDay7 = getYYYYMMDD(new Date(midsummerDate));
+  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6, redDay7);
   return holidays;
 }
 
-function isHoliday(date){
-  var holiday = getHolidays();
+function isHoliday(date)
+{
+  var holiday = getHolidays(date);
   for(i = 0; i<holiday.length; i++){
     if(date == holiday[i]){
       return true;
@@ -1136,6 +1252,7 @@ function createGitHubcontributionTable(data) {
     tblhead: {
       weeks: "Week",
       dates: "Dates",
+      redDays: "Red Days",
       codeContribution: "Code Contribution",
       githubContribution: "GitHub Contribution"
     },
