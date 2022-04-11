@@ -206,7 +206,7 @@ function getMidsummer(date)
 function getHolidays(date) 
 {
   var holidays = new Array();
-  var easterDate = getEaster(date);
+/*   var easterDate = getEaster(date);
   var goodFridayDate = getGoodFriday(easterDate);
   var easterMondayDate = getEasterMonday(easterDate);
   var ascensionDayDate = getAscensionDay(easterDate);
@@ -219,8 +219,15 @@ function getHolidays(date)
   var redDay4 = getYYYYMMDD(new Date(ascensionDayDate));
   var redDay5 = getYYYYMMDD(new Date(Y + "-05-01"));
   var redDay6 = getYYYYMMDD(new Date(Y + "-06-06"));
-  var redDay7 = getYYYYMMDD(new Date(midsummerDate));
-  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6, redDay7);
+  var redDay7 = getYYYYMMDD(new Date(midsummerDate)); */
+
+  var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
+  var redDay2 = getYYYYMMDD(new Date("2019-04-22"));
+  var redDay3 = getYYYYMMDD(new Date("2019-05-01"));
+  var redDay4 = getYYYYMMDD(new Date("2019-05-30"));
+  var redDay5 = getYYYYMMDD(new Date("2019-06-06"));
+  var redDay6 = getYYYYMMDD(new Date("2019-06-21"));
+  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6);
   return holidays;
 }
 
@@ -1360,6 +1367,50 @@ function renderCellForghContibTable(col, celldata, cellid) {
        }
      }
      str += "</div>";
+  } else if(col == 'Red Days'){
+    var alphaPlus = new Date();
+    var holidayList = getHolidays(alphaPlus);
+    var i = 0;
+    //Get a list of all red days this year and check if they belong on the current row
+    //Based on row number
+    //Works only if the course is held the same time every year
+    while(holidayList.length > i){
+      var MM = holidayList[i].getMonth();
+      var DD = holidayList[i].getDate();
+      if(MM == 4 && DD >= 1 && DD <= 8 && rowNr == 0){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 4 && DD >= 9 && DD <= 15 && rowNr == 1){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 4 && DD >= 15 && DD <= 22 && rowNr == 2){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 4 && DD >= 22 && DD <= 29 && rowNr == 3){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if((MM == 4 || MM == 5) && DD >= 29 && DD <= 6 && rowNr == 4){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 5 && DD >= 6 && DD <= 13 && rowNr == 5){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 5 && DD >= 13 && DD <= 20 && rowNr == 6){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 5 && DD >= 20 && DD <= 27 && rowNr == 7){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if((MM == 5 || MM == 6) && DD >= 27 && DD <= 3 && rowNr == 8){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 6 && DD >= 3 && DD <= 10 && rowNr == 8 && rowNr == 9){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } 
+      i++;
+    }
+
   } else {
     str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${obj}</span></div>`;
   }
