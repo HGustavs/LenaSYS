@@ -1381,7 +1381,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
     //Get a list of all red days this year and check if they belong on the current row
     //Based on row number
     //Works only if the course is held the same time every year
-    while(holidayList.length > i){
+    /* while(holidayList.length > i){ */
       var MM = holidayList[i].getMonth();
       var DD = holidayList[i].getDate();
       /* 
