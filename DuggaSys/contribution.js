@@ -207,27 +207,27 @@ function getHolidays(date)
 {
   var holidays = new Array();
   var easterDate = getEaster(date);
-/*   var goodFridayDate = getGoodFriday(easterDate);
+  var goodFridayDate = getGoodFriday(easterDate);
   var easterMondayDate = getEasterMonday(easterDate);
   var ascensionDayDate = getAscensionDay(easterDate);
   var midsummerDate = getMidsummer(date);
-  var Y = date.getFullYear(); */
+  var Y = date.getFullYear(); 
 
-/*   var redDay1 = getYYYYMMDD(new Date(goodFridayDate)); */
+ var redDay1 = getYYYYMMDD(new Date(goodFridayDate)); 
   var redDay2 = getYYYYMMDD(new Date(easterDate));
-/*   var redDay3 = getYYYYMMDD(new Date(easterMondayDate));
+  var redDay3 = getYYYYMMDD(new Date(easterMondayDate));
   var redDay4 = getYYYYMMDD(new Date(ascensionDayDate));
   var redDay5 = getYYYYMMDD(new Date(Y + "-05-01"));
   var redDay6 = getYYYYMMDD(new Date(Y + "-06-06"));
-  var redDay7 = getYYYYMMDD(new Date(midsummerDate)); */
+  var redDay7 = getYYYYMMDD(new Date(midsummerDate));
 
-  var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
-/*   var redDay2 = getYYYYMMDD(new Date("2019-04-22")); */
+  /* var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
+  var redDay2 = getYYYYMMDD(new Date("2019-04-22"));
   var redDay3 = getYYYYMMDD(new Date("2019-05-01"));
   var redDay4 = getYYYYMMDD(new Date("2019-05-30"));
   var redDay5 = getYYYYMMDD(new Date("2019-06-06"));
-  var redDay6 = getYYYYMMDD(new Date("2019-06-21"));
-  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6);
+  var redDay6 = getYYYYMMDD(new Date("2019-06-21")); */
+  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6,redDay7);
   return holidays;
 }
 
