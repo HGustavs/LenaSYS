@@ -874,8 +874,12 @@ var scrollx = 100;
 var scrolly = 100;
 var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
 var camera = new Point(0, 0); // Relative to coordinate system origo
+
+var zoomAllowed = true; // Boolean value to slow down zoom on touchpad.
+
 var lastZoomPos = new Point(0, 0); //placeholder for the previous zoom position relative to the screen (Screen position for previous zoom)
 var lastMousePosCoords = new Point(0, 0); //placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom) 
+
 
 // Constants
 const elementwidth = 200;
@@ -1358,13 +1362,16 @@ document.addEventListener("mouseleave", function(event){
  * @description Event function triggered when the mousewheel reader has a value of grater or less than 0.
  * @param {MouseEvent} event Triggered mouse event.
  */
-function mwheel(event)
-{
+function mwheel(event) {
     event.preventDefault();
-    if(event.deltaY < 0) {
-        zoomin(event);
-    } else {
-        zoomout(event);
+    if(zoomAllowed){
+        if(event.deltaY < 0) {
+            zoomin(event);
+        } else {
+            zoomout(event);
+        }
+        zoomAllowed = false;
+        setTimeout(function(){zoomAllowed = true}, 75); // This number decides the time between each zoom tick, in ms.
     }
 }
 
