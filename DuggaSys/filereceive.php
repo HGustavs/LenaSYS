@@ -174,6 +174,7 @@ if ($storefile) {
         "dtd" => ["application/octet-stream"],
         "py" => ["text/plain"],
         "bat" => ["text/plain"],
+        "json" => ["text/application"],
         //	"xslt"	=> [
         "xsl" => ["text/xml"]
         //	"sl"		=> [
