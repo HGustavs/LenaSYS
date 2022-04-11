@@ -184,8 +184,10 @@ function renderCell(col, celldata, cellid) {
 	str = "<div class='resultTableCell'>";
 	if (col == "hash"){
 		var url = createUrl(celldata);
+		console.log("celldata: "+celldata);
 		str += "<div class='resultTableText'>";
 		str += "<a href='" + url + "'>" + celldata + "</a>";
+		
 	}
 	else if(col == "grade"){
 		str += "<div class='gradeContainer resultTableText'>";

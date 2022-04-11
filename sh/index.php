@@ -11,7 +11,10 @@ require 'query.php';
 //Gets the parameter from the URL. If the parameter is not availble then return UNK
 $course = getOPG("c");
 $assignment = getOPG("a");
-$submission = getOPG("s");
+//Before
+// $submission = getOPG("s");
+//After
+$submission = getOPG("a");
 
 // Connect to database and start session
 pdoConnect();
@@ -26,6 +29,7 @@ if(isset($_SESSION['uid'])){
 //To test this function, try and enter the following:
 //http://localhost/lenasys/LenaSYS/sh/?a=<hash>
 function GetAssignment ($hash){
+
 	global $pdo;
 	global $userid;
 
@@ -34,9 +38,13 @@ function GetAssignment ($hash){
 
 	// Database request form
 	$sql = "select * from userAnswer left join quiz on userAnswer.quiz=quiz.id left join course on course.cid=userAnswer.cid where hash=:hash;";
+	$sql_1 = "UPDATE userAnswer SET last_Time_techer_visited=SYSDATE() where hash=:hash;";
 	$query = $pdo->prepare($sql);
+	$query_1 = $pdo->prepare($sql_1);
 	$query->bindParam(":hash", $hash,PDO::PARAM_STR);
+	$query_1->bindParam(":hash", $hash,PDO::PARAM_STR);
 	$query->execute();
+	$query_1->execute();
 	
 	// There should only be one match to the hash value in database as the hash is unique
 	foreach ($query->fetchAll() as $row){
