@@ -735,7 +735,7 @@ const keybinds = {
         PLACE_ENTITY: {key: "3", ctrl: false},
         PLACE_RELATION: {key: "4", ctrl: false},
         PLACE_ATTRIBUTE: {key: "5", ctrl: false},
-        PLACE_UMLENTITY: {key: "6", ctrl: false},
+        PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
         EDGE_CREATION: {key: "7", ctrl: false},
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
@@ -776,7 +776,7 @@ const elementTypes = {
     ERRelation: 1,
     ERAttr: 2,
     Ghost: 3,
-    UMLEntity: 4,
+    UMLEntity: 4,       //<-- UML functionality Change to 5
 };
 
 /**
@@ -813,12 +813,18 @@ const attrState = {
 };
 
 /**
- * @description Available types of entity, ie ER, IE, UML This affect how the entity is drawn and which menu is displayed 
+ * @description Available types of entity, ie ER, IE, UML This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
  */
 const entityType = {
     UML: "UML",
     ER: "ER",
 };
+/**
+ * @description
+ */
+const umlState = {
+    NORMAL: "normal",
+}
 
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
@@ -986,7 +992,7 @@ var defaults = {
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60 },
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45 },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5 },
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50}
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50}     //<-- UML functionality
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1296,7 +1302,7 @@ document.addEventListener('keyup', function (e)
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
-        //===================================================
+        //=================================================== //<-- UML functionality
         //Temp for UML functionality
         if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
             setElementPlacementType(elementTypes.UMLEntity)
@@ -3527,46 +3533,32 @@ function generateContextProperties()
 
     if (context.length == 1 && contextLine.length == 0) {
         var element = context[0];
-        var value;
-        var selected;
-
-        //If it is a UML type
-        if (element.type == "UML") {
-
-            selected = context[0].type;
-            if(element.kind == "UMLEntity") {
-                value = Object.values(entityType);
-            }       
-        }
-
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
         for (const property in element) {
             switch (property.toLowerCase()) {
                 case "name":
                     str += `<input id="elementProperty_${property}" type="text" value="${element[property]}" onfocus="propFieldSelected(true)" onblur="propFieldSelected(false)"> `;
                     break;
-                case "type":
-                    // Attempt for learning how the dynamic properties panel is created.
-                    // str += `<input id="elementProperty_${property}" type="text" value="${element[property]}" onfocus="propFieldSelected(true)" onblur="propFieldSelecred(false)">`;
-                    break;
+            
                 default:
                     break;
             }
         }
 
         //Creates drop down for changing state of ER elements
-        if(element.type == "ER") {
-            var selected = context[0].state;
-            if(selected == undefined) {
-                selected = "normal"
-            }
-            if(element.kind=="ERAttr") {
-                value = Object.values(attrState);
-            } else if(element.kind=="EREntity") {
-                value = Object.values(entityState);
-            } else if(element.kind=="ERRelation") {
-                value = Object.values(relationState);
-            }
+        var value;
+        var selected = context[0].state;
+        if(selected == undefined) {
+            selected = "normal"
+        }
+        if(element.kind=="ERAttr") {
+            value = Object.values(attrState);
+        } else if(element.kind=="EREntity") {
+            value = Object.values(entityState);
+        } else if(element.kind=="ERRelation") {
+            value = Object.values(relationState);
+        } else if (element.kind == "UMLEntity") {      //<-- UML functionality , continue here 
+            value = Object.values(umlState);
         }
 
         str += '<select id="propertySelect">';
@@ -4753,7 +4745,7 @@ function drawElement(element, ghosted = false)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-
+    var elemAttri = 2;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
 
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
@@ -4772,43 +4764,71 @@ function drawElement(element, ghosted = false)
     var xAnchor = tooBig ? margin : hboxw;
     var vAlignment = tooBig ? "left" : "middle";
 
-    // Create div & svg element
-    str += `
-				<div id='${element.id}'	class='element' onmousedown='ddown(event);' style='
-						left:0px;
-						top:0px;
-						width:${boxw}px;
-						height:${boxh}px;
-						font-size:${texth}px;`;
-    if(context.includes(element)){
-        str += `z-index: 1;`;
-    }
-    if (ghosted) {
-        str += `
-            pointer-events: none;
-            opacity: ${ghostLine ? 0 : 0.5};
-        `;
-    }
-    str += `'>`;
-    str += `<svg width='${boxw}' height='${boxh * 2}' >`;
-
-    //===============================================
+    //=============================================== <-- UML functionality
     if (element.kind == "UMLEntity") {
+            //div to encapuslate UML element
+            str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
+            style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
+
+            if(context.includes(element)){
+                str += `z-index: 1;`;
+            }
+            if (ghosted) {
+                str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+            }
+        str += `'>`;
+
+        //div to encapuslate UML header
+        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`; 
+        //svg for UML header, background and text
+        str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <rect x='${linew}' y='${linew + boxh - (linew * 2)}' width='${boxw - (linew * 2)}' height='${boxh / 2}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <rect x='${linew}' y='${linew + boxh - (linew * 2)}' width='${boxw - (linew * 2)}' height='${boxh / 2}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <rect x='${linew}' y='${linew + boxh - (linew * 2) + boxh / 2}' width='${boxw - (linew * 2)}' height='${boxh / 2}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-        <text x='${xAnchor}' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>Texto</text> 
-        <text x='${xAnchor}' y='${hboxh + boxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>Another texto</text>  
-        `;
+        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        str += `</svg>`;
+        //end of svg for UML header
+        str += `</div>`;
+        //end of div for UML header
+
+        //div to encapuslate UML content
+        str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
+        //svg for background
+        str += `<svg width='${boxw}' height='${boxh * elemAttri}'>`;
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemAttri - (linew * 2)}'
+        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+        for (var i = 0; i < elemAttri; i++) {
+            str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- Attri ${i}</text>`;
+        }
+
+        //end of svg for background
+        str += `</svg>`;
+        
+        //div for UML attribute <-- Will be implemented in upcoming issues
+        str += `<div>`;
+        //end of div for UML attribute
+        str += `</div>`;
+        //end of div for UML content
+        str += `</div>`;
     }
-    // Create svg 
+    //====================================================================
+
+    
     else if (element.kind == "EREntity") {
+        // Create div & svg element
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);'
+            style='left:0px; top:0px; width:${boxw}px; height:${boxh}px; font-size:${texth}px;`;
+
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+        }
+        str += `'>`;
+
+        str += `<svg width='${boxw}' height='${boxh * 2}' >`;
+
+        //Create svg element
         var weak = "";
 
         if(element.state == "weak") {
@@ -4822,8 +4842,25 @@ function drawElement(element, ghosted = false)
                    ${weak}
                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                    `;
+
+        str += "</svg>";
     }
+
     else if (element.kind == "ERAttr") {
+        // Create div & svg element
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);'
+            style='left:0px; top:0px; width:${boxw}px; height:${boxh}px; font-size:${texth}px;`;
+
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+        }
+        str += `'>`;
+
+        str += `<svg width='${boxw}' height='${boxh * 2}' >`;
+
         var dash = "";
         var multi = "";
 
@@ -4864,9 +4901,23 @@ function drawElement(element, ghosted = false)
             diff = diff < 0 ? 0 - diff + 10 : 0;
             str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="${element.stroke}" stroke-dasharray="${5*zoomfact}" stroke-width="${linew}"/>`;
         }
-        
+        str += "</svg>";
     }
+
     else if (element.kind == "ERRelation") {
+        // Create div & svg element
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);'
+            style='left:0px; top:0px; width:${boxw}px; height:${boxh}px; font-size:${texth}px;`;
+
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+        }
+        str += `'>`;
+
+        str += `<svg width='${boxw}' height='${boxh * 2}' >`;
 
         var numOfLetters = element.name.length;
         if (tooBig) {
@@ -4895,9 +4946,9 @@ function drawElement(element, ghosted = false)
                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
                    ${weak}`;
         str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
-
+        str += "</svg>";
     }
-    str += "</svg>";
+
     if (element.isLocked) {
         str += `<img id="pad_lock" width='${zoomfact *20}' height='${zoomfact *25}' src="../Shared/icons/pad_lock.svg"/>`;     
     }
