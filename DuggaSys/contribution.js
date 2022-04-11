@@ -1370,9 +1370,10 @@ function renderCellForghContibTable(col, celldata, cellid) {
   } else if(col == 'Red Days'){
     str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
         hello_world</span></div>`
-    /* var alphaPlus = new Date();
+    var alphaPlus = new Date();
     var holidayList = getHolidays(alphaPlus);
     var i = 0;
+    /* 
     //Get a list of all red days this year and check if they belong on the current row
     //Based on row number
     //Works only if the course is held the same time every year
