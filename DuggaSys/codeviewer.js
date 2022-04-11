@@ -1079,14 +1079,21 @@ function Skip(skipkind)
 
 function execSkip() {
 	str = "";
+	
+	//Holding backwards button
 	if (dmd == 1) {
+
 		for (i = 0; i < retData['before'].length; i++) {
-			str += "<span id='F" + retData['before'][i][1] + "' onclick='navigateExample(\"" + retData['before'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['before'][i][1] + ":" + retData['before'][i][2] + "</span>";
+			str += "<span id='F" + retData['before'][i][1] + "' onclick='navigateExample(\"" + retData['before'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['before'][i][1] + ":" + retData['before'][i][2] + "</span>";		
 		}
 		document.getElementById("backwdropc").innerHTML = str;
 		document.getElementById("backwdrop").style.display = "block";
 		dmd = 0;
-	} else if (dmd == 2) {
+	} 
+	
+	//Holding forwards button
+	else if (dmd == 2) {
+
 		for (i = 0; i < retData['after'].length; i++) {
 			str += "<span id='F" + retData['after'][i][1] + "' onclick='navigateExample(\"" + retData['after'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['after'][i][1] + ":" + retData['after'][i][2] + "</span>";
 		}
@@ -1094,6 +1101,18 @@ function execSkip() {
 		document.getElementById("forwdrop").style.display = "block";
 		dmd = 0;
 	}
+
+	//Hides dropdown if click outside.
+	document.addEventListener("click", function (e) {
+
+		if (!document.getElementById("backwdrop").contains(e.target) || !document.getElementById("forwdrop").contains(e.target)) {
+			
+			document.getElementById("backwdrop").style.display = "none";
+			document.getElementById("forwdrop").style.display = "none";
+
+		}
+	});
+	
 }
 
 //Retrieve height for building menu.
