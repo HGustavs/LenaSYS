@@ -1381,7 +1381,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
       var MM = holidayList[i].substr(5,2);
       var DD = holidayList[i].substr(8,2);
       str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        _${MM}_${DD}_</span></div>`
+        _${MM}_${DD}_${rowNr}</span></div>`
       
 
       
