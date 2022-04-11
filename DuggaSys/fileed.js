@@ -404,7 +404,7 @@ function fileDownload(name, path, extension){
     h1.textContent = "Download file";
     a.href = path;
     a.textContent = name + "." + extension;
-    a.download = name;
+    a.download = "";
     div.appendChild(h1);
     div.appendChild(a);
     document.querySelector(".fileView").appendChild(div);
