@@ -206,6 +206,7 @@ function getMidsummer(date)
 function getHolidays(date) 
 {
   var holidays = new Array();
+
   var easterDate = getEaster(date);
   var goodFridayDate = getGoodFriday(easterDate);
   var easterMondayDate = getEasterMonday(easterDate);
@@ -221,6 +222,8 @@ function getHolidays(date)
   var redDay6 = getYYYYMMDD(new Date(Y + "-06-06"));
   var redDay7 = getYYYYMMDD(new Date(midsummerDate));
 
+  //This is old and static but there was a bug that caused line diagram and bar diagram
+  //to not render after the change to the new self updating system.
   /* var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
   var redDay2 = getYYYYMMDD(new Date("2019-04-22"));
   var redDay3 = getYYYYMMDD(new Date("2019-05-01"));
