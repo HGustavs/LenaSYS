@@ -19,6 +19,7 @@ session_start();
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="duggaed.js"></script>
+  <script src="fileed.js"></script>
   <script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
   <script src="timer.js"></script>
   <script src="clickcounter.js"></script>
@@ -226,9 +227,13 @@ session_start();
        </div>
     </div>
   	<!-- Edit Variant Dialog END -->
+     
+     
 
     <div class="fixed-action-button" style = "padding-right: 150px;" id="fabButtonAcc">
         <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
+        
+        
         <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
         </ol>
         <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed id='fab-btn-list'>
@@ -272,8 +277,7 @@ session_start();
                   ';
               }
               ?>
-
-    </ol>
+        </ol>
 	</div>
 
 </body>
