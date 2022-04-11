@@ -881,7 +881,6 @@ const strokewidth = 2.0;
 const baseline = 10;
 const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
 const colors = ["white", "gold", "#ffccdc", "yellow", "cornflowerBlue", "#CDF5F6"];
-// const selectedColors = ["#cccccc", "#ce7f00", "#ff66b3", "#d2cf00", "#505E95", "#A45A5A"]; // Uncomment if an entity should change color when selected (1 of 2).
 const strokeColors = ["black", "white", "grey", "#614875"];
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
@@ -5038,11 +5037,9 @@ function updateCSSForAllElements()
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
 
-            // Handle coloring // Uncomment if an entity should change color when selected (2 of 2).
-            // var sColor = selectedColors[colors.indexOf(element.fill)];
-            // var grandChild = elementDiv.children[0].children[0];
-            // grandChild.style.fill = inContext ? `${sColor}` : `${element.fill}`;
-            // grandChild.style.stroke = data[i].stroke;
+            // Opacity on selected elements
+            var grandChild = elementDiv.children[0].children[0];
+            grandChild.style.opacity = inContext ? `${0.3}` : `${1.0}`;
         }
     }
 
