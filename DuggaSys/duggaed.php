@@ -227,7 +227,85 @@ session_start();
        </div>
     </div>
   	<!-- Edit Variant Dialog END -->
-     
+      <!-- Add File Dialog START -->
+    <div id='addFile' class='loginBoxContainer' style='display:none;'>
+        <div class='loginBox' style='width:464px; overflow-y: visible'>
+            <div class='loginBoxheader' style='cursor:default;'>
+                <h3 class="fileHeadline" id="eFileHeadline">Add Dummy Empty File</h3>
+
+                <h3 class="fileHeadline" id="mFileHeadline">Add Course Local File</h3>
+                <h3 class="fileHeadline" id="eFileHeadline">Add Dummy Empty File</h3>
+                <h3 class="fileHeadline" id="gFileHeadline">Add Global File</h3>
+                <h3 class="fileHeadline" id="lFileHeadline">Add Version Local File</h3>
+                <h3 class="linkPopUp">Add Link</h3>
+                <div class='cursorPointer' onclick='closeAddFile();'>x</div>
+            </div>
+           <div class="addNewFile">
+                <form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
+                <div>
+                    <input type='hidden' id='courseid' name='courseid' value='Toddler'/>
+                    <input type='hidden' id='coursevers' name='coursevers' value='Toddler'/>
+                    <input type='hidden' id='kind' name='kind' value='Toddler'/>
+                    <div class='inputwrapper filePopUp'>
+                        <span>Upload File:</span>
+                        <input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" placeholder="hej.text"/>
+                        
+                        <div class="fileUploadInfo">
+                            <h1>Allowed Files</h1>
+                            <p>PDF, HTML, PHP, MD, TXT, JS, JPG, PNG</p>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class='inputwrapper linkPopUp'>
+                        <span>URL:</span>
+                        <input style="width:380px" id="uploadedlink" class="textinput" name="link"
+                               placeholder="https://facebook.com" type="text"/>
+                    </div>
+                </div>
+                <div id='uploadbuttonname'>
+                    <input class='submit-button fileed-submit-button' type="submit" onclick="uploadFile(fileKind);"/>
+                </div>
+                <div style='display:none;' id='errormessage'></div>
+            </form>
+
+           </div>
+            <div id="createNewEmptyFile" style="display: none;">
+                <form enctype="multipart/form-data" action="filereceive.php" method="POST" onsubmit="return validateDummyFile();">
+                    <input type='hidden' id='ecourseid' name='courseid' value='Toddler'/>
+                    <input type='hidden' id='ecoursevers' name='coursevers' value='Toddler'/>
+                    <input type='hidden' id='ekind' name='kind' value='Toddler'/>
+                    <label for="newEmptyFile">File name and type e.g greger.txt</label>
+                    <!-- .svg| -->
+                    <ul style="padding-left: 0px; list-style-type: none; display: none;" id="dummyFileErrorList"></ul>
+                    <input type="text" id="newEmptyFile" name="newEmptyFile[]" placeholder="Greger.txt">
+                    <span id="spankind">Kind:</span>
+                    <select name ="efilekind[]" id="selectdir">
+                    <?php
+                    if(isSuperUser($_SESSION['uid'])){
+                        echo '
+                            <option value="GFILE">Global</option>
+                           
+                        ';
+                    }
+                    if(isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w')){
+                    echo '
+                    <option value="MFILE">Course Local</option>
+                    <option value="LFILE">Version Local</option>
+                    ';
+                    }
+                    ?>
+                    <select>
+                    <div id='uploadbuttonname'>
+                        <input type="submit" style="position: relative; top:25px;" onclick="uploadFile('EFILE');"/>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Edit File Dialog END -->
      
 
     <div class="fixed-action-button" style = "padding-right: 150px;" id="fabButtonAcc">
