@@ -1375,6 +1375,8 @@ function renderCellForghContibTable(col, celldata, cellid) {
     var i = 0;
     str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
         ${holidayList[i]}</span></div>`
+    str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+      ${holidayList[3]}</span></div>`
     /* 
     //Get a list of all red days this year and check if they belong on the current row
     //Based on row number
