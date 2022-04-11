@@ -133,11 +133,11 @@
 			echo "<body>";
 		}
 ?>
-<!--<script type="text/javascript">
+<script type="text/javascript">
 
 	setHash("<?php /*echo $hash*/ ?>");
 
-</script>-->
+</script>
 
 
 	<?php
