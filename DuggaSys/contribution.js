@@ -97,20 +97,146 @@ function showInfoText(object, displayText) {
   }
 }
 
-function getHolidays() {
+//A hilariously complicated way to find the date of easter every year. Why so complicated you ask. Because the date of easter
+//is detirmined by lunnar cycles thats why.
+function getEaster(date)
+{
+  var Y = date.getFullYear();
+  var A, B, C, P, Q,
+      M, N, D, E;
+
+  A = Y % 19;
+  B = Y % 4;
+  C = Y % 7;
+  P = Math.floor(Y / 100);
+  Q = Math.floor((13 + 8 * P) / 25);
+  M = (15 - Q + P - P / 4) % 30;
+  N = (4 + P - P / 4) % 7;
+  D = (19 * A + M) % 30;
+  E = (2 * B + 4 * C + 6 * D + N) % 7;
+  var days = (22 + D + E);
+  var easterDate
+
+  if ((D == 29) && (E == 6)) {
+    easterDate = Y + "-04" + "-19";
+    return easterDate;
+  }else if ((D == 28) && (E == 6)) {
+    easterDate = Y + "-04" + "-18";
+    return easterDate;
+  }else {
+    if (days > 31) {
+    easterDate = Y + "-04-" + (days - 31);
+    return easterDate;
+    }else {
+      easterDate = Y + "-03-" + days;
+      return easterDate;
+    }
+  }
+}
+
+function getGoodFriday(easterDate)
+{
+  var YYYY = easterDate.substr(0,4);
+  var MM = easterDate.substr(5,2);
+  var DD = easterDate.substr(8,2);
+  if((Number(DD) - 2) <= 0){
+    MM = "03"
+    return (YYYY + "-" + MM + "-" + DD);
+  }
+  else{
+    return (YYYY + "-" + MM + "-" + String(Number(DD) - 2));
+  }
+}
+
+function getEasterMonday(easterDate)
+{
+  var YYYY = easterDate.substr(0,4);
+  var MM = easterDate.substr(5,2);
+  var DD = easterDate.substr(8,2);
+  if((Number(DD) + 1) >= 31){
+    MM = "04"
+    return (YYYY + "-" + MM + "-" + DD);
+  }
+  else{
+    return (YYYY + "-" + MM + "-" + String(Number(DD) + 1));
+  }
+}
+
+function getAscensionDay(easterDate)
+{
+  var YYYY = easterDate.substr(0,4);
+  var MM = easterDate.substr(5,2);
+  var DD = easterDate.substr(8,2);
+
+  //There are four possiblities 
+  //Easter was in mars and ascension day is in april
+  //Easter was in mars and ascension day is in may
+  //Easter was in april and ascension day is in may
+  //Easter was in april and ascension day is in june
+  if(((Number(DD) + 40) <= 61) && (MM == "03")){
+    DD = String(Number(DD) + 40 - 30);
+    return (YYYY + "-04-" + DD);
+  }else if(((Number(DD) + 40) > 61) && (MM == "03")){
+    DD = String(Number(DD) + 40 - 61);
+    return (YYYY + "-05-" + DD);
+  }else if(((Number(DD) + 40) <= 61) && (MM == "04")){
+    DD = String(Number(DD) + 40 - 31);
+    return (YYYY + "-05-" + DD);
+  }else if(((Number(DD) + 40) > 61) && (MM == "04")){
+    DD = String(Number(DD) + 40 - 61);
+    return (YYYY + "-06-" + DD);
+  }
+
+}
+
+function getMidsummer(date)
+{
+  var year = date.getFullYear();
+  var day = 19;
+  while(day <= 26){
+    const d = new Date("July " + day + ", " + year + " 01:15:00");
+    var weekday = d.getDay();
+    if(weekday == 5){
+      return (year + "-06-" + day)
+    }
+    day++;
+  }
+}
+
+function getHolidays(date) 
+{
   var holidays = new Array();
-  var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
+
+  var easterDate = getEaster(date);
+  var goodFridayDate = getGoodFriday(easterDate);
+  var easterMondayDate = getEasterMonday(easterDate);
+  var ascensionDayDate = getAscensionDay(easterDate);
+  var midsummerDate = getMidsummer(date);
+  var Y = date.getFullYear(); 
+
+ var redDay1 = getYYYYMMDD(new Date(goodFridayDate)); 
+  var redDay2 = getYYYYMMDD(new Date(easterDate));
+  var redDay3 = getYYYYMMDD(new Date(easterMondayDate));
+  var redDay4 = getYYYYMMDD(new Date(ascensionDayDate));
+  var redDay5 = getYYYYMMDD(new Date(Y + "-05-01"));
+  var redDay6 = getYYYYMMDD(new Date(Y + "-06-06"));
+  var redDay7 = getYYYYMMDD(new Date(midsummerDate));
+
+  //This is old and static but there was a bug that caused line diagram and bar diagram
+  //to not render after the change to the new self updating system.
+  /* var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
   var redDay2 = getYYYYMMDD(new Date("2019-04-22"));
   var redDay3 = getYYYYMMDD(new Date("2019-05-01"));
   var redDay4 = getYYYYMMDD(new Date("2019-05-30"));
   var redDay5 = getYYYYMMDD(new Date("2019-06-06"));
-  var redDay6 = getYYYYMMDD(new Date("2019-06-21"));
-  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6);
+  var redDay6 = getYYYYMMDD(new Date("2019-06-21")); */
+  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6,redDay7);
   return holidays;
 }
 
-function isHoliday(date){
-  var holiday = getHolidays();
+function isHoliday(date)
+{
+  var holiday = getHolidays(date);
   for(i = 0; i<holiday.length; i++){
     if(date == holiday[i]){
       return true;
@@ -694,9 +820,7 @@ function renderActivityPoints(activities) {
   const BASELINE = 75;
   const MIDDLE = 243;
   activities.forEach(entry => {
-    //Cast integer to string
-    var hourString = entry.time.toString();
-    var hour = hourString.substr(0, 2);
+    var hour = entry.time.substr(0, 2);
     var houroffset = parseInt(hour) + 6;
     var type = entry.type;
     var activityCount = activities.length;
@@ -967,13 +1091,13 @@ function returnedSection(data) {
 
   str += "<div id='contributionContainer' class='contributionSort'>";
   str += `<input type='button' id='allBtn' value='All' class='submit-button title='All' 
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'></input>`;
+  onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>`;
   str += `<input type='button' id='basicBtn' value='Basic' class='submit-button title='Basic'
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'></input>`;
+  onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>`;
   str += `<input type='button' id='chartsBtn' value='Charts' class='submit-button title='Charts'
-  onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
+  onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>`;
   str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution'
-  onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
+  onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>`;
   str += "</div>";
 
   localStorage.setItem('GitHubUser', data['githubuser'])
@@ -1138,13 +1262,14 @@ function createGitHubcontributionTable(data) {
     tblhead: {
       weeks: "Week",
       dates: "Dates",
+      redDays: "Red Days",
       codeContribution: "Code Contribution",
       githubContribution: "GitHub Contribution"
     },
     tblbody: data,
     tblfoot: {}
   };
-  var colOrder = ["weeks", "dates", "codeContribution", "githubContribution"];
+  var colOrder = ["weeks", "dates", "Red Days", "codeContribution", "githubContribution"];
   ghContibTable = new SortableTable({
     data: tabledata,
     tableElementId: "contribGithHubContribTable",
@@ -1245,7 +1370,54 @@ function renderCellForghContibTable(col, celldata, cellid) {
        }
      }
      str += "</div>";
-  } else {
+  } else if(col == 'Red Days'){
+    var alphaPlus = new Date();
+    var holidayList = getHolidays(alphaPlus);
+
+    
+    //Get a list of all red days this year and check if they belong on the current row
+    //Based on row number
+    //Works only if the course is held the same time every year
+    var i = 0;
+    while(holidayList.length > i){ 
+      var MM = holidayList[i].substr(5,2);
+      var DD = holidayList[i].substr(8,2);
+
+      if(MM == 4 && DD >= 1 && DD <= 8 && rowNr == 0){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 4 && DD >= 9 && DD <= 15 && rowNr == 1){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 4 && DD >= 15 && DD <= 22 && rowNr == 2){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 4 && DD >= 22 && DD <= 29 && rowNr == 3){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(((MM == 4 && DD >= 29) || (MM == 5 && DD <= 6)) && rowNr == 4){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 5 && DD >= 6 && DD <= 13 && rowNr == 5){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 5 && DD >= 13 && DD <= 20 && rowNr == 6){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 5 && DD >= 20 && DD <= 27 && rowNr == 7){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(((MM == 5 && DD >= 27) || (MM == 6 && DD <= 3)) && rowNr == 8){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(MM == 6 && DD >= 3 && DD <= 10 && rowNr == 9){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } 
+      i++;
+    }
+
+  }  else {
     str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${obj}</span></div>`;
   }
   return str;
@@ -1560,6 +1732,38 @@ function allRankRenderCell(col,celldata,cellid){
   return str;
 }
 
+// Tooltips for sorting buttons on hover
+
+function showTooltip(hoverBtn) {
+  var TTtext = "";
+  var leftOffset = 0;
+
+  switch(hoverBtn.value) {
+    case "All":
+      TTtext = "Show all";
+      leftOffset = 0;
+    break;
+    case "Basic":
+      TTtext = "Show basic";
+      leftOffset = 115;
+    break;
+    case "Charts":
+      TTtext = "Show charts";
+      leftOffset = 230;
+    break;
+    case "Contribution":
+      TTtext = "Show contribution";
+      leftOffset = 345;
+    break;
+  }
+  
+  var TTtextContainer = document.createElement("P");
+  var TTtextNode = document.createTextNode(TTtext);
+  TTtextContainer.appendChild(TTtextNode);
+  document.getElementById("contributionContainer").appendChild(TTtextContainer);
+  TTtextContainer.classList.add("contribToolTip");
+  TTtextContainer.style.marginLeft = leftOffset + "px";
+}
 
 function hideTooltip() {
   var childrens = document.getElementById("contributionContainer").children;
