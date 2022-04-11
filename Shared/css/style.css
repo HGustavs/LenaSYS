@@ -6607,6 +6607,7 @@ only screen and (max-device-width: 320px) {
   color: var(--color-primary);
   font-size: 30px;
   vertical-align: middle;
+  margin-bottom: 30px;
 }
 
 .fab-btn-lg:hover {
@@ -6621,7 +6622,7 @@ only screen and (max-device-width: 320px) {
   width: 100%;
   list-style: none;
   text-align: center;
-  bottom: 55px;
+  bottom: 90px;
 }
 
 .fab-btn-list2 {
@@ -6668,14 +6669,14 @@ only screen and (max-device-width: 320px) {
 
 @media screen and (max-height: 600px) {
   .fab-btn-list {
-    transform-origin: 35% bottom;
+    transform-origin: 0% bottom;
     transform: rotate(270deg);
   }
   .fab-btn-sm {
-    transform: rotate(135deg);
+    transform: rotate(375deg);
   }
   [data-tooltip]:before {
-    bottom: 85%;
+    bottom: 90%;
   }
 }
 
