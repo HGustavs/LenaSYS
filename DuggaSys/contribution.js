@@ -1397,7 +1397,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
       } else if(MM == 4 && DD >= 22 && DD <= 29 && rowNr == 3){
         str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
         ${holidayList[i]}</span></div>`
-      } else if((MM == 4 || MM == 5) && DD >= 29 && DD <= 6 && rowNr == 4){
+      } else if((MM == 4 || MM == 5) && (DD >= 29 || DD <= 6) && rowNr == 4){
         str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
         ${holidayList[i]}</span></div>`
       } else if(MM == 5 && DD >= 6 && DD <= 13 && rowNr == 5){
@@ -1409,10 +1409,10 @@ function renderCellForghContibTable(col, celldata, cellid) {
       } else if(MM == 5 && DD >= 20 && DD <= 27 && rowNr == 7){
         str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
         ${holidayList[i]}</span></div>`
-      } else if((MM == 5 || MM == 6) && DD >= 27 && DD <= 3 && rowNr == 8){
+      } else if((MM == 5 || MM == 6) && (DD >= 27 || DD <= 3) && rowNr == 8){
         str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
         ${holidayList[i]}</span></div>`
-      } else if(MM == 6 && DD >= 3 && DD <= 10 && rowNr == 8 && rowNr == 9){
+      } else if(MM == 6 && DD >= 3 && DD <= 10 && rowNr == 9){
         str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
         ${holidayList[i]}</span></div>`
       } 
