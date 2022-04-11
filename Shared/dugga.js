@@ -2170,7 +2170,7 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggatitle){
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
 
 		// Adds dugga title next to the text "Instructions"
-		$('h3:contains("Instructions")').html(duggatitle + " - Instructions");
+		$('h3:contains("Instructions")').html(duggaTitle + " - Instructions");
 }
 
 function FABMouseOver(e) {

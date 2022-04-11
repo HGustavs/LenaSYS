@@ -43,6 +43,7 @@ $AUtoken=getOP('AUtoken');
 $variantvalue= getOP('variant');
 $hashvariant="UNK";
 $duggatitle="UNK";
+$duggatitle=getOP('qname');
 $link="UNK";
 
 $showall="true";
