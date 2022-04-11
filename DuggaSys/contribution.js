@@ -1368,23 +1368,17 @@ function renderCellForghContibTable(col, celldata, cellid) {
      }
      str += "</div>";
   } else if(col == 'Red Days'){
-    str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        hello_world</span></div>`
     var alphaPlus = new Date();
     var holidayList = getHolidays(alphaPlus);
     var i = 0;
-    str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[i]}</span></div>`
-    str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-      ${holidayList[3]}</span></div>`
     
     //Get a list of all red days this year and check if they belong on the current row
     //Based on row number
     //Works only if the course is held the same time every year
-    /* while(holidayList.length > i){ */
-      var MM = holidayList[i].getMonth();
-      var DD = holidayList[i].getDate();
-      /* 
+    while(holidayList.length > i){ 
+      var MM = holidayList[i].substr(5,2);
+      var DD = holidayList[i].substr(8,2);
+      
       if(MM == 4 && DD >= 1 && DD <= 8 && rowNr == 0){
         str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
         ${holidayList[i]}</span></div>`
@@ -1418,7 +1412,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
       } 
       i++;
     }
-*/
+
   }  else {
     str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${obj}</span></div>`;
   }
