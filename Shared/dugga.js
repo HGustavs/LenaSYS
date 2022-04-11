@@ -2164,7 +2164,7 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggatitle){
 
 		str+="</div>";
 		$("#duggaStatus").remove();
-		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
+		$("<td id='duggaStatus' align='center'>{$str}</td>").insertAfter("#menuHook");
 
 		// Adds dugga title next to the text "Instructions"
 		$('h3:contains("Instructions")').html(duggatitle + " - Instructions");
