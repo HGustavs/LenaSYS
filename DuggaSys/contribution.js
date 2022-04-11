@@ -174,13 +174,13 @@ function getAscensionDay(easterDate)
   //Easter was in april and ascension day is in may
   //Easter was in april and ascension day is in june
   if(((Number(DD) + 40) <= 61) && (MM == "03")){
-    DD = String(Number(DD) + 40 - 31);
+    DD = String(Number(DD) + 40 - 30);
     return (YYYY + "-04-" + DD);
   }else if(((Number(DD) + 40) > 61) && (MM == "03")){
     DD = String(Number(DD) + 40 - 61);
     return (YYYY + "-05-" + DD);
   }else if(((Number(DD) + 40) <= 61) && (MM == "04")){
-    DD = String(Number(DD) + 40 - 30);
+    DD = String(Number(DD) + 40 - 31);
     return (YYYY + "-05-" + DD);
   }else if(((Number(DD) + 40) > 61) && (MM == "04")){
     DD = String(Number(DD) + 40 - 61);
