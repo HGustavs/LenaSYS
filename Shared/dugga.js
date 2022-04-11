@@ -2159,7 +2159,7 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggatitle){
 			str+="<div id='nextVariantBtn' ><input class='submit-button large-button' style='width:auto;' type='button' value='"+duggaTitle+" V:"+variantValue+"' onclick='selectNextVariant();' /></div>"; 
 		}
 		else{	//If the 'Next variant' button is set to not be visable (Students).
-			str+="<div>"+duggaTitle+"<div>";
+			str+="<div>"+duggaTitle+"</div>";
 		}
 
 		str+="</div>";
