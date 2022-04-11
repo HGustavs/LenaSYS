@@ -1367,7 +1367,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
        }
      }
      str += "</div>";
-  } else if(col == 'Red Days'){
+  } /* else if(col == 'Red Days'){
     var alphaPlus = new Date();
     var holidayList = getHolidays(alphaPlus);
     var i = 0;
@@ -1411,7 +1411,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
       i++;
     }
 
-  } else {
+  } */ else {
     str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${obj}</span></div>`;
   }
   return str;
