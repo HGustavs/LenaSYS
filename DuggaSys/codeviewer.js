@@ -882,15 +882,15 @@ function createboxmenu(contentid, boxid, type) {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
-				str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
+				str += "<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
-				str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
+				str += "<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
 			} else if (type == "IFRAME") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
-				str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
+				str += "<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
 			} else {
 				str += "<td class='butto2 showdesktop'>";
 				str += "<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\"" + boxid + "\",\"" + contentid + "\");removeboxmenu(\"" + contentid + "menu\");'>";
