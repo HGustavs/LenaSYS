@@ -78,7 +78,7 @@
                         </div>-->  <!--for possible future IE functionality-->
                     </div>
                 </div>
-                <div id="elementPlacement0UML" class="diagramIcons toolbarMode hiddenPlacementType" onclick='setElementPlacementType(4); setMouseMode(2);'  onmousedown='holdPlacementButtonDown(0,"UML");' onmouseup='holdPlacementButtonUp();' >
+                <div id="elementPlacement0UML" class="diagramIcons toolbarMode hiddenPlacementType" onclick='setElementPlacementType("0UML"); setMouseMode(2);'  onmousedown='holdPlacementButtonDown(0,"UML");' onmouseup='holdPlacementButtonUp();' >
                     <img src="../Shared/icons/diagram_entity_UML.svg"/>
                     <span class="toolTipText"><b>Entity</b><br>
                         <p>Add an UML entity to the diagram</p><br>
@@ -88,13 +88,13 @@
                         <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
                     </div>
                     <div id="togglePlacementTypeBox0UML" class="togglePlacementTypeBox">
-                        <div id="togglePlacementTypeButton0ER" class="placementTypeBoxIcons" onclick='togglePlacementType(0,"");'>
+                        <div id="togglePlacementTypeButton0ER" class="placementTypeBoxIcons" onclick='togglePlacementType(0,""); setElementPlacementType(0); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>ER</b><br>
                                 <p>Choose ER entity</p>
                             </span>
                         </div>
-                        <div id="togglePlacementTypeButton0UML" class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,"UML");' >
+                        <div id="togglePlacementTypeButton0UML" class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,"UML"); setElementPlacementType("0UML"); setMouseMode(2);' >
                             <img src="../Shared/icons/diagram_entity_UML.svg"/>
                             <span class="placementTypeToolTipText"><b>UML</b><br>
                                 <p>Choose UML entity</p>

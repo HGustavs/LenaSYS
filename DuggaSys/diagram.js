@@ -735,8 +735,7 @@ const keybinds = {
         PLACE_ENTITY: {key: "3", ctrl: false},
         PLACE_RELATION: {key: "4", ctrl: false},
         PLACE_ATTRIBUTE: {key: "5", ctrl: false},
-        PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
-        EDGE_CREATION: {key: "7", ctrl: false},
+        EDGE_CREATION: {key: "6", ctrl: false},
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},
@@ -776,7 +775,7 @@ const elementTypes = {
     ERRelation: 1,
     ERAttr: 2,
     Ghost: 3,
-    UMLEntity: 4,       //<-- UML functionality
+    UMLEntity: "0UML",       //<-- UML functionality 
 };
 
 /**
@@ -3373,7 +3372,8 @@ function holdPlacementButtonUp(){
  * @param {Number} diagramType What kind of diagram the element belongs to.
  */
 function togglePlacementTypeBox(type,diagramType){
-    for(i=0;i<3;i++){
+    var numberOfIconsWithArrows=2;
+    for(i=0;i<numberOfIconsWithArrows;i++){
         if(!!document.getElementById("elementPlacement"+i+diagramType)){
             document.getElementById("elementPlacement"+i+diagramType).children.item(1).classList.add("toolTipText");
             document.getElementById("elementPlacement"+i+diagramType).children.item(1).classList.remove("hiddenToolTiptext");
@@ -4832,6 +4832,7 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
     if (element.kind == "UMLEntity") {  
+        console.log("!!!!!");
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
