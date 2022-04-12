@@ -102,16 +102,16 @@ function showInfoText(object, displayText) {
 function getEaster(date)
 {
   var Y = date.getFullYear();
-  var MetonicCycle, JulianCalendarLeapDays, JulianCalendarNonLeapDays, P, Q,
+  var MetonicCycle, JulianCalendarLeapDays, JulianCalendarNonLeapDays, PVärde, QVärde,
       M, N, D, E;
 
       MetonicCycle = Y % 19;
       JulianCalendarLeapDays = Y % 4;
       JulianCalendarNonLeapDays = Y % 7;
-  P = Math.floor(Y / 100);
-  Q = Math.floor((13 + 8 * P) / 25);
-  M = (15 - Q + P - P / 4) % 30;
-  N = (4 + P - P / 4) % 7;
+      PVärde = Math.floor(Y / 100);
+      QVärde = Math.floor((13 + 8 * PVärde) / 25);
+  M = (15 - QVärde + PVärde - PVärde / 4) % 30;
+  N = (4 + PVärde - PVärde / 4) % 7;
   D = (19 * MetonicCycle + M) % 30;
   E = (2 * JulianCalendarLeapDays + 4 * JulianCalendarNonLeapDays + 6 * D + N) % 7;
   var days = (22 + D + E);
