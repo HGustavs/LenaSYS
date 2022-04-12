@@ -3325,6 +3325,57 @@ function setElementPlacementType(type = elementTypes.EREntity)
 }
 
 /**
+ * @description toggles the box containing different types of placement entitys.
+ * @param {Number} type What kind of element to place.
+ * @param {Number} diagramType What kind of diagram the element belongs to.
+ */
+function togglePlacementTypeBox(type,diagramType){
+    for(i=0;i<3;i++){
+        if(!!document.getElementById("elementPlacement"+i+diagramType)){
+            document.getElementById("elementPlacement"+i+diagramType).children.item(1).classList.add("toolTipText");
+            document.getElementById("elementPlacement"+i+diagramType).children.item(1).classList.remove("hiddenToolTiptext");
+        }
+    }
+    if(!document.getElementById("togglePlacementTypeButton"+type+diagramType).classList.contains("activeTogglePlacementTypeButton")){ 
+        for (let index = 0; index < document.getElementsByClassName("togglePlacementTypeButton").length; index++) {
+            if(document.getElementsByClassName("togglePlacementTypeButton")[index].classList.contains("activeTogglePlacementTypeButton")) {
+                document.getElementsByClassName("togglePlacementTypeButton")[index].classList.remove("activeTogglePlacementTypeButton");
+            }
+            if(document.getElementsByClassName("togglePlacementTypeBox")[index].classList.contains("activeTogglePlacementTypeBox")) {
+                document.getElementsByClassName("togglePlacementTypeBox")[index].classList.remove("activeTogglePlacementTypeBox");
+            }
+        }       
+        document.getElementById("togglePlacementTypeButton"+type+diagramType).classList.add("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox"+type+diagramType).classList.add("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement"+type+diagramType).children.item(1).classList.remove("toolTipText");
+        document.getElementById("elementPlacement"+type+diagramType).children.item(1).classList.add("hiddenToolTiptext");
+    }
+    else{
+        document.getElementById("togglePlacementTypeButton"+type+diagramType).classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox"+type+diagramType).classList.remove("activeTogglePlacementTypeBox");
+    }
+}
+/**
+ * @description toggles which placement type is selected for the different types of diagrams.
+ * @param {Number} type What kind of element to place.
+ * @param {Number} diagramType What kind of diagram the element belongs to.
+ */
+function togglePlacementType(type,diagramType){
+    document.getElementById("elementPlacement"+type).classList.add("hiddenPlacementType");
+    document.getElementById("elementPlacement"+type+"UML").classList.add("hiddenPlacementType");
+    /*document.getElementById("elementPlacement"+type+"IE").classList.add("hiddenPlacementType");*/ //for possible future IE functionality
+    if(diagramType==0){
+        document.getElementById("elementPlacement"+type).classList.remove("hiddenPlacementType");
+    }
+    if(diagramType==1){
+        document.getElementById("elementPlacement"+type+"UML").classList.remove("hiddenPlacementType");
+    }
+    /*if(diagramType==2){
+        document.getElementById("elementPlacement"+type+"IE").classList.remove("hiddenPlacementType");
+    }*/ //for possible future IE functionality
+
+}
+/**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.
  */

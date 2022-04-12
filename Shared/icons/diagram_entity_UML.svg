@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+<style type="text/css">
+	.st0{fill:none;stroke:#FFFFFF;stroke-width:10;stroke-miterlimit:10;}
+</style>
+<style>
+</style>
+	<rect x="25" y="26" class="st0" width="150" height="150"/>
+	<rect x="25" y="26" class="st0" width="150" height="100"/>
+	<rect x="25" y="26" class="st0" width="150" height="50"/>
+</svg>
