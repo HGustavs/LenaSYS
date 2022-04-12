@@ -154,6 +154,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   // Default showing of gradesystem. Will show if has type "Test" or "Moment"
   if ((kind == 3 || kind == 4)) {
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
+    var f = document.querySelector("#inputwrapper-gradesystem").style.display;
   } else {
     document.querySelector("#inputwrapper-gradesystem").style.display = "block";
   }
