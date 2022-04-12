@@ -1235,7 +1235,7 @@ function returnedSection(data) {
 
 function showCanvasLinkBox(operation,btnobj){
   if(operation == "open"){
-    var canvasLink = "<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('.internal-link').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
+    var canvasLink = "This is a test link."//"<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('.internal-link').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
     if(canvasLink == null){
       canvasLink = "ERROR: Failed to get canvas link.";
     }
