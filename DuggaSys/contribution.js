@@ -103,7 +103,7 @@ function getEaster(date)
 {
   var Y = date.getFullYear();
   var MetonicCycle, JulianCalendarLeapDays, JulianCalendarNonLeapDays, PVärde, QVärde,
-      CenturyValue, N, D, E;
+      CenturyValue, JulianGregorianDiffrence, D, E;
 
       MetonicCycle = Y % 19;
       JulianCalendarLeapDays = Y % 4;
@@ -111,9 +111,9 @@ function getEaster(date)
       PVärde = Math.floor(Y / 100);
       QVärde = Math.floor((13 + 8 * PVärde) / 25);
       CenturyValue = (15 - QVärde + PVärde - PVärde / 4) % 30;
-  N = (4 + PVärde - PVärde / 4) % 7;
+      JulianGregorianDiffrence = (4 + PVärde - PVärde / 4) % 7;
   D = (19 * MetonicCycle + CenturyValue) % 30;
-  E = (2 * JulianCalendarLeapDays + 4 * JulianCalendarNonLeapDays + 6 * D + N) % 7;
+  E = (2 * JulianCalendarLeapDays + 4 * JulianCalendarNonLeapDays + 6 * D + JulianGregorianDiffrence) % 7;
   var days = (22 + D + E);
   var easterDate
 
