@@ -199,7 +199,8 @@ $lfiles = array();
 $gfiles = array();
 $access = False;
 
-if (checklogin() && $hasAccess) {
+// Fetches information from the filelink table in the database, binds column result into vars and loops through each fetched result, building a new cell for each index.
+if (checklogin() && $hasAccess) {  
     //$query = $pdo->prepare("SELECT fileid,filename,kind, filesize, uploaddate FROM fileLink WHERE ((cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) OR isGlobal='1') ORDER BY filename;");
     $query = $pdo->prepare("SELECT * FROM fileLink WHERE kind=2 OR (cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) ORDER BY kind,filename;");
     $query->bindParam(':cid', $cid);
@@ -213,6 +214,7 @@ if (checklogin() && $hasAccess) {
     foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
         // En till foreach om man vill hämta flera objekt i en cell och skicka med till rendercell
 
+        //takes result from query and stores it in local vars
         $filekind = $row['kind'];
         $filename = $row['filename'];
         $splitname = explode(".", $filename);
@@ -220,6 +222,7 @@ if (checklogin() && $hasAccess) {
         $splitname = array_slice($splitname, 0, count($splitname) - 1);
         $shortfilename = implode(".", $splitname);
 
+        //filters out files the user shouldn't have access to.
         if ($filekind == 1) {
             $filePath = "UNK";
             $filekindname = "Link";
@@ -241,7 +244,7 @@ if (checklogin() && $hasAccess) {
             $filePath = "UNK";
             $filekindname = "UNK";
         }
-        
+        // edit/delete rows feature disabled by default, is re-enabled if super user/admin.      
         $showTrashcan = false;
         $showEditor = false;
 

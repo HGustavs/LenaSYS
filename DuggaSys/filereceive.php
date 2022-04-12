@@ -149,6 +149,7 @@ if ($storefile) {
     //				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html","txt", "java", "xml", "js", "css", "php","md","ai", "psd","svg", "sql", "sr", "doc", "sl", "glsl", "docx", "odt", "xslt", "xsl");
 
     // Derived from testing files and IANA assignment of MIME types
+    // Add files extensions to $allowedExtensions to allow them to be saved to the database.
     $allowedExtensions = [
         "txt" => ["text/plain"],
         "pdf" => ["application/pdf"],
@@ -220,11 +221,15 @@ if ($storefile) {
                     } else {
                         $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=2;"); // 1=Link 2=Global 3=Course Local 4=Local
                     }
+
+                    // bind query results into local vars.
                     $query->bindParam(':filename', $fileText);
                     $query->bindParam(':cid', $cid);
                     $query->execute();
                     $norows = $query->fetchColumn();
                     $filesize = filesize($movname);
+
+                    // creates SQL strings for inserts into filelink database table. Different if-blocks determine the visible scope of the file. Runs if the file doesn't exist in the DB.
                     if ($norows == 0) {
                         if ($fileLocation == "LFILE") {
                             $kindid = 4;
@@ -242,6 +247,7 @@ if ($storefile) {
                         $query->bindParam(':filesize', $filesize);
                         $query->bindParam(':kindid', $kindid);
 
+                        // Runs SQL query and runs general error handling if it fails.
                         if (!$query->execute()) {
                             $error = $query->errorInfo();
                             echo "Error updating file entries" . $error[2];
@@ -251,12 +257,15 @@ if ($storefile) {
                             echo $errorvar;
                         }
                     }
+
+                    // if it already exists in the database, simply prepare to update the stored meta-data
                     $query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;");
                     $query->bindParam(':filename', $fileText);
                     $query->bindParam(':cid', $cid);
                     $query->bindParam(':filesize', $filesize);
                     $query->bindParam(':kindid', $kindid);
 
+                    // Runs SQL query and runs general error handling if it fails.
                     if (!$query->execute()) {
                         $error = $query->errorInfo();
                         echo "Error updating filesize and uploaddate: " . $error[2];
@@ -275,7 +284,6 @@ if ($storefile) {
     echo "<pre>";
     // Uncomment for debug printing
     //print_r($swizzled);
-    //testcommit
 
     foreach ($swizzled as $key => $filea) {
         
@@ -364,6 +372,7 @@ if ($storefile) {
                         $query->bindParam(':filesize', $filesize);
                         $query->bindParam(':kindid', $kindid);
 
+                        // Execute prepared SQL query and print general error handling if it fails.
                         if (!$query->execute()) {
                             $error = $query->errorInfo();
                             echo "Error updating file entries" . $error[2];
@@ -373,6 +382,8 @@ if ($storefile) {
                             echo $errorvar;
                         }
                     }
+
+                    // if the file already exists in the database, prepare SQL string to update data in DB.
                     $query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;");
                     $query->bindParam(':filename', $fname);
                     $query->bindParam(':cid', $cid);
@@ -386,6 +397,7 @@ if ($storefile) {
                     }
                     $query->bindParam(':kindid', $kindid);
 
+                    // Execute prepared SQL query and print general error handling if it fails.
                     if (!$query->execute()) {
                         $error = $query->errorInfo();
                         echo "Error updating filesize and uploaddate: " . $error[2];
