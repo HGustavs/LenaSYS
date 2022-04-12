@@ -2522,8 +2522,8 @@ function rectsIntersect (left, right)
     return (
         (left.x + left.width >= right.x + right.width) && 
         (left.x <= right.x) &&
-        (left.y + (right.height / 2) + left.height >= right.y + right.height) &&
-        (left.y <= right.y + (right.height / 2) )
+        (left.y + left.height + (right.height/2) >= right.y + right.height) &&
+        (left.y + (right.height/2) <= right.y )
     );
 }
 
