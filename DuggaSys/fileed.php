@@ -64,8 +64,8 @@ $js = array(
         $filemtime = filemtime('fileed.js');
 		echo "<script type='text/javascript' src='fileed.js?$filemtime'></script>";
     
-        //$filemtime = filemtime('ace.js');
-		//echo "<script type='text/javascript' src='ace.js?$filemtime'></script>";
+        // $filemtime = filemtime('ace.js');
+		// echo "<script type='text/javascript' src='ace.js?$filemtime'></script>";
 	?>
     
 </head>
@@ -435,7 +435,7 @@ $js = array(
 	if (isset($_GET['kind']) && isset($_GET['filename'])) {
 		if($_GET['kind'] != null && $_GET['filename'] != null){
 			echo '<script type="text/javascript">',
-			'loadFile("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
+			'loadPreview("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
 				'</script>'
 			;
 		}  
