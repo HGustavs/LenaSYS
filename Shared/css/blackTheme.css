@@ -307,9 +307,9 @@
 }
 
 .descbox .impword {
-    color: #000000;
+    /* color: #000000; // Commented out this, to resolve another issue go to codeviewer.css (class ".descbox .impword") to see similar changes.
     background-color: #fff;
-    border: 1px solid #f44;
+    border: 1px solid #f44; */
 }
 
 .normtext .imphi {

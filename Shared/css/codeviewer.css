@@ -587,9 +587,10 @@
 }
 
 .descbox .impword {
-  background-color: #F2F2F2;
-  color: #000;
+  /* background-color: #F2F2F2;
+  color: #000; */
   border-bottom: 2px solid #9971AF; 
+  cursor: pointer;
 }
 
 .descbox code .impword {
