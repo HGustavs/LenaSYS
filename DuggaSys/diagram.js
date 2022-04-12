@@ -5023,7 +5023,6 @@ function drawSelectionBox(str)
         deleteBtnY = lowY - 5;
 
         //Delete button visual representation
-        str += `<rect width='${deleteBtnSize}' height='${deleteBtnSize}' x='${deleteBtnX}' y='${deleteBtnY}'; style='fill:transparent;stroke-width:2;stroke:rgb(0,0,0)'/>`;
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
     }
