@@ -37,14 +37,14 @@
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg"/>
                     <span class="toolTipText"><b>Pointer</b><br>
-                        <p>(Select elements or pan around the canvas)</p><br>
+                        <p>(Select and interact with elements or pan around the canvas)</p><br>
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_select.svg"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
-                        <p>(Select elements within rectangular area)</p><br>
+                        <p>(Select elements within adjustable rectangular area)</p><br>
                         <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -72,7 +72,7 @@
                 <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg"/>
                     <span class="toolTipText"><b>Line</b><br>
-                        <p>(Connect elements with edges)</p><br>
+                        <p>(Connect Elements with edges)</p><br>
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -82,21 +82,21 @@
             <div class="diagramIcons" onclick='zoomin();'>
                 <img src="../Shared/icons/diagram_zoomin.svg"/>
                 <span class="toolTipText"><b>Zoom IN</b><br>
-                    <p>(Increase size of environment)</p><br>
+                    <p>(Decrease size of view)</p><br>
                     <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div class="diagramIcons" onclick='zoomout();'>
                 <img src="../Shared/icons/diagram_zoomout.svg"/>
                 <span class="toolTipText"><b>Zoom OUT</b><br>
-                    <p>(Decrease size of environment)</p><br>
+                    <p>(Increase size of view)</p><br>
                     <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div class="diagramIcons" onclick="zoomreset()">
                 <img src="../Shared/icons/fullscreen.svg"/>
                 <span class="toolTipText"><b>Zoom RESET</b><br>
-                    <p>(Reset environment size)</p><br>
+                    <p>(Reset view size)</p><br>
                     <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
@@ -137,8 +137,8 @@
             <legend>Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
                 <img src="../Shared/icons/screenUpdate.svg"/>
-                <span class="toolTipText"><b>Click to redirect camera to center</b><br>
-                    <p>(Move view to default position)</p><br>
+                <span class="toolTipText"><b>Center view</b><br>
+                    <p>(Move the view to the default center position)</p><br>
                     <p id="tooltip-CENTER_CAMERA" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
@@ -148,7 +148,7 @@
             <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
                 <img src="../Shared/icons/diagram_stepforward.svg"/>
                 <span class="toolTipText"><b>Toggle step forward</b><br>
-                    <p>(Revert previous Undo/Step backward)</p><br>
+                    <p>(Redo previous change)</p><br>
                     <p id="tooltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
