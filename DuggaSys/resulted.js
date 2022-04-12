@@ -198,6 +198,16 @@ function renderCell(col, celldata, cellid) {
 		str += "<div class='resultTableText passwordBlock'>";
 		str += celldata;
 	}
+	else if (col == "teacher_visited") {
+		if(celldata == null){
+			str += "<div class='resultTableText'>";
+			str += "<div>NOT VISITED YET</div>";
+		}else{
+			str += "<div class='resultTableText'>";
+			str += "<div>" + celldata +"</div>";
+		}
+		
+	}
 	else {
 		str += "<div class='resultTableText'>";
 		str += "<div>" + celldata +"</div>";
