@@ -486,7 +486,9 @@
     display: none;
     position: absolute;
     left: 125%;
-    top: 0%;
+    top:-15%;
+    padding:5px;
+    padding-top:0px;
     border-radius: 5px;
     background-color:var(--color-primary);
 }
@@ -504,7 +506,7 @@
 }
 .placementTypeIcon img{
     position: absolute;
-    top:0px;
+    top: 0px;
     width: 6.2px;
     height: 6.2px;
 }
@@ -515,7 +517,7 @@
     cursor:pointer;
     border-radius: 30%;
     border: solid 1px var(--color-primary);
-    margin-top:5px;
+    margin-top: 5px;
 }
 .placementTypeBoxIcons:hover, .active{
     background: var(--color-primary-hover);
