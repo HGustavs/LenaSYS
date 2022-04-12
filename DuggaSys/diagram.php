@@ -58,21 +58,21 @@
                 <div id="elementPlacement1" class="diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_relation.svg"/>
                     <span class="toolTipText"><b>Relation</b><br>
-                        <p>(Add Relations between entities)</p><br>
+                        <p>(Add Relations between Entities)</p><br>
                         <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_attribute.svg"/>
                     <span class="toolTipText"><b>Attribute</b><br>
-                        <p>(Add Attributes to entities)</p><br>
+                        <p>(Add Attributes to Entities)</p><br>
                         <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg"/>
                     <span class="toolTipText"><b>Line</b><br>
-                        <p>(Connect Elements with edges)</p><br>
+                        <p>(Connect elements with edges)</p><br>
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -96,7 +96,7 @@
             <div class="diagramIcons" onclick="zoomreset()">
                 <img src="../Shared/icons/fullscreen.svg"/>
                 <span class="toolTipText"><b>Zoom RESET</b><br>
-                    <p>(Reset view size)</p><br>
+                    <p>(Reset view area)</p><br>
                     <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
