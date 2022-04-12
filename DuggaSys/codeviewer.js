@@ -4874,9 +4874,17 @@ function fillBurger() {
 	var burgerMenu = document.querySelector('#burgerMenu');
 	var str = "";
 	boxes.forEach(box => {
-		str += "<div class='burgerOption DarkModeBackgrounds' onclick='setShowPane("+box[0]+");'>"+box[4]+"</div>";
+		str += "<div class='burgerOption DarkModeBackgrounds' onclick='setShowPane("+box[0]+");'>"+box[4]+"</div>";	
 	});
+	str += "<div class='burgerOption DarkModeBackgrounds' onclick='showAllViews();'>All views</div>";
 	burgerMenu.innerHTML = str;
+}
+
+function showAllViews(){
+	var boxes = retData['box'];
+ 	boxes.forEach(box => {
+    	showAllBox(box[0]);
+ 	});
 }
 
 function setShowPane(id) {
@@ -4889,6 +4897,20 @@ function setShowPane(id) {
 		loc = loc+'&showPane='+id;
 		window.location.href = loc;
 	}
+}
+
+function showAllBox(id) {
+   closeBurgerMenu();
+   var container = document.querySelector('#div2');
+   var boxes = [...container.childNodes];
+   boxes.forEach(box => {
+    if (box.id === 'box'+id+'wrapper') {
+        box.style.display = 'block';
+        box.style.width = '100%';
+        box.style.maxWidth = '100%';
+        box.style.height = '100%';
+    } 
+   });
 }
 
 function showBox(id) {
