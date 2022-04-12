@@ -3243,10 +3243,32 @@ function resetBoxes()
 	showCopyButtons(templateid);
 
 	if (templateid == 1) {
+
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+
          thisBox.classList.remove('hidden');
             setTimeout(function () {
                 thisBox.classList.remove('visuallyhidden');
@@ -3258,19 +3280,78 @@ function resetBoxes()
 	}
 	
 	if (templateid == 2) {
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "50%";
+
+		thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
+        thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+
+		thisBox.classList.remove('hidden');
+		setTimeout(function () {
+			thisBox.classList.remove('visuallyhidden');
+		}, 20);
+		thisBox2.classList.remove('hidden');
+		setTimeout(function () {
+			thisBox2.classList.remove('visuallyhidden');
+		}, 20);
 	}
 
 	if (templateid == 3) {
+
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-        thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
+		thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
+
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+
         thisBox.classList.remove('hidden');
             setTimeout(function () {
                 thisBox.classList.remove('visuallyhidden');
@@ -3286,15 +3367,41 @@ function resetBoxes()
 	}
 
 	if (templateid == 4) {
+
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "100%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
+
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+
         thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
@@ -3310,18 +3417,49 @@ function resetBoxes()
 	}
 
 	if (templateid == 5) {
+		
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-        thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "50%";
+		thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
+
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
+
         thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
@@ -3344,15 +3482,45 @@ function resetBoxes()
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-        thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "40%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "30%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "30%";
+		thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
+		
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
+
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
         thisBox.classList.remove('hidden');
             setTimeout(function () {
@@ -3376,15 +3544,45 @@ function resetBoxes()
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-        thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "40%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "30%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "30%";
+		thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
+		
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
+
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
         thisBox.classList.remove('hidden');
             setTimeout(function () {
@@ -3407,13 +3605,38 @@ function resetBoxes()
 	if (templateid == 8) {
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-        thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
+		thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
+		
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+
         thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
@@ -3432,19 +3655,54 @@ function resetBoxes()
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
         thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
-        thisBox5 = document.querySelector('#box' + 5 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "25%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "25%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "25%";
-		document.querySelector(boxValArray['box' + 5]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 5]['id']).style.height = "25%";
+		thisBox5 = document.querySelector('#box' + 5 + 'wrapper #boxtitlewrapper');
+		
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.bottom = "";
+
 		alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
-       thisBox.classList.remove('hidden');
+     	thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
             }, 20);
