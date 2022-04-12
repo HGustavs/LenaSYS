@@ -711,11 +711,11 @@ function deleteFile(fileid, filename, filekind) {
     }
 }
 
-/*
+
 function createQuickItem() {
-    //showFilePopUp('MFILE');
+    showFilePopUp('MFILE');
 }
-*/
+
 
 /*****************************************************************
   loadFile(), editFile(), cancelEditFile() and closeEditFile()
