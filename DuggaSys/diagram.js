@@ -776,7 +776,7 @@ const elementTypes = {
     ERRelation: 1,
     ERAttr: 2,
     Ghost: 3,
-    UMLEntity: 4,       //<-- UML functionality Change to 5
+    UMLEntity: 4,       //<-- UML functionality
 };
 
 /**
@@ -4745,7 +4745,7 @@ function drawElement(element, ghosted = false)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var elemAttri = 3;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
+    var elemAttri = 2;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
 
@@ -4767,17 +4767,18 @@ function drawElement(element, ghosted = false)
     var vAlignment = tooBig ? "left" : "middle";
 
     //=============================================== <-- UML functionality
+    //Check if the element is a UML entity
     if (element.kind == "UMLEntity") {  
-            //div to encapuslate UML element
-            str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
-            style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
+        //div to encapuslate UML element
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
 
-            if(context.includes(element)){
-                str += `z-index: 1;`;
-            }
-            if (ghosted) {
-                str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
-            }
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+        }
         str += `'>`;
 
         //div to encapuslate UML header
@@ -4825,143 +4826,118 @@ function drawElement(element, ghosted = false)
     }
     //====================================================================
 
-    
-    else if (element.kind == "EREntity") {
+    //ER elementss
+    else {
         // Create div & svg element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);'
-            style='left:0px; top:0px; width:${boxw}px; height:${boxh}px; font-size:${texth}px;`;
-
+        str += `
+                    <div id='${element.id}'	class='element' onmousedown='ddown(event);' style='
+                            left:0px;
+                            top:0px;
+                            width:${boxw}px;
+                            height:${boxh}px;
+                            font-size:${texth}px;`;
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+            str += `
+                pointer-events: none;
+                opacity: ${ghostLine ? 0 : 0.5};
+            `;
         }
         str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}' >`;
+        // Create svg 
+        if (element.kind == "EREntity") {
+            var weak = "";
 
-        str += `<svg width='${boxw}' height='${boxh * 2}' >`;
-
-        //Create svg element
-        var weak = "";
-
-        if(element.state == "weak") {
-            weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' /> 
-            `;         
-        }
-        
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-                   stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-                   ${weak}
-                   <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
-                   `;
-
-        str += "</svg>";
-    }
-
-    else if (element.kind == "ERAttr") {
-        // Create div & svg element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);'
-            style='left:0px; top:0px; width:${boxw}px; height:${boxh}px; font-size:${texth}px;`;
-
-        if(context.includes(element)){
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
-        }
-        str += `'>`;
-
-        str += `<svg width='${boxw}' height='${boxh * 2}' >`;
-
-        var dash = "";
-        var multi = "";
-
-        if (element.state == "computed") {
-            dash = "stroke-dasharray='4 4'";
-        }
-       
-        if (element.state == "multiple") {
-            multi = `
-                    <path d="M${linew * multioffs},${hboxh} 
-                    Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
-                    Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
-                    Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
-                    Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
-                    stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
-        }    
-
-        str += `<path d="M${linew},${hboxh} 
-                           Q${linew},${linew} ${hboxw},${linew} 
-                           Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
-                           Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
-                           Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                    stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}'/>
-                    
-                    ${multi}
-
-                    <text x='${xAnchor}' y='${hboxh}' `;
-        
-        if(element.state == "key") {
-            str += `class='underline'`;
-        }             
-        str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-        `;
+            if(element.state == "weak") {
+                weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
+                stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' /> 
+                `;         
+            }
             
-        if(element.state == "weakKey") {
-            // Calculates how far to the left X starts
-            var diff = xAnchor - textWidth / 2;
-            diff = diff < 0 ? 0 - diff + 10 : 0;
-            str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="${element.stroke}" stroke-dasharray="${5*zoomfact}" stroke-width="${linew}"/>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+                    ${weak}
+                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
+                    `;
         }
-        str += "</svg>";
-    }
+        else if (element.kind == "ERAttr") {
+            var dash = "";
+            var multi = "";
 
-    else if (element.kind == "ERRelation") {
-        // Create div & svg element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);'
-            style='left:0px; top:0px; width:${boxw}px; height:${boxh}px; font-size:${texth}px;`;
+            if (element.state == "computed") {
+                dash = "stroke-dasharray='4 4'";
+            }
+        
+            if (element.state == "multiple") {
+                multi = `
+                        <path d="M${linew * multioffs},${hboxh} 
+                        Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
+                        Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
+                        Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
+                        Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
+                        stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
+            }    
 
-        if(context.includes(element)){
-            str += `z-index: 1;`;
+            str += `<path d="M${linew},${hboxh} 
+                            Q${linew},${linew} ${hboxw},${linew} 
+                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
+                            Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
+                            Q${linew},${boxh - linew} ${linew},${hboxh}" 
+                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}'/>
+                        
+                        ${multi}
+                        <text x='${xAnchor}' y='${hboxh}' `;
+            
+            if(element.state == "key") {
+                str += `class='underline'`;
+            }             
+            str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+            `;
+                
+            if(element.state == "weakKey") {
+                // Calculates how far to the left X starts
+                var diff = xAnchor - textWidth / 2;
+                diff = diff < 0 ? 0 - diff + 10 : 0;
+                str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="${element.stroke}" stroke-dasharray="${5*zoomfact}" stroke-width="${linew}"/>`;
+            }
+            
         }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
-        }
-        str += `'>`;
+        else if (element.kind == "ERRelation") {
 
-        str += `<svg width='${boxw}' height='${boxh * 2}' >`;
+            var numOfLetters = element.name.length;
+            if (tooBig) {
+                var tempName = "";
+                var maxTextWidth = boxw - margin;
 
-        var numOfLetters = element.name.length;
-        if (tooBig) {
-            var tempName = "";
-            var maxTextWidth = boxw - margin;
+                if (element.state == "weak") maxTextWidth -= (linew * multioffs) * 2;
 
-            if (element.state == "weak") maxTextWidth -= (linew * multioffs) * 2;
-
-            for (var i = 0; i < element.name.length; i++){
-                tempName += element.name[i];
-                if (canvasContext.measureText(tempName).width > maxTextWidth){
-                    numOfLetters = tempName.length - 1;
-                    break;
+                for (var i = 0; i < element.name.length; i++){
+                    tempName += element.name[i];
+                    if (canvasContext.measureText(tempName).width > maxTextWidth){
+                        numOfLetters = tempName.length - 1;
+                        break;
+                    }
                 }
             }
-        }
 
-        var weak = "";
-        if (element.state == "weak") {
-            weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
-                stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
-                `;
-            xAnchor += linew * multioffs;
+            var weak = "";
+            if (element.state == "weak") {
+                weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
+                    `;
+                xAnchor += linew * multioffs;
+            }
+            str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
+                    ${weak}`;
+            str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+
         }
-        str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
-                   stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
-                   ${weak}`;
-        str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
         str += "</svg>";
     }
-
     if (element.isLocked) {
         str += `<img id="pad_lock" width='${zoomfact *20}' height='${zoomfact *25}' src="../Shared/icons/pad_lock.svg"/>`;     
     }
