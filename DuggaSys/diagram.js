@@ -4745,7 +4745,9 @@ function drawElement(element, ghosted = false)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var elemAttri = 2;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
+    var elemAttri = 3;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
+                                //This value represents the amount of attributes, hopefully this will be calculated through
+                                //an array in the UML document that contains the element's attributes.
 
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
@@ -4765,7 +4767,7 @@ function drawElement(element, ghosted = false)
     var vAlignment = tooBig ? "left" : "middle";
 
     //=============================================== <-- UML functionality
-    if (element.kind == "UMLEntity") {
+    if (element.kind == "UMLEntity") {  
             //div to encapuslate UML element
             str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
             style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
@@ -4799,13 +4801,24 @@ function drawElement(element, ghosted = false)
         for (var i = 0; i < elemAttri; i++) {
             str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- Attri ${i}</text>`;
         }
-
         //end of svg for background
         str += `</svg>`;
         
+        /*
         //div for UML attribute <-- Will be implemented in upcoming issues
         str += `<div>`;
         //end of div for UML attribute
+        str += `</div>`;*/
+
+        //div for UML footer
+        str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
+        //svg for background
+        str += `<svg width='${boxw}' height='${boxh / 2}'>`;
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 - (linew * 2)}'
+        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+        //end of svg for background
+        str += `</svg>`;
+        //end of div for UML footer
         str += `</div>`;
         //end of div for UML content
         str += `</div>`;
