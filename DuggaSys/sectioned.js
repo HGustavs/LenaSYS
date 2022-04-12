@@ -152,7 +152,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
 
   // Default showing of gradesystem. Will show if has type "Test" or "Moment"
-  if (!(kind != 3 || kind != 4)) {
+  if ((kind != 3 || kind != 4)) {
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   } else {
     document.querySelector("#inputwrapper-gradesystem").style.display = "block";
