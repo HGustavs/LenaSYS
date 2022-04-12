@@ -102,17 +102,17 @@ function showInfoText(object, displayText) {
 function getEaster(date)
 {
   var Y = date.getFullYear();
-  var A, B, C, P, Q,
+  var MetonicCycle, B, C, P, Q,
       M, N, D, E;
 
-  A = Y % 19;
+      MetonicCycle = Y % 19;
   B = Y % 4;
   C = Y % 7;
   P = Math.floor(Y / 100);
   Q = Math.floor((13 + 8 * P) / 25);
   M = (15 - Q + P - P / 4) % 30;
   N = (4 + P - P / 4) % 7;
-  D = (19 * A + M) % 30;
+  D = (19 * MetonicCycle + M) % 30;
   E = (2 * B + 4 * C + 6 * D + N) % 7;
   var days = (22 + D + E);
   var easterDate
