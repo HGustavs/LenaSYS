@@ -1,0 +1,38 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Created using Krita: https://krita.org -->
+<svg xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:krita="http://krita.org/namespaces/svg/krita"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    width="144pt"
+    height="144pt"
+    viewBox="0 0 144 144">
+<defs/>
+<g id="Lager_1" transform="matrix(0.72 0 0 0.72 0 0)" display="none" fill="none">
+  <image id="image0" transform="matrix(0.2455 0 0 0.2455 -9.5 20)" width="900px" height="600px"/>
+ </g><g id="Lager_2" transform="matrix(0.72 0 0 0.72 0 0)" display="none" fill="none">
+  <path id="shape0" transform="translate(38.2722169276084, 29.1686536219019)" fill="#000000" d="M41.1278 105.231C29.8278 77.4313 10.0278 30.1313 0.427783 7.13135C-1.47222 2.73135 3.32778 -1.66865 7.52778 0.631347L103.128 52.1313C106.328 53.8313 106.728 58.2313 103.928 60.5313L89.9278 72.2313C87.6278 74.1313 87.4278 77.5313 89.4278 79.6313L121.028 113.731C123.028 115.931 122.828 119.331 120.528 121.131L111.528 128.531C109.428 130.331 106.228 130.031 104.428 127.931L74.0278 92.5313C72.2278 90.4313 69.0278 90.1313 66.8278 91.9313C62.1278 95.9313 54.3278 102.531 49.1278 107.031C46.4278 109.531 42.4278 108.531 41.1278 105.231Z"/>
+ </g><g id="Lager_3" transform="matrix(0.72 0 0 0.72 0 0)" display="none" fill="none">
+  <g id="group0" fill="none">
+   <path id="shape1" transform="translate(55.2, 16)" fill="#000000" d="M0 0L0 169L52.8 116.2L122.8 116.2"/>
+  </g>
+ </g><g id="Lager_4" transform="matrix(0.72 0 0 0.72 0 0)" display="none" fill="none">
+  <g id="group1" fill="none">
+   <g id="group2" fill="none">
+    <path id="shape2" transform="translate(26, 26)" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" d="M0 10L0 0L10 0"/>
+    <path id="shape3" transform="translate(54.6, 26)" fill="none" stroke="#000000" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="18.5714,18.5714" d="M0 0L102.1 0"/>
+    <path id="shape4" transform="translate(166, 26)" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" d="M0 0L10 0L10 10"/>
+    <path id="shape5" transform="translate(176, 54.6)" fill="none" stroke="#000000" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="18.5714,18.5714" d="M0 0L0 102.1"/>
+    <path id="shape6" transform="translate(166, 166)" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" d="M10 0L10 10L0 10"/>
+    <path id="shape7" transform="translate(45.3, 176)" fill="none" stroke="#000000" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="18.5714,18.5714" d="M102.1 0L0 0"/>
+    <path id="shape8" transform="translate(26, 166)" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" d="M10 10L0 10L0 0"/>
+    <path id="shape9" transform="translate(26, 45.3)" fill="none" stroke="#000000" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="18.5714,18.5714" d="M0 102.1L0 0"/>
+   </g>
+  </g>
+ </g><g id="Lager_6" transform="matrix(0.72 0 0 0.72 0 0)" display="none" fill="none"/><g id="Lager_5" transform="matrix(0.72 0 0 0.72 0 0)" display="none" fill="none">
+  <rect id="shape10" transform="translate(25, 26)" fill="none" stroke="#000000" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" width="150" height="150"/>
+ </g><g id="Lager_7" transform="matrix(0.72 0 0 0.72 0 0)" display="none" fill="none">
+  <ellipse id="shape11" transform="translate(20, 50.5)" rx="80" ry="50" cx="80" cy="50" fill="none" stroke="#000000" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"/>
+ </g><rect id="shape0" transform="translate(16.8432468450967, 15.84)" fill="none" stroke="#ffffff" stroke-width="3.6" stroke-linecap="square" stroke-linejoin="bevel" width="44.64" height="43.92"/><rect id="shape1" transform="translate(98.9232468450967, 43.92)" fill="none" stroke="#ffffff" stroke-width="3.6" stroke-linecap="square" stroke-linejoin="bevel" width="33.12" height="45.36"/><rect id="shape2" transform="translate(26.2032468450967, 90.72)" fill="none" stroke="#ffffff" stroke-width="3.6" stroke-linecap="square" stroke-linejoin="bevel" width="56.88" height="37.44"/><path id="shape3" transform="translate(37.6110098888468, 59.375756567959)" fill="none" stroke="#ffffff" stroke-width="2.16" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M0.0636396 0L0 31.3107"/><path id="shape4" transform="translate(83.176970984944, 113.405785856488)" fill="none" stroke="#ffffff" stroke-width="2.16" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M0 0.0636396L36.02 0"/><path id="shape5" transform="translate(118.878792458283, 89.4772923199896)" fill="none" stroke="#ffffff" stroke-width="2.16" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M0.318198 23.9285L0 0"/><path id="shape6" transform="translate(61.393247109688, 53.9100002066365)" fill="none" stroke="#ffffff" stroke-width="2.16" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M0 0.27L37.26 0"/><path id="shape7" transform="translate(16.6735789386392, 23.419377514198)" fill="none" stroke="#ffffff" stroke-width="2.16" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M0 0.509117L45.0568 0"/><path id="shape8" transform="translate(98.8959586895736, 49.8934564432914)" fill="none" stroke="#ffffff" stroke-width="2.16" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M0 0.127279L33.0926 0"/><path id="shape9" transform="translate(26.0922416345667, 98.3868414047558)" fill="none" stroke="#ffffff" stroke-width="2.16" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M0 0.254558L57.1484 0"/><path id="shape10" transform="translate(61.8300046276919, 48.1950036071747)" fill="none" stroke="#ffffff" stroke-width="2.16" stroke-linecap="square" stroke-linejoin="bevel" d="M6.795 0L0 5.895L6.795 11.88"/><path id="shape11" transform="translate(114.614941149154, 89.3500151990076)" fill="none" stroke="#ffffff" stroke-width="2.16" stroke-linecap="square" stroke-linejoin="bevel" d="M4.64569 0L8.59135 7.38219L0 7.31856L4.64569 0"/><path id="shape12" transform="translate(33.5700003860204, 60.0300006902832)" fill="none" stroke="#ffffff" stroke-width="2.16" stroke-linecap="square" stroke-linejoin="bevel" d="M4.14 0L8.19 7.38L3.96 14.76L0 8.01L4.14 0"/>
+</svg>
