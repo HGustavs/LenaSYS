@@ -32,7 +32,7 @@ How to use
 
 var retData; // Data returned from setup
 var tokens = []; // Array to hold the tokens.
-var allBlocks = [];
+var allBlocks = []; // Array holding collapsible tokens
 var dmd = 0; // Variable used to determine forward/backward skipping with the forward/backward buttons
 var genSettingsTabMenuValue = "wordlist";
 var codeSettingsTabMenuValue = "implines";
@@ -1702,12 +1702,14 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				pid = bracket.pop();
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "{") {
+				// [token row position, 1 = opening bracket, codeviewer box id]
 				allBlocks.push([tokens[i].row, 1, parseInt(boxid)]);
 				pid = "CBR" + cbcount + boxid;
 				cbcount++;
 				cbracket.push(pid);
 				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "}") {
+				// [token row position, 0 = closing bracket, codeviewer box id]
 				allBlocks.push([tokens[i].row, 0, parseInt(boxid)]);
 				pid = cbracket.pop();
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
@@ -1750,6 +1752,20 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						fontcolor = "#00ff";
 						break;
 				}
+
+				// Enables collapsible html tags
+				if (String(tokens[i + 1].kind) == "name") {
+					// Ensures that void elements do not count as opening html tags
+					if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
+						// [token row position, 1 = opening html tag, codeviewer box id]
+						allBlocks.push([tokens[i + 1].row, 1, parseInt(boxid)]);
+					}	
+				}
+				else if (String(tokens[i + 1].kind) == "operator" && String(tokens[i + 1].val) == "/" && String(tokens[i + 2].kind) == "name") {
+					// [token row position, 0 = closing html tag, codeviewer box id]
+					allBlocks.push([tokens[i + 1].row, 0, parseInt(boxid)]);
+				}
+
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
 					if (htmlArray.indexOf(tokens[i + 1].val.toLowerCase()) > -1) {
