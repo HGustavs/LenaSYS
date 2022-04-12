@@ -103,7 +103,7 @@ function getEaster(date)
 {
   var Y = date.getFullYear();
   var MetonicCycle, JulianCalendarLeapDays, JulianCalendarNonLeapDays, PVärde, QVärde,
-      CenturyValue, JulianGregorianDiffrence, D, E;
+      CenturyValue, JulianGregorianDiffrence, PaschallFullMoon, E;
 
       MetonicCycle = Y % 19;
       JulianCalendarLeapDays = Y % 4;
@@ -112,15 +112,15 @@ function getEaster(date)
       QVärde = Math.floor((13 + 8 * PVärde) / 25);
       CenturyValue = (15 - QVärde + PVärde - PVärde / 4) % 30;
       JulianGregorianDiffrence = (4 + PVärde - PVärde / 4) % 7;
-  D = (19 * MetonicCycle + CenturyValue) % 30;
-  E = (2 * JulianCalendarLeapDays + 4 * JulianCalendarNonLeapDays + 6 * D + JulianGregorianDiffrence) % 7;
-  var days = (22 + D + E);
+      PaschallFullMoon = (19 * MetonicCycle + CenturyValue) % 30;
+  E = (2 * JulianCalendarLeapDays + 4 * JulianCalendarNonLeapDays + 6 * PaschallFullMoon + JulianGregorianDiffrence) % 7;
+  var days = (22 + PaschallFullMoon + E);
   var easterDate
 
-  if ((D == 29) && (E == 6)) {
+  if ((PaschallFullMoon == 29) && (E == 6)) {
     easterDate = Y + "-04" + "-19";
     return easterDate;
-  }else if ((D == 28) && (E == 6)) {
+  }else if ((PaschallFullMoon == 28) && (E == 6)) {
     easterDate = Y + "-04" + "-18";
     return easterDate;
   }else {
