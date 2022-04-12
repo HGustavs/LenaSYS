@@ -5362,10 +5362,6 @@ function showdata()
         str += drawElement(data[i]);
     }
 
-    if (ghostElement) {
-        str += drawElement(ghostElement, true);
-    }
-
     container.innerHTML = str;
     updatepos(null, null);
 
