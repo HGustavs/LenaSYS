@@ -3436,6 +3436,7 @@ span.arrow {
   font-weight: 300;
   border-radius: 5px;
   cursor: pointer;
+  min-width: max-content;
 }
 
 .filter-btn:hover{
@@ -3446,14 +3447,22 @@ span.arrow {
   position: relative;
 }
 
-.show-dugga-filter-popup {
+.show-dugga-filter-popup, .show-column-filter-popup {
   position: absolute;
   left: 15%;
   min-width: 250px;
   background-color: var(--color-background-3);
   border: 1px solid black;
 }
+.show-column-filter-popup {
+  left: inherit;
+  min-width:170px;
+}
 
+.select-dugga-filter {
+  display:flex;
+}
+ 
 .dugga-entry-box {
   padding: 2px 2px 2px 5px;
 }
@@ -3474,7 +3483,7 @@ span.arrow {
   background-color: #fff;
 }
 
-.show-dugga-filter-popup.hidden {
+.show-dugga-filter-popup.hidden, .show-column-filter-popup.hidden {
   display: none;
 }
 
@@ -4367,10 +4376,13 @@ div.reset-pw:hover{
  -ms-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
  -o-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
  transition: height 0.2s cubic-bezier(0,1.4, 0.8, 1);
- height:0px;
- overflow:hidden;
  display: flex;
  flex-direction: column;
+
+ height: auto;
+ font-size: 0;
+ transition: font-size 0.15s ease-out;
+ overflow:hidden;
 }
 
 .contribcontent span {
@@ -4380,7 +4392,8 @@ div.reset-pw:hover{
 }
 
 .contribcontentToggle {
-  height: auto;
+  font-size: 1em;
+  transition: font-size 0.25s ease-in;
 }
 
 .contrib {

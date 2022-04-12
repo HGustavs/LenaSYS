@@ -1076,6 +1076,7 @@ function returnedSection(data) {
           str += "</td>";
         }
 
+
         // Generate Canvas Link Button
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
@@ -1233,6 +1234,7 @@ function returnedSection(data) {
   }
 }
 
+
 function showCanvasLinkBox(operation,btnobj){
   if(operation == "open"){
     var canvasLink = "This is a test link."//"<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('.internal-link').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
@@ -1249,6 +1251,7 @@ function showCanvasLinkBox(operation,btnobj){
     $("#canvasLinkBox").css("display", "none");
   }
 }
+
 
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){

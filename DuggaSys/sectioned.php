@@ -259,6 +259,7 @@
 		</div>
 	</div>
 
+
 	<!-- Canvas Link Dialog -->
 	<div id='canvasLinkBox' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='min-width:250px;'>
@@ -271,6 +272,7 @@
 			</div>
 		</div>
 	</div>
+
 	<!-- Confirm Edit Section Dialog END -->
 
 	<!-- Confirm Section Hide Dialog START -->

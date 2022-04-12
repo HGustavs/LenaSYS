@@ -1093,7 +1093,10 @@ function AJAXService(opt,apara,kind)
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
-			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+"&variant="+querystring['variantValue']+opt+para,
+
+			//Something is wrong with the line below, restored to an older version for now.
+			//data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+"&variant="+querystring['variantValue']+opt+para,
+			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para+"&variant="+variantValue,
 			datatype: "json",
 			success: returnedDugga
 			// success: function(data){
@@ -2167,7 +2170,7 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggatitle){
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
 
 		// Adds dugga title next to the text "Instructions"
-		$('h3:contains("Instructions")').html(duggatitle + " - Instructions");
+		$('h3:contains("Instructions")').html(duggaTitle + " - Instructions");
 }
 
 function FABMouseOver(e) {

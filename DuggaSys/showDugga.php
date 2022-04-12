@@ -122,7 +122,7 @@
 			}
 		}
 		if($duggatitle!="UNK"){
-			//echo "<script>setDuggaTitle('" . $duggatitle . "');</script>";
+			echo "<script>setDuggaTitle('" . $duggatitle . "');</script>";
 			echo $output;
 			
 			echo "<script src='templates/".$duggafile.".js'></script>";
@@ -133,11 +133,11 @@
 			echo "<body>";
 		}
 ?>
-<!--<script type="text/javascript">
+<script type="text/javascript">
 
 	setHash("<?php /*echo $hash*/ ?>");
 
-</script>-->
+</script>
 
 
 	<?php
@@ -263,15 +263,15 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		//echo "<script>console.log('".$duggafile."');</script>";
 			// Log USERID for Dugga Access
 			// commented out because we are unsure about the usage of logs
-			//makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
-			//Retrieved from 'password' input field
+			// makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+			// Retrieved from 'password' input field
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
 
 			$btnDisable = "btn-disable";
-
+			
 			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");

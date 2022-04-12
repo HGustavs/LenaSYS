@@ -9,7 +9,8 @@ var filerByDate = {
 var duggasArr = [];
 var searchTerms = [];
 var showDuggaFilterElement;
-var toggleElement;
+var showColumnFilterElement;
+var toggleDuggaCheckAll;
 var checkboxElements;
 var searchBarElement;
 var searchDelayTimeout;
@@ -43,19 +44,23 @@ function setSearchTerms() {
 document.addEventListener("DOMContentLoaded", loadHTMLelements);
 document.addEventListener("click", function(e) {
 	var child = e.target;
-	var parent = showDuggaFilterElement;
-	var bool = (!parent.classList.contains("hidden") && (child.classList.contains("filter-btn-duggaName") || parent.contains(child)));
+	var parent = [showDuggaFilterElement, showColumnFilterElement];
+	for (let i = 0; i < parent.length; i++) {
+		var bool = (!parent[i].classList.contains("hidden") && (child.classList.contains("filter-btn-duggaName") || parent[i].contains(child)));
 
-	if (bool) parent.classList.remove("hidden")
-	else parent.classList.add("hidden")
+		if (bool) parent[i].classList.remove("hidden")
+		else parent[i].classList.add("hidden")
+	}
 });
 
 
 function loadHTMLelements() {
 	searchBarElement = document.querySelector(".searchbar-filter");
 	showDuggaFilterElement = document.querySelector(".show-dugga-filter-popup");
-	toggleElement = document.getElementById("toggle-dugganame-filter");
-	checkboxElements = document.getElementsByName("duggaEntryname");
+	showColumnFilterElement = document.querySelector(".show-column-filter-popup");
+	toggleDuggaCheckAll = document.getElementById("toggle-dugganame-filter");
+	toggleColumnCheckAll = document.getElementById("toggle-column-filter");
+	//checkboxElements = document.getElementsByName("duggaEntryname");
 
 	// Whenever user presses key in searchbar filter is applied automatically
 	// Timeout used so search is only applied if they user hasnt pressed a key for a while (not make 100 searches if user types a 10 letter keyword/search term)
@@ -68,15 +73,34 @@ function loadHTMLelements() {
 }
 
 function checkboxDuggaNameClicked(thisElement) {
-	// When unchecking toggle should also uncheck
-	if (toggleElement.checked && !thisElement.checked)
-		toggleElement.checked = false;
+	// When unchecking any checkbox after select all has been checked, select all should uncheck
+	switch (thisElement.name) {
+		case "duggaEntryname":
+			if (toggleDuggaCheckAll.checked && !thisElement.checked)
+				toggleDuggaCheckAll.checked = false;
+			break;
+		case "columnEntryname":
+			if (toggleColumnCheckAll.checked && !thisElement.checked)
+				toggleColumnCheckAll.checked = false;
+			break;
+	}
+	
 }
 
-function toggleDuggaNameFilter() {
-	var toggleStatus = toggleElement.checked;
+function toggleDuggaNameFilter(element) {
+	var toggleStatus;
 	var isAnyChecked = false;
 	var isAnyUnChecked = false;
+	switch (element.id) {
+		case "toggle-dugganame-filter":
+			toggleStatus = toggleDuggaCheckAll.checked
+			checkboxElements = document.getElementsByName("duggaEntryname");
+			break;
+		case "toggle-column-filter":
+			toggleStatus = toggleColumnCheckAll.checked
+			checkboxElements = document.getElementsByName("columnEntryname");
+			break;
+	}
 
 	for (var element of checkboxElements) {
 		if (element.checked) isAnyChecked = true;
@@ -88,11 +112,15 @@ function toggleDuggaNameFilter() {
 		else element.checked = toggleStatus
 	}
 
-	if (isAnyChecked && isAnyUnChecked) toggleElement.checked = false;
+	// Doesn't seem to do much, research more before merge
+	if (isAnyChecked && isAnyUnChecked) toggleDuggaCheckAll.checked = false;
 }
 
-function showAvaiableDuggaFilter() {
-	showDuggaFilterElement.classList.toggle("hidden")
+function showAvailableDuggaFilter() {
+	showDuggaFilterElement.classList.toggle("hidden");
+}
+function showAvailableColumnFilter() {
+	showColumnFilterElement.classList.toggle("hidden");
 }
 
 function setup(){
@@ -125,24 +153,55 @@ function returnedResults(data) {
 	}
 	duggaEntrynameCheckbox += `
 	<div class="toggle-dugganame-filter-box toggle-${(lasti + 1)%2}">
-		<input type="checkbox" id="toggle-dugganame-filter" onclick="toggleDuggaNameFilter()">
+		<input type="checkbox" id="toggle-dugganame-filter" onclick="toggleDuggaNameFilter(this)">
 		<label>Select all</label>
 	</div>`
 
 	document.querySelector(".show-dugga-filter-popup").innerHTML = duggaEntrynameCheckbox;
-		
-    createSortableTable(data['tableInfo']);
+
+
+
+    createSortableTable(data['tableInfo']); 	
+	if (typeof myTable != "undefined") {
+		createColumnFilter(myTable.getColumnNames());
+	} else {
+		console.log("Table is undefined");
+	}
 	setDateIntervals(data)
 	loadHTMLelements();
 }
 
-function createSortableTable(data){
+// Creates the column filter checkboxes according to the table head
+function createColumnFilter(data) {
+	var columnEntrynameCheckbox = "";
+	var n = 0;
+	for (const index in data) {
+		columnEntrynameCheckbox += `
+		<div class="column-entry-box toggle-${n%2}">
+			<input type="checkbox" name="columnEntryname" value="${data[index]}" onclick="checkboxDuggaNameClicked(this)">
+			<label>${data[index]}</label>
+		</div>
+		`;
+		n++;
+	}
+	columnEntrynameCheckbox += `
+	<div class="toggle-column-filter-box toggle-${(n + 1)%2}">
+		<input type="checkbox" id="toggle-column-filter" onclick="toggleDuggaNameFilter(this)">
+		<label>Select all</label>
+	</div>`;
 
+	document.querySelector(".show-column-filter-popup").innerHTML = columnEntrynameCheckbox;
+}
+
+
+function createSortableTable(data){
+	//Added teacher_visited in tblhead object
     var tabledata = {
 		tblhead:{
 			duggaName: "Dugga",
 			hash:"Hash",
 			password:"Password",
+			teacher_visited: "teacher visited",
 			submitted:"Submission Date",
 			timesSubmitted: "Times submitted",
 			timesAccessed: "Times accessed",
@@ -151,7 +210,8 @@ function createSortableTable(data){
 		tblfoot:{}
 	};
 
-	var colOrder = ["duggaName","hash", "password", "submitted", "timesSubmitted", "timesAccessed"];
+	//Added Teacher_visited
+	var colOrder = ["duggaName","hash", "password","teacher_visited", "submitted", "timesSubmitted", "timesAccessed"];
 
 	myTable = new SortableTable({
 		data: tabledata,
