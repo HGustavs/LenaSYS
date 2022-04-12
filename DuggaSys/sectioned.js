@@ -151,7 +151,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $("#I" + lid).css("border", "2px dashed #FC5");
   $("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
 
-  // Default showing of gradesystem. Will show if has type "Test" or "Moment"
+/*   // Default showing of gradesystem. Will show if has type "Test" or "Moment"
   if (kind != 3 || kind != 4) {
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   } else {
@@ -164,7 +164,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
       document.querySelector("#dialog8").style.display = "none";
   } else {
      document.querySelector("#inputwrapper-deadline").style.display = "block";
-  }
+  } */
   
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
   $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
@@ -256,16 +256,16 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 // If type "Test" or "Moment" then Grade system will be shown
 function changedType(kind) {
   // Prepares option list for code example (2)/dugga (3) dropdown/links (5) / Not applicable
-    document.querySelector("#inputwrapper-gradesystem").style.display = "none";
+/*     document.querySelector("#inputwrapper-gradesystem").style.display = "none"; */
   if (kind == 2) {
     $("#link").html(makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid'));
   } else if (kind == 3) {
-    document.querySelector("#inputwrapper-group").style.display = "none";
-    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
+/*     document.querySelector("#inputwrapper-group").style.display = "none";
+    document.querySelector("#inputwrapper-gradesystem").style.display = "block"; */
     $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
   } else if (kind == 4) {
-    document.querySelector("#inputwrapper-group").style.display = "block";
-    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
+/*     document.querySelector("#inputwrapper-group").style.display = "block";
+    document.querySelector("#inputwrapper-gradesystem").style.display = "block"; */
   } else if (kind == 5 || kind == 7) {
     $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
   } else {
