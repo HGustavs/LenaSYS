@@ -1365,8 +1365,9 @@ function tokenize(instring, inprefix, insuffix) {
 				currentCharacter = instring.charAt(i);
 				if (currentCharacter < ' ') {
 					if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) row++; // Add row if this white space is a row terminator
+					/* Added a multiline string handler, no error message needed
 					error('Unterminated String: ', currentStr, row);
-					break;
+					break; */
 				}
 
 				if (currentCharacter == currentQuoteChar) break;
@@ -1626,7 +1627,42 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		} else if (tokens[i].kind == "blockcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "string") {
-      cont+="<span class='string'>"+tokenvalue+"</span>";
+			// To represent a multilined string in the codeviewer window
+			if (tokenvalue.includes('\n') || tokenvalue.includes('\r')) {
+				var tokenString =tokenvalue;
+				var partialTokenString;
+				var currentTokenCharacter;
+				var tokenIndex = 0;
+				var tokenQuotationMark = tokenString.charAt(0);
+
+				partialTokenString = "";
+				while (true) {
+					currentTokenCharacter = tokenString.charAt(tokenIndex);
+					if (currentTokenCharacter == tokenQuotationMark && tokenIndex != 0) {
+						// At the end of the string
+						partialTokenString += currentTokenCharacter;
+						cont += `<span class='string'>${partialTokenString}</span>`;
+						break;
+					}
+					if (currentTokenCharacter < ' ') {
+						if ((currentTokenCharacter == '\n') || (currentTokenCharacter == '\r') || (currentTokenCharacter == '')) {
+							// Creates a new line when a line break character is in the string
+							cont += `<span class='string'>${partialTokenString}</span>`;
+							lineno++;
+							str += `<div id='${boxfilename}-line${lineno}' style='line-height:21px'><span class='blockBtnSlot'></span>${cont}</div>`;
+							cont = "";
+							partialTokenString = "";
+						}
+					}
+					// replace '<' and '>' with &lt; and &gt; to prevent html tags in the string to mess with the HTML DOM
+					if (currentTokenCharacter == '<') currentTokenCharacter = '&lt;';
+					if (currentTokenCharacter == '>') currentTokenCharacter = '&gt;';
+					tokenIndex++;
+					partialTokenString += currentTokenCharacter;
+				}
+			} else {
+				cont+=`<span class='string'>${tokenvalue}</span>`;
+			}
 		} else if (tokens[i].kind == "number") {
 			cont += "<span class='number'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "name") {
