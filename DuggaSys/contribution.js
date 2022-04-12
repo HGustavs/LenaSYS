@@ -102,25 +102,25 @@ function showInfoText(object, displayText) {
 function getEaster(date)
 {
   var Y = date.getFullYear();
-  var MetonicCycle, LeapDays, NonLeapDays, PVärde, QVärde,
-      CenturyValue, GregorianJulianDiffrence, PaschallFullMoon, DaysTillEasterSundayFromPaschallMoon;
+  var A, B, C, P, Q,
+      M, N, D, E;
 
-  MetonicCycle = Y % 19;
-  NonLeapDays = Y % 4;
-  NonLeap = Y % 7;
-  PVärde = Math.floor(Y / 100);
-  QVärde = Math.floor((13 + 8 * PVärde) / 25);
-  CenturyValue = (15 - QVärde + PVärde - PVärde / 4) % 30;
-  GregorianJulianDiffrence = (4 + PVärde - PVärde / 4) % 7;
-  PaschallFullMoon = (19 * MetonicCycle + CenturyValue) % 30;
-  DaysTillEasterSundayFromPaschallMoon = (2 * LeapDays + 4 * NonLeapDays + 6 * PaschallFullMoon + GregorianJulianDiffrence) % 7;
-  var days = (22 + PaschallFullMoon + DaysTillEasterSundayFromPaschallMoon);
+  A = Y % 19;
+  B = Y % 4;
+  C = Y % 7;
+  P = Math.floor(Y / 100);
+  Q = Math.floor((13 + 8 * P) / 25);
+  M = (15 - Q + P - P / 4) % 30;
+  N = (4 + P - P / 4) % 7;
+  D = (19 * A + M) % 30;
+  E = (2 * B + 4 * C + 6 * D + N) % 7;
+  var days = (22 + D + E);
   var easterDate
 
-  if ((PaschallFullMoon == 29) && (DaysTillEasterSundayFromPaschallMoon == 6)) {
+  if ((D == 29) && (E == 6)) {
     easterDate = Y + "-04" + "-19";
     return easterDate;
-  }else if ((PaschallFullMoon == 28) && (DaysTillEasterSundayFromPaschallMoon == 6)) {
+  }else if ((D == 28) && (E == 6)) {
     easterDate = Y + "-04" + "-18";
     return easterDate;
   }else {
