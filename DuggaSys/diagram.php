@@ -138,7 +138,7 @@
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
                 <img src="../Shared/icons/screenUpdate.svg"/>
                 <span class="toolTipText"><b>Click to redirect camera to center</b><br>
-                    <p>(Move view to default position))</p><br>
+                    <p>(Move view to default position)</p><br>
                     <p id="tooltip-CENTER_CAMERA" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
@@ -155,7 +155,7 @@
             <div id="stepBackToggle" class="diagramIcons" onclick="toggleStepBack()">
                 <img src="../Shared/icons/diagram_stepback.svg"/>
                 <span class="toolTipText"><b>Toggle step backward</b><br>
-                    <p>(Undo previous change in history)</p><br>
+                    <p>(Undo previous change)</p><br>
                     <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
