@@ -3331,11 +3331,26 @@ function setElementPlacementType(type = elementTypes.EREntity)
 
 function zoomin(scrollEvent = undefined)
 {
-    // If mousewheel is not used, we zoom towards origo (0, 0)
-    if (!scrollEvent){
-        // Origo set to center of screen in pixels
-        zoomOrigo.x = window.innerWidth / 2;
-        zoomOrigo.y = window.innerHeight / 2;
+    if (!scrollEvent){ // If mousewheel is not used, we zoom towards the center of the screen
+        if (zoomfact < 4.0) {
+            var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
+            var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+                x: midScreen.x - zoomOrigo.x,
+                y: midScreen.y - zoomOrigo.y
+            }
+
+            //Update scroll x/y to center screen on new zoomOrigo
+            scrollx = scrollx / zoomfact;
+            scrolly = scrolly / zoomfact;
+            scrollx += delta.x;
+            scrolly += delta.y;
+            scrollx = scrollx * zoomfact;
+            scrolly = scrolly * zoomfact;
+
+            zoomOrigo.x = midScreen.x;
+            zoomOrigo.y = midScreen.y;
+        }
+
     }else if (zoomfact < 4.0){ // ELSE zoom towards mouseCoordinates
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
@@ -3383,11 +3398,26 @@ function zoomin(scrollEvent = undefined)
  */
 function zoomout(scrollEvent = undefined)
 {
-    // If mousewheel is not used, we zoom towards origo (0, 0)
-    if (!scrollEvent){
-        // Origin set to center of screen in pixels
-        zoomOrigo.x = window.innerWidth / 2;
-        zoomOrigo.y = window.innerHeight / 2;
+    if (!scrollEvent){ // If mousewheel is not used, we zoom out from the center of the screen
+        if (zoomfact > 0.25) {
+            var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
+            var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+                x: midScreen.x - zoomOrigo.x,
+                y: midScreen.y - zoomOrigo.y
+            }
+
+            //Update scroll x/y to center screen on new zoomOrigo
+            scrollx = scrollx / zoomfact;
+            scrolly = scrolly / zoomfact;
+            scrollx += delta.x;
+            scrolly += delta.y;
+            scrollx = scrollx * zoomfact;
+            scrolly = scrolly * zoomfact;
+
+            zoomOrigo.x = midScreen.x;
+            zoomOrigo.y = midScreen.y;
+        }
+
     }else if (zoomfact > 0.25) { // ELSE zoom towards mouseCoordinates
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
         var delta = {
