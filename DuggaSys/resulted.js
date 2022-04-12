@@ -14,6 +14,7 @@ var toggleDuggaCheckAll;
 var checkboxElements;
 var searchBarElement;
 var searchDelayTimeout;
+var colOrder = ["duggaName","hash", "password","teacherVisited", "submitted", "timesSubmitted", "timesAccessed"];
 
 function searchByFilter() {
 	// Date object requires string to not apply random time zone.
@@ -163,7 +164,7 @@ function returnedResults(data) {
 
     createSortableTable(data['tableInfo']); 	
 	if (typeof myTable != "undefined") {
-		createColumnFilter(myTable.getColumnNames());
+		createColumnFilter();
 	} else {
 		console.log("Table is undefined");
 	}
@@ -172,14 +173,15 @@ function returnedResults(data) {
 }
 
 // Creates the column filter checkboxes according to the table head
-function createColumnFilter(data) {
+function createColumnFilter() {
+	var nameList = myTable.getColumnNames();
 	var columnEntrynameCheckbox = "";
 	var n = 0;
-	for (const index in data) {
+	for (const index in nameList) {
 		columnEntrynameCheckbox += `
 		<div class="column-entry-box toggle-${n%2}">
-			<input type="checkbox" name="columnEntryname" value="${data[index]}" onclick="checkboxDuggaNameClicked(this)">
-			<label>${data[index]}</label>
+			<input type="checkbox" name="columnEntryname" value="${nameList[index]}" onclick="toggleColumn('${index}')">
+			<label>${nameList[index]}</label>
 		</div>
 		`;
 		n++;
@@ -195,13 +197,12 @@ function createColumnFilter(data) {
 
 
 function createSortableTable(data){
-	//Added teacher_visited in tblhead object
     var tabledata = {
 		tblhead:{
 			duggaName: "Dugga",
 			hash:"Hash",
 			password:"Password",
-			teacher_visited: "teacher visited",
+			teacherVisited: "Teacher visited",
 			submitted:"Submission Date",
 			timesSubmitted: "Times submitted",
 			timesAccessed: "Times accessed",
@@ -210,9 +211,6 @@ function createSortableTable(data){
 		tblfoot:{}
 	};
 
-	//Added Teacher_visited
-	var colOrder = ["duggaName","hash", "password","teacher_visited", "submitted", "timesSubmitted", "timesAccessed"];
-
 	myTable = new SortableTable({
 		data: tabledata,
 		tableElementId: tableName,
@@ -220,7 +218,7 @@ function createSortableTable(data){
 		renderCellCallback: renderCell,
         renderSortOptionsCallback: renderSortOptions,
         rowFilterCallback: rowFilter,
-		columnOrder: colOrder,
+		columnOrder: colOrder.slice(), // Copy array to keep original for future reference
 		hasRowHighlight: true,
 		hasCounterColumn: true,
 	});
@@ -283,6 +281,29 @@ function renderSortOptions(col, sortKind, colname) { // Which columns and how th
 	}
     
     return str;
+}
+
+// Toggle visibility of a column
+function toggleColumn(colId) {
+	// Check if column exists
+	var originalPos = colOrder.indexOf(colId, 0);
+	if(originalPos == -1) {
+		return;
+	}
+
+	// Toggle visibility
+	var orderList = myTable.getColumnOrder(); // Current column order
+	var index = orderList.indexOf(colId, 0); // Current column position
+	if(index == -1) { // Check if hidden
+		// Add column
+		orderList.splice(originalPos, 0, colId);
+	} else {
+		// Remove column
+		orderList.splice(index, 1);
+	}
+
+	// Update table
+	myTable.reorderColumns(orderList);
 }
 
 // How rows are filtered, for multiple filters add more if statements
