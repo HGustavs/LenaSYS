@@ -184,29 +184,20 @@ function renderCell(col, celldata, cellid) {
 	str = "<div class='resultTableCell'>";
 	if (col == "hash"){
 		var url = createUrl(celldata);
-		console.log("celldata: "+celldata);
 		str += "<div class='resultTableText'>";
 		str += "<a href='" + url + "'>" + celldata + "</a>";
-		
 	}
 	else if(col == "grade"){
 		str += "<div class='gradeContainer resultTableText'>";
 		str += "<img id='korf' class='fist' src='../Shared/icons/FistV.png' onclick='clickResult("+celldata+")'/>";
-
 	}
 	else if (col == "password") {
 		str += "<div class='resultTableText passwordBlock'>";
 		str += celldata;
 	}
 	else if (col == "teacher_visited") {
-		if(celldata == null){
-			str += "<div class='resultTableText'>";
-			str += "<div>NOT VISITED YET</div>";
-		}else{
-			str += "<div class='resultTableText'>";
-			str += "<div>" + celldata +"</div>";
-		}
-		
+		str += "<div class='resultTableText'>";
+		str += "<div>" + (celldata==null?"NOT VISITED YET":celldata); +"</div>";
 	}
 	else {
 		str += "<div class='resultTableText'>";

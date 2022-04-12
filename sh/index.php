@@ -38,12 +38,14 @@ function GetAssignment ($hash){
 
 	// Database request form
 	$sql = "select * from userAnswer left join quiz on userAnswer.quiz=quiz.id left join course on course.cid=userAnswer.cid where hash=:hash;";
-	$sql_1 = "UPDATE userAnswer SET last_Time_techer_visited=SYSDATE() where hash=:hash;";
 	$query = $pdo->prepare($sql);
-	$query_1 = $pdo->prepare($sql_1);
 	$query->bindParam(":hash", $hash,PDO::PARAM_STR);
-	$query_1->bindParam(":hash", $hash,PDO::PARAM_STR);
 	$query->execute();
+
+	// Database update form
+	$sql_1 = "UPDATE userAnswer SET last_Time_techer_visited=SYSDATE() where hash=:hash;";
+	$query_1 = $pdo->prepare($sql_1);
+	$query_1->bindParam(":hash", $hash,PDO::PARAM_STR);
 	$query_1->execute();
 	
 	// There should only be one match to the hash value in database as the hash is unique
