@@ -343,6 +343,11 @@ function updateVariantTitle(number) {
 
 // Opens the variant editor.
 function showVariantEditor() {
+	/*Currently switching between "SECTION" and "FILE" to try returnedSection() and returnedFile() below and
+	see which solution works best. Currently "SECTION" and returnedSection() works best to list all files
+	from filelink but they're not doing anything at the moment.*/
+
+	AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "SECTION");
   if(submissionRow == 0){
     // The submission row doesn't go away when leaving the modal
     // so without the if statement a new submission div would be created each time.
@@ -352,6 +357,18 @@ function showVariantEditor() {
 	}
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
+}
+
+function returnedSection(data){
+	/*This function currently works best, it lists all files from filelink.
+	Still need to implement filter to only list .json files*/
+	retdata = data;
+	$("#file").html(makeoptionsItem("test", retdata['links'], 'filename'));
+}
+
+function returnedFile(data){
+	retdata = data;
+	$("#file").html(makeoptionsItem("test", [JSON.parse(retdata.entries[0].filename)], 'filename'));
 }
 
 // Adds a submission row

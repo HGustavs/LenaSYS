@@ -178,7 +178,7 @@ session_start();
                     <div>
                       <fieldset style="width:90%">
                         <legend>Add diagram to dugga</legend>
-                        <select id="jsonfile" style="flex:1"></select>
+                        <select id="file" style="flex:1"></select>
                       </fieldset>
                     </div>
                   </div>
