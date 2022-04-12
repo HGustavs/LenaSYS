@@ -864,7 +864,7 @@ var dblPreviousTime = new Date().getTime(); ; // Used when determining if an ele
 var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Doubleclick was performed.
 var wasDblClicked = false;
 var targetDelta;
-
+var mousePressed = false;
 // Zoom variables
 var lastZoomfact = 1.0;
 var zoomfact = 1.0;
@@ -3323,7 +3323,25 @@ function setElementPlacementType(type = elementTypes.EREntity)
 {
     elementTypeSelected = type;
 }
-
+/**
+ * @description checks if the button is pressed long enough.
+ * @param {Number} type What kind of element to place.
+ * @param {Number} diagramType What kind of diagram the element belongs to.
+ */
+function holdPlacementButtonDown(type,diagramType){
+    mousePressed=true;
+    setTimeout(() => {
+        if(!!mousePressed){
+            togglePlacementTypeBox(type,diagramType);
+        }
+    }, 1500);
+}
+/**
+ * @description resets the mousepress.
+ */
+function holdPlacementButtonUp(){
+    mousePressed=false;
+}
 /**
  * @description toggles the box containing different types of placement entitys.
  * @param {Number} type What kind of element to place.
@@ -3364,16 +3382,10 @@ function togglePlacementType(type,diagramType){
     document.getElementById("elementPlacement"+type).classList.add("hiddenPlacementType");
     document.getElementById("elementPlacement"+type+"UML").classList.add("hiddenPlacementType");
     /*document.getElementById("elementPlacement"+type+"IE").classList.add("hiddenPlacementType");*/ //for possible future IE functionality
-    if(diagramType==0){
-        document.getElementById("elementPlacement"+type).classList.remove("hiddenPlacementType");
+    document.getElementById("elementPlacement"+type+diagramType).classList.remove("hiddenPlacementType");
+    if(!!document.getElementById("togglePlacementTypeButton"+type+diagramType).classList.contains("activeTogglePlacementTypeButton")){
+        togglePlacementTypeBox(type,diagramType);
     }
-    if(diagramType==1){
-        document.getElementById("elementPlacement"+type+"UML").classList.remove("hiddenPlacementType");
-    }
-    /*if(diagramType==2){
-        document.getElementById("elementPlacement"+type+"IE").classList.remove("hiddenPlacementType");
-    }*/ //for possible future IE functionality
-
 }
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.

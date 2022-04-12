@@ -485,7 +485,7 @@
 .togglePlacementTypeBox{
     display: none;
     position: absolute;
-    left: 125%;
+    left: 120%;
     top:-15%;
     padding:5px;
     padding-top:0px;
@@ -493,10 +493,11 @@
     background-color:var(--color-primary);
 }
 .activeTogglePlacementTypeBox{
-    display: block;
+    display: flex;
+    justify-content: left;
 }
 .activePlacementType{
-    background-color:#220033;
+    background: var(--color-primary-hover);
 }
 .hiddenPlacementType{
     display:none;
@@ -528,7 +529,8 @@
     height:30px;
 }
 .placementTypeToolTipText{
-    left:105%;
+    top:0%;
+    left:100%;
     visibility: hidden;
     width: 250px;
     background: rgba(0, 0, 0, 0.8);
