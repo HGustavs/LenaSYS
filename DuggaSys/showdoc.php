@@ -29,6 +29,9 @@
 				$inString=preg_replace("/\</", "&lt;",$inString);
 				$inString=preg_replace("/\>/", "&gt;",$inString);
 
+				//converts html code for plus sign into plus
+				$inString=preg_replace("/\&#43;/", "+",$inString);
+				
 				$inString=preg_replace("/^\`{3}(\r\n|\n|\r)/m", "```@@@",$inString);
 				$inString=preg_replace("/^\~{3}(\r\n|\n|\r)/m", "~~~@@@",$inString);
 				$inString=preg_replace("/^\=\|\=(\r\n|\n|\r)/m", "=|=&&&",$inString);
@@ -118,7 +121,7 @@
 		// Check if its an unordered list
 		function isUnorderdList($item) {
   			// return 1 if unordered list
-        return preg_match('/^\s*[\-\*]\s.*$/', $item);
+        return preg_match('/^\s*[\-\*\+]\s.*$/', $item);
 		}
 
 		// Check if its a table
@@ -136,7 +139,7 @@
         $nextLineIndentation = strlen($nextLine)-strlen(ltrim($nextLine));
         // decide value
         if(isOrderdList($currentLine)) $value = preg_replace('/^\s*\d*\.\s(.*)/','$1',$currentLine);        
-        if(isUnorderdList($currentLine)) $value = preg_replace('/^\s*[\-\*]\s(.*)/','$1',$currentLine);        
+        if(isUnorderdList($currentLine)) $value = preg_replace('/^\s*[\-\*\+]\s(.*)/','$1',$currentLine);        
         // Open new ordered list
         if(!(isOrderdList($prevLine) || isUnorderdList($prevLine)) && isOrderdList($currentLine)) {
             $markdown .= "<ol>"; // Open a new ordered list
