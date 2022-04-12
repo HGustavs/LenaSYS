@@ -1,5 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg viewBox="106.605 200.103 124.711 71.763" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
-  <path d="M 101.698 234.6 H 173.516 L 173.516 219.6 L 213.516 239.6 L 173.516 259.6 L 173.516 244.6 H 101.698 V 234.6 Z" style="fill: rgb(255, 255, 255);" transform="matrix(0.999988, 0.004975, -0.004975, 0.999988, 6.200012, -2.171893)" bx:shape="arrow 101.698 219.6 111.818 40 10 40 0 1@569d5289"/>
-  <line style="stroke-width: 7px; stroke: rgb(255, 252, 252); fill: rgb(255, 255, 255);" x1="230.75986981677482" y1="200.10256837801037" x2="231.31615542562372" y2="271.865169029084"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24" height="24" viewBox="0 0 24 24" version="1.1" id="svg6" sodipodi:docname="redo.svg" inkscape:version="1.1 (c68e22c387, 2021-05-23)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+   <defs id="defs10" />
+   <sodipodi:namedview id="namedview8" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0" showgrid="false" inkscape:zoom="16.291667" inkscape:cx="20.900256" inkscape:cy="17.063939" inkscape:window-width="1920" inkscape:window-height="986" inkscape:window-x="-11" inkscape:window-y="-11" inkscape:window-maximized="1" inkscape:current-layer="svg6" />
+   <path d="M0 0h24v24H0z" fill="none" id="path2" />
+   <path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z" id="path4" style="fill:#ffffff" />
 </svg>
