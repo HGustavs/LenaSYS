@@ -73,48 +73,42 @@ function loadHTMLelements() {
 	});
 }
 
-function checkboxDuggaNameClicked(thisElement) {
+function updateCheckbox(elem) {
 	// When unchecking any checkbox after select all has been checked, select all should uncheck
-	switch (thisElement.name) {
+	var selectAllElement;
+	switch (elem.name) {
 		case "duggaEntryname":
-			if (toggleDuggaCheckAll.checked && !thisElement.checked)
-				toggleDuggaCheckAll.checked = false;
+			selectAllElement = toggleDuggaCheckAll;
 			break;
 		case "columnEntryname":
-			if (toggleColumnCheckAll.checked && !thisElement.checked)
-				toggleColumnCheckAll.checked = false;
+			selectAllElement = toggleColumnCheckAll;
 			break;
 	}
-	
+	if (selectAllElement.checked && !elem.checked) {
+		selectAllElement.checked = false;
+	}
+	updateTable();
 }
 
-function toggleDuggaNameFilter(element) {
-	var toggleStatus;
-	var isAnyChecked = false;
-	var isAnyUnChecked = false;
-	switch (element.id) {
+function selectAll(elem) {
+	// Get array of checkbox elements
+	var checkboxElements;
+	switch (elem.id) {
 		case "toggle-dugganame-filter":
-			toggleStatus = toggleDuggaCheckAll.checked
 			checkboxElements = document.getElementsByName("duggaEntryname");
 			break;
 		case "toggle-column-filter":
-			toggleStatus = toggleColumnCheckAll.checked
 			checkboxElements = document.getElementsByName("columnEntryname");
 			break;
 	}
 
+	// Check all if checked, uncheck all if unchecked
+	var check = elem.checked;
 	for (var element of checkboxElements) {
-		if (element.checked) isAnyChecked = true;
-		else isAnyUnChecked = true
+		element.checked = check;
 	}
 
-	for (var element of checkboxElements) {
-		if (isAnyChecked && isAnyUnChecked) element.checked = false;
-		else element.checked = toggleStatus
-	}
-
-	// Doesn't seem to do much, research more before merge
-	if (isAnyChecked && isAnyUnChecked) toggleDuggaCheckAll.checked = false;
+	updateTable();
 }
 
 function showAvailableDuggaFilter() {
@@ -131,7 +125,7 @@ function setup(){
 
 
 function updateTable() {
-		
+	updateColumnOrder();
 	myTable.renderTable();
 }
 
@@ -145,7 +139,7 @@ function returnedResults(data) {
 		assignmentList += "<option value='"+ duggaFilterOptions[i].entryname +"'>"+ duggaFilterOptions[i].entryname + "</option>";
 		duggaEntrynameCheckbox += `
 		<div class="dugga-entry-box toggle-${i%2}">
-			<input type="checkbox" name="duggaEntryname" value="${duggaFilterOptions[i].entryname}" onclick="checkboxDuggaNameClicked(this)">
+			<input type="checkbox" name="duggaEntryname" value="${duggaFilterOptions[i].entryname}" onclick="updateCheckbox(this)">
 			<label>${duggaFilterOptions[i].entryname}</label>
 		</div>
 		`;
@@ -154,7 +148,7 @@ function returnedResults(data) {
 	}
 	duggaEntrynameCheckbox += `
 	<div class="toggle-dugganame-filter-box toggle-${(lasti + 1)%2}">
-		<input type="checkbox" id="toggle-dugganame-filter" onclick="toggleDuggaNameFilter(this)">
+		<input type="checkbox" id="toggle-dugganame-filter" onclick="selectAll(this)">
 		<label>Select all</label>
 	</div>`
 
@@ -170,6 +164,7 @@ function returnedResults(data) {
 	}
 	setDateIntervals(data)
 	loadHTMLelements();
+	updateTable();
 }
 
 // Creates the column filter checkboxes according to the table head
@@ -180,7 +175,7 @@ function createColumnFilter() {
 	for (const index in nameList) {
 		columnEntrynameCheckbox += `
 		<div class="column-entry-box toggle-${n%2}">
-			<input type="checkbox" name="columnEntryname" value="${nameList[index]}" onclick="toggleColumn('${index}')">
+			<input type="checkbox" checked name="columnEntryname" value="${nameList[index]}" onclick="updateCheckbox(this)">
 			<label>${nameList[index]}</label>
 		</div>
 		`;
@@ -188,7 +183,7 @@ function createColumnFilter() {
 	}
 	columnEntrynameCheckbox += `
 	<div class="toggle-column-filter-box toggle-${(n + 1)%2}">
-		<input type="checkbox" id="toggle-column-filter" onclick="toggleDuggaNameFilter(this)">
+		<input type="checkbox" checked id="toggle-column-filter" onclick="selectAll(this)">
 		<label>Select all</label>
 	</div>`;
 
@@ -283,27 +278,25 @@ function renderSortOptions(col, sortKind, colname) { // Which columns and how th
     return str;
 }
 
-// Toggle visibility of a column
-function toggleColumn(colId) {
-	// Check if column exists
-	var originalPos = colOrder.indexOf(colId, 0);
-	if(originalPos == -1) {
-		return;
-	}
+// Update column visibility
+function updateColumnOrder() {
+	var newOrder = [];
+	var nameList = myTable.getColumnNames();
+	var checkboxElements = document.getElementsByName("columnEntryname");
 
-	// Toggle visibility
-	var orderList = myTable.getColumnOrder(); // Current column order
-	var index = orderList.indexOf(colId, 0); // Current column position
-	if(index == -1) { // Check if hidden
-		// Add column
-		orderList.splice(originalPos, 0, colId);
-	} else {
-		// Remove column
-		orderList.splice(index, 1);
+	// Get column IDs of checked columns
+	for (const index in nameList) {
+		var name = nameList[index];
+		for(var element of checkboxElements) {
+			if(element.value == name && element.checked) {
+				newOrder.push(index);
+				break;
+			}
+		}
 	}
 
 	// Update table
-	myTable.reorderColumns(orderList);
+	myTable.reorderColumns(newOrder);
 }
 
 // How rows are filtered, for multiple filters add more if statements
