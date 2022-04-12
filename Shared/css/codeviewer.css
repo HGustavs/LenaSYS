@@ -952,6 +952,14 @@
     display: none;
 }
 
+#mobileExampleSection {
+    white-space: nowrap;
+}
+
+#mobileExampleName {
+    white-space: nowrap;
+}
+
 /* Classes for animating display:none */
 .hidden{
     display:none;
