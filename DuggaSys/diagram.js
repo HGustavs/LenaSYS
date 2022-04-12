@@ -5333,8 +5333,7 @@ function updateCSSForAllElements()
             updateElementDivCSS(element, elementDiv, useDelta);
 
             // Opacity on selected elements
-            var grandChild = elementDiv.children[0].children[0];
-            grandChild.style.opacity = inContext ? `${0.3}` : `${1.0}`;
+            elementDiv.style.opacity = inContext ? `${0.6}` : `${1.0}`;
         }
     }
 
