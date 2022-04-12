@@ -4,10 +4,18 @@
 *********************************************************************************
 UI for creating and finding, folders to save diagrams in.
 The folders only go 2 layers deep.
+The program gives the user options to create a mainfolder to hold subfolders in which each subfolder holds a diagram.
+When creatin a subfolder you get the option to choose persmissions.
+The folders and subfolders gets put in a mainfolder called "Save"
+
 Requesting a diagram folder will send a request to diagram.php 
-of which folder in the repository [save] to load.
+of which folder in the repository 'save' on the server to load.
 
 
+*notes:
+    -Diagram files does not save or load on the subfolder.
+    -Choosing permission does nothing to permissions.
+    -'Upload Canvas' and 'Example canvas' options does not seem to do anything.
 -------------==============######## Documentation End ###########==============-------------*/
   session_start();
   include_once "../../coursesyspw.php";
