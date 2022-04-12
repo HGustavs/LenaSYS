@@ -418,6 +418,8 @@ function returned(data)
 	if (querystring['showPane']) {
 		showBox(querystring['showPane']);
 	}
+
+	resetBoxes();
 }
 
 function returnedTitle(data) {
