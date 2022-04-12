@@ -1076,6 +1076,16 @@ function returnedSection(data) {
           str += "</td>";
         }
 
+
+        // Generate Canvas Link Button
+        if (data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+          str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
+          src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
+          str += "</td>";
+        }
+
         // Cog Wheel
         if (data['writeaccess'] || data['studentteacher']) {
           str += "<td style='width:32px;' ";
@@ -1223,6 +1233,26 @@ function returnedSection(data) {
     showMOTD();
   }
 }
+
+
+function showCanvasLinkBox(operation,btnobj){
+  if(operation == "open"){
+    var canvasLink = "This is a test link."//"<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('.internal-link').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
+    if(canvasLink == null){
+      canvasLink = "ERROR: Failed to get canvas link.";
+    }
+
+    $("#canvasLinkBox").css("display", "flex");
+    $('#close-item-button').focus();
+
+    navigator.clipboard.writeText(canvasLink);
+    document.getElementById("canvasLinkText").value = canvasLink;
+  }else if(operation == "close"){
+    $("#canvasLinkBox").css("display", "none");
+  }
+}
+
+
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
   if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){
