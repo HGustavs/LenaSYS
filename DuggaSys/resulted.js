@@ -197,7 +197,7 @@ function createSortableTable(data){
 			duggaName: "Dugga",
 			hash:"Hash",
 			password:"Password",
-			teacherVisited: "Teacher visited",
+			teacher_visited: "Teacher visited",
 			submitted:"Submission Date",
 			timesSubmitted: "Times submitted",
 			timesAccessed: "Times accessed",

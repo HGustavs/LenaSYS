@@ -45,7 +45,7 @@ function GetAssignment ($hash){
 	$sql_1 = "UPDATE userAnswer SET last_Time_techer_visited=SYSDATE() where hash=:hash;";
 	$query_1 = $pdo->prepare($sql_1);
 	$query_1->bindParam(":hash", $hash,PDO::PARAM_STR);
-	$query_1->exec
+	$query_1->execute();
 	
 	// There should only be one match to the hash value in database as the hash is unique
 	foreach ($query->fetchAll() as $row){

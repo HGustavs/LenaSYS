@@ -77,4 +77,5 @@ if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
 	);
 
 	echo json_encode($returnArray);
+
 }
