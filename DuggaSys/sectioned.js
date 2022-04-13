@@ -397,7 +397,7 @@ function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
     selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", 0, null);
     clearHideItemList();
-    newItem();
+    newItem(itemtitle);
   }
 }
 
@@ -514,10 +514,21 @@ function updateDeadline() {
 // newItem: New Item for Section List
 //----------------------------------------------------------------------------------
 
-function newItem() {
+function newItem(itemtitle) {
 
   AJAXService("NEW", prepareItem(), "SECTION");
   $("#editSection").css("display", "none");
+
+  //Toggle for alert when create a New Item
+  var element = document.getElementById("createAlert");
+  element.classList.toggle("createAlertToggle");
+  //Set text for the alert when create a New Item
+  document.getElementById("createAlert").innerHTML = itemtitle + " has been created!";
+  //Duration time for the alert before remove
+  setTimeout(function(){
+    $("#createAlert").removeClass("createAlertToggle");
+    document.getElementById("createAlert").innerHTML = "";
+  },3000);
 
   //setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
 }
@@ -2627,7 +2638,6 @@ function validateForm(formid) {
 
     // if all information is correct
     if (window.bool8 == true && window.bool10 == true && window.bool11 == true) {
-      alert('The item is now updated');
       updateItem();
       updateDeadline();
 

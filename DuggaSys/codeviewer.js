@@ -32,7 +32,7 @@ How to use
 
 var retData; // Data returned from setup
 var tokens = []; // Array to hold the tokens.
-var allBlocks = [];
+var allBlocks = []; // Array holding collapsible tokens
 var dmd = 0; // Variable used to determine forward/backward skipping with the forward/backward buttons
 var genSettingsTabMenuValue = "wordlist";
 var codeSettingsTabMenuValue = "implines";
@@ -83,30 +83,64 @@ function returnedError(error) {
 function returned(data) 
 {
 	retData = data;
+	sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
+
+	// User can choose template if no template has been chosen and the user has write access.
+	if ((retData['templateid'] == 0)) {
+		if (retData['writeaccess'] == "w") {
+			alert("A template has not been chosen for this example. Please choose one.");
+			$("#chooseTemplateContainer").css("display", "flex");
+			return;
+		} else {
+			alert("The administrator of this code example has not yet chosen a template.");
+			return;
+		}
+	}
+	changeCSS("../Shared/css/" + retData['stylesheet']);
 
 	//Checks current example name with all the examples in codeExamples[] to find a match
 	//and determine current position.
-	for(i = 0; i < codeExamples.length; i++){
-		if(retData['examplename'] == codeExamples[i]['examplename'] && retData['sectionname'] == codeExamples[i]['entryname']){
+	for(i = 0; i < sectionData['entries'].length; i++){
+		if(retData['examplename'] == sectionData['entries'][i]['examplename'] && retData['sectionname'] == sectionData['entries'][i]['entryname']){
+			currentPos = i;
+		}
+		else if(sectionData['entries'][i]['link'] == exampleid){
 			currentPos = i;
 		}
 	}
 
 	//Fixes the five next code examples in retData to match the order that was assigned in Section.
 	var j = 0;
-	for(i = currentPos + 1; i < codeExamples.length; i++){
+	var posAfter = currentPos+1;
+
+	retData['after'] = [];
+	for(i = currentPos; i <= sectionData['entries'].length-1; i++){
 		if(j < 5){
-			retData['after'][j][1] = codeExamples[currentPos + 1 + j]['entryname'];
-			retData['after'][j][0] = (String)(codeExamples[currentPos + 1 + j]['link']);
-			for(k = 1; k < sectionData['codeexamples'].length; k++){
-				if(retData['after'][j][0] == sectionData['codeexamples'][k]['exampleid']){
-					retData['after'][j][2] = sectionData['codeexamples'][k]['examplename'];
+			if(currentPos == sectionData['entries'].length-1 && posAfter + j == sectionData['entries'].length){
+				retData['after'] = [];
+				break;
+			}
+			if(posAfter + j == sectionData['entries'].length){
+				//Not ideal to have this here but this is needed to not get an arrayOutOfBounds Error.
+				break;
+			}
+			if(sectionData['entries'][posAfter + j]['kind'] == 1){
+				posAfter++;
+				continue;
+			}
+
+			retData['after'].push(sectionData['entries'][posAfter + j]);
+			retData['after'][j][1] = sectionData['entries'][posAfter + j]['entryname'];
+			retData['after'][j][0] = (String)(sectionData['entries'][posAfter + j]['link']);
+
+			for(k = 0; k < retData['beforeafter'].length; k++){
+				if(retData['beforeafter'][k][0] == retData['after'][j][0]){			
+					retData['after'][j][2] = retData['beforeafter'][k][2]
 					break;
 				}
 			}
-			
-			retData['exampleno'] = currentPos
-			j++
+			retData['exampleno'] = posAfter;
+			j++;
 		}else{
 			break
 		}
@@ -114,23 +148,35 @@ function returned(data)
 
 	//Fixes the five code examples before the current one in retData to match the order that was assigned in Section.
 	j = 0;
-	for(i = currentPos - 1; i >= 0; i--){
+	var posBefore = currentPos-1;
+	retData['before'] = [];
+	for(i = currentPos; i > 0; i--){
 		if(j < 5){
-			retData['before'][j][1] = codeExamples[currentPos - 1 - j]['entryname'];
-			retData['before'][j][0] = (String)(codeExamples[currentPos - 1 - j]['link']);
-			for(k = 0; k < codeExamples.length; k++){
-				if(retData['before'][j][0] == codeExamples[k]['link']){
-					retData['before'][j][2] = codeExamples[k]['examplename'];
-					break
+			if(currentPos==1 && posBefore - j == 0){
+				retData['before'] = [];
+				break;
+			}
+			if(sectionData['entries'][posBefore - j]['kind']== 1){
+				posBefore--;
+				continue;
+			}
+
+			retData['before'].push(sectionData['entries'][posBefore - j]);
+			retData['before'][j][1] = sectionData['entries'][posBefore - j]['entryname'];
+			retData['before'][j][0] = (String)(sectionData['entries'][posBefore - j]['link']);
+
+			for(k = 0; k < retData['beforeafter'].length; k++){
+				if(retData['beforeafter'][k][0] == retData['before'][j][0] ){					
+					retData['before'][j][2] = retData['beforeafter'][k][2]
+					break;
 				}
 			}
-			retData['exampleno'] = currentPos
-			j++
+			retData['exampleno'] = posBefore;
+			j++;
 		}else{
 			break
 		}
 	}
-	
 	if (retData['deleted']) {
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
 	}
@@ -146,12 +192,12 @@ function returned(data)
 	// Works by checking if the current example is last or first in the order of examples.
 	//If there are no examples this disables being able to jump through (the non-existsing) examples
 
-	if (retData['before'].length != 0 && retData['after'].length != 0) {
+	if (retData['before'].length != 0 && retData['after'].length != 0 || retData['before'].length == 0 || retData['after'].length == 0) {
 		if (retData['exampleno'] == 0 || retData['before'].length == 0) {
 			document.querySelector("#beforebutton").style.opacity = "0.4";
 			document.querySelector("#beforebutton").style.pointerEvents = "none";
 		}
-		if (retData['exampleno'] == codeExamples.length - 1 || retData['after'].length == 0) {
+		if (retData['exampleno'] == sectionData['entries'].length || retData['after'].length == 0) {
 			document.querySelector("#afterbutton").style.opacity = "0.4";
 			document.querySelector("#afterbutton").style.pointerEvents = "none";
 		}
@@ -183,19 +229,6 @@ function returned(data)
 	var mobExSection = document.querySelector('#mobileExampleSection');
 	mobExName.innerHTML = data['examplename'];
 	mobExSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
-
-	// User can choose template if no template has been chosen and the user has write access.
-	if ((retData['templateid'] == 0)) {
-		if (retData['writeaccess'] == "w") {
-			alert("A template has not been chosen for this example. Please choose one.");
-			$("#chooseTemplateContainer").css("display", "flex");
-			return;
-		} else {
-			alert("The administrator of this code example has not yet chosen a template.");
-			return;
-		}
-	}
-	changeCSS("../Shared/css/" + retData['stylesheet']);
 
 	// Clear div2
 	$("#div2").html("");
@@ -386,6 +419,8 @@ function returned(data)
 	if (querystring['showPane']) {
 		showBox(querystring['showPane']);
 	}
+
+	resetBoxes();
 }
 
 function returnedTitle(data) {
@@ -476,11 +511,9 @@ function editImpWords(editType)
 //
 //----------------------------------------------------------------------------------
 
-function displayEditExample(boxid) 
-{
+function displayEditExample() {
 	document.getElementById("title").value = $('<textarea />').html(retData['examplename']).text();
 	document.getElementById("secttitle").value = $('<textarea />').html(retData['sectionname']).text();
-	document.getElementById("boxcontent").value = retData['box'][1][1];
 	changeDirectory(document.getElementById("boxcontent"));
 	document.getElementById("playlink").value = retData['playlink'];
 
@@ -848,12 +881,15 @@ function createboxmenu(contentid, boxid, type) {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
 			} else if (type == "IFRAME") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
 			} else {
 				str += "<td class='butto2 showdesktop'>";
 				str += "<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\"" + boxid + "\",\"" + contentid + "\");removeboxmenu(\"" + contentid + "menu\");'>";
@@ -882,7 +918,7 @@ function createboxmenu(contentid, boxid, type) {
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Maximize box' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Minimize box' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
 		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
-    str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
+    
 
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
@@ -1047,14 +1083,21 @@ function Skip(skipkind)
 
 function execSkip() {
 	str = "";
+	
+	//Holding backwards button
 	if (dmd == 1) {
+
 		for (i = 0; i < retData['before'].length; i++) {
-			str += "<span id='F" + retData['before'][i][1] + "' onclick='navigateExample(\"" + retData['before'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['before'][i][1] + ":" + retData['before'][i][2] + "</span>";
+			str += "<span id='F" + retData['before'][i][1] + "' onclick='navigateExample(\"" + retData['before'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['before'][i][1] + ":" + retData['before'][i][2] + "</span>";		
 		}
 		document.getElementById("backwdropc").innerHTML = str;
 		document.getElementById("backwdrop").style.display = "block";
 		dmd = 0;
-	} else if (dmd == 2) {
+	} 
+	
+	//Holding forwards button
+	else if (dmd == 2) {
+
 		for (i = 0; i < retData['after'].length; i++) {
 			str += "<span id='F" + retData['after'][i][1] + "' onclick='navigateExample(\"" + retData['after'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['after'][i][1] + ":" + retData['after'][i][2] + "</span>";
 		}
@@ -1062,6 +1105,18 @@ function execSkip() {
 		document.getElementById("forwdrop").style.display = "block";
 		dmd = 0;
 	}
+
+	//Hides dropdown if click outside.
+	document.addEventListener("click", function (e) {
+
+		if (!document.getElementById("backwdrop").contains(e.target) || !document.getElementById("forwdrop").contains(e.target)) {
+			
+			document.getElementById("backwdrop").style.display = "none";
+			document.getElementById("forwdrop").style.display = "none";
+
+		}
+	});
+	
 }
 
 //Retrieve height for building menu.
@@ -1310,8 +1365,9 @@ function tokenize(instring, inprefix, insuffix) {
 				currentCharacter = instring.charAt(i);
 				if (currentCharacter < ' ') {
 					if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) row++; // Add row if this white space is a row terminator
+					/* Added a multiline string handler, no error message needed
 					error('Unterminated String: ', currentStr, row);
-					break;
+					break; */
 				}
 
 				if (currentCharacter == currentQuoteChar) break;
@@ -1571,7 +1627,42 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		} else if (tokens[i].kind == "blockcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "string") {
-      cont+="<span class='string'>"+tokenvalue+"</span>";
+			// To represent a multilined string in the codeviewer window
+			if (tokenvalue.includes('\n') || tokenvalue.includes('\r')) {
+				var tokenString =tokenvalue;
+				var partialTokenString;
+				var currentTokenCharacter;
+				var tokenIndex = 0;
+				var tokenQuotationMark = tokenString.charAt(0);
+
+				partialTokenString = "";
+				while (true) {
+					currentTokenCharacter = tokenString.charAt(tokenIndex);
+					if (currentTokenCharacter == tokenQuotationMark && tokenIndex != 0) {
+						// At the end of the string
+						partialTokenString += currentTokenCharacter;
+						cont += `<span class='string'>${partialTokenString}</span>`;
+						break;
+					}
+					if (currentTokenCharacter < ' ') {
+						if ((currentTokenCharacter == '\n') || (currentTokenCharacter == '\r') || (currentTokenCharacter == '')) {
+							// Creates a new line when a line break character is in the string
+							cont += `<span class='string'>${partialTokenString}</span>`;
+							lineno++;
+							str += `<div id='${boxfilename}-line${lineno}' style='line-height:21px'><span class='blockBtnSlot'></span>${cont}</div>`;
+							cont = "";
+							partialTokenString = "";
+						}
+					}
+					// replace '<' and '>' with &lt; and &gt; to prevent html tags in the string to mess with the HTML DOM
+					if (currentTokenCharacter == '<') currentTokenCharacter = '&lt;';
+					if (currentTokenCharacter == '>') currentTokenCharacter = '&gt;';
+					tokenIndex++;
+					partialTokenString += currentTokenCharacter;
+				}
+			} else {
+				cont+=`<span class='string'>${tokenvalue}</span>`;
+			}
 		} else if (tokens[i].kind == "number") {
 			cont += "<span class='number'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "name") {
@@ -1611,12 +1702,14 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				pid = bracket.pop();
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "{") {
+				// [token row position, 1 = opening bracket, codeviewer box id]
 				allBlocks.push([tokens[i].row, 1, parseInt(boxid)]);
 				pid = "CBR" + cbcount + boxid;
 				cbcount++;
 				cbracket.push(pid);
 				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "}") {
+				// [token row position, 0 = closing bracket, codeviewer box id]
 				allBlocks.push([tokens[i].row, 0, parseInt(boxid)]);
 				pid = cbracket.pop();
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
@@ -1659,6 +1752,20 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						fontcolor = "#00ff";
 						break;
 				}
+
+				// Enables collapsible html tags
+				if (String(tokens[i + 1].kind) == "name") {
+					// Ensures that void elements do not count as opening html tags
+					if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
+						// [token row position, 1 = opening html tag, codeviewer box id]
+						allBlocks.push([tokens[i + 1].row, 1, parseInt(boxid)]);
+					}	
+				}
+				else if (String(tokens[i + 1].kind) == "operator" && String(tokens[i + 1].val) == "/" && String(tokens[i + 2].kind) == "name") {
+					// [token row position, 0 = closing html tag, codeviewer box id]
+					allBlocks.push([tokens[i + 1].row, 0, parseInt(boxid)]);
+				}
+
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
 					if (htmlArray.indexOf(tokens[i + 1].val.toLowerCase()) > -1) {
@@ -2465,7 +2572,7 @@ function showCopyButtons(templateid) {
 
 		for (var i = 1; i <= totalBoxes; i++) {
 		if (document.querySelector('#box' + i).className == 'box codebox') {
-		document.querySelector('#box' + i + 'wrapper #copyClipboard').style.display = 'block'
+		document.querySelector('#box' + i + 'wrapper #copyClipboard').style.display = 'table-cell'
 		}
 	}
 }
@@ -3188,10 +3295,32 @@ function resetBoxes()
 	showCopyButtons(templateid);
 
 	if (templateid == 1) {
+
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+
          thisBox.classList.remove('hidden');
             setTimeout(function () {
                 thisBox.classList.remove('visuallyhidden');
@@ -3203,19 +3332,78 @@ function resetBoxes()
 	}
 	
 	if (templateid == 2) {
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "50%";
+
+		thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
+        thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+
+		thisBox.classList.remove('hidden');
+		setTimeout(function () {
+			thisBox.classList.remove('visuallyhidden');
+		}, 20);
+		thisBox2.classList.remove('hidden');
+		setTimeout(function () {
+			thisBox2.classList.remove('visuallyhidden');
+		}, 20);
 	}
 
 	if (templateid == 3) {
+
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-        thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
+		thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
+
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+
         thisBox.classList.remove('hidden');
             setTimeout(function () {
                 thisBox.classList.remove('visuallyhidden');
@@ -3231,15 +3419,41 @@ function resetBoxes()
 	}
 
 	if (templateid == 4) {
+
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "100%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
+
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+
         thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
@@ -3255,18 +3469,49 @@ function resetBoxes()
 	}
 
 	if (templateid == 5) {
+		
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-        thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "50%";
+		thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
+
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
+
         thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
@@ -3289,15 +3534,45 @@ function resetBoxes()
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-        thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "40%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "30%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "30%";
+		thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
+		
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
+
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
         thisBox.classList.remove('hidden');
             setTimeout(function () {
@@ -3321,15 +3596,45 @@ function resetBoxes()
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-        thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "40%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "30%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "30%";
+		thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
+		
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
+
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
         thisBox.classList.remove('hidden');
             setTimeout(function () {
@@ -3352,13 +3657,38 @@ function resetBoxes()
 	if (templateid == 8) {
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-        thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "50%";
+		thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
+		
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+
         thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
@@ -3377,19 +3707,54 @@ function resetBoxes()
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
         thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
-        thisBox5 = document.querySelector('#box' + 5 + 'wrapper #boxtitlewrapper');
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "100%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "25%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "25%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "25%";
-		document.querySelector(boxValArray['box' + 5]['id']).style.width = "50%";
-		document.querySelector(boxValArray['box' + 5]['id']).style.height = "25%";
+		thisBox5 = document.querySelector('#box' + 5 + 'wrapper #boxtitlewrapper');
+		
+		//Reset css attributes to default. Surely there has to be an easier way to do this.
+		//Width
+		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.width = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.width = "";
+		//Height
+		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.height = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.height = "";
+		//Position
+		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.position = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.position = "";
+		//Top
+		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.top = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.top = "";
+		//Right
+		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.right = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.right = "";
+		//Left
+		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.left = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.left = "";
+		//Bottom
+		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
+		document.querySelector(boxValArray['box' + 5]['id']).style.bottom = "";
+
 		alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
-       thisBox.classList.remove('hidden');
+     	thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
             }, 20);
@@ -3496,7 +3861,7 @@ function resizeBoxes(parent, templateId)
 
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
-			handles: "e,s",
+			handles: "e",
 			start: function (event, ui) {
 				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
@@ -3519,7 +3884,6 @@ function resizeBoxes(parent, templateId)
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
-				alignBoxesWidth(boxValArray, 2, 1);
 				document.getElementById("box2wrapper").style.left = " ";
 			},
 			stop: function (e, ui) {
@@ -4838,9 +5202,17 @@ function fillBurger() {
 	var burgerMenu = document.querySelector('#burgerMenu');
 	var str = "";
 	boxes.forEach(box => {
-		str += "<div class='burgerOption' onclick='setShowPane("+box[0]+");'>"+box[4]+"</div>";
+		str += "<div class='burgerOption DarkModeBackgrounds' onclick='setShowPane("+box[0]+");'>"+box[4]+"</div>";	
 	});
+	str += "<div class='burgerOption DarkModeBackgrounds' onclick='showAllViews();'>All views</div>";
 	burgerMenu.innerHTML = str;
+}
+
+function showAllViews(){
+	var boxes = retData['box'];
+ 	boxes.forEach(box => {
+    	showAllBox(box[0]);
+ 	});
 }
 
 function setShowPane(id) {
@@ -4853,6 +5225,20 @@ function setShowPane(id) {
 		loc = loc+'&showPane='+id;
 		window.location.href = loc;
 	}
+}
+
+function showAllBox(id) {
+   closeBurgerMenu();
+   var container = document.querySelector('#div2');
+   var boxes = [...container.childNodes];
+   boxes.forEach(box => {
+    if (box.id === 'box'+id+'wrapper') {
+        box.style.display = 'block';
+        box.style.width = '100%';
+        box.style.maxWidth = '100%';
+        box.style.height = '100%';
+    } 
+   });
 }
 
 function showBox(id) {
@@ -4871,11 +5257,12 @@ function showBox(id) {
 	});
 }
 
-function showIframe(boxid,kind)
-{
+function showIframe(boxid,kind) {
+	    var fileName = retData['box'][boxid - 1][5]+'';
+		var filePath = 'fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename=';
 		document.querySelector(".previewWindow").style.display = "block";
 		document.querySelector(".previewWindowContainer").style.display = "block";
-		$("#iframeFileed").attr('src', 'fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename='+retData['box'][boxid - 1][5]+'');
+		$("#iframeFileed").attr('src', filePath+fileName);
 }
 function hideIframe()
 {

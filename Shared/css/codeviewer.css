@@ -81,6 +81,7 @@
     margin: 0;
     overflow: hidden;
     z-index: 2;
+    height: 40px;
 }
 
 .buttomenu2 table td img {
@@ -949,6 +950,14 @@
 
 #mobileNavHeading {
     display: none;
+}
+
+#mobileExampleSection {
+    white-space: nowrap;
+}
+
+#mobileExampleName {
+    white-space: nowrap;
 }
 
 /* Classes for animating display:none */
