@@ -232,7 +232,8 @@ function validateDummyFile() {
         "md",
         "py",
         "bat",
-        "xsl"
+        "xsl",
+        "json"
     ];
 
     var filterSymbols = [
