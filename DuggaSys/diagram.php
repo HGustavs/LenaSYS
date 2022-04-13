@@ -110,7 +110,7 @@
                 </span>
             </div>
         </fieldset>
-        <fieldset>
+<!--         <fieldset>
             <legend>Toggle</legend>
             <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
                 <img src="../Shared/icons/diagram_ruler.svg"/>
@@ -127,7 +127,7 @@
                 </span>
             </div>
 
-        </fieldset>   
+        </fieldset>   --> 
         <fieldset>
             <legend>Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
@@ -215,9 +215,10 @@
         <div id ="fieldsetBox">
             <fieldset id='propertyFieldset' style="position: absolute;">
             </fieldset>
-            <fieldset style="position: absolute; bottom: 200px;">
+
+            <fieldset style="position: absolute; bottom: 200px; width:82%">
             <legend>Toggle</legend>
-                <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
+                <!-- <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
                     <img src="../Shared/icons/diagram_grid.svg"/>
                     <span class="toolTipText"><b>Toggle grid</b><br>
                         <p>Enable/disable the grid</p><br>
@@ -230,7 +231,25 @@
                         <p>Enable/disable the Snap To Grid</p><br>
                         <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
                     </span>
-                </div>  
+                <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
+                <img src="../Shared/icons/diagram_ruler.svg"/>
+                <span class="toolTipText"><b>Toggle Ruler</b><br>
+                    <p>Enable/disable the ruler</p><br>
+                    <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+            <div id="a4TemplateToggle" class="diagramIcons" onclick="toggleA4Template()">
+                <img src="../Shared/icons/diagram_a4.svg"/>
+                <span class="toolTipText"><b>Toggle A4 template</b><br>
+                    <p>Enable/disable the A4 template</p><br>
+                    <p id="tooltip-TOGGLE_A4" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+                </div>   -->    
+                <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Toggle grid</button>
+                <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Toggle snap to grid</button>
+                <button id="rulerToggle" class="saveButton" onclick="toggleRuler()">Toggle ruler</button>
+                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">Toggle A4 template</button>
             </fieldset>
             <div style="position: absolute; bottom: 20px;">
                 <fieldset>
