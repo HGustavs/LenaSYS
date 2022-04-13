@@ -174,6 +174,14 @@ session_start();
                       </fieldset>
                     </div>
                   </div>
+                  <div>
+                    <div>
+                      <fieldset style="width:90%">
+                        <legend>Add diagram to dugga</legend>
+                        <select id="file" style="flex:1"></select>
+                      </fieldset>
+                    </div>
+                  </div>
                       <!-- Submissions for dugga -->
                   <div>
                     <div id="duggaSubmissionForm">
