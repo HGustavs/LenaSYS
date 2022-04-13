@@ -89,8 +89,12 @@ pdoConnect();
 			</div>
 			<div class="select-dugga-filter">
 				<div class="dugga-filter-container">
-					<div class="filter-btn filter-btn-duggaName" onclick="showAvaiableDuggaFilter()">Show dugga filter</div>
+					<div class="filter-btn filter-btn-duggaName" onclick="showAvailableDuggaFilter()">Show dugga filter</div>
 					<div class="show-dugga-filter-popup hidden"></div>
+				</div>
+				<div class="column-filter-container">
+				<div class="filter-btn filter-btn-duggaName" onclick="showAvailableColumnFilter()">Show column filter</div>
+					<div class="show-column-filter-popup hidden"></div>
 				</div>
 			</div>
 			<div class="select-date-interval">

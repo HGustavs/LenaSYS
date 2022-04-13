@@ -155,7 +155,7 @@ function renderBarDiagram(data) {
   // Renders the diagram
 
   var str = "<div style='width:100%;overflow-x:scroll;'>";
-  str += "<h2 style='padding-top:10px'>Weekly bar chart</h2>";
+  str += "<h2 style='padding-left:5px'>Weekly bar chart</h2>";
   str += "<p style 'padding-top:10px'>Showing activities for " + dailyCount[0][0] + " - " + dailyCount[7*numOfWeeks-1][0] + " </p>";
   str += `<svg  class='chart fumho'  style='background-color:#efefef;'
   width='1300' height='250' aria-labelledby='title desc' role='img'>`;
@@ -347,7 +347,7 @@ function renderLineDiagram(data) {
 
 
   //Selectbox to choose week
-  str = "<h2 style='padding-top:10px'>Weekly line chart</h2>";
+  str = "<h2 style='padding-left:5px'>Weekly line chart</h2>";
   str += `<select class="group2" id="weekoption" value="0" style="margin-top:25px;"
   onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">`;
   str += '<option value="' + firstweek + '">All weeks</option>';
@@ -694,7 +694,9 @@ function renderActivityPoints(activities) {
   const BASELINE = 75;
   const MIDDLE = 243;
   activities.forEach(entry => {
-    var hour = entry.time.substr(0, 2);
+    //Cast integer to string
+    var hourString = entry.time.toString();
+    var hour = hourString.substr(0, 2);
     var houroffset = parseInt(hour) + 6;
     var type = entry.type;
     var activityCount = activities.length;
@@ -965,13 +967,13 @@ function returnedSection(data) {
 
   str += "<div id='contributionContainer' class='contributionSort'>";
   str += `<input type='button' id='allBtn' value='All' class='submit-button title='All' 
-  onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>`;
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'></input>`;
   str += `<input type='button' id='basicBtn' value='Basic' class='submit-button title='Basic'
-  onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>`;
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'></input>`;
   str += `<input type='button' id='chartsBtn' value='Charts' class='submit-button title='Charts'
-  onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>`;
+  onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
   str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution'
-  onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>`;
+  onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
   str += "</div>";
 
   localStorage.setItem('GitHubUser', data['githubuser'])
@@ -1558,38 +1560,6 @@ function allRankRenderCell(col,celldata,cellid){
   return str;
 }
 
-// Tooltips for sorting buttons on hover
-
-function showTooltip(hoverBtn) {
-  var TTtext = "";
-  var leftOffset = 0;
-
-  switch(hoverBtn.value) {
-    case "All":
-      TTtext = "Show all";
-      leftOffset = 0;
-    break;
-    case "Basic":
-      TTtext = "Show basic";
-      leftOffset = 115;
-    break;
-    case "Charts":
-      TTtext = "Show charts";
-      leftOffset = 230;
-    break;
-    case "Contribution":
-      TTtext = "Show contribution";
-      leftOffset = 345;
-    break;
-  }
-  
-  var TTtextContainer = document.createElement("P");
-  var TTtextNode = document.createTextNode(TTtext);
-  TTtextContainer.appendChild(TTtextNode);
-  document.getElementById("contributionContainer").appendChild(TTtextContainer);
-  TTtextContainer.classList.add("contribToolTip");
-  TTtextContainer.style.marginLeft = leftOffset + "px";
-}
 
 function hideTooltip() {
   var childrens = document.getElementById("contributionContainer").children;

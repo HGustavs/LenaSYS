@@ -93,6 +93,9 @@ function parseMarkdown(inString)
     inString = inString.replace(/\</g, "&lt;");
     inString = inString.replace(/\>/g, "&gt;");
 
+    //converts html code for plus sign into plus
+    inString = inString.replace(/&#43;>/g, "+");
+
     // append '@@@' to all code block indicators '```' and '~~~'
     inString = inString.replace(/^\`{3}[\r\n|\n|\r]?/gm, '```@@@');
     inString = inString.replace(/^\~{3}[\r\n|\n|\r]?/gm, '~~~@@@');

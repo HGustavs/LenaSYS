@@ -408,7 +408,7 @@ function fileDownload(name, path, extension){
     h1.textContent = "Download file";
     a.href = path;
     a.textContent = name + "." + extension;
-    a.download = name;
+    a.download = "";
     div.appendChild(h1);
     div.appendChild(a);
     document.querySelector(".fileView").appendChild(div);
@@ -715,11 +715,11 @@ function deleteFile(fileid, filename, filekind) {
     }
 }
 
-/*
+
 function createQuickItem() {
-    //showFilePopUp('MFILE');
+    showFilePopUp('MFILE');
 }
-*/
+
 
 /*****************************************************************
   loadFile(), editFile(), cancelEditFile() and closeEditFile()
@@ -772,7 +772,9 @@ function cancelEditFile() {
 
 function saveMarkdown() {
     let content = document.getElementById("mrkdwntxt").value;
-    content = content.replace(/\+/g, '%2B');
+
+    //content = content.replace(/\+/g, '%2B'); when saving files all pluses were converted to %2B.
+    content = content.replace(/\&#43;/g, '+');
     AJAXService("SAVEFILE", {
         cid: querystring['courseid'],
         contents: content,
@@ -786,10 +788,11 @@ function saveMarkdown() {
 }
 
 function saveTextToFile() {
-    
     let content = document.getElementById("filecont").value;
-    
-    content = content.replace(/\+/g, '%2B');
+
+    content = content.replace(/\&#43;/g, '+');
+    //content = content.replace(/\+/g, '%2B');
+
     AJAXService("SAVEFILE", {
         cid: querystring['courseid'],
         contents: content,

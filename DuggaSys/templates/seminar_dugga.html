@@ -1,0 +1,41 @@
+<div id="container">
+	<div class='instructions-container'>
+	<div class='instructions-button' onclick='toggleInstructions()'><h3>Instructions</h3></div>	
+		<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " >
+		<p>Register for seminar. Attaching PDF files is allowed. PDF-files will be previewed.</p>
+		</div>
+	</div>
+
+	<!-- Input username to register -->
+	<div style='margin-left: 25px;margin-bottom: 25px;'>
+		<form id = input_prompt>
+			<label for="uname">Username:</label>
+			<input type="input" id="input_uname" name="uname"><br>
+			<input type="button" class="submit-button" value="Register" onclick="registerForSeminar();">
+		  </form>
+		<div id = confirm_text></div>
+	</div>
+
+	<div class='instructions-container'>
+		<div class='instructions-button' onclick='toggleInstructions()'><h3>Upload PDF of Presentation</h3></div>	
+		<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; ">
+
+			<!-- pdf Preview -->
+			<div id="Inl1DocumentPrev" style="background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;">&lt;PDF Preview&gt;</div>
+			<table>
+				<tr>
+					<td id = "Inl1Document">
+
+					</td>
+					<td>
+							<span id="Inl1DocumentFile" style="margin:4px;" >No file uploaded</span>
+					</td>
+					<td>
+							<span id="Inl1DocumentDate" style="margin:4px;" ></span>
+					</td>
+				</tr>
+			</table>
+			<!-- End pdf Preview -->
+		</div>	
+	</div>
+</div>

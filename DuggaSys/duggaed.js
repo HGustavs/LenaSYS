@@ -8,7 +8,7 @@ var querystring = parseGet();
 var filez;
 var variant = [];
 var submissionRow = 0;
-var duggaTable;
+var myTable;
 var variantTable;
 var str;
 var globalData;
@@ -20,12 +20,12 @@ var isClickedElementBox = false;
 var searchterm = "";
 
 function setup() {
-
+	/* Replaced by search bar in navheader.php. Remove this code when the new search bar has been properly tested
 	var filt = "";
 
 	filt += `<td id='testSearchContainer' class='navButt'>`
     filt += `<form autocomplete='off' style='display:contents'><input id='duggaSearch' readonly style='margin-top:4px;' onmouseover = 'duggaSearchMouseOver()' type='text' name='search' placeholder='Search..'`;
-	filt += `onkeyup='searchterm=document.getElementById("duggaSearch").value;searchKeyUp(event);duggaTable.renderTable();'onsearch='searchterm=document.getElementById("duggaSearch").value; searchKeyUp(event); duggaTable.renderTable();document.getElementById("searchinputMobile").value=document.getElementById("duggaSearch").value;'/></form>`;
+	filt += `onkeyup='searchterm=document.getElementById("duggaSearch").value;searchKeyUp(event);myTable.renderTable();'onsearch='searchterm=document.getElementById("duggaSearch").value; searchKeyUp(event); myTable.renderTable();document.getElementById("searchinputMobile").value=document.getElementById("duggaSearch").value;'/></form>`;
 	filt += `<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>`
     filt += `<img alt='search icon' id='lookingGlassSVG' style='height:18px;margin-bottom:6px;' src='../Shared/icons/LookingGlass.svg'>`
 	filt += `</button>`
@@ -35,10 +35,21 @@ function setup() {
     filt += `<script> function duggaSearchMouseOver() {var obj = document.getElementById("duggaSearch"); if(obj != null){obj.removeAttribute('readonly');}}</script>`;
 
 	$("#menuHook").before(filt);
-
+	*/
 	AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
+//displays dropdown when hovering search bar
+function hoverSearch() {
+	$('#dropdownSearch').css({display:'block'});
+	$('#dropdowns').css('display', 'none');
+	$('#dropdownc').css('display', 'none');
+}
+
+//stops displaying the dropdown when removing cursor from search bar
+function leaveSearch() {
+	$('#dropdownSearch').css({display:'none'});
+}
 
 // Detects clicks
 $(document).mousedown(function (e) {
@@ -612,7 +623,7 @@ function returnedDugga(data) {
 		tblfoot: {}
 	}
 		var colOrder=["did","qname","autograde","gradesystem","quizFile","qstart","deadline","qrelease","modified","arrow","cogwheel","trashcan"];
-		duggaTable = new SortableTable({
+		myTable = new SortableTable({
 				data:tabledata,
 				tableElementId:"quiz",
 				renderCellCallback:renderCell,
@@ -625,7 +636,7 @@ function returnedDugga(data) {
         hasFooter:false
 		});
 
-		duggaTable.renderTable(); // Renders the dugga table
+		myTable.renderTable(); // Renders the dugga table
 
 		var content = "";
 
@@ -801,21 +812,21 @@ function renderSortOptionsDugga(col,status,colname) {
 		}
 		else{
 			if (status ==- 1) {
-				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
 			} else if (status == 0) {
-				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 			} else {
-				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 			}
 		}
 		*/
 		if (col != "arrow" && col != "cogwheel" && col != "trashcan") {			//Disable sorting for pen, cog and trashcan icons
 			if (status ==- 1) {
-				str += `<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"${col}\",0)'>${colname}</span>`;
+				str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>${colname}</span>`;
 			} else if (status == 0) {
-					str += `<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"${col}\",1)'>${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
+					str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",1)'>${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
 			} else {
-					str += `<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"${col}\",0)'>${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
+					str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
 			}
 		}
 return str;
