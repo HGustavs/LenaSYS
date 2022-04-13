@@ -1545,6 +1545,9 @@ div .navButt:hover {
       
       vertical-align: middle;
     }
+    .editbtn{
+      display: none;
+    }
     .buttomenu2{
         height: 35px;
     }
