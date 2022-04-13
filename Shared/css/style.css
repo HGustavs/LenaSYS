@@ -1541,7 +1541,7 @@ div .navButt:hover {
     .box{
         overflow: hidden;
     }
-    .maximizebtn, .minimizebtn, .resetbtn{
+    .maximizebtn, .minimizebtn, .resetbtn, .editbtn{
       
       vertical-align: middle;
     }
