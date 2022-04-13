@@ -855,6 +855,8 @@ var deltaX = 0, deltaY = 0, startX, startY;
 var startTop, startLeft;
 var sscrollx, sscrolly;
 var cwidth, cheight;
+var deleteBtnX = 0, deleteBtnY = 0;
+var deleteBtnSize = 0;
 var hasRecursion = false;
 var startWidth;
 var startNodeRight = false;
@@ -874,6 +876,12 @@ var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
 var camera = new Point(0, 0); // Relative to coordinate system origo
 var lastZoomPos = new Point(0, 0); //placeholder for the previous zoom position relative to the screen (Screen position for previous zoom)
 var lastMousePosCoords = new Point(0, 0); //placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom) 
+
+var zoomAllowed = true; // Boolean value to slow down zoom on touchpad.
+
+var lastZoomPos = new Point(0, 0); //placeholder for the previous zoom position relative to the screen (Screen position for previous zoom)
+var lastMousePosCoords = new Point(0, 0); //placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom) 
+
 
 // Constants
 const elementwidth = 200;
@@ -1355,13 +1363,16 @@ document.addEventListener("mouseleave", function(event){
  * @description Event function triggered when the mousewheel reader has a value of grater or less than 0.
  * @param {MouseEvent} event Triggered mouse event.
  */
-function mwheel(event)
-{
+function mwheel(event) {
     event.preventDefault();
-    if(event.deltaY < 0) {
-        zoomin(event);
-    } else {
-        zoomout(event);
+    if(zoomAllowed){
+        if(event.deltaY < 0) {
+            zoomin(event);
+        } else {
+            zoomout(event);
+        }
+        zoomAllowed = false;
+        setTimeout(function(){zoomAllowed = true}, 75); // This number decides the time between each zoom tick, in ms.
     }
 }
 
@@ -1371,6 +1382,11 @@ function mwheel(event)
  */
 function mdown(event)
 {
+        // Mouse pressed over delete button for multiple elements
+        if (event.button == 0 && context.length > 1) {
+            checkDeleteBtn();
+        }
+
     // Prevent middle mouse panning when moving an object
     if(event.button == 1) {
         if (movingObject) {
@@ -1452,6 +1468,11 @@ function mdown(event)
  */
 function ddown(event)
 {
+    // Mouse pressed over delete button for a single element
+    if (event.button == 0) {
+        checkDeleteBtn();
+    }
+    
     // Used when determining time between clicks.
     if((new Date().getTime() - dblPreviousTime) < dblClickInterval && event.button == 0){
 
@@ -1646,6 +1667,24 @@ function mup(event)
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
+}
+
+/**
+ * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
+ */
+function checkDeleteBtn(){
+    if (deleteBtnX != 0) {
+        if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
+            if (mouseMode == mouseModes.EDGE_CREATION) return;
+            if (context.length > 0) {
+                removeElements(context);
+            } else if (contextLine.length > 0) {
+                 removeLines(contextLine);
+            }            
+    
+            updateSelection();
+        }
+    }
 }
 
 /**
@@ -4942,6 +4981,10 @@ function updateContainerBounds()
  */
 function drawSelectionBox(str)
 {
+    deleteBtnX = 0;
+    deleteBtnY = 0;
+    deleteBtnSize = 0;
+
     if (context.length != 0 || contextLine.length != 0) {
         var lowX;
         var highX;
@@ -5015,7 +5058,31 @@ function drawSelectionBox(str)
             highY = (highY > lineHighY) ? highY : lineHighY;
         }
 
+        // Selection container of selected elements
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
+
+        //Determine size and position of delete button
+        if (highX - lowX + 10 > highY - lowY + 10) {
+            deleteBtnSize = (highY - lowY + 10) / 4;
+        }
+        else {
+            deleteBtnSize = (highX - lowX + 10) / 4;
+        }
+        
+        if (deleteBtnSize > 15) {
+            deleteBtnSize = 15;
+        }
+        else if (deleteBtnSize < 10) {
+            deleteBtnSize = 10;
+        }
+
+        deleteBtnX = lowX - 5 + highX - lowX + 10 - deleteBtnSize;
+        deleteBtnY = lowY - 5;
+
+        //Delete button visual representation
+        str += `<rect width='${deleteBtnSize}' height='${deleteBtnSize}' x='${deleteBtnX}' y='${deleteBtnY}'; style='fill:transparent;stroke-width:2;stroke:rgb(0,0,0)'/>`;
+        str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
+        str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
     }
 
     return str;
