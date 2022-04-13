@@ -61,4 +61,4 @@ ALTER TABLE userAnswer ADD COLUMN timesAccessed INT(5);
 ALTER TABLE userAnswer ADD COLUMN timesAccessed INT(5);
 
 /* Associated with issue #11113 */
-ALTER TABLE userAnswer ADD last_Time_techer_visited TIMESTAMP NULL DEFAULT NULL AFTER timesGraded;
+ALTER TABLE userAnswer ADD last_Time_teacher_visited TIMESTAMP NULL DEFAULT NULL AFTER timesGraded;
