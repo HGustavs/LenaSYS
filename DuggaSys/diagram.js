@@ -3481,20 +3481,11 @@ function setElementPlacementType(type = elementTypes.EREntity)
     elementTypeSelected = type;
 }
 
-function holdPlacementButtonDownEntity(type){
+function holdPlacementButtonDown(num){
     mousePressed=true;
     setTimeout(() => {
         if(!!mousePressed){
-            togglePlacementTypeBoxEntity(type);
-        }
-    }, 500);
-}
-
-function holdPlacementButtonDownRI(type){
-    mousePressed=true;
-    setTimeout(() => {
-        if(!!mousePressed){
-            togglePlacementTypeBoxRI(type);
+            togglePlacementTypeBox(num);
         }
     }, 500);
 }
@@ -3506,89 +3497,61 @@ function holdPlacementButtonUp(){
 }
 /**
  * @description toggles the box containing different types of placement entitys.
- * @param {Number} type what type of element to select.
+ * @param {Number} num the number connected to the element selected.
  */
-function togglePlacementTypeBoxEntity(type){
-    if(!document.getElementById("togglePlacementTypeButton"+type).classList.contains("activeTogglePlacementTypeButton")){ 
-        for (let index = 0; index < document.getElementsByClassName("togglePlacementTypeButtonEntity").length; index++) {
+function togglePlacementTypeBox(num){
+    if(!document.getElementById("togglePlacementTypeButton"+num).classList.contains("activeTogglePlacementTypeButton")){ 
+        for (let index = 0; index < document.getElementsByClassName("togglePlacementTypeButton").length; index++) {
             if(document.getElementsByClassName("togglePlacementTypeButton")[index].classList.contains("activeTogglePlacementTypeButton")) {
                 document.getElementsByClassName("togglePlacementTypeButton")[index].classList.remove("activeTogglePlacementTypeButton");
             }
-            if(document.getElementsByClassName("togglePlacementTypeBoxEntity")[index].classList.contains("activeTogglePlacementTypeBox")) {
-                document.getElementsByClassName("togglePlacementTypeBoxEntity")[index].classList.remove("activeTogglePlacementTypeBox");
+            if(document.getElementsByClassName("togglePlacementTypeBox")[index].classList.contains("activeTogglePlacementTypeBox")) {
+                document.getElementsByClassName("togglePlacementTypeBox")[index].classList.remove("activeTogglePlacementTypeBox");
             }
         }       
-        document.getElementById("togglePlacementTypeButton"+type).classList.add("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBoxEntity"+type).classList.add("activeTogglePlacementTypeBox");
-        document.getElementById("elementPlacement"+type).children.item(1).classList.remove("toolTipText");
-        document.getElementById("elementPlacement"+type).children.item(1).classList.add("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton"+num).classList.add("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox"+num).classList.add("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement"+num).children.item(1).classList.remove("toolTipText");
+        document.getElementById("elementPlacement"+num).children.item(1).classList.add("hiddenToolTiptext");
     }
     else{
-        document.getElementById("elementPlacement"+type).children.item(1).classList.add("toolTipText");
-        document.getElementById("elementPlacement"+type).children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton"+type).classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBoxEntity"+type).classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement"+num).children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement"+num).children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton"+num).classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox"+num).classList.remove("activeTogglePlacementTypeBox");
     }
 }
 /**
  * @description toggles which entity placement type is selected for the different types of diagrams.
- * @param {Number} type what type of element to select.
+ * @param {Number} num the number connected to the element selected.
+ * @param {Number} type the type of element selected.
  */
-function togglePlacementTypeEntity(type){
-    document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
-    document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
-    document.getElementById("elementPlacement"+type).classList.remove("hiddenPlacementType");
-    document.getElementById("elementPlacement0").children.item(1).classList.add("toolTipText");
-    document.getElementById("elementPlacement0").children.item(1).classList.remove("hiddenToolTiptext");
-    document.getElementById("togglePlacementTypeButton0").classList.remove("activeTogglePlacementTypeButton");
-    document.getElementById("togglePlacementTypeBoxEntity0").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("elementPlacement4").children.item(1).classList.add("toolTipText");
-    document.getElementById("elementPlacement4").children.item(1).classList.remove("hiddenToolTiptext");
-    document.getElementById("togglePlacementTypeButton4").classList.remove("activeTogglePlacementTypeButton");
-    document.getElementById("togglePlacementTypeBoxEntity4").classList.remove("activeTogglePlacementTypeBox");
-}
-/**
- * @description toggles the box containing inheritance or relations.
- * @param {Number} type what type of element to select.
- */
- function togglePlacementTypeBoxRI(type){
-    if(!document.getElementById("togglePlacementTypeButton"+type).classList.contains("activeTogglePlacementTypeButton")){ 
-        for (let index = 0; index < document.getElementsByClassName("togglePlacementTypeButtonRI").length; index++) {
-            if(document.getElementsByClassName("togglePlacementTypeButton")[index].classList.contains("activeTogglePlacementTypeButton")) {
-                document.getElementsByClassName("togglePlacementTypeButton")[index].classList.remove("activeTogglePlacementTypeButton");
-            }
-            if(document.getElementsByClassName("togglePlacementTypeBoxRI")[index].classList.contains("activeTogglePlacementTypeBox")) {
-                document.getElementsByClassName("togglePlacementTypeBoxRI")[index].classList.remove("activeTogglePlacementTypeBox");
-            }
-        }       
-        document.getElementById("togglePlacementTypeButton"+type).classList.add("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBoxRI"+type).classList.add("activeTogglePlacementTypeBox");
-        document.getElementById("elementPlacement"+type).children.item(1).classList.remove("toolTipText");
-        document.getElementById("elementPlacement"+type).children.item(1).classList.add("hiddenToolTiptext");
+function togglePlacementType(num,type){
+    if(type==0){
+        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement0").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement0").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton0").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox0").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement4").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement4").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton4").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox4").classList.remove("activeTogglePlacementTypeBox");
     }
-    else{
-        document.getElementById("elementPlacement"+type).children.item(1).classList.add("toolTipText");
-        document.getElementById("elementPlacement"+type).children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton"+type).classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBoxRI"+type).classList.remove("activeTogglePlacementTypeBox");
+    else if(type==1){
+        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement1").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement1").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton1").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox1").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement5").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement5").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton5").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");
     }
-}
-/**
- * @description toggles which relation or inheritance placement type is selected.
- * @param {Number} type what type of element to select.
- */
-function togglePlacementTypeRI(type){
-    document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
-    document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
-    document.getElementById("elementPlacement"+type).classList.remove("hiddenPlacementType");
-    document.getElementById("elementPlacement1").children.item(1).classList.add("toolTipText");
-    document.getElementById("elementPlacement1").children.item(1).classList.remove("hiddenToolTiptext");
-    document.getElementById("togglePlacementTypeButton1").classList.remove("activeTogglePlacementTypeButton");
-    document.getElementById("togglePlacementTypeBoxRI1").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("elementPlacement5").children.item(1).classList.add("toolTipText");
-    document.getElementById("elementPlacement5").children.item(1).classList.remove("hiddenToolTiptext");
-    document.getElementById("togglePlacementTypeButton5").classList.remove("activeTogglePlacementTypeButton");
-    document.getElementById("togglePlacementTypeBoxRI5").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
 }
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
