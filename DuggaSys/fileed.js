@@ -578,7 +578,7 @@ function rowFilter(row) {
                         if (fileNameSearch(row, key, tempSearchTerm) &&
                             !(key == "counter" || key == "editor" || key == "trashcan")) match = true;
                     } else {
-                        if (row[key].toUpperCase().indexOf(tempSearchTerm.toUpperCase()) != -1 &&
+                        if (row[key].toString().toUpperCase().indexOf(tempSearchTerm.toUpperCase()) != -1 &&
                             !(key == "counter" || key == "editor" || key == "trashcan")) match = true;
                     }
                 }
