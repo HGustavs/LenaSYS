@@ -3323,6 +3323,15 @@ function toggleKeybindList()
     }
 }
 
+
+/** @description Gives the exit button its intended functionality to exit out of replay-mode */
+function exitReplayMode()
+{
+    toggleReplay();
+    setReplayRunning(false);
+    clearInterval(stateMachine.replayTimer);
+}
+
 /**
  * @description Sets the replay-delay value
  */

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   data-name="Layer 1"
+   viewBox="0 0 24 24"
+   version="1.1"
+   sodipodi:docname="replay.svg"
+   width="24"
+   height="24"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview15"
+     pagecolor="#4d4d4d"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="5.6568542"
+     inkscape:cx="-15.467961"
+     inkscape:cy="24.218407"
+     inkscape:window-width="1920"
+     inkscape:window-height="986"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Layer_1" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:7px;}.cls-2{fill:#fff;}</style>
+  </defs>
+  <title
+     id="title6">ResetButton</title>
+  <metadata
+     id="metadata832">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>ResetButton</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     d="M 10.251411,15.764977 V 8.2352434 l 6.066632,3.7656156 z"
+     id="path846"
+     style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1.16934;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <g
+     id="g1559"
+     style="fill:#ffffff;stroke:#ffffff;stroke-opacity:1"
+     transform="matrix(0.33303547,0,0,0.33303547,17.876619,-4.6195184)" />
+  <path
+     style="fill:#ffffff;stroke:#ffffff;stroke-width:0.0186773;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+     d=""
+     id="path1179" />
+  <path
+     style="fill:#ffffff;stroke:#ffffff;stroke-width:0.0186773;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+     d=""
+     id="path1257" />
+  <g
+     id="g3830"
+     transform="translate(0.53033004)">
+    <path
+       class="cls-1"
+       d="M 5.838651,4.2124359 A 9.9329091,9.9329091 0 1 1 2.0449204,12.053025"
+       id="path8"
+       style="stroke:#ffffff;stroke-width:2.33893;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.69025;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       d="m -0.27859001,12.160449 c 0,-0.05022 2.43676841,-4.4140445 2.46486841,-4.4140445 0.02872,0 2.470098,4.3610145 2.470098,4.4123475 0,0.01602 -1.110368,0.02898 -2.467483,0.02898 -1.35711601,0 -2.46748341,-0.01295 -2.46748341,-0.02758 z"
+       id="path2714" />
+  </g>
+</svg>
