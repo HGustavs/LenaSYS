@@ -97,17 +97,205 @@ function showInfoText(object, displayText) {
   }
 }
 
-function getHolidays() {
+/* 
+//A hilariously complicated way to find the date of easter every year. Why so complicated you ask. Because the date of easter
+//is detirmined by lunnar cycles thats why.
+function getEaster(date)
+{
+  var Y = date.getFullYear();
+  var MetonicCycle, JulianCalendarLeapDays, JulianCalendarNonLeapDays, PVärde, QVärde,
+      CenturyValue, JulianGregorianDiffrence, PaschallFullMoon, DaysToSundayFromPaschallFullMoon;
+
+      MetonicCycle = Y % 19;
+      JulianCalendarLeapDays = Y % 4;
+      JulianCalendarNonLeapDays = Y % 7;
+      PVärde = Math.floor(Y / 100);
+      QVärde = Math.floor((13 + 8 * PVärde) / 25);
+      CenturyValue = (15 - QVärde + PVärde - PVärde / 4) % 30;
+      JulianGregorianDiffrence = (4 + PVärde - PVärde / 4) % 7;
+      PaschallFullMoon = (19 * MetonicCycle + CenturyValue) % 30;
+      DaysToSundayFromPaschallFullMoon = (2 * JulianCalendarLeapDays + 4 * JulianCalendarNonLeapDays + 6 * PaschallFullMoon + JulianGregorianDiffrence) % 7;
+  var days = (22 + PaschallFullMoon + DaysToSundayFromPaschallFullMoon);
+  var easterDate
+
+  if ((PaschallFullMoon == 29) && (DaysToSundayFromPaschallFullMoon == 6)) {
+    easterDate = Y + "-04" + "-19";
+    return easterDate;
+  }else if ((PaschallFullMoon == 28) && (DaysToSundayFromPaschallFullMoon == 6)) {
+    easterDate = Y + "-04" + "-18";
+    return easterDate;
+  }else {
+    if (days > 31) {
+    easterDate = Y + "-04-" + (days - 31);
+    return easterDate;
+    }else {
+      easterDate = Y + "-03-" + days;
+      return easterDate;
+    }
+  }
+}
+
+function getGoodFriday(easterDate)
+{
+  var YYYY = easterDate.substr(0,4);
+  var MM = easterDate.substr(5,2);
+  var DD = easterDate.substr(8,2);
+  if((Number(DD) - 2) <= 0){
+    MM = "03"
+    return (YYYY + "-" + MM + "-" + DD);
+  }
+  else{
+    return (YYYY + "-" + MM + "-" + String(Number(DD) - 2));
+  }
+}
+
+function getEasterMonday(easterDate)
+{
+  var YYYY = easterDate.substr(0,4);
+  var MM = easterDate.substr(5,2);
+  var DD = easterDate.substr(8,2);
+  if((Number(DD) + 1) >= 31){
+    MM = "04"
+    return (YYYY + "-" + MM + "-" + DD);
+  }
+  else{
+    return (YYYY + "-" + MM + "-" + String(Number(DD) + 1));
+  }
+}
+
+function getAscensionDay(easterDate)
+{
+  var YYYY = easterDate.substr(0,4);
+  var MM = easterDate.substr(5,2);
+  var DD = easterDate.substr(8,2);
+
+  //There are four possiblities 
+  //Easter was in mars and ascension day is in april
+  //Easter was in mars and ascension day is in may
+  //Easter was in april and ascension day is in may
+  //Easter was in april and ascension day is in june
+  if(((Number(DD) + 40) <= 61) && (MM == "03")){
+    DD = String(Number(DD) + 40 - 30);
+    return (YYYY + "-04-" + DD);
+  }else if(((Number(DD) + 40) > 61) && (MM == "03")){
+    DD = String(Number(DD) + 40 - 61);
+    return (YYYY + "-05-" + DD);
+  }else if(((Number(DD) + 40) <= 61) && (MM == "04")){
+    DD = String(Number(DD) + 40 - 31);
+    return (YYYY + "-05-" + DD);
+  }else if(((Number(DD) + 40) > 61) && (MM == "04")){
+    DD = String(Number(DD) + 40 - 61);
+    return (YYYY + "-06-" + DD);
+  }
+
+}
+
+function getMidsummer(date)
+{
+  var year = date.getFullYear();
+  var day = 19;
+  while(day <= 26){
+    const d = new Date("July " + day + ", " + year + " 01:15:00");
+    var weekday = d.getDay();
+    if(weekday == 5){
+      return (year + "-06-" + day)
+    }
+    day++;
+  }
+}
+ */
+function getHolidays(date) 
+{
   var holidays = new Array();
-  var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
-  var redDay2 = getYYYYMMDD(new Date("2019-04-22"));
-  var redDay3 = getYYYYMMDD(new Date("2019-05-01"));
-  var redDay4 = getYYYYMMDD(new Date("2019-05-30"));
-  var redDay5 = getYYYYMMDD(new Date("2019-06-06"));
-  var redDay6 = getYYYYMMDD(new Date("2019-06-21"));
-  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6);
+
+  //This commented out code is meant to automate the process of finding holidays every year. Works every year till 
+  //the end of time.
+/* 
+  var easterDate = getEaster(date);
+  var goodFridayDate = getGoodFriday(easterDate);
+  var easterMondayDate = getEasterMonday(easterDate);
+  var ascensionDayDate = getAscensionDay(easterDate);
+  var midsummerDate = getMidsummer(date);
+  var Y = date.getFullYear(); 
+
+ var redDay1 = getYYYYMMDD(new Date(goodFridayDate)); 
+  var redDay2 = getYYYYMMDD(new Date(easterDate));
+  var redDay3 = getYYYYMMDD(new Date(easterMondayDate));
+  var redDay4 = getYYYYMMDD(new Date(ascensionDayDate));
+  var redDay5 = getYYYYMMDD(new Date(Y + "-05-01"));
+  var redDay6 = getYYYYMMDD(new Date(Y + "-06-06"));
+  var redDay7 = getYYYYMMDD(new Date(midsummerDate));
+*/
+
+  //This is a hardcoded list of all red dates from 2022 to 2025. It has to be manually edited every few years by
+  //maunally editing the source code. Witch is frankly idiotic:( Client for some reason seamed reluctant to automate this.
+  //Most of the automatin is already done and commented out above. Some winter red days still missing above.
+  var redDay1 = getYYYYMMDD(new Date("2022-01-01"));
+  var redDay2 = getYYYYMMDD(new Date("2022-01-06"));
+  var redDay3 = getYYYYMMDD(new Date("2022-04-15"));
+  var redDay4 = getYYYYMMDD(new Date("2022-04-17"));
+  var redDay5 = getYYYYMMDD(new Date("2022-04-18"));
+  var redDay6 = getYYYYMMDD(new Date("2022-05-01"));
+  var redDay7 = getYYYYMMDD(new Date("2022-05-26"));
+  var redDay8 = getYYYYMMDD(new Date("2022-06-06"));
+  var redDay9 = getYYYYMMDD(new Date("2022-06-25"));
+  var redDay10 = getYYYYMMDD(new Date("2022-11-05"));
+  var redDay11 = getYYYYMMDD(new Date("2022-12-25"));
+  var redDay12 = getYYYYMMDD(new Date("2022-12-26"));
+
+  var redDay2_1 = getYYYYMMDD(new Date("2023-01-01"));
+  var redDay2_2 = getYYYYMMDD(new Date("2023-01-06"));
+  var redDay2_3 = getYYYYMMDD(new Date("2023-04-07"));
+  var redDay2_4 = getYYYYMMDD(new Date("2023-04-09"));
+  var redDay2_5 = getYYYYMMDD(new Date("2023-04-10"));
+  var redDay2_6 = getYYYYMMDD(new Date("2023-05-01"));
+  var redDay2_7 = getYYYYMMDD(new Date("2023-05-18"));
+  var redDay2_8 = getYYYYMMDD(new Date("2023-05-28"));
+  var redDay2_9 = getYYYYMMDD(new Date("2023-06-06"));
+  var redDay2_10 = getYYYYMMDD(new Date("2023-06-24"));
+  var redDay2_11 = getYYYYMMDD(new Date("2023-11-04"));
+  var redDay2_12 = getYYYYMMDD(new Date("2023-12-24"));
+  var redDay2_13 = getYYYYMMDD(new Date("2023-12-25"));
+  var redDay2_14 = getYYYYMMDD(new Date("2023-12-26"));
+  var redDay2_15 = getYYYYMMDD(new Date("2023-12-31"));
+
+  var redDay3_1 = getYYYYMMDD(new Date("2024-01-01"));
+  var redDay3_2 = getYYYYMMDD(new Date("2024-01-06"));
+  var redDay3_3 = getYYYYMMDD(new Date("2024-03-29"));
+  var redDay3_4 = getYYYYMMDD(new Date("2024-03-31"));
+  var redDay3_5 = getYYYYMMDD(new Date("2024-04-01"));
+  var redDay3_6 = getYYYYMMDD(new Date("2024-05-01"));
+  var redDay3_7 = getYYYYMMDD(new Date("2024-05-09"));
+  var redDay3_8 = getYYYYMMDD(new Date("2024-05-19"));
+  var redDay3_9 = getYYYYMMDD(new Date("2024-06-06"));
+  var redDay3_10 = getYYYYMMDD(new Date("2024-06-22"));
+  var redDay3_11 = getYYYYMMDD(new Date("2024-11-02"));
+  var redDay3_12 = getYYYYMMDD(new Date("2024-12-25"));
+  var redDay3_13 = getYYYYMMDD(new Date("2024-12-26"));
+
+  var redDay4_1 = getYYYYMMDD(new Date("2025-01-01"));
+  var redDay4_2 = getYYYYMMDD(new Date("2025-01-06"));
+  var redDay4_3 = getYYYYMMDD(new Date("2025-04-18"));
+  var redDay4_4 = getYYYYMMDD(new Date("2025-04-20"));
+  var redDay4_5 = getYYYYMMDD(new Date("2025-04-21"));
+  var redDay4_6 = getYYYYMMDD(new Date("2025-05-01"));
+  var redDay4_7 = getYYYYMMDD(new Date("2025-05-29"));
+  var redDay4_8 = getYYYYMMDD(new Date("2025-06-06"));
+  var redDay4_9 = getYYYYMMDD(new Date("2025-06-08"));
+  var redDay4_10 = getYYYYMMDD(new Date("2025-06-21"));
+  var redDay4_11 = getYYYYMMDD(new Date("2025-11-01"));
+  var redDay4_12 = getYYYYMMDD(new Date("2023-12-24"));
+  var redDay4_13 = getYYYYMMDD(new Date("2025-12-25"));
+  var redDay4_14 = getYYYYMMDD(new Date("2025-12-26"));
+
+
+  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6,redDay7,redDay8,redDay9,redDay10,redDay11,redDay12,
+    redDay2_1,redDay2_2,redDay2_3,redDay2_4,redDay2_5,redDay2_6,redDay2_7,redDay2_8,redDay2_9,redDay2_10,redDay2_11,redDay2_12,redDay2_13,redDay2_14,redDay2_15,
+    redDay3_1,redDay3_2,redDay3_3,redDay3_4,redDay3_5,redDay3_6,redDay3_7,redDay3_8,redDay3_9,redDay3_10,redDay3_11,redDay3_12,redDay3_13,
+    redDay4_1,redDay4_2,redDay4_3,redDay4_4,redDay4_5,redDay4_6,redDay4_7,redDay4_8,redDay4_9,redDay4_10,redDay4_11,redDay4_12,redDay4_13,redDay4_14);
   return holidays;
 }
+
 
 function isHoliday(date){
   var holiday = getHolidays();
