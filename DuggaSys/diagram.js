@@ -4301,6 +4301,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         fromElement = tempElement;
     } 
 
+    if (fromElement.kind == toElement.kind && fromElement.name == toElement.name) {
+        displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
+        return;
+    }
+
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
