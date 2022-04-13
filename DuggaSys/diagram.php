@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement4" class="diagramIcons toolbarMode hiddenPlacementType" onclick='setElementPlacementType(4); setMouseMode(2);'  onmousedown='holdPlacementButtonDown(0);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement4" class="diagramIcons toolbarMode hiddenPlacementType" onclick='setElementPlacementType(4); setMouseMode(2);'  onmousedown='holdPlacementButtonDown(4);' onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_UML_entity.svg"/>
                         <span class="toolTipText"><b>Entity</b><br>
                             <p>Add an UML entity to the diagram</p><br>
