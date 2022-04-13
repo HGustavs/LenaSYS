@@ -2623,18 +2623,18 @@ function getRectFromElement (element)
 }
 
 /**
- * @description Performs a box-collision between two rectangles.
+ * @description Checks if the second rectangle is within the first rectangle.
  * @param {*} left First rectangle
  * @param {*} right Second rectangle
- * @returns {Boolean} true if the rectangles collide with each other.
+ * @returns {Boolean} true if the right rectangle is within the left rectangle.
  */
 function rectsIntersect (left, right)
 {
     return (
-        (left.x + left.width >= right.x) && 
-        (left.x <= right.x + right.width) &&
-        (left.y + (right.height / 2) + left.height >= right.y) &&
-        (left.y <= right.y - (right.height / 2) + right.height)
+        (left.x + left.width >= right.x + right.width) && 
+        (left.x <= right.x) &&
+        (left.y + left.height + (right.height/2) >= right.y + right.height) &&
+        (left.y + (right.height/2) <= right.y )
     );
 }
 
@@ -2875,7 +2875,7 @@ function calculateDeltaExceeded(){
     }
 }
 // --------------------------------------- Box Selection    --------------------------------
-// Returns all elements touching the coordinate box
+// Returns all elements within the coordinate box
 function getElementsInsideCoordinateBox(selectionRect)
 {
     var elements = [];
@@ -2890,9 +2890,9 @@ function getElementsInsideCoordinateBox(selectionRect)
 }
 
 /**
- * @description Checks whether the lines in the diagram touch the coordinate box
+ * @description Checks whether the lines in the diagram is within the coordinate box
  * @param {Rect} selectionRect returned from the getRectFromPoints() function
- * @returns {Array<Object>} containing all of the lines that are currently touching the coordinate box
+ * @returns {Array<Object>} containing all of the lines that are currently within the coordinate box
  */
 function getLinesInsideCoordinateBox(selectionRect)
 {
@@ -2900,7 +2900,7 @@ function getLinesInsideCoordinateBox(selectionRect)
     var tempLines = [];
     var bLayerLineIDs = [];
     for (var i = 0; i < allLines.length; i++) {
-        if (intersectsBox(selectionRect, allLines[i]) || pointIsInsideRect(selectionRect, allLines[i])) {
+        if (/*intersectsBox(selectionRect, allLines[i]) ||*/ lineIsInsideRect(selectionRect, allLines[i])) {
             bLayerLineIDs[i] = allLines[i].id;
             bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
             bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
@@ -2911,12 +2911,12 @@ function getLinesInsideCoordinateBox(selectionRect)
 }
 
 /**
- * @description Checks if a given point is inside of the coordinate box
+ * @description Checks if a entire line is inside of the coordinate box
  * @param {Rect} selectionRect returned from the getRectFromPoints() function
  * @param {Object} line following the format of the lines contained within the children of svgbacklayer
- * @returns {Boolean} Returns true if the point is within the coordinate box, else false
+ * @returns {Boolean} Returns true if the line is within the coordinate box, else false
  */
-function pointIsInsideRect(selectionRect, line)
+function lineIsInsideRect(selectionRect, line)
 {
     var lineCoord1 = screenToDiagramCoordinates(
         line.getAttribute("x1"),
@@ -2926,20 +2926,29 @@ function pointIsInsideRect(selectionRect, line)
         line.getAttribute("x2"),
         line.getAttribute("y2")
     );
-
+    var lineLeftX = Math.min(lineCoord1.x,lineCoord2.x);
+    var lineTopY = Math.min(lineCoord1.y,lineCoord2.y);
+    var lineRightX = Math.max(lineCoord1.x,lineCoord2.x);
+    var lineBottomY =  Math.max(lineCoord1.y,lineCoord2.y);
     var leftX = selectionRect.x;
     var topY = selectionRect.y;
     var rightX = selectionRect.x + selectionRect.width;
     var bottomY = selectionRect.y + selectionRect.height;
-
+    if(leftX <= lineLeftX && topY <= lineTopY && rightX >= lineRightX && bottomY >= lineBottomY)
+    {
+        return true;
+    }
+    else{
+        return false;
+    }
+     /* Code used to check for a point
     // Return true if any of the end points of the line are inside of the rect
     if (lineCoord1.x > leftX && lineCoord1.x < rightX && lineCoord1.y > topY && lineCoord1.y < bottomY) {
         return true;
     } else if (lineCoord2.x > leftX && lineCoord2.x < rightX && lineCoord2.y > topY && lineCoord2.y < bottomY) {
         return true;
-    }
+    }*/
 
-    return false;
 }
 
 /**
