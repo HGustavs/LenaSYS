@@ -3,11 +3,15 @@ var diagramWindow;
 
 /** 
  * @description Alert message appears before closing down or refreshing the dugga viewer page window.
- * @return For clarification: It will return a built-in message rather than a customised one as seen below, for saftey reasons.
+
+ * @return For clarification: It will return a built-in message rather than a customised one as seen below, for safety reasons.
  */
 function beforeUnloadingPage() 
 {
-    return "Are you sure you want to close the dugga viewer? Make sure your changes are saved.";
+    if (diagramWindow.contentWindow.stateMachine.historyLog.length != 0) {
+        return "Are you sure you want to close the dugga viewer? Make sure your changes are saved.";
+    }
+
 }
 
 /**

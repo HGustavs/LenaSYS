@@ -198,7 +198,7 @@
 	?>
 
 		<!-- Edit Section Dialog START -->
-		<div id='editSection' onmouseover="validateSectName('sectionname','dialog10'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
+		<div id='editSection' onkeyup="validateSectName('sectionname');" onmouseover="validateSectName('sectionname'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:460px;'>
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
@@ -209,9 +209,11 @@
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<input onchange="validateSectName('sectionname','dialog10')" type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input onchange="validateSectName('sectionname')" type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
-				<p id="dialog10" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Forbidden characters in filename</p>
+				<div class="tooltipDugga">
+  		      		<span id="dialog10" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
+  		      	</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
 					 <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.

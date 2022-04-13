@@ -875,6 +875,8 @@ var scrollx = 100;
 var scrolly = 100;
 var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
 var camera = new Point(0, 0); // Relative to coordinate system origo
+var lastZoomPos = new Point(0, 0); //placeholder for the previous zoom position relative to the screen (Screen position for previous zoom)
+var lastMousePosCoords = new Point(0, 0); //placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom) 
 
 var zoomAllowed = true; // Boolean value to slow down zoom on touchpad.
 
@@ -3074,9 +3076,9 @@ function boxSelect_Update(mouseX, mouseY)
         if (ctrlPressed) {
             var markedEntities = getElementsInsideCoordinateBox(rect);
 
+
             // Remove entity from markedEntities if it was already marked.
             markedEntities = markedEntities.filter(entity => !previousContext.includes(entity));
-
 
             var markedLines = getLinesInsideCoordinateBox(rect);
             markedLines = markedLines.filter(line => !previousContextLine.includes(line));
