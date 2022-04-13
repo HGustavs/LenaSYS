@@ -155,7 +155,7 @@ function renderBarDiagram(data) {
   // Renders the diagram
 
   var str = "<div style='width:100%;overflow-x:scroll;'>";
-  str += "<h2 style='padding-top:10px'>Weekly bar chart</h2>";
+  str += "<h2 style='padding-left:5px'>Weekly bar chart</h2>";
   str += "<p style 'padding-top:10px'>Showing activities for " + dailyCount[0][0] + " - " + dailyCount[7*numOfWeeks-1][0] + " </p>";
   str += `<svg  class='chart fumho'  style='background-color:#efefef;'
   width='1300' height='250' aria-labelledby='title desc' role='img'>`;
@@ -347,7 +347,7 @@ function renderLineDiagram(data) {
 
 
   //Selectbox to choose week
-  str = "<h2 style='padding-top:10px'>Weekly line chart</h2>";
+  str = "<h2 style='padding-left:5px'>Weekly line chart</h2>";
   str += `<select class="group2" id="weekoption" value="0" style="margin-top:25px;"
   onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">`;
   str += '<option value="' + firstweek + '">All weeks</option>';

@@ -376,7 +376,7 @@ $js = array(
 
 <!--Fab-button-->
 <div class="fixed-action-button" id="fabButton" style = "margin-right: 100px;">
-    <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
+    <a class="btn-floating fab-btn-lg noselect" id="fabBtn" onclick=" createQuickItem()">+</a>
     <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed id='fab-btn-list'>
     <?php
         if (isSuperUser($_SESSION['uid'] || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w'))) {
