@@ -24,15 +24,6 @@ function searchByFilter() {
 		filerByDate.date2 = new Date(JSON.stringify(dateElement[1].value));
 	}
 
-	duggasArr = [];
-	var checkboxElements = document.getElementsByName("duggaEntryname");
-
-	for (var element of checkboxElements) {
-		if (element.checked) {
-			duggasArr.push(element.value)
-		}
-	}
-
 	setSearchTerms();
 	updateTable();
 }
@@ -126,6 +117,7 @@ function setup(){
 
 function updateTable() {
 	updateColumnOrder();
+	updateDuggaFilter();
 	myTable.renderTable();
 }
 
@@ -139,7 +131,7 @@ function returnedResults(data) {
 		assignmentList += "<option value='"+ duggaFilterOptions[i].entryname +"'>"+ duggaFilterOptions[i].entryname + "</option>";
 		duggaEntrynameCheckbox += `
 		<div class="dugga-entry-box toggle-${i%2}">
-			<input type="checkbox" name="duggaEntryname" value="${duggaFilterOptions[i].entryname}" onclick="updateCheckbox(this)">
+			<input type="checkbox" checked name="duggaEntryname" value="${duggaFilterOptions[i].entryname}" onclick="updateCheckbox(this)">
 			<label>${duggaFilterOptions[i].entryname}</label>
 		</div>
 		`;
@@ -148,7 +140,7 @@ function returnedResults(data) {
 	}
 	duggaEntrynameCheckbox += `
 	<div class="toggle-dugganame-filter-box toggle-${(lasti + 1)%2}">
-		<input type="checkbox" id="toggle-dugganame-filter" onclick="selectAll(this)">
+		<input type="checkbox" checked id="toggle-dugganame-filter" onclick="selectAll(this)">
 		<label>Select all</label>
 	</div>`
 
@@ -299,21 +291,31 @@ function updateColumnOrder() {
 	myTable.reorderColumns(newOrder);
 }
 
+// Update row filter
+function updateDuggaFilter() {
+	// Reset array
+	duggasArr.length = 0;
+
+	// Add duggas that are checked in the dugga filter
+	var checkboxElements = document.getElementsByName("duggaEntryname");
+	for(var element of checkboxElements) {
+		if(element.checked){
+			duggasArr.push(element.value);
+		}
+	}
+}
+
 // How rows are filtered, for multiple filters add more if statements
 // Add new variable to each type filter
 function rowFilter(row) {
-	var isDuggaFilterMatch = true;
 	var isFilterDateMatch = true;
 	var isSearchMatch = true;
-  
-	for (var duggaName of duggasArr) {
-		if (duggaName == row["duggaName"]) {
-			isDuggaFilterMatch = true;
-			break;
-		}
-		else{
-			isDuggaFilterMatch = false;
-		}
+
+	// Check if dugga is in approved list
+	var duggaName = row["duggaName"];
+	if(duggasArr.indexOf(duggaName) == -1)
+	{
+		return false;
 	}
 
 	if (filerByDate.date1 != null && filerByDate.date2 != null)	{
@@ -341,7 +343,7 @@ function rowFilter(row) {
 		}
 	}
 
-	return (isDuggaFilterMatch && isFilterDateMatch && isSearchMatch);
+	return (isFilterDateMatch && isSearchMatch);
 }
 
 // Basic ascending/descending order
