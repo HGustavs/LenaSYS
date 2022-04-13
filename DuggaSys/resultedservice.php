@@ -26,7 +26,7 @@ $subCourse = "UNK";
 
 if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
 	// Get data to display in table rows
-	$query = $pdo->prepare("SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment FROM userAnswer WHERE cid=:cid AND vers=:vers");
+	$query = $pdo->prepare("SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Time_techer_visited FROM userAnswer WHERE cid=:cid AND vers=:vers");
 
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':vers', $coursevers);
@@ -60,6 +60,7 @@ if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
         	'duggaName' => $duggaName,
         	'hash' => $row['hash'],
         	'password' => $row['password'],
+        	'teacher_visited' => $row['last_Time_techer_visited'],
         	'submitted' => $row['submitted'],
 			'timesSubmitted' => $row['timesSubmitted'],
 			'timesAccessed' => $row['timesAccessed'],
