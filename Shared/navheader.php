@@ -204,7 +204,7 @@
 			}
 			// Sort dialog - accessed / resulted /fileed					
 			//old search bar for resulted
-      if($requestedService=="accessed.php" /*|| $requestedService=="resulted.php"*/ ||$requestedService=="fileed.php" ){
+      if($requestedService=="accessed.php" /*|| $requestedService=="resulted.php"*/ || $requestedService=="fileed.php" || $requestedService=="duggaed.php" ){
 					echo "<td id='testSearchContainer' class='navButt'>";
 
 					if ($requestedService == "fileed.php")
@@ -215,6 +215,9 @@
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black;'>"; //Dropdown menu for when hovering the search bar
 					if($requestedService=="accessed.php"){
 						echo    "<p aria-live='polite'><b>Keywords:</b> Username, first/lastname, date <br> <b>Ex:</b> Webug13h, 2020-02-29 13:37</p>";
+					}
+					if($requestedService=="duggaed.php"){
+						echo    "<p aria-live='polite'><b>Keywords:</b> template name, name, date <br> <b>Ex:</b> color-dugga</p>";
 					}
 					//old search bar for resulted
 					/*if($requestedService=="resulted.php"){
