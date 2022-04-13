@@ -768,6 +768,9 @@ function cancelEditFile() {
 
 function saveMarkdown() {
     let content = document.getElementById("mrkdwntxt").value;
+
+    //content = content.replace(/\+/g, '%2B'); when saving files all pluses were converted to %2B.
+    content = content.replace(/\&#43;/g, '+');
     AJAXService("SAVEFILE", {
         cid: querystring['courseid'],
         contents: content,
@@ -781,8 +784,11 @@ function saveMarkdown() {
 }
 
 function saveTextToFile() {
-    
     let content = document.getElementById("filecont").value;
+
+    content = content.replace(/\&#43;/g, '+');
+    //content = content.replace(/\+/g, '%2B');
+
     AJAXService("SAVEFILE", {
         cid: querystring['courseid'],
         contents: content,
