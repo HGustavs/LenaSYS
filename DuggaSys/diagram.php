@@ -112,20 +112,6 @@
         </fieldset>
         <fieldset>
             <legend>Toggle</legend>
-            <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
-                <img src="../Shared/icons/diagram_grid.svg"/>
-                <span class="toolTipText"><b>Toggle grid</b><br>
-                    <p>Enable/disable the grid</p><br>
-                    <p id="tooltip-TOGGLE_GRID" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div id="rulerSnapToGrid" class="diagramIcons" onclick="toggleSnapToGrid()">
-                <img src="../Shared/icons/diagram_gridmagnet.svg"/>
-                <span class="toolTipText"><b>Toggle Snap To Grid</b><br>
-                    <p>Enable/disable the Snap To Grid</p><br>
-                    <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
             <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
                 <img src="../Shared/icons/diagram_ruler.svg"/>
                 <span class="toolTipText"><b>Toggle Ruler</b><br>
@@ -227,10 +213,26 @@
             </span>
         </div>
         <div id ="fieldsetBox">
-            <fieldset id='propertyFieldset'>
-                
+            <fieldset id='propertyFieldset' style="position: absolute;">
             </fieldset>
-            <div style="position: absolute; bottom: 20px">
+            <fieldset style="position: absolute; bottom: 200px;">
+            <legend>Toggle</legend>
+                <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
+                    <img src="../Shared/icons/diagram_grid.svg"/>
+                    <span class="toolTipText"><b>Toggle grid</b><br>
+                        <p>Enable/disable the grid</p><br>
+                        <p id="tooltip-TOGGLE_GRID" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <div id="rulerSnapToGrid" class="diagramIcons" onclick="toggleSnapToGrid()">
+                    <img src="../Shared/icons/diagram_gridmagnet.svg"/>
+                    <span class="toolTipText"><b>Toggle Snap To Grid</b><br>
+                        <p>Enable/disable the Snap To Grid</p><br>
+                        <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>  
+            </fieldset>
+            <div style="position: absolute; bottom: 20px;">
                 <fieldset>
                     <legend>Export</legend>
                     <button class="saveButton" onclick="saveDiagram();">Save</button>
