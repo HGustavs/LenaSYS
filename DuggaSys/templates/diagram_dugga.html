@@ -1,24 +1,32 @@
-<div id="content">
-    <div class='feedback-container' style="display: none;">
-        <div class='feedback-button' onclick='toggleFeedback()'><h3>Feedback</h3></div>
-        <div class="feedback-content">
-            <div id="feedbackTable" style="margin-top: -3px;"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body onbeforeunload="return beforeUnloadingPage()">
+    <div id="content">
+        <div class='feedback-container' style="display: none;">
+            <div class='feedback-button' onclick='toggleFeedback()'><h3>Feedback</h3></div>
+            <div class="feedback-content">
+                <div id="feedbackTable" style="margin-top: -3px;"></div>
+            </div>
         </div>
-    </div>
-    <div class='instructions-container'>
-        <div class='instructions-button' onclick='toggleInstructions(this)'><h3>Instructions</h3></div>
-        <div class="instructions-content">
-            <p style="margin-left: 4px;">Diagram-duggan går ut på att producera det diagrammet som beskrivs i beskrivningen.</p>
-            <p style="margin-left: 4px;">Lägg till element med hjälp av att byta till respective läge och klicka på canvasen.</p>
-            <p style="margin-left: 4px;"><strong>Uppgiftsbeskrivning:</strong></p>
-            <p style="margin-left: 4px;" id="assigment-instructions"></p>
+        <div class='instructions-container'>
+            <div class='instructions-button' onclick='toggleInstructions(this)'><h3>Instructions</h3></div>
+            <div class="instructions-content">
+                <p style="margin-left: 4px;">Diagram-duggan går ut på att producera det diagrammet som beskrivs i beskrivningen.</p>
+                <p style="margin-left: 4px;">Lägg till element med hjälp av att byta till respective läge och klicka på canvasen.</p>
+                <p style="margin-left: 4px;"><strong>Uppgiftsbeskrivning:</strong></p>
+                <p style="margin-left: 4px;" id="assigment-instructions"></p>
+            </div>
         </div>
+    
+        <div id="container" style="display:flex; justify-content:space-around;">
+    
+            <iframe onclick="canSaveController()" id="diagram-iframe" width="80%" height="800px" src="./diagram.php" title="Diagram"></iframe>
+    
+        </div>
+        <div id="nextVariantBtn"></div>
     </div>
-
-    <div id="container" style="display:flex; justify-content:space-around;">
-
-        <iframe onclick="canSaveController()" id="diagram-iframe" width="80%" height="800px" src="./diagram.php" title="Diagram"></iframe>
-
-    </div>
-    <div id="nextVariantBtn"></div>
-</div>
+</body>
+</html>

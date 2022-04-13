@@ -875,6 +875,8 @@ var scrollx = 100;
 var scrolly = 100;
 var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
 var camera = new Point(0, 0); // Relative to coordinate system origo
+var lastZoomPos = new Point(0, 0); //placeholder for the previous zoom position relative to the screen (Screen position for previous zoom)
+var lastMousePosCoords = new Point(0, 0); //placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom) 
 
 var zoomAllowed = true; // Boolean value to slow down zoom on touchpad.
 
@@ -889,9 +891,8 @@ const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
 const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
-const colors = ["white", "gold", "#ffccdc", "yellow", "cornflowerBlue", "#FF4D4D"];
-const selectedColors = ["#cccccc", "#ce7f00", "#ff66b3", "#d2cf00", "#505E95", "#A45A5A"];
-const strokeColors = ["black", "white", "grey", "red"];
+const colors = ["white", "gold", "#ffccdc", "yellow", "cornflowerBlue", "#CDF5F6"];
+const strokeColors = ["black", "white", "grey", "#614875"];
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -3075,9 +3076,9 @@ function boxSelect_Update(mouseX, mouseY)
         if (ctrlPressed) {
             var markedEntities = getElementsInsideCoordinateBox(rect);
 
+
             // Remove entity from markedEntities if it was already marked.
             markedEntities = markedEntities.filter(entity => !previousContext.includes(entity));
-
 
             var markedLines = getLinesInsideCoordinateBox(rect);
             markedLines = markedLines.filter(line => !previousContextLine.includes(line));
@@ -4362,6 +4363,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         fromElement = tempElement;
     } 
 
+    if (fromElement.kind == toElement.kind && fromElement.name == toElement.name) {
+        displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
+        return;
+    }
+
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
     if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
 
@@ -5328,11 +5334,9 @@ function updateCSSForAllElements()
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
 
-            // Handle coloring
-            var sColor = selectedColors[colors.indexOf(element.fill)];
+            // Opacity on selected elements
             var grandChild = elementDiv.children[0].children[0];
-            grandChild.style.fill = inContext ? `${sColor}` : `${element.fill}`;
-            grandChild.style.stroke = data[i].stroke;
+            grandChild.style.opacity = inContext ? `${0.3}` : `${1.0}`;
         }
     }
 
