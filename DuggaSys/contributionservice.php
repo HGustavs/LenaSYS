@@ -18,6 +18,7 @@ $vers=$_SESSION['coursevers'];
 
 $debug="NONE!";
 
+//This uses an hardcoded path to a database file containing all Github data and run all funtions on that data. No other connection to a database at the moment.
 $log_db = new PDO('sqlite:..\..\BGHdata_2021_05.db');
 
 $opt = getOP('opt');
