@@ -3489,9 +3489,32 @@ function zoomin(scrollEvent = undefined)
 {
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent){
-        // Origo set to center of screen in pixels
-        zoomOrigo.x = window.innerWidth / 2;
-        zoomOrigo.y = window.innerHeight / 2;
+        console.log("ZOOMIN:");
+        console.log("Window x/y: " + window.innerWidth / 2 + ", " + window.innerHeight / 2);
+        console.log("zoomOrigo x/y: " + zoomOrigo.x + ", " + zoomOrigo.y);
+        console.log("Scroll x/y: " + scrollx + ", " + scrolly);
+        console.log("SScroll x/y: " + sscrollx + ", " + sscrolly);
+        console.log("zoomfact: " + zoomfact);
+        var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
+        var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+            x: midScreen.x - zoomOrigo.x,
+            y: midScreen.y - zoomOrigo.y
+        }
+
+        console.log("midScreen x/y: " + midScreen.x + ", " + midScreen.y);
+        console.log("delta x/y: " + delta.x + ", " + delta.y);
+
+        //Update scroll x/y to center screen on new zoomOrigo
+        scrollx = scrollx / zoomfact;
+        scrolly = scrolly / zoomfact;
+        scrollx += delta.x;
+        scrolly += delta.y;
+        scrollx = scrollx * zoomfact;
+        scrolly = scrolly * zoomfact;
+
+        zoomOrigo.x = midScreen.x;
+        zoomOrigo.y = midScreen.y;
+
     }else if (zoomfact < 4.0){ // ELSE zoom towards mouseCoordinates
        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
@@ -3544,6 +3567,10 @@ function zoomin(scrollEvent = undefined)
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
 
+    console.log("UPDATED Scroll x/y: " + scrollx + ", " + scrolly);
+    console.log ("UPDATED zoomOrigo x/y: " + zoomOrigo.x + ", " + zoomOrigo.y);
+    console.log("/////////////////////////////////////");
+
     //Note: scroll variables (scrollx, scrolly) does not scale properly sometimes, not sure what causes it. zoomout() has the same problem.
 
     updateGridSize();
@@ -3562,9 +3589,34 @@ function zoomout(scrollEvent = undefined)
 {
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent){
-        // Origin set to center of screen in pixels
-        zoomOrigo.x = window.innerWidth / 2;
-        zoomOrigo.y = window.innerHeight / 2;
+            console.log("ZOOMOUT:");
+            console.log("Window x/y: " + window.innerWidth / 2 + ", " + window.innerHeight / 2);
+            console.log("zoomOrigo x/y: " + zoomOrigo.x + ", " + zoomOrigo.y);
+            console.log("Scroll x/y: " + scrollx + ", " + scrolly);
+            console.log("SScroll x/y: " + sscrollx + ", " + sscrolly);
+            console.log("zoomfact: " + zoomfact);
+            var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
+            var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+                x: midScreen.x - zoomOrigo.x,
+                y: midScreen.y - zoomOrigo.y
+            }
+
+            console.log("midScreen x/y: " + midScreen.x + ", " + midScreen.y);
+            console.log("delta x/y: " + delta.x + ", " + delta.y);
+  
+
+
+            //Update scroll x/y to center screen on new zoomOrigo
+            scrollx = scrollx / zoomfact;
+            scrolly = scrolly / zoomfact;
+            scrollx += delta.x;
+            scrolly += delta.y;
+            scrollx = scrollx * zoomfact;
+            scrolly = scrolly * zoomfact;
+
+            zoomOrigo.x = midScreen.x;
+            zoomOrigo.y = midScreen.y;
+
     }else if (zoomfact > 0.25) { // ELSE zoom towards mouseCoordinates
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
@@ -3614,6 +3666,10 @@ function zoomout(scrollEvent = undefined)
 
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
+
+    console.log("UPDATED Scroll x/y: " + scrollx + ", " + scrolly);
+    console.log ("UPDATED zoomOrigo x/y: " + zoomOrigo.x + ", " + zoomOrigo.y);
+    console.log("/////////////////////////////////////");
 
     //Note: scroll variables (scrollx, scrolly) does not scale properly sometimes, not sure what causes it. zoomin() has the same problem.
 
