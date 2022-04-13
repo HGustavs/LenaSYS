@@ -63,6 +63,8 @@ function returnedFile(data) {
     if (!data.access) {
         window.location.href = 'courseed.php';S
     }
+
+    // Init for file display table column labels.
     filez = data;
     var tblheadPre = {
         filename: "File name",
@@ -151,6 +153,7 @@ function showFilePopUp(fileKind) {
     }
 }
 
+//see fileedservice.php and filerecieve.php for more details of how files are saved to local storage and meta-data is saved to DB.
 function uploadFile(kind) {
     if (kind == "MFILE") {
         var str = "<option>NONE</option>";
@@ -215,7 +218,7 @@ function leaveSearch() {
 }
 
 //------------------------------------------------------------------
-// validateDummyFile <- Validates the name and extension of the file
+// validateDummyFile <- Validates the name and extension of the file. Add extensions to "var allowedExtensions" to allow into filelink table in DB.
 //------------------------------------------------------------------
 function validateDummyFile() {
     var allowedExtensions = [
