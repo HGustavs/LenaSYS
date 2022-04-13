@@ -5212,30 +5212,30 @@ function updateLabelPos(newPosX, newPosY)
     }
     var distance = (Math.abs(lineCoeffs.a*newPosX + lineCoeffs.b*newPosY + lineCoeffs.c)) / Math.sqrt(lineCoeffs.a*lineCoeffs.a + lineCoeffs.b*lineCoeffs.b);
     // Constraints the label to within the box, within 30pixels from the line and half a width from the end.
-    if(newPosX < targetLabel.highX && newPosX > targetLabel.lowX){
+    if(newPosX < targetLabel.highX && newPosX > targetLabel.lowX ){
         if (distance < 30) {
             if(newPosX<targetLabel.lowX+targetLabel.width/2){
-                targetLabel.labelMovedX = (newPosX - targetLabel.centerX+targetLabel.width/2) * zoomfact;
+                targetLabel.labelMovedX = (newPosX - targetLabel.centerX+targetLabel.width/2);
             }
             else if(newPosX>targetLabel.highX-targetLabel.width/2){
-                targetLabel.labelMovedX = (newPosX - targetLabel.centerX-targetLabel.width/2) * zoomfact;
+                targetLabel.labelMovedX = (newPosX - targetLabel.centerX-targetLabel.width/2);
             }
             else{
-                targetLabel.labelMovedX = (newPosX - targetLabel.centerX) * zoomfact;
+                targetLabel.labelMovedX = (newPosX - targetLabel.centerX);
             }
         }
     }
     // Constraints the label to within the box, within 30pixels from the line and half a height from the end.
-    if(newPosY<targetLabel.highY && newPosY>targetLabel.lowY){        
+    if(newPosY < targetLabel.highY && newPosY > targetLabel.lowY){        
         if (distance < 30) {
             if(newPosY<targetLabel.lowY+targetLabel.height/2){
-                targetLabel.labelMovedY = (newPosY - targetLabel.centerY + targetLabel.height/2) * zoomfact;
+                targetLabel.labelMovedY = (newPosY - targetLabel.centerY + targetLabel.height/2);
             }
             else if(newPosY>targetLabel.highY-targetLabel.height/2){
-                targetLabel.labelMovedY = (newPosY - targetLabel.centerY - targetLabel.height/2) * zoomfact;
+                targetLabel.labelMovedY = (newPosY - targetLabel.centerY - targetLabel.height/2);
             }
             else{
-                targetLabel.labelMovedY = (newPosY - targetLabel.centerY) * zoomfact;
+                targetLabel.labelMovedY = (newPosY - targetLabel.centerY);
             }
         }
     }
