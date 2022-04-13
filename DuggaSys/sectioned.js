@@ -1249,11 +1249,24 @@ function showCanvasLinkBox(operation,btnobj){
     if(canvasLink == null){
       canvasLink = "ERROR: Failed to get canvas link.";
     }
+    //navigator.clipboard.writeText(canvasLink); method that requires local host or HTTPS which we dont have here.
+    //alternative route with a text area.
+    let textArea = document.createElement("textarea");
+    textArea.value = canvasLink;
+    // make the textarea out of viewport
+    textArea.style.position = "fixed";
+    textArea.style.left = "-999999px";
+    textArea.style.top = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    document.execCommand('copy');
+    textArea.remove();
+    
 
     $("#canvasLinkBox").css("display", "flex");
     $('#close-item-button').focus();
 
-    navigator.clipboard.writeText(canvasLink);
     document.getElementById("canvasLinkText").value = canvasLink;
   }else if(operation == "close"){
     $("#canvasLinkBox").css("display", "none");
