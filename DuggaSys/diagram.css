@@ -482,10 +482,21 @@
     width: 6.2px;
     height: 6.2px;
 }
-.togglePlacementTypeBox{
+.togglePlacementTypeBoxEntity{
     display: none;
     position: absolute;
-    left: 120%;
+    top:11.1%;
+    left: 100%;
+    padding:5px;
+    padding-top:0px;
+    border-radius: 5px;
+    background-color:var(--color-primary);
+}
+.togglePlacementTypeBoxRI{
+    display: none;
+    position: absolute;
+    top:16.1%;
+    left: 100%;
     padding:5px;
     padding-top:0px;
     border-radius: 5px;
