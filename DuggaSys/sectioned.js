@@ -1406,7 +1406,7 @@ function drawSwimlanes() {
     }
   }
 
-  //console.log(deadlineEntries,momentEntries);
+  
   deadlineEntries.sort(function(a,b){
     return a.pos-b.pos;
   });
