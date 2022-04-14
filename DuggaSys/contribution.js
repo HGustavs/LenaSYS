@@ -1570,4 +1570,29 @@ function hideTooltip() {
     }
 }
 
+function forceUserLogin()
+{
+      /* 
+      make sure the loginBox is generated before you run this function as 
+      it queries for elements that exist in the loginbox and changes their properties
+      */
+      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
+			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
+
+			// prepare replacement of onclick
+			loginBoxheader_login_close.removeAttribute("onClick"); // remove auto generated 
+			loginBoxheader_forgot_close.removeAttribute("onClick"); // remove auto generated
+			
+			/*
+      replace with a history back, this makes sure you dont get a blank page if you dont want to enter a password
+      and instead press the button to close down the loginBox
+      */
+			loginBoxheader_login_close.setAttribute("onClick", "history.back();"); 
+			loginBoxheader_forgot_close.setAttribute("onClick", "history.back();"); 
+
+      // After the loginbox has been prepared/modified we display it to the user
+      showLoginPopup();
+
+}
+
 console.error
