@@ -1317,7 +1317,7 @@ function buildContributionData() {
   }
   return contribData;
 }
-
+/* 
 function createGitHubcontributionTable(data) {
   var tabledata = {
     tblhead: {
@@ -1334,7 +1334,7 @@ function createGitHubcontributionTable(data) {
   ghContibTable = new SortableTable({
     data: tabledata,
     tableElementId: "contribGithHubContribTable",
-    renderCellCallback: renderCellForghContibTable,
+    renderCellCallback: renderCellForghContibTable, */
     renderSortOptionsCallback: renderSortOptions,
     columnOrder: colOrder,
     freezePaneIndex: 4,
