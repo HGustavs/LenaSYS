@@ -21,11 +21,6 @@
 	<script src="timer.js"></script>
 	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
-
-	<script> //if changes has been done a promt is made to ask user if they want to discard them.
-		window.onbeforeunload = function() {return "Changes will be discarded by leaving page.";}
-	</script>
-
 <?php
 	date_default_timezone_set("Europe/Stockholm");
 
@@ -132,10 +127,10 @@
 			
 			echo "<script src='templates/".$duggafile.".js'></script>";
 			echo "</head>";
-			echo "<body onload='setup();'>";
+			echo "<body onload='setup();addAlertOnUnload();'>"; //add an alert when leaving page with changes.
 		}else{
 			echo "</head>";
-			echo "<body>";
+			echo "<body onload='addAlertOnUnload();'>"; //add an alert when leaving page with changes.
 		}
 ?>
 <script type="text/javascript">
