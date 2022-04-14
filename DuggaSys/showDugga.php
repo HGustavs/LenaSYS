@@ -21,6 +21,11 @@
 	<script src="timer.js"></script>
 	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
+
+	<script> //if changes has been done a promt is made to ask user if they want to discard them.
+		window.onbeforeunload = function() {return "Changes will be discarded by leaving page.";}
+	</script>
+
 <?php
 	date_default_timezone_set("Europe/Stockholm");
 
