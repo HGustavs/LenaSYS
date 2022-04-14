@@ -322,15 +322,13 @@ function rowFilter(row) {
 		var newdate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0); 
 		isFilterDateMatch = (newdate >= filerByDate.date1 && newdate <= filerByDate.date2);
 	}
-
 	for(var term of searchTerms){
 		if(term != ""){
 			for(var column in row){
-			
 				if(row[column] == null){
 					isSearchMatch = false;
 				} 
-				else if(row[column].toLowerCase().includes(term.toLowerCase())){
+				else if(row[column].toString().toLowerCase().includes(term.toLowerCase())){
 					isSearchMatch = true;
 					break;
 				}else{
