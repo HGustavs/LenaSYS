@@ -1452,9 +1452,8 @@ function renderCellForghContibTable(col, celldata, cellid) {
     var ObjDay1 = obj.weekStart.substr(8,2);
     var ObjDay2 = obj.weekEnd.substr(8,2);
 
-
     while(holidayList.length > i){ 
-      var HolidayYear = holidayList[i].substr(0,4);
+      /* var HolidayYear = holidayList[i].substr(0,4);
       var HolidayMonth = holidayList[i].substr(5,2);
       var HolidayDay = holidayList[i].substr(8,2);
 
@@ -1481,7 +1480,8 @@ function renderCellForghContibTable(col, celldata, cellid) {
       } else if(ObjYear2 == HolidayYear && Number(ObjMonth2) == 1 && ObjDay2 >= HolidayDay){
         str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
         ${holidayList[i]}</span></div>`
-      } 
+      }  */
+      i++;
 
 /*       var Month = holidayList[i].substr(5,2);
       var DayOfMonth = holidayList[i].substr(8,2); */
@@ -1529,7 +1529,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
           ${holidayList[i]}</span></div>`
         }
       } */
-      i++;
+      
     }
 
   }  else {
