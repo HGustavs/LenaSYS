@@ -2559,28 +2559,20 @@ function validateDate2(ddate, dialogid) {
 
 function validateSectName(name){
   var emotd = document.getElementById(name);
-  var Emotd = /^[^"']+$/;
   var tooltipTxt = document.getElementById("dialog10");
-  // var EmotdRange = /^.{0,50}$/;
-  //var x4 = document.getElementById(dialogid);
+  tooltipTxt.style.left = 50 + "px";
+  tooltipTxt.style.top = -50 + "px";
+  emotd.style.borderWidth = "2px";
+  // Valid string
   if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
-    emotd.style.borderColor = "black";
-    emotd.style.backgroundColor = "white";
-    //x4.style.display = "block";
-    emotd.style.borderWidth = "2px";
-    window.bool10 = false;
+    emotd.style.borderColor = "#383";
     $('#dialog10').fadeOut();
-  } else {
-    emotd.style.borderColor = "red";
-    emotd.style.borderWidth = "2px";
-   // x4.style.display = "none";
     window.bool10 = true;
-    tooltipTxt.style.left = 50 + "px";
-    tooltipTxt.style.top = -50 + "px";
-    emotd.style.backgroundColor = "#f57";
+  } else { // Invalid string
+    emotd.style.borderColor = "#E54";
+    window.bool10 = false;
     $('#dialog10').fadeIn();
   }
-
 }
 
 /*recursive functions to retrieve the deepest DOM element */
@@ -2664,7 +2656,7 @@ function validateForm(formid) {
     }
 
     // if all information is correct
-    if (window.bool8 == true && window.bool10 == true && window.bool11 == true) {
+    if (window.bool10 == true && window.bool11 == true) {
       updateItem();
       updateDeadline();
 
