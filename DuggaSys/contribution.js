@@ -1329,6 +1329,7 @@ function createGitHubcontributionTable(data) {
     },
     tblbody: data,
     tblfoot: {}
+    //Kontrol Value QQQQQQQQQQQQQQ
   };
   var colOrder = ["weeks", "dates", "redDays", "codeContribution", "githubContribution"];
   ghContibTable = new SortableTable({
