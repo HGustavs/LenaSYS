@@ -1446,10 +1446,12 @@ function renderCellForghContibTable(col, celldata, cellid) {
     
     //Get a list of all red days this year and check if they belong on the current row
     //Based on row number. A certain row should only post a date if that date is on the same week as that row covers.
-    //Works only if the course is held the same time every year
     var i = 0;
+    //Extract values that were staticlly stored during the previous iteration of this function when a week cell was generated
     var time1 = String(renderCellForghContibTable.weekStart);
     var time2 = String(renderCellForghContibTable.weekEnd);
+
+    //Extract all the important values from the two dates that we require
     var ObjYear1 = time1.substr(0,4);
     var ObjYear2 = time2.substr(0,4);
     var ObjMonth1 = time1.substr(5,2);
@@ -1457,6 +1459,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
     var ObjDay1 = time1.substr(8,2);
     var ObjDay2 = time2.substr(8,2); 
 
+    //Repeat for every holiday in the holiday list and check if that holiday is this week(The week of this cell)
     while(holidayList.length > i){ 
       var HolidayYear = holidayList[i].substr(0,4);
       var HolidayMonth = holidayList[i].substr(5,2);
