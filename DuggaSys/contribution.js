@@ -1350,9 +1350,11 @@ function createGitHubcontributionTable(data) {
   ghContibTable.renderTable();
 }
 
+
 function renderCellForghContibTable(col, celldata, cellid) {
   var str = "";
   obj = celldata;
+
   var rowNr = cellid.charAt(1);
   if (col === 'weeks') {
     str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
@@ -1360,6 +1362,8 @@ function renderCellForghContibTable(col, celldata, cellid) {
   } else if (col === 'dates') {
     str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
     ${obj.weekStart} - ${obj.weekEnd}</span></div>`;
+    renderCellForghContibTable.weekStart = obj.weekStart;
+    renderCellForghContibTable.weekEnd = obj.weekEnd;
   } else if (col === 'codeContribution') {
     for (var j = 0; j < obj.files.length; j++) {
       var file = obj.files[j];
@@ -1439,21 +1443,22 @@ function renderCellForghContibTable(col, celldata, cellid) {
   } else if(col == 'redDays'){
     var alphaPlus = new Date();
     var holidayList = getHolidays(alphaPlus);
-
     
     //Get a list of all red days this year and check if they belong on the current row
     //Based on row number. A certain row should only post a date if that date is on the same week as that row covers.
     //Works only if the course is held the same time every year
     var i = 0;
-    var ObjYear1 = Number(obj.weekStart);
-   /*  var ObjYear2 = parseInt(obj.weekEnd.substr(0,4));
-    var ObjMonth1 = parseInt(obj.weekStart.substr(5,2));
-    var ObjMonth2 = parseInt(obj.weekEnd.subtstr(5,2));
-    var ObjDay1 = parseInt(obj.weekStart.substr(8,2));
-    var ObjDay2 = parseInt(obj.weekEnd.substr(8,2));  */
+    var time1 = String(renderCellForghContibTable.weekStart);
+    var time2 = String(renderCellForghContibTable.weekEnd);
+    var ObjYear1 = time1.substr(0,4);
+    var ObjYear2 = time2.substr(0,4);
+    var ObjMonth1 = time1.substr(5,2);
+    var ObjMonth2 = time2.substr(5,2);
+    var ObjDay1 = time1.substr(8,2);
+    var ObjDay2 = time2.substr(8,2); 
 
     while(holidayList.length > i){ 
-      /* var HolidayYear = holidayList[i].substr(0,4);
+      var HolidayYear = holidayList[i].substr(0,4);
       var HolidayMonth = holidayList[i].substr(5,2);
       var HolidayDay = holidayList[i].substr(8,2);
 
@@ -1480,7 +1485,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
       } else if(ObjYear2 == HolidayYear && Number(ObjMonth2) == 1 && ObjDay2 >= HolidayDay){
         str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
         ${holidayList[i]}</span></div>`
-      }  */
+      }  
       i++;
 
 /*       var Month = holidayList[i].substr(5,2);
