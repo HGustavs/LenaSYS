@@ -291,7 +291,7 @@ function getHolidays(date)
   var redDay4_12 = getYYYYMMDD(new Date("2023-12-24"));
   var redDay4_13 = getYYYYMMDD(new Date("2025-12-25"));
   var redDay4_14 = getYYYYMMDD(new Date("2025-12-26"));
-  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6,redDay7);
+  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6);
   return holidays;
 }
 
