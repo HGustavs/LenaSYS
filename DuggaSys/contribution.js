@@ -102,25 +102,25 @@ function showInfoText(object, displayText) {
 function getEaster(date)
 {
   var Y = date.getFullYear();
-  var A, B, C, P, Q,
-      M, N, D, E;
+  var MetonicCycle, JulianCalendarLeapDays, JulianCalendarNonLeapDays, PVärde, QVärde,
+      CenturyValue, JulianGregorianDiffrence, PaschallFullMoon, DaysToSundayFromPaschallFullMoon;
 
-  A = Y % 19;
-  B = Y % 4;
-  C = Y % 7;
-  P = Math.floor(Y / 100);
-  Q = Math.floor((13 + 8 * P) / 25);
-  M = (15 - Q + P - P / 4) % 30;
-  N = (4 + P - P / 4) % 7;
-  D = (19 * A + M) % 30;
-  E = (2 * B + 4 * C + 6 * D + N) % 7;
-  var days = (22 + D + E);
+      MetonicCycle = Y % 19;
+      JulianCalendarLeapDays = Y % 4;
+      JulianCalendarNonLeapDays = Y % 7;
+      PVärde = Math.floor(Y / 100);
+      QVärde = Math.floor((13 + 8 * PVärde) / 25);
+      CenturyValue = (15 - QVärde + PVärde - PVärde / 4) % 30;
+      JulianGregorianDiffrence = (4 + PVärde - PVärde / 4) % 7;
+      PaschallFullMoon = (19 * MetonicCycle + CenturyValue) % 30;
+      DaysToSundayFromPaschallFullMoon = (2 * JulianCalendarLeapDays + 4 * JulianCalendarNonLeapDays + 6 * PaschallFullMoon + JulianGregorianDiffrence) % 7;
+  var days = (22 + PaschallFullMoon + DaysToSundayFromPaschallFullMoon);
   var easterDate
 
-  if ((D == 29) && (E == 6)) {
+  if ((PaschallFullMoon == 29) && (DaysToSundayFromPaschallFullMoon == 6)) {
     easterDate = Y + "-04" + "-19";
     return easterDate;
-  }else if ((D == 28) && (E == 6)) {
+  }else if ((PaschallFullMoon == 28) && (DaysToSundayFromPaschallFullMoon == 6)) {
     easterDate = Y + "-04" + "-18";
     return easterDate;
   }else {
@@ -206,9 +206,9 @@ function getMidsummer(date)
 function getHolidays(date) 
 {
   var holidays = new Array();
-/* 
+
   var easterDate = getEaster(date);
-  var goodFridayDate = getGoodFriday(easterDate);
+/*   var goodFridayDate = getGoodFriday(easterDate);
   var easterMondayDate = getEasterMonday(easterDate);
   var ascensionDayDate = getAscensionDay(easterDate);
   var midsummerDate = getMidsummer(date);
@@ -224,7 +224,7 @@ function getHolidays(date)
 
   //This is old and static but there was a bug that caused line diagram and bar diagram
   //to not render after the change to the new self updating system.
-  //This is a hardcoded list of all red dates from 2022 to 2025. It has to be manually edited every few years by
+ //This is a hardcoded list of all red dates from 2022 to 2025. It has to be manually edited every few years by
   //maunally editing the source code. Witch is frankly idiotic:( Client for some reason seamed reluctant to automate this.
   //Most of the automatin is already done and commented out above. Some winter red days still missing above.
   var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
@@ -1323,18 +1323,18 @@ function createGitHubcontributionTable(data) {
     tblhead: {
       weeks: "Week",
       dates: "Dates",
-      redDays: "Red Days",
+      redDays: "red Days",
       codeContribution: "Code Contribution",
       githubContribution: "GitHub Contribution"
     },
     tblbody: data,
     tblfoot: {}
   };
-  var colOrder = ["weeks",  "dates",  "Red Days", "codeContribution", "githubContribution"];
+  var colOrder = ["weeks", "dates", "redDays", "codeContribution", "githubContribution"];
   ghContibTable = new SortableTable({
     data: tabledata,
     tableElementId: "contribGithHubContribTable",
-    renderCellCallback: renderCellForghContibTable, 
+    renderCellCallback: renderCellForghContibTable,
     renderSortOptionsCallback: renderSortOptions,
     columnOrder: colOrder,
     freezePaneIndex: 4,
@@ -1431,50 +1431,62 @@ function renderCellForghContibTable(col, celldata, cellid) {
        }
      }
      str += "</div>";
-  } else if(col == 'Red Days'){
+  } else if(col == 'redDays'){
     var alphaPlus = new Date();
     var holidayList = getHolidays(alphaPlus);
 
     
     //Get a list of all red days this year and check if they belong on the current row
-    //Based on row number
+    //Based on row number. A certain row should only post a date if that date is on the same week as that row covers.
     //Works only if the course is held the same time every year
     var i = 0;
     while(holidayList.length > i){ 
-      var MM = holidayList[i].substr(5,2);
-      var DD = holidayList[i].substr(8,2);
+      var Month = holidayList[i].substr(5,2);
+      var DayOfMonth = holidayList[i].substr(8,2);
 
-      if(MM == 4 && DD >= 1 && DD <= 8 && rowNr == 0){
-        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[i]}</span></div>`
-      } else if(MM == 4 && DD >= 9 && DD <= 15 && rowNr == 1){
-        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[i]}</span></div>`
-      } else if(MM == 4 && DD >= 15 && DD <= 22 && rowNr == 2){
-        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[i]}</span></div>`
-      } else if(MM == 4 && DD >= 22 && DD <= 29 && rowNr == 3){
-        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[i]}</span></div>`
-      } else if(((MM == 4 && DD >= 29) || (MM == 5 && DD <= 6)) && rowNr == 4){
-        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[i]}</span></div>`
-      } else if(MM == 5 && DD >= 6 && DD <= 13 && rowNr == 5){
-        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[i]}</span></div>`
-      } else if(MM == 5 && DD >= 13 && DD <= 20 && rowNr == 6){
-        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[i]}</span></div>`
-      } else if(MM == 5 && DD >= 20 && DD <= 27 && rowNr == 7){
-        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[i]}</span></div>`
-      } else if(((MM == 5 && DD >= 27) || (MM == 6 && DD <= 3)) && rowNr == 8){
-        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[i]}</span></div>`
-      } else if(MM == 6 && DD >= 3 && DD <= 10 && rowNr == 9){
-        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
-        ${holidayList[i]}</span></div>`
-      } 
+      if(Month == 4){
+        if(DayOfMonth >= 1 && DayOfMonth <= 8 && rowNr == 0){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 9 && DayOfMonth <= 15 && rowNr == 1){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 15 && DayOfMonth <= 22 && rowNr == 2){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 22 && DayOfMonth <= 29 && rowNr == 3){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(( DayOfMonth >= 29) && rowNr == 4){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        }
+      }else if(Month == 5){
+        if( DayOfMonth <= 6 && rowNr == 4){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 6 && DayOfMonth <= 13 && rowNr == 5){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 13 && DayOfMonth <= 20 && rowNr == 6){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 20 && DayOfMonth <= 27 && rowNr == 7){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 27 && rowNr == 8){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        }
+      }else if(Month == 6){
+        if(DayOfMonth <= 3 && rowNr == 8){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 3 && DayOfMonth <= 10 && rowNr == 9){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        }
+      }
       i++;
     }
 
