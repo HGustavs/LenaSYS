@@ -234,13 +234,13 @@ function getHolidays(date)
   var redDay5 = getYYYYMMDD(new Date("2019-06-06"));
   var redDay6 = getYYYYMMDD(new Date("2019-06-21"));
 
-  var redDay1 = getYYYYMMDD(new Date("2022-01-01"));
-  var redDay2 = getYYYYMMDD(new Date("2022-01-06"));
-  var redDay3 = getYYYYMMDD(new Date("2022-04-15"));
-  var redDay4 = getYYYYMMDD(new Date("2022-04-17"));
-  var redDay5 = getYYYYMMDD(new Date("2022-04-18"));
-  var redDay6 = getYYYYMMDD(new Date("2022-05-01"));
-  var redDay7 = getYYYYMMDD(new Date("2022-05-26"));
+  var redDay1_1 = getYYYYMMDD(new Date("2022-01-01"));
+  var redDay1_2 = getYYYYMMDD(new Date("2022-01-06"));
+  var redDay1_3 = getYYYYMMDD(new Date("2022-04-15"));
+  var redDay1_4 = getYYYYMMDD(new Date("2022-04-17"));
+  var redDay1_5 = getYYYYMMDD(new Date("2022-04-18"));
+  var redDay1_6 = getYYYYMMDD(new Date("2022-05-01"));
+  var redDay1_7 = getYYYYMMDD(new Date("2022-05-26"));
   var redDay8 = getYYYYMMDD(new Date("2022-06-06"));
   var redDay9 = getYYYYMMDD(new Date("2022-06-25"));
   var redDay10 = getYYYYMMDD(new Date("2022-11-05"));
