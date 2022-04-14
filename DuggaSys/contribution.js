@@ -1445,10 +1445,47 @@ function renderCellForghContibTable(col, celldata, cellid) {
     //Based on row number. A certain row should only post a date if that date is on the same week as that row covers.
     //Works only if the course is held the same time every year
     var i = 0;
-    while(holidayList.length > i){ 
-      var Month = holidayList[i].substr(5,2);
-      var DayOfMonth = holidayList[i].substr(8,2);
+    var ObjYear1 = obj.weekStart.substr(0,4);
+    var ObjYear2 = obj.weekEnd.subtract(0,4);
+    var ObjMonth1 = obj.weekStart.substr(5,2);
+    var ObjMonth2 = obj.weekEnd.subtract(5,2);
+    var ObjDay1 = obj.weekStart.substr(8,2);
+    var ObjDay2 = obj.weekEnd.substr(8,2);
 
+
+    while(holidayList.length > i){ 
+      var HolidayYear = holidayList[i].substr(0,4);
+      var HolidayMonth = holidayList[i].substr(5,2);
+      var HolidayDay = holidayList[i].substr(8,2);
+
+      //Same Year all?
+      if(ObjYear1 == HolidayYear && ObjYear2 == HolidayYear){
+        //Same Month all?
+        if(ObjMonth1 == HolidayMonth && ObjMonth2 == HolidayMonth){
+          //Day is somewere in the correct range
+          if(ObjDay1 <= HolidayDay && ObjDay2 >= HolidayDay){
+            str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+            ${holidayList[i]}</span></div>`
+          }
+        //Holiday is in one of the two months and on the right day?
+        } else if (ObjMonth1 == HolidayMonth && ObjDay1 <= HolidayDay){
+            str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+            ${holidayList[i]}</span></div>`
+        } else if (ObjMonth2 == HolidayMonth && ObjDay2 >= HolidayDay){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        }
+      } else if(ObjYear1 == HolidayYear && Number(ObjMonth1) == 12 && ObjDay1 <= HolidayDay){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(ObjYear2 == HolidayYear && Number(ObjMonth2) == 1 && ObjDay2 >= HolidayDay){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } 
+
+/*       var Month = holidayList[i].substr(5,2);
+      var DayOfMonth = holidayList[i].substr(8,2); */
+/* 
       if(Month == 4){
         if(DayOfMonth >= 1 && DayOfMonth <= 8 && rowNr == 0){
           str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
@@ -1491,7 +1528,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
           str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
           ${holidayList[i]}</span></div>`
         }
-      }
+      } */
       i++;
     }
 
