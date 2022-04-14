@@ -1326,13 +1326,14 @@ function createGitHubcontributionTable(data) {
     tblhead: {
       weeks: "Week",
       dates: "Dates",
+      redDays: "Red Days",
       codeContribution: "Code Contribution",
       githubContribution: "GitHub Contribution"
     },
     tblbody: data,
     tblfoot: {}
   };
-  var colOrder = ["weeks", "dates", "codeContribution", "githubContribution"];
+  var colOrder = ["weeks", "dates", "Red Days" , "codeContribution", "githubContribution"];
   ghContibTable = new SortableTable({
     data: tabledata,
     tableElementId: "contribGithHubContribTable",
@@ -1433,7 +1434,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
        }
      }
      str += "</div>";
-  }  else if (col == 'Red Days'){
+  } else if (col == 'Red Days'){
     var alphaPlus = new Date();
     var holidayList = getHolidays(alphaPlus);
 
