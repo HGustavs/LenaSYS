@@ -291,7 +291,12 @@ function getHolidays(date)
   var redDay4_12 = getYYYYMMDD(new Date("2023-12-24"));
   var redDay4_13 = getYYYYMMDD(new Date("2025-12-25"));
   var redDay4_14 = getYYYYMMDD(new Date("2025-12-26"));
-  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6);
+
+  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6,redDay1_1,redDay1_2,redDay1_3,redDay1_4,redDay1_5,redDay1_6,redDay1_7,
+    redDay8,redDay9,redDay10,redDay11,redDay12,redDay2_1,redDay2_2,redDay2_3,redDay2_4,redDay2_5,redDay2_6,redDay2_7,redDay2_8,
+    redDay2_9,redDay2_10,redDay2_11,redDay2_12,redDay2_13,redDay2_14,redDay2_15,redDay3_1,redDay3_2,redDay3_3,redDay3_4,redDay3_5,
+    redDay3_6,redDay3_7,redDay3_8,redDay3_9,redDay3_10,redDay3_11,redDay3_12,redDay3_13,redDay4_1,redDay4_2,redDay4_3,redDay4_4,
+    redDay4_5,redDay4_6,redDay4_7,redDay4_8,redDay4_9,redDay4_10,redDay4_11,redDay4_12,redDay4_13,redDay4_14);
   return holidays;
 }
 
@@ -1329,7 +1334,6 @@ function createGitHubcontributionTable(data) {
     },
     tblbody: data,
     tblfoot: {}
-    //Kontrol Value QQQQQQQQQQQQQQ
   };
   var colOrder = ["weeks", "dates", "redDays", "codeContribution", "githubContribution"];
   ghContibTable = new SortableTable({
