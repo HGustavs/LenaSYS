@@ -431,7 +431,7 @@ function removeExtraSubmissionRows() {
 
 function createJSONString(formData) {
 	var submission_types = [];
-	var type, fieldname, instruction;
+	var type, fieldname, instruction, diagramFile;
 
 	formData.forEach(element => {
 		if (element.name == "s_type") type = element;
@@ -455,6 +455,7 @@ function createJSONString(formData) {
 	return JSON.stringify({
 		"type":formData[0].value,
 		"filelink":formData[1].value,
+		"diagram File":$("#file option:selected").text(),
 		"extraparam":$('#extraparam').val(),
 		"submissions":submission_types
 	});
@@ -485,6 +486,9 @@ function createJSONFormData(){
       else if(result == "extraparam"){
         document.getElementById('extraparam').value = obj[result];
       }
+	  else if(result =="file"){
+		document.getElementById('file').value = "hejsan";
+	  }
     }
 
     var submissionTypes = obj.submissions;
@@ -1015,10 +1019,10 @@ function compare(a, b) {
 	}
 	
 	if(tempA != null){
-		tempA = tempA.toLowerCase().replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
+		tempA = tempA.toString().toLowerCase().replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
 	}
 	if(tempB != null){
-		tempB = tempB.toLowerCase().replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
+		tempB = tempB.toString().toLowerCase().replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
 	}
 
 	if (tempA > tempB) {
