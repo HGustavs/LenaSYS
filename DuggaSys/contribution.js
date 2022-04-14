@@ -227,6 +227,13 @@ function getHolidays(date)
   //This is a hardcoded list of all red dates from 2022 to 2025. It has to be manually edited every few years by
   //maunally editing the source code. Witch is frankly idiotic:( Client for some reason seamed reluctant to automate this.
   //Most of the automatin is already done and commented out above. Some winter red days still missing above.
+  var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
+  var redDay2 = getYYYYMMDD(new Date("2019-04-22"));
+  var redDay3 = getYYYYMMDD(new Date("2019-05-01"));
+  var redDay4 = getYYYYMMDD(new Date("2019-05-30"));
+  var redDay5 = getYYYYMMDD(new Date("2019-06-06"));
+  var redDay6 = getYYYYMMDD(new Date("2019-06-21"));
+
   var redDay1 = getYYYYMMDD(new Date("2022-01-01"));
   var redDay2 = getYYYYMMDD(new Date("2022-01-06"));
   var redDay3 = getYYYYMMDD(new Date("2022-04-15"));
