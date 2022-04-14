@@ -5313,7 +5313,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 3 && (retData['templateid']) != 5){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxW < 98 && boxNum == 3 && (retData['templateid']) != 5){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5322,7 +5322,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 4 && boxW < 98){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxW < 98 && boxNum == 4 && boxW < 98){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5331,7 +5331,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 6){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85  && boxW < 98 && boxNum == 1 && (retData['templateid']) == 6){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5340,7 +5340,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 3){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85  && boxW < 98 && boxNum == 1 && (retData['templateid']) == 3){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5349,7 +5349,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 9){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85  && boxW < 98 && boxNum == 1 && (retData['templateid']) == 9){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
