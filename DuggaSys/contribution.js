@@ -207,7 +207,7 @@ function getHolidays(date)
 {
   var holidays = new Array();
 
-  var easterDate = getEaster(date);
+  /* var easterDate = getEaster(date); */
 /*   var goodFridayDate = getGoodFriday(easterDate);
   var easterMondayDate = getEasterMonday(easterDate);
   var ascensionDayDate = getAscensionDay(easterDate);
