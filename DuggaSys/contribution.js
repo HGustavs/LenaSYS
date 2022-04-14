@@ -1445,12 +1445,12 @@ function renderCellForghContibTable(col, celldata, cellid) {
     //Based on row number. A certain row should only post a date if that date is on the same week as that row covers.
     //Works only if the course is held the same time every year
     var i = 0;
-    var ObjYear1 = obj.weekStart.substr(0,4);
+    /* var ObjYear1 = obj.weekStart.substr(0,4);
     var ObjYear2 = obj.weekEnd.subtract(0,4);
     var ObjMonth1 = obj.weekStart.substr(5,2);
     var ObjMonth2 = obj.weekEnd.subtract(5,2);
     var ObjDay1 = obj.weekStart.substr(8,2);
-    var ObjDay2 = obj.weekEnd.substr(8,2);
+    var ObjDay2 = obj.weekEnd.substr(8,2); */
 
     while(holidayList.length > i){ 
       /* var HolidayYear = holidayList[i].substr(0,4);
