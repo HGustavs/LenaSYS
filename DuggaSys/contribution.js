@@ -224,12 +224,66 @@ function getHolidays(date)
 
   //This is old and static but there was a bug that caused line diagram and bar diagram
   //to not render after the change to the new self updating system.
-  var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
-  var redDay2 = getYYYYMMDD(new Date("2019-04-22"));
-  var redDay3 = getYYYYMMDD(new Date("2019-05-01"));
-  var redDay4 = getYYYYMMDD(new Date("2019-05-30"));
-  var redDay5 = getYYYYMMDD(new Date("2019-06-06"));
-  var redDay6 = getYYYYMMDD(new Date("2019-06-21"));
+  //This is a hardcoded list of all red dates from 2022 to 2025. It has to be manually edited every few years by
+  //maunally editing the source code. Witch is frankly idiotic:( Client for some reason seamed reluctant to automate this.
+  //Most of the automatin is already done and commented out above. Some winter red days still missing above.
+  var redDay1 = getYYYYMMDD(new Date("2022-01-01"));
+  var redDay2 = getYYYYMMDD(new Date("2022-01-06"));
+  var redDay3 = getYYYYMMDD(new Date("2022-04-15"));
+  var redDay4 = getYYYYMMDD(new Date("2022-04-17"));
+  var redDay5 = getYYYYMMDD(new Date("2022-04-18"));
+  var redDay6 = getYYYYMMDD(new Date("2022-05-01"));
+  var redDay7 = getYYYYMMDD(new Date("2022-05-26"));
+  var redDay8 = getYYYYMMDD(new Date("2022-06-06"));
+  var redDay9 = getYYYYMMDD(new Date("2022-06-25"));
+  var redDay10 = getYYYYMMDD(new Date("2022-11-05"));
+  var redDay11 = getYYYYMMDD(new Date("2022-12-25"));
+  var redDay12 = getYYYYMMDD(new Date("2022-12-26"));
+
+  var redDay2_1 = getYYYYMMDD(new Date("2023-01-01"));
+  var redDay2_2 = getYYYYMMDD(new Date("2023-01-06"));
+  var redDay2_3 = getYYYYMMDD(new Date("2023-04-07"));
+  var redDay2_4 = getYYYYMMDD(new Date("2023-04-09"));
+  var redDay2_5 = getYYYYMMDD(new Date("2023-04-10"));
+  var redDay2_6 = getYYYYMMDD(new Date("2023-05-01"));
+  var redDay2_7 = getYYYYMMDD(new Date("2023-05-18"));
+  var redDay2_8 = getYYYYMMDD(new Date("2023-05-28"));
+  var redDay2_9 = getYYYYMMDD(new Date("2023-06-06"));
+  var redDay2_10 = getYYYYMMDD(new Date("2023-06-24"));
+  var redDay2_11 = getYYYYMMDD(new Date("2023-11-04"));
+  var redDay2_12 = getYYYYMMDD(new Date("2023-12-24"));
+  var redDay2_13 = getYYYYMMDD(new Date("2023-12-25"));
+  var redDay2_14 = getYYYYMMDD(new Date("2023-12-26"));
+  var redDay2_15 = getYYYYMMDD(new Date("2023-12-31"));
+
+  var redDay3_1 = getYYYYMMDD(new Date("2024-01-01"));
+  var redDay3_2 = getYYYYMMDD(new Date("2024-01-06"));
+  var redDay3_3 = getYYYYMMDD(new Date("2024-03-29"));
+  var redDay3_4 = getYYYYMMDD(new Date("2024-03-31"));
+  var redDay3_5 = getYYYYMMDD(new Date("2024-04-01"));
+  var redDay3_6 = getYYYYMMDD(new Date("2024-05-01"));
+  var redDay3_7 = getYYYYMMDD(new Date("2024-05-09"));
+  var redDay3_8 = getYYYYMMDD(new Date("2024-05-19"));
+  var redDay3_9 = getYYYYMMDD(new Date("2024-06-06"));
+  var redDay3_10 = getYYYYMMDD(new Date("2024-06-22"));
+  var redDay3_11 = getYYYYMMDD(new Date("2024-11-02"));
+  var redDay3_12 = getYYYYMMDD(new Date("2024-12-25"));
+  var redDay3_13 = getYYYYMMDD(new Date("2024-12-26"));
+
+  var redDay4_1 = getYYYYMMDD(new Date("2025-01-01"));
+  var redDay4_2 = getYYYYMMDD(new Date("2025-01-06"));
+  var redDay4_3 = getYYYYMMDD(new Date("2025-04-18"));
+  var redDay4_4 = getYYYYMMDD(new Date("2025-04-20"));
+  var redDay4_5 = getYYYYMMDD(new Date("2025-04-21"));
+  var redDay4_6 = getYYYYMMDD(new Date("2025-05-01"));
+  var redDay4_7 = getYYYYMMDD(new Date("2025-05-29"));
+  var redDay4_8 = getYYYYMMDD(new Date("2025-06-06"));
+  var redDay4_9 = getYYYYMMDD(new Date("2025-06-08"));
+  var redDay4_10 = getYYYYMMDD(new Date("2025-06-21"));
+  var redDay4_11 = getYYYYMMDD(new Date("2025-11-01"));
+  var redDay4_12 = getYYYYMMDD(new Date("2023-12-24"));
+  var redDay4_13 = getYYYYMMDD(new Date("2025-12-25"));
+  var redDay4_14 = getYYYYMMDD(new Date("2025-12-26"));
   holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6,redDay7);
   return holidays;
 }
