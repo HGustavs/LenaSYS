@@ -1433,7 +1433,66 @@ function renderCellForghContibTable(col, celldata, cellid) {
        }
      }
      str += "</div>";
-  } else {
+  }  else if (col == 'Red Days'){
+    var alphaPlus = new Date();
+    var holidayList = getHolidays(alphaPlus);
+
+    
+    //Get a list of all red days this year and check if they belong on the current row
+    //Based on row number. A certain row should only post a date if that date is on the same week as that row covers.
+    //Works only if the course is held the same time every year
+    var i = 0;
+    while(holidayList.length > i){ 
+      var Month = holidayList[i].substr(5,2);
+      var DayOfMonth = holidayList[i].substr(8,2);
+
+      if(Month == 4){
+        if(DayOfMonth >= 1 && DayOfMonth <= 8 && rowNr == 0){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 9 && DayOfMonth <= 15 && rowNr == 1){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 15 && DayOfMonth <= 22 && rowNr == 2){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 22 && DayOfMonth <= 29 && rowNr == 3){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(( DayOfMonth >= 29) && rowNr == 4){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        }
+      }else if(Month == 5){
+        if( DayOfMonth <= 6 && rowNr == 4){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 6 && DayOfMonth <= 13 && rowNr == 5){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 13 && DayOfMonth <= 20 && rowNr == 6){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 20 && DayOfMonth <= 27 && rowNr == 7){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 27 && rowNr == 8){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        }
+      }else if(Month == 6){
+        if(DayOfMonth <= 3 && rowNr == 8){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        } else if(DayOfMonth >= 3 && DayOfMonth <= 10 && rowNr == 9){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        }
+      }
+      i++;
+    }
+
+  }else {
     str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${obj}</span></div>`;
   }
   return str;
