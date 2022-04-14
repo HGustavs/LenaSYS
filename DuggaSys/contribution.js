@@ -186,8 +186,7 @@ function renderBarDiagram(data) {
       var day = dailyCount[i * 7 + j];
       
       var yOffset = 0;
-      str += `<g width='10' onmouseover='showInfoText(this, \"${(day[0] + `<br />commits: ${day[1]}<br />
-      Events: ${day[2]}<br />Comments: ${day[3]}<br />LOC: ` + day[4])}\");' onmouseout='hideInfoText()'>`;
+      str += `<g width='10' onmouseover='showInfoText(this, \"${(day[0] + `<br />commits: ${day[1]}<br />Events: ${day[2]}<br />Comments: ${day[3]}<br />LOC: ` + day[4])}\");' onmouseout='hideInfoText()'>`;
       if(isHoliday(day[0])){
         str += `<rect style='fill:#ffc0cb;' width='15'; height='88%'; opacity='0.7';
         x='${(j * 15 + 120 * i + 73)}'></rect>`;
