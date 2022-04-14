@@ -103,9 +103,15 @@ function selectAll(elem) {
 }
 
 function showAvailableDuggaFilter() {
+	//Hides other dropdown
+	showColumnFilterElement.classList.add("hidden");
+
 	showDuggaFilterElement.classList.toggle("hidden");
 }
 function showAvailableColumnFilter() {
+	//Hides other dropdown
+	showDuggaFilterElement.classList.add("hidden");
+
 	showColumnFilterElement.classList.toggle("hidden");
 }
 
