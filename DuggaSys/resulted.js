@@ -49,7 +49,7 @@ document.addEventListener("click", function(e) {
 	for (let i = 0; i < parent.length; i++) {
 		var bool = (!parent[i].classList.contains("hidden") && (child.classList.contains("filter-btn-duggaName") || parent[i].contains(child)));
 
-		if (bool) parent[i].classList.remove("hidden")
+		if (bool) parent[i].classList.remove("hidden")	
 		else parent[i].classList.add("hidden")
 	}
 });
@@ -112,9 +112,15 @@ function selectAll(elem) {
 }
 
 function showAvailableDuggaFilter() {
+	//Hides other dropdown
+	showColumnFilterElement.classList.add("hidden");
+
 	showDuggaFilterElement.classList.toggle("hidden");
 }
 function showAvailableColumnFilter() {
+	//Hides other dropdown
+	showDuggaFilterElement.classList.add("hidden");
+
 	showColumnFilterElement.classList.toggle("hidden");
 }
 
