@@ -338,7 +338,7 @@ function rowFilter(row) {
 				if(row[column] == null){
 					isSearchMatch = false;
 				} 
-				else if(row[column].toLowerCase().includes(term.toLowerCase())){
+				else if(row[column].toString().toLowerCase().includes(term.toLowerCase())){
 					isSearchMatch = true;
 					break;
 				}else{
