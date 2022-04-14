@@ -2568,13 +2568,13 @@ function validateSectName(name){
     emotd.style.backgroundColor = "white";
     //x4.style.display = "block";
     emotd.style.borderWidth = "2px";
-    window.bool10 = false;
+    window.bool10 = true;
     $('#dialog10').fadeOut();
   } else {
     emotd.style.borderColor = "red";
     emotd.style.borderWidth = "2px";
    // x4.style.display = "none";
-    window.bool10 = true;
+    window.bool10 = false;
     tooltipTxt.style.left = 50 + "px";
     tooltipTxt.style.top = -50 + "px";
     emotd.style.backgroundColor = "#f57";
@@ -2664,7 +2664,7 @@ function validateForm(formid) {
     }
 
     // if all information is correct
-    if (window.bool8 == true && window.bool10 == true && window.bool11 == true) {
+    if ((window.bool8) && (window.bool10) && (window.bool11)) {
       updateItem();
       updateDeadline();
 
