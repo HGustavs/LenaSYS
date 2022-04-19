@@ -915,11 +915,8 @@
 }
 
 .copy-notification {
-    width: calc(100% - 17px);
-    height: calc(100% - 17px);
     position: -webkit-sticky;
     position: sticky;
-    top: 0;
     right: 0;
     background-color: var(--color-accent-transparent);
     color: white;
@@ -941,7 +938,6 @@
     top: 0;
     margin-left: auto;
     margin-right: auto;
-    width: 30% !important;
 }
 
 #codeBurger {
