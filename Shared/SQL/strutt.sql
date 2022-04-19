@@ -5,5 +5,3 @@ alter table user_course add column vershistory TEXT;
 alter table user_course add column vers VARCHAR(8);
 alter table codeexample MODIFY runlink VARCHAR(256);
 alter table fileLink add column vers VARCHAR(8);
-/* Associated with issue #11113 */
-ALTER TABLE userAnswer ADD last_Time_techer_visited TIMESTAMP NULL DEFAULT NULL AFTER timesGraded;
