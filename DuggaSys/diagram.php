@@ -216,7 +216,7 @@
             <fieldset id='propertyFieldset' style="position: absolute;">
             </fieldset>
 
-            <fieldset style="position: absolute; bottom: 200px; width:82%">
+            <fieldset style="position: absolute; bottom: 260px; width:82%">
             <legend>Toggle</legend>
                 <!-- <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
                     <img src="../Shared/icons/diagram_grid.svg"/>
@@ -246,20 +246,20 @@
                 </span>
             </div>
                 </div>   -->    
-                <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Toggle grid</button>
-                <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Toggle snap to grid</button>
-                <button id="rulerToggle" class="saveButton" onclick="toggleRuler()">Toggle ruler</button>
-                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">Toggle A4 template</button>
+                <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
+                <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
+                <button id="rulerToggle" class="saveButton" onclick="toggleRuler()">Ruler</button><br><br>
+                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button>
             </fieldset>
             <div style="position: absolute; bottom: 20px;">
                 <fieldset>
                     <legend>Export</legend>
-                    <button class="saveButton" onclick="saveDiagram();">Save</button>
+                    <button class="saveButton" onclick="saveDiagram();">Save</button><br><br>
                     <button class="saveButton" onclick="exportDiagram();">Export</button>
                 </fieldset>
                 <fieldset>
                     <legend>Import</legend>
-                    <input style="width: 100%" id="importDiagramFile" type="file">
+                    <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
                     <button class="saveButton" onclick="loadDiagram();">Load</button>
                 </fieldset>
             </div>
