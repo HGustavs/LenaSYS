@@ -5123,12 +5123,27 @@ function copyCodeToClipboard(boxid) {
 	var box = document.getElementById("box" + boxid);
 	var code = box.getElementsByClassName("normtextwrapper")[0];
 
+	// Just copy class "impo" code, add code
+	var impo = code.getElementsByClassName("impo");
+	
+
 	// Select the code
 	var selection = window.getSelection();
-	var range = document.createRange();
-	range.selectNodeContents(code);
+	// var range = document.createRange();	Origninal code
+
+	//Add code to just copy impo code
 	selection.removeAllRanges();
-	selection.addRange(range);
+	for(var i = 0; i < impo.length; i++){
+		
+		var range = document.createRange();
+		range.selectNode(impo[i]);
+		selection.addRange(range);
+	
+	}
+	
+	//range.selectNodeContents(impo);	Origninal code
+	//selection.removeAllRanges();		Origninal code
+	//selection.addRange(range);		Origninal code
 	document.execCommand("Copy");
 	selection.removeAllRanges();
 
