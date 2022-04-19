@@ -195,7 +195,7 @@ function createSortableTable(data){
 			duggaName: "Dugga",
 			hash:"Hash",
 			password:"Password",
-			teacherVisited: "Teacher visited",
+			teacher_visited: "Teacher visited",
 			submitted:"Submission Date",
 			timesSubmitted: "Times submitted",
 			timesAccessed: "Times accessed",
@@ -245,6 +245,11 @@ function renderCell(col, celldata, cellid) {
 		str += "<div class='resultTableText passwordBlock'>";
 		str += celldata;
 	}
+	else if (col == "teacher_visited") {
+		str += "<div class='resultTableText'>";
+		str += "<div>" + (celldata==null?"NOT VISITED YET":celldata); +"</div>";
+	}
+
 	else {
 		str += "<div class='resultTableText'>";
 		str += "<div>" + celldata +"</div>";
