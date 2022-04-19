@@ -79,7 +79,7 @@
 #options-pane {
     position: fixed;
     top: 0px;
-    width: 280px;
+    width: 320px;
     bottom: 0px;
     z-index: 5000;
     background-color: #eb4;
@@ -111,7 +111,7 @@
 }
 
 .hide-options-pane {
-    right: -270px;
+    right: -308px;
 }
 
 .selected-entry {

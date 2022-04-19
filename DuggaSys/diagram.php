@@ -191,22 +191,8 @@
                 </span>
             </div>
         </fieldset>
-        <fieldset>
+<!--         <fieldset>
             <legend>Toggle</legend>
-            <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
-                <img src="../Shared/icons/diagram_grid.svg"/>
-                <span class="toolTipText"><b>Toggle grid</b><br>
-                    <p>Enable/disable the grid</p><br>
-                    <p id="tooltip-TOGGLE_GRID" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div id="rulerSnapToGrid" class="diagramIcons" onclick="toggleSnapToGrid()">
-                <img src="../Shared/icons/diagram_gridmagnet.svg"/>
-                <span class="toolTipText"><b>Toggle Snap To Grid</b><br>
-                    <p>Enable/disable the Snap To Grid</p><br>
-                    <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
             <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
                 <img src="../Shared/icons/diagram_ruler.svg"/>
                 <span class="toolTipText"><b>Toggle Ruler</b><br>
@@ -222,7 +208,7 @@
                 </span>
             </div>
 
-        </fieldset>   
+        </fieldset>   --> 
         <fieldset>
             <legend>Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
@@ -308,18 +294,57 @@
             </span>
         </div>
         <div id ="fieldsetBox">
-            <fieldset id='propertyFieldset'>
-                
+            <fieldset id='propertyFieldset' style="position: absolute;">
             </fieldset>
-            <div style="position: absolute; bottom: 20px">
+
+            <fieldset style="position: absolute; bottom: 250px; width:82%">
+            <legend>Toggle</legend>
+                <!-- <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
+                    <img src="../Shared/icons/diagram_grid.svg"/>
+                    <span class="toolTipText"><b>Toggle grid</b><br>
+                        <p>Enable/disable the grid</p><br>
+                        <p id="tooltip-TOGGLE_GRID" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <div id="rulerSnapToGrid" class="diagramIcons" onclick="toggleSnapToGrid()">
+                    <img src="../Shared/icons/diagram_gridmagnet.svg"/>
+                    <span class="toolTipText"><b>Toggle Snap To Grid</b><br>
+                        <p>Enable/disable the Snap To Grid</p><br>
+                        <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
+                    </span>
+                <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
+                <img src="../Shared/icons/diagram_ruler.svg"/>
+                <span class="toolTipText"><b>Toggle Ruler</b><br>
+                    <p>Enable/disable the ruler</p><br>
+                    <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+            <div id="a4TemplateToggle" class="diagramIcons" onclick="toggleA4Template()">
+                <img src="../Shared/icons/diagram_a4.svg"/>
+                <span class="toolTipText"><b>Toggle A4 template</b><br>
+                    <p>Enable/disable the A4 template</p><br>
+                    <p id="tooltip-TOGGLE_A4" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+                </div>   -->    
+                <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
+                <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
+                <button id="rulerToggle" class="saveButton" style="background-color:#362049;" onclick="toggleRuler()">Ruler</button><br><br>
+                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
+                <div id="a4Options" style="display:flex;">
+                    <button id="a4VerticalButton" style="display:none; width:76px; margin-right:45%;" onclick="toggleA4Vertical()">Vertical</button>
+                    <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
+                </div>
+            </fieldset>
+            <div style="position: absolute; bottom: 20px;">
                 <fieldset>
                     <legend>Export</legend>
-                    <button class="saveButton" onclick="saveDiagram();">Save</button>
+                    <button class="saveButton" onclick="saveDiagram();">Save</button><br><br>
                     <button class="saveButton" onclick="exportDiagram();">Export</button>
                 </fieldset>
-                <fieldset>
+                <fieldset style="margin-top:2%;">
                     <legend>Import</legend>
-                    <input style="width: 100%" id="importDiagramFile" type="file">
+                    <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
                     <button class="saveButton" onclick="loadDiagram();">Load</button>
                 </fieldset>
             </div>
