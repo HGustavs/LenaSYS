@@ -3483,6 +3483,10 @@ function setElementPlacementType(type = elementTypes.EREntity)
 
 function holdPlacementButtonDown(num){
     mousePressed=true;
+    if(document.getElementById("togglePlacementTypeBox"+num).classList.contains("activeTogglePlacementTypeBox")){
+        mousePressed=false;
+        togglePlacementTypeBox(num);
+    }
     setTimeout(() => {
         if(!!mousePressed){
             togglePlacementTypeBox(num);
