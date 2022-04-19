@@ -1548,6 +1548,7 @@ function ddown(event)
             if(event.button == 2) return;
             var element = data[findIndex(data, event.currentTarget.id)];
             if (element != null){
+                pointerState = pointerStates.CLICKED_ELEMENT;
                 updateSelection(element);
             }
             break;
