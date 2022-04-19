@@ -504,6 +504,7 @@ const regex = {
 function elementIsValid(element) {
 	const messageElement = element.parentNode.nextElementSibling; //The dialog to show validation messages in
 
+	const saveButton = document.getElementById('saveCourse');
 	//Standard styling for a failed validation that will be changed if element passes validation
 	element.style.borderWidth = "2px";
 	element.style.borderColor = "#E54";
@@ -517,6 +518,7 @@ function elementIsValid(element) {
 			//This prevents it from being impossible to save course code without changing it
 			if(element.value !== element.dataset.origincode) {
 				if(activeCodes.includes(element.value)) {
+					saveButton.disabled = false;
 					messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
 					return false;
 				}
@@ -524,6 +526,7 @@ function elementIsValid(element) {
 		}
 
 		//Setting the style of the element represent being valid and not show
+		saveButton.disabled = false;
 		element.style.borderColor = "#383";
 		messageElement.style.display = "none";
 		return true;
@@ -532,6 +535,10 @@ function elementIsValid(element) {
 		element.removeAttribute("style");
 		element.value = "";
 		messageElement.style.display = "none";
+		
+	}else{
+		//Disable save button to notify user that an error exit.
+		saveButton.disabled = true;
 	}
 
 	//Change back to original validation error message if it has been changed when knowing course code is not duplicate

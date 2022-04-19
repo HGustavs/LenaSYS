@@ -2561,12 +2561,14 @@ function validateSectName(name){
   var emotd = document.getElementById(name);
   var Emotd = /^[^"']+$/;
   var tooltipTxt = document.getElementById("dialog10");
+  const saveButton = document.getElementById("saveBtn");
   if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
     //Validation successful 
     emotd.style.borderColor = "black";
     emotd.style.backgroundColor = "white";
     emotd.style.borderWidth = "2px";
     window.bool10 = false;
+    saveButton.disabled = false;
     $('#dialog10').fadeOut();
   } else {
     //Failed validation.
@@ -2576,6 +2578,7 @@ function validateSectName(name){
     tooltipTxt.style.left = 50 + "px";
     tooltipTxt.style.top = -50 + "px";
     emotd.style.backgroundColor = "#f57";
+    saveButton.disabled = true;
     $('#dialog10').fadeIn();
   }
 

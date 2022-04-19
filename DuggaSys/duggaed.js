@@ -196,12 +196,14 @@ function validateDuggaName() {
 	var nme = document.getElementById("name");
 
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
+		//Validation successful 
 		$('#tooltipTxt').fadeOut();
 		$('#saveDugga').removeAttr('disabled');
 		$('#submitDugga').removeAttr('disabled');
 		nme.style.backgroundColor = "#fff";
 		retValue = true;
 	} else {
+		//Failed validation.
 		$('#tooltipTxt').fadeIn();
 		$('#submitDugga').attr('disabled', 'disabled');
 		$('#saveDugga').attr('disabled', 'disabled');
