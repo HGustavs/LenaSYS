@@ -1545,8 +1545,11 @@ div .navButt:hover {
     .box{
         overflow: hidden;
     }
-    .maximizebtn, .minimizebtn, .resetbtn, .editbtn {      
+    .maximizebtn, .minimizebtn, .resetbtn, .editbtn{
       vertical-align: middle;
+    }
+    .editbtn{
+      display: none;
     }
     .buttomenu2{
         height: 35px;

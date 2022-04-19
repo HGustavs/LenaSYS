@@ -3284,6 +3284,7 @@ function hideMaximizeAndResetButton() {
 		$('.maximizebtn').hide();
 		$('.resetbtn').hide();
 		$('.minimizebtn').hide();
+		$('.editbtn').hide();
 	}
 }
 
