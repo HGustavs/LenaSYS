@@ -34,6 +34,12 @@ function restoreStatView() {
     all[i].style.display = 'block';
 
   }
+  var flex = document.querySelectorAll('.group2flex');
+
+  for (j = 0; j < flex.length; j++) {
+    flex[j].style.display = 'flex';
+  }
+  
 }
 //Removes unwanted classes based on button
 function removeStatview(value) {
@@ -57,22 +63,30 @@ function restoreSpecStatView(value) {
       all[i].style.display = 'block';
 
     }
+  if(value.includes("group2flex")){
+    var flex = document.querySelectorAll('.group2flex');
+    for (j = 0; j < flex.length; j++) {
+      flex[j].style.display = 'flex';
+    }
+  }
 }
 
 // Gives the buttons functionality
+// group2flex is for elements that should be style.display:flex under group2
+// group2noDisplay is for elements that should not be affected by style.display changes under group2
 function statSort(value) {
   if (value == "All") {
     restoreStatView();
 
   } else if (value == "Basic") {
-    removeStatview('.group2 , .group3');
+    removeStatview('.group2 , .group3, .group2flex');
     restoreSpecStatView('.group1');
 
   } else if (value == "Charts") {
     removeStatview('.group1 , .group3');
-    restoreSpecStatView('.group2');
+    restoreSpecStatView('.group2, .group2flex');
   } else if (value == "Contribution") {
-    removeStatview('.group1 , .group2');
+    removeStatview('.group1 , .group2, .group2flex');
     restoreSpecStatView('.group3');
   }
 }
@@ -213,7 +227,7 @@ function renderBarDiagram(data) {
     str += "</g>";
   }
   str += '</svg>';
-  str += '<div class="group2" id="barDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
+  str += '<div class="group2flex" id="barDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Commits:</p>';
   str += '<div style="width:15px; height:15px; background-color:#F44336;margin-left:10px;"></div></div>';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Events:</p>';
@@ -368,7 +382,7 @@ function renderLineDiagram(data) {
   str += weekchoice(firstweek);
   str += '</div>';
 
-  str += '<div class="group2" id="lineDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
+  str += '<div class="group2flex" id="lineDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Commits:</p>';
   str += '<div style="width:15px; height:15px; background-color:#F44336;margin-left:10px;"></div></div>';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Events:</p>';
@@ -623,7 +637,7 @@ function renderCircleDiagram(data, day) {
   var firstweek = weeks[0].weekstart;
 
   str = "<h2 style='padding-top:10px'>Hourly activities</h2>";
-  str += `<select class="group2" id="firstWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,1)"'>`;
+  str += `<select class="group2noDisplay" id="firstWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,1)"'>`;
   str += '<option value="' + firstweek + '">Select start week</option>';
 
   for (i = 0; i < weeks.length; i++) {
@@ -633,7 +647,7 @@ function renderCircleDiagram(data, day) {
 
   str += '</select>';
   
-  str += `<select class="group2" id="secondWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,2)"'>`;
+  str += `<select class="group2noDisplay" id="secondWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,2)"'>`;
   str += '<option value="' + firstweek + '">Select end week</option>';
   
   for (i = 0; i < weeks.length; i++) {
