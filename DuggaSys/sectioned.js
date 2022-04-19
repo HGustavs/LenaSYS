@@ -18,6 +18,7 @@ var hideItemList = [];
 var hasDuggs = false;
 var dateToday = new Date().getTime();
 var compareWeek = -604800000;
+let width = screen.width;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -1054,7 +1055,12 @@ function returnedSection(data) {
             str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length);
           } else {
             str += "<span class='dateField'>" + deadline.slice(0, yearFormat.length) + "</span>";
-            str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3);
+            if(width > 430){
+              str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3);
+            }
+            else{
+              str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1);
+            }
           }
 
           str += "</div></td>";
@@ -1122,7 +1128,7 @@ function returnedSection(data) {
 
         // checkbox
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
+          str += `<td style='width:25px;' class='" + makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
             str += "<input type='checkbox' name='arrayCheckBox' onclick='markedItems(this)'>";
             str += "</td>";      
