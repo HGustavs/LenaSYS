@@ -1371,6 +1371,9 @@ div .navButt:hover {
   transition: 0.05s;
   filter: drop-shadow(5px 5px 2px rgba(0,0,0,0.2))
 }
+.navButt:active {
+  transform: translateY(4px);
+}
 
 .navHeading {
   font-size: 2.5em;
