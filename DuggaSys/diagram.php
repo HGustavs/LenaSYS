@@ -216,7 +216,7 @@
             <fieldset id='propertyFieldset' style="position: absolute;">
             </fieldset>
 
-            <fieldset style="position: absolute; bottom: 260px; width:82%">
+            <fieldset style="position: absolute; bottom: 250px; width:82%">
             <legend>Toggle</legend>
                 <!-- <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
                     <img src="../Shared/icons/diagram_grid.svg"/>
@@ -249,7 +249,11 @@
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
                 <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" onclick="toggleRuler()">Ruler</button><br><br>
-                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button>
+                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template(), generateA4TemplateProperties()">A4 template</button><br><br>
+                <div id="a4Options" style="display:flex;">
+                    <button id="a4VerticalButton" style="display:none; width:76px; margin-right:45%;" onclick="toggleA4Vertical()">Vertical</button>
+                    <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
+                </div>
             </fieldset>
             <div style="position: absolute; bottom: 20px;">
                 <fieldset>

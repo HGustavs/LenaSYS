@@ -3693,19 +3693,36 @@ function propFieldSelected(isSelected)
 /**
  * @description Generates fields for all properties of the currently selected element/line in the context. These fields can be used to modify the selected element/line.
  */
+
+
+/**
+ * @description A4-template options pop up only when A4-template function button is pressed inside options panel.
+ */
+ function generateA4TemplateProperties(){
+    //a4 propteries
+    if (document.getElementById("a4Template").style.display === "block") {
+        document.getElementById("a4VerticalButton").style.display = "inline-block";
+        document.getElementById("a4HorizontalButton").style.display = "inline-block";
+    } 
+    else {
+        document.getElementById("a4VerticalButton").style.display = "none";
+        document.getElementById("a4HorizontalButton").style.display = "none";
+    }
+} 
+
 function generateContextProperties()
 {
 
     var propSet = document.getElementById("propertyFieldset");
     var str = "<legend>Properties</legend>";
-    
+/*     
     //a4 propteries
     if (document.getElementById("a4Template").style.display === "block") {
         str += `<text>Change the size of the A4</text>`;
         str += `<input type="range" onchange="setA4SizeFactor(event)" min="100" max="200" value ="${settings.grid.a4SizeFactor*100}" id="slider">`;
         str += `<br><button onclick="toggleA4Vertical()">Vertical</button>`;
         str += `<button onclick="toggleA4Horizontal()">Horizontal</button>`;
-    }
+    } */
 
     //more than one element selected
 
