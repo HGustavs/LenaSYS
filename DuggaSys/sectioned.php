@@ -432,12 +432,8 @@
 	</div>
 	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
 
-	<!-- A footer was created, the code is in the file "coursefooter.php" -->
- 	<div>
-		<?php include 'coursefooter.php';
-		
-		?>
-	</div> 
+	
+
 
 </body>
 
