@@ -474,3 +474,84 @@
     visibility: hidden;
      pointer-events: none;
  }
+/* toggle placement types */
+.togglePlacementTypeButton{
+    position: absolute;
+    right: -10%;
+    bottom: -10%;
+    width: 6.2px;
+    height: 6.2px;
+}
+.togglePlacementTypeBoxEntity{
+    display: none;
+    position: absolute;
+    top:11.1%;
+    left: 100%;
+    padding:5px;
+    padding-top:0px;
+    border-radius: 5px;
+    background-color:var(--color-primary);
+}
+.togglePlacementTypeBoxRI{
+    display: none;
+    position: absolute;
+    top:15.9%;
+    left: 100%;
+    padding:5px;
+    padding-top:0px;
+    border-radius: 5px;
+    background-color:var(--color-primary);
+}
+.activeTogglePlacementTypeBox{
+    display: flex;
+    justify-content: left;
+}
+.activePlacementType{
+    background: var(--color-primary-hover);
+}
+.hiddenPlacementType{
+    display:none;
+}
+.hiddenToolTiptext{
+    visibility:hidden;
+}
+.placementTypeIcon img{
+    position: absolute;
+    top: 0px;
+    width: 6.2px;
+    height: 6.2px;
+}
+.placementTypeBoxIcons{
+    margin: auto;
+    width: 31px;
+    height: 31px;
+    cursor:pointer;
+    border-radius: 30%;
+    border: solid 1px var(--color-primary);
+    margin-top: 5px;
+}
+.placementTypeBoxIcons:hover, .active{
+    background: var(--color-primary-hover);
+    border: solid 1px var(--color-primary-light);
+}
+.placementTypeBoxIcons img{
+    width:30px;
+    height:30px;
+}
+.placementTypeToolTipText{
+    top:0%;
+    left:100%;
+    visibility: hidden;
+    width: 250px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 2;
+}
+.placementTypeBoxIcons:hover .placementTypeToolTipText{
+    visibility: visible;
+}

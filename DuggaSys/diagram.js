@@ -883,6 +883,7 @@ var dblPreviousTime = new Date().getTime(); ; // Used when determining if an ele
 var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Doubleclick was performed.
 var wasDblClicked = false;
 var targetDelta;
+var mousePressed;
 
 // Zoom variables
 var lastZoomfact = 1.0;
@@ -3481,6 +3482,82 @@ function setElementPlacementType(type = elementTypes.EREntity)
     elementTypeSelected = type;
 }
 
+function holdPlacementButtonDown(num){
+    mousePressed=true;
+    if(document.getElementById("togglePlacementTypeBox"+num).classList.contains("activeTogglePlacementTypeBox")){
+        mousePressed=false;
+        togglePlacementTypeBox(num);
+    }
+    setTimeout(() => {
+        if(!!mousePressed){
+            togglePlacementTypeBox(num);
+        }
+    }, 500);
+}
+/**
+ * @description resets the mousepress.
+ */
+function holdPlacementButtonUp(){
+    mousePressed=false;
+}
+/**
+ * @description toggles the box containing different types of placement entitys.
+ * @param {Number} num the number connected to the element selected.
+ */
+function togglePlacementTypeBox(num){
+    if(!document.getElementById("togglePlacementTypeButton"+num).classList.contains("activeTogglePlacementTypeButton")){ 
+        for (let index = 0; index < document.getElementsByClassName("togglePlacementTypeButton").length; index++) {
+            if(document.getElementsByClassName("togglePlacementTypeButton")[index].classList.contains("activeTogglePlacementTypeButton")) {
+                document.getElementsByClassName("togglePlacementTypeButton")[index].classList.remove("activeTogglePlacementTypeButton");
+            }
+            if(document.getElementsByClassName("togglePlacementTypeBox")[index].classList.contains("activeTogglePlacementTypeBox")) {
+                document.getElementsByClassName("togglePlacementTypeBox")[index].classList.remove("activeTogglePlacementTypeBox");
+            }
+        }       
+        document.getElementById("togglePlacementTypeButton"+num).classList.add("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox"+num).classList.add("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement"+num).children.item(1).classList.remove("toolTipText");
+        document.getElementById("elementPlacement"+num).children.item(1).classList.add("hiddenToolTiptext");
+    }
+    else{
+        document.getElementById("elementPlacement"+num).children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement"+num).children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton"+num).classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox"+num).classList.remove("activeTogglePlacementTypeBox");
+    }
+}
+/**
+ * @description toggles which entity placement type is selected for the different types of diagrams.
+ * @param {Number} num the number connected to the element selected.
+ * @param {Number} type the type of element selected.
+ */
+function togglePlacementType(num,type){
+    if(type==0){
+        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement0").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement0").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton0").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox0").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement4").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement4").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton4").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox4").classList.remove("activeTogglePlacementTypeBox");
+    }
+    else if(type==1){
+        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement1").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement1").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton1").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox1").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement5").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement5").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton5").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");
+    }
+    document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
+}
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.
