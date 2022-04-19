@@ -2507,3 +2507,8 @@ var ClickCounter = {
 		}
 	}
 }
+
+//if changes has been done a promt is made to ask user if they want to discard them.
+function addAlertOnUnload(){
+	window.onbeforeunload = function() {return "Changes will be discarded by leaving page.";}
+}
