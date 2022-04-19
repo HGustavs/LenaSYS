@@ -5507,7 +5507,22 @@ function drawSelectionBox(str)
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
     }
 
-    return str;
+    if(context.length > 1 || contextLine.length > 0 && context.length > 0){
+        var tempX1 = 0;
+        var tempX2 = 0;
+        var tempY1 = 0;
+        var tempY2 = 0;
+
+        for(var i = 0; i < context.length; i++){
+            tempX1 = context[i].x1;
+            tempX2 = context[i].x2;
+            tempY1 = context[i].y1;
+            tempY2 = context[i].y2;
+            str += `<rect width='${tempX2 - tempX1 + 4}' height='${tempY2 - tempY1 + 4}' x= '${tempX1 - 2}' y='${tempY1 - 2}'; style="fill:transparent;stroke-width:2; stroke:rgb(75,75,75); stroke-dasharray:5 5;" />`;
+        }
+    }
+
+    return str; 
 }
 /**
  * @description Translate all elements to the correct coordinate
@@ -5575,9 +5590,6 @@ function updateCSSForAllElements()
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
 
-            // Opacity on selected elements
-            var grandChild = elementDiv.children[0].children[0];
-            grandChild.style.opacity = inContext ? `${0.3}` : `${1.0}`;
         }
     }
 
