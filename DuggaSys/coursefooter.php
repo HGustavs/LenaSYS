@@ -38,7 +38,7 @@
   <body>
     <!-- A footer that have a icon for dark/light mode -->
     <footer id="coursefooter">
-      <img id="moon_toggle" src="../Shared/icons/Dark:lightmode_toggle.svg" alt="an icon on a moon, which indicates dark mode and light mood"/>
+      <img id="moon_toggle" src="../Shared/icons/ThemeToggle.svg" alt="an icon on a moon, which indicates dark mode and light mood"/>
       <!-- oncklick="DarkLightMode_toggle();" -->
     </footer>
   </body>
