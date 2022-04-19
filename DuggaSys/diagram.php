@@ -248,8 +248,8 @@
                 </div>   -->    
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
                 <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
-                <button id="rulerToggle" class="saveButton" onclick="toggleRuler()">Ruler</button><br><br>
-                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template(), generateA4TemplateProperties()">A4 template</button><br><br>
+                <button id="rulerToggle" class="saveButton" style="background-color:#362049;" onclick="toggleRuler()">Ruler</button><br><br>
+                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
                 <div id="a4Options" style="display:flex;">
                     <button id="a4VerticalButton" style="display:none; width:76px; margin-right:45%;" onclick="toggleA4Vertical()">Vertical</button>
                     <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
@@ -261,7 +261,7 @@
                     <button class="saveButton" onclick="saveDiagram();">Save</button><br><br>
                     <button class="saveButton" onclick="exportDiagram();">Export</button>
                 </fieldset>
-                <fieldset>
+                <fieldset style="margin-top:2%;">
                     <legend>Import</legend>
                     <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
                     <button class="saveButton" onclick="loadDiagram();">Load</button>

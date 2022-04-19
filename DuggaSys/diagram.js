@@ -3253,14 +3253,18 @@ function toggleEntityLocked()
 function toggleGrid()
 {
     var grid = document.getElementById("svggrid");
+    var gridButton = document.getElementById("gridToggle");
 
     // Toggle active class on button
     document.getElementById("gridToggle").classList.toggle("active");
 
+    // Toggle active grid + color change of button to clarify if button is pressed or not
     if (grid.style.display == "block") {
         grid.style.display = "none";
+        gridButton.style.backgroundColor ="#614875";
      } else {
         grid.style.display = "block";
+        gridButton.style.backgroundColor ="#362049";
    }
 }
 
@@ -3408,8 +3412,14 @@ function toggleA4Template()
 
     if (template.style.display == "block") {
         template.style.display = "none";
+        document.getElementById("a4VerticalButton").style.display = "none";
+        document.getElementById("a4HorizontalButton").style.display = "none";
+        document.getElementById("a4TemplateToggle").style.backgroundColor = "#614875";
      } else {
         template.style.display = "block";
+        document.getElementById("a4VerticalButton").style.display = "inline-block";
+        document.getElementById("a4HorizontalButton").style.display = "inline-block";
+        document.getElementById("a4TemplateToggle").style.backgroundColor = "#362049";
    }
    generateContextProperties();
 }
@@ -3448,6 +3458,16 @@ function toggleSnapToGrid()
 
     // Toggle the boolean
     settings.grid.snapToGrid = !settings.grid.snapToGrid;
+
+    // Color change of button to clarify if button is pressed or not
+    if(settings.grid.snapToGrid)
+    {
+        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#362049";
+    }
+    else
+    {
+        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#614875";
+    }
 }
 
 /**
@@ -3456,14 +3476,19 @@ function toggleSnapToGrid()
 function toggleRuler()
 {
     var ruler = document.getElementById("rulerOverlay");
+    var rulerToggleButton = document.getElementById("rulerToggle");
   
     // Toggle active class on button
     document.getElementById("rulerToggle").classList.toggle("active");
 
+    // Toggle active ruler + color change of button to clarify if button is pressed or not
     if(settings.ruler.isRulerActive){
         ruler.style.display = "none";
+        rulerToggleButton.style.backgroundColor = "#614875";
     } else {
         ruler.style.display = "block";
+        rulerToggleButton.style.backgroundColor = "#362049";
+
     }
   
     settings.ruler.isRulerActive = !settings.ruler.isRulerActive;
@@ -3692,24 +3717,7 @@ function propFieldSelected(isSelected)
 
 /**
  * @description Generates fields for all properties of the currently selected element/line in the context. These fields can be used to modify the selected element/line.
- */
-
-
-/**
- * @description A4-template options pop up only when A4-template function button is pressed inside options panel.
- */
- function generateA4TemplateProperties(){
-    //a4 propteries
-    if (document.getElementById("a4Template").style.display === "block") {
-        document.getElementById("a4VerticalButton").style.display = "inline-block";
-        document.getElementById("a4HorizontalButton").style.display = "inline-block";
-    } 
-    else {
-        document.getElementById("a4VerticalButton").style.display = "none";
-        document.getElementById("a4HorizontalButton").style.display = "none";
-    }
-} 
-
+ */ 
 function generateContextProperties()
 {
 
