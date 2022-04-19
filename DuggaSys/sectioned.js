@@ -664,6 +664,10 @@ function returnedGroups(data) {
   }
 }
 
+//dugga row click functionality
+function duggaRowClick(rowElement){
+  window.location.assign(rowElement.parentNode.querySelector('.internal-link').href); //get link from child and redirect
+}
 
 function returnedSection(data) {
   retdata = data;
@@ -785,7 +789,7 @@ function returnedSection(data) {
         else{
           str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
         }
-
+        
         menuState.idCounter++;
         // All are visible according to database
 
@@ -955,7 +959,7 @@ function returnedSection(data) {
         }
 
         // Close Information
-        str += ">";
+        str += "  onclick='duggaRowClick(this)' >";
         // Content of Section Item
         if (itemKind == 0) {
           // Header
@@ -1037,6 +1041,8 @@ function returnedSection(data) {
         }
 
         str += "</td>";
+        
+        //
 
         // Add generic td for deadlines if one exists
         if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
@@ -1045,7 +1051,7 @@ function returnedSection(data) {
           var yearFormat = "0000-";
           var dateFormat = "00-00";
 
-          str += "<td class='dateSize' style='text-align:right;overflow:hidden;'>"+
+          str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;overflow:hidden;'>"+
           "<div class='' style='white-space:nowrap;'>";
 
           if (dl[1] == timeFilterAndFormat) {
