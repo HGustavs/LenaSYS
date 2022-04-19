@@ -230,20 +230,28 @@ function renderBarDiagram(data) {
 
 function renderCommits(data) {
   
-  //creating the svg to put the commit tree in
-  var str = "<h2>Commit tree</h2>";
-  str += "<div id='innerCommitTree'>";
-  str += "<svg id='commitTree' viewBox='0 0 600 300' style='background-color:#efefef; width: 1200px; height:300px;' aria-labelledby='title desc' role='img'>";
-  
-
-  var current = new Date();
-  var currentYear = current.getFullYear();
   var weekData = data['weeks'];
-
   var allCommits =  [];
   var commitDict = Object();
   var index = 0;
 
+  //Gets the date of the first and last day in the interval
+  var startDate =  weekData[0]['weekstart'];
+  var endDate =  weekData[9]['weekend'];
+  date = new Date(endDate);
+  date.setDate(date.getDate() - 1);
+  endDate = date.toISOString().split("T")[0];
+
+  //creating the svg to put the commit tree in
+  var str = "<h2>Commit tree</h2>";
+  str += "<p>Showing commit tree for "+startDate+" - "+endDate+"</p>";
+  str += "<div id='innerCommitTree'>";
+  str += "<svg id='commitTree' viewBox='0 0 600 300' style='background-color:#efefef; width: 1200px; height:300px;' aria-labelledby='title desc' role='img'>";
+
+  //gets the year of the startdate
+  var firstDate = new Date(startDate);
+  var startYear = firstDate.getFullYear();
+  
  // for each commit ID
  // X is commit order, Y is commit nesting
   for(var i = 0; i < weekData.length;i++) {  
@@ -257,7 +265,7 @@ function renderCommits(data) {
       }
       var finalDate = new Date(newDate);
 
-      if(finalDate.getFullYear() == currentYear){
+      if(finalDate.getFullYear() == startYear){
         allCommits.push(weekData[i]['commits'][j]);
         var commit_obj = {
           index: index
