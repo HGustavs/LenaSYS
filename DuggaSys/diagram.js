@@ -5391,7 +5391,7 @@ function drawSelectionBox(str)
         }
     }
 
-    return str;
+    return str; 
 }
 /**
  * @description Translate all elements to the correct coordinate
