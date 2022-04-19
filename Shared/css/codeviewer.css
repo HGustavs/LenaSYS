@@ -893,6 +893,7 @@
     width: 43px;
     padding-right: 2px;
     text-align: center;
+    height: 40px;
     font-size: 12px;
     display: table-cell;
     transition: all 0.2s linear;
