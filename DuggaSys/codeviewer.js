@@ -1108,8 +1108,11 @@ function execSkip() {
 
 	//Hides dropdown if click outside.
 	document.addEventListener("click", function (e) {
-
-		if (!document.getElementById("backwdrop").contains(e.target) || !document.getElementById("forwdrop").contains(e.target)) {
+		// Code to make it do not disappear when you hold 1s.
+		if(document.getElementById("afterbutton").contains(e.target) || document.getElementById("beforebutton").contains(e.target)){
+		
+		}
+		else if (!document.getElementById("backwdrop").contains(e.target) || !document.getElementById("forwdrop").contains(e.target)) {
 			
 			document.getElementById("backwdrop").style.display = "none";
 			document.getElementById("forwdrop").style.display = "none";
