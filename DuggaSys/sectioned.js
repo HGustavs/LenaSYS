@@ -1122,7 +1122,7 @@ function returnedSection(data) {
 
         // checkbox
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
+          str += `<td style='width:25px;' class='" + makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
             str += "<input type='checkbox' name='arrayCheckBox' onclick='markedItems(this)'>";
             str += "</td>";      
