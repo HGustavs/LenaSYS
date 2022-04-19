@@ -980,14 +980,16 @@
     }
 }
 
-
-
-
 @media only screen and (max-width: 364px) {
         #mobileNavHeading {
             font-size: 13px;
     }
+    /* Removes maximize- and minimize buttons i mobile view because they don´t work correctly */
+    .maximizebtn, .minimizebtn {
+        display: none;
+    }
 }
+
 .blockBtnSlot {
     min-width: 11px;
     display: inline;
