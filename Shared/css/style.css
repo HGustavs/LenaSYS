@@ -1497,7 +1497,7 @@ div .navButt:hover {
     .navButt img {
         width: 20px;
     }
-
+    
     .access menuButton{
       width: 20px;
     }
@@ -5082,6 +5082,9 @@ only screen and (max-device-width: 800px) {
   #hideElement{
     display: block;
   }
+  .maximizebtn, .minimizebtn, .resetbtn, .copybutton, .editbtn {
+    height: 35px;
+  }
 
   table.navheader td.contribution {
     margin-right: 0px;
@@ -5091,7 +5094,7 @@ only screen and (max-device-width: 800px) {
     -o-transition: margin-right 0.5s, width 0.5s;
   }
 
-
+  
 }
 
 @media only screen and (max-width: 768px),
@@ -7343,7 +7346,7 @@ textarea#mrkdwntxt {
   .previewWindow {
     height: 89%;
   }
-
+  
   .markdown {
     height: 38%;
     width: 97%;
