@@ -145,5 +145,13 @@ if(isset($_SESSION['uid'])){
     </div>
 	</div>
 	<!-- Edit Server Settings END -->
+
+	<!-- A footer was created, the code is in the file "coursefooter.php" -->
+	<div>
+		<?php include 'coursefooter.php';
+		
+		?>
+	</div>
+
 </body>
 </html>

@@ -1108,8 +1108,11 @@ function execSkip() {
 
 	//Hides dropdown if click outside.
 	document.addEventListener("click", function (e) {
-
-		if (!document.getElementById("backwdrop").contains(e.target) || !document.getElementById("forwdrop").contains(e.target)) {
+		// Code to make it do not disappear when you hold 1s.
+		if(document.getElementById("afterbutton").contains(e.target) || document.getElementById("beforebutton").contains(e.target)){
+		
+		}
+		else if (!document.getElementById("backwdrop").contains(e.target) || !document.getElementById("forwdrop").contains(e.target)) {
 			
 			document.getElementById("backwdrop").style.display = "none";
 			document.getElementById("forwdrop").style.display = "none";
@@ -5124,12 +5127,22 @@ function copyCodeToClipboard(boxid) {
 	var box = document.getElementById("box" + boxid);
 	var code = box.getElementsByClassName("normtextwrapper")[0];
 
+	var impo = code.getElementsByClassName("impo"); // Add code to just copy impo code
+
 	// Select the code
 	var selection = window.getSelection();
-	var range = document.createRange();
-	range.selectNodeContents(code);
-	selection.removeAllRanges();
-	selection.addRange(range);
+	
+	// Add Code to just copy impo code
+	for(i = 0; i<impo.length;i++){
+		var range = document.createRange();
+		range.selectNode(impo[i]);
+		selection.addRange(range);
+	}
+	
+	//var range = document.createRange();	// Original Code
+	//range.selectNodeContents(code);		// Original Code
+	//selection.removeAllRanges();			// Original Code
+	//selection.addRange(range);			// Original Code
 	document.execCommand("Copy");
 	selection.removeAllRanges();
 
@@ -5314,7 +5327,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 3 && (retData['templateid']) != 5){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxW < 98 && boxNum == 3 && (retData['templateid']) != 5){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5323,7 +5336,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 4 && boxW < 98){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxW < 98 && boxNum == 4 && boxW < 98){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5332,7 +5345,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 6){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85  && boxW < 98 && boxNum == 1 && (retData['templateid']) == 6){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5341,7 +5354,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 3){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85  && boxW < 98 && boxNum == 1 && (retData['templateid']) == 3){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5350,7 +5363,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 9){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85  && boxW < 98 && boxNum == 1 && (retData['templateid']) == 9){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
