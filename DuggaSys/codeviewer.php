@@ -357,5 +357,8 @@ Testing Link:
 
 </div>
 
+	<?php include 'coursefooter.php';
+    
+    ?> 
 	</body>
 </html>
