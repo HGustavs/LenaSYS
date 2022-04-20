@@ -34,6 +34,12 @@ function restoreStatView() {
     all[i].style.display = 'block';
 
   }
+  var flex = document.querySelectorAll('.group2flex');
+
+  for (j = 0; j < flex.length; j++) {
+    flex[j].style.display = 'flex';
+  }
+  
 }
 //Removes unwanted classes based on button
 function removeStatview(value) {
@@ -57,22 +63,30 @@ function restoreSpecStatView(value) {
       all[i].style.display = 'block';
 
     }
+  if(value.includes("group2flex")){
+    var flex = document.querySelectorAll('.group2flex');
+    for (j = 0; j < flex.length; j++) {
+      flex[j].style.display = 'flex';
+    }
+  }
 }
 
 // Gives the buttons functionality
+// group2flex is for elements that should be style.display:flex under group2
+// group2noDisplay is for elements that should not be affected by style.display changes under group2
 function statSort(value) {
   if (value == "All") {
     restoreStatView();
 
   } else if (value == "Basic") {
-    removeStatview('.group2 , .group3');
+    removeStatview('.group2 , .group3, .group2flex');
     restoreSpecStatView('.group1');
 
   } else if (value == "Charts") {
     removeStatview('.group1 , .group3');
-    restoreSpecStatView('.group2');
+    restoreSpecStatView('.group2, .group2flex');
   } else if (value == "Contribution") {
-    removeStatview('.group1 , .group2');
+    removeStatview('.group1 , .group2, .group2flex');
     restoreSpecStatView('.group3');
   }
 }
@@ -186,8 +200,7 @@ function renderBarDiagram(data) {
       var day = dailyCount[i * 7 + j];
       
       var yOffset = 0;
-      str += `<g width='10' onmouseover='showInfoText(this, \"${(day[0] + `<br />commits: ${day[1]}<br />
-      Events: ${day[2]}<br />Comments: ${day[3]}<br />LOC: ` + day[4])}\");' onmouseout='hideInfoText()'>`;
+      str += `<g width='10' onmouseover='showInfoText(this, \"${(day[0] + `<br />commits: ${day[1]}<br />Events: ${day[2]}<br />Comments: ${day[3]}<br />LOC: ` + day[4])}\");' onmouseout='hideInfoText()'>`;
       if(isHoliday(day[0])){
         str += `<rect style='fill:#ffc0cb;' width='15'; height='88%'; opacity='0.7';
         x='${(j * 15 + 120 * i + 73)}'></rect>`;
@@ -214,7 +227,7 @@ function renderBarDiagram(data) {
     str += "</g>";
   }
   str += '</svg>';
-  str += '<div class="group2" id="barDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
+  str += '<div class="group2flex" id="barDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Commits:</p>';
   str += '<div style="width:15px; height:15px; background-color:#F44336;margin-left:10px;"></div></div>';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Events:</p>';
@@ -231,20 +244,28 @@ function renderBarDiagram(data) {
 
 function renderCommits(data) {
   
-  //creating the svg to put the commit tree in
-  var str = "<h2>Commit tree</h2>";
-  str += "<div id='innerCommitTree'>";
-  str += "<svg id='commitTree' viewBox='0 0 600 300' style='background-color:#efefef; width: 1200px; height:300px;' aria-labelledby='title desc' role='img'>";
-  
-
-  var current = new Date();
-  var currentYear = current.getFullYear();
   var weekData = data['weeks'];
-
   var allCommits =  [];
   var commitDict = Object();
   var index = 0;
 
+  //Gets the date of the first and last day in the interval
+  var startDate =  weekData[0]['weekstart'];
+  var endDate =  weekData[9]['weekend'];
+  date = new Date(endDate);
+  date.setDate(date.getDate() - 1);
+  endDate = date.toISOString().split("T")[0];
+
+  //creating the svg to put the commit tree in
+  var str = "<h2>Commit tree</h2>";
+  str += "<p>Showing commit tree for "+startDate+" - "+endDate+"</p>";
+  str += "<div id='innerCommitTree'>";
+  str += "<svg id='commitTree' viewBox='0 0 600 300' style='background-color:#efefef; width: 1200px; height:300px;' aria-labelledby='title desc' role='img'>";
+
+  //gets the year of the startdate
+  var firstDate = new Date(startDate);
+  var startYear = firstDate.getFullYear();
+  
  // for each commit ID
  // X is commit order, Y is commit nesting
   for(var i = 0; i < weekData.length;i++) {  
@@ -258,7 +279,7 @@ function renderCommits(data) {
       }
       var finalDate = new Date(newDate);
 
-      if(finalDate.getFullYear() == currentYear){
+      if(finalDate.getFullYear() == startYear){
         allCommits.push(weekData[i]['commits'][j]);
         var commit_obj = {
           index: index
@@ -361,7 +382,7 @@ function renderLineDiagram(data) {
   str += weekchoice(firstweek);
   str += '</div>';
 
-  str += '<div class="group2" id="lineDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
+  str += '<div class="group2flex" id="lineDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Commits:</p>';
   str += '<div style="width:15px; height:15px; background-color:#F44336;margin-left:10px;"></div></div>';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Events:</p>';
@@ -616,7 +637,7 @@ function renderCircleDiagram(data, day) {
   var firstweek = weeks[0].weekstart;
 
   str = "<h2 style='padding-top:10px'>Hourly activities</h2>";
-  str += `<select class="group2" id="firstWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,1)"'>`;
+  str += `<select class="group2noDisplay" id="firstWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,1)"'>`;
   str += '<option value="' + firstweek + '">Select start week</option>';
 
   for (i = 0; i < weeks.length; i++) {
@@ -626,7 +647,7 @@ function renderCircleDiagram(data, day) {
 
   str += '</select>';
   
-  str += `<select class="group2" id="secondWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,2)"'>`;
+  str += `<select class="group2noDisplay" id="secondWeek" value="0" style="margin-top:25px"; onchange="selectWeek(this.value,2)"'>`;
   str += '<option value="' + firstweek + '">Select end week</option>';
   
   for (i = 0; i < weeks.length; i++) {
@@ -974,7 +995,20 @@ function returnedSection(data) {
   onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
   str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution'
   onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
-  str += "</div>";
+  str += `<select id='courseBtn' class='submit-button'
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'>
+  "<option value="ChooseC">Choose course</option>"
+  "<option value="opt1">Option1</option>"
+  "<option value="opt2">Option2</option>"
+  </select>`;
+  str += `<select id='yearBtn' class='submit-button'
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'>
+  "<option value="ChooseY">Choose year</option>"
+  "<option value="opt1">Option1</option>"
+  "<option value="opt2">Option2</option>"
+  </select>`;
+  str += "</div>"; 
+
 
   localStorage.setItem('GitHubUser', data['githubuser'])
      str+="<p>";
@@ -1569,5 +1603,113 @@ function hideTooltip() {
       }
     }
 }
+
+function forceUserLogin()
+{
+      /* 
+      make sure the loginBox is generated before you run this function as 
+      it queries for elements that exist in the loginbox and changes their properties
+      */
+      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
+			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
+
+
+
+
+      let loginBoxheader_login_username_field = document.querySelector("#username");
+      loginBoxheader_login_username_field.setAttribute("Placeholder","Github username");
+
+      let loginBoxheader_login_password_field = document.querySelector("#password");
+      loginBoxheader_login_password_field.style.visibility = "hidden";
+
+      let loginBoxButton = document.querySelector(".buttonLoginBox");
+      loginBoxButton.setAttribute("onClick", "showNewGitLogin()");
+
+
+			// prepare replacement of onclick
+			loginBoxheader_login_close.removeAttribute("onClick"); // remove auto generated 
+			loginBoxheader_forgot_close.removeAttribute("onClick"); // remove auto generated
+			
+			/*
+      replace with a history back, this makes sure you dont get a blank page if you dont want to enter a password
+      and instead press the button to close down the loginBox
+      */
+			loginBoxheader_login_close.setAttribute("onClick", "history.back();"); 
+			loginBoxheader_forgot_close.setAttribute("onClick", "history.back();"); 
+
+
+      // ----
+      let FP = document.querySelector("#newpassword .forgotPw");
+      FP.setAttribute("onClick", "toggleloginnewpass(); resetForceLogin();");
+
+      // After the loginbox has been prepared/modified we display it to the user
+      showLoginPopup();
+      
+
+}
+
+function showNewGitLogin()
+{
+      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
+			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
+      let loginBox = document.querySelector("#password");
+      let loginBoxParent = loginBox.closest("tr");
+
+
+      let loginBoxheader_login_username_field = document.querySelector("#username");
+      let loginBoxheader_login_password_field = document.querySelector("#password");
+      let loginBoxButton = document.querySelector(".buttonLoginBox");
+
+      loginBoxheader_login_password_field.style.visibility = "";
+
+
+      // create another loginbox and create a new id
+      let originalId = loginBox.getAttribute("id");
+      loginBox.setAttribute("id", originalId+1);
+      loginBoxParent.outerHTML += loginBoxParent.innerHTML;
+      loginBox = document.querySelector("#"+originalId+1);
+      loginBox.setAttribute("id", originalId);
+
+
+      let login_first = document.querySelector("#"+originalId);
+      let login_second = document.querySelector("#"+originalId+1);
+
+      login_first.setAttribute("placeholder", "Create new password");
+      login_second.setAttribute("placeholder","Repeat new password");
+
+      loginBoxButton.setAttribute("onClick", "");
+      loginBoxButton.setAttribute("Value", "Create");
+
+     
+      
+
+
+
+}
+
+function resetForceLogin()
+{
+  let originalId = ("password");
+  let login_second = document.querySelector("#"+originalId+1);
+  if(login_second != null)
+    login_second.remove();
+  let loginBoxButton = document.querySelector(".buttonLoginBox");
+  loginBoxButton.setAttribute("Value", "Login");
+  forceUserLogin();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 console.error

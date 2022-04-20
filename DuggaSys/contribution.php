@@ -57,6 +57,11 @@ $vers=getOPG('coursevers');
 
 	<?php
 		include '../Shared/loginbox.php';
+
+		if(!checklogin()) // If not logged in, force a log in
+		{
+			echo '<script> forceUserLogin(); </script>';
+		}
 	?>
 
 </body>

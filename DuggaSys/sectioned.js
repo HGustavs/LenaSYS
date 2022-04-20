@@ -18,6 +18,7 @@ var hideItemList = [];
 var hasDuggs = false;
 var dateToday = new Date().getTime();
 var compareWeek = -604800000;
+let width = screen.width;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -663,6 +664,10 @@ function returnedGroups(data) {
   }
 }
 
+//dugga row click functionality
+function duggaRowClick(rowElement){
+  window.location.assign(rowElement.parentNode.querySelector('.internal-link').href); //get link from child and redirect
+}
 
 function returnedSection(data) {
   retdata = data;
@@ -784,7 +789,7 @@ function returnedSection(data) {
         else{
           str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
         }
-
+        
         menuState.idCounter++;
         // All are visible according to database
 
@@ -954,7 +959,7 @@ function returnedSection(data) {
         }
 
         // Close Information
-        str += ">";
+        str += "  onclick='duggaRowClick(this)' >";
         // Content of Section Item
         if (itemKind == 0) {
           // Header
@@ -1036,6 +1041,8 @@ function returnedSection(data) {
         }
 
         str += "</td>";
+        
+        //
 
         // Add generic td for deadlines if one exists
         if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
@@ -1044,7 +1051,7 @@ function returnedSection(data) {
           var yearFormat = "0000-";
           var dateFormat = "00-00";
 
-          str += "<td class='dateSize' style='text-align:right;overflow:hidden;'>"+
+          str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;overflow:hidden;'>"+
           "<div class='' style='white-space:nowrap;'>";
 
           if (dl[1] == timeFilterAndFormat) {
@@ -1054,7 +1061,12 @@ function returnedSection(data) {
             str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length);
           } else {
             str += "<span class='dateField'>" + deadline.slice(0, yearFormat.length) + "</span>";
-            str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3);
+            if(width > 430){
+              str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3);
+            }
+            else{
+              str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1);
+            }
           }
 
           str += "</div></td>";
@@ -1122,7 +1134,7 @@ function returnedSection(data) {
 
         // checkbox
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
+          str += `<td style='width:25px;' class='" + makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
             str += "<input type='checkbox' name='arrayCheckBox' onclick='markedItems(this)'>";
             str += "</td>";      
@@ -1249,11 +1261,24 @@ function showCanvasLinkBox(operation,btnobj){
     if(canvasLink == null){
       canvasLink = "ERROR: Failed to get canvas link.";
     }
+    //navigator.clipboard.writeText(canvasLink); method that requires local host or HTTPS which we dont have here.
+    //alternative route with a text area.
+    let textArea = document.createElement("textarea");
+    textArea.value = canvasLink;
+    // make the textarea out of viewport
+    textArea.style.position = "fixed";
+    textArea.style.left = "-999999px";
+    textArea.style.top = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    document.execCommand('copy');
+    textArea.remove();
+    
 
     $("#canvasLinkBox").css("display", "flex");
     $('#close-item-button').focus();
 
-    navigator.clipboard.writeText(canvasLink);
     document.getElementById("canvasLinkText").value = canvasLink;
   }else if(operation == "close"){
     $("#canvasLinkBox").css("display", "none");
@@ -2559,28 +2584,20 @@ function validateDate2(ddate, dialogid) {
 
 function validateSectName(name){
   var emotd = document.getElementById(name);
-  var Emotd = /^[^"']+$/;
   var tooltipTxt = document.getElementById("dialog10");
-  // var EmotdRange = /^.{0,50}$/;
-  //var x4 = document.getElementById(dialogid);
+  tooltipTxt.style.left = 50 + "px";
+  tooltipTxt.style.top = -50 + "px";
+  emotd.style.borderWidth = "2px";
+  // Valid string
   if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
-    emotd.style.borderColor = "black";
-    emotd.style.backgroundColor = "white";
-    //x4.style.display = "block";
-    emotd.style.borderWidth = "2px";
-    window.bool10 = false;
+    emotd.style.borderColor = "#383";
     $('#dialog10').fadeOut();
-  } else {
-    emotd.style.borderColor = "red";
-    emotd.style.borderWidth = "2px";
-   // x4.style.display = "none";
     window.bool10 = true;
-    tooltipTxt.style.left = 50 + "px";
-    tooltipTxt.style.top = -50 + "px";
-    emotd.style.backgroundColor = "#f57";
+  } else { // Invalid string
+    emotd.style.borderColor = "#E54";
+    window.bool10 = false;
     $('#dialog10').fadeIn();
   }
-
 }
 
 /*recursive functions to retrieve the deepest DOM element */
@@ -2664,7 +2681,7 @@ function validateForm(formid) {
     }
 
     // if all information is correct
-    if (window.bool8 == true && window.bool10 == true && window.bool11 == true) {
+    if (window.bool10 == true && window.bool11 == true) {
       updateItem();
       updateDeadline();
 
