@@ -990,6 +990,7 @@ var settings = {
 // Demo data - read / write from service later on
 var data = [];
 var lines = [];
+var cid = 0;
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
@@ -1136,6 +1137,8 @@ function onSetup()
 
     // Global statemachine init
     stateMachine = new StateMachine(data, lines);
+
+    mickeTemp();
 }
 
 /**
@@ -5862,5 +5865,11 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }else{
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
+}
+
+function mickeTemp()
+{
+    cid = window.parent.getDiagramToLoadParam();
+    console.log(cid);
 }
 //#endregion =====================================================================================

@@ -1,5 +1,7 @@
 <?php
 	include_once "../Shared/sessions.php";
+	pdoConnect();
+	include_once "../Shared/basic.php";
  	session_start();
 ?>
 <!DOCTYPE html>
@@ -21,14 +23,24 @@
 	<script src="timer.js"></script>
 	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
+	<?php
+	//$mickeQuery = "SELECT param FROM variant LEFT JOIN quiz ON quiz.id=variant.quizID WHERE disabled=0 AND quiz.cid = " + querystring['courseid'];
+
+	?>
+	<script type="text/javascript">
+	function getDiagramToLoadParam()
+	{
+		//const queryArray = [querystring['courseid'], querystring['coursevers'], querystring['did']];
+		var queryString = "SELECT param FROM variant LEFT JOIN quiz ON quiz.id=variant.quizID WHERE disabled=0 AND quiz.cid = " + querystring['courseid'];
+		return queryString;
+		} 
+	</script>
+
 <?php
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services!
-	include_once "../Shared/basic.php";
-
 	// Connect to database and start session
-	pdoConnect();
 
 	$cid=getOPG('courseid');
 	$vers=getOPG('coursevers');
@@ -50,6 +62,20 @@
 	$duggaid=getOPG('did');
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
+	$queryArray = array($cid, $vers, $quizid);
+
+	$mickeQuery = $pdo->prepare("SELECT param FROM variant LEFT JOIN quiz ON quiz.id=variant.quizID WHERE disabled=0 AND quiz.cid = $cid;");
+//	$mickeResult = $mickeQuery->execute();
+
+	if(!$mickeQuery->execute())
+	{
+		echo "ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR";
+		print_f($mickeQuery->errorInfo());
+	}
+	
+	else{
+		echo "$mickeQuery->fetch(PDO::FETCH_ASSOC)";
+	}
 
 	// if(isset($_SESSION['hashpassword'])){
 	// 	$hashpassword=$_SESSION['hashpassword'];
