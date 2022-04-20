@@ -1,5 +1,6 @@
 var lastFile = null;
 var diagramWindow;
+var diagramType = {ER:false,UML:false};
 
 /** 
  * @description Alert message appears before closing down or refreshing the dugga viewer page window.
@@ -74,7 +75,8 @@ function returnedDugga(data)
 {
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
-        document.getElementById("assigment-instructions").innerHTML = param.instructions;
+        document.getElementById("assigment-instructions").innerHTML = param.instructions;        
+        diagramType =  param.diagram_types;
     }
 
     if (data.files[inParams["moment"]] && Object.keys(data.files[inParams["moment"]]).length != 0) {

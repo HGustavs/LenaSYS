@@ -181,6 +181,10 @@ session_start();
                       They're fetched and parsed in returnedFile() in duggaed.js -->
                         <legend>Add diagram to dugga</legend>
                         <select id="file" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))"></select>
+                        <label for="ER">ER</label>
+                        <input type="checkbox" name="ER" id="ER" value="true" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>
+                        <label for="UML">UML</label>
+                        <input type="checkbox" name="UML" id="UML" value="true" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>
                       </fieldset>
                     </div>
                   </div>
