@@ -666,7 +666,13 @@ function returnedGroups(data) {
 
 //dugga row click functionality
 function duggaRowClick(rowElement){
-  window.location.assign(rowElement.parentNode.querySelector('.internal-link').href); //get link from child and redirect
+  let children = rowElement.parentNode.querySelectorAll("*"); //get all children + grandchildren of parent node.
+  for(let i = 0; i < children.length;i++){
+    if(children[i].href != null){                             //find the one with href
+      window.location.assign(children[i].href);               //go to to the url.
+      return;
+    }
+  }
 }
 
 function returnedSection(data) {
