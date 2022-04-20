@@ -1409,8 +1409,13 @@ function mwheel(event) {
  * @description Event function triggered when any mouse button is pressed down on top of the container.
  * @param {MouseEvent} event Triggered mouse event.
  */
+
+ var mouseButtonDown = false;
+
 function mdown(event)
 {
+    mouseButtonDown = true;
+
         // Mouse pressed over delete button for multiple elements
         if (event.button == 0 && context.length > 1) {
             checkDeleteBtn();
@@ -1642,6 +1647,8 @@ function mouseMode_onMouseUp(event)
 
 function mup(event)
 {
+    mouseButtonDown = false;
+
     targetElement = null;
     deltaX = startX - event.clientX;
     deltaY = startY - event.clientY;
@@ -5301,8 +5308,8 @@ function updatepos(deltaX, deltaY)
 
     // Update svg overlay -- place everyhing to draw OVER elements here
     str = "";
-    str = boxSelect_Draw(str);
-    str = drawSelectionBox(str);
+    if(mouseButtonDown == true) str = boxSelect_Draw(str);
+    if (mouseButtonDown == false) str = drawSelectionBox(str);
     document.getElementById("svgoverlay").innerHTML=str;
 
     // Updates nodes for resizing
