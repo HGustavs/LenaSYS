@@ -145,5 +145,8 @@ if(isset($_SESSION['uid'])){
     </div>
 	</div>
 	<!-- Edit Server Settings END -->
+
+
+
 </body>
 </html>

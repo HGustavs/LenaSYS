@@ -1371,6 +1371,9 @@ div .navButt:hover {
   transition: 0.05s;
   filter: drop-shadow(5px 5px 2px rgba(0,0,0,0.2))
 }
+.navButt:active {
+  transform: translateY(4px);
+}
 
 .navHeading {
   font-size: 2.5em;
@@ -1497,7 +1500,7 @@ div .navButt:hover {
     .navButt img {
         width: 20px;
     }
-
+    
     .access menuButton{
       width: 20px;
     }
@@ -1541,9 +1544,11 @@ div .navButt:hover {
     .box{
         overflow: hidden;
     }
-    .maximizebtn, .minimizebtn, .resetbtn{
-      
+    .maximizebtn, .minimizebtn, .resetbtn, .editbtn{
       vertical-align: middle;
+    }
+    .editbtn{
+      display: none;
     }
     .buttomenu2{
         height: 35px;
@@ -5082,6 +5087,9 @@ only screen and (max-device-width: 800px) {
   #hideElement{
     display: block;
   }
+  .maximizebtn, .minimizebtn, .resetbtn, .copybutton, .editbtn {
+    height: 35px;
+  }
 
   table.navheader td.contribution {
     margin-right: 0px;
@@ -5091,7 +5099,7 @@ only screen and (max-device-width: 800px) {
     -o-transition: margin-right 0.5s, width 0.5s;
   }
 
-
+  
 }
 
 @media only screen and (max-width: 768px),
@@ -7343,7 +7351,7 @@ textarea#mrkdwntxt {
   .previewWindow {
     height: 89%;
   }
-
+  
   .markdown {
     height: 38%;
     width: 97%;
