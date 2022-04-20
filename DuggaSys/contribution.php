@@ -53,6 +53,9 @@ $vers=getOPG('coursevers');
 
 	<div class='group3' id='contribTsTable' style='margin-left: 12px; width:50%; white-space: nowrap;'></div>
 
+	
+	<div id='commitDiv' style='background-color: yellow; margin-left: 12px; width:100px; height: 100px; white-space: nowrap; display:none;'></div>
+
 	<!-- content END -->
 
 	<?php

@@ -1229,7 +1229,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
            for (j = 0; j < obj.commits.length; j++) {
              var message = obj.commits[j].message;
              var hash = obj.commits[j].cid;
-             str += `<span><a onclick='keepContribContentOpen(event)' 
+             str += `<span><a class="link"onmouseover="hover(this)" onclick='keepContribContentOpen(event)' 
              target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}'>${message}</a></span>`;
            }
            str += "</div>";
@@ -1699,17 +1699,8 @@ function resetForceLogin()
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+function hover(){
+  document.getElementById('commitDiv').style.display="block";
+}
 
 console.error
