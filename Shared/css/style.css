@@ -4798,12 +4798,10 @@ rect[class*="activitymarker"]:hover {
   white-space: nowrap;
 }
 
-@media only screen and (min-width: 439px),
-only screen and (min-device-width: 439px) {
-#CoutseOrgSys{
+@media screen and (max-width: 439px){
+#CourseOrgSys{
   display: none;
 }
-
 }
 
 .ellipsis {
