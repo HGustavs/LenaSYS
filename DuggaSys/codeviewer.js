@@ -3577,7 +3577,7 @@ function resetBoxes()
 		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
 		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
 
-		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		
         thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
