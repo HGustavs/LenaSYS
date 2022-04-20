@@ -11,10 +11,7 @@ require 'query.php';
 //Gets the parameter from the URL. If the parameter is not availble then return UNK
 $course = getOPG("c");
 $assignment = getOPG("a");
-//Before
-// $submission = getOPG("s");
-//After
-$submission = getOPG("a");
+$submission = getOPG("s");
 
 // Connect to database and start session
 pdoConnect();
@@ -119,7 +116,7 @@ function GetCourse($course){
 		$vers = $row['vers'];
 	}
 	if(isset($cid)&&isset($vers)){
-		header("Location: /DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}&embed");
+		header("Location: ../DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}&embed");
 		exit();			
 	}else{
 		header("Location: ../errorpages/404.php");
@@ -217,7 +214,7 @@ function CourseAndAssignment($course, $assignment) {
 	// }
 
 	if(isset($cid)&&isset($vers)&&isset($did)&&isset($moment)){		
-    header("Location: /DuggaSys/showDugga.php?courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&embed");
+    header("Location: ../DuggaSys/showDugga.php?courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&embed");
 		exit();	
 	}else{
 		header("Location: ../errorpages/404.php");
