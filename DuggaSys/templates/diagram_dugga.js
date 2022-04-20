@@ -21,9 +21,7 @@ function beforeUnloadingPage()
 function setup()
 {
     diagramWindow = document.getElementById("diagram-iframe");
-    inParams = parseGet();   
-    console.log(inParams);
-    diagramType =  inParams.diagram_types;
+    inParams = parseGet();
     AJAXService("GETPARAM", { }, "PDUGGA");
     document.getElementById("saveDuggaButton").onclick = function (){ uploadFile();};
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
@@ -75,9 +73,11 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
+    console.log(data);
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
-        document.getElementById("assigment-instructions").innerHTML = param.instructions;     
+        document.getElementById("assigment-instructions").innerHTML = param.instructions;
+        diagramType = param.diagram_types;
     }
 
     if (data.files[inParams["moment"]] && Object.keys(data.files[inParams["moment"]]).length != 0) {
