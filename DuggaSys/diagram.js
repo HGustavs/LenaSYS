@@ -1161,7 +1161,8 @@ function getData()
 }
 
 function showDiagramTypes(){
-    if(!!diagramType.ER && !!diagramType.UML){
+    console.log(diagramType);
+    /*if(!!diagramType.ER && !!diagramType.UML){
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
     }
     else if(!diagramType.ER && !!diagramType.UML){
@@ -1174,7 +1175,7 @@ function showDiagramTypes(){
     }
     else{
         alert("NONE");
-    }
+    }*/
 }
 
 /**
