@@ -883,6 +883,7 @@ var dblPreviousTime = new Date().getTime(); ; // Used when determining if an ele
 var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Doubleclick was performed.
 var wasDblClicked = false;
 var targetDelta;
+var mousePressed;
 
 // Zoom variables
 var lastZoomfact = 1.0;
@@ -892,7 +893,7 @@ var scrolly = 100;
 var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
 var camera = new Point(0, 0); // Relative to coordinate system origo
 var lastZoomPos = new Point(0, 0); //placeholder for the previous zoom position relative to the screen (Screen position for previous zoom)
-var lastMousePosCoords = new Point(0, 0); //placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom) 
+var lastMousePosCoords = new Point(0, 0); //placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom)
 
 var zoomAllowed = true; // Boolean value to slow down zoom on touchpad.
 
@@ -1548,6 +1549,7 @@ function ddown(event)
             if(event.button == 2) return;
             var element = data[findIndex(data, event.currentTarget.id)];
             if (element != null){
+                pointerState = pointerStates.CLICKED_ELEMENT;
                 updateSelection(element);
             }
             break;
@@ -3253,14 +3255,18 @@ function toggleEntityLocked()
 function toggleGrid()
 {
     var grid = document.getElementById("svggrid");
+    var gridButton = document.getElementById("gridToggle");
 
     // Toggle active class on button
     document.getElementById("gridToggle").classList.toggle("active");
 
+    // Toggle active grid + color change of button to clarify if button is pressed or not
     if (grid.style.display == "block") {
         grid.style.display = "none";
+        gridButton.style.backgroundColor ="#614875";
      } else {
         grid.style.display = "block";
+        gridButton.style.backgroundColor ="#362049";
    }
 }
 
@@ -3408,8 +3414,14 @@ function toggleA4Template()
 
     if (template.style.display == "block") {
         template.style.display = "none";
+        document.getElementById("a4VerticalButton").style.display = "none";
+        document.getElementById("a4HorizontalButton").style.display = "none";
+        document.getElementById("a4TemplateToggle").style.backgroundColor = "#614875";
      } else {
         template.style.display = "block";
+        document.getElementById("a4VerticalButton").style.display = "inline-block";
+        document.getElementById("a4HorizontalButton").style.display = "inline-block";
+        document.getElementById("a4TemplateToggle").style.backgroundColor = "#362049";
    }
    generateContextProperties();
 }
@@ -3448,6 +3460,16 @@ function toggleSnapToGrid()
 
     // Toggle the boolean
     settings.grid.snapToGrid = !settings.grid.snapToGrid;
+
+    // Color change of button to clarify if button is pressed or not
+    if(settings.grid.snapToGrid)
+    {
+        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#362049";
+    }
+    else
+    {
+        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#614875";
+    }
 }
 
 /**
@@ -3456,14 +3478,19 @@ function toggleSnapToGrid()
 function toggleRuler()
 {
     var ruler = document.getElementById("rulerOverlay");
+    var rulerToggleButton = document.getElementById("rulerToggle");
   
     // Toggle active class on button
     document.getElementById("rulerToggle").classList.toggle("active");
 
+    // Toggle active ruler + color change of button to clarify if button is pressed or not
     if(settings.ruler.isRulerActive){
         ruler.style.display = "none";
+        rulerToggleButton.style.backgroundColor = "#614875";
     } else {
         ruler.style.display = "block";
+        rulerToggleButton.style.backgroundColor = "#362049";
+
     }
   
     settings.ruler.isRulerActive = !settings.ruler.isRulerActive;
@@ -3480,6 +3507,82 @@ function setElementPlacementType(type = elementTypes.EREntity)
     elementTypeSelected = type;
 }
 
+function holdPlacementButtonDown(num){
+    mousePressed=true;
+    if(document.getElementById("togglePlacementTypeBox"+num).classList.contains("activeTogglePlacementTypeBox")){
+        mousePressed=false;
+        togglePlacementTypeBox(num);
+    }
+    setTimeout(() => {
+        if(!!mousePressed){
+            togglePlacementTypeBox(num);
+        }
+    }, 500);
+}
+/**
+ * @description resets the mousepress.
+ */
+function holdPlacementButtonUp(){
+    mousePressed=false;
+}
+/**
+ * @description toggles the box containing different types of placement entitys.
+ * @param {Number} num the number connected to the element selected.
+ */
+function togglePlacementTypeBox(num){
+    if(!document.getElementById("togglePlacementTypeButton"+num).classList.contains("activeTogglePlacementTypeButton")){ 
+        for (let index = 0; index < document.getElementsByClassName("togglePlacementTypeButton").length; index++) {
+            if(document.getElementsByClassName("togglePlacementTypeButton")[index].classList.contains("activeTogglePlacementTypeButton")) {
+                document.getElementsByClassName("togglePlacementTypeButton")[index].classList.remove("activeTogglePlacementTypeButton");
+            }
+            if(document.getElementsByClassName("togglePlacementTypeBox")[index].classList.contains("activeTogglePlacementTypeBox")) {
+                document.getElementsByClassName("togglePlacementTypeBox")[index].classList.remove("activeTogglePlacementTypeBox");
+            }
+        }       
+        document.getElementById("togglePlacementTypeButton"+num).classList.add("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox"+num).classList.add("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement"+num).children.item(1).classList.remove("toolTipText");
+        document.getElementById("elementPlacement"+num).children.item(1).classList.add("hiddenToolTiptext");
+    }
+    else{
+        document.getElementById("elementPlacement"+num).children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement"+num).children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton"+num).classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox"+num).classList.remove("activeTogglePlacementTypeBox");
+    }
+}
+/**
+ * @description toggles which entity placement type is selected for the different types of diagrams.
+ * @param {Number} num the number connected to the element selected.
+ * @param {Number} type the type of element selected.
+ */
+function togglePlacementType(num,type){
+    if(type==0){
+        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement0").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement0").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton0").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox0").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement4").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement4").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton4").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox4").classList.remove("activeTogglePlacementTypeBox");
+    }
+    else if(type==1){
+        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement1").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement1").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton1").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox1").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement5").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement5").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton5").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");
+    }
+    document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
+}
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.
@@ -3489,9 +3592,26 @@ function zoomin(scrollEvent = undefined)
 {
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent){
-        // Origo set to center of screen in pixels
-        zoomOrigo.x = window.innerWidth / 2;
-        zoomOrigo.y = window.innerHeight / 2;
+        if (zoomfact < 4) {
+            var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
+                
+            var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+                x: midScreen.x - zoomOrigo.x,
+                y: midScreen.y - zoomOrigo.y
+            }
+
+            //Update scroll x/y to center screen on new zoomOrigo
+            scrollx = scrollx / zoomfact;
+            scrolly = scrolly / zoomfact;
+            scrollx += delta.x * zoomfact;
+            scrolly += delta.y * zoomfact;
+            scrollx = scrollx * zoomfact;
+            scrolly = scrolly * zoomfact;
+
+            zoomOrigo.x = midScreen.x;
+            zoomOrigo.y = midScreen.y;
+        }
+
     }else if (zoomfact < 4.0){ // ELSE zoom towards mouseCoordinates
        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
@@ -3505,8 +3625,8 @@ function zoomin(scrollEvent = undefined)
            //Update scroll variables with delta in order to move the screen to the new zoom position
            scrollx = scrollx / zoomfact;
            scrolly = scrolly / zoomfact;
-           scrollx += delta.x;
-           scrolly += delta.y;
+           scrollx += delta.x * zoomfact;
+           scrolly += delta.y * zoomfact;
            scrollx = scrollx * zoomfact;
            scrolly = scrolly * zoomfact;
 
@@ -3544,8 +3664,6 @@ function zoomin(scrollEvent = undefined)
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
 
-    //Note: scroll variables (scrollx, scrolly) does not scale properly sometimes, not sure what causes it. zoomout() has the same problem.
-
     updateGridSize();
     updateA4Size();
     showdata();
@@ -3562,9 +3680,25 @@ function zoomout(scrollEvent = undefined)
 {
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent){
-        // Origin set to center of screen in pixels
-        zoomOrigo.x = window.innerWidth / 2;
-        zoomOrigo.y = window.innerHeight / 2;
+        if (zoomfact > 0.25) {
+            var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
+                
+            var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+                x: midScreen.x - zoomOrigo.x,
+                y: midScreen.y - zoomOrigo.y
+            }
+  
+            //Update scroll x/y to center screen on new zoomOrigo
+            scrollx = scrollx / zoomfact;
+            scrolly = scrolly / zoomfact;
+            scrollx += delta.x * zoomfact;
+            scrolly += delta.y * zoomfact;
+            scrollx = scrollx * zoomfact;
+            scrolly = scrolly * zoomfact;
+
+            zoomOrigo.x = midScreen.x;
+            zoomOrigo.y = midScreen.y;
+        }
     }else if (zoomfact > 0.25) { // ELSE zoom towards mouseCoordinates
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
@@ -3578,12 +3712,12 @@ function zoomout(scrollEvent = undefined)
             //Update scroll variables with delta in order to move the screen to the new zoom position
             scrollx = scrollx / zoomfact;
             scrolly = scrolly / zoomfact;
-            scrollx += delta.x;
-            scrolly += delta.y;
+            scrollx += delta.x * zoomfact;
+            scrolly += delta.y * zoomfact;
             scrollx = scrollx * zoomfact;
             scrolly = scrolly * zoomfact;
             
-            //Set new zoomOrigo to the current mouse coordinates
+            //Set new zoomOrigo to the current mouse coordinatest
             zoomOrigo.x = mouseCoordinates.x;
             zoomOrigo.y = mouseCoordinates.y;
             lastMousePosCoords = mouseCoordinates;
@@ -3614,8 +3748,6 @@ function zoomout(scrollEvent = undefined)
 
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
-
-    //Note: scroll variables (scrollx, scrolly) does not scale properly sometimes, not sure what causes it. zoomin() has the same problem.
 
     updateGridSize();
     updateA4Size();
@@ -3692,20 +3824,20 @@ function propFieldSelected(isSelected)
 
 /**
  * @description Generates fields for all properties of the currently selected element/line in the context. These fields can be used to modify the selected element/line.
- */
+ */ 
 function generateContextProperties()
 {
 
     var propSet = document.getElementById("propertyFieldset");
     var str = "<legend>Properties</legend>";
-    
+/*     
     //a4 propteries
     if (document.getElementById("a4Template").style.display === "block") {
         str += `<text>Change the size of the A4</text>`;
         str += `<input type="range" onchange="setA4SizeFactor(event)" min="100" max="200" value ="${settings.grid.a4SizeFactor*100}" id="slider">`;
         str += `<br><button onclick="toggleA4Vertical()">Vertical</button>`;
         str += `<button onclick="toggleA4Horizontal()">Horizontal</button>`;
-    }
+    } */
 
     //more than one element selected
 
@@ -5371,12 +5503,26 @@ function drawSelectionBox(str)
         deleteBtnY = lowY - 5;
 
         //Delete button visual representation
-        str += `<rect width='${deleteBtnSize}' height='${deleteBtnSize}' x='${deleteBtnX}' y='${deleteBtnY}'; style='fill:transparent;stroke-width:2;stroke:rgb(0,0,0)'/>`;
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
     }
 
-    return str;
+    if(context.length > 1 || contextLine.length > 0 && context.length > 0){
+        var tempX1 = 0;
+        var tempX2 = 0;
+        var tempY1 = 0;
+        var tempY2 = 0;
+
+        for(var i = 0; i < context.length; i++){
+            tempX1 = context[i].x1;
+            tempX2 = context[i].x2;
+            tempY1 = context[i].y1;
+            tempY2 = context[i].y2;
+            str += `<rect width='${tempX2 - tempX1 + 4}' height='${tempY2 - tempY1 + 4}' x= '${tempX1 - 2}' y='${tempY1 - 2}'; style="fill:transparent;stroke-width:2; stroke:rgb(75,75,75); stroke-dasharray:5 5;" />`;
+        }
+    }
+
+    return str; 
 }
 /**
  * @description Translate all elements to the correct coordinate
@@ -5444,9 +5590,6 @@ function updateCSSForAllElements()
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
 
-            // Opacity on selected elements
-            var grandChild = elementDiv.children[0].children[0];
-            grandChild.style.opacity = inContext ? `${0.3}` : `${1.0}`;
         }
     }
 

@@ -197,7 +197,7 @@ $js = array(
                         
                         <div class="fileUploadInfo">
                             <h1>Allowed Files</h1>
-                            <p>PDF, HTML, PHP, MD, TXT, JS, JPG, PNG</p>
+                            <p>PDF, HTML, PHP, MD, TXT, JS, JPG, PNG, JSON</p>
                         </div>
                     </div>
                     

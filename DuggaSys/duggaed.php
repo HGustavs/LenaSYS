@@ -162,7 +162,7 @@ session_start();
                           <option value="pdf">PDF</option>
                           <option value="html">HTML</option>
                         </select>
-                        <input id="filelink" type="text" name="filelink" style="flex:2;margin-left:5px;" onkeyup="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));">
+                        <input id="filelink" type="text" name="filelink" style="flex:2;margin-left:5px;" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));">
                       </div>
                     </fieldset>
                   </div>
@@ -177,8 +177,10 @@ session_start();
                   <div>
                     <div>
                       <fieldset style="width:90%">
+                      <!-- Currently the diagrams aren't doing anything, they're just listed.
+                      They're fetched and parsed in returnedFile() in duggaed.js -->
                         <legend>Add diagram to dugga</legend>
-                        <select id="file" style="flex:1"></select>
+                        <select id="file" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))"></select>
                       </fieldset>
                     </div>
                   </div>
