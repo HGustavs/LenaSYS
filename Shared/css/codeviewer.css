@@ -341,7 +341,7 @@
 
 .normtextwrapper{
     /* Width of codeborder */
-    position: absolute;
+    position: static;
     top: 0px;
     margin-left: 32px;
     padding: 0px 0px 0px 0px;
