@@ -1604,4 +1604,112 @@ function hideTooltip() {
     }
 }
 
+function forceUserLogin()
+{
+      /* 
+      make sure the loginBox is generated before you run this function as 
+      it queries for elements that exist in the loginbox and changes their properties
+      */
+      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
+			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
+
+
+
+
+      let loginBoxheader_login_username_field = document.querySelector("#username");
+      loginBoxheader_login_username_field.setAttribute("Placeholder","Github username");
+
+      let loginBoxheader_login_password_field = document.querySelector("#password");
+      loginBoxheader_login_password_field.style.visibility = "hidden";
+
+      let loginBoxButton = document.querySelector(".buttonLoginBox");
+      loginBoxButton.setAttribute("onClick", "showNewGitLogin()");
+
+
+			// prepare replacement of onclick
+			loginBoxheader_login_close.removeAttribute("onClick"); // remove auto generated 
+			loginBoxheader_forgot_close.removeAttribute("onClick"); // remove auto generated
+			
+			/*
+      replace with a history back, this makes sure you dont get a blank page if you dont want to enter a password
+      and instead press the button to close down the loginBox
+      */
+			loginBoxheader_login_close.setAttribute("onClick", "history.back();"); 
+			loginBoxheader_forgot_close.setAttribute("onClick", "history.back();"); 
+
+
+      // ----
+      let FP = document.querySelector("#newpassword .forgotPw");
+      FP.setAttribute("onClick", "toggleloginnewpass(); resetForceLogin();");
+
+      // After the loginbox has been prepared/modified we display it to the user
+      showLoginPopup();
+      
+
+}
+
+function showNewGitLogin()
+{
+      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
+			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
+      let loginBox = document.querySelector("#password");
+      let loginBoxParent = loginBox.closest("tr");
+
+
+      let loginBoxheader_login_username_field = document.querySelector("#username");
+      let loginBoxheader_login_password_field = document.querySelector("#password");
+      let loginBoxButton = document.querySelector(".buttonLoginBox");
+
+      loginBoxheader_login_password_field.style.visibility = "";
+
+
+      // create another loginbox and create a new id
+      let originalId = loginBox.getAttribute("id");
+      loginBox.setAttribute("id", originalId+1);
+      loginBoxParent.outerHTML += loginBoxParent.innerHTML;
+      loginBox = document.querySelector("#"+originalId+1);
+      loginBox.setAttribute("id", originalId);
+
+
+      let login_first = document.querySelector("#"+originalId);
+      let login_second = document.querySelector("#"+originalId+1);
+
+      login_first.setAttribute("placeholder", "Create new password");
+      login_second.setAttribute("placeholder","Repeat new password");
+
+      loginBoxButton.setAttribute("onClick", "");
+      loginBoxButton.setAttribute("Value", "Create");
+
+     
+      
+
+
+
+}
+
+function resetForceLogin()
+{
+  let originalId = ("password");
+  let login_second = document.querySelector("#"+originalId+1);
+  if(login_second != null)
+    login_second.remove();
+  let loginBoxButton = document.querySelector(".buttonLoginBox");
+  loginBoxButton.setAttribute("Value", "Login");
+  forceUserLogin();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 console.error
