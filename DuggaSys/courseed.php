@@ -78,12 +78,12 @@ if(isset($_SESSION['uid'])){
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
-					<input oninput="elementIsValid(this);" class='textinput validate' type='text' id='ncoursename' name='coursename' placeholder='Course Name' />
+					<input oninput="elementIsValid(this);" onkeyup="elementIsValid(this);" class='textinput validate' type='text' id='ncoursename' name='coursename' placeholder='Course Name' />
 				</div>
 				<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
-					<input oninput="elementIsValid(this);" class='textinput validate' type='text' id='ncoursecode' name='coursecode' placeholder='Course Code' />
+					<input oninput="elementIsValid(this);" onkeyup="elementIsValid(this);" class='textinput validate' type='text' id='ncoursecode' name='coursecode' placeholder='Course Code' />
 				</div>
 				<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
     		</div>
@@ -105,12 +105,12 @@ if(isset($_SESSION['uid'])){
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
-					<input oninput="elementIsValid(this);" class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
+					<input oninput="elementIsValid(this);" onkeyup="elementIsValid(this);" class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
 				</div>
 				<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
-					<input oninput="elementIsValid(this);" class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
+					<input oninput="elementIsValid(this);" onkeyup="elementIsValid(this);" class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
 				</div>
 				<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
     			<div class='inputwrapper'>
@@ -119,7 +119,7 @@ if(isset($_SESSION['uid'])){
 				</div>
     		</div>
     		<div style='padding:5px;'>
-    			<input class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
+    			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
     		</div>
       </div>
 	</div>

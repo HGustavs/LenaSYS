@@ -2585,17 +2585,20 @@ function validateDate2(ddate, dialogid) {
 function validateSectName(name){
   var emotd = document.getElementById(name);
   var tooltipTxt = document.getElementById("dialog10");
+  const saveButton = document.getElementById("saveBtn");
   tooltipTxt.style.left = 50 + "px";
   tooltipTxt.style.top = -50 + "px";
   emotd.style.borderWidth = "2px";
   // Valid string
   if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
     emotd.style.borderColor = "#383";
+    saveButton.disabled = false;
     $('#dialog10').fadeOut();
     window.bool10 = true;
   } else { // Invalid string
     emotd.style.borderColor = "#E54";
     window.bool10 = false;
+    saveButton.disabled = true;
     $('#dialog10').fadeIn();
   }
 }
