@@ -481,7 +481,7 @@ function createJSONString(formData) {
 		"type":formData[0].value,
 		"filelink":formData[1].value,
 		"diagram File":$("#file option:selected").text(),
-		"diagram type":diagram_types,
+		"diagram_type":diagram_types,
 		"extraparam":$('#extraparam').val(),
 		"submissions":submission_types
 	});

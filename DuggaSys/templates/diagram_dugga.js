@@ -73,11 +73,11 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-    console.log(data);
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
         document.getElementById("assigment-instructions").innerHTML = param.instructions;
-        diagramType = param.diagram_types;
+        diagramType.ER = param.ER;
+        diagramType.UML = param.UML;
     }
 
     if (data.files[inParams["moment"]] && Object.keys(data.files[inParams["moment"]]).length != 0) {
