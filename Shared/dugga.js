@@ -1411,7 +1411,14 @@ function processResetPasswordCheckUsername() {
 				toggleloginnewpass();
 			}else if(result['getname'] == "limit"){
         displayAlertText("#newpassword #message2", "You have exceeded the maximum <br /> amount of tries within 5 min");
-      }else{
+      }
+	 	else if(result['getname'] == "pending"){
+			displayAlertText("#newpassword #message2", "Not yet confirmed");
+		 }
+		 else if(result['getname'] == "revoked"){
+			displayAlertText("#newpassword #message2", "Permission revoked");
+		 } else{
+
 				if(typeof result.reason != "undefined") {
           displayAlertText("#newpassword #message2", result.reason);
 				} else {
@@ -1441,7 +1448,15 @@ function processResetPasswordCheckSecurityAnswer() {
         toggleloginnewpass();
       }else if(result['requestchange'] == "limit"){
         displayAlertText("#showsecurityquestion #message3", "You have exceeded the maximum <br /> amount of tries within 5 min");
-      }else if(result['requestchange'] == "wrong"){
+
+      }else if(result['requestchange'] == "pending"){
+		displayAlertText("#showsecurityquestion #message3",  "Not yet confirmed");
+	  }
+	  else if(result['requestchange'] == "revoked"){
+		displayAlertText("#showsecurityquestion #message3",  "Permission revoked");
+	  }
+
+	  else if(result['requestchange'] == "wrong"){
         displayAlertText("#showsecurityquestion #message3", "Wrong answer");
       }else{
         $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
@@ -2506,4 +2521,9 @@ var ClickCounter = {
 
 		}
 	}
+}
+
+//if changes has been done a promt is made to ask user if they want to discard them.
+function addAlertOnUnload(){
+	window.onbeforeunload = function() {return "Changes will be discarded by leaving page.";}
 }

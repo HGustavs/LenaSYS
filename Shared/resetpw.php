@@ -35,20 +35,33 @@ if($opt=="GETQUESTION"){
   
   // Retriving uid from database is used for logging 
 			// Gets uid based on username
-			$query = $pdo->prepare( "SELECT uid FROM user WHERE username = :username");
+			$query = $pdo->prepare( "SELECT uid, requestedpasswordchange FROM user WHERE username = :username");
 			$query->bindParam(':username', $username);
 			$query-> execute();
 
 			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
 			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 				$userid = $row['uid'];
+        $RPC = $row['requestedpasswordchange'];
   }
 
 	// Default values
 	$res = array("getname" => "failed");
 	$res = array("securityquestion" => "undefined");
   if($queryResult < $maxRequestTries){
-    if(getQuestion($username)){
+    
+      if($RPC == 101) // 101 for git user pending accept
+      {
+        $res["getname"] = "pending";
+      }
+      else if($RPC == 102)
+      {
+        $res["getname"] = "revoked";
+      }
+      
+    
+
+    else if(getQuestion($username)){
 		$res["getname"] = "success";
 		$res["username"] = $username;
 		$res["securityquestion"] = $_SESSION["securityquestion"];
@@ -73,7 +86,7 @@ if($opt=="GETQUESTION"){
   $IP = getIP();
   $timeInterval = 5; // in minutes
 
-  $query = $GLOBALS['log_db']->prepare("SELECT COUNT(*) FROM userLogEntries
+  $query = $GLOBALS['log_db']->prepare("SELECT COUNT(*), requestedpasswordchange FROM userLogEntries
     WHERE eventType = 13
     AND uid = :user
     AND remoteAddress = :IP
@@ -88,6 +101,8 @@ if($opt=="GETQUESTION"){
   } else {
     $result = $query->fetch(PDO::FETCH_ASSOC);
     $queryResult = $result['COUNT(*)'];
+    $RPC = $row['requestedpasswordchange'];
+
   }
   
   
@@ -96,7 +111,21 @@ if($opt=="GETQUESTION"){
   
 	$res = array("requestchange" => "failed");
   if($queryResult < $maxQuestionTries){
-    if(checkAnswer($username, $securityquestionanswer)){
+
+    // TODO add git block
+
+    if($RPC == 101) // 101 for git user pending accept
+    {
+      $res["getname"] = "pending";
+    }
+    else if($RPC == 102)
+    {
+      $res["getname"] = "revoked";
+    }
+
+
+
+    else if(checkAnswer($username, $securityquestionanswer)){
       $res["username"] = $username;
       if(requestChange($username)){
         $res["requestchange"] = "success";

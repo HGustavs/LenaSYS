@@ -11,7 +11,10 @@ require 'query.php';
 //Gets the parameter from the URL. If the parameter is not availble then return UNK
 $course = getOPG("c");
 $assignment = getOPG("a");
-$submission = getOPG("s");
+//Before
+// $submission = getOPG("s");
+//After
+$submission = getOPG("a");
 
 // Connect to database and start session
 pdoConnect();
@@ -37,6 +40,12 @@ function GetAssignment ($hash){
 	$query = $pdo->prepare($sql);
 	$query->bindParam(":hash", $hash,PDO::PARAM_STR);
 	$query->execute();
+
+	// Database update form
+	$sql_1 = "UPDATE userAnswer SET last_Time_techer_visited=SYSDATE() where hash=:hash;";
+	$query_1 = $pdo->prepare($sql_1);
+	$query_1->bindParam(":hash", $hash,PDO::PARAM_STR);
+	$query_1->execute();
 	
 	// There should only be one match to the hash value in database as the hash is unique
 	foreach ($query->fetchAll() as $row){

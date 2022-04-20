@@ -127,10 +127,10 @@
 			
 			echo "<script src='templates/".$duggafile.".js'></script>";
 			echo "</head>";
-			echo "<body onload='setup();'>";
+			echo "<body onload='setup();addAlertOnUnload();'>"; //add an alert when leaving page with changes.
 		}else{
 			echo "</head>";
-			echo "<body>";
+			echo "<body onload='addAlertOnUnload();'>"; //add an alert when leaving page with changes.
 		}
 ?>
 <script type="text/javascript">

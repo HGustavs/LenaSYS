@@ -181,6 +181,9 @@ CREATE TABLE userAnswer (
 	FOREIGN KEY (variant) REFERENCES variant(vid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
+/* Associated with issue #11113 */
+ALTER TABLE userAnswer ADD COLUMN last_Time_techer_visited TIMESTAMP NULL DEFAULT NULL;
+
 /**
  * Removes entries from groupdugga when entries from useranswer are removed.
  */
