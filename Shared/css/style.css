@@ -1343,6 +1343,10 @@ header td {
   margin:auto 10px auto 0;
 }
 
+#toggleIcon {
+  transform: scale(2.7);
+  margin-top: 8px;
+}
 .burgerButt {
   float:left;
   margin-left: 10px;
