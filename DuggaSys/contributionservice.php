@@ -36,6 +36,16 @@ $allcommitranks=array();
 
 $draught=false;
 
+//Get all databases separated by course and year
+
+$directoriesYear = glob('/contributionDBs/*.*', GLOB_ONLYDIR);
+//echo '<script>console.log("Welcome to GeeksforGeeks!"); </script>';
+
+//print_r($directoriesYear);
+//var_dump($directoriesYear);
+
+
+
 if (!checklogin()) die;
 if(strcmp($opt,"get")==0) {
 	if(checklogin() && isSuperUser($_SESSION['uid'])) {
