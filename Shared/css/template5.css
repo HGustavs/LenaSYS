@@ -4,64 +4,40 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    height: -webkit-calc(50.0%);
-    height: -moz-calc(50.0%);
-    height: calc(50.0%);
-    width: -webkit-calc(50.0%);
-    width: -moz-calc(50.0%); 
-    width: calc(50.0%); 
-	max-width: 90%;
-	min-width: 10%;
-	max-height: 90%;
-	min-height: 10%;
+	grid-column: a;
+	grid-row: a/c;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 #box2wrapper {
     position: absolute;
     top: 0px;
     right: 0px;
-    height: -webkit-calc(50.0%);
-    height: -moz-calc(50.0%);
-    height: calc(50.0%);
-    width: -webkit-calc(50.0%);
-    width: -moz-calc(50.0%); 
-    width: calc(50.0%);
-	max-width: 90%;
-	min-width: 10%;
-	max-height: 90%;
-	min-height: 10%;
+	grid-column: b;
+	grid-row: b/d;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 #box3wrapper {
     position: absolute;
     bottom: 0px;
     left: 0px;
-    height: -webkit-calc(50.0%);
-    height: -moz-calc(50.0%);
-    height: calc(50.0%);
-    width: -webkit-calc(50.0%);
-    width: -moz-calc(50.0%); 
-    width: calc(50.0%);
-	max-width: 90%;
-	min-width: 10%;
-	max-height: 90%;
-	min-height: 10%;
+	grid-column: e;
+	grid-row: e/g;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 #box4wrapper {
     position: absolute;
     right: 0px;
     bottom: 0px;
-    height: -webkit-calc(50.0%);
-    height: -moz-calc(50.0%);
-    height: calc(50.0%);
-    width: -webkit-calc(50.0%);
-    width: -moz-calc(50.0%); 
-    width: calc(50.0%);
-	max-width: 90%;
-	min-width: 10%;
-	max-height: 90%;
-	min-height: 10%;
+	grid-column: f;
+	grid-row: f/h;
+    min-width: 100%;
+    min-height: 100%;
 }
 @media only screen and (max-width: 800px) {
     #box1wrapper{
@@ -69,73 +45,47 @@
     position: absolute;
     left: 0px;
     top:0;    
-    height: -moz-calc(35.0%);
-    height: -webkit-calc(35.0%);
-    height: calc(35.0%);
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
-    min-height: 10%;
-	max-height: 25%;
+	grid-column: a/b;
+	grid-row: a;
     min-width: 100%;
-	max-width: 100%;
+    min-height: 100%;
 }
-
-
 
     #box2wrapper {
      overflow: hidden;
     position: absolute;
-    top: 25%;
+    top: 0px;
     bottom: 0px;
     left: 0px;
-    height: -moz-calc(65.0%);
-    height: -webkit-calc(65.0%);
-    height: calc(65.0%);
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
     font-family: Arial,Sans-Serif;
-    min-height: 10%;
-	max-height: 25%;
+    grid-column: c/d;
+	grid-row: c;
     min-width: 100%;
-	max-width: 100%;
+    min-height: 100%;
 }
     #box3wrapper {
      overflow: hidden;
     position: absolute;
-    top:50%;
-    bottom: 33%;
+    top: 0px;
+    bottom: 0px;
     left: 0px; 
-    height: -moz-calc(65.0%);
-    height: -webkit-calc(65.0%);
-    height: calc(65.0%);
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
     font-family: Arial,Sans-Serif;
-    min-height: 10%;
-	max-height: 25%;
+    grid-column: e/f;
+	grid-row: e;
     min-width: 100%;
-	max-width: 100%;
+    min-height: 100%;
 }
     #box4wrapper {
      overflow: hidden;
     position: absolute;
-    top:75%;
-    bottom: 33%;
+    top: 0px;
+    bottom: 0px;
     left: 0px;       
-    height: -moz-calc(65.0%);
-    height: -webkit-calc(65.0%);
-    height: calc(65.0%);
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
     font-family: Arial,Sans-Serif;
-    min-height: 10%;
-	max-height: 25%;
+    grid-column: g/h;
+	grid-row: g;
     min-width: 100%;
-	max-width: 100%;
+    min-height: 100%;
 }
 
 
