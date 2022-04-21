@@ -1195,7 +1195,7 @@ function createGitHubcontributionTable(data) {
 
 function renderCellForghContibTable(col, celldata, cellid) {
   var str = "";
-  str += "<div id='commitDiv' style='background: #f5e7ff; box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6); border-radius: 5px;margin-left: auto; margin-right: auto; width:300px; height: 100px; white-space: nowrap; display:none; margin-top: -520px; margin-bottom: 450px;'>";
+  str += "<div id='commitDiv' style='position: absolute; background: #f5e7ff; box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6); border-radius: 5px;  width:410px; height: 200px; white-space: nowrap; top: 8px; left:12px; display:none;'>";
   str += "</div>";
   obj = celldata;
   var rowNr = cellid.charAt(1);
@@ -1231,7 +1231,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
            for (j = 0; j < obj.commits.length; j++) {
              var message = obj.commits[j].message;
              var hash = obj.commits[j].cid;
-             str += `<span><a class="commitLink"onmouseover="showCommits(this)" onmouseout="hideCommits(this)" onclick='keepContribContentOpen(event)' 
+             str += `<span><a class="commitLink" onmouseover="showCommits(this)" onmouseout="hideCommits(this)" onclick='keepContribContentOpen(event)' 
              target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}'>${message}</a></span>`;
            }
            str += "</div>";
@@ -1704,7 +1704,7 @@ function resetForceLogin()
 function showCommits(){
   document.getElementById('commitDiv').style.display="block";
 }
-//Shows a div when hover the commit links
+//Hide a div when hover the commit links
  function hideCommits(){
   document.getElementById('commitDiv').style.display="none";
  }
