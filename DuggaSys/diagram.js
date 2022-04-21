@@ -988,8 +988,9 @@ var settings = {
 
 
 // Demo data - read / write from service later on
-var data = [];
-var lines = [];
+var data = []; // List of all elements in diagram
+var lines = []; // List of all lines in diagram
+var errorData = []; // List of all elements with an error in diagram
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
@@ -1056,8 +1057,8 @@ function onSetup()
         { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Ssn_ID, isLocked: false, state: "key"},
         { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Name_ID, isLocked: false },
         { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDependent_ID, isLocked: false, state: "weakKey"},
-        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameProject_ID, isLocked: false, state: "key"},
-        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDEPARTMENT_ID, isLocked: false, state: "key"},
+        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameProject_ID, isLocked: false},
+        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDEPARTMENT_ID, isLocked: false},
         { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Address_ID, isLocked: false },
         { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: AddressDependent_ID, isLocked: false },
         { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Relationship_ID, isLocked: false },
@@ -1093,7 +1094,7 @@ function onSetup()
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "MANY" },
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "ONE"},
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: DEPENDENTS_OF_ID, kind: "Normal", cardinality: "ONE" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "MANY"},
+        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Normal", cardinality: "MANY"},
 
         { id: makeRandomID(), fromID: Name_ID, toID: FNID, kind: "Normal" },
         { id: makeRandomID(), fromID: Name_ID, toID: Initial_ID, kind: "Normal" },
@@ -1106,10 +1107,10 @@ function onSetup()
         { id: makeRandomID(), fromID: DEPENDENT_ID, toID: BdaleDependent_ID, kind: "Normal"},
         { id: makeRandomID(), fromID: DEPENDENT_ID, toID: Relationship_ID, kind: "Normal"},
 
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_ON_ID, kind: "Double", cardinality: "MANY" },
+        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_ON_ID, kind: "Normal", cardinality: "MANY" },
         { id: makeRandomID(), fromID: Hours_ID, toID: WORKS_ON_ID, kind: "Normal"},
 
-        { id: makeRandomID(), fromID: PROJECT_ID, toID: WORKS_ON_ID, kind: "Double", cardinality: "MANY"},
+        { id: makeRandomID(), fromID: PROJECT_ID, toID: WORKS_ON_ID, kind: "Normal", cardinality: "MANY"},
         { id: makeRandomID(), fromID: PROJECT_ID, toID: CONTROLS_ID, kind: "Normal", cardinality: "MANY"},
         { id: makeRandomID(), fromID: NameProject_ID, toID: PROJECT_ID, kind: "Normal"},
         { id: makeRandomID(), fromID: NumberProject_ID, toID: PROJECT_ID, kind: "Normal"},
@@ -1117,14 +1118,14 @@ function onSetup()
         
         { id: makeRandomID(), fromID: MANAGES_ID, toID: Start_date_ID, kind: "Normal"},
         { id: makeRandomID(), fromID: MANAGES_ID, toID: EMPLOYEE_ID, kind: "Normal", cardinality: "ONE"},
-        { id: makeRandomID(), fromID: MANAGES_ID, toID: DEPARTMENT_ID, kind: "Double", cardinality: "ONE"},
+        { id: makeRandomID(), fromID: MANAGES_ID, toID: DEPARTMENT_ID, kind: "Normal", cardinality: "ONE"},
 
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Locations_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: CONTROLS_ID, kind: "Normal", cardinality: "ONE" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NameDEPARTMENT_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NumberDEPARTMENT_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Number_of_employees_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "ONE" },
+        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: WORKS_FOR_ID, kind: "Normal", cardinality: "ONE" },
     ];
 
     for(var i = 0; i < demoData.length; i++){
@@ -5107,6 +5108,18 @@ function drawElement(element, ghosted = false)
     var xAnchor = tooBig ? margin : hboxw;
     var vAlignment = tooBig ? "left" : "middle";
 
+    var errorActive = true; // Change/use this variable when implementing on/off functionality for error handling
+
+    if (errorActive) {
+        // Checking for errors regarding ER Entities
+        checkElementError(element);
+
+        // Checks if element is involved with an error and outlines them in red
+        for (var i = 0; i < errorData.length; i++) {
+            if (element.id == errorData[i].id) element.stroke = 'red';
+        }
+    }
+
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
     if (element.kind == "UMLEntity") {  
@@ -5310,6 +5323,368 @@ function updatepos(deltaX, deltaY)
     if (context.length === 1 && mouseMode == mouseModes.POINTER && context[0].kind != "ERRelation") addNodes(context[0]);
     
 
+}
+/**
+ * @description Checks for errors and adds the element affected by the errors to a error list.
+ * @param {Object} element Element to be checked for errors.
+ */
+function checkElementError(element) 
+{
+    var line;
+    var fElement;
+    var tElement;
+    var keyQuantity;
+    var lineQuantity;
+
+    // Error checking for ER Entities
+    if (element.kind == "EREntity") {
+        if (element.state == "weak") {
+            keyQuantity = 0;
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+
+                // Checking for wrong line type to a relation
+                if (fElement.id == element.id && tElement.kind == "ERRelation") {
+                    if (line.kind == "Normal") {
+                        errorData.push(fElement);
+                        errorData.push(tElement);
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERRelation") {
+                    if (line.kind == "Normal") {
+                        errorData.push(fElement);
+                        errorData.push(tElement);
+                    }
+                }
+
+                // Checking for wrong key type
+                if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                    if (tElement.state == "key") {
+                        errorData.push(fElement);
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                    if (fElement.state == "key") {
+                        errorData.push(tElement);
+                    }
+                }
+
+                // Counting quantity of keys
+                if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                    if (tElement.state == "weakKey") {
+                        keyQuantity += 1;
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                    if (fElement.state == "weakKey") {
+                        keyQuantity += 1;
+                    }
+                }
+            }
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+
+                // Checks if entity has any lines
+                if (fElement.id == element.id || tElement.id == element.id) {
+                    //Checking for wrong quantity of keys
+                    if (keyQuantity < 1 || keyQuantity > 1) {
+                        errorData.push(element);
+                    }
+                }
+            }
+        }
+        else {
+            keyQuantity = 0;
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+
+                // Checking for wrong line type to a relation
+                if (fElement.id == element.id && tElement.kind == "ERRelation") {
+                    if (line.kind == "Double") {
+                        errorData.push(fElement);
+                        errorData.push(tElement);
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERRelation") {
+                    if (line.kind == "Double") {
+                        errorData.push(fElement);
+                        errorData.push(tElement);
+                    }
+                }
+
+                // Checking for wrong key type
+                if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                    if (tElement.state == "weakKey") {
+                        errorData.push(fElement);
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                    if (fElement.state == "weakKey") {
+                        errorData.push(tElement);
+                    }
+                }
+
+                // Counting quantity of keys
+                if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                    if (tElement.state == "key") {
+                        keyQuantity += 1;
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                    if (fElement.state == "key") {
+                        keyQuantity += 1;
+                    }
+                }
+            }
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+
+                // Checks if entity has any lines
+                if (fElement.id == element.id || tElement.id == element.id) {
+                    //Checking for wrong quantity of keys
+                    if (keyQuantity < 1 || keyQuantity > 1) {
+                        errorData.push(element);
+                    }
+                }
+            }
+        }
+    }
+
+    // Error checking for ER Relations
+    if (element.kind == "ERRelation") {
+        if (element.state == "weak") {
+            lineQuantity = 0;
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+
+                // Checking for wrong line type to a relation
+                if (fElement.id == element.id && tElement.kind == "EREntity" && tElement.state == "weak") {
+                    if (line.kind == "Normal") {
+                        errorData.push(fElement);
+                        errorData.push(tElement);
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "EREntity" && fElement.state == "weak") {
+                    if (line.kind == "Normal") {
+                        errorData.push(fElement);
+                        errorData.push(tElement);
+                    }
+                }
+
+                var line0;
+                var fElement0;
+                var tElement0;
+
+                // Checking for more than one Normal line to a weak relation
+                if (fElement.id == element.id && tElement.kind == "EREntity" && tElement.state != "weak") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != tElement.id) {
+                            errorData.push(fElement);
+                        }
+                        if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != tElement.id) {
+                            errorData.push(fElement);
+                        }
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "EREntity" && fElement.state != "weak") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != fElement.id) {
+                            errorData.push(tElement);
+                        }
+                        if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != fElement.id) {
+                            errorData.push(tElement);
+                        }
+                    }
+                }
+
+                // Counting connected lines
+                if ((tElement.id == element.id && fElement.kind == "EREntity") || (fElement.id == element.id && tElement.kind == "EREntity")) {
+                    lineQuantity += 1;
+                }
+            }
+        }
+        else {
+            lineQuantity = 0;
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+
+                // Checking for wrong line type to a relation
+                if (fElement.id == element.id && tElement.kind == "EREntity") {
+                    if (line.kind == "Double") {
+                        errorData.push(fElement);
+                        errorData.push(tElement);
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "EREntity") {
+                    if (line.kind == "Double") {
+                        errorData.push(fElement);
+                        errorData.push(tElement);
+                    }
+                }
+
+                // Counting connected lines
+                if ((tElement.id == element.id && fElement.kind == "EREntity") || (fElement.id == element.id && tElement.kind == "EREntity")) {
+                    lineQuantity += 1;
+                }
+            }
+        }
+        //Checking for wrong quantity of lines
+        if (lineQuantity == 1 || lineQuantity > 2) {
+            errorData.push(element);
+        }
+    }
+
+    // Error checking for ER Attributes
+    if (element.kind == "ERAttr") {
+        for (var i = 0; i < lines.length; i++) {
+            line = lines[i];
+            fElement = data[findIndex(data, line.fromID)];
+            tElement = data[findIndex(data, line.toID)];
+
+            // Checking for wrong key type
+            if ((tElement.kind == "EREntity" || fElement.kind == "EREntity") && (tElement.state == "weak" || fElement.state == "weak")) {
+                if (fElement.id == element.id && tElement.kind == "EREntity") {
+                    if (fElement.state == "key") {
+                        errorData.push(fElement);
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "EREntity") {
+                    if (tElement.state == "key") {
+                        errorData.push(tElement);
+                    }
+                }
+            }
+            else {
+                if (fElement.id == element.id && tElement.kind == "EREntity") {
+                    if (fElement.state == "weakKey") {
+                        errorData.push(fElement);
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "EREntity") {
+                    if (tElement.state == "weakKey") {
+                        errorData.push(tElement);
+                    }
+                }
+            }
+
+            var line0;
+            var fElement0;
+            var tElement0;
+
+            // Checking for attributes on the same entity
+            if (fElement.id == element.id && tElement.kind == "EREntity") {
+                var currentAttr = fElement;
+                var currentEntity = tElement;
+                for (var j = 0; j < lines.length; j++) {
+                    line0 = lines[j];
+                    fElement0 = data[findIndex(data, line0.fromID)];
+                    tElement0 = data[findIndex(data, line0.toID)];
+
+                    // Checking for attributes on the same entity with same name
+                    if (fElement0.id == currentEntity.id && tElement0.name == currentAttr.name && tElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(tElement0);
+                        errorData.push(currentEntity);
+                    }
+                    if (tElement0.id == currentEntity.id && fElement0.name == currentAttr.name && fElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(fElement0);
+                        errorData.push(currentEntity);
+                    }
+
+                    // Checking for more than one key attributes on the same entity
+                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "key" && tElement0.state == "key") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(tElement0);
+                        errorData.push(currentEntity);
+                    }
+                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "key" && fElement0.state == "key") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(fElement0);
+                        errorData.push(currentEntity);
+                    }
+                }
+            }
+            if (tElement.id == element.id && fElement.kind == "EREntity") {
+                var currentAttr = tElement;
+                var currentEntity = fElement;
+                for (var j = 0; j < lines.length; j++) {
+                    line0 = lines[j];
+                    fElement0 = data[findIndex(data, line0.fromID)];
+                    tElement0 = data[findIndex(data, line0.toID)];
+
+                    // Checking for attributes on the same entity with same name
+                    if (fElement0.id == currentEntity.id && tElement0.name == currentAttr.name && tElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(tElement0);
+                        errorData.push(currentEntity);
+                    }
+                    if (tElement0.id == currentEntity.id && fElement0.name == currentAttr.name && fElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(fElement0);
+                        errorData.push(currentEntity);
+                    }
+
+                    // Checking for more than one key attributes on the same entity
+                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "key" && tElement0.state == "key") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(tElement0);
+                        errorData.push(currentEntity);
+                    }
+                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "key" && fElement0.state == "key") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(fElement0);
+                        errorData.push(currentEntity);
+                    }
+                }
+            }
+        }
+    }
+
+    // Error checking for lines
+    for (var i = 0; i < lines.length; i++) {
+        line = lines[i];
+        fElement = data[findIndex(data, line.fromID)];
+        tElement = data[findIndex(data, line.toID)];
+
+        //Checking for cardinality
+        if ((fElement.kind == "EREntity" && tElement.kind == "ERRelation") || (tElement.kind == "EREntity" && fElement.kind == "ERRelation")) {
+            if (line.cardinality != "ONE" && line.cardinality != "MANY") {
+                errorData.push(fElement);
+                errorData.push(tElement);
+            }
+        }
+    }
+}
+/**
+ * @description Sets every elements stroke to black.
+ * @param {Object} elements List of all elements.
+ */
+function errorReset(elements)
+{
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].stroke = 'black';
+    }
 }
 /**
  * @description Updates the Label position on the line.
@@ -5611,6 +5986,9 @@ function showdata()
 
     var str = "";
     var courses = [];
+    errorData = [];
+
+    errorReset(data);
 
     // Iterate over programs
     for (var i = 0; i < data.length; i++) {
