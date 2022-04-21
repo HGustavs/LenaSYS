@@ -29,60 +29,31 @@
           overflow: hidden;
           position: absolute;
           left: 0px;
-          height: -moz-calc(35.0%);
-          height: -webkit-calc(35.0%);
-          height: calc(35.0%);
-          width: -moz-calc(100.0%) !important;
-          width: -webkit-calc(100.0%) !important;
-          width: calc(100.0%) !important;
-          min-height: 33%;
-          max-height: 33%;
-          min-width: 100%;
-          max-width: 100%;
+          grid-column: a/b;
+          grid-row: c;
       }
-  
-  
-  
+
       #box2wrapper {
           overflow: hidden;
           position: absolute;
-          top: 33%;
+          top: 0px;
           bottom: 0px;
           left: 0px;
-          height: -moz-calc(65.0%);
-          height: -webkit-calc(65.0%);
-          height: calc(65.0%);
-          width: -moz-calc(100.0%) !important;
-          width: -webkit-calc(100.0%) !important;
-          width: calc(100.0%) !important;
           font-family: Arial, Sans-Serif;
-          min-height: 33%;
-          max-height: 33%;
-          min-width: 100%;
-          max-width: 100%;
+          grid-column: c/d;
+          grid-row: a;
       }
   
       #box3wrapper {
           overflow: hidden;
           position: absolute;
-          top: 66%;
-          bottom: 33%;
+          top: 0px;
+          bottom: 0px;
           left: 0px;
-          height: -moz-calc(65.0%);
-          height: -webkit-calc(65.0%);
-          height: calc(65.0%);
-          width: -moz-calc(100.0%) !important;
-          width: -webkit-calc(100.0%) !important;
-          width: calc(100.0%) !important;
           font-family: Arial, Sans-Serif;
-          min-height: 33%;
-          max-height: 33%;
-          min-width: 100%;
-          max-width: 100%;
+          grid-column: e/f;
+          grid-row: e/g;
       }
-  
-  
-  
   
   
   }
