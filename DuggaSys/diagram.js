@@ -1162,20 +1162,37 @@ function getData()
 
 function showDiagramTypes(){
     console.log(diagramType);
-    /*if(!!diagramType.ER && !!diagramType.UML){
+    if(!!diagramType.ER && !!diagramType.UML){
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement0").onmousedown = function() {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement4").onmousedown = function() {
+            holdPlacementButtonDown(4);
+        };
+        document.getElementById("elementPlacement1").onmousedown = function() {
+            holdPlacementButtonDown(1);
+        };
+        document.getElementById("elementPlacement5").onmousedown = function() {
+            holdPlacementButtonDown(5);
+        };
     }
     else if(!diagramType.ER && !!diagramType.UML){
         document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
-        document.getElementById("togglePlacementTypeButton0").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton5").classList.add("hiddenPlacementType");
     }
     else if(!!diagramType.ER && !diagramType.UML){
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
-        document.getElementById("togglePlacementTypeButton4").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton0").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton1").classList.add("hiddenPlacementType");
     }
     else{
         alert("NONE");
-    }*/
+    }
 }
 
 /**

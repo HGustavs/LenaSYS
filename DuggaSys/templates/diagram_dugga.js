@@ -1,6 +1,6 @@
 var lastFile = null;
 var diagramWindow;
-var diagramType = {ER:false,UML:false};
+var diagramType = {ER:true,UML:false};
 
 /** 
  * @description Alert message appears before closing down or refreshing the dugga viewer page window.
