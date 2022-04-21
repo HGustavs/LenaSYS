@@ -1623,7 +1623,7 @@ function forceUserLogin()
       loginBoxheader_login_password_field.style.visibility = "hidden";
 
       let loginBoxButton = document.querySelector(".buttonLoginBox");
-      loginBoxButton.setAttribute("onClick", "checkIfGitUserExists()");
+      loginBoxButton.setAttribute("onClick", "loginGitOrUser_Check()");
 
 
 			// prepare replacement of onclick
@@ -1699,9 +1699,39 @@ function resetForceLogin()
 
 }
 
-function checkIfGitUserExists()
+function checkIfGitUserExists(username) // checks if user exists in the git data
+{
+  // ajax here
+
+  if(username == null || username == "" || !(typeof(username) === 'string'))
+    alert("invalid input of username");
+  else
+  {
+    AJAXService("checkForGitUser",{
+      userid: username,
+    }, "CONTRIBUTION_GIT_USER_CHECK");
+
+  }
+
+}
+
+function returned_git_user_check(data)
+{
+  if(typeof data == "boolean") // check so that the type is correct
+  {
+    console.log(data);
+  }
+  else
+    alert("invalid data returned from service")
+}
+
+
+
+function loginGitOrUser_Check()
 {
   let loginBoxheader_login_username_field = document.querySelector("#username");
+
+
 
   let username = loginBoxheader_login_username_field.value;
   if(username === "") // we do a simple check if the string is empty to not call backend if nothing is entered.
@@ -1710,15 +1740,10 @@ function checkIfGitUserExists()
   } 
   else
   {
-    
-    // TODO ajax
+    if(checkIfGitUserExists(username));
+      return true;
   }
-
-
-
 }
-
-
 
 
 
