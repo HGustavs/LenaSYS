@@ -1623,7 +1623,7 @@ function forceUserLogin()
       loginBoxheader_login_password_field.style.visibility = "hidden";
 
       let loginBoxButton = document.querySelector(".buttonLoginBox");
-      loginBoxButton.setAttribute("onClick", "showNewGitLogin()");
+      loginBoxButton.setAttribute("onClick", "checkIfGitUserExists()");
 
 
 			// prepare replacement of onclick
@@ -1696,6 +1696,25 @@ function resetForceLogin()
   let loginBoxButton = document.querySelector(".buttonLoginBox");
   loginBoxButton.setAttribute("Value", "Login");
   forceUserLogin();
+
+}
+
+function checkIfGitUserExists()
+{
+  let loginBoxheader_login_username_field = document.querySelector("#username");
+
+  let username = loginBoxheader_login_username_field.value;
+  if(username === "") // we do a simple check if the string is empty to not call backend if nothing is entered.
+  {
+    console.log("poggis");
+  } 
+  else
+  {
+    
+    // TODO ajax
+  }
+
+
 
 }
 
