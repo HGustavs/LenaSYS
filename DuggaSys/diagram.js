@@ -5492,11 +5492,11 @@ function drawSelectionBox(str)
             deleteBtnSize = (highX - lowX + 10) / 3;
         }
         
-        if (deleteBtnSize > 30) {
-            deleteBtnSize = 30;
+        if (deleteBtnSize > 20) {
+            deleteBtnSize = 20;
         }
-        else if (deleteBtnSize < 25) {
-            deleteBtnSize = 25;
+        else if (deleteBtnSize < 15) {
+            deleteBtnSize = 15;
         }
 
         deleteBtnX = lowX - 5 + highX - lowX + 10 - (deleteBtnSize/2);
