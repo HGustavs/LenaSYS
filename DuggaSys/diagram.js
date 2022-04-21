@@ -960,8 +960,8 @@ var pointerState = pointerStates.DEFAULT;
 var movingObject = false;
 var movingContainer = false;
 
-//getting the allowed diagram types from the page that the iframe is in
-var diagramType = window.parent.diagramType;
+//setting the base values for the allowed diagramtypes
+var diagramType = {ER:true,UML:false};
 
 //Grid Settings
 var settings = {
@@ -1147,7 +1147,6 @@ function onSetup()
 function getData()
 {
     container = document.getElementById("container");
-    showDiagramTypes();
     onSetup();
     showdata();
     drawRulerBars(scrollx,scrolly);
@@ -1161,7 +1160,6 @@ function getData()
 }
 
 function showDiagramTypes(){
-    console.log(diagramType);
     if(!!diagramType.ER && !!diagramType.UML){
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
@@ -1189,9 +1187,6 @@ function showDiagramTypes(){
         document.getElementById("togglePlacementTypeButton0").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
         document.getElementById("togglePlacementTypeButton1").classList.add("hiddenPlacementType");
-    }
-    else{
-        alert("NONE");
     }
 }
 

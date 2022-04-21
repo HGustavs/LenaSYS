@@ -1,7 +1,5 @@
 var lastFile = null;
 var diagramWindow;
-var diagramType = {ER:true,UML:true};
-
 /** 
  * @description Alert message appears before closing down or refreshing the dugga viewer page window.
 
@@ -73,12 +71,12 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-    console.log(data);
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
         document.getElementById("assigment-instructions").innerHTML = param.instructions;
-        diagramType.ER = param.ER;
-        diagramType.UML = param.UML;
+        // getting the diagram types allowed and calling a function in diagram.js where the values are now set UML functionality
+        document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type[0];
+        document.getElementById("diagram-iframe").contentWindow.showDiagramTypes();
     }
 
     if (data.files[inParams["moment"]] && Object.keys(data.files[inParams["moment"]]).length != 0) {

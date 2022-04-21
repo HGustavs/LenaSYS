@@ -1016,7 +1016,6 @@ function AJAXService(opt,apara,kind)
 			success: returnedanswersDugga
 		});
 	}else if(kind=="DUGGA"){
-		console.log(para);
 		$.ajax({
 			url: "duggaedservice.php",
 			type: "POST",
