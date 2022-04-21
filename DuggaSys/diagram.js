@@ -5308,8 +5308,10 @@ function updatepos(deltaX, deltaY)
 
     // Update svg overlay -- place everyhing to draw OVER elements here
     str = "";
-    if(mouseButtonDown == true) str = boxSelect_Draw(str);
+    str = boxSelect_Draw(str);
+    str = selectionAllIndividualElements(str);
     if (mouseButtonDown == false) str = drawSelectionBox(str);
+    
     document.getElementById("svgoverlay").innerHTML=str;
 
     // Updates nodes for resizing
@@ -5488,7 +5490,7 @@ function drawSelectionBox(str)
             highY = (highY > lineHighY) ? highY : lineHighY;
         }
 
-        // Selection container of selected elements
+        // Outer bigger selection container of selected elements
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
 
         //Determine size and position of delete button
@@ -5514,12 +5516,16 @@ function drawSelectionBox(str)
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
     }
 
+    return str;
+}
+
+function selectionAllIndividualElements(str) {
     if(context.length > 1 || contextLine.length > 0 && context.length > 0){
         var tempX1 = 0;
         var tempX2 = 0;
         var tempY1 = 0;
         var tempY2 = 0;
-
+    
         for(var i = 0; i < context.length; i++){
             tempX1 = context[i].x1;
             tempX2 = context[i].x2;
@@ -5528,9 +5534,10 @@ function drawSelectionBox(str)
             str += `<rect width='${tempX2 - tempX1 + 4}' height='${tempY2 - tempY1 + 4}' x= '${tempX1 - 2}' y='${tempY1 - 2}'; style="fill:transparent;stroke-width:2; stroke:rgb(75,75,75); stroke-dasharray:5 5;" />`;
         }
     }
-
+    
     return str; 
 }
+
 /**
  * @description Translate all elements to the correct coordinate
  */
