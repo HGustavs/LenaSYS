@@ -3,7 +3,7 @@
 #box1wrapper{
 	position: absolute;
 	grid-column: a;
-    grid-row: a/c;
+    grid-row: a/e;
 	top: 0px;
 	left: 0px;
     min-width: 100%;
@@ -13,7 +13,7 @@
 #box2wrapper {
 	position: absolute;
 	grid-column: b;
-    grid-row: b/d;
+    grid-row: b/f;
 	top: 0px;
 	right: 0px;
     min-width: 100%;
@@ -23,7 +23,7 @@
 #box3wrapper {
    	position: absolute;
 	grid-column: e/f;
-	grid-row: e/h;
+	grid-row: g/k;
    	right: 0px;
    	bottom: 0px;
    	left: 0px;
@@ -37,7 +37,7 @@
      overflow: hidden;
     position: absolute;
 	grid-column: a/b;
-	grid-row: c;
+	grid-row: a/c;
     left: 0px;
 	min-width: 100%;
 	min-height: 100%;
@@ -47,7 +47,7 @@
      overflow: hidden;
     position: absolute;
 	grid-column: c/d;
-	grid-row: a;
+	grid-row: e/g;
     top:0px;
     bottom: 0px;
     left: 0px;
@@ -60,7 +60,7 @@
      overflow: hidden;
     position: absolute;
 	grid-column: e/f;
-	grid-row: e/g;
+	grid-row: i/k;
     top:0px;
     bottom: 0px;
     left: 0px;  

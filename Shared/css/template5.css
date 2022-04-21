@@ -5,7 +5,7 @@
     top: 0px;
     left: 0px;
 	grid-column: a;
-	grid-row: a/c;
+	grid-row: a/e;
     min-width: 100%;
     min-height: 100%;
 }
@@ -15,7 +15,7 @@
     top: 0px;
     right: 0px;
 	grid-column: b;
-	grid-row: b/d;
+	grid-row: b/f;
     min-width: 100%;
     min-height: 100%;
 }
@@ -25,7 +25,7 @@
     bottom: 0px;
     left: 0px;
 	grid-column: e;
-	grid-row: e/g;
+	grid-row: g/k;
     min-width: 100%;
     min-height: 100%;
 }
@@ -35,10 +35,12 @@
     right: 0px;
     bottom: 0px;
 	grid-column: f;
-	grid-row: f/h;
+	grid-row: h/l;
     min-width: 100%;
     min-height: 100%;
 }
+
+
 @media only screen and (max-width: 800px) {
     #box1wrapper{
      overflow: hidden;
@@ -46,7 +48,7 @@
     left: 0px;
     top:0;    
 	grid-column: a/b;
-	grid-row: a;
+	grid-row: a/c;
     min-width: 100%;
     min-height: 100%;
 }
@@ -58,11 +60,12 @@
     bottom: 0px;
     left: 0px;
     font-family: Arial,Sans-Serif;
-    grid-column: c/d;
-	grid-row: c;
+    grid-column: e/f;
+	grid-row: e/g;
     min-width: 100%;
     min-height: 100%;
 }
+
     #box3wrapper {
      overflow: hidden;
     position: absolute;
@@ -70,11 +73,12 @@
     bottom: 0px;
     left: 0px; 
     font-family: Arial,Sans-Serif;
-    grid-column: e/f;
-	grid-row: e;
+    grid-column: i/j;
+	grid-row: i;
     min-width: 100%;
     min-height: 100%;
 }
+
     #box4wrapper {
      overflow: hidden;
     position: absolute;
@@ -82,8 +86,8 @@
     bottom: 0px;
     left: 0px;       
     font-family: Arial,Sans-Serif;
-    grid-column: g/h;
-	grid-row: g;
+    grid-column: k/l;
+	grid-row: k;
     min-width: 100%;
     min-height: 100%;
 }

@@ -3,7 +3,7 @@
    #box1wrapper {
     position: absolute;
     grid-column: a;
-    grid-row: a/g;
+    grid-row: a/k;
     min-width: 100%;
     min-height: 100%;
   }
@@ -11,7 +11,7 @@
   #box2wrapper {
     position: absolute;
     grid-column: b;
-    grid-row: b/d;
+    grid-row: b/f;
     min-width: 100%;
     min-height: 100%;
   }
@@ -19,7 +19,7 @@
   #box3wrapper {
     position: absolute;
     grid-column: f;
-    grid-row: f/h;
+    grid-row: h/l;
     min-width: 100%;
     min-height: 100%;  
   }
@@ -30,7 +30,7 @@
           position: absolute;
           left: 0px;
           grid-column: a/b;
-          grid-row: c;
+          grid-row: a/c;
       }
 
       #box2wrapper {
@@ -41,7 +41,7 @@
           left: 0px;
           font-family: Arial, Sans-Serif;
           grid-column: c/d;
-          grid-row: a;
+          grid-row: e/g;
       }
   
       #box3wrapper {
@@ -52,7 +52,7 @@
           left: 0px;
           font-family: Arial, Sans-Serif;
           grid-column: e/f;
-          grid-row: e/g;
+          grid-row: i/k;
       }
   
   

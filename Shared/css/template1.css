@@ -9,7 +9,7 @@
         left: 0px;
         bottom: 0px;
         grid-column: a;
-        grid-row: a/g;
+        grid-row: a/k;
         min-width: 100%;
         min-height: 100%;
     }
@@ -26,7 +26,7 @@
         overflow-x: auto;
         z-index: 2;
         grid-column: b;
-        grid-row: b/h;
+        grid-row: b/l;
         min-width: 100%;
         min-height: 100%;
 
@@ -38,7 +38,7 @@
     position: absolute;
     left: 0px;
     grid-column: a/b;
-    grid-row: a/c;
+    grid-row: a/e;
     min-width: 100%;
     min-height: 100%;
 }
@@ -50,7 +50,7 @@
     left: 0px;
     font-family: Arial,Sans-Serif;
     grid-column: e/f;
-    grid-row: e/g;
+    grid-row: g/k;
     min-width: 100%;
     min-height: 100%;
 }
