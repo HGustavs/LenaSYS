@@ -544,6 +544,53 @@ if(strcmp($opt,"get")==0) {
 		}
 	}
 
+
+
+	//Commit changes
+	$datefrom = $startweek;
+	$datefrom=date('Y-m-d', $datefrom);
+	$dateto=strtotime("+10 week",strtotime($datefrom));
+	$dateto=date('Y-m-d', $dateto);
+
+	$commitchanges=array();
+	$query = $log_db->prepare('SELECT cid FROM commitgit WHERE author=:gituser AND thedate>:datefrom AND thedate<:dateto');
+	$query->bindParam(':gituser', $gituser);
+	$query->bindParam(':datefrom', $datefrom);
+	$query->bindParam(':dateto', $dateto );
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries\n".$error[2];
+	}
+	$rows = $query->fetchAll();
+
+	foreach($rows as $row){
+
+		$codechanges=array();
+		$query = $log_db->prepare('SELECT fileid, blameid, rowno, code FROM codeRow WHERE cid=:cid');
+		$query->bindParam(':cid', $row['cid']);
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error reading entries\n".$error[2];
+		}
+		$innerRows = $query->fetchAll();
+		foreach($innerRows as $innerRow){
+			$codechange = array(
+				'fileid' => $innerRow['fileid'],
+				'blameid' => $innerRow['blameid'],
+				'rowno' => $innerRow['rowno'],
+				'code' => $innerRow['code']
+			);
+			array_push($codechanges, $codechange);
+		}
+
+		$commitchange=array(
+			'cid' => $row['cid'],
+			'codechange' => $codechanges,
+		);			
+		array_push($commitchanges, $commitchange);
+	}
+
+	//Prepare encode
 	$array = array(
 		'debug' => $debug,
 		'weeks' => $weeks,
@@ -572,7 +619,8 @@ if(strcmp($opt,"get")==0) {
     'amountInCourse' => $amountInCourse,
     'amountInGroups' => $amountInGroups,
 		'hourlyevents' => $hourlyevents,
-		'timesheets' => $timesheets
+		'timesheets' => $timesheets,
+		'commitchange' => $commitchanges
 	);
 
 	echo json_encode($array);
