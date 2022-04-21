@@ -38,11 +38,13 @@ $draught=false;
 
 //Get all databases separated by course and year
 
-$directoriesYear = glob('/contributionDBs/*.*', GLOB_ONLYDIR);
-//echo '<script>console.log("Welcome to GeeksforGeeks!"); </script>';
+$directoriesYear = glob('../../contributionDBs/*', GLOB_ONLYDIR);
+$allCoursesPerYear=array();
 
-//print_r($directoriesYear);
-//var_dump($directoriesYear);
+for($i=0; $i< sizeof($directoriesYear); $i++){
+	$allCourses= glob($directoriesYear[$i].'/*.db');
+	array_push($allCoursesPerYear,$allCourses);
+}
 
 
 
@@ -557,6 +559,8 @@ if(strcmp($opt,"get")==0) {
 	$array = array(
 		'debug' => $debug,
 		'weeks' => $weeks,
+		'directoriesYear' => $directoriesYear,
+		'allCoursesPerYear' => $allCoursesPerYear,
 		'rowrankno' => $rowrankno,
 		'rowrank' => $rowrank,
     'rowgrouprank' => $rowgrouprank,
