@@ -1,4 +1,61 @@
 @media (prefers-color-scheme: dark){
+    :root {
+         --color-text-primary: #775886;
+        --color-text-primary-darker: #620C5B;
+        --color-text-secondary: #434343;
+        --color-text-header: #fff;
+        --color-text-list: #000;
+        --color-text-logo: #fff;
+        --color-text-label: #000;
+      
+        --color-logo1: #775886;
+        --color-logo2: #573866;
+        --color-logo-background: #775886;
+      
+        --color-primary: #614875;
+        --color-primary-2: #775886;
+        --color-primary-hover: #7b5a96;
+        --color-primary-light: #927b9e;
+        --color-new-user: #93A561;
+        --color-new-user-hover: #B6C58C;
+        --color-accent: rgb(254, 204, 86);
+        --color-accent-transparent: rgba(254, 204, 86, 0.5);
+        --color-accent-hover: #ffd369;
+        --color-background: #121212; 
+        --color-background-2: #ccc;
+        --color-background-3: #f0f0f0;
+        --color-background-4: #c8c8c8;
+        --color-sectioned-table-hi: #dad8db;
+        --color-sectioned-table-lo: #eae8eb;
+        --color-statistics: #d8d7da;
+        --color-list-hover: #c6cdb8;
+      
+        --color-border-primary: #775886;
+        --color-border-list: #dbd0d8;
+        --color-border: #999;
+        --color-border-2: #ccc;
+        --color-border-3: #f0f0f0;
+        --color-border-4: #c8c8c8;
+        --color-border-5: #888;
+      
+        --color-green: #50a750;
+        --color-red: #c75050;
+        --color-red-hover: #ce3d3d;
+    }
+
+    #dorf {
+        cursor: pointer;
+        filter: invert(80%);
+        -webkit-filter: invert(80%);
+    }
+    .whiteIcon {
+        cursor: pointer;
+        filter: invert(80%);
+        -webkit-filter: invert(80%);
+    }
+
+
+      
 #div2{
 	background-color: #FFF;
 }
