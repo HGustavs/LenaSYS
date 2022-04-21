@@ -4,6 +4,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
+    bottom: 0px;
 	grid-column: a;
 	grid-row: a/k;
     min-width: 100%;
@@ -15,7 +16,7 @@
     top: 0px;
     right: 0px;
     bottom: 0px;
-    grid-column: b/d;
+    grid-column: b;
 	grid-row: b/d;
     min-width: 100%;
     min-height: 100%;
@@ -26,7 +27,7 @@
     top: 0px;
     right: 0px;
     bottom: 0px;
-    grid-column: f/h;
+    grid-column: f;
 	grid-row: f/h;
     min-width: 100%;
     min-height: 100%;
@@ -37,7 +38,7 @@
     top: 0px;
     right: 0px;
     bottom: 0px;
-    grid-column: j/l;
+    grid-column: j;
 	grid-row: j/l;
     min-width: 100%;
     min-height: 100%;
