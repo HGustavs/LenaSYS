@@ -990,7 +990,7 @@ var settings = {
 // Demo data - read / write from service later on
 var data = [];
 var lines = [];
-var cid = 0;
+var diagramToLoad = "";
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
@@ -1138,7 +1138,7 @@ function onSetup()
     // Global statemachine init
     stateMachine = new StateMachine(data, lines);
 
-    mickeTemp();
+    fetchDiagramFileName();
 }
 
 /**
@@ -5867,9 +5867,11 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }
 }
 
-function mickeTemp()
+function fetchDiagramFileName()
 {
-    cid = window.parent.getDiagramToLoadParam();
-    console.log(cid);
+        cid = window.parent.getVariantParam();
+        let start = cid[0].lastIndexOf('diagram File&quot;:&quot;')+25;
+        let finish = cid[0].indexOf('.json') + 5;
+        console.log(cid[0].slice(start, finish));
 }
 //#endregion =====================================================================================
