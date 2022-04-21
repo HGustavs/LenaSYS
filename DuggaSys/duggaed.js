@@ -285,7 +285,11 @@ function selectVariant(vid, el) {
   					document.getElementById('extraparam').value = obj[result];
   				}
   			}
-
+		var diagramType = obj.diagram_type;
+		if(diagramType){
+			document.getElementById('ER').checked = diagramType[0].ER;
+			document.getElementById('UML').checked = diagramType[0].UML;
+		}
         var submissionTypes = obj.submissions;
         if (submissionTypes) {
   			  document.getElementById('submissionType0').value = submissionTypes[0].type;
