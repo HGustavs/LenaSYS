@@ -2,49 +2,33 @@
    The third fills out the bottom of the window. */
 #box1wrapper{
 	position: absolute;
+	grid-column: a;
+    grid-row: a/c;
 	top: 0px;
 	left: 0px;
-	width: -moz-calc(50.0%);
-	width: -webkit-calc(50.0%);
-	width: calc(50.0%);
-	height: -webkit-calc(35%);
-	height: -moz-calc(35%);
-	height: calc(35%);
-	max-width: 90%;
-	min-width: 10%;
-	max-height: 90%;
-	min-height: 10%;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 #box2wrapper {
 	position: absolute;
+	grid-column: b;
+    grid-row: b/d;
 	top: 0px;
 	right: 0px;
-	width: -moz-calc(50.0%);
-	width: -webkit-calc(50.0%);
-	width: calc(50.0%);
-	height: -webkit-calc(35%);
-	height: -moz-calc(35%);
-	height: calc(35%);
-	max-width: 90%;
-	min-width: 10%;
-	max-height: 90%;
-	min-height: 10%;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 #box3wrapper {
    	position: absolute;
+	grid-column: e/f;
+	grid-row: e/h;
    	right: 0px;
    	bottom: 0px;
    	left: 0px;
-   	width: -moz-calc(100.0%);
-	width: -webkit-calc(100.0%);
-	width: calc(100.0%);
-	height: -webkit-calc(65%);
-	height: -moz-calc(65%);
-	height: calc(65%);
-	max-height: 90%;
-	min-height: 10%;
+	min-width: 100%;
+	min-height: 100%;
 }
 @media only screen and (max-width: 800px) {
     #box1wrapper{
