@@ -777,6 +777,7 @@ const elementTypes = {
     ERAttr: 2,
     Ghost: 3,
     UMLEntity: 4,       //<-- UML functionality
+    UMLInheritance: 5,     //<-- UML functionality
 };
 
 /**
@@ -821,11 +822,19 @@ const entityType = {
     ER: "ER",
 };
 /**
- * @description
+ * @description         <-- UML functionality
  */
 const umlState = {
     NORMAL: "normal",
-}
+};
+
+/**
+ * @description State of inheritance between UML entities. <-- UML functionality
+ */
+const inheritanceState = {
+    DISJOINT: "disjoint",
+    OVERLAPPING: "overlapping",
+};
 
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
@@ -1005,7 +1014,8 @@ var defaults = {
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60 },
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45 },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5 },
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50}     //<-- UML functionality
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50},     //<-- UML functionality
+    UMLInheritance: {name: "Inheritance", kind: "UMLInheritance", fill: "white", stroke: "Black", width: 50, height: 50}, //<-- UML functionality
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -3867,8 +3877,10 @@ function generateContextProperties()
             value = Object.values(entityState);
         } else if(element.kind=="ERRelation") {
             value = Object.values(relationState);
-        } else if (element.kind == "UMLEntity") {      //<-- UML functionality , continue here 
+        } else if (element.kind == "UMLEntity") {      //<-- UML functionality
             value = Object.values(umlState);
+        } else if (element.kind=="UMLInheritance") {              //<-- UML functionality
+            value = Object.values(inheritanceState);
         }
 
         str += '<select id="propertySelect">';
@@ -5118,7 +5130,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
 
@@ -5164,6 +5176,40 @@ function drawElement(element, ghosted = false)
         str += `</div>`;
         //end of div for UML content
         str += `</div>`;
+    }
+    //Inheritance relation
+    else if(element.kind == 'UMLInheritance') {
+        //size of triangle
+        var triWidth = boxw * 0.75;
+        var triHeight = boxh * 0.75;
+
+        //div to encapuslate UML element
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
+        style='left:0px; top:0px; width:${triWidth}px;height:${triHeight}px;`;
+
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+
+        //svg for inheritance symbol
+        str += `<svg width='${triWidth}' height='${triHeight}'>`;
+        
+        //Disjoint inheritance
+        if (element.state == 'overlapping') {
+            str += `<polygon points='${linew},${triHeight-linew} ${triWidth/2},${linew} ${triWidth-linew},${triHeight-linew}' 
+            style='fill:black;stroke:${element.stroke};stroke-width:${linew};'/>`;
+        }
+        //Overlapping inheritance
+        else {
+            str += `<polygon points='${linew},${triHeight-linew} ${triWidth/2},${linew} ${triWidth-linew},${triHeight-linew}' 
+            style='fill:white;stroke:${element.stroke};stroke-width:${linew};'/>`;
+        }
+        //end of svg
+        str += `</svg>`;
     }
     //====================================================================
 
@@ -5307,7 +5353,7 @@ function updatepos(deltaX, deltaY)
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && context[0].kind != "ERRelation") addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLInheritance")) addNodes(context[0]);
     
 
 }
