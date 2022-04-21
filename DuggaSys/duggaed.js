@@ -475,6 +475,12 @@ function createJSONString(formData) {
 				UML:true
 			});
 		}
+		else if (!ER && !UML) {
+			diagram_types.push({
+				ER:false,
+				UML:false
+			});
+		}
 		for (let index = 0; index < diagram_types.length-1; index++) {
 			diagram_types.shift();
 		}

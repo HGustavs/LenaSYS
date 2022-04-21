@@ -71,12 +71,20 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
+    console.log(data);
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
         document.getElementById("assigment-instructions").innerHTML = param.instructions;
-        // getting the diagram types allowed and calling a function in diagram.js where the values are now set UML functionality
-        document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type[0];
-        document.getElementById("diagram-iframe").contentWindow.showDiagramTypes();
+        //checking if the user is a teacher
+        if(data.isTeacher==0){
+            // getting the diagram types allowed and calling a function in diagram.js where the values are now set UML functionality
+            document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type[0];
+            document.getElementById("diagram-iframe").contentWindow.showDiagramTypes();
+        }
+        else{
+            var diagramType={ER:true,UML:true};
+            document.getElementById("diagram-iframe").contentWindow.diagramType = diagramType;
+        }
     }
 
     if (data.files[inParams["moment"]] && Object.keys(data.files[inParams["moment"]]).length != 0) {
