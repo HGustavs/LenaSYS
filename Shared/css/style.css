@@ -1479,8 +1479,18 @@ div .navButt:hover {
     width: 35px;
   }
 }
+
 #div2 {
   position: absolute;
+  display: grid;
+  grid-gap: 0px;
+  grid-template-columns: auto;
+  grid-template-areas: 
+    'a a b b'
+    'c c d d'
+    'e e f f'
+    'g g h h'
+  ;
   top: 50px;
   bottom: 0px;
   left: 0px;
