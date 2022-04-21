@@ -1195,8 +1195,7 @@ function createGitHubcontributionTable(data) {
 
 function renderCellForghContibTable(col, celldata, cellid) {
   var str = "";
-  str += "<div id='commitDiv' style='position: absolute; background: #f5e7ff; box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6); border-radius: 5px;  width:410px; height: 200px; white-space: nowrap; top: 8px; left:12px; display:none;'>";
-  str += "</div>";
+ 
   obj = celldata;
   var rowNr = cellid.charAt(1);
   if (col === 'weeks') {
@@ -1702,6 +1701,7 @@ function resetForceLogin()
 }
 //Shows a div when hover the commit links
 function showCommits(){
+ 
   document.getElementById('commitDiv').style.display="block";
 }
 //Hide a div when hover the commit links
