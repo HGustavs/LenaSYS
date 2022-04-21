@@ -5486,21 +5486,21 @@ function drawSelectionBox(str)
 
         //Determine size and position of delete button
         if (highX - lowX + 10 > highY - lowY + 10) {
-            deleteBtnSize = (highY - lowY + 10) / 4;
+            deleteBtnSize = (highY - lowY + 10) / 3;
         }
         else {
-            deleteBtnSize = (highX - lowX + 10) / 4;
+            deleteBtnSize = (highX - lowX + 10) / 3;
         }
         
-        if (deleteBtnSize > 15) {
-            deleteBtnSize = 15;
+        if (deleteBtnSize > 30) {
+            deleteBtnSize = 30;
         }
-        else if (deleteBtnSize < 10) {
-            deleteBtnSize = 10;
+        else if (deleteBtnSize < 25) {
+            deleteBtnSize = 25;
         }
 
-        deleteBtnX = lowX - 5 + highX - lowX + 10 - deleteBtnSize;
-        deleteBtnY = lowY - 5;
+        deleteBtnX = lowX - 5 + highX - lowX + 10 - (deleteBtnSize/2);
+        deleteBtnY = lowY - 5 - (deleteBtnSize/2);
 
         //Delete button visual representation
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
