@@ -57,28 +57,28 @@
 	$finalArray = [];
 
 	
-	$mickeQuery = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid;");
-	$mickeQuery->execute();
-	foreach($mickeQuery->fetchAll(PDO::FETCH_ASSOC) as $row)
+	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid;");
+	$response->execute();
+	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
 	{
 		$variantParams=$row['jparam'];
-		array_push($finalArray, $variantParams);
+//		array_push($finalArray, $variantParams);
 	}
-	$mickeQuery->closeCursor();
+	$response->closeCursor();
 	
 
-//	echo $mickeResult[0];
+//	echo $response[0];
 	
-//	$mickeResult = $mickeQuery->execute();
+//	$response = $response->execute();
 
-/*	if(!$mickeQuery->execute())
+/*	if(!$response->execute())
 	{
 		echo "ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR_ERROR";
-		print_f($mickeQuery->errorInfo());
+		print_f($response->errorInfo());
 	}
 	
 	else{
-		$mickeQuery->fetch(PDO::FETCH_ASSOC);
+		$response->fetch(PDO::FETCH_ASSOC);
 	}
 	*/
 
