@@ -1,4 +1,4 @@
-@media (prefers-color-scheme: light){
+
     :root {
         --color-text-primary: #775886;
        --color-text-primary-darker: #620C5B;
@@ -474,4 +474,3 @@
 }
 
 /* BOXMENU STYLING STOP */
-}

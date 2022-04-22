@@ -45,8 +45,7 @@
 
 
 			// Always show toggle button. When clicked it changes between dark and light mode.
-			echo "<td class='navButt' title='toggleicon'><a id='homeIcon' class='navButt'><img id='toggleIcon' src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></a></td>";
-			
+			echo "<td class='navButt'><img id='theme-toggle' src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></td>";
 
 			if($noup!='NONE') {
 				echo "<td class='navButt' id='back' title='Back'>";

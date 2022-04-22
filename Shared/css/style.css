@@ -1343,8 +1343,8 @@ header td {
   margin:auto 10px auto 0;
 }
 
-#toggleIcon {
-  transform: scale(2.7);
+#theme-toggle {
+  transform: scale(2.8);
   margin-top: 8px;
 }
 .burgerButt {
