@@ -331,8 +331,6 @@ p {
   background-color: var(--color-background);
   padding-top: 7px;
   min-height: 30px;
-  margin-right: 8px;
-  padding-right: 8px;
 }
 
 .validationDialog {
