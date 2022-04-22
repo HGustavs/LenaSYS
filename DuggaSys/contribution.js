@@ -152,6 +152,7 @@ function renderBarDiagram(data) {
   var maxDayCount = 0;
   for (var i = 0; i < 7 * numOfWeeks; i++) {
     var day = data['count'][dateString];
+    //console.log(data['count']);
     var commits = parseInt(day["commits"][0][0]);
     var events = parseInt(day["events"][0][0]);
     var comments = parseInt(day["comments"][0][0]);
@@ -361,11 +362,14 @@ function drawCommitDots(x1, y1, xmul, ymul, x_spacing, y_spacing){
   return str;
 }
 
+
+
 function renderLineDiagram(data) {
   weeks = data.weeks;
   daycounts = data['count'];
-  var firstweek = data.weeks[0].weekstart;
+  console.log('test');
 
+  var firstweek = data.weeks[0].weekstart;
 
   //Selectbox to choose week
   str = "<h2 style='padding-left:5px'>Weekly line chart</h2>";
