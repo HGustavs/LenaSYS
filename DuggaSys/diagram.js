@@ -5881,7 +5881,6 @@ function fetchDiagramFileName()
         console.log(diagramToLoad);
         console.log(cid);
         console.log(cvers);
-
 }
 
 function returnedFile(data){
@@ -5894,10 +5893,5 @@ function returnedFile(data){
 	filteredarray = filearray.filter(x => x.filename === diagramToLoad);
 
     console.log(filteredarray[0].filePath);
-}
-
-function loadDiagramOnLoad()
-{
-    
 }
 //#endregion =====================================================================================
