@@ -3785,382 +3785,399 @@ function resetBoxes()
 // resizeBoxes: Adding resize functionality for the boxes
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
-
+//3788
 function resizeBoxes(parent, templateId) 
 {
-	var boxValArray = initResizableBoxValues(parent);
+	$('#box1wrapper').resizable({
+		resize: function( event, ui ) {
+			//box wrapper 2 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = screen widht.)
+			document.querySelector('#box2wrapper').style.width = (window.screen.width) - parseFloat(document.querySelector('#box1wrapper').style.width) + "px";
 
-	if (templateId == 1) {
-		getLocalStorageProperties(templateId, boxValArray);
-
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesWidth(boxValArray, 1, 2);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-	} else if (templateId == 2) {
-		getLocalStorageProperties(templateId, boxValArray);
-
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight2boxes(boxValArray, 1, 2);
-				document.querySelector(boxValArray['box1']['id']).style.width = "100%";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-	} else if (templateId == 3) {
-		getLocalStorageProperties(templateId, boxValArray);
-
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-				document.getElementById("box2wrapper").style.left = "";
-				document.getElementById("box1wrapper").style.height = "100%"
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight2boxes(boxValArray, 2, 3);
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-	} else if (templateId == 4) {
-		getLocalStorageProperties(templateId, boxValArray);
-
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesWidth(boxValArray, 1, 2);
-				alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
-				document.getElementById("box2wrapper").style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
-				document.getElementById("box2wrapper").style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-	} else if (templateId == 5) {
-		getLocalStorageProperties(templateId, boxValArray);
-
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
-			handles: "e,s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesWidth(boxValArray, 1, 2);
-				alignBoxesHeight4boxes(boxValArray, 1, 2);
-				document.getElementById("box2wrapper").style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight4boxes(boxValArray, 2, 1);
-				document.getElementById("box2wrapper").style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-
-		$(boxValArray['box3']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesWidth(boxValArray, 3, 4);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-
-	} else if (templateId == 6) {
-		getLocalStorageProperties(templateId, boxValArray);
-		document.getElementById("box3wrapper").style.top = localStorage.getItem("template6box2heightPercent") + "%";
-
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignWidth4boxes(boxValArray, 1, 2, 3, 4);
-
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				document.querySelector(boxValArray['box2']['id']).style.left = "";
-				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-
-		$(boxValArray['box3']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				document.querySelector(boxValArray['box3']['id']).style.left = "";
-				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-
-	} else if (templateId == 7) {
-		getLocalStorageProperties(templateId, boxValArray);
-		document.getElementById("box3wrapper").style.top = localStorage.getItem("template7box2heightPercent") + "%";
-
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
-			handles: "s,e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-				alignWidthTemplate7(boxValArray, 2, 3, 4, 1);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-		$(boxValArray['box3']['id']).resizable({
-			containment: parent,
-			handles: "s,e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				document.querySelector(boxValArray['box1']['id']).style.left = " ";
-				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
-				alignWidthTemplate7(boxValArray, 3, 2, 4, 1);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
+			//Since there is a grid view the 3rd box follows the 2nd box since they are apart of the same collums.
+			//document.querySelector('#box3wrapper').style.width = (window.screen.width) - parseFloat(document.querySelector('#box1wrapper').style.width) + "px";
+		},
+		handles: "e",
+		containment: parent
+	});
+	$('#box2wrapper').resizable({
 		
-		$(boxValArray['box4']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				$(boxValArray['box4']['id']).css("top", "");
-				alignWidthTemplate7(boxValArray, 4, 3, 2, 1);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-	} else if (templateId == 8) {
-		getLocalStorageProperties(templateId, boxValArray);
+	});
+	$('#box3wrapper').resizable({
+		
+	});
+	// var boxValArray = initResizableBoxValues(parent);
 
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
-			handles: "e, s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight2boxes(boxValArray, 2, 3);
-				alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-		$(boxValArray['box3']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight2boxes(boxValArray, 2, 3);
-				alignBoxesWidthTemplate8(boxValArray, 3, 2, 1);
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
-				document.querySelector(boxValArray['box3']['id']).style.top = "";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-	} else if (templateId == 9) {
-		getLocalStorageProperties(templateId, boxValArray);
+	// if (templateId == 1) {
+	// 	getLocalStorageProperties(templateId, boxValArray);
 
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignTemplate9Width(boxValArray, 1, 2, 3, 4, 5);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
+	// 	$(boxValArray['box1']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "e",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignBoxesWidth(boxValArray, 1, 2);
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+	// } else if (templateId == 2) {
+	// 	getLocalStorageProperties(templateId, boxValArray);
 
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignTemplate9Height(boxValArray, 2, 3, 4, 5);
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
-				document.querySelector(boxValArray['box3']['id']).style.left = " ";
-				document.querySelector(boxValArray['box4']['id']).style.left = " ";
-				document.querySelector(boxValArray['box5']['id']).style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
+	// 	$(boxValArray['box1']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "s",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignBoxesHeight2boxes(boxValArray, 1, 2);
+	// 			document.querySelector(boxValArray['box1']['id']).style.width = "100%";
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+	// } else if (templateId == 3) {
+	// 	getLocalStorageProperties(templateId, boxValArray);
 
-		$(boxValArray['box3']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
-				document.querySelector(boxValArray['box3']['id']).style.left = " ";
-				document.querySelector(boxValArray['box4']['id']).style.left = " ";
-				document.querySelector(boxValArray['box5']['id']).style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-		$(boxValArray['box4']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignTemplate9Height2Stack(boxValArray, 2, 3, 4, 5);
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
-				document.querySelector(boxValArray['box3']['id']).style.left = " ";
-				document.querySelector(boxValArray['box4']['id']).style.left = " ";
-				document.querySelector(boxValArray['box5']['id']).style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
+	// 	$(boxValArray['box1']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "e",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+	// 			document.getElementById("box2wrapper").style.left = "";
+	// 			document.getElementById("box1wrapper").style.height = "100%"
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
 
-	}
-};
+	// 	$(boxValArray['box2']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "s",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignBoxesHeight2boxes(boxValArray, 2, 3);
+	// 			document.querySelector(boxValArray['box2']['id']).style.left = " ";
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+	// } else if (templateId == 4) {
+	// 	getLocalStorageProperties(templateId, boxValArray);
+
+	// 	$(boxValArray['box1']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "e",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignBoxesWidth(boxValArray, 1, 2);
+	// 			alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
+	// 			document.getElementById("box2wrapper").style.left = " ";
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+
+	// 	$(boxValArray['box2']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "s",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+	// 			document.getElementById("box2wrapper").style.left = " ";
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+	// } else if (templateId == 5) {
+	// 	getLocalStorageProperties(templateId, boxValArray);
+
+	// 	$(boxValArray['box1']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "e,s",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignBoxesWidth(boxValArray, 1, 2);
+	// 			alignBoxesHeight4boxes(boxValArray, 1, 2);
+	// 			document.getElementById("box2wrapper").style.left = " ";
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+
+	// 	$(boxValArray['box2']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "s",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignBoxesHeight4boxes(boxValArray, 2, 1);
+	// 			document.getElementById("box2wrapper").style.left = " ";
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+
+	// 	$(boxValArray['box3']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "e",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignBoxesWidth(boxValArray, 3, 4);
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+
+	// } else if (templateId == 6) {
+	// 	getLocalStorageProperties(templateId, boxValArray);
+	// 	document.getElementById("box3wrapper").style.top = localStorage.getItem("template6box2heightPercent") + "%";
+
+	// 	$(boxValArray['box1']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "e",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignWidth4boxes(boxValArray, 1, 2, 3, 4);
+
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+
+	// 	$(boxValArray['box2']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "s",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			document.querySelector(boxValArray['box2']['id']).style.left = "";
+	// 			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+
+	// 	$(boxValArray['box3']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "s",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			document.querySelector(boxValArray['box3']['id']).style.left = "";
+	// 			alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+
+	// } else if (templateId == 7) {
+	// 	getLocalStorageProperties(templateId, boxValArray);
+	// 	document.getElementById("box3wrapper").style.top = localStorage.getItem("template7box2heightPercent") + "%";
+
+	// 	$(boxValArray['box2']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "s,e",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	// 			alignWidthTemplate7(boxValArray, 2, 3, 4, 1);
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+	// 	$(boxValArray['box3']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "s,e",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			document.querySelector(boxValArray['box1']['id']).style.left = " ";
+	// 			alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
+	// 			alignWidthTemplate7(boxValArray, 3, 2, 4, 1);
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+		
+	// 	$(boxValArray['box4']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "e",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			$(boxValArray['box4']['id']).css("top", "");
+	// 			alignWidthTemplate7(boxValArray, 4, 3, 2, 1);
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+	// } else if (templateId == 8) {
+	// 	getLocalStorageProperties(templateId, boxValArray);
+
+	// 	$(boxValArray['box2']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "e, s",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignBoxesHeight2boxes(boxValArray, 2, 3);
+	// 			alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
+	// 			document.querySelector(boxValArray['box2']['id']).style.left = " ";
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+	// 	$(boxValArray['box3']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "e",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignBoxesHeight2boxes(boxValArray, 2, 3);
+	// 			alignBoxesWidthTemplate8(boxValArray, 3, 2, 1);
+	// 			document.querySelector(boxValArray['box2']['id']).style.left = " ";
+	// 			document.querySelector(boxValArray['box3']['id']).style.top = "";
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+	// } else if (templateId == 9) {
+	// 	getLocalStorageProperties(templateId, boxValArray);
+
+	// 	$(boxValArray['box1']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "e",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignTemplate9Width(boxValArray, 1, 2, 3, 4, 5);
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+
+	// 	$(boxValArray['box2']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "s",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignTemplate9Height(boxValArray, 2, 3, 4, 5);
+	// 			document.querySelector(boxValArray['box2']['id']).style.left = " ";
+	// 			document.querySelector(boxValArray['box3']['id']).style.left = " ";
+	// 			document.querySelector(boxValArray['box4']['id']).style.left = " ";
+	// 			document.querySelector(boxValArray['box5']['id']).style.left = " ";
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+
+	// 	$(boxValArray['box3']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "s",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
+	// 			document.querySelector(boxValArray['box2']['id']).style.left = " ";
+	// 			document.querySelector(boxValArray['box3']['id']).style.left = " ";
+	// 			document.querySelector(boxValArray['box4']['id']).style.left = " ";
+	// 			document.querySelector(boxValArray['box5']['id']).style.left = " ";
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+	// 	$(boxValArray['box4']['id']).resizable({
+	// 		containment: parent,
+	// 		handles: "s",
+	// 		start: function (event, ui) {
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
+	// 		},
+	// 		resize: function (e, ui) {
+	// 			alignTemplate9Height2Stack(boxValArray, 2, 3, 4, 5);
+	// 			document.querySelector(boxValArray['box2']['id']).style.left = " ";
+	// 			document.querySelector(boxValArray['box3']['id']).style.left = " ";
+	// 			document.querySelector(boxValArray['box4']['id']).style.left = " ";
+	// 			document.querySelector(boxValArray['box5']['id']).style.left = " ";
+	// 		},
+	// 		stop: function (e, ui) {
+	// 			setLocalStorageProperties(templateId, boxValArray);
+	// 			document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
+	// 		}
+	// 	});
+
+	// }
+}
 
 //----------------------------------------------------------------------------------
 //width adjustment for template 1 and 4 (Two boxes beside eachother.)
