@@ -1699,7 +1699,7 @@ function resetForceLogin()
 
 }
 
-function checkIfGitUserExists(username) // checks if user exists in the git data
+function checkIfGitUserExists(username) // checks if user exists in the git data and or the lenasys data
 {
   // ajax here
 
@@ -1711,38 +1711,66 @@ function checkIfGitUserExists(username) // checks if user exists in the git data
       userid: username,
     }, "CONTRIBUTION_GIT_USER_CHECK");
 
+    // ##############################
+
+    AJAXService("checkForLenasysUser",{
+      userid: username,
+    }, "CONTRIBUTION_LENASYS_USER_CHECK");
+
+
   }
 
 }
 
-function returned_git_user_check(data)
-{
-  if(typeof data == "boolean") // check so that the type is correct
+{ // scope for local-storage of in-between function variables
+
+  let userExists_Git = false; // if it exists in the git data
+  let userExists_Lenasys = false; // if it exists in the lenasys data
+  
+
+  function returned_git_user_check(data)
   {
-    console.log(data);
+    if(typeof data == "boolean") // check so that the type is correct
+    {
+      console.log("exists on git "+data);
+      userExists_Git = data;
+    }
+    else
+      alert("invalid data returned from git-data");
   }
-  else
-    alert("invalid data returned from service")
-}
 
-
-
-function loginGitOrUser_Check()
-{
-  let loginBoxheader_login_username_field = document.querySelector("#username");
-
-
-
-  let username = loginBoxheader_login_username_field.value;
-  if(username === "") // we do a simple check if the string is empty to not call backend if nothing is entered.
+  function returned_lenasys_user_check(data)
   {
-    console.log("poggis");
-  } 
-  else
-  {
-    if(checkIfGitUserExists(username));
-      return true;
+    if(typeof data == "boolean")
+    {
+      console.log("exists on lenasys "+data);
+      userExists_Lenasys = data;
+    }
+    else
+      alert("invalid data returned from lenasys-data");
   }
+
+
+
+  function loginGitOrUser_Check()
+  {
+    let loginBoxheader_login_username_field = document.querySelector("#username");
+
+
+
+    let username = loginBoxheader_login_username_field.value;
+    if(username === "") // we do a simple check if the string is empty to not call backend if nothing is entered.
+    {
+      console.log("poggis");
+    } 
+    else
+    {
+      if(checkIfGitUserExists(username));
+        return true;
+    }
+  }
+
+
 }
 
 

@@ -631,7 +631,13 @@ if (checklogin()) // methods needing you to be logged in
 if (strcmp($opt, "checkForGitUser")==0)
 {
 	$gituser = getOP('userid');
-	$query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2019-03-31" and blamedate<"2020-01-01" union select author as usr from event where eventtime>"2019-03-31" and eventtime<"2020-01-01" union select author as usr from issue where issuetime>"2019-03-31" and issuetime<"2019-01-08") order by usr;');
+	$query = $log_db->prepare('select distinct(usr) from 
+		(	select blameuser as usr from blame
+		union select author as usr from event
+		union select author as usr from issue
+		union select author as usr from commitgit
+		union select blameuser as usr from coderow
+		order by usr);');
 
 	if(!$query->execute()) 
 	{
@@ -642,13 +648,43 @@ if (strcmp($opt, "checkForGitUser")==0)
 	$rows = $query->fetchAll();
 	foreach($rows as $row)
 	{
-		if(strlen($row['usr'])<9) // the reason for this is a username check, only users with names less than 9 characters are allowed, commented out for now, i want all users
+		//(strlen($row['usr'])<9) // the reason for this is a username check, only users with names less than 9 characters are allowed, commented out for now, i want all users of all lengths
 		array_push($allusers, $row['usr']); 
 	}
 
 
 	$userExisted = in_array($gituser, $allusers); // if the user existed it should be not empty, aka this checks if we retrieved the user from the DB
 		
+	echo json_encode($userExisted);
+}
+else if(strcmp($opt, "checkForLenasysUser")==0)
+{
+	global $pdo;
+
+	if($pdo == null) 
+	{
+		pdoConnect();
+	}
+	$gituser = getOP('userid');
+	
+	$query = $pdo->prepare("SELECT username FROM user WHERE username=:GU;");
+	$query->bindParam(':GU', $gituser);
+	
+	if(!$query->execute()) 
+	{
+		$error=$query->errorInfo();
+		$debug="Error reading entries\n".$error[2];
+	}
+
+	$rows = $query->fetchAll();
+	foreach($rows as $row)
+	{
+		array_push($allusers, $row['usr']); 
+	}
+
+	
+	$userExisted = !empty($allusers); // if we managed to retrieve something with the query we found the user in the lenasys DB
+	
 	echo json_encode($userExisted);
 }
 

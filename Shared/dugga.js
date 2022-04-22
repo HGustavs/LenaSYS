@@ -1079,15 +1079,23 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedSection
 			});
-	}else if(kind=="CONTRIBUTION_GIT_USER_CHECK")
+	}else if(kind=="CONTRIBUTION_GIT_USER_CHECK"){
 			$.ajax({
 				url: "contributionservice.php",
 				type: "POST",
 				data: "&opt="+opt+para,
 				dataType: "json",
 				success: returned_git_user_check
-			})
-	else if(kind=="DIAGRAM"){
+			});
+	}else if(kind=="CONTRIBUTION_LENASYS_USER_CHECK"){
+			$.ajax({
+				url: "contributionservice.php",
+				type: "POST",
+				data: "&opt="+opt+para,
+				dataType: "json",
+				success: returned_lenasys_user_check
+			});
+	}else if(kind=="DIAGRAM"){
 			$.ajax({
 				url: "diagramservice.php",
 				type: "POST",
