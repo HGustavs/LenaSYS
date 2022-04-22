@@ -999,7 +999,7 @@ function returnedSection(data) {
   
   //Dynamically loads the year selection list based on folders in ../../contributionDBs/
   str += `<select id='yearBtn' class='submit-button'
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'>
+  onclick='statSort(value)'onsubmit='courseSelection()'>
   "<option value="ChooseY">Choose year</option>"`;
 
   if (data['directoriesYear'][0] !== null){
@@ -1050,6 +1050,11 @@ function returnedSection(data) {
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(data);
   document.getElementById('commitDiagram').innerHTML = renderCommits(data);
   document.getElementById('content').innerHTML = str;
+}
+
+function courseSelection(){
+  var button = document.getElementById('yearBtn').value;
+  console.log('Test');
 }
 
 function buildRankData(data) {
