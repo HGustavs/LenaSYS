@@ -77,14 +77,14 @@ function returnedDugga(data)
         document.getElementById("assigment-instructions").innerHTML = param.instructions;
         //checking if the user is a teacher
         if(data.isTeacher==0){
-            // getting the diagram types allowed and calling a function in diagram.js where the values are now set UML functionality
+            // getting the diagram types allowed and calling a function in diagram.js where the values are now set <-- UML functionality start
             document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type[0];
         }
         else{
             var diagramType={ER:true,UML:true};
             document.getElementById("diagram-iframe").contentWindow.diagramType = diagramType;
         }
-        document.getElementById("diagram-iframe").contentWindow.showDiagramTypes();
+        document.getElementById("diagram-iframe").contentWindow.showDiagramTypes();//<-- UML functionality end
     }
 
     if (data.files[inParams["moment"]] && Object.keys(data.files[inParams["moment"]]).length != 0) {

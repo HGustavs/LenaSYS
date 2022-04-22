@@ -1158,6 +1158,7 @@ function getData()
     setCursorStyles(mouseMode);
     generateKeybindList();
 }
+//<-- UML functionality start
 /**
  * @description Used to determine the tools shown depending on diagram type.
  */
@@ -1201,7 +1202,7 @@ function showDiagramTypes(){
         document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
     }
 }
-
+//<-- UML functionality end
 /**
  * @description Used to determine if returned data is correct.
  * @param {*} ret Returned data to determine.
@@ -3552,7 +3553,10 @@ function setElementPlacementType(type = elementTypes.EREntity)
 {
     elementTypeSelected = type;
 }
-
+//<-- UML functionality start
+/**
+ * @description starts a mousepress on placecment type.
+ */
 function holdPlacementButtonDown(num){
     mousePressed=true;
     if(document.getElementById("togglePlacementTypeBox"+num).classList.contains("activeTogglePlacementTypeBox")){
@@ -3628,7 +3632,7 @@ function togglePlacementType(num,type){
         document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");
     }
     document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
-}
+}//<-- UML functionality end
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.

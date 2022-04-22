@@ -285,11 +285,11 @@ function selectVariant(vid, el) {
   					document.getElementById('extraparam').value = obj[result];
   				}
   			}
-		var diagramType = obj.diagram_type;
+		var diagramType = obj.diagram_type; //<-- UML functionality start
 		if(diagramType){
 			document.getElementById('ER').checked = diagramType[0].ER;
 			document.getElementById('UML').checked = diagramType[0].UML;
-		}
+		}//<-- UML functionality end
         var submissionTypes = obj.submissions;
         if (submissionTypes) {
   			  document.getElementById('submissionType0').value = submissionTypes[0].type;
@@ -436,8 +436,6 @@ function removeExtraSubmissionRows() {
 function createJSONString(formData) {
 	var submission_types = [];
 	var type, fieldname, instruction, diagramFile;
-	var diagram_types = [];
-	var ER, UML;
 
 	formData.forEach(element => {
 		if (element.name == "s_type") type = element;
@@ -455,35 +453,6 @@ function createJSONString(formData) {
 			fieldname = undefined;
 			instruction = undefined;
 		}
-		if (element.name == "ER") ER = element;
-		if (element.name == "UML") UML = element;
-		if (!ER && UML) {
-			diagram_types.push({
-				ER:false,
-				UML:true
-			});
-		}
-		else if (ER && !UML) {
-			diagram_types.push({
-				ER:true,
-				UML:false
-			});
-		}
-		else if (ER && UML) {
-			diagram_types.push({
-				ER:true,
-				UML:true
-			});
-		}
-		else if (!ER && !UML) {
-			diagram_types.push({
-				ER:false,
-				UML:false
-			});
-		}
-		for (let index = 0; index < diagram_types.length-1; index++) {
-			diagram_types.shift();
-		}
 	});
 
 
@@ -491,7 +460,7 @@ function createJSONString(formData) {
 		"type":formData[0].value,
 		"filelink":formData[1].value,
 		"diagram File":$("#file option:selected").text(),
-		"diagram_type":diagram_types,
+		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
 		"submissions":submission_types
 	});
