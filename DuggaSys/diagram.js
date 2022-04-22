@@ -5872,15 +5872,28 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
 function fetchDiagramFileName()
 {
         var temp = window.parent.getVariantParam();
-        diagramToLoad = temp[0];
         cid = temp[1];
         cvers = temp[2];
+        AJAXService("GET", { cid: cid, coursevers: cvers }, "FILE");
         let start = temp[0].lastIndexOf('diagram File&quot;:&quot;')+25;
         let finish = temp[0].indexOf('.json') + 5;
-        console.log(temp[0].slice(start, finish));
+        diagramToLoad = temp[0].slice(start, finish);
+        console.log(diagramToLoad);
         console.log(cid);
         console.log(cvers);
 
+}
+
+function returnedFile(data){
+    retdata = data;
+    filearray = [];
+
+    for (var i = 0; i < retdata['entries'].length; i++){
+		filearray[i] = JSON.parse(retdata['entries'][i].filename);
+	}
+	filteredarray = filearray.filter(x => x.filename === diagramToLoad);
+
+    console.log(filteredarray[0].filePath);
 }
 
 function loadDiagramOnLoad()
