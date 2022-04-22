@@ -562,11 +562,12 @@ if(strcmp($opt,"get")==0) {
 		$debug="Error reading entries\n".$error[2];
 	}
 	$rows = $query->fetchAll();
-
+	
+	//Gets code changes and blame for each commit
 	foreach($rows as $row){
-
-		$codechanges=array();
-		$query = $log_db->prepare('SELECT fileid, blameid, rowno, code FROM codeRow WHERE cid=:cid');
+		$blames=array();
+		
+		$query = $log_db->prepare('SELECT Bfile.filename, Blame.id, sum(rowcnt) as rowk FROM Blame, Bfile WHERE href=:cid AND Blame.fileid=Bfile.id Group by fileid');
 		$query->bindParam(':cid', $row['cid']);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -574,18 +575,41 @@ if(strcmp($opt,"get")==0) {
 		}
 		$innerRows = $query->fetchAll();
 		foreach($innerRows as $innerRow){
-			$codechange = array(
-				'fileid' => $innerRow['fileid'],
-				'blameid' => $innerRow['blameid'],
-				'rowno' => $innerRow['rowno'],
-				'code' => $innerRow['code']
+			$blame = array(
+				//'fileid' => $innerRow['fileid'],
+				'filename' => $innerRow['filename'],
+				'id' => $innerRow['id'],
+				'rowk' => $innerRow['rowk']
 			);
-			array_push($codechanges, $codechange);
+			array_push($blames, $blame);
 		}
 
+		//If the blame is null then codechanges will also be null thus we don't execute it to improve performance
+		$codechanges=array();
+		if($blames != NULL){
+			
+			$query = $log_db->prepare('SELECT Bfile.filename, rowno, code, fileid FROM CodeRow, Bfile WHERE cid=:cid AND CodeRow.fileid=Bfile.id');
+			$query->bindParam(':cid', $row['cid']);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading entries\n".$error[2];
+			}
+			$innerRows = $query->fetchAll();
+			foreach($innerRows as $innerRow){
+				$codechange = array(
+					'filename' => $innerRow['filename'],
+					'rowno' => $innerRow['rowno'],
+					'code' => $innerRow['code'],
+					'fileid' => $innerRow['fileid']
+				);
+				array_push($codechanges, $codechange);
+			}
+		}
+		
 		$commitchange=array(
 			'cid' => $row['cid'],
 			'codechange' => $codechanges,
+			'blame' => $blames
 		);			
 		array_push($commitchanges, $commitchange);
 	}
