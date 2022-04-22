@@ -183,6 +183,13 @@ session_start();
                         <select id="file" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))"></select>
                       </fieldset>
                     </div>
+                    <div>
+                      <fieldset style="width:90%">
+                        <legend>Error check</legend>
+                        <label for="errorActive">Active</label>
+                        <input type="checkbox" name="errorActive" id="errorActive" value="true" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>
+                      </fieldset>
+                    </div>
                   </div>
                       <!-- Submissions for dugga -->
                   <div>

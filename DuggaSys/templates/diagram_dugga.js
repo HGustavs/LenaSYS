@@ -74,7 +74,15 @@ function returnedDugga(data)
 {
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
-        document.getElementById("assigment-instructions").innerHTML = param.instructions;
+        //document.getElementById("assigment-instructions").innerHTML = param.instructions; -Outcommented because currently missing id- please merge other line!
+        //checking if the user is a teacher
+        if(data.isTeacher==0){
+            // getting the error finder allowed or not
+            document.getElementById("diagram-iframe").contentWindow.errorActive = param.errorActive;
+        }
+        else{
+            document.getElementById("diagram-iframe").contentWindow.errorActive = true;
+        }
     }
 
     if (data.files[inParams["moment"]] && Object.keys(data.files[inParams["moment"]]).length != 0) {

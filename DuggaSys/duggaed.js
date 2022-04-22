@@ -284,6 +284,9 @@ function selectVariant(vid, el) {
   				else if(result == "extraparam"){
   					document.getElementById('extraparam').value = obj[result];
   				}
+				else if(result =="errorActive"){
+					document.getElementById("errorActive").checked = obj[result];
+				}
   			}
 
         var submissionTypes = obj.submissions;
@@ -457,7 +460,8 @@ function createJSONString(formData) {
 		"filelink":formData[1].value,
 		"diagram File":$("#file option:selected").text(),
 		"extraparam":$('#extraparam').val(),
-		"submissions":submission_types
+		"submissions":submission_types,
+		"errorActive":document.getElementById("errorActive").checked
 	});
 }
 

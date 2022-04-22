@@ -920,6 +920,8 @@ const zoom0_75 = -0.775;
 const zoom0_5 = -3;
 const zoom0_25 = -15.01;
 
+var errorActive = true;
+
 // Arrow drawing stuff - diagram elements, diagram lines and labels 
 var lines = [];
 var elements = [];
