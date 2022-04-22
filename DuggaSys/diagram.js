@@ -1158,8 +1158,11 @@ function getData()
     setCursorStyles(mouseMode);
     generateKeybindList();
 }
-
+/**
+ * @description Used to determine the tools shown depending on diagram type.
+ */
 function showDiagramTypes(){
+    //if both diagramtypes are allowed hides the uml elements and adds the function to show the selection box
     if(!!diagramType.ER && !!diagramType.UML){
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
@@ -1176,18 +1179,21 @@ function showDiagramTypes(){
             holdPlacementButtonDown(5);
         };
     }
+    //if only UML is allowed hides ER and the arrows that shows more options
     else if(!diagramType.ER && !!diagramType.UML){
         document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
         document.getElementById("togglePlacementTypeButton4").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
         document.getElementById("togglePlacementTypeButton5").classList.add("hiddenPlacementType");
     }
+    //if only ER is allowed hides UML and the arrows that shows more options
     else if(!!diagramType.ER && !diagramType.UML){
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
         document.getElementById("togglePlacementTypeButton0").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
         document.getElementById("togglePlacementTypeButton1").classList.add("hiddenPlacementType");
     }
+    // if neither are allowed hides all
     else if (!diagramType.ER && !diagramType.UML){
         document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
