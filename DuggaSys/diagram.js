@@ -991,6 +991,8 @@ var settings = {
 var data = [];
 var lines = [];
 var diagramToLoad = "";
+var cid = "";
+var cvers = "";
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
@@ -5869,9 +5871,20 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
 
 function fetchDiagramFileName()
 {
-        cid = window.parent.getVariantParam();
-        let start = cid[0].lastIndexOf('diagram File&quot;:&quot;')+25;
-        let finish = cid[0].indexOf('.json') + 5;
-        console.log(cid[0].slice(start, finish));
+        var temp = window.parent.getVariantParam();
+        diagramToLoad = temp[0];
+        cid = temp[1];
+        cvers = temp[2];
+        let start = temp[0].lastIndexOf('diagram File&quot;:&quot;')+25;
+        let finish = temp[0].indexOf('.json') + 5;
+        console.log(temp[0].slice(start, finish));
+        console.log(cid);
+        console.log(cvers);
+
+}
+
+function loadDiagramOnLoad()
+{
+    
 }
 //#endregion =====================================================================================

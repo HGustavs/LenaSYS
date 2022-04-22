@@ -62,7 +62,8 @@
 	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
 	{
 		$variantParams=$row['jparam'];
-//		array_push($finalArray, $variantParams);
+		array_push($finalArray, $variantParams);
+		$s_to_json=json_encode((array)$finalArray);
 	}
 	$response->closeCursor();
 	
@@ -468,10 +469,15 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	<script type="text/javascript">
 	function getVariantParam()
 	{
-		const variantArray = [<?php echo "'$variantParams'"#,'$queryArray[1]','$queryArray[2]'" #echo"$mickeResult[0];";?>];
+		var variantArray = [<?php echo "'$variantParams'"#,'$queryArray[1]','$queryArray[2]'" #echo"$mickeResult[0];";?>];
+		variantArray.push(<?php echo "$cid"?>);
+		variantArray.push(<?php echo "$vers"?>);
 		return variantArray;
-		} 
+	} 
 	</script>
+
+	<script>
+</script>
 	<!-- content END -->
 	<?php
 		include '../Shared/loginbox.php';
