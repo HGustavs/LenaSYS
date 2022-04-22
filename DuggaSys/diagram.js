@@ -5179,13 +5179,9 @@ function drawElement(element, ghosted = false)
     }
     //Inheritance relation
     else if(element.kind == 'UMLInheritance') {
-        //size of triangle
-        var triWidth = boxw * 0.75;
-        var triHeight = boxh * 0.75;
-
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
-        style='left:0px; top:0px; width:${triWidth}px;height:${triHeight}px;`;
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
@@ -5196,17 +5192,17 @@ function drawElement(element, ghosted = false)
         str += `'>`;
 
         //svg for inheritance symbol
-        str += `<svg width='${triWidth}' height='${triHeight}'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
         
         //Disjoint inheritance
         if (element.state == 'overlapping') {
-            str += `<polygon points='${linew},${triHeight-linew} ${triWidth/2},${linew} ${triWidth-linew},${triHeight-linew}' 
-            style='fill:black;stroke:${element.stroke};stroke-width:${linew};'/>`;
+            str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
+            style='fill:black;stroke:black;stroke-width:${linew};'/>`;
         }
         //Overlapping inheritance
         else {
-            str += `<polygon points='${linew},${triHeight-linew} ${triWidth/2},${linew} ${triWidth-linew},${triHeight-linew}' 
-            style='fill:white;stroke:${element.stroke};stroke-width:${linew};'/>`;
+            str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
+            style='fill:white;stroke:black;stroke-width:${linew};'/>`;
         }
         //end of svg
         str += `</svg>`;
