@@ -2411,13 +2411,14 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 }
 /*Validates all versionnames*/
 function validateVersionName(versionName, dialogid) {
-  //Regex for 2 capital letters, 2 numbers
-  var Name = /^HT\d{2}$|^VT\d{2}$|^ST\d{2}$/;
+  //Regex for letters, numbers, and dashes
+  var Name = /^[A-Za-z0-9_ \-.]+$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
+  var val = document.getElementById("versname").value;
 
   //if versionname is 2 capital letters, 2 numbers
-  if (name.value.match(Name)) {
+  if (val.match(Name)) {
     name.style.borderColor = "#383";
     name.style.borderWidth = "2px";
     x.style.display = "none";
@@ -2445,13 +2446,13 @@ function validateVersionName(versionName, dialogid) {
 
 /*Validate versionID */
 function validateCourseID(courseid, dialogid) {
-  //regex for only numbers, between 3 and 6 numbers
-  var Code = /^[0-9]{3,6}$/;
+  //regex numbers, letters and dashes, between 3 and 8 numbers
+  var Code = /^[A-Za-z0-9_.]{3,8}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
   var val = document.getElementById("cversid").value;
 
-  if (code.value.match(Code)) {
+  if (val.match(Code)) {
     code.style.borderColor = "#383";
     code.style.borderWidth = "2px";
     x2.style.display = "none";
@@ -2459,7 +2460,7 @@ function validateCourseID(courseid, dialogid) {
   } else {
 
     code.style.borderColor = "#E54";
-    x2.innerHTML = "Only numbers(between 3-6 numbers)";
+    x2.innerHTML = "numbers, letters and dashes(between 3-8)";
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
