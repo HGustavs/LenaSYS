@@ -995,20 +995,33 @@ function returnedSection(data) {
   onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
   str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution'
   onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
+  
+  
+  //Dynamically loads the year selection list based on folders in ../../contributionDBs/
+  str += `<select id='yearBtn' class='submit-button'
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'>
+  "<option value="ChooseY">Choose year</option>"`;
+
+  if (data['directoriesYear'][0] !== null){
+    for(i=0;i<data['directoriesYear'].length;i++){
+      str +=`"<option value="opt`;
+      str +=i;
+      str +=`">`;
+      str = str.concat(data['directoriesYear'][i]);
+      str +=`</option>"`;
+    }
+  }
+  str +=`</option>"</select>`;
+
   str += `<select id='courseBtn' class='submit-button'
   onclick='statSort(value)'onmouseout='hideTooltip(this)'>
   "<option value="ChooseC">Choose course</option>"
   "<option value="opt1">Option1</option>"
   "<option value="opt2">Option2</option>"
   </select>`;
-  str += `<select id='yearBtn' class='submit-button'
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'>
-  "<option value="ChooseY">Choose year</option>"
-  "<option value="opt1">Option1</option>"
-  "<option value="opt2">Option2</option>"
-  </select>`;
-  str += "</div>"; 
 
+  str += "</div>"; 
+ 
 
   localStorage.setItem('GitHubUser', data['githubuser'])
      str+="<p>";
