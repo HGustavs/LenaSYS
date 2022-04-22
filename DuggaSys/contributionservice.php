@@ -39,6 +39,11 @@ $draught=false;
 //Get all databases separated by course and year
 
 $directoriesYear = glob('../../contributionDBs/*', GLOB_ONLYDIR);
+
+for($i=0; $i< sizeof($directoriesYear); $i++){
+	$directoriesYear[$i]= substr($directoriesYear[$i],-4);
+}
+
 $allCoursesPerYear=array();
 
 for($i=0; $i< sizeof($directoriesYear); $i++){
