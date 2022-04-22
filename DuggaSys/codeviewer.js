@@ -402,7 +402,7 @@ function returned(data)
 		createBlocks(ranges[boxid], boxid);
 	}
 
-	//hides maximize button if not supported
+	// Hides maximize button if not supported
 	hideMaximizeAndResetButton();
 
 	// Allows resizing of boxes on the page
@@ -901,6 +901,11 @@ function createboxmenu(contentid, boxid, type) {
 			}
 			// If reader doesn't have write access, only the boxtitle is shown
 		} else {
+
+			document.oncopy = function(){
+				return false;
+			}
+
 			str += '<td id="boxtitlewrapper" class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
 		}
 
@@ -5124,26 +5129,52 @@ function addHtmlLineBreak(inString) {
 //----------------------------------------------------------------------------------
 
 function copyCodeToClipboard(boxid) {
+	
+	
 	var box = document.getElementById("box" + boxid);
 	var code = box.getElementsByClassName("normtextwrapper")[0];
 
 	var impo = code.getElementsByClassName("impo"); // Add code to just copy impo code
 
+	
+
 	// Select the code
 	var selection = window.getSelection();
 	
-	// Add Code to just copy impo code
-	for(i = 0; i<impo.length;i++){
-		var range = document.createRange();
-		range.selectNode(impo[i]);
-		selection.addRange(range);
+	selection.removeAllRanges();			//Remove range at selection
+
+	if (retData['writeaccess'] == "w") {		// If teacher
+
+		for(i = 0; i<impo.length;i++){
+			var range = document.createRange();
+			range.selectNode(impo[i]);
+			selection.addRange(range);
+		}
+		document.execCommand("Copy");			// Do Copy
+		
+	}else{										// If student or not log in
+
+		document.oncopy = function(){			//make copy possible
+			return true;
+		}
+
+		// Add Code to just copy impo code
+		for(i = 0; i<impo.length;i++){
+			var range = document.createRange();
+			range.selectNode(impo[i]);
+			selection.addRange(range);
+		}
+		
+		//var range = document.createRange();	// Original Code
+		//range.selectNodeContents(code);		// Original Code
+		//selection.removeAllRanges();			// Original Code
+		//selection.addRange(range);			// Original Code
+		document.execCommand("Copy");			// Do Copy
+
+		document.oncopy = function(){			//make copy impossible
+			return false;
+		}
 	}
-	
-	//var range = document.createRange();	// Original Code
-	//range.selectNodeContents(code);		// Original Code
-	//selection.removeAllRanges();			// Original Code
-	//selection.addRange(range);			// Original Code
-	document.execCommand("Copy");
 	selection.removeAllRanges();
 
 	// Notification animation
@@ -5156,6 +5187,7 @@ function copyCodeToClipboard(boxid) {
 	setTimeout(function () {
 		$("#textwrapper" + boxid).fadeIn("fast");
 	}, 1000);*/
+	
 }
 
 
