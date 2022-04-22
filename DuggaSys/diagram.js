@@ -1140,6 +1140,7 @@ function onSetup()
     // Global statemachine init
     stateMachine = new StateMachine(data, lines);
 
+    //toggleGrid();
     fetchDiagramFileName();
 }
 
@@ -5874,24 +5875,10 @@ function fetchDiagramFileName()
         var temp = window.parent.getVariantParam();
         cid = temp[1];
         cvers = temp[2];
-        AJAXService("GET", { cid: cid, coursevers: cvers }, "FILE");
-        let start = temp[0].lastIndexOf('diagram File&quot;:&quot;')+25;
-        let finish = temp[0].indexOf('.json') + 5;
-        diagramToLoad = temp[0].slice(start, finish);
-        console.log(diagramToLoad);
+        diagramToLoad = temp[3];
+
         console.log(cid);
         console.log(cvers);
-}
-
-function returnedFile(data){
-    retdata = data;
-    filearray = [];
-
-    for (var i = 0; i < retdata['entries'].length; i++){
-		filearray[i] = JSON.parse(retdata['entries'][i].filename);
-	}
-	filteredarray = filearray.filter(x => x.filename === diagramToLoad);
-
-    console.log(filteredarray[0].filePath);
+        console.log(diagramToLoad);
 }
 //#endregion =====================================================================================
