@@ -51,48 +51,7 @@
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
 
-	// if(isset($_SESSION['hashpassword'])){
-	// 	$hashpassword=$_SESSION['hashpassword'];
-	// }else{
-	// 	$hashpassword='UNK';
-	// }	
-
-	// if(isset($_SESSION['uid'])){
-	// 	$userid=$_SESSION['uid'];
-	// }else{
-	// 	$userid="UNK";
-	// }
-
-	// if(!isset($_SESSION['hasUploaded'])){
-	// 	$_SESSION['hasUploaded'] = "UNK";
-	// }
-
-	// if(!isset($_SESSION['pwdentrance'])){
-	// 	$_SESSION['pwdentrance'] = 0;
-	// }
-	//logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
-
-// if($cid != "UNK") $_SESSION['courseid'] = $cid;
-// 	$hr=false;
-// 	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
-// 	$query->bindParam(':cid', $cid);
-// 	$result = $query->execute();
-// 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
-// 			$visibility=$row['visibility'];
-// 	}
-	
-/*
-		//Give permit if the user is logged in and has access to the course or if it is public
-		$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0  && $userid != "UNK");
-
-		if(!$hr){
-			if (checklogin()){
-				$hr = isSuperUser($userid);$hr;
-			}
-		}
-*/
-
-  // can see all duggas and deleted ones
+// can see all duggas and deleted ones
   if(isSuperUser($userid)){
 	$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
 }
@@ -148,25 +107,6 @@
 <div id='login_popup'>
 <?php
 
-
-		//Old function
-		/*
-		global $pdo;
-		$sql = "SELECT hash,password FROM userAnswer WHERE '" .$password. "' LIKE password AND '".$hash."' LIKE hash";
-		$query = $pdo->prepare($sql);
-		$query->execute();
-		$count = $query->rowCount();
-			if($count == 0){
-				echo '<script>console.log(false)</script>';
-				echo "<script>console.log('".$count."')</script>;";
-				return false;
-			} else{
-				echo '<script>console.log(true)</script>';
-				echo "<script>console.log('".$count."')</script>;";
-				return true;
-			}*/
-
-
 // Check if we have a hash/hashpwd and dugga variant
 //echo "|". print_r($_SESSION)."|<br>";
 if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
@@ -207,52 +147,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	//echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
 	//echo "|$hash|$hashpwd|$variant|$moment|<br>";
 }
-// if(!isSuperUser($userid) && !hasAccess($userid, $cid, 'w')){
-// 	if($_SESSION['pwdentrance'] != 1){
-// 		if($_SESSION['hasUploaded'] != 1){
 
-// 			$hashLabelText;
-// 			if ($hash == "UNK")
-// 				$hashLabelText = "Previously used hash:";
-// 			else 
-// 				$hashLabelText = "Logging in with hash:";
-
-// 			//echo '<script type="text/javascript"> saveTimesAccessed(); </script>';
-// 			echo "<div class='loginHashContainer' id='hashBox'>";	
-// 			echo "<div class='loginHashBox'>";
-// 			echo "<div class='loginHashContent'>";
-// 			echo "<div class='w100'>";
-// 			echo "<div class='loginBoxheader'>";
-// 			echo "<h3>Login for Saved Dugga</h3>";
-// 			echo "<div onclick='exitHashBox()' class='cursorPointer'>x</div>";
-// 			echo "</div>";
-// 			echo "</div>";
-// 			echo "<div class='prev-hash-container'>";
-// 			echo "<label class='login-label'>" . $hashLabelText . "</label>";
-// 			echo "<p id='hash' style='font-weight: bold;'></p>";
-// 			echo "</div>";
-// 			if($hash == "UNK") {
-// 				echo "<div class='login-input-container'>";
-// 				echo "<input id='hashfield' class='textinput hash-login-input' type='text' placeholder='Hash'>";
-// 				echo "</div>";
-// 			}
-// 			echo "<div class='login-input-container'>";
-// 			echo "<input id='passwordfield' class='textinput form-control hash-login-input' type='password' autocomplete='new-password' placeholder='Password'>";
-// 			echo "</div>";
-// 			echo "<div class='hash-submit-btn-container'>";
-// 			echo "<input type='submit' class='submit-button' value='Confirm' name='Confirm' onclick='checkHashPassword()'>";
-// 			if ($hash == "UNK")
-// 				echo "<input class='submit-button large-button' type='button' value='New submission' onclick='newSubmission();' />";
-// 			echo "</div>";
-// 			echo "</div>";
-// 			echo "</div>";
-// 			echo "</div>";
-// 			//echo '<script type="text/javascript"> updateLoginPopup(); </script>';
-// 			//exit();
-// 		}
-		
-// 	}
-// }
 //Remove if you want the password to be persistent.
 //$_SESSION['hashpassword'] = 'UNK';
 ?>
@@ -383,17 +278,9 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 
     		<div id='emailPopup' style="display:block">
 				<p>Your dugga has been saved. Besure to store the hash and hash password in a safe place before submitting the dugga in canvas! <em>There is <strong>no way</strong> to restore a submission without the hash and hash password.</p>
-				<textarea readonly id="submission-receipt" rows="15" cols="50" style="height: 180px;resize: none;"></textarea>
-				<!-- <div id='urlAndPwd'>					 -->
-					<!-- <div class="testasd"><p class="bold">Direct link (to be submitted in canvas)</p><a id='url_receipt' target="_blank"></a></div>
-					<div class="testasd"><p class="bold">Hash</p><p id='hash_receipt'></p></div>
-					<div class="testasd"><p class="bold">Hash password</p><p id='pwd_receipt'></p></div> -->
-				<!-- </div> -->
-				
+				<textarea readonly id="submission-receipt" rows="15" cols="50" style="height: 180px;resize: none;"></textarea>					
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="copySubmissionReceiptToClipboard();" value='Copy Receipt'>
-					<!--<input type='button' class='submit-button' onclick="copyHashtoCB();" value='Copy Hash'>-->
-					<!--<input type='button' class='submit-button' onclick="copyUrltoCB();" value='Copy URL'>-->
 					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
 				</div>
     		</div>
@@ -429,7 +316,6 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 			<div id='loadDuggaInfo'></div>
     		<div id='loadDuggaPopup' style="display:block">
 				<div class='inputwrapper'><span>Enter hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value='' autocomplete="off"/></div>
-				<!--<div class='inputwrapper'><span>Enter hash password:</span><input class='textinput' type='text' id='hashpwd' placeholder='Hash password' value='' autocomplete="off"/></div>-->
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="loadDuggaType();" value='Load Dugga'>
 				</div>

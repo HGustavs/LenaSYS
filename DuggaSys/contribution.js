@@ -1183,7 +1183,7 @@ function createGitHubcontributionTable(data) {
     data: tabledata,
     tableElementId: "contribGithHubContribTable",
     renderCellCallback: renderCellForghContibTable,
-    renderSortOptionsCallback: renderSortOptions,
+    renderSortOptionsCallback: renderSortOptions, 
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
@@ -1195,6 +1195,7 @@ function createGitHubcontributionTable(data) {
 
 function renderCellForghContibTable(col, celldata, cellid) {
   var str = "";
+ 
   obj = celldata;
   var rowNr = cellid.charAt(1);
   if (col === 'weeks') {
@@ -1229,7 +1230,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
            for (j = 0; j < obj.commits.length; j++) {
              var message = obj.commits[j].message;
              var hash = obj.commits[j].cid;
-             str += `<span><a onclick='keepContribContentOpen(event)' 
+             str += `<span><a class="commitLink" onmouseover="showCommits(this)" onmouseout="hideCommits(this)" onclick='keepContribContentOpen(event)' 
              target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}'>${message}</a></span>`;
            }
            str += "</div>";
@@ -1698,18 +1699,13 @@ function resetForceLogin()
   forceUserLogin();
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//Shows a div when hover the commit links
+function showCommits(){
+ 
+  document.getElementById('commitDiv').style.display="block";
+}
+//Hide a div when hover the commit links
+ function hideCommits(){
+  document.getElementById('commitDiv').style.display="none";
+ }
 console.error
