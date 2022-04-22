@@ -1,5 +1,4 @@
 <?php
-/*testar en kommentar*/
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
@@ -11,10 +10,7 @@ require 'query.php';
 //Gets the parameter from the URL. If the parameter is not availble then return UNK
 $course = getOPG("c");
 $assignment = getOPG("a");
-//Before
-// $submission = getOPG("s");
-//After
-$submission = getOPG("a");
+$submission = getOPG("s");
 
 // Connect to database and start session
 pdoConnect();
@@ -119,7 +115,7 @@ function GetCourse($course){
 		$vers = $row['vers'];
 	}
 	if(isset($cid)&&isset($vers)){
-		header("Location: /DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}&embed");
+		header("Location: ../DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}&embed");
 		exit();			
 	}else{
 		header("Location: ../errorpages/404.php");
@@ -143,6 +139,96 @@ function GetCourse($course){
 //------------------------------------------------------------------------------------------------
 function CourseAndAssignment($course, $assignment) {	
 	global $pdo;
+	// $tmpcoursearr = explode(" ", $course);
+	// $tmpassignmentarr = explode(" ", $assignment);
+
+	// Match parameters with SH identifiers
+	$sql = "SELECT cparam, aparam, cid, lid FROM shregister WHERE cparam = :cparam AND aparam = :aparam;";
+	$query = $pdo->prepare($sql);
+	$query->bindParam(":cparam", $course,PDO::PARAM_STR);
+	$query->bindParam(":aparam", $assignment,PDO::PARAM_STR);
+	$query->execute();
+
+	if($row = $query->fetch(PDO::FETCH_ASSOC)){ // Identifier recognized
+		$cparam = $row['cparam'];
+		$aparam = $row['aparam'];
+		$cid = $row['cid'];
+		$lid = $row['lid'];
+
+		echo "<script>console.log('Console: An identifier was found' );</script>";
+
+		// 
+		$sql="SELECT course.cid AS cid,course.activeversion AS vers, course.coursename AS coursename, listentries.entryname AS entryname, listentries.lid AS lid,listentries.link AS link,listentries.highscoremode AS highscoremode,quiz.deadline AS deadline FROM listentries JOIN course ON listentries.vers=course.activeversion AND listentries.cid=course.cid LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind=3 AND cid = :courseid AND lid = :assignmentid;";
+		$query->bindParam(":courseid", $cid,PDO::PARAM_INT);
+		$query->bindParam(":assignmentid", $lid,PDO::PARAM_INT);
+
+		$query->execute();
+
+		if($row = $query->fetch(PDO::FETCH_ASSOC)) {
+			$cid = $row['cid'];
+			$vers = $row['vers'];
+			$coursename = $row['coursename'];
+			$entryname = $row['entryname'];
+			$lid = $row['lid'];
+			$link = $row['link'];
+			$highscoremode = $row['highscoremode'];
+			$deadline = $row['deadline'];
+
+			// TODO Implement handler for deleted courses and changed id.
+			// Check if the SH identifiers are still similar to course and assignment names
+			$coursesimilar = stristr($courselink, $coursename) || stristr($coursename, $courselink);
+			$assignmentsimilar = stristr($assignmentlink, $entryname) || stristr($entryname, $assignmentlink);
+			if ($coursesimilar && $assignmentsimilar) {
+
+			} else { // SH identifiers do not resemble course and assignment names
+
+			}
+		} else {
+			
+		}
+	} else { // Identifier not recognized (Create new identifier)
+		echo "<script>console.log('Console: No identifier was found' );</script>";
+		// Find a resembling coursename and assignmentname form listentry with parameters
+		$sql="SELECT course.cid AS cid,course.activeversion AS vers, course.coursename AS coursename, listentries.entryname AS entryname, listentries.lid AS lid,listentries.link AS link,listentries.highscoremode AS highscoremode,quiz.deadline AS deadline FROM listentries JOIN course ON listentries.vers=course.activeversion AND listentries.cid=course.cid LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind=3 AND coursename LIKE CONCAT('%', :cparam, '%') AND entryname LIKE CONCAT('%', :aparam, '%');";
+		$query = $pdo->prepare($sql);
+		$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+		$query->bindParam(":aparam", $assignment, PDO::PARAM_STR);
+		$query->execute();
+
+		if($row = $query->fetch(PDO::FETCH_ASSOC)) { // One  row resulted form query
+			if (!$query->fetch()) {
+				$cid = $row['cid'];
+				$vers = $row['vers'];
+				$coursename = $row['coursename'];
+				$entryname = $row['entryname'];
+				$lid = $row['lid'];
+				$link = $row['link'];
+				$highscoremode = $row['highscoremode'];
+				$deadline = $row['deadline'];
+
+				echo "<script>console.log('Console: SH identifier is unique' );</script>";
+
+				$sql = "INSERT INTO shregister (cparam, aparam, cid, lid) VALUES (?, ?, ?, ?);";
+				$query = $pdo->prepare($sql);
+				$query->execute([$course, $assignment, $cid, $lid]);
+
+				echo "<script>console.log('Console: New SH identifier created' );</script>";
+			} else { // Multiple query results
+				echo "<script>console.log('Console: SH identifier is not unique' );</script>";
+			}
+		} else { // No query results
+			echo "<script>console.log('Console: SH identifier is not unique' );</script>";
+		}
+	}
+
+	if(isset($cid)&&isset($vers)&&isset($link)&&isset($lid)) {
+		header("Location: ../DuggaSys/showDugga.php?courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$link}&moment={$lid}&embed");
+		exit();
+	}else{
+		header("Location: ../errorpages/404.php");
+	}
+
+	/*global $pdo;
 	$sql="SELECT course.cid AS cid,course.activeversion AS vers, course.coursename AS coursename, listentries.entryname AS entryname, listentries.lid AS lid,listentries.link AS link,listentries.highscoremode AS highscoremode,quiz.deadline AS deadline FROM listentries JOIN course ON listentries.vers=course.activeversion AND listentries.cid=course.cid LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind=3";
 	$tmpcoursearr=explode(" ",$course);
 	$tmpassignmentarr=explode(" ",$assignment);
@@ -171,7 +257,7 @@ function CourseAndAssignment($course, $assignment) {
 		$did = $row['link'];
 		$highscoremode = $row['highscoremode'];
 		$deadline = $row['deadline'];
-	}
+	}*/
 
 	// $tmparr=explode(" ",$course);
 
@@ -216,12 +302,12 @@ function CourseAndAssignment($course, $assignment) {
 	// 	}	
 	// }
 
-	if(isset($cid)&&isset($vers)&&isset($did)&&isset($moment)){		
-    header("Location: /DuggaSys/showDugga.php?courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&embed");
+	/*if(isset($cid)&&isset($vers)&&isset($did)&&isset($moment)){		
+    header("Location: ../DuggaSys/showDugga.php?courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&embed");
 		exit();	
 	}else{
 		header("Location: ../errorpages/404.php");
-	}
+	}*/
 }
 
 
