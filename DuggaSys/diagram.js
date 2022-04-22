@@ -1412,8 +1412,10 @@ function mwheel(event) {
 function mdown(event)
 {
         // Mouse pressed over delete button for multiple elements
-        if (event.button == 0 && context.length > 1) {
-            checkDeleteBtn();
+        if (event.button == 0) {
+            if (context.length > 1) {
+                checkDeleteBtn();
+            }
         }
 
     // Prevent middle mouse panning when moving an object
@@ -1447,6 +1449,13 @@ function mdown(event)
                 sscrolly = scrolly;
                 startX = event.clientX;
                 startY = event.clientY;
+
+                // Mouse pressed over delete button for a single element
+                if (event.button == 0) {
+                    if (context.length == 1) {
+                        checkDeleteBtn();
+                    }
+                }
 
                 if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                     wasDblClicked = true;
@@ -1505,8 +1514,8 @@ function mdown(event)
  */
 function ddown(event)
 {
-    // Mouse pressed over delete button for a single element
-    if (event.button == 0) {
+    // Mouse pressed over delete button for a single line
+    if (event.button == 0 && contextLine.length > 0) {
         checkDeleteBtn();
     }
     
@@ -1722,7 +1731,8 @@ function checkDeleteBtn(){
             if (mouseMode == mouseModes.EDGE_CREATION) return;
             if (context.length > 0) {
                 removeElements(context);
-            } else if (contextLine.length > 0) {
+            }
+            if (contextLine.length > 0) {
                  removeLines(contextLine);
             }            
     
