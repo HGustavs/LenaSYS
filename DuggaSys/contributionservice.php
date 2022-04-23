@@ -463,7 +463,7 @@ if(strcmp($opt,"get")==0) {
 		array_push($hourlyevents, $issue);
 	}
 
-	//error_log("message",1);
+
 
 	$count = array();
 	$currentdate = $startweek;
@@ -472,9 +472,8 @@ if(strcmp($opt,"get")==0) {
 		$tomorrowdate=strtotime("+1 day",strtotime($currentdate));
         $tomorrowdate=date('Y-m-d',$tomorrowdate);
 		$daycount = array();
+
 		//Events
-		//$eventcount = $log_db->get_var('SELECT count(*) FROM event WHERE author='$gituser' AND eventtime>'$currentdate' AND eventtime<'$tomorrowdate' AND kind!="comment"');
-		
 		$query = $log_db->prepare('SELECT count(*) FROM event WHERE author=:gituser AND eventtime>:currentdate AND eventtime<:tomorrowdate AND kind!="comment"');
 		$query->bindParam(':gituser', $gituser);
 		$query->bindParam(':currentdate', $currentdate);
@@ -483,11 +482,9 @@ if(strcmp($opt,"get")==0) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries".$error[2];
 		}
-		$eventcount = $query->fetchAll();
+		$eventcount = $query->fetchColumn(); 
 
 	  	//Comments
-		//$commentcount = $log_db->get_var('SELECT count(*) FROM event WHERE author='$gituser' AND eventtime>'$currentdate' AND eventtime<'$tomorrowdate' AND kind="comment"');
-
 		$query = $log_db->prepare('SELECT count(*) FROM event WHERE author=:gituser AND eventtime>:currentdate AND eventtime<:tomorrowdate AND kind="comment"');
 		$query->bindParam(':gituser', $gituser);
 		$query->bindParam(':currentdate', $currentdate);
@@ -496,11 +493,9 @@ if(strcmp($opt,"get")==0) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries".$error[2];
 		}
-		$commentcount = $query->fetchAll();
+		$commentcount = $query->fetchColumn(); 
  
 		//Commits
-		//$commitcount = $log_db->get_var("SELECT count(*) FROM Bfile,Blame where Blame.fileid=Bfile.id and blameuser='$gituser' and blamedate>'$currentdate' AND blamedate<'$tomorrowdate'");
-
 		$query = $log_db->prepare('SELECT count(*) FROM Bfile,Blame where Blame.fileid=Bfile.id and blameuser=:gituser and blamedate>:currentdate AND blamedate<:tomorrowdate');
 		$query->bindParam(':gituser', $gituser);
 		$query->bindParam(':currentdate', $currentdate);
@@ -509,11 +504,9 @@ if(strcmp($opt,"get")==0) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries".$error[2];
 		}
-		$commitcount = $query->fetchAll();
+		$commitcount = $query->fetchColumn(); 
 		
 		//LOC
-		//$loccount = $log_db->get_var("SELECT sum(rowcnt) FROM Bfile,Blame where Blame.fileid=Bfile.id and blameuser='$gituser' and blamedate>'$currentdate' AND blamedate<'$tomorrowdate'");
-
 		$query = $log_db->prepare('SELECT sum(rowcnt) FROM Bfile,Blame where Blame.fileid=Bfile.id and blameuser=:gituser and blamedate>:currentdate AND blamedate<:tomorrowdate');
 		$query->bindParam(':gituser', $gituser);
 		$query->bindParam(':currentdate', $currentdate);
@@ -522,7 +515,10 @@ if(strcmp($opt,"get")==0) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries".$error[2];
 		}
-		$loccount = $query->fetchAll();
+		$loccount = $query->fetchColumn(); 
+		if($loccount == NULL){
+			$loccount = 0;
+		}
 
 		$daycount = array('events' => $eventcount,
 						  'commits' => $commitcount,
@@ -531,7 +527,7 @@ if(strcmp($opt,"get")==0) {
 		$count[$currentdate] = $daycount;
 		$currentdate=strtotime("+1 day",strtotime($currentdate));
 	}
-	//error_log($count);
+
 
 
 	$timesheets = array();
