@@ -1005,7 +1005,7 @@ var defaults = {
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60 },
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45 },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5 },
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50}     //<-- UML functionality
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50, attributes: ['Test'], functions: ['Whato']}     //<-- UML functionality
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -2256,7 +2256,12 @@ function saveProperties()
                     propsChanged.name = value;
                 }
                 break;
-        
+            case "attributes":
+                var temp = element.attributes;
+                var tempo = child.value;
+                var testo = tempo.split('\n');
+                element[propName] = testo;
+                break;
             default:
                 break;
         }
@@ -3840,6 +3845,29 @@ function generateContextProperties()
     } */
 
     //more than one element selected
+    //One element selected, not lines
+    if (context.length == 1 && contextLine.length == 0) {
+        //Get selected element
+        var element = context[0];
+        
+        for (const property in element) {
+            switch (property.toLowerCase()) {
+                case 'name':
+                    //str += `<input id="elementProperty_${property}" type="text" value="${element[property]}" onfocus="propFieldSelected(true)" onblur="propFieldSelected(false)"> `;
+                    break;
+
+                case 'attributes':
+                    str += `<textarea id='elementProperty_${property}' rows='4' cols='50'>${element[property]}</textarea>`;
+                    break;
+                
+                default:
+                    break;
+            }
+        }
+        if (element.kind == 'UMLEntity') {
+            //str += `<textarea></textarea>`;
+        }
+    }
 
     if (context.length == 1 && contextLine.length == 0) {
         var element = context[0];
@@ -3936,6 +3964,7 @@ function generateContextProperties()
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
     }
 
+    //If more than one element is selected
     if (context.length > 1) {
         str += `<div style="color: white">BG Color</div>`;
         str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
@@ -5086,7 +5115,7 @@ function drawElement(element, ghosted = false)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var elemAttri = 2;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
+    var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
 
@@ -5110,6 +5139,7 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
     if (element.kind == "UMLEntity") {  
+        elemAttri = element.attributes.length;
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
@@ -5141,7 +5171,7 @@ function drawElement(element, ghosted = false)
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemAttri - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
         for (var i = 0; i < elemAttri; i++) {
-            str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- Attri ${i}</text>`;
+            str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- ${element.attributes[i]}</text>`;
         }
         //end of svg for background
         str += `</svg>`;
