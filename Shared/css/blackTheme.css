@@ -450,6 +450,11 @@ body {
 .DarkModeText{
     color: white;
 }
+#inputwrapperText{
+    color:rgba(255,255,255,0.6);
+}
+
+
 
 }
 /* BOXMENU STYLING STOP */
