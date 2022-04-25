@@ -1732,9 +1732,9 @@ function showCommits(object, cid){
       //Adds the code changes associated with that blame
       console.log("before for offset: "+offset+" offsetRunner: " + offsetRunner);
       codeLength = commitChange[i]['blame'][j].rowk;
-      for(var k = 0 + offset; k < codeLength+offset; k++){
-        console.log("index: " + i + " k: "+ k + " code length: "+ codeLength + " offset: "+ offset);
-        str += "<p><b>" + commitChange[i]['codechange'][k].rowno + "</b> - " + commitChange[i]['codechange'][k].code + " ";
+      for(var x = 0; x < codeLength; x++){
+        console.log("index: " + i + " x: "+ x + " code length: "+ codeLength + " offset: "+ offset);
+        str += "<p><b>" + commitChange[i]['codechange'][x+offset].rowno + "</b> - " + commitChange[i]['codechange'][x+offset].code;
         offsetRunner++;
       }
       offset = offsetRunner;
