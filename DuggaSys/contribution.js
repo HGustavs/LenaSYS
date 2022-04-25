@@ -1058,7 +1058,16 @@ function courseSelection(){
   console.log(button);
 }
 
-function courseDBcollection(){
+
+//Function to reload contributionservice with the path to the correct db file
+function courseDBcollection(path){
+  $.get( 
+    "contributionservice.php",
+    { path: path },
+    function(data) {
+       //$('#stage').html(data);
+    }
+ );
   
 }
 

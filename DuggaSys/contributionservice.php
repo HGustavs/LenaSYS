@@ -24,6 +24,17 @@ $log_db = new PDO('sqlite:../../BGHdata_2021_05.db');
 //Old filepath with wrong orientation of the slashes that prevent function on Linux DO NOT USE
 //$log_db = new PDO('sqlite:..\..\BGHdata_2021_05.db');
 
+
+//This loads the correct db file selected by buttons in js file
+if( $_REQUEST["path"] ) {
+	
+	$path = $_REQUEST['path'];
+	$log_db = new PDO('sqlite:'.$path);
+ }
+
+//Old filepath with wrong orientation of the slashes that prevent function on Linux DO NOT USE
+//$log_db = new PDO('sqlite:..\..\BGHdata_2021_05.db');
+
 $opt = getOP('opt');
 $courseid=getOP('courseid');
 $coursename=getOP('coursename');
@@ -41,7 +52,6 @@ $draught=false;
 $directoriesYear = glob('../../contributionDBs/*', GLOB_ONLYDIR);
 
 for($i=0; $i< sizeof($directoriesYear); $i++){
-	//$temp = substr($directoriesYear[$i],-4);
 	$directoriesYear[$i]= substr($directoriesYear[$i],-4);
 }
 
