@@ -5334,6 +5334,7 @@ function checkElementError(element)
     var fElement;
     var tElement;
     var keyQuantity;
+    var strongEntity;
     var weakrelation;
     var lineQuantity;
 
@@ -5341,6 +5342,7 @@ function checkElementError(element)
     if (element.kind == "EREntity") {
         if (element.state == "weak") {
             keyQuantity = 0;
+            strongEntity = 0;
             weakrelation = 0;
             for (var i = 0; i < lines.length; i++) {
                 line = lines[i];
@@ -5371,6 +5373,36 @@ function checkElementError(element)
                     }
                 }
 
+                // Checking if weak entity is related to a strong entity or a weak entity with a relation
+                if (fElement.id == element.id && tElement.kind == "ERRelation" && tElement.state == "weak" && line.kind == "Double") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == tElement.id && tElement0.kind == "EREntity" && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
+                            strongEntity += 1;
+                        }
+                        if (tElement0.id == tElement.id && fElement0.kind == "EREntity" && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
+                            strongEntity += 1;
+                        }
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERRelation" && fElement.state == "weak" && line.kind == "Double") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == fElement.id && tElement0.kind == "EREntity" && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
+                            strongEntity += 1;
+                        }
+                        if (tElement0.id == fElement.id && fElement0.kind == "EREntity" && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
+                            strongEntity += 1;
+                        }
+                    }
+                }
+
                 // Counting weak relations
                 if (fElement.id == element.id && tElement.kind == "ERRelation" && tElement.state == "weak") {
                     weakrelation += 1;
@@ -5379,6 +5411,11 @@ function checkElementError(element)
                     weakrelation += 1;
                 }
             }
+            // Checks if element has one relation to a strong entity
+            if (strongEntity != 1) {
+                errorData.push(element);
+            } 
+
             for (var i = 0; i < lines.length; i++) {
                 line = lines[i];
                 fElement = data[findIndex(data, line.fromID)];
@@ -5455,16 +5492,32 @@ function checkElementError(element)
                 tElement = data[findIndex(data, line.toID)];
 
                 // Checking for wrong line type to a relation
-                if (fElement.id == element.id && tElement.kind == "EREntity" && tElement.state == "weak") {
-                    if (line.kind == "Normal") {
-                        errorData.push(fElement);
-                        errorData.push(tElement);
+                if (fElement.id == element.id && tElement.kind == "EREntity" && tElement.state == "weak" && line.kind == "Normal") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != tElement.id) {
+                            errorData.push(element);
+                        }
+                        if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != tElement.id) {
+                            errorData.push(element);
+                        }
                     }
                 }
-                if (tElement.id == element.id && fElement.kind == "EREntity" && fElement.state == "weak") {
-                    if (line.kind == "Normal") {
-                        errorData.push(fElement);
-                        errorData.push(tElement);
+                if (tElement.id == element.id && fElement.kind == "EREntity" && fElement.state == "weak" && line.kind == "Normal") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != fElement.id) {
+                            errorData.push(element);
+                        }
+                        if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != fElement.id) {
+                            errorData.push(element);
+                        }
                     }
                 }
 
@@ -5501,6 +5554,66 @@ function checkElementError(element)
                         }
                     }
                 }
+
+                // Checking for more than one double line to a weak relation
+                if (fElement.id == element.id && line.kind == "Double") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && line0.kind == "Double" && tElement0.id != tElement.id) {
+                            errorData.push(element);
+                        }
+                        if (tElement0.id == element.id && line0.kind == "Double" && fElement0.id != tElement.id) {
+                            errorData.push(element);
+                        }
+                    }
+                }
+                if (tElement.id == element.id && line.kind == "Double") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && line0.kind == "Double" && tElement0.id != fElement.id) {
+                            errorData.push(element);
+                        }
+                        if (tElement0.id == element.id && line0.kind == "Double" && fElement0.id != fElement.id) {
+                            errorData.push(element);
+                        }
+                    }
+                }
+
+                // Checking for more than one weak entities to a weak relation
+                /*if (fElement.id == element.id && tElement.kind == "EREntity" && tElement.state == "weak") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state == "weak" && tElement0.id != tElement.id) {
+                            errorData.push(fElement);
+                        }
+                        if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state == "weak" && fElement0.id != tElement.id) {
+                            errorData.push(fElement);
+                        }
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "EREntity" && fElement.state == "weak") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state == "weak" && tElement0.id != fElement.id) {
+                            errorData.push(tElement);
+                        }
+                        if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state == "weak" && fElement0.id != fElement.id) {
+                            errorData.push(tElement);
+                        }
+                    }
+                }*/
 
                 // Counting connected lines
                 if ((tElement.id == element.id && fElement.kind == "EREntity") || (fElement.id == element.id && tElement.kind == "EREntity")) {
