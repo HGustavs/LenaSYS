@@ -356,6 +356,14 @@ function updateVariantTitle(number) {
 // Opens the variant editor.
 function showVariantEditor() {
 	AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
+
+	//check if the selected dugga is a diagram dugga
+	if(globalData['entries'][globalVariant].quizFile == "diagram_dugga"){
+		$("#selectBox").css("display", "flex");
+	}
+	else{
+		$("#selectBox").css("display", "none");
+	}
   if(submissionRow == 0){
     // The submission row doesn't go away when leaving the modal
     // so without the if statement a new submission div would be created each time.
