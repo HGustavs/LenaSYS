@@ -23,6 +23,8 @@ var firstSelWeek;
 var secondSelWeek;
 var updateShowAct = true;
 
+var commitChangeArray = [];
+
 //sorting for multiple views
 //Restores all views when pressing the All button
 function restoreStatView() {
@@ -1031,6 +1033,8 @@ function returnedSection(data) {
   createGitHubcontributionTable(buildContributionData(data));
   toggleAfterLocalStorage(data);
   createTimeSheetTable(data['timesheets']);
+  
+  createCommitChange(data['commitchange']);
 
   document.getElementById('barchart').innerHTML = renderBarDiagram(data);
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
@@ -1230,7 +1234,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
            for (j = 0; j < obj.commits.length; j++) {
              var message = obj.commits[j].message;
              var hash = obj.commits[j].cid;
-             str += `<span><a class="commitLink" onmouseover="showCommits(this)" onmouseout="hideCommits(this)" onclick='keepContribContentOpen(event)' 
+             str += `<span><a class="commitLink" onmouseover='showCommits(this, \"${"cid: " + hash}\");' onmouseout="hideCommits(this)" onclick='keepContribContentOpen(event)' 
              target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}'>${message}</a></span>`;
            }
            str += "</div>";
@@ -1700,12 +1704,50 @@ function resetForceLogin()
 
 }
 //Shows a div when hover the commit links
-function showCommits(){
- 
-  document.getElementById('commitDiv').style.display="block";
+function showCommits(object, cid){
+  var text = document.getElementById('commitDiv');
+  text.style.display="block";
+  text.innerHTML = commitChangeArray[cid];
 }
 //Hide a div when hover the commit links
  function hideCommits(){
   document.getElementById('commitDiv').style.display="none";
  }
+
+//Creates the html elements containing the commit changes
+ function createCommitChange(data){
+  var commitChange = data;
+  var l = commitChange.length;
+  
+  for(var i = 0; i < l; i++){
+    var str ="";
+    var blameLength = commitChange[i]['blame'].length;
+    var offset = 0;
+    
+    for(var j = 0; j < blameLength; j++){
+      var offsetRunner = offset;
+      //Adds blame string
+      str += "<h3>" + commitChange[i]['blame'][j].filename + " - " + commitChange[i]['blame'][j].rowk + " lines changed </h3>";
+
+      //Adds the code changes associated with that blame
+      //console.log("before for offset: "+offset+" offsetRunner: " + offsetRunner);
+      codeLength = commitChange[i]['blame'][j].rowk;
+      for(var x = 0; x < codeLength; x++){
+        //console.log("index: " + i + " x: "+ x + " code length: "+ codeLength + " offset: "+ offset);
+        str += "<p><b>" + commitChange[i]['codechange'][x+offset].rowno + "</b> - " + commitChange[i]['codechange'][x+offset].code;
+        offsetRunner++;
+      }
+      offset = offsetRunner;
+      //console.log("After for "+offset);
+    }
+    //If a commit didn't change anything display this instead
+    if(str == ""){
+      str += "<h3>Commit overwritten or missing from database</h3>"
+    }
+    //Add the string to the array using the cid as index.
+    commitChangeArray["cid: "+commitChange[i]['cid']] = str;
+  }
+ }
+
+
 console.error
