@@ -22,6 +22,7 @@ var activities;
 var firstSelWeek;
 var secondSelWeek;
 var updateShowAct = true;
+var courseFileArr = [];
 
 //sorting for multiple views
 //Restores all views when pressing the All button
@@ -999,26 +1000,21 @@ function returnedSection(data) {
   
   //Dynamically loads the year selection list based on folders in ../../contributionDBs/
   str += `<select id='yearBtn' class='submit-button'
-  onclick='statSort(value)'onchange='courseSelection()'>
-  "<option value="ChooseY">Choose year</option>"`;
-
+  onclick='statSort(value)'onchange='courseSelection(value)'>
+  <option value="ChooseY">Choose year</option>`;
   if (data['directoriesYear'][0] !== null){
     for(i=0;i<data['directoriesYear'].length;i++){
-      str +=`"<option value="opt`;
-      str +=i;
-      str +=`">`;
-      str = str.concat(data['directoriesYear'][i]);
-      str +=`</option>"`;
+      courseFileArr.push(data['allCoursesPerYear'][i]); // Keep file paths
+      str += '<option value=' + i + '>'; // Array pos
+      str += data['directoriesYear'][i]; // Year
+      str +=`</option>`;
     }
   }
-  str +=`</option>"</select>`;
+  str +=`</select>`;
 
   str += `<select id='courseBtn' class='submit-button'
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'>
-  "<option value="ChooseC">Choose course</option>"
-  "<option value="opt1">Option1</option>"
-  "<option value="opt2">Option2</option>"
-  </select>`;
+  onclick='statSort(value)'onchange='courseDBcollection(value)'>
+  <option value="ChooseC">Choose course</option></select>`;
 
   str += "</div>"; 
  
@@ -1052,11 +1048,22 @@ function returnedSection(data) {
   document.getElementById('content').innerHTML = str;
 }
 
-function courseSelection(){
-  console.log("Test");
-  var button = document.getElementById('yearBtn').value;
-  courseDBcollection('../../contributionDBs/2019/2019_1.db');
-  console.log(button);
+// Update the "Select Course" dropdown options
+function courseSelection(pos){
+  // Clear dropdown menu
+  var dropdown = document.getElementById('courseBtn');
+  dropdown.options.length=0;
+
+  // Get file paths
+  for(i=0;i<courseFileArr[pos].length;i++)
+  {
+    // Create button
+    var opt = document.createElement('option');
+    opt.value = i;
+    var str = courseFileArr[pos][i];
+    opt.innerHTML = str.substring(str.lastIndexOf('/') + 1);
+    dropdown.appendChild(opt);
+  }
 }
 
 
