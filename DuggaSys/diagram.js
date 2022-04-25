@@ -1001,11 +1001,11 @@ var ghostLine = null;
  * @see constructElementOfType() For creating new elements with default values.
  */
 var defaults = {
-    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50 },
-    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60 },
-    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45 },
-    Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5 },
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50, attributes: ['Test'], functions: ['Whato']}     //<-- UML functionality
+    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50, type: "ER" },
+    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60, type: "ER" },
+    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45, type: "ER" },
+    Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5, type: "ER" },
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50, type: "UML", attributes: ['Test'], functions: ['Whato']}     //<-- UML functionality
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -3845,32 +3845,102 @@ function generateContextProperties()
     } */
 
     //more than one element selected
-    //One element selected, not lines
+    //One element selected, no lines
     if (context.length == 1 && contextLine.length == 0) {
         //Get selected element
         var element = context[0];
         
-        for (const property in element) {
-            switch (property.toLowerCase()) {
-                case 'name':
-                    //str += `<input id="elementProperty_${property}" type="text" value="${element[property]}" onfocus="propFieldSelected(true)" onblur="propFieldSelected(false)"> `;
-                    break;
+        str += `<div style='color:white'>Type</div>`;
 
-                case 'attributes':
-                    str += `<textarea id='elementProperty_${property}' rows='4' cols='50'>${element[property]}</textarea>`;
-                    break;
-                
-                default:
-                    break;
+        //Create a dropdown menu for diagram type
+        var value = Object.values(entityType);
+        var selected = element.type;
+
+        str += '<select id="propertySelect">';
+        for (i = 0; i < value.length; i++) {
+            if (selected != value[i]) {
+                str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+            } else if(selected == value[i]) {
+                str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
             }
         }
-        if (element.kind == 'UMLEntity') {
-            //str += `<textarea></textarea>`;
+        str += '</select>'; 
+
+        //Selected ER type
+        if (element.type == 'ER') {
+            //Iterate through properties
+            for (const property in element) {
+                switch (property.toLowerCase()) {
+                    case 'name':
+                        str += `<div style='color:white'>Name</div>`;
+                        str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        //Creates drop down for changing state of ER elements
+        var value;
+        var selected = context[0].state;
+        if(selected == undefined) {
+            selected = "normal"
         }
+        if(element.kind=="ERAttr") {
+            value = Object.values(attrState);
+        } else if(element.kind=="EREntity") {
+            value = Object.values(entityState);
+        } else if(element.kind=="ERRelation") {
+            value = Object.values(relationState);
+        }
+
+        str += '<select id="propertySelect">';
+            for (i = 0; i < value.length; i++) {
+                if (selected != value[i]) {
+                    str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                } else if(selected == value[i]) {
+                    str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                }
+            }
+        str += '</select>'; 
+
+        }
+
+        //Selected UML type
+        else if (element.type == 'UML') {
+            //Iterate through properties
+            for (const property in element) {
+                switch (property.toLowerCase()) {
+                    case 'name':
+                        str += `<div style='color:white'>Name</div>`;
+                        str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                        break;
+                    case 'attributes':
+                        str += `<div style='color:white'>Attributes</div>`;
+                        str += `<textarea id='elementProperty_${property}' rows='4' cols='40'>${element[property]}</textarea>`;
+                        break;
+                    case 'functions':
+                        str += `<div style='color:white'>Functions</div>`;
+                        str += `<textarea id='elementProperty_${property}' rows='4' cols='40'>${element[property]}</textarea>`;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+         // Creates button for selecting element background color
+         str += `<div style="color: white">BG Color</div>`;
+         str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+             `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+         str += `<div style="color: white">Stroke Color</div>`;
+         str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
+             `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
+ 
+         str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+
     }
 
     if (context.length == 1 && contextLine.length == 0) {
-        var element = context[0];
+        /*var element = context[0];
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
         for (const property in element) {
             switch (property.toLowerCase()) {
@@ -3909,19 +3979,11 @@ function generateContextProperties()
             }
         str += '</select>'; 
 
-        // Creates button for selecting element background color
-        str += `<div style="color: white">BG Color</div>`;
-        str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
-            `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-        str += `<div style="color: white">Stroke Color</div>`;
-        str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
-            `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
-
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+       */
 
     } 
 
-    // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
+   /* // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
     if (contextLine.length == 1 && context.length == 0) {
         str = "<legend>Properties</legend>";
         
@@ -3963,8 +4025,8 @@ function generateContextProperties()
 
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
     }
-
-    //If more than one element is selected
+    */
+    /*//If more than one element is selected
     if (context.length > 1) {
         str += `<div style="color: white">BG Color</div>`;
         str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
@@ -3983,7 +4045,7 @@ function generateContextProperties()
             }
         }
         str += `<br></br><input type="submit" id="lockbtn" value="${locked ? "Unlock" : "Lock"}" class="saveButton" onclick="toggleEntityLocked();">`;
-    }
+    }*/
 
     propSet.innerHTML = str;
 
