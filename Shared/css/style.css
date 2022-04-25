@@ -8179,7 +8179,7 @@ textarea#filecont {
   color: #000fff;
   
 }
-#options-pane {
+#accountRequests-pane {
   position: fixed;
   top: 0px;
   width: 320px;
@@ -8195,7 +8195,7 @@ textarea#filecont {
   user-select: none;
 }
 
-#options-pane-button {
+#accountRequests-pane-button {
   display: inline-block;
   vertical-align: top;
   transform-origin: top left;            
@@ -8203,16 +8203,16 @@ textarea#filecont {
   cursor: pointer;
 }
 
-#options-pane-content {
+#accountRequests-pane-content {
   margin-left:20px;
   vertical-align: top;
   display: inline-block;
 }
 
-.show-options-pane {
+.show-accountRequests-pane {
   right: 0px;
 }
 
-.hide-options-pane {
+.hide-accountRequests-pane {
   right: -308px;
 }

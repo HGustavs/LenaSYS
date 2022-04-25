@@ -1709,3 +1709,13 @@ function showCommits(){
   document.getElementById('commitDiv').style.display="none";
  }
 console.error
+function toggleOptionsPane(){
+    if (document.getElementById("accountRequests-pane").className == "show-accountRequests-pane") {
+        document.getElementById('optmarker').innerHTML = "Account requests";
+        document.getElementById("accountRequests-pane").className = "hide-accountRequests-pane";
+    } else {
+        document.getElementById('optmarker').innerHTML = "Account requests";
+        document.getElementById("accountRequests-pane").className = "show-accountRequests-pane";
+       
+    }
+}
