@@ -1055,6 +1055,7 @@ function returnedSection(data) {
 function courseSelection(){
   console.log("Test");
   var button = document.getElementById('yearBtn').value;
+  courseDBcollection('../../contributionDBs/2019/2019_1.db');
   console.log(button);
 }
 
@@ -1065,7 +1066,7 @@ function courseDBcollection(path){
     "contributionservice.php",
     { path: path },
     function(data) {
-       //$('#stage').html(data);
+      location.reload();
     }
  );
   
