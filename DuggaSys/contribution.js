@@ -1699,55 +1699,77 @@ function resetForceLogin()
 
 }
 
-function checkIfGitUserExists(username) // checks if user exists in the git data and or the lenasys data
+{ // scope for local-storage of in-between function variables
+
+  let userExists_Git = null; // if it exists in the git data
+  let userExists_Lenasys = null; // if it exists in the lenasys data
+ 
+  function checkIfGitUserExists(username, _callback) // checks if user exists in the git data and or the lenasys data
 {
-  // ajax here
+  userExists_Git = null; // reset back to null if we want to do a check for another user
+  userExists_Lenasys = null;
+
 
   if(username == null || username == "" || !(typeof(username) === 'string'))
+  {
     alert("invalid input of username");
+  }
   else
   {
-    AJAXService("checkForGitUser",{
-      userid: username,
-    }, "CONTRIBUTION_GIT_USER_CHECK");
+      AJAXService("checkForGitUser",{
+        userid: username,
+      }, "CONTRIBUTION_GIT_USER_CHECK");
 
-    // ##############################
+      // ##############################
 
-    AJAXService("checkForLenasysUser",{
-      userid: username,
-    }, "CONTRIBUTION_LENASYS_USER_CHECK");
+      AJAXService("checkForLenasysUser",{
+        userid: username,
+      }, "CONTRIBUTION_LENASYS_USER_CHECK");
+
+      function checkAsyncFlags() 
+      {
+        if(userExists_Git == null || userExists_Lenasys == null) 
+        {
+           window.setTimeout(checkAsyncFlags, 100);
+        } else 
+        {
+          _callback(userExists_Git,userExists_Lenasys);
+
+        }
+      }
+      checkAsyncFlags();
+
+        
+  }   
+
 
 
   }
 
-}
-
-{ // scope for local-storage of in-between function variables
-
-  let userExists_Git = false; // if it exists in the git data
-  let userExists_Lenasys = false; // if it exists in the lenasys data
-  
 
   function returned_git_user_check(data)
   {
     if(typeof data == "boolean") // check so that the type is correct
     {
-      console.log("exists on git "+data);
       userExists_Git = data;
     }
     else
       alert("invalid data returned from git-data");
+
+    return userExists_Git;
+
   }
 
   function returned_lenasys_user_check(data)
   {
     if(typeof data == "boolean")
     {
-      console.log("exists on lenasys "+data);
       userExists_Lenasys = data;
     }
     else
       alert("invalid data returned from lenasys-data");
+
+    return userExists_Lenasys;
   }
 
 
@@ -1761,12 +1783,50 @@ function checkIfGitUserExists(username) // checks if user exists in the git data
     let username = loginBoxheader_login_username_field.value;
     if(username === "") // we do a simple check if the string is empty to not call backend if nothing is entered.
     {
-      console.log("poggis");
+      console.log("nothing entered");
     } 
     else
     {
-      if(checkIfGitUserExists(username));
-        return true;
+
+      checkIfGitUserExists(username ,function(_onGit, _onLena) 
+        {
+          
+
+          /*
+            There exists a number of combinations that we need to handle¨
+
+            onGit | onLena
+            --------------
+              T   |  T    -> Log in with lena
+              F   |  T    -> Log in with lena
+              T   |  F    -> Create new user
+              F   |  F    -> User does not exist
+          */
+
+          if(_onLena) // log in with lena
+          {
+            console.log("test1");
+          }
+          if(!_onLena && _onGit) // onlena is false, ongit true, create new user
+          {
+            showNewGitLogin();
+
+          }
+          if(!_onLena && !_onGit)
+          { // default to user does not exist if nothing else
+            console.log("test3");
+
+          }
+        
+
+
+        });    
+
+
+     
+
+
+
     }
   }
 
