@@ -1078,7 +1078,7 @@ function courseDBcollection(path){
     "contributionservice.php",
     { path: path },
     function(data) {
-       //$('#stage').html(data);
+      location.reload();
     }
  );
   
