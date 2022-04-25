@@ -7297,6 +7297,9 @@ textarea#mrkdwntxt {
   margin-top: -0.75%;
   filter: invert(100%);
 }
+#inputwrapperText{
+  color:rgba(0,0,0,0.6);
+}
 
 .createAlertToggle{
   position: fixed;
