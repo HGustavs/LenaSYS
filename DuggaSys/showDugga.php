@@ -87,10 +87,10 @@
 		$count = $count + 1;
 		if($isGlobal == 1)
 		{
-			$fileContent = file_get_contents("../courses/global/"."'$splicedFileName'");
+			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
 		}
 		else{
-			$fileContent = file_get_contents("../courses/".$cid."/"."'$splicedFileName'");
+			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
 		}
 	}
 	$fileLinkResponse->closeCursor();
