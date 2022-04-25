@@ -81,29 +81,31 @@
 	}
 
 	#repeat for filelink table, checking if the corresponding file is global or not (if it's global, file is found in ../courses/global/ rather than course specific)
-	$query = $pdo->prepare("SELECT isGlobal as isGlobal FROM filelink WHERE filename = '$splicedFileName'");
+	#$query = $pdo->prepare("SELECT isGlobal as isGlobal FROM filelink WHERE filename = '$splicedFileName'");
+	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid;");
 	#$fileLinkResponse->bindParam(':isGlobal', $isGlobal);
 	$count = $count + 1;
 
-	if($query->execute())
+	if($response->execute())
 	{
-		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row)
+		foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
 		{
-			$isGlobal = $row['isGlobal'];
+			#$isGlobal = $row['isGlobal'];
+			$isGlobal = $row['jparam'];
 			$count = $count + 1;
 			if($isGlobal == 1)
 			{
-				$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
+				#$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
 			}
 			else{
-				$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
+				#$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
 			}
 		}
 	}
 	else{
-		$fileContent = "DATABASE_FETCH_ERROR:\$query->execute() failed.";
+		$fileContent = "DATABASE_FETCH_ERROR:\$query->execute() failed: Select=isGlobal Table=filelink";
 	}
-	$query->closeCursor();
+	$response->closeCursor();
 	#if result is 1, meaning it's global, set $isGlobal boolean to true. $isGlobal exists mainly so it can be returned to diagram.js in the future, if ever needed.
 
 	#if the file is global, get content from global folder. Else, set path to use course-id folder.
@@ -501,7 +503,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		variantArray.push(<?php echo "$count"?>);
 		variantArray.push(<?php echo "'$splicedFileName'"?>);
 		variantArray.push(<?php echo "'$fileContent'"?>);
-		variantArray.push(<?php echo "$isGlobal"?>);
+		//variantArray.push(<?php echo "$isGlobal"?>);
 		return variantArray;
 	} 
 	</script>
