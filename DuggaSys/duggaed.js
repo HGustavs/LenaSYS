@@ -355,10 +355,12 @@ function updateVariantTitle(number) {
 
 // Opens the variant editor.
 function showVariantEditor() {
-	AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
-
 	//check if the selected dugga is a diagram dugga
 	if(globalData['entries'][globalVariant].quizFile == "diagram_dugga"){
+		/*For now it only fetches the files when it's a diagram dugga. 
+		This might change in the future if other duggor should have
+		additional files as parameters*/
+		AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
 		$("#selectBox").css("display", "flex");
 	}
 	else{
