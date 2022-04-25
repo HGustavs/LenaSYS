@@ -1066,9 +1066,23 @@ function courseSelection(pos){
   }
 }
 
+<<<<<<< HEAD
 function courseDBcollection(index){
   var path = courseFileArr[index];
 
+=======
+
+//Function to reload contributionservice with the path to the correct db file
+function courseDBcollection(path){
+  $.get( 
+    "contributionservice.php",
+    { path: path },
+    function(data) {
+       //$('#stage').html(data);
+    }
+ );
+  
+>>>>>>> 92589a8755bc2e017a9e858a906779e8c8a4d01d
 }
 
 function buildRankData(data) {
