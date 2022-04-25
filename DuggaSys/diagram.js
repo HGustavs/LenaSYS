@@ -5887,4 +5887,57 @@ function fetchDiagramFileContentOnLoad()
         console.log(printthisshit);
         console.log(printisglobalshit);
 }
+
+function loadInitDiagramFromFileContent(fileContent, shouldDisplayMessage = false)
+{
+    if(fileContent.historyLog && fileContent.initialState){
+        // Set the history and initalState to the values of the file
+        stateMachine.historyLog = fileContent.historyLog;
+        stateMachine.initialState = fileContent.initialState;
+
+        // Update the stateMachine to the latest current index
+        stateMachine.currentHistoryIndex = stateMachine.historyLog.length -1;
+
+        // Scrub to the latest point in the diagram
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
+
+        // Display success message for load
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Save-file loaded");
+
+    } else if(fileContent.data && fileContent.lines){
+        // Set data and lines to the values of the export file
+        fileContent.data.forEach(element => {
+            var elDefault = defaults[element.kind];
+            Object.keys(elDefault).forEach(defaultKey => {
+                if (!element[defaultKey]){
+                    element[defaultKey] = elDefault[defaultKey];
+                }
+            });
+        });
+        fileContent.lines.forEach(line => {
+            Object.keys(defaultLine).forEach(defaultKey => {
+                if (!line[defaultKey]){
+                    line[defaultKey] = defaultLine[defaultKey];
+                }
+            });
+        });
+
+        // Set the vaules of the intialState to the JSON-file
+        stateMachine.initialState.elements = fileContent.data;
+        stateMachine.initialState.lines = fileContent.lines;
+
+        // Goto the beginning of the diagram
+        stateMachine.gotoInitialState();
+
+        // Remove the previous history
+        stateMachine.currentHistoryIndex = -1;
+        stateMachine.lastFlag = {};
+        stateMachine.removeFutureStates();
+
+        // Display success message for load
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Export-file loaded");
+    }else{
+        if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
+    }
+}
 //#endregion =====================================================================================
