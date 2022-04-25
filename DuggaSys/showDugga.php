@@ -77,10 +77,10 @@
 	$response->closeCursor();
 
 	#repeat for filelink table, checking if the corresponding file is global or not (if it's global, file is found in ../courses/global/ rather than course specific)
-	$count = $count + 1;
 	$fileLinkResponse = $pdo->prepare("SELECT isGlobal as isGlobal FROM filelink WHERE filename = '$splicedFileName'");
 	#$fileLinkResponse->bindParam(':isGlobal', $isGlobal);
 	$fileLinkResponse->execute();
+	$count = $count + 1;
 
 
 	foreach($fileLinkResponse->fetchAll(PDO::FETCH_ASSOC) as $row)
