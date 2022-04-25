@@ -1714,6 +1714,19 @@ function showCommits(object, cid){
   document.getElementById('commitDiv').style.display="none";
  }
 
+console.error
+//Toggles the account request menu being open or closed.
+function toggleAccountRequestPane(){
+    if (document.getElementById("accountRequests-pane").className == "show-accountRequests-pane") {
+        document.getElementById('accountReqmarker').innerHTML = "Account requests";
+        document.getElementById("accountRequests-pane").className = "hide-accountRequests-pane";
+    } else {
+        document.getElementById('accountReqmarker').innerHTML = "Account requests";
+        document.getElementById("accountRequests-pane").className = "show-accountRequests-pane";
+       
+    }
+}
+
 //Creates the html elements containing the commit changes
  function createCommitChange(data){
   var commitChange = data;
@@ -1751,3 +1764,4 @@ function showCommits(object, cid){
 
 
 console.error
+
