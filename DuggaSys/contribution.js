@@ -111,15 +111,75 @@ function showInfoText(object, displayText) {
   }
 }
 
+//Returns a static list of holidays. This needs to be manually updated every few years when thae list runs out. It currently has dates all the way to 2025.
 function getHolidays() {
   var holidays = new Array();
-  var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
-  var redDay2 = getYYYYMMDD(new Date("2019-04-22"));
-  var redDay3 = getYYYYMMDD(new Date("2019-05-01"));
-  var redDay4 = getYYYYMMDD(new Date("2019-05-30"));
-  var redDay5 = getYYYYMMDD(new Date("2019-06-06"));
-  var redDay6 = getYYYYMMDD(new Date("2019-06-21"));
-  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6);
+  //Year 2019 for testing purposes only
+  holidays.push(getYYYYMMDD(new Date("2019-04-19")));
+  holidays.push(getYYYYMMDD(new Date("2019-04-22")));
+  holidays.push(getYYYYMMDD(new Date("2019-05-01")));
+  holidays.push(getYYYYMMDD(new Date("2019-05-30")));
+  holidays.push(getYYYYMMDD(new Date("2019-06-06")));
+  holidays.push(getYYYYMMDD(new Date("2019-06-21")));
+  //Year 2022
+  holidays.push(getYYYYMMDD(new Date("2022-01-01")));
+  holidays.push(getYYYYMMDD(new Date("2022-01-06")));
+  holidays.push(getYYYYMMDD(new Date("2022-04-15")));
+  holidays.push(getYYYYMMDD(new Date("2022-04-17")));
+  holidays.push(getYYYYMMDD(new Date("2022-04-18")));
+  holidays.push(getYYYYMMDD(new Date("2022-05-01")));
+  holidays.push(getYYYYMMDD(new Date("2022-05-26")));
+  holidays.push(getYYYYMMDD(new Date("2022-06-06")));
+  holidays.push(getYYYYMMDD(new Date("2022-06-25")));
+  holidays.push(getYYYYMMDD(new Date("2022-11-05")));
+  holidays.push(getYYYYMMDD(new Date("2022-12-25")));
+  holidays.push(getYYYYMMDD(new Date("2022-12-26")));
+  //Year 2023
+  holidays.push(getYYYYMMDD(new Date("2023-01-01")));
+  holidays.push(getYYYYMMDD(new Date("2023-01-06")));
+  holidays.push(getYYYYMMDD(new Date("2023-04-07")));
+  holidays.push(getYYYYMMDD(new Date("2023-04-09")));
+  holidays.push(getYYYYMMDD(new Date("2023-04-10")));
+  holidays.push(getYYYYMMDD(new Date("2023-05-01")));
+  holidays.push(getYYYYMMDD(new Date("2023-05-18")));
+  holidays.push(getYYYYMMDD(new Date("2023-05-28")));
+  holidays.push(getYYYYMMDD(new Date("2023-06-06")));
+  holidays.push(getYYYYMMDD(new Date("2023-06-24")));
+  holidays.push(getYYYYMMDD(new Date("2023-11-04")));
+  holidays.push(getYYYYMMDD(new Date("2023-12-24")));
+  holidays.push(getYYYYMMDD(new Date("2023-12-25")));
+  holidays.push(getYYYYMMDD(new Date("2023-12-26")));
+  holidays.push(getYYYYMMDD(new Date("2023-12-31")));
+  //Year 2024
+  holidays.push(getYYYYMMDD(new Date("2024-01-01")));
+  holidays.push(getYYYYMMDD(new Date("2024-01-06")));
+  holidays.push(getYYYYMMDD(new Date("2024-03-29")));
+  holidays.push(getYYYYMMDD(new Date("2024-03-31")));
+  holidays.push(getYYYYMMDD(new Date("2024-04-01")));
+  holidays.push(getYYYYMMDD(new Date("2024-05-01")));
+  holidays.push(getYYYYMMDD(new Date("2024-05-09")));
+  holidays.push(getYYYYMMDD(new Date("2024-05-19")));
+  holidays.push(getYYYYMMDD(new Date("2024-06-06")));
+  holidays.push(getYYYYMMDD(new Date("2024-06-22")));
+  holidays.push(getYYYYMMDD(new Date("2024-11-02")));
+  holidays.push(getYYYYMMDD(new Date("2024-12-25")));
+  holidays.push(getYYYYMMDD(new Date("2024-12-26")));
+  //Year 2025S
+  holidays.push(getYYYYMMDD(new Date("2025-01-01")));
+  holidays.push(getYYYYMMDD(new Date("2025-01-06")));
+  holidays.push(getYYYYMMDD(new Date("2025-04-18")));
+  holidays.push(getYYYYMMDD(new Date("2025-04-20")));
+  holidays.push(getYYYYMMDD(new Date("2025-04-21")));
+  holidays.push(getYYYYMMDD(new Date("2025-05-01")));
+  holidays.push(getYYYYMMDD(new Date("2025-05-29")));
+  holidays.push(getYYYYMMDD(new Date("2025-06-06")));
+  holidays.push(getYYYYMMDD(new Date("2025-06-08")));
+  holidays.push(getYYYYMMDD(new Date("2025-06-21")));
+  holidays.push(getYYYYMMDD(new Date("2025-11-01")));
+  holidays.push(getYYYYMMDD(new Date("2023-12-24")));
+  holidays.push(getYYYYMMDD(new Date("2025-12-25")));
+  holidays.push(getYYYYMMDD(new Date("2025-12-26")));
+
   return holidays;
 }
 
@@ -1172,13 +1232,14 @@ function createGitHubcontributionTable(data) {
     tblhead: {
       weeks: "Week",
       dates: "Dates",
+      redDays: "Red Days",
       codeContribution: "Code Contribution",
       githubContribution: "GitHub Contribution"
     },
     tblbody: data,
     tblfoot: {}
   };
-  var colOrder = ["weeks", "dates", "codeContribution", "githubContribution"];
+  var colOrder = ["weeks", "dates", "redDays", "codeContribution", "githubContribution"];
   ghContibTable = new SortableTable({
     data: tabledata,
     tableElementId: "contribGithHubContribTable",
@@ -1204,6 +1265,8 @@ function renderCellForghContibTable(col, celldata, cellid) {
   } else if (col === 'dates') {
     str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
     ${obj.weekStart} - ${obj.weekEnd}</span></div>`;
+    renderCellForghContibTable.weekStart = obj.weekStart;
+    renderCellForghContibTable.weekEnd = obj.weekEnd;
   } else if (col === 'codeContribution') {
     for (var j = 0; j < obj.files.length; j++) {
       var file = obj.files[j];
@@ -1280,6 +1343,57 @@ function renderCellForghContibTable(col, celldata, cellid) {
        }
      }
      str += "</div>";
+  } else if(col == 'redDays'){
+    var alphaPlus = new Date();
+    var holidayList = getHolidays(alphaPlus);
+
+    //Get a list of all red days this year and check if they belong on the current row
+    //Based on row number. A certain row should only post a date if that date is on the same week as that row covers.
+    var i = 0;
+    //Extract values that were staticlly stored during the previous iteration of this function when a week cell was generated
+    var time1 = String(renderCellForghContibTable.weekStart);
+    var time2 = String(renderCellForghContibTable.weekEnd);
+
+    //Extract all the important values from the two dates that we require
+    var ObjYear1 = time1.substr(0,4);
+    var ObjYear2 = time2.substr(0,4);
+    var ObjMonth1 = time1.substr(5,2);
+    var ObjMonth2 = time2.substr(5,2);
+    var ObjDay1 = time1.substr(8,2);
+    var ObjDay2 = time2.substr(8,2); 
+
+    //Repeat for every holiday in the holiday list and check if that holiday is this week(The week of this cell)
+    while(holidayList.length > i){ 
+      var HolidayYear = holidayList[i].substr(0,4);
+      var HolidayMonth = holidayList[i].substr(5,2);
+      var HolidayDay = holidayList[i].substr(8,2);
+
+      //Same Year all?
+      if(ObjYear1 == HolidayYear && ObjYear2 == HolidayYear){
+        //Same Month all?
+        if(ObjMonth1 == HolidayMonth && ObjMonth2 == HolidayMonth){
+          //Day is somewere in the correct range
+          if(ObjDay1 <= HolidayDay && ObjDay2 >= HolidayDay){
+            str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+            ${holidayList[i]}</span></div>`
+          }
+        //Holiday is in one of the two months and on the right day?
+        } else if (ObjMonth1 == HolidayMonth && ObjDay1 <= HolidayDay){
+            str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+            ${holidayList[i]}</span></div>`
+        } else if (ObjMonth2 == HolidayMonth && ObjDay2 >= HolidayDay){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        }
+      } else if(ObjYear1 == HolidayYear && Number(ObjMonth1) == 12 && ObjDay1 <= HolidayDay){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(ObjYear2 == HolidayYear && Number(ObjMonth2) == 1 && ObjDay2 >= HolidayDay){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      }  
+      i++;
+    }
   } else {
     str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${obj}</span></div>`;
   }
