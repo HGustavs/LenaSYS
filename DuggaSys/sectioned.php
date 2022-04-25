@@ -224,8 +224,24 @@
 					</div>
 					<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
 					<div id='inputwrapper-gradesystem' class='inputwrapper'><span>Grade system:</span><select id='gradesys' ></select></div>
-					<div id='inputwrapper-deadline' class='inputwrapper'><span>Set Deadline:</span><span style='float:right'><input onchange="showCourseDate('setDeadlineValue','dialog8')" class='textinput' type='date' id='setDeadlineValue' value='' /><select style='width:55px;' id='deadlineminutes'></select><select style='width:55px;' id='deadlinehours'></select></span></div>
-			        <p id="dialog8" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Deadline has to be between start date and end date</p>
+					<div id='inputwrapper-deadline' class='inputwrapper'>
+							<legend><h3>Deadline</h3></legend>
+							<span>Absolute</span>
+							<span style='float:right'>
+								<input onchange="showCourseDate('setDeadlineValue','dialog8')" class='textinput' type='date' id='setDeadlineValue' value='' />
+								<select style='width:55px;' id='deadlineminutes'></select>
+								<select style='width:55px;' id='deadlinehours'></select>
+							</span>
+							<br />
+							<span>Relative</span>
+							<span style='float:right'>
+								<select style='width:140px;' id='relativedeadlineweekdays'></select>
+								<select style='width:55px;' id='relativedeadlineweeks'></select>
+								<select style='width:55px;' id='relativedeadlineminutes'></select>
+								<select style='width:55px;' id='relativedeadlinehours'></select>
+							</span>
+					</div>
+			        <!-- <p id="dialog8" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Deadline has to be between start date and end date</p> -->
 					<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
 					<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 					<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>

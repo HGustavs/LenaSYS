@@ -55,6 +55,7 @@ $enddate=getOP('enddate');
 $showgrps=getOP('showgrp');
 $grptype=getOP('grptype');
 $deadline=getOP('deadline');
+$relativedeadline=getOP('relativedeadline');
 $pos=getOP('pos');
 $jsondeadline = getOP('jsondeadline');
 $studentTeacher = false;
@@ -351,10 +352,11 @@ if($gradesys=="UNK") $gradesys=0;
 						}
 					}
 				}else if(strcmp($opt,"UPDATEDEADLINE")===0){
-					$deadlinequery = $pdo->prepare("UPDATE quiz SET deadline=:deadline WHERE id=:link;");
+					$deadlinequery = $pdo->prepare("UPDATE quiz SET deadline=:deadline, relativedeadline=:relativedeadline WHERE id=:link;");
 					$deadlinequery->bindParam(':deadline',$deadline);
+					$deadlinequery->bindParam(':relativedeadline',$relativedeadline);
 					$deadlinequery->bindParam(':link',$link);
-
+					
 					if(!$deadlinequery->execute()){
 						$error=$deadlinequery->errorInfo();
 						$debug="ERROR THE DEADLINE QUERY FAILED".$error[2];
@@ -457,7 +459,7 @@ if($gradesys=="UNK") $gradesys=0;
 		$duggor=array();
 		$releases=array();
 
-		$query = $pdo->prepare("SELECT id,qname,qrelease,deadline FROM quiz WHERE cid=:cid AND vers=:vers ORDER BY qname");
+		$query = $pdo->prepare("SELECT id,qname,qrelease,deadline,relativedeadline FROM quiz WHERE cid=:cid AND vers=:vers ORDER BY qname");
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':vers', $coursevers);
 
@@ -471,7 +473,8 @@ if($gradesys=="UNK") $gradesys=0;
 		foreach($query->fetchAll() as $row) {
 			$releases[$row['id']]=array(
 					'release' => $row['qrelease'],
-					'deadline' => $row['deadline']
+					'deadline' => $row['deadline'],
+					'relativedeadline' => $row['relativedeadline']
 			);
 			array_push(
 				$duggor,
@@ -479,7 +482,8 @@ if($gradesys=="UNK") $gradesys=0;
 					'id' => $row['id'],
 					'qname' => $row['qname'],
 					'release' => $row['qrelease'],
-					'deadline' => $row['deadline']
+					'deadline' => $row['deadline'],
+					'relativedeadline' => $row['relativedeadline']
 				)
 			);
 		}
@@ -567,7 +571,7 @@ if($gradesys=="UNK") $gradesys=0;
 		$entries=array();
 
 		if($cvisibility){
-			$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind, 
+			$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,relativedeadline,qrelease,comments, qstart, jsondeadline, groupKind, 
 			 ts, listentries.gradesystem as tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id 
 					WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 			$query->bindParam(':cid', $courseid);
@@ -595,6 +599,7 @@ if($gradesys=="UNK") $gradesys=0;
 								'gradesys' => $row['gradesystem'],
 								'code_id' => $row['code_id'],
 								'deadline'=> $row['deadline'],
+								'relativedeadline'=> $row['relativedeadline'],
 								'qrelease' => $row['qrelease'],
 								'comments' => $row['comments'],
 								'qstart' => $row['qstart'],

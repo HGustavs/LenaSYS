@@ -141,6 +141,10 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
   var minuteArrOptions=["00","05","10","15","20","25","30","35","40","45","50","55"];
   var minuteArrValue=[0,5,10,15,20,25,30,35,40,45,50,55];
+  var weekArrOptions=["1","2","3","4","5","6","7","8","9","10","11","12"];
+  var weekArrValue=[1,2,3,4,5,6,7,8,9,10,11,12];
+  var weekdayArrOptions=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  var weekdayArrValue=[1,2,3,4,5,6,7];
 
   nameSet = false;
   if (entryname == "undefined") entryname = "New Header";
@@ -173,6 +177,12 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   if(deadline !== undefined){
     $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
     $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
+    $("#relativedeadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
+    $("#relativedeadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
+
+    // Might want to add selection for weeks and weekdays
+    $("#relativedeadlineweeks").html(makeoptions(1,weekArrOptions,weekArrValue ));
+    $("#relativedeadlineweekdays").html(makeoptions("Monday",weekdayArrOptions,weekdayArrValue));
     $("#setDeadlineValue").val(deadline.substr(0,10));
   }
   var groups = [];
@@ -440,7 +450,7 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-
+  param.relativedeadline = $("#relativedeadlineweeks").val()+" "+$("#relativedeadlineweekdays").val()+" "+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
 
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
@@ -2572,13 +2582,13 @@ function validateDate2(ddate, dialogid) {
   if (startdate < deadline && enddate > deadline) {
     ddate.style.borderColor = "#383";
     ddate.style.borderWidth = "2px";
-    x.style.display = "none";
+    // x.style.display = "none";
     window.bool8 = true;
 
   } else {
 
     ddate.style.borderColor = "#E54";
-    x.style.display = "block";
+    // x.style.display = "block";
     ddate.style.borderWidth = "2px";
     window.bool8 = false;
 

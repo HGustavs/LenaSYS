@@ -2162,7 +2162,7 @@ input {
   clear: both;
   width: 100%;
   padding: 3px 0 3px 0;
-  height: 30px;
+  /*height: 30px;*/
   line-height: 30px;
 }
 
