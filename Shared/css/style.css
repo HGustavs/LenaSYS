@@ -8216,3 +8216,18 @@ textarea#filecont {
 .hide-accountRequests-pane {
   right: -308px;
 }
+.accountRequestTable {
+  margin-right: auto;
+  margin-left: auto;
+  color: #000000;
+  border: solid 1px #888;
+  border-collapse: collapse;
+  padding: 7px;
+  
+}
+.accountRequestTable tr:nth-child(even){
+  background-color: #cccccc;
+}
+.accountRequestTable tr:nth-child(odd){
+  background-color: #efefef;
+}
