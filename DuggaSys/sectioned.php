@@ -267,7 +267,7 @@
 
 	<!-- Canvas Link Dialog -->
 	<div id='canvasLinkBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='min-width:250px;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='min-width:250px;'>
 			<div class='loginBoxheader'>
 					<h3 style='text-align: center;'>Link Copied To Clipboard</h3>
 					<div class="cursorPointer" onclick='showCanvasLinkBox("close",this);' title="Close window">x</div>
