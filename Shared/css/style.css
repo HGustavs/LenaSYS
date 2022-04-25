@@ -8179,3 +8179,7 @@ textarea#filecont {
   width: 80%;
   margin: 15px 0px 8px 0px
 }
+
+input[disabled] {
+  opacity: .5;
+}
