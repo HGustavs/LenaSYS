@@ -55,12 +55,12 @@
 
 	#vars for handling fetching of diagram variant file name
 	$variantParams = "UNK";
-	$isGlobalBool = -1;
 	$filePath ="";
 	#$finalArray = [];
 	$fileContent="UNK";
 	$splicedFileName = "UNK";
-	$isGlobal=false;
+	$isGlobal = -1;
+	$count = 0;
 
 	#create request to database and execute it
 	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid;");
@@ -77,30 +77,26 @@
 	$response->closeCursor();
 
 	#repeat for filelink table, checking if the corresponding file is global or not (if it's global, file is found in ../courses/global/ rather than course specific)
-	$fileLinkResponse = $pdo->prepare("SELECT isGlobal as isglobal FROM filelink WHERE filename = $splicedFileName");
-	$response->execute();
-	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
+	$fileLinkResponse = $pdo->prepare("SELECT isGlobal as isGlobal FROM filelink WHERE filename = '$splicedFileName'");
+	#$fileLinkResponse->bindParam(':isGlobal', $isGlobal);
+	$fileLinkResponse->execute();
+
+	foreach($fileLinkResponse->fetchAll(PDO::FETCH_ASSOC) as $row)
 	{
-		$response->bindParam(':isGlobalBool', $isGlobal);
+		$isGlobal = $row['isGlobal'];
+		$count = $count + 1;
+		if($isGlobal == 1)
+		{
+			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
+		}
+		else{
+			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
+		}
 	}
-	$response->closeCursor();
+	$fileLinkResponse->closeCursor();
 	#if result is 1, meaning it's global, set $isGlobal boolean to true. $isGlobal exists mainly so it can be returned to diagram.js in the future, if ever needed.
-	if($isGlobalBool != 0)
-	{
-		$isGlobal = false;
-	}
-	else{
-		$isGlobal = true;
-	}
 
 	#if the file is global, get content from global folder. Else, set path to use course-id folder.
-	if($isGlobal == true)
-	{
-		$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
-	}
-	else{
-		$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
-	}
 
 
 	#I have no idea what the things below
@@ -492,8 +488,10 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	{
 		var variantArray = [<?php echo "'$variantParams'"#,'$queryArray[1]','$queryArray[2]'" #echo"$mickeResult[0];";?>];
 		variantArray.push(<?php echo "$cid"?>);
-		variantArray.push(<?php echo "$vers"?>);
+		variantArray.push(<?php echo "$count"?>);
+		variantArray.push(<?php echo "'$splicedFileName'"?>);
 		variantArray.push(<?php echo "'$fileContent'"?>);
+		variantArray.push(<?php echo "$isGlobal"?>);
 		return variantArray;
 	} 
 	</script>

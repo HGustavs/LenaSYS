@@ -5877,10 +5877,14 @@ function fetchDiagramFileContentOnLoad()
         cid = temp[1];
         cvers = temp[2];
         diagramToLoad = temp[3];
+        var printthisshit = temp[4];
+        var printisglobalshit = temp[5];
 
         console.log(fullParam);
         console.log(cid);
         console.log(cvers);
         console.log(diagramToLoad);
+        console.log(printthisshit);
+        console.log(printisglobalshit);
 }
 //#endregion =====================================================================================
