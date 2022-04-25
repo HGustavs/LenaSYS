@@ -1730,15 +1730,15 @@ function showCommits(object, cid){
       str += "<h3>" + commitChange[i]['blame'][j].filename + " - " + commitChange[i]['blame'][j].rowk + " lines changed </h3>";
 
       //Adds the code changes associated with that blame
-      console.log("before for offset: "+offset+" offsetRunner: " + offsetRunner);
+      //console.log("before for offset: "+offset+" offsetRunner: " + offsetRunner);
       codeLength = commitChange[i]['blame'][j].rowk;
       for(var x = 0; x < codeLength; x++){
-        console.log("index: " + i + " x: "+ x + " code length: "+ codeLength + " offset: "+ offset);
+        //console.log("index: " + i + " x: "+ x + " code length: "+ codeLength + " offset: "+ offset);
         str += "<p><b>" + commitChange[i]['codechange'][x+offset].rowno + "</b> - " + commitChange[i]['codechange'][x+offset].code;
         offsetRunner++;
       }
       offset = offsetRunner;
-      console.log("After for "+offset);
+      //console.log("After for "+offset);
     }
     //If a commit didn't change anything display this instead
     if(str == ""){
