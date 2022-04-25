@@ -28,8 +28,9 @@ $log_db = new PDO('sqlite:../../BGHdata_2021_05.db');
 //This loads the correct db file selected by buttons in js file
 if( $_REQUEST["path"] ) {
 	
-	$path = $_REQUEST['path'];
-	$log_db = new PDO('sqlite:'.$path);
+	$path = $_REQUEST["path"];
+	$path = "sqlite:".$path;
+	$log_db = new PDO($path);
  }
 
 //Old filepath with wrong orientation of the slashes that prevent function on Linux DO NOT USE

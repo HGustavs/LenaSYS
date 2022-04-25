@@ -1073,7 +1073,8 @@ function courseDBcollection(path){
     "contributionservice.php",
     { path: path },
     function(data) {
-      location.reload();
+      $("#contribGithHubContribTable").load(" #contribGithHubContribTable > *");
+      //location.reload();
     }
  );
   
