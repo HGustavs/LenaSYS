@@ -1242,8 +1242,8 @@ function renderCellForghContibTable(col, celldata, cellid) {
        }
        if (obj.issues.length > 0) {
           str += `<div id='ghIssues' onclick='toggleContributionTable(this)' 
-          class='contribheading' style='cursor:pointer;'><span>Created ${obj.issues.length} issue(s).</span>";
-          str += "<div id='ghIssues"+rowNr+"' class='contribcontent'>`;
+          class='contribheading' style='cursor:pointer;'><span>Created ${obj.issues.length} issue(s).</span>`;
+          str += "<div id='ghIssues"+rowNr+"' class='contribcontent'>";
           for (j = 0; j < obj.issues.length; j++) {
             var issue = obj.issues[j];
             var issuestr = issue.issueno + " " + issue.title;
