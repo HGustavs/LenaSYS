@@ -1708,6 +1708,9 @@ function showCommits(object, cid){
   var text = document.getElementById('commitDiv');
   text.style.display="block";
   text.innerHTML = commitChangeArray[cid];
+  //position the div at the correct location
+  text.style.left = (document.documentElement.scrollLeft) + "px";
+  text.style.top = (document.documentElement.scrollTop) + "px";
 }
 //Hide a div when hover the commit links
  function hideCommits(){
