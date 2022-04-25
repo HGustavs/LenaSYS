@@ -993,6 +993,7 @@ var lines = [];
 var diagramToLoad = "";
 var cid = "";
 var cvers = "";
+var diagramToLoadContent = "";
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
@@ -1140,7 +1141,7 @@ function onSetup()
     // Global statemachine init
     stateMachine = new StateMachine(data, lines);
 
-    //toggleGrid();
+    toggleGrid();
     fetchDiagramFileContentOnLoad();
 }
 
@@ -5872,28 +5873,27 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
 
 function fetchDiagramFileContentOnLoad()
 {
-        var temp = window.parent.getVariantParam();
+        let temp = window.parent.getVariantParam();
         var fullParam = temp[0];
         cid = temp[1];
         cvers = temp[2];
         diagramToLoad = temp[3];
-        var printthisshit = temp[4];
-        var printisglobalshit = temp[5];
+        diagramToLoadContent = temp[4];
 
         console.log(fullParam);
         console.log(cid);
         console.log(cvers);
         console.log(diagramToLoad);
-        console.log(printthisshit);
-        console.log(printisglobalshit);
+
+        loadDiagramFromString(JSON.parse(diagramToLoadContent));
 }
 
-function loadInitDiagramFromFileContent(fileContent, shouldDisplayMessage = false)
+function loadDiagramFromString(temp)
 {
-    if(fileContent.historyLog && fileContent.initialState){
+    if(temp.historyLog && temp.initialState){
         // Set the history and initalState to the values of the file
-        stateMachine.historyLog = fileContent.historyLog;
-        stateMachine.initialState = fileContent.initialState;
+        stateMachine.historyLog = temp.historyLog;
+        stateMachine.initialState = temp.initialState;
 
         // Update the stateMachine to the latest current index
         stateMachine.currentHistoryIndex = stateMachine.historyLog.length -1;
@@ -5904,9 +5904,9 @@ function loadInitDiagramFromFileContent(fileContent, shouldDisplayMessage = fals
         // Display success message for load
         if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Save-file loaded");
 
-    } else if(fileContent.data && fileContent.lines){
+    } else if(temp.data && temp.lines){
         // Set data and lines to the values of the export file
-        fileContent.data.forEach(element => {
+        temp.data.forEach(element => {
             var elDefault = defaults[element.kind];
             Object.keys(elDefault).forEach(defaultKey => {
                 if (!element[defaultKey]){
@@ -5914,7 +5914,7 @@ function loadInitDiagramFromFileContent(fileContent, shouldDisplayMessage = fals
                 }
             });
         });
-        fileContent.lines.forEach(line => {
+        temp.lines.forEach(line => {
             Object.keys(defaultLine).forEach(defaultKey => {
                 if (!line[defaultKey]){
                     line[defaultKey] = defaultLine[defaultKey];
@@ -5923,8 +5923,8 @@ function loadInitDiagramFromFileContent(fileContent, shouldDisplayMessage = fals
         });
 
         // Set the vaules of the intialState to the JSON-file
-        stateMachine.initialState.elements = fileContent.data;
-        stateMachine.initialState.lines = fileContent.lines;
+        stateMachine.initialState.elements = temp.data;
+        stateMachine.initialState.lines = temp.lines;
 
         // Goto the beginning of the diagram
         stateMachine.gotoInitialState();

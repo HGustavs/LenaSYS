@@ -492,12 +492,11 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	<script type="text/javascript">
 	function getVariantParam()
 	{
-		var variantArray = [<?php echo "'$variantParams'"#,'$queryArray[1]','$queryArray[2]'" #echo"$mickeResult[0];";?>];
+		var variantArray = [<?php echo "'$variantParams'"?>];
 		variantArray.push(<?php echo "$cid"?>);
-		variantArray.push(<?php echo "$count"?>);
+		variantArray.push(<?php echo "$vers"?>);
 		variantArray.push(<?php echo "'$splicedFileName'"?>);
 		variantArray.push(<?php echo "'$fileContent'"?>);
-		variantArray.push(<?php echo "$isGlobal"?>);
 		return variantArray;
 	} 
 	</script>
