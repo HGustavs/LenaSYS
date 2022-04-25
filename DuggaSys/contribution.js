@@ -1054,6 +1054,7 @@ function courseSelection(pos){
   var dropdown = document.getElementById('courseBtn');
   dropdown.options.length=0;
 
+  // Default option
   var opt = document.createElement('option');
   opt.value = "ChooseC";
   opt.innerHTML = "Choose Course";
