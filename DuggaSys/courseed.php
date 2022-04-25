@@ -70,7 +70,7 @@ if(isset($_SESSION['uid'])){
 
 <!-- New Course Section Dialog START -->
 <div id='newCourse' class='loginBoxContainer' style='display:none;'>
-    <div class='loginBox' style='width:464px;'>
+    <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
     		<div class='loginBoxheader'>
     			<h3>New Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();' title='Close window'>x</div>
