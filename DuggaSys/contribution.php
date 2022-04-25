@@ -55,7 +55,10 @@ $vers=getOPG('coursevers');
 
 	<div class='group3' id='contribTsTable' style='margin-left: 12px; width:50%; white-space: nowrap;'></div>
 
-
+	<div id="options-pane" class="hide-options-pane" onmousedown='showSideBar(event)'> <!-- Yellow menu on right side of screen -->
+	<div id="options-pane-button" onclick="toggleOptionsPane();"><span id='optmarker'>Options</span>
+        </div>
+	</div>
 	
 	<!-- content END -->
 
