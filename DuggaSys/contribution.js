@@ -162,8 +162,11 @@ function getHolidays() {
   holidays.push(getYYYYMMDD(new Date("2024-06-06")));
   holidays.push(getYYYYMMDD(new Date("2024-06-22")));
   holidays.push(getYYYYMMDD(new Date("2024-11-02")));
+  holidays.push(getYYYYMMDD(new Date("2024-12-24")));
   holidays.push(getYYYYMMDD(new Date("2024-12-25")));
   holidays.push(getYYYYMMDD(new Date("2024-12-26")));
+  holidays.push(getYYYYMMDD(new Date("2024-12-31")));
+  
   //Year 2025S
   holidays.push(getYYYYMMDD(new Date("2025-01-01")));
   holidays.push(getYYYYMMDD(new Date("2025-01-06")));
@@ -179,6 +182,7 @@ function getHolidays() {
   holidays.push(getYYYYMMDD(new Date("2023-12-24")));
   holidays.push(getYYYYMMDD(new Date("2025-12-25")));
   holidays.push(getYYYYMMDD(new Date("2025-12-26")));
+  holidays.push(getYYYYMMDD(new Date("2025-12-31")));
 
   return holidays;
 }
