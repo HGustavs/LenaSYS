@@ -61,7 +61,7 @@
 	$splicedFileName = "UNK";
 	$isGlobal = -1;
 	$count = 0;
-
+	
 	#create request to database and execute it
 	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid;");
 	$response->execute();
@@ -77,7 +77,7 @@
 	$response->closeCursor();
 
 	#repeat for filelink table, checking if the corresponding file is global or not (if it's global, file is found in ../courses/global/ rather than course specific)
-	$fileLinkResponse = $pdo->prepare("SELECT isGlobal FROM filelink WHERE filename = $splicedFileName");
+	$fileLinkResponse = $pdo->prepare("SELECT isGlobal as isGlobal FROM filelink WHERE filename = '$splicedFileName'");
 	#$fileLinkResponse->bindParam(':isGlobal', $isGlobal);
 	$count = $count + 1;
 
