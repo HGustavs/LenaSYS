@@ -1094,7 +1094,7 @@ function onSetup()
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "MANY" },
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: SUPERVISION_ID, kind: "Normal", cardinality: "ONE"},
         { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: DEPENDENTS_OF_ID, kind: "Normal", cardinality: "ONE" },
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Normal", cardinality: "MANY"},
+        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "MANY"},
 
         { id: makeRandomID(), fromID: Name_ID, toID: FNID, kind: "Normal" },
         { id: makeRandomID(), fromID: Name_ID, toID: Initial_ID, kind: "Normal" },
@@ -1107,10 +1107,10 @@ function onSetup()
         { id: makeRandomID(), fromID: DEPENDENT_ID, toID: BdaleDependent_ID, kind: "Normal"},
         { id: makeRandomID(), fromID: DEPENDENT_ID, toID: Relationship_ID, kind: "Normal"},
 
-        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_ON_ID, kind: "Normal", cardinality: "MANY" },
+        { id: makeRandomID(), fromID: EMPLOYEE_ID, toID: WORKS_ON_ID, kind: "Double", cardinality: "MANY" },
         { id: makeRandomID(), fromID: Hours_ID, toID: WORKS_ON_ID, kind: "Normal"},
 
-        { id: makeRandomID(), fromID: PROJECT_ID, toID: WORKS_ON_ID, kind: "Normal", cardinality: "MANY"},
+        { id: makeRandomID(), fromID: PROJECT_ID, toID: WORKS_ON_ID, kind: "Double", cardinality: "MANY"},
         { id: makeRandomID(), fromID: PROJECT_ID, toID: CONTROLS_ID, kind: "Normal", cardinality: "MANY"},
         { id: makeRandomID(), fromID: NameProject_ID, toID: PROJECT_ID, kind: "Normal"},
         { id: makeRandomID(), fromID: NumberProject_ID, toID: PROJECT_ID, kind: "Normal"},
@@ -1118,14 +1118,14 @@ function onSetup()
         
         { id: makeRandomID(), fromID: MANAGES_ID, toID: Start_date_ID, kind: "Normal"},
         { id: makeRandomID(), fromID: MANAGES_ID, toID: EMPLOYEE_ID, kind: "Normal", cardinality: "ONE"},
-        { id: makeRandomID(), fromID: MANAGES_ID, toID: DEPARTMENT_ID, kind: "Normal", cardinality: "ONE"},
+        { id: makeRandomID(), fromID: MANAGES_ID, toID: DEPARTMENT_ID, kind: "Double", cardinality: "ONE"},
 
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Locations_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: CONTROLS_ID, kind: "Normal", cardinality: "ONE" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NameDEPARTMENT_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NumberDEPARTMENT_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Number_of_employees_ID, kind: "Normal" },
-        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: WORKS_FOR_ID, kind: "Normal", cardinality: "ONE" },
+        { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "ONE" },
     ];
 
     for(var i = 0; i < demoData.length; i++){
@@ -5334,30 +5334,18 @@ function checkElementError(element)
     var fElement;
     var tElement;
     var keyQuantity;
+    var weakrelation;
     var lineQuantity;
 
     // Error checking for ER Entities
     if (element.kind == "EREntity") {
         if (element.state == "weak") {
             keyQuantity = 0;
+            weakrelation = 0;
             for (var i = 0; i < lines.length; i++) {
                 line = lines[i];
                 fElement = data[findIndex(data, line.fromID)];
                 tElement = data[findIndex(data, line.toID)];
-
-                // Checking for wrong line type to a relation
-                if (fElement.id == element.id && tElement.kind == "ERRelation") {
-                    if (line.kind == "Normal") {
-                        errorData.push(fElement);
-                        errorData.push(tElement);
-                    }
-                }
-                if (tElement.id == element.id && fElement.kind == "ERRelation") {
-                    if (line.kind == "Normal") {
-                        errorData.push(fElement);
-                        errorData.push(tElement);
-                    }
-                }
 
                 // Checking for wrong key type
                 if (fElement.id == element.id && tElement.kind == "ERAttr") {
@@ -5382,6 +5370,14 @@ function checkElementError(element)
                         keyQuantity += 1;
                     }
                 }
+
+                // Counting weak relations
+                if (fElement.id == element.id && tElement.kind == "ERRelation" && tElement.state == "weak") {
+                    weakrelation += 1;
+                }
+                if (tElement.id == element.id && fElement.kind == "ERRelation" && fElement.state == "weak") {
+                    weakrelation += 1;
+                }
             }
             for (var i = 0; i < lines.length; i++) {
                 line = lines[i];
@@ -5395,6 +5391,11 @@ function checkElementError(element)
                         errorData.push(element);
                     }
                 }
+
+                // Checks if entity has a weak relation
+                if (weakrelation < 1) {
+                    errorData.push(element);
+                }
             }
         }
         else {
@@ -5403,20 +5404,6 @@ function checkElementError(element)
                 line = lines[i];
                 fElement = data[findIndex(data, line.fromID)];
                 tElement = data[findIndex(data, line.toID)];
-
-                // Checking for wrong line type to a relation
-                if (fElement.id == element.id && tElement.kind == "ERRelation") {
-                    if (line.kind == "Double") {
-                        errorData.push(fElement);
-                        errorData.push(tElement);
-                    }
-                }
-                if (tElement.id == element.id && fElement.kind == "ERRelation") {
-                    if (line.kind == "Double") {
-                        errorData.push(fElement);
-                        errorData.push(tElement);
-                    }
-                }
 
                 // Checking for wrong key type
                 if (fElement.id == element.id && tElement.kind == "ERAttr") {
@@ -5527,20 +5514,6 @@ function checkElementError(element)
                 line = lines[i];
                 fElement = data[findIndex(data, line.fromID)];
                 tElement = data[findIndex(data, line.toID)];
-
-                // Checking for wrong line type to a relation
-                if (fElement.id == element.id && tElement.kind == "EREntity") {
-                    if (line.kind == "Double") {
-                        errorData.push(fElement);
-                        errorData.push(tElement);
-                    }
-                }
-                if (tElement.id == element.id && fElement.kind == "EREntity") {
-                    if (line.kind == "Double") {
-                        errorData.push(fElement);
-                        errorData.push(tElement);
-                    }
-                }
 
                 // Counting connected lines
                 if ((tElement.id == element.id && fElement.kind == "EREntity") || (fElement.id == element.id && tElement.kind == "EREntity")) {
