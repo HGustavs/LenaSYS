@@ -1014,6 +1014,13 @@ var defaultLine = { kind: "Normal" };
  * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
  * @see getData() For the VERY FIRST function called in the file.
  */
+
+ var allLinesFromEntiAndRela = [];
+ var allLinesFromAttributes = [];
+ var allLinesBetweenAttributesToEntiAndRel = [];
+// Variables also used in addLine function, allAttrToEntityRelations saves all attributes connected to a entity or relation
+var countUsedAttributes = 0;
+var allAttrToEntityRelations = [];
 function onSetup()
 {
     const EMPLOYEE_ID = makeRandomID();
@@ -1130,6 +1137,61 @@ function onSetup()
     for(var i = 0; i < demoData.length; i++){
         addObjectToData(demoData[i], false);
     }
+    // Sorts out all attributes connected to a entity or relation
+    var k = 0;
+    var h = 0;
+    for(var i = 0; i < demoLines.length; i++){
+        for(var j = 0; j < demoData.length; j++){
+             // Lines to and from Attributes
+            if (demoLines[i].toID == demoData[j].id && demoData[j].kind == "ERAttr") {
+                allLinesFromAttributes[k] = demoLines[i].id;
+                k++;
+            }
+            if (demoLines[i].fromID == demoData[j].id && demoData[j].kind == "ERAttr") {
+                allLinesFromAttributes[k] = demoLines[i].id;
+                k++;
+            }
+            // Lines to and from Entitys and Relations
+            if (demoLines[i].fromID == demoData[j].id && demoData[j].kind == "ERRelation") {
+                allLinesFromEntiAndRela[h] = demoLines[i].id;
+                h++;
+            }
+            if (demoLines[i].toID == demoData[j].id && demoData[j].kind == "ERRelation") {
+                allLinesFromEntiAndRela[h] = demoLines[i].id;
+                h++;
+            }
+            if (demoLines[i].fromID == demoData[j].id && demoData[j].kind == "EREntity") {
+                allLinesFromEntiAndRela[h] = demoLines[i].id;
+                h++;
+            }
+            if (demoLines[i].toID == demoData[j].id && demoData[j].kind == "EREntity") {
+                allLinesFromEntiAndRela[h] = demoLines[i].id;
+                h++;
+            }
+        }
+    }
+    var countSeekedLines = 0;
+    for (var i = 0; i < allLinesFromEntiAndRela.length; i++) {
+        for (var j = 0; j < allLinesFromAttributes.length; j++) {
+            if (allLinesFromEntiAndRela[i] == allLinesFromAttributes[j]) {
+                allLinesBetweenAttributesToEntiAndRel[countSeekedLines] = allLinesFromAttributes[j];
+                countSeekedLines++;
+            }
+        }
+    }
+    for (var i = 0; i < demoLines.length; i++) {
+        for (var j = 0; j < allLinesBetweenAttributesToEntiAndRel.length; j++) {
+            if (demoLines[i].id == allLinesBetweenAttributesToEntiAndRel[j]) {
+                for (var k = 0; k < demoData.length; k++) {
+                    if (demoData[k].kind == "ERAttr" && demoLines[i].fromID == demoData[k].id || demoData[k].kind == "ERAttr" && demoLines[i].toID == demoData[k].id) {
+                        allAttrToEntityRelations[countUsedAttributes] = demoData[k].id;
+                        countUsedAttributes++;
+                    }
+                }
+            }
+        }
+    }   // End of sorting code for attributes connected to entity or relation
+
     for(var i = 0; i < demoLines.length; i++){
         addObjectToLines(demoLines[i], false);
     }
@@ -4532,6 +4594,7 @@ function sortElementAssociations(element)
  * @param {String} kind The kind of line that should be added.
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
+ 
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
 
      // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
@@ -4540,6 +4603,26 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         toElement = fromElement;
         fromElement = tempElement;
     } 
+
+    // Control for attributes to enti or rel
+    for (i = 0; i < allAttrToEntityRelations.length; i++) {
+        if (fromElement.kind === "ERAttr" && toElement.kind === "ERAttr") {
+            //
+        }
+        else if (toElement.id == allAttrToEntityRelations[i] || fromElement.id == allAttrToEntityRelations[i]) {
+            displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
+            return;
+        }
+    }
+
+    if (toElement.kind == "ERAttr" && fromElement.kind == "EREntity") {
+        allAttrToEntityRelations[countUsedAttributes] = toElement.id;
+        countUsedAttributes++;
+    }
+    if (toElement.kind == "ERAttr" && fromElement.kind == "ERRelation") {
+        allAttrToEntityRelations[countUsedAttributes] = toElement.id;
+        countUsedAttributes++;
+    } // End control
 
     if (fromElement.kind == toElement.kind && fromElement.name == toElement.name) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
@@ -4602,9 +4685,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                     newLine.cardinality = cardinal;
                 }
             }
-            
+
             addObjectToLines(newLine, stateMachineShouldSave);
-            
             if(successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
             return newLine;
             
