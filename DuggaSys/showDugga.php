@@ -79,7 +79,6 @@
 	else{
 		$splicedFileName = "DATABASE_FETCH_ERROR:\$query->execute() failed.";
 	}
-	$response->closeCursor();
 
 	#repeat for filelink table, checking if the corresponding file is global or not (if it's global, file is found in ../courses/global/ rather than course specific)
 	$query = $pdo->prepare("SELECT isGlobal as isGlobal FROM filelink WHERE filename = '$splicedFileName'");
