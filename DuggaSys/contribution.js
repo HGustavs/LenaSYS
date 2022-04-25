@@ -1725,6 +1725,7 @@ function showCommits(object, cid){
     var offset = 0;
     
     for(var j = 0; j < blameLength; j++){
+      var offsetRunner = offset;
       //Adds blame string
       str += "<h3>" + commitChange[i]['blame'][j].filename + " - " + commitChange[i]['blame'][j].rowk + " lines changed </h3>";
 
@@ -1733,8 +1734,9 @@ function showCommits(object, cid){
       for(var k = 0 + offset; k < codeLength+offset; k++){
         console.log("index: " + i + " k: "+ k + " code length: "+ codeLength + " offset: "+ offset);
         str += "<p><b>" + commitChange[i]['codechange'][k].rowno + "</b> - " + commitChange[i]['codechange'][k].code + " ";
+        offsetRunner++;
       }
-      offset = k;
+      offset = offsetRunner;
     }
     //If a commit didn't change anything display this instead
     if(str == ""){
