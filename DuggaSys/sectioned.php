@@ -419,7 +419,7 @@
 	
 	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
 	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
-	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
+	  <div class="loadDuggaBox loginBox DarkModeBackgrounds DarkModeText" style="max-width:400px; overflow-y:visible;">
 			<div class='loginBoxheader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
     		<div id='loadDuggaPopup' style="display:block">
