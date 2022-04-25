@@ -56,9 +56,7 @@ $vers=getOPG('coursevers');
 	<div class='group3' id='contribTsTable' style='margin-left: 12px; width:50%; white-space: nowrap;'></div>
 
 	<div id="accountRequests-pane" class="hide-accountRequests-pane"> <!-- Yellow menu on right side of screen -->
-	<div id="accountRequests-pane-button" onclick="toggleOptionsPane();"><span id='accountReqmarker'>Account requests</span>
-	
-        </div>
+		<div id="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id='accountReqmarker'>Account requests</span></div>
 		<?php 
 			echo "<table class='accountRequestTable'style='width: 85%'  border='1'><br />";
 			echo "<tr class='accountRequestTable' style=' background-color: #ffffff';>";

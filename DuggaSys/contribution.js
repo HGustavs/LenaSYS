@@ -1709,7 +1709,8 @@ function showCommits(){
   document.getElementById('commitDiv').style.display="none";
  }
 console.error
-function toggleOptionsPane(){
+//Toggles the account request menu being open or closed.
+function toggleAccountRequestPane(){
     if (document.getElementById("accountRequests-pane").className == "show-accountRequests-pane") {
         document.getElementById('accountReqmarker').innerHTML = "Account requests";
         document.getElementById("accountRequests-pane").className = "hide-accountRequests-pane";
