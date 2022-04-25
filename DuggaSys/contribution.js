@@ -1001,7 +1001,7 @@ function returnedSection(data) {
   //Dynamically loads the year selection list based on folders in ../../contributionDBs/
   str += `<select id='yearBtn' class='submit-button'
   onclick='statSort(value)'onchange='courseSelection(value)'>
-  <option value="ChooseY">Choose year</option>`;
+  <option value="ChooseY">Choose Year</option>`;
   if (data['directoriesYear'][0] !== null){
     for(i=0;i<data['directoriesYear'].length;i++){
       courseFileArr.push(data['allCoursesPerYear'][i]); // Keep file paths
