@@ -9,12 +9,10 @@
     bottom: 0px;
     left: 0px;
     right: 0px;
-    width: -moz-calc(25.0%);
-    width: -webkit-calc(25.0%);
-    width: calc(100.0%);
-    height: 100% !important;
-	min-width: 10%;
-	max-width: 99.8%;
+    grid-column: a/b;
+    grid-row: a/k;
+    min-width: 100%;
+    min-height: 100%;
 }
 .box{
     margin-top: 30px !important;
