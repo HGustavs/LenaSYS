@@ -23,6 +23,7 @@
 	<title id="sectionedPageTitle">Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+	<link type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -201,7 +202,7 @@
 
 		<!-- Edit Section Dialog START -->
 		<div id='editSection' onkeyup="validateSectName('sectionname');" onmouseover="validateSectName('sectionname'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:460px;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
 				<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
