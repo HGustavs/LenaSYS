@@ -990,6 +990,9 @@ var settings = {
 // Demo data - read / write from service later on
 var data = [];
 var lines = [];
+var diagramToLoad = "";
+var cid = "";
+var cvers = "";
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
@@ -1136,6 +1139,9 @@ function onSetup()
 
     // Global statemachine init
     stateMachine = new StateMachine(data, lines);
+
+    //toggleGrid();
+    fetchDiagramFileContentOnLoad();
 }
 
 /**
@@ -5862,6 +5868,24 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }else{
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
+}
+
+function fetchDiagramFileContentOnLoad()
+{
+        var temp = window.parent.getVariantParam();
+        var fullParam = temp[0];
+        cid = temp[1];
+        cvers = temp[2];
+        diagramToLoad = temp[3];
+        var printthisshit = temp[4];
+        var printisglobalshit = temp[5];
+
+        console.log(fullParam);
+        console.log(cid);
+        console.log(cvers);
+        console.log(diagramToLoad);
+        console.log(printthisshit);
+        console.log(printisglobalshit);
 }
 
 function loadInitDiagramFromFileContent(fileContent, shouldDisplayMessage = false)
