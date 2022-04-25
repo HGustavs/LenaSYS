@@ -64,15 +64,20 @@
 
 	#create request to database and execute it
 	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid;");
-	$response->execute();
 
 	#loop through responses, fetch param column in variant table, splice string to extract file name, then close request.
-	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
+	if($response->execute())
 	{
-		$variantParams=$row['jparam'];
-		$start = strpos($variantParams, "diagram File&quot;:&quot;") + 25;
-		$end = strpos($variantParams, "&quot;,&quot;extraparam&quot;");
-		$splicedFileName = substr($variantParams, strpos($variantParams, "diagram File&quot;:&quot;") + 25, ($end - $start));
+		foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
+		{
+			$variantParams=$row['jparam'];
+			$start = strpos($variantParams, "diagram File&quot;:&quot;") + 25;
+			$end = strpos($variantParams, "&quot;,&quot;extraparam&quot;");
+			$splicedFileName = substr($variantParams, strpos($variantParams, "diagram File&quot;:&quot;") + 25, ($end - $start));
+		}
+	}
+	else{
+		$splicedFileName = "DATABASE_FETCH_ERROR:\$query->execute() failed.";
 	}
 	$response->closeCursor();
 
@@ -97,7 +102,7 @@
 		}
 	}
 	else{
-		$fileContent = "DATABASE_FETCH_ERROR_500";
+		$fileContent = "DATABASE_FETCH_ERROR:\$query->execute() failed.";
 	}
 	$query->closeCursor();
 	#if result is 1, meaning it's global, set $isGlobal boolean to true. $isGlobal exists mainly so it can be returned to diagram.js in the future, if ever needed.
