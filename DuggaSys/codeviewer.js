@@ -5134,7 +5134,7 @@ function copyCodeToClipboard(boxid) {
 	var box = document.getElementById("box" + boxid);
 	var code = box.getElementsByClassName("normtextwrapper")[0];
 
-	var impo = code.getElementsByClassName("impo"); // Add code to just copy impo code
+	var impo = code.getElementsByClassName("impo")[0]; // Add code to just copy impo code
 
 	
 
@@ -5145,31 +5145,26 @@ function copyCodeToClipboard(boxid) {
 
 	if (retData['writeaccess'] == "w") {		// If teacher
 
-		for(i = 0; i<impo.length;i++){
-			var range = document.createRange();
-			range.selectNode(impo[i]);
-			selection.addRange(range);
-		}
-		document.execCommand("Copy");			// Do Copy
 		
+		var range = document.createRange();	
+		range.selectNodeContents(code);		
+		selection.removeAllRanges();			
+		selection.addRange(range);			
+		document.execCommand("Copy");			// Do Copy
+
 	}else{										// If student or not log in
 
 		document.oncopy = function(){			//make copy possible
 			return true;
 		}
 
-		// Add Code to just copy impo code
-		for(i = 0; i<impo.length;i++){
-			var range = document.createRange();
-			range.selectNode(impo[i]);
-			selection.addRange(range);
-		}
-		
-		//var range = document.createRange();	// Original Code
-		//range.selectNodeContents(code);		// Original Code
-		//selection.removeAllRanges();			// Original Code
-		//selection.addRange(range);			// Original Code
+		// Add Code to just copy first raw impo code
+		var range = document.createRange();
+		range.selectNodeContents(impo);
+		selection.addRange(range);
 		document.execCommand("Copy");			// Do Copy
+		
+		
 
 		document.oncopy = function(){			//make copy impossible
 			return false;
