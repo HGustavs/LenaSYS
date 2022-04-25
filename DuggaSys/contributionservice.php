@@ -41,13 +41,14 @@ $draught=false;
 $directoriesYear = glob('../../contributionDBs/*', GLOB_ONLYDIR);
 
 for($i=0; $i< sizeof($directoriesYear); $i++){
+	//$temp = substr($directoriesYear[$i],-4);
 	$directoriesYear[$i]= substr($directoriesYear[$i],-4);
 }
 
 $allCoursesPerYear=array();
 
 for($i=0; $i< sizeof($directoriesYear); $i++){
-	$allCourses= glob($directoriesYear[$i].'/*.db');
+	$allCourses= glob('../../contributionDBs/'.$directoriesYear[$i].'/*.db');
 	array_push($allCoursesPerYear,$allCourses);
 }
 
