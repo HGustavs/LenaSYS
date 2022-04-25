@@ -249,7 +249,7 @@
 
 	<!-- Confirm Section Dialog START -->
 	<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:460px;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
 					<h3>Confirm deletion</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
