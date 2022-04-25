@@ -37,7 +37,7 @@
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg"/>
                     <span class="toolTipText"><b>Pointer</b><br>
-                        <p>Allows you to press and move the different entities as well as navigate the diagram</p><br>
+                        <p>Allows you to select and move different entities as well as navigate the diagram</p><br>
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -172,14 +172,14 @@
             <div class="diagramIcons" onclick='zoomin();'>
                 <img src="../Shared/icons/diagram_zoomin.svg"/>
                 <span class="toolTipText"><b>Zoom IN</b><br>
-                    <p>Close in on the diagram center</p><br>
+                    <p>Close in on the center of the screen</p><br>
                     <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div class="diagramIcons" onclick='zoomout();'>
                 <img src="../Shared/icons/diagram_zoomout.svg"/>
                 <span class="toolTipText"><b>Zoom OUT</b><br>
-                    <p>Back away from the diagram center</p><br>
+                    <p>Back away from the center of the screen</p><br>
                     <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
