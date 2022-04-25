@@ -3,176 +3,113 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    height: -webkit-calc(100.0%);
-    height: -moz-calc(100.0%);
-    height: calc(100.0%) !important;
-    width: -webkit-calc(33.3%);
-    width: -moz-calc(33.3%);
-    width: calc(33.3%);
-	max-width: 90%;
-	min-width: 10%;
+    grid-column: a;
+    grid-row: a/k;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 #box2wrapper {
     position: absolute;
     top: 0px;
     right: 0px;
-    height: -webkit-calc(25.0%);
-    height: -moz-calc(25.0%);
-    height: calc(25.0%);
-    width: -webkit-calc(66.7%);
-    width: -moz-calc(66.7%);
-    width: calc(66.7%);
-    z-index: 2;
-    max-height: 70%;
-    min-height: 10%;
-	max-width: 90%;
-	min-width: 10%;
+    grid-column: b;
+    grid-row: b/f;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 #box3wrapper {
     position: absolute;
-    top: 25%;
+    top: 0px;
     right: 0px;
-    height: -webkit-calc(25.0%);
-    height: -moz-calc(25.0%);
-    height: calc(25.0%);
-    width: -webkit-calc(66.7%);
-    width: -moz-calc(66.7%); 
-    width: calc(66.7%);
-    z-index: 2;
-    max-height: 80%;
-    min-height: 10%;
-	max-width: 90%;
-	min-width: 10%;
+    grid-column: h;
+    grid-row: h;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 #box4wrapper {
     position: absolute;
     right: 0px;
     bottom: 0px;
-    top: 50%;
-    height: -webkit-calc(25.0%);
-    height: -moz-calc(25.0%);
-    height: calc(25.0%);
-    width: -webkit-calc(66.7%);
-    width: -moz-calc(66.7%);
-    width: calc(66.7%);
-    z-index: 2;
-    max-height: 80%;
-    min-height: 10%;
-	max-width: 90%;
-	min-width: 10%;
+    top: 0px;
+    grid-column: j;
+    grid-row: j;
+    min-width: 100%;
+    min-height: 100%;
 }
 #box5wrapper {
     position: absolute;
     right: 0px;
     bottom: 0px;
-    top: 75%;
-    height: -webkit-calc(25.0%);
-    height: -moz-calc(25.0%);
-    height: calc(25.0%);
-    width: -webkit-calc(66.7%);
-    width: -moz-calc(66.7%);
-    width: calc(66.7%);
-    z-index: 2;
-    max-height: 80%;
-    min-height: 10%;
-	max-width: 90%;
-	min-width: 10%;
+    top: 0px;
+    grid-column: l;
+    grid-row: l;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 @media only screen and (max-width: 800px) {
+
     #box1wrapper{
      overflow: hidden;
     position: absolute;
     left: 0px;
-    top:0 !important;    
-    height: -moz-calc(35.0%);
-    height: -webkit-calc(35.0%);
-    height: calc(35.0%) !important;
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
-    min-height: 10%;
-	max-height: 20%;
+    top: 0px;    
+    grid-column: a/b;
+    grid-row: a/c;
     min-width: 100%;
-	max-width: 100%;
+    min-height: 100%;
 }
-
-
 
     #box2wrapper {
      overflow: hidden;
     position: absolute;
-    top: 20% !important;
+    top: 0px;
     bottom: 0px;
     left: 0px;
-    height: -moz-calc(65.0%);
-    height: -webkit-calc(65.0%);
-    height: calc(65.0%) !important;
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
     font-family: Arial,Sans-Serif;
-    min-height: 10%;
-	max-height: 20%;
+    grid-column: e/f;
+    grid-row: e;
     min-width: 100%;
-	max-width: 100%;
+    min-height: 100%;
 }
     #box3wrapper {
      overflow: hidden;
     position: absolute;
-    top:40% !important;
-    bottom: 33%;
+    top: 0px;
+    bottom: 0px;
     left: 0px; 
-    height: -moz-calc(65.0%);
-    height: -webkit-calc(65.0%);
-    height: calc(65.0%) !important;
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
     font-family: Arial,Sans-Serif;
-    min-height: 10%;
-	max-height: 20%;
+    grid-column: g/h;
+    grid-row: g;
     min-width: 100%;
-	max-width: 100%;
+    min-height: 100%;
 }
     #box4wrapper {
      overflow: hidden;
     position: absolute;
-    top:60% !important;
-    bottom: 33%;
+    top: 0px;
+    bottom: 0px;
     left: 0px;       
-    height: -moz-calc(65.0%);
-    height: -webkit-calc(65.0%);
-    height: calc(65.0%) !important;
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
     font-family: Arial,Sans-Serif;
-    min-height: 10%;
-	max-height: 20%;
+    grid-column: i/j;
+    grid-row: i;
     min-width: 100%;
-	max-width: 100%;
+    min-height: 100%;
 }
     #box5wrapper {
      overflow: hidden;
     position: absolute;
-    top:80% !important;
-    bottom: 33%;
+    top: 0px;
+    bottom: 0px;
     left: 0px;       
-    height: -moz-calc(65.0%);
-    height: -webkit-calc(65.0%);
-    height: calc(65.0%) !important;
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
     font-family: Arial,Sans-Serif;
-    min-height: 10%;
-	max-height: 20%;
+    grid-column: k/l;
+    grid-row: k;
     min-width: 100%;
-	max-width: 100%;
+    min-height: 100%;
 }
 
 
