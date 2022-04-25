@@ -2,14 +2,17 @@
    The two to the right is, one on top of the other */
    #box1wrapper {
     overflow: hidden;
+    overflow: auto;
     grid-column: a;
     grid-row: a/k;
     width: 100%;
     height: 100%;
+    min-width: 400px !important;
   }
   
   #box2wrapper {
     overflow: hidden;
+    overflow: auto;
     grid-column: b;
     grid-row: b/f;
     width: 100%;
@@ -18,6 +21,7 @@
   
   #box3wrapper {
     overflow: hidden;
+    overflow: auto;
     grid-column: f;
     grid-row: h/l;
     width: 100%;
