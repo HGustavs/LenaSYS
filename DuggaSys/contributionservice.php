@@ -26,12 +26,12 @@ $log_db = new PDO('sqlite:../../BGHdata_2021_05.db');
 
 
 //This loads the correct db file selected by buttons in js file
-if( $_REQUEST["path"] ) {
+/*if( $_REQUEST["path"] ) {
 	
 	$path = $_REQUEST["path"];
 	$path = "sqlite:".$path;
 	$log_db = new PDO($path);
- }
+}*/
 
 //Old filepath with wrong orientation of the slashes that prevent function on Linux DO NOT USE
 //$log_db = new PDO('sqlite:..\..\BGHdata_2021_05.db');
@@ -68,6 +68,22 @@ for($i=0; $i< sizeof($directoriesYear); $i++){
 if (!checklogin()) die;
 if(strcmp($opt,"get")==0) {
 	if(checklogin() && isSuperUser($_SESSION['uid'])) {
+		
+		
+		$dbPath=getOP('dbPath');
+		if( $dbPath != null && $dbPath != 'UNK' ) {
+			$path = $dbPath;
+			//$path = preg_replace('/\b'.preg_quote('%').'\b/','/',$path);
+			//$path = preg_replace('/\b'.preg_quote('//').'\b/','/',$path);
+			$path = str_replace('%','/',$path);
+			//$path = "sqlite:".$path;
+			//../../contributionDBs/2021/a97marbr.db
+			//$log_db = new PDO('sqlite:../../contributionDBs/2020/2020_3.db');
+			//echo "das path  ".$path;
+			$log_db = new PDO('sqlite:'.$path);
+			//echo "das path  ".$path;
+		}
+
 		$gituser = getOP('userid');
 		$query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2019-03-31" and blamedate<"2020-01-01" union select author as usr from event where eventtime>"2019-03-31" and eventtime<"2020-01-01" union select author as usr from issue where issuetime>"2019-03-31" and issuetime<"2019-01-08") order by usr;');
 		if(!$query->execute()) {

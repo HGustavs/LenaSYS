@@ -1075,6 +1075,17 @@ function courseSelection(pos){
 
 //Function to reload contributionservice with the path to the correct db file
 function courseDBcollection(path){
+
+  console.log(path);
+  path = path.replaceAll("/",'%');
+  
+  AJAXService("get", {
+    userid: "HGustavs", 
+    dbPath: path
+  }, "CONTRIBUTION");
+  
+  
+  /*
   $.get( 
     "contributionservice.php",
     { path: path },
@@ -1082,7 +1093,8 @@ function courseDBcollection(path){
       $("#contribGithHubContribTable").load(" #contribGithHubContribTable > *");
       //location.reload();
     }
- );
+    
+ );*/
   
 }
 
