@@ -1142,6 +1142,7 @@ function onSetup()
     stateMachine = new StateMachine(data, lines);
 
     toggleGrid();
+    showdata();
     fetchDiagramFileContentOnLoad();
 }
 
