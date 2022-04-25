@@ -282,7 +282,7 @@
 
 	<!-- Confirm Section Hide Dialog START -->
 	<div id='sectionHideConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:460px;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
 					<h3>Confirm hiding</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
