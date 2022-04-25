@@ -102,6 +102,8 @@
 		$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
 	}
 
+
+	#I have no idea what the things below
 	// if(isset($_SESSION['hashpassword'])){
 	// 	$hashpassword=$_SESSION['hashpassword'];
 	// }else{

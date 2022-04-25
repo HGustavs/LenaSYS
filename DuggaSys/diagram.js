@@ -1141,7 +1141,7 @@ function onSetup()
     stateMachine = new StateMachine(data, lines);
 
     //toggleGrid();
-    fetchDiagramFileName();
+    fetchDiagramFileContentOnLoad();
 }
 
 /**
@@ -5870,13 +5870,15 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }
 }
 
-function fetchDiagramFileName()
+function fetchDiagramFileContentOnLoad()
 {
         var temp = window.parent.getVariantParam();
+        var fullParam = temp[0];
         cid = temp[1];
         cvers = temp[2];
         diagramToLoad = temp[3];
 
+        console.log(fullParam);
         console.log(cid);
         console.log(cvers);
         console.log(diagramToLoad);
