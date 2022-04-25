@@ -77,13 +77,13 @@
 	$response->closeCursor();
 
 	#repeat for filelink table, checking if the corresponding file is global or not (if it's global, file is found in ../courses/global/ rather than course specific)
-	$fileLinkResponse = $pdo->prepare("SELECT isGlobal as isGlobal FROM filelink WHERE filename = '$splicedFileName'");
+	$query = $pdo->prepare("SELECT isGlobal as isGlobal FROM filelink WHERE filename = '$splicedFileName'");
 	#$fileLinkResponse->bindParam(':isGlobal', $isGlobal);
 	$count = $count + 1;
 
-	if($fileLinkResponse->execute())
+	if($query->execute())
 	{
-		foreach($fileLinkResponse->fetchAll(PDO::FETCH_ASSOC) as $row)
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row)
 		{
 			$isGlobal = $row['isGlobal'];
 			$count = $count + 1;
@@ -99,7 +99,7 @@
 	else{
 		$fileContent = "DATABASE_FETCH_ERROR_500";
 	}
-	$fileLinkResponse->closeCursor();
+	$query->closeCursor();
 	#if result is 1, meaning it's global, set $isGlobal boolean to true. $isGlobal exists mainly so it can be returned to diagram.js in the future, if ever needed.
 
 	#if the file is global, get content from global folder. Else, set path to use course-id folder.
