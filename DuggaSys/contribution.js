@@ -1057,6 +1057,10 @@ function courseSelection(){
   console.log('Test');
 }
 
+function courseDBcollection(){
+  
+}
+
 function buildRankData(data) {
   var kindArr = ["Issue Creation", "Comment Creation", "Events Performed", "Lines of Code", "GIT Commit"];
   var numberArr = [data.issuerankno, data.commentrankno, data.eventrankno, data.rowrankno, data.commitrankno];
