@@ -1719,19 +1719,19 @@ function showCommits(object, cid){
   var commitChange = data;
   var l = commitChange.length;
   
-  for(i = 0; i < l; i++){
+  for(var i = 0; i < l; i++){
     var str ="";
     var blameLength = commitChange[i]['blame'].length;
-    var k = 0;
     var offset = 0;
     
-    for(j = 0; j < blameLength; j++){
+    for(var j = 0; j < blameLength; j++){
       //Adds blame string
       str += "<h3>" + commitChange[i]['blame'][j].filename + " - " + commitChange[i]['blame'][j].rowk + " lines changed </h3>";
 
       //Adds the code changes associated with that blame
       codeLength = commitChange[i]['blame'][j].rowk;
-      for(k; k < codeLength+offset; k++){
+      for(var k = 0 + offset; k < codeLength+offset; k++){
+        console.log("index: " + i + " k: "+ k + " code length: "+ codeLength + " offset: "+ offset);
         str += "<p><b>" + commitChange[i]['codechange'][k].rowno + "</b> - " + commitChange[i]['codechange'][k].code + " ";
       }
       offset = k;
