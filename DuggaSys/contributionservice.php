@@ -687,6 +687,28 @@ else if(strcmp($opt, "checkForLenasysUser")==0)
 	
 	echo json_encode($userExisted);
 }
+else if(strcmp($opt,"requestGitUserCreation") == 0)
+{
+	echo json_encode("its me, calling from the other side");
+
+	global $pdo;
+
+	if($pdo == null) 
+	{
+		pdoConnect();
+	}
+	$gituser = getOP('userid');
+	$gitpass = getOP('userpass');
+	
+	$query = $pdo->prepare("SELECT username FROM user WHERE username=:GU;");
+	$query->bindParam(':GU', $gituser);
+	
+	if(!$query->execute()) 
+	{
+		$error=$query->errorInfo();
+		$debug="Error reading entries\n".$error[2];
+	}
+}
 
 
 die; // end of file, kill yourself

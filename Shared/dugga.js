@@ -1095,6 +1095,14 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returned_lenasys_user_check
 			});
+	}else if(kind=="CONTRIBUTION_LENASYS_USER_CREATION"){
+			$.ajax({
+				url: "contributionservice.php",
+				type: "POST",
+				data: "&opt="+opt+para,
+				dataType: "json",
+				success: returned_lenasys_user_creation
+			});
 	}else if(kind=="DIAGRAM"){
 			$.ajax({
 				url: "diagramservice.php",

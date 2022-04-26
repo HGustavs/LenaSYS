@@ -1677,11 +1677,13 @@ function showNewGitLogin()
       login_first.setAttribute("placeholder", "Create new password");
       login_second.setAttribute("placeholder","Repeat new password");
 
-      loginBoxButton.setAttribute("onClick", "");
-      loginBoxButton.setAttribute("Value", "Create");
-
+      loginBoxheader_login_username_field.setAttribute("disabled","");
      
       
+
+      //TODO add onclick function for requesting user creation
+      loginBoxButton.setAttribute("onClick", "requestGitUserCreation()");
+      loginBoxButton.setAttribute("Value", "Create");
 
 
 
@@ -1695,6 +1697,11 @@ function resetForceLogin()
     login_second.remove();
   let loginBoxButton = document.querySelector(".buttonLoginBox");
   loginBoxButton.setAttribute("Value", "Login");
+
+  let loginBoxheader_login_username_field = document.querySelector("#username");
+  loginBoxheader_login_username_field.removeAttribute("disabled");
+
+
   forceUserLogin();
 
 }
@@ -1747,6 +1754,39 @@ function resetForceLogin()
   }
 
 
+
+  function requestGitUserCreation(username, password) // function to create the git user in the lenasys database, make sure requestedpasswordchange is pending(101)
+  {
+  
+    console.log("poggis");
+
+    let pass1 = document.querySelector("#password").value;
+    let pass2 = document.querySelector("#password1").value;
+
+
+    if(pass1 == pass2)
+    {
+      AJAXService("requestGitUserCreation",{
+        userid: username,
+        userpass: password,
+      }, "CONTRIBUTION_LENASYS_USER_CREATION");
+    }
+    else
+    {
+      // todo error thingy
+      console.log("password doesnt match");
+    }
+    
+  }
+
+  function returned_lenasys_user_creation(data)
+  {
+    console.log(data);
+  }
+
+
+
+
   function returned_git_user_check(data)
   {
     if(typeof data == "boolean") // check so that the type is correct
@@ -1771,6 +1811,8 @@ function resetForceLogin()
 
     return userExists_Lenasys;
   }
+
+  
 
 
 
