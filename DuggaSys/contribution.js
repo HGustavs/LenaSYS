@@ -1060,13 +1060,8 @@ function courseSelection(elem){
   var dropdown = document.getElementById('courseBtn');
   dropdown.options.length=0;
 
-  // Toggle visibility
-  if(elem.value == "ChooseY") {
-    dropdown.style.visibility = "hidden";
-  }
-  else{
-    dropdown.style.visibility = "visible";
-  }
+  // Set visibility
+  dropdown.style.visibility = elem.value == "ChooseY" ? 'hidden' : "visible";
 
   // Default option
   var opt = document.createElement('option');
