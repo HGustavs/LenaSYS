@@ -1140,9 +1140,9 @@ function returnedSection(data) {
 
         // checkbox
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:25px;' class='" + makeTextArray(itemKind,["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
-            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' value='" + true + "' onclick='markedItems(this)'>";
-            str += "<label for='"+ item['lid'] + "-checkbox" + "' class='checkbox-label' >text</label>"
+          str += `<td style='width:25px;' class='" + makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
+            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' onclick='markedItems(this)'>";
             str += "</td>";      
         }
         
