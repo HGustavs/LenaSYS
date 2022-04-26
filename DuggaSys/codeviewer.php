@@ -258,7 +258,7 @@ Testing Link:
 						</tr>
 						<tr>
 							<td colspan="1"><input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwfrom' placeholder='From #' />&nbsp;-&nbsp;<input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwto' placeholder='To #' /></td>
-							<td colspan="1"><input style="width: 32px; float: none;" class='submit-button' type='button' value='+' onclick='editImpRows("+");' /></td>
+							<td colspan="1"><input style="width: 32px; float: none;" class='submit-button' id='improw-submit-btn' type='button' value='+' onclick='editImpRows("+");' /></td>
 						</tr>
 					</table>
 					<table width="100%">
