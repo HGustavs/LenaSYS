@@ -14,9 +14,6 @@ var dailyCount = [
 ];
 
 AJAXService("get", {
-  //userid: document.getElementById('userid').value
-  //userid: "Not selected"
-  //userid: "HGustavs"
 }, "CONTRIBUTION");
 
 var weeks;
