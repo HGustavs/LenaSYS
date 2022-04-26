@@ -37,14 +37,14 @@
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg"/>
                     <span class="toolTipText"><b>Pointer</b><br>
-                        <p>Allows you to select and move different entities as well as navigate the diagram</p><br>
+                        <p>Allows you to select and move different elements as well as navigate the diagram</p><br>
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_select.svg"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
-                        <p>Click and drag to select multiple elements within that area</p><br>
+                        <p>Click and drag to select multiple elements within the selected area</p><br>
                         <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -63,13 +63,13 @@
                         <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>ER Entity</b><br>
-                                <p>Change to ER entity creation</p>
+                                <p>Change to ER entity</p>
                             </span>
                         </div>
                         <div class="placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_UML_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>UML Entity</b><br>
-                                <p>Change to UML entity creation</p>
+                                <p>Change to UML entity</p>
                             </span>
                         </div>
                     </div>
@@ -89,13 +89,13 @@
                         <div class="placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>ER Entity</b><br>
-                                <p>Change to ER entity creation</p>
+                                <p>Change to ER entity</p>
                             </span>
                         </div>
                         <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
                             <img src="../Shared/icons/diagram_UML_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>UML Entity</b><br>
-                                <p>Change to UML entity creation</p>
+                                <p>Change to UML entity</p>
                             </span>
                         </div>
                     </div>
@@ -115,13 +115,13 @@
                         <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_relation.svg"/>
                             <span class="placementTypeToolTipText"><b>ER Relation</b><br>
-                                <p>Change to ER relation creation</p>
+                                <p>Change to ER relation</p>
                             </span>
                         </div>
                         <div class="placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_inheritance.svg"/>
                             <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
-                                <p>Change to UML inheritance creation</p>
+                                <p>Change to UML inheritance</p>
                             </span>
                         </div>
                     </div>
@@ -141,13 +141,13 @@
                         <div class="placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_relation.svg"/>
                             <span class="placementTypeToolTipText"><b>ER Relation</b><br>
-                                <p>Change to ER relation creation</p>
+                                <p>Change to ER relation</p>
                             </span>
                         </div>
                         <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_inheritance.svg"/>
                             <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
-                                <p>Change to UML inheritance creation</p>
+                                <p>Change to UML inheritance</p>
                             </span>
                         </div>
                     </div>
@@ -155,7 +155,7 @@
                 <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_attribute.svg"/>
                     <span class="toolTipText"><b>Attribute</b><br>
-                        <p>Add an ER Attribute to the diagram</p><br>
+                        <p>Add an ER attribute to the diagram</p><br>
                         <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -172,21 +172,21 @@
             <div class="diagramIcons" onclick='zoomin();'>
                 <img src="../Shared/icons/diagram_zoomin.svg"/>
                 <span class="toolTipText"><b>Zoom IN</b><br>
-                    <p>Close in on the center of the screen</p><br>
+                    <p>Zoom in on viewed area</p><br>
                     <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div class="diagramIcons" onclick='zoomout();'>
                 <img src="../Shared/icons/diagram_zoomout.svg"/>
                 <span class="toolTipText"><b>Zoom OUT</b><br>
-                    <p>Back away from the center of the screen</p><br>
+                    <p>Zoom out on viewed area</p><br>
                     <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div class="diagramIcons" onclick="zoomreset()">
                 <img src="../Shared/icons/fullscreen.svg"/>
                 <span class="toolTipText"><b>Zoom RESET</b><br>
-                    <p>Reset the zoom to its original position</p><br>
+                    <p>Reset the zoom to 1x</p><br>
                     <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
@@ -213,8 +213,8 @@
             <legend>Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
                 <img src="../Shared/icons/screenUpdate.svg"/>
-                <span class="toolTipText"><b>Redirect camera to center</b><br>
-                    <p>Redirect camera to center of all elements</p><br>
+                <span class="toolTipText"><b>Reset view</b><br>
+                    <p>Reset view to show all elements</p><br>
                     <p id="tooltip-CENTER_CAMERA" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
@@ -224,21 +224,21 @@
             <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
                 <img src="../Shared/icons/diagram_stepforward.svg"/>
                 <span class="toolTipText"><b>Redo</b><br>
-                    <p>Restores last undo made</p><br>
+                    <p>Redo last change</p><br>
                     <p id="tooltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="stepBackToggle" class="diagramIcons" onclick="toggleStepBack()">
                 <img src="../Shared/icons/diagram_stepback.svg"/>
                 <span class="toolTipText"><b>Undo</b><br>
-                    <p>Reverts last change made</p><br>
+                    <p>Undo last change</p><br>
                     <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="replayToggle" class="diagramIcons" onclick="toggleReplay()">
                 <img src="../Shared/icons/diagram_replay.svg"/>
-                <span class="toolTipText"><b>Toggle replay</b><br>
-                    <p>Enter replay-mode</p><br>
+                <span class="toolTipText"><b>Enter replay mode</b><br>
+                    <p>View history of changes made</p><br>
                 </span>
         </fieldset>
 
