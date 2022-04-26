@@ -359,6 +359,13 @@ function updateVariantTitle(number) {
 
 // Opens the variant editor.
 function showVariantEditor() {
+	if(globalData['entries'][globalVariant].quizFile == "diagram_dugga"){
+		$("#typeCheckbox").css("display", "flex");
+	}
+	else{
+		$("#typeCheckbox").css("display", "none");
+	}
+
 	AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
   if(submissionRow == 0){
     // The submission row doesn't go away when leaving the modal

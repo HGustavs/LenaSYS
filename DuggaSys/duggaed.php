@@ -185,7 +185,7 @@ session_start();
                     </div>
                   </div>
                     <!-- diagram types -->
-                  <div>
+                  <div id="typeCheckbox">
                     <fieldset style="width:90%">
                       <legend>Diagram types allowed</legend>
                       <div id="diagramTypesBox" style="display:flex;flex-wrap:wrap;flex-direction:row;">
