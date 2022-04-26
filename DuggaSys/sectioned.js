@@ -2365,7 +2365,8 @@ function addClasses() {
   var links = document.getElementsByTagName('a');
 
   for (var i = 0; i < links.length; i++) {
-    links[i].setAttribute('target', '_blank');
+    if(links[i].href.includes("github.com") || links[i].href.includes("youtube.com")){
+      links[i].setAttribute('target', '_blank');}
     if ((links[i].innerHTML.toLowerCase().indexOf("example") !== -1) ||
     (links[i].innerHTML.toLowerCase().indexOf("exempel") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("examples") !== -1)) {
       links[i].classList.add("example-link");
