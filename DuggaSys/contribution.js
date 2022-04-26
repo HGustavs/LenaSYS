@@ -1002,6 +1002,8 @@ function returnedSection(data) {
   str += `<select id='yearBtn' class='submit-button'
   onclick='statSort(value)'onchange='courseSelection(value)'>
   <option value="ChooseY">Choose Year</option>`;
+
+  // Add option for each year folder
   if (data['directoriesYear'][0] !== null){
     for(i=0;i<data['directoriesYear'].length;i++){
       courseFileArr.push(data['allCoursesPerYear'][i]); // Keep file paths
