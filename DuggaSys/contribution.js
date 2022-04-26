@@ -1015,7 +1015,7 @@ function returnedSection(data) {
   str +=`</select>`;
 
   str += `<select id='courseBtn' class='submit-button'
-  onclick='statSort(value)'onchange='courseDBcollection(value)'>
+  onclick='statSort(value)'onchange='courseDBCollection(value)'>
   <option value="ChooseC">Choose Course</option></select>`;
 
   str += "</div>"; 
@@ -1076,27 +1076,14 @@ function courseSelection(pos){
 
 
 //Function to reload contributionservice with the path to the correct db file
-function courseDBcollection(path){
+function courseDBCollection(path){
 
   console.log(path);
   path = path.replaceAll("/",'%');
   
-  AJAXService("get", {
-    //userid: "HGustavs", 
+  AJAXService("get", { 
     dbPath: path
   }, "CONTRIBUTION");
-  
-  
-  /*
-  $.get( 
-    "contributionservice.php",
-    { path: path },
-    function(data) {
-      $("#contribGithHubContribTable").load(" #contribGithHubContribTable > *");
-      //location.reload();
-    }
-    
- );*/
   
 }
 
