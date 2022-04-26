@@ -20,6 +20,28 @@
 			background-color: rgba(255,255,255,1);
 		}
 	}
+
+	.loginPass {
+		animation: loginPass 2s;
+		animation-iteration-count:2;
+	}
+	@keyframes loginPass {
+		0% {
+			background-color: rgba(255,255,255,1);
+		}
+		25% {
+			background-color: rgba(242, 251, 62, 0.2);
+		}
+		50% {
+			background-color: rgba(255,255,255,1);
+		}
+		75% {
+			background-color: rgba(242, 251, 62, 0.2);
+		}
+		100% {
+			background-color: rgba(255,255,255,1);
+		}
+	}
 </style>
 		<!-- Overlay -->
 
