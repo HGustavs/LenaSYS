@@ -666,6 +666,7 @@ else if(strcmp($opt, "checkForLenasysUser")==0)
 		pdoConnect();
 	}
 	$gituser = getOP('userid');
+
 	
 	$query = $pdo->prepare("SELECT username FROM user WHERE username=:GU;");
 	$query->bindParam(':GU', $gituser);
@@ -689,8 +690,6 @@ else if(strcmp($opt, "checkForLenasysUser")==0)
 }
 else if(strcmp($opt,"requestGitUserCreation") == 0)
 {
-	echo json_encode("its me, calling from the other side");
-
 	global $pdo;
 
 	if($pdo == null) 
@@ -699,15 +698,123 @@ else if(strcmp($opt,"requestGitUserCreation") == 0)
 	}
 	$gituser = getOP('userid');
 	$gitpass = getOP('userpass');
+	$gitssn = getOP('userssn'); // TODO make sure userssn is valid before inserting
 	
-	$query = $pdo->prepare("SELECT username FROM user WHERE username=:GU;");
-	$query->bindParam(':GU', $gituser);
-	
+	$addStatus = false;
+
+// ------------------------
+
+
+$query = $log_db->prepare('select distinct(usr) from 
+		(	select blameuser as usr from blame
+		union select author as usr from event
+		union select author as usr from issue
+		union select author as usr from commitgit
+		union select blameuser as usr from coderow
+		order by usr);');
+
 	if(!$query->execute()) 
 	{
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
 	}
+
+	$rows = $query->fetchAll();
+	foreach($rows as $row)
+	{
+		//(strlen($row['usr'])<9) // the reason for this is a username check, only users with names less than 9 characters are allowed, commented out for now, i want all users of all lengths
+		array_push($allusers, $row['usr']); 
+	}
+
+
+	$userExisted = in_array($gituser, $allusers); // if the user existed it should be not empty, aka this checks if we retrieved the user from the DB
+		
+	/*
+            There exists a number of combinations that we need to handle¨
+
+            onGit | onLena
+            --------------
+              T   |  T    -> Log in with lena
+              F   |  T    -> Log in with lena
+              T   |  F    -> Create new user
+              F   |  F    -> User does not exist
+          */
+
+
+	if($userExisted) // exists in git data
+	{
+
+		$allusers = array();
+
+		$query = $pdo->prepare("SELECT username FROM user WHERE username=:GU;");
+		$query->bindParam(':GU', $gituser);
+	
+		if(!$query->execute()) 
+		{
+			$error=$query->errorInfo();
+			$debug="Error reading entries\n".$error[2];
+		}
+
+		$rows = $query->fetchAll();
+		foreach($rows as $row)
+		{
+			array_push($allusers, $row['usr']); 
+		}
+
+		$userExisted = !empty($allusers); // if we managed to retrieve something with the query we found the user in the lenasys DB
+
+		if(!$userExisted) // if it isnt on the lenasys database
+		{
+			/*
+            onGit | onLena
+            --------------
+              T   |  F    -> Create new user
+
+			  At this point we have done the server side check and we can create a pending user creation from here
+        	 */
+			$git_pending = 101;
+			$git_revoked = 102;
+			$git_accepted = 103;
+		
+			$temp_null_str = "NULL";
+
+			$rnd=standardPasswordHash($gitpass);
+			$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password, addedtime, class, requestedpasswordchange) VALUES(:username, :email, :firstname, :lastname, :ssn, :password, now(), :className, :RPC);';
+			$stmt = $pdo->prepare($querystring);
+			$stmt->bindParam(':username', $gituser);
+			$stmt->bindParam(':email', $temp_null_str); 
+			$stmt->bindParam(':firstname', $temp_null_str); 
+			$stmt->bindParam(':lastname', $temp_null_str); 
+			$stmt->bindParam(':ssn', $gitssn); 
+			$stmt->bindParam(':password', $rnd); 
+			$stmt->bindParam(':className', $temp_null_str); 
+			$stmt->bindParam(':RPC', $git_pending);
+
+			try {
+				if(!$stmt->execute()) {
+					$error=$stmt->errorInfo();
+					$debug.="Error updating entries\n".$error[2];
+					$debug.="   ".$gituser."Does not Exist \n";
+					//$debug.=" ".$uid;
+				}
+				$uid=$pdo->lastInsertId();
+				$addStatus = true;
+
+			} catch (PDOException $e) {
+				if ($e->errorInfo[1] == 1062) {
+					$debug="Duplicate SSN or Username";
+				} else {
+					$debug="Error updating entries\n".$error[2];
+				}
+			}
+
+
+		}
+
+	}
+
+	echo json_encode($addStatus); // if successfully created will be true
+
 }
 
 

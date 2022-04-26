@@ -1663,19 +1663,31 @@ function showNewGitLogin()
       loginBoxheader_login_password_field.style.visibility = "";
 
 
-      // create another loginbox and create a new id
+      // create ssn box
       let originalId = loginBox.getAttribute("id");
+      loginBox.setAttribute("id", "ssnbox");
+      loginBox.closest("tr").outerHTML += loginBox.closest("tr").innerHTML;
+      loginBox = document.querySelector("#ssnbox");
+      loginBox.setAttribute("id", originalId);
+
+
+      // create another loginbox and create a new id
+      originalId = loginBox.getAttribute("id");
       loginBox.setAttribute("id", originalId+1);
-      loginBoxParent.outerHTML += loginBoxParent.innerHTML;
+      loginBox.closest("tr").outerHTML += loginBox.closest("tr").innerHTML;
       loginBox = document.querySelector("#"+originalId+1);
       loginBox.setAttribute("id", originalId);
 
 
+
+
       let login_first = document.querySelector("#"+originalId);
       let login_second = document.querySelector("#"+originalId+1);
+      let ssnbox = document.querySelector("#ssnbox");
 
       login_first.setAttribute("placeholder", "Create new password");
       login_second.setAttribute("placeholder","Repeat new password");
+      ssnbox.setAttribute("placeholder", "Enter SSN YYYYMMDD-XXXX")
 
       loginBoxheader_login_username_field.setAttribute("disabled","");
      
@@ -1695,6 +1707,11 @@ function resetForceLogin()
   let login_second = document.querySelector("#"+originalId+1);
   if(login_second != null)
     login_second.remove();
+
+  let ssnbox = document.querySelector("#ssnbox");
+  if(ssnbox != null)
+    ssnbox.remove();
+
   let loginBoxButton = document.querySelector(".buttonLoginBox");
   loginBoxButton.setAttribute("Value", "Login");
 
@@ -1755,20 +1772,24 @@ function resetForceLogin()
 
 
 
-  function requestGitUserCreation(username, password) // function to create the git user in the lenasys database, make sure requestedpasswordchange is pending(101)
+  function requestGitUserCreation() // function to create the git user in the lenasys database, make sure requestedpasswordchange is pending(101)
   {
   
     console.log("poggis");
 
     let pass1 = document.querySelector("#password").value;
     let pass2 = document.querySelector("#password1").value;
+    let username = document.querySelector("#username").value;
+    let ssn = document.querySelector("#ssnbox").value;
 
+    // TODO MAKE SURE SSN IS ACTUALLY A VALID SSN BEFORE INSERTING INTO DB
 
     if(pass1 == pass2)
     {
       AJAXService("requestGitUserCreation",{
         userid: username,
-        userpass: password,
+        userpass: pass1,
+        userssn: ssn
       }, "CONTRIBUTION_LENASYS_USER_CREATION");
     }
     else
