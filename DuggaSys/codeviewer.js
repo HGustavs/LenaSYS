@@ -673,14 +673,24 @@ function displayEditContent(boxid)
 // Listen to enterpress on "important rows" inputfield and runs the same function as the + button
 // -----------------------------------------------------------------------------------------------
 
+var enterPress; // Variable that is used to check enter press or button press
 function editRowsEnterPress(){
-	var input = document.getElementById("improwto");
-	input.addEventListener("keypress", function(event) {
+	var inputRowFrom = document.getElementById("improwfrom");
+	inputRowFrom.addEventListener("keypress", function(event) {
 		if (event.key === "Enter") {
+			enterPress = true;
 			event.preventDefault();
-			document.getElementById("improw-submit-btn").click();
+			editImpRows("+");
 		}
 	});
+	var inputRowTo = document.getElementById("improwto");
+	inputRowTo.addEventListener("keypress", function(event) {
+		if (event.key === "Enter") {
+			enterPress = true;
+			event.preventDefault();
+			editImpRows("+"); 	
+		}
+	});	
 }
 
 //----------------------------------------------------------------------------------
