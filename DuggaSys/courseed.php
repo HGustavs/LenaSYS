@@ -88,7 +88,7 @@ if(isset($_SESSION['uid'])){
 				<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
     		</div>
     		<div style='padding:5px;'>
-    			<input class='submit-button' id="createCourse" type='button' value='Create' title='Create course' onclick="validateForm('newCourse')" />
+    			<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse')" />
     		</div>
       </div>
 	</div>
