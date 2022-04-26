@@ -1,23 +1,19 @@
 /* This template makes two boxes, one at the top of the window and one underneath the first one*/
 #box1wrapper{
-    position: absolute;
-    left: 0px;
+    position: relative;
     grid-column: a/b;
-    grid-row: a/e;
-    min-width: 100%;
-    min-height: 100%;
+    grid-row: a/f;
+    width: 100%;
+    height: 100%;
 }
 
 #box2wrapper {
-    position: absolute;
-    top:auto !important;
-    bottom: 0px;
-    left: 0px;
+    position: relative;
     font-family: Arial,Sans-Serif;
-    grid-column: e/f;
-    grid-row: g/k;
-    min-width: 100%;
-    min-height: 100%;
+    grid-column: g/h;
+    grid-row: g/l;
+    width: 100%;
+    height: 100%;
 }
 
 @media only screen and (max-width: 800px) {

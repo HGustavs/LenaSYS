@@ -1,7 +1,7 @@
 /* This template makes two boxes, one to the left in the window and one to the right of the first one*/
 #box1wrapper {
     overflow: hidden;
-    position: absolute;
+    position: relative;
     border-right-style: solid;
     border-right-width: 3px;
     border-color: #5A5757;
