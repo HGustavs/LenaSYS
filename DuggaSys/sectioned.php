@@ -240,8 +240,11 @@
 								<select style='width:55px;' id='relativedeadlineminutes'></select>
 								<select style='width:55px;' id='relativedeadlinehours'></select>
 							</span>
+							<span style='float:left'>
+								<p id="dialog8" style="font-size:11px; border:0px; margin-left: 10px; display:none;max-height:20px;">Deadline has to be between start date and end date</p>
+							</span>
 					</div>
-			        <!-- <p id="dialog8" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Deadline has to be between start date and end date</p> -->
+			        
 					<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
 					<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 					<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>

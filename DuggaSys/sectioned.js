@@ -181,7 +181,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   }
   if(relativedeadline !== undefined) {
     var splitdeadline = relativedeadline.split(":");
-
+    // relativedeadline -> week:weekday:hour:minute
     $("#relativedeadlinehours").html(makeoptions(splitdeadline[2],hourArrOptions,hourArrValue));
     $("#relativedeadlineminutes").html(makeoptions(splitdeadline[3],minuteArrOptions,minuteArrValue));
 
@@ -2585,13 +2585,13 @@ function validateDate2(ddate, dialogid) {
   if (startdate < deadline && enddate > deadline) {
     ddate.style.borderColor = "#383";
     ddate.style.borderWidth = "2px";
-    // x.style.display = "none";
+    x.style.display = "none";
     window.bool8 = true;
 
   } else {
 
     ddate.style.borderColor = "#E54";
-    // x.style.display = "block";
+    x.style.display = "block";
     ddate.style.borderWidth = "2px";
     window.bool8 = false;
 
