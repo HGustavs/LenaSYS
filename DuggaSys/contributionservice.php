@@ -21,7 +21,7 @@ $debug="NONE!";
 //This uses an hardcoded path to a database file containing all Github data and run all funtions on that data. No other connection to a database at the moment.
 $log_db = new PDO('sqlite:../../BGHdata_2021_05.db');
 
-//Old filepath with wrong orientation of the slashes that prevent function on Linux DO NOT USE
+//Old filepath with wrong orientation of the slashes that prevent function on Linux DO NOT USE!!!!!!!!
 //$log_db = new PDO('sqlite:..\..\BGHdata_2021_05.db');
 
 $opt = getOP('opt');
@@ -36,9 +36,35 @@ $allcommitranks=array();
 
 $draught=false;
 
+//Get all databases separated by course and year
+$directoriesYear = glob('../../contributionDBs/*', GLOB_ONLYDIR);
+
+//Removes everything but the year from the directories
+for($i=0; $i< sizeof($directoriesYear); $i++){
+	$directoriesYear[$i]= substr($directoriesYear[$i],-4);
+}
+
+$allCoursesPerYear=array();
+//2d-array. For every year, create an array of the .db in that folder
+for($i=0; $i< sizeof($directoriesYear); $i++){
+	$allCourses= glob('../../contributionDBs/'.$directoriesYear[$i].'/*.db');
+	array_push($allCoursesPerYear,$allCourses);
+}
+
 if (!checklogin()) die;
 if(strcmp($opt,"get")==0) {
 	if(checklogin() && isSuperUser($_SESSION['uid'])) {
+		
+		
+		//Dynamically loads PDO by path name
+		$dbPath=getOP('dbPath');
+		if( $dbPath != null && $dbPath != 'UNK' ) {
+			$path = $dbPath;
+			//AJAX has troubles with / so in the transfer it is replaced with % and here back to /
+			$path = str_replace('%','/',$path);
+			$log_db = new PDO('sqlite:'.$path);
+		}
+
 		$gituser = getOP('userid');
 		$query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2019-03-31" and blamedate<"2020-01-01" union select author as usr from event where eventtime>"2019-03-31" and eventtime<"2020-01-01" union select author as usr from issue where issuetime>"2019-03-31" and issuetime<"2019-01-08") order by usr;');
 		if(!$query->execute()) {
@@ -618,6 +644,8 @@ if(strcmp($opt,"get")==0) {
 	$array = array(
 		'debug' => $debug,
 		'weeks' => $weeks,
+		'directoriesYear' => $directoriesYear,
+		'allCoursesPerYear' => $allCoursesPerYear,
 		'rowrankno' => $rowrankno,
 		'rowrank' => $rowrank,
     'rowgrouprank' => $rowgrouprank,

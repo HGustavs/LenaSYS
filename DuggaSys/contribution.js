@@ -22,6 +22,7 @@ var activities;
 var firstSelWeek;
 var secondSelWeek;
 var updateShowAct = true;
+var courseFileArr = [];
 
 var commitChangeArray = [];
 
@@ -997,20 +998,30 @@ function returnedSection(data) {
   onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
   str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution'
   onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
-  str += `<select id='courseBtn' class='submit-button'
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'>
-  "<option value="ChooseC">Choose course</option>"
-  "<option value="opt1">Option1</option>"
-  "<option value="opt2">Option2</option>"
-  </select>`;
+  
+  
+  //Dynamically loads the year selection list based on folders in ../../contributionDBs/
   str += `<select id='yearBtn' class='submit-button'
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'>
-  "<option value="ChooseY">Choose year</option>"
-  "<option value="opt1">Option1</option>"
-  "<option value="opt2">Option2</option>"
-  </select>`;
-  str += "</div>"; 
+  onclick='statSort(value)'onchange='courseSelection(value)'>
+  <option value="ChooseY">Choose Year</option>`;
 
+  // Add option for each year folder
+  if (data['directoriesYear'][0] !== null){
+    for(i=0;i<data['directoriesYear'].length;i++){
+      courseFileArr.push(data['allCoursesPerYear'][i]); // Keep file paths
+      str += '<option value=' + i + '>'; // Array pos
+      str += data['directoriesYear'][i]; // Year
+      str +=`</option>`;
+    }
+  }
+  str +=`</select>`;
+
+  str += `<select id='courseBtn' class='submit-button'
+  onclick='statSort(value)'onchange='courseDBCollection(value)'>
+  <option value="ChooseC">Choose Course</option></select>`;
+
+  str += "</div>"; 
+ 
 
   localStorage.setItem('GitHubUser', data['githubuser'])
      str+="<p>";
@@ -1041,6 +1052,42 @@ function returnedSection(data) {
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(data);
   document.getElementById('commitDiagram').innerHTML = renderCommits(data);
   document.getElementById('content').innerHTML = str;
+}
+
+// Update the "Select Course" dropdown options
+function courseSelection(pos){
+  // Clear dropdown menu
+  var dropdown = document.getElementById('courseBtn');
+  dropdown.options.length=0;
+
+  // Default option
+  var opt = document.createElement('option');
+  opt.value = "ChooseC";
+  opt.innerHTML = "Choose Course";
+  dropdown.appendChild(opt);
+
+  // Get file paths
+  for(i=0;i<courseFileArr[pos].length;i++)
+  {
+    // Create button
+    var opt = document.createElement('option');
+    var str = courseFileArr[pos][i];
+    opt.value = str;
+    opt.innerHTML = str.substring(str.lastIndexOf('/') + 1);
+    dropdown.appendChild(opt);
+  }
+}
+
+
+//Function to reload contributionservice with the path to the correct db file
+function courseDBCollection(path){
+  //AJAX has troubles with / so in the transfer it is replaced with % and then back to / in contributionservice.php
+  path = path.replaceAll("/",'%');  
+
+  AJAXService("get", { 
+    dbPath: path
+  }, "CONTRIBUTION");
+  
 }
 
 function buildRankData(data) {
