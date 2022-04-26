@@ -2693,8 +2693,9 @@ function quickValidateForm(formid, submitButton){
     var endialog = document.getElementById("EndDialog1");
     endialog.innerHTML = "";
     valid = true;
-    var deadlinepart = document.getElementById('inputwrapper-deadline')
-    if (deadlinepart.display == 'block'){
+    var deadlinepart = document.getElementById('inputwrapper-deadline');
+    var deadlinedisplayattribute = deadlinepart.style.display; 
+    if (deadlinedisplayattribute == 'block'){
       valid = valid && (validateSectName('sectionname') && showCourseDate('setDeadlineValue','dialog8'));
     }else{
       valid = valid && validateSectName('sectionname');
