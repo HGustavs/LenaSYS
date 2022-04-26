@@ -70,18 +70,13 @@ if(strcmp($opt,"get")==0) {
 	if(checklogin() && isSuperUser($_SESSION['uid'])) {
 		
 		
+		//Dynamically loads PDO by path name
 		$dbPath=getOP('dbPath');
 		if( $dbPath != null && $dbPath != 'UNK' ) {
 			$path = $dbPath;
-			//$path = preg_replace('/\b'.preg_quote('%').'\b/','/',$path);
-			//$path = preg_replace('/\b'.preg_quote('//').'\b/','/',$path);
+			//AJAX has troubles with / so in the transfer it is replaced with % and here back to /
 			$path = str_replace('%','/',$path);
-			//$path = "sqlite:".$path;
-			//../../contributionDBs/2021/a97marbr.db
-			//$log_db = new PDO('sqlite:../../contributionDBs/2020/2020_3.db');
-			//echo "das path  ".$path;
 			$log_db = new PDO('sqlite:'.$path);
-			//echo "das path  ".$path;
 		}
 
 		$gituser = getOP('userid');

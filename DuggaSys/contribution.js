@@ -1077,8 +1077,9 @@ function courseSelection(pos){
 
 //Function to reload contributionservice with the path to the correct db file
 function courseDBCollection(path){
+  //AJAX has troubles with / so in the transfer it is replaced with % and then back to / in contributionservice.php
   path = path.replaceAll("/",'%');  
-  
+
   AJAXService("get", { 
     dbPath: path
   }, "CONTRIBUTION");
