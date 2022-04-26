@@ -338,7 +338,7 @@
 				<p id="EndDialog2" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
 			</div>
 			<div style='padding:5px;'>
-				<input id='submitCourseMotd' class='submit-button' type='button' value='Create' title='Create new version' onclick="validateForm('newCourseVersion')" />
+				<input id='submitCourseMotd' class='submit-button' type='button' value='Create' disabled title='Create new version' onclick="validateForm('newCourseVersion')" />
 			</div>
 		</div>
 	</div>
