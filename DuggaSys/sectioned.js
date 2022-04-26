@@ -2685,7 +2685,7 @@ function getCourseElements(){
   }
   return list;
 }
-//Validate form but do not 
+//Validate form but do not perform it.
 function quickValidateForm(formid, submitButton){
   const saveButton = document.getElementById(submitButton);
   var valid = true;
