@@ -1,6 +1,7 @@
 /* This template makes two boxes, one to the left in the window and one to the right of the first one*/
 @media screen and (min-width: 726px) {
     #box1wrapper {
+        position: relative;
         grid-column: a;
         grid-row: a/k;
         width: 100%;
@@ -8,7 +9,7 @@
     }
     
     #box2wrapper {
-        position: absolute;
+        position: relative;
         grid-column: b;
         grid-row: b/l;
         width: 100%;
