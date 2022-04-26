@@ -37,21 +37,19 @@ $allcommitranks=array();
 $draught=false;
 
 //Get all databases separated by course and year
-
 $directoriesYear = glob('../../contributionDBs/*', GLOB_ONLYDIR);
 
+//Removes everything but the year from the directories
 for($i=0; $i< sizeof($directoriesYear); $i++){
 	$directoriesYear[$i]= substr($directoriesYear[$i],-4);
 }
 
 $allCoursesPerYear=array();
-
+//2d-array. For every year, create an array of the .db in that folder
 for($i=0; $i< sizeof($directoriesYear); $i++){
 	$allCourses= glob('../../contributionDBs/'.$directoriesYear[$i].'/*.db');
 	array_push($allCoursesPerYear,$allCourses);
 }
-
-
 
 if (!checklogin()) die;
 if(strcmp($opt,"get")==0) {
