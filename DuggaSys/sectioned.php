@@ -142,8 +142,8 @@
 		<!-- Small FAB Button in top in the header of sectioned -->
 		
 			<div style="margin:10px;">
-				<img src="../Shared/icons/right_complement.svg" id="sectionList_arrowStatisticsOpen">
-				<img src="../Shared/icons/desc_complement.svg" id="sectionList_arrowStatisticsClosed">
+				<img src="../Shared/icons/right_complement.svg" alt='Show List Content' id="sectionList_arrowStatisticsOpen">
+				<img src="../Shared/icons/desc_complement.svg" alt='Hide List Content' id="sectionList_arrowStatisticsClosed">
 			</div>
 			<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
 				<input id='addElement'  type='button' value='+' style="top:-493px" class='submit-button-newitem' title='New Item' >
