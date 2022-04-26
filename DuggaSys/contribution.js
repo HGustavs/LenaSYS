@@ -1077,9 +1077,7 @@ function courseSelection(pos){
 
 //Function to reload contributionservice with the path to the correct db file
 function courseDBCollection(path){
-
-  console.log(path);
-  path = path.replaceAll("/",'%');
+  path = path.replaceAll("/",'%');  
   
   AJAXService("get", { 
     dbPath: path
