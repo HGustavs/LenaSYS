@@ -1096,6 +1096,12 @@ function returnedSection(data) {
           str += "</td>";
         }
 
+        //Generate new tab link
+        str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+          str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Open link in new tab' class='' 
+          src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
+          str += "</td>";
 
         // Generate Canvas Link Button
         if (data['writeaccess'] || data['studentteacher']) {
@@ -1254,10 +1260,15 @@ function returnedSection(data) {
   }
 }
 
+function openCanvasLink(btnobj){
+  link = btnobj.parentNode.parentNode.querySelector('a').href;
+  window.open(link, "_blank");
+}
 
 function showCanvasLinkBox(operation,btnobj){
   if(operation == "open"){
-    var canvasLink = "This is a test link."//"<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('.internal-link').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
+    var canvasLink = btnobj.parentNode.parentNode.querySelector('a').href;
+    //var canvasLink = "<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('a').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
     if(canvasLink == null){
       canvasLink = "ERROR: Failed to get canvas link.";
     }
