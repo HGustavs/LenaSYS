@@ -4,7 +4,7 @@ session_start();
 //pdoConnect();
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
