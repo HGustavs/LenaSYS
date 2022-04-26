@@ -217,8 +217,8 @@ session_start();
                 </fieldset>
                 <fieldset style="width:90%; margin-left:5%;">
                   <legend>Answer</legend>
-                    <div id='variantanswer' style='min-height:40px;'>
-                      <textarea id='variantanswerText' rows="2" style="min-height:40px"></textarea>
+                    <div id='variantanswer' style='min-height:15px;'>
+                      <textarea id='variantanswerText' rows="2" style="min-height:40px; height:53px;"></textarea>
                     </div>
                 </fieldset>
               </div>
