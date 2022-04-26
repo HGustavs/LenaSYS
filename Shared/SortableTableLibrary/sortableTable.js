@@ -457,7 +457,7 @@ function SortableTable(param)
       for(var columnOrderIdx=0;columnOrderIdx<columnOrder.length;columnOrderIdx++){
           if (columnfilter[columnOrderIdx] !== null) {
               if (typeof(sumContent[columnOrder[columnOrderIdx]])!=='undefined') {
-                  str += "<td style='whitespace:nowrap;'>"+sumContent[columnOrder[columnOrderIdx]]+"</td>";
+                  str += "<td style='whitespace:nowrap;'>"+sumContent[columnOrder[columnOrderIdx]].toFixed(2)+"</td>";
                   if (columnOrderIdx < freezePaneIndex) {
                       mhvstr += "<td style='whitespace:nowrap;'>"+sumContent[columnOrder[columnOrderIdx]]+"</td>";                  
                   }
