@@ -212,7 +212,7 @@
         <fieldset>
             <legend>Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
-                <img src="../Shared/icons/screenUpdate.svg"/>
+                <img src="../Shared/icons/fullscreen.svg"/>
                 <span class="toolTipText"><b>Click to redirect camera to center</b><br>
                     <p>Redirect camera to center of all elements</p><br>
                     <p id="tooltip-CENTER_CAMERA" class="key_tooltip">Keybinding:</p>
