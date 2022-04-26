@@ -496,7 +496,7 @@ function setActiveCodes() {
 }
 
 const regex = {
-	coursename: /^[A-ZÅÄÖa-zåäö]+( (- )?[A-ZÅÄÖa-zåäö]+)*$/,
+	coursename: /^[A-ZÅÄÖa-zåäö]+( ?(- ?)?[A-ZÅÄÖa-zåäö]+)*$/,
 	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/
 };
 
@@ -504,7 +504,6 @@ const regex = {
 function elementIsValid(element) {
 	const messageElement = element.parentNode.nextElementSibling; //The dialog to show validation messages in
 
-	const saveButton = document.getElementById('saveCourse');
 	//Standard styling for a failed validation that will be changed if element passes validation
 	element.style.borderWidth = "2px";
 	element.style.borderColor = "#E54";
@@ -518,7 +517,6 @@ function elementIsValid(element) {
 			//This prevents it from being impossible to save course code without changing it
 			if(element.value !== element.dataset.origincode) {
 				if(activeCodes.includes(element.value)) {
-					saveButton.disabled = false;
 					messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
 					return false;
 				}
@@ -526,7 +524,6 @@ function elementIsValid(element) {
 		}
 
 		//Setting the style of the element represent being valid and not show
-		saveButton.disabled = false;
 		element.style.borderColor = "#383";
 		messageElement.style.display = "none";
 		return true;
@@ -535,9 +532,6 @@ function elementIsValid(element) {
 		element.removeAttribute("style");
 		element.value = "";
 		messageElement.style.display = "none";
-	}else{
-		//Disable save button to notify user that an error exit.
-		saveButton.disabled = true;
 	}
 
 	//Change back to original validation error message if it has been changed when knowing course code is not duplicate
@@ -548,6 +542,35 @@ function elementIsValid(element) {
 	//Validation falied if getting here without returning
 	return false;
 }
+
+
+
+//Validates whole form but don't implement it.
+function quickValidateForm(formid, submitButton){
+	
+	const formContainer = document.getElementById(formid);
+	const inputs = formContainer.querySelectorAll("input.validate");
+	const saveButton = document.getElementById(submitButton);
+	let numberOfValidInputs = 0;
+
+	//Count number of valid inputs
+	inputs.forEach(input => {
+		if(elementIsValid(input)) {
+			numberOfValidInputs++;
+		}
+	});
+
+	//If all inputs were valid create course or update course depending on id of form
+	if(numberOfValidInputs === inputs.length) {
+		saveButton.disabled = false;
+		return true;
+	} else{
+		saveButton.disabled = true;
+	}
+	
+	return false;
+}
+
 
 //Validates whole form
 function validateForm(formid) {
@@ -587,12 +610,14 @@ function validateForm(formid) {
 		}
 	}
 }
-function validateMOTD(motd, dialogid){
+function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton){
+	const saveButton = document.getElementById(submitButton);
 	var emotd = document.getElementById(motd);
 	var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
 	var EmotdRange = /^.{0,100}$/;
-	var x4 = document.getElementById(dialogid);
-	if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
+	var x4 = document.getElementById(syntaxdialogid);
+	var x8 = document.getElementById(rangedialogid);
+	if (emotd.value.match(Emotd) ) {
 	  emotd.style.borderColor = "#383";
 	  emotd.style.borderWidth = "2px";
 	  x4.style.display = "none";
@@ -602,6 +627,22 @@ function validateMOTD(motd, dialogid){
 	  x4.style.display = "block";
 	  emotd.style.borderWidth = "2px";
 	  window.bool9 = false;
+	}
+	if (emotd.value.match(EmotdRange)){
+		emotd.style.borderColor = "#383";
+		emotd.style.borderWidth = "2px";
+		x8.style.display = "none";
+		window.bool9 = true;
+	}else{
+		emotd.style.borderColor = "#E54";
+		x8.style.display = "block";
+		emotd.style.borderWidth = "2px";
+		window.bool9 = false;
+	}
+	if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
+		saveButton.disabled = false;
+	}else{
+		saveButton.disabled = true;
 	}
   
   }
