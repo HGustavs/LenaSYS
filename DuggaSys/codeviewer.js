@@ -629,6 +629,7 @@ var openBoxID;
 
 function displayEditContent(boxid) 
 {
+	editRowsEnterPress();
 	document.getElementById("boxtitle2").removeAttribute("contenteditable");
 	// The information stored about the box is fetched
 	var box = retData['box'][boxid - 1];
@@ -667,6 +668,19 @@ function displayEditContent(boxid)
 	document.getElementById("improws").innerHTML = str;
 
 	document.getElementById("editContentContainer").style.display = "flex";
+}
+// -----------------------------------------------------------------------------------------------
+// Listen to enterpress on "important rows" inputfield and runs the same function as the + button
+// -----------------------------------------------------------------------------------------------
+
+function editRowsEnterPress(){
+	var input = document.getElementById("improwto");
+	input.addEventListener("keypress", function(event) {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			document.getElementById("improw-submit-btn").click();
+		}
+	});
 }
 
 //----------------------------------------------------------------------------------
