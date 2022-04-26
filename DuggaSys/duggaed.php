@@ -154,7 +154,7 @@ session_start();
                   </div>
                       <!-- Instruction for assignment -->
                   <div>
-                    <fieldset style="width:90%">
+                    <fieldset style="width:90%;">
                       <legend>Instruction file</legend>
                       <div style="display:flex;flex-wrap:wrap;flex-direction:row;">
                         <select name="type" id="type" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));">
@@ -187,9 +187,9 @@ session_start();
                       <!-- Submissions for dugga -->
                   <div>
                     <div id="duggaSubmissionForm">
-                      <fieldset style="width:90%">
+                      <fieldset style="width:90%; margin-top:5%;">
                         <legend>Submission types</legend>
-                        <div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;overflow:auto;"></div>
+                        <div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:column;overflow:hidden;"></div>
                       </fieldset>
                       <input type="button" class="submit-button" name="addfieldname" id="addfieldname" value="+" style="width:32px;" onclick="addVariantSubmissionRow();" />
                     </div>
@@ -199,9 +199,9 @@ session_start();
                 </form>
               </div>
               <div id="rightDivDialog" style='width: 50%; height:100%; display: inline-block;'>
-                <fieldset style="width:90%">
+                <fieldset style="width:90%; margin-left:5%;">
                   <legend>Search in the Table</legend>
-                  <div style="width:100%; height: 25px; display:flex; flex-wrap:wrap; flex-direction:row;">
+                  <div style="width:100%; height: 25px; display:flex; flex-wrap:nowrap; flex-direction:row;">
                     <input id="variantSearch" class="searchFiled" type="search" placeholder="Search.." style="flex-grow: 99; margin: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;"
                     onkeyup="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"onsearch="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"/>
                                         <button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
@@ -209,16 +209,16 @@ session_start();
                     </button>
                   </div>
                 </fieldset>
-                <fieldset style="width:90%">
+                <fieldset style="width:90%; margin-left:5%;">
                   <legend>Generated Param JSON</legend>
-                  <div id='parameter' style='min-height:120px'>
-                    <textarea id='variantparameterText' rows="5" style="min-height:100px" onchange="createJSONFormData()"></textarea>
+                  <div id='parameter' style='min-height:75px'>
+                    <textarea id='variantparameterText' rows="2" style="min-height:80px" onchange="createJSONFormData()"></textarea>
                   </div>
                 </fieldset>
-                <fieldset style="width:90%">
+                <fieldset style="width:90%; margin-left:5%;">
                   <legend>Answer</legend>
-                    <div id='variantanswer' style='min-height:120px;'>
-                      <textarea id='variantanswerText' rows="5" style="min-height:100px"></textarea>
+                    <div id='variantanswer' style='min-height:40px;'>
+                      <textarea id='variantanswerText' rows="2" style="min-height:40px"></textarea>
                     </div>
                 </fieldset>
               </div>
