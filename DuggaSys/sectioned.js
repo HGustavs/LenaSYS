@@ -134,7 +134,7 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, tabs, feedbackenabled, feedbackquestion) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativedeadline, tabs, feedbackenabled, feedbackquestion) {
 
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
@@ -177,13 +177,16 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   if(deadline !== undefined){
     $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
     $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
-    $("#relativedeadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
-    $("#relativedeadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
-
-    // Might want to add selection for weeks and weekdays
-    $("#relativedeadlineweeks").html(makeoptions(1,weekArrOptions,weekArrValue ));
-    $("#relativedeadlineweekdays").html(makeoptions("Monday",weekdayArrOptions,weekdayArrValue));
     $("#setDeadlineValue").val(deadline.substr(0,10));
+  }
+  if(relativedeadline !== undefined) {
+    var splitdeadline = relativedeadline.split(":");
+
+    $("#relativedeadlinehours").html(makeoptions(splitdeadline[2],hourArrOptions,hourArrValue));
+    $("#relativedeadlineminutes").html(makeoptions(splitdeadline[3],minuteArrOptions,minuteArrValue));
+
+    $("#relativedeadlineweeks").html(makeoptions(splitdeadline[0],weekArrOptions,weekArrValue ));
+    $("#relativedeadlineweekdays").html(makeoptions(splitdeadline[1],weekdayArrOptions,weekdayArrValue));
   }
   var groups = [];
   for (var key in retdata['groups']) {
@@ -403,7 +406,7 @@ function showCreateVersion() {
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", 0, null);
+    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", "undefined", 0, null);
     clearHideItemList();
     newItem(itemtitle);
   }
@@ -450,7 +453,7 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-  param.relativedeadline = $("#relativedeadlineweeks").val()+" "+$("#relativedeadlineweekdays").val()+" "+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
+  param.relativedeadline = $("#relativedeadlineweeks").val()+":"+$("#relativedeadlineweekdays").val()+":"+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
 
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
@@ -1134,7 +1137,7 @@ function returnedSection(data) {
           str += "><img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
-          item['highscoremode'], item['comments'], item['grptype'], item['deadline'],
+          item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
           item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
           str += "</td>";
         }
