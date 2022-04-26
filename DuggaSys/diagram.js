@@ -1677,6 +1677,7 @@ function mup(event)
             break;
         
         case pointerStates.CLICKED_LABEL:
+            updateSelectedLine(lines[findIndex(lines, determinedLines.labelLineID)]);
             break;
 
         case pointerStates.CLICKED_ELEMENT:
