@@ -2459,6 +2459,7 @@ function validateCourseID(courseid, dialogid) {
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
+    return false;
   }
 
   const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
@@ -2468,8 +2469,11 @@ function validateCourseID(courseid, dialogid) {
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
+  }else{
+    return true;
   }
 
+  return false
 }
 
 function validateMOTD(motd,  syntaxdialogid, rangedialogid, submitButton){
@@ -2739,10 +2743,10 @@ function quickValidateForm(formid, submitButton){
     endialog.innerHTML = "";
     valid = true;
 
-    valid = valid && validateCourseID('cversid', 'dialog2')
-    valid = valid && validateVersionName('versname', 'dialog')
-    valid = valid && validateDate('startdate','enddate','dialog3')
-    valid = valid && validateMOTD('vmotd','dialog4', 'dialog42', 'submitCourseMotd')
+    valid = valid && validateCourseID('cversid', 'dialog2');
+    valid = valid && validateVersionName('versname', 'dialog');
+    valid = valid && validateDate('startdate','enddate','dialog3');
+    valid = valid && validateMOTD('vmotd','dialog4', 'dialog42', 'submitCourseMotd');
 
     //If fields empty
     if (versName == null || versName == "", versId == null || versId == "") {
