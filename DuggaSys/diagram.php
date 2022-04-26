@@ -184,7 +184,7 @@
                 </span>
             </div>
             <div class="diagramIcons" onclick="zoomreset()">
-                <img src="../Shared/icons/fullscreen.svg"/>
+                <img src="../Shared/icons/1x.svg"/>
                 <span class="toolTipText"><b>Zoom RESET</b><br>
                     <p>Reset size of all elements</p><br>
                     <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
