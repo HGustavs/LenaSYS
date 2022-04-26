@@ -44,15 +44,9 @@
                 <div>
                     Webbappkationen får inte innehålla:
                     <ul>
-                        <input type="checkbox" id="test1"  class="unchecked" onclick="striketxt('test1','tes1')">
-                        <label for="test1" id="tes1" > CSS Ramverk (exv bootstrap)</label><br>
-            
-                        <input type="checkbox" id="test2" >
-                        <label for="test2">Javascript Ramverk (exv Angular eller React)</label><br>
-            
-                        <input type="checkbox" id="test3" >
-                        <label for="test3">Templates (exv färdig template för bokningssite)</label><br>
-            
+                        <li>CSS Ramverk (exv bootstrap)</li>
+                        <li>Javascript Ramverk (exv Angular eller React)</li>
+                        <li>Templates (exv färdig template för bokningssite)</li>           
                     </ul>
             
                     Man får ej skriva egen PHP utom den ändring (konfiguration) av vårt Boknings-API där lösenord och användarnamn
@@ -81,60 +75,56 @@
                 </div>
                 <div>
                     Följande screens behöver implementeras:
-                    <ul>
-                        <input type="checkbox" id="test4" class="unchecked">
-                            <label for="test4">Det skall finnas en screen för kundregistrering där kunden registrerar informationen om sitt konto,
-                                exempelvis
-                                förnamn, efternamn och adress. På Denna sida skall validering senare implementeras.</label><br>
-                        <input type="checkbox" id="test5" >
-                            <label for="test5">Det skall finnas en screen för inloggning/välkomst som är unik för användaren <input type="checkbox" class="test" >knande de som finns
-                                exempelvis
-                                på exempelvis Amazon.com etc. Användaren skall endast behöva ange sitt kontonamn för att kunna logga in
-                                på systemet
-                                (det skall inte finnas någon komplett inloggning där lösenord måste anges).</label><br>
-                        <input type="checkbox" id="test6" >
-                            <label for="test6">Det skall finnas en screen för sökningar på verksamhetens resurs-data och/eller tillgäng<input type="checkbox" class="test" >ghet för en
-                                resurs.
-                                Att
-                                skriva html som visar en mockup på hur ett framtida sökresultat från Boknings-API skall
-                                representeras/visualiseras
-                                är lämpligt här.</label><br>
-            
-                        <input type="checkbox" id="test7" >
-                            <label for="test7">Det skall finnas en bokningssida där användaren utöver ett traditionellt formulär kan kunna klicka på en
-                                grafisk
-                                representation av resurs eller grafisk representation av positionerna i någon (tillgänglig) resurs för
-                                att kunna
-                                göra bokningar. Den grafiska representationen av resurser är inte del av Inlämningsuppgifter Scripting
-                                2,0 hp.</label><br>
-            
-                        <input type="checkbox" id="test8" >
-                            <label for="test8">Det skall finnas en screen för bokningshistorik som listar kundens genomförda bokningar. Att skriva
-                                html som
-                                visar
-                                en mockup på hur bokningsdata för en användare skall representeras/visualiseras är lämpligt här.</label><br>
-                    </ul>
+                    <input type="checkbox" id="test4" class="unchecked" onclick="striketxt('test4','tes4')">
+                        <label for="test4" id="tes4">Det skall finnas en screen för kundregistrering där kunden registrerar informationen om sitt konto,
+                            exempelvis
+                            förnamn, efternamn och adress. På Denna sida skall validering senare implementeras.</label><br>
+                    <input type="checkbox" id="test5" class="unchecked" onclick="striketxt('test5','tes5')">
+                        <label for="test5" id="tes5">Det skall finnas en screen för inloggning/välkomst som är unik för användaren liknande de som finns
+                            exempelvis
+                            på exempelvis Amazon.com etc. Användaren skall endast behöva ange sitt kontonamn för att kunna logga in
+                            på systemet
+                            (det skall inte finnas någon komplett inloggning där lösenord måste anges).</label><br>
+                    <input type="checkbox" id="test6" class="unchecked" onclick="striketxt('test6','tes6')">
+                        <label for="test6" id="tes6">Det skall finnas en screen för sökningar på verksamhetens resurs-data och/eller tillgänglighet för en
+                            resurs.
+                            Att
+                            skriva html som visar en mockup på hur ett framtida sökresultat från Boknings-API skall
+                            representeras/visualiseras
+                            är lämpligt här.</label><br>
+        
+                    <input type="checkbox" id="test7" class="unchecked" onclick="striketxt('test7','tes7')">
+                        <label for="test7" id="tes7">Det skall finnas en bokningssida där användaren utöver ett traditionellt formulär kan kunna klicka på en
+                            grafisk
+                            representation av resurs eller grafisk representation av positionerna i någon (tillgänglig) resurs för
+                            att kunna
+                            göra bokningar. Den grafiska representationen av resurser är inte del av Inlämningsuppgifter Scripting
+                            2,0 hp.</label><br>
+        
+                    <input type="checkbox" id="test8" class="unchecked" onclick="striketxt('test8','tes8')">
+                        <label for="test8" id="tes8">Det skall finnas en screen för bokningshistorik som listar kundens genomförda bokningar. Att skriva
+                            html som
+                            visar
+                            en mockup på hur bokningsdata för en användare skall representeras/visualiseras är lämpligt här.</label><br>
                 </div>
                 <div>
                     <h2> Steg 2: Historik</h2>
-                    <ul>
-                        <input type="checkbox" id="test9" >
-                        <label for="test9"> Eftersom vi kommer att navigera till olika sidor (screens) utan att göra sidnavigering till nya
-                            html-dokument så
-                            kommer vi vara tvugna att manuellt uppdatera historiken i webbläsaren. Om en användare t ex har besökt
-                            sök-sidan
-                            och
-                            sedan navigerar till bokningshistoriken så skall ett tryck på webbläsarens “tillbaka”-knapp förflytta
-                            användaren
-                            tillbaka till sök-sidan (inte till webbsidan som vi besökte innan vi navigerade till bokningssystemet)</label><br>
-                        <input type="checkbox" id="test10" >
-                            <label for="test10">Ett annat exempel på historik-hantering skulle kunna vara sökningar. Om vi har gjort flera sökningar så
-                                skulle
-                                “tillbaka”-knappen ta oss till baka till respektive sökning</label><br>
-                        <input type="checkbox" id="test11" >
-                        <label for="test11">Vi gör denna manuella uppdatering av webbläsar-historiken med hjälp av History API</label><br>
-            
-                    </ul>
+                    <input type="checkbox" id="test9" class="unchecked" onclick="striketxt('test9','tes9')">
+                    <label for="test9" id="tes9"> Eftersom vi kommer att navigera till olika sidor (screens) utan att göra sidnavigering till nya
+                        html-dokument så
+                        kommer vi vara tvugna att manuellt uppdatera historiken i webbläsaren. Om en användare t ex har besökt
+                        sök-sidan
+                        och
+                        sedan navigerar till bokningshistoriken så skall ett tryck på webbläsarens “tillbaka”-knapp förflytta
+                        användaren
+                        tillbaka till sök-sidan (inte till webbsidan som vi besökte innan vi navigerade till bokningssystemet)</label><br>
+                    <input type="checkbox" id="test10" class="unchecked" onclick="striketxt('test10','tes10')">
+                        <label for="test10" id="tes10">Ett annat exempel på historik-hantering skulle kunna vara sökningar. Om vi har gjort flera sökningar så
+                            skulle
+                            “tillbaka”-knappen ta oss till baka till respektive sökning</label><br>
+                    <input type="checkbox" id="test11" class="unchecked" onclick="striketxt('test11','tes11')">
+                    <label for="test11" id="tes11">Vi gör denna manuella uppdatering av webbläsar-historiken med hjälp av History API</label><br>
+        
                 </div>
             </section>
 		</div>
