@@ -119,6 +119,7 @@ CREATE TABLE quiz (
 	quizFile 				VARCHAR(255) NOT NULL DEFAULT 'default',
 	qrelease 				DATETIME,
 	deadline 				DATETIME,
+	relativedeadline		varchar(10),
 	modified 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	creator 				INTEGER,
 	vers					VARCHAR(8),
