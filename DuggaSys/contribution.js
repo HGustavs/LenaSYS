@@ -1663,8 +1663,20 @@ function showNewGitLogin()
       loginBoxheader_login_password_field.style.visibility = "";
 
 
+      let forgotPwText = document.querySelector(".forgotPw");
+      
+
+     
+      let originalId = forgotPwText.getAttribute("id");
+      forgotPwText.setAttribute("id", "backtologin");
+      forgotPwText.closest("td").innerHTML += forgotPwText.closest("td").innerHTML;
+      forgotPwText = document.querySelector("#backtologin");
+      forgotPwText.setAttribute("id", originalId);
+
+
+
       // create ssn box
-      let originalId = loginBox.getAttribute("id");
+      originalId = loginBox.getAttribute("id");
       loginBox.setAttribute("id", "ssnbox");
       loginBox.closest("tr").outerHTML += loginBox.closest("tr").innerHTML;
       loginBox = document.querySelector("#ssnbox");
@@ -1679,8 +1691,7 @@ function showNewGitLogin()
       loginBox.setAttribute("id", originalId);
 
 
-
-
+      let backtologin = document.querySelector("#backtologin");
       let login_first = document.querySelector("#"+originalId);
       let login_second = document.querySelector("#"+originalId+1);
       let ssnbox = document.querySelector("#ssnbox");
@@ -1688,6 +1699,9 @@ function showNewGitLogin()
       login_first.setAttribute("placeholder", "Create new password");
       login_second.setAttribute("placeholder","Repeat new password");
       ssnbox.setAttribute("placeholder", "Enter SSN YYYYMMDD-XXXX")
+      backtologin.innerHTML = "Back to login";
+      backtologin.setAttribute("onclick","resetForceLogin()")
+
 
       loginBoxheader_login_username_field.setAttribute("disabled","");
      
@@ -1711,6 +1725,10 @@ function resetForceLogin()
   let ssnbox = document.querySelector("#ssnbox");
   if(ssnbox != null)
     ssnbox.remove();
+
+  let forgotPwText = document.querySelector("#backtologin");
+  if(forgotPwText != null)
+    forgotPwText.remove();
 
   let loginBoxButton = document.querySelector(".buttonLoginBox");
   loginBoxButton.setAttribute("Value", "Login");
@@ -1775,16 +1793,15 @@ function resetForceLogin()
   function requestGitUserCreation() // function to create the git user in the lenasys database, make sure requestedpasswordchange is pending(101)
   {
   
-    console.log("poggis");
-
     let pass1 = document.querySelector("#password").value;
     let pass2 = document.querySelector("#password1").value;
     let username = document.querySelector("#username").value;
     let ssn = document.querySelector("#ssnbox").value;
 
     // TODO MAKE SURE SSN IS ACTUALLY A VALID SSN BEFORE INSERTING INTO DB
+    // TODO MAKE SURE PASSWORD IS ACTUALLY VALID BEFORE INSERT INTO DB
 
-    if(pass1 == pass2)
+    if((pass1 == pass2 && pass1 != null && pass1 != "" && pass2 != null && pass2 != "") && (ssn != null && ssn != ""))
     {
       AJAXService("requestGitUserCreation",{
         userid: username,
@@ -1792,17 +1809,81 @@ function resetForceLogin()
         userssn: ssn
       }, "CONTRIBUTION_LENASYS_USER_CREATION");
     }
-    else
+    else if(pass1 != pass2)
+    {      
+      displayAlertText("#login #message", "password doesnt match <br />");
+
+      $("input#password").addClass("loginFail");
+		    $("input#password1").addClass("loginFail");
+			  setTimeout(function()
+        {
+		      $("input#password").removeClass("loginFail");
+          $("input#password1").removeClass("loginFail");
+				}, 2000);
+
+    }
+    else if(!(pass1 != null && pass1 != "" && pass2 != null && pass2 != ""))
     {
-      // todo error thingy
-      console.log("password doesnt match");
+      displayAlertText("#login #message", "invalid password <br />");
+
+      $("input#password").addClass("loginFail");
+		    $("input#password1").addClass("loginFail");
+			  setTimeout(function()
+        {
+		      $("input#password").removeClass("loginFail");
+          $("input#password1").removeClass("loginFail");
+				}, 2000);
+    }
+    else if(!(ssn != null && ssn != ""))
+    {
+      displayAlertText("#login #message", "invalid SSN <br />");
+
+      $("input#ssnbox").addClass("loginFail");
+			  setTimeout(function()
+        {
+		      $("input#ssnbox").removeClass("loginFail");
+				}, 2000);
     }
     
   }
 
   function returned_lenasys_user_creation(data)
   {
-    console.log(data);
+
+    if(typeof data == "boolean") // check so that the type is correct
+    {
+      if(data == false) // didnt create user
+      {
+        displayAlertText("#login #message", "could not create user <br />");
+
+        $("input#username").addClass("loginFail");
+		    $("input#password").addClass("loginFail");
+			  setTimeout(function()
+        {
+		      $("input#username").removeClass("loginFail");
+          $("input#password").removeClass("loginFail");
+          resetForceLogin();
+				}, 2000);
+      }
+      else // created user
+      {
+        $("input#username").addClass("loginPass");
+		    $("input#password").addClass("loginPass");
+        $("input#password1").addClass("loginPass");
+        $("input#ssnbox").addClass("loginPass");
+			  setTimeout(function()
+        {
+		      $("input#username").removeClass("loginPass");
+          $("input#password").removeClass("loginPass");
+          $("input#password1").removeClass("loginPass");
+          $("input#ssnbox").removeClass("loginPass");
+          resetForceLogin();
+				}, 2000);
+      }
+    }
+    else
+      alert("invalid data returned from git-data");
+
   }
 
 
@@ -1833,7 +1914,34 @@ function resetForceLogin()
     return userExists_Lenasys;
   }
 
-  
+  function restoreAndLockLogin()
+  {
+
+    let forgotPwText = document.querySelector(".forgotPw");
+      
+    let originalId = forgotPwText.getAttribute("id");
+    forgotPwText.setAttribute("id", "backtologin");
+    forgotPwText.closest("td").innerHTML += forgotPwText.closest("td").innerHTML;
+    forgotPwText = document.querySelector("#backtologin");
+    forgotPwText.setAttribute("id", originalId);
+
+    backtologin.innerHTML = "Back to login";
+    backtologin.setAttribute("onclick","resetForceLogin()")
+
+
+
+    let loginBoxheader_login_username_field = document.querySelector("#username");
+    loginBoxheader_login_username_field.setAttribute("Placeholder","Username");
+    loginBoxheader_login_username_field.setAttribute("disabled","");
+
+
+    let loginBoxheader_login_password_field = document.querySelector("#password");
+    loginBoxheader_login_password_field.style.visibility = "";
+
+    let loginBoxButton = document.querySelector(".buttonLoginBox");
+    loginBoxButton.setAttribute("onClick", "processLogin()");
+    
+  }
 
 
 
@@ -1868,7 +1976,7 @@ function resetForceLogin()
 
           if(_onLena) // log in with lena
           {
-            console.log("test1");
+            restoreAndLockLogin();
           }
           if(!_onLena && _onGit) // onlena is false, ongit true, create new user
           {
@@ -1877,7 +1985,16 @@ function resetForceLogin()
           }
           if(!_onLena && !_onGit)
           { // default to user does not exist if nothing else
-            console.log("test3");
+            displayAlertText("#login #message", "User does not exist <br />");
+
+            $("input#username").addClass("loginFail");
+		      	$("input#password").addClass("loginFail");
+			      setTimeout(function()
+            {
+		      	  $("input#username").removeClass("loginFail");
+              $("input#password").removeClass("loginFail");
+              displayAlertText("#login #message", "Try again");
+					  }, 2000);
 
           }
         
