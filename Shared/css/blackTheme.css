@@ -1,4 +1,4 @@
-
+/* @media (prefers-color-scheme: dark){ */ /*This comment must remain, do not delete it when you "clean code" . */
     :root {
          --color-text-primary: #775886;
         --color-text-primary-darker: #620C5B;
@@ -25,8 +25,8 @@
         --color-background-2: #ccc;
         --color-background-3: #f0f0f0;
         --color-background-4: #c8c8c8;
-        --color-sectioned-table-hi: #dad8db;
-        --color-sectioned-table-lo: #eae8eb;
+        --color-sectioned-table-hi: #303030;
+        --color-sectioned-table-lo: #343434;
         --color-statistics: #d8d7da;
         --color-list-hover: #c6cdb8;
       
@@ -91,7 +91,7 @@
 }
 
 #content {
-    background-color: #2c2c2c;
+    background-color: #121212;
     margin: 5px 10px 15px 10px;
 		color: #fff;
 }
@@ -412,18 +412,19 @@
 .codebox{
 	padding: 0px;
   font-family:Hack;
+  background-color: var(--color-background);
 }
 
 .descbox{
 	padding-top: 4px;
 	padding-left: 4px;
-	background-color: #2c2c2c;
+	background-color: var(--color-background);
 	color: #fff;
 }
 
 /* BOXMENU STYLING START */
 .buttomenu2Style{
-	background-color: #5C5A5A;
+	background-color: #464646;
 }
 
 .buttomenu2Style .wordlistselect{
@@ -512,5 +513,13 @@ body {
         background-color: #2c2c2c;
     } 
 
+    /* #Sectionlist .example {
+        color: var(--color-text-secondary);
+        /*font-size: 12pt;
+        padding-top: 5px;*/
+        /* min-height: 26px;
+        background-color: #121212;
+      } */ 
 
 /* BOXMENU STYLING STOP */
+/* } */

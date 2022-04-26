@@ -1,3 +1,4 @@
+/* @media (prefers-color-scheme: light){ */ /*This comment must remain, do not delete it when you "clean code" . */
 
     :root {
         --color-text-primary: #775886;
@@ -413,7 +414,7 @@
 
 /* BOXMENU STYLING START */
 .buttomenu2Style{
-	background-color: #5A5757;
+	background-color: #464646;
 }
 
 .buttomenu2Style .wordlistselect{
@@ -473,4 +474,14 @@
     padding: 0px 5px;
 }
 
+/* #Sectionlist .example {
+    color: var(--color-text-secondary);
+    /*font-size: 12pt;
+    padding-top: 5px;*/
+    /* min-height: 26px;
+    background-color: white;
+  } */ 
+
+
 /* BOXMENU STYLING STOP */
+/* } */
