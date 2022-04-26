@@ -1080,7 +1080,7 @@ function courseDBcollection(path){
   path = path.replaceAll("/",'%');
   
   AJAXService("get", {
-    userid: "HGustavs", 
+    //userid: "HGustavs", 
     dbPath: path
   }, "CONTRIBUTION");
   
