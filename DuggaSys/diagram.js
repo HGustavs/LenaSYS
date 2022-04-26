@@ -1450,9 +1450,9 @@ function mdown(event)
                 startX = event.clientX;
                 startY = event.clientY;
 
-                // Mouse pressed over delete button for a single element
+                // Mouse pressed over delete button for a single element or line
                 if (event.button == 0) {
-                    if (context.length == 1) {
+                    if (context.length == 1 || contextLine.length == 1) {
                         checkDeleteBtn();
                     }
                 }
@@ -1465,6 +1465,14 @@ function mdown(event)
             
             case mouseModes.BOX_SELECTION:
                 boxSelect_Start(event.clientX, event.clientY);  
+
+                // Mouse pressed over delete button for a single element or line
+                if (event.button == 0) {
+                    if (context.length == 1 || contextLine.length == 1) {
+                        checkDeleteBtn();
+                    }
+                }
+
                 break;
 
             default:
@@ -1514,7 +1522,7 @@ function mdown(event)
  */
 function ddown(event)
 {
-    // Mouse pressed over delete button for a single line
+    // Mouse pressed over delete button for a single line over a element
     if (event.button == 0 && contextLine.length > 0) {
         checkDeleteBtn();
     }
