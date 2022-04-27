@@ -4031,7 +4031,7 @@ function updateGridSize()
 {
     var pxlength = (pixellength.offsetWidth/1000)*window.devicePixelRatio;
     settings.grid.gridSize = 10*pxlength;
-    
+
     var bLayer = document.getElementById("grid");
     bLayer.setAttribute("width", settings.grid.gridSize * zoomfact + "px");
     bLayer.setAttribute("height", settings.grid.gridSize * zoomfact + "px");
@@ -5015,11 +5015,14 @@ function drawRulerBars(X,Y)
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
-            barY += "<text x='2' y='"+(pannedY+i+10)+"'style='font-size: 10px'>"+cordY+"</text>";
+            barY += "<text x='10' y='"+(pannedY+i+10)+"'style='font-size: 10px'>"+cordY+"</text>";
             cordY = cordY +10;
-        }else if(zoomfact > 0.25 && lineNumber % lineRatio2 == 0) {
+        }else if(zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
             //centi
             barY += "<line x1='25px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+            if (zoomfact > 0.5 || (lineNumber/10) % 5 == 0){
+                barY += "<text x='20' y='"+(pannedY+i+10)+"'style='font-size: 8px'>"+(cordY-10+lineNumber/10)+"</text>";
+            }
         }else if (zoomfact > 0.75){
             //milli
             barY += "<line x1='35px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
@@ -5036,11 +5039,14 @@ function drawRulerBars(X,Y)
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
-            barY += "<text x='25' y='"+(pannedY-i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
+            barY += "<text x='10' y='"+(pannedY-i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
             cordY = cordY -10;
-        }else if (zoomfact > 0.25 && lineNumber % lineRatio2 == 0){
+        }else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0){
             //centi
             barY += "<line x1='25px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+            if (zoomfact > 0.5 || (lineNumber/10) % 5 == 0){
+                barY += "<text x='20' y='"+(pannedY-i+10)+"' style='font-size: 8px'>"+(cordY+10-lineNumber/10)+"</text>";
+            }
         }else if (zoomfact > 0.75){
             //milli
             barY += "<line x1='35px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
@@ -5061,9 +5067,12 @@ function drawRulerBars(X,Y)
             barX += "<line x1='" +(i+pannedX)+"' y1='0' x2='" + (i+pannedX) + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
             cordX = cordX +10;
-        }else if (zoomfact > 0.25 && lineNumber % lineRatio2 == 0){
+        }else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0){
             //centi
             barX += "<line x1='" +(i+pannedX)+"' y1='25' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+            if (zoomfact > 0.5 || (lineNumber/10) % 5 == 0){
+                barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='25' style='font-size: 8px'>"+(cordX-10+lineNumber/10)+"</text>";
+            }
         }else if (zoomfact > 0.75){
             //milli
             barX += "<line x1='" +(i+pannedX)+"' y1='35' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
@@ -5082,9 +5091,12 @@ function drawRulerBars(X,Y)
             barX += "<line x1='" +(pannedX-i)+"' y1='0' x2='" + (pannedX-i) + "' y2='40px' stroke='" + color + "' />";
             barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px'>"+cordX+"</text>";
             cordX = cordX -10;
-        }else if (zoomfact > 0.25 && lineNumber % lineRatio2 == 0){
+        }else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0){
             //centi
             barX += "<line x1='" +(pannedX-i)+"' y1='25' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+            if (zoomfact > 0.5 || (lineNumber/10) % 5 == 0){
+                barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='25'style='font-size: 8px'>"+(cordX+10-lineNumber/10)+"</text>";
+            }
         }else if (zoomfact > 0.75){
             //milli
             barX += "<line x1='" +(pannedX-i)+"' y1='35' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
