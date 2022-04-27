@@ -3923,9 +3923,25 @@ function zoomout(scrollEvent = undefined)
  */
 function zoomreset()
 {
-    zoomOrigo.x = 0;
-    zoomOrigo.y = 0;
+    
+    var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
+                
+    var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+        x: midScreen.x - zoomOrigo.x,
+        y: midScreen.y - zoomOrigo.y
+    }
 
+    //Update scroll x/y to center screen on new zoomOrigo
+    scrollx = scrollx / zoomfact;
+    scrolly = scrolly / zoomfact;
+    scrollx += delta.x * zoomfact;
+    scrolly += delta.y * zoomfact;
+    scrollx = scrollx * zoomfact;
+    scrolly = scrolly * zoomfact;
+
+    zoomOrigo.x = midScreen.x;
+    zoomOrigo.y = midScreen.y;
+    
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
    
