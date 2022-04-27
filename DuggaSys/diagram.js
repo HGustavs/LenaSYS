@@ -4603,7 +4603,8 @@ function generateContextProperties()
       propSet.innerHTML = str;
 
       multipleColorsTest();
-}
+}}
+
 
 /**
  * @description Toggles the option menu being open or closed.
