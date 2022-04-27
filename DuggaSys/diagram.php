@@ -241,7 +241,14 @@
                     <p>Click to start replay</p><br>
                 </span>
         </fieldset>
-
+        <fieldset>
+            <legend>ER-Table</legend>
+            <div id="erTableToggle" class="diagramIcons" onclick="toggleErTable()">
+                <img src="../Shared/icons/diagram_replay.svg"/>
+                <span class="toolTipText"><b>Toggle ER-Table</b><br>
+                    <p>Click to toggle ER-Table in options</p><br>
+                </span>
+        </fieldset>
     </div>
 
     <!-- Message prompt -->
