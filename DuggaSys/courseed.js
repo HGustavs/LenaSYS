@@ -496,7 +496,7 @@ function setActiveCodes() {
 }
 
 const regex = {
-	coursename: /^[A-ZÅÄÖa-zåäö]+( (- )?[A-ZÅÄÖa-zåäö]+)*$/,
+	coursename: /^[A-ZÅÄÖa-zåäö]+( ?(- ?)?[A-ZÅÄÖa-zåäö]+)*$/,
 	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/
 };
 
@@ -543,6 +543,35 @@ function elementIsValid(element) {
 	return false;
 }
 
+
+
+//Validates whole form but don't implement it.
+function quickValidateForm(formid, submitButton){
+	
+	const formContainer = document.getElementById(formid);
+	const inputs = formContainer.querySelectorAll("input.validate");
+	const saveButton = document.getElementById(submitButton);
+	let numberOfValidInputs = 0;
+
+	//Count number of valid inputs
+	inputs.forEach(input => {
+		if(elementIsValid(input)) {
+			numberOfValidInputs++;
+		}
+	});
+
+	//If all inputs were valid create course or update course depending on id of form
+	if(numberOfValidInputs === inputs.length) {
+		saveButton.disabled = false;
+		return true;
+	} else{
+		saveButton.disabled = true;
+	}
+	
+	return false;
+}
+
+
 //Validates whole form
 function validateForm(formid) {
 	const formContainer = document.getElementById(formid);
@@ -581,12 +610,14 @@ function validateForm(formid) {
 		}
 	}
 }
-function validateMOTD(motd, dialogid){
+function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton){
+	const saveButton = document.getElementById(submitButton);
 	var emotd = document.getElementById(motd);
 	var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
 	var EmotdRange = /^.{0,100}$/;
-	var x4 = document.getElementById(dialogid);
-	if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
+	var x4 = document.getElementById(syntaxdialogid);
+	var x8 = document.getElementById(rangedialogid);
+	if (emotd.value.match(Emotd) ) {
 	  emotd.style.borderColor = "#383";
 	  emotd.style.borderWidth = "2px";
 	  x4.style.display = "none";
@@ -596,6 +627,22 @@ function validateMOTD(motd, dialogid){
 	  x4.style.display = "block";
 	  emotd.style.borderWidth = "2px";
 	  window.bool9 = false;
+	}
+	if (emotd.value.match(EmotdRange)){
+		emotd.style.borderColor = "#383";
+		emotd.style.borderWidth = "2px";
+		x8.style.display = "none";
+		window.bool9 = true;
+	}else{
+		emotd.style.borderColor = "#E54";
+		x8.style.display = "block";
+		emotd.style.borderWidth = "2px";
+		window.bool9 = false;
+	}
+	if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
+		saveButton.disabled = false;
+	}else{
+		saveButton.disabled = true;
 	}
   
   }
