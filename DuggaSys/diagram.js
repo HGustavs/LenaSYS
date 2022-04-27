@@ -5118,7 +5118,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
 
@@ -5183,7 +5183,7 @@ function drawElement(element, ghosted = false)
         if (ghosted) {
             str += `
                 pointer-events: none;
-                opacity: ${ghostLine ? 0 : 0.5};
+                opacity: ${ghostLine ? 0 : 0.0};
             `;
         }
         str += `'>`;
