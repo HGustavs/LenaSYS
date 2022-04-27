@@ -3,7 +3,7 @@
  	session_start();
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">

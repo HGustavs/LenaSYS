@@ -2299,7 +2299,7 @@ label.login-label {
 
 .loginBox form,
 .logoutBox form {
-  padding: 20px;
+  padding-bottom: 20px;
 }
 
 .loginBox .text,
@@ -8033,7 +8033,6 @@ textarea#filecont {
   background-color: var(--color-accent);
   z-index: 1000;
   position: relative;
-  margin-top: 16px;
   margin-bottom: 7px;
   max-width: auto;
 }

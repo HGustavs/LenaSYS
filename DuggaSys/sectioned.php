@@ -13,7 +13,7 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
@@ -200,7 +200,7 @@
 	?>
 
 		<!-- Edit Section Dialog START -->
-		<div id='editSection' onkeyup="validateSectName('sectionname');" onmouseover="validateSectName('sectionname'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
+		<div id='editSection' onmouseover='quickValidateForm("editSection", "saveBtn");' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:460px;'>
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
@@ -211,7 +211,7 @@
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<input onchange="validateSectName('sectionname')" type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input onkeyup="quickValidateForm('editSection', 'saveBtn');"  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
 				<div class="tooltipDugga">
   		      		<span id="dialog10" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
@@ -224,7 +224,7 @@
 					</div>
 					<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
 					<div id='inputwrapper-gradesystem' class='inputwrapper'><span>Grade system:</span><select id='gradesys' ></select></div>
-					<div id='inputwrapper-deadline' class='inputwrapper'><span>Set Deadline:</span><span style='float:right'><input onchange="showCourseDate('setDeadlineValue','dialog8')" class='textinput' type='date' id='setDeadlineValue' value='' /><select style='width:55px;' id='deadlineminutes'></select><select style='width:55px;' id='deadlinehours'></select></span></div>
+					<div id='inputwrapper-deadline' class='inputwrapper'><span>Set Deadline:</span><span style='float:right'><input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' /><select style='width:55px;' id='deadlineminutes'></select><select style='width:55px;' id='deadlinehours'></select></span></div>
 			        <p id="dialog8" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Deadline has to be between start date and end date</p>
 					<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
 					<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
@@ -233,6 +233,7 @@
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' onchange='showFeedbackquestion()'></input></div>
 					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput'' id='fdbckque' value='How would you grade the dugga?'></input></div>
+					<p id="EndDialog1" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
 				</div>
 
 				<!-- Error message, no duggas present-->
@@ -322,27 +323,29 @@
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 			</div>
 			<div style='padding:5px;'>
-				<div class='inputwrapper'><span>Version ID:</span><input onkeyup="validateCourseID('cversid', 'dialog2')" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/></div>
+				<div class='inputwrapper'><span>Version ID:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateCourseID('cversid', 'dialog2')" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/></div>
 				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-6 numbers)</p>
-				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="validateVersionName('versname', 'dialog')" class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
+				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateVersionName('versname', 'dialog')" class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
 				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN, VTNN or STNN</p>
-				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
+				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
+				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
-				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="validateMOTD('vmotd','dialog4')" class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
-				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>
+				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateMOTD('vmotd','dialog4', 'dialog42', 'submitCourseMotd')" class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
+				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibited symbols</p>
+				<p id="dialog42" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
+				<p id="EndDialog2" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
 			</div>
 			<div style='padding:5px;'>
-				<input class='submit-button' type='button' value='Create' title='Create new version' onclick="validateForm('newCourseVersion')" />
+				<input id='submitCourseMotd' class='submit-button' type='button' value='Create' disabled title='Create new version' onclick="validateForm('newCourseVersion')" />
 			</div>
 		</div>
 	</div>
 	<!-- New Verison Dialog END -->
 
 <!-- Edit Version Dialog START -->
-<div id='editCourseVersion' onmouseover="validateVersionName('eversname', 'dialog5'); validateDate('estartdate','eenddate','dialog6'); validateMOTD('eMOTD', 'dialog9');" class='loginBoxContainer' style='display:none;'>
+<div id='editCourseVersion'  class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:464px;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Course Version</h3>
@@ -351,17 +354,19 @@
 			<div style='padding:5px;'>
 				<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
-				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="validateVersionName('eversname', 'dialog5')" class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
+				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); validateVersionName('eversname', 'dialog5')" class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
 				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN, VTNN or STNN</p>
-				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' value='' /></div>
+				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse'); validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' value='' /></div>
+				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse'); validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='eenddate' value='' /></div>
 				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
-				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="validateMOTD('eMOTD', 'dialog9')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
-				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>
+				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
+				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibted symbols</p>
+				<p id="dialog92" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
+				<p id="EndDialog3" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
 			</div>
 			<div style='padding:5px;'>
-				<input class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourseVersion')" />
+				<input id='submitEditCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourseVersion')" />
 			</div>
 		</div>
 	</div>
