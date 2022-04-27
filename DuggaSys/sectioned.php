@@ -211,7 +211,7 @@
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<input onchange="validateSectName('sectionname')" type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input onchange="validateSectName('sectionname')" type='text' class='textinput' id='sectionname' placeholder='Enter section name' value='sectionname' maxlength="64"/>
 				</div>
 				<div class="tooltipDugga">
   		      		<span id="dialog10" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
@@ -224,14 +224,14 @@
 					</div>
 					<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
 					<div id='inputwrapper-gradesystem' class='inputwrapper'><span>Grade system:</span><select id='gradesys' ></select></div>
-					<div id='inputwrapper-deadline' class='inputwrapper'><span>Set Deadline:</span><span style='float:right'><input onchange="showCourseDate('setDeadlineValue','dialog8')" class='textinput' type='date' id='setDeadlineValue' value='' /><select style='width:55px;' id='deadlineminutes'></select><select style='width:55px;' id='deadlinehours'></select></span></div>
+					<div id='inputwrapper-deadline' class='inputwrapper'><span>Set Deadline:</span><span style='float:right'><input onchange="showCourseDate('setDeadlineValue','dialog8')" class='textinput' type='date' id='setDeadlineValue' title='Deadline input' value='' /><select style='width:55px;' id='deadlineminutes'></select><select style='width:55px;' id='deadlinehours'></select></span></div>
 			        <p id="dialog8" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Deadline has to be between start date and end date</p>
 					<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
 					<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 					<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
-					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' onchange='showFeedbackquestion()'></input></div>
+					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
 					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput'' id='fdbckque' value='How would you grade the dugga?'></input></div>
 				</div>
 
@@ -326,12 +326,12 @@
 				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-8 numbers)</p>
 				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="validateVersionName('versname', 'dialog')" class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
 				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be A-Z 0-9</p>
-				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
+				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' title='Start date input' value='' /></div>
+				<div class='inputwrapper'><span>End Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' title='End date input' value='' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="validateMOTD('vmotd','dialog4')" class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
 				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>
-				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
+				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" title='default version checkbox' value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
 			</div>
 			<div style='padding:5px;'>
@@ -353,12 +353,12 @@
 				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="validateVersionName('eversname', 'dialog5')" class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
 				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN, VTNN or STNN</p>
-				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' value='' /></div>
+				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' title='Start date input' value='' /></div>
+				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' title='End date input' value='' /></div>
 				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="validateMOTD('eMOTD', 'dialog9')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
 				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>
-				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
+				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
 			</div>
 			<div style='padding:5px;'>
 				<input class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourseVersion')" />
