@@ -780,6 +780,18 @@ const elementTypes = {
 };
 
 /**
+ * @description Same as const elementTypes, but uses their names instead of numbers.
+ * @see generateErTableString() For comparing elements with this enum.
+ */
+const elementTypesNames = {
+    EREntity: "EREntity",
+    ERRelation: "ERRelation",
+    ERAttr: "ERAttr",
+    Ghost: "Ghost",
+    UMLEntity: "UMLEntity",
+}
+
+/**
  * @description Used by the mup and mmoving functions to determine what was clicked in ddown/mdown.
  * @see ddown For mouse down on top of elements.
  */
@@ -884,11 +896,13 @@ var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Do
 var wasDblClicked = false;
 var targetDelta;
 var mousePressed;
+var erTableToggle = false; //Used only in toggleErTable() and generateContextProperties().
 var selectionBoxLowX;
 var selectionBoxHighX;
 var selectionBoxLowY;
 var selectionBoxHighY;
 var lastClickedElement = null;
+
 
 // Zoom variables
 var lastZoomfact = 1.0;
@@ -3563,6 +3577,140 @@ function setReplayRunning(state)
     }
 }
 /**
+ * @description Toggles the ER-table for the diagram in the "Options side-bar" on/off.
+ */
+function toggleErTable()
+{
+    if(erTableToggle == false){
+        erTableToggle = true;
+    }
+    else if (erTableToggle == true){
+        erTableToggle = false;
+    }
+    generateContextProperties();
+}
+/**
+ * @description Generates the string which holds the ER table for the current ER-model/ER-diagram.
+ * @returns Current ER table in the form of a string.
+ */
+function generateErTableString()
+{
+    var entityList = [];    //All EREntities currently in the diagram
+    var attrList = [];      //All ERAttributes currently in the diagram
+    var relationList = [];  //All ERRelations currently in the diagram
+    var stringList = [];    //List of strings where each string holds the relevant data for each entity
+
+    //sort the data[] elements into entity-, attr- and relationList
+    for (var i = 0; i < data.length; i++) {
+        
+        if (data[i].kind == elementTypesNames.EREntity) {
+            entityList.push(data[i]);
+        }
+        else if (data[i].kind == elementTypesNames.ERAttr) {
+            attrList.push(data[i]);
+        }
+        else if (data[i].kind == elementTypesNames.ERRelation) {
+            relationList.push(data[i]);
+        }
+    }
+
+    //For each entity in entityList
+    for (var i = 0; i < entityList.length; i++) {
+        
+        //Add the start of the string for each entity. Example: "EMPLOYEE("
+        stringList.push(new String(entityList[i].name + "("));
+        
+        //Sort all lines that are connected to the current entity into lineList[]
+        var lineList = []; 
+        for (var j = 0; j < lines.length; j++) {
+            
+            if (entityList[i].id == lines[j].fromID) {
+                lineList.push(lines[j]);
+            }
+            else if (entityList[i].id == lines[j].toID) {
+                lineList.push(lines[j]);
+            }
+        }
+
+        // Identify all attributes that are connected to the current entity by using lineList[] and store them in currentEntityAttrList. Save their ID's in idList.
+        var currentEntityAttrList = [];
+        var idList = [];
+        for (var j = 0; j < lineList.length; j++) {
+            
+            for (var h = 0; h < attrList.length; h++) {
+
+                if (attrList[h].id == lineList[j].fromID || attrList[h].id == lineList[j].toID) {
+                
+                    currentEntityAttrList.push(attrList[h]);
+                    idList.push(attrList[h].id)
+                        
+                }
+            }
+        }
+        
+        
+        for (var j = 0; j < currentEntityAttrList.length; j++) {
+
+            //For each attribute connected to the current entity, identify if other attributes are connected to themselves.
+            var attrLineList = [];
+            for (var h = 0; h < lines.length; h++) {
+                
+                //If there is a line to/from the attribute that ISN'T connected to the current entity, save it in attrLineList[].
+                if((currentEntityAttrList[j].id == lines[h].toID || currentEntityAttrList[j].id == lines[h].fromID) && (lines[h].toID != entityList[i].id && lines[h].fromID != entityList[i].id)) {
+                    
+                    attrLineList.push(lines[h]);
+                }
+            }
+            
+            //Compare each line in attrLineList to each attribute.
+            for (var h = 0; h < attrLineList.length; h++) {
+                
+                for (var k = 0; k < attrList.length; k++) {
+
+                    //If ID matches the current attribute AND another attribute, try pushing the other attribute to currentEntityAttrList[]
+                    if (((attrLineList[h].fromID == attrList[k].id) && (attrLineList[h].toID == currentEntityAttrList[j].id)) || ((attrLineList[h].toID == attrList[k].id) && (attrLineList[h].fromID == currentEntityAttrList[j].id))) {
+                        
+                        //Iterate over saved IDs
+                        var hits = 0;
+                        for(var p = 0; p < idList.length; p++) {
+
+                            //If the ID of the attribute already exists, then increase hits and break the loop.
+                            if (idList[p] == attrList[k].id) {
+                                hits++;
+                                break;
+                            }
+                        }
+
+                        //If no hits, then push the attribute to currentEntityAttrList[] (so it will also be checked for additional attributes in future iterations) and save the ID.
+                        if (hits == 0) {
+                            currentEntityAttrList.push(attrList[k]);
+                            idList.push(attrList[k].id);
+                        }
+                    }   
+                }
+            }
+        }
+
+        //Add each connected attribute in stringList[i]
+        for (var j = 0; j < currentEntityAttrList.length; j++) {
+            if (j < currentEntityAttrList.length - 1) { //If j is not the last element
+                stringList[i] += currentEntityAttrList[j].name + ", ";
+            }
+            else if (j == currentEntityAttrList.length - 1) { //Else if j is the last element
+                stringList[i] += currentEntityAttrList[j].name + ")";
+            }
+        }
+    }
+
+    //Add each string element in stringList[] into a single string.
+    var stri = "";
+    for (var i = 0; i < stringList.length; i++) {
+        stri += new String(stringList[i] + "\n\n");
+    }
+
+    return stri;
+}
+/**
  * @description Toggles the A4 template ON/OFF.
  */
 function toggleA4Template()
@@ -4020,6 +4168,17 @@ function generateContextProperties()
 
     //more than one element selected
 
+
+
+    //If erTableToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
+    if (erTableToggle == true) {
+        str +=`<style> .textbox {resize: none; height: 250px; width: 273px;}</style><textarea readonly class="textbox">`
+        var ertable = generateErTableString();
+        str += ertable;
+        str += `</textarea>`
+    }
+    else {
+
     if (context.length == 1 && contextLine.length == 0) {
         var element = context[0];
         //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
@@ -4134,7 +4293,7 @@ function generateContextProperties()
         }
         str += `<br></br><input type="submit" id="lockbtn" value="${locked ? "Unlock" : "Lock"}" class="saveButton" onclick="toggleEntityLocked();">`;
     }
-
+    }
     propSet.innerHTML = str;
 
     multipleColorsTest();
