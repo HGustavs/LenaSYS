@@ -2292,17 +2292,37 @@ function saveProperties()
             case 'attributes':
                 //Get string from textarea
                 var elementAttr = child.value;
+                //Create an array from string where newline seperates elements
                 var arrElementAttr = elementAttr.split('\n');
+                var formatArr = [];
+                for (var i = 0; i < arrElementAttr.length; i++) {
+                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
+                        formatArr.push(arrElementAttr[i]);
+                    } 
+                }
+                //Update the attribute array
+                arrElementAttr = formatArr;
                 element[propName] = arrElementAttr;
                 propsChanged.attributes = arrElementAttr;
                 break;
+        
             case 'functions':
                 //Get string from textarea
                 var elementFunc = child.value;
+                //Create an array from string where newline seperates elements
                 var arrElementFunc = elementFunc.split('\n');
+                var formatArr = [];
+                for (var i = 0; i < arrElementFunc.length; i++) {
+                    if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) {
+                        formatArr.push(arrElementFunc[i]);
+                    } 
+                }
+                //Update the attribute array
+                arrElementFunc = formatArr;
                 element[propName] = arrElementFunc;
                 propsChanged.attributes = arrElementFunc;
                 break;
+
             default:
                 break;
         }
@@ -2535,7 +2555,10 @@ function pasteClipboard(elements, elementsLines)
             id: idMap[element.id],
             state: element.state,
             fill: element.fill,
-            stroke: element.stroke
+            stroke: element.stroke,
+            type: element.type,
+            attributes: element.attributes,
+            functions: element.functions
         };
 
         newElements.push(elementObj)
@@ -3867,11 +3890,16 @@ function propFieldSelected(isSelected)
 {
     propFieldState = isSelected;
 }
-
-function umlFormatString(arr) {
+/**
+ * @description Function used to format the attribute and function textareas in UML-entities. Every entry is written on new row.
+ * @param {*} arr Input array with all elements that should be seperated by newlines
+ * @returns Formated string containing all the elements in arr
+ */
+function umlFormatString(arr)
+{
     var content = '';
     for (var i = 0; i < arr.length; i++) {
-        content += arr[i] + '\n';
+            content += arr[i] + '\n';   
     }
     return content;
 }
@@ -4007,53 +4035,9 @@ function generateContextProperties()
          str += `<div style="color: white">Stroke Color</div>`;
          str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
              `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
-         str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+         str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
 
     }
-
-    if (context.length == 1 && contextLine.length == 0) {
-        /*var element = context[0];
-        //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
-        for (const property in element) {
-            switch (property.toLowerCase()) {
-                case "name":
-                    str += `<input id="elementProperty_${property}" type="text" value="${element[property]}" onfocus="propFieldSelected(true)" onblur="propFieldSelected(false)"> `;
-                    break;
-            
-                default:
-                    break;
-            }
-        }
-
-        //Creates drop down for changing state of ER elements
-        var value;
-        var selected = context[0].state;
-        if(selected == undefined) {
-            selected = "normal"
-        }
-        if(element.kind=="ERAttr") {
-            value = Object.values(attrState);
-        } else if(element.kind=="EREntity") {
-            value = Object.values(entityState);
-        } else if(element.kind=="ERRelation") {
-            value = Object.values(relationState);
-        } else if (element.kind == "UMLEntity") {      //<-- UML functionality , continue here 
-            value = Object.values(umlState);
-        }
-
-        str += '<select id="propertySelect">';
-            for (i = 0; i < value.length; i++) {
-                if (selected != value[i]) {
-                    str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
-                } else if(selected == value[i]) {
-                    str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
-                }
-            }
-        str += '</select>'; 
-
-       */
-
-    } 
 
     // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
     if (contextLine.length == 1 && context.length == 0) {
@@ -5325,35 +5309,44 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate UML content
         str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
-        //svg for background
-        str += `<svg width='${boxw}' height='${boxh * elemAttri}'>`;
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemAttri - (linew * 2)}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-        for (var i = 0; i < elemAttri; i++) {
-            str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- ${element.attributes[i]}</text>`;
-        }
-        //end of svg for background
-        str += `</svg>`;
 
-        //div for UML footer
-        str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
-        //svg for background
-        str += `<svg width='${boxw}' height='${boxh * elemFunc}'>`;
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemFunc - (linew * 2)}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-        for (var i = 0; i < elemFunc; i++) {
-            str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- ${element.functions[i]}</text>`;
+        //Draw UML-content if there exist at least one attribute
+        if (elemAttri != 0) {
+
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh * elemAttri}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemAttri - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            for (var i = 0; i < elemAttri; i++) {
+                str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- ${element.attributes[i]}</text>`;
+            }
+            //end of svg for background
+            str += `</svg>`;
         }
-        //end of svg for background
-        str += `</svg>`;
-        //end of div for UML footer
-        str += `</div>`;
+
+        //Draw UML-footer if there exist at least one function
+        if (elemFunc != 0) {
+            //div for UML footer
+            str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh * elemFunc}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemFunc - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            for (var i = 0; i < elemFunc; i++) {
+                str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- ${element.functions[i]}</text>`;
+            }
+            //end of svg for background
+            str += `</svg>`;
+            //end of div for UML footer
+            str += `</div>`;
+        }
+
         //end of div for UML content
         str += `</div>`;
     }
     //====================================================================
 
-    //ER elementss
+    //ER element
     else {
         // Create div & svg element
         str += `
