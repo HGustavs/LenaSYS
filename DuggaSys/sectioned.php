@@ -200,7 +200,7 @@
 	?>
 
 		<!-- Edit Section Dialog START -->
-		<div id='editSection'  class='loginBoxContainer' style='display:none;'>
+		<div id='editSection' onmouseover='quickValidateForm("editSection", "saveBtn");' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:460px;'>
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
