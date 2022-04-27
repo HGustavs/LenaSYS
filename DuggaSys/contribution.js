@@ -1026,6 +1026,78 @@ function renderAllRankSortOptions(col, status, colname) {
   return str;
 }
 
+function renderRankSortOptions(col, status, colname) {
+  str = "";
+  if (status == -1) {
+    str += `<span class='sortableHeading' onclick='rankTable.toggleSortStatus(\"${col}\",0)'>
+    ${colname}</span>`;
+  } else if (status == 0) {
+    str += `<span class='sortableHeading' onclick='rankTable.toggleSortStatus(\"${col}\",1)'>
+    ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
+  } else {
+    str += `<span class='sortableHeading' onclick='rankTable.toggleSortStatus(\"${col}\",0)'>
+    ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
+  }
+  return str;
+}
+
+function renderGitHubSortOptions(col, status, colname) {
+  str = "";
+  if (status == -1) {
+    str += `<span class='sortableHeading' onclick='ghContibTable.toggleSortStatus(\"${col}\",0)'>
+    ${colname}</span>`;
+  } else if (status == 0) {
+    str += `<span class='sortableHeading' onclick='ghContibTable.toggleSortStatus(\"${col}\",1)'>
+    ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
+  } else {
+    str += `<span class='sortableHeading' onclick='ghContibTable.toggleSortStatus(\"${col}\",0)'>
+    ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
+  }
+  return str;
+}
+
+//compare function is called by sortableTable.js, used to order tables
+function compare(a, b) {
+  var col = sortableTable.currentTable.getSortcolumn();
+  var status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
+
+	if(status==1){
+		var tempA = a;
+		var tempB = b;
+	}else{
+		var tempA = b;
+		var tempB = a;
+	}
+
+  //If a column uses string or int the compare will work by default.
+  //ghContibTable columns use arrays in the table so we need to handle them in a different way from other columns
+  
+  if (col == "dates") {
+    tempA = tempA['weekStart'];
+    tempB = tempB['weekStart'];
+  }else if (col == "codeContribution") {
+    var countA = tempA['files'].length;
+    var countB = tempB['files'].length;
+    tempA = countA;
+    tempB = countB;
+  }else if(col == "githubContribution"){
+    //Sorts column based on amount of 'things' that happened for that week
+    var countA = tempA['comments'].length + tempA['commits'].length + tempA['events'].length + tempA['issues'].length;
+    var countB = tempB['comments'].length + tempB['commits'].length + tempB['events'].length + tempB['issues'].length;
+    tempA = countA;
+    tempB = countB;
+  }
+
+  
+	if (tempA > tempB) {
+		return 1;
+	} else if (tempA < tempB) {
+		return -1;
+	} else {
+		return 0;
+	}	
+}
+
 function selectuser() {
   AJAXService("get", {
     userid: document.getElementById('userid').value
@@ -1233,7 +1305,7 @@ function createRankTable(data) {
     data: tabledata,
     tableElementId: "personalRankTable",
     renderCellCallback: rankRenderCell,
-    renderSortOptionsCallback: renderSortOptions,
+    renderSortOptionsCallback: renderRankSortOptions,
     columnSum:["number","rank","grpranking"],
     columnSumCallback: makeSumPersonalRank,
     columnOrder: colOrder,
@@ -1303,7 +1375,7 @@ function createGitHubcontributionTable(data) {
     data: tabledata,
     tableElementId: "contribGithHubContribTable",
     renderCellCallback: renderCellForghContibTable,
-    renderSortOptionsCallback: renderSortOptions, 
+    renderSortOptionsCallback: renderGitHubSortOptions, 
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
