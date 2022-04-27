@@ -341,7 +341,7 @@
 
 .normtextwrapper{
     /* Width of codeborder */
-    position: absolute;
+    position: static;
     top: 0px;
     margin-left: 32px;
     padding: 0px 0px 0px 0px;
@@ -583,7 +583,7 @@
     border-left-style: solid;
     border-left-width: 3px;
     border-color: #5A5757;
-    padding: 10px !important;
+    padding: 5px !important;
 }
 
 .descbox .impword {
@@ -983,9 +983,12 @@
 
 
 
-@media only screen and (max-width: 364px) {
+@media only screen and (max-width: 480px) {
         #mobileNavHeading {
             font-size: 13px;
+    }
+    .maximizebtn, .minimizebtn {
+        display: none;
     }
 }
 .blockBtnSlot {

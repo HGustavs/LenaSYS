@@ -28,7 +28,7 @@
 	<!-- Login Box Start! -->
   <!--  <div id='loginBox' class="loginBox" style="display:none;display:flex;justify-content:center;align-items:center;">-->
     <div id='loginBox' class="loginBoxContainer" style="display:none;">
-		<div id='login' class="loginBox">
+		<div id='login' class="loginBox DarkModeBackgrounds DarkModeText">
 			<div class='loginBoxheader'>
 				<h3>Login</h3>
 				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>

@@ -283,14 +283,6 @@ function returned(data)
 			// set font size
 			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
 
-			// Set scrollbars to hidden if the content in the box takes up less space than the size of the box.
-			// var contentHeight = 15 * (lineno / 2);
-			// if(contentHeight < $("#box" + boxid).height()){
-			// 	$("#box" + boxid).css("overflow", "hidden");
-			// }else{
-			// 	$("#box" + boxid).css("overflow", "auto");
-			// }
-
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
 
@@ -339,12 +331,6 @@ function returned(data)
 				boxmenuheight = $("#" + contentid + "menu").height();
 			}
 			$("#" + contentid).css("margin-top", boxmenuheight);
-
-			// if(document.querySelector('#box' + boxid).firstChild.childElementCount * 15 < $('#box' + boxid).height()){
-			// 	$('#box' + boxid).css("overflow", "hidden");
-			// }else{
-			// 	$('#box' + boxid).css("overflow", "auto");
-			// }
 
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype);
@@ -763,7 +749,6 @@ function editImpRows(editType)
 		$('option:selected', "#improws").remove();
 		removedRows.push([openBoxID, FromTo[0], FromTo[1]]);
 	} else {
-		//alert("editType == +: " + (editType=="+") + " (rowFrom <= rowTo): " + (rowFrom <= rowTo) + " (rowFrom > 0): " + (rowFrom > 0) + " (rowTo > 0): " + (rowTo > 0) + " rowFrom: " + rowFrom + " rowTo: " + rowTo);
 		alert("Incorrect value(s) (from: " + rowFrom + " to: " + rowTo + ")  for important rows!");
 	}
 }
@@ -1525,7 +1510,6 @@ function tokenize(instring, inprefix, insuffix) {
 		}
 	}
   
-  // alert(row);
   console.log(tokens);
 }
 
@@ -1828,13 +1812,11 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		// tokens.length-1 so the last line will be printed out
 		if (tokens[i].kind == "newline" || i == tokens.length - 1) {
 			// Help empty lines to be printed out
-			//console.log("C:"+cont);
 			if (cont == "") cont = "&nbsp;";
 			// Count how many linenumbers that'll be needed
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				//str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 				str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px' ><span class='blockBtnSlot'></span>" + cont + "</div>";
 			} else {
 				// Print out important lines
@@ -1844,7 +1826,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							//str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 							str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						}
 					}
@@ -1966,7 +1947,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				//str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 				str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px'><span class='blockBtnSlot'></span>" + cont + "</div>";
 			} else {
 				// Print out important lines
@@ -1976,7 +1956,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							//str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 							str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px' ><span class='blockBtnSlot'></span>" + cont + "</div>";
 						}
 					}
@@ -2243,7 +2222,6 @@ function updateTemplate() {
 	} catch (e) {
 		alert("Error when updating template: " + e.message)
 	}
-	// setTimeout("location.reload()", 500);
 }
 
 //----------------------------------------------------------------------------------
@@ -3289,7 +3267,6 @@ function hideMaximizeAndResetButton() {
 		$('.maximizebtn').hide();
 		$('.resetbtn').hide();
 		$('.minimizebtn').hide();
-		$('.editbtn').hide();
 	}
 }
 
@@ -3539,7 +3516,7 @@ function resetBoxes()
             }, 20);
 	}
 
-	if (templateid == 6) {
+	if (templateid == 6 || templateid == 7) {
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
@@ -3606,44 +3583,6 @@ function resetBoxes()
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
 		thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
 		
-		//Reset css attributes to default. Surely there has to be an easier way to do this.
-		//Width
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "";
-		//Height
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "";
-		//Position
-		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.position = "";
-		//Top
-		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.top = "";
-		//Right
-		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.right = "";
-		//Left
-		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.left = "";
-		//Bottom
-		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
-
-		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
         thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
@@ -4411,6 +4350,14 @@ function resizeBoxes(parent, templateId)
 			handles:"s",
 			containment: parent
 		});
+//------------------------------------------------------------------------------------------------------------------------------
+// Hide or show scrollbars on a box depending on if the content of the box takes more or less space than the box itself.
+//------------------------------------------------------------------------------------------------------------------------------
+
+// The function does not do anything, but MUST NOT be removed because other functions in other files still refers to it.
+function hideShowScrollbars(boxValArray, box){
+	if(document.querySelector('#box' + box).className == 'box codebox'){
+	}else if(document.querySelector('#box' + box).className == 'box descbox'){
 	}
 }
 
@@ -4509,10 +4456,6 @@ function copyCodeToClipboard(boxid) {
 		selection.addRange(range);
 	}
 	
-	//var range = document.createRange();	// Original Code
-	//range.selectNodeContents(code);		// Original Code
-	//selection.removeAllRanges();			// Original Code
-	//selection.addRange(range);			// Original Code
 	document.execCommand("Copy");
 	selection.removeAllRanges();
 
@@ -4522,10 +4465,6 @@ function copyCodeToClipboard(boxid) {
 			$("#notificationbox" + boxid).fadeOut("fast");
 		}, 500);
 	});
-	/*$("#textwrapper" + boxid).hide();
-	setTimeout(function () {
-		$("#textwrapper" + boxid).fadeIn("fast");
-	}, 1000);*/
 }
 
 

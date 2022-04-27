@@ -1343,6 +1343,10 @@ header td {
   margin:auto 10px auto 0;
 }
 
+#theme-toggle {
+  transform: scale(2.8);
+  margin-top: 8px;
+}
 .burgerButt {
   float:left;
   margin-left: 10px;
@@ -6601,7 +6605,7 @@ only screen and (max-device-width: 320px) {
 }
 
 .fixed-action-button2.sectioned2 {
-  right: 80px;
+  right: 125px;
 }
 
 .fixed-action-button3 {
@@ -6679,7 +6683,7 @@ only screen and (max-device-width: 320px) {
   width: 100%;
   list-style: none;
   text-align: center;
-  bottom: 90px;
+  bottom: 80px;
 }
 
 .fab-btn-list2 {
@@ -7310,6 +7314,9 @@ textarea#mrkdwntxt {
   margin-left: 32.75%;
   margin-top: -0.75%;
   filter: invert(100%);
+}
+#inputwrapperText{
+  color:rgba(0,0,0,0.6);
 }
 
 .createAlertToggle{
