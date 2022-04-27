@@ -298,7 +298,7 @@
 	</div>
 	<!-- Confirm Edit Section Hide Dialog END -->
 
-	<!--  -->
+	<!-- Cofirm Section Tab Dialog START -->
 	<div id='tabConfirmBox' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:460px;'>
 			<div class='loginBoxheader'>
@@ -326,7 +326,7 @@
 			</div>
 		</div>
 	</div>
-	<!--  -->
+	<!-- Cofirm Edit Section Tab Dialog END -->
 
 	<!-- Confirm Missing Material Dialog START -->
 	<div id='noMaterialConfirmBox' class='loginBoxContainer' style='display:none;'>
