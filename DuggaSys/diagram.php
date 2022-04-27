@@ -195,6 +195,7 @@
                 </span>
             </div>
         </fieldset>
+        <!--
          <fieldset>
             <legend>Toggle</legend>
             <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
@@ -212,7 +213,7 @@
                 </span>
             </div>
 
-        </fieldset>   
+        </fieldset>  --> 
         <fieldset>
             <legend>Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
