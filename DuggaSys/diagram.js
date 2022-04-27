@@ -245,7 +245,6 @@ class StateChangeFactory
      */
     static LinesRemoved(lines)
     {
-        console.log("TEST");
         var lineIDs = [];
 
         // For every object in the lines array, add them to lineIDs
@@ -907,7 +906,7 @@ var lastClickedElement = null;
 
 
 // Zoom variables
-var lastZoomfact = 1.0;
+var desiredZoomfact = 1.0;
 var zoomfact = 1.0;
 var scrollx = 100;
 var scrolly = 100;
@@ -4293,7 +4292,7 @@ function zoomreset()
 
 /**
  * 
- * @description Zooms to lastZoomfactor from center of diagram.
+ * @description Zooms to desiredZoomfactor from center of diagram.
  */
 function zoomCenter(centerDiagram)
 {
@@ -4303,7 +4302,7 @@ function zoomCenter(centerDiagram)
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
    
-    zoomfact = lastZoomfact;
+    zoomfact = desiredZoomfact;
     document.getElementById("zoom-message").innerHTML = zoomfact + "x";
 
     scrollx = scrollx * zoomfact;
@@ -4317,6 +4316,25 @@ function zoomCenter(centerDiagram)
 
     // Draw new rules to match the new zoomfact
     drawRulerBars(scrollx,scrolly);
+}
+
+function determineZoomfact(maxX, maxY, minX, minY)
+{
+    // Resolution of the screen
+    var screenResolution = {
+        x: window.innerWidth,
+        y: window.innerHeight
+    };
+
+    // Checks if elements are within the window for the smalest zoomfact
+    desiredZoomfact = 0.25;
+    if (maxX-minX < ((screenResolution.x*1.25*1.5)-150) && maxY-minY < ((screenResolution.y*1.25*1.5)-100))desiredZoomfact = 0.5;
+    if (maxX-minX < ((screenResolution.x*1.25)-150) && maxY-minY < ((screenResolution.y*1.25)-100))desiredZoomfact = 0.75;
+    if (maxX-minX < (screenResolution.x-150) && maxY-minY < screenResolution.y-100)desiredZoomfact = 1.0;
+    if (maxX-minX < ((screenResolution.x*0.75)-150) && maxY-minY < ((screenResolution.y*0.75)-100))desiredZoomfact = 1.25;
+    if (maxX-minX < ((screenResolution.x*0.64)-150) && maxY-minY < ((screenResolution.y*0.64)-100))desiredZoomfact = 1.5;
+    if (maxX-minX < ((screenResolution.x*0.5)-150) && maxY-minY < ((screenResolution.y*0.5)-100)) desiredZoomfact = 2.0;
+    if (maxX-minX < ((screenResolution.x*0.25)-150) && maxY-minY < ((screenResolution.y*0.25)-100)) desiredZoomfact = 4.0;
 }
 
 /**
@@ -7010,55 +7028,58 @@ function showdata()
 /**
  * @description Centers the camera between the highest and lowest x and y values of all elements
  */
- function centerCamera()
- {
-     // Calculate min and max x and y values for all elements combined, and then find their averages
-     lastZoomfact = zoomfact;
-     zoomfact = 1;
-     var maxX = undefined;
-     var maxY = undefined;
-     var minX = undefined;
-     var minY = undefined;
-     for (var i = 0; i < data.length; i++) {
-         if (maxX == undefined || data[i].x + data[i].width > maxX) maxX = data[i].x + data[i].width;
-         if (minX == undefined || data[i].x < minX) minX = data[i].x;
-         if (maxY == undefined || data[i].y + data[i].height > maxY) maxY = data[i].y + data[i].height;
-         if (minY == undefined || data[i].y < minY) minY = data[i].y;
-     }
- 
-     // Center of screen in pixels
-     var centerScreen = {
-         x: window.innerWidth / 2,
-         y: window.innerHeight / 2
-     };
- 
-     // Center of diagram in coordinates
-     var centerDiagram = {
-         x: minX + (maxX - minX) / 2,
-         y: minY + (maxY - minY) / 2
-     };
- 
-     // Move camera to center of diagram
-     scrollx = centerDiagram.x * zoomfact;
-     scrolly = centerDiagram.y * zoomfact;
- 
-     var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
-     document.getElementById("zoom-message").innerHTML = zoomfact + "x";
+function centerCamera()
+{
+    //desiredZoomfact = zoomfact;
+    zoomfact = 1;
 
- 
-     scrollx = middleCoordinate.x;
-     scrolly = middleCoordinate.y;
- 
-     // Update screen
-     showdata();
-     updatepos();
-     updateGridPos();
-     updateGridSize();
-     drawRulerBars(scrollx, scrolly);
-     updateA4Pos();
-     updateA4Size();
-     zoomCenter(centerDiagram);
- }
+    // Calculate min and max x and y values for all elements combined, and then find their averages
+    var maxX = undefined;
+    var maxY = undefined;
+    var minX = undefined;
+    var minY = undefined;
+    for (var i = 0; i < data.length; i++) {
+        if (maxX == undefined || data[i].x + data[i].width > maxX) maxX = data[i].x + data[i].width;
+        if (minX == undefined || data[i].x < minX) minX = data[i].x;
+        if (maxY == undefined || data[i].y + data[i].height > maxY) maxY = data[i].y + data[i].height;
+        if (minY == undefined || data[i].y < minY) minY = data[i].y;
+    }
+
+    determineZoomfact(maxX, maxY, minX, minY);
+
+    // Center of screen in pixels
+    var centerScreen = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2
+    };
+
+    // Center of diagram in coordinates
+    var centerDiagram = {
+        x: minX + (maxX - minX) / 2,
+        y: minY + (maxY - minY) / 2
+    };
+
+    // Move camera to center of diagram
+    scrollx = centerDiagram.x * zoomfact;
+    scrolly = centerDiagram.y * zoomfact;
+
+    var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
+
+
+    scrollx = middleCoordinate.x;
+    scrolly = middleCoordinate.y;
+
+    // Update screen
+    showdata();
+    updatepos();
+    updateGridPos();
+    updateGridSize();
+    drawRulerBars(scrollx, scrolly);
+    updateA4Pos();
+    updateA4Size();
+    zoomCenter(centerDiagram);
+}
 //#endregion =====================================================================================
 //#region ================================   LOAD AND EXPORTS    ==================================
 /**
