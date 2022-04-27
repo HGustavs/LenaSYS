@@ -367,9 +367,11 @@ function showVariantEditor() {
 		additional files as parameters*/
 		AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
 		$("#selectBox").css("display", "flex");
+		$("#typeCheckBox").css("display", "flex");
 	}
 	else{
 		$("#selectBox").css("display", "none");
+		$("#typeCheckBox").css("display", "none");
 	}
 
   if(submissionRow == 0){
