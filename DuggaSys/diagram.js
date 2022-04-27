@@ -5508,7 +5508,7 @@ function drawSelectionBox(str)
         str += `<line x1='${deleteBtnX}' y1='${deleteBtnY + deleteBtnSize}' x2='${deleteBtnX + deleteBtnSize}' y2='${deleteBtnY}' style='stroke:#0000ff; stroke-width:2'/>`;
     }
 
-    if(context.length > 1 || contextLine.length > 0 && context.length > 0){
+    if(context.length > 0 || contextLine.length > 0 && context.length > 0){
         var tempX1 = 0;
         var tempX2 = 0;
         var tempY1 = 0;
