@@ -11,44 +11,43 @@
             width: 100%;
             justify-content: space-between;
         }
-
-        ::-webkit-scrollbar {
+        
+         ::-webkit-scrollbar {
             width: 5px;
         }
-
-        ::-webkit-scrollbar-track {
+        
+         ::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
-
-        ::-webkit-scrollbar-thumb {
+        
+         ::-webkit-scrollbar-thumb {
             background: #888;
         }
-
+        
         .assignment_left {
             background-color: #fffcfc;
-            width: 15px;
+            width: 300px;
             height: 800px;
             overflow: auto;
             margin: 0px;
         }
-
+        
         #close_open {
             width: 23px;
             position: fixed;
             top: 50%;
-            left: -10px;
+            left: 272px;
             border-top: 14px solid transparent;
             border-bottom: 14px solid transparent;
             border-right: 14px solid #d4d2d2;
-
         }
-
+        
         #close_open:hover {
             border-top: 14px solid transparent;
             border-bottom: 14px solid transparent;
             border-right: 14px solid #8e8e8e;
         }
-
+        
         .canvas_right {
             flex: 1;
             display: flex;
@@ -56,18 +55,33 @@
         }
     </style>
     <script>
-        $(document).ready(function () {
-            $("#close_open").click(function () {
+        $(document).ready(function() {
+            $("#close_open").click(function() {
                 if ($("#pvalue").val() == "0") {
-                    $("#container__left").animate({ width: "300px" });
-                    $("#assignment_discrb").css('visibility', 'visible');
-                    $("#close_open").css({ 'display': 'block', 'left': '272px' });
-                    $("#pvalue").val("1");
-                }
-                else {
+
                     $("#assignment_discrb").css('visibility', 'hidden');
-                    $("#close_open").css({ 'display': 'fixed', 'left': '-18px' });
-                    $("#container__left").animate({ width: "10px" }, "slow");
+                    $("#container__left").animate({
+                        width: "10px"
+                    }, "slow");
+                    $("#close_open").css({
+                        'display': 'fixed',
+                        'left': '-18px'
+                    });
+
+                    $("#pvalue").val("1");
+                } else {
+
+                    $("#container__left").animate({
+                        width: "300px"
+                    });
+                    $("#container__left").animate({
+                        width: "300px"
+                    }, "slow");
+                    $("#assignment_discrb").css('visibility', 'visible');
+                    $("#close_open").css({
+                        'display': 'block',
+                        'left': '272px'
+                    });
                     $("#pvalue").val("0");
                 }
 
@@ -93,46 +107,34 @@
                 <h3>Instructions</h3>
             </div>
             <div class="instructions-content">
-                <p style="margin-left: 4px;">Diagram-duggan går ut på att producera det diagrammet som beskrivs i
-                    beskrivningen.</p>
-                <p style="margin-left: 4px;">Lägg till element med hjälp av att byta till respective läge och klicka på
-                    canvasen.</p>
+                <p style="margin-left: 4px;">Diagram-duggan går ut på att producera det diagrammet som beskrivs i beskrivningen.
+                </p>
+                <p style="margin-left: 4px;">Lägg till element med hjälp av att byta till respective läge och klicka på canvasen.
+                </p>
                 <!-- <p style="margin-left: 4px;"><strong>Uppgiftsbeskrivning:</strong></p>
                 <p style="margin-left: 4px;" id="assigment-instructions"></p> -->
             </div>
         </div>
         <div class="container">
-            <input type="hidden" id="pvalue" value="0"/>
+            <input type="hidden" id="pvalue" value="0" />
             <div class="assignment_left" id="container__left" style="overflow: auto;">
-                <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0"
-                    style=" visibility: hidden; color: rgb(0, 0, 0); padding: 4px; ">
+                <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0" style=" visibility: visible; color: rgb(0, 0, 0); padding: 4px; ">
                     <h2 style="margin-left: 14px;">Beskrivningen</h2>
                     <h2 style="margin-left: 14px;">Modellering</h2>
                     <p style="margin-left: 14px;">Modellera nedanstående uppgifter i notationerna ER och UML.</p>
                     <ol type="1">
                         <li>En person identifieras av ett personnummer och har ett namn.</li><br>
-                        <li>Lägg till så att personen också har ett efternamn samt att man kan
-                            härleda åldern med hjälp av personnumret.</li><br>
+                        <li>Lägg till så att personen också har ett efternamn samt att man kan härleda åldern med hjälp av personnumret.</li><br>
                         <li>Lägg till så att personen kan ha många olika adresser.</li><br>
-                        <li>En bil identifieras av dess registreringsnummer och är av ett visst
-                            bilmärke. Bilen tillhör dessutom en viss typ, har en färg.</li><br>
-                        <li>Lägg till så att en person kan äga många bilar, men endast en bil kan ägas
-                            av en person. Vi vill inte lagra några egenskaper person, eftersom det
-                            anses onödigt, exempel namn, ålder, eller adress.</li><br>
-                        <li>En kaffekopp identifieras av en färg och har en viss storlek. En person
-                            identifieras av ett personnummer och äger en kaffekopp. En kaffekopp
-                            kan endast ägas av en person.</li><br>
-                        <li>En person har ett namn och personnummer och kan äta många maträtter
-                            från en buffé. Från buffén kan många personer äta. En maträtt hare en
-                            smak och identifieras av dess namn.</li><br>
-                        <li>Ett husdjur identifieras av dess namn och i kombination med personen
-                            som äger husdjuret. Personen har ett namn och ett personnummer.</li><br>
-                        <li>Lägg till så att ett husdjur också har en unik matskål. Matskålen
-                            identifieras av dess namn samt i kombination med husdjuret som äter ur
-                            matskålen.</li><br>
-                        <li>Lägg till så att ett husdjur kan ha en skötare. En skötare identifieras av ett
-                            anställningsnummer och har ett namn. En skötare kan ta hand om många
-                            husdjur.</li><br>
+                        <li>En bil identifieras av dess registreringsnummer och är av ett visst bilmärke. Bilen tillhör dessutom en viss typ, har en färg.</li><br>
+                        <li>Lägg till så att en person kan äga många bilar, men endast en bil kan ägas av en person. Vi vill inte lagra några egenskaper person, eftersom det anses onödigt, exempel namn, ålder, eller adress.</li><br>
+                        <li>En kaffekopp identifieras av en färg och har en viss storlek. En person identifieras av ett personnummer och äger en kaffekopp. En kaffekopp kan endast ägas av en person.</li><br>
+                        <li>En person har ett namn och personnummer och kan äta många maträtter från en buffé. Från buffén kan många personer äta. En maträtt hare en smak och identifieras av dess namn.</li><br>
+                        <li>Ett husdjur identifieras av dess namn och i kombination med personen som äger husdjuret. Personen har ett namn och ett personnummer.</li><br>
+                        <li>Lägg till så att ett husdjur också har en unik matskål. Matskålen identifieras av dess namn samt i kombination med husdjuret som äter ur matskålen.
+                        </li><br>
+                        <li>Lägg till så att ett husdjur kan ha en skötare. En skötare identifieras av ett anställningsnummer och har ett namn. En skötare kan ta hand om många husdjur.
+                        </li><br>
                     </ol>
                 </div>
                 <div id="close_open">
@@ -140,8 +142,7 @@
             </div>
             <div id="container" class="canvas_right">
 
-                <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%"
-                    style="pointer-events:auto;margin-left: 10px;" src="
+                <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;margin-left: 10px;" src="
                                     ./diagram.php" title="Diagram"></iframe>
 
             </div>
