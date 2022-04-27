@@ -284,6 +284,9 @@ function selectVariant(vid, el) {
   				else if(result == "extraparam"){
   					document.getElementById('extraparam').value = obj[result];
   				}
+				else if(result =="errorActive"){
+					document.getElementById("errorActive").checked = obj[result];
+				}
   			}
 		var diagramType = obj.diagram_type; //<-- UML functionality start
 		if(diagramType){
@@ -476,7 +479,8 @@ function createJSONString(formData) {
 		"diagram File":$("#file option:selected").text(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
-		"submissions":submission_types
+		"submissions":submission_types,
+		"errorActive":document.getElementById("errorActive").checked
 	});
 }
 
