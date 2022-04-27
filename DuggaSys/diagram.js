@@ -1021,6 +1021,9 @@ var defaultLine = { kind: "Normal" };
 // Variables also used in addLine function, allAttrToEntityRelations saves all attributes connected to a entity or relation
 var countUsedAttributes = 0;
 var allAttrToEntityRelations = [];
+// Array for attributes connected with eachother
+var attrViaAttrToEnt = [];
+var attrViaAttrCounter = 0;
 function onSetup()
 {
     const EMPLOYEE_ID = makeRandomID();
@@ -1146,10 +1149,24 @@ function onSetup()
             if (demoLines[i].toID == demoData[j].id && demoData[j].kind == "ERAttr") {
                 allLinesFromAttributes[k] = demoLines[i].id;
                 k++;
+                // To catch attr to attr
+                for (var l = 0; l < demoData.length; l++) {
+                    if (demoData[l].kind == "ERAttr" && demoData[l].id == demoLines[i].fromID) {
+                        attrViaAttrToEnt[attrViaAttrCounter] = demoData[l].id;
+                        attrViaAttrCounter++;
+                    }
+                }
             }
             if (demoLines[i].fromID == demoData[j].id && demoData[j].kind == "ERAttr") {
                 allLinesFromAttributes[k] = demoLines[i].id;
                 k++;
+                // To catch attr to attr
+                for (var m = 0; m < demoData.length; m++) {
+                    if (demoData[m].kind == "ERAttr" && demoData[m].id == demoLines[i].toID) {
+                        attrViaAttrToEnt[attrViaAttrCounter] = demoData[m].id;
+                        attrViaAttrCounter++;
+                    }
+                }
             }
             // Lines to and from Entitys and Relations
             if (demoLines[i].fromID == demoData[j].id && demoData[j].kind == "ERRelation") {
@@ -1170,6 +1187,7 @@ function onSetup()
             }
         }
     }
+
     var countSeekedLines = 0;
     for (var i = 0; i < allLinesFromEntiAndRela.length; i++) {
         for (var j = 0; j < allLinesFromAttributes.length; j++) {
@@ -1191,6 +1209,20 @@ function onSetup()
             }
         }
     }   // End of sorting code for attributes connected to entity or relation
+
+    // Delete duplicates
+    attrViaAttrToEnt = [... new Set(attrViaAttrToEnt)];
+    
+    for (i = 0; i < allAttrToEntityRelations.length; i++) { 
+        for (j = 0; j < attrViaAttrToEnt.length; j++) {
+            if (allAttrToEntityRelations[i] == attrViaAttrToEnt[j]) {
+                // Sort out attributes connected to entitis or relations from the attrViaAttrToEnt array
+                attrViaAttrToEnt.splice(j, 1);
+                // Sort out attributes connected to other attributes from the allAttrToEntityRelations
+                //allAttrToEntityRelations.splice(i, 1);
+            }
+        }
+    }
 
     for(var i = 0; i < demoLines.length; i++){
         addObjectToLines(demoLines[i], false);
@@ -2210,9 +2242,23 @@ function removeElements(elementArray, stateMachineShouldSave = true)
  */
 function removeLines(linesArray, stateMachineShouldSave = true)
 {
-
     var anyRemoved = false;
+
+    // Removes from the two arrays that keep track of the attributes connections. 
     for (var i = 0; i < linesArray.length; i++) {
+        for (j = 0; j < allAttrToEntityRelations.length; j++) {
+            if (linesArray[i].toID == allAttrToEntityRelations[j]) {
+                allAttrToEntityRelations.splice(j, 1);
+                countUsedAttributes--;
+            }
+        }
+        for (k = 0; k < attrViaAttrToEnt.length; k++) {
+            if (linesArray[i].toID == attrViaAttrToEnt[k] || linesArray[i].fromID == attrViaAttrToEnt[k]) {
+                attrViaAttrToEnt.splice(k, 1);
+                attrViaAttrCounter--;
+            }
+        }
+
         lines = lines.filter(function(line) {
             var shouldRemove = (line != linesArray[i]);
             if (shouldRemove) {
@@ -4602,31 +4648,87 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         var tempElement = toElement;
         toElement = fromElement;
         fromElement = tempElement;
-    } 
+    }
 
-    // Control for attributes to enti or rel
-    for (i = 0; i < allAttrToEntityRelations.length; i++) {
-        if (fromElement.kind === "ERAttr" && toElement.kind === "ERAttr") {
-            //
-        }
-        else if (toElement.id == allAttrToEntityRelations[i] || fromElement.id == allAttrToEntityRelations[i]) {
+    if (fromElement.kind == toElement.kind && fromElement.name == toElement.name) {
+        displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
+        return;
+    }
+
+    // All attributes that is connected to other attributes without being the one directly connected 
+    // to the entity or relation are blocked here for any further connections.
+    for (i = 0; i < attrViaAttrToEnt.length; i++) {
+        if (toElement.id == attrViaAttrToEnt[i] || fromElement.id == attrViaAttrToEnt[i]) {
             displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
             return;
         }
     }
 
-    if (toElement.kind == "ERAttr" && fromElement.kind == "EREntity") {
-        allAttrToEntityRelations[countUsedAttributes] = toElement.id;
-        countUsedAttributes++;
+    // Helps to decide later on, after passing the tests after this loop and the next two loops if the value should be added
+    var exists = false;
+    for (i = 0; i < allAttrToEntityRelations.length; i++) {
+        if (toElement.id == allAttrToEntityRelations[i]) {
+            exists = true;
+            break;
+        }
+        if (fromElement.id == allAttrToEntityRelations[i]) {
+            exists = true;
+            break;
+        }
     }
-    if (toElement.kind == "ERAttr" && fromElement.kind == "ERRelation") {
-        allAttrToEntityRelations[countUsedAttributes] = toElement.id;
-        countUsedAttributes++;
-    } // End control
 
-    if (fromElement.kind == toElement.kind && fromElement.name == toElement.name) {
-        displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
-        return;
+    // Blocking some combinations not allowed according to ER-rules
+    for (i = 0; i < allAttrToEntityRelations.length; i++) {
+        if (fromElement.kind == "EREntity" && toElement.id == allAttrToEntityRelations[i] || fromElement.kind == "ERRelation" && toElement.id == allAttrToEntityRelations[i]) {
+            displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
+            return;
+        }
+        else if (toElement.kind == "ERRelation" && fromElement.id == allAttrToEntityRelations[i]) {
+            displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
+            return;
+        }
+        else if (fromElement.id == allAttrToEntityRelations[i]) {
+            for (j = 0; j < allAttrToEntityRelations.length; j++) {
+                if (toElement.id == allAttrToEntityRelations[j]) {
+                    displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
+                    return;
+                }
+            }
+        }
+        else if (toElement.id == allAttrToEntityRelations[i]) {
+            for (j = 0; j < allAttrToEntityRelations.length; j++) {
+                if (fromElement.id == allAttrToEntityRelations[j]) {
+                    displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
+                    return;
+                }
+            }
+        }
+    }
+
+    // Adding elements to the array that carries attributes connected to attributes without being directly connected to an entity or relation
+    for (i = 0; i < allAttrToEntityRelations.length; i++) {
+        if (fromElement.kind === "ERAttr" && toElement.kind === "ERAttr" && fromElement.id == allAttrToEntityRelations[i]) {
+            attrViaAttrToEnt[attrViaAttrCounter] = toElement.id;
+            attrViaAttrCounter++;
+            break;
+        }
+        else if (fromElement.kind === "ERAttr" && toElement.kind === "ERAttr" && toElement.id == allAttrToEntityRelations[i]) {
+            attrViaAttrToEnt[attrViaAttrCounter] = fromElement.id;
+            attrViaAttrCounter++;
+            break;
+        }
+    }
+    
+    // Adding attributes to the array that only carries attributes directly connected to entities or relations
+    if (!exists) {
+        if (toElement.kind == "ERRelation") {
+            allAttrToEntityRelations[countUsedAttributes] = fromElement.id;
+            countUsedAttributes++;
+        }
+        else {
+            allAttrToEntityRelations[countUsedAttributes] = toElement.id;
+            countUsedAttributes++;
+        }
     }
 
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
@@ -4647,7 +4749,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                             toElement.kind === "ERRelation");
 
         // Check rules for Recursive relations
-        if(fromElement.kind === "ERRelation" || toElement.kind === "ERRelation") {
+        if(fromElement.kind === "ERRelation" && fromElement.kind == "Normal" || toElement.kind === "ERRelation" && toElement.kind == "Normal") {
             var relationID;
             if (fromElement.kind === "ERRelation") relationID = fromElement.id;
             else relationID = toElement.id;
@@ -4663,6 +4765,18 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             });
             var hasRecursive = (connElemsIds.length == 2 && connElemsIds[0] == connElemsIds[1]);
             var hasOtherLines = (numOfExistingLines == 1 && connElemsIds.length >= 2);
+            for (i = 0; i < allAttrToEntityRelations.length; i++) {
+                if (allAttrToEntityRelations[i] == fromElement.id) {
+                    allAttrToEntityRelations.splice(i, 1);
+                    countUsedAttributes--;
+                    break;
+                }
+                else if (allAttrToEntityRelations[i] == toElement.id) {
+                    allAttrToEntityRelations.splice(i, 1);
+                    countUsedAttributes--;
+                    break;
+                }
+            }
             if (hasRecursive || hasOtherLines){
                 displayMessage(messageTypes.ERROR, "Sorry, that is not possible");
                 return;
