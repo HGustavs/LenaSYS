@@ -5110,8 +5110,6 @@ function drawElement(element, ghosted = false)
     var xAnchor = tooBig ? margin : hboxw;
     var vAlignment = tooBig ? "left" : "middle";
 
-    var errorActive = true; // Change/use this variable when implementing on/off functionality for error handling
-
     if (errorActive) {
         // Checking for errors regarding ER Entities
         checkElementError(element);
