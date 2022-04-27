@@ -1545,8 +1545,10 @@ function mdown(event)
     mouseButtonDown = true;
 
         // Mouse pressed over delete button for multiple elements
-        if (event.button == 0 && context.length > 1) {
-            checkDeleteBtn();
+        if (event.button == 0) {
+            if (context.length > 1) {
+                checkDeleteBtn();
+            }
         }
 
     // Prevent middle mouse panning when moving an object
@@ -1570,6 +1572,55 @@ function mdown(event)
 
     // If the right mouse button is pressed => return
     if(event.button == 2) return;
+
+    // React to mouse down on container
+    if (event.target.id == "container") {
+        switch (mouseMode) {
+            case mouseModes.POINTER:
+                pointerState = pointerStates.CLICKED_CONTAINER;
+                sscrollx = scrollx;
+                sscrolly = scrolly;
+                startX = event.clientX;
+                startY = event.clientY;
+
+                // Mouse pressed over delete button for a single element or line
+                if (event.button == 0) {
+                    if (context.length == 1 || contextLine.length == 1) {
+                        checkDeleteBtn();
+                    }
+                }
+
+                if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                    wasDblClicked = true;
+                    document.getElementById("options-pane").className = "hide-options-pane";
+                }
+                break;
+            
+            case mouseModes.BOX_SELECTION:
+                boxSelect_Start(event.clientX, event.clientY);  
+
+                // Mouse pressed over delete button for a single element or line
+                if (event.button == 0) {
+                    if (context.length == 1 || contextLine.length == 1) {
+                        checkDeleteBtn();
+                    }
+                }
+
+                break;
+
+            default:
+                break;
+        }
+       
+    } else if (event.target.classList.contains("node")) {
+        pointerState = pointerStates.CLICKED_NODE;
+        startWidth = data[findIndex(data, context[0].id)].width;
+
+        startNodeRight = !event.target.classList.contains("mr");
+
+        startX = event.clientX;
+        startY = event.clientY;
+    }
 
     // Check if not an element OR node has been clicked at the event
     if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT && !settings.replay.active){
@@ -1667,8 +1718,8 @@ function mdown(event)
  */
 function ddown(event)
 {
-    // Mouse pressed over delete button for a single element
-    if (event.button == 0) {
+    // Mouse pressed over delete button for a single line over a element
+    if (event.button == 0 && contextLine.length > 0) {
         checkDeleteBtn();
     }
     
@@ -1894,7 +1945,8 @@ function checkDeleteBtn(){
             if (mouseMode == mouseModes.EDGE_CREATION) return;
             if (context.length > 0) {
                 removeElements(context);
-            } else if (contextLine.length > 0) {
+            }
+            if (contextLine.length > 0) {
                  removeLines(contextLine);
             }            
     
@@ -5852,21 +5904,21 @@ function drawSelectionBox(str)
 
         //Determine size and position of delete button
         if (highX - lowX + 10 > highY - lowY + 10) {
-            deleteBtnSize = (highY - lowY + 10) / 4;
+            deleteBtnSize = (highY - lowY + 10) / 3;
         }
         else {
-            deleteBtnSize = (highX - lowX + 10) / 4;
+            deleteBtnSize = (highX - lowX + 10) / 3;
         }
         
-        if (deleteBtnSize > 15) {
+        if (deleteBtnSize > 20) {
+            deleteBtnSize = 20;
+        }
+        else if (deleteBtnSize < 15) {
             deleteBtnSize = 15;
         }
-        else if (deleteBtnSize < 10) {
-            deleteBtnSize = 10;
-        }
 
-        deleteBtnX = lowX - 5 + highX - lowX + 10 - deleteBtnSize;
-        deleteBtnY = lowY - 5;
+        deleteBtnX = lowX - 5 + highX - lowX + 10 - (deleteBtnSize/2);
+        deleteBtnY = lowY - 5 - (deleteBtnSize/2);
 
         //Delete button visual representation
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
