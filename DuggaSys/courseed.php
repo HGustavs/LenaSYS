@@ -21,7 +21,7 @@ if(isset($_SESSION['uid'])){
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
