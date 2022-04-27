@@ -84,7 +84,6 @@ function returned(data)
 {
 	retData = data;
 	sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
-	console.log(retData);
 	// User can choose template if no template has been chosen and the user has write access.
 	if ((retData['templateid'] == 0)) {
 		if (retData['writeaccess'] == "w") {
@@ -274,7 +273,7 @@ function returned(data)
 			} else {
 				boxmenuheight = $("#" + contentid + "menu").height();
 			}
-			//$("#" + contentid).css("margin-top", boxmenuheight - 1);
+			$("#" + contentid).css("margin-top", boxmenuheight - 1);
 			// Indentation fix of content
 			boxcontent = tabLine(boxcontent);
 
@@ -327,7 +326,7 @@ function returned(data)
 
 			/* Assign Content */
 			$("#" + contentid).html(desc);
-			//$("#" + contentid).css("margin-top", boxmenuheight);
+			$("#" + contentid).css("margin-top", boxmenuheight);
 			createboxmenu(contentid, boxid, boxtype);
 
 			// set font size
@@ -339,7 +338,7 @@ function returned(data)
 			} else {
 				boxmenuheight = $("#" + contentid + "menu").height();
 			}
-			//$("#" + contentid).css("margin-top", boxmenuheight);
+			$("#" + contentid).css("margin-top", boxmenuheight);
 
 			// if(document.querySelector('#box' + boxid).firstChild.childElementCount * 15 < $('#box' + boxid).height()){
 			// 	$('#box' + boxid).css("overflow", "hidden");
@@ -380,7 +379,7 @@ function returned(data)
 			} else {
 				boxmenuheight = $("#" + contentid + "menu").height();
 			}
-			//$("#" + contentid).css("margin-top", boxmenuheight);
+			$("#" + contentid).css("margin-top", boxmenuheight);
 
 		} else if (boxtype == "NOT DEFINED") {
 			if (retData['writeaccess'] == "w") {
@@ -391,7 +390,7 @@ function returned(data)
 				} else {
 					boxmenuheight = $("#" + contentid + "menu").height();
 				}
-				//$("#" + contentid).css("margin-top", boxmenuheight);
+				$("#" + contentid).css("margin-top", boxmenuheight);
 			}
 		}
 	}
