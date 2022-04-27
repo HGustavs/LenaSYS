@@ -327,14 +327,21 @@ function confirmBox(operation, item = null) {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionHideConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
+  } else if (operation == "openTabConfirmBox") {
+    active_lid = item ? $(item).parents('table').attr('value') : null;
+    $("#tabConfirmBox").css("display", "flex");
   } else if (operation == "deleteItem") {
     deleteItem(active_lid);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "hideItem" && !hideItemList.length == 0) {
     hideMarkedItems(hideItemList)
     $("#sectionHideConfirmBox").css("display", "none");
+  }else if (operation == "tabItem" && !hideItemList.length == 0) {
+    tabMarkedItems(hideItemList);
+      $("#tabConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
+    $("#tabConfirmBox").css("display", "none");
     $("#sectionHideConfirmBox").css("display", "none");
     $("#noMaterialConfirmBox").css("display", "none");
   }
@@ -490,6 +497,16 @@ function hideMarkedItems() {
     hideItemList = [];
   }
 
+  //----------------------------------------------------------------------------------
+  // tabMarkedItems: Tabs Item from Section List
+  //----------------------------------------------------------------------------------
+  function tabMarkedItems() {
+    for (i=0; i < hideItemList.length; i++) {  
+      var lid = hideItemList[i]; 
+    }
+      hideItemList = [];
+  }
+    
 //----------------------------------------------------------------------------------
 // updateItem: Updates Item from Section List
 //----------------------------------------------------------------------------------
