@@ -1801,16 +1801,45 @@ function resetForceLogin()
     // TODO MAKE SURE SSN IS ACTUALLY A VALID SSN BEFORE INSERTING INTO DB
     // TODO MAKE SURE PASSWORD IS ACTUALLY VALID BEFORE INSERT INTO DB
 
-    if((pass1 == pass2 && pass1 != null && pass1 != "" && pass2 != null && pass2 != "") && (ssn != null && ssn != ""))
+
+    if(pass1 == pass2)
     {
-      AJAXService("requestGitUserCreation",{
-        userid: username,
-        userpass: pass1,
-        userssn: ssn
-      }, "CONTRIBUTION_LENASYS_USER_CREATION");
+      if(pass1 != null && pass1 != "")
+      {
+        if(ssn != null && ssn != "")
+        {
+          AJAXService("requestGitUserCreation",{
+            userid: username,
+            userpass: pass1,
+            userssn: ssn
+          }, "CONTRIBUTION_LENASYS_USER_CREATION");
+        }
+        else
+        {
+          displayAlertText("#login #message", "invalid SSN <br />");
+
+          $("input#ssnbox").addClass("loginFail");
+            setTimeout(function()
+            {
+              $("input#ssnbox").removeClass("loginFail");
+            }, 2000);
+        }
+      }
+      else
+      {
+        displayAlertText("#login #message", "invalid password <br />");
+
+        $("input#password").addClass("loginFail");
+		    $("input#password1").addClass("loginFail");
+			  setTimeout(function()
+          {
+		        $("input#password").removeClass("loginFail");
+            $("input#password1").removeClass("loginFail");
+			  	}, 2000);
+      }
     }
-    else if(pass1 != pass2)
-    {      
+    else
+    {
       displayAlertText("#login #message", "password doesnt match <br />");
 
       $("input#password").addClass("loginFail");
@@ -1819,29 +1848,6 @@ function resetForceLogin()
         {
 		      $("input#password").removeClass("loginFail");
           $("input#password1").removeClass("loginFail");
-				}, 2000);
-
-    }
-    else if(!(pass1 != null && pass1 != "" && pass2 != null && pass2 != ""))
-    {
-      displayAlertText("#login #message", "invalid password <br />");
-
-      $("input#password").addClass("loginFail");
-		    $("input#password1").addClass("loginFail");
-			  setTimeout(function()
-        {
-		      $("input#password").removeClass("loginFail");
-          $("input#password1").removeClass("loginFail");
-				}, 2000);
-    }
-    else if(!(ssn != null && ssn != ""))
-    {
-      displayAlertText("#login #message", "invalid SSN <br />");
-
-      $("input#ssnbox").addClass("loginFail");
-			  setTimeout(function()
-        {
-		      $("input#ssnbox").removeClass("loginFail");
 				}, 2000);
     }
     
