@@ -910,6 +910,7 @@ const baseline = 10;
 const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
 const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd"];
 const strokeColors = ["#000000"];
+const selectedColor = "#A000DC";
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -1412,7 +1413,7 @@ function mwheel(event) {
 function mdown(event)
 {
         // Mouse pressed over delete button
-        if (event.button == 0 && context.length > 0) {
+        if (event.button == 0 && context.length > 1) {
             checkDeleteBtn();
         }
 
@@ -4635,7 +4636,7 @@ function drawLine(line, targetGhost = false)
     
     var lineColor = '#000000';
     if(contextLine.includes(line)){
-        lineColor = '#0000ff';
+        lineColor = selectedColor;
     }
 
     felem = data[findIndex(data, line.fromID)];
@@ -5482,7 +5483,7 @@ function drawSelectionBox(str)
         }
 
         // Selection container of selected elements
-        str += `<rect width='${highX - lowX}' height='${highY - lowY}' x= '${lowX}' y='${lowY}'; style="fill:transparent; stroke-width:0.3; stroke:#0000ff;" />`;
+        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
 
         //Determine size and position of delete button
         if (highX - lowX + 10 > highY - lowY + 10) {
@@ -5499,28 +5500,12 @@ function drawSelectionBox(str)
             deleteBtnSize = 10;
         }
 
-        deleteBtnX = highX;
-        deleteBtnY = lowY - deleteBtnSize;
+        deleteBtnX = lowX - 5 + highX - lowX + 10 - deleteBtnSize;
+        deleteBtnY = lowY - 5;
 
         //Delete button visual representation
-        str += `<rect x='${deleteBtnX}' y='${deleteBtnY}' width="${deleteBtnSize}" height="${deleteBtnSize}" style="fill:#ffffff;" />`
-        str += `<line x1='${deleteBtnX}' y1='${deleteBtnY}' x2='${deleteBtnX + deleteBtnSize}' y2='${deleteBtnY + deleteBtnSize}' style='stroke:#0000ff; stroke-width:2'/>`;
-        str += `<line x1='${deleteBtnX}' y1='${deleteBtnY + deleteBtnSize}' x2='${deleteBtnX + deleteBtnSize}' y2='${deleteBtnY}' style='stroke:#0000ff; stroke-width:2'/>`;
-    }
-
-    if(context.length > 0 || contextLine.length > 0 && context.length > 0){
-        var tempX1 = 0;
-        var tempX2 = 0;
-        var tempY1 = 0;
-        var tempY2 = 0;
-
-        for(var i = 0; i < context.length; i++){
-            tempX1 = context[i].x1;
-            tempX2 = context[i].x2;
-            tempY1 = context[i].y1;
-            tempY2 = context[i].y2;
-            str += `<rect width='${tempX2 - tempX1}' height='${tempY2 - tempY1}' x= '${tempX1}' y='${tempY1}'; style="fill:transparent;stroke-width:1; stroke:#0000ff;" />`;
-        }
+        str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
+        str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
     }
 
     return str; 
@@ -5590,6 +5575,9 @@ function updateCSSForAllElements()
             var useDelta = (inContext && movingObject);
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
+            var grandChild = elementDiv.children[0].children[0];
+            grandChild.style.fill = inContext ? `${"#927b9e"}` : `${element.fill}`;
+
         }
     }
 
