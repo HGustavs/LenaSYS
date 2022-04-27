@@ -30,6 +30,10 @@
 
     </div>
 
+     <!-- Used for calculating pixels per millimeter using offsetWidth. Note that in offsetWidth system scaling is not included
+    and window.devicePixelRatio have to be included -->
+    <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
+
     <!-- Toolbar for diagram -->
     <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'>
         <fieldset>
@@ -184,14 +188,14 @@
                 </span>
             </div>
             <div class="diagramIcons" onclick="zoomreset()">
-                <img src="../Shared/icons/fullscreen.svg"/>
+                <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
                 <span class="toolTipText"><b>Zoom RESET</b><br>
                     <p>Reset the zoom to 1x</p><br>
                     <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
         </fieldset>
-<!--         <fieldset>
+         <fieldset>
             <legend>Toggle</legend>
             <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
                 <img src="../Shared/icons/diagram_ruler.svg"/>
@@ -208,11 +212,11 @@
                 </span>
             </div>
 
-        </fieldset>   --> 
+        </fieldset>   
         <fieldset>
             <legend>Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
-                <img src="../Shared/icons/screenUpdate.svg"/>
+                <img src="../Shared/icons/fullscreen.svg"/>
                 <span class="toolTipText"><b>Reset view</b><br>
                     <p>Reset view to show all elements</p><br>
                     <p id="tooltip-CENTER_CAMERA" class="key_tooltip">Keybinding:</p>

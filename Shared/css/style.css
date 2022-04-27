@@ -2299,7 +2299,7 @@ label.login-label {
 
 .loginBox form,
 .logoutBox form {
-  padding: 20px;
+  padding-bottom: 20px;
 }
 
 .loginBox .text,

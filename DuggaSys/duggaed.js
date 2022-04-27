@@ -290,8 +290,8 @@ function selectVariant(vid, el) {
   			}
 		var diagramType = obj.diagram_type; //<-- UML functionality start
 		if(diagramType){
-			document.getElementById('ER').checked = diagramType[0].ER;
-			document.getElementById('UML').checked = diagramType[0].UML;
+			document.getElementById('ER').checked = diagramType.ER;
+			document.getElementById('UML').checked = diagramType.UML;
 		}//<-- UML functionality end
         var submissionTypes = obj.submissions;
         if (submissionTypes) {
@@ -370,9 +370,11 @@ function showVariantEditor() {
 		additional files as parameters*/
 		AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
 		$("#selectBox").css("display", "flex");
+		$("#typeCheckbox").css("display", "flex");
 	}
 	else{
 		$("#selectBox").css("display", "none");
+		$("#typeCheckbox").css("display", "none");
 	}
 
   if(submissionRow == 0){
@@ -403,7 +405,7 @@ function returnedFile(data){
 
 // Adds a submission row
 function addVariantSubmissionRow() {
-  var subDivContent = `<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>
+  var subDivContent = `<div style='width:100%;display:flex;flex-wrap:nowrap;flex-direction:row; margin-right:2%;'>
 		<select name='s_type' id='submissionType${submissionRow}' style='width:65px;' onchange='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'>
 		<option value='pdf'>PDF</option>
 		<option value='zip'>Zip</option>
