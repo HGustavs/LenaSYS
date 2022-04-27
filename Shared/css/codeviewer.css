@@ -983,9 +983,12 @@
 
 
 
-@media only screen and (max-width: 364px) {
+@media only screen and (max-width: 480px) {
         #mobileNavHeading {
             font-size: 13px;
+    }
+    .maximizebtn, .minimizebtn {
+        display: none;
     }
 }
 .blockBtnSlot {
