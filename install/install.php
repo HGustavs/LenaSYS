@@ -211,6 +211,8 @@
             Include test data. <br><br>
             <input title="Include Demo-Course" type="checkbox" name="demoCourseDB" value="Yes" onchange="demoCourseDBchange(this)" checked/>
             Include demo-course. <br><br>
+            <input title="Include Testing-Course" type="checkbox" name="Testing-Course" value="Yes" onchange="demoCourseDBchange(this)" checked/>
+            Include Testing-Course. <br><br>
             <div id="testdataBoxes">
               <input title="Include markdown." type="checkbox" name="mdSupport" value="Yes" checked/>
               Include markdown. (Files located in /Install/md) <br><br>
@@ -348,6 +350,10 @@
           $totalSteps += 4;
 
           if (isset($_POST["demoCourseDB"]) && $_POST["demoCourseDB"] == 'Yes') {
+            $totalSteps++;
+          }
+
+          if (isset($_POST["Testing-Course"]) && $_POST["Testing-Course"] == 'Yes') {
             $totalSteps++;
           }
           
@@ -545,7 +551,12 @@
             } else {
               echo "Skipped adding demo-page<br>";
             }
-
+            # Add Testing_Course
+            if (isset($_POST["Testing-Course"]) && $_POST["Testing-Course"] == 'Yes') {
+              addTestData("testingCourseData", $connection);
+            } else {
+              echo "Skipped adding Testing-Course<br>";
+            }
             # Copy md files to the right place.
             if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
               copyTestFiles("{$putFileHere}/install/md/", "{$putFileHere}/DuggaSys/templates/");
