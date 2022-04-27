@@ -777,6 +777,7 @@ const elementTypes = {
     ERAttr: 2,
     Ghost: 3,
     UMLEntity: 4,       //<-- UML functionality
+    UMLRelation: 5, //<-- UML functionality
 };
 
 /**
@@ -835,6 +836,14 @@ const entityState = {
 const relationState = {
     NORMAL: "normal",
     WEAK: "weak",
+};
+
+/**
+ * @description State of inheritance between UML entities. <-- UML functionality
+ */
+ const inheritanceState = {
+    DISJOINT: "disjoint",
+    OVERLAPPING: "overlapping",
 };
 
 /**
@@ -998,7 +1007,8 @@ var defaults = {
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60, type: "ER" },
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45, type: "ER" },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5, type: "ER" },
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50, type: "UML", attributes: ['Attribute'], functions: ['Function']}     //<-- UML functionality
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50, type: "UML", attributes: ['Attribute'], functions: ['Function'] },     //<-- UML functionality
+    UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "white", stroke: "Black", width: 50, height: 50, type: "UML" }, //<-- UML functionality
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -4008,26 +4018,55 @@ function generateContextProperties()
 
         //Selected UML type
         else if (element.type == 'UML') {
-            //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
-            for (const property in element) {
-                switch (property.toLowerCase()) {
-                    case 'name':
-                        str += `<div style='color:white'>Name</div>`;
-                        str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                        break;
-                    case 'attributes':
-                        str += `<div style='color:white'>Attributes</div>`;
-                        str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
-                        break;
-                    case 'functions':
-                        str += `<div style='color:white'>Functions</div>`;
-                        str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
-                        break;
-                    default:
-                        break;
+            //If UML entity
+            if (element.kind == 'UMLEntity') {
+                //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        case 'attributes':
+                            str += `<div style='color:white'>Attributes</div>`;
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
+                            break;
+                        case 'functions':
+                            str += `<div style='color:white'>Functions</div>`;
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
+
+            //If UML inheritance
+            else if (element.kind = 'UMLRelation') {
+                str += `<div style='color:white'>Inheritance</div>`;
+                //Creates drop down for changing state of ER elements
+                var value;
+                var selected = context[0].state;
+                if(selected == undefined) {
+                    selected = "disjoint"
+                }
+
+                if(element.kind=="UMLRelation") {
+                    value = Object.values(inheritanceState);
+                }
+
+                str += '<select id="propertySelect">';
+                for (i = 0; i < value.length; i++) {
+                    if (selected != value[i]) {
+                        str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                    } else if(selected == value[i]) {
+                        str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                    }
+                }
+                str += '</select>'; 
+            }            
         }
+        
          // Creates button for selecting element background color
          str += `<div style="color: white">BG Color</div>`;
          str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
@@ -5344,6 +5383,36 @@ function drawElement(element, ghosted = false)
         //end of div for UML content
         str += `</div>`;
     }
+    //Check if element is UMLRelation
+    else if (element.kind == 'UMLRelation') {
+        //div to encapuslate UML element
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;`;
+
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+        }
+        str += `'>`;
+
+        //svg for inheritance symbol
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+
+        //Disjoint inheritance
+        if (element.state == 'overlapping') {
+            str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
+            style='fill:black;stroke:black;stroke-width:${linew};'/>`;
+        }
+        //Overlapping inheritance
+        else {
+            str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
+            style='fill:white;stroke:black;stroke-width:${linew};'/>`;
+        }
+        //end of svg
+        str += `</svg>`;
+    }
     //====================================================================
 
     //ER element
@@ -5486,7 +5555,7 @@ function updatepos(deltaX, deltaY)
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && context[0].kind != "ERRelation") addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLRelation")) addNodes(context[0]);
     
 
 }
