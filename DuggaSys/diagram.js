@@ -1014,16 +1014,15 @@ var defaultLine = { kind: "Normal" };
  * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
  * @see getData() For the VERY FIRST function called in the file.
  */
-
- var allLinesFromEntiAndRela = [];
- var allLinesFromAttributes = [];
- var allLinesBetweenAttributesToEntiAndRel = [];
+ 
 // Variables also used in addLine function, allAttrToEntityRelations saves all attributes connected to a entity or relation
 var countUsedAttributes = 0;
 var allAttrToEntityRelations = [];
 // Array for attributes connected with eachother
 var attrViaAttrToEnt = [];
 var attrViaAttrCounter = 0;
+//--------------------------
+
 function onSetup()
 {
     const EMPLOYEE_ID = makeRandomID();
@@ -1140,55 +1139,74 @@ function onSetup()
     for(var i = 0; i < demoData.length; i++){
         addObjectToData(demoData[i], false);
     }
+
+    sortedAttributes(demoLines, demoData, attrViaAttrToEnt, attrViaAttrCounter, allAttrToEntityRelations, countUsedAttributes);
+    
+    for(var i = 0; i < demoLines.length; i++){
+        addObjectToLines(demoLines[i], false);
+    }
+
+    // Global statemachine init
+    stateMachine = new StateMachine(data, lines);
+}
+// This method sorts attributes when new startup data is given to the diagram. This is necesarry to deal with the er rules in the addline.
+// This method should only be run whith the startup data.
+// The two arrays: attrViaAttrToEnt and allAttrToEntityRelations and the to counter variables attrViaAttrCounter and countUsedAttributes
+// are then used in the addLine function to deal with the er rules. And in the remove line function.
+function sortedAttributes(lines, elementData, attrViaAttrToEnt, attrViaAttrCounter, allAttrToEntityRelations, countUsedAttributes){
     // Sorts out all attributes connected to a entity or relation
     var k = 0;
     var h = 0;
-    for(var i = 0; i < demoLines.length; i++){
-        for(var j = 0; j < demoData.length; j++){
+    var countSeekedLines = 0;
+    var allLinesFromEntiAndRela = [];
+    var allLinesFromAttributes = [];
+    var allLinesBetweenAttributesToEntiAndRel = [];
+    for(var i = 0; i < lines.length; i++){
+        for(var j = 0; j < elementData.length; j++){
              // Lines to and from Attributes
-            if (demoLines[i].toID == demoData[j].id && demoData[j].kind == "ERAttr") {
-                allLinesFromAttributes[k] = demoLines[i].id;
+            if (lines[i].toID == elementData[j].id && elementData[j].kind == "ERAttr") {
+                allLinesFromAttributes[k] = lines[i].id;
                 k++;
                 // To catch attr to attr
-                for (var l = 0; l < demoData.length; l++) {
-                    if (demoData[l].kind == "ERAttr" && demoData[l].id == demoLines[i].fromID) {
-                        attrViaAttrToEnt[attrViaAttrCounter] = demoData[l].id;
+                for (var l = 0; l < elementData.length; l++) {
+                    if (elementData[l].kind == "ERAttr" && elementData[l].id == lines[i].fromID) {
+                        attrViaAttrToEnt[attrViaAttrCounter] = elementData[l].id;
                         attrViaAttrCounter++;
                     }
                 }
             }
-            if (demoLines[i].fromID == demoData[j].id && demoData[j].kind == "ERAttr") {
-                allLinesFromAttributes[k] = demoLines[i].id;
+            if (lines[i].fromID == elementData[j].id && elementData[j].kind == "ERAttr") {
+                allLinesFromAttributes[k] = lines[i].id;
                 k++;
                 // To catch attr to attr
-                for (var m = 0; m < demoData.length; m++) {
-                    if (demoData[m].kind == "ERAttr" && demoData[m].id == demoLines[i].toID) {
-                        attrViaAttrToEnt[attrViaAttrCounter] = demoData[m].id;
+                for (var m = 0; m < elementData.length; m++) {
+                    if (elementData[m].kind == "ERAttr" && elementData[m].id == lines[i].toID) {
+                        attrViaAttrToEnt[attrViaAttrCounter] = elementData[m].id;
                         attrViaAttrCounter++;
                     }
                 }
             }
             // Lines to and from Entitys and Relations
-            if (demoLines[i].fromID == demoData[j].id && demoData[j].kind == "ERRelation") {
-                allLinesFromEntiAndRela[h] = demoLines[i].id;
+            if (lines[i].fromID == elementData[j].id && elementData[j].kind == "ERRelation") {
+                allLinesFromEntiAndRela[h] = lines[i].id;
                 h++;
             }
-            if (demoLines[i].toID == demoData[j].id && demoData[j].kind == "ERRelation") {
-                allLinesFromEntiAndRela[h] = demoLines[i].id;
+            if (lines[i].toID == elementData[j].id && elementData[j].kind == "ERRelation") {
+                allLinesFromEntiAndRela[h] = lines[i].id;
                 h++;
             }
-            if (demoLines[i].fromID == demoData[j].id && demoData[j].kind == "EREntity") {
-                allLinesFromEntiAndRela[h] = demoLines[i].id;
+            if (lines[i].fromID == elementData[j].id && elementData[j].kind == "EREntity") {
+                allLinesFromEntiAndRela[h] = lines[i].id;
                 h++;
             }
-            if (demoLines[i].toID == demoData[j].id && demoData[j].kind == "EREntity") {
-                allLinesFromEntiAndRela[h] = demoLines[i].id;
+            if (lines[i].toID == elementData[j].id && elementData[j].kind == "EREntity") {
+                allLinesFromEntiAndRela[h] = lines[i].id;
                 h++;
             }
         }
     }
 
-    var countSeekedLines = 0;
+    
     for (var i = 0; i < allLinesFromEntiAndRela.length; i++) {
         for (var j = 0; j < allLinesFromAttributes.length; j++) {
             if (allLinesFromEntiAndRela[i] == allLinesFromAttributes[j]) {
@@ -1197,12 +1215,12 @@ function onSetup()
             }
         }
     }
-    for (var i = 0; i < demoLines.length; i++) {
+    for (var i = 0; i < lines.length; i++) {
         for (var j = 0; j < allLinesBetweenAttributesToEntiAndRel.length; j++) {
-            if (demoLines[i].id == allLinesBetweenAttributesToEntiAndRel[j]) {
-                for (var k = 0; k < demoData.length; k++) {
-                    if (demoData[k].kind == "ERAttr" && demoLines[i].fromID == demoData[k].id || demoData[k].kind == "ERAttr" && demoLines[i].toID == demoData[k].id) {
-                        allAttrToEntityRelations[countUsedAttributes] = demoData[k].id;
+            if (lines[i].id == allLinesBetweenAttributesToEntiAndRel[j]) {
+                for (var k = 0; k < elementData.length; k++) {
+                    if (elementData[k].kind == "ERAttr" && lines[i].fromID == elementData[k].id || elementData[k].kind == "ERAttr" && lines[i].toID == elementData[k].id) {
+                        allAttrToEntityRelations[countUsedAttributes] = elementData[k].id;
                         countUsedAttributes++;
                     }
                 }
@@ -1223,13 +1241,6 @@ function onSetup()
             }
         }
     }
-
-    for(var i = 0; i < demoLines.length; i++){
-        addObjectToLines(demoLines[i], false);
-    }
-
-    // Global statemachine init
-    stateMachine = new StateMachine(data, lines);
 }
 
 /**
