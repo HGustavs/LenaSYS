@@ -990,8 +990,9 @@ var settings = {
 
 
 // Demo data - read / write from service later on
-var data = [];
-var lines = [];
+var data = []; // List of all elements in diagram
+var lines = []; // List of all lines in diagram
+var errorData = []; // List of all elements with an error in diagram
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
@@ -1058,8 +1059,8 @@ function onSetup()
         { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Ssn_ID, isLocked: false, state: "key"},
         { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Name_ID, isLocked: false },
         { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDependent_ID, isLocked: false, state: "weakKey"},
-        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameProject_ID, isLocked: false, state: "key"},
-        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDEPARTMENT_ID, isLocked: false, state: "key"},
+        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameProject_ID, isLocked: false},
+        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: NameDEPARTMENT_ID, isLocked: false},
         { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Address_ID, isLocked: false },
         { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: AddressDependent_ID, isLocked: false },
         { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", fill: "#ffccdc", stroke: "black", id: Relationship_ID, isLocked: false },
@@ -5109,6 +5110,18 @@ function drawElement(element, ghosted = false)
     var xAnchor = tooBig ? margin : hboxw;
     var vAlignment = tooBig ? "left" : "middle";
 
+    var errorActive = true; // Change/use this variable when implementing on/off functionality for error handling
+
+    if (errorActive) {
+        // Checking for errors regarding ER Entities
+        checkElementError(element);
+
+        // Checks if element is involved with an error and outlines them in red
+        for (var i = 0; i < errorData.length; i++) {
+            if (element.id == errorData[i].id) element.stroke = 'red';
+        }
+    }
+
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
     if (element.kind == "UMLEntity") {  
@@ -5312,6 +5325,477 @@ function updatepos(deltaX, deltaY)
     if (context.length === 1 && mouseMode == mouseModes.POINTER && context[0].kind != "ERRelation") addNodes(context[0]);
     
 
+}
+/**
+ * @description Checks for errors and adds the element affected by the errors to a error list.
+ * @param {Object} element Element to be checked for errors.
+ */
+function checkElementError(element) 
+{
+    var line;
+    var fElement;
+    var tElement;
+    var keyQuantity;
+    var strongEntity;
+    var weakrelation;
+    var lineQuantity;
+
+    // Error checking for ER Entities
+    if (element.kind == "EREntity") {
+        if (element.state == "weak") {
+            keyQuantity = 0;
+            strongEntity = 0;
+            weakrelation = 0;
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+
+                // Checking for wrong key type
+                if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                    if (tElement.state == "key") {
+                        errorData.push(fElement);
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                    if (fElement.state == "key") {
+                        errorData.push(tElement);
+                    }
+                }
+
+                // Counting quantity of keys
+                if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                    if (tElement.state == "weakKey") {
+                        keyQuantity += 1;
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                    if (fElement.state == "weakKey") {
+                        keyQuantity += 1;
+                    }
+                }
+
+                // Checking for attributes with same name
+                if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == fElement.id && tElement0.kind == "ERAttr" && tElement0.name == tElement.name && tElement0.id != tElement.id) {
+                            errorData.push(element);
+                        }
+                        if (tElement0.id == fElement.id && fElement0.kind == "ERAttr" && fElement0.name == tElement.name && fElement0.id != tElement.id) {
+                            errorData.push(element);
+                        }
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == tElement.id && tElement0.kind == "ERAttr" && tElement0.name == fElement.name && tElement0.id != fElement.id) {
+                            errorData.push(element);
+                        }
+                        if (tElement0.id == tElement.id && fElement0.kind == "ERAttr" && fElement0.name == fElement.name && fElement0.id != fElement.id) {
+                            errorData.push(element);
+                        }
+                    }
+                }
+
+                // Checking if weak entity is related to a strong entity or a weak entity with a relation
+                if (fElement.id == element.id && tElement.kind == "ERRelation" && tElement.state == "weak" && line.kind == "Double") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == tElement.id && tElement0.kind == "EREntity" && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
+                            strongEntity += 1;
+                        }
+                        if (tElement0.id == tElement.id && fElement0.kind == "EREntity" && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
+                            strongEntity += 1;
+                        }
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERRelation" && fElement.state == "weak" && line.kind == "Double") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == fElement.id && tElement0.kind == "EREntity" && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
+                            strongEntity += 1;
+                        }
+                        if (tElement0.id == fElement.id && fElement0.kind == "EREntity" && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
+                            strongEntity += 1;
+                        }
+                    }
+                }
+
+                // Counting weak relations
+                if (fElement.id == element.id && tElement.kind == "ERRelation" && tElement.state == "weak") {
+                    weakrelation += 1;
+                }
+                if (tElement.id == element.id && fElement.kind == "ERRelation" && fElement.state == "weak") {
+                    weakrelation += 1;
+                }
+            }
+            // Checks if element has one relation to a strong entity
+            if (strongEntity != 1) {
+                errorData.push(element);
+            } 
+
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+
+                // Checks if entity has any lines
+                if (fElement.id == element.id || tElement.id == element.id) {
+                    //Checking for wrong quantity of keys
+                    if (keyQuantity < 1 || keyQuantity > 1) {
+                        errorData.push(element);
+                    }
+                }
+
+                // Checks if entity has a weak relation
+                if (weakrelation < 1) {
+                    errorData.push(element);
+                }
+            }
+        }
+        else {
+            keyQuantity = 0;
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+
+                // Checking for wrong key type
+                if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                    if (tElement.state == "weakKey") {
+                        errorData.push(fElement);
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                    if (fElement.state == "weakKey") {
+                        errorData.push(tElement);
+                    }
+                }
+
+                // Counting quantity of keys
+                if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                    if (tElement.state == "key") {
+                        keyQuantity += 1;
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                    if (fElement.state == "key") {
+                        keyQuantity += 1;
+                    }
+                }
+
+                // Checking for attributes with same name
+                if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == fElement.id && tElement0.kind == "ERAttr" && tElement0.name == tElement.name && tElement0.id != tElement.id) {
+                            errorData.push(element);
+                        }
+                        if (tElement0.id == fElement.id && fElement0.kind == "ERAttr" && fElement0.name == tElement.name && fElement0.id != tElement.id) {
+                            errorData.push(element);
+                        }
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == tElement.id && tElement0.kind == "ERAttr" && tElement0.name == fElement.name && tElement0.id != fElement.id) {
+                            errorData.push(element);
+                        }
+                        if (tElement0.id == tElement.id && fElement0.kind == "ERAttr" && fElement0.name == fElement.name && fElement0.id != fElement.id) {
+                            errorData.push(element);
+                        }
+                    }
+                }
+
+            }
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+
+                // Checks if entity has any lines
+                if (fElement.id == element.id || tElement.id == element.id) {
+                    //Checking for wrong quantity of keys
+                    if (keyQuantity < 1 || keyQuantity > 1) {
+                        errorData.push(element);
+                    }
+                }
+            }
+        }
+    }
+
+    // Error checking for ER Relations
+    if (element.kind == "ERRelation") {
+        if (element.state == "weak") {
+            lineQuantity = 0;
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+
+                // Checking for wrong line type to a relation
+                if (fElement.id == element.id && tElement.kind == "EREntity" && tElement.state == "weak" && line.kind == "Normal") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != tElement.id) {
+                            errorData.push(element);
+                        }
+                        if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != tElement.id) {
+                            errorData.push(element);
+                        }
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "EREntity" && fElement.state == "weak" && line.kind == "Normal") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != fElement.id) {
+                            errorData.push(element);
+                        }
+                        if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != fElement.id) {
+                            errorData.push(element);
+                        }
+                    }
+                }
+
+                var line0;
+                var fElement0;
+                var tElement0;
+
+                // Checking for more than one Normal line to a weak relation
+                if (fElement.id == element.id && tElement.kind == "EREntity" && tElement.state != "weak") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != tElement.id) {
+                            errorData.push(fElement);
+                        }
+                        if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != tElement.id) {
+                            errorData.push(fElement);
+                        }
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "EREntity" && fElement.state != "weak") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != fElement.id) {
+                            errorData.push(tElement);
+                        }
+                        if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != fElement.id) {
+                            errorData.push(tElement);
+                        }
+                    }
+                }
+
+                // Checking for more than one double line to a weak relation
+                if (fElement.id == element.id && line.kind == "Double") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && line0.kind == "Double" && tElement0.id != tElement.id) {
+                            errorData.push(element);
+                        }
+                        if (tElement0.id == element.id && line0.kind == "Double" && fElement0.id != tElement.id) {
+                            errorData.push(element);
+                        }
+                    }
+                }
+                if (tElement.id == element.id && line.kind == "Double") {
+                    for (var j = 0; j < lines.length; j++) {
+                        line0 = lines[j];
+                        fElement0 = data[findIndex(data, line0.fromID)];
+                        tElement0 = data[findIndex(data, line0.toID)];
+
+                        if (fElement0.id == element.id && line0.kind == "Double" && tElement0.id != fElement.id) {
+                            errorData.push(element);
+                        }
+                        if (tElement0.id == element.id && line0.kind == "Double" && fElement0.id != fElement.id) {
+                            errorData.push(element);
+                        }
+                    }
+                }
+
+                // Counting connected lines
+                if ((tElement.id == element.id && fElement.kind == "EREntity") || (fElement.id == element.id && tElement.kind == "EREntity")) {
+                    lineQuantity += 1;
+                }
+            }
+        }
+        else {
+            lineQuantity = 0;
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+
+                // Counting connected lines
+                if ((tElement.id == element.id && fElement.kind == "EREntity") || (fElement.id == element.id && tElement.kind == "EREntity")) {
+                    lineQuantity += 1;
+                }
+            }
+        }
+        //Checking for wrong quantity of lines
+        if (lineQuantity == 1 || lineQuantity > 2) {
+            errorData.push(element);
+        }
+    }
+
+    // Error checking for ER Attributes
+    if (element.kind == "ERAttr") {
+        for (var i = 0; i < lines.length; i++) {
+            line = lines[i];
+            fElement = data[findIndex(data, line.fromID)];
+            tElement = data[findIndex(data, line.toID)];
+
+            // Checking for wrong key type
+            if ((tElement.kind == "EREntity" || fElement.kind == "EREntity") && (tElement.state == "weak" || fElement.state == "weak")) {
+                if (fElement.id == element.id && tElement.kind == "EREntity") {
+                    if (fElement.state == "key") {
+                        errorData.push(fElement);
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "EREntity") {
+                    if (tElement.state == "key") {
+                        errorData.push(tElement);
+                    }
+                }
+            }
+            else {
+                if (fElement.id == element.id && tElement.kind == "EREntity") {
+                    if (fElement.state == "weakKey") {
+                        errorData.push(fElement);
+                    }
+                }
+                if (tElement.id == element.id && fElement.kind == "EREntity") {
+                    if (tElement.state == "weakKey") {
+                        errorData.push(tElement);
+                    }
+                }
+            }
+
+            var line0;
+            var fElement0;
+            var tElement0;
+
+            // Checking for attributes on the same entity
+            if (fElement.id == element.id && tElement.kind == "EREntity") {
+                var currentAttr = fElement;
+                var currentEntity = tElement;
+                for (var j = 0; j < lines.length; j++) {
+                    line0 = lines[j];
+                    fElement0 = data[findIndex(data, line0.fromID)];
+                    tElement0 = data[findIndex(data, line0.toID)];
+
+                    // Checking for attributes on the same entity with same name
+                    if (fElement0.id == currentEntity.id && tElement0.name == currentAttr.name && tElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(tElement0);
+                    }
+                    if (tElement0.id == currentEntity.id && fElement0.name == currentAttr.name && fElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(fElement0);
+                    }
+
+                    // Checking for more than one key attributes on the same entity
+                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "key" && tElement0.state == "key") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(tElement0);
+                    }
+                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "key" && fElement0.state == "key") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(fElement0);
+                    }
+                }
+            }
+            if (tElement.id == element.id && fElement.kind == "EREntity") {
+                var currentAttr = tElement;
+                var currentEntity = fElement;
+                for (var j = 0; j < lines.length; j++) {
+                    line0 = lines[j];
+                    fElement0 = data[findIndex(data, line0.fromID)];
+                    tElement0 = data[findIndex(data, line0.toID)];
+
+                    // Checking for attributes on the same entity with same name
+                    if (fElement0.id == currentEntity.id && tElement0.name == currentAttr.name && tElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(tElement0);
+                    }
+                    if (tElement0.id == currentEntity.id && fElement0.name == currentAttr.name && fElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(fElement0);
+                    }
+
+                    // Checking for more than one key attributes on the same entity
+                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "key" && tElement0.state == "key") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(tElement0);
+                    }
+                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "key" && fElement0.state == "key") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
+                        errorData.push(currentAttr);
+                        errorData.push(fElement0);
+                    }
+                }
+            }
+        }
+    }
+
+    // Error checking for lines
+    for (var i = 0; i < lines.length; i++) {
+        line = lines[i];
+        fElement = data[findIndex(data, line.fromID)];
+        tElement = data[findIndex(data, line.toID)];
+
+        //Checking for cardinality
+        if ((fElement.kind == "EREntity" && tElement.kind == "ERRelation") || (tElement.kind == "EREntity" && fElement.kind == "ERRelation")) {
+            if (line.cardinality != "ONE" && line.cardinality != "MANY") {
+                errorData.push(fElement);
+                errorData.push(tElement);
+            }
+        }
+    }
+}
+/**
+ * @description Sets every elements stroke to black.
+ * @param {Object} elements List of all elements.
+ */
+function errorReset(elements)
+{
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].stroke = 'black';
+    }
 }
 /**
  * @description Updates the Label position on the line.
@@ -5613,6 +6097,9 @@ function showdata()
 
     var str = "";
     var courses = [];
+    errorData = [];
+
+    errorReset(data);
 
     // Iterate over programs
     for (var i = 0; i < data.length; i++) {
