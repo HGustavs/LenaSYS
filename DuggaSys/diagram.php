@@ -30,6 +30,10 @@
 
     </div>
 
+     <!-- Used for calculating pixels per millimeter using offsetWidth. Note that in offsetWidth system scaling is not included
+    and window.devicePixelRatio have to be included -->
+    <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
+
     <!-- Toolbar for diagram -->
     <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'>
         <fieldset>
@@ -191,7 +195,7 @@
                 </span>
             </div>
         </fieldset>
-<!--         <fieldset>
+         <fieldset>
             <legend>Toggle</legend>
             <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
                 <img src="../Shared/icons/diagram_ruler.svg"/>
@@ -208,7 +212,7 @@
                 </span>
             </div>
 
-        </fieldset>   --> 
+        </fieldset>   
         <fieldset>
             <legend>Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
