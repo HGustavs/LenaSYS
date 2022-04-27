@@ -777,7 +777,20 @@ const elementTypes = {
     ERAttr: 2,
     Ghost: 3,
     UMLEntity: 4,       //<-- UML functionality
+    UMLRelation: 5, //<-- UML functionality
 };
+
+/**
+ * @description Same as const elementTypes, but uses their names instead of numbers.
+ * @see generateErTableString() For comparing elements with this enum.
+ */
+const elementTypesNames = {
+    EREntity: "EREntity",
+    ERRelation: "ERRelation",
+    ERAttr: "ERAttr",
+    Ghost: "Ghost",
+    UMLEntity: "UMLEntity",
+}
 
 /**
  * @description Used by the mup and mmoving functions to determine what was clicked in ddown/mdown.
@@ -821,13 +834,6 @@ const entityType = {
     ER: "ER",
 };
 /**
- * @description
- */
-const umlState = {
-    NORMAL: "normal",
-}
-
-/**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
  */
 const entityState = {
@@ -842,6 +848,14 @@ const entityState = {
 const relationState = {
     NORMAL: "normal",
     WEAK: "weak",
+};
+
+/**
+ * @description State of inheritance between UML entities. <-- UML functionality
+ */
+ const inheritanceState = {
+    DISJOINT: "disjoint",
+    OVERLAPPING: "overlapping",
 };
 
 /**
@@ -884,6 +898,13 @@ var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Do
 var wasDblClicked = false;
 var targetDelta;
 var mousePressed;
+var erTableToggle = false; //Used only in toggleErTable() and generateContextProperties().
+var selectionBoxLowX;
+var selectionBoxHighX;
+var selectionBoxLowY;
+var selectionBoxHighY;
+var lastClickedElement = null;
+
 
 // Zoom variables
 var lastZoomfact = 1.0;
@@ -962,6 +983,9 @@ var pointerState = pointerStates.DEFAULT;
 var movingObject = false;
 var movingContainer = false;
 
+//setting the base values for the allowed diagramtypes
+var diagramType = {ER:false,UML:false};
+
 //Grid Settings
 var settings = {
     ruler: {
@@ -1004,11 +1028,12 @@ var ghostLine = null;
  * @see constructElementOfType() For creating new elements with default values.
  */
 var defaults = {
-    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50 },
-    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60 },
-    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45 },
-    Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5 },
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50}     //<-- UML functionality
+    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50, type: "ER", attributes: ['Attribute'], functions: ['Function'] },
+    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60, type: "ER" },
+    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45, type: "ER" },
+    Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5, type: "ER" },
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50, type: "UML", attributes: ['Attribute'], functions: ['Function'] },     //<-- UML functionality
+    UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "white", stroke: "Black", width: 50, height: 50, type: "UML" }, //<-- UML functionality
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1017,6 +1042,16 @@ var defaultLine = { kind: "Normal" };
  * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
  * @see getData() For the VERY FIRST function called in the file.
  */
+
+ var allLinesFromEntiAndRela = [];
+ var allLinesFromAttributes = [];
+ var allLinesBetweenAttributesToEntiAndRel = [];
+// Variables also used in addLine function, allAttrToEntityRelations saves all attributes connected to a entity or relation
+var countUsedAttributes = 0;
+var allAttrToEntityRelations = [];
+// Array for attributes connected with eachother
+var attrViaAttrToEnt = [];
+var attrViaAttrCounter = 0;
 function onSetup()
 {
     const EMPLOYEE_ID = makeRandomID();
@@ -1133,6 +1168,90 @@ function onSetup()
     for(var i = 0; i < demoData.length; i++){
         addObjectToData(demoData[i], false);
     }
+    // Sorts out all attributes connected to a entity or relation
+    var k = 0;
+    var h = 0;
+    for(var i = 0; i < demoLines.length; i++){
+        for(var j = 0; j < demoData.length; j++){
+             // Lines to and from Attributes
+            if (demoLines[i].toID == demoData[j].id && demoData[j].kind == "ERAttr") {
+                allLinesFromAttributes[k] = demoLines[i].id;
+                k++;
+                // To catch attr to attr
+                for (var l = 0; l < demoData.length; l++) {
+                    if (demoData[l].kind == "ERAttr" && demoData[l].id == demoLines[i].fromID) {
+                        attrViaAttrToEnt[attrViaAttrCounter] = demoData[l].id;
+                        attrViaAttrCounter++;
+                    }
+                }
+            }
+            if (demoLines[i].fromID == demoData[j].id && demoData[j].kind == "ERAttr") {
+                allLinesFromAttributes[k] = demoLines[i].id;
+                k++;
+                // To catch attr to attr
+                for (var m = 0; m < demoData.length; m++) {
+                    if (demoData[m].kind == "ERAttr" && demoData[m].id == demoLines[i].toID) {
+                        attrViaAttrToEnt[attrViaAttrCounter] = demoData[m].id;
+                        attrViaAttrCounter++;
+                    }
+                }
+            }
+            // Lines to and from Entitys and Relations
+            if (demoLines[i].fromID == demoData[j].id && demoData[j].kind == "ERRelation") {
+                allLinesFromEntiAndRela[h] = demoLines[i].id;
+                h++;
+            }
+            if (demoLines[i].toID == demoData[j].id && demoData[j].kind == "ERRelation") {
+                allLinesFromEntiAndRela[h] = demoLines[i].id;
+                h++;
+            }
+            if (demoLines[i].fromID == demoData[j].id && demoData[j].kind == "EREntity") {
+                allLinesFromEntiAndRela[h] = demoLines[i].id;
+                h++;
+            }
+            if (demoLines[i].toID == demoData[j].id && demoData[j].kind == "EREntity") {
+                allLinesFromEntiAndRela[h] = demoLines[i].id;
+                h++;
+            }
+        }
+    }
+
+    var countSeekedLines = 0;
+    for (var i = 0; i < allLinesFromEntiAndRela.length; i++) {
+        for (var j = 0; j < allLinesFromAttributes.length; j++) {
+            if (allLinesFromEntiAndRela[i] == allLinesFromAttributes[j]) {
+                allLinesBetweenAttributesToEntiAndRel[countSeekedLines] = allLinesFromAttributes[j];
+                countSeekedLines++;
+            }
+        }
+    }
+    for (var i = 0; i < demoLines.length; i++) {
+        for (var j = 0; j < allLinesBetweenAttributesToEntiAndRel.length; j++) {
+            if (demoLines[i].id == allLinesBetweenAttributesToEntiAndRel[j]) {
+                for (var k = 0; k < demoData.length; k++) {
+                    if (demoData[k].kind == "ERAttr" && demoLines[i].fromID == demoData[k].id || demoData[k].kind == "ERAttr" && demoLines[i].toID == demoData[k].id) {
+                        allAttrToEntityRelations[countUsedAttributes] = demoData[k].id;
+                        countUsedAttributes++;
+                    }
+                }
+            }
+        }
+    }   // End of sorting code for attributes connected to entity or relation
+
+    // Delete duplicates
+    attrViaAttrToEnt = [... new Set(attrViaAttrToEnt)];
+    
+    for (i = 0; i < allAttrToEntityRelations.length; i++) { 
+        for (j = 0; j < attrViaAttrToEnt.length; j++) {
+            if (allAttrToEntityRelations[i] == attrViaAttrToEnt[j]) {
+                // Sort out attributes connected to entitis or relations from the attrViaAttrToEnt array
+                attrViaAttrToEnt.splice(j, 1);
+                // Sort out attributes connected to other attributes from the allAttrToEntityRelations
+                //allAttrToEntityRelations.splice(i, 1);
+            }
+        }
+    }
+
     for(var i = 0; i < demoLines.length; i++){
         addObjectToLines(demoLines[i], false);
     }
@@ -1158,7 +1277,51 @@ function getData()
     setCursorStyles(mouseMode);
     generateKeybindList();
 }
-
+//<-- UML functionality start
+/**
+ * @description Used to determine the tools shown depending on diagram type.
+ */
+function showDiagramTypes(){
+    //if both diagramtypes are allowed hides the uml elements and adds the function to show the selection box
+    if(!!diagramType.ER && !!diagramType.UML){
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement0").onmousedown = function() {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement4").onmousedown = function() {
+            holdPlacementButtonDown(4);
+        };
+        document.getElementById("elementPlacement1").onmousedown = function() {
+            holdPlacementButtonDown(1);
+        };
+        document.getElementById("elementPlacement5").onmousedown = function() {
+            holdPlacementButtonDown(5);
+        };
+    }
+    //if only UML is allowed hides ER and the arrows that shows more options
+    else if(!diagramType.ER && !!diagramType.UML){
+        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton5").classList.add("hiddenPlacementType");
+    }
+    //if only ER is allowed hides UML and the arrows that shows more options
+    else if(!!diagramType.ER && !diagramType.UML){
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton0").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton1").classList.add("hiddenPlacementType");
+    }
+    // if neither are allowed hides all
+    else if (!diagramType.ER && !diagramType.UML){
+        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+    }
+}
+//<-- UML functionality end
 /**
  * @description Used to determine if returned data is correct.
  * @param {*} ret Returned data to determine.
@@ -1412,11 +1575,18 @@ function mwheel(event) {
  * @description Event function triggered when any mouse button is pressed down on top of the container.
  * @param {MouseEvent} event Triggered mouse event.
  */
+
+ var mouseButtonDown = false;
+
 function mdown(event)
 {
+    mouseButtonDown = true;
+
         // Mouse pressed over delete button for multiple elements
-        if (event.button == 0 && context.length > 1) {
-            checkDeleteBtn();
+        if (event.button == 0) {
+            if (context.length > 1) {
+                checkDeleteBtn();
+            }
         }
 
     // Prevent middle mouse panning when moving an object
@@ -1451,6 +1621,13 @@ function mdown(event)
                 startX = event.clientX;
                 startY = event.clientY;
 
+                // Mouse pressed over delete button for a single element or line
+                if (event.button == 0) {
+                    if (context.length == 1 || contextLine.length == 1) {
+                        checkDeleteBtn();
+                    }
+                }
+
                 if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                     wasDblClicked = true;
                     document.getElementById("options-pane").className = "hide-options-pane";
@@ -1459,6 +1636,14 @@ function mdown(event)
             
             case mouseModes.BOX_SELECTION:
                 boxSelect_Start(event.clientX, event.clientY);  
+
+                // Mouse pressed over delete button for a single element or line
+                if (event.button == 0) {
+                    if (context.length == 1 || contextLine.length == 1) {
+                        checkDeleteBtn();
+                    }
+                }
+
                 break;
 
             default:
@@ -1498,6 +1683,69 @@ function mdown(event)
         }
     }
 
+    // React to mouse down on container
+    if (pointerState != pointerStates.CLICKED_LINE && pointerState != pointerStates.CLICKED_LABEL) {
+        if (event.target.id == "container") {
+            switch (mouseMode) {
+                case mouseModes.POINTER:
+                    sscrollx = scrollx;
+                    sscrolly = scrolly;
+                    startX = event.clientX;
+                    startY = event.clientY;
+                    // If pressed down in selection box
+                    if (context.length > 0) {
+                        if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
+                            pointerState = pointerStates.CLICKED_ELEMENT;
+                            targetElement = context[0];
+                            targetElementDiv = document.getElementById(targetElement.id);
+                        } else {
+                            pointerState = pointerStates.CLICKED_CONTAINER;
+                            if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                                wasDblClicked = true;
+                                document.getElementById("options-pane").className = "hide-options-pane";
+                            }
+                        }
+                        break;
+                    }
+                    else {
+                        pointerState = pointerStates.CLICKED_CONTAINER;
+                        if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                            wasDblClicked = true;
+                            document.getElementById("options-pane").className = "hide-options-pane";
+                        }
+                        break;
+                    }
+                case mouseModes.BOX_SELECTION:
+                    // If pressed down in selection box
+                    if(context.length > 0){
+                        startX = event.clientX;
+                        startY = event.clientY;
+                        if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
+                            pointerState = pointerStates.CLICKED_ELEMENT;
+                            targetElement = context[0];
+                            targetElementDiv = document.getElementById(targetElement.id);
+                        }else{
+                            boxSelect_Start(event.clientX, event.clientY);
+                        }
+                    }else {
+                        boxSelect_Start(event.clientX, event.clientY);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+        } else if (event.target.classList.contains("node")) {
+            pointerState = pointerStates.CLICKED_NODE;
+            startWidth = data[findIndex(data, context[0].id)].width;
+
+            startNodeRight = !event.target.classList.contains("mr");
+
+            startX = event.clientX;
+            startY = event.clientY;
+        }
+    }
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
 }
@@ -1508,8 +1756,8 @@ function mdown(event)
  */
 function ddown(event)
 {
-    // Mouse pressed over delete button for a single element
-    if (event.button == 0) {
+    // Mouse pressed over delete button for a single line over a element
+    if (event.button == 0 && contextLine.length > 0) {
         checkDeleteBtn();
     }
     
@@ -1551,9 +1799,13 @@ function ddown(event)
         case mouseModes.EDGE_CREATION:
             if(event.button == 2) return;
             var element = data[findIndex(data, event.currentTarget.id)];
-            if (element != null){
+            // If element not in context, update selection on down click
+            if (element != null && !context.includes(element)){
                 pointerState = pointerStates.CLICKED_ELEMENT;
                 updateSelection(element);
+                lastClickedElement = null;
+            } else if(element != null){
+                lastClickedElement = element;
             }
             break;
             
@@ -1645,6 +1897,8 @@ function mouseMode_onMouseUp(event)
 
 function mup(event)
 {
+    mouseButtonDown = false;
+
     targetElement = null;
     deltaX = startX - event.clientX;
     deltaY = startY - event.clientY;
@@ -1680,10 +1934,14 @@ function mup(event)
             break;
         
         case pointerStates.CLICKED_LABEL:
+            updateSelectedLine(lines[findIndex(lines, determinedLines.labelLineID)]);
             break;
 
         case pointerStates.CLICKED_ELEMENT:
-            
+            // If clicked element already was in context, update selection on mouse up
+            if(lastClickedElement != null && context.includes(lastClickedElement) && !movingObject){
+                updateSelection(lastClickedElement);
+            }
             movingObject = false;
             // Special cases:
             if (mouseMode == mouseModes.EDGE_CREATION) {
@@ -1725,7 +1983,8 @@ function checkDeleteBtn(){
             if (mouseMode == mouseModes.EDGE_CREATION) return;
             if (context.length > 0) {
                 removeElements(context);
-            } else if (contextLine.length > 0) {
+            }
+            if (contextLine.length > 0) {
                  removeLines(contextLine);
             }            
     
@@ -1959,6 +2218,7 @@ function mmoving(event)
             break;
 
         case pointerStates.CLICKED_ELEMENT:
+            if(mouseMode != mouseModes.EDGE_CREATION){
             var prevTargetPos = {
                 x: data[findIndex(data, targetElement.id)].x,
                 y: data[findIndex(data, targetElement.id)].y
@@ -1983,6 +2243,7 @@ function mmoving(event)
             updatepos(deltaX, deltaY);
 
             calculateDeltaExceeded();
+        }
             break;
 
         case pointerStates.CLICKED_NODE:
@@ -2151,9 +2412,23 @@ function removeElements(elementArray, stateMachineShouldSave = true)
  */
 function removeLines(linesArray, stateMachineShouldSave = true)
 {
-
     var anyRemoved = false;
+
+    // Removes from the two arrays that keep track of the attributes connections. 
     for (var i = 0; i < linesArray.length; i++) {
+        for (j = 0; j < allAttrToEntityRelations.length; j++) {
+            if (linesArray[i].toID == allAttrToEntityRelations[j]) {
+                allAttrToEntityRelations.splice(j, 1);
+                countUsedAttributes--;
+            }
+        }
+        for (k = 0; k < attrViaAttrToEnt.length; k++) {
+            if (linesArray[i].toID == attrViaAttrToEnt[k] || linesArray[i].fromID == attrViaAttrToEnt[k]) {
+                attrViaAttrToEnt.splice(k, 1);
+                attrViaAttrCounter--;
+            }
+        }
+
         lines = lines.filter(function(line) {
             var shouldRemove = (line != linesArray[i]);
             if (shouldRemove) {
@@ -2229,11 +2504,52 @@ function constructElementOfType(type)
  */
 function changeState() 
 {
-
-    var property = document.getElementById("propertySelect").value;
     var element = context[0];
-    element.state = property;
-    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    if (element.type == 'ER') {
+        //If not attribute, also save the current type and check if kind also should be updated
+        if (element.kind != 'ERAttr') {
+            var oldType = element.type;
+            var newType = document.getElementById("typeSelect").value;
+            //Check if type has been changed
+            if (oldType != newType) {
+                var newKind = element.kind;
+                newKind = newKind.replace(oldType, newType);
+                //Update element kind
+                element.kind = newKind;
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            }
+            //Update element type
+            element.type = newType;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+
+        var property = document.getElementById("propertySelect").value;   
+        element.state = property;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    }
+    
+    else {
+        //Save the current property if not an UML entity since UML entities does not have variants.
+        if (element.kind != 'UMLEntity') {
+            var property = document.getElementById("propertySelect").value;
+            element.state = property;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+
+        var oldType = element.type;
+        var newType = document.getElementById("typeSelect").value;
+        //Check if type has been changed
+        if (oldType != newType) {
+            var newKind = element.kind;
+            newKind = newKind.replace(oldType, newType);
+            //Update element kind
+            element.kind = newKind;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        //Update element type
+        element.type = newType;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    }
 }
 
 /**
@@ -2250,7 +2566,6 @@ function saveProperties()
     for (var index = 0; index < children.length; index++) {
         const child = children[index];
         const propName = child.id.split(`_`)[1];
-
         switch (propName) {
             case "name":
                 const value = child.value.trim();
@@ -2259,7 +2574,40 @@ function saveProperties()
                     propsChanged.name = value;
                 }
                 break;
+            case 'attributes':
+                //Get string from textarea
+                var elementAttr = child.value;
+                //Create an array from string where newline seperates elements
+                var arrElementAttr = elementAttr.split('\n');
+                var formatArr = [];
+                for (var i = 0; i < arrElementAttr.length; i++) {
+                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
+                        formatArr.push(arrElementAttr[i]);
+                    } 
+                }
+                //Update the attribute array
+                arrElementAttr = formatArr;
+                element[propName] = arrElementAttr;
+                propsChanged.attributes = arrElementAttr;
+                break;
         
+            case 'functions':
+                //Get string from textarea
+                var elementFunc = child.value;
+                //Create an array from string where newline seperates elements
+                var arrElementFunc = elementFunc.split('\n');
+                var formatArr = [];
+                for (var i = 0; i < arrElementFunc.length; i++) {
+                    if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) {
+                        formatArr.push(arrElementFunc[i]);
+                    } 
+                }
+                //Update the attribute array
+                arrElementFunc = formatArr;
+                element[propName] = arrElementFunc;
+                propsChanged.attributes = arrElementFunc;
+                break;
+
             default:
                 break;
         }
@@ -2492,7 +2840,10 @@ function pasteClipboard(elements, elementsLines)
             id: idMap[element.id],
             state: element.state,
             fill: element.fill,
-            stroke: element.stroke
+            stroke: element.stroke,
+            type: element.type,
+            attributes: element.attributes,
+            functions: element.functions
         };
 
         newElements.push(elementObj)
@@ -3280,7 +3631,7 @@ function toggleReplay()
 {
     // If there is no history => display error and return
     if (stateMachine.historyLog.length == 0){
-        displayMessage(messageTypes.ERROR, "Sorry, you need to make changes before enter the replay-mode");
+        displayMessage(messageTypes.ERROR, "Sorry, you need to make changes before entering the replay-mode");
         return;
     }
 
@@ -3396,14 +3747,148 @@ function setReplayRunning(state)
     var stateSlider = document.getElementById("replay-range");
 
     if (state){
-        button.innerHTML = '<div class="diagramIcons" onclick="clearInterval(stateMachine.replayTimer);setReplayRunning(false)"><img src="../Shared/icons/pause.svg"></div>';
+        button.innerHTML = '<div class="diagramIcons" onclick="clearInterval(stateMachine.replayTimer);setReplayRunning(false)"><img src="../Shared/icons/pause.svg"><span class="toolTipText" style="top: -80px;"><b>Pause</b><br><p>Pause history of changes made to the diagram</p><br></span></div>';
         delaySlider.disabled = true;
         stateSlider.disabled = true;
     }else{
-        button.innerHTML = '<div class="diagramIcons" onclick="stateMachine.replay()"><img src="../Shared/icons/Play.svg"></div>';
+        button.innerHTML = '<div class="diagramIcons" onclick="stateMachine.replay()"><img src="../Shared/icons/Play.svg"><span class="toolTipText" style="top: -80px;"><b>Play</b><br><p>Play history of changes made to the diagram</p><br></span></div>';
         delaySlider.disabled = false;
         stateSlider.disabled = false;
     }
+}
+/**
+ * @description Toggles the ER-table for the diagram in the "Options side-bar" on/off.
+ */
+function toggleErTable()
+{
+    if(erTableToggle == false){
+        erTableToggle = true;
+    }
+    else if (erTableToggle == true){
+        erTableToggle = false;
+    }
+    generateContextProperties();
+}
+/**
+ * @description Generates the string which holds the ER table for the current ER-model/ER-diagram.
+ * @returns Current ER table in the form of a string.
+ */
+function generateErTableString()
+{
+    var entityList = [];    //All EREntities currently in the diagram
+    var attrList = [];      //All ERAttributes currently in the diagram
+    var relationList = [];  //All ERRelations currently in the diagram
+    var stringList = [];    //List of strings where each string holds the relevant data for each entity
+
+    //sort the data[] elements into entity-, attr- and relationList
+    for (var i = 0; i < data.length; i++) {
+        
+        if (data[i].kind == elementTypesNames.EREntity) {
+            entityList.push(data[i]);
+        }
+        else if (data[i].kind == elementTypesNames.ERAttr) {
+            attrList.push(data[i]);
+        }
+        else if (data[i].kind == elementTypesNames.ERRelation) {
+            relationList.push(data[i]);
+        }
+    }
+
+    //For each entity in entityList
+    for (var i = 0; i < entityList.length; i++) {
+        
+        //Add the start of the string for each entity. Example: "EMPLOYEE("
+        stringList.push(new String(entityList[i].name + "("));
+        
+        //Sort all lines that are connected to the current entity into lineList[]
+        var lineList = []; 
+        for (var j = 0; j < lines.length; j++) {
+            
+            if (entityList[i].id == lines[j].fromID) {
+                lineList.push(lines[j]);
+            }
+            else if (entityList[i].id == lines[j].toID) {
+                lineList.push(lines[j]);
+            }
+        }
+
+        // Identify all attributes that are connected to the current entity by using lineList[] and store them in currentEntityAttrList. Save their ID's in idList.
+        var currentEntityAttrList = [];
+        var idList = [];
+        for (var j = 0; j < lineList.length; j++) {
+            
+            for (var h = 0; h < attrList.length; h++) {
+
+                if (attrList[h].id == lineList[j].fromID || attrList[h].id == lineList[j].toID) {
+                
+                    currentEntityAttrList.push(attrList[h]);
+                    idList.push(attrList[h].id)
+                        
+                }
+            }
+        }
+        
+        
+        for (var j = 0; j < currentEntityAttrList.length; j++) {
+
+            //For each attribute connected to the current entity, identify if other attributes are connected to themselves.
+            var attrLineList = [];
+            for (var h = 0; h < lines.length; h++) {
+                
+                //If there is a line to/from the attribute that ISN'T connected to the current entity, save it in attrLineList[].
+                if((currentEntityAttrList[j].id == lines[h].toID || currentEntityAttrList[j].id == lines[h].fromID) && (lines[h].toID != entityList[i].id && lines[h].fromID != entityList[i].id)) {
+                    
+                    attrLineList.push(lines[h]);
+                }
+            }
+            
+            //Compare each line in attrLineList to each attribute.
+            for (var h = 0; h < attrLineList.length; h++) {
+                
+                for (var k = 0; k < attrList.length; k++) {
+
+                    //If ID matches the current attribute AND another attribute, try pushing the other attribute to currentEntityAttrList[]
+                    if (((attrLineList[h].fromID == attrList[k].id) && (attrLineList[h].toID == currentEntityAttrList[j].id)) || ((attrLineList[h].toID == attrList[k].id) && (attrLineList[h].fromID == currentEntityAttrList[j].id))) {
+                        
+                        //Iterate over saved IDs
+                        var hits = 0;
+                        for(var p = 0; p < idList.length; p++) {
+
+                            //If the ID of the attribute already exists, then increase hits and break the loop.
+                            if (idList[p] == attrList[k].id) {
+                                hits++;
+                                break;
+                            }
+                        }
+
+                        //If no hits, then push the attribute to currentEntityAttrList[] (so it will also be checked for additional attributes in future iterations) and save the ID.
+                        if (hits == 0) {
+                            currentEntityAttrList.push(attrList[k]);
+                            idList.push(attrList[k].id);
+                        }
+                    }   
+                }
+            }
+        }
+
+        //Add each connected attribute in stringList[i]
+        for (var j = 0; j < currentEntityAttrList.length; j++) {
+            if (j < currentEntityAttrList.length - 1) { //If j is not the last element
+                stringList[i] += currentEntityAttrList[j].name + ", ";
+            }
+            else if (j == currentEntityAttrList.length - 1) { //Else if j is the last element
+                stringList[i] += currentEntityAttrList[j].name + ")";
+            }
+        }
+    }
+
+    //Add each string element in stringList[] into a single string.
+    var stri = "";
+    for (var i = 0; i < stringList.length; i++) {
+        stri += new String(stringList[i] + "\n\n");
+    }
+
+    return stri;
 }
 /**
  * @description Toggles the A4 template ON/OFF.
@@ -3509,7 +3994,10 @@ function setElementPlacementType(type = elementTypes.EREntity)
 {
     elementTypeSelected = type;
 }
-
+//<-- UML functionality start
+/**
+ * @description starts a mousepress on placecment type.
+ */
 function holdPlacementButtonDown(num){
     mousePressed=true;
     if(document.getElementById("togglePlacementTypeBox"+num).classList.contains("activeTogglePlacementTypeBox")){
@@ -3585,7 +4073,7 @@ function togglePlacementType(num,type){
         document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");
     }
     document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
-}
+}//<-- UML functionality end
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.
@@ -3764,9 +4252,25 @@ function zoomout(scrollEvent = undefined)
  */
 function zoomreset()
 {
-    zoomOrigo.x = 0;
-    zoomOrigo.y = 0;
+    
+    var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
+                
+    var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+        x: midScreen.x - zoomOrigo.x,
+        y: midScreen.y - zoomOrigo.y
+    }
 
+    //Update scroll x/y to center screen on new zoomOrigo
+    scrollx = scrollx / zoomfact;
+    scrolly = scrolly / zoomfact;
+    scrollx += delta.x * zoomfact;
+    scrolly += delta.y * zoomfact;
+    scrollx = scrollx * zoomfact;
+    scrolly = scrolly * zoomfact;
+
+    zoomOrigo.x = midScreen.x;
+    zoomOrigo.y = midScreen.y;
+    
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
    
@@ -3824,14 +4328,28 @@ function propFieldSelected(isSelected)
 {
     propFieldState = isSelected;
 }
+/**
+ * @description Function used to format the attribute and function textareas in UML-entities. Every entry is written on new row.
+ * @param {*} arr Input array with all elements that should be seperated by newlines
+ * @returns Formated string containing all the elements in arr
+ */
+function umlFormatString(arr)
+{
+    var content = '';
+    for (var i = 0; i < arr.length; i++) {
+            content += arr[i] + '\n';   
+    }
+    return content;
+}
 
 /**
  * @description Generates fields for all properties of the currently selected element/line in the context. These fields can be used to modify the selected element/line.
  */ 
 function generateContextProperties()
 {
-
     var propSet = document.getElementById("propertyFieldset");
+    var menuSet = document.getElementsByClassName('options-section');
+    
     var str = "<legend>Properties</legend>";
 /*     
     //a4 propteries
@@ -3842,127 +4360,254 @@ function generateContextProperties()
         str += `<button onclick="toggleA4Horizontal()">Horizontal</button>`;
     } */
 
-    //more than one element selected
-
-    if (context.length == 1 && contextLine.length == 0) {
-        var element = context[0];
-        //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
-        for (const property in element) {
-            switch (property.toLowerCase()) {
-                case "name":
-                    str += `<input id="elementProperty_${property}" type="text" value="${element[property]}" onfocus="propFieldSelected(true)" onblur="propFieldSelected(false)"> `;
-                    break;
-            
-                default:
-                    break;
-            }
+    //No element or line selected
+    if (context.length == 0 && contextLine.length == 0) {
+        //Hide properties and show the other options
+        propSet.classList.add('options-fieldset-hidden');
+        propSet.classList.remove('options-fieldset-show');
+        for (var i = 0; i < menuSet.length; i++) {
+            menuSet[i].classList.add('options-fieldset-show');
+            menuSet[i].classList.remove('options-fieldset-hidden');  
         }
-
-        //Creates drop down for changing state of ER elements
-        var value;
-        var selected = context[0].state;
-        if(selected == undefined) {
-            selected = "normal"
-        }
-        if(element.kind=="ERAttr") {
-            value = Object.values(attrState);
-        } else if(element.kind=="EREntity") {
-            value = Object.values(entityState);
-        } else if(element.kind=="ERRelation") {
-            value = Object.values(relationState);
-        } else if (element.kind == "UMLEntity") {      //<-- UML functionality , continue here 
-            value = Object.values(umlState);
-        }
-
-        str += '<select id="propertySelect">';
-            for (i = 0; i < value.length; i++) {
-                if (selected != value[i]) {
-                    str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
-                } else if(selected == value[i]) {
-                    str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
-                }
-            }
-        str += '</select>'; 
-
-        // Creates button for selecting element background color
-        str += `<div style="color: white">BG Color</div>`;
-        str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
-            `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-        str += `<div style="color: white">Stroke Color</div>`;
-        str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
-            `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
-
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
-
-    } 
-
-    // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
-    if (contextLine.length == 1 && context.length == 0) {
-        str = "<legend>Properties</legend>";
-        
-        var value;
-        var selected = contextLine[0].kind;
-        if(selected == undefined) selected = normal;
-        
-        value = Object.values(lineKind);
-        str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
-        for(var i = 0; i < value.length; i++){
-            if(selected == value[i]){
-                str += `<input type="radio" id="lineRadio1" name="lineKind" value='${value[i]}' checked>`
-                str += `<label for='${value[i]}'>${value[i]}</label><br>`
-            }else {
-                str += `<input type="radio" id="lineRadio2" name="lineKind" value='${value[i]}'>`
-                str += `<label for='${value[i]}'>${value[i]}</label><br>` 
-            }
-        }
-
-        // Cardinality
-        // If FROM or TO has an entity, print option for change if its not connected to an attribute
-        if (findAttributeFromLine(contextLine[0]) == null){
-        if (findEntityFromLine(contextLine[0]) != null){
-            str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
-            str  += `<option value=''>None</option>`
-            Object.keys(lineCardinalitys).forEach(cardinality => {
-                if (contextLine[0].cardinality != undefined && contextLine[0].cardinality == cardinality){
-                    str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
-                }else {
-                    str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
-                }
-            });
-            str += `</select></label>`;
-        }
-        str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
-        if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
-        str += `/>`;
-    }   
-
-        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
     }
 
-    if (context.length > 1) {
-        str += `<div style="color: white">BG Color</div>`;
-        str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
-            `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-        str += `<div style="color: white">Stroke Color</div>`;
-        str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
-            `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
+
+    //If erTableToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
+    if (erTableToggle == true) {
+        str +=`<style> .textbox {resize: none; height: 250px; width: 273px;}</style><textarea readonly class="textbox">`
+        var ertable = generateErTableString();
+        str += ertable;
+        str += `</textarea>`
     }
+    else {
+      //One element selected, no lines
+      if (context.length == 1 && contextLine.length == 0) {
+          //Show properties and hide the other options
+          propSet.classList.add('options-fieldset-show');
+          propSet.classList.remove('options-fieldset-hidden');
+          for (var i = 0; i < menuSet.length; i++) {
+              menuSet[i].classList.add('options-fieldset-hidden');
+              menuSet[i].classList.remove('options-fieldset-show');  
+          }
 
-    if (context.length > 0) {
-        var locked = true;
-        for (var i = 0; i < context.length; i++) {
-            if (!context[i].isLocked) {
-                locked = false;
-                break;
-            }
-        }
-        str += `<br></br><input type="submit" id="lockbtn" value="${locked ? "Unlock" : "Lock"}" class="saveButton" onclick="toggleEntityLocked();">`;
-    }
+          //Get selected element
+          var element = context[0];
 
-    propSet.innerHTML = str;
+          //Skip diagram type-dropdown if element does not have an UML equivalent, in this case only applies to ER attributes
+          //TODO: Find a way to do this dynamically as new diagram types are added
+          if (element.kind != 'ERAttr') {
+              str += `<div style='color:white'>Type</div>`;
 
-    multipleColorsTest();
-}
+              //Create a dropdown menu for diagram type
+              var value = Object.values(entityType);
+              var selected = context[0].type;
+
+              str += '<select id="typeSelect">';
+              for (i = 0; i < value.length; i++) {
+                  if (selected != value[i]) {
+                      str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                  } else if(selected == value[i]) {
+                      str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                  }
+              }
+              str += '</select>'; 
+          }
+
+          //Selected ER type
+          if (element.type == 'ER') {
+              //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
+              for (const property in element) {
+                  switch (property.toLowerCase()) {
+                      case 'name':
+                          str += `<div style='color:white'>Name</div>`;
+                          str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                          break;
+                      default:
+                          break;
+                  }
+              }
+              str += `<div style='color:white'>Variant</div>`;
+
+              //Creates drop down for changing state of ER elements
+              var value;
+              var selected = context[0].state;
+              if(selected == undefined) {
+                  selected = "normal"
+              }
+              if(element.kind=="ERAttr") {
+                  value = Object.values(attrState);
+              } else if(element.kind=="EREntity") {
+                  value = Object.values(entityState);
+              } else if(element.kind=="ERRelation") {
+                  value = Object.values(relationState);
+              }
+
+              str += '<select id="propertySelect">';
+              for (i = 0; i < value.length; i++) {
+                  if (selected != value[i]) {
+                      str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                  } else if(selected == value[i]) {
+                      str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                  }
+              }
+              str += '</select>'; 
+          }
+
+          //Selected UML type
+          else if (element.type == 'UML') {
+              //If UML entity
+              if (element.kind == 'UMLEntity') {
+                  //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
+                  for (const property in element) {
+                      switch (property.toLowerCase()) {
+                          case 'name':
+                              str += `<div style='color:white'>Name</div>`;
+                              str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                              break;
+                          case 'attributes':
+                              str += `<div style='color:white'>Attributes</div>`;
+                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
+                              break;
+                          case 'functions':
+                              str += `<div style='color:white'>Functions</div>`;
+                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
+                              break;
+                          default:
+                              break;
+                      }
+                  }
+              }
+
+              //If UML inheritance
+              else if (element.kind = 'UMLRelation') {
+                  str += `<div style='color:white'>Inheritance</div>`;
+                  //Creates drop down for changing state of ER elements
+                  var value;
+                  var selected = context[0].state;
+                  if(selected == undefined) {
+                      selected = "disjoint"
+                  }
+
+                  if(element.kind=="UMLRelation") {
+                      value = Object.values(inheritanceState);
+                  }
+
+                  str += '<select id="propertySelect">';
+                  for (i = 0; i < value.length; i++) {
+                      if (selected != value[i]) {
+                          str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                      } else if(selected == value[i]) {
+                          str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                      }
+                  }
+                  str += '</select>'; 
+              }            
+          }
+
+           // Creates button for selecting element background color
+           str += `<div style="color: white">BG Color</div>`;
+           str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+               `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+           str += `<div style="color: white">Stroke Color</div>`;
+           str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
+               `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
+           str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+
+      }
+
+      // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
+      if (contextLine.length == 1 && context.length == 0) {
+          //Show properties and hide the other options
+          propSet.classList.add('options-fieldset-show');
+          propSet.classList.remove('options-fieldset-hidden');
+          for (var i = 0; i < menuSet.length; i++) {
+              menuSet[i].classList.add('options-fieldset-hidden');
+              menuSet[i].classList.remove('options-fieldset-show');  
+          }
+
+          str = "<legend>Properties</legend>";
+
+          var value;
+          var selected = contextLine[0].kind;
+          if(selected == undefined) selected = normal;
+
+          value = Object.values(lineKind);
+          str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+          for(var i = 0; i < value.length; i++){
+              if(selected == value[i]){
+                  str += `<input type="radio" id="lineRadio1" name="lineKind" value='${value[i]}' checked>`
+                  str += `<label for='${value[i]}'>${value[i]}</label><br>`
+              }else {
+                  str += `<input type="radio" id="lineRadio2" name="lineKind" value='${value[i]}'>`
+                  str += `<label for='${value[i]}'>${value[i]}</label><br>` 
+              }
+          }
+
+          // Cardinality
+          // If FROM or TO has an entity, print option for change if its not connected to an attribute
+          if (findAttributeFromLine(contextLine[0]) == null){
+          if (findEntityFromLine(contextLine[0]) != null){
+              str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
+              str  += `<option value=''>None</option>`
+              Object.keys(lineCardinalitys).forEach(cardinality => {
+                  if (contextLine[0].cardinality != undefined && contextLine[0].cardinality == cardinality){
+                      str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+                  }else {
+                      str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+                  }
+              });
+              str += `</select></label>`;
+          }
+          str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
+          if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
+          str += `/>`;
+      }   
+
+          str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+      }
+
+      //If more than one element is selected
+      if (context.length > 1) {
+          //Show properties and hide the other options
+          propSet.classList.add('options-fieldset-show');
+          propSet.classList.remove('options-fieldset-hidden');
+          for (var i = 0; i < menuSet.length; i++) {
+              menuSet[i].classList.add('options-fieldset-hidden');
+              menuSet[i].classList.remove('options-fieldset-show');  
+          }
+
+          str += `<div style="color: white">BG Color</div>`;
+          str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+              `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+          str += `<div style="color: white">Stroke Color</div>`;
+          str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
+              `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
+      }
+
+      if (context.length > 0) {
+          //Show properties and hide the other options
+          propSet.classList.add('options-fieldset-show');
+          propSet.classList.remove('options-fieldset-hidden');
+          for (var i = 0; i < menuSet.length; i++) {
+              menuSet[i].classList.add('options-fieldset-hidden');
+              menuSet[i].classList.remove('options-fieldset-show');  
+          }
+
+          var locked = true;
+          for (var i = 0; i < context.length; i++) {
+              if (!context[i].isLocked) {
+                  locked = false;
+                  break;
+              }
+          }
+          str += `<br></br><input type="submit" id="lockbtn" value="${locked ? "Unlock" : "Lock"}" class="saveButton" onclick="toggleEntityLocked();">`;
+      }
+      }
+      propSet.innerHTML = str;
+
+      multipleColorsTest();
+}}
+
 
 /**
  * @description Toggles the option menu being open or closed.
@@ -3991,7 +4636,7 @@ function generateToolTips()
         var id = element.id.split("-")[1];
         if (Object.getOwnPropertyNames(keybinds).includes(id)) {
 
-            var str = "Keybind: ";
+            var str = "Keybinding: ";
 
             if (keybinds[id].ctrl) str += "CTRL + ";
             str += '"' + keybinds[id].key.toUpperCase() + '"';
@@ -4535,6 +5180,7 @@ function sortElementAssociations(element)
  * @param {String} kind The kind of line that should be added.
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
+ 
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
 
      // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
@@ -4542,11 +5188,87 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         var tempElement = toElement;
         toElement = fromElement;
         fromElement = tempElement;
-    } 
+    }
 
     if (fromElement.kind == toElement.kind && fromElement.name == toElement.name) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
+    }
+
+    // All attributes that is connected to other attributes without being the one directly connected 
+    // to the entity or relation are blocked here for any further connections.
+    for (i = 0; i < attrViaAttrToEnt.length; i++) {
+        if (toElement.id == attrViaAttrToEnt[i] || fromElement.id == attrViaAttrToEnt[i]) {
+            displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
+            return;
+        }
+    }
+
+    // Helps to decide later on, after passing the tests after this loop and the next two loops if the value should be added
+    var exists = false;
+    for (i = 0; i < allAttrToEntityRelations.length; i++) {
+        if (toElement.id == allAttrToEntityRelations[i]) {
+            exists = true;
+            break;
+        }
+        if (fromElement.id == allAttrToEntityRelations[i]) {
+            exists = true;
+            break;
+        }
+    }
+
+    // Blocking some combinations not allowed according to ER-rules
+    for (i = 0; i < allAttrToEntityRelations.length; i++) {
+        if (fromElement.kind == "EREntity" && toElement.id == allAttrToEntityRelations[i] || fromElement.kind == "ERRelation" && toElement.id == allAttrToEntityRelations[i]) {
+            displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
+            return;
+        }
+        else if (toElement.kind == "ERRelation" && fromElement.id == allAttrToEntityRelations[i]) {
+            displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
+            return;
+        }
+        else if (fromElement.id == allAttrToEntityRelations[i]) {
+            for (j = 0; j < allAttrToEntityRelations.length; j++) {
+                if (toElement.id == allAttrToEntityRelations[j]) {
+                    displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
+                    return;
+                }
+            }
+        }
+        else if (toElement.id == allAttrToEntityRelations[i]) {
+            for (j = 0; j < allAttrToEntityRelations.length; j++) {
+                if (fromElement.id == allAttrToEntityRelations[j]) {
+                    displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
+                    return;
+                }
+            }
+        }
+    }
+
+    // Adding elements to the array that carries attributes connected to attributes without being directly connected to an entity or relation
+    for (i = 0; i < allAttrToEntityRelations.length; i++) {
+        if (fromElement.kind === "ERAttr" && toElement.kind === "ERAttr" && fromElement.id == allAttrToEntityRelations[i]) {
+            attrViaAttrToEnt[attrViaAttrCounter] = toElement.id;
+            attrViaAttrCounter++;
+            break;
+        }
+        else if (fromElement.kind === "ERAttr" && toElement.kind === "ERAttr" && toElement.id == allAttrToEntityRelations[i]) {
+            attrViaAttrToEnt[attrViaAttrCounter] = fromElement.id;
+            attrViaAttrCounter++;
+            break;
+        }
+    }
+    
+    // Adding attributes to the array that only carries attributes directly connected to entities or relations
+    if (!exists) {
+        if (toElement.kind == "ERRelation") {
+            allAttrToEntityRelations[countUsedAttributes] = fromElement.id;
+            countUsedAttributes++;
+        }
+        else {
+            allAttrToEntityRelations[countUsedAttributes] = toElement.id;
+            countUsedAttributes++;
+        }
     }
 
     // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
@@ -4567,7 +5289,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                             toElement.kind === "ERRelation");
 
         // Check rules for Recursive relations
-        if(fromElement.kind === "ERRelation" || toElement.kind === "ERRelation") {
+        if(fromElement.kind === "ERRelation" && fromElement.kind == "Normal" || toElement.kind === "ERRelation" && toElement.kind == "Normal") {
             var relationID;
             if (fromElement.kind === "ERRelation") relationID = fromElement.id;
             else relationID = toElement.id;
@@ -4583,6 +5305,18 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             });
             var hasRecursive = (connElemsIds.length == 2 && connElemsIds[0] == connElemsIds[1]);
             var hasOtherLines = (numOfExistingLines == 1 && connElemsIds.length >= 2);
+            for (i = 0; i < allAttrToEntityRelations.length; i++) {
+                if (allAttrToEntityRelations[i] == fromElement.id) {
+                    allAttrToEntityRelations.splice(i, 1);
+                    countUsedAttributes--;
+                    break;
+                }
+                else if (allAttrToEntityRelations[i] == toElement.id) {
+                    allAttrToEntityRelations.splice(i, 1);
+                    countUsedAttributes--;
+                    break;
+                }
+            }
             if (hasRecursive || hasOtherLines){
                 displayMessage(messageTypes.ERROR, "Sorry, that is not possible");
                 return;
@@ -4605,9 +5339,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                     newLine.cardinality = cardinal;
                 }
             }
-            
+
             addObjectToLines(newLine, stateMachineShouldSave);
-            
             if(successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
             return newLine;
             
@@ -5089,7 +5822,7 @@ function drawElement(element, ghosted = false)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var elemAttri = 2;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
+    var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
 
@@ -5122,7 +5855,9 @@ function drawElement(element, ghosted = false)
 
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
-    if (element.kind == "UMLEntity") {  
+    if (element.kind == "UMLEntity") { 
+        elemAttri = element.attributes.length;
+        elemFunc = element.functions.length;
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
@@ -5131,7 +5866,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
 
@@ -5149,38 +5884,74 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate UML content
         str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
-        //svg for background
-        str += `<svg width='${boxw}' height='${boxh * elemAttri}'>`;
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemAttri - (linew * 2)}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-        for (var i = 0; i < elemAttri; i++) {
-            str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- Attri ${i}</text>`;
-        }
-        //end of svg for background
-        str += `</svg>`;
-        
-        /*
-        //div for UML attribute <-- Will be implemented in upcoming issues
-        str += `<div>`;
-        //end of div for UML attribute
-        str += `</div>`;*/
 
-        //div for UML footer
-        str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
-        //svg for background
-        str += `<svg width='${boxw}' height='${boxh / 2}'>`;
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 - (linew * 2)}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-        //end of svg for background
-        str += `</svg>`;
-        //end of div for UML footer
-        str += `</div>`;
+        //Draw UML-content if there exist at least one attribute
+        if (elemAttri != 0) {
+
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh * elemAttri}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemAttri - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            for (var i = 0; i < elemAttri; i++) {
+                str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- ${element.attributes[i]}</text>`;
+            }
+            //end of svg for background
+            str += `</svg>`;
+        }
+
+        //Draw UML-footer if there exist at least one function
+        if (elemFunc != 0) {
+            //div for UML footer
+            str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh * elemFunc}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemFunc - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            for (var i = 0; i < elemFunc; i++) {
+                str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- ${element.functions[i]}</text>`;
+            }
+            //end of svg for background
+            str += `</svg>`;
+            //end of div for UML footer
+            str += `</div>`;
+        }
+
         //end of div for UML content
         str += `</div>`;
     }
+    //Check if element is UMLRelation
+    else if (element.kind == 'UMLRelation') {
+        //div to encapuslate UML element
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;`;
+
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+        }
+        str += `'>`;
+
+        //svg for inheritance symbol
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+
+        //Disjoint inheritance
+        if (element.state == 'overlapping') {
+            str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
+            style='fill:black;stroke:black;stroke-width:${linew};'/>`;
+        }
+        //Overlapping inheritance
+        else {
+            str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
+            style='fill:white;stroke:black;stroke-width:${linew};'/>`;
+        }
+        //end of svg
+        str += `</svg>`;
+    }
     //====================================================================
 
-    //ER elementss
+    //ER element
     else {
         // Create div & svg element
         str += `
@@ -5196,7 +5967,7 @@ function drawElement(element, ghosted = false)
         if (ghosted) {
             str += `
                 pointer-events: none;
-                opacity: ${ghostLine ? 0 : 0.5};
+                opacity: ${ghostLine ? 0 : 0.0};
             `;
         }
         str += `'>`;
@@ -5315,12 +6086,14 @@ function updatepos(deltaX, deltaY)
     // Update svg overlay -- place everyhing to draw OVER elements here
     str = "";
     str = boxSelect_Draw(str);
-    str = drawSelectionBox(str);
+    str = selectionAllIndividualElements(str);
+    if (mouseButtonDown == false) str = drawSelectionBox(str);
+    
     document.getElementById("svgoverlay").innerHTML=str;
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && context[0].kind != "ERRelation") addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLRelation")) addNodes(context[0]);
     
 
 }
@@ -5964,39 +6737,49 @@ function drawSelectionBox(str)
             lowY = (lowY < lineLowY) ? lowY : lineLowY;
             highY = (highY > lineHighY) ? highY : lineHighY;
         }
+        
+        // Global variables used to determine if mouse was clicked within selection box
+        selectionBoxLowX = lowX - 5;
+        selectionBoxHighX = highX + 5;
+        selectionBoxLowY = lowY - 5;
+        selectionBoxHighY = highY + 5;
 
-        // Selection container of selected elements
+        // Outer bigger selection container of selected elements
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
 
         //Determine size and position of delete button
         if (highX - lowX + 10 > highY - lowY + 10) {
-            deleteBtnSize = (highY - lowY + 10) / 4;
+            deleteBtnSize = (highY - lowY + 10) / 3;
         }
         else {
-            deleteBtnSize = (highX - lowX + 10) / 4;
+            deleteBtnSize = (highX - lowX + 10) / 3;
         }
         
-        if (deleteBtnSize > 15) {
+        if (deleteBtnSize > 20) {
+            deleteBtnSize = 20;
+        }
+        else if (deleteBtnSize < 15) {
             deleteBtnSize = 15;
         }
-        else if (deleteBtnSize < 10) {
-            deleteBtnSize = 10;
-        }
 
-        deleteBtnX = lowX - 5 + highX - lowX + 10 - deleteBtnSize;
-        deleteBtnY = lowY - 5;
+        deleteBtnX = lowX - 5 + highX - lowX + 10 - (deleteBtnSize/2);
+        deleteBtnY = lowY - 5 - (deleteBtnSize/2);
 
         //Delete button visual representation
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
     }
 
+    return str;
+}
+
+function selectionAllIndividualElements(str) {
     if(context.length > 1 || contextLine.length > 0 && context.length > 0){
         var tempX1 = 0;
         var tempX2 = 0;
         var tempY1 = 0;
         var tempY2 = 0;
-
+    
         for(var i = 0; i < context.length; i++){
             tempX1 = context[i].x1;
             tempX2 = context[i].x2;
@@ -6005,9 +6788,10 @@ function drawSelectionBox(str)
             str += `<rect width='${tempX2 - tempX1 + 4}' height='${tempY2 - tempY1 + 4}' x= '${tempX1 - 2}' y='${tempY1 - 2}'; style="fill:transparent;stroke-width:2; stroke:rgb(75,75,75); stroke-dasharray:5 5;" />`;
         }
     }
-
+    
     return str; 
 }
+
 /**
  * @description Translate all elements to the correct coordinate
  */
