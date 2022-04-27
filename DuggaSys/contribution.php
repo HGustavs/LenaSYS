@@ -36,6 +36,8 @@ $vers=getOPG('coursevers');
 
 	<!-- content START -->
 	<div id="content"></div>
+	
+	<div id='commitDiv' style=' position: absolute; background: #f5e7ff;box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6); border-radius: 5px; width:500px; height: 500px; white-space: nowrap; display:none; margin-top: 15px; margin-left: 50px; z-index: 100; overflow-y:scroll;'></div>
 
 	<div id='commitDiagram' style='margin-left: 12px; width:70%;'></div>
 
@@ -53,6 +55,31 @@ $vers=getOPG('coursevers');
 
 	<div class='group3' id='contribTsTable' style='margin-left: 12px; width:50%; white-space: nowrap;'></div>
 
+	<div id="accountRequests-pane" class="hide-accountRequests-pane"> <!-- Yellow menu on right side of screen -->
+		<div id="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id='accountReqmarker'>Account requests</span></div>
+		<?php 
+			echo "<table class='accountRequestTable'style='width: 85%'  border='1'><br />";
+			echo "<tr class='accountRequestTable' style=' background-color: #ffffff';>";
+			echo "<th class='accountRequestTable'></th>";
+			echo "<th class='accountRequestTable'>Name </th>";
+			echo "<th class='accountRequestTable'>Status</th>";
+			echo "<th class='accountRequestTable'></th>";
+			echo "</tr>";
+
+			for ($row = 0; $row < 10; $row ++) {
+			echo "<tr class='accountRequestTable'>";
+
+			for ($col = 1; $col <= 4; $col ++) {
+					echo "<td class='accountRequestTable'>", ($col + ($row * 4)), "</td>";
+			}
+
+			echo "</tr>";
+			}
+
+			echo "</table>";
+		?>
+	</div>
+	
 	<!-- content END -->
 
 	<?php
