@@ -23,9 +23,10 @@ INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML-TEST1.html",2,18
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML-TEST2.html",2,1885,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML-TEST3.html",2,1885,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML-TEST4.html",2,1885,0);
+INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("SQL-TEST1.sql",2,1885,0);
+																														
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL-TEST1.sql',"SQL-TEST1.sql","SQL-TEST1.sql",1,45656,'1','2',1,1885);
 
-#INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'TESTING',"TESTING","testc1.html",7,45656,'1','2',1,1885);
-#INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1337,1885,"testc1.html","Code","[viktig=1]",3,"HTML_Ex1.html");
 
 
 
