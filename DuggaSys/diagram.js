@@ -4031,7 +4031,7 @@ function updateGridSize()
 {
     var pxlength = (pixellength.offsetWidth/1000)*window.devicePixelRatio;
     settings.grid.gridSize = 10*pxlength;
-    //settings.grid.gridSize = 10
+    
     var bLayer = document.getElementById("grid");
     bLayer.setAttribute("width", settings.grid.gridSize * zoomfact + "px");
     bLayer.setAttribute("height", settings.grid.gridSize * zoomfact + "px");
