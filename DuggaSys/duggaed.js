@@ -285,7 +285,11 @@ function selectVariant(vid, el) {
   					document.getElementById('extraparam').value = obj[result];
   				}
   			}
-
+		var diagramType = obj.diagram_type; //<-- UML functionality start
+		if(diagramType){
+			document.getElementById('ER').checked = diagramType[0].ER;
+			document.getElementById('UML').checked = diagramType[0].UML;
+		}//<-- UML functionality end
         var submissionTypes = obj.submissions;
         if (submissionTypes) {
   			  document.getElementById('submissionType0').value = submissionTypes[0].type;
@@ -355,6 +359,7 @@ function updateVariantTitle(number) {
 
 // Opens the variant editor.
 function showVariantEditor() {
+
 	//check if the selected dugga is a diagram dugga
 	if(globalData['entries'][globalVariant].quizFile == "diagram_dugga"){
 		/*For now it only fetches the files when it's a diagram dugga. 
@@ -366,6 +371,7 @@ function showVariantEditor() {
 	else{
 		$("#selectBox").css("display", "none");
 	}
+
   if(submissionRow == 0){
     // The submission row doesn't go away when leaving the modal
     // so without the if statement a new submission div would be created each time.
@@ -466,6 +472,7 @@ function createJSONString(formData) {
 		"type":formData[0].value,
 		"filelink":formData[1].value,
 		"diagram File":$("#file option:selected").text(),
+		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
 		"submissions":submission_types
 	});
