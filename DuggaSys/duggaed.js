@@ -402,7 +402,7 @@ function returnedFile(data){
 
 // Adds a submission row
 function addVariantSubmissionRow() {
-  var subDivContent = `<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>
+  var subDivContent = `<div style='width:100%;display:flex;flex-wrap:nowrap;flex-direction:row; margin-right:2%;'>
 		<select name='s_type' id='submissionType${submissionRow}' style='width:65px;' onchange='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'>
 		<option value='pdf'>PDF</option>
 		<option value='zip'>Zip</option>
