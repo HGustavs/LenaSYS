@@ -2682,6 +2682,18 @@ function validateForm(formid) {
 
     // if all information is correct
     if (window.bool10 == true && window.bool11 == true) {
+      
+      //Toggle for alert when update a item
+      var element = document.getElementById("updateAlert");
+      element.classList.toggle("createAlertToggle");
+      //Set text for the alert when update a item
+      document.getElementById("updateAlert").innerHTML = "The item is now updated!";
+      //Duration time for the alert before remove
+      setTimeout(function(){
+        $("#updateAlert").removeClass("createAlertToggle");
+        document.getElementById("updateAlert").innerHTML = "";
+      },3000);
+
       updateItem();
       updateDeadline();
 
