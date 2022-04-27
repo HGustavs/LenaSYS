@@ -332,7 +332,7 @@
 ?>
 <div id="overlay" style="display: none;"></div>
 <div id='logoutBox' class="logoutBoxContainer" style="display: none">
-	<div id='logout' class="logoutBox">
+	<div id='logout' class="logoutBox DarkModeBackgrounds DarkModeText">
 		<div class='logoutBoxheader'>
 			<h3>Sign out</h3>
 			<div class="cursorPointer" onclick="$('#logoutBox').hide();" title="Close window">x</div>
