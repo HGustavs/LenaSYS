@@ -258,15 +258,6 @@
     line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
 }
 
-.header {
-    padding: 30px;
-    text-align: center;
-    background: #5A5757;
-    color: white;
-    font-size: 28px;
-    margin-top: 50px;
-}
-
 .normtextwrapper{
 	 /* Width of codeborder */
   	 margin-left: 32px;
@@ -513,13 +504,16 @@ body {
         background-color: #2c2c2c;
     } 
 
-    /* #Sectionlist .example {
-        color: var(--color-text-secondary);
-        /*font-size: 12pt;
-        padding-top: 5px;*/
-        /* min-height: 26px;
-        background-color: #121212;
-      } */ 
+/*A global styling for darkmode, a class for white text on darkbackgrounds*/
+.DarkModeText{
+    color: white;
+}
+#inputwrapperText{
+    color:rgba(255,255,255,0.6);
+}
 
+
+
+}
 /* BOXMENU STYLING STOP */
 /* } */
