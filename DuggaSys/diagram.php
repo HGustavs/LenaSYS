@@ -49,7 +49,7 @@
                     </span>
                 </div>
                 <div>
-                    <div id="elementPlacement0" class="diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);' onmousedown='holdPlacementButtonDown(0);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement0" class="diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_entity.svg"/>
                         <span class="toolTipText"><b>Entity</b><br>
                             <p>Add an entity to the diagram</p><br>
@@ -59,7 +59,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
                         </div>
                     </div>    
-                    <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                    <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                         <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>ER</b><br>
@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement4" class="diagramIcons toolbarMode hiddenPlacementType" onclick='setElementPlacementType(4); setMouseMode(2);'  onmousedown='holdPlacementButtonDown(4);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement4" class="diagramIcons toolbarMode" onclick='setElementPlacementType(4); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_UML_entity.svg"/>
                         <span class="toolTipText"><b>Entity</b><br>
                             <p>Add an UML entity to the diagram</p><br>
@@ -99,9 +99,9 @@
                             </span>
                         </div>
                     </div>
-                </div>
+                </div><!--<-- UML functionality end -->
                 <div>
-                    <div id="elementPlacement1" class="diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmousedown='holdPlacementButtonDown(1);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement1" class="diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"/>
                         <span class="toolTipText"><b>Relation</b><br>
                             <p>Add a relation between entities</p><br>
@@ -111,7 +111,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
                         </div>
                     </div>    
-                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
                         <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_relation.svg"/>
                             <span class="placementTypeToolTipText"><b>ER</b><br>
@@ -127,7 +127,7 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement5" class="diagramIcons toolbarMode hiddenPlacementType" onclick='setElementPlacementType(5); setMouseMode(2);' onmousedown='holdPlacementButtonDown(5);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement5" class="diagramIcons toolbarMode" onclick='setElementPlacementType(5); setMouseMode(2);'onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_inheritance.svg"/>
                         <span class="toolTipText"><b>Relation</b><br>
                             <p>Add a relation between entities</p><br>
@@ -151,7 +151,7 @@
                             </span>
                         </div>
                     </div>
-                </div>
+                </div><!--<-- UML functionality end -->
                 <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_attribute.svg"/>
                     <span class="toolTipText"><b>Attribute</b><br>

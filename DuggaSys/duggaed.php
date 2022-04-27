@@ -184,6 +184,18 @@ session_start();
                       </fieldset>
                     </div>
                   </div>
+                    <!-- diagram types -->
+                  <div id="typeCheckbox">
+                    <fieldset style="width:90%">
+                      <legend>Diagram types allowed</legend>
+                      <div id="diagramTypesBox" style="display:flex;flex-wrap:wrap;flex-direction:row;">
+                        <label for="ER">ER</label>
+                        <input type="checkbox" name="ER" id="ER" value="true" checked="true" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>
+                        <label for="UML">UML</label>
+                        <input type="checkbox" name="UML" id="UML" value="true" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>  
+                      </div>
+                    </fieldset>
+                  </div>
                       <!-- Submissions for dugga -->
                   <div>
                     <div id="duggaSubmissionForm">

@@ -965,6 +965,9 @@ var pointerState = pointerStates.DEFAULT;
 var movingObject = false;
 var movingContainer = false;
 
+//setting the base values for the allowed diagramtypes
+var diagramType = {ER:false,UML:false};
+
 //Grid Settings
 var settings = {
     ruler: {
@@ -1160,7 +1163,51 @@ function getData()
     setCursorStyles(mouseMode);
     generateKeybindList();
 }
-
+//<-- UML functionality start
+/**
+ * @description Used to determine the tools shown depending on diagram type.
+ */
+function showDiagramTypes(){
+    //if both diagramtypes are allowed hides the uml elements and adds the function to show the selection box
+    if(!!diagramType.ER && !!diagramType.UML){
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement0").onmousedown = function() {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement4").onmousedown = function() {
+            holdPlacementButtonDown(4);
+        };
+        document.getElementById("elementPlacement1").onmousedown = function() {
+            holdPlacementButtonDown(1);
+        };
+        document.getElementById("elementPlacement5").onmousedown = function() {
+            holdPlacementButtonDown(5);
+        };
+    }
+    //if only UML is allowed hides ER and the arrows that shows more options
+    else if(!diagramType.ER && !!diagramType.UML){
+        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton5").classList.add("hiddenPlacementType");
+    }
+    //if only ER is allowed hides UML and the arrows that shows more options
+    else if(!!diagramType.ER && !diagramType.UML){
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton0").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton1").classList.add("hiddenPlacementType");
+    }
+    // if neither are allowed hides all
+    else if (!diagramType.ER && !diagramType.UML){
+        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+    }
+}
+//<-- UML functionality end
 /**
  * @description Used to determine if returned data is correct.
  * @param {*} ret Returned data to determine.
@@ -3556,7 +3603,10 @@ function setElementPlacementType(type = elementTypes.EREntity)
 {
     elementTypeSelected = type;
 }
-
+//<-- UML functionality start
+/**
+ * @description starts a mousepress on placecment type.
+ */
 function holdPlacementButtonDown(num){
     mousePressed=true;
     if(document.getElementById("togglePlacementTypeBox"+num).classList.contains("activeTogglePlacementTypeBox")){
@@ -3632,7 +3682,7 @@ function togglePlacementType(num,type){
         document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");
     }
     document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
-}
+}//<-- UML functionality end
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.
