@@ -359,14 +359,19 @@ function updateVariantTitle(number) {
 
 // Opens the variant editor.
 function showVariantEditor() {
+
+	//check if the selected dugga is a diagram dugga
 	if(globalData['entries'][globalVariant].quizFile == "diagram_dugga"){
-		$("#typeCheckbox").css("display", "flex");
+		/*For now it only fetches the files when it's a diagram dugga. 
+		This might change in the future if other duggor should have
+		additional files as parameters*/
+		AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
+		$("#selectBox").css("display", "flex");
 	}
 	else{
-		$("#typeCheckbox").css("display", "none");
+		$("#selectBox").css("display", "none");
 	}
 
-	AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
   if(submissionRow == 0){
     // The submission row doesn't go away when leaving the modal
     // so without the if statement a new submission div would be created each time.
