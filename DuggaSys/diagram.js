@@ -2060,8 +2060,8 @@ function determineLineSelect(mouseX, mouseY)
         }
         if (document.getElementById(bLayerLineIDs[i]+"Label")) {
             var centerPoint = {
-                x: lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].centerX + lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].labelMovedX,
-                y: lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].centerY + lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].labelMovedY
+                x: lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].centerX + lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].labelMovedX + lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].displacementX,
+                y: lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].centerY + lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].labelMovedY + lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].displacementY
             
             }
             var labelWidth = lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].width;
@@ -2211,7 +2211,7 @@ function mmoving(event)
 
         case pointerStates.CLICKED_LABEL:
             updateLabelPos(event.clientX, event.clientY);
-
+            updatepos(null, null);
             break;
 
         case pointerStates.CLICKED_ELEMENT:
@@ -5585,30 +5585,38 @@ function drawLine(line, targetGhost = false)
         var highX= Math.max(tx,fx);
         var labelPosX = (tx+fx)/2 - ((textWidth) + zoomfact * 8)/2;
         var labelPosY = (ty+fy)/2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        lineLabel={id: line.id+"Label",labelLineID: line.id, centerX: centerX, x: labelPosX, centerY: centerY, y: labelPosY, width: textWidth + zoomfact * 4, height: textheight * zoomfact + zoomfact * 3, labelMovedX: 0 * zoomfact, labelMovedY: 0 * zoomfact, lowY: lowY, highY: highY, lowX: lowX, highX: highX, procentOfLine: 0};
-        for(var i=0;i<lineLabelList.length;i++){
-            if(lineLabelList[i].labelLineID==line.id){
-                lineLabel.procentOfLine = lineLabelList[i].procentOfLine;
-                if(fx<lineLabel.centerX){
-                    lineLabel.labelMovedX = -lineLabel.procentOfLine * (lineLabel.highX-lineLabel.lowX);
-                }
-                else if(fx>lineLabel.centerX){
-                    lineLabel.labelMovedX = lineLabel.procentOfLine * (lineLabel.highX-lineLabel.lowX);
-                }
-                if(fy<lineLabel.centerY){
-                    lineLabel.labelMovedY = -lineLabel.procentOfLine * (lineLabel.highY-lineLabel.lowY);
-                }
-                else if(fy>lineLabel.centerY){
-                    lineLabel.labelMovedY = lineLabel.procentOfLine * (lineLabel.highY-lineLabel.lowY);
-                }
-                lineLabelList.splice(i,1);
-            }
+        var lineLabel={id: line.id+"Label",labelLineID: line.id, centerX: centerX, centerY: centerY, width: textWidth + zoomfact * 4, height: textheight * zoomfact + zoomfact * 3, labelMovedX: 0 * zoomfact, labelMovedY: 0 * zoomfact, lowY: lowY, highY: highY, lowX: lowX, highX: highX, percentOfLine: 0,displacementX:0,displacementY:0,fromX:fx,toX:tx,fromY:fy,toY:ty,lineGroup:0};
+        if(!!targetLabel){
+            var rememberTargetLabelID = targetLabel.id;
         }
-        lineLabelList.push(lineLabel);
+        if(!!lineLabelList[findIndex(lineLabelList,lineLabel.id)]){
+            lineLabel.labelMovedX = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelMovedX;
+            lineLabel.labelMovedY = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelMovedY;
+            lineLabel.labelGroup = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelGroup;
+            if (lineLabel.labelGroup == 0) {
+                    lineLabel.displacementX = 0;
+                    lineLabel.displacementY = 0;
+            }
+            else if (lineLabel.labelGroup == 1) {
+                lineLabel.displacementX = calculateLabelDisplacement(lineLabel).storeX*zoomfact;
+                lineLabel.displacementY = calculateLabelDisplacement(lineLabel).storeY*zoomfact;
+            }
+            else if (lineLabel.labelGroup == 2) {
+                lineLabel.displacementX = -calculateLabelDisplacement(lineLabel).storeX*zoomfact;
+                lineLabel.displacementY = -calculateLabelDisplacement(lineLabel).storeY*zoomfact;
+            }
+            lineLabelList[findIndex(lineLabelList,lineLabel.id)] = lineLabel;
+        }
+        else{
+            lineLabelList.push(lineLabel);
+        }
+        if(!!rememberTargetLabelID){
+            targetLabel=lineLabelList[findIndex(lineLabelList,rememberTargetLabelID)];
+        }
         //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-        str += `<rect id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX}" y="${labelPosY+lineLabel.labelMovedY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`
+        str += `<rect id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX+lineLabel.displacementX}" y="${labelPosY+lineLabel.labelMovedY+lineLabel.displacementY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`
         //Add label
-        str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)+lineLabel.labelMovedX}" y="${centerY-(2 * zoomfact)+lineLabel.labelMovedY}">${line.label}</text>`;
+        str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)+lineLabel.labelMovedX+lineLabel.displacementX}" y="${centerY-(2 * zoomfact)+lineLabel.labelMovedY+lineLabel.displacementY}">${line.label}</text>`;
     }
 
     return str;
@@ -6091,75 +6099,129 @@ function updatepos(deltaX, deltaY)
  */
 function updateLabelPos(newPosX, newPosY)
 {   
-    // Getting the lines start and end points.
-    if(document.getElementById(targetLabel.labelLineID)){
-        currentline = {
-            x1: document.getElementById(targetLabel.labelLineID).getAttribute("x1"),
-            x2: document.getElementById(targetLabel.labelLineID).getAttribute("x2"),
-            y1: document.getElementById(targetLabel.labelLineID).getAttribute("y1"),
-            y2: document.getElementById(targetLabel.labelLineID).getAttribute("y2")
-        };
+    if(newPosX<targetLabel.highX && newPosX>targetLabel.lowX){ 
+        targetLabel.labelMovedX = (newPosX - targetLabel.centerX);
     }
-    // If its a double line getting the lines start and end points.
-    else if(document.getElementById(targetLabel.labelLineID+"-1")){
-        currentline = {
-            x1: document.getElementById(targetLabel.labelLineID+"-1").getAttribute("x1"),
-            x2: document.getElementById(targetLabel.labelLineID+"-1").getAttribute("x2"),
-            y1: document.getElementById(targetLabel.labelLineID+"-1").getAttribute("y1"),
-            y2: document.getElementById(targetLabel.labelLineID+"-1").getAttribute("y2")
-        };
+    else if(newPosX < targetLabel.lowX){
+        targetLabel.labelMovedX = (targetLabel.lowX - (targetLabel.centerX));
     }
-    // Coefficients of the general equation of the current line the labels on.
-    lineCoeffs = {
-        a: (currentline.y1 - currentline.y2),
-        b: (currentline.x2 - currentline.x1),
-        c: ((currentline.x1 - currentline.x2)*currentline.y1 + (currentline.y2-currentline.y1)*currentline.x1)
+    else if(newPosX > targetLabel.highX){
+        targetLabel.labelMovedX = (targetLabel.highX - (targetLabel.centerX));
     }
-    var distance = (Math.abs(lineCoeffs.a*newPosX + lineCoeffs.b*newPosY + lineCoeffs.c)) / Math.sqrt(lineCoeffs.a*lineCoeffs.a + lineCoeffs.b*lineCoeffs.b);
-    // Constraints the label to within the box, within 30pixels from the line and half a width from the end.
-    if(newPosX < targetLabel.highX && newPosX > targetLabel.lowX ){
-        if (distance < 30) {
-            if(newPosX<targetLabel.lowX+targetLabel.width/2){
-                targetLabel.labelMovedX = (newPosX - targetLabel.centerX+targetLabel.width/2);
-            }
-            else if(newPosX>targetLabel.highX-targetLabel.width/2){
-                targetLabel.labelMovedX = (newPosX - targetLabel.centerX-targetLabel.width/2);
-            }
-            else{
-                targetLabel.labelMovedX = (newPosX - targetLabel.centerX);
-            }
-        }
+    if(newPosY < targetLabel.highY && newPosY > targetLabel.lowY){ 
+        targetLabel.labelMovedY = (newPosY - (targetLabel.centerY));
     }
-    // Constraints the label to within the box, within 30pixels from the line and half a height from the end.
-    if(newPosY < targetLabel.highY && newPosY > targetLabel.lowY){        
-        if (distance < 30) {
-            if(newPosY<targetLabel.lowY+targetLabel.height/2){
-                targetLabel.labelMovedY = (newPosY - targetLabel.centerY + targetLabel.height/2);
-            }
-            else if(newPosY>targetLabel.highY-targetLabel.height/2){
-                targetLabel.labelMovedY = (newPosY - targetLabel.centerY - targetLabel.height/2);
-            }
-            else{
-                targetLabel.labelMovedY = (newPosY - targetLabel.centerY);
-            }
-        }
+    else if(newPosY < targetLabel.lowY){
+        targetLabel.labelMovedY = (targetLabel.lowY - (targetLabel.centerY));
+    }
+    else if(newPosY > targetLabel.highY){
+        targetLabel.labelMovedY = (targetLabel.highY - (targetLabel.centerY));
     }
     // Math to calculate procentuall distance from/to centerpoint
-    var diffrenceX = targetLabel.highX-targetLabel.lowX;
-    var diffrenceY = targetLabel.highY-targetLabel.lowY;
-    var distanceToX1 = targetLabel.centerX + targetLabel.labelMovedX - currentline.x1;
-    var distanceToY1 = targetLabel.centerY + targetLabel.labelMovedY - currentline.y1;
+    var diffrenceX = targetLabel.highX - targetLabel.lowX;
+    var diffrenceY = targetLabel.highY - targetLabel.lowY;
+    var distanceToX1 = targetLabel.centerX + targetLabel.labelMovedX - targetLabel.fromX;
+    var distanceToY1 = targetLabel.centerY + targetLabel.labelMovedY - targetLabel.fromY;
     var lenghtToNewPos = Math.abs(Math.sqrt(distanceToX1*distanceToX1 + distanceToY1*distanceToY1));
     var entireLinelenght = Math.abs(Math.sqrt(diffrenceX*diffrenceX+diffrenceY*diffrenceY));
-    targetLabel.procentOfLine = lenghtToNewPos/entireLinelenght;
+    targetLabel.percentOfLine = lenghtToNewPos/entireLinelenght;
     // Making sure the procent is less than 0.5 to be able to use them from the centerpoint of the line as well as ensuring the direction is correct 
-    if(targetLabel.procentOfLine < 0.5){
-        targetLabel.procentOfLine = 1 - targetLabel.procentOfLine;
-        targetLabel.procentOfLine = targetLabel.procentOfLine - 0.5 ;
-    } else if (targetLabel.procentOfLine > 0.5){
-        targetLabel.procentOfLine = -(targetLabel.procentOfLine - 0.5) ;
+    if(targetLabel.percentOfLine < 0.5){
+        targetLabel.percentOfLine = 1 - targetLabel.percentOfLine;
+        targetLabel.percentOfLine = targetLabel.percentOfLine - 0.5 ;
+    } 
+    else if (targetLabel.percentOfLine > 0.5){
+        targetLabel.percentOfLine = -(targetLabel.percentOfLine - 0.5) ;
     }
-
+    //changing the direction depending on how the line is drawn
+    if(targetLabel.fromX<targetLabel.centerX){ //left to right
+        targetLabel.labelMovedX = -targetLabel.percentOfLine * diffrenceX;
+    }
+    else if(targetLabel.fromX>targetLabel.centerX){//right to left
+        targetLabel.labelMovedX = targetLabel.percentOfLine * diffrenceX;
+    }
+    if(targetLabel.fromY<targetLabel.centerY){ //down to up
+        targetLabel.labelMovedY = -targetLabel.percentOfLine * diffrenceY;
+    }
+    else if(targetLabel.fromY>targetLabel.centerY){ //up to down
+        targetLabel.labelMovedY = targetLabel.percentOfLine * diffrenceY;
+    }
+    console.log(targetLabel.labelMovedY+" = "+targetLabel.highY+" - "+targetLabel.centerY);//&& targetLabel.highX-targetLabel.centerX<targetLabel.labelMovedX
+    if(targetLabel.highY-targetLabel.centerY < targetLabel.labelMovedY ){
+        targetLabel.labelMovedY = (targetLabel.highY-targetLabel.centerY)-targetLabel.height;
+        targetLabel.labelMovedX = (targetLabel.highX-targetLabel.centerX)-targetLabel.width;
+        console.log(targetLabel.labelMovedY+" = / = "+targetLabel.highY+" - "+targetLabel.centerY);
+    }
+    else if(targetLabel.lowY-targetLabel.centerY>targetLabel.labelMovedY && targetLabel.lowX-targetLabel.centerX>targetLabel.labelMovedX){
+        targetLabel.labelMovedY = (targetLabel.lowY-targetLabel.centerY)+targetLabel.height;
+        targetLabel.labelMovedX = (targetLabel.lowX-targetLabel.centerX)+targetLabel.width;
+        console.log(targetLabel.labelMovedY+" = "+targetLabel.lowY+" - "+targetLabel.centerY);
+    }
+    calculateLabelDisplacement(targetLabel);
+    displaceFromLine(newPosX,newPosY);
+}
+/**
+ * @description calculates how the label should be displacesed
+ * @param {Interger} labelObject the label that should be displaced
+ */
+function calculateLabelDisplacement(labelObject)
+{
+    var diffrenceX = labelObject.highX-labelObject.lowX;
+    var diffrenceY = labelObject.highY-labelObject.lowY;
+    var entireLinelenght = Math.abs(Math.sqrt(diffrenceX*diffrenceX+diffrenceY*diffrenceY));
+    var baseLine, angle, displacementConstant=18, storeX, storeY;
+    var distanceToOuterlines={storeX, storeY}
+    // define the baseline used to calculate the angle
+    if((labelObject.fromX - labelObject.toX) > 0){
+        if((labelObject.fromY - labelObject.toY) > 0){ // upp left
+            baseLine = labelObject.fromY - labelObject.toY;
+            angle = (Math.acos(Math.cos(baseLine / entireLinelenght))*90);
+            distanceToOuterlines.storeX = ((90-angle) / 5)*3 - displacementConstant*3;
+            distanceToOuterlines.storeY = displacementConstant*2 - (angle / 5)*2;
+        }
+        else if((labelObject.fromY - labelObject.toY) < 0){ // down left
+            baseLine = labelObject.toY - labelObject.fromY;
+            angle = -(Math.acos(Math.cos(baseLine / entireLinelenght))*90);
+            distanceToOuterlines.storeX = displacementConstant*3 - ((angle+90) / 5)*3;
+            distanceToOuterlines.storeY = displacementConstant*2 + (angle / 5)*2;
+        }
+    }
+    else if((labelObject.fromX - labelObject.toX) < 0){
+        if((labelObject.fromY - labelObject.toY) > 0){ // up right
+            baseLine = labelObject.toY - labelObject.fromY;
+            angle = (Math.acos(Math.cos(baseLine / entireLinelenght))*90);
+            distanceToOuterlines.storeX = ((90-angle) / 5)*3 - displacementConstant*3;
+            distanceToOuterlines.storeY = (angle / 5)*2 - displacementConstant*2;
+        }
+        else if((labelObject.fromY - labelObject.toY) < 0){ // down right
+            baseLine = labelObject.fromY - labelObject.toY;
+            angle = -(Math.acos(Math.cos(baseLine / entireLinelenght))*90);
+            distanceToOuterlines.storeX = displacementConstant*3 - ((angle+90) / 5)*3;
+            distanceToOuterlines.storeY = -displacementConstant*2 - (angle / 5)*2;
+        }
+    }
+    return distanceToOuterlines;
+}
+/**
+ * @description checks if the label should be detached.
+ * @param {Interger} newX The position the mouse is at in the X-axis.
+ * @param {Interger} newY The position the mouse is at in the Y-axis.
+ */
+function displaceFromLine(newX,newY)
+{
+    //calculates which side of the line the point is.
+    var y1=targetLabel.fromY,y2=targetLabel.toY,x1=targetLabel.fromX,x2=targetLabel.toX;
+    var distance = ((newX - x1) * (y2 - y1)) - ((newY - y1) * (x2 - x1));
+    //deciding which side of the line the label should be
+    if (distance > 3000) {
+        targetLabel.labelGroup = 1;
+    }
+    else if (distance < -3000) {
+        targetLabel.labelGroup = 2;
+    }
+    else {        
+        targetLabel.labelGroup = 0;
+    }
 }
 /**
  * @description Updates the variables for the size of the container-element.
