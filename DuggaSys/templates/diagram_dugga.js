@@ -74,7 +74,7 @@ function returnedDugga(data)
     console.log(data);
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
-        document.getElementById("assigment-instructions").innerHTML = param.instructions;
+        //document.getElementById("assigment-instructions").innerHTML = param.instructions;
         //checking if the user is a teacher
         if(data.isTeacher==0){
             // getting the diagram types allowed and calling a function in diagram.js where the values are now set <-- UML functionality start
