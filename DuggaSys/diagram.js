@@ -821,13 +821,6 @@ const entityType = {
     ER: "ER",
 };
 /**
- * @description
- */
-const umlState = {
-    NORMAL: "normal",
-}
-
-/**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
  */
 const entityState = {
@@ -1001,11 +994,11 @@ var ghostLine = null;
  * @see constructElementOfType() For creating new elements with default values.
  */
 var defaults = {
-    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50, type: "ER" },
+    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50, type: "ER", attributes: ['Attribute'], functions: ['Function'] },
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffccdc", stroke: "Black", width: 60, height: 60, type: "ER" },
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 90, height: 45, type: "ER" },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffccdc", stroke: "Black", width: 5, height: 5, type: "ER" },
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50, type: "UML", attributes: ['Test'], functions: ['Whato']}     //<-- UML functionality
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffccdc", stroke: "Black", width: 200, height: 50, type: "UML", attributes: ['Attribute'], functions: ['Function']}     //<-- UML functionality
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -2226,11 +2219,52 @@ function constructElementOfType(type)
  */
 function changeState() 
 {
-
-    var property = document.getElementById("propertySelect").value;
     var element = context[0];
-    element.state = property;
-    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    if (element.type == 'ER') {
+        //If not attribute, also save the current type and check if kind also should be updated
+        if (element.kind != 'ERAttr') {
+            var oldType = element.type;
+            var newType = document.getElementById("typeSelect").value;
+            //Check if type has been changed
+            if (oldType != newType) {
+                var newKind = element.kind;
+                newKind = newKind.replace(oldType, newType);
+                //Update element kind
+                element.kind = newKind;
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            }
+            //Update element type
+            element.type = newType;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+
+        var property = document.getElementById("propertySelect").value;   
+        element.state = property;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    }
+    
+    else {
+        //Save the current property if not an UML entity since UML entities does not have variants.
+        if (element.kind != 'UMLEntity') {
+            var property = document.getElementById("propertySelect").value;
+            element.state = property;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+
+        var oldType = element.type;
+        var newType = document.getElementById("typeSelect").value;
+        //Check if type has been changed
+        if (oldType != newType) {
+            var newKind = element.kind;
+            newKind = newKind.replace(oldType, newType);
+            //Update element kind
+            element.kind = newKind;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        //Update element type
+        element.type = newType;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    }
 }
 
 /**
@@ -2247,7 +2281,6 @@ function saveProperties()
     for (var index = 0; index < children.length; index++) {
         const child = children[index];
         const propName = child.id.split(`_`)[1];
-
         switch (propName) {
             case "name":
                 const value = child.value.trim();
@@ -2256,11 +2289,19 @@ function saveProperties()
                     propsChanged.name = value;
                 }
                 break;
-            case "attributes":
-                var temp = element.attributes;
-                var tempo = child.value;
-                var testo = tempo.split('\n');
-                element[propName] = testo;
+            case 'attributes':
+                //Get string from textarea
+                var elementAttr = child.value;
+                var arrElementAttr = elementAttr.split('\n');
+                element[propName] = arrElementAttr;
+                propsChanged.attributes = arrElementAttr;
+                break;
+            case 'functions':
+                //Get string from textarea
+                var elementFunc = child.value;
+                var arrElementFunc = elementFunc.split('\n');
+                element[propName] = arrElementFunc;
+                propsChanged.attributes = arrElementFunc;
                 break;
             default:
                 break;
@@ -3827,13 +3868,22 @@ function propFieldSelected(isSelected)
     propFieldState = isSelected;
 }
 
+function umlFormatString(arr) {
+    var content = '';
+    for (var i = 0; i < arr.length; i++) {
+        content += arr[i] + '\n';
+    }
+    return content;
+}
+
 /**
  * @description Generates fields for all properties of the currently selected element/line in the context. These fields can be used to modify the selected element/line.
  */ 
 function generateContextProperties()
 {
-
     var propSet = document.getElementById("propertyFieldset");
+    var menuSet = document.getElementsByClassName('options-section');
+    
     var str = "<legend>Properties</legend>";
 /*     
     //a4 propteries
@@ -3844,31 +3894,53 @@ function generateContextProperties()
         str += `<button onclick="toggleA4Horizontal()">Horizontal</button>`;
     } */
 
-    //more than one element selected
+    //No element or line selected
+    if (context.length == 0 && contextLine.length == 0) {
+        //Hide properties and show the other options
+        propSet.classList.add('options-fieldset-hidden');
+        propSet.classList.remove('options-fieldset-show');
+        for (var i = 0; i < menuSet.length; i++) {
+            menuSet[i].classList.add('options-fieldset-show');
+            menuSet[i].classList.remove('options-fieldset-hidden');  
+        }
+    }
+
     //One element selected, no lines
     if (context.length == 1 && contextLine.length == 0) {
+        //Show properties and hide the other options
+        propSet.classList.add('options-fieldset-show');
+        propSet.classList.remove('options-fieldset-hidden');
+        for (var i = 0; i < menuSet.length; i++) {
+            menuSet[i].classList.add('options-fieldset-hidden');
+            menuSet[i].classList.remove('options-fieldset-show');  
+        }
+
         //Get selected element
         var element = context[0];
         
-        str += `<div style='color:white'>Type</div>`;
+        //Skip diagram type-dropdown if element does not have an UML equivalent, in this case only applies to ER attributes
+        //TODO: Find a way to do this dynamically as new diagram types are added
+        if (element.kind != 'ERAttr') {
+            str += `<div style='color:white'>Type</div>`;
 
-        //Create a dropdown menu for diagram type
-        var value = Object.values(entityType);
-        var selected = element.type;
-
-        str += '<select id="propertySelect">';
-        for (i = 0; i < value.length; i++) {
-            if (selected != value[i]) {
-                str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
-            } else if(selected == value[i]) {
-                str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+            //Create a dropdown menu for diagram type
+            var value = Object.values(entityType);
+            var selected = context[0].type;
+    
+            str += '<select id="typeSelect">';
+            for (i = 0; i < value.length; i++) {
+                if (selected != value[i]) {
+                    str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                } else if(selected == value[i]) {
+                    str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                }
             }
+            str += '</select>'; 
         }
-        str += '</select>'; 
 
         //Selected ER type
         if (element.type == 'ER') {
-            //Iterate through properties
+            //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
             for (const property in element) {
                 switch (property.toLowerCase()) {
                     case 'name':
@@ -3879,21 +3951,23 @@ function generateContextProperties()
                         break;
                 }
             }
-        //Creates drop down for changing state of ER elements
-        var value;
-        var selected = context[0].state;
-        if(selected == undefined) {
-            selected = "normal"
-        }
-        if(element.kind=="ERAttr") {
-            value = Object.values(attrState);
-        } else if(element.kind=="EREntity") {
-            value = Object.values(entityState);
-        } else if(element.kind=="ERRelation") {
-            value = Object.values(relationState);
-        }
+            str += `<div style='color:white'>Variant</div>`;
 
-        str += '<select id="propertySelect">';
+            //Creates drop down for changing state of ER elements
+            var value;
+            var selected = context[0].state;
+            if(selected == undefined) {
+                selected = "normal"
+            }
+            if(element.kind=="ERAttr") {
+                value = Object.values(attrState);
+            } else if(element.kind=="EREntity") {
+                value = Object.values(entityState);
+            } else if(element.kind=="ERRelation") {
+                value = Object.values(relationState);
+            }
+
+            str += '<select id="propertySelect">';
             for (i = 0; i < value.length; i++) {
                 if (selected != value[i]) {
                     str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
@@ -3901,13 +3975,12 @@ function generateContextProperties()
                     str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
                 }
             }
-        str += '</select>'; 
-
+            str += '</select>'; 
         }
 
         //Selected UML type
         else if (element.type == 'UML') {
-            //Iterate through properties
+            //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
             for (const property in element) {
                 switch (property.toLowerCase()) {
                     case 'name':
@@ -3916,11 +3989,11 @@ function generateContextProperties()
                         break;
                     case 'attributes':
                         str += `<div style='color:white'>Attributes</div>`;
-                        str += `<textarea id='elementProperty_${property}' rows='4' cols='40'>${element[property]}</textarea>`;
+                        str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
                         break;
                     case 'functions':
                         str += `<div style='color:white'>Functions</div>`;
-                        str += `<textarea id='elementProperty_${property}' rows='4' cols='40'>${element[property]}</textarea>`;
+                        str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
                         break;
                     default:
                         break;
@@ -3934,7 +4007,6 @@ function generateContextProperties()
          str += `<div style="color: white">Stroke Color</div>`;
          str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
              `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
- 
          str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
 
     }
@@ -3983,8 +4055,16 @@ function generateContextProperties()
 
     } 
 
-   /* // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
+    // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
     if (contextLine.length == 1 && context.length == 0) {
+        //Show properties and hide the other options
+        propSet.classList.add('options-fieldset-show');
+        propSet.classList.remove('options-fieldset-hidden');
+        for (var i = 0; i < menuSet.length; i++) {
+            menuSet[i].classList.add('options-fieldset-hidden');
+            menuSet[i].classList.remove('options-fieldset-show');  
+        }
+
         str = "<legend>Properties</legend>";
         
         var value;
@@ -4025,9 +4105,17 @@ function generateContextProperties()
 
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
     }
-    */
-    /*//If more than one element is selected
+    
+    //If more than one element is selected
     if (context.length > 1) {
+        //Show properties and hide the other options
+        propSet.classList.add('options-fieldset-show');
+        propSet.classList.remove('options-fieldset-hidden');
+        for (var i = 0; i < menuSet.length; i++) {
+            menuSet[i].classList.add('options-fieldset-hidden');
+            menuSet[i].classList.remove('options-fieldset-show');  
+        }
+
         str += `<div style="color: white">BG Color</div>`;
         str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
             `<span id="BGColorMenu" class="colorMenu"></span></button>`;
@@ -4037,6 +4125,14 @@ function generateContextProperties()
     }
 
     if (context.length > 0) {
+        //Show properties and hide the other options
+        propSet.classList.add('options-fieldset-show');
+        propSet.classList.remove('options-fieldset-hidden');
+        for (var i = 0; i < menuSet.length; i++) {
+            menuSet[i].classList.add('options-fieldset-hidden');
+            menuSet[i].classList.remove('options-fieldset-show');  
+        }
+
         var locked = true;
         for (var i = 0; i < context.length; i++) {
             if (!context[i].isLocked) {
@@ -4045,7 +4141,7 @@ function generateContextProperties()
             }
         }
         str += `<br></br><input type="submit" id="lockbtn" value="${locked ? "Unlock" : "Lock"}" class="saveButton" onclick="toggleEntityLocked();">`;
-    }*/
+    }
 
     propSet.innerHTML = str;
 
@@ -5200,8 +5296,9 @@ function drawElement(element, ghosted = false)
 
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
-    if (element.kind == "UMLEntity") {  
+    if (element.kind == "UMLEntity") { 
         elemAttri = element.attributes.length;
+        elemFunc = element.functions.length;
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
@@ -5237,19 +5334,16 @@ function drawElement(element, ghosted = false)
         }
         //end of svg for background
         str += `</svg>`;
-        
-        /*
-        //div for UML attribute <-- Will be implemented in upcoming issues
-        str += `<div>`;
-        //end of div for UML attribute
-        str += `</div>`;*/
 
         //div for UML footer
         str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
         //svg for background
-        str += `<svg width='${boxw}' height='${boxh / 2}'>`;
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 - (linew * 2)}'
+        str += `<svg width='${boxw}' height='${boxh * elemFunc}'>`;
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemFunc - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+        for (var i = 0; i < elemFunc; i++) {
+            str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- ${element.functions[i]}</text>`;
+        }
         //end of svg for background
         str += `</svg>`;
         //end of div for UML footer
