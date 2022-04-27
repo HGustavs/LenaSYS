@@ -175,10 +175,9 @@ session_start();
                     </div>
                   </div>
                   <div>
-                    <div>
+                    <div id="selectBox" style="display:none;">
                       <fieldset style="width:90%">
-                      <!-- Currently the diagrams aren't doing anything, they're just listed.
-                      They're fetched and parsed in returnedFile() in duggaed.js -->
+                      <!-- The json files are fetched and parsed in returnedFile() in duggaed.js -->
                         <legend>Add diagram to dugga</legend>
                         <select id="file" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))"></select>
                       </fieldset>
