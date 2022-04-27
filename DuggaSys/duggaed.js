@@ -287,8 +287,8 @@ function selectVariant(vid, el) {
   			}
 		var diagramType = obj.diagram_type; //<-- UML functionality start
 		if(diagramType){
-			document.getElementById('ER').checked = diagramType[0].ER;
-			document.getElementById('UML').checked = diagramType[0].UML;
+			document.getElementById('ER').checked = diagramType.ER;
+			document.getElementById('UML').checked = diagramType.UML;
 		}//<-- UML functionality end
         var submissionTypes = obj.submissions;
         if (submissionTypes) {

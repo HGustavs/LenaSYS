@@ -78,7 +78,7 @@ function returnedDugga(data)
         //checking if the user is a teacher
         if(data.isTeacher==0){
             // getting the diagram types allowed and calling a function in diagram.js where the values are now set <-- UML functionality start
-            document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type[0];
+            document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type;
         }
         else{
             var diagramType={ER:true,UML:true};
