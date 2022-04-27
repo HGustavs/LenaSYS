@@ -884,6 +884,11 @@ var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Do
 var wasDblClicked = false;
 var targetDelta;
 var mousePressed;
+var selectionBoxLowX;
+var selectionBoxHighX;
+var selectionBoxLowY;
+var selectionBoxHighY;
+var lastClickedElement = null;
 
 // Zoom variables
 var lastZoomfact = 1.0;
@@ -1443,40 +1448,6 @@ function mdown(event)
     // If the right mouse button is pressed => return
     if(event.button == 2) return;
 
-    // React to mouse down on container
-    if (event.target.id == "container") {
-        switch (mouseMode) {
-            case mouseModes.POINTER:
-                pointerState = pointerStates.CLICKED_CONTAINER;
-                sscrollx = scrollx;
-                sscrolly = scrolly;
-                startX = event.clientX;
-                startY = event.clientY;
-
-                if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
-                    wasDblClicked = true;
-                    document.getElementById("options-pane").className = "hide-options-pane";
-                }
-                break;
-            
-            case mouseModes.BOX_SELECTION:
-                boxSelect_Start(event.clientX, event.clientY);  
-                break;
-
-            default:
-                break;
-        }
-       
-    } else if (event.target.classList.contains("node")) {
-        pointerState = pointerStates.CLICKED_NODE;
-        startWidth = data[findIndex(data, context[0].id)].width;
-
-        startNodeRight = !event.target.classList.contains("mr");
-
-        startX = event.clientX;
-        startY = event.clientY;
-    }
-
     // Check if not an element OR node has been clicked at the event
     if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT && !settings.replay.active){
         // Used when clicking on a line between two elements.
@@ -1500,6 +1471,69 @@ function mdown(event)
         }
     }
 
+    // React to mouse down on container
+    if (pointerState != pointerStates.CLICKED_LINE && pointerState != pointerStates.CLICKED_LABEL) {
+        if (event.target.id == "container") {
+            switch (mouseMode) {
+                case mouseModes.POINTER:
+                    sscrollx = scrollx;
+                    sscrolly = scrolly;
+                    startX = event.clientX;
+                    startY = event.clientY;
+                    // If pressed down in selection box
+                    if (context.length > 0) {
+                        if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
+                            pointerState = pointerStates.CLICKED_ELEMENT;
+                            targetElement = context[0];
+                            targetElementDiv = document.getElementById(targetElement.id);
+                        } else {
+                            pointerState = pointerStates.CLICKED_CONTAINER;
+                            if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                                wasDblClicked = true;
+                                document.getElementById("options-pane").className = "hide-options-pane";
+                            }
+                        }
+                        break;
+                    }
+                    else {
+                        pointerState = pointerStates.CLICKED_CONTAINER;
+                        if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                            wasDblClicked = true;
+                            document.getElementById("options-pane").className = "hide-options-pane";
+                        }
+                        break;
+                    }
+                case mouseModes.BOX_SELECTION:
+                    // If pressed down in selection box
+                    if(context.length > 0){
+                        startX = event.clientX;
+                        startY = event.clientY;
+                        if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
+                            pointerState = pointerStates.CLICKED_ELEMENT;
+                            targetElement = context[0];
+                            targetElementDiv = document.getElementById(targetElement.id);
+                        }else{
+                            boxSelect_Start(event.clientX, event.clientY);
+                        }
+                    }else {
+                        boxSelect_Start(event.clientX, event.clientY);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+        } else if (event.target.classList.contains("node")) {
+            pointerState = pointerStates.CLICKED_NODE;
+            startWidth = data[findIndex(data, context[0].id)].width;
+
+            startNodeRight = !event.target.classList.contains("mr");
+
+            startX = event.clientX;
+            startY = event.clientY;
+        }
+    }
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
 }
@@ -1553,9 +1587,13 @@ function ddown(event)
         case mouseModes.EDGE_CREATION:
             if(event.button == 2) return;
             var element = data[findIndex(data, event.currentTarget.id)];
-            if (element != null){
+            // If element not in context, update selection on down click
+            if (element != null && !context.includes(element)){
                 pointerState = pointerStates.CLICKED_ELEMENT;
                 updateSelection(element);
+                lastClickedElement = null;
+            } else if(element != null){
+                lastClickedElement = element;
             }
             break;
             
@@ -1687,7 +1725,10 @@ function mup(event)
             break;
 
         case pointerStates.CLICKED_ELEMENT:
-            
+            // If clicked element already was in context, update selection on mouse up
+            if(lastClickedElement != null && context.includes(lastClickedElement) && !movingObject){
+                updateSelection(lastClickedElement);
+            }
             movingObject = false;
             // Special cases:
             if (mouseMode == mouseModes.EDGE_CREATION) {
@@ -1963,6 +2004,7 @@ function mmoving(event)
             break;
 
         case pointerStates.CLICKED_ELEMENT:
+            if(mouseMode != mouseModes.EDGE_CREATION){
             var prevTargetPos = {
                 x: data[findIndex(data, targetElement.id)].x,
                 y: data[findIndex(data, targetElement.id)].y
@@ -1987,6 +2029,7 @@ function mmoving(event)
             updatepos(deltaX, deltaY);
 
             calculateDeltaExceeded();
+        }
             break;
 
         case pointerStates.CLICKED_NODE:
@@ -5489,6 +5532,12 @@ function drawSelectionBox(str)
             lowY = (lowY < lineLowY) ? lowY : lineLowY;
             highY = (highY > lineHighY) ? highY : lineHighY;
         }
+        
+        // Global variables used to determine if mouse was clicked within selection box
+        selectionBoxLowX = lowX - 5;
+        selectionBoxHighX = highX + 5;
+        selectionBoxLowY = lowY - 5;
+        selectionBoxHighY = highY + 5;
 
         // Outer bigger selection container of selected elements
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent;stroke-width:2;stroke:rgb(75,75,75);stroke-dasharray:10 5;" />`;
