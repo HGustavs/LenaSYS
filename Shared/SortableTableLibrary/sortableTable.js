@@ -466,10 +466,14 @@ function SortableTable(param)
                       mhvstr += "<td style='whitespace:nowrap;'>"+sumContent[columnOrder[columnOrderIdx]]+"</td>";                  
                   }
               }else{
-                  str += "<td>Sum/Average</td>";
-                  if (columnOrderIdx < freezePaneIndex) {
-                      mhvstr += "<td>&nbsp;</td>";
+                if(columnOrder[columnOrderIdx]== 'kind'){
+                    str += "<td>Sum/Average</td>";
+                }else {
+                    str += "<td>&nbsp;</td>";
+                if (columnOrderIdx < freezePaneIndex) {
+                    mhvstr += "<td>&nbsp;</td>";
                   }
+                }
               }          
           }
       }
