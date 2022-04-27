@@ -23,10 +23,14 @@
 	<title id="sectionedPageTitle">Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+	<link type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link id="themeWhite" type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet">
+	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+	
+	<script src="darkmodeToggle.js"></script>
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -203,7 +207,7 @@
 
 		<!-- Edit Section Dialog START -->
 		<div id='editSection' onkeyup="validateSectName('sectionname');" onmouseover="validateSectName('sectionname'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:460px;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
 				<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
@@ -250,7 +254,7 @@
 
 	<!-- Confirm Section Dialog START -->
 	<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:460px;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
 					<h3>Confirm deletion</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
@@ -268,7 +272,7 @@
 
 	<!-- Canvas Link Dialog -->
 	<div id='canvasLinkBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='min-width:250px;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='min-width:250px;'>
 			<div class='loginBoxheader'>
 					<h3 style='text-align: center;'>Link Copied To Clipboard</h3>
 					<div class="cursorPointer" onclick='showCanvasLinkBox("close",this);' title="Close window">x</div>
@@ -283,7 +287,7 @@
 
 	<!-- Confirm Section Hide Dialog START -->
 	<div id='sectionHideConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:460px;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
 					<h3>Confirm hiding</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
@@ -348,7 +352,7 @@
 
 		<!-- New Version Dialog START -->
 		<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
-    	<div class='loginBox' style='width:464px;'>
+    	<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
 			<div class='loginBoxheader'>
 				<h3>New Course Version</h3>
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
@@ -375,7 +379,7 @@
 
 <!-- Edit Version Dialog START -->
 <div id='editCourseVersion' onmouseover="validateVersionName('eversname', 'dialog5'); validateDate('estartdate','eenddate','dialog6'); validateMOTD('eMOTD', 'dialog9');" class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:464px;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Course Version</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
@@ -450,7 +454,7 @@
 	
 	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
 	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
-	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
+	  <div class="loadDuggaBox loginBox DarkModeBackgrounds DarkModeText" style="max-width:400px; overflow-y:visible;">
 			<div class='loginBoxheader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
     		<div id='loadDuggaPopup' style="display:block">

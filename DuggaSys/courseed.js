@@ -344,6 +344,50 @@ function createVersion(){
 
 }
 
+// //----------------------------------------
+// // Dark mode toggle button listener.  
+// //----------------------------------------
+
+// /*/ The code below is waitng for the page to load, and check when the user changes his/her 
+// operative system to either black or white mode . /*/
+
+// const themeStylesheet = document.getElementById('themeBlack');
+
+// document.addEventListener('DOMContentLoaded', () => {
+// 	const storedTheme = localStorage.getItem('themeBlack');
+// 	if(storedTheme){
+// 			themeStylesheet.href = storedTheme;
+// 	}
+// 	const themeToggle = document.getElementById('theme-toggle');
+// 	themeToggle.addEventListener('click', () => {
+// 			// if it's light -> go dark
+// 			if(themeStylesheet.href.includes('blackTheme')){
+// 					themeStylesheet.href = "../Shared/css/whiteTheme.css";
+// 					localStorage.setItem('themeBlack',themeStylesheet.href)
+// 					// themeToggle.innerText = 'Switch to light mode';
+// 			} else if(themeStylesheet.href.includes('whiteTheme')) {
+// 					// if it's dark -> go light
+// 					themeStylesheet.href = "../Shared/css/blackTheme.css";
+// 					localStorage.setItem('themeBlack',themeStylesheet.href)
+// 					// themeToggle.innerText = 'Switch to dark mode';
+// 			}		
+// 	})
+// })
+
+// //It actively checks if the "theme" changes on the operating system and changes colors based on it. It override your preferences.
+// window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+// 	const newColorScheme = e.matches ? "dark" : "light";
+// 	if(newColorScheme == "dark") {
+// 		themeStylesheet.href = "../Shared/css/blackTheme.css";
+// 		localStorage.setItem('themeBlack',themeStylesheet.href)
+// 	}
+// 	else {
+// 		themeStylesheet.href = "../Shared/css/whiteTheme.css";
+// 		localStorage.setItem('themeBlack',themeStylesheet.href)
+// 	}
+// });
+
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -375,7 +419,7 @@ function returnedCourse(data)
 	// Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
 	str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;''><a href='https://github.com/HGustavs/LenaSYS'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div id='CourseOrgSys'> Course Organization System</div>"
 	if (data['writeaccess']){
-		str+="<img alt='settings icon' style='margin-left:17px;cursor:pointer;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings(); 'title='Edit Server Settings'>"
+		str+="<img alt='settings icon' class='whiteIcon' style='margin-left:17px;cursor:pointer;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings(); 'title='Edit Server Settings'>"
 	}
 	str+="</div>";
 	// For now we only have two kinds of sections
