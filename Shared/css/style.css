@@ -301,7 +301,8 @@ p {
 }
 
 #Courselist a {
-  color: var(--color-primary-2);
+  color: black;
+  opacity: 1 !important;
   text-decoration: none;
 }
 
