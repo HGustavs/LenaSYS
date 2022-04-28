@@ -284,8 +284,15 @@ function selectVariant(vid, el) {
   				else if(result == "extraparam"){
   					document.getElementById('extraparam').value = obj[result];
   				}
+				else if(result =="errorActive"){
+					document.getElementById("errorActive").checked = obj[result];
+				}
   			}
-
+		var diagramType = obj.diagram_type; //<-- UML functionality start
+		if(diagramType){
+			document.getElementById('ER').checked = diagramType.ER;
+			document.getElementById('UML').checked = diagramType.UML;
+		}//<-- UML functionality end
         var submissionTypes = obj.submissions;
         if (submissionTypes) {
   			  document.getElementById('submissionType0').value = submissionTypes[0].type;
@@ -355,7 +362,21 @@ function updateVariantTitle(number) {
 
 // Opens the variant editor.
 function showVariantEditor() {
-	AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
+
+	//check if the selected dugga is a diagram dugga
+	if(globalData['entries'][globalVariant].quizFile == "diagram_dugga"){
+		/*For now it only fetches the files when it's a diagram dugga. 
+		This might change in the future if other duggor should have
+		additional files as parameters*/
+		AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
+		$("#selectBox").css("display", "flex");
+		$("#typeCheckbox").css("display", "flex");
+	}
+	else{
+		$("#selectBox").css("display", "none");
+		$("#typeCheckbox").css("display", "none");
+	}
+
   if(submissionRow == 0){
     // The submission row doesn't go away when leaving the modal
     // so without the if statement a new submission div would be created each time.
@@ -384,7 +405,7 @@ function returnedFile(data){
 
 // Adds a submission row
 function addVariantSubmissionRow() {
-  var subDivContent = `<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>
+  var subDivContent = `<div style='width:100%;display:flex;flex-wrap:nowrap;flex-direction:row; margin-right:2%;'>
 		<select name='s_type' id='submissionType${submissionRow}' style='width:65px;' onchange='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'>
 		<option value='pdf'>PDF</option>
 		<option value='zip'>Zip</option>
@@ -456,8 +477,10 @@ function createJSONString(formData) {
 		"type":formData[0].value,
 		"filelink":formData[1].value,
 		"diagram File":$("#file option:selected").text(),
+		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
-		"submissions":submission_types
+		"submissions":submission_types,
+		"errorActive":document.getElementById("errorActive").checked
 	});
 }
 

@@ -30,6 +30,10 @@
 
     </div>
 
+     <!-- Used for calculating pixels per millimeter using offsetWidth. Note that in offsetWidth system scaling is not included
+    and window.devicePixelRatio have to be included -->
+    <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
+
     <!-- Toolbar for diagram -->
     <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'>
         <fieldset>
@@ -37,45 +41,45 @@
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg"/>
                     <span class="toolTipText"><b>Pointer</b><br>
-                        <p>Allows you to press the different entities and move around the diagram</p><br>
+                        <p>Allows you to select and move different elements as well as navigate the diagram</p><br>
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_select.svg"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
-                        <p>Select everything withing a certain area</p><br>
+                        <p>Click and drag to select multiple elements within the selected area</p><br>
                         <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <div>
-                    <div id="elementPlacement0" class="diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);' onmousedown='holdPlacementButtonDown(0);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement0" class="diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_entity.svg"/>
                         <span class="toolTipText"><b>Entity</b><br>
-                            <p>Add an entity to the diagram</p><br>
+                            <p>Add an ER entity to the diagram</p><br>
                             <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton0" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
                         </div>
                     </div>    
-                    <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                    <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                         <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_entity.svg"/>
-                            <span class="placementTypeToolTipText"><b>ER</b><br>
-                                <p>Choose ER entity</p>
+                            <span class="placementTypeToolTipText"><b>ER Entity</b><br>
+                                <p>Change to ER entity</p>
                             </span>
                         </div>
                         <div class="placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_UML_entity.svg"/>
-                            <span class="placementTypeToolTipText"><b>UML</b><br>
-                                <p>Choose UML entity</p>
+                            <span class="placementTypeToolTipText"><b>UML Entity</b><br>
+                                <p>Change to UML entity</p>
                             </span>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement4" class="diagramIcons toolbarMode hiddenPlacementType" onclick='setElementPlacementType(4); setMouseMode(2);'  onmousedown='holdPlacementButtonDown(4);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement4" class="diagramIcons toolbarMode" onclick='setElementPlacementType(4); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_UML_entity.svg"/>
                         <span class="toolTipText"><b>Entity</b><br>
                             <p>Add an UML entity to the diagram</p><br>
@@ -88,49 +92,49 @@
                     <div id="togglePlacementTypeBox4" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                         <div class="placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_entity.svg"/>
-                            <span class="placementTypeToolTipText"><b>ER</b><br>
-                                <p>Choose ER entity</p>
+                            <span class="placementTypeToolTipText"><b>ER Entity</b><br>
+                                <p>Change to ER entity</p>
                             </span>
                         </div>
                         <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
                             <img src="../Shared/icons/diagram_UML_entity.svg"/>
-                            <span class="placementTypeToolTipText"><b>UML</b><br>
-                                <p>Choose UML entity</p>
+                            <span class="placementTypeToolTipText"><b>UML Entity</b><br>
+                                <p>Change to UML entity</p>
                             </span>
                         </div>
                     </div>
-                </div>
+                </div><!--<-- UML functionality end -->
                 <div>
-                    <div id="elementPlacement1" class="diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmousedown='holdPlacementButtonDown(1);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement1" class="diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"/>
                         <span class="toolTipText"><b>Relation</b><br>
-                            <p>Add a relation between entities</p><br>
+                            <p>Add a ER relation to the diagram</p><br>
                             <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton1" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
                         </div>
                     </div>    
-                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
                         <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_relation.svg"/>
-                            <span class="placementTypeToolTipText"><b>ER</b><br>
-                                <p>Choose relation</p>
+                            <span class="placementTypeToolTipText"><b>ER Relation</b><br>
+                                <p>Change to ER relation</p>
                             </span>
                         </div>
                         <div class="placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_inheritance.svg"/>
-                            <span class="placementTypeToolTipText"><b>UML</b><br>
-                                <p>Choose inheritance</p>
+                            <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                <p>Change to UML inheritance</p>
                             </span>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement5" class="diagramIcons toolbarMode hiddenPlacementType" onclick='setElementPlacementType(5); setMouseMode(2);' onmousedown='holdPlacementButtonDown(5);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement5" class="diagramIcons toolbarMode" onclick='setElementPlacementType(5); setMouseMode(2);'onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_inheritance.svg"/>
-                        <span class="toolTipText"><b>Relation</b><br>
-                            <p>Add a relation between entities</p><br>
+                        <span class="toolTipText"><b>Inheritance</b><br>
+                            <p>Add an UML inheritance to the diagram</p><br>
                             <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton5" class="placementTypeIcon togglePlacementTypeButton">
@@ -140,29 +144,29 @@
                     <div id="togglePlacementTypeBox5" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                         <div class="placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_relation.svg"/>
-                            <span class="placementTypeToolTipText"><b>ER</b><br>
-                                <p>Choose relation</p>
+                            <span class="placementTypeToolTipText"><b>ER Relation</b><br>
+                                <p>Change to ER relation</p>
                             </span>
                         </div>
                         <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_inheritance.svg"/>
-                            <span class="placementTypeToolTipText"><b>UML</b><br>
-                                <p>Choose inheritance</p>
+                            <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                <p>Change to UML inheritance</p>
                             </span>
                         </div>
                     </div>
-                </div>
+                </div><!--<-- UML functionality end -->
                 <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_attribute.svg"/>
                     <span class="toolTipText"><b>Attribute</b><br>
-                        <p>Create an Attribute to an entity</p><br>
+                        <p>Add an ER attribute to the diagram</p><br>
                         <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg"/>
                     <span class="toolTipText"><b>Line</b><br>
-                        <p>Make a line between objects</p><br>
+                        <p>Make a line between elements</p><br>
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -172,26 +176,27 @@
             <div class="diagramIcons" onclick='zoomin();'>
                 <img src="../Shared/icons/diagram_zoomin.svg"/>
                 <span class="toolTipText"><b>Zoom IN</b><br>
-                    <p>Increase size of all elements</p><br>
+                    <p>Zoom in on viewed area</p><br>
                     <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div class="diagramIcons" onclick='zoomout();'>
                 <img src="../Shared/icons/diagram_zoomout.svg"/>
                 <span class="toolTipText"><b>Zoom OUT</b><br>
-                    <p>Decrease size of all elements</p><br>
+                    <p>Zoom out on viewed area</p><br>
                     <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div class="diagramIcons" onclick="zoomreset()">
-                <img src="../Shared/icons/fullscreen.svg"/>
+                <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
                 <span class="toolTipText"><b>Zoom RESET</b><br>
-                    <p>Reset size of all elements</p><br>
+                    <p>Reset the zoom to 1x</p><br>
                     <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
         </fieldset>
-<!--         <fieldset>
+        <!--
+         <fieldset>
             <legend>Toggle</legend>
             <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
                 <img src="../Shared/icons/diagram_ruler.svg"/>
@@ -208,13 +213,13 @@
                 </span>
             </div>
 
-        </fieldset>   --> 
+        </fieldset>  --> 
         <fieldset>
             <legend>Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
-                <img src="../Shared/icons/screenUpdate.svg"/>
-                <span class="toolTipText"><b>Click to redirect camera to center</b><br>
-                    <p>Redirect camera to center of all elements</p><br>
+                <img src="../Shared/icons/fullscreen.svg"/>
+                <span class="toolTipText"><b>Reset view</b><br>
+                    <p>Reset view to show all elements</p><br>
                     <p id="tooltip-CENTER_CAMERA" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
@@ -223,25 +228,32 @@
             <legend>History</legend>
             <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
                 <img src="../Shared/icons/diagram_stepforward.svg"/>
-                <span class="toolTipText"><b>Toggle step forward</b><br>
-                    <p>Click to step forward in history</p><br>
+                <span class="toolTipText"><b>Redo</b><br>
+                    <p>Redo last change</p><br>
                     <p id="tooltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="stepBackToggle" class="diagramIcons" onclick="toggleStepBack()">
                 <img src="../Shared/icons/diagram_stepback.svg"/>
-                <span class="toolTipText"><b>Toggle step backward</b><br>
-                    <p>Click to step back in history</p><br>
+                <span class="toolTipText"><b>Undo</b><br>
+                    <p>Undo last change</p><br>
                     <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="replayToggle" class="diagramIcons" onclick="toggleReplay()">
                 <img src="../Shared/icons/diagram_replay.svg"/>
-                <span class="toolTipText"><b>Toggle replay</b><br>
-                    <p>Click to start replay</p><br>
+                <span class="toolTipText"><b>Enter replay mode</b><br>
+                    <p>View history of changes made</p><br>
                 </span>
         </fieldset>
-
+        <fieldset>
+            <legend>ER-Table</legend>
+            <div id="erTableToggle" class="diagramIcons" onclick="toggleErTable()">
+                <img src="../Shared/icons/diagram_replay.svg"/>
+                <span class="toolTipText"><b>Toggle ER-Table</b><br>
+                    <p>Click to toggle ER-Table in options</p><br>
+                </span>
+        </fieldset>
     </div>
 
     <!-- Message prompt -->
@@ -294,39 +306,11 @@
             </span>
         </div>
         <div id ="fieldsetBox">
-            <fieldset id='propertyFieldset' style="position: absolute;">
+            <fieldset id='propertyFieldset' class='options-fieldset options-fieldset-hidden' style="position: absolute;">
             </fieldset>
 
-            <fieldset style="position: absolute; bottom: 250px; width:82%">
-            <legend>Toggle</legend>
-                <!-- <div id="gridToggle" class="diagramIcons" onclick='toggleGrid()'>
-                    <img src="../Shared/icons/diagram_grid.svg"/>
-                    <span class="toolTipText"><b>Toggle grid</b><br>
-                        <p>Enable/disable the grid</p><br>
-                        <p id="tooltip-TOGGLE_GRID" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div>
-                <div id="rulerSnapToGrid" class="diagramIcons" onclick="toggleSnapToGrid()">
-                    <img src="../Shared/icons/diagram_gridmagnet.svg"/>
-                    <span class="toolTipText"><b>Toggle Snap To Grid</b><br>
-                        <p>Enable/disable the Snap To Grid</p><br>
-                        <p id="tooltip-TOGGLE_SNAPGRID" class="key_tooltip">Keybinding:</p>
-                    </span>
-                <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
-                <img src="../Shared/icons/diagram_ruler.svg"/>
-                <span class="toolTipText"><b>Toggle Ruler</b><br>
-                    <p>Enable/disable the ruler</p><br>
-                    <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div id="a4TemplateToggle" class="diagramIcons" onclick="toggleA4Template()">
-                <img src="../Shared/icons/diagram_a4.svg"/>
-                <span class="toolTipText"><b>Toggle A4 template</b><br>
-                    <p>Enable/disable the A4 template</p><br>
-                    <p id="tooltip-TOGGLE_A4" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-                </div>   -->    
+            <fieldset class='options-fieldset options-section' style='position: absolute;'>
+                <legend>Toggle</legend>
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
                 <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" style="background-color:#362049;" onclick="toggleRuler()">Ruler</button><br><br>
@@ -336,35 +320,43 @@
                     <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
                 </div>
             </fieldset>
-            <div style="position: absolute; bottom: 20px;">
-                <fieldset>
-                    <legend>Export</legend>
-                    <button class="saveButton" onclick="saveDiagram();">Save</button><br><br>
-                    <button class="saveButton" onclick="exportDiagram();">Export</button>
-                </fieldset>
-                <fieldset style="margin-top:2%;">
-                    <legend>Import</legend>
-                    <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
-                    <button class="saveButton" onclick="loadDiagram();">Load</button>
-                </fieldset>
-            </div>
+            <fieldset class='options-fieldset options-section' style='position: absolute; top: 33%;'>
+                <legend>Export</legend>
+                <button class="saveButton" onclick="saveDiagram();">Save</button><br><br>
+                <button class="saveButton" onclick="exportDiagram();">Export</button>
+            </fieldset>
+            <fieldset class='options-fieldset options-section' style="position: absolute; top: 48%; margin-top: 2%;">
+                <legend>Import</legend>
+                <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
+                <button class="saveButton" onclick="loadDiagram();">Load</button>
+            </fieldset>
         </div>
     </div>
     </div>
     <!-- Replay-mode -->
     <div id="diagram-replay-box">
-        <div style=";display: flex;">
+        <div style="display: flex;">
             <fieldset style="display: flex; justify-content: space-between">
                 <div id="diagram-replay-switch">
                     <div class="diagramIcons" onclick="stateMachine.replay()">
-                        <img src="../Shared/icons/Play.svg" title="Play">
+                        <img src="../Shared/icons/Play.svg">
+                        <span class="toolTipText" style="top: -80px"><b>Play</b><br>
+                            <p>Play history of changes made to the diagram</p><br>
+                        </span>
                     </div>
                 </div>
                 <div class="diagramIcons" onclick="stateMachine.replay(0)">
-                    <img src="../Shared/icons/replay.svg"  title="Replay">
+                    <img src="../Shared/icons/replay.svg">
+                    <span class="toolTipText" style="top: -80px"><b>Replay</b><br>
+                        <p>Replay history of changes made to the diagram</p><br>
+                    </span>
                 </div>
                 <div class="diagramIcons" onclick="exitReplayMode()">
-                    <img src="../Shared/icons/exit.svg"  title="Exit out from replay mode">
+                    <img src="../Shared/icons/exit.svg">
+                    <span class="toolTipText" style="top: -95px"><b>Exit</b><br>
+                        <p>Exit the replay-mode</p><br>
+                        <p id="tooltip-ESCAPE" class="key_tooltip">Keybinding:</p>
+                    </span>
                 </div>
             </fieldset>
             <div style="width: 250px">
@@ -380,7 +372,7 @@
     </div>
     <div id="diagram-replay-message">
         <h2>Replay mode</h2>
-        <p>Press "Escape" to exit the replay-mode.</p>
+        <p>Press "ESCAPE" to exit the replay-mode.</p>
     </div>
     <!-- content END -->
     <?php

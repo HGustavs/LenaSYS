@@ -1096,6 +1096,12 @@ function returnedSection(data) {
           str += "</td>";
         }
 
+        //Generate new tab link
+        str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+          str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Open link in new tab' class='' 
+          src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
+          str += "</td>";
 
         // Generate Canvas Link Button
         if (data['writeaccess'] || data['studentteacher']) {
@@ -1254,10 +1260,15 @@ function returnedSection(data) {
   }
 }
 
+function openCanvasLink(btnobj){
+  link = btnobj.parentNode.parentNode.querySelector('a').href;
+  window.open(link, "_blank");
+}
 
 function showCanvasLinkBox(operation,btnobj){
   if(operation == "open"){
-    var canvasLink = "This is a test link."//"<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('.internal-link').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
+    var canvasLink = btnobj.parentNode.parentNode.querySelector('a').href;
+    //var canvasLink = "<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('a').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
     if(canvasLink == null){
       canvasLink = "ERROR: Failed to get canvas link.";
     }
@@ -2365,6 +2376,8 @@ function addClasses() {
   var links = document.getElementsByTagName('a');
 
   for (var i = 0; i < links.length; i++) {
+    if(links[i].href.includes("github.com") || links[i].href.includes("youtube.com")){
+      links[i].setAttribute('target', '_blank');}
     if ((links[i].innerHTML.toLowerCase().indexOf("example") !== -1) ||
     (links[i].innerHTML.toLowerCase().indexOf("exempel") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("examples") !== -1)) {
       links[i].classList.add("example-link");
@@ -2422,6 +2435,7 @@ function validateVersionName(versionName, dialogid) {
       window.bool4 = true;
     }
 
+    return true;
   } else {
 
     name.style.borderColor = "#E54";
@@ -2434,6 +2448,7 @@ function validateVersionName(versionName, dialogid) {
     if (versionName === 'eversname') {
       window.bool4 = false;
     }
+    return false;
   }
 }
 
@@ -2457,6 +2472,7 @@ function validateCourseID(courseid, dialogid) {
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
+    return false;
   }
 
   const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
@@ -2466,16 +2482,21 @@ function validateCourseID(courseid, dialogid) {
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
+  }else{
+    return true;
   }
 
+  return false
 }
 
-function validateMOTD(motd, dialogid){
+function validateMOTD(motd,  syntaxdialogid, rangedialogid, submitButton){
+  const saveButton = document.getElementById(submitButton);
   var emotd = document.getElementById(motd);
   var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
   var EmotdRange = /^.{0,50}$/;
-  var x4 = document.getElementById(dialogid);
-  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
+  var x4 = document.getElementById(syntaxdialogid);
+	var x8 = document.getElementById(rangedialogid);
+	if (emotd.value.match(Emotd) ) {
     emotd.style.borderColor = "#383";
     emotd.style.borderWidth = "2px";
     x4.style.display = "none";
@@ -2487,6 +2508,24 @@ function validateMOTD(motd, dialogid){
     window.bool9 = false;
   }
 
+	if (emotd.value.match(EmotdRange)){
+		emotd.style.borderColor = "#383";
+		emotd.style.borderWidth = "2px";
+		x8.style.display = "none";
+		window.bool9 = true;
+	}else{
+		emotd.style.borderColor = "#E54";
+		x8.style.display = "block";
+		emotd.style.borderWidth = "2px";
+		window.bool9 = false;
+	}
+  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
+		saveButton.disabled = false;
+    return true;
+	}else{
+		saveButton.disabled = true;
+    return false;
+	}
 }
 
 /*Validates that start date comes before end date*/
@@ -2506,6 +2545,7 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderWidth = "2px";
     x3.innerHTML = "Both start date and end date must be filled in";
     x3.style.display = "block";
+    return false;
   }
  // if start date is less than end date
   if (date1 < date2) {
@@ -2520,6 +2560,7 @@ function validateDate(startDate, endDate, dialogID) {
     if (startDate === 'estartdate' && endDate === 'eenddate') {
       window.bool6 = true;
     }
+    return true;
   }
   // if end date is less than start date
   if (date2 < date1) {
@@ -2535,6 +2576,7 @@ function validateDate(startDate, endDate, dialogID) {
     if (startDate === 'estartdate' && endDate === 'eenddate') {
       window.bool6 = false;
     }
+    return false;
   }
 }
 
@@ -2568,6 +2610,7 @@ function validateDate2(ddate, dialogid) {
     x.style.display = "none";
     window.bool8 = true;
 
+    return true;
   } else {
 
     ddate.style.borderColor = "#E54";
@@ -2580,6 +2623,7 @@ function validateDate2(ddate, dialogid) {
   else{
     window.bool8 = true;
   }
+  return false;
 }
 
 function validateSectName(name){
@@ -2593,10 +2637,12 @@ function validateSectName(name){
     emotd.style.borderColor = "#383";
     $('#dialog10').fadeOut();
     window.bool10 = true;
+    return true;
   } else { // Invalid string
     emotd.style.borderColor = "#E54";
     window.bool10 = false;
     $('#dialog10').fadeIn();
+    return false;
   }
 }
 
@@ -2652,9 +2698,121 @@ function getCourseElements(){
   }
   return list;
 }
+//Validate form but do not perform it.
+function quickValidateForm(formid, submitButton){
+  const saveButton = document.getElementById(submitButton);
+  var valid = true;
+  //Validates Item form
+  if (formid === 'editSection') {
+    var sName = document.getElementById("sectionname").value;
+    var deadDate = document.getElementById("setDeadlineValue").value;
+    var item = document.getElementById("editSectionDialogTitle").innerHTML;
+    var endialog = document.getElementById("EndDialog1");
+    endialog.innerHTML = "";
+    valid = true;
+    var deadlinepart = document.getElementById('inputwrapper-deadline');
+    var deadlinedisplayattribute = deadlinepart.style.display; 
+    if (deadlinedisplayattribute == 'block'){
+      valid = valid && (validateSectName('sectionname') && showCourseDate('setDeadlineValue','dialog8'));
+    }else{
+      valid = valid && validateSectName('sectionname');
+    }
+   
+
+    //If fields empty
+    if (sName == null || sName == "") {
+      //alert("Fill in all fields");
+      endialog.innerHTML += "Fill in all fields </br>";
+      valid = valid && false;
+    }
+
+    //Name is a duplicate
+    if(sName == item){ 
+      window.bool11 = true;
+
+    }
+
+    // if all information is correct
+    if (window.bool10 == true && window.bool11 == true) {
+      
+      //updateItem();
+      //updateDeadline();
+
+    } else {
+      //alert("You have entered incorrect information");
+      endialog.innerHTML += "Entered information is incorrect </br>";
+    }
+    if (valid){
+      saveButton.disabled = false;
+    }else{
+      saveButton.disabled = true;
+    }
+  }
+   //Validates new course version form
+  if (formid === 'newCourseVersion') {
+    var versName = document.getElementById("versname").value;
+    var versId = document.getElementById("cversid").value;
+    var endialog = document.getElementById("EndDialog2");
+    endialog.innerHTML = "";
+    valid = true;
+
+    valid = valid && validateCourseID('cversid', 'dialog2');
+    valid = valid && validateVersionName('versname', 'dialog');
+    valid = valid && validateDate('startdate','enddate','dialog3');
+    valid = valid && validateMOTD('vmotd','dialog4', 'dialog42', 'submitCourseMotd');
+
+    //If fields empty
+    if (versName == null || versName == "", versId == null || versId == "") {
+      //alert("Fill in all fields");
+      endialog.innerHTML += "Fill in all fields </br>";
+    }
+    // if all information is correct
+    if (window.bool5 === true && window.bool3 === true && window.bool === true) {
+    } else {
+      //alert("You have entered incorrect information");
+      endialog.innerHTML += "Entered information is incorrect </br>";
+    }
+    if (valid){
+      saveButton.disabled = false;
+    }else{
+      saveButton.disabled = true;
+    }
+  }
+
+  // validates edit course version form
+  if (formid === 'editCourseVersion') {
+    var eversName = document.getElementById("eversname").value;
+    var endialog = document.getElementById("EndDialog3");
+    endialog.innerHTML = "";
+    valid = true;
+
+    valid = valid && validateVersionName('eversname', 'dialog5')
+    valid = valid && validateDate('estartdate','eenddate','dialog6')
+    valid = valid && validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse')
+
+
+    //If fields empty
+    if (eversName == null || eversName == "") {
+      //alert("Fill in all fields");
+      endialog.innerHTML += "Fill in all fields </br>";
+    }
+
+    // if all information is correct
+    if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
+    } else {
+      //alert("You have entered incorrect information");
+      endialog.innerHTML += "Entered information is incorrect </br>";
+    }
+    if (valid){
+      saveButton.disabled = false;
+    }else{
+      saveButton.disabled = true;
+    }
+  }
+ 
+}
 
 /*Validates all forms*/
-
 function validateForm(formid) {
 
   //Validates Item form
