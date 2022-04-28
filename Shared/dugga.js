@@ -2195,12 +2195,12 @@ function FABMouseOver(e) {
 			$('.fab-btn-sm').toggleClass('scale-out');
 		}
 	}
-	else if (e.target.id === "addElement") {
+	
 		if ($('.fab-btn-sm2').hasClass('scale-out')) {
 			$('.fab-btn-list2').fadeIn(0);
 			$('.fab-btn-sm2').toggleClass('scale-out');
 		}
-	}
+	
 }
 
 //----------------------------------------------------------------------------------
