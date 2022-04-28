@@ -14,7 +14,6 @@ var dailyCount = [
 ];
 
 AJAXService("get", {
-  userid: "HGustavs"
 }, "CONTRIBUTION");
 
 var weeks;
@@ -658,7 +657,8 @@ function changeDay() {
       alert("Second week can't be earlier than first week");
     } else {
       AJAXService("updateday", {
-        userid: "HGustavs",
+        userid: document.getElementById('userid').value,
+        //userid: "HGustavs",
         today: firstSelWeek,
         secondday: secondSelWeek
       }, "CONTRIBUTION");
@@ -1163,7 +1163,7 @@ function returnedSection(data) {
      str+="<p>";
      if(data['allusers'].length>0){
          str+="<select id='userid' onchange='selectuser();'>";
-         str+="<option>"+localStorage.getItem('GitHubUser')+"</option>";
+         str+="<option>Select Git user</option>";
          for(i=0;i<data['allusers'].length;i++){
            if(data['allusers'][i] != localStorage.getItem('GitHubUser')){
              str+="<option>"+data['allusers'][i]+"</option>";
