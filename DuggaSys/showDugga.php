@@ -1,5 +1,7 @@
 <?php
 	include_once "../Shared/sessions.php";
+	include_once "../Shared/basic.php";
+
  	session_start();
 ?>
 <!DOCTYPE html>
@@ -21,12 +23,11 @@
 	<script src="timer.js"></script>
 	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
+
 <?php
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services!
-	include_once "../Shared/basic.php";
-
 	// Connect to database and start session
 	pdoConnect();
 
@@ -50,8 +51,104 @@
 	$duggaid=getOPG('did');
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
+//	$queryArray = array($cid, $vers, $quizid);
 
-// can see all duggas and deleted ones
+	#vars for handling fetching of diagram variant file name
+	$variantParams = "UNK";
+	$filePath ="";
+	#$finalArray = [];
+	$fileContent="UNK";
+	$splicedFileName = "UNK";
+	$isGlobal = -1;
+	$count = 0;
+	
+	#create request to database and execute it
+	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid;");
+	$response->execute();
+
+	#loop through responses, fetch param column in variant table, splice string to extract file name, then close request.
+	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
+	{
+		$variantParams=$row['jparam'];
+		$start = strpos($variantParams, "diagram File&quot;:&quot;") + 25;
+		$end = strpos($variantParams, "&quot;,&quot;extraparam&quot;");
+		$splicedFileName = substr($variantParams, strpos($variantParams, "diagram File&quot;:&quot;") + 25, ($end - $start));
+	}
+	$response->closeCursor();
+
+	#repeat for filelink table, checking if the corresponding file is global or not (if it's global, file is found in ../courses/global/ rather than course specific)
+	$fileLinkResponse = $pdo->prepare("SELECT isGlobal as isGlobal FROM filelink WHERE filename = '$splicedFileName'");
+	#$fileLinkResponse->bindParam(':isGlobal', $isGlobal);
+	$count = $count + 1;
+
+	if($fileLinkResponse->execute())
+	{
+		foreach($fileLinkResponse->fetchAll(PDO::FETCH_ASSOC) as $row)
+		{
+			$isGlobal = $row['isGlobal'];
+			$count = $count + 1;
+			if($isGlobal == 1)
+			{
+				$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
+			}
+			else{
+				$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
+			}
+		}
+	}
+	else{
+		$fileContent = "SELECT isGlobal from filelink error.";
+	}
+	$fileLinkResponse->closeCursor();
+	#if result is 1, meaning it's global, set $isGlobal boolean to true. $isGlobal exists mainly so it can be returned to diagram.js in the future, if ever needed.
+
+	#if the file is global, get content from global folder. Else, set path to use course-id folder.
+
+
+	#I have no idea what the things below
+	// if(isset($_SESSION['hashpassword'])){
+	// 	$hashpassword=$_SESSION['hashpassword'];
+	// }else{
+	// 	$hashpassword='UNK';
+	// }	
+
+	// if(isset($_SESSION['uid'])){
+	// 	$userid=$_SESSION['uid'];
+	// }else{
+	// 	$userid="UNK";
+	// }
+
+	// if(!isset($_SESSION['hasUploaded'])){
+	// 	$_SESSION['hasUploaded'] = "UNK";
+	// }
+
+	// if(!isset($_SESSION['pwdentrance'])){
+	// 	$_SESSION['pwdentrance'] = 0;
+	// }
+	//logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
+
+// if($cid != "UNK") $_SESSION['courseid'] = $cid;
+// 	$hr=false;
+// 	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
+// 	$query->bindParam(':cid', $cid);
+// 	$result = $query->execute();
+// 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
+// 			$visibility=$row['visibility'];
+// 	}
+	
+/*
+		//Give permit if the user is logged in and has access to the course or if it is public
+		$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0  && $userid != "UNK");
+
+		if(!$hr){
+			if (checklogin()){
+				$hr = isSuperUser($userid);$hr;
+			}
+		}
+*/
+
+  // can see all duggas and deleted ones
+
   if(isSuperUser($userid)){
 	$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
 }
@@ -92,11 +189,13 @@
 			echo "<body>";
 		}
 ?>
+
 <!--<script type="text/javascript">
 
 	setHash("<?php /*echo $hash*/ ?>");
 
 </script>-->
+
 
 
 	<?php
@@ -310,12 +409,26 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
     		</div>
       </div>
 	</div>
+	<script type="text/javascript">
+	function getVariantParam()
+	{
+		var variantArray = [<?php echo "'$variantParams'"?>];
+		variantArray.push(<?php echo "$cid"?>);
+		variantArray.push(<?php echo "$vers"?>);
+		variantArray.push(<?php echo "'$splicedFileName'"?>);
+		variantArray.push(<?php echo "'$fileContent'"?>);
+		return variantArray;
+	} 
+	</script>
 
+	<script>
+</script>
 	<!-- content END -->
 	<?php
 		include '../Shared/loginbox.php';
 	?>
 
 </head>
+
 </body>
 </html>
