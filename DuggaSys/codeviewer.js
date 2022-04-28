@@ -721,7 +721,11 @@ function changeDirectory(kind) {
 	for (var i = 0; i < dir.length; i++) {
 		if (chosen == dir[i].filename) {
 			str += "<option selected='selected' value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>";
-		} else {
+		} 
+		else if (dir[i].filename == "---===######===---"){
+			str += "<option disabled hidden value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>"
+		}
+		else {
 			str += "<option value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>";
 		}
 	}
