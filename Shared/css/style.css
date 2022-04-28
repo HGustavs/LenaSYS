@@ -1571,6 +1571,9 @@ div .navButt:hover {
     .box{
         margin-top: 30px !important;
     }
+    .dropdownStyle{
+      margin-top: 32px;
+    }
 }
 
 /*MEDIA QUERIES FOR HAMBURGER MENU IN ANALYTICS.PHP*/
@@ -8249,4 +8252,8 @@ textarea#filecont {
 }
 .accountRequestTable tr:nth-child(odd){
   background-color: #efefef;
+}
+
+.dropdownitemStyle{
+  padding: 15px;
 }
