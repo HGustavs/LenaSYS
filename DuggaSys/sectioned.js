@@ -190,9 +190,9 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
     if (relativedeadline !== "null") {
       if (calculateRelativeDeadline(splitdeadline).getTime() !== new Date(deadline).getTime()) {
-        deadlineCheckbox($("#absolutedeadlinecheck"), true);
+        checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
       } else {
-        deadlineCheckbox($("#absolutedeadlinecheck"), false);
+        checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
       }
     }
   }
@@ -268,7 +268,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 }
 
 // Handles the logic behind the checkbox for absolute deadline
-function deadlineCheckbox(e, check) {
+function checkDeadlineCheckbox(e, check) {
 
   if (check !== undefined) e.checked = check;
 
@@ -303,7 +303,6 @@ function calculateRelativeDeadline(rDeadline) {
       var daysToAdd = parseInt(rDeadline[0]);
       break;
   }
-  // var daysToAdd = rDeadline[0] * 7 + parseInt(rDeadline[1]);
   var newDeadline = new Date(retdata['startdate']);
   newDeadline.setDate(newDeadline.getDate() + daysToAdd);
   newDeadline.setHours(parseInt(rDeadline[2]));
