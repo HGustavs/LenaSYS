@@ -4542,6 +4542,9 @@ function generateContextProperties()
                 `<span id="BGColorMenu" class="colorMenu"></span></button>`;
         }
 
+           str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+
+
         str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
       }
 
@@ -6970,9 +6973,45 @@ function updateCSSForAllElements()
             var useDelta = (inContext && movingObject);
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
-            var grandChild = elementDiv.children[0].children[0];
-            grandChild.style.fill = inContext ? `${"#927b9e"}` : `${element.fill}`;
-
+            // Update UMLEntity
+            if(element.kind == "UMLEntity"){
+                for (let index = 0; index < 3; index++) {
+                    var grandChild = elementDiv.children[index].children[0].children[0];
+                    // If more than one element is marked.
+                    if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        grandChild.style.fill = `${"#927b9e"}`;
+                    } else{
+                        grandChild.style.fill = `${element.fill}`;
+                    }
+                    
+                }
+            // Update Elements with double borders.
+            }else if(element.state == "weak" || element.state == "multiple"){
+                for (let index = 0; index < 2; index++){
+                    var grandChild = elementDiv.children[0].children[index];
+                    // If more than one element is marked.
+                    if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        grandChild.style.fill = `${"#927b9e"}`;
+                    } else{
+                        grandChild.style.fill = `${element.fill}`;
+                    }
+                }
+            }else{ // Update normal elements, and relations
+                var grandChild = elementDiv.children[0].children[0];
+                // If more than one element is marked.
+                if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                    grandChild.style.fill = `${"#927b9e"}`;
+                    // If UMLRelation is not marked.
+                } else if(element.kind == "UMLRelation"){
+                    if(element.state == "overlapping"){
+                        grandChild.style.fill = `${"black"}`;
+                    }else{
+                        grandChild.style.fill = `${"white"}`;
+                    }
+                }else{
+                    grandChild.style.fill = `${element.fill}`;
+                }
+            }
         }
     }
 
