@@ -76,36 +76,24 @@
 	}
 	$response->closeCursor();
 
-	#try{
-		try{
-			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
-		}
-		catch(Exception $e)
+	$doesFileExist = file_get_contents("../courses/global/"."$splicedFileName");
+	if($doesFileExist === FALSE)
+	{
+		$doesFileExist = file_get_contents("../courses/".$cid."/"."$splicedFileName");
+
+		if($doesFileExist === FALSE)
 		{
-			print_r("Error1");
+			$doesFileExist = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
 		}
+	}
 
-		if($fileContent == "UNK")
-		{
-			try{
-				if($fileContent == "UNK" || $fileContent == "")
-				{
-					$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
-				}
-			}
-			catch(Exception $e)
-			{
-				print_r("Error2");
-			}
-		}
-	#}
-	#catch(e){
-		#$fileContent = "ERROR FETCHING FILE CONTENT:"
-	#}
-	#if result is 1, meaning it's global, set $isGlobal boolean to true. $isGlobal exists mainly so it can be returned to diagram.js in the future, if ever needed.
-
-	#if the file is global, get content from global folder. Else, set path to use course-id folder.
-
+	if($doesFileExist === FALSE)
+	{
+		$fileContent = "NO_FILE_FETCHED";
+	}
+	else{
+		$fileContent = $doesFileExist;
+	}
 
 	#I have no idea what the things below
 	// if(isset($_SESSION['hashpassword'])){
