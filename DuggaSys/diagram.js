@@ -4637,10 +4637,10 @@ function generateContextProperties()
 function toggleOptionsPane()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
-        document.getElementById('optmarker').innerHTML = "Options";
+        document.getElementById('optmarker').innerHTML = "&#9660;Options";
         document.getElementById("options-pane").className = "hide-options-pane";
     } else {
-        document.getElementById('optmarker').innerHTML = "Options";
+        document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
         document.getElementById("options-pane").className = "show-options-pane";
     }
 }
@@ -6701,16 +6701,13 @@ function updateLabelPos(newPosX, newPosY)
     else if(targetLabel.fromY>targetLabel.centerY){ //up to down
         targetLabel.labelMovedY = targetLabel.percentOfLine * diffrenceY;
     }
-    console.log(targetLabel.labelMovedY+" = "+targetLabel.highY+" - "+targetLabel.centerY);//&& targetLabel.highX-targetLabel.centerX<targetLabel.labelMovedX
     if(targetLabel.highY-targetLabel.centerY < targetLabel.labelMovedY ){
         targetLabel.labelMovedY = (targetLabel.highY-targetLabel.centerY)-targetLabel.height;
         targetLabel.labelMovedX = (targetLabel.highX-targetLabel.centerX)-targetLabel.width;
-        console.log(targetLabel.labelMovedY+" = / = "+targetLabel.highY+" - "+targetLabel.centerY);
     }
     else if(targetLabel.lowY-targetLabel.centerY>targetLabel.labelMovedY && targetLabel.lowX-targetLabel.centerX>targetLabel.labelMovedX){
         targetLabel.labelMovedY = (targetLabel.lowY-targetLabel.centerY)+targetLabel.height;
         targetLabel.labelMovedX = (targetLabel.lowX-targetLabel.centerX)+targetLabel.width;
-        console.log(targetLabel.labelMovedY+" = "+targetLabel.lowY+" - "+targetLabel.centerY);
     }
     calculateLabelDisplacement(targetLabel);
     displaceFromLine(newPosX,newPosY);
