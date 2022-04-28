@@ -58,7 +58,7 @@
 							We now add css and JS files directly trough PHP instead and not trough direct linking.
 						/*/
             foreach($css as $filename) { 
-                $filemtime = filemtime('../Shared/css/' . $filename);
+                $filemtime = filemtime('../Shared/css/'.$filename);
 
 								if($filename == "blackTheme.css"){
 									echo "<link id='themeBlack' rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
