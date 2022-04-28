@@ -76,30 +76,17 @@
 	}
 	$response->closeCursor();
 
-	#repeat for filelink table, checking if the corresponding file is global or not (if it's global, file is found in ../courses/global/ rather than course specific)
-	$fileLinkResponse = $pdo->prepare("SELECT isGlobal as isGlobal FROM filelink WHERE filename = '$splicedFileName'");
-	#$fileLinkResponse->bindParam(':isGlobal', $isGlobal);
-	$count = $count + 1;
+	try{
+		$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
 
-	if($fileLinkResponse->execute())
-	{
-		foreach($fileLinkResponse->fetchAll(PDO::FETCH_ASSOC) as $row)
+		if($fileContent = "UNK" || $fileContent = "")
 		{
-			$isGlobal = $row['isGlobal'];
-			$count = $count + 1;
-			if($isGlobal == 1)
-			{
-				$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
-			}
-			else{
-				$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
-			}
+			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
 		}
 	}
-	else{
-		$fileContent = "SELECT isGlobal from filelink error.";
+	catch(e){
+		$fileContent = "ERROR FETCHING FILE CONTENT:"
 	}
-	$fileLinkResponse->closeCursor();
 	#if result is 1, meaning it's global, set $isGlobal boolean to true. $isGlobal exists mainly so it can be returned to diagram.js in the future, if ever needed.
 
 	#if the file is global, get content from global folder. Else, set path to use course-id folder.
@@ -415,7 +402,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		var variantArray = [<?php echo "'$variantParams'"?>];
 		variantArray.push(<?php echo "$cid"?>);
 		variantArray.push(<?php echo "$vers"?>);
-		variantArray.push(<?php echo "$isGlobal"?>);
+		variantArray.push(<?php echo "$splicedFileName"?>);
 		variantArray.push(<?php echo "'$fileContent'"?>);
 		return variantArray;
 	} 
