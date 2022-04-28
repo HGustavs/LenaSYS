@@ -4397,6 +4397,8 @@ function resizeBoxes(parent, templateId)
 			handles:"s",
 			containment: parent
 		});
+	}
+}	
 //------------------------------------------------------------------------------------------------------------------------------
 // Hide or show scrollbars on a box depending on if the content of the box takes more or less space than the box itself.
 //------------------------------------------------------------------------------------------------------------------------------
@@ -4739,4 +4741,4 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 	  });
 	}
 
-}}}
+}
