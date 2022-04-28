@@ -76,17 +76,17 @@
 	}
 	$response->closeCursor();
 
-	try{
+	#try{
 		$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
 
 		if($fileContent = "UNK" || $fileContent = "")
 		{
 			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
 		}
-	}
-	catch(e){
-		$fileContent = "ERROR FETCHING FILE CONTENT:"
-	}
+	#}
+	#catch(e){
+		#$fileContent = "ERROR FETCHING FILE CONTENT:"
+	#}
 	#if result is 1, meaning it's global, set $isGlobal boolean to true. $isGlobal exists mainly so it can be returned to diagram.js in the future, if ever needed.
 
 	#if the file is global, get content from global folder. Else, set path to use course-id folder.
