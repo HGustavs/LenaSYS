@@ -476,7 +476,7 @@ function createJSONString(formData) {
 	return JSON.stringify({
 		"type":formData[0].value,
 		"filelink":formData[1].value,
-		"diagram File":$("#file option:selected").text(),
+		"diagram_File":$("#file option:selected").text(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
 		"submissions":submission_types,

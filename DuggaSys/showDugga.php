@@ -70,9 +70,12 @@
 	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
 	{
 		$variantParams=$row['jparam'];
-		$start = strpos($variantParams, "diagram File&quot;:&quot;") + 25;
-		$end = strpos($variantParams, "&quot;:&quot;&quot;,&quot;diagram_type") - 177;
-		$splicedFileName = substr($variantParams, strpos($variantParams, "diagram File&quot;:&quot;") + 25, ($end - $start));
+		/* $start = strpos($variantParams, "diagram File&quot;:&quot;") + 25;
+		$end = strpos($variantParams, "&quot;:&quot;&quot;,&quot;diagram_type") - 176;
+		$splicedFileName = substr($variantParams, strpos($variantParams, "diagram File&quot;:") + 25, ($end - $start));*/
+		$variantParams = str_replace('&quot;','"',$variantParams);
+		$parameterArray = json_decode($variantParams,true);
+		$splicedFileName=$parameterArray["diagram_File"];
 	}
 	$response->closeCursor();
 
