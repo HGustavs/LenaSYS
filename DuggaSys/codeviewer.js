@@ -615,6 +615,7 @@ var openBoxID;
 
 function displayEditContent(boxid) 
 {
+	editRowsEnterPress();
 	document.getElementById("boxtitle2").removeAttribute("contenteditable");
 	// The information stored about the box is fetched
 	var box = retData['box'][boxid - 1];
@@ -653,6 +654,29 @@ function displayEditContent(boxid)
 	document.getElementById("improws").innerHTML = str;
 
 	document.getElementById("editContentContainer").style.display = "flex";
+}
+// -----------------------------------------------------------------------------------------------
+// Listen to enterpress on "important rows" inputfield and runs the same function as the + button
+// -----------------------------------------------------------------------------------------------
+
+var enterPress; // Variable that is used to check enter press or button press
+function editRowsEnterPress(){
+	var inputRowFrom = document.getElementById("improwfrom");
+	inputRowFrom.addEventListener("keypress", function(event) {
+		if (event.key === "Enter") {
+			enterPress = true;
+			event.preventDefault();
+			editImpRows("+");
+		}
+	});
+	var inputRowTo = document.getElementById("improwto");
+	inputRowTo.addEventListener("keypress", function(event) {
+		if (event.key === "Enter") {
+			enterPress = true;
+			event.preventDefault();
+			editImpRows("+"); 	
+		}
+	});	
 }
 
 //----------------------------------------------------------------------------------
@@ -709,6 +733,12 @@ function changeDirectory(kind) {
 }
 
 //----------------------------------------------------------------------------------
+// btnPress reset a boolean when the "+" button is pressed
+//----------------------------------------------------------------------------------
+function btnPress(){
+	enterPress = false;
+}
+//----------------------------------------------------------------------------------
 // editImpRows: Adds and removes important rows
 //                Is called at line 165/169 in EditorV50.php
 //----------------------------------------------------------------------------------
@@ -743,7 +773,9 @@ function editImpRows(editType)
 		FromTo = $('option:selected', "#improws").text().split(" - ");
 		$('option:selected', "#improws").remove();
 		removedRows.push([openBoxID, FromTo[0], FromTo[1]]);
-	} else {
+
+	} else if (enterPress === false){
+		//alert("editType == +: " + (editType=="+") + " (rowFrom <= rowTo): " + (rowFrom <= rowTo) + " (rowFrom > 0): " + (rowFrom > 0) + " (rowTo > 0): " + (rowTo > 0) + " rowFrom: " + rowFrom + " rowTo: " + rowTo);
 		alert("Incorrect value(s) (from: " + rowFrom + " to: " + rowTo + ")  for important rows!");
 	}
 }
