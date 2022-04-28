@@ -590,10 +590,10 @@ function weekchoice(dateString) {
     var weekarray = [];
     for (i = 0; i < 70; i++) {
 
-      events = parseInt(daycounts[dateString].events[0][0]);
-      commits = parseInt(daycounts[dateString].commits[0][0]);
-      loc = parseInt(daycounts[dateString].loc[0][0] == null ? 0 : daycounts[dateString].loc[0][0]);
-      comments = parseInt(daycounts[dateString].comments[0][0]);
+      events = parseInt(daycounts[dateString].events);
+      commits = parseInt(daycounts[dateString].commits);
+      loc = parseInt(daycounts[dateString].loc);
+      comments = parseInt(daycounts[dateString].comments);
 
       weekarray[i] = [dateString, commits, events, loc, comments];
 
@@ -626,10 +626,10 @@ function weekchoice(dateString) {
   for (var key in daycounts) {
     if (key == dateString) {
       for (i = 0; i < 7; i++) {
-        var events = parseInt(daycounts[dateString].events[0][0]);
-        var commits = parseInt(daycounts[dateString].commits[0][0]);
-        var loc = parseInt(daycounts[dateString].loc[0][0] == null ? 0 : daycounts[dateString].loc[0][0]);
-        var comments = parseInt(daycounts[dateString].comments[0][0]);
+        var events = parseInt(daycounts[dateString].events);
+        var commits = parseInt(daycounts[dateString].commits);
+        var loc = parseInt(daycounts[dateString].loc);
+        var comments = parseInt(daycounts[dateString].comments);
 
         dailyCount[i] = [dateString, commits, events, loc, comments];
 
