@@ -3041,10 +3041,10 @@ function rectsIntersect (left, right)
                  //Different snap points for entity and others
                  if (obj.kind == "EREntity") {
                      // Calculate nearest snap point
-                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+100) / settings.grid.gridSize) * settings.grid.gridSize;
+                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+(settings.grid.gridSize*2)) / settings.grid.gridSize) * settings.grid.gridSize;
                      obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
                  } else{
-                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+50) / settings.grid.gridSize) * settings.grid.gridSize;
+                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+(settings.grid.gridSize)) / settings.grid.gridSize) * settings.grid.gridSize;
                      obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
                  }
                  // Set the new snap point to center of element
@@ -4701,8 +4701,8 @@ function updateGridSize()
 {
 
     //Do not remore, for later us to make gridsize in 1cm.
-    //var pxlength = (pixellength.offsetWidth/1000)*window.devicePixelRatio;
-    //settings.grid.gridSize = 10*pxlength;
+    var pxlength = (pixellength.offsetWidth/1000)*window.devicePixelRatio;
+    settings.grid.gridSize = 10*pxlength;
 
     var bLayer = document.getElementById("grid");
     bLayer.setAttribute("width", settings.grid.gridSize * zoomfact + "px");
@@ -5797,7 +5797,11 @@ function drawRulerBars(X,Y)
             }
         }else if (zoomfact > 0.75){
             //milli
-            barY += "<line x1='35px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+            if ((lineNumber) % 5 == 0 ){
+                barY += "<line x1='32px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+            }else{
+                barY += "<line x1='35px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+            }
         } 
     }
 
@@ -5823,7 +5827,12 @@ function drawRulerBars(X,Y)
             }
         }else if (zoomfact > 0.75){
             //milli
-            barY += "<line x1='35px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+            if ((lineNumber) % 5 == 0 ){
+                barY += "<line x1='32px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+            }else{
+                barY += "<line x1='35px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+            }
+
         }
     }
     svgY.style.backgroundColor = "#e6e6e6";
@@ -5851,7 +5860,12 @@ function drawRulerBars(X,Y)
             }
         }else if (zoomfact > 0.75){
             //milli
-            barX += "<line x1='" +(i+pannedX)+"' y1='35' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+            if ((lineNumber) % 5 == 0 ){
+                barX += "<line x1='" +(i+pannedX)+"' y1='32' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+            }else{
+                barX += "<line x1='" +(i+pannedX)+"' y1='35' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+            }
+
         }
     }
 
@@ -5877,7 +5891,11 @@ function drawRulerBars(X,Y)
             }
         }else if (zoomfact > 0.75){
             //milli
-            barX += "<line x1='" +(pannedX-i)+"' y1='35' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+            if ((lineNumber) % 5 == 0 ){
+                barX += "<line x1='" +(pannedX-i)+"' y1='32' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+            }else{
+                barX += "<line x1='" +(pannedX-i)+"' y1='35' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+            }
         }
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
@@ -6915,7 +6933,7 @@ function updateCSSForAllElements()
     function updateElementDivCSS(elementData, divObject, useDelta = false)
     {
         var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
-            top = Math.round((((elementData.y - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+            top = Math.round((((elementData.y - zoomOrigo.y)-(settings.grid.gridSize/2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
         if (useDelta){
             left -= deltaX;
@@ -6925,12 +6943,12 @@ function updateCSSForAllElements()
         if (settings.grid.snapToGrid && useDelta) {
             if (element.kind == "EREntity"){
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-150) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-(settings.grid.gridSize*3)) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
                 
                 // Add the scroll values
-                left = Math.round((((objX - zoomOrigo.x)+250)* zoomfact) + (scrollx * (1.0 / zoomfact)));
-                top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+                left = Math.round((((objX - zoomOrigo.x)+(settings.grid.gridSize*5))* zoomfact) + (scrollx * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y)-(settings.grid.gridSize/2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
@@ -6939,12 +6957,12 @@ function updateCSSForAllElements()
             } 
             else if (element.kind != "EREntity"){
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-150) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-(settings.grid.gridSize*3)) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
                 
                 // Add the scroll values
-                left = Math.round((((objX - zoomOrigo.x)+200) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-                top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+                left = Math.round((((objX - zoomOrigo.x)+(settings.grid.gridSize*4)) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y)-(settings.grid.gridSize/2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
             
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
