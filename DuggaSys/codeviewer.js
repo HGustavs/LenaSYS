@@ -76,6 +76,17 @@ function returnedError(error) {
 	}
 }
 
+function fillBurger() {
+	var boxes = retData['box'];
+	var burgerMenu = document.querySelector('#burgerMenu');
+	var str = "";
+	boxes.forEach(box => {
+		str += "<div class='burgerOption DarkModeBackgrounds' onclick='setShowPane("+box[0]+");'>"+box[4]+"</div>";	
+	});
+	str += "<div class='burgerOption DarkModeBackgrounds' onclick='showAllViews();'>All views</div>";
+	burgerMenu.innerHTML = str;
+}
+
 //-----------------------------------------------------------------
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
@@ -4556,16 +4567,7 @@ function closeBurgerMenu() {
 	document.querySelector('#burgerMenu').style.display = 'none';
 }
 
-function fillBurger() {
-	var boxes = retData['box'];
-	var burgerMenu = document.querySelector('#burgerMenu');
-	var str = "";
-	boxes.forEach(box => {
-		str += "<div class='burgerOption DarkModeBackgrounds' onclick='setShowPane("+box[0]+");'>"+box[4]+"</div>";	
-	});
-	str += "<div class='burgerOption DarkModeBackgrounds' onclick='showAllViews();'>All views</div>";
-	burgerMenu.innerHTML = str;
-}
+
 
 function showAllViews(){
 	var boxes = retData['box'];
