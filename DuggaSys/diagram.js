@@ -7282,7 +7282,7 @@ function fetchDiagramFileContentOnLoad()
         loadDiagramFromString(JSON.parse(diagramToLoadContent));
 }
 
-function loadDiagramFromString(temp)
+function loadDiagramFromString(temp, shouldDisplayMessage = true)
 {
     if(temp.historyLog && temp.initialState){
         // Set the history and initalState to the values of the file

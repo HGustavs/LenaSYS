@@ -71,7 +71,7 @@
 	{
 		$variantParams=$row['jparam'];
 		$start = strpos($variantParams, "diagram File&quot;:&quot;") + 25;
-		$end = strpos($variantParams, "&quot;,&quot;extraparam&quot;");
+		$end = strpos($variantParams, "&quot;:&quot;&quot;,&quot;diagram_type") - 177;
 		$splicedFileName = substr($variantParams, strpos($variantParams, "diagram File&quot;:&quot;") + 25, ($end - $start));
 	}
 	$response->closeCursor();
