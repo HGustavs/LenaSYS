@@ -657,7 +657,7 @@ function changeDay() {
       alert("Second week can't be earlier than first week");
     } else {
       AJAXService("updateday", {
-        userid: document.getElementById('userid').value,
+        userid: localStorage.getItem('GitHubUser'),
         //userid: "HGustavs",
         today: firstSelWeek,
         secondday: secondSelWeek
@@ -725,7 +725,7 @@ function renderCircleDiagram(data, day) {
   str += '</select>';
   
   str += `<button style='margin-left: 20px' onclick='changeDay()'>Show selected dates</button>`;
-  if (updateShowAct) {
+  if (updateShowAct || firstSelWeek == null && secondSelWeek == null) {
     str += "<p style='margin-left: 10px'>Showing all activities</p>";
     updateShowAct = false;
   } else {
