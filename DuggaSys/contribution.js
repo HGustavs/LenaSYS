@@ -1069,9 +1069,13 @@ function compare(a, b) {
 		var tempB = a;
 	}
 
-  //If a column uses string or int the compare will work by default.
+  //If a column uses string the compare will work by default. If it uses an int make sure it really is an int otherwise do like if col == number
   //ghContibTable columns use arrays in the table so we need to handle them in a different way from other columns
-  
+  if(col == "number"){
+    tempA = parseInt(tempA);
+    tempB = parseInt(tempB);
+  }
+
   if (col == "dates") {
     tempA = tempA['weekStart'];
     tempB = tempB['weekStart'];
