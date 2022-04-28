@@ -1587,7 +1587,7 @@ function mdown(event)
         for (let index = 0; index < document.getElementsByClassName("activeTogglePlacementTypeBox").length; index++) {
             setTimeout(() => {
                 document.getElementsByClassName("activeTogglePlacementTypeBox")[index].classList.remove("activeTogglePlacementTypeBox");
-            }, 150);
+            }, 500);
         }
     }
         // Mouse pressed over delete button for multiple elements
