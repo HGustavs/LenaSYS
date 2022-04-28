@@ -4600,9 +4600,6 @@ function generateContextProperties()
           str += `<div style="color: white">BG Color</div>`;
           str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
               `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-          str += `<div style="color: white">Stroke Color</div>`;
-          str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
-              `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
       }
 
       if (context.length > 0) {
