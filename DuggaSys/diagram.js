@@ -1014,9 +1014,16 @@ var settings = {
 
 
 // Demo data - read / write from service later on
+
+var diagramToLoad = "";
+var cid = "";
+var cvers = "";
+var diagramToLoadContent = "";
+
 var data = []; // List of all elements in diagram
 var lines = []; // List of all lines in diagram
 var errorData = []; // List of all elements with an error in diagram
+
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
@@ -1089,38 +1096,38 @@ function onSetup()
 
     const demoData = [
  
-        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID , isLocked: false },
-        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Bdale_ID, isLocked: false, state: "Normal" },
-        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: BdaleDependent_ID, isLocked: false, state: "Normal" },
-        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Ssn_ID, isLocked: false, state: "key"},
-        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Name_ID, isLocked: false },
-        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDependent_ID, isLocked: false, state: "weakKey"},
-        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameProject_ID, isLocked: false, state: "key"},
-        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDEPARTMENT_ID, isLocked: false, state: "key"},
-        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Address_ID, isLocked: false },
-        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: AddressDependent_ID, isLocked: false },
-        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Relationship_ID, isLocked: false },
-        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Salary_ID, isLocked: false },
-        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: FNID, isLocked: false },
-        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Initial_ID, isLocked: false },
-        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: LNID, isLocked: false },
-        { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: SUPERVISION_ID, isLocked: false },
-        { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak"},
-        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPENDENT_ID, isLocked: false, state: "weak"},
-        { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Number_of_depends_ID, isLocked: false, state: "computed"},
-        { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_ON_ID, isLocked: false },
-        { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Hours_ID, isLocked: false },
-        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: PROJECT_ID, isLocked: false },
-        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberProject_ID, isLocked: false, state: "key"},
-        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Location_ID, isLocked: false},
-        { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: MANAGES_ID, isLocked: false },
-        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Start_date_ID, isLocked: false },
-        { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: CONTROLS_ID, isLocked: false },
-        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPARTMENT_ID, isLocked: false },
-        { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Locations_ID, isLocked: false, state: "multiple" },
-        { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_FOR_ID, isLocked: false },
-        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberDEPARTMENT_ID, isLocked: false, state: "key"},
-        { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Number_of_employees_ID, isLocked: false, state: "computed"},
+        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID , isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function'] },
+        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Bdale_ID, isLocked: false, state: "Normal",  type: "ER" },
+        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: BdaleDependent_ID, isLocked: false, state: "Normal",  type: "ER" },
+        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Ssn_ID, isLocked: false, state: "key",  type: "ER"},
+        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Name_ID, isLocked: false,  type: "ER" },
+        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDependent_ID, isLocked: false, state: "weakKey",  type: "ER"},
+        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameProject_ID, isLocked: false, type: "ER"},
+        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDEPARTMENT_ID, isLocked: false,  type: "ER"},
+        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Address_ID, isLocked: false,  type: "ER" },
+        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: AddressDependent_ID, isLocked: false,  type: "ER" },
+        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Relationship_ID, isLocked: false,  type: "ER" },
+        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Salary_ID, isLocked: false,  type: "ER" },
+        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: FNID, isLocked: false,  type: "ER" },
+        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Initial_ID, isLocked: false,  type: "ER" },
+        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: LNID, isLocked: false,  type: "ER" },
+        { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: SUPERVISION_ID, isLocked: false,  type: "ER" },
+        { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak",  type: "ER"},
+        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPENDENT_ID, isLocked: false, state: "weak",  type: "ER", attributes: ['Attribute'], functions: ['Function'] },
+        { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Number_of_depends_ID, isLocked: false, state: "computed",  type: "ER"},
+        { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_ON_ID, isLocked: false,  type: "ER" },
+        { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Hours_ID, isLocked: false,  type: "ER" },
+        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: PROJECT_ID, isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
+        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberProject_ID, isLocked: false, state: "key",  type: "ER"},
+        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Location_ID, isLocked: false,  type: "ER"},
+        { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: MANAGES_ID, isLocked: false,  type: "ER" },
+        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Start_date_ID, isLocked: false,  type: "ER" },
+        { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: CONTROLS_ID, isLocked: false,  type: "ER" },
+        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPARTMENT_ID, isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
+        { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Locations_ID, isLocked: false, state: "multiple",  type: "ER" },
+        { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_FOR_ID, isLocked: false,  type: "ER" },
+        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberDEPARTMENT_ID, isLocked: false, state: "key",  type: "ER"},
+        { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Number_of_employees_ID, isLocked: false, state: "computed",  type: "ER"},
     ];
 
     const demoLines = [
@@ -1259,6 +1266,8 @@ function onSetup()
 
     // Global statemachine init
     stateMachine = new StateMachine(data, lines);
+
+    fetchDiagramFileContentOnLoad();
 }
 
 /**
@@ -1583,7 +1592,13 @@ function mdown(event)
 {
 
     mouseButtonDown = true;
-
+    if(document.getElementsByClassName("activeTogglePlacementTypeBox")){
+        for (let index = 0; index < document.getElementsByClassName("activeTogglePlacementTypeBox").length; index++) {
+            setTimeout(() => {
+                document.getElementsByClassName("activeTogglePlacementTypeBox")[index].classList.remove("activeTogglePlacementTypeBox");
+            }, 500);
+        }
+    }
         // Mouse pressed over delete button for multiple elements
         if (event.button == 0) {
             if (context.length > 1) {
@@ -4526,15 +4541,17 @@ function generateContextProperties()
               }            
           }
 
-           // Creates button for selecting element background color
-           str += `<div style="color: white">BG Color</div>`;
-           str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
-               `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-           str += `<div style="color: white">Stroke Color</div>`;
-           str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
-               `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
+        // Creates button for selecting element background color if not a UML relation since they should not be able change color
+        if (element.kind != 'UMLRelation') {
+            str += `<div style="color: white">BG Color</div>`;
+            str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+        }
+
            str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
 
+
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
       }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
@@ -4601,9 +4618,6 @@ function generateContextProperties()
           str += `<div style="color: white">BG Color</div>`;
           str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
               `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-          str += `<div style="color: white">Stroke Color</div>`;
-          str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
-              `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
       }
 
       if (context.length > 0) {
@@ -4637,10 +4651,10 @@ function generateContextProperties()
 function toggleOptionsPane()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
-        document.getElementById('optmarker').innerHTML = "Options";
+        document.getElementById('optmarker').innerHTML = "&#9660;Options";
         document.getElementById("options-pane").className = "hide-options-pane";
     } else {
-        document.getElementById('optmarker').innerHTML = "Options";
+        document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
         document.getElementById("options-pane").className = "show-options-pane";
     }
 }
@@ -5958,17 +5972,15 @@ function drawElement(element, ghosted = false)
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
         <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        str += `</svg>`;
         //end of svg for UML header
-        str += `</div>`;
+        str += `</svg>`;
         //end of div for UML header
-
+        str += `</div>`;
+        
         //div to encapuslate UML content
         str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
-
         //Draw UML-content if there exist at least one attribute
         if (elemAttri != 0) {
-
             //svg for background
             str += `<svg width='${boxw}' height='${boxh * elemAttri}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemAttri - (linew * 2)}'
@@ -5979,11 +5991,13 @@ function drawElement(element, ghosted = false)
             //end of svg for background
             str += `</svg>`;
         }
+        //end of div for UML content
+        str += `</div>`;
 
+        //div for UML footer
+        str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw UML-footer if there exist at least one function
         if (elemFunc != 0) {
-            //div for UML footer
-            str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh * elemFunc}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemFunc - (linew * 2)}'
@@ -5993,11 +6007,8 @@ function drawElement(element, ghosted = false)
             }
             //end of svg for background
             str += `</svg>`;
-            //end of div for UML footer
-            str += `</div>`;
         }
-
-        //end of div for UML content
+        //end of div for UML footer
         str += `</div>`;
     }
     //Check if element is UMLRelation
@@ -6010,7 +6021,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
 
@@ -6719,6 +6730,7 @@ function calculateProcentualDistance(objectLabel,x,y){
     else if(objectLabel.fromX>objectLabel.centerX){//right to left
         objectLabel.labelMovedX = objectLabel.percentOfLine * diffrenceX;
     }
+
     if(objectLabel.fromY<objectLabel.centerY){ //down to up
         objectLabel.labelMovedY = -objectLabel.percentOfLine * diffrenceY;
     }
@@ -6982,9 +6994,45 @@ function updateCSSForAllElements()
             var useDelta = (inContext && movingObject);
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
-            var grandChild = elementDiv.children[0].children[0];
-            grandChild.style.fill = inContext ? `${"#927b9e"}` : `${element.fill}`;
-
+            // Update UMLEntity
+            if(element.kind == "UMLEntity"){
+                for (let index = 0; index < 3; index++) {
+                    var grandChild = elementDiv.children[index].children[0].children[0];
+                    // If more than one element is marked.
+                    if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        grandChild.style.fill = `${"#927b9e"}`;
+                    } else{
+                        grandChild.style.fill = `${element.fill}`;
+                    }
+                    
+                }
+            // Update Elements with double borders.
+            }else if(element.state == "weak" || element.state == "multiple"){
+                for (let index = 0; index < 2; index++){
+                    var grandChild = elementDiv.children[0].children[index];
+                    // If more than one element is marked.
+                    if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        grandChild.style.fill = `${"#927b9e"}`;
+                    } else{
+                        grandChild.style.fill = `${element.fill}`;
+                    }
+                }
+            }else{ // Update normal elements, and relations
+                var grandChild = elementDiv.children[0].children[0];
+                // If more than one element is marked.
+                if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                    grandChild.style.fill = `${"#927b9e"}`;
+                    // If UMLRelation is not marked.
+                } else if(element.kind == "UMLRelation"){
+                    if(element.state == "overlapping"){
+                        grandChild.style.fill = `${"black"}`;
+                    }else{
+                        grandChild.style.fill = `${"white"}`;
+                    }
+                }else{
+                    grandChild.style.fill = `${element.fill}`;
+                }
+            }
         }
     }
 
@@ -7214,6 +7262,76 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }
 
 
+    if(temp.historyLog && temp.initialState){
+        // Set the history and initalState to the values of the file
+        stateMachine.historyLog = temp.historyLog;
+        stateMachine.initialState = temp.initialState;
+
+        // Update the stateMachine to the latest current index
+        stateMachine.currentHistoryIndex = stateMachine.historyLog.length -1;
+
+        // Scrub to the latest point in the diagram
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
+
+        // Display success message for load
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Save-file loaded");
+
+    } else if(temp.data && temp.lines){
+        // Set data and lines to the values of the export file
+        temp.data.forEach(element => {
+            var elDefault = defaults[element.kind];
+            Object.keys(elDefault).forEach(defaultKey => {
+                if (!element[defaultKey]){
+                    element[defaultKey] = elDefault[defaultKey];
+                }
+            });
+        });
+        temp.lines.forEach(line => {
+            Object.keys(defaultLine).forEach(defaultKey => {
+                if (!line[defaultKey]){
+                    line[defaultKey] = defaultLine[defaultKey];
+                }
+            });
+        });
+
+        // Set the vaules of the intialState to the JSON-file
+        stateMachine.initialState.elements = temp.data;
+        stateMachine.initialState.lines = temp.lines;
+
+        // Goto the beginning of the diagram
+        stateMachine.gotoInitialState();
+
+        // Remove the previous history
+        stateMachine.currentHistoryIndex = -1;
+        stateMachine.lastFlag = {};
+        stateMachine.removeFutureStates();
+
+        // Display success message for load
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Export-file loaded");
+    }else{
+        if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
+    }
+}
+
+function fetchDiagramFileContentOnLoad()
+{
+        let temp = window.parent.getVariantParam();
+        var fullParam = temp[0];
+        cid = temp[1];
+        cvers = temp[2];
+        diagramToLoad = temp[3];
+        diagramToLoadContent = temp[4];
+
+        console.log(fullParam);
+        console.log(cid);
+        console.log(cvers);
+        console.log(diagramToLoad);
+
+        loadDiagramFromString(JSON.parse(diagramToLoadContent));
+}
+
+function loadDiagramFromString(temp, shouldDisplayMessage = true)
+{
     if(temp.historyLog && temp.initialState){
         // Set the history and initalState to the values of the file
         stateMachine.historyLog = temp.historyLog;
