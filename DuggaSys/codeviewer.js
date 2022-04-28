@@ -4735,8 +4735,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else {
-		
-	  }
+	}
 
-}
+}}}
