@@ -134,13 +134,17 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, tabs, feedbackenabled, feedbackquestion) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativedeadline, tabs, feedbackenabled, feedbackquestion) {
 
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
   var minuteArrOptions=["00","05","10","15","20","25","30","35","40","45","50","55"];
   var minuteArrValue=[0,5,10,15,20,25,30,35,40,45,50,55];
+  var weekArrOptions=["1","2","3","4","5","6","7","8","9","10","11","12"];
+  var weekArrValue=[1,2,3,4,5,6,7,8,9,10,11,12];
+  var weekdayArrOptions=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  var weekdayArrValue=[1,2,3,4,5,6,7];
 
   nameSet = false;
   if (entryname == "undefined") entryname = "New Header";
@@ -174,6 +178,15 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
     $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
     $("#setDeadlineValue").val(deadline.substr(0,10));
+  }
+  if(relativedeadline !== undefined) {
+    var splitdeadline = relativedeadline.split(":");
+    // relativedeadline -> week:weekday:hour:minute
+    $("#relativedeadlinehours").html(makeoptions(splitdeadline[2],hourArrOptions,hourArrValue));
+    $("#relativedeadlineminutes").html(makeoptions(splitdeadline[3],minuteArrOptions,minuteArrValue));
+
+    $("#relativedeadlineweeks").html(makeoptions(splitdeadline[0],weekArrOptions,weekArrValue ));
+    $("#relativedeadlineweekdays").html(makeoptions(splitdeadline[1],weekdayArrOptions,weekdayArrValue));
   }
   var groups = [];
   for (var key in retdata['groups']) {
@@ -400,7 +413,7 @@ function showCreateVersion() {
 // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", 0, null);
+    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", "undefined", 0, null);
     clearHideItemList();
     newItem(itemtitle);
   }
@@ -447,7 +460,7 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-
+  param.relativedeadline = $("#relativedeadlineweeks").val()+":"+$("#relativedeadlineweekdays").val()+":"+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
 
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
@@ -683,7 +696,13 @@ function returnedGroups(data) {
 
 // Dugga row click functionality
 function duggaRowClick(rowElement){
-  window.location.assign(rowElement.parentNode.querySelector('.internal-link').href); //get link from child and redirect
+  let children = rowElement.parentNode.querySelectorAll("*"); //get all children + grandchildren of parent node.
+  for(let i = 0; i < children.length;i++){
+    if(children[i].href != null){                             //find the one with href
+      window.location.assign(children[i].href);               //go to to the url.
+      return;
+    }
+  }
 }
 
 function returnedSection(data) {
@@ -988,15 +1007,15 @@ function returnedSection(data) {
           str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;
           ' title='${item['entryname']}'>`;
           str += `<span class='ellipsis listentries-span'>${item['entryname']}</span>`;
-          str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}' class='arrowComp' style='display:inline-block;'>`;
-          str += `<img src='../Shared/icons/right_complement.svg' id='arrowRight${item['lid']}' class='arrowRight' style='display:none;'></div>`;
+          str += `<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp${item['lid']}' class='arrowComp' style='display:inline-block;'>`;
+          str += `<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight${item['lid']}' class='arrowRight' style='display:none;'></div>`;
         } else if (itemKind == 4) {
           // Moment
           var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
           str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
           str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
-          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
+          str += "<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
           str += "</div>";
         } else if (itemKind == 2) {
           // Code Example
@@ -1142,7 +1161,7 @@ function returnedSection(data) {
           str += "><img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
-          item['highscoremode'], item['comments'], item['grptype'], item['deadline'],
+          item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
           item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
           str += "</td>";
         }
@@ -1160,7 +1179,7 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:25px;' class='" + makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
-            str += "<input type='checkbox' name='arrayCheckBox' onclick='markedItems(this)'>";
+            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' onclick='markedItems(this)'>";
             str += "</td>";      
         }
         
@@ -2438,13 +2457,14 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 }
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
-  // Regex for 2 capital letters, 2 numbers
-  var Name = /^HT\d{2}$|^VT\d{2}$|^ST\d{2}$/;
+  //Regex for letters, numbers, and dashes
+  var Name = /^[A-Za-z0-9_ \-.]+$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
+  var val = document.getElementById("versname").value;
 
-  // If versionname is 2 capital letters, 2 numbers
-  if (name.value.match(Name)) {
+  //if versionname is 2 capital letters, 2 numbers
+  if (val.match(Name)) {
     name.style.borderColor = "#383";
     name.style.borderWidth = "2px";
     x.style.display = "none";
@@ -2474,13 +2494,14 @@ function validateVersionName(versionName, dialogid) {
 
 // ------ Validate versionID ------
 function validateCourseID(courseid, dialogid) {
-  // Regex for only numbers, between 3 and 6 numbers
-  var Code = /^[0-9]{3,6}$/;
+
+  //regex numbers, letters and dashes, between 3 and 8 numbers
+  var Code = /^[A-Za-z0-9_.]{3,8}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
   var val = document.getElementById("cversid").value;
 
-  if (code.value.match(Code)) {
+  if (val.match(Code)) {
     code.style.borderColor = "#383";
     code.style.borderWidth = "2px";
     x2.style.display = "none";
@@ -2488,7 +2509,7 @@ function validateCourseID(courseid, dialogid) {
   } else {
 
     code.style.borderColor = "#E54";
-    x2.innerHTML = "Only numbers(between 3-6 numbers)";
+    x2.innerHTML = "numbers, letters and dashes(between 3-8)";
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;

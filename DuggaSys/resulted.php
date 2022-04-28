@@ -84,8 +84,8 @@ pdoConnect();
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
 		<div class="resulted-filter-container">
 			<div class="search-filter-container">
-				<label class="filter-label" for="">Search</label>
-				<input class="searchbar-filter" type="text">
+				<label class="filter-label" for="searchbar">Search</label>
+				<input class="searchbar-filter" type="text" id="searchbar">
 			</div>
 			<div class="select-dugga-filter">
 				<div class="dugga-filter-container">
@@ -99,11 +99,11 @@ pdoConnect();
 			</div>
 			<div class="select-date-interval">
 				<div>
-					<label class="filter-label" for="">Earliest Submission</label>
+					<label class="filter-label" for="datepicker-interval-1">Earliest Submission</label>
 					<input class="date-interval-selector" type="date" id="datepicker-interval-1">
 				</div>
 				<div>
-					<label class="filter-label" for="">Latest Submission</label>
+					<label class="filter-label" for="datepicker-interval-2">Latest Submission</label>
 					<input class="date-interval-selector" type="date" id="datepicker-interval-2">
 				</div>
 			</div>
@@ -111,11 +111,11 @@ pdoConnect();
 		</div>
 		<div class="resulted-filter-container">
 			<div>
-				<label class="filter-label" for="">Highlight threshold (Times Accessed)</label>
+				<label class="filter-label" for="highlight-entry">Highlight threshold (Times Accessed)</label>
 				<input class="searchbar-filter" id="highlight-entry" type="text" value="20" onkeyup="updateTable()">
 			</div>
 			<div>
-				<label class="filter-label" for="">Enabled</label>
+				<label class="filter-label" for="highlight-checkbox">Enabled</label>
 				<input type="checkbox" id="highlight-checkbox" onclick="updateTable()">
 			</div>
 		</div>

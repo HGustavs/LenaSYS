@@ -333,7 +333,7 @@ $js = array(
                             </div>
 
                             <div class="markText" style="flex-grow:1;">
-                                <textarea id="mrkdwntxt" style="font-family:monospace;" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
+                                <textarea id="mrkdwntxt" style="font-family:monospace;" oninput="updatePreview(this.value)" name="markdowntext" placeholder="Enter text here"></textarea>
                             </div>
                         </div>
                     </fieldset>

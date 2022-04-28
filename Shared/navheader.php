@@ -126,7 +126,7 @@
 							pdoConnect();
 
 							//Get version name and coursecode from the correct version of the course
-							$query = $pdo->prepare("SELECT versname, coursecode FROM vers WHERE cid=:cid AND vers=:vers");
+							$query = $pdo->prepare("SELECT versname, coursecode, startdate FROM vers WHERE cid=:cid AND vers=:vers");
 							$query->bindParam(":cid", $_SESSION["courseid"]);
 							$query->bindParam(':vers', $_SESSION['coursevers']);
 							$query->execute();
@@ -136,14 +136,17 @@
 							if(isset($result['versname'])) {
 								// Changes format from 'HT20' to numbers to create the URL
 								$array = explode("T", $result['versname']);
-								$year = "20";
-								$year .= $array[1];
+								$array_1 = explode("-", $result['startdate']);
+        						$year = $array_1[0];
+
 								if ($array[0] === "H") {
 									$term = 2;
 								} else if ($array[0] === "V") {
 									$term = 1;
 								}else if ($array[0] === "S") {
 									$term = 3;
+								}else {
+									$term = 1;
 								}
 
 								echo "<td class='coursePage' style='display: inline-block;'>";

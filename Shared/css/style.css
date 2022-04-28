@@ -215,7 +215,6 @@ p {
  *                               Lists and Content                              *
  * --------------================################================-------------- */
 
-
 .version {
   color: #EFF;
   text-shadow: 1px 1px var(--color-text-list);
@@ -331,8 +330,6 @@ p {
   background-color: var(--color-background);
   padding-top: 7px;
   min-height: 30px;
-  margin-right: 8px;
-  padding-right: 8px;
 }
 
 .validationDialog {
@@ -2182,7 +2179,7 @@ input {
   clear: both;
   width: 100%;
   padding: 3px 0 3px 0;
-  height: 30px;
+  /*height: 30px;*/
   line-height: 30px;
 }
 
@@ -4816,12 +4813,10 @@ rect[class*="activitymarker"]:hover {
   white-space: nowrap;
 }
 
-@media only screen and (min-width: 439px),
-only screen and (min-device-width: 439px) {
-#CoutseOrgSys{
+@media screen and (max-width: 439px){
+#CourseOrgSys{
   display: none;
 }
-
 }
 
 .ellipsis {
@@ -6683,7 +6678,7 @@ only screen and (max-device-width: 320px) {
   width: 100%;
   list-style: none;
   text-align: center;
-  bottom: 80px;
+  bottom: 85px;
 }
 
 .fab-btn-list2 {
@@ -8198,4 +8193,60 @@ textarea#filecont {
 .prev-hash-container {
   width: 80%;
   margin: 15px 0px 8px 0px
+}
+.commitLink:hover{
+  color: #000fff;
+  
+}
+#accountRequests-pane {
+  position: fixed;
+  top: 0px;
+  width: 320px;
+  bottom: 0px;
+  z-index: 5000;
+  background-color: #eb4;
+  color: #FFF;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  box-shadow: 0px 6px 10px #888;
+  padding: 10px;
+  transition: right .3s ease-in-out;
+  user-select: none;
+}
+
+#accountRequests-pane-button {
+  display: inline-block;
+  vertical-align: top;
+  transform-origin: top left;            
+  transform: translate(20px,0px) rotate(90deg);
+  cursor: pointer;
+}
+
+#accountRequests-pane-content {
+  margin-left:20px;
+  vertical-align: top;
+  display: inline-block;
+}
+
+.show-accountRequests-pane {
+  right: 0px;
+}
+
+.hide-accountRequests-pane {
+  right: -308px;
+}
+.accountRequestTable {
+  margin-right: auto;
+  margin-left: auto;
+  color: #000000;
+  border: solid 1px #888;
+  border-collapse: collapse;
+  padding: 7px;
+  
+}
+.accountRequestTable tr:nth-child(even){
+  background-color: #cccccc;
+}
+.accountRequestTable tr:nth-child(odd){
+  background-color: #efefef;
 }

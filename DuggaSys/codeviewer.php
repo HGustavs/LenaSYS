@@ -248,7 +248,7 @@ Testing Link:
 							<td>Kind:</td>
 						</tr>
 						<tr>
-							<td><input class='form-control textinput' type='text' id='boxtitle' value='Title' /></td>
+							<td><input class='form-control textinput' type='text' id='boxtitle' placeholder='Title' value='Title' /></td>
 							<td><select id='boxcontent' onchange='changeDirectory(this);'><option value='DOCUMENT'>Document</option><option value='CODE'>Code</option><option value='IFRAME'>Preview</option></select></td>
 						</tr>
 						<tr>
@@ -299,8 +299,8 @@ Testing Link:
 						<legend>Example Info</legend>
 						<table width="100%">
 							<tr>
-								<td>Section Title:<input class='form-control textinput' type='text' id='secttitle' value='&lt;Secrion Title&gt;' /></td>
-								<td>Title:<input class='form-control textinput' type='text' id='title' value='&lt;Title&gt;' /></td>
+								<td>Section Title:<input class='form-control textinput' type='text' id='secttitle' placeholder='Section Title' value='&lt;Secrion Title&gt;' /></td>
+								<td>Title:<input class='form-control textinput' type='text' placeholder='Title' id='title' value='&lt;Title&gt;' /></td>
 							</tr>
 
 							<tr>
