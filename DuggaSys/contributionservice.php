@@ -672,7 +672,8 @@ if(strcmp($opt,"get")==0) {
     'amountInGroups' => $amountInGroups,
 		'hourlyevents' => $hourlyevents,
 		'timesheets' => $timesheets,
-		'commitchange' => $commitchanges
+		'commitchange' => $commitchanges,
+		'isSuperUser' => isSuperUser($_SESSION['uid'])
 	);
 
 	echo json_encode($array);

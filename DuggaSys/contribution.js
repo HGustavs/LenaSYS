@@ -1188,6 +1188,9 @@ function returnedSection(data) {
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(data);
   document.getElementById('commitDiagram').innerHTML = renderCommits(data);
   document.getElementById('content').innerHTML = str;
+  
+  //only create sidebar if the user is a superuser
+  if(data['isSuperUser']) createSidebar();
 }
 
 // Update the "Select Course" dropdown options
@@ -2004,6 +2007,36 @@ function toggleAccountRequestPane(){
     commitChangeArray["cid: "+commitChange[i]['cid']] = str;
   }
  }
+
+//Creates the sidebar for accepting and rejecting students when logged in as a superUser
+function createSidebar(){
+  var text = document.getElementById('accountRequests-pane');
+  text.style.display="block";
+  str = "";
+  str+= '<div id="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker">Account requests</span></div>';
+  str+= "<table class='accountRequestTable'style='width: 85%'  border='1'><br />";
+	str+= "<tr class='accountRequestTable' style=' background-color: #ffffff';>";
+  str+= "<th class='accountRequestTable'></th>";
+  str+= "<th class='accountRequestTable'>Name </th>";
+  str+= "<th class='accountRequestTable'>Status</th>";
+  str+= "<th class='accountRequestTable'></th>";
+  str+= "</tr>";
+
+  for (var row = 0; row < 10; row++) {
+    str+= "<tr class='accountRequestTable'>";
+
+    for (var col = 1; col <= 4; col++) {
+      str+= "<td class='accountRequestTable'>" + (col + (row * 4)) +"</td>";
+    }
+
+    str+= "</tr>";
+  }
+
+  str+= "</table>";
+  str+= "</div>";
+  text.innerHTML = str;
+}
+
 
 
 console.error
