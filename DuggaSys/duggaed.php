@@ -4,7 +4,7 @@ session_start();
 //pdoConnect();
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -83,14 +83,14 @@ session_start();
         			<div class='flexwrapper'><span>Auto-grade:</span><select id='autograde'></select></div>
         			<div class='flexwrapper'><span>Grade System:</span><select id='gradesys'></select></div>
         			<div class='flexwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
-              <div class='flexwrapper'><span>Start Date:</span><span><input class='textinput' type='date' id='qstart' value=''  /><select style='width:55px;' id='qstartt'></select><select style='width:55px;' id='qstartm'></select></span></div>
-              <div class='flexwrapper'><span>Deadline 1:</span><span><input class='textinput' type='date' id='deadline' value=''  /><select style='width:55px;' id='deadlinet'></select><select style='width:55px;' id='deadlinem'></select></span></div>
+              <div class='flexwrapper'><span>Start Date:</span><span><input class='textinput' type='date' id='qstart' title='Start date input' value=''  /><select style='width:55px;' id='qstartt'></select><select style='width:55px;' id='qstartm'></select></span></div>
+              <div class='flexwrapper'><span>Deadline 1:</span><span><input class='textinput' type='date' id='deadline' title='Deadline 1 input' value=''  /><select style='width:55px;' id='deadlinet'></select><select style='width:55px;' id='deadlinem'></select></span></div>
   						<div class='flexwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
-              <div class='flexwrapper'><span>Deadline 2:</span><span><input class='textinput' type='date' id='deadline2' value=''  /><select style='width:55px;' id='deadlinet2'></select><select style='width:55px;' id='deadlinem2'></select></span></div>
+              <div class='flexwrapper'><span>Deadline 2:</span><span><input class='textinput' type='date' id='deadline2' title='Deadline 2 input' value=''  /><select style='width:55px;' id='deadlinet2'></select><select style='width:55px;' id='deadlinem2'></select></span></div>
   						<div class='flexwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
-              <div class='flexwrapper'><span>Deadline 3:</span><span><input class='textinput' type='date' id='deadline3' value=''  /><select style='width:55px;' id='deadlinet3'></select><select style='width:55px;' id='deadlinem3'></select></span></div>
+              <div class='flexwrapper'><span>Deadline 3:</span><span><input class='textinput' type='date' id='deadline3' title='Deadline 3 input' value=''  /><select style='width:55px;' id='deadlinet3'></select><select style='width:55px;' id='deadlinem3'></select></span></div>
   						<div class='flexwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
-              <div class='flexwrapper'><span>Result release:</span><span><input class='textinput' type='date' id='release' value=''  /><select style='width:55px;' id='releaset'></select><select style='width:55px;' id='releasem'></select></span></div>
+              <div class='flexwrapper'><span>Result release:</span><span><input class='textinput' type='date' id='release' title='Result release input' value=''  /><select style='width:55px;' id='releaset'></select><select style='width:55px;' id='releasem'></select></span></div>
         		</div>
         		<div style='padding:5px;display:flex;justify-content: flex-end'>
         			<input id='saveDugga' class='submit-button' type='button' value='Save' onclick='updateDugga();' />
@@ -154,7 +154,7 @@ session_start();
                   </div>
                       <!-- Instruction for assignment -->
                   <div>
-                    <fieldset style="width:90%">
+                    <fieldset style="width:90%;">
                       <legend>Instruction file</legend>
                       <div style="display:flex;flex-wrap:wrap;flex-direction:row;">
                         <select name="type" id="type" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));">
@@ -175,21 +175,39 @@ session_start();
                     </div>
                   </div>
                   <div>
-                    <div>
+                    <div id="selectBox" style="display:none;">
                       <fieldset style="width:90%">
-                      <!-- Currently the diagrams aren't doing anything, they're just listed.
-                      They're fetched and parsed in returnedFile() in duggaed.js -->
+                      <!-- The json files are fetched and parsed in returnedFile() in duggaed.js -->
                         <legend>Add diagram to dugga</legend>
                         <select id="file" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))"></select>
                       </fieldset>
                     </div>
+                    <div>
+                      <fieldset style="width:90%">
+                        <legend>Error check</legend>
+                        <label for="errorActive">Active</label>
+                        <input type="checkbox" name="errorActive" id="errorActive" value="true" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>
+                      </fieldset>
+                    </div>
+                  </div>
+                    <!-- diagram types -->
+                  <div id="typeCheckbox">
+                    <fieldset style="width:90%">
+                      <legend>Diagram types allowed</legend>
+                      <div id="diagramTypesBox" style="display:flex;flex-wrap:wrap;flex-direction:row;">
+                        <label for="ER">ER</label>
+                        <input type="checkbox" name="ER" id="ER" value="true" checked="true" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>
+                        <label for="UML">UML</label>
+                        <input type="checkbox" name="UML" id="UML" value="true" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>  
+                      </div>
+                    </fieldset>
                   </div>
                       <!-- Submissions for dugga -->
                   <div>
                     <div id="duggaSubmissionForm">
-                      <fieldset style="width:90%">
+                      <fieldset style="width:90%; margin-top:5%;">
                         <legend>Submission types</legend>
-                        <div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;overflow:auto;"></div>
+                        <div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:column;overflow:hidden;"></div>
                       </fieldset>
                       <input type="button" class="submit-button" name="addfieldname" id="addfieldname" value="+" style="width:32px;" onclick="addVariantSubmissionRow();" />
                     </div>
@@ -199,9 +217,9 @@ session_start();
                 </form>
               </div>
               <div id="rightDivDialog" style='width: 50%; height:100%; display: inline-block;'>
-                <fieldset style="width:90%">
+                <fieldset style="width:90%; margin-left:5%;">
                   <legend>Search in the Table</legend>
-                  <div style="width:100%; height: 25px; display:flex; flex-wrap:wrap; flex-direction:row;">
+                  <div style="width:100%; height: 25px; display:flex; flex-wrap:nowrap; flex-direction:row;">
                     <input id="variantSearch" class="searchFiled" type="search" placeholder="Search.." style="flex-grow: 99; margin: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;"
                     onkeyup="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"onsearch="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"/>
                                         <button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
@@ -209,16 +227,16 @@ session_start();
                     </button>
                   </div>
                 </fieldset>
-                <fieldset style="width:90%">
+                <fieldset style="width:90%; margin-left:5%;">
                   <legend>Generated Param JSON</legend>
-                  <div id='parameter' style='min-height:120px'>
-                    <textarea id='variantparameterText' rows="5" style="min-height:100px" onchange="createJSONFormData()"></textarea>
+                  <div id='parameter' style='min-height:75px'>
+                    <textarea id='variantparameterText' rows="2" style="min-height:80px" onchange="createJSONFormData()"></textarea>
                   </div>
                 </fieldset>
-                <fieldset style="width:90%">
+                <fieldset style="width:90%; margin-left:5%;">
                   <legend>Answer</legend>
-                    <div id='variantanswer' style='min-height:120px;'>
-                      <textarea id='variantanswerText' rows="5" style="min-height:100px"></textarea>
+                    <div id='variantanswer' style='min-height:15px;'>
+                      <textarea id='variantanswerText' rows="2" style="min-height:40px; height:53px;"></textarea>
                     </div>
                 </fieldset>
               </div>

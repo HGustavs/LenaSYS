@@ -34,7 +34,7 @@ $js = array(
 
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
@@ -333,7 +333,7 @@ $js = array(
                             </div>
 
                             <div class="markText" style="flex-grow:1;">
-                                <textarea id="mrkdwntxt" style="font-family:monospace;" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
+                                <textarea id="mrkdwntxt" style="font-family:monospace;" oninput="updatePreview(this.value)" name="markdowntext" placeholder="Enter text here"></textarea>
                             </div>
                         </div>
                     </fieldset>

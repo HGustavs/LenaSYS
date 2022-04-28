@@ -24,8 +24,8 @@ let width = screen.width;
 var menuState = {
   idCounter: 0,
   /* Used to give elements unique ids. This might? brake
-						   because an element is not guaranteed to recieve the
-						   same id every time. */
+		 because an element is not guaranteed to recieve the
+		 same id every time. */
   hiddenElements: [], // Stores the id of elements who's childs should be hidden.
   arrowIcons: [] // Stores ids of arrows whose state needs to be remembered.
 }
@@ -73,9 +73,9 @@ function hideCollapsedMenus() {
   }
 }
 
-// Show down arrow by default and then hide this arrow and show the right
-//   arrow if it is in the arrowIcons array.
-//	 The other way around for the statistics section.
+/* Show down arrow by default and then hide this arrow and show the right
+   arrow if it is in the arrowIcons array.*/
+// The other way around for the statistics section.
 function toggleArrows() {
   $('.arrowComp').show();
   $('.arrowRight').hide();
@@ -98,7 +98,7 @@ function toggleArrows() {
 }
 menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
-// added some if-statements so escapePress wont always toggle
+// Added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation = 'click') {
 
   if (operation != "click") {
@@ -134,13 +134,17 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, tabs, feedbackenabled, feedbackquestion) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativedeadline, tabs, feedbackenabled, feedbackquestion) {
 
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
   var minuteArrOptions=["00","05","10","15","20","25","30","35","40","45","50","55"];
   var minuteArrValue=[0,5,10,15,20,25,30,35,40,45,50,55];
+  var weekArrOptions=["1","2","3","4","5","6","7","8","9","10","11","12"];
+  var weekArrValue=[1,2,3,4,5,6,7,8,9,10,11,12];
+  var weekdayArrOptions=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  var weekdayArrValue=[1,2,3,4,5,6,7];
 
   nameSet = false;
   if (entryname == "undefined") entryname = "New Header";
@@ -168,16 +172,25 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
-  $("#tabs").html(makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
+  $("#tabs").html(makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "0 tab + end", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 7, 4, 5, 6]));
   $("#highscoremode").html(makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]));
   if(deadline !== undefined){
     $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
     $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
     $("#setDeadlineValue").val(deadline.substr(0,10));
   }
+  if(relativedeadline !== undefined) {
+    var splitdeadline = relativedeadline.split(":");
+    // relativedeadline -> week:weekday:hour:minute
+    $("#relativedeadlinehours").html(makeoptions(splitdeadline[2],hourArrOptions,hourArrValue));
+    $("#relativedeadlineminutes").html(makeoptions(splitdeadline[3],minuteArrOptions,minuteArrValue));
+
+    $("#relativedeadlineweeks").html(makeoptions(splitdeadline[0],weekArrOptions,weekArrValue ));
+    $("#relativedeadlineweekdays").html(makeoptions(splitdeadline[1],weekdayArrOptions,weekdayArrValue));
+  }
   var groups = [];
   for (var key in retdata['groups']) {
-    // skip loop if the property is from prototype
+    // Skip loop if the property is from prototype
     if (!retdata['groups'].hasOwnProperty(key)) continue;
     groups.push(key);
   }
@@ -227,7 +240,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $("#editSection").css("display", "flex");
 
   //------------------------------------------------------------------------------
-  //checks if feedback is enabled and enables input box for feedbackquestion choice.
+  // Checks if feedback is enabled and enables input box for feedbackquestion choice.
   //------------------------------------------------------------------------------
   if(kind == 3){
     $('#inputwrapper-Feedback').css("display","block");
@@ -246,9 +259,9 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   }
 }
 
-//----------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
 // changedType: When kind of section has been changed we must update dropdown lists accordingly
-//----------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
 
 
 // If type "Test" or "Moment" then Grade system will be shown
@@ -327,14 +340,21 @@ function confirmBox(operation, item = null) {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionHideConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
+  } else if (operation == "openTabConfirmBox") {
+    active_lid = item ? $(item).parents('table').attr('value') : null;
+    $("#tabConfirmBox").css("display", "flex");
   } else if (operation == "deleteItem") {
     deleteItem(active_lid);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "hideItem" && !hideItemList.length == 0) {
     hideMarkedItems(hideItemList)
     $("#sectionHideConfirmBox").css("display", "none");
+  }else if (operation == "tabItem" && !hideItemList.length == 0) {
+    tabMarkedItems(hideItemList);
+      $("#tabConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
+    $("#tabConfirmBox").css("display", "none");
     $("#sectionHideConfirmBox").css("display", "none");
     $("#noMaterialConfirmBox").css("display", "none");
   }
@@ -390,10 +410,10 @@ function showCreateVersion() {
 }
 
 
-//kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
+// kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", 0, null);
+    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", "undefined", 0, null);
     clearHideItemList();
     newItem(itemtitle);
   }
@@ -440,7 +460,7 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-
+  param.relativedeadline = $("#relativedeadlineweeks").val()+":"+$("#relativedeadlineweekdays").val()+":"+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
 
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
@@ -490,6 +510,16 @@ function hideMarkedItems() {
     hideItemList = [];
   }
 
+  //----------------------------------------------------------------------------------
+  // tabMarkedItems: Tabs Item from Section List
+  //----------------------------------------------------------------------------------
+  function tabMarkedItems() {
+    for (i=0; i < hideItemList.length; i++) {  
+      var lid = hideItemList[i]; 
+    }
+      hideItemList = [];
+  }
+    
 //----------------------------------------------------------------------------------
 // updateItem: Updates Item from Section List
 //----------------------------------------------------------------------------------
@@ -517,18 +547,18 @@ function newItem(itemtitle) {
   AJAXService("NEW", prepareItem(), "SECTION");
   $("#editSection").css("display", "none");
 
-  //Toggle for alert when create a New Item
+  // Toggle for alert when create a New Item
   var element = document.getElementById("createAlert");
   element.classList.toggle("createAlertToggle");
-  //Set text for the alert when create a New Item
+  // Set text for the alert when create a New Item
   document.getElementById("createAlert").innerHTML = itemtitle + " has been created!";
-  //Duration time for the alert before remove
+  // Duration time for the alert before remove
   setTimeout(function(){
     $("#createAlert").removeClass("createAlertToggle");
     document.getElementById("createAlert").innerHTML = "";
   },3000);
 
-  //setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
+  // setTimeout(scrollToBottom, 200);  Scroll to the bottom to show newly created items.
 }
 
 //----------------------------------------------------------------------------------
@@ -538,7 +568,7 @@ function newItem(itemtitle) {
 function createVersion() {
 
   var param = {};
-  //param.courseid = querystring['courseid'];
+  // param.courseid = querystring['courseid'];
   param.cid = querystring['courseid'];
   param.versid = document.getElementById("cversid").value;
   param.versname = document.getElementById("versname").value;
@@ -556,10 +586,10 @@ function createVersion() {
     alert("Version Name and Version ID must be entered!");
   } else {
     if (param.copycourse != "None") {
-      //create a copy of course version
+      // Create a copy of course version
       AJAXService("CPYVRS", param, "COURSE");
     } else {
-      //create a fresh course version
+      // Create a fresh course version
       AJAXService("NEWVRS", param, "COURSE");
     }
     $("#newCourseVersion").css("display", "none");
@@ -595,7 +625,7 @@ function updateVersion() {
   querystring["coursename"] + "&coursevers=" +document.getElementById("eversid").value );
 }
 
-//queryString for coursename is added
+// QueryString for coursename is added
 function goToVersion(courseDropDown) {
   var value = courseDropDown.options[courseDropDown.selectedIndex].value;
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + 
@@ -664,17 +694,23 @@ function returnedGroups(data) {
   }
 }
 
-//dugga row click functionality
+// Dugga row click functionality
 function duggaRowClick(rowElement){
-  window.location.assign(rowElement.parentNode.querySelector('.internal-link').href); //get link from child and redirect
+  let children = rowElement.parentNode.querySelectorAll("*"); //get all children + grandchildren of parent node.
+  for(let i = 0; i < children.length;i++){
+    if(children[i].href != null){                             //find the one with href
+      window.location.assign(children[i].href);               //go to to the url.
+      return;
+    }
+  }
 }
 
 function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
 
-  //data variable is put in localStorage which is then used in Codeviewer
-	//to get the right order when going backward and forward in code examples
+  // Data variable is put in localStorage which is then used in Codeviewer
+	// To get the right order when going backward and forward in code examples
 	localStorage.setItem("ls-section-data", JSON.stringify(data));
 
   var now = new Date();
@@ -727,7 +763,7 @@ function returnedSection(data) {
           }
           bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
         }
-        // save vers, versname and motd from table vers as global variables.
+        // Save vers, versname and motd from table vers as global variables.
         versnme = versionname;
         if (querystring['coursevers'] == item['vers']) motd = item['motd'] ||'UNK';
         if (querystring['coursevers'] == item['vers']) versnr = item['vers'] || 'UNK';
@@ -749,7 +785,7 @@ function returnedSection(data) {
       document.getElementById("FABStatic2").style.display = "None";
     }
 
-    // hide som elements if to narrow
+    // Hide som elements if to narrow
     var hiddenInline = "";
     var showInline = true;
     if ($(window).width() < 480) {
@@ -814,7 +850,7 @@ function returnedSection(data) {
         var itemKind = parseInt(item['kind']);
         if (itemKind === 3 || itemKind === 4) {
           
-          //If there exists atleast one test or moment swimlanes shall be hidden
+          // If there exists atleast one test or moment swimlanes shall be hidden
           hasDuggs = true;
 
           var grady = -1;
@@ -887,6 +923,8 @@ function returnedSection(data) {
             str += addColorsToTabSections(itemKind, itemVisible, "L");
             str += addColorsToTabSections(itemKind, itemVisible, "L");
             str += addColorsToTabSections(itemKind, itemVisible, "E");
+          }else if (itemGradesys == 7) {
+            str += addColorsToTabSections(itemKind, itemVisible, "E");
           }
         }
 
@@ -915,7 +953,7 @@ function returnedSection(data) {
           kk++;
 
         } else if (itemKind === 4) {
-          //new moment bool equals true
+          // New moment bool equals true
           momentexists = item['lid'];
           str += `<td class='moment item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
@@ -925,7 +963,7 @@ function returnedSection(data) {
           str += `<td class='example item' placeholder='${momentexists}' id='I${item['lid']}' `;
           kk++;
 
-        } else if (itemKind === 6) { //Group
+        } else if (itemKind === 6) { // Group
           // Alt 1
           let grpmembershp = data['grpmembershp'].split(" ");
           var grptype = item['grptype'] + "_";
@@ -950,7 +988,7 @@ function returnedSection(data) {
           str += `<td class='section-message item' onclick='getGroups(\"${grp}\");
           ' placeholder='${momentexists}' id='I${item['lid']}' `;
 
-        } else if (itemKind === 7) { //Message
+        } else if (itemKind === 7) { // Message
           if (!(item['link'] == "" || item['link'] == "---===######===---")) {
             str += `<td style='width:32px;'><img title='Important message' 
             src='../Shared/icons/warningTriangle.svg'></td>`;
@@ -969,15 +1007,15 @@ function returnedSection(data) {
           str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;
           ' title='${item['entryname']}'>`;
           str += `<span class='ellipsis listentries-span'>${item['entryname']}</span>`;
-          str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}' class='arrowComp' style='display:inline-block;'>`;
-          str += `<img src='../Shared/icons/right_complement.svg' id='arrowRight${item['lid']}' class='arrowRight' style='display:none;'></div>`;
+          str += `<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp${item['lid']}' class='arrowComp' style='display:inline-block;'>`;
+          str += `<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight${item['lid']}' class='arrowRight' style='display:none;'></div>`;
         } else if (itemKind == 4) {
           // Moment
           var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
           str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
           str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
-          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
+          str += "<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
           str += "</div>";
         } else if (itemKind == 2) {
           // Code Example
@@ -1042,7 +1080,6 @@ function returnedSection(data) {
 
         str += "</td>";
         
-        //
 
         // Add generic td for deadlines if one exists
         if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
@@ -1078,7 +1115,7 @@ function returnedSection(data) {
           var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
-          // create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
+          // Create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
             if (hasGracetimeExpired(deadline, dateTimeSubmitted)) {
               str += `<td style='width:25px;'><img style='width:25px; padding-top:3px' 
@@ -1096,6 +1133,12 @@ function returnedSection(data) {
           str += "</td>";
         }
 
+        //Generate new tab link
+        str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+          str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Open link in new tab' class='' 
+          src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
+          str += "</td>";
 
         // Generate Canvas Link Button
         if (data['writeaccess'] || data['studentteacher']) {
@@ -1118,12 +1161,12 @@ function returnedSection(data) {
           str += "><img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
-          item['highscoremode'], item['comments'], item['grptype'], item['deadline'],
+          item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
           item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
           str += "</td>";
         }
         
-        // trashcan
+        // Trashcan
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
@@ -1132,11 +1175,11 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        // checkbox
+        // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:25px;' class='" + makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
-            str += "<input type='checkbox' name='arrayCheckBox' onclick='markedItems(this)'>";
+            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' onclick='markedItems(this)'>";
             str += "</td>";      
         }
         
@@ -1254,18 +1297,25 @@ function returnedSection(data) {
   }
 }
 
+function openCanvasLink(btnobj){
+  link = btnobj.parentNode.parentNode.querySelector('a').href;
+  window.open(link, "_blank");
+}
 
 function showCanvasLinkBox(operation,btnobj){
   if(operation == "open"){
-    var canvasLink = "This is a test link."//"<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('.internal-link').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
+
+    var canvasLink = btnobj.parentNode.parentNode.querySelector('a').href; // "<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('.internal-link').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
+    //var canvasLink = "<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('a').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
+
     if(canvasLink == null){
       canvasLink = "ERROR: Failed to get canvas link.";
     }
-    //navigator.clipboard.writeText(canvasLink); method that requires local host or HTTPS which we dont have here.
-    //alternative route with a text area.
+    // navigator.clipboard.writeText(canvasLink);  Method that requires local host or HTTPS which we dont have here.
+    // Alternative route with a text area.
     let textArea = document.createElement("textarea");
     textArea.value = canvasLink;
-    // make the textarea out of viewport
+    // Make the textarea out of viewport
     textArea.style.position = "fixed";
     textArea.style.left = "-999999px";
     textArea.style.top = "-999999px";
@@ -1430,7 +1480,7 @@ function drawSwimlanes() {
 
   var deadlineEntries = [];
   var momentEntries = [];
-  //var current = new Date(2015, 02, 19);
+  // var current = new Date(2015, 02, 19);
   var current = new Date();
 
   var momentno = 0;
@@ -1479,7 +1529,7 @@ function drawSwimlanes() {
   });
 
 
-  //var weekLength = weeksBetween(startdate, enddate);
+  // var weekLength = weeksBetween(startdate, enddate);
   var weekLength = Math.ceil((enddate - startdate) / (7 * 24 * 60 * 60 * 1000));
   var currentWeek = weeksBetween(current, startdate);
   var daywidth = 10;
@@ -1536,7 +1586,7 @@ function drawSwimlanes() {
 
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = `url("#fadeTextGrey")`;
-        //var textcol = `#FFFFFF`;
+        // var textcol = `#FFFFFF`;
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
           textcol = `url("#fadeTextRed")`;
         } else if((fillcol == "#FFEB3B") && (entry.deadline - current < 0) && (entry.submitted != null)) {
@@ -1550,7 +1600,7 @@ function drawSwimlanes() {
   }
 
   // Setting a temporary date on 'current' in case dates not updated in course 
-  // to adjust the red line showing the day in swimlanes
+  // To adjust the red line showing the day in swimlanes
   var newCurrent;
   var daySinceStart;
 
@@ -1578,7 +1628,7 @@ function drawSwimlanes() {
 
   var minDistance;
   var min_index = -1;
-  //Looks through all the deadline entries and finds the one with the shortest distance to current date
+  // Looks through all the deadline entries and finds the one with the shortest distance to current date
   for(var i = 0; i < deadlineEntries.length;i++) {
       if(deadlineEntries[i].deadline >= current) {
         if(deadlineEntries[i].deadline - current < minDistance || minDistance == undefined) {
@@ -1587,7 +1637,7 @@ function drawSwimlanes() {
         }
       }
     }
-   //index * height = topPos
+   // index * height = topPos
   var topPos =  min_index * weekheight;  
   document.getElementById('statisticsSwimlanes').scrollTop = topPos;
 
@@ -1596,7 +1646,7 @@ function drawSwimlanes() {
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
 $(document).mouseover(function (e) {
-    //showFabList(e);
+    // showFabList(e);
     FABMouseOver(e);
 });
 
@@ -1648,7 +1698,7 @@ function mouseDown(e) {
 
   var box = $(e.target);
 
-  // is the clicked element a loginbox? or is it inside a loginbox?
+  // Is the clicked element a loginbox? or is it inside a loginbox?
   if (box[0].classList.contains("loginBox")) {
     isClickedElementBox = true;
   } else if ((findAncestor(box[0], "loginBox") != null) &&
@@ -1665,8 +1715,8 @@ function mouseDown(e) {
 //----------------------------------------------------------------------------------
 
 function mouseUp(e) {
-  // if the target of the click isn't the container nor a descendant of the container, 
-  // or if we have clicked inside box and dragged it outside and released it
+  /* If the target of the click isn't the container nor a descendant of the container, 
+     or if we have clicked inside box and dragged it outside and released it */
   if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) &&
   $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
 
@@ -1687,12 +1737,12 @@ function mouseUp(e) {
 $(window).keyup(function (event) {
   var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
   if (event.keyCode == 27) {
-    // if key is escape
+    // If key is escape
     showSaveButton();
      hamburgerChange("escapePress");
-    document.activeElement.blur(); // to lose focus from the newItem button when pressing escape
+    document.activeElement.blur(); // To lose focus from the newItem button when pressing escape
   } else if (event.keyCode == 13) {
-    //Remember that keycode 13 = enter button
+    // Remember that keycode 13 = enter button
     document.activeElement.blur();
     var saveButtonDisplay = ($('#saveBtn').css('display'));
     var editSectionDisplay = ($('#editSection').css('display'));
@@ -1806,21 +1856,21 @@ $(window).load(function () {
     sessionStorage.setItem('closeUpdateForm', true);
   });
 
-  //retrieveAnnouncementAuthor();
-  //retrieveAnnouncementsCards();
+  // retrieveAnnouncementAuthor();
+  // retrieveAnnouncementsCards();
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
   multiSelect();
-  //toggleFeedbacks();
+  // toggleFeedbacks();
 });
 
 
-//show the full announcement
+// Show the full announcement
 function showAnnouncement(){
   document.getElementById('fullAnnnouncementOverlay').style.display="block";
 }
 
-//retrieve the announcment author 
+// Retrieve the announcment author 
 function retrieveAnnouncementAuthor(){
   var uname = $("#userName").html();
   var xmlhttp = new XMLHttpRequest();
@@ -1840,7 +1890,7 @@ function retrieveAnnouncementAuthor(){
 
 }
 
-//retrieve course profile
+// Retrieve course profile
 function retrieveCourseProfile(userid){
   $(".selectLabels label input").attr("disabled", true);
   var cid = '';
@@ -1916,7 +1966,7 @@ function getStudents(cid, userid){
   }
 }
 
-//validate create announcement form
+// Validate create announcement form
 function validateCreateAnnouncementForm(){
   $("#announcementForm").submit(function(e){
     var announcementTitle = ($("#announcementTitle").val()).trim();
@@ -1962,7 +2012,7 @@ function validateUpdateAnnouncementForm(){
     });  
   });
 }
-//retrive announcements
+// Retrive announcements
 function retrieveAnnouncementsCards(){
   var currentLocation = $(location).attr('href');
   var url = new URL(currentLocation);
@@ -2005,7 +2055,7 @@ function retrieveAnnouncementsCards(){
     }
   });
 }
-//update anouncement form
+// Update anouncement form
 function updateannouncementForm(updateannouncementid, cid, versid, tempFuction){
   var xmlhttp = new XMLHttpRequest();
   
@@ -2048,7 +2098,7 @@ function handleResponse(xhttp, updateannouncementid, cid, versid){
 
 }
 
-//announcement card grid and list view
+// Announcement card grid and list view
 function displayListAndGrid(){
   $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn">'+
   '<i alt="list icon" class="fa fa-bars"></i> List</button>'+
@@ -2134,7 +2184,7 @@ function scrollToTheAnnnouncementForm(){
 function closeActionLogDisplay(){
   $(".closeActionLogDisplay").parent().remove();
 }
-//read less or more announcement card
+// Read less or more announcement card
 function readLessOrMore(paragraph){
     var maxLength = 70;
 
@@ -2251,7 +2301,7 @@ function multiSelect(){
     $(select).focus();
   }).mousemove(function(e){e.preventDefault()});
 }
-//start of recent feedback from the teacher
+// Start of recent feedback from the teacher
 function toggleFeedbacks(){
   let uname = $("#userName").html();
   let studentid, parsed_data, parsed_uid, duggaFeedback, feedbackComment, unseen_feedbacks;
@@ -2365,6 +2415,8 @@ function addClasses() {
   var links = document.getElementsByTagName('a');
 
   for (var i = 0; i < links.length; i++) {
+    if(links[i].href.includes("github.com") || links[i].href.includes("youtube.com")){
+      links[i].setAttribute('target', '_blank');}
     if ((links[i].innerHTML.toLowerCase().indexOf("example") !== -1) ||
     (links[i].innerHTML.toLowerCase().indexOf("exempel") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("examples") !== -1)) {
       links[i].classList.add("example-link");
@@ -2403,15 +2455,16 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
     return false;
   }
 }
-/*Validates all versionnames*/
+// ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
-  //Regex for 2 capital letters, 2 numbers
-  var Name = /^HT\d{2}$|^VT\d{2}$|^ST\d{2}$/;
+  //Regex for letters, numbers, and dashes
+  var Name = /^[A-Za-z0-9_ \-.]+$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
+  var val = document.getElementById("versname").value;
 
   //if versionname is 2 capital letters, 2 numbers
-  if (name.value.match(Name)) {
+  if (val.match(Name)) {
     name.style.borderColor = "#383";
     name.style.borderWidth = "2px";
     x.style.display = "none";
@@ -2422,6 +2475,7 @@ function validateVersionName(versionName, dialogid) {
       window.bool4 = true;
     }
 
+    return true;
   } else {
 
     name.style.borderColor = "#E54";
@@ -2434,18 +2488,20 @@ function validateVersionName(versionName, dialogid) {
     if (versionName === 'eversname') {
       window.bool4 = false;
     }
+    return false;
   }
 }
 
-/*Validate versionID */
+// ------ Validate versionID ------
 function validateCourseID(courseid, dialogid) {
-  //regex for only numbers, between 3 and 6 numbers
-  var Code = /^[0-9]{3,6}$/;
+
+  //regex numbers, letters and dashes, between 3 and 8 numbers
+  var Code = /^[A-Za-z0-9_.]{3,8}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
   var val = document.getElementById("cversid").value;
 
-  if (code.value.match(Code)) {
+  if (val.match(Code)) {
     code.style.borderColor = "#383";
     code.style.borderWidth = "2px";
     x2.style.display = "none";
@@ -2453,10 +2509,11 @@ function validateCourseID(courseid, dialogid) {
   } else {
 
     code.style.borderColor = "#E54";
-    x2.innerHTML = "Only numbers(between 3-6 numbers)";
+    x2.innerHTML = "numbers, letters and dashes(between 3-8)";
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
+    return false;
   }
 
   const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
@@ -2466,16 +2523,21 @@ function validateCourseID(courseid, dialogid) {
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
+  }else{
+    return true;
   }
 
+  return false
 }
 
-function validateMOTD(motd, dialogid){
+function validateMOTD(motd,  syntaxdialogid, rangedialogid, submitButton){
+  const saveButton = document.getElementById(submitButton);
   var emotd = document.getElementById(motd);
   var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
   var EmotdRange = /^.{0,50}$/;
-  var x4 = document.getElementById(dialogid);
-  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
+  var x4 = document.getElementById(syntaxdialogid);
+	var x8 = document.getElementById(rangedialogid);
+	if (emotd.value.match(Emotd) ) {
     emotd.style.borderColor = "#383";
     emotd.style.borderWidth = "2px";
     x4.style.display = "none";
@@ -2487,9 +2549,27 @@ function validateMOTD(motd, dialogid){
     window.bool9 = false;
   }
 
+	if (emotd.value.match(EmotdRange)){
+		emotd.style.borderColor = "#383";
+		emotd.style.borderWidth = "2px";
+		x8.style.display = "none";
+		window.bool9 = true;
+	}else{
+		emotd.style.borderColor = "#E54";
+		x8.style.display = "block";
+		emotd.style.borderWidth = "2px";
+		window.bool9 = false;
+	}
+  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
+		saveButton.disabled = false;
+    return true;
+	}else{
+		saveButton.disabled = true;
+    return false;
+	}
 }
 
-/*Validates that start date comes before end date*/
+// ------ Validates that start date comes before end date ------
 function validateDate(startDate, endDate, dialogID) {
   var sdate = document.getElementById(startDate);
   var edate = document.getElementById(endDate);
@@ -2506,8 +2586,9 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderWidth = "2px";
     x3.innerHTML = "Both start date and end date must be filled in";
     x3.style.display = "block";
+    return false;
   }
- // if start date is less than end date
+ // If start date is less than end date
   if (date1 < date2) {
     sdate.style.borderColor = "#383";
     edate.style.borderColor = "#383";
@@ -2520,8 +2601,9 @@ function validateDate(startDate, endDate, dialogID) {
     if (startDate === 'estartdate' && endDate === 'eenddate') {
       window.bool6 = true;
     }
+    return true;
   }
-  // if end date is less than start date
+  // If end date is less than start date
   if (date2 < date1) {
     sdate.style.borderColor = "#E54";
     edate.style.borderColor = "#E54";
@@ -2535,6 +2617,7 @@ function validateDate(startDate, endDate, dialogID) {
     if (startDate === 'estartdate' && endDate === 'eenddate') {
       window.bool6 = false;
     }
+    return false;
   }
 }
 
@@ -2549,7 +2632,7 @@ function showCourseDate(ddate, dialogid){
   return isCorrect;
 }
 
-/*Validates if deadline is between start and end date*/
+// ------ Validates if deadline is between start and end date ------
 function validateDate2(ddate, dialogid) {
   var inputDeadline = document.getElementById("inputwrapper-deadline");
   if (window.getComputedStyle(inputDeadline).display !== "none") {
@@ -2557,17 +2640,18 @@ function validateDate2(ddate, dialogid) {
   var ddate = document.getElementById(ddate);
   var x = document.getElementById(dialogid);
   var deadline = new Date(ddate.value);
-  //Dates from database
+  // Dates from database
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
 
-  //if deadline is between start date and end date
+  // If deadline is between start date and end date
   if (startdate < deadline && enddate > deadline) {
     ddate.style.borderColor = "#383";
     ddate.style.borderWidth = "2px";
     x.style.display = "none";
     window.bool8 = true;
 
+    return true;
   } else {
 
     ddate.style.borderColor = "#E54";
@@ -2580,6 +2664,7 @@ function validateDate2(ddate, dialogid) {
   else{
     window.bool8 = true;
   }
+  return false;
 }
 
 function validateSectName(name){
@@ -2593,14 +2678,16 @@ function validateSectName(name){
     emotd.style.borderColor = "#383";
     $('#dialog10').fadeOut();
     window.bool10 = true;
+    return true;
   } else { // Invalid string
     emotd.style.borderColor = "#E54";
     window.bool10 = false;
     $('#dialog10').fadeIn();
+    return false;
   }
 }
 
-/*recursive functions to retrieve the deepest DOM element */
+// ------ Recursive functions to retrieve the deepest DOM element ------
 function unNestElement(node){
   if(node == null)
     return;
@@ -2635,7 +2722,7 @@ function removeGrade(string){
   return result;
 }
 
-/* Write a function which gets all anchor elements of class "internal-link" */
+// ------ Write a function which gets all anchor elements of class "internal-link" ------
 function getCourseElements(){
   let list = [];
   var duggor = Array.from(document.getElementsByClassName("ellipsis nowrap"));
@@ -2652,18 +2739,132 @@ function getCourseElements(){
   }
   return list;
 }
-
-/*Validates all forms*/
-
-function validateForm(formid) {
-
+//Validate form but do not perform it.
+function quickValidateForm(formid, submitButton){
+  const saveButton = document.getElementById(submitButton);
+  var valid = true;
   //Validates Item form
   if (formid === 'editSection') {
     var sName = document.getElementById("sectionname").value;
     var deadDate = document.getElementById("setDeadlineValue").value;
     var item = document.getElementById("editSectionDialogTitle").innerHTML;
+    var endialog = document.getElementById("EndDialog1");
+    endialog.innerHTML = "";
+    valid = true;
+    var deadlinepart = document.getElementById('inputwrapper-deadline');
+    var deadlinedisplayattribute = deadlinepart.style.display; 
+    if (deadlinedisplayattribute == 'block'){
+      valid = valid && (validateSectName('sectionname') && showCourseDate('setDeadlineValue','dialog8'));
+    }else{
+      valid = valid && validateSectName('sectionname');
+    }
+   
 
     //If fields empty
+    if (sName == null || sName == "") {
+      //alert("Fill in all fields");
+      endialog.innerHTML += "Fill in all fields </br>";
+      valid = valid && false;
+    }
+
+    //Name is a duplicate
+    if(sName == item){ 
+      window.bool11 = true;
+
+    }
+
+    // if all information is correct
+    if (window.bool10 == true && window.bool11 == true) {
+      
+      //updateItem();
+      //updateDeadline();
+
+    } else {
+      //alert("You have entered incorrect information");
+      endialog.innerHTML += "Entered information is incorrect </br>";
+    }
+    if (valid){
+      saveButton.disabled = false;
+    }else{
+      saveButton.disabled = true;
+    }
+  }
+   //Validates new course version form
+  if (formid === 'newCourseVersion') {
+    var versName = document.getElementById("versname").value;
+    var versId = document.getElementById("cversid").value;
+    var endialog = document.getElementById("EndDialog2");
+    endialog.innerHTML = "";
+    valid = true;
+
+    valid = valid && validateCourseID('cversid', 'dialog2');
+    valid = valid && validateVersionName('versname', 'dialog');
+    valid = valid && validateDate('startdate','enddate','dialog3');
+    valid = valid && validateMOTD('vmotd','dialog4', 'dialog42', 'submitCourseMotd');
+
+    //If fields empty
+    if (versName == null || versName == "", versId == null || versId == "") {
+      //alert("Fill in all fields");
+      endialog.innerHTML += "Fill in all fields </br>";
+    }
+    // if all information is correct
+    if (window.bool5 === true && window.bool3 === true && window.bool === true) {
+    } else {
+      //alert("You have entered incorrect information");
+      endialog.innerHTML += "Entered information is incorrect </br>";
+    }
+    if (valid){
+      saveButton.disabled = false;
+    }else{
+      saveButton.disabled = true;
+    }
+  }
+
+  // validates edit course version form
+  if (formid === 'editCourseVersion') {
+    var eversName = document.getElementById("eversname").value;
+    var endialog = document.getElementById("EndDialog3");
+    endialog.innerHTML = "";
+    valid = true;
+
+    valid = valid && validateVersionName('eversname', 'dialog5')
+    valid = valid && validateDate('estartdate','eenddate','dialog6')
+    valid = valid && validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse')
+
+
+    //If fields empty
+    if (eversName == null || eversName == "") {
+      //alert("Fill in all fields");
+      endialog.innerHTML += "Fill in all fields </br>";
+    }
+
+    // if all information is correct
+    if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
+    } else {
+      //alert("You have entered incorrect information");
+      endialog.innerHTML += "Entered information is incorrect </br>";
+    }
+    if (valid){
+      saveButton.disabled = false;
+    }else{
+      saveButton.disabled = true;
+    }
+  }
+ 
+}
+
+
+/*Validates all forms*/
+
+function validateForm(formid) {
+
+  // Validates Item form
+  if (formid === 'editSection') {
+    var sName = document.getElementById("sectionname").value;
+    var deadDate = document.getElementById("setDeadlineValue").value;
+    var item = document.getElementById("editSectionDialogTitle").innerHTML;
+
+    // If fields empty
     if (sName == null || sName == "") {
       alert("Fill in all fields");
 
@@ -2682,6 +2883,18 @@ function validateForm(formid) {
 
     // if all information is correct
     if (window.bool10 == true && window.bool11 == true) {
+      
+      //Toggle for alert when update a item
+      var element = document.getElementById("updateAlert");
+      element.classList.toggle("createAlertToggle");
+      //Set text for the alert when update a item
+      document.getElementById("updateAlert").innerHTML = "The item is now updated!";
+      //Duration time for the alert before remove
+      setTimeout(function(){
+        $("#updateAlert").removeClass("createAlertToggle");
+        document.getElementById("updateAlert").innerHTML = "";
+      },3000);
+
       updateItem();
       updateDeadline();
 
@@ -2699,7 +2912,7 @@ function validateForm(formid) {
       alert("Fill in all fields");
 
     }
-    // if all information is correct
+    // If all information is correct
     if (window.bool5 === true && window.bool3 === true && window.bool === true) {
       alert('New version created');
       createVersion();
@@ -2710,17 +2923,17 @@ function validateForm(formid) {
     }
   }
 
-  // validates edit course version form
+  // Validates edit course version form
   if (formid === 'editCourseVersion') {
     var eversName = document.getElementById("eversname").value;
 
-    //If fields empty
+    // If fields empty
     if (eversName == null || eversName == "") {
       alert("Fill in all fields");
 
     }
 
-    // if all information is correct
+    // If all information is correct
     if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
       alert('Version updated');
       updateVersion();
@@ -2732,7 +2945,7 @@ function validateForm(formid) {
 }
 
 //------------------------------------------------------------------------------
-//displays dialogue box and the content
+// Displays dialogue box and the content
 //------------------------------------------------------------------------------
 function showUserFeedBack(lid,feedbackquestion) {
 	AJAXService("GETUF", { courseid: querystring['courseid'], moment: lid }, "USERFB");
@@ -2743,7 +2956,7 @@ function showUserFeedBack(lid,feedbackquestion) {
 }
 
 //------------------------------------------------------------------------------
-//returns the feedbackdata and displays the feedback and statistics.
+// Returns the feedbackdata and displays the feedback and statistics.
 //------------------------------------------------------------------------------
 function returnedUserFeedback(data){
   if(data.userfeedback.length == 0){
@@ -2770,7 +2983,7 @@ function returnedUserFeedback(data){
   
 }
 //------------------------------------------------------------------------------
-//Creates a table with the Feedback data.
+// Creates a table with the Feedback data.
 //------------------------------------------------------------------------------
 function createUserFeedbackTable(data){
   var str = "<table id='feedbacktable'  style='border-collapse: collapse' class='list'>";
@@ -2806,7 +3019,7 @@ function createUserFeedbackTable(data){
 }
 
 //------------------------------------------------------------------------------
-//opens an email to the student
+// Opens an email to the student
 //------------------------------------------------------------------------------
 function contactStudent(entryname,username){
   
@@ -2814,7 +3027,7 @@ function contactStudent(entryname,username){
   "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga "+entryname;
 }
 //------------------------------------------------------------------------------
-//Displays the feedback question input on enable-button toggle. 
+// Displays the feedback question input on enable-button toggle. 
 //------------------------------------------------------------------------------
 function showFeedbackquestion(){
   if($("#fdbck").prop('checked')){
@@ -2833,7 +3046,7 @@ $(document).ready(function(){
   });
 });
 
-/*Show the up-arrow when user has scrolled down 200 pixels on the page*/
+// Show the up-arrow when user has scrolled down 200 pixels on the page
 window.onscroll = function() {scrollToTop()};
 function scrollToTop() {
   var scroll = document.getElementById("fixedScroll");

@@ -344,6 +344,50 @@ function createVersion(){
 
 }
 
+// //----------------------------------------
+// // Dark mode toggle button listener.  
+// //----------------------------------------
+
+// /*/ The code below is waitng for the page to load, and check when the user changes his/her 
+// operative system to either black or white mode . /*/
+
+// const themeStylesheet = document.getElementById('themeBlack');
+
+// document.addEventListener('DOMContentLoaded', () => {
+// 	const storedTheme = localStorage.getItem('themeBlack');
+// 	if(storedTheme){
+// 			themeStylesheet.href = storedTheme;
+// 	}
+// 	const themeToggle = document.getElementById('theme-toggle');
+// 	themeToggle.addEventListener('click', () => {
+// 			// if it's light -> go dark
+// 			if(themeStylesheet.href.includes('blackTheme')){
+// 					themeStylesheet.href = "../Shared/css/whiteTheme.css";
+// 					localStorage.setItem('themeBlack',themeStylesheet.href)
+// 					// themeToggle.innerText = 'Switch to light mode';
+// 			} else if(themeStylesheet.href.includes('whiteTheme')) {
+// 					// if it's dark -> go light
+// 					themeStylesheet.href = "../Shared/css/blackTheme.css";
+// 					localStorage.setItem('themeBlack',themeStylesheet.href)
+// 					// themeToggle.innerText = 'Switch to dark mode';
+// 			}		
+// 	})
+// })
+
+// //It actively checks if the "theme" changes on the operating system and changes colors based on it. It override your preferences.
+// window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+// 	const newColorScheme = e.matches ? "dark" : "light";
+// 	if(newColorScheme == "dark") {
+// 		themeStylesheet.href = "../Shared/css/blackTheme.css";
+// 		localStorage.setItem('themeBlack',themeStylesheet.href)
+// 	}
+// 	else {
+// 		themeStylesheet.href = "../Shared/css/whiteTheme.css";
+// 		localStorage.setItem('themeBlack',themeStylesheet.href)
+// 	}
+// });
+
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -375,7 +419,7 @@ function returnedCourse(data)
 	// Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
 	str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;''><a href='https://github.com/HGustavs/LenaSYS'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div id='CourseOrgSys'> Course Organization System</div>"
 	if (data['writeaccess']){
-		str+="<img alt='settings icon' style='margin-left:17px;cursor:pointer;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings(); 'title='Edit Server Settings'>"
+		str+="<img alt='settings icon' class='whiteIcon' style='margin-left:17px;cursor:pointer;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings(); 'title='Edit Server Settings'>"
 	}
 	str+="</div>";
 	// For now we only have two kinds of sections
@@ -415,11 +459,11 @@ function returnedCourse(data)
         
         		str += "</span>";
       		} else {
-        		str += "<div class='ellipsis' style='margin-right:15px;'>";
+        		str += "<div class='ellipsis'>";
 				if(item['registered'] == true || uname=="Guest") {
           			str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + item['coursename'] + "</a></span>";
         		}else{
-          			str += "<span style='margin-right:15px;opacity:0.3'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode']+ "] '>" + item['coursename'] + "</a></span>";
+          			str += "<span style='opacity:0.3'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode']+ "] '>" + item['coursename'] + "</a></span>";
         		}
         		str += "</div>";
 			}
@@ -496,7 +540,7 @@ function setActiveCodes() {
 }
 
 const regex = {
-	coursename: /^[A-ZÅÄÖa-zåäö]+( (- )?[A-ZÅÄÖa-zåäö]+)*$/,
+	coursename: /^[A-ZÅÄÖa-zåäö]+( ?(- ?)?[A-ZÅÄÖa-zåäö]+)*$/,
 	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/
 };
 
@@ -543,6 +587,35 @@ function elementIsValid(element) {
 	return false;
 }
 
+
+
+//Validates whole form but don't implement it.
+function quickValidateForm(formid, submitButton){
+	
+	const formContainer = document.getElementById(formid);
+	const inputs = formContainer.querySelectorAll("input.validate");
+	const saveButton = document.getElementById(submitButton);
+	let numberOfValidInputs = 0;
+
+	//Count number of valid inputs
+	inputs.forEach(input => {
+		if(elementIsValid(input)) {
+			numberOfValidInputs++;
+		}
+	});
+
+	//If all inputs were valid create course or update course depending on id of form
+	if(numberOfValidInputs === inputs.length) {
+		saveButton.disabled = false;
+		return true;
+	} else{
+		saveButton.disabled = true;
+	}
+	
+	return false;
+}
+
+
 //Validates whole form
 function validateForm(formid) {
 	const formContainer = document.getElementById(formid);
@@ -581,12 +654,14 @@ function validateForm(formid) {
 		}
 	}
 }
-function validateMOTD(motd, dialogid){
+function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton){
+	const saveButton = document.getElementById(submitButton);
 	var emotd = document.getElementById(motd);
 	var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
 	var EmotdRange = /^.{0,100}$/;
-	var x4 = document.getElementById(dialogid);
-	if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
+	var x4 = document.getElementById(syntaxdialogid);
+	var x8 = document.getElementById(rangedialogid);
+	if (emotd.value.match(Emotd) ) {
 	  emotd.style.borderColor = "#383";
 	  emotd.style.borderWidth = "2px";
 	  x4.style.display = "none";
@@ -596,6 +671,22 @@ function validateMOTD(motd, dialogid){
 	  x4.style.display = "block";
 	  emotd.style.borderWidth = "2px";
 	  window.bool9 = false;
+	}
+	if (emotd.value.match(EmotdRange)){
+		emotd.style.borderColor = "#383";
+		emotd.style.borderWidth = "2px";
+		x8.style.display = "none";
+		window.bool9 = true;
+	}else{
+		emotd.style.borderColor = "#E54";
+		x8.style.display = "block";
+		emotd.style.borderWidth = "2px";
+		window.bool9 = false;
+	}
+	if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
+		saveButton.disabled = false;
+	}else{
+		saveButton.disabled = true;
 	}
   
   }

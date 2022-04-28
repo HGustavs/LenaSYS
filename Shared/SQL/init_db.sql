@@ -119,6 +119,7 @@ CREATE TABLE quiz (
 	quizFile 				VARCHAR(255) NOT NULL DEFAULT 'default',
 	qrelease 				DATETIME,
 	deadline 				DATETIME,
+	relativedeadline		varchar(10),
 	modified 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	creator 				INTEGER,
 	vers					VARCHAR(8),
@@ -697,6 +698,16 @@ CREATE TABLE coursekeys(
 	coursename				VARCHAR(80) NULL,
 	activeversion			VARCHAR(8),
 	PRIMARY KEY (urlkey)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+
+/*SH url table for both courses and assignments*/
+CREATE TABLE shregister (
+    cparam 					VARCHAR(255) NOT NULL,
+    aparam 					VARCHAR(255) NOT NULL,
+    cid						INT UNSIGNED NOT NULL,
+    lid 					INT UNSIGNED,
+    PRIMARY KEY (cparam, aparam),
+	FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (lid) REFERENCES listentries(lid) ON DELETE CASCADE ON UPDATE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 /*

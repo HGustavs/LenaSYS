@@ -1,38 +1,20 @@
 /* This template makes two boxes, one to the left in the window and one to the right of the first one*/
 @media screen and (min-width: 726px) {
     #box1wrapper {
-        position: absolute;
-        border-right-style: solid;
-        border-right-width: 3px;
-        border-color: #5A5757;
-        top: 0px;
-        left: 0px;
-        bottom: 0px;
-        width: -moz-calc(25.0%);
-        width: -webkit-calc(25.0%);
-        width: calc(25.0%);
-        height: 100% !important;
-        min-width: 10%;
-        max-width: 90%;
+        position: relative;
+        grid-column: a;
+        grid-row: a/k;
+        width: 100%;
+        height: 100%;
     }
     
     #box2wrapper {
-        position: absolute;
-        top: 0px;
-        bottom: 0px;
-        width: -moz-calc(75%);
-        width: -webkit-calc(75%);
-        width: calc(75.0%);
-        right: 0px;
-        font-family: Arial,Sans-Serif;
-        font-size: 14px;
-        overflow: scroll;
-        overflow-y: auto;
-        overflow-x: auto;
-        z-index: 2;
-        height: 100% !important;
-        min-width: 10%;
-        max-width: 90%;
+        position: relative;
+        grid-column: b;
+        grid-row: b/l;
+        width: 100%;
+        height: 100%;
+
     }
 }
 
@@ -40,29 +22,21 @@
 #box1wrapper{
     position: absolute;
     left: 0px;
-    height: -moz-calc(35.0%);
-    height: -webkit-calc(35.0%);
-    height: calc(50.0%) !important;
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
-    min-height: 10%;
-	max-height: 90%;
+    grid-column: a/b;
+    grid-row: a/e;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 #box2wrapper {
     position: absolute;
-    top:auto !important;
+    top: 0px;
     bottom: 0px;
     left: 0px;
-    height: -moz-calc(65.0%);
-    height: -webkit-calc(65.0%);
-    height: calc(50.0%) !important;
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
     font-family: Arial,Sans-Serif;
-    min-height: 10%;
-	max-height: 90%;
+    grid-column: e/f;
+    grid-row: g/k;
+    min-width: 100%;
+    min-height: 100%;
 }
 }

@@ -425,6 +425,9 @@
 
 #fieldsetBox {
     margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+
 }
 
 /* Markdown document*/
@@ -554,4 +557,14 @@
 }
 .placementTypeBoxIcons:hover .placementTypeToolTipText{
     visibility: visible;
+}
+
+.options-fieldset {
+    width: 80%;
+}
+.options-fieldset-show {
+    display: block;
+}
+.options-fieldset-hidden {
+    display: none;
 }

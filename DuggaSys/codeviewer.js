@@ -76,6 +76,17 @@ function returnedError(error) {
 	}
 }
 
+function fillBurger() {
+	var boxes = retData['box'];
+	var burgerMenu = document.querySelector('#burgerMenu');
+	var str = "";
+	boxes.forEach(box => {
+		str += "<div class='burgerOption DarkModeBackgrounds' onclick='setShowPane("+box[0]+");'>"+box[4]+"</div>";	
+	});
+	str += "<div class='burgerOption DarkModeBackgrounds' onclick='showAllViews();'>All views</div>";
+	burgerMenu.innerHTML = str;
+}
+
 //-----------------------------------------------------------------
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
@@ -84,7 +95,6 @@ function returned(data)
 {
 	retData = data;
 	sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
-
 	// User can choose template if no template has been chosen and the user has write access.
 	if ((retData['templateid'] == 0)) {
 		if (retData['writeaccess'] == "w") {
@@ -284,14 +294,6 @@ function returned(data)
 			// set font size
 			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
 
-			// Set scrollbars to hidden if the content in the box takes up less space than the size of the box.
-			// var contentHeight = 15 * (lineno / 2);
-			// if(contentHeight < $("#box" + boxid).height()){
-			// 	$("#box" + boxid).css("overflow", "hidden");
-			// }else{
-			// 	$("#box" + boxid).css("overflow", "auto");
-			// }
-
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
 
@@ -340,12 +342,6 @@ function returned(data)
 				boxmenuheight = $("#" + contentid + "menu").height();
 			}
 			$("#" + contentid).css("margin-top", boxmenuheight);
-
-			// if(document.querySelector('#box' + boxid).firstChild.childElementCount * 15 < $('#box' + boxid).height()){
-			// 	$('#box' + boxid).css("overflow", "hidden");
-			// }else{
-			// 	$('#box' + boxid).css("overflow", "auto");
-			// }
 
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype);
@@ -406,8 +402,14 @@ function returned(data)
 	hideMaximizeAndResetButton();
 
 	// Allows resizing of boxes on the page
-	resizeBoxes("#div2", retData["templateid"]);
+	//If firefox is the browser do not allow resizing. (firefox resizing is currently)
+	var userAgent = navigator.userAgent;
 
+	if(userAgent.match(/firefox|fxios/i)){
+		console.log('Resizing is broken in firefox');
+	}
+
+	resizeBoxes("#div2", retData["templateid"]);
 	var titles = [...document.querySelectorAll('[contenteditable="true"]')];
 
 	titles.forEach(title => {
@@ -629,6 +631,7 @@ var openBoxID;
 
 function displayEditContent(boxid) 
 {
+	editRowsEnterPress();
 	document.getElementById("boxtitle2").removeAttribute("contenteditable");
 	// The information stored about the box is fetched
 	var box = retData['box'][boxid - 1];
@@ -667,6 +670,29 @@ function displayEditContent(boxid)
 	document.getElementById("improws").innerHTML = str;
 
 	document.getElementById("editContentContainer").style.display = "flex";
+}
+// -----------------------------------------------------------------------------------------------
+// Listen to enterpress on "important rows" inputfield and runs the same function as the + button
+// -----------------------------------------------------------------------------------------------
+
+var enterPress; // Variable that is used to check enter press or button press
+function editRowsEnterPress(){
+	var inputRowFrom = document.getElementById("improwfrom");
+	inputRowFrom.addEventListener("keypress", function(event) {
+		if (event.key === "Enter") {
+			enterPress = true;
+			event.preventDefault();
+			editImpRows("+");
+		}
+	});
+	var inputRowTo = document.getElementById("improwto");
+	inputRowTo.addEventListener("keypress", function(event) {
+		if (event.key === "Enter") {
+			enterPress = true;
+			event.preventDefault();
+			editImpRows("+"); 	
+		}
+	});	
 }
 
 //----------------------------------------------------------------------------------
@@ -711,7 +737,11 @@ function changeDirectory(kind) {
 	for (var i = 0; i < dir.length; i++) {
 		if (chosen == dir[i].filename) {
 			str += "<option selected='selected' value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>";
-		} else {
+		} 
+		else if (dir[i].filename == "---===######===---"){
+			str += "<option disabled hidden value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>"
+		}
+		else {
 			str += "<option value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>";
 		}
 	}
@@ -722,6 +752,12 @@ function changeDirectory(kind) {
 	document.getElementById("playlink").innerHTML = str;
 }
 
+//----------------------------------------------------------------------------------
+// btnPress reset a boolean when the "+" button is pressed
+//----------------------------------------------------------------------------------
+function btnPress(){
+	enterPress = false;
+}
 //----------------------------------------------------------------------------------
 // editImpRows: Adds and removes important rows
 //                Is called at line 165/169 in EditorV50.php
@@ -757,7 +793,8 @@ function editImpRows(editType)
 		FromTo = $('option:selected', "#improws").text().split(" - ");
 		$('option:selected', "#improws").remove();
 		removedRows.push([openBoxID, FromTo[0], FromTo[1]]);
-	} else {
+
+	} else if (enterPress === false){
 		//alert("editType == +: " + (editType=="+") + " (rowFrom <= rowTo): " + (rowFrom <= rowTo) + " (rowFrom > 0): " + (rowFrom > 0) + " (rowTo > 0): " + (rowTo > 0) + " rowFrom: " + rowFrom + " rowTo: " + rowTo);
 		alert("Incorrect value(s) (from: " + rowFrom + " to: " + rowTo + ")  for important rows!");
 	}
@@ -1520,7 +1557,6 @@ function tokenize(instring, inprefix, insuffix) {
 		}
 	}
   
-  // alert(row);
   console.log(tokens);
 }
 
@@ -1823,13 +1859,11 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		// tokens.length-1 so the last line will be printed out
 		if (tokens[i].kind == "newline" || i == tokens.length - 1) {
 			// Help empty lines to be printed out
-			//console.log("C:"+cont);
 			if (cont == "") cont = "&nbsp;";
 			// Count how many linenumbers that'll be needed
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				//str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 				str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px' ><span class='blockBtnSlot'></span>" + cont + "</div>";
 			} else {
 				// Print out important lines
@@ -1839,7 +1873,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							//str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 							str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						}
 					}
@@ -1961,7 +1994,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				//str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 				str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px'><span class='blockBtnSlot'></span>" + cont + "</div>";
 			} else {
 				// Print out important lines
@@ -1971,7 +2003,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							//str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 							str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px' ><span class='blockBtnSlot'></span>" + cont + "</div>";
 						}
 					}
@@ -2238,7 +2269,6 @@ function updateTemplate() {
 	} catch (e) {
 		alert("Error when updating template: " + e.message)
 	}
-	// setTimeout("location.reload()", 500);
 }
 
 //----------------------------------------------------------------------------------
@@ -3284,7 +3314,6 @@ function hideMaximizeAndResetButton() {
 		$('.maximizebtn').hide();
 		$('.resetbtn').hide();
 		$('.minimizebtn').hide();
-		$('.editbtn').hide();
 	}
 }
 
@@ -3534,7 +3563,7 @@ function resetBoxes()
             }, 20);
 	}
 
-	if (templateid == 6) {
+	if (templateid == 6 || templateid == 7) {
         thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
         thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
@@ -3577,7 +3606,6 @@ function resetBoxes()
 		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
 		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
 
-		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
         thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
@@ -3602,44 +3630,6 @@ function resetBoxes()
         thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
 		thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
 		
-		//Reset css attributes to default. Surely there has to be an easier way to do this.
-		//Width
-		document.querySelector(boxValArray['box' + 1]['id']).style.width = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.width = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.width = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.width = "";
-		//Height
-		document.querySelector(boxValArray['box' + 1]['id']).style.height = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.height = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.height = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.height = "";
-		//Position
-		document.querySelector(boxValArray['box' + 1]['id']).style.position = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.position = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.position = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.position = "";
-		//Top
-		document.querySelector(boxValArray['box' + 1]['id']).style.top = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.top = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.top = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.top = "";
-		//Right
-		document.querySelector(boxValArray['box' + 1]['id']).style.right = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.right = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.right = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.right = "";
-		//Left
-		document.querySelector(boxValArray['box' + 1]['id']).style.left = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.left = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.left = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.left = "";
-		//Bottom
-		document.querySelector(boxValArray['box' + 1]['id']).style.bottom = "";
-		document.querySelector(boxValArray['box' + 2]['id']).style.bottom = "";
-		document.querySelector(boxValArray['box' + 3]['id']).style.bottom = "";
-		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
-
-		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
         thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
@@ -3757,7 +3747,6 @@ function resetBoxes()
 		document.querySelector(boxValArray['box' + 4]['id']).style.bottom = "";
 		document.querySelector(boxValArray['box' + 5]['id']).style.bottom = "";
 
-		alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
      	thisBox.classList.remove('hidden');
             setTimeout(function () {
         thisBox.classList.remove('visuallyhidden');
@@ -3785,1165 +3774,639 @@ function resetBoxes()
 // resizeBoxes: Adding resize functionality for the boxes
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
-
 function resizeBoxes(parent, templateId) 
 {
-	var boxValArray = initResizableBoxValues(parent);
-
-	if (templateId == 1) {
-		getLocalStorageProperties(templateId, boxValArray);
-
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
+	var remaining;
+	if(templateId == 1)
+	{
+		$('#box1wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				if((remaining/$(parent).width())*100 < 16){
+					//hide box 2 title
+					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+	
+				}
+				else if((remaining/$(parent).width())*100 > 84){
+					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else{
+					boxToShow = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+					boxToShow = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+				}
+				//box wrapper 2 and 3 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = screen widht.)
+				document.querySelector('#box2wrapper').style.width = remaining + "px";
+						
+			},		
+			maxWidth: ($(parent).width()*0.85),
+			minWidth: ($(parent).width()*0.15),
 			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesWidth(boxValArray, 1, 2);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
+			containment: parent
 		});
-	} else if (templateId == 2) {
-		getLocalStorageProperties(templateId, boxValArray);
-
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
+		$('#box2wrapper').resizable({
+			disabled: true
+		});
+	}
+	if(templateId == 2){
+		$('#box1wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).height()) - $('#box1wrapper').height();
+				document.querySelector('#box2wrapper').style.height = remaining + "px";		
+				console.log($('#box1wrapper').height());
+			},		
+			maxHeight: ($(parent).height()*0.85),
+			minHeight: ($(parent).height()*0.15),
 			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight2boxes(boxValArray, 1, 2);
-				document.querySelector(boxValArray['box1']['id']).style.width = "100%";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
+			containment: parent	
 		});
-	} else if (templateId == 3) {
-		getLocalStorageProperties(templateId, boxValArray);
+		$('#box2wrapper').resizable({
+			disabled: true
+		});	
+	}
+	if(templateId == 3){
+		$('#box1wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				if((remaining/$(parent).width())*100 < 16){
+					//hide box 2 and 3 title
+					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
 
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
+					boxToHide = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else if((remaining/$(parent).width())*100 > 84){
+					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else{
+					boxToShow = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+
+					boxToShow = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+
+					boxToShow = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+				}
+				//box wrapper 2 and 3 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = screen widht.)
+				document.querySelector('#box2wrapper').style.width = remaining + "px";
+				document.querySelector('#box3wrapper').style.width = remaining + "px";
+					
+			},		
+			maxWidth: ($(parent).width()*0.85),
+			minWidth: ($(parent).width()*0.15),
 			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-				document.getElementById("box2wrapper").style.left = "";
-				document.getElementById("box1wrapper").style.height = "100%"
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
+			containment: parent
 
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight2boxes(boxValArray, 2, 3);
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
 		});
-	} else if (templateId == 4) {
-		getLocalStorageProperties(templateId, boxValArray);
-
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
+		$('#box2wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).height()) - $('#box2wrapper').height();
+				document.querySelector('#box3wrapper').style.height = remaining + "px";
+			},
+		handles: "s",
+		containment: parent,
+		maxHeight: ($(parent).height()*0.85),
+		minHeight: ($(parent).height()*0.16)
+		});
+		$('#box3wrapper').resizable({
+		disabled: true
+		});
+	}
+	if(templateId == 3){
+		$('#box1wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				if((remaining/$(parent).width())*100 < 16){
+					//hide box 2 and 3 title
+					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+	
+					boxToHide = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else if((remaining/$(parent).width())*100 > 84){
+					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else{
+					boxToShow = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+					boxToShow = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+					boxToShow = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+				}
+				//box wrapper 2 and 3 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = screen widht.)
+				document.querySelector('#box2wrapper').style.width = remaining + "px";
+				document.querySelector('#box3wrapper').style.width = remaining + "px";
+						
+			},		
+			maxWidth: ($(parent).width()*0.85),
+			minWidth: ($(parent).width()*0.15),
 			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesWidth(boxValArray, 1, 2);
-				alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
-				document.getElementById("box2wrapper").style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
+			containment: parent
+	
 		});
-
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
+		$('#box2wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).height()) - $('#box2wrapper').height();
+				document.querySelector('#box3wrapper').style.height = remaining + "px";
+			},
 			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
-				document.getElementById("box2wrapper").style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-	} else if (templateId == 5) {
-		getLocalStorageProperties(templateId, boxValArray);
-
-		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
-			handles: "e,s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesWidth(boxValArray, 1, 2);
-				alignBoxesHeight4boxes(boxValArray, 1, 2);
-				document.getElementById("box2wrapper").style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
+			maxHeight: ($(parent).height()*0.85),
+			minHeight: ($(parent).height()*0.16)
 		});
-
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight4boxes(boxValArray, 2, 1);
-				document.getElementById("box2wrapper").style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
+		$('#box3wrapper').resizable({
+			disabled: true
 		});
+		}
 
-		$(boxValArray['box3']['id']).resizable({
-			containment: parent,
+	if(templateId == 4){
+		$('#box1wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				if((remaining/$(parent).width())*100 < 16){
+					//hide box 2 and 3 title
+					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+	
+				}
+				else if((remaining/$(parent).width())*100 > 84){
+					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else{
+					boxToShow = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+					boxToShow = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+				}
+				//box wrapper 2 and 3 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = screen widht.)
+				document.querySelector('#box2wrapper').style.width = remaining + "px";
+						
+			},		
+			maxWidth: ($(parent).width()*0.85),
+			minWidth: ($(parent).width()*0.15),
 			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesWidth(boxValArray, 3, 4);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
+			containment: parent
+	
 		});
-
-	} else if (templateId == 6) {
-		getLocalStorageProperties(templateId, boxValArray);
-		document.getElementById("box3wrapper").style.top = localStorage.getItem("template6box2heightPercent") + "%";
-
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignWidth4boxes(boxValArray, 1, 2, 3, 4);
-
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
+		$('#box2wrapper').resizable({
+			//This one currently doens't work
+			disabled:true,
+			handles: "n"
 		});
+		$('#box3wrapper').resizable({
+			//This one currently doens't work
+			disabled: true,
+			handles: "s"
 
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				document.querySelector(boxValArray['box2']['id']).style.left = "";
-				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
 		});
+	}
+	if(templateId == 5){
+		$('#box1wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				if((remaining/$(parent).width())*100 < 16){
+					//hide box 2 and 3 title
+					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+	
+					boxToHide = document.querySelector('#box4wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else if((remaining/$(parent).width())*100 > 84){
+					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
 
-		$(boxValArray['box3']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				document.querySelector(boxValArray['box3']['id']).style.left = "";
-				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
+					boxToHide = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else{
+					boxToShow = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+					boxToShow = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+					boxToShow = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
 
-	} else if (templateId == 7) {
-		getLocalStorageProperties(templateId, boxValArray);
-		document.getElementById("box3wrapper").style.top = localStorage.getItem("template7box2heightPercent") + "%";
-
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
-			handles: "s,e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-				alignWidthTemplate7(boxValArray, 2, 3, 4, 1);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-		$(boxValArray['box3']['id']).resizable({
-			containment: parent,
-			handles: "s,e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				document.querySelector(boxValArray['box1']['id']).style.left = " ";
-				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
-				alignWidthTemplate7(boxValArray, 3, 2, 4, 1);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-		
-		$(boxValArray['box4']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				$(boxValArray['box4']['id']).css("top", "");
-				alignWidthTemplate7(boxValArray, 4, 3, 2, 1);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-	} else if (templateId == 8) {
-		getLocalStorageProperties(templateId, boxValArray);
-
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
+					boxToShow = document.querySelector('#box4wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+				}
+				//box wrapper 2 and 4 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = screen widht.)
+				document.querySelector('#box2wrapper').style.width = remaining + "px";
+				remaining = ($(parent).height()) - $('#box1wrapper').height();
+				document.querySelector('#box4wrapper').style.height = remaining + "px";
+				document.querySelector('#box3wrapper').style.height = remaining + "px";
+				
+						
+			},		
+			maxWidth: ($(parent).width()*0.85),
+			minWidth: ($(parent).width()*0.15),
+			maxHeight: ($(parent).height()*0.85),
+			minHeight: ($(parent).height()*0.16),
 			handles: "e, s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight2boxes(boxValArray, 2, 3);
-				alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
+			containment: parent
 		});
-		$(boxValArray['box3']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignBoxesHeight2boxes(boxValArray, 2, 3);
-				alignBoxesWidthTemplate8(boxValArray, 3, 2, 1);
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
-				document.querySelector(boxValArray['box3']['id']).style.top = "";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-	} else if (templateId == 9) {
-		getLocalStorageProperties(templateId, boxValArray);
+		$('#box2wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).height()) - $('#box1wrapper').height();
+				document.querySelector('#box4wrapper').style.height = remaining + "px";
+				document.querySelector('#box3wrapper').style.height = remaining + "px";
 
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignTemplate9Width(boxValArray, 1, 2, 3, 4, 5);
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
 
-		$(boxValArray['box2']['id']).resizable({
-			containment: parent,
+			},
+
 			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignTemplate9Height(boxValArray, 2, 3, 4, 5);
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
-				document.querySelector(boxValArray['box3']['id']).style.left = " ";
-				document.querySelector(boxValArray['box4']['id']).style.left = " ";
-				document.querySelector(boxValArray['box5']['id']).style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
-		});
-
-		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
-				document.querySelector(boxValArray['box3']['id']).style.left = " ";
-				document.querySelector(boxValArray['box4']['id']).style.left = " ";
-				document.querySelector(boxValArray['box5']['id']).style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
+			maxHeight: ($(parent).height()*0.85),
+			minHeight: ($(parent).height()*0.16),
+			maxHeight: ($(parent).height()*0.85),
+			minHeight: ($(parent).height()*0.16)	
+			
 		});
-		$(boxValArray['box4']['id']).resizable({
+		$('#box3wrapper').resizable({
+			disabled: true
+			// resize: function( event, ui ) {
+			// 	document.querySelector('#box3wrapper').style.width = remaining + "px";
+			// 	remaining = ($(parent).height()) - $('#box3wrapper').height();
+			// 	document.querySelector('#box1wrapper').style.height = remaining + "px";
+			// 	document.querySelector('#box4wrapper').style.height = remaining + "px";
+				
+			// },
+			// handles: "w",
+			// containment: parent,
+			// maxHeight: ($(parent).height()*0.85),
+			// minHeight: ($(parent).height()*0.16),
+			// maxHeight: ($(parent).height()*0.85),
+			// minHeight: ($(parent).height()*0.16)
+		});
+		$('#box4wrapper').resizable({
+			disabled: true
+			// resize: function( event, ui ) {
+			// 	remaining = ($(parent).width()) - $('#box3wrapper').width();
+			// 	document.querySelector('#box3wrapper').style.width = remaining + "px";
+
+			// 	remaining = ($(parent).height()) - $('#box1wrapper').height();
+			// 	document.querySelector('#box1wrapper').style.height = remaining + "px";
+			// 	document.querySelector('#box2wrapper').style.height = remaining + "px";
+				
+			// },
+			// handles: "w, n",
+			// containment: parent,
+			// maxHeight: ($(parent).height()*0.85),
+			// minHeight: ($(parent).height()*0.16),
+			// maxHeight: ($(parent).height()*0.85),
+			// minHeight: ($(parent).height()*0.16)
+		});
+	}
+
+	//This one currently doens't work
+	if(templateId == 6){
+		$('#box1wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				if((remaining/$(parent).width())*100 < 16){
+					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+
+					boxToHide = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+
+					boxToHide = document.querySelector('#box4wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+	
+				}
+				else if((remaining/$(parent).width())*100 > 84){
+					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else{
+					boxToShow = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+					boxToShow = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+
+					boxToShow = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+
+					boxToShow = document.querySelector('#box4wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+				}
+				document.querySelector('#box2wrapper').style.width = remaining + "px";
+				document.querySelector('#box3wrapper').style.width = remaining + "px";
+				document.querySelector('#box4wrapper').style.width = remaining + "px";
+						
+			},		
+			maxWidth: ($(parent).width()*0.85),
+			minWidth: ($(parent).width()*0.15),
+			handles: "e" ,
+			containment: parent
+	
+		});
+		$('#box2wrapper').resizable({
+			//This one currently doens't work
+			disabled:true,
+			handles:"s"
+		});
+		$('#box3wrapper').resizable({
+			//This one currently doens't work
+			disabled:true,
+			handles: "n",
+
+		});
+		$('#box4wrapper').resizable({
+			//This one currently doens't work
+			resize: function( event, ui ) {
+				remaining = ($(parent).height()) - $('#box4wrapper').height() - $('#box2wrapper').height();
+				document.querySelector('#box3wrapper').style.height = remaining + "px";
+			},
+			maxHeight: ($(parent).width()*0.85),
+			minHeight: ($(parent).width()*0.15),
 			containment: parent,
-			handles: "s",
-			start: function (event, ui) {
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
-			},
-			resize: function (e, ui) {
-				alignTemplate9Height2Stack(boxValArray, 2, 3, 4, 5);
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
-				document.querySelector(boxValArray['box3']['id']).style.left = " ";
-				document.querySelector(boxValArray['box4']['id']).style.left = " ";
-				document.querySelector(boxValArray['box5']['id']).style.left = " ";
-			},
-			stop: function (e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
-			}
+			handles: "n",
+
 		});
 
 	}
-};
+	if(templateId == 7){
+		$('#box1wrapper').resizable({
+			//This one currently doens't work
+			resize: function( event, ui ) {
+				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				if((remaining/$(parent).width())*100 < 16){
+					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
 
-//----------------------------------------------------------------------------------
-//width adjustment for template 1 and 4 (Two boxes beside eachother.)
-//                Is called by resizeBoxes in codeviewer.js
-//----------------------------------------------------------------------------------
+					boxToHide = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
 
-function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
-	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
-	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-
-	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
-	var basePer = 100 - remainWidthPer;
-	var thisBox = null;
-	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
-
-	boxValArray['box' + boxNumBase]['width'] = basePer;
-	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
-
-	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
-	if (basePer < 15) {
-		//Remove document description text
-		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
-		//If the document is of type 'codebox', remove copyclipboard as well
-		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
-			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'none';
-		}
-
-		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
-			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		
-	}else if (basePer > 85) {
-
-		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
-		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-
-		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
-			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'none';
-		}
-
-		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
-			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		
-	}else {
-
-		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
-
-		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
-			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
-			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'table-cell';
-		}
-	}
-}
-
-//----------------------------------------------------------------------------------
-//width adjustment for template 3 & 8.
-//                Is called by resizeBoxes in codeviewer.js
-//----------------------------------------------------------------------------------
-
-function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond) {
-	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
-	var basePer = 100 - remainWidthPer;
-
-	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-	$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
-	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
-	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
-
-	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
-	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
-
-	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
-	if(basePer < 15) {
-		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-		}
-	}else if (basePer > 85) {
-		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		}
-		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		}
-	} else {
-
-		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
-		}
-	}
-}
-
-function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond) {
-	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
-	var basePer = 100 - remainWidthPer;
-
-	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
-	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-
-	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
-
-	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
-
-	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
-	if(basePer < 15) {
-		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		}
-		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		}
-	}else if (basePer > 85) {
-		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-		}
-	} else {
-		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
-		}
-	}
-}
-
-//----------------------------------------------------------------------------------
-//Height adjustment for two boxes on top of eachother.
-//                Is called by resizeBoxes in codeviewer.js
-//----------------------------------------------------------------------------------
-
-function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame) {
-	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-	var remainHeightPer = (remainHeight / boxValArray['parent']['height']) * 100;
-	var basePer = 100 - remainHeightPer;
-
-	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
-	$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
-
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxNumBase);
-	hideShowScrollbars(boxValArray, boxNumSame);
-
-	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-}
-
-//----------------------------------------------------------------------------------
-//Height adjustment for boxes in template 4. (Two small boxes ontop of a big box.)
-//                Is called by resizeBoxes in codeviewer.js
-//----------------------------------------------------------------------------------
-
-function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig) {
-	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-	var remainHeightPer = (remainHeight / boxValArray['parent']['height']) * 100;
-	var samePer = (($(boxValArray['box' + boxNumBase]['id']).height()) / boxValArray['parent']['height']) * 100;
-
-	$(boxValArray['box' + boxNumBase]['id']).height(samePer + "%");
-	$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
-	$(boxValArray['box' + boxNumBig]['id']).height(remainHeightPer + "%");
+					boxToHide = document.querySelector('#box4wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
 	
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxNumBase);
-	hideShowScrollbars(boxValArray, boxNumSame);
-	hideShowScrollbars(boxValArray, boxNumBig);
-
-	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-	boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
-}
-
-//----------------------------------------------------------------------------------
-//Height adjustment for boxes in template 5.
-//                Is called by resizeBoxes in codeviewer.js
-//----------------------------------------------------------------------------------
-
-function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame) {
-	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-	var remainHeightPer = (remainHeight / boxValArray['parent']['height']) * 100;
-	var basePer = 100 - remainHeightPer;
-
-	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
-	$(boxValArray['box' + boxNumSame]['id']).height(basePer + "%");
-	$(boxValArray['box3']['id']).height(remainHeightPer + "%");
-	$(boxValArray['box4']['id']).height(remainHeightPer + "%");
+				}
+				else if((remaining/$(parent).width())*100 > 84){
+					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else{
+					boxToShow = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
 	
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxNumBase);
-	hideShowScrollbars(boxValArray, boxNumSame);
-	hideShowScrollbars(boxValArray, 3);
-	hideShowScrollbars(boxValArray, 4);
+					boxToShow = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
 
+					boxToShow = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+
+					boxToShow = document.querySelector('#box4wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
 	
-	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-	boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
-	boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
-}
-
-//---------------------------------
-// WIDTH MEASURMENT FOR TEMPLATE 6
-//---------------------------------
-
-function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird) {
-
-	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
-	var basePer = 100 - remainWidthPer;
-
-	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-
-	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
-	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
-	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
-
-	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
-	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
-	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
-
-	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
-	if(basePer < 15) {
-		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-		}
-	}else if (basePer > 85) {
-		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		}
-		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		}
-		if(document.querySelector('#box4').className == 'box codebox'){
-			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
-		}
-	}else {
-		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box4').className == 'box codebox'){
-			document.querySelector('#box4wrapper #copyClipboard').style.display = 'table-cell';
-		}
-	}
-}
-
-//-----------------------------------
-// WIDTH MEASURMENT FOR TEMPLATE 7
-//-----------------------------------
-
-function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird) {
-
-	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-
-	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
-	var basePer = 100 - remainWidthPer;
-
-	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
-	$(boxValArray['box' + boxNumAlignSecond]['id']).width(basePer + "%");
-	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
-
-	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
-
-	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
-	if(basePer > 85) {
-		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-		}
-	}else if (basePer < 15) {
-		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		}
-		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		}
-		if(document.querySelector('#box4').className == 'box codebox'){
-			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
-		}
-	}else {
-		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxNumBase, basePer);
-
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box4').className == 'box codebox'){
-			document.querySelector('#box4wrapper #copyClipboard').style.display = 'table-cell';
-		}
-	}
-}
-
-//---------------------------------------
-// HEIGHT MEASURMENT FOR TEMPLATE 6 & 7
-//---------------------------------------
-
-function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond) {
-
-	//Get initial values.
-	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
-	var remainHeightPer = (remainHeight / boxValArray['parent']['height']) * 100;
-	var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height']) * 100;
-	var basePer = 100 - (remainHeightPer + alignSecondPer);
-	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-	var atry2 = (atry / boxValArray['parent']['height']) * 100;
-
-	if (remainHeightPer <= 10) { // When Box3 is at minimum size.
-		
-		atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-		atry2 = (atry / boxValArray['parent']['height']) * 100;
-
-		remainHeightPer = 10;
-		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
-		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
-		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
-		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
-
-	} else { // When Box3 is greater than minimum size.
-		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
-		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
-		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
-	}
-
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxNumBase);
-	hideShowScrollbars(boxValArray, boxNumAlign);
-	hideShowScrollbars(boxValArray, boxNumAlignSecond);
-
-	//Update array
-	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-	boxValArray['box' + boxNumAlign]['height'] = $(boxValArray['box' + boxNumAlign]['id']).height();
-	boxValArray['box' + boxNumAlignSecond]['height'] = $(boxValArray['box' + boxNumAlignSecond]['id']).height();
-}
-
-//----------------------------------
-// HEIGHT MEASURMENT FOR TEMPLATE 6
-//----------------------------------
-
-function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond) {
-	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
-	var remainHeightPer = (remainHeight / boxValArray['parent']['height']) * 100;
-	var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height']) * 100;
-	var basePer = 100 - (remainHeightPer + alignSecondPer);
-	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-	var atry2 = (atry / boxValArray['parent']['height']) * 100;
-
-	if (atry2 <= 10) {
-		$("#box3wrapper").css({
-			"top": basePer + "%",
-			"height": remainHeightPer + "%"
+				}
+				document.querySelector('#box2wrapper').style.width = remaining + "px";
+				document.querySelector('#box3wrapper').style.width = remaining + "px";
+				document.querySelector('#box4wrapper').style.width = remaining + "px";
+						
+			},		
+			maxWidth: ($(parent).width()*0.85),
+			minWidth: ($(parent).width()*0.15),
+			handles: "w" ,
+			containment: parent
+	
 		});
-	} 
-	else if(atry2 >= 79.5){
-		$(boxValArray['box' + boxNumAlign]['id']).css("top", remainHeightPer + "%");
-		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
-		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%",);
-	}else {
-		$("#box4wrapper").height(atry2 + "%");
+		$('#box2wrapper').resizable({
+			//This one currently doens't work
+			disabled:true,
+			handles:"s"
+		});
+		$('#box3wrapper').resizable({
+			//This one currently doens't work
+			disabled:true,
+			handles: "n",
+
+		});
+		$('#box4wrapper').resizable({
+			//This one currently doens't work
+			disabled:true,
+			handles:"s"
+
+		});
 	}
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxNumBase);
-	hideShowScrollbars(boxValArray, boxNumAlign);
-	hideShowScrollbars(boxValArray, boxNumAlignSecond);
-}
-
-//----------------------------------
-// WIDTH MEASURMENT FOR TEMPLATE 9
-//----------------------------------
-
-function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, boxFive) {
-
-	//Width for the four smaller boxes.
-	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxOne]['id']).width();
-	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
-
-	//Width for the left big box.
-	var basePer = 100 - remainWidthPer;
-
-	$(boxValArray['box' + boxOne]['id']).width(basePer + "%");
-	//Corrects bug that sets left property on boxTwo, three and four. Forces it to have left property turned off. Also forced a top property on boxOne.
-	$(boxValArray['box' + boxTwo]['id']).css("left", " ");
-	$(boxValArray['box' + boxThree]['id']).css("left", " ");
-	$(boxValArray['box' + boxFour]['id']).css("left", " ");
-
-	$(boxValArray['box' + boxOne]['id']).css("top", " ");
-
-	//Sets width for all boxes.
-	$(boxValArray['box' + boxTwo]['id']).width(remainWidthPer + "%");
-	$(boxValArray['box' + boxThree]['id']).width(remainWidthPer + "%");
-	$(boxValArray['box' + boxFour]['id']).width(remainWidthPer + "%");
-	$(boxValArray['box' + boxFive]['id']).width(remainWidthPer + "%");
-
-	//Updates array.
-	boxValArray['box' + boxOne]['width'] = $(boxValArray['box' + boxOne]['id']).width();
-	boxValArray['box' + boxTwo]['width'] = $(boxValArray['box' + boxTwo]['id']).width();
-	boxValArray['box' + boxThree]['width'] = $(boxValArray['box' + boxThree]['id']).width();
-	boxValArray['box' + boxFour]['width'] = $(boxValArray['box' + boxFour]['id']).width();
-	boxValArray['box' + boxFive]['width'] = $(boxValArray['box' + boxFive]['id']).width();
-
-	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
-	if(basePer < 15) {
-		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxOne, basePer);
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-		}
-	}else if (basePer > 85) {
-		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxOne, basePer);
-		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxOne, basePer);
-		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxOne, basePer);
-		thisBox = document.querySelector('#box5wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxOne, basePer);
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		}
-		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		}
-		if(document.querySelector('#box4').className == 'box codebox'){
-			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
-		}
-		if(document.querySelector('#box5').className == 'box codebox'){
-			document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
-		}
-	}else {
-		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxOne, basePer);
-		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxOne, basePer);
-		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxOne, basePer);
-		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxOne, basePer);
-		thisBox = document.querySelector('#box5wrapper #boxtitlewrapper');
-		toggleTitleWrapper(thisBox, boxOne, basePer);
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box4').className == 'box codebox'){
-			document.querySelector('#box4wrapper #copyClipboard').style.display = 'table-cell';
-		}
-		if(document.querySelector('#box5').className == 'box codebox'){
-			document.querySelector('#box5wrapper #copyClipboard').style.display = 'table-cell';
-		}
-	}
-}
-
-//-----------------------------------
-// HEIGHT MEASURMENT FOR TEMPLATE 9
-//-----------------------------------
-
-function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
-
-	//Height of the two boxes between boxOne and boxFour (top most box and bottom most box)
-	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
-	var remainHeightPer = (remainHeight / boxValArray['parent']['height']) * 100;
-
-	//fourth and third box height in percent.
-	var boxThreeHeightPer = ($(boxValArray['box' + boxThree]['id']).height() / boxValArray['parent']['height']) * 100;
-	var boxFourHeightPer = ($(boxValArray['box' + boxFour]['id']).height() / boxValArray['parent']['height']) * 100;
-
-	//The second and first box height in percent.
-	var boxTwoHeightPer = (remainHeightPer - boxThreeHeightPer);
-	var boxOneHeightPer = 100 - (remainHeightPer + boxFourHeightPer);
-
-	//Set values if the boxes reaches minimum height.
-	if (boxTwoHeightPer <= 10 && boxThreeHeightPer <= 10 && boxFourHeightPer <= 10) {
-		boxTwoHeightPer = 10;
-		boxThreeHeightPer = 10;
-		boxFourHeightPer = 10;
-		remainHeightPer = 30;
-
-	}else if (boxTwoHeightPer <= 10) {
-		boxTwoHeightPer = 10;
-
-	}else if (boxThreeHeightPer <= 10) {
-		boxThreeHeightPer = 10;
-
-	}else if (boxFourHeightPer <= 10) {
-		boxFourHeightPer = 10;
-	}
-
-	//Set height and top on the boxes
-	$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
-
-	$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
-	$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
-
-	$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer - boxTwoHeightPer) + "%");
-	$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+	if(templateId == 8){
+		$('#box2wrapper').resizable({
+			//This one currently doens't work
+			resize: function( event, ui ) {
+				remaining = ($(parent).width()) - $('#box2wrapper').width();
+				if((remaining/$(parent).width())*100 < 16){
+					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else if((remaining/$(parent).width())*100 > 84){
+					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+			
+					boxToHide = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else{
+					boxToShow = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
 	
+					boxToShow = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+
+					boxToShow = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
 	
-    //Checks if the third box is minimum size.
-	if(boxThreeHeightPer <= 10.2) {
-		//Sets height and top on fourth box.
-		$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");
-		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + remainHeightPer) + "%");
+				}
+				document.querySelector('#box1wrapper').style.width = remaining + "px";
+			},
+			maxWidth: ($(parent).width()*0.85),
+			minWidth: ($(parent).width()*0.15),
+			handles:"e",
+			containment: parent
+		});
+		//This one currently doens't work
+		$('#box3wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).height()) - $('#box3wrapper').height();
+				document.querySelector('#box2wrapper').style.height = remaining + "px";
+			},
+			handles: "n",
+
+		});
 	}
+	if(templateId == 9){
+		$('#box1wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				if((remaining/$(parent).width())*100 < 16){
+					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+					boxToHide = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+					boxToHide = document.querySelector('#box4wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+					boxToHide = document.querySelector('#box5wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else if((remaining/$(parent).width())*100 > 84){
+					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else{
+					boxToShow = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
 	
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxOne);
-	hideShowScrollbars(boxValArray, boxTwo);
-	hideShowScrollbars(boxValArray, boxThree);
-	hideShowScrollbars(boxValArray, boxFour);
+					boxToShow = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
 
-	//Update array
-	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
-	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
-	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
-	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
-}
+					boxToShow = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
 
-//-----------------------------------
-// HEIGHT MEASURMENT FOR TEMPLATE 9
-//-----------------------------------
+					boxToShow = document.querySelector('#box4wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
 
-function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
-
-	//Box three height. It is the box that is currently being resized.
-	var boxThreeHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
-	var boxThreeHeightPer = (boxThreeHeight / (boxValArray['parent']['height'])) * 100;
-
-	//Fourth box height in pixels then in percent.
-	var boxFourHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + boxThreeHeight));
-	var boxFourHeightPer = (boxFourHeight / (boxValArray['parent']['height'])) * 100;
-
-	//Second box height in pixels then in percent.
-	var boxTwoHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + boxThreeHeight + boxFourHeight));
-	var boxTwoHeightPer = (boxTwoHeight / (boxValArray['parent']['height'])) * 100;
-
-	//First box height in pixels then in percent.
-	var boxOneHeight = (boxValArray['parent']['height'] - (boxTwoHeight + boxThreeHeight + boxFourHeight));
-	var boxOneHeightPer = (boxOneHeight / (boxValArray['parent']['height'])) * 100;
-
-	//Box three and four totalt height
-	var boxThreeAndFourHeightPer = boxThreeHeightPer + boxFourHeightPer;
-
-	//check if box three and four is at minimum height.
-	if (boxThreeAndFourHeightPer <= 20) {
-
-		//Set the height to the minimum.
-		boxThreeAndFourHeightPer = 20;
-
-		//Set height and top on the boxes when the lower two boxes are at the minimum height.
-		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
-
-		$(boxValArray['box' + boxTwo]['id']).css("height", (100 - boxOneHeightPer - boxThreeAndFourHeightPer) + "%");
-		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
-
-		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeAndFourHeightPer / 2 + "%");
-		$(boxValArray['box' + boxThree]['id']).css("top", "80" + "%");
-
-		$(boxValArray['box' + boxFour]['id']).css("height", boxThreeAndFourHeightPer / 2 + "%");
-		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");
-
-		//Check if box three is at or below minimum height.
-	}else if (boxThreeHeightPer <= 10) {
-		boxThreeHeightPer = 10;
-
-		//Set height and top on the boxes when the lower two boxes are at the minimum height.
-		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
-
-		$(boxValArray['box' + boxTwo]['id']).css("height", (100 - boxOneHeightPer - boxThreeAndFourHeightPer) + "%");
-		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
-
-		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
-		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
-
-		$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");
-		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxThreeHeightPer + boxTwoHeightPer) + "%");
-
-	}else {
-
-		//Set height and top on the boxes
-		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
-
-		$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
-		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
-
-		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
-		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
-
-		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
-		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxThreeHeightPer + boxTwoHeightPer) + "%");
-
+					boxToShow = document.querySelector('#box5wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+				}
+				document.querySelector('#box2wrapper').style.width = remaining + "px";
+				document.querySelector('#box3wrapper').style.width = remaining + "px";
+				document.querySelector('#box4wrapper').style.width = remaining + "px";
+				document.querySelector('#box5wrapper').style.width = remaining + "px";
+			},
+			maxWidth: ($(parent).width()*0.85),
+			minWidth: ($(parent).width()*0.15),
+			handles:"e",
+			containment: parent
+		});
+		$('#box2wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).height()) - $('#box2wrapper').height();
+				document.querySelector('#box3wrapper').style.height = remaining/3 + "px";
+				document.querySelector('#box4wrapper').style.height = remaining/3 + "px";
+				document.querySelector('#box5wrapper').style.height = remaining/3 + "px";
+				
+			},
+			maxHeight: ($(parent).height()*0.65),
+			minHeight: ($(parent).height()*0.15),
+			handles:"s",
+			containment: parent
+		});
+		$('#box3wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).height()) - $('#box3wrapper').height();
+				 document.querySelector('#box2wrapper').style.height = remaining/3 + "px";
+				 document.querySelector('#box4wrapper').style.height = remaining/3 + "px";
+				 document.querySelector('#box5wrapper').style.height = remaining/3 + "px";
+				
+			},
+			maxHeight: ($(parent).height()*0.65),
+			minHeight: ($(parent).height()*0.15),
+			handles:"s",
+			containment: parent
+		});
+		$('#box4wrapper').resizable({
+			resize: function( event, ui ) {
+				remaining = ($(parent).height()) - $('#box4wrapper').height();
+				 document.querySelector('#box2wrapper').style.height = remaining/3 + "px";
+				 document.querySelector('#box3wrapper').style.height = remaining/3 + "px";
+				 document.querySelector('#box5wrapper').style.height = remaining/3 + "px";
+				
+			},
+			maxHeight: ($(parent).height()*0.65),
+			minHeight: ($(parent).height()*0.15),
+			handles:"s",
+			containment: parent
+		});
 	}
-
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxOne);
-	hideShowScrollbars(boxValArray, boxTwo);
-	hideShowScrollbars(boxValArray, boxThree);
-	hideShowScrollbars(boxValArray, boxFour);
-
-	//Update array
-	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
-	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
-	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
-	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
-}
-
-//------------------------------------
-// HEIGHT MEASURMENT FOR TEMPLATE 9
-//------------------------------------
-
-function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
-	//Box four height in pixels then in percent. It is the box that is currently being resized.
-	var boxFourHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxThree]['id']).height());
-	var boxFourHeightPer = (boxFourHeight / boxValArray['parent']['height']) * 100;
-
-	//Second box height in pixels then in percent
-	var boxTwoHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxThree]['id']).height() + boxFourHeight));
-	var boxTwoHeightPer = (boxTwoHeight / (boxValArray['parent']['height'])) * 100;
-
-	//First box height in pixels then in percent
-	var boxOneHeight = (boxValArray['parent']['height'] - (boxTwoHeight + $(boxValArray['box' + boxThree]['id']).height() + boxFourHeight));
-	var boxOneHeightPer = (boxOneHeight / (boxValArray['parent']['height'])) * 100;
-
-	//Third box height in pixels then in percent
-	var boxThreeHeight = (boxValArray['parent']['height'] - (boxOneHeight + boxTwoHeight + boxFourHeight));
-	var boxThreeHeightPer = boxThreeHeight / (boxValArray['parent']['height']) * 100;
-
-	if (boxFourHeightPer <= 10) {
-
-		boxFourHeightPer = 10;
-
-		//Set height and top on the boxes
-		$(boxValArray['box' + boxThree]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxFourHeightPer) + "%");
-		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
-
-		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
-		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");
-
-	}else {
-
-		//Set height and top on the boxes
-		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
-		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
-
-		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
-		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer + boxThreeHeightPer) + "%");
-	}
-
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxOne);
-	hideShowScrollbars(boxValArray, boxTwo);
-	hideShowScrollbars(boxValArray, boxThree);
-	hideShowScrollbars(boxValArray, boxFour);
-
-	//Update array
-	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
-	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
-	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
-	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
-}
-
+}	
 //------------------------------------------------------------------------------------------------------------------------------
 // Hide or show scrollbars on a box depending on if the content of the box takes more or less space than the box itself.
 //------------------------------------------------------------------------------------------------------------------------------
 
+// The function does not do anything, but MUST NOT be removed because other functions in other files still refers to it.
 function hideShowScrollbars(boxValArray, box){
 	if(document.querySelector('#box' + box).className == 'box codebox'){
-		// if(document.querySelector('#textwrapper' + box).childElementCount * 15 > $(boxValArray['box' + box]['id']).height() - 44){
-		// 	$("#box" + box).css("overflow", "auto");
-		// }else{
-		// 	$("#box" + box).css("overflow", "hidden");
-		// }
 	}else if(document.querySelector('#box' + box).className == 'box descbox'){
-		// if(document.querySelector('#box' + box).firstChild.childElementCount * 15 > $(boxValArray['box' + box]['id']).height() - 44){
-		// 	$("#box" + box).css("overflow", "auto");
-		// }else{
-		// 	$("#box" + box).css("overflow", "hidden");
-		// }
 	}
 }
 
@@ -4995,31 +4458,6 @@ function initResizableBoxValues(parent) {
 	return boxValueArray;
 }
 
-//----------------------------------------------------------------------------------
-//Saves the measurments in percent for the boxes on the screen in local storage.
-//                Is called by resizeBoxes in codeviewer.js
-//----------------------------------------------------------------------------------
-
-function setLocalStorageProperties(templateId, boxValArray) {
-	var numBoxes = $("[id ^=box][id $=wrapper]").length;
-	var widthPer;
-	var heightPer;
-
-	for (var i = 1; i <= numBoxes; i++) {
-		boxValArray['box' + i]['width'] = $(boxValArray['box' + i]['id']).width();
-		boxValArray['box' + i]['height'] = $(boxValArray['box' + i]['id']).height();
-
-		widthPer = (boxValArray['box' + i]['width'] / boxValArray['parent']['width']) * 100;
-		heightPer = (boxValArray['box' + i]['height'] / boxValArray['parent']['height']) * 100;
-
-		widthPer = Math.floor(widthPer, 100);
-		heightPer = Math.floor(heightPer, 100);
-
-		localStorage.setItem("template" + templateId + "box" + i + "widthPercent", widthPer);
-		localStorage.setItem("template" + templateId + "box" + i + "heightPercent", heightPer);
-	}
-	setResizableToPer(boxValArray);
-}
 
 //----------------------------------------------------------------------------------
 //	LOADER:	Makes the page content hidden until it is loaded completely and displays a
@@ -5036,78 +4474,6 @@ document.onreadystatechange = function () {
 	}
 }
 
-//----------------------------------------------------------------------------------
-//Gets box measurements from localstorage and applies them onto the boxes on screen.
-//This is done preinit of boxValArray, so that the init of that array gets these values.
-//		  TODO: Add handling for when localstorage is null or < 0
-//                Is called by resizeBoxes in codeviewer.js
-//----------------------------------------------------------------------------------
-
-function getLocalStorageProperties(templateId, boxValArray) {
-	var numBoxes = $("[id ^=box][id $=wrapper]").length;
-	for (var i = 1; i <= numBoxes; i++) {
-		//Sanity checks
-		if (localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null && localStorage.getItem("template" + templateId + "box" + i + "widthPercent") > 0) {
-			if (localStorage.getItem("template" + templateId + "box" + i + "heightPercent") != null && localStorage.getItem("template" + templateId + "box" + i + "heightPercent") > 0) {
-				$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
-				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId + "box" + i + "heightPercent") + "%");
-				erasePercentGap(templateId, boxValArray);
-			}
-		}
-	}
-}
-
-//----------------------------------------------------------------------------------
-//removes percentage based gap
-//                Is called by getLocalStorageProperties in codeviewer.js
-//----------------------------------------------------------------------------------
-
-function erasePercentGap(templateId, boxValArray) {
-	if (templateId == 1) {
-		alignBoxesWidth(boxValArray, 1, 2);
-	} else if (templateId == 2) {
-		alignBoxesHeight2boxes(boxValArray, 1, 2);
-	} else if (templateId == 3) {
-		alignBoxesHeight2boxes(boxValArray, 2, 3);
-		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-	} else if (templateId == 4) {
-		alignBoxesWidth(boxValArray, 1, 2);
-		alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
-	} else if (templateId == 5) {
-		alignBoxesWidth(boxValArray, 1, 2);
-		alignBoxesWidth(boxValArray, 3, 4);
-		alignBoxesHeight4boxes(boxValArray, 1, 2);
-	} else if (templateId == 6) {
-		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
-		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-	} else if (templateId == 7) {
-		alignWidthTemplate7(boxValArray, 2, 3, 4, 1);
-		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-	} else if (templateId == 8) {
-		alignBoxesHeight2boxes(boxValArray, 2, 3);
-		alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
-	} else if (templateId == 9) {
-		alignTemplate9Width(boxValArray, 1, 2, 3, 4, 5);
-		alignTemplate9Height(boxValArray, 2, 3, 4, 5);
-		alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
-	}
-}
-
-//----------------------------------------------------------------------------------
-//Solves problem of how resizable ui component only work with pixel based positioning.
-//                Is called by setLocalStorageProperties in codeviewer.js
-//----------------------------------------------------------------------------------
-
-function setResizableToPer(boxValArray) {
-	$("[class ^=ui][class $=resizable]").each(function (index) {
-		var elemWidth = $(this).width();
-		var elemHeight = $(this).height();
-		var newWidth = (elemWidth / ($(boxValArray['parent']['id']).width())) * 100;
-		var newHeight = (elemHeight / ($(boxValArray['parent']['id']).height())) * 100;
-		$(this).height(newHeight + "%");
-		$(this).width(newWidth + "%");
-	});
-}
 
 //----------------------------------------------------------------------------------
 // addHtmlLineBreak: This function will replace all '\n' line breaks in a string
@@ -5139,10 +4505,6 @@ function copyCodeToClipboard(boxid) {
 		selection.addRange(range);
 	}
 	
-	//var range = document.createRange();	// Original Code
-	//range.selectNodeContents(code);		// Original Code
-	//selection.removeAllRanges();			// Original Code
-	//selection.addRange(range);			// Original Code
 	document.execCommand("Copy");
 	selection.removeAllRanges();
 
@@ -5152,10 +4514,6 @@ function copyCodeToClipboard(boxid) {
 			$("#notificationbox" + boxid).fadeOut("fast");
 		}, 500);
 	});
-	/*$("#textwrapper" + boxid).hide();
-	setTimeout(function () {
-		$("#textwrapper" + boxid).fadeIn("fast");
-	}, 1000);*/
 }
 
 
@@ -5211,16 +4569,7 @@ function closeBurgerMenu() {
 	document.querySelector('#burgerMenu').style.display = 'none';
 }
 
-function fillBurger() {
-	var boxes = retData['box'];
-	var burgerMenu = document.querySelector('#burgerMenu');
-	var str = "";
-	boxes.forEach(box => {
-		str += "<div class='burgerOption DarkModeBackgrounds' onclick='setShowPane("+box[0]+");'>"+box[4]+"</div>";	
-	});
-	str += "<div class='burgerOption DarkModeBackgrounds' onclick='showAllViews();'>All views</div>";
-	burgerMenu.innerHTML = str;
-}
+
 
 function showAllViews(){
 	var boxes = retData['box'];
@@ -5294,7 +4643,7 @@ function hideDescription() {
 
 function toggleTitleWrapper(targetBox, boxNum, boxW){
 	var box = targetBox;
-  	if (boxW > 15 && boxW < 85 || boxW < 15 && boxNum == 2 && (retData['templateid']) == !8 || boxW > 85 && boxNum == 1 && (retData['templateid']) == !6 && !3 && !9) {
+  	if (boxW > 15 && boxW < 84 || boxW < 15 && boxNum == 2 && (retData['templateid']) == !8 || boxW > 84 && boxNum == 1 && (retData['templateid']) == !6 && !3 && !9) {
     	box.classList.remove('hidden');
     	setTimeout(function () {
       		box.classList.remove('visuallyhidden');
@@ -5309,7 +4658,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
       		once: true,
       		passive: false
     	});
-  	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 2 && boxW < 98){
+  	}else if(box.classList.contains('visuallyhidden') == false && boxW > 84 && boxNum == 2 && boxW < 98){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5327,7 +4676,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxW < 98 && boxNum == 3 && (retData['templateid']) != 5){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 84 && boxW < 98 && boxNum == 3 && (retData['templateid']) != 5){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5336,7 +4685,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxW < 98 && boxNum == 4 && boxW < 98){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 84 && boxW < 98 && boxNum == 4 && boxW < 98){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5345,7 +4694,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85  && boxW < 98 && boxNum == 1 && (retData['templateid']) == 6){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 84  && boxW < 98 && boxNum == 1 && (retData['templateid']) == 6){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5354,7 +4703,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85  && boxW < 98 && boxNum == 1 && (retData['templateid']) == 3){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 84  && boxW < 98 && boxNum == 1 && (retData['templateid']) == 3){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5363,7 +4712,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85  && boxW < 98 && boxNum == 1 && (retData['templateid']) == 9){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 84  && boxW < 98 && boxNum == 1 && (retData['templateid']) == 9){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -5390,8 +4739,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else {
-		
-	  }
+	}
 
 }

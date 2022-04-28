@@ -21,17 +21,19 @@ if(isset($_SESSION['uid'])){
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Course Editor</title>
-
-	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+	<link id="themeWhite" type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet">
+	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 
+	<script src="darkmodeToggle.js"></script>
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -69,7 +71,7 @@ if(isset($_SESSION['uid'])){
 
 <!-- New Course Section Dialog START -->
 <div id='newCourse' class='loginBoxContainer' style='display:none;'>
-    <div class='loginBox' style='width:464px;'>
+    <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
     		<div class='loginBoxheader'>
     			<h3>New Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();' title='Close window'>x</div>
@@ -78,17 +80,17 @@ if(isset($_SESSION['uid'])){
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
-					<input oninput="elementIsValid(this);" class='textinput validate' type='text' id='ncoursename' name='coursename' placeholder='Course Name' />
+					<input oninput="elementIsValid(this);" onkeyup="quickValidateForm('newCourse','createCourse')" class='textinput validate' type='text' id='ncoursename' name='coursename' placeholder='Course Name' />
 				</div>
 				<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
-					<input oninput="elementIsValid(this);" class='textinput validate' type='text' id='ncoursecode' name='coursecode' placeholder='Course Code' />
+					<input oninput="elementIsValid(this);" onkeyup="quickValidateForm('newCourse','createCourse')" class='textinput validate' type='text' id='ncoursecode' name='coursecode' placeholder='Course Code' />
 				</div>
 				<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
     		</div>
     		<div style='padding:5px;'>
-    			<input class='submit-button' type='button' value='Create' title='Create course' onclick="validateForm('newCourse')" />
+    			<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse')" />
     		</div>
       </div>
 	</div>
@@ -96,7 +98,7 @@ if(isset($_SESSION['uid'])){
 
 	<!-- Edit Section Dialog START -->
 	<div id='editCourse' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style='width:464px;'>
+      <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
     		<div class='loginBoxheader'>
     			<h3>Edit Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
@@ -105,12 +107,12 @@ if(isset($_SESSION['uid'])){
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
-					<input oninput="elementIsValid(this);" class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
+					<input oninput="elementIsValid(this);" onkeyup="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
 				</div>
 				<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
-					<input oninput="elementIsValid(this);" class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
+					<input oninput="elementIsValid(this);" onkeyup="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
 				</div>
 				<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
     			<div class='inputwrapper'>
@@ -119,7 +121,7 @@ if(isset($_SESSION['uid'])){
 				</div>
     		</div>
     		<div style='padding:5px;'>
-    			<input class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
+    			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
     		</div>
       </div>
 	</div>
@@ -127,20 +129,24 @@ if(isset($_SESSION['uid'])){
 
 
 	<!-- Edit Server Settings START -->
-	<div id='editSettings' onmouseover="validateMOTD('motd','dialog5');" class='loginBoxContainer' style='display:none;' >
-    <div class='loginBox' style='width:464px;'>
+
+	<div id='editSettings' onmouseover="validateMOTD('motd','dialog5', 'dialog52', 'submitMotd');" class='loginBoxContainer' style='display:none;' >
+    <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
+
     		<div class='loginBoxheader'>
     			<h3>Edit Server Settings</h3>
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
     		</div>
     		<div style='padding:5px;'>
-    			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog5')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
+
+    			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog5', 'dialog52', 'submitMotd')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
     			<div class='inputwrapper'><span style='font-style:italic;color:rgba(0,0,0,0.6)'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
 				
     		</div>
-			<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>
+			<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibited symbols</p>
+			<p id="dialog52" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>
     		<div style='padding:5px;'>
-    			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
+    			<input id='submitMotd' class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
     		</div>
     </div>
 	</div>
