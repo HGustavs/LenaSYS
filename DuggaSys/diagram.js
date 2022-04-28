@@ -1267,8 +1267,6 @@ function onSetup()
     // Global statemachine init
     stateMachine = new StateMachine(data, lines);
 
-    toggleGrid();
-    showdata();
     fetchDiagramFileContentOnLoad();
 }
 
