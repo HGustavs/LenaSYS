@@ -6657,33 +6657,45 @@ function errorReset(elements)
 function updateLabelPos(newPosX, newPosY)
 {   
     targetLabel.labelMoved = true;
-    if(newPosX<targetLabel.highX && newPosX>targetLabel.lowX){ 
+    if(newPosX + targetLabel.width < targetLabel.highX && newPosX - targetLabel.width>targetLabel.lowX){ 
         targetLabel.labelMovedX = (newPosX - targetLabel.centerX);
     }
-    else if(newPosX < targetLabel.lowX){
-        targetLabel.labelMovedX = (targetLabel.lowX - (targetLabel.centerX));
+    else if(newPosX - targetLabel.width < targetLabel.lowX){
+        targetLabel.labelMovedX = (targetLabel.lowX  + targetLabel.width - (targetLabel.centerX));
     }
-    else if(newPosX > targetLabel.highX){
-        targetLabel.labelMovedX = (targetLabel.highX - (targetLabel.centerX));
+    else if(newPosX  + targetLabel.width > targetLabel.highX){
+        targetLabel.labelMovedX = (targetLabel.highX  - targetLabel.width - (targetLabel.centerX));
     }
-    if(newPosY < targetLabel.highY && newPosY > targetLabel.lowY){ 
+    if(newPosY + targetLabel.height < targetLabel.highY && newPosY - targetLabel.height > targetLabel.lowY){ 
         targetLabel.labelMovedY = (newPosY - (targetLabel.centerY));
     }
-    else if(newPosY < targetLabel.lowY){
-        targetLabel.labelMovedY = (targetLabel.lowY - (targetLabel.centerY));
+    else if(newPosY - targetLabel.height < targetLabel.lowY){
+        targetLabel.labelMovedY = (targetLabel.lowY + targetLabel.height - (targetLabel.centerY));
     }
-    else if(newPosY > targetLabel.highY){
-        targetLabel.labelMovedY = (targetLabel.highY - (targetLabel.centerY));
+    else if(newPosY + targetLabel.height > targetLabel.highY){
+        targetLabel.labelMovedY = (targetLabel.highY - targetLabel.height - (targetLabel.centerY));
     }
     calculateProcentualDistance(targetLabel);
     calculateLabelDisplacement(targetLabel);
     displaceFromLine(newPosX,newPosY);
 }
 
-function calculateProcentualDistance(objectLabel){
+function calculateProcentualDistance(objectLabel,x,y){
     // Math to calculate procentuall distance from/to centerpoint
     var diffrenceX = objectLabel.highX - objectLabel.lowX;
-    var diffrenceY = objectLabel.highY - objectLabel.lowY;
+    var diffrenceY = objectLabel.highY - objectLabel.lowY;    
+    if(objectLabel.labelMovedX > objectLabel.highX - objectLabel.lowX){
+        objectLabel.labelMovedX = objectLabel.highX - objectLabel.lowX;
+    }
+    else if(objectLabel.labelMovedX < objectLabel.lowX - objectLabel.highX){
+        objectLabel.labelMovedX = objectLabel.lowX - objectLabel.highX
+    }
+    if(objectLabel.labelMovedY > objectLabel.highY - objectLabel.lowY){
+        objectLabel.labelMovedY = objectLabel.highY - objectLabel.lowY;
+    }
+    else if(objectLabel.labelMovedX < objectLabel.lowX - objectLabel.highX){
+        objectLabel.labelMovedX = objectLabel.lowX - objectLabel.highX
+    }
     var distanceToX1 = objectLabel.centerX + objectLabel.labelMovedX - objectLabel.fromX;
     var distanceToY1 = objectLabel.centerY + objectLabel.labelMovedY - objectLabel.fromY;
     var lenghtToNewPos = Math.abs(Math.sqrt(distanceToX1*distanceToX1 + distanceToY1*distanceToY1));
