@@ -1014,9 +1014,16 @@ var settings = {
 
 
 // Demo data - read / write from service later on
+
+var diagramToLoad = "";
+var cid = "";
+var cvers = "";
+var diagramToLoadContent = "";
+
 var data = []; // List of all elements in diagram
 var lines = []; // List of all lines in diagram
 var errorData = []; // List of all elements with an error in diagram
+
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
@@ -1259,6 +1266,8 @@ function onSetup()
 
     // Global statemachine init
     stateMachine = new StateMachine(data, lines);
+
+    fetchDiagramFileContentOnLoad();
 }
 
 /**
@@ -7200,6 +7209,76 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }
 
 
+    if(temp.historyLog && temp.initialState){
+        // Set the history and initalState to the values of the file
+        stateMachine.historyLog = temp.historyLog;
+        stateMachine.initialState = temp.initialState;
+
+        // Update the stateMachine to the latest current index
+        stateMachine.currentHistoryIndex = stateMachine.historyLog.length -1;
+
+        // Scrub to the latest point in the diagram
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
+
+        // Display success message for load
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Save-file loaded");
+
+    } else if(temp.data && temp.lines){
+        // Set data and lines to the values of the export file
+        temp.data.forEach(element => {
+            var elDefault = defaults[element.kind];
+            Object.keys(elDefault).forEach(defaultKey => {
+                if (!element[defaultKey]){
+                    element[defaultKey] = elDefault[defaultKey];
+                }
+            });
+        });
+        temp.lines.forEach(line => {
+            Object.keys(defaultLine).forEach(defaultKey => {
+                if (!line[defaultKey]){
+                    line[defaultKey] = defaultLine[defaultKey];
+                }
+            });
+        });
+
+        // Set the vaules of the intialState to the JSON-file
+        stateMachine.initialState.elements = temp.data;
+        stateMachine.initialState.lines = temp.lines;
+
+        // Goto the beginning of the diagram
+        stateMachine.gotoInitialState();
+
+        // Remove the previous history
+        stateMachine.currentHistoryIndex = -1;
+        stateMachine.lastFlag = {};
+        stateMachine.removeFutureStates();
+
+        // Display success message for load
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Export-file loaded");
+    }else{
+        if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
+    }
+}
+
+function fetchDiagramFileContentOnLoad()
+{
+        let temp = window.parent.getVariantParam();
+        var fullParam = temp[0];
+        cid = temp[1];
+        cvers = temp[2];
+        diagramToLoad = temp[3];
+        diagramToLoadContent = temp[4];
+
+        console.log(fullParam);
+        console.log(cid);
+        console.log(cvers);
+        console.log(diagramToLoad);
+
+        loadDiagramFromString(JSON.parse(diagramToLoadContent));
+}
+
+function loadDiagramFromString(temp, shouldDisplayMessage = true)
+{
     if(temp.historyLog && temp.initialState){
         // Set the history and initalState to the values of the file
         stateMachine.historyLog = temp.historyLog;
