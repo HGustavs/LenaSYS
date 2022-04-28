@@ -4526,13 +4526,12 @@ function generateContextProperties()
               }            
           }
 
-           // Creates button for selecting element background color
-           str += `<div style="color: white">BG Color</div>`;
-           str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
-               `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-           str += `<div style="color: white">Stroke Color</div>`;
-           str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
-               `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
+        // Creates button for selecting element background color if not a UML relation since they should not be able change color
+        if (element.kind != 'UMLRelation') {
+            str += `<div style="color: white">BG Color</div>`;
+            str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+        }
            str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
 
       }
@@ -5956,17 +5955,15 @@ function drawElement(element, ghosted = false)
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
         <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        str += `</svg>`;
         //end of svg for UML header
-        str += `</div>`;
+        str += `</svg>`;
         //end of div for UML header
-
+        str += `</div>`;
+        
         //div to encapuslate UML content
         str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
-
         //Draw UML-content if there exist at least one attribute
         if (elemAttri != 0) {
-
             //svg for background
             str += `<svg width='${boxw}' height='${boxh * elemAttri}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemAttri - (linew * 2)}'
@@ -5977,11 +5974,13 @@ function drawElement(element, ghosted = false)
             //end of svg for background
             str += `</svg>`;
         }
+        //end of div for UML content
+        str += `</div>`;
 
+        //div for UML footer
+        str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw UML-footer if there exist at least one function
         if (elemFunc != 0) {
-            //div for UML footer
-            str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh * elemFunc}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemFunc - (linew * 2)}'
@@ -5991,11 +5990,8 @@ function drawElement(element, ghosted = false)
             }
             //end of svg for background
             str += `</svg>`;
-            //end of div for UML footer
-            str += `</div>`;
         }
-
-        //end of div for UML content
+        //end of div for UML footer
         str += `</div>`;
     }
     //Check if element is UMLRelation
@@ -6008,7 +6004,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
 
@@ -6971,9 +6967,45 @@ function updateCSSForAllElements()
             var useDelta = (inContext && movingObject);
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
-            var grandChild = elementDiv.children[0].children[0];
-            grandChild.style.fill = inContext ? `${"#927b9e"}` : `${element.fill}`;
-
+            // Update UMLEntity
+            if(element.kind == "UMLEntity"){
+                for (let index = 0; index < 3; index++) {
+                    var grandChild = elementDiv.children[index].children[0].children[0];
+                    // If more than one element is marked.
+                    if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        grandChild.style.fill = `${"#927b9e"}`;
+                    } else{
+                        grandChild.style.fill = `${element.fill}`;
+                    }
+                    
+                }
+            // Update Elements with double borders.
+            }else if(element.state == "weak" || element.state == "multiple"){
+                for (let index = 0; index < 2; index++){
+                    var grandChild = elementDiv.children[0].children[index];
+                    // If more than one element is marked.
+                    if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        grandChild.style.fill = `${"#927b9e"}`;
+                    } else{
+                        grandChild.style.fill = `${element.fill}`;
+                    }
+                }
+            }else{ // Update normal elements, and relations
+                var grandChild = elementDiv.children[0].children[0];
+                // If more than one element is marked.
+                if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                    grandChild.style.fill = `${"#927b9e"}`;
+                    // If UMLRelation is not marked.
+                } else if(element.kind == "UMLRelation"){
+                    if(element.state == "overlapping"){
+                        grandChild.style.fill = `${"black"}`;
+                    }else{
+                        grandChild.style.fill = `${"white"}`;
+                    }
+                }else{
+                    grandChild.style.fill = `${element.fill}`;
+                }
+            }
         }
     }
 
