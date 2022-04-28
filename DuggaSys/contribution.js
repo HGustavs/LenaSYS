@@ -218,10 +218,10 @@ function renderBarDiagram(data) {
   var maxDayCount = 0;
   for (var i = 0; i < 7 * numOfWeeks; i++) {
     var day = data['count'][dateString];
-    var commits = parseInt(day["commits"][0][0]);
-    var events = parseInt(day["events"][0][0]);
-    var comments = parseInt(day["comments"][0][0]);
-    var loc = parseInt(day["loc"][0][0] == null ? 0 : day["loc"][0][0]);
+    var commits = parseInt(day["commits"]);
+    var events = parseInt(day["events"]);
+    var comments = parseInt(day["comments"]);
+    var loc = parseInt(day["loc"]);
     var total = commits + events + comments + loc;
     if (total > maxDayCount) {
       maxDayCount = total;
