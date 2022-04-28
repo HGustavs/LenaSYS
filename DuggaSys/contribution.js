@@ -430,6 +430,7 @@ function drawCommitDots(x1, y1, xmul, ymul, x_spacing, y_spacing){
 function renderLineDiagram(data) {
   weeks = data.weeks;
   daycounts = data['count'];
+  console.log(daycounts);
   var firstweek = data.weeks[0].weekstart;
 
 
