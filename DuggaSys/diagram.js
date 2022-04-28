@@ -1592,7 +1592,13 @@ function mdown(event)
 {
 
     mouseButtonDown = true;
-
+    if(document.getElementsByClassName("activeTogglePlacementTypeBox")){
+        for (let index = 0; index < document.getElementsByClassName("activeTogglePlacementTypeBox").length; index++) {
+            setTimeout(() => {
+                document.getElementsByClassName("activeTogglePlacementTypeBox")[index].classList.remove("activeTogglePlacementTypeBox");
+            }, 500);
+        }
+    }
         // Mouse pressed over delete button for multiple elements
         if (event.button == 0) {
             if (context.length > 1) {
