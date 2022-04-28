@@ -76,23 +76,23 @@
 	}
 	$response->closeCursor();
 
-	@$doesFileExist = file_get_contents("../courses/global/"."$splicedFileName");
-	if($doesFileExist === FALSE)
-	{
-		@$doesFileExist = file_get_contents("../courses/".$cid."/"."$splicedFileName");
 
-		if($doesFileExist === FALSE)
-		{
-			@$doesFileExist = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
-		}
+	if(file_exists("../courses/global/"."$splicedFileName"))
+	{
+		$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
+	}
+	else if(file_exists("../courses/".$cid."/"."$splicedFileName"))
+	{
+		$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
+	}
+	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))
+	{
+		$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
 	}
 
-	if($doesFileExist === FALSE)
+	if($fileContent === "UNK")
 	{
 		$fileContent = "NO_FILE_FETCHED";
-	}
-	else{
-		$fileContent = $doesFileExist;
 	}
 
 	#I have no idea what the things below
