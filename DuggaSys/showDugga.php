@@ -76,14 +76,14 @@
 	}
 	$response->closeCursor();
 
-	$doesFileExist = @file_get_contents("../courses/global/"."$splicedFileName");
+	@$doesFileExist = @file_get_contents("../courses/global/"."$splicedFileName");
 	if($doesFileExist === FALSE)
 	{
-		$doesFileExist = @file_get_contents("../courses/".$cid."/"."$splicedFileName");
+		@$doesFileExist = @file_get_contents("../courses/".$cid."/"."$splicedFileName");
 
 		if($doesFileExist === FALSE)
 		{
-			$doesFileExist = @file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
+			@$doesFileExist = @file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
 		}
 	}
 
