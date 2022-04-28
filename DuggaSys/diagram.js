@@ -5618,7 +5618,7 @@ function drawLine(line, targetGhost = false)
         var highX= Math.max(tx,fx);
         var labelPosX = (tx+fx)/2 - ((textWidth) + zoomfact * 8)/2;
         var labelPosY = (ty+fy)/2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        var lineLabel={id: line.id+"Label",labelLineID: line.id, centerX: centerX, centerY: centerY, width: textWidth + zoomfact * 4, height: textheight * zoomfact + zoomfact * 3, labelMovedX: 0 * zoomfact, labelMovedY: 0 * zoomfact, lowY: lowY, highY: highY, lowX: lowX, highX: highX, percentOfLine: 0,displacementX:0,displacementY:0,fromX:fx,toX:tx,fromY:fy,toY:ty,lineGroup:0};
+        var lineLabel={id: line.id+"Label",labelLineID: line.id, centerX: centerX, centerY: centerY, width: textWidth + zoomfact * 4, height: textheight * zoomfact + zoomfact * 3, labelMovedX: 0 * zoomfact, labelMovedY: 0 * zoomfact, lowY: lowY, highY: highY, lowX: lowX, highX: highX, percentOfLine: 0,displacementX:0,displacementY:0,fromX:fx,toX:tx,fromY:fy,toY:ty,lineGroup:0,labelMoved:false};
         if(!!targetLabel){
             var rememberTargetLabelID = targetLabel.id;
         }
@@ -5626,6 +5626,8 @@ function drawLine(line, targetGhost = false)
             lineLabel.labelMovedX = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelMovedX;
             lineLabel.labelMovedY = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelMovedY;
             lineLabel.labelGroup = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelGroup;
+            lineLabel.labelMoved = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelMoved;
+            calculateProcentualDistance(lineLabel);
             if (lineLabel.labelGroup == 0) {
                     lineLabel.displacementX = 0;
                     lineLabel.displacementY = 0;
@@ -6654,6 +6656,7 @@ function errorReset(elements)
  */
 function updateLabelPos(newPosX, newPosY)
 {   
+    targetLabel.labelMoved = true;
     if(newPosX<targetLabel.highX && newPosX>targetLabel.lowX){ 
         targetLabel.labelMovedX = (newPosX - targetLabel.centerX);
     }
@@ -6672,48 +6675,44 @@ function updateLabelPos(newPosX, newPosY)
     else if(newPosY > targetLabel.highY){
         targetLabel.labelMovedY = (targetLabel.highY - (targetLabel.centerY));
     }
-    // Math to calculate procentuall distance from/to centerpoint
-    var diffrenceX = targetLabel.highX - targetLabel.lowX;
-    var diffrenceY = targetLabel.highY - targetLabel.lowY;
-    var distanceToX1 = targetLabel.centerX + targetLabel.labelMovedX - targetLabel.fromX;
-    var distanceToY1 = targetLabel.centerY + targetLabel.labelMovedY - targetLabel.fromY;
-    var lenghtToNewPos = Math.abs(Math.sqrt(distanceToX1*distanceToX1 + distanceToY1*distanceToY1));
-    var entireLinelenght = Math.abs(Math.sqrt(diffrenceX*diffrenceX+diffrenceY*diffrenceY));
-    targetLabel.percentOfLine = lenghtToNewPos/entireLinelenght;
-    // Making sure the procent is less than 0.5 to be able to use them from the centerpoint of the line as well as ensuring the direction is correct 
-    if(targetLabel.percentOfLine < 0.5){
-        targetLabel.percentOfLine = 1 - targetLabel.percentOfLine;
-        targetLabel.percentOfLine = targetLabel.percentOfLine - 0.5 ;
-    } 
-    else if (targetLabel.percentOfLine > 0.5){
-        targetLabel.percentOfLine = -(targetLabel.percentOfLine - 0.5) ;
-    }
-    //changing the direction depending on how the line is drawn
-    if(targetLabel.fromX<targetLabel.centerX){ //left to right
-        targetLabel.labelMovedX = -targetLabel.percentOfLine * diffrenceX;
-    }
-    else if(targetLabel.fromX>targetLabel.centerX){//right to left
-        targetLabel.labelMovedX = targetLabel.percentOfLine * diffrenceX;
-    }
-    if(targetLabel.fromY<targetLabel.centerY){ //down to up
-        targetLabel.labelMovedY = -targetLabel.percentOfLine * diffrenceY;
-    }
-    else if(targetLabel.fromY>targetLabel.centerY){ //up to down
-        targetLabel.labelMovedY = targetLabel.percentOfLine * diffrenceY;
-    }
-    console.log(targetLabel.labelMovedY+" = "+targetLabel.highY+" - "+targetLabel.centerY);//&& targetLabel.highX-targetLabel.centerX<targetLabel.labelMovedX
-    if(targetLabel.highY-targetLabel.centerY < targetLabel.labelMovedY ){
-        targetLabel.labelMovedY = (targetLabel.highY-targetLabel.centerY)-targetLabel.height;
-        targetLabel.labelMovedX = (targetLabel.highX-targetLabel.centerX)-targetLabel.width;
-        console.log(targetLabel.labelMovedY+" = / = "+targetLabel.highY+" - "+targetLabel.centerY);
-    }
-    else if(targetLabel.lowY-targetLabel.centerY>targetLabel.labelMovedY && targetLabel.lowX-targetLabel.centerX>targetLabel.labelMovedX){
-        targetLabel.labelMovedY = (targetLabel.lowY-targetLabel.centerY)+targetLabel.height;
-        targetLabel.labelMovedX = (targetLabel.lowX-targetLabel.centerX)+targetLabel.width;
-        console.log(targetLabel.labelMovedY+" = "+targetLabel.lowY+" - "+targetLabel.centerY);
-    }
+    calculateProcentualDistance(targetLabel);
     calculateLabelDisplacement(targetLabel);
     displaceFromLine(newPosX,newPosY);
+}
+
+function calculateProcentualDistance(objectLabel){
+    // Math to calculate procentuall distance from/to centerpoint
+    var diffrenceX = objectLabel.highX - objectLabel.lowX;
+    var diffrenceY = objectLabel.highY - objectLabel.lowY;
+    var distanceToX1 = objectLabel.centerX + objectLabel.labelMovedX - objectLabel.fromX;
+    var distanceToY1 = objectLabel.centerY + objectLabel.labelMovedY - objectLabel.fromY;
+    var lenghtToNewPos = Math.abs(Math.sqrt(distanceToX1*distanceToX1 + distanceToY1*distanceToY1));
+    var entireLinelenght = Math.abs(Math.sqrt(diffrenceX*diffrenceX+diffrenceY*diffrenceY));
+    objectLabel.percentOfLine = lenghtToNewPos/entireLinelenght;
+    // Making sure the procent is less than 0.5 to be able to use them from the centerpoint of the line as well as ensuring the direction is correct 
+    if(objectLabel.percentOfLine < 0.5){
+        objectLabel.percentOfLine = 1 - objectLabel.percentOfLine;
+        objectLabel.percentOfLine = objectLabel.percentOfLine - 0.5 ;
+    } 
+    else if (objectLabel.percentOfLine > 0.5){
+        objectLabel.percentOfLine = -(objectLabel.percentOfLine - 0.5) ;
+    }
+    if(!objectLabel.labelMoved){
+        objectLabel.percentOfLine = 0;
+    }
+    //changing the direction depending on how the line is drawn
+    if(objectLabel.fromX<objectLabel.centerX){ //left to right
+        objectLabel.labelMovedX = -objectLabel.percentOfLine * diffrenceX;
+    }
+    else if(objectLabel.fromX>objectLabel.centerX){//right to left
+        objectLabel.labelMovedX = objectLabel.percentOfLine * diffrenceX;
+    }
+    if(objectLabel.fromY<objectLabel.centerY){ //down to up
+        objectLabel.labelMovedY = -objectLabel.percentOfLine * diffrenceY;
+    }
+    else if(objectLabel.fromY>objectLabel.centerY){ //up to down
+        objectLabel.labelMovedY = objectLabel.percentOfLine * diffrenceY;
+    }
 }
 /**
  * @description calculates how the label should be displacesed
@@ -6728,7 +6727,7 @@ function calculateLabelDisplacement(labelObject)
     var distanceToOuterlines={storeX, storeY}
     // define the baseline used to calculate the angle
     if((labelObject.fromX - labelObject.toX) > 0){
-        if((labelObject.fromY - labelObject.toY) > 0){ // upp left
+        if((labelObject.fromY - labelObject.toY) > 0){ // up left
             baseLine = labelObject.fromY - labelObject.toY;
             angle = (Math.acos(Math.cos(baseLine / entireLinelenght))*90);
             distanceToOuterlines.storeX = ((90-angle) / 5)*3 - displacementConstant*3;
