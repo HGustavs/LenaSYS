@@ -166,7 +166,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
 
 			$btnDisable = "btn-disable";
-
+			echo "<input class='submit-button large-button' type='button' value='Edit instructions'/>";
 			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
