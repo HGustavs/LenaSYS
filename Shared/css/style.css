@@ -1343,6 +1343,10 @@ header td {
   margin:auto 10px auto 0;
 }
 
+#theme-toggle {
+  transform: scale(2.8);
+  margin-top: 8px;
+}
 .burgerButt {
   float:left;
   margin-left: 10px;
@@ -1479,8 +1483,22 @@ div .navButt:hover {
     width: 35px;
   }
 }
+
 #div2 {
   position: absolute;
+  display: grid;
+  justify-items: stretch;
+  grid-gap: 0px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: 
+    'a a b b'
+    'c c d d'
+    'e e f f'
+    'g g h h'
+    'i i j j'
+    'k k l l'
+  ;
   top: 50px;
   bottom: 0px;
   left: 0px;
@@ -6587,7 +6605,7 @@ only screen and (max-device-width: 320px) {
 }
 
 .fixed-action-button2.sectioned2 {
-  right: 80px;
+  right: 125px;
 }
 
 .fixed-action-button3 {
@@ -6665,7 +6683,7 @@ only screen and (max-device-width: 320px) {
   width: 100%;
   list-style: none;
   text-align: center;
-  bottom: 90px;
+  bottom: 80px;
 }
 
 .fab-btn-list2 {
@@ -7296,6 +7314,9 @@ textarea#mrkdwntxt {
   margin-left: 32.75%;
   margin-top: -0.75%;
   filter: invert(100%);
+}
+#inputwrapperText{
+  color:rgba(0,0,0,0.6);
 }
 
 .createAlertToggle{

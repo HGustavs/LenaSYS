@@ -122,22 +122,22 @@
 			}
 		}
 		if($duggatitle!="UNK"){
-			echo "<script>setDuggaTitle('" . $duggatitle . "');</script>";
+			//echo "<script>setDuggaTitle('" . $duggatitle . "');</script>";
 			echo $output;
 			
 			echo "<script src='templates/".$duggafile.".js'></script>";
 			echo "</head>";
-			echo "<body onload='setup();addAlertOnUnload();'>"; //add an alert when leaving page with changes.
+			echo "<body onload='setup();'>";
 		}else{
 			echo "</head>";
-			echo "<body onload='addAlertOnUnload();'>"; //add an alert when leaving page with changes.
+			echo "<body>";
 		}
 ?>
-<script type="text/javascript">
+<!--<script type="text/javascript">
 
 	setHash("<?php /*echo $hash*/ ?>");
 
-</script>
+</script>-->
 
 
 	<?php
@@ -263,15 +263,15 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		//echo "<script>console.log('".$duggafile."');</script>";
 			// Log USERID for Dugga Access
 			// commented out because we are unsure about the usage of logs
-			// makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
-			// Retrieved from 'password' input field
+			//makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+			//Retrieved from 'password' input field
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
 
 			$btnDisable = "btn-disable";
-			
+
 			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
@@ -316,19 +316,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Something went wrong in loading the test. Contact LENASys-admin.</div>";
 			}
 
-			// Feedback area START
-			if(isSuperUser($userid) && $hash!='UNK' || hasAccess($userid, $cid, 'w') && $hash!='UNK'){
-				echo "<div id='container' style='margin:0px;'>";
-					echo "<div class='instructions-container'>";
-						echo "<div class='instructions-button' onclick='toggleFeedback()'><h3>Feedback</h3></div>";
-							echo "<div class='feedback-content' style=' -webkit-columns: 1; -moz-columns: 1; columns: 1; ' id='snus'>";
-								echo "<textarea name='feedback' id='feedback' style='float: left; width: 100%; min-height: 75px;'></textarea><br>";
-								echo "<input class='submit-button large-button' type='button' value='Skicka feedback' />";
-							echo "</div>";
-						echo "</div>";
-					echo "</div>";
-				echo "</div>";
-			}
+		
 		?>
 	</div>
 

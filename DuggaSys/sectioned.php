@@ -23,10 +23,14 @@
 	<title id="sectionedPageTitle">Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+	<link type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link id="themeWhite" type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet">
+	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+	
+	<script src="darkmodeToggle.js"></script>
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -42,6 +46,7 @@
 	<!-- content START -->
 	<!-- Div that apper as an alert when a New Item has been created -->
 	<div style="z-index: 1500;" id="createAlert"></div>
+	<div style="z-index: 1500;" id="updateAlert"></div>
 	<div id="content">
 
 		<!-- FAB Start -->
@@ -134,7 +139,8 @@
 		<!-- Hide button -->
 		
 		<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
-			<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+			<input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
+			<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
 		</div>
 		
 		<!-- end hide button -->
@@ -200,8 +206,10 @@
 	?>
 
 		<!-- Edit Section Dialog START -->
-		<div id='editSection' onmouseover='quickValidateForm("editSection", "saveBtn");' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:460px;'>
+
+		<div id='editSection'  onmouseover='quickValidateForm("editSection", "saveBtn");' onkeyup="validateSectName('sectionname');" onmouseover="validateSectName('sectionname'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
 				<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
@@ -249,7 +257,7 @@
 
 	<!-- Confirm Section Dialog START -->
 	<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:460px;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
 					<h3>Confirm deletion</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
@@ -267,7 +275,7 @@
 
 	<!-- Canvas Link Dialog -->
 	<div id='canvasLinkBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='min-width:250px;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='min-width:250px;'>
 			<div class='loginBoxheader'>
 					<h3 style='text-align: center;'>Link Copied To Clipboard</h3>
 					<div class="cursorPointer" onclick='showCanvasLinkBox("close",this);' title="Close window">x</div>
@@ -282,7 +290,7 @@
 
 	<!-- Confirm Section Hide Dialog START -->
 	<div id='sectionHideConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:460px;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
 					<h3>Confirm hiding</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
@@ -297,6 +305,36 @@
 		</div>
 	</div>
 	<!-- Confirm Edit Section Hide Dialog END -->
+
+	<!-- Cofirm Section Tab Dialog START -->
+	<div id='tabConfirmBox' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox' style='width:460px;'>
+			<div class='loginBoxheader'>
+					<h3>Confirm tab</h3>
+					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+			</div>
+			<div style='text-align: center;'>
+					<h4>How many tabs?</h4>
+			</div>
+			<div style='display:flex; align-items:center; justify-content: center;'>
+				<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span>
+					<select id='tabs'>
+						<option value="0">0 tabs</option>
+						<option value="1">1 tabs</option>
+						<option value="2">2 tabs</option>
+						<option value="3">3 tabs</option>
+						<option value="4">1 tabs + end</option>
+						<option value="5">2 tabs + end</option>
+						<option value="6">3 tabs + end</option>
+					</select>
+				</div>
+			</div>
+			<div style='display:flex; align-items:center; justify-content: center;'>
+				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='OK' title='OK' onclick='confirmBox("tabItem");' />
+			</div>
+		</div>
+	</div>
+	<!-- Cofirm Edit Section Tab Dialog END -->
 
 	<!-- Confirm Missing Material Dialog START -->
 	<div id='noMaterialConfirmBox' class='loginBoxContainer' style='display:none;'>
@@ -317,7 +355,7 @@
 
 		<!-- New Version Dialog START -->
 		<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
-    	<div class='loginBox' style='width:464px;'>
+    	<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
 			<div class='loginBoxheader'>
 				<h3>New Course Version</h3>
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
@@ -345,8 +383,10 @@
 	<!-- New Verison Dialog END -->
 
 <!-- Edit Version Dialog START -->
-<div id='editCourseVersion'  class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:464px;'>
+
+<div id='editCourseVersion' onmouseover="validateVersionName('eversname', 'dialog5'); validateDate('estartdate','eenddate','dialog6'); validateMOTD('eMOTD', 'dialog9');" class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
+
 			<div class='loginBoxheader'>
 				<h3>Edit Course Version</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
@@ -423,7 +463,7 @@
 	
 	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
 	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
-	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
+	  <div class="loadDuggaBox loginBox DarkModeBackgrounds DarkModeText" style="max-width:400px; overflow-y:visible;">
 			<div class='loginBoxheader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
     		<div id='loadDuggaPopup' style="display:block">

@@ -47,11 +47,30 @@
 
         <?php
 
-            foreach($css as $filename) {
-                $filemtime = filemtime('../Shared/css/' . $filename);
-                echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
-            }
+						/*/
+							We usually follow this strucutre: 
+							
+							<link id="themeWhite" type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet">
+							<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+							<script src="darkmodeToggle.js"></script>
 
+							But, we now have to make a exception as style sheets are connected trough different means in this file.
+							We now add css and JS files directly trough PHP instead and not trough direct linking.
+						/*/
+            foreach($css as $filename) { 
+                $filemtime = filemtime('../Shared/css/' . $filename);
+
+								if($filename == "blackTheme.css"){
+									echo "<link id='themeBlack' rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
+								}
+								else if ($filename == "whiteTheme.css"){
+									continue;
+								}
+								else{
+									echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
+								} 
+            }
+						echo "<script src='darkmodeToggle.js'></script>";
 
             foreach($js as $filename) {
 
@@ -258,7 +277,7 @@ Testing Link:
 						</tr>
 						<tr>
 							<td colspan="1"><input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwfrom' placeholder='From #' />&nbsp;-&nbsp;<input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwto' placeholder='To #' /></td>
-							<td colspan="1"><input style="width: 32px; float: none;" class='submit-button' type='button' value='+' onclick='editImpRows("+");' /></td>
+							<td colspan="1"><input style="width: 32px; float: none;" class='submit-button' id='improw-submit-btn' type='button' value='+' onclick='btnPress();editImpRows("+");' /></td>
 						</tr>
 					</table>
 					<table width="100%">
@@ -356,7 +375,6 @@ Testing Link:
     </div>
 
 </div>
-
 
 	</body>
 </html>
