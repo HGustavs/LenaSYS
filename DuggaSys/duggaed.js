@@ -799,8 +799,8 @@ function renderCell(col, celldata, cellid) {
 
 		case "disabled":	// VARIANT-TABLE - Translades disabled status from integers
 			switch(celldata) {
-				case "0": retString = "<span style='color:black;'>Enabled</span>"; break;
-				case "1": retString = "<span style='color:red;'>Disabled</span>"; break;
+				case 0: retString = "<span style='color:black;'>Enabled</span>"; break;
+				case 1: retString = "<span style='color:red;'>Disabled</span>"; break;
 				default: retString = "<span style='color:black; opacity:0.5;'>Undefined</span>";
 			}
 			break;
