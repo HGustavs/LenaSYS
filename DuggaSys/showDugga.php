@@ -77,12 +77,17 @@
 	$response->closeCursor();
 
 	#try{
-		$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
+		// try{
+		// 	$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
+		// }
+		// catch(e)
+		// {
 
-		if($fileContent = "UNK" || $fileContent = "")
-		{
-			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
-		}
+		// }
+
+		// try{
+		// 	$fileContent = file_get_contents("../courses/".$cid."$splicedFileName");
+		// }
 	#}
 	#catch(e){
 		#$fileContent = "ERROR FETCHING FILE CONTENT:"
