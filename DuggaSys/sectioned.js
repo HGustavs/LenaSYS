@@ -141,10 +141,10 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
   var minuteArrOptions=["00","05","10","15","20","25","30","35","40","45","50","55"];
   var minuteArrValue=[0,5,10,15,20,25,30,35,40,45,50,55];
-  var weekArrOptions=["1","2","3","4","5","6","7","8","9","10","11","12"];
-  var weekArrValue=[1,2,3,4,5,6,7,8,9,10,11,12];
-  var weekdayArrOptions=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-  var weekdayArrValue=[1,2,3,4,5,6,7];
+  var amountArrOptions=["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23", "24"];
+  var amountArrValue=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+  var typeArrOptions=["Days", "Weeks", "Months"];
+  var typeArrValue=[1,2,3];
 
   nameSet = false;
   if (entryname == "undefined") entryname = "New Header";
@@ -185,8 +185,16 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     $("#relativedeadlinehours").html(makeoptions(splitdeadline[2],hourArrOptions,hourArrValue));
     $("#relativedeadlineminutes").html(makeoptions(splitdeadline[3],minuteArrOptions,minuteArrValue));
 
-    $("#relativedeadlineweeks").html(makeoptions(splitdeadline[0],weekArrOptions,weekArrValue ));
-    $("#relativedeadlineweekdays").html(makeoptions(splitdeadline[1],weekdayArrOptions,weekdayArrValue));
+    $("#relativedeadlineamount").html(makeoptions(splitdeadline[0],amountArrOptions,amountArrValue ));
+    $("#relativedeadlinetype").html(makeoptions(splitdeadline[1],typeArrOptions,typeArrValue));
+
+    if (relativedeadline !== "null") {
+      if (calculateRelativeDeadline(splitdeadline).getTime() !== new Date(deadline).getTime()) {
+        deadlineCheckbox($("#absolutedeadlinecheck"), true);
+      } else {
+        deadlineCheckbox($("#absolutedeadlinecheck"), false);
+      }
+    }
   }
   var groups = [];
   for (var key in retdata['groups']) {
@@ -257,6 +265,51 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     $('#inputwrapper-Feedback').css("display","none");
     $( "#fdbck" ).prop( "checked", false );
   }
+}
+
+// Handles the logic behind the checkbox for absolute deadline
+function deadlineCheckbox(e, check) {
+
+  if (check !== undefined) e.checked = check;
+
+  if (e.checked) {
+    $("#absolutedeadlinecheck").prop("checked", true);
+    $("#setDeadlineValue").prop("disabled", false);
+    $("#deadlineminutes").prop("disabled", false);
+    $("#deadlinehours").prop("disabled", false);
+  } else {
+    $("#absolutedeadlinecheck").prop("checked", false);
+    $("#setDeadlineValue").prop("disabled", true);
+    $("#deadlineminutes").prop("disabled", true);
+    $("#deadlinehours").prop("disabled", true);
+  }
+}
+
+// Calculates the relative deadline string into a real date relative to the course startdate
+function calculateRelativeDeadline(rDeadline) {
+  // rDeadline = [amount, type, hour, minute]
+  var daysToAdd;
+  switch (rDeadline[1]) {
+    case "1":
+      var daysToAdd = parseInt(rDeadline[0]);
+      break;
+    case "2":
+      var daysToAdd = parseInt(rDeadline[0]) * 7;
+      break;
+    case "3":
+      var daysToAdd = parseInt(rDeadline[0]) * 30;
+      break;
+    default:
+      var daysToAdd = parseInt(rDeadline[0]);
+      break;
+  }
+  // var daysToAdd = rDeadline[0] * 7 + parseInt(rDeadline[1]);
+  var newDeadline = new Date(retdata['startdate']);
+  newDeadline.setDate(newDeadline.getDate() + daysToAdd);
+  newDeadline.setHours(parseInt(rDeadline[2]));
+  newDeadline.setMinutes(parseInt(rDeadline[3]));
+  console.log(newDeadline);
+  return newDeadline;
 }
 
 //---------------------------------------------------------------------------------------------
@@ -460,8 +513,16 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-  param.relativedeadline = $("#relativedeadlineweeks").val()+":"+$("#relativedeadlineweekdays").val()+":"+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
+  param.relativedeadline = $("#relativedeadlineamount").val()+":"+$("#relativedeadlinetype").val()+":"+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
 
+  // If absolute deadline is not checked, always use relative deadline
+  if (!$('#absolutedeadlinecheck').prop('checked')) {
+    var relativeDeadline = new Date(calculateRelativeDeadline(param.relativedeadline.split(":")));
+    var rDeadlineArr = relativeDeadline.toISOString().toString().split("T");
+    var newDeadline = rDeadlineArr[0] + " " + $("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
+    param.deadline = newDeadline;
+    console.log(param.deadline);
+  }
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
     param.feedbackquestion = $("#fdbckque").val();
