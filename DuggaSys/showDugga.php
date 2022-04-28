@@ -77,17 +77,27 @@
 	$response->closeCursor();
 
 	#try{
-		// try{
-		// 	$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
-		// }
-		// catch(e)
-		// {
+		try{
+			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
+		}
+		catch(Exception $e)
+		{
+			print_r("Error1");
+		}
 
-		// }
-
-		// try{
-		// 	$fileContent = file_get_contents("../courses/".$cid."$splicedFileName");
-		// }
+		if($fileContent == "UNK")
+		{
+			try{
+				if($fileContent == "UNK" || $fileContent == "")
+				{
+					$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
+				}
+			}
+			catch(Exception $e)
+			{
+				print_r("Error2");
+			}
+		}
 	#}
 	#catch(e){
 		#$fileContent = "ERROR FETCHING FILE CONTENT:"
@@ -407,7 +417,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		var variantArray = [<?php echo "'$variantParams'"?>];
 		variantArray.push(<?php echo "$cid"?>);
 		variantArray.push(<?php echo "$vers"?>);
-		variantArray.push(<?php echo "$splicedFileName"?>);
+		variantArray.push(<?php echo "'$splicedFileName'"?>);
 		variantArray.push(<?php echo "'$fileContent'"?>);
 		return variantArray;
 	} 
