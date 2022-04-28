@@ -28,10 +28,12 @@ if(isset($_SESSION['uid'])){
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Course Editor</title>
-
-	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+	<link id="themeWhite" type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet">
+	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 
+	<script src="darkmodeToggle.js"></script>
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -69,7 +71,7 @@ if(isset($_SESSION['uid'])){
 
 <!-- New Course Section Dialog START -->
 <div id='newCourse' class='loginBoxContainer' style='display:none;'>
-    <div class='loginBox' style='width:464px;'>
+    <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
     		<div class='loginBoxheader'>
     			<h3>New Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();' title='Close window'>x</div>
@@ -96,7 +98,7 @@ if(isset($_SESSION['uid'])){
 
 	<!-- Edit Section Dialog START -->
 	<div id='editCourse' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style='width:464px;'>
+      <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
     		<div class='loginBoxheader'>
     			<h3>Edit Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
@@ -128,14 +130,14 @@ if(isset($_SESSION['uid'])){
 
 	<!-- Edit Server Settings START -->
 	<div id='editSettings' onmouseover="validateMOTD('motd','dialog5');" class='loginBoxContainer' style='display:none;' >
-    <div class='loginBox' style='width:464px;'>
+    <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
     		<div class='loginBoxheader'>
     			<h3>Edit Server Settings</h3>
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
     		</div>
     		<div style='padding:5px;'>
     			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog5')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
-    			<div class='inputwrapper'><span style='font-style:italic;color:rgba(0,0,0,0.6)'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
+    			<div class='inputwrapper' id='inputwrapperText'><span style='font-style:italic;'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
 				
     		</div>
 			<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>

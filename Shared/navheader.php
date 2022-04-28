@@ -36,13 +36,15 @@
 
 			// Always show home button which links to course homepage
 			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img alt='home button icon' src='../Shared/icons/Home.svg'></a></td>";
+			// Always show toggle button. When clicked it changes between dark and light mode.
+			echo "<td class='navButt'><img id='theme-toggle' src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></td>";
+
 			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			// If the current page is the course editor, don't display the back button
 			//---------------------------------------------------------------------
-
 
 			if($noup!='NONE') {
 				echo "<td class='navButt' id='back' title='Back'>";
@@ -332,7 +334,7 @@
 ?>
 <div id="overlay" style="display: none;"></div>
 <div id='logoutBox' class="logoutBoxContainer" style="display: none">
-	<div id='logout' class="logoutBox">
+	<div id='logout' class="logoutBox DarkModeBackgrounds DarkModeText">
 		<div class='logoutBoxheader'>
 			<h3>Sign out</h3>
 			<div class="cursorPointer" onclick="$('#logoutBox').hide();" title="Close window">x</div>
