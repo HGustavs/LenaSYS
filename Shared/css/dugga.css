@@ -200,7 +200,9 @@ strong {font-weight: bold;}
 	width:100%;
 	margin-bottom:25px;
 }
-
+.stroked { 
+	text-decoration: line-through; 
+}  
 .instructions-content {
 	-webkit-columns: 2 200px;
 	-moz-columns: 2 200px;

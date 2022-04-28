@@ -22,6 +22,9 @@ var activities;
 var firstSelWeek;
 var secondSelWeek;
 var updateShowAct = true;
+var courseFileArr = [];
+
+var commitChangeArray = [];
 
 //sorting for multiple views
 //Restores all views when pressing the All button
@@ -111,15 +114,79 @@ function showInfoText(object, displayText) {
   }
 }
 
+//Returns a static list of holidays. This needs to be manually updated every few years when thae list runs out. It currently has dates all the way to 2025.
 function getHolidays() {
   var holidays = new Array();
-  var redDay1 = getYYYYMMDD(new Date("2019-04-19"));
-  var redDay2 = getYYYYMMDD(new Date("2019-04-22"));
-  var redDay3 = getYYYYMMDD(new Date("2019-05-01"));
-  var redDay4 = getYYYYMMDD(new Date("2019-05-30"));
-  var redDay5 = getYYYYMMDD(new Date("2019-06-06"));
-  var redDay6 = getYYYYMMDD(new Date("2019-06-21"));
-  holidays.push(redDay1,redDay2,redDay3,redDay4,redDay5,redDay6);
+  //Year 2019 for testing purposes only
+  holidays.push(getYYYYMMDD(new Date("2019-04-19")));
+  holidays.push(getYYYYMMDD(new Date("2019-04-22")));
+  holidays.push(getYYYYMMDD(new Date("2019-05-01")));
+  holidays.push(getYYYYMMDD(new Date("2019-05-30")));
+  holidays.push(getYYYYMMDD(new Date("2019-06-06")));
+  holidays.push(getYYYYMMDD(new Date("2019-06-21")));
+  //Year 2022
+  holidays.push(getYYYYMMDD(new Date("2022-01-01")));
+  holidays.push(getYYYYMMDD(new Date("2022-01-06")));
+  holidays.push(getYYYYMMDD(new Date("2022-04-15")));
+  holidays.push(getYYYYMMDD(new Date("2022-04-17")));
+  holidays.push(getYYYYMMDD(new Date("2022-04-18")));
+  holidays.push(getYYYYMMDD(new Date("2022-05-01")));
+  holidays.push(getYYYYMMDD(new Date("2022-05-26")));
+  holidays.push(getYYYYMMDD(new Date("2022-06-06")));
+  holidays.push(getYYYYMMDD(new Date("2022-06-25")));
+  holidays.push(getYYYYMMDD(new Date("2022-11-05")));
+  holidays.push(getYYYYMMDD(new Date("2022-12-25")));
+  holidays.push(getYYYYMMDD(new Date("2022-12-26")));
+  //Year 2023
+  holidays.push(getYYYYMMDD(new Date("2023-01-01")));
+  holidays.push(getYYYYMMDD(new Date("2023-01-06")));
+  holidays.push(getYYYYMMDD(new Date("2023-04-07")));
+  holidays.push(getYYYYMMDD(new Date("2023-04-09")));
+  holidays.push(getYYYYMMDD(new Date("2023-04-10")));
+  holidays.push(getYYYYMMDD(new Date("2023-05-01")));
+  holidays.push(getYYYYMMDD(new Date("2023-05-18")));
+  holidays.push(getYYYYMMDD(new Date("2023-05-28")));
+  holidays.push(getYYYYMMDD(new Date("2023-06-06")));
+  holidays.push(getYYYYMMDD(new Date("2023-06-24")));
+  holidays.push(getYYYYMMDD(new Date("2023-11-04")));
+  holidays.push(getYYYYMMDD(new Date("2023-12-24")));
+  holidays.push(getYYYYMMDD(new Date("2023-12-25")));
+  holidays.push(getYYYYMMDD(new Date("2023-12-26")));
+  holidays.push(getYYYYMMDD(new Date("2023-12-31")));
+  //Year 2024
+  holidays.push(getYYYYMMDD(new Date("2024-01-01")));
+  holidays.push(getYYYYMMDD(new Date("2024-01-06")));
+  holidays.push(getYYYYMMDD(new Date("2024-03-29")));
+  holidays.push(getYYYYMMDD(new Date("2024-03-31")));
+  holidays.push(getYYYYMMDD(new Date("2024-04-01")));
+  holidays.push(getYYYYMMDD(new Date("2024-05-01")));
+  holidays.push(getYYYYMMDD(new Date("2024-05-09")));
+  holidays.push(getYYYYMMDD(new Date("2024-05-19")));
+  holidays.push(getYYYYMMDD(new Date("2024-06-06")));
+  holidays.push(getYYYYMMDD(new Date("2024-06-22")));
+  holidays.push(getYYYYMMDD(new Date("2024-11-02")));
+  holidays.push(getYYYYMMDD(new Date("2024-12-24")));
+  holidays.push(getYYYYMMDD(new Date("2024-12-25")));
+  holidays.push(getYYYYMMDD(new Date("2024-12-26")));
+  holidays.push(getYYYYMMDD(new Date("2024-12-31")));
+  
+  //Year 2025S
+  holidays.push(getYYYYMMDD(new Date("2025-01-01")));
+  holidays.push(getYYYYMMDD(new Date("2025-01-06")));
+  holidays.push(getYYYYMMDD(new Date("2025-04-18")));
+  holidays.push(getYYYYMMDD(new Date("2025-04-20")));
+  holidays.push(getYYYYMMDD(new Date("2025-04-21")));
+  holidays.push(getYYYYMMDD(new Date("2025-05-01")));
+  holidays.push(getYYYYMMDD(new Date("2025-05-29")));
+  holidays.push(getYYYYMMDD(new Date("2025-06-06")));
+  holidays.push(getYYYYMMDD(new Date("2025-06-08")));
+  holidays.push(getYYYYMMDD(new Date("2025-06-21")));
+  holidays.push(getYYYYMMDD(new Date("2025-11-01")));
+  holidays.push(getYYYYMMDD(new Date("2023-12-24")));
+  holidays.push(getYYYYMMDD(new Date("2025-12-25")));
+  holidays.push(getYYYYMMDD(new Date("2025-12-26")));
+  holidays.push(getYYYYMMDD(new Date("2025-12-31")));
+
   return holidays;
 }
 
@@ -959,6 +1026,78 @@ function renderAllRankSortOptions(col, status, colname) {
   return str;
 }
 
+function renderRankSortOptions(col, status, colname) {
+  str = "";
+  if (status == -1) {
+    str += `<span class='sortableHeading' onclick='rankTable.toggleSortStatus(\"${col}\",0)'>
+    ${colname}</span>`;
+  } else if (status == 0) {
+    str += `<span class='sortableHeading' onclick='rankTable.toggleSortStatus(\"${col}\",1)'>
+    ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
+  } else {
+    str += `<span class='sortableHeading' onclick='rankTable.toggleSortStatus(\"${col}\",0)'>
+    ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
+  }
+  return str;
+}
+
+function renderGitHubSortOptions(col, status, colname) {
+  str = "";
+  if (status == -1) {
+    str += `<span class='sortableHeading' onclick='ghContibTable.toggleSortStatus(\"${col}\",0)'>
+    ${colname}</span>`;
+  } else if (status == 0) {
+    str += `<span class='sortableHeading' onclick='ghContibTable.toggleSortStatus(\"${col}\",1)'>
+    ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
+  } else {
+    str += `<span class='sortableHeading' onclick='ghContibTable.toggleSortStatus(\"${col}\",0)'>
+    ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
+  }
+  return str;
+}
+
+//compare function is called by sortableTable.js, used to order tables
+function compare(a, b) {
+  var col = sortableTable.currentTable.getSortcolumn();
+  var status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
+
+	if(status==1){
+		var tempA = a;
+		var tempB = b;
+	}else{
+		var tempA = b;
+		var tempB = a;
+	}
+
+  //If a column uses string or int the compare will work by default.
+  //ghContibTable columns use arrays in the table so we need to handle them in a different way from other columns
+  
+  if (col == "dates") {
+    tempA = tempA['weekStart'];
+    tempB = tempB['weekStart'];
+  }else if (col == "codeContribution") {
+    var countA = tempA['files'].length;
+    var countB = tempB['files'].length;
+    tempA = countA;
+    tempB = countB;
+  }else if(col == "githubContribution"){
+    //Sorts column based on amount of 'things' that happened for that week
+    var countA = tempA['comments'].length + tempA['commits'].length + tempA['events'].length + tempA['issues'].length;
+    var countB = tempB['comments'].length + tempB['commits'].length + tempB['events'].length + tempB['issues'].length;
+    tempA = countA;
+    tempB = countB;
+  }
+
+  
+	if (tempA > tempB) {
+		return 1;
+	} else if (tempA < tempB) {
+		return -1;
+	} else {
+		return 0;
+	}	
+}
+
 function selectuser() {
   AJAXService("get", {
     userid: document.getElementById('userid').value
@@ -995,20 +1134,30 @@ function returnedSection(data) {
   onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
   str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution'
   onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
-  str += `<select id='courseBtn' class='submit-button'
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'>
-  "<option value="ChooseC">Choose course</option>"
-  "<option value="opt1">Option1</option>"
-  "<option value="opt2">Option2</option>"
-  </select>`;
+  
+  
+  //Dynamically loads the year selection list based on folders in ../../contributionDBs/
   str += `<select id='yearBtn' class='submit-button'
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'>
-  "<option value="ChooseY">Choose year</option>"
-  "<option value="opt1">Option1</option>"
-  "<option value="opt2">Option2</option>"
-  </select>`;
-  str += "</div>"; 
+  onclick='statSort(value)'onchange='courseSelection(this)'>
+  <option value="ChooseY">Choose Year</option>`;
 
+  // Add option for each year folder
+  if (data['directoriesYear'][0] !== null){
+    for(i=0;i<data['directoriesYear'].length;i++){
+      courseFileArr.push(data['allCoursesPerYear'][i]); // Keep file paths
+      str += '<option value=' + i + '>'; // Array pos
+      str += data['directoriesYear'][i]; // Year
+      str +=`</option>`;
+    }
+  }
+  str +=`</select>`;
+
+  str += `<select id='courseBtn' class='submit-button'
+  onclick='statSort(value)'onchange='courseDBCollection(value)' style="visibility: hidden">
+  <option value="ChooseC">Choose Course</option></select>`;
+
+  str += "</div>"; 
+ 
 
   localStorage.setItem('GitHubUser', data['githubuser'])
      str+="<p>";
@@ -1031,12 +1180,54 @@ function returnedSection(data) {
   createGitHubcontributionTable(buildContributionData(data));
   toggleAfterLocalStorage(data);
   createTimeSheetTable(data['timesheets']);
+  
+  createCommitChange(data['commitchange']);
 
   document.getElementById('barchart').innerHTML = renderBarDiagram(data);
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(data);
   document.getElementById('commitDiagram').innerHTML = renderCommits(data);
   document.getElementById('content').innerHTML = str;
+}
+
+// Update the "Select Course" dropdown options
+function courseSelection(elem){
+  // Clear dropdown menu
+  var dropdown = document.getElementById('courseBtn');
+  dropdown.options.length=0;
+
+  // Set visibility
+  dropdown.style.visibility = elem.value == "ChooseY" ? 'hidden' : "visible";
+
+  // Default option
+  var opt = document.createElement('option');
+  opt.value = "ChooseC";
+  opt.innerHTML = "Choose Course";
+  dropdown.appendChild(opt);
+
+  // Get file paths
+  var pos = elem.value;
+  for(i=0;i<courseFileArr[pos].length;i++)
+  {
+    // Create button
+    var opt = document.createElement('option');
+    var str = courseFileArr[pos][i];
+    opt.value = str;
+    opt.innerHTML = str.substring(str.lastIndexOf('/') + 1);
+    dropdown.appendChild(opt);
+  }
+}
+
+
+//Function to reload contributionservice with the path to the correct db file
+function courseDBCollection(path){
+  //AJAX has troubles with / so in the transfer it is replaced with % and then back to / in contributionservice.php
+  path = path.replaceAll("/",'%');  
+
+  AJAXService("get", { 
+    dbPath: path
+  }, "CONTRIBUTION");
+  
 }
 
 function buildRankData(data) {
@@ -1114,7 +1305,7 @@ function createRankTable(data) {
     data: tabledata,
     tableElementId: "personalRankTable",
     renderCellCallback: rankRenderCell,
-    renderSortOptionsCallback: renderSortOptions,
+    renderSortOptionsCallback: renderRankSortOptions,
     columnSum:["number","rank","grpranking"],
     columnSumCallback: makeSumPersonalRank,
     columnOrder: colOrder,
@@ -1172,18 +1363,19 @@ function createGitHubcontributionTable(data) {
     tblhead: {
       weeks: "Week",
       dates: "Dates",
+      redDays: "Red Days",
       codeContribution: "Code Contribution",
       githubContribution: "GitHub Contribution"
     },
     tblbody: data,
     tblfoot: {}
   };
-  var colOrder = ["weeks", "dates", "codeContribution", "githubContribution"];
+  var colOrder = ["weeks", "dates", "redDays", "codeContribution", "githubContribution"];
   ghContibTable = new SortableTable({
     data: tabledata,
     tableElementId: "contribGithHubContribTable",
     renderCellCallback: renderCellForghContibTable,
-    renderSortOptionsCallback: renderSortOptions, 
+    renderSortOptionsCallback: renderGitHubSortOptions, 
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
@@ -1204,6 +1396,8 @@ function renderCellForghContibTable(col, celldata, cellid) {
   } else if (col === 'dates') {
     str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
     ${obj.weekStart} - ${obj.weekEnd}</span></div>`;
+    renderCellForghContibTable.weekStart = obj.weekStart;
+    renderCellForghContibTable.weekEnd = obj.weekEnd;
   } else if (col === 'codeContribution') {
     for (var j = 0; j < obj.files.length; j++) {
       var file = obj.files[j];
@@ -1230,7 +1424,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
            for (j = 0; j < obj.commits.length; j++) {
              var message = obj.commits[j].message;
              var hash = obj.commits[j].cid;
-             str += `<span><a class="commitLink" onmouseover="showCommits(this)" onmouseout="hideCommits(this)" onclick='keepContribContentOpen(event)' 
+             str += `<span><a class="commitLink" onmouseover='showCommits(this, \"${"cid: " + hash}\");' onmouseout="hideCommits(this)" onclick='keepContribContentOpen(event)' 
              target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}'>${message}</a></span>`;
            }
            str += "</div>";
@@ -1238,8 +1432,8 @@ function renderCellForghContibTable(col, celldata, cellid) {
        }
        if (obj.issues.length > 0) {
           str += `<div id='ghIssues' onclick='toggleContributionTable(this)' 
-          class='contribheading' style='cursor:pointer;'><span>Created ${obj.issues.length} issue(s).</span>";
-          str += "<div id='ghIssues"+rowNr+"' class='contribcontent'>`;
+          class='contribheading' style='cursor:pointer;'><span>Created ${obj.issues.length} issue(s).</span>`;
+          str += "<div id='ghIssues"+rowNr+"' class='contribcontent'>";
           for (j = 0; j < obj.issues.length; j++) {
             var issue = obj.issues[j];
             var issuestr = issue.issueno + " " + issue.title;
@@ -1280,6 +1474,57 @@ function renderCellForghContibTable(col, celldata, cellid) {
        }
      }
      str += "</div>";
+  } else if(col == 'redDays'){
+    var alphaPlus = new Date();
+    var holidayList = getHolidays(alphaPlus);
+
+    //Get a list of all red days this year and check if they belong on the current row
+    //Based on row number. A certain row should only post a date if that date is on the same week as that row covers.
+    var i = 0;
+    //Extract values that were staticlly stored during the previous iteration of this function when a week cell was generated
+    var time1 = String(renderCellForghContibTable.weekStart);
+    var time2 = String(renderCellForghContibTable.weekEnd);
+
+    //Extract all the important values from the two dates that we require
+    var ObjYear1 = time1.substr(0,4);
+    var ObjYear2 = time2.substr(0,4);
+    var ObjMonth1 = time1.substr(5,2);
+    var ObjMonth2 = time2.substr(5,2);
+    var ObjDay1 = time1.substr(8,2);
+    var ObjDay2 = time2.substr(8,2); 
+
+    //Repeat for every holiday in the holiday list and check if that holiday is this week(The week of this cell)
+    while(holidayList.length > i){ 
+      var HolidayYear = holidayList[i].substr(0,4);
+      var HolidayMonth = holidayList[i].substr(5,2);
+      var HolidayDay = holidayList[i].substr(8,2);
+
+      //Same Year all?
+      if(ObjYear1 == HolidayYear && ObjYear2 == HolidayYear){
+        //Same Month all?
+        if(ObjMonth1 == HolidayMonth && ObjMonth2 == HolidayMonth){
+          //Day is somewere in the correct range
+          if(ObjDay1 <= HolidayDay && ObjDay2 >= HolidayDay){
+            str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+            ${holidayList[i]}</span></div>`
+          }
+        //Holiday is in one of the two months and on the right day?
+        } else if (ObjMonth1 == HolidayMonth && ObjDay1 <= HolidayDay){
+            str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+            ${holidayList[i]}</span></div>`
+        } else if (ObjMonth2 == HolidayMonth && ObjDay2 >= HolidayDay){
+          str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+          ${holidayList[i]}</span></div>`
+        }
+      } else if(ObjYear1 == HolidayYear && Number(ObjMonth1) == 12 && ObjDay1 <= HolidayDay){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      } else if(ObjYear2 == HolidayYear && Number(ObjMonth2) == 1 && ObjDay2 >= HolidayDay){
+        str += `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>
+        ${holidayList[i]}</span></div>`
+      }  
+      i++;
+    }
   } else {
     str = `<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>${obj}</span></div>`;
   }
@@ -1700,12 +1945,66 @@ function resetForceLogin()
 
 }
 //Shows a div when hover the commit links
-function showCommits(){
- 
-  document.getElementById('commitDiv').style.display="block";
+function showCommits(object, cid){
+  var text = document.getElementById('commitDiv');
+  text.style.display="block";
+  text.innerHTML = commitChangeArray[cid];
+  text.style.left = (document.documentElement.scrollLeft) + "px";
+  text.style.top = (document.documentElement.scrollTop) + "px";
 }
 //Hide a div when hover the commit links
  function hideCommits(){
   document.getElementById('commitDiv').style.display="none";
  }
+
 console.error
+//Toggles the account request menu being open or closed.
+function toggleAccountRequestPane(){
+    if (document.getElementById("accountRequests-pane").className == "show-accountRequests-pane") {
+        document.getElementById('accountReqmarker').innerHTML = "Account requests";
+        document.getElementById("accountRequests-pane").className = "hide-accountRequests-pane";
+    } else {
+        document.getElementById('accountReqmarker').innerHTML = "Account requests";
+        document.getElementById("accountRequests-pane").className = "show-accountRequests-pane";
+       
+    }
+}
+
+//Creates the html elements containing the commit changes
+ function createCommitChange(data){
+  var commitChange = data;
+  var l = commitChange.length;
+  
+  for(var i = 0; i < l; i++){
+    var str ="";
+    var blameLength = commitChange[i]['blame'].length;
+    var offset = 0;
+    
+    for(var j = 0; j < blameLength; j++){
+      var offsetRunner = offset;
+      //Adds blame string
+      str += "<h3>" + commitChange[i]['blame'][j].filename + " - " + commitChange[i]['blame'][j].rowk + " lines changed </h3>";
+
+      //Adds the code changes associated with that blame
+      //console.log("before for offset: "+offset+" offsetRunner: " + offsetRunner);
+      codeLength = commitChange[i]['blame'][j].rowk;
+      for(var x = 0; x < codeLength; x++){
+        //console.log("index: " + i + " x: "+ x + " code length: "+ codeLength + " offset: "+ offset);
+        str += "<p><b>" + commitChange[i]['codechange'][x+offset].rowno + "</b> - " + commitChange[i]['codechange'][x+offset].code;
+        offsetRunner++;
+      }
+      offset = offsetRunner;
+      //console.log("After for "+offset);
+    }
+    //If a commit didn't change anything display this instead
+    if(str == ""){
+      str += "<h3>Commit overwritten or missing from database</h3>"
+    }
+    //Add the string to the array using the cid as index.
+    commitChangeArray["cid: "+commitChange[i]['cid']] = str;
+  }
+ }
+
+
+console.error
+

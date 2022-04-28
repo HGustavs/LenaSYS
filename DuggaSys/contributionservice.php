@@ -21,7 +21,7 @@ $debug="NONE!";
 //This uses an hardcoded path to a database file containing all Github data and run all funtions on that data. No other connection to a database at the moment.
 $log_db = new PDO('sqlite:../../BGHdata_2021_05.db');
 
-//Old filepath with wrong orientation of the slashes that prevent function on Linux DO NOT USE
+//Old filepath with wrong orientation of the slashes that prevent function on Linux DO NOT USE!!!!!!!!
 //$log_db = new PDO('sqlite:..\..\BGHdata_2021_05.db');
 
 $opt = getOP('opt');
@@ -36,9 +36,35 @@ $allcommitranks=array();
 
 $draught=false;
 
+//Get all databases separated by course and year
+$directoriesYear = glob('../../contributionDBs/*', GLOB_ONLYDIR);
+
+//Removes everything but the year from the directories
+for($i=0; $i< sizeof($directoriesYear); $i++){
+	$directoriesYear[$i]= substr($directoriesYear[$i],-4);
+}
+
+$allCoursesPerYear=array();
+//2d-array. For every year, create an array of the .db in that folder
+for($i=0; $i< sizeof($directoriesYear); $i++){
+	$allCourses= glob('../../contributionDBs/'.$directoriesYear[$i].'/*.db');
+	array_push($allCoursesPerYear,$allCourses);
+}
+
 if (!checklogin()) die;
 if(strcmp($opt,"get")==0) {
 	if(checklogin() && isSuperUser($_SESSION['uid'])) {
+		
+		
+		//Dynamically loads PDO by path name
+		$dbPath=getOP('dbPath');
+		if( $dbPath != null && $dbPath != 'UNK' ) {
+			$path = $dbPath;
+			//AJAX has troubles with / so in the transfer it is replaced with % and here back to /
+			$path = str_replace('%','/',$path);
+			$log_db = new PDO('sqlite:'.$path);
+		}
+
 		$gituser = getOP('userid');
 		$query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2019-03-31" and blamedate<"2020-01-01" union select author as usr from event where eventtime>"2019-03-31" and eventtime<"2020-01-01" union select author as usr from issue where issuetime>"2019-03-31" and issuetime<"2019-01-08") order by usr;');
 		if(!$query->execute()) {
@@ -544,9 +570,82 @@ if(strcmp($opt,"get")==0) {
 		}
 	}
 
+
+
+	//Commit changes
+	$datefrom = $startweek;
+	$datefrom=date('Y-m-d', $datefrom);
+	$dateto=strtotime("+10 week",strtotime($datefrom));
+	$dateto=date('Y-m-d', $dateto);
+
+	$commitchanges=array();
+	$query = $log_db->prepare('SELECT cid FROM commitgit WHERE author=:gituser AND thedate>:datefrom AND thedate<:dateto');
+	$query->bindParam(':gituser', $gituser);
+	$query->bindParam(':datefrom', $datefrom);
+	$query->bindParam(':dateto', $dateto );
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries\n".$error[2];
+	}
+	$rows = $query->fetchAll();
+	
+	//Gets code changes and blame for each commit
+	foreach($rows as $row){
+		$blames=array();
+		
+		$query = $log_db->prepare('SELECT Bfile.filename, Blame.id, sum(rowcnt) as rowk FROM Blame, Bfile WHERE href=:cid AND Blame.fileid=Bfile.id Group by fileid');
+		$query->bindParam(':cid', $row['cid']);
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error reading entries\n".$error[2];
+		}
+		$innerRows = $query->fetchAll();
+		foreach($innerRows as $innerRow){
+			$blame = array(
+				//'fileid' => $innerRow['fileid'],
+				'filename' => $innerRow['filename'],
+				'id' => $innerRow['id'],
+				'rowk' => $innerRow['rowk']
+			);
+			array_push($blames, $blame);
+		}
+
+		//If the blame is null then codechanges will also be null thus we don't execute it to improve performance
+		$codechanges=array();
+		if($blames != NULL){
+			
+			$query = $log_db->prepare('SELECT Bfile.filename, rowno, code, fileid FROM CodeRow, Bfile WHERE cid=:cid AND CodeRow.fileid=Bfile.id');
+			$query->bindParam(':cid', $row['cid']);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading entries\n".$error[2];
+			}
+			$innerRows = $query->fetchAll();
+			foreach($innerRows as $innerRow){
+				$codechange = array(
+					'filename' => $innerRow['filename'],
+					'rowno' => $innerRow['rowno'],
+					'code' => $innerRow['code'],
+					'fileid' => $innerRow['fileid']
+				);
+				array_push($codechanges, $codechange);
+			}
+		}
+		
+		$commitchange=array(
+			'cid' => $row['cid'],
+			'codechange' => $codechanges,
+			'blame' => $blames
+		);			
+		array_push($commitchanges, $commitchange);
+	}
+
+	//Prepare encode
 	$array = array(
 		'debug' => $debug,
 		'weeks' => $weeks,
+		'directoriesYear' => $directoriesYear,
+		'allCoursesPerYear' => $allCoursesPerYear,
 		'rowrankno' => $rowrankno,
 		'rowrank' => $rowrank,
     'rowgrouprank' => $rowgrouprank,
@@ -572,7 +671,8 @@ if(strcmp($opt,"get")==0) {
     'amountInCourse' => $amountInCourse,
     'amountInGroups' => $amountInGroups,
 		'hourlyevents' => $hourlyevents,
-		'timesheets' => $timesheets
+		'timesheets' => $timesheets,
+		'commitchange' => $commitchanges
 	);
 
 	echo json_encode($array);
