@@ -3975,10 +3975,12 @@ function toggleRuler()
 
     // Toggle active ruler + color change of button to clarify if button is pressed or not
     if(settings.ruler.isRulerActive){
-        ruler.style.display = "none";
+        ruler.style.left = "-1000px";
+        ruler.style.top = "-1000px";
         rulerToggleButton.style.backgroundColor = "#614875";
     } else {
-        ruler.style.display = "block";
+        ruler.style.left = "50px";
+        ruler.style.top = "0px";
         rulerToggleButton.style.backgroundColor = "#362049";
 
     }
