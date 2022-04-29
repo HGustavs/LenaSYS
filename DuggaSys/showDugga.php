@@ -166,7 +166,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
 
 			$btnDisable = "btn-disable";
-			echo "<input class='submit-button large-button' type='button' value='Edit instructions'/>";
+			
 			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
@@ -174,7 +174,13 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 					if(isSuperUser($userid)){
 						// A teacher may not submit any duggas
 						echo "<table id='submitButtonTable' class='navheader'>";
+						echo "<tr>";
+						echo "<td align='rigth'>";
+						echo "<input class='submit-button large-button' type='button' value='Edit instructions'/>";	
+						echo "</td>";
+						echo "</tr>";
 						echo "</table>";
+						
 					}else if ($duggafile !== 'contribution') {						
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
