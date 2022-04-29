@@ -776,7 +776,7 @@ else if(strcmp($opt, "checkForLenasysUser")==0)
 	$gituser = getOP('userid');
 
 	
-	$query = $pdo->prepare("SELECT username FROM user WHERE username=:GU;");
+	$query = $pdo->prepare("SELECT username FROM git_user WHERE username=:GU;");
 	$query->bindParam(':GU', $gituser);
 	
 	if(!$query->execute()) 
@@ -854,7 +854,7 @@ $query = $log_db->prepare('select distinct(usr) from
 
 		$allusers = array();
 
-		$query = $pdo->prepare("SELECT username FROM user WHERE username=:GU;");
+		$query = $pdo->prepare("SELECT username FROM git_user WHERE username=:GU;");
 		$query->bindParam(':GU', $gituser);
 	
 		if(!$query->execute()) 
@@ -887,6 +887,8 @@ $query = $log_db->prepare('select distinct(usr) from
 			$temp_null_str = "NULL";
 
 			$rnd=standardPasswordHash($gitpass);
+
+			/*
 			$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password, addedtime, class, requestedpasswordchange) VALUES(:username, :email, :firstname, :lastname, :ssn, :password, now(), :className, :RPC);';
 			$stmt = $pdo->prepare($querystring);
 			$stmt->bindParam(':username', $gituser);
@@ -898,19 +900,29 @@ $query = $log_db->prepare('select distinct(usr) from
 			$stmt->bindParam(':className', $temp_null_str); 
 			$stmt->bindParam(':RPC', $git_pending);
 
+			*/
+
+			$querystring='INSERT INTO git_user (username, password, status_account, addedtime) VALUES(:username, :password, :status_account, now());';
+			$stmt = $pdo->prepare($querystring);
+			$stmt->bindParam(':username', $gituser);
+			$stmt->bindParam(':password', $rnd);
+			$stmt->bindParam(':status_account', $git_pending);
+			
+
+
 			try {
 				if(!$stmt->execute()) {
 					$error=$stmt->errorInfo();
 					$debug.="Error updating entries\n".$error[2];
 					$debug.="   ".$gituser."Does not Exist \n";
-					//$debug.=" ".$uid;
+					$debug.=" ".$uid;
 				}
 				$uid=$pdo->lastInsertId();
 				$addStatus = true;
 
 			} catch (PDOException $e) {
 				if ($e->errorInfo[1] == 1062) {
-					$debug="Duplicate SSN or Username";
+					$debug="Duplicate Username";
 				} else {
 					$debug="Error updating entries\n".$error[2];
 				}
