@@ -63,7 +63,7 @@
 	$count = 0;
 	
 	#create request to database and execute it
-	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid;");
+	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid  AND disabled = 0;");
 	$response->execute();
 
 	#loop through responses, fetch param column in variant table, splice string to extract file name, then close request.
