@@ -31,6 +31,8 @@ CREATE TABLE git_user(
 	password				VARCHAR(255) NOT NULL,
 	status_pass				TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	status_account			TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	addedtime  				DATETIME,
+	lastvisit				DATETIME,
 	PRIMARY KEY (git_uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
