@@ -3888,7 +3888,7 @@ function resizeBoxes(parent, templateId)
 		});
 		$('#box3wrapper').resizable({
 			disabled: true
-			});
+		});
 	}
 	if(templateId == 4){
 		$('#box1wrapper').resizable({
