@@ -189,6 +189,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     $("#relativedeadlinetype").html(makeoptions(splitdeadline[1],typeArrOptions,typeArrValue));
 
     if (relativedeadline !== "null") {
+      console.log(calculateRelativeDeadline(splitdeadline), new Date(deadline));
       if (calculateRelativeDeadline(splitdeadline).getTime() !== new Date(deadline).getTime()) {
         checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
       } else {
@@ -307,7 +308,6 @@ function calculateRelativeDeadline(rDeadline) {
   newDeadline.setDate(newDeadline.getDate() + daysToAdd);
   newDeadline.setHours(parseInt(rDeadline[2]));
   newDeadline.setMinutes(parseInt(rDeadline[3]));
-  console.log(newDeadline);
   return newDeadline;
 }
 
@@ -517,11 +517,12 @@ function prepareItem() {
   // If absolute deadline is not checked, always use relative deadline
   if (!$('#absolutedeadlinecheck').prop('checked')) {
     var relativeDeadline = new Date(calculateRelativeDeadline(param.relativedeadline.split(":")));
-    var rDeadlineArr = relativeDeadline.toISOString().toString().split("T");
-    var newDeadline = rDeadlineArr[0] + " " + $("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
+    var rDeadlineArr = relativeDeadline.toLocaleDateString().split("/");
+    var newDeadline = rDeadlineArr[2] + "-" + rDeadlineArr[0]+ "-" + rDeadlineArr[1] + " " + $("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
+    
     param.deadline = newDeadline;
-    console.log(param.deadline);
   }
+
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
     param.feedbackquestion = $("#fdbckque").val();

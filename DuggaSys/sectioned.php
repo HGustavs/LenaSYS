@@ -242,7 +242,7 @@
 								<input onchange="showCourseDate('setDeadlineValue','dialog8')" class='textinput' type='date' id='setDeadlineValue' value='' />
 								<select style='width:55px;' id='deadlineminutes'></select>
 								<select style='width:55px;' id='deadlinehours'></select>
-								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='deadlineCheckbox(this)'/>
+								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='checkDeadlineCheckbox(this)'/>
 							</span>
 							<br />
 							<span>Relative</span>
