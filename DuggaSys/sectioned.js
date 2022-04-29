@@ -31,6 +31,8 @@ var menuState = {
 }
 
 function setup() {
+  document.querySelector('#hideElement').disabled = true;
+  document.querySelector('#hideElement').style.opacity = 0.7;
   AJAXService("get", {}, "SECTION");
 }
 
