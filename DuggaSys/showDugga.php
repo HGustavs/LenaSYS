@@ -86,10 +86,10 @@
 			
 			echo "<script src='templates/".$duggafile.".js'></script>";
 			echo "</head>";
-			echo "<body onload='setup();'>";
-		}else{
-			echo "</head>";
-			echo "<body>";
+			echo "<body onload='setup();addAlertOnUnload();'>"; //Adds an alert when leaving page with changes.
+		}else{													//^this also works as a event for doing things before page unloads.
+			echo "</head>";										
+			echo "<body onload='addAlertOnUnload()'>"; 			//Same as above but without other stuff.
 		}
 ?>
 <!--<script type="text/javascript">
