@@ -938,6 +938,10 @@ function createboxmenu(contentid, boxid, type) {
 			}
 			// If reader doesn't have write access, only the boxtitle is shown
 		} else {
+			document.oncopy = function(){
+				return false;
+			}
+
 			str += '<td id="boxtitlewrapper" class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
 		}
 
@@ -4498,14 +4502,37 @@ function copyCodeToClipboard(boxid) {
 	// Select the code
 	var selection = window.getSelection();
 	
-	// Add Code to just copy impo code
-	for(i = 0; i<impo.length;i++){
+	selection.removeAllRanges();			//Remove range at selection
+
+ 	if (retData['writeaccess'] == "w") {		// If teacher
+
+ 		var range = document.createRange();	
+ 		range.selectNodeContents(code);		
+ 		selection.removeAllRanges();			
+ 		selection.addRange(range);			
+ 		document.execCommand("Copy");			// Do Copy
+
+ 	}else{	
+		document.oncopy = function(){			//make copy possible
+			return true;
+		}
+
 		var range = document.createRange();
-		range.selectNode(impo[i]);
-		selection.addRange(range);
+
+		for(i = 0; i<impo.length;i++){
+
+			// Add Code to just copy first raw impo code
+			range.selectNode(impo[i]);
+			selection.addRange(range);
+		}
+
+		document.execCommand("Copy");			// Do Copy
+
+		document.oncopy = function(){			//make copy impossible
+			return false;
+		}
 	}
-	
-	document.execCommand("Copy");
+
 	selection.removeAllRanges();
 
 	// Notification animation
