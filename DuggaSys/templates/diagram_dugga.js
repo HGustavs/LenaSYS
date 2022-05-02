@@ -21,7 +21,8 @@ function setup()
     diagramWindow = document.getElementById("diagram-iframe");
     inParams = parseGet();
     AJAXService("GETPARAM", { }, "PDUGGA");
-    document.getElementById("saveDuggaButton").onclick = function (){ uploadFile();};
+    document.getElementById("saveDuggaButton").onclick = function (){ uploadFile() , showReceiptPopup();};
+    
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
 }
 
@@ -100,7 +101,7 @@ function returnedDugga(data)
         var lastKeyIndex = Object.keys(momentFiles).length-1;
         var lastKey = Object.keys(momentFiles)[lastKeyIndex];
         var lastFile = momentFiles[lastKey]
-        var filePath = lastFile.filepath + lastFile.filename + lastFile.seq + "." + lastFile.extension;
+        var filePath = lastFile.filepath + "/" + lastFile.filename + lastFile.seq + "." + lastFile.extension;
 
         $.ajax({
             method: "GET",
