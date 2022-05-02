@@ -71,15 +71,18 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
+    console.log(data);
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
         //document.getElementById("assigment-instructions").innerHTML = param.instructions;
         //checking if the user is a teacher
         if(data.isTeacher==0){
             // getting the diagram types allowed and calling a function in diagram.js where the values are now set <-- UML functionality start
+
             document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type;
             // getting the error finder allowed or not
             document.getElementById("diagram-iframe").contentWindow.errorActive = param.errorActive;
+
         }
         else{
             var diagramType={ER:true,UML:true};
