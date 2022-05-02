@@ -61,6 +61,7 @@ function uploadFile()
         }
     }).done(function() {
         AJAXService("GETPARAM", { }, "PDUGGA");
+        showReceiptPopup();
         saveClick();
     });
 }
@@ -71,6 +72,7 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
+    $('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
     console.log(data);
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
