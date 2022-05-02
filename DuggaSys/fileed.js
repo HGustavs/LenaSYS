@@ -354,10 +354,10 @@ function renderCell(col, celldata, cellid) {
         str += "<span>" + celldata + "</span>";
     } else if (col == "editor") {
         if(obj.showeditor){
-        if (obj.extension == "md" || obj.extension == "txt") {
+        if (obj.extension == "md" || obj.extension == "txt" || obj.extension == "html") {
             str = "<span class='iconBox'><img alt='edit file icon' id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
-        } else if (obj.extension == "js" || obj.extension == "html" || obj.extension == "css" || obj.extension == "php") {
+        } else if (obj.extension == "js"  || obj.extension == "css" || obj.extension == "php") {
             str = "<span class='iconBox'><img alt='edit file icon' id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
         }
