@@ -363,7 +363,12 @@ function confirmBox(operation, item = null) {
 // Creates an array over all checked items
 function markedItems(item = null){
   var removed = false;
+  var kind = $(item).parents('tr').attr('value');
+    if(kind == "section"){
+      console.log(kind);
+    }
     active_lid = item ? $(item).parents('table').attr('value') : null;
+    console.log("Active lid: "+active_lid);
     if (hideItemList.length != 0){
       for( var i = 0; i < hideItemList.length; i++){ 
         if ( hideItemList[i] === active_lid) { 
@@ -831,7 +836,7 @@ function returnedSection(data) {
 
         // Content table
         str += `<table id='lid${item['lid']}' value='${item['lid']}' 
-        style='width:100%;table-layout:fixed;'><tr style='height:32px;' `;
+        style='width:100%;table-layout:fixed;'><tr value='${makeTextArray(item['kind'], valarr)}' style='height:32px;' `;
 
         if (kk % 2 == 0) {
           str += " class='hi' ";
@@ -1135,7 +1140,7 @@ function returnedSection(data) {
 
         //Generate new tab link
         str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Open link in new tab' class='' 
           src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
           str += "</td>";
@@ -1143,7 +1148,7 @@ function returnedSection(data) {
         // Generate Canvas Link Button
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
           src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
           str += "</td>";
@@ -1151,14 +1156,11 @@ function returnedSection(data) {
 
         // Cog Wheel
         if (data['writeaccess'] || data['studentteacher']) {
-          str += "<td style='width:32px;' ";
-
-          if (itemKind === 0) str += "class='header" + hideState + "' ";
-          if (itemKind === 1) str += "class='section" + hideState + "' ";
-          if (itemKind === 4) str += "class='moment" + hideState + "' ";
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
 
-          str += "><img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
+          str += "<img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
@@ -1169,7 +1171,7 @@ function returnedSection(data) {
         // Trashcan
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img alt='trashcan icon' id='dorf' title='Delete item' class='' 
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
@@ -1177,8 +1179,8 @@ function returnedSection(data) {
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:25px;' class='" + makeTextArray(itemKind,
-            ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
+          str += `<td style='width:25px;' class='${makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
             str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' onclick='markedItems(this)'>";
             str += "</td>";      
         }
