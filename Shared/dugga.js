@@ -2551,3 +2551,7 @@ var ClickCounter = {
 function addAlertOnUnload(){
 	window.onbeforeunload = function() {return "Changes will be discarded by leaving page.";}
 }
+
+function editDugga(){
+	console.log("testing correct upload file");
+}
