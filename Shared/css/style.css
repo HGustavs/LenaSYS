@@ -1512,10 +1512,7 @@ div .navButt:hover {
         #codeBurger {
         display: table-cell;
     }
-    .navButt img { /* test commit, this is where the issue lies */
-        width: 20px;
-    }
-    
+        
     .access menuButton{
       width: 20px;
     }
