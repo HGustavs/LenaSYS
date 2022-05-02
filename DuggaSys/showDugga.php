@@ -177,7 +177,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='rigth'>";
-						echo "<input class='submit-button large-button' onclick='editDugga()' type='button' value='Edit instructions'/>";	
+						echo "<input class='submit-button large-button' onclick='editDuggaInstruction()' type='button' value='Edit instructions'/>";	
 						echo "</td>";
 						echo "</tr>";
 						echo "</table>";

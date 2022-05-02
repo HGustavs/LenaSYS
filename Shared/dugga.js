@@ -2,6 +2,7 @@
 // changeCSS: Changes the CSS and remembers the index of the CSS.
 //            This allows us to set and remove whole CSS files
 //----------------------------------------------------------------------------------
+
 var renderId; // Used to store active rendering function
 var benchmarkData = performance.timing; // Will be updated after onload event
 var status = 0;
@@ -2552,21 +2553,29 @@ function addAlertOnUnload(){
 	window.onbeforeunload = function() {return "Changes will be discarded by leaving page.";}
 }
 
-function editDugga(){
 
-	const extractContent = (s) => {
-		const span = document.createElement('span');
-		span.innerHTML=s;
-		
-		return span.textContent || span.innerText ;
 
-	}
-
-	var doc = document.getElementsByClassName("instructions-content");
-	//doc = extractContent(doc);
-	for (var i = 0; i< doc.length;i++){
-		console.log(doc[i].textContent);
-	}
+function saveEdits(doc){
 	
+}
+
+//read instructions as string
+function ReadOriginalInstructions(doc){
+	var strDoc = "";
+	
+	for (var i = 0; i< doc.length;i++){
+		strDoc = strDoc + doc[i].textContent
+	}
+
+	return strDoc;
+
+}
+//read and edit instructions on dugga.
+function editDuggaInstruction(){
+	var doc = document.getElementsByClassName("instruction-content");
+	doc.contenteditable =true;	
+	doc.onClick = saveEdit();
+	strDoc = ReadOriginalInstructions(doc);
+
 
 }
