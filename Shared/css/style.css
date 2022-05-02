@@ -8250,3 +8250,629 @@ textarea#filecont {
 .accountRequestTable tr:nth-child(odd){
   background-color: #efefef;
 }
+
+
+
+/* --------------================################================-------------- *
+ *                                    Diagrams - CSS                            *
+ * --------------================################================-------------- */
+
+ #container {
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  user-select: none;
+  overflow: none;
+}
+
+#svgbacklayer {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:100%;
+  height:100%;
+  pointer-events: none;
+  z-index: -10;
+}
+
+#svggrid {
+  position:absolute;
+  left:0;
+  top:0;
+  display: none;
+  width:100%;
+  height:100%;
+  pointer-events: none;
+  z-index: -10;
+}
+#svgA4Template{
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:100%;
+  height:100%;
+  pointer-events: none;
+  z-index: -10;
+}
+#a4Template{
+  position:absolute;
+  left:0;
+  top:0;
+  display: none;
+  width:100%;
+  height:100%;
+  pointer-events: none;
+  z-index: -10;
+}
+
+#svgoverlay {
+  position:absolute;
+  left:0px;
+  top:0px;
+  border:1px dotted green;
+  width:100%;
+  height:100%;
+  pointer-events: none;
+  z-index: 10;
+}		
+
+#fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 80px;
+  height: 80px;
+  font-size: 36px;
+  line-height: 80px;
+  text-align: center;
+  border-radius: 40px;
+  background-color: #eb4;
+  box-shadow: 6px 6px 10px #888;
+  user-select: none;
+  cursor:pointer;
+  z-index: 5001;
+}
+
+#options-pane {
+  position: fixed;
+  top: 0px;
+  width: 320px;
+  bottom: 0px;
+  z-index: 5000;
+  background-color: #eb4;
+  color: #FFF;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  box-shadow: 0px 6px 10px #888;
+  padding: 10px;
+  transition: right .3s ease-in-out;
+  user-select: none;
+}
+
+#options-pane-button {
+  display: inline-block;
+  vertical-align: top;
+  transform-origin: top left;            
+  transform: translate(20px,0px) rotate(90deg);
+  cursor: pointer;
+}
+
+#options-pane-content {
+  margin-left:20px;
+  vertical-align: top;
+  display: inline-block;
+}
+
+.show-options-pane {
+  right: 0px;
+}
+
+.hide-options-pane {
+  right: -308px;
+}
+
+.selected-entry {
+  box-shadow: 6px 6px 10px #888;
+}
+
+.hide {
+  display: none;
+}	
+
+.element {
+  font-size: small;
+  box-sizing: border-box;
+  overflow: none;
+  position:absolute;
+}
+#pad_lock{
+  top: -45%;
+  display: block;
+  position: relative;
+}
+
+#canvasOverlay{
+  pointer-events:none;
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:100%;
+  height:100%;
+}
+
+.selected-course {
+  box-shadow:10px 10px 10px RGBA(0,0,0,0.3);
+}
+
+#diagram-header{
+  z-index: 1;
+  position: relative;
+  background-color: #FFF;
+}
+
+#rulerOverlay {
+  display: none;
+  position:absolute;
+  left:50px;
+  top:0;
+  width:100%;
+  height:100%;
+  pointer-events: none;
+  display:block;
+  z-index: 20;
+}
+#ruler-y {
+  left: 20px;
+  background-color: #1f65cd;
+  width: 30px;
+  height: 1px !important;
+  position: absolute;
+  z-index: 500;
+}
+
+#ruler-x {
+  top: 20px;
+  background-color: #1f65cd;
+  height: 30px;
+  width: 1px;
+  position: absolute;
+  z-index: 500;
+}
+#ruler-x-svg {
+  background-color: #FFF;
+  position:absolute;
+  width:100%;
+  height:40px;
+  z-index:2;
+}
+#ruler-y-svg {
+  background-color: #FFF;
+  position:absolute;
+  width:40px;
+  height:100%;
+  z-index:2;
+}
+
+#rulerCorner {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  background-color: #e6e6e6;
+  z-index: 700;
+  top: 0px;
+}
+
+.diagramIcons{
+  margin: auto;
+  width: 31px;
+  height: 31px;
+  cursor:pointer;
+  border-radius: 30%;
+  border: solid 1px var(--color-primary);
+  margin-top:5px;
+}
+.diagramIcons:hover, .active{
+  background: var(--color-primary-hover);
+  border: solid 1px var(--color-primary-light);
+}
+.diagramIcons img{
+  width:30px;
+  height:30px;
+}
+.node {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: blue;
+}
+.node.mr {
+  top: calc(50% - 4px);
+  left: 0;
+  cursor: col-resize;
+}
+.node.ml {
+  top: calc(50% - 4px);
+  right: 0;
+  cursor: col-resize;
+}
+
+.underline{
+  text-underline-offset: 0.15em;
+  text-decoration: underline;
+}
+
+.saveButton {
+  background-color: #614875;
+  border: 0px;
+  color: #fff;
+  cursor: pointer;
+  width: 100%;
+  height: 25px;
+  transition: 1s background-color;
+}
+
+.saveButton:hover {
+  background: #815e9d;
+  color: #FFF;
+}
+
+.saveButton:active {
+  background: #614875;
+  transition: 0.1s;
+  color: #FFF;
+}
+
+#diagram-toolbar {
+  position: absolute;
+  width: 50px;
+  height: 100%;
+  border-right: solid black 1px;
+  background-color: var(--color-primary);
+  z-index: 1000;
+}
+#diagram-toolbar>fieldset {
+  padding: 2px;
+  border-color: var(--color-primary-hover);
+}
+#diagram-toolbar>fieldset>legend {
+  color: var(--color-text-header);
+  font-size: 0.6em;
+}
+/* Diagram Messages */
+#diagram-message {
+  width: 300px;
+  left: 100px;
+  bottom: 20px;
+  position: absolute;
+  z-index: 1;
+  opacity: 1;
+  display: block;
+  pointer-events: none;
+  vertical-align: bottom;
+}
+#diagram-message .timeIndicatorBar {
+  height: 5px;
+  width: calc(100% - 20px);
+  bottom: 5px;
+  left: 10px;
+  background: rgba(255,255,255,1);
+}
+#diagram-message>div {
+  pointer-events: auto;
+  margin: 5px;
+  display: block;
+  padding: 10px;
+  box-shadow: 6px 6px 10px #888;
+}
+
+#diagram-message .error {
+  background-color: #FFD2D2;
+}
+
+#diagram-message .success {
+  background-color: #DFF2BF;
+}
+
+#diagram-message .warning {
+  background-color: #FEEFB3;
+}
+
+#zoom-message-box{
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 75px;
+  left: 100px;
+  bottom: 5px;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/*tooltip*/
+
+.diagramIcons{
+  position: relative;
+}
+
+.toolTipText{
+  top:-5px;
+  left:105%;
+  visibility: hidden;
+  width: 250px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+
+.diagramIcons:hover .toolTipText{
+  visibility: visible;
+}
+
+.colorMenu{
+  visibility: hidden;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 230px;
+  height: 50px;
+  z-index: 5;
+  float: left;
+}
+
+@keyframes colorMenuAnim {
+  0% {
+      width: 0px;
+  }
+
+  100% {
+      width: 50px;
+  }
+}
+
+.colorCircle {
+  animation-name: colorMenuAnim;
+  animation-duration: 0.5s;
+}
+
+.colorCircle:hover{
+  stroke: white;
+  cursor: pointer;
+}
+
+.colorMenuButton {
+  background-color: #614875;
+  border: 0px;
+  color: #fff;
+  cursor: pointer;
+  width: 100%;
+  height: 25px;
+  transition: 1s;
+}
+
+#options-pane-button .toolTipText{
+  transform: translate(-150px,100px) rotate(-90deg);
+}
+#options-pane-button:hover .toolTipText{
+  visibility: visible;
+}
+#fab .toolTipText{
+  transform: translate(-335px,-20px);
+  font-size: 16px;
+  line-height: 20px;
+
+}
+#fab:hover .toolTipText{
+  visibility: visible;
+}
+
+.tooltip{
+  position: absolute;
+  z-index: 1;
+}
+
+#fieldsetBox {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+
+}
+
+/* Markdown document*/
+
+#markdownKeybinds {
+  position: absolute;
+  display: block;
+  z-index: 1000;
+  background-color: var(--color-background-4);
+  height: 75%;
+  width: 30%;
+  overflow: scroll;
+  border: 2px solid black;
+  top: 100px;
+  left: 33%;
+  padding-left: 10px;
+}
+
+/*Cardinality stuff*/
+
+.propertyCardinality{
+  padding-left:3px;
+  padding-right:3px;
+}
+/* REPLAY */
+#diagram-replay-box{
+  position: absolute;
+  background-color: var(--color-primary);
+  bottom: 0;
+  left: 0;
+  z-index: 501;
+  width: 100%;
+  height: 50px;
+  visibility: hidden;
+  color: var(--color-text-header);
+}
+#diagram-replay-message{
+   position: absolute;
+   background-color: rgba(0, 0, 0, 0.8);
+   width: 300px;
+   left: calc(50% - 50px);
+   bottom: 70px;
+   color: var(--color-text-header);
+   border-radius: 5px;
+   text-align: center;
+   z-index: 100;
+  visibility: hidden;
+   pointer-events: none;
+}
+/* toggle placement types */
+.togglePlacementTypeButton{
+  position: absolute;
+  right: -10%;
+  bottom: -10%;
+  width: 6.2px;
+  height: 6.2px;
+}
+.togglePlacementTypeBoxEntity{
+  display: none;
+  position: absolute;
+  top:11.1%;
+  left: 100%;
+  padding:5px;
+  padding-top:0px;
+  border-radius: 5px;
+  background-color:var(--color-primary);
+}
+.togglePlacementTypeBoxRI{
+  display: none;
+  position: absolute;
+  top:15.9%;
+  left: 100%;
+  padding:5px;
+  padding-top:0px;
+  border-radius: 5px;
+  background-color:var(--color-primary);
+}
+.activeTogglePlacementTypeBox{
+  display: flex;
+  justify-content: left;
+}
+.activePlacementType{
+  background: var(--color-primary-hover);
+}
+.hiddenPlacementType{
+  display:none;
+}
+.hiddenToolTiptext{
+  visibility:hidden;
+}
+.placementTypeIcon img{
+  position: absolute;
+  top: 0px;
+  width: 6.2px;
+  height: 6.2px;
+}
+.placementTypeBoxIcons{
+  margin: auto;
+  width: 31px;
+  height: 31px;
+  cursor:pointer;
+  border-radius: 30%;
+  border: solid 1px var(--color-primary);
+  margin-top: 5px;
+}
+.placementTypeBoxIcons:hover, .active{
+  background: var(--color-primary-hover);
+  border: solid 1px var(--color-primary-light);
+}
+.placementTypeBoxIcons img{
+  width:30px;
+  height:30px;
+}
+.placementTypeToolTipText{
+  top:0%;
+  left:100%;
+  visibility: hidden;
+  width: 250px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+.placementTypeBoxIcons:hover .placementTypeToolTipText{
+  visibility: visible;
+}
+
+.options-fieldset {
+  width: 80%;
+}
+.options-fieldset-show {
+  display: block;
+}
+.options-fieldset-hidden {
+  display: none;
+}
+
+.container {
+  display: flex;
+  height: 50.1rem;
+  width: 100%;
+  justify-content: space-between;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.assignment_left {
+  background-color: #fffcfc;
+  width: 300px;
+  height: 800px;
+  overflow: auto;
+  margin: 0px;
+}
+
+#close_open {
+  width: 23px;
+  position: fixed;
+  top: 50%;
+  left: 272px;
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+  border-right: 14px solid #d4d2d2;
+}
+
+#close_open:hover {
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+  border-right: 14px solid #8e8e8e;
+}
+
+.canvas_right {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+}
