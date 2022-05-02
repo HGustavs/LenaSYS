@@ -2020,15 +2020,6 @@ function showNewGitLogin()
       forgotPwText.setAttribute("id", originalId);
 
 
-
-      // create ssn box
-      originalId = loginBox.getAttribute("id");
-      loginBox.setAttribute("id", "ssnbox");
-      loginBox.closest("tr").outerHTML += loginBox.closest("tr").innerHTML;
-      loginBox = document.querySelector("#ssnbox");
-      loginBox.setAttribute("id", originalId);
-
-
       // create another loginbox and create a new id
       originalId = loginBox.getAttribute("id");
       loginBox.setAttribute("id", originalId+1);
@@ -2040,11 +2031,9 @@ function showNewGitLogin()
       let backtologin = document.querySelector("#backtologin");
       let login_first = document.querySelector("#"+originalId);
       let login_second = document.querySelector("#"+originalId+1);
-      let ssnbox = document.querySelector("#ssnbox");
 
       login_first.setAttribute("placeholder", "Create new password");
       login_second.setAttribute("placeholder","Repeat new password");
-      ssnbox.setAttribute("placeholder", "Enter SSN YYYYMMDD-XXXX")
       backtologin.innerHTML = "Back to login";
       backtologin.setAttribute("onclick","resetForceLogin()")
 
@@ -2068,9 +2057,6 @@ function resetForceLogin()
   if(login_second != null)
     login_second.remove();
 
-  let ssnbox = document.querySelector("#ssnbox");
-  if(ssnbox != null)
-    ssnbox.remove();
 
   let forgotPwText = document.querySelector("#backtologin");
   if(forgotPwText != null)
@@ -2142,9 +2128,7 @@ function resetForceLogin()
     let pass1 = document.querySelector("#password").value;
     let pass2 = document.querySelector("#password1").value;
     let username = document.querySelector("#username").value;
-    let ssn = document.querySelector("#ssnbox").value;
 
-    // TODO MAKE SURE SSN IS ACTUALLY A VALID SSN BEFORE INSERTING INTO DB
     // TODO MAKE SURE PASSWORD IS ACTUALLY VALID BEFORE INSERT INTO DB
 
 
@@ -2152,24 +2136,10 @@ function resetForceLogin()
     {
       if(pass1 != null && pass1 != "")
       {
-        if(ssn != null && ssn != "")
-        {
-          AJAXService("requestGitUserCreation",{
-            userid: username,
-            userpass: pass1,
-            userssn: ssn
-          }, "CONTRIBUTION_LENASYS_USER_CREATION");
-        }
-        else
-        {
-          displayAlertText("#login #message", "invalid SSN <br />");
-
-          $("input#ssnbox").addClass("loginFail");
-            setTimeout(function()
-            {
-              $("input#ssnbox").removeClass("loginFail");
-            }, 2000);
-        }
+        AJAXService("requestGitUserCreation",{
+          userid: username,
+          userpass: pass1,
+        }, "CONTRIBUTION_LENASYS_USER_CREATION");
       }
       else
       {
@@ -2222,13 +2192,11 @@ function resetForceLogin()
         $("input#username").addClass("loginPass");
 		    $("input#password").addClass("loginPass");
         $("input#password1").addClass("loginPass");
-        $("input#ssnbox").addClass("loginPass");
 			  setTimeout(function()
         {
 		      $("input#username").removeClass("loginPass");
           $("input#password").removeClass("loginPass");
           $("input#password1").removeClass("loginPass");
-          $("input#ssnbox").removeClass("loginPass");
           resetForceLogin();
 				}, 2000);
       }
