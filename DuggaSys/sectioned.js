@@ -194,6 +194,8 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
       } else {
         checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
       }
+    } else {
+      checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
     }
   }
   var groups = [];
