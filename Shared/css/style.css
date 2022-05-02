@@ -1483,6 +1483,7 @@ div .navButt:hover {
 
 #div2 {
   position: absolute;
+  overflow: hidden;
   display: grid;
   justify-items: stretch;
   grid-gap: 0px;
