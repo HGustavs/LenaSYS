@@ -2419,7 +2419,7 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     // Removes from the two arrays that keep track of the attributes connections. 
     for (var i = 0; i < linesArray.length; i++) {
         for (j = 0; j < allAttrToEntityRelations.length; j++) {
-            if (linesArray[i].toID == allAttrToEntityRelations[j]) {
+            if (linesArray[i].toID == allAttrToEntityRelations[j] || linesArray[i].fromID == allAttrToEntityRelations[j]) {
                 allAttrToEntityRelations.splice(j, 1);
                 countUsedAttributes--;
             }
@@ -5220,7 +5220,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         fromElement = tempElement;
     }
 
-    if (fromElement.kind == toElement.kind && fromElement.name == toElement.name) {
+    if (fromElement.kind == toElement.kind && fromElement.id == toElement.id) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
@@ -5253,7 +5253,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
             return;
         }
-        else if (toElement.kind == "ERRelation" && fromElement.id == allAttrToEntityRelations[i]) {
+        else if (toElement.kind == "ERRelation" && fromElement.id == allAttrToEntityRelations[i] && fromElement.kind != "EREntity") {
             displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
             return;
         }
@@ -5379,6 +5379,18 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         }
     } else {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between two: ${fromElement.kind} elements`);
+        for (i = 0; i < allAttrToEntityRelations.length; i++) {
+            if (allAttrToEntityRelations[i] == fromElement.id) {
+                allAttrToEntityRelations.splice(i, 1);
+                countUsedAttributes--;
+                break;
+            }
+            else if (allAttrToEntityRelations[i] == toElement.id) {
+                allAttrToEntityRelations.splice(i, 1);
+                countUsedAttributes--;
+                break;
+            }
+        }
     }
 }
 //#endregion =====================================================================================
