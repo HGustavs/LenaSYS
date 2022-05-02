@@ -806,7 +806,6 @@ else if(strcmp($opt,"requestGitUserCreation") == 0)
 	}
 	$gituser = getOP('userid');
 	$gitpass = getOP('userpass');
-	$gitssn = getOP('userssn'); // TODO make sure userssn is valid before inserting
 	
 	$addStatus = false;
 
@@ -888,19 +887,6 @@ $query = $log_db->prepare('select distinct(usr) from
 
 			$rnd=standardPasswordHash($gitpass);
 
-			/*
-			$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password, addedtime, class, requestedpasswordchange) VALUES(:username, :email, :firstname, :lastname, :ssn, :password, now(), :className, :RPC);';
-			$stmt = $pdo->prepare($querystring);
-			$stmt->bindParam(':username', $gituser);
-			$stmt->bindParam(':email', $temp_null_str); 
-			$stmt->bindParam(':firstname', $temp_null_str); 
-			$stmt->bindParam(':lastname', $temp_null_str); 
-			$stmt->bindParam(':ssn', $gitssn); 
-			$stmt->bindParam(':password', $rnd); 
-			$stmt->bindParam(':className', $temp_null_str); 
-			$stmt->bindParam(':RPC', $git_pending);
-
-			*/
 
 			$querystring='INSERT INTO git_user (username, password, status_account, addedtime) VALUES(:username, :password, :status_account, now());';
 			$stmt = $pdo->prepare($querystring);
