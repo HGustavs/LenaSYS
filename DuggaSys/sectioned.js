@@ -363,11 +363,32 @@ function confirmBox(operation, item = null) {
 // Creates an array over all checked items
 function markedItems(item = null){
   var removed = false;
-  var kind = $(item).parents('tr').attr('value');
-    if(kind == "section"){
-      console.log(kind);
+  var kind = item ? $(item).parents('tr').attr('value') : null;
+  active_lid = item ? $(item).parents('table').attr('value') : null;
+  var subItems = [];
+
+    //if the checkbox belongs to one of these kinds then all elements below it should also be selected.
+    if(kind == "section" || kind == "moment"){
+      var itemInSection = true;
+      var sectionStart = false;
+      
+      $("#Sectionlist").find(".item").each(function (i) {
+        var tempItem = $(this).attr('value');
+        if(itemInSection && sectionStart){
+          var tempKind = $(this).parents('tr').attr('value');
+          if(tempKind == "section" || tempKind == "moment" || tempKind == "header"){
+            itemInSection = false;
+            //console.log("loop breaker: "+tempItem);
+          }else{
+            subItems.push(tempItem);
+            //console.log("added: "+tempItem);
+          } 
+        }else if(tempItem==active_lid) sectionStart=true;
+      });
+
     }
-    active_lid = item ? $(item).parents('table').attr('value') : null;
+
+    
     console.log("Active lid: "+active_lid);
     if (hideItemList.length != 0){
       for( var i = 0; i < hideItemList.length; i++){ 
@@ -377,13 +398,25 @@ function markedItems(item = null){
           var removed = true;
           console.log("Removed from list");
         }   
+        for(var j = 0; j < subItems.length; j++){
+          if ( hideItemList[i] === subItems[j]) { 
+            hideItemList.splice(i, 1);
+            //console.log(subItems[j]+" Removed from list");
+          }
+        }
       } if(removed != true){
         hideItemList.push(active_lid);
         console.log("Adding !empty list");
+        for(var j = 0; j < subItems.length; j++){
+          hideItemList.push(subItems[j]);
+        }
       }
     } else {
       hideItemList.push(active_lid);
       console.log("Added");
+      for(var j = 0; j < subItems.length; j++){
+        hideItemList.push(subItems[j]);
+      }
     } 
     console.log(hideItemList);
 }
@@ -1002,7 +1035,7 @@ function returnedSection(data) {
         }
 
         // Close Information
-        str += "  onclick='duggaRowClick(this)' >";
+        str += " value='"+item['lid']+"' onclick='duggaRowClick(this)' >";
         // Content of Section Item
         if (itemKind == 0) {
           // Header
