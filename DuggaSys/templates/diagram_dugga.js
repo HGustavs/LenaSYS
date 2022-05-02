@@ -72,7 +72,8 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-    $('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
+    //temporary solution to get the correct link in the receipt
+    $('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${createUrl(data['hash'])}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
     console.log(data);
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
