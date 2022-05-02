@@ -4072,13 +4072,7 @@ function resizeBoxes(parent, templateId)
 			disabled: true
 		
 				
-			// },
-			// handles: "w",
-			// containment: parent,
-			// maxHeight: ($(parent).height()*0.85),
-			// minHeight: ($(parent).height()*0.16),
-			// maxHeight: ($(parent).height()*0.85),
-			// minHeight: ($(parent).height()*0.16)
+			
 		});
 		$('#box4wrapper').resizable({
 			disabled: true
