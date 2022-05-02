@@ -266,7 +266,7 @@
 				</div>
 
 				<!-- Error message, no duggas present-->
-				<div style='padding:5px;'>
+				<div style='padding:20px;'>
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
