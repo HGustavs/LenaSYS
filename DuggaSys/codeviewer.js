@@ -3952,8 +3952,8 @@ function resizeBoxes(parent, templateId)
 		$('#box1wrapper').resizable({
 			resize: function( event, ui ) {
 				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
 				if((remaining/$(parent).width())*100 < 16){
-					//hide box 2 and 3 title
 					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
 					boxToHide.classList.add('hidden');
 					boxToHide.classList.add('visuallyhidden');
@@ -3974,26 +3974,33 @@ function resizeBoxes(parent, templateId)
 					boxToShow.classList.remove('visuallyhidden');
 	
 				}
-				//box wrapper 2 and 3 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = screen widht.)
 				document.querySelector('#box2wrapper').style.width = remaining + "px";
-						
+
+				document.querySelector('#box2wrapper').style.height = $('#box1wrapper').height() + "px";
+
+				document.querySelector('#box3wrapper').style.height = remainingHeight + "px";							
 			},		
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
-			handles: "e",
+			maxHeight: ($(parent).height()*0.85),
+			minHeight: ($(parent).height()*0.15),
+			handles: "e, s",
 			containment: parent
 	
 		});
 		$('#box2wrapper').resizable({
-			//This one currently doens't work
-			disabled:true,
-			handles: "n"
-		});
-		$('#box3wrapper').resizable({
-			//This one currently doens't work
-			disabled: true,
-			handles: "s"
+			resize: function( event, ui ) {
+				remaining = ($(parent).height()) - $('#box2wrapper').height();
 
+				document.querySelector('#box1wrapper').style.height = $('#box2wrapper').height() + "px";
+
+				document.querySelector('#box3wrapper').style.height = remaining + "px";
+
+			},
+			maxHeight: ($(parent).height()*0.85),
+			minHeight: ($(parent).height()*0.15),
+			handles: "s",
+			containment: parent
 		});
 	}
 	if(templateId == 5){
