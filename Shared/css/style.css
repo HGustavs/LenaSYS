@@ -2589,7 +2589,7 @@ label.login-label {
   height: 30px;
   line-height: 18px;
   color: #202020;
-  background-color: var(--color-sectioned-table-lo);
+  background-color: var(--color-border-3);
   background-image: none;
   border: 1px solid var(--color-border-2);
   border-radius: 0;
