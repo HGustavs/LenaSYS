@@ -2638,14 +2638,21 @@ function validateDate2(ddate, dialogid) {
   if (window.getComputedStyle(inputDeadline).display !== "none") {
   
   var ddate = document.getElementById(ddate);
+  var deadlinehours = document.getElementById("deadlinehours");
+  var deadlineminutes = document.getElementById("deadlineminutes");
   var x = document.getElementById(dialogid);
   var deadline = new Date(ddate.value);
+  deadline.setHours(deadlinehours.options[deadlinehours.selectedIndex].value, deadlineminutes.options[deadlineminutes.selectedIndex].value);
   // Dates from database
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
 
+  // Correct the fetched dates from database
+  startdate.setMonth(startdate.getMonth() - 1);
+  enddate.setMonth(enddate.getMonth() - 1);
+
   // If deadline is between start date and end date
-  if (startdate < deadline && enddate > deadline) {
+  if (startdate <= deadline && enddate >= deadline) {
     ddate.style.borderColor = "#383";
     ddate.style.borderWidth = "2px";
     x.style.display = "none";
@@ -2753,12 +2760,10 @@ function quickValidateForm(formid, submitButton){
     valid = true;
     var deadlinepart = document.getElementById('inputwrapper-deadline');
     var deadlinedisplayattribute = deadlinepart.style.display; 
-    if (deadlinedisplayattribute == 'block'){
-      valid = valid && (validateSectName('sectionname') && showCourseDate('setDeadlineValue','dialog8'));
-    }else{
-      valid = valid && validateSectName('sectionname');
-    }
-   
+    valid = valid && validateSectName('sectionname');
+
+    // Validates Deadline
+    showCourseDate('setDeadlineValue','dialog8');
 
     //If fields empty
     if (sName == null || sName == "") {

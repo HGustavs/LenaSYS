@@ -239,7 +239,7 @@
 							<legend><h3>Deadline</h3></legend>
 							<span>Absolute</span>
 							<span style='float:right'>
-								<input onchange="showCourseDate('setDeadlineValue','dialog8');quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
+								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
 								<select style='width:55px;' id='deadlineminutes'></select>
 								<select style='width:55px;' id='deadlinehours'></select>
 							</span>
