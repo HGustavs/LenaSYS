@@ -474,6 +474,20 @@
     padding: 0px 5px;
 }
 
+#announcementBoxOverlay{
+    position: relative;
+    display: none;
+    background-color:#fff;
+    z-index: 1004;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    overflow-x: auto;
+    font-family: 'Varela', sans-serif;
+  }
 /* #Sectionlist .example {
     color: var(--color-text-secondary);
     /*font-size: 12pt;
