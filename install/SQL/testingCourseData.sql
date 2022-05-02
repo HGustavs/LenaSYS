@@ -1,4 +1,5 @@
 INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (1885,' - This course is for testing purposes','Testing-Course',NOW(),1,1,'45656','1');
+INSERT INTO coursekeys (cid,urlkey,coursename, activeversion) VALUES (1885, 'testing', 'Testing-Course', 45656); 
 
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1,1885,'HTML-Code:',1,1,1,1,1,'45656',0);
 
