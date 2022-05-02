@@ -1283,7 +1283,7 @@ function getData()
  * @description Used to determine the tools shown depending on diagram type.
  */
 function showDiagramTypes(){
-    //if both diagramtypes are allowed hides the uml elements and adds the function to show the selection box
+    //if both diagramtypes are allowed hides the uml elements and adds the function to show the toggle box
     if(!!diagramType.ER && !!diagramType.UML){
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
@@ -6768,10 +6768,10 @@ function displaceFromLine(newX,newY)
     var y1=targetLabel.fromY,y2=targetLabel.toY,x1=targetLabel.fromX,x2=targetLabel.toX;
     var distance = ((newX - x1) * (y2 - y1)) - ((newY - y1) * (x2 - x1));
     //deciding which side of the line the label should be
-    if (distance > 3000) {
+    if (distance > 6000) {
         targetLabel.labelGroup = 1;
     }
-    else if (distance < -3000) {
+    else if (distance < -6000) {
         targetLabel.labelGroup = 2;
     }
     else {        
