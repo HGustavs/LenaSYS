@@ -120,7 +120,7 @@ if(isset($_SESSION['uid'])){
 					<select class='selectinput' id='visib'></select>
 				</div>
     		</div>
-    		<div style='float:left; padding-top:20px; padding-right:50px;' >
+    		<div style='float:right; padding-top:20px;' >
     			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
     		</div>
       </div>
