@@ -1408,9 +1408,9 @@ function renderCellForghContibTable(col, celldata, cellid) {
   } else if (col === 'codeContribution') {
     for (var j = 0; j < obj.files.length; j++) {
       var file = obj.files[j];
-      str += "<a href='https://github.com/HGustavs/LenaSYS/blame/" + file.path + file.filename + "'>";
       str += "<div class='contrib'>";
-      str += "<div class='contribheading'";
+      str += "<div class='contribheading'>";
+      str += "<a href='https://github.com/HGustavs/LenaSYS/blame/" + file.path + file.filename + "'>";
       str += "<span class='contribpath'>" + file.path + "</span>";
       str += "<span class='contribfile'>" + file.filename + "</span>";
       str += "</a>";
