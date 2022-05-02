@@ -2553,5 +2553,20 @@ function addAlertOnUnload(){
 }
 
 function editDugga(){
-	console.log("testing correct upload file");
+
+	const extractContent = (s) => {
+		const span = document.createElement('span');
+		span.innerHTML=s;
+		
+		return span.textContent || span.innerText ;
+
+	}
+
+	var doc = document.getElementsByClassName("instructions-content");
+	//doc = extractContent(doc);
+	for (var i = 0; i< doc.length;i++){
+		console.log(doc[i].textContent);
+	}
+	
+
 }
