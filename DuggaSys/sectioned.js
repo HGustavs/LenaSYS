@@ -189,7 +189,6 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     $("#relativedeadlinetype").html(makeoptions(splitdeadline[1],typeArrOptions,typeArrValue));
 
     if (relativedeadline !== "null") {
-      console.log(calculateRelativeDeadline(splitdeadline), new Date(deadline));
       if (calculateRelativeDeadline(splitdeadline).getTime() !== new Date(deadline).getTime()) {
         checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
       } else {
@@ -2684,7 +2683,7 @@ function validateDate(startDate, endDate, dialogID) {
 
 function showCourseDate(ddate, dialogid){
   var isCorrect = validateDate2(ddate,dialogid);
-  var startdate = new Date(retdata['startdate']);;
+  var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
   var startdate = new String(startdate.getFullYear()+ "-" + startdate.getMonth() + "-" + startdate.getDate());
   var enddate = new String(enddate.getFullYear()+ "-" + ("0" + enddate.getMonth()).slice(-2) + "-" + ("0" + enddate.getDate()).slice(-2));
@@ -2697,32 +2696,40 @@ function showCourseDate(ddate, dialogid){
 function validateDate2(ddate, dialogid) {
   var inputDeadline = document.getElementById("inputwrapper-deadline");
   if (window.getComputedStyle(inputDeadline).display !== "none") {
-  
-  var ddate = document.getElementById(ddate);
-  var x = document.getElementById(dialogid);
-  var deadline = new Date(ddate.value);
-  // Dates from database
-  var startdate = new Date(retdata['startdate']);
-  var enddate = new Date(retdata['enddate']);
+    var ddate = document.getElementById(ddate);
+    var x = document.getElementById(dialogid);
+    var deadline = new Date(ddate.value);
+    // Dates from database
+    var startdate = new Date(retdata['startdate']);
+    var enddate = new Date(retdata['enddate']);
 
-  // If deadline is between start date and end date
-  if (startdate < deadline && enddate > deadline) {
-    ddate.style.borderColor = "#383";
-    ddate.style.borderWidth = "2px";
-    x.style.display = "none";
-    window.bool8 = true;
+    // If absolute deadline is not being used
+    if (!$("#absolutedeadlinecheck").is(":checked")) {
+      ddate.style.borderWidth = "0px";
+      x.style.display = "none";
+      window.bool8 = true;
 
-    return true;
-  } else {
-
-    ddate.style.borderColor = "#E54";
-    x.style.display = "block";
-    ddate.style.borderWidth = "2px";
-    window.bool8 = false;
+      return true;
 
     }
-  }
-  else{
+
+    // If deadline is between start date and end date
+    if (startdate < deadline && enddate > deadline) {
+      ddate.style.borderColor = "#383";
+      ddate.style.borderWidth = "2px";
+      x.style.display = "none";
+      window.bool8 = true;
+
+      return true;
+    } else {
+
+      ddate.style.borderColor = "#E54";
+      x.style.display = "block";
+      ddate.style.borderWidth = "2px";
+      window.bool8 = false;
+
+    }
+  } else {
     window.bool8 = true;
   }
   return false;
