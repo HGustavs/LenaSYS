@@ -1340,6 +1340,10 @@ header td {
   margin:auto 10px auto 0;
 }
 
+.navButt #homeIcon img{
+  height: 87%;
+}
+
 #theme-toggle {
   transform: scale(2.8);
   margin-top: 8px;
