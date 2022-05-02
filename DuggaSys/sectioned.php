@@ -224,7 +224,7 @@
 
 				</div>
 				<div class="tooltipDugga">
-  		      		<span id="dialog10" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
+  		      		<span id="dialog10" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
   		      	</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
