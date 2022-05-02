@@ -7006,45 +7006,56 @@ function updateCSSForAllElements()
             // If the element was clicked and our mouse movement is not null
             var inContext = deltaX != null && findIndex(context, element.id) != -1;
             var useDelta = (inContext && movingObject);
+            var fillColor;
+            var fontColor;
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
             // Update UMLEntity
             if(element.kind == "UMLEntity"){
                 for (let index = 0; index < 3; index++) {
-                    var grandChild = elementDiv.children[index].children[0].children[0];
+                    fillColor = elementDiv.children[index].children[0].children[0];
+                    fontColor = elementDiv.children[index].children[0];
                     // If more than one element is marked.
                     if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
-                        grandChild.style.fill = `${"#927b9e"}`;
+                        fillColor.style.fill = `${"#927b9e"}`;
+                        fontColor.style.fill = `${"#ffffff"}`;
                     } else{
-                        grandChild.style.fill = `${element.fill}`;
+                        fillColor.style.fill = `${element.fill}`;
+                        fontColor.style.fill = `${"#000000"}`;
                     }
                     
                 }
             // Update Elements with double borders.
             }else if(element.state == "weak" || element.state == "multiple"){
                 for (let index = 0; index < 2; index++){
-                    var grandChild = elementDiv.children[0].children[index];
+                    fillColor = elementDiv.children[0].children[index];
+                    fontColor = elementDiv.children[0];
                     // If more than one element is marked.
                     if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
-                        grandChild.style.fill = `${"#927b9e"}`;
+                        fillColor.style.fill = `${"#927b9e"}`;
+                        fontColor.style.fill = `${"#ffffff"}`;
                     } else{
-                        grandChild.style.fill = `${element.fill}`;
+                        fillColor.style.fill = `${element.fill}`;
+                        fontColor.style.fill = `${"#000000"}`;
                     }
                 }
             }else{ // Update normal elements, and relations
-                var grandChild = elementDiv.children[0].children[0];
+                fillColor = elementDiv.children[0].children[0];
+                fontColor = elementDiv.children[0];
                 // If more than one element is marked.
                 if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
-                    grandChild.style.fill = `${"#927b9e"}`;
+                    fillColor.style.fill = `${"#927b9e"}`;
+                    fontColor.style.fill = `${"#ffffff"}`;
                     // If UMLRelation is not marked.
                 } else if(element.kind == "UMLRelation"){
                     if(element.state == "overlapping"){
-                        grandChild.style.fill = `${"black"}`;
+                        fillColor.style.fill = `${"#000000"}`;
                     }else{
-                        grandChild.style.fill = `${"white"}`;
+                        fillColor.style.fill = `${"#ffffff"}`;
                     }
                 }else{
-                    grandChild.style.fill = `${element.fill}`;
+                    fillColor.style.fill = `${element.fill}`;
+                    fontColor.style.fill = `${"#000000"}`;
                 }
             }
         }
