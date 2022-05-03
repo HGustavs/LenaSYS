@@ -13,6 +13,10 @@
 	<title>Access Editor</title>
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+	<link id="themeWhite" type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet">
+	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+	
+	<script src="darkmodeToggle.js"></script>
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
