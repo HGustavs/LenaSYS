@@ -57,7 +57,7 @@
 
       
 #div2{
-	background-color: #FFF;
+	background-color: #2c2c2c;
 }
 
 #picktemplate{
@@ -118,6 +118,7 @@
     outline: 0 none;
     background-color: #2c2c2c;
     color: #FFF;
+    height: auto;
 }
 
 .box h1{
