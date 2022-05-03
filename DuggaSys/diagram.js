@@ -903,6 +903,7 @@ var selectionBoxHighX;
 var selectionBoxLowY;
 var selectionBoxHighY;
 var lastClickedElement = null;
+var hasPressedDelete = false;
 
 
 // Zoom variables
@@ -1581,13 +1582,11 @@ function mwheel(event) {
 
 function mdown(event)
 {
-
     mouseButtonDown = true;
-
         // Mouse pressed over delete button for multiple elements
-        if (event.button == 0) {
-            if (context.length > 1) {
-                checkDeleteBtn();
+        if (event.button == 0 && mouseMode != mouseModes.EDGE_CREATION) {
+            if (context.length > 0 || contextLine.length > 0) {
+               hasPressedDelete = checkDeleteBtn();
             }
         }
 
@@ -1613,57 +1612,8 @@ function mdown(event)
     // If the right mouse button is pressed => return
     if(event.button == 2) return;
 
-    // React to mouse down on container
-    if (event.target.id == "container") {
-        switch (mouseMode) {
-            case mouseModes.POINTER:
-                pointerState = pointerStates.CLICKED_CONTAINER;
-                sscrollx = scrollx;
-                sscrolly = scrolly;
-                startX = event.clientX;
-                startY = event.clientY;
-
-                // Mouse pressed over delete button for a single element or line
-                if (event.button == 0) {
-                    if (context.length == 1 || contextLine.length == 1) {
-                        checkDeleteBtn();
-                    }
-                }
-
-                if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
-                    wasDblClicked = true;
-                    document.getElementById("options-pane").className = "hide-options-pane";
-                }
-                break;
-            
-            case mouseModes.BOX_SELECTION:
-                boxSelect_Start(event.clientX, event.clientY);  
-
-                // Mouse pressed over delete button for a single element or line
-                if (event.button == 0) {
-                    if (context.length == 1 || contextLine.length == 1) {
-                        checkDeleteBtn();
-                    }
-                }
-
-                break;
-
-            default:
-                break;
-        }
-       
-    } else if (event.target.classList.contains("node")) {
-        pointerState = pointerStates.CLICKED_NODE;
-        startWidth = data[findIndex(data, context[0].id)].width;
-
-        startNodeRight = !event.target.classList.contains("mr");
-
-        startX = event.clientX;
-        startY = event.clientY;
-    }
-
-    // Check if not an element OR node has been clicked at the event
-    if(pointerState !== pointerStates.CLICKED_NODE && pointerState !== pointerStates.CLICKED_ELEMENT && !settings.replay.active){
+    // Check if no element has been clicked or delete button pressed.
+    if(pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active){
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
         if(determinedLines){
@@ -1686,7 +1636,7 @@ function mdown(event)
     }
 
     // React to mouse down on container
-    if (pointerState != pointerStates.CLICKED_LINE && pointerState != pointerStates.CLICKED_LABEL) {
+    if (pointerState != pointerStates.CLICKED_LINE && pointerState != pointerStates.CLICKED_LABEL && !hasPressedDelete) {
         if (event.target.id == "container") {
             switch (mouseMode) {
                 case mouseModes.POINTER:
@@ -1757,10 +1707,10 @@ function mdown(event)
  * @param {MouseEvent} event Triggered mouse event.
  */
 function ddown(event)
-{
+{   
     // Mouse pressed over delete button for a single line over a element
-    if (event.button == 0 && contextLine.length > 0) {
-        checkDeleteBtn();
+    if (event.button == 0 && (contextLine.length > 0 || context.length > 0) && mouseMode != mouseModes.EDGE_CREATION) {
+        hasPressedDelete = checkDeleteBtn();
     }
     
     // Used when determining time between clicks.
@@ -1784,7 +1734,7 @@ function ddown(event)
 
     // If the right mouse button is pressed => return
     if(event.button == 2) return;
-
+if(!hasPressedDelete){
     switch (mouseMode) {
         case mouseModes.POINTER:
         case mouseModes.BOX_SELECTION:
@@ -1815,7 +1765,7 @@ function ddown(event)
             console.error(`State ${mouseMode} missing implementation at switch-case in ddown()!`);
             break;
     }
-
+}
     dblPreviousTime = new Date().getTime(); // Update dblClick-timer.
     wasDblClicked = false; // Reset the bool.
 }
@@ -1827,6 +1777,7 @@ function ddown(event)
  */
 function mouseMode_onMouseUp(event)
 {
+    if(!hasPressedDelete){
     switch (mouseMode) {
         case mouseModes.PLACING_ELEMENT:
             if(event.target.id == "container") {
@@ -1878,6 +1829,8 @@ function mouseMode_onMouseUp(event)
             console.error(`State ${mouseMode} missing implementation at switch-case in mouseMode_onMouseUp()!`);
             break;
     }
+    }
+    hasPressedDelete = false;
 }
 /**
  * @description Event function triggered when any mouse button is released on top of the toolbar.
@@ -1989,10 +1942,13 @@ function checkDeleteBtn(){
             if (contextLine.length > 0) {
                  removeLines(contextLine);
             }            
-    
+            
             updateSelection();
+            return true
         }
+        return false
     }
+    return false
 }
 
 /**
