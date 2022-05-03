@@ -266,7 +266,8 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 
     		<div id='emailPopup' style="display:block">
 				<p>Your dugga has been saved. Besure to store the hash and hash password in a safe place before submitting the dugga in canvas! <em>There is <strong>no way</strong> to restore a submission without the hash and hash password.</p>
-				<textarea readonly id="submission-receipt" rows="15" cols="50" style="height: 180px;resize: none;"></textarea>					
+				<div id="submission-receipt" rows="15" cols="50" style="height: 180px;resize: none; background-color: white; border-style: solid; border-width: 1px; font-size: 13px; font-weight: bold;">
+				</div>					
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="copySubmissionReceiptToClipboard();" value='Copy Receipt'>
 					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>

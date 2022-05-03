@@ -74,7 +74,14 @@ function uploadFile()
 function returnedDugga(data)
 {
     //temporary solution to get the correct link in the receipt
-    $('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${createUrl(data['hash'])}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
+    var textBox = document.getElementById('submission-receipt');
+    var tempA = document.createElement('a');
+    tempA.setAttribute('href', createUrl(data['hash']));
+    var myUrl = createUrl(data['hash']);
+
+
+    
+    textBox.innerHTML=(`${data['duggaTitle']}</br></br>Direct link (to be submitted in canvas) </br>` + `<a href='${createUrl(data['hash'])}'> ${createUrl(data['hash'])}` + `</a> </br></br> Hash </br> ${data['hash']}</br></br>Hash password</br>${data['hashpwd']}`);
     console.log(data);
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
