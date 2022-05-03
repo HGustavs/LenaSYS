@@ -8250,3 +8250,6 @@ textarea#filecont {
 .accountRequestTable tr:nth-child(odd){
   background-color: #efefef;
 }
+.bottomBorderColor{
+  border-top: 2px solid var(--color-border-list); 
+}

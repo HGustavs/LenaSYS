@@ -473,6 +473,9 @@
     vertical-align: middle;
     padding: 0px 5px;
 }
+.bottomBorderColor{
+    border-top: 2px solid var(--color-border-list); 
+}
 
 /* #Sectionlist .example {
     color: var(--color-text-secondary);

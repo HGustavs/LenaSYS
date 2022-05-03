@@ -484,11 +484,16 @@
 }
 
 .list tbody tr:nth-child(odd) {
-  background-color: #271d2f;
+  background-color: var(--color-sectioned-table-hi);
 }
-
 .list tbody tr:nth-child(even) {
-  background-color: #34273f;
+  background-color: var(--color-sectioned-table-lo);
+}
+.list tr {
+    background-color: var(--color-sectioned-table-hi);
+}
+.bottomBorderColor{
+    border-top: 2px solid #614875;
 }
 
 .descbox code{
