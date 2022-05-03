@@ -3831,9 +3831,9 @@ function generateErTableString()
                         
                 }
             }
-        }   
+        }
         
-
+        var parentAttribeList=[]; //list of parent attributes
         for (var j = 0; j < currentEntityAttrList.length; j++) {
 
             //For each attribute connected to the current entity, identify if other attributes are connected to themselves.
@@ -3869,6 +3869,10 @@ function generateErTableString()
 
                         //If no hits, then push the attribute to currentEntityAttrList[] (so it will also be checked for additional attributes in future iterations) and save the ID.
                         if (hits == 0) {
+                            // looking if the parent attribute is in the parentAttributeList 
+                            if(findIndex(parentAttribeList,currentEntityAttrList[j].id) == -1){
+                                parentAttribeList.push(currentEntityAttrList[j]);
+                            }
                             currentEntityAttrList.push(attrList[k]);
                             currentRow.push(attrList[k]);
                             idList.push(attrList[k].id);
@@ -3876,6 +3880,10 @@ function generateErTableString()
                     }   
                 }
             }
+        }
+        //removes all attributes in parent attribute list from current entity attribute list
+        for (let index = 0; index < parentAttribeList.length; index++) {
+            currentEntityAttrList.splice(findIndex(currentEntityAttrList,parentAttribeList[index].id),1);
         }
 
         //Add each connected attribute in stringList[i]
