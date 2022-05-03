@@ -48,6 +48,11 @@
         filter: invert(80%);
         -webkit-filter: invert(80%);
     }
+    #NewTabLink{
+        cursor: pointer;
+        filter: invert(80%);
+        -webkit-filter: invert(20%);   
+    }
     .whiteIcon {
         cursor: pointer;
         filter: invert(80%);
@@ -57,7 +62,7 @@
 
       
 #div2{
-	background-color: #FFF;
+	background-color: #2c2c2c;
 }
 
 #picktemplate{
@@ -96,6 +101,11 @@
 		color: #fff;
 }
 
+.filter-label {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+}
+
 .docucontentStyle h1 {
     color: white;
 }
@@ -113,6 +123,7 @@
     outline: 0 none;
     background-color: #2c2c2c;
     color: #FFF;
+    height: auto;
 }
 
 .box h1{
@@ -479,11 +490,16 @@
 }
 
 .list tbody tr:nth-child(odd) {
-  background-color: #271d2f;
+  background-color: var(--color-sectioned-table-hi);
 }
-
 .list tbody tr:nth-child(even) {
-  background-color: #34273f;
+  background-color: var(--color-sectioned-table-lo);
+}
+.list tr {
+    background-color: var(--color-sectioned-table-hi);
+}
+.bottomBorderColor{
+    border-top: 2px solid #614875;
 }
 
 .descbox code{
@@ -512,8 +528,49 @@ body {
     color:rgba(255,255,255,0.6);
 }
 
+.item a {
+    text-decoration: none;
+    color: white;
+    opacity: 87%;
+  }
 
-
+.toggle-0{
+    background-color: var(--color-sectioned-table-hi);
 }
+.toggle-1{
+   background-color: var(--color-sectioned-table-lo); 
+}
+.toggle-dugganame-filter-box{
+    background-color: var(--color-sectioned-table-hi);
+}
+.dropdown-list-container{
+    padding: 8px;
+    width: 200px;
+    font-size: 12px;
+    overflow-y: auto;
+    display: none;
+    position: absolute;
+    background: var(--color-sectioned-table-hi);
+    color: white;
+    box-shadow: none;
+    margin-top: 5px;
+}
+
+.loginBox,
+.logoutBox{
+  padding: 4px;
+  background-color: var(--color-background);
+  color:white;
+  border: 2px solid var(--color-border);
+  min-height: 100px;
+  min-width: 200px;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* } */
 /* BOXMENU STYLING STOP */
 /* } */

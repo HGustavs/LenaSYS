@@ -120,12 +120,19 @@
 
 				// Create appropriate number of boxes
 				for($i=1;$i<$boxCount+1;$i++){
-						$kind = $multiArray[$i-1][0];
-						$file = $multiArray[$i-1][1];
-						$wordlist = $multiArray[$i-1][2];
+					$kind = $multiArray[$i-1][0];
+					$file = $multiArray[$i-1][1];
+					$wordlist = $multiArray[$i-1][2];
 
+					$query = $pdo->prepare("SELECT COUNT(1) FROM box WHERE boxid = :i AND exampleid = :exampleid");
+
+					$query->bindParam(':i', $i);
+					$query->bindParam(':exampleid', $exampleId);
+					$query->execute();
+
+					if($query->fetch() < 1){	
 						// Create boxes, if some box does not exist
-						$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename, :wordlistid);");
+						$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid,fontsize) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename, :wordlistid, :fontsize);");
 
 						$query->bindParam(':i', $i);
 						$query->bindParam(':exampleid', $exampleId);
@@ -134,6 +141,7 @@
 						$query->bindValue(':settings', '[viktig=1]'); //TODO: Check what viktig is and what it's for
 						$query->bindValue(':filename', $file);
 						$query->bindValue(':wordlistid', $wordlist);
+						$query->bindValue(':fontsize', '9');
 
 						// Update code example to reflect change of template
 						if(!$query->execute()) {
@@ -143,6 +151,7 @@
 							if(strpos($error[2],"Duplicate entry")==-1) $debug.="Error creating new box: ".$error[2];
 
 						}
+					}
 				}
 			}else if(strcmp('EDITEXAMPLE',$opt)===0){
 				if(isset($_POST['playlink'])) {$playlink = $_POST['playlink'];}

@@ -19,6 +19,8 @@ var hasDuggs = false;
 var dateToday = new Date().getTime();
 var compareWeek = -604800000;
 let width = screen.width;
+var time;
+var lid;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -31,6 +33,9 @@ var menuState = {
 }
 
 function setup() {
+  // Disable ghost button when page is loaded
+  document.querySelector('#hideElement').disabled = true;
+  document.querySelector('#hideElement').style.opacity = 0.7;
   AJAXService("get", {}, "SECTION");
 }
 
@@ -379,6 +384,14 @@ function markedItems(item = null){
     } else {
       hideItemList.push(active_lid);
       console.log("Added");
+      // Show ghost button when checkbox is checked
+      document.querySelector('#hideElement').disabled = false;
+      document.querySelector('#hideElement').style.opacity = 1;
+    } 
+    if (hideItemList.length == 0) {
+      // Disable ghost button when no checkboxes is checked
+      document.querySelector('#hideElement').disabled = true;
+      document.querySelector('#hideElement').style.opacity = 0.7;
     } 
     console.log(hideItemList);
 }
@@ -488,11 +501,26 @@ function prepareItem() {
 //----------------------------------------------------------------------------------
 
 function deleteItem(item_lid = null) { 
-   var lid = item_lid ? item_lid : $("#lid").val();
+  lid = item_lid ? item_lid : $("#lid").val();
+  document.getElementById("lid" + lid).style.display = "none";
+  alert("Press recycle button within 60 seconds to undo the deletion");
+  document.querySelector("#undoButton").style.display = "block";
+  // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
+  time = setTimeout(() => {
     AJAXService("DEL", {
       lid: lid
     }, "SECTION");
     $("#editSection").css("display", "none");
+    document.querySelector("#undoButton").style.display = "none";
+   }, 60000)
+}
+
+// Cancel deletion
+function cancelDelete() {
+  clearTimeout(time);
+  document.getElementById("lid" + lid).style.display = "block";
+  location.reload();
+  document.querySelector("#undoButton").style.display = "none";
 }
 
 //----------------------------------------------------------------------------------
@@ -500,6 +528,9 @@ function deleteItem(item_lid = null) {
 //----------------------------------------------------------------------------------
 
 function hideMarkedItems() {
+  // Since no boxes are checked ghost button is disabled
+  document.querySelector('#hideElement').disabled = true;
+  document.querySelector('#hideElement').style.opacity = 0.7;
   for (i=0; i < hideItemList.length; i++) {  
     var lid = hideItemList[i];
       AJAXService("HIDDEN", {
@@ -1136,7 +1167,7 @@ function returnedSection(data) {
         //Generate new tab link
         str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
-          str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Open link in new tab' class='' 
+          str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
           src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
           str += "</td>";
 
@@ -1177,9 +1208,9 @@ function returnedSection(data) {
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:25px;' class='" + makeTextArray(itemKind,
-            ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
-            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' onclick='markedItems(this)'>";
+          str += `<td style='width:25px;' class='${makeTextArray(itemKind, ["header", "section", 
+          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+            str += "<input type='checkbox'  id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' onclick='markedItems(this)'>";
             str += "</td>";      
         }
         
@@ -2638,14 +2669,21 @@ function validateDate2(ddate, dialogid) {
   if (window.getComputedStyle(inputDeadline).display !== "none") {
   
   var ddate = document.getElementById(ddate);
+  var deadlinehours = document.getElementById("deadlinehours");
+  var deadlineminutes = document.getElementById("deadlineminutes");
   var x = document.getElementById(dialogid);
   var deadline = new Date(ddate.value);
+  deadline.setHours(deadlinehours.options[deadlinehours.selectedIndex].value, deadlineminutes.options[deadlineminutes.selectedIndex].value);
   // Dates from database
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
 
+  // Correct the fetched dates from database
+  startdate.setMonth(startdate.getMonth() - 1);
+  enddate.setMonth(enddate.getMonth() - 1);
+
   // If deadline is between start date and end date
-  if (startdate < deadline && enddate > deadline) {
+  if (startdate <= deadline && enddate >= deadline) {
     ddate.style.borderColor = "#383";
     ddate.style.borderWidth = "2px";
     x.style.display = "none";
@@ -2753,12 +2791,10 @@ function quickValidateForm(formid, submitButton){
     valid = true;
     var deadlinepart = document.getElementById('inputwrapper-deadline');
     var deadlinedisplayattribute = deadlinepart.style.display; 
-    if (deadlinedisplayattribute == 'block'){
-      valid = valid && (validateSectName('sectionname') && showCourseDate('setDeadlineValue','dialog8'));
-    }else{
-      valid = valid && validateSectName('sectionname');
-    }
-   
+    valid = valid && validateSectName('sectionname');
+
+    // Validates Deadline
+    showCourseDate('setDeadlineValue','dialog8');
 
     //If fields empty
     if (sName == null || sName == "") {

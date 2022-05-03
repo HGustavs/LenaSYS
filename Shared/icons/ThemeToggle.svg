@@ -1,28 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 2481 3508" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <g transform="matrix(-0.991379,0,0,1,2283.67,0)">
-        <clipPath id="_clip1">
-            <rect x="1130.7" y="1047.81" width="707.675" height="1157.14"/>
-        </clipPath>
-        <g clip-path="url(#_clip1)">
-            <circle cx="1144.49" cy="1630.93" r="528.459" style="fill:white;"/>
-        </g>
-    </g>
-    <g transform="matrix(-1.00503,0,0,0.999342,2307.75,1.19303)">
-        <clipPath id="_clip2">
-            <rect x="616.029" y="1002.25" width="523.864" height="1157.14"/>
-        </clipPath>
-        <g clip-path="url(#_clip2)">
-            <circle cx="1144.49" cy="1630.93" r="528.459" style="fill:white;"/>
-        </g>
-    </g>
-    <g transform="matrix(-0.959713,0,0,0.958735,2256.02,67.4446)">
-        <clipPath id="_clip3">
-            <rect x="616.029" y="1002.25" width="523.864" height="1157.14"/>
-        </clipPath>
-        <g clip-path="url(#_clip3)">
-            <circle cx="1144.49" cy="1630.93" r="528.459" style="fill:rgb(93,74,114);"/>
-        </g>
-    </g>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.13 31.13">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #5d4a72;
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <title>ThemeToggle</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <path class="cls-1" d="M0,15.57c0,.07,0,.13,0,.2v-.4C0,15.44,0,15.5,0,15.57Z" transform="translate(0.02 -0.01)"/>
+  </g>
+  <path class="cls-2" d="M0,15.57c0,.54,0,1.07.08,1.59a.5.5,0,0,1,0,.12A13.13,13.13,0,0,0,.3,18.7a15.56,15.56,0,1,0,0-6.26A15.39,15.39,0,0,0,0,15.57ZM24.43,6.74a12.51,12.51,0,0,1-8.88,21.34h0v-25h0A12.46,12.46,0,0,1,24.43,6.74Z" transform="translate(0.02 -0.01)"/>
 </svg>

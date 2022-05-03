@@ -445,9 +445,9 @@ function SortableTable(param)
     	}
     	str += "</tbody>";
       mhvstr += "</tbody>";
-      mhvstr += "<tfoot style='border-top:2px solid #000'>";
+      mhvstr += "<tfoot class='bottomBorderColor'>";
       mhvstr += "<tr style='font-style:italic;'>";
-      str += "<tfoot style='border-top:2px solid #000'>";
+      str += "<tfoot class='bottomBorderColor'>";
       str += "<tr style='font-style:italic;'>";
 
       if(this.hasCounter) {
