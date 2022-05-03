@@ -305,7 +305,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
     		<div id='loadDuggaPopup' style="display:block">
 				<div class='inputwrapper'><span>Enter hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value='' autocomplete="off"/></div>
 				<div class="button-row">
-					<input type='button' class='submit-button' onclick="loadDuggaType();" value='Load Dugga'>
+					<input type='button' class='submit-button' onclick="loadDugga();" value='Load Dugga'>
 				</div>
     		</div>
       </div>

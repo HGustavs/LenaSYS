@@ -85,8 +85,10 @@ function saveTimesAccessed(){
 
 		// Loads a dugga from hash and redirects to index.php that then continues to redirect to the specified dugga
 function loadDugga(){
-	var hash = document.getElementById('hash');
-	window.location.href = "../sh/?a="+hash.value;
+	var hash = document.getElementById('hash').value;
+	/*when adding `${hash}` it redirects to validateHash.php whereas if it was just raw 
+	hash it wouldn't validate anything*/
+	window.location.href = createUrl(`${hash}`);
 }
 
 function loadDuggaType(){
