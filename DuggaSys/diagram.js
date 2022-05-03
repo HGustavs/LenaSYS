@@ -3826,7 +3826,6 @@ function generateErTableString()
                 if (attrList[h].id == lineList[j].fromID || attrList[h].id == lineList[j].toID) {
                 
                     currentEntityAttrList.push(attrList[h]);
-                    currentRow.push(attrList[h]);
                     idList.push(attrList[h].id);
                         
                 }
@@ -3874,7 +3873,6 @@ function generateErTableString()
                                 parentAttribeList.push(currentEntityAttrList[j]);
                             }
                             currentEntityAttrList.push(attrList[k]);
-                            currentRow.push(attrList[k]);
                             idList.push(attrList[k].id);
                         }
                     }   
@@ -3884,6 +3882,9 @@ function generateErTableString()
         //removes all attributes in parent attribute list from current entity attribute list
         for (let index = 0; index < parentAttribeList.length; index++) {
             currentEntityAttrList.splice(findIndex(currentEntityAttrList,parentAttribeList[index].id),1);
+        }
+        for (let index = 0; index < currentEntityAttrList.length; index++) {
+            currentRow.push(currentEntityAttrList[index]);            
         }
 
         //Add each connected attribute in stringList[i]
@@ -4442,7 +4443,7 @@ function generateContextProperties()
 
     //If erTableToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
     if (erTableToggle == true) {
-        str +=`<style> .textbox {resize: none; height: 250px; width: 273px;}</style><div class="textbox">`
+        str +=`<div style="overflow:scroll; height: 300px; width: 96%;background-color:white;color:black;padding-left:8px;border:black 2px dotted;">`
         var ertable = generateErTableString();
         str += ertable;
         str += `</div>`
