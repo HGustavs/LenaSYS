@@ -118,14 +118,13 @@ function showAvailableColumnFilter() {
 
 function showMenu() {
 
-	 //Toggle for alert when create a New Item
-	 var element = document.getElementById("sideMenu");
-	 var legends = document.getElementById("resultedLegendContainer")
-	 element.classList.toggle("showMenuToggle");
-	 //This will be what is displayed inside of the menu.
-	 //document.getElementById("sideMenu").innerHTML = legends;
-	 document.getElementById("sideMenu").innerHTML = "Placeholder text"
+	var element = document.getElementById("sideMenu");
+
+	element.classList.toggle("showMenuToggle");
 	
+	//The text for the "legends" will be placed here
+	document.getElementById("sideMenu").innerHTML = "Placeholder text";
+
 }
 
 function setup(){
