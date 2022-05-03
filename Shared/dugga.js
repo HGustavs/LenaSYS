@@ -2560,37 +2560,31 @@ function ReadOriginalInstructions(doc){
 	for (var i = 0; i< doc.length;i++){
 		strDoc =strDoc + doc[i].textContent
 	}
-	console.log(strDoc);
 	return strDoc;
 
 }
 
 function ignoreEditDugga(){
-	console.log("ignoring changes");
+	window.alert("No changes will be saved");
+	window.close();
 }
 
-function saveEditDugga(){
-	console.log("saving blabla");
+function saveEditDugga(changed){
+	console.log(changed)	
 }
 
 //create popup for editing dugga
 function createPopup(strDoc){
-	var win = window.open("","","popup=true");
+	var win = window.open("","","popup,width=700, height=500");
 	win.document.write(`
 	<script src="../Shared/dugga.js"></script>
-	<form>
+	<form name='changeDugga' action='' >
 		<textarea  rows=30 cols=80 id='changedinfo'>
 			`+ strDoc +`
 		</textarea><br>
-		<input type='button' value='save changes' onclick='saveEditDugga()'></input><br>
-		<input type='button' value='cancel changes' onclick='ignoreEditDugga()'></input>
+		<input type='submit' value='save changes' onclick='saveEditDugga(this.form)'></input>
+		<input type='button' value='cancel changes' onclick='ignoreEditDugga(this.form)'></input>
 	</form>`);
-	
-	//win.innerHTML= "<p>" +  strDoc+ "</p>";	
-	var textField = win.document.createElement("INPUT");
-	textField.setAttribute("type","text");
-	textField.setAttribute("defaultValue", strDoc)
-	
 	return win;
 }
 
