@@ -11,6 +11,7 @@ require 'query.php';
 $course = getOPG("c");
 $assignment = getOPG("a");
 $submission = getOPG("s");
+$stupidBoolean = false;
 
 // Connect to database and start session
 pdoConnect();
@@ -59,7 +60,9 @@ function GetAssignment ($hash){
 	// Redirect if no password is stored in session or if hash/hashpwd is incorrect 
 	if(isSuperUser($userid)){
 		// Never ask for pwd
-	}else if(!isset($_SESSION["submission-password-$cid-$vers-$did-$moment"]) || (isset($_SESSION["submission-password-$cid-$vers-$did-$moment"]) && $_SESSION["submission-password-$cid-$vers-$did-$moment"]!=$hashpwd)){
+		exit();
+	}else if(!$stupidBoolean || (!isset($_SESSION["submission-password-$cid-$vers-$did-$moment"]) || (isset($_SESSION["submission-password-$cid-$vers-$did-$moment"]) && $_SESSION["submission-password-$cid-$vers-$did-$moment"]!=$hashpwd))){
+		$stupidBoolean = true;
 		$_SESSION['checkhash']=$hash;
 		header("Location: ../DuggaSys/validateHash.php");
 		exit();	
@@ -280,7 +283,7 @@ if($submission != "UNK"){
 	CourseAndAssignment($course, $assignment);
 }
 else {
-	header("Location: ../errorpages/404.php");
+	//header("Location: ../errorpages/404.php");
 }
 $pdo = null;
 
