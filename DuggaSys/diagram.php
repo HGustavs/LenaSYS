@@ -46,7 +46,7 @@
                     </span>
                 </div>
                 <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
-                    <img src="../Shared/icons/diagram_box_select.svg"/>
+                    <img src="../Shared/icons/diagram_box_selection2.svg"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
                         <p>Click and drag to select multiple elements within the selected area</p><br>
                         <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
@@ -249,7 +249,7 @@
         <fieldset>
             <legend>ER-Table</legend>
             <div id="erTableToggle" class="diagramIcons" onclick="toggleErTable()">
-                <img src="../Shared/icons/diagram_replay.svg"/>
+                <img src="../Shared/icons/diagram_ER_table_info.svg"/>
                 <span class="toolTipText"><b>Toggle ER-Table</b><br>
                     <p>Click to toggle ER-Table in options</p><br>
                 </span>
@@ -299,7 +299,7 @@
         </svg>  
     </div>  
     <div id="options-pane" class="hide-options-pane" onmousedown='mdown(event)'> <!-- Yellow menu on right side of screen -->
-        <div id="options-pane-button" onclick="toggleOptionsPane();"><span id='optmarker'>Options</span>
+        <div id="options-pane-button" onclick="toggleOptionsPane();"><span id='optmarker'>&#9660;Options</span>
             <span class="toolTipText"><b>Show Option Panel</b><br>
                 <p>Enable/disable the Option Panel</p><br>
                 <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>

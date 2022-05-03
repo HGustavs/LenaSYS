@@ -80,7 +80,7 @@
 				<div class='inputwrapper'><span>Enter hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value='<?php echo $_SESSION['checkhash'] ?>' autocomplete="off" disabled/></div>
 				<div class='inputwrapper'><span>Enter hash password:</span><input class='textinput' type='text' id='hashpwd' name='hashpwd' placeholder='Hash password' value='' autocomplete="off"/></div>
 				<div class="button-row">
-					<input type='submit' class='submit-button' onclick="loadDuggaType();" value='Load Dugga'>
+					<input type='submit' class='submit-button' onclick="loadDugga();" value='Load Dugga'>
 				</div>
                 </form>
     		</div>
