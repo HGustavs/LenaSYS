@@ -1,4 +1,5 @@
-INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (1885,' - This course is for testing purposes','Testing-Course',NOW(),1,1,'45656','1');
+INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (1885,'G1337','Testing-Course',NOW(),1,1,'45656','1');
+INSERT INTO coursekeys (cid,urlkey,coursename, activeversion) VALUES (1885, 'testing', 'Testing-Course', 45656); 
 
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1,1885,'HTML-Code:',1,1,1,1,1,'45656',0);
 
@@ -19,22 +20,9 @@ INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,ro
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (23,1885,'TEST MESSAGE!!',5,7,23,1,1,'45656',0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (24,1885,'Moment Test',5,4,24,1,1,'45656',0);
 
-/*Links local files to Testing-Course*/
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML-TEST1.html",2,1885,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML-TEST2.html",2,1885,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML-TEST3.html",2,1885,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML-TEST4.html",2,1885,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("SQL-TEST1.sql",2,1885,0);
-INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("SQL-TEST2.sql",2,1885,0);
-INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("CSS-TEST1.css",2,1885,0);
-INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("JS-TEST1.js",2,1885,0);
-INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("JS-TEST2.js",2,1885,0);
-/*Attempt to create codeexample in the testing course (not working yet)*/																														
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL-TEST1.sql',"SQL-TEST1.sql","SQL-TEST1.sql",1,45656,'1','2',1,1885);
-
-
-
-
-
-
 
