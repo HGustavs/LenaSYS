@@ -528,6 +528,11 @@ body {
     color:rgba(255,255,255,0.6);
 }
 
+.item a {
+    text-decoration: none;
+    color: white;
+    opacity: 87%;
+  }
 
 .toggle-0{
     background-color: var(--color-sectioned-table-hi);
