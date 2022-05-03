@@ -4104,7 +4104,6 @@ function resizeBoxes(parent, templateId)
 		});
 	}
 
-	//This one currently doens't work
 	if(templateId == 6){
 		$('#box1wrapper').resizable({
 			resize: function( event, ui ) {
@@ -4146,10 +4145,9 @@ function resizeBoxes(parent, templateId)
 					boxToShow.classList.remove('visuallyhidden');
 	
 				}
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
-				document.querySelector('#box3wrapper').style.width = remaining + "px";
-				document.querySelector('#box4wrapper').style.width = remaining + "px";
-						
+				$('#box2wrapper').css('width', remaining + "px");
+				$('#box3wrapper').css('width', remaining + "px");
+				$('#box4wrapper').css('width', remaining + "px");						
 			},		
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
@@ -4158,29 +4156,32 @@ function resizeBoxes(parent, templateId)
 	
 		});
 		$('#box2wrapper').resizable({
-			//This one currently doens't work
-			disabled:true,
+			resize: function( event, ui ) {
+				// TODO: The alignment should take into account the original position of the boxes when resize is fired.
+				remaining = ($(parent).height()) - $('#box2wrapper').height();
+				remaining = remaining/2;
+				$('#box3wrapper').css('height', remaining + "px");
+				$('#box4wrapper').css('height', remaining + "px");
+			},
+			//Since there are 3 boxes in this columm the maxheight will be 70% of the screen instead of 85%
+			maxHeight: ($(parent).height()*0.70),
+			minHeight: ($(parent).height()*0.15),
+			containment: parent,
 			handles:"s"
 		});
 		$('#box3wrapper').resizable({
-			//This one currently doens't work
-			disabled:true,
-			handles: "n",
-
-		});
-		$('#box4wrapper').resizable({
-			//This one currently doens't work
 			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box4wrapper').height() - $('#box2wrapper').height();
-				document.querySelector('#box3wrapper').style.height = remaining + "px";
-			},
-			maxHeight: ($(parent).width()*0.85),
-			minHeight: ($(parent).width()*0.15),
+				// TODO: The alignment should take into account the original position of the boxes when resize is fired.
+				remaining = ($(parent).height()) - $('#box3wrapper').height();
+				remaining = remaining/2;
+				$('#box2wrapper').css('height', remaining  + "px");
+				$('#box4wrapper').css('height', remaining  + "px");
+			},			
+			maxHeight: ($(parent).height()*0.70),
+			minHeight: ($(parent).height()*0.15),
 			containment: parent,
-			handles: "n",
-
+			handles: "s"
 		});
-
 	}
 	if(templateId == 7){
 		$('#box1wrapper').resizable({
