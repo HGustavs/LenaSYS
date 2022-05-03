@@ -400,6 +400,7 @@ function markedItems(item = null){
         }   
         for(var j = 0; j < subItems.length; j++){
           if ( hideItemList[i] === subItems[j]) { 
+            $("#"+hideItemList[i]+"-checkbox").prop("checked", false);
             hideItemList.splice(i, 1);
             //console.log(subItems[j]+" Removed from list");
           }
@@ -417,6 +418,10 @@ function markedItems(item = null){
       for(var j = 0; j < subItems.length; j++){
         hideItemList.push(subItems[j]);
       }
+      for(i=0; i<hideItemList.length; i++){
+        $("#"+hideItemList[i]+"-checkbox").prop("checked", true);
+        //console.log(hideItemList[i]+"-checkbox");
+        }
     } 
     console.log(hideItemList);
 }
