@@ -60,7 +60,6 @@ function GetAssignment ($hash){
 	// Redirect if no password is stored in session or if hash/hashpwd is incorrect 
 	if(isSuperUser($userid)){
 		// Never ask for pwd
-		exit();
 	}else if(!$stupidBoolean || (!isset($_SESSION["submission-password-$cid-$vers-$did-$moment"]) || (isset($_SESSION["submission-password-$cid-$vers-$did-$moment"]) && $_SESSION["submission-password-$cid-$vers-$did-$moment"]!=$hashpwd))){
 		$stupidBoolean = true;
 		$_SESSION['checkhash']=$hash;
