@@ -476,7 +476,7 @@ function createJSONString(formData) {
 	return JSON.stringify({
 		"type":formData[0].value,
 		"filelink":formData[1].value,
-		"diagram File":$("#file option:selected").text(),
+		"diagram_File":$("#file option:selected").text(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
 		"submissions":submission_types,
@@ -1059,4 +1059,18 @@ function compare(a, b) {
 	} else {
 		return 0;
 	}	
+}
+
+function checkDiagramTypes(num){
+	if(num==0){
+		if(document.getElementById("UML").checked == false){
+			document.getElementById("ER").checked = true;
+		}
+	}
+	if(num==1){
+		if(document.getElementById("ER").checked == false){
+			document.getElementById("UML").checked = true;
+		}
+	}
+	$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 }
