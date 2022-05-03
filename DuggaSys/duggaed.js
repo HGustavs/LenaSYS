@@ -1060,3 +1060,17 @@ function compare(a, b) {
 		return 0;
 	}	
 }
+
+function checkDiagramTypes(num){
+	if(num==0){
+		if(document.getElementById("UML").checked == false){
+			document.getElementById("ER").checked = true;
+		}
+	}
+	if(num==1){
+		if(document.getElementById("ER").checked == false){
+			document.getElementById("UML").checked = true;
+		}
+	}
+	$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
+}
