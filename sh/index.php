@@ -280,7 +280,7 @@ if($submission != "UNK"){
 	CourseAndAssignment($course, $assignment);
 }
 else {
-	//header("Location: ../errorpages/404.php");
+	header("Location: ../errorpages/404.php");
 }
 $pdo = null;
 
