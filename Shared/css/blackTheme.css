@@ -48,6 +48,11 @@
         filter: invert(80%);
         -webkit-filter: invert(80%);
     }
+    #NewTabLink{
+        cursor: pointer;
+        filter: invert(80%);
+        -webkit-filter: invert(20%);   
+    }
     .whiteIcon {
         cursor: pointer;
         filter: invert(80%);
@@ -561,6 +566,6 @@ body {
 
 
 
-}
+/* } */
 /* BOXMENU STYLING STOP */
 /* } */

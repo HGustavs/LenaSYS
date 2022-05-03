@@ -474,6 +474,11 @@
     vertical-align: middle;
     padding: 0px 5px;
 }
+#NewTabLink{
+    cursor: pointer;
+    filter: invert(80%);
+    -webkit-filter: invert(100%);   
+}
 
 .bottomBorderColor{
     border-top: 2px solid var(--color-border-list); 
