@@ -2101,6 +2101,7 @@ function getBlockRanges(blocks) {
 
 // ↓ relevant function to collapsible brackets
 function createBlocks(ranges, boxid) {
+	console.log("ranges contain: "+ranges); // contain of ranges
 	var wrapper = document.querySelector('#textwrapper'+boxid);
 	for (var i = 0; i < ranges.length; i++) {
 		var blockStartRow = wrapper.querySelector("div[id$='"+ranges[i][0]+"']");
@@ -2109,6 +2110,13 @@ function createBlocks(ranges, boxid) {
 		buttonSlot.classList.add('occupied');
 		buttonSlot.id = i;
 
+		console.log("ranges[i][0]: "+ranges[i][0]+" --> ranges[i]:"+ranges[i]); // find ranges
+		/*
+			if child block has span = closed-block
+			do NOT .style.display = display
+			if range can be found inside of range do nothing
+		*/
+		if (!(ranges[i] > ranges[i-1])){ // <------	blocks nested ranges to collapse
 		buttonSlot.addEventListener('click', (e) => {
 			var button = e.target;
 			button.classList.toggle('open-block');
@@ -2116,6 +2124,7 @@ function createBlocks(ranges, boxid) {
 			var rowsInBlock = Array(ranges[button.id][1] - ranges[button.id][0]).fill().map((_, idx) => ranges[button.id][0] + idx);
 			toggleRows(rowsInBlock, button);
 		});
+		} // <------
 	}
 }
 
