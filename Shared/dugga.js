@@ -2552,13 +2552,7 @@ var ClickCounter = {
 function addAlertOnUnload(){
 	window.onbeforeunload = function() {return "Changes will be discarded by leaving page.";}
 }
-
-
-
-function saveEdits(doc){
-	
-}
-
+// -----------------------  Edit dugga instructions start -------------------
 //read instructions as string
 function ReadOriginalInstructions(doc){
 	var strDoc = "";
@@ -2566,16 +2560,28 @@ function ReadOriginalInstructions(doc){
 	for (var i = 0; i< doc.length;i++){
 		strDoc = strDoc + doc[i].textContent
 	}
-
+	console.log(strDoc);
 	return strDoc;
 
 }
+
+//create popup for editing dugga
+function createPopup(strDoc){
+	var win = window.open("","","popup=true");
+	win.document.write("<p>" + strDoc + "</p>");
+/*	var textField = win.document.createElement("INPUT");
+	textField.setAttribute("type","text");
+	textField.innerHTML= "<p>" +  strDoc+ "</p>";
+*/	return win;
+}
+
 //read and edit instructions on dugga.
 function editDuggaInstruction(){
-	var doc = document.getElementsByClassName("instruction-content");
-	doc.contenteditable =true;	
-	doc.onClick = saveEdit();
-	strDoc = ReadOriginalInstructions(doc);
-
+	
+	var doc = document.getElementsByClassName("instructions-content");
+	var strDoc = ReadOriginalInstructions(doc);
+	var poppy = createPopup(strDoc);	
 
 }
+
+// ----------------------------- Edit dugga instructions end ------------------------
