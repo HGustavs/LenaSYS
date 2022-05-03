@@ -4158,10 +4158,19 @@ function resizeBoxes(parent, templateId)
 		$('#box2wrapper').resizable({
 			resize: function( event, ui ) {
 				// TODO: The alignment should take into account the original position of the boxes when resize is fired.
-				remaining = ($(parent).height()) - $('#box2wrapper').height();
-				remaining = remaining/2;
-				$('#box3wrapper').css('height', remaining + "px");
-				$('#box4wrapper').css('height', remaining + "px");
+				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
+
+				if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
+				}
+				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount) + "px");
+				}
+				else{
+					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/2) + "px");
+					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
+				}
+				
 			},
 			//Since there are 3 boxes in this columm the maxheight will be 70% of the screen instead of 85%
 			maxHeight: ($(parent).height()*0.70),
