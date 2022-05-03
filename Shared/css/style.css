@@ -2650,14 +2650,15 @@ button.option {
 }
 
 #courseBtn{
-  margin-left: 100px;
+  margin-left: 8px;
   font-size: 12px;
   border-radius: 5px;
 }
 
 #yearBtn{
-font-size: 12px;
-border-radius: 5px;
+  margin-left: 8px;
+  font-size: 12px;
+  border-radius: 5px;
 }
 
 
