@@ -903,7 +903,8 @@ var selectionBoxHighX;
 var selectionBoxLowY;
 var selectionBoxHighY;
 var lastClickedElement = null;
-
+var mouseOverElement = false;
+var mouseOverLine = false;
 
 // Zoom variables
 var desiredZoomfact = 1.0;
@@ -1717,6 +1718,7 @@ function mdown(event)
                             targetElementDiv = document.getElementById(targetElement.id);
                         } else {
                             pointerState = pointerStates.CLICKED_CONTAINER;
+                            cursorStyle.cursor = "grabbing";
                             if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                                 wasDblClicked = true;
                                 document.getElementById("options-pane").className = "hide-options-pane";
@@ -1726,6 +1728,7 @@ function mdown(event)
                     }
                     else {
                         pointerState = pointerStates.CLICKED_CONTAINER;
+                        cursorStyle.cursor = "grabbing";
                         if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                             wasDblClicked = true;
                             document.getElementById("options-pane").className = "hide-options-pane";
@@ -1902,6 +1905,7 @@ function mouseMode_onMouseUp(event)
 
  function tup(event) 
  {
+     mouseButtonDown = false;
      pointerState = pointerStates.DEFAULT;
      deltaExceeded = false;
  }
@@ -1914,8 +1918,10 @@ function mouseMode_onMouseUp(event)
 
 function mup(event)
 {
+    if(!mouseOverLine && !mouseOverElement){
+        setCursorStyles(mouseMode);
+    }
     mouseButtonDown = false;
-
     targetElement = null;
     deltaX = startX - event.clientX;
     deltaY = startY - event.clientY;
@@ -1989,6 +1995,23 @@ function mup(event)
 }
 
 /**
+ * @description change cursor style when mouse hovering over an element.
+ */
+function mouseEnter(){
+    if(!mouseButtonDown){
+        mouseOverElement = true;
+        cursorStyle.cursor = "pointer";
+    }
+}
+
+/**
+ * @description change cursor style when mouse is hovering over the container.
+ */
+function mouseLeave(){
+    mouseOverElement = false;
+    setCursorStyles(mouseMode);
+}
+/**
 
  * @description Calculates if any line or label is present on x/y position in pixels.
 
@@ -2007,6 +2030,29 @@ function checkDeleteBtn(){
     
             updateSelection();
         }
+    }
+}
+/**
+ *  @description change cursor style if mouse position is over a selection box or the deletebutton.
+ */
+function mouseOverSelection(mouseX, mouseY){
+    if(context.length > 0 || contextLine.length > 0){
+        // If there is a selection box and mouse position is inside it.
+        if (mouseX > selectionBoxLowX && mouseX < selectionBoxHighX && mouseY > selectionBoxLowY && mouseY < selectionBoxHighY){
+            cursorStyle.cursor = "pointer";
+        }
+        // If mouse position is over the delete button.
+        else if (mouseX > deleteBtnX && mouseX < (deleteBtnX + deleteBtnSize) && mouseY > deleteBtnY && mouseY < (deleteBtnY + deleteBtnSize)){
+            cursorStyle.cursor = "pointer";
+        }
+        // Not inside selection box, nor over an element or line.
+        else if(!mouseOverElement && !mouseOverLine){
+            setCursorStyles(mouseMode);
+        }
+    }
+    // There is no selection box, and mouse position is not over any element or line.
+    else if(!mouseOverElement && !mouseOverLine){
+        setCursorStyles(mouseMode);
     }
 }
 
@@ -2156,12 +2202,18 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
          return false
      }
  }
-
 /**
  * @description Called on mouse moving if no pointer state has blocked the event in mmoving()-function.
  */
 function mouseMode_onMouseMove(event)
 {
+    mouseOverLine = determineLineSelect(event.clientX, event.clientY);
+    // Change cursor style if mouse pointer is over a line.
+    if(mouseOverLine && !mouseButtonDown){
+        cursorStyle.cursor = "pointer";
+    } else if(!mouseOverElement){
+        setCursorStyles(mouseMode);
+    }
      switch (mouseMode) {
         case mouseModes.EDGE_CREATION:
         case mouseModes.PLACING_ELEMENT:
@@ -2181,12 +2233,14 @@ function mouseMode_onMouseMove(event)
             }
             break;
 
-        case mouseModes.POINTER: // do nothing
+        case mouseModes.POINTER:
+            mouseOverSelection(event.clientX, event.clientY);
             break;
             
         case mouseModes.BOX_SELECTION:
             boxSelect_Update(event.clientX, event.clientY);
             updatepos(0, 0);
+            mouseOverSelection(event.clientX, event.clientY);
             break;
             
         default:
@@ -3184,7 +3238,7 @@ function setCursorStyles(cursorMode = mouseModes.POINTER)
 
     switch(cursorMode) {
         case mouseModes.POINTER:
-            cursorStyle.cursor = "pointer";
+            cursorStyle.cursor = "grab";
             break;
         case mouseModes.BOX_SELECTION:
             cursorStyle.cursor = "crosshair";
@@ -3193,7 +3247,7 @@ function setCursorStyles(cursorMode = mouseModes.POINTER)
             cursorStyle.cursor = "default";
             break;
         case mouseModes.EDGE_CREATION:
-            cursorStyle.cursor = "grab";
+            cursorStyle.cursor = "default";
             break;
         default:
             break;
@@ -5982,7 +6036,7 @@ function drawElement(element, ghosted = false)
         elemAttri = element.attributes.length;
         elemFunc = element.functions.length;
         //div to encapuslate UML element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
 
         if(context.includes(element)){
@@ -6042,7 +6096,7 @@ function drawElement(element, ghosted = false)
     //Check if element is UMLRelation
     else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' 
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
         style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;`;
 
         if(context.includes(element)){
@@ -6075,7 +6129,7 @@ function drawElement(element, ghosted = false)
     else {
         // Create div & svg element
         str += `
-                    <div id='${element.id}'	class='element' onmousedown='ddown(event);' style='
+                    <div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
                             width:${boxw}px;
