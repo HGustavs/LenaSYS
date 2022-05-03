@@ -2552,48 +2552,71 @@ var ClickCounter = {
 function addAlertOnUnload(){
 	window.onbeforeunload = function() {return "Changes will be discarded by leaving page.";}
 }
+
+
 // -----------------------  Edit dugga instructions start -------------------
+
 //read instructions as string
 function ReadOriginalInstructions(doc){
 	var strDoc = "";
-	
 	for (var i = 0; i< doc.length;i++){
 		strDoc =strDoc + doc[i].textContent
 	}
+	strDoc = strDoc.trim();
 	return strDoc;
-
 }
 
-function ignoreEditDugga(){
-	window.alert("No changes will be saved");
+//ignore changes and close window
+function ignoreEditDugga(popupForm){
 	window.close();
 }
 
-function saveEditDugga(changed){
-	console.log(changed)	
+//save info from new input
+function saveEditDugga(popupForm){
+	var changed =popupForm.changedinfo.value;
+	changed.trim();
+	var doc = window.opener.document.getElementsByClassName("instructions-content") 
+	
+	doc[0].textContent = changed;
+
+	for(var i = 1; i< doc.length; i++){
+		doc[i].textContent = "";
+	}
+	
+	window.close();
+}
+
+function autoUpdateText(popupForm){
+	var newInfo = popupForm.changedinfo.value;
+	console.log(newInfo);
+	
 }
 
 //create popup for editing dugga
 function createPopup(strDoc){
 	var win = window.open("","","popup,width=700, height=500");
+	win.onbeforeunload = function() {return "Changes will be discarded by leaving page.";}
 	win.document.write(`
 	<script src="../Shared/dugga.js"></script>
-	<form name='changeDugga' action='' >
-		<textarea  rows=30 cols=80 id='changedinfo'>
-			`+ strDoc +`
+	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
+	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+	<form name='changeDugga' action=''>
+		<textarea rows=30 cols=80 id='changedinfo'>
+			`+strDoc+`
 		</textarea><br>
 		<input type='submit' value='save changes' onclick='saveEditDugga(this.form)'></input>
-		<input type='button' value='cancel changes' onclick='ignoreEditDugga(this.form)'></input>
+		<input type='button' value='cancel changes' onclick='ignoreEditDugga()'></input>
 	</form>`);
+	win.document.getElementById('changedinfo').onchange = popupForm(this.form);
 	return win;
 }
 
 //read and edit instructions on dugga.
-function editDuggaInstruction(){
+function editDuggaInstruction(){	
 	
-	var doc = document.getElementsByClassName("instructions-content");
-	var strDoc = ReadOriginalInstructions(doc);
-	var poppy = createPopup(strDoc);	
+	//var doc = document.getElementsByClassName("instructions-content");
+	var strDoc = ReadOriginalInstructions(document.getElementsByClassName("instructions-content"));
+	var poppy = createPopup(strDoc);
 
 }
 
