@@ -1670,8 +1670,20 @@ function checkScroll(obj) {
 // copySubmissionReceiptToClipboard: Copy the hash to user clipboard
 //----------------------------------------------------------------------------------
 function copySubmissionReceiptToClipboard() {
-	$('#submission-receipt').select();
+	const tempTextArea = document.createElement('textarea');
+	tempTextArea.id = 'temp_element';
+	tempTextArea.style.height = 0;
+
+	document.body.appendChild(tempTextArea);
+
+	tempTextArea.value = document.getElementById('submission-receipt').innerText;
+
+	const selector = document.querySelector('#temp_element');
+	selector.select();
 	document.execCommand('copy');
+
+	document.body.removeChild(tempTextArea);
+
 }
 
 //----------------------------------------------------------------------------------
