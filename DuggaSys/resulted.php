@@ -47,6 +47,8 @@ pdoConnect();
 		include '../Shared/loginbox.php';
   ?>
   <!-- content START -->
+  <!-- Div that apper as an alert when a New Item has been created -->
+	<div style="z-index: 1500;" id="sideMenu"></div>
 	<div id="content">
 	
 	<!-- Legend content which includes icons that are used in the database of the resultEd. -->
@@ -55,7 +57,8 @@ pdoConnect();
 	
 	<div id="resultedLegendContainer" >
 	
-		<div id="legendBtn"> ? </div>
+		<div class="filter-btn filter-btn-duggaName" onclick="showMenu()"> ? </div>
+		
 		<ul class="legendList">
 			<li class="legendListItem"><img alt="pass icon" src="../Shared/icons/Uh.png"><img src="../Shared/icons/G.png"> Pass</li>
 			<li class="legendListItem"><img alt="fail icon" src="../Shared/icons/U.png"><img src="../Shared/icons/Gc.png"> Fail</li>

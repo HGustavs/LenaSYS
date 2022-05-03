@@ -50,6 +50,7 @@ function loadHTMLelements() {
 	searchBarElement = document.querySelector(".searchbar-filter");
 	showDuggaFilterElement = document.querySelector(".show-dugga-filter-popup");
 	showColumnFilterElement = document.querySelector(".show-column-filter-popup");
+	showMenuElement = document.querySelector(".sideMenu");
 	toggleDuggaCheckAll = document.getElementById("toggle-dugganame-filter");
 	toggleColumnCheckAll = document.getElementById("toggle-column-filter");
 	//checkboxElements = document.getElementsByName("duggaEntryname");
@@ -113,6 +114,22 @@ function showAvailableColumnFilter() {
 	showDuggaFilterElement.classList.add("hidden");
 
 	showColumnFilterElement.classList.toggle("hidden");
+}
+
+function showMenu() {
+
+	 //Toggle for alert when create a New Item
+	 var element = document.getElementById("sideMenu");
+	 element.classList.toggle("showMenuToggle");
+	 //Set text for the alert when create a New Item
+	 document.getElementById("sideMenu").innerHTML = "This will be a menu";
+	 //Duration time for the alert before remove
+	 setTimeout(function(){
+	   $("#sideMenu").removeClass("showMenuToggle");
+	   document.getElementById("sideMenu").innerHTML = "";
+	 },3000);
+   
+   
 }
 
 function setup(){
