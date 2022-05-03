@@ -473,6 +473,18 @@
     vertical-align: middle;
     padding: 0px 5px;
 }
+.loginBox,
+.logoutBox{
+  padding: 4px;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
+  color:black;
+  min-height: 100px;
+  min-width: 200px;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
 
 /* #Sectionlist .example {
     color: var(--color-text-secondary);
