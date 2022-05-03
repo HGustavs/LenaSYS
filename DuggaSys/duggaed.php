@@ -196,9 +196,9 @@ session_start();
                       <legend>Diagram types allowed</legend>
                       <div id="diagramTypesBox" style="display:flex;flex-wrap:wrap;flex-direction:row;">
                         <label for="ER">ER</label>
-                        <input type="checkbox" name="ER" id="ER" value="true" checked="true" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>
+                        <input type="checkbox" name="ER" id="ER" value="true" checked="true" onchange="checkDiagramTypes(0);"/>
                         <label for="UML">UML</label>
-                        <input type="checkbox" name="UML" id="UML" value="true" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>  
+                        <input type="checkbox" name="UML" id="UML" value="true" onchange="checkDiagramTypes(1);"/>  
                       </div>
                     </fieldset>
                   </div>
