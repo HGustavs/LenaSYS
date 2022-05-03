@@ -2119,6 +2119,7 @@ function createBlocks(ranges, boxid) {
 	}
 }
 
+// ↓ possible relevant function to collapsible brackets
 function toggleRows(rows, button) {
 	var baseRow = button.parentNode;
 	var wrapper = baseRow.parentNode;
