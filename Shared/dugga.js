@@ -1633,6 +1633,14 @@ function hideLoadDuggaPopup()
 	$("#loadDuggaBox").css("display","none");
 }
 
+function updateReceiptText(title, URL, hash, hashPW)
+{
+	//data['duggaTitle] & createUrl(data['hash']) & data['hash'] & data['hashpwd'] are often used as params
+	var textBox = document.getElementById('submission-receipt');  
+    textBox.innerHTML=(`${title}</br></br>Direct link (to be submitted in canvas): </br>` + 
+	`<a href=${URL}'> ${URL}` + 
+	`</a> </br></br> Hash: </br> ${hash}</br></br>Hash password:</br>${hashPW}`);
+}
 
 function showReceiptPopup()
 {
