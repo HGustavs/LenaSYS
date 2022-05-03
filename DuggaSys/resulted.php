@@ -57,7 +57,7 @@ pdoConnect();
 	
 	<div id="resultedLegendContainer" >
 	
-		<div class="filter-btn filter-btn-duggaName" onclick="showMenu()"> ? </div>
+		<div class="filter-btn filter-btn-duggaName" title="Show legend" onclick="showMenu()"> ? </div>
 		
 		<ul class="legendList">
 			<li class="legendListItem"><img alt="pass icon" src="../Shared/icons/Uh.png"><img src="../Shared/icons/G.png"> Pass</li>

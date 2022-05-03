@@ -7328,8 +7328,8 @@ textarea#mrkdwntxt {
 
 .showMenuToggle{
   position: fixed;
-  width: 100%;
-  margin: auto;
+  height: 100%;
+  right: 0;
   padding: 30px;
   background-color: #eb4;
   color: white;

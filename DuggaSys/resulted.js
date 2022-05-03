@@ -120,16 +120,11 @@ function showMenu() {
 
 	 //Toggle for alert when create a New Item
 	 var element = document.getElementById("sideMenu");
+	 var legends = document.getElementById("resultedLegendContainer")
 	 element.classList.toggle("showMenuToggle");
-	 //Set text for the alert when create a New Item
-	 document.getElementById("sideMenu").innerHTML = "This will be a menu";
-	 //Duration time for the alert before remove
-	 setTimeout(function(){
-	   $("#sideMenu").removeClass("showMenuToggle");
-	   document.getElementById("sideMenu").innerHTML = "";
-	 },3000);
-   
-   
+	 //This will be what is displayed inside of the menu.
+	 //document.getElementById("sideMenu").innerHTML = legends;
+	
 }
 
 function setup(){
