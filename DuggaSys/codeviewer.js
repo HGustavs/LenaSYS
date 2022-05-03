@@ -1741,6 +1741,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				pid = bracket.pop();
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "{") {
+				// below row ↓ was out commented in pull request #11411
 				// [token row position, 1 = opening bracket, codeviewer box id]
 				allBlocks.push([tokens[i].row, 1, parseInt(boxid)]);
 				pid = "CBR" + cbcount + boxid;
@@ -1748,6 +1749,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cbracket.push(pid);
 				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "}") {
+				// below row ↓ was out commented in pull request #11411
 				// [token row position, 0 = closing bracket, codeviewer box id]
 				allBlocks.push([tokens[i].row, 0, parseInt(boxid)]);
 				pid = cbracket.pop();
@@ -1792,6 +1794,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						break;
 				}
 
+				// ↓ added in pull request #11411 (START) 
 				// Enables collapsible html tags
 				if (String(tokens[i + 1].kind) == "name") {
 					// Ensures that void elements do not count as opening html tags
@@ -1804,6 +1807,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					// [token row position, 0 = closing html tag, codeviewer box id]
 					allBlocks.push([tokens[i + 1].row, 0, parseInt(boxid)]);
 				}
+				// ↑ added in pull request #11411 (START) 
 
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
