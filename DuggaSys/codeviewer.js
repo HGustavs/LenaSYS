@@ -4630,17 +4630,25 @@ function showAllViews(){
  	boxes.forEach(box => {
     	showAllBox(box[0]);
  	});
+	for(i = 1; i <= retData['numbox']; i++){
+		$("#box" + i +"wrapper").css('grid-column','');
+		$("#box" + i +"wrapper").css('grid-row','');
+	}
 }
 
 function setShowPane(id) {
 	closeBurgerMenu();
-	var loc = window.location.href;
-	if (loc.indexOf('&showPane=') !== -1) {
-		loc = loc.substring(0,loc.indexOf('showPane=') - 1)+'&showPane='+id;
-		window.location.href = loc;
-	} else {
-		loc = loc+'&showPane='+id;
-		window.location.href = loc;
+	for(i = 1; i <= retData['numbox']; i++){
+		if(i == id){
+			$("#box" + i +"wrapper").css("display", "inline");
+			//Setting the box to cover the entire grid of #div2
+			$("#box" + i +"wrapper").css('grid-column',"a/b");
+			$("#box" + i +"wrapper").css('grid-row',"a/l");
+		}
+		else{
+			$("#box" + i +"wrapper").css("display", "none");
+		}
+		
 	}
 }
 
