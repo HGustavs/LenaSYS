@@ -1131,18 +1131,18 @@ function returnedSection(data) {
 
   str += "<div id='contributionContainer' class='contributionSort'>";
   str += `<input type='button' id='allBtn' value='All' class='submit-button title='All' 
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'></input>`;
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'title='View all tables and charts'></input>`;
   str += `<input type='button' id='basicBtn' value='Basic' class='submit-button title='Basic'
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'></input>`;
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'title='View basic statistics'></input>`;
   str += `<input type='button' id='chartsBtn' value='Charts' class='submit-button title='Charts'
-  onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
+  onclick='statSort(value)' onmouseout='hideTooltip(this)'title='View only charts'></input>`;
   str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution'
-  onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
+  onclick='statSort(value)' onmouseout='hideTooltip(this)'title='View contribution data'></input>`;
   
   
   //Dynamically loads the year selection list based on folders in ../../contributionDBs/
   str += `<select id='yearBtn' class='submit-button'
-  onclick='statSort(value)'onchange='courseSelection(this)'>
+  onclick='statSort(value)'onchange='courseSelection(this)'title='Select year dropdown'>
   <option value="ChooseY">Choose Year</option>`;
 
   // Add option for each year folder
@@ -1157,7 +1157,7 @@ function returnedSection(data) {
   str +=`</select>`;
 
   str += `<select id='courseBtn' class='submit-button'
-  onclick='statSort(value)'onchange='courseDBCollection(value)' style="visibility: hidden">
+  onclick='statSort(value)'onchange='courseDBCollection(value)' style="visibility: hidden"title='Select course dropdown'>
   <option value="ChooseC">Choose Course</option></select>`;
 
   str += "</div>"; 
