@@ -3219,9 +3219,11 @@ div.submit-button:disabled {
   padding: 0px;
 }
 
+/*
 .list tbody tr:nth-child(odd) {
   background-color: var(--color-background-2);
 }
+*/
 
 .list#testTable tr:nth-child(odd),
 .list#testTable tr:nth-child(even) {

@@ -395,6 +395,7 @@ function SortableTable(param)
     	// Render table body
     	str += "<tbody id='"+this.tableid+DELIMITER+"body'>";
     	mhvstr += "<tbody id='"+this.tableid+DELIMITER+"mhvbody'>";
+      var n = 0;
     	for (var i = 0; i < tbl.tblbody.length; i++) {
           str += "<tr id='"+this.tableid+DELIMITER+i+"'"
           if (this.hasRowHighlight)str+=" onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
@@ -404,11 +405,17 @@ function SortableTable(param)
           // Not adding this data would make the columns change size every time the table is changed.
           var row = tbl.tblbody[i];
           if (rowFilter(row)) {
-            str += " style='box-sizing:border-box'>";
+            str += " style='box-sizing:border-box";
+            // Alternate row colors
+            if(++n%2)
+            {
+              str += ";background: #ccc"; // --color-background-2;
+            }
           }
           else {
-            str += " style='visibility:collapse'>";
+            str += " style='visibility:collapse";
           }
+          str += "'>";
 
           mhvstr += "<tr id='"+this.tableid+DELIMITER+i+DELIMITER+"mhv' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 
