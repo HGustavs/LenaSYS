@@ -6763,35 +6763,35 @@ function calculateLabelDisplacement(labelObject)
     var diffrenceX = labelObject.highX-labelObject.lowX;
     var diffrenceY = labelObject.highY-labelObject.lowY;
     var entireLinelenght = Math.abs(Math.sqrt(diffrenceX*diffrenceX+diffrenceY*diffrenceY));
-    var baseLine, angle, displacementConstant=18, storeX, storeY;
+    var baseLine, angle, displacementConstant=labelObject.height, storeX, storeY;
     var distanceToOuterlines={storeX, storeY}
     // define the baseline used to calculate the angle
     if((labelObject.fromX - labelObject.toX) > 0){
         if((labelObject.fromY - labelObject.toY) > 0){ // up left
             baseLine = labelObject.fromY - labelObject.toY;
             angle = (Math.acos(Math.cos(baseLine / entireLinelenght))*90);
-            distanceToOuterlines.storeX = ((90-angle) / 5)*3 - displacementConstant*3;
-            distanceToOuterlines.storeY = displacementConstant*2 - (angle / 5)*2;
+            distanceToOuterlines.storeX = (((90-angle) / 5) - displacementConstant)*2.2;
+            distanceToOuterlines.storeY = (displacementConstant - (angle / 5))*1.2;
         }
         else if((labelObject.fromY - labelObject.toY) < 0){ // down left
             baseLine = labelObject.toY - labelObject.fromY;
             angle = -(Math.acos(Math.cos(baseLine / entireLinelenght))*90);
-            distanceToOuterlines.storeX = displacementConstant*3 - ((angle+90) / 5)*3;
-            distanceToOuterlines.storeY = displacementConstant*2 + (angle / 5)*2;
+            distanceToOuterlines.storeX = (displacementConstant - ((angle+90) / 5))*2.2;
+            distanceToOuterlines.storeY = (displacementConstant + (angle / 5))*1.2;
         }
     }
     else if((labelObject.fromX - labelObject.toX) < 0){
         if((labelObject.fromY - labelObject.toY) > 0){ // up right
             baseLine = labelObject.toY - labelObject.fromY;
             angle = (Math.acos(Math.cos(baseLine / entireLinelenght))*90);
-            distanceToOuterlines.storeX = ((90-angle) / 5)*3 - displacementConstant*3;
-            distanceToOuterlines.storeY = (angle / 5)*2 - displacementConstant*2;
+            distanceToOuterlines.storeX = (((90-angle) / 5) - displacementConstant)*2.2;
+            distanceToOuterlines.storeY = ((angle / 5) - displacementConstant)*1.2;
         }
         else if((labelObject.fromY - labelObject.toY) < 0){ // down right
             baseLine = labelObject.fromY - labelObject.toY;
             angle = -(Math.acos(Math.cos(baseLine / entireLinelenght))*90);
-            distanceToOuterlines.storeX = displacementConstant*3 - ((angle+90) / 5)*3;
-            distanceToOuterlines.storeY = -displacementConstant*2 - (angle / 5)*2;
+            distanceToOuterlines.storeX = (displacementConstant - ((angle+90) / 5))*2.2;
+            distanceToOuterlines.storeY = (-displacementConstant - (angle / 5))*1.2;
         }
     }
     return distanceToOuterlines;
