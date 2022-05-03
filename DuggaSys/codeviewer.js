@@ -2111,7 +2111,7 @@ function createBlocks(ranges, boxid) {
 
 		buttonSlot.addEventListener('click', (e) => {
 			var button = e.target;
-			// button.classList.toggle('open-block');
+			button.classList.toggle('open-block');
 			button.classList.toggle('closed-block');
 			var rowsInBlock = Array(ranges[button.id][1] - ranges[button.id][0]).fill().map((_, idx) => ranges[button.id][0] + idx);
 			toggleRows(rowsInBlock, button);
