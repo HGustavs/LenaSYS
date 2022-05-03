@@ -124,6 +124,7 @@ function showMenu() {
 	 element.classList.toggle("showMenuToggle");
 	 //This will be what is displayed inside of the menu.
 	 //document.getElementById("sideMenu").innerHTML = legends;
+	 document.getElementById("sideMenu").innerHTML = "Placeholder text"
 	
 }
 
