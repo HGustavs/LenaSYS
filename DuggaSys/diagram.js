@@ -739,7 +739,7 @@ const keybinds = {
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},
-        TOGGLE_A4: {key: "a", ctrl: false, meta: false},
+        TOGGLE_A4: {key: "p", ctrl: false, meta: false},
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
@@ -1014,9 +1014,16 @@ var settings = {
 
 
 // Demo data - read / write from service later on
+
+var diagramToLoad = "";
+var cid = "";
+var cvers = "";
+var diagramToLoadContent = "";
+
 var data = []; // List of all elements in diagram
 var lines = []; // List of all lines in diagram
 var errorData = []; // List of all elements with an error in diagram
+
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
@@ -1089,38 +1096,38 @@ function onSetup()
 
     const demoData = [
  
-        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID , isLocked: false },
-        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Bdale_ID, isLocked: false, state: "Normal" },
-        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: BdaleDependent_ID, isLocked: false, state: "Normal" },
-        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Ssn_ID, isLocked: false, state: "key"},
-        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Name_ID, isLocked: false },
-        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDependent_ID, isLocked: false, state: "weakKey"},
-        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameProject_ID, isLocked: false, state: "key"},
-        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDEPARTMENT_ID, isLocked: false, state: "key"},
-        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Address_ID, isLocked: false },
-        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: AddressDependent_ID, isLocked: false },
-        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Relationship_ID, isLocked: false },
-        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Salary_ID, isLocked: false },
-        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: FNID, isLocked: false },
-        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Initial_ID, isLocked: false },
-        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: LNID, isLocked: false },
-        { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: SUPERVISION_ID, isLocked: false },
-        { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak"},
-        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPENDENT_ID, isLocked: false, state: "weak"},
-        { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Number_of_depends_ID, isLocked: false, state: "computed"},
-        { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_ON_ID, isLocked: false },
-        { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Hours_ID, isLocked: false },
-        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: PROJECT_ID, isLocked: false },
-        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberProject_ID, isLocked: false, state: "key"},
-        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Location_ID, isLocked: false},
-        { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: MANAGES_ID, isLocked: false },
-        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Start_date_ID, isLocked: false },
-        { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: CONTROLS_ID, isLocked: false },
-        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPARTMENT_ID, isLocked: false },
-        { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Locations_ID, isLocked: false, state: "multiple" },
-        { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_FOR_ID, isLocked: false },
-        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberDEPARTMENT_ID, isLocked: false, state: "key"},
-        { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Number_of_employees_ID, isLocked: false, state: "computed"},
+        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID , isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function'] },
+        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Bdale_ID, isLocked: false, state: "Normal",  type: "ER" },
+        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: BdaleDependent_ID, isLocked: false, state: "Normal",  type: "ER" },
+        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Ssn_ID, isLocked: false, state: "key",  type: "ER"},
+        { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Name_ID, isLocked: false,  type: "ER" },
+        { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDependent_ID, isLocked: false, state: "weakKey",  type: "ER"},
+        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameProject_ID, isLocked: false, type: "ER"},
+        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDEPARTMENT_ID, isLocked: false,  type: "ER"},
+        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Address_ID, isLocked: false,  type: "ER" },
+        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: AddressDependent_ID, isLocked: false,  type: "ER" },
+        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Relationship_ID, isLocked: false,  type: "ER" },
+        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Salary_ID, isLocked: false,  type: "ER" },
+        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: FNID, isLocked: false,  type: "ER" },
+        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Initial_ID, isLocked: false,  type: "ER" },
+        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: LNID, isLocked: false,  type: "ER" },
+        { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: SUPERVISION_ID, isLocked: false,  type: "ER" },
+        { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak",  type: "ER"},
+        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPENDENT_ID, isLocked: false, state: "weak",  type: "ER", attributes: ['Attribute'], functions: ['Function'] },
+        { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Number_of_depends_ID, isLocked: false, state: "computed",  type: "ER"},
+        { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_ON_ID, isLocked: false,  type: "ER" },
+        { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Hours_ID, isLocked: false,  type: "ER" },
+        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: PROJECT_ID, isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
+        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberProject_ID, isLocked: false, state: "key",  type: "ER"},
+        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Location_ID, isLocked: false,  type: "ER"},
+        { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: MANAGES_ID, isLocked: false,  type: "ER" },
+        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Start_date_ID, isLocked: false,  type: "ER" },
+        { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: CONTROLS_ID, isLocked: false,  type: "ER" },
+        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPARTMENT_ID, isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
+        { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Locations_ID, isLocked: false, state: "multiple",  type: "ER" },
+        { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_FOR_ID, isLocked: false,  type: "ER" },
+        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberDEPARTMENT_ID, isLocked: false, state: "key",  type: "ER"},
+        { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Number_of_employees_ID, isLocked: false, state: "computed",  type: "ER"},
     ];
 
     const demoLines = [
@@ -1259,6 +1266,8 @@ function onSetup()
 
     // Global statemachine init
     stateMachine = new StateMachine(data, lines);
+
+    fetchDiagramFileContentOnLoad();
 }
 
 /**
@@ -1283,7 +1292,7 @@ function getData()
  * @description Used to determine the tools shown depending on diagram type.
  */
 function showDiagramTypes(){
-    //if both diagramtypes are allowed hides the uml elements and adds the function to show the selection box
+    //if both diagramtypes are allowed hides the uml elements and adds the function to show the toggle box
     if(!!diagramType.ER && !!diagramType.UML){
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
@@ -1583,7 +1592,13 @@ function mdown(event)
 {
 
     mouseButtonDown = true;
-
+    if(document.getElementsByClassName("activeTogglePlacementTypeBox")){
+        for (let index = 0; index < document.getElementsByClassName("activeTogglePlacementTypeBox").length; index++) {
+            setTimeout(() => {
+                document.getElementsByClassName("activeTogglePlacementTypeBox")[index].classList.remove("activeTogglePlacementTypeBox");
+            }, 500);
+        }
+    }
         // Mouse pressed over delete button for multiple elements
         if (event.button == 0) {
             if (context.length > 1) {
@@ -2419,7 +2434,7 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     // Removes from the two arrays that keep track of the attributes connections. 
     for (var i = 0; i < linesArray.length; i++) {
         for (j = 0; j < allAttrToEntityRelations.length; j++) {
-            if (linesArray[i].toID == allAttrToEntityRelations[j]) {
+            if (linesArray[i].toID == allAttrToEntityRelations[j] || linesArray[i].fromID == allAttrToEntityRelations[j]) {
                 allAttrToEntityRelations.splice(j, 1);
                 countUsedAttributes--;
             }
@@ -3041,10 +3056,10 @@ function rectsIntersect (left, right)
                  //Different snap points for entity and others
                  if (obj.kind == "EREntity") {
                      // Calculate nearest snap point
-                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+100) / settings.grid.gridSize) * settings.grid.gridSize;
+                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+(settings.grid.gridSize*2)) / settings.grid.gridSize) * settings.grid.gridSize;
                      obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
                  } else{
-                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+50) / settings.grid.gridSize) * settings.grid.gridSize;
+                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+(settings.grid.gridSize)) / settings.grid.gridSize) * settings.grid.gridSize;
                      obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
                  }
                  // Set the new snap point to center of element
@@ -4526,15 +4541,14 @@ function generateContextProperties()
               }            
           }
 
-           // Creates button for selecting element background color
-           str += `<div style="color: white">BG Color</div>`;
+        // Creates button for selecting element background color if not a UML relation since they should not be able change color
+        if (element.kind != 'UMLRelation') {
+            // Creates button for selecting element background color
+           str += `<div style="color: white">Color</div>`;
            str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-           str += `<div style="color: white">Stroke Color</div>`;
-           str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
-               `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
-           str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
-
+        }
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
       }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
@@ -4601,9 +4615,6 @@ function generateContextProperties()
           str += `<div style="color: white">BG Color</div>`;
           str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
               `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-          str += `<div style="color: white">Stroke Color</div>`;
-          str += `<button id="colorMenuButton2" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton2')" style="background-color: ${context[0].stroke}">` +
-              `<span id="StrokeColorMenu" class="colorMenu"></span></button>`;
       }
 
       if (context.length > 0) {
@@ -4637,10 +4648,11 @@ function generateContextProperties()
 function toggleOptionsPane()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
+        document.getElementById("BGColorMenu").style.visibility = "hidden";
         document.getElementById('optmarker').innerHTML = "Options";
         document.getElementById("options-pane").className = "hide-options-pane";
     } else {
-        document.getElementById('optmarker').innerHTML = "Options";
+        document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
         document.getElementById("options-pane").className = "show-options-pane";
     }
 }
@@ -4701,8 +4713,8 @@ function updateGridSize()
 {
 
     //Do not remore, for later us to make gridsize in 1cm.
-    //var pxlength = (pixellength.offsetWidth/1000)*window.devicePixelRatio;
-    //settings.grid.gridSize = 10*pxlength;
+    var pxlength = (pixellength.offsetWidth/1000)*window.devicePixelRatio;
+    settings.grid.gridSize = 10*pxlength;
 
     var bLayer = document.getElementById("grid");
     bLayer.setAttribute("width", settings.grid.gridSize * zoomfact + "px");
@@ -4907,7 +4919,7 @@ function toggleColorMenu(buttonID)
         var buttonWidth = button.offsetWidth;
         var offsetWidth = window.innerWidth - button.getBoundingClientRect().x - (buttonWidth);
         var offsetHeight = button.getBoundingClientRect().y;
-        menu.style.top = offsetHeight + "px";
+        menu.style.top = (offsetHeight-50) + "px";
         var menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
         menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
 
@@ -5220,7 +5232,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         fromElement = tempElement;
     }
 
-    if (fromElement.kind == toElement.kind && fromElement.name == toElement.name) {
+    if (fromElement.kind == toElement.kind && fromElement.id == toElement.id) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
@@ -5253,7 +5265,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
             return;
         }
-        else if (toElement.kind == "ERRelation" && fromElement.id == allAttrToEntityRelations[i]) {
+        else if (toElement.kind == "ERRelation" && fromElement.id == allAttrToEntityRelations[i] && fromElement.kind != "EREntity") {
             displayMessage(messageTypes.ERROR,`The attribute already has a connection to an entity or relationelement: ${fromElement.name} and ${toElement.name}`);
             return;
         }
@@ -5379,6 +5391,18 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         }
     } else {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between two: ${fromElement.kind} elements`);
+        for (i = 0; i < allAttrToEntityRelations.length; i++) {
+            if (allAttrToEntityRelations[i] == fromElement.id) {
+                allAttrToEntityRelations.splice(i, 1);
+                countUsedAttributes--;
+                break;
+            }
+            else if (allAttrToEntityRelations[i] == toElement.id) {
+                allAttrToEntityRelations.splice(i, 1);
+                countUsedAttributes--;
+                break;
+            }
+        }
     }
 }
 //#endregion =====================================================================================
@@ -5618,7 +5642,7 @@ function drawLine(line, targetGhost = false)
         var highX= Math.max(tx,fx);
         var labelPosX = (tx+fx)/2 - ((textWidth) + zoomfact * 8)/2;
         var labelPosY = (ty+fy)/2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        var lineLabel={id: line.id+"Label",labelLineID: line.id, centerX: centerX, centerY: centerY, width: textWidth + zoomfact * 4, height: textheight * zoomfact + zoomfact * 3, labelMovedX: 0 * zoomfact, labelMovedY: 0 * zoomfact, lowY: lowY, highY: highY, lowX: lowX, highX: highX, percentOfLine: 0,displacementX:0,displacementY:0,fromX:fx,toX:tx,fromY:fy,toY:ty,lineGroup:0};
+        var lineLabel={id: line.id+"Label",labelLineID: line.id, centerX: centerX, centerY: centerY, width: textWidth + zoomfact * 4, height: textheight * zoomfact + zoomfact * 3, labelMovedX: 0 * zoomfact, labelMovedY: 0 * zoomfact, lowY: lowY, highY: highY, lowX: lowX, highX: highX, percentOfLine: 0,displacementX:0,displacementY:0,fromX:fx,toX:tx,fromY:fy,toY:ty,lineGroup:0,labelMoved:false};
         if(!!targetLabel){
             var rememberTargetLabelID = targetLabel.id;
         }
@@ -5626,6 +5650,8 @@ function drawLine(line, targetGhost = false)
             lineLabel.labelMovedX = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelMovedX;
             lineLabel.labelMovedY = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelMovedY;
             lineLabel.labelGroup = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelGroup;
+            lineLabel.labelMoved = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelMoved;
+            calculateProcentualDistance(lineLabel);
             if (lineLabel.labelGroup == 0) {
                     lineLabel.displacementX = 0;
                     lineLabel.displacementY = 0;
@@ -5797,7 +5823,11 @@ function drawRulerBars(X,Y)
             }
         }else if (zoomfact > 0.75){
             //milli
-            barY += "<line x1='35px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+            if ((lineNumber) % 5 == 0 ){
+                barY += "<line x1='32px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+            }else{
+                barY += "<line x1='35px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+            }
         } 
     }
 
@@ -5823,7 +5853,12 @@ function drawRulerBars(X,Y)
             }
         }else if (zoomfact > 0.75){
             //milli
-            barY += "<line x1='35px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+            if ((lineNumber) % 5 == 0 ){
+                barY += "<line x1='32px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+            }else{
+                barY += "<line x1='35px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+            }
+
         }
     }
     svgY.style.backgroundColor = "#e6e6e6";
@@ -5851,7 +5886,12 @@ function drawRulerBars(X,Y)
             }
         }else if (zoomfact > 0.75){
             //milli
-            barX += "<line x1='" +(i+pannedX)+"' y1='35' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+            if ((lineNumber) % 5 == 0 ){
+                barX += "<line x1='" +(i+pannedX)+"' y1='32' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+            }else{
+                barX += "<line x1='" +(i+pannedX)+"' y1='35' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+            }
+
         }
     }
 
@@ -5877,7 +5917,11 @@ function drawRulerBars(X,Y)
             }
         }else if (zoomfact > 0.75){
             //milli
-            barX += "<line x1='" +(pannedX-i)+"' y1='35' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+            if ((lineNumber) % 5 == 0 ){
+                barX += "<line x1='" +(pannedX-i)+"' y1='32' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+            }else{
+                barX += "<line x1='" +(pannedX-i)+"' y1='35' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+            }
         }
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
@@ -5956,17 +6000,15 @@ function drawElement(element, ghosted = false)
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
         <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        str += `</svg>`;
         //end of svg for UML header
-        str += `</div>`;
+        str += `</svg>`;
         //end of div for UML header
-
+        str += `</div>`;
+        
         //div to encapuslate UML content
         str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
-
         //Draw UML-content if there exist at least one attribute
         if (elemAttri != 0) {
-
             //svg for background
             str += `<svg width='${boxw}' height='${boxh * elemAttri}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemAttri - (linew * 2)}'
@@ -5977,11 +6019,13 @@ function drawElement(element, ghosted = false)
             //end of svg for background
             str += `</svg>`;
         }
+        //end of div for UML content
+        str += `</div>`;
 
+        //div for UML footer
+        str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw UML-footer if there exist at least one function
         if (elemFunc != 0) {
-            //div for UML footer
-            str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh * elemFunc}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemFunc - (linew * 2)}'
@@ -5991,11 +6035,8 @@ function drawElement(element, ghosted = false)
             }
             //end of svg for background
             str += `</svg>`;
-            //end of div for UML footer
-            str += `</div>`;
         }
-
-        //end of div for UML content
+        //end of div for UML footer
         str += `</div>`;
     }
     //Check if element is UMLRelation
@@ -6008,7 +6049,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.5};`;
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
 
@@ -6654,66 +6695,76 @@ function errorReset(elements)
  */
 function updateLabelPos(newPosX, newPosY)
 {   
-    if(newPosX<targetLabel.highX && newPosX>targetLabel.lowX){ 
+    targetLabel.labelMoved = true;
+    if(newPosX + targetLabel.width < targetLabel.highX && newPosX - targetLabel.width>targetLabel.lowX){ 
         targetLabel.labelMovedX = (newPosX - targetLabel.centerX);
     }
-    else if(newPosX < targetLabel.lowX){
-        targetLabel.labelMovedX = (targetLabel.lowX - (targetLabel.centerX));
+    else if(newPosX - targetLabel.width < targetLabel.lowX){
+        targetLabel.labelMovedX = (targetLabel.lowX  + targetLabel.width - (targetLabel.centerX));
     }
-    else if(newPosX > targetLabel.highX){
-        targetLabel.labelMovedX = (targetLabel.highX - (targetLabel.centerX));
+    else if(newPosX  + targetLabel.width > targetLabel.highX){
+        targetLabel.labelMovedX = (targetLabel.highX  - targetLabel.width - (targetLabel.centerX));
     }
-    if(newPosY < targetLabel.highY && newPosY > targetLabel.lowY){ 
+    if(newPosY + targetLabel.height < targetLabel.highY && newPosY - targetLabel.height > targetLabel.lowY){ 
         targetLabel.labelMovedY = (newPosY - (targetLabel.centerY));
     }
-    else if(newPosY < targetLabel.lowY){
-        targetLabel.labelMovedY = (targetLabel.lowY - (targetLabel.centerY));
+    else if(newPosY - targetLabel.height < targetLabel.lowY){
+        targetLabel.labelMovedY = (targetLabel.lowY + targetLabel.height - (targetLabel.centerY));
     }
-    else if(newPosY > targetLabel.highY){
-        targetLabel.labelMovedY = (targetLabel.highY - (targetLabel.centerY));
+    else if(newPosY + targetLabel.height > targetLabel.highY){
+        targetLabel.labelMovedY = (targetLabel.highY - targetLabel.height - (targetLabel.centerY));
     }
-    // Math to calculate procentuall distance from/to centerpoint
-    var diffrenceX = targetLabel.highX - targetLabel.lowX;
-    var diffrenceY = targetLabel.highY - targetLabel.lowY;
-    var distanceToX1 = targetLabel.centerX + targetLabel.labelMovedX - targetLabel.fromX;
-    var distanceToY1 = targetLabel.centerY + targetLabel.labelMovedY - targetLabel.fromY;
-    var lenghtToNewPos = Math.abs(Math.sqrt(distanceToX1*distanceToX1 + distanceToY1*distanceToY1));
-    var entireLinelenght = Math.abs(Math.sqrt(diffrenceX*diffrenceX+diffrenceY*diffrenceY));
-    targetLabel.percentOfLine = lenghtToNewPos/entireLinelenght;
-    // Making sure the procent is less than 0.5 to be able to use them from the centerpoint of the line as well as ensuring the direction is correct 
-    if(targetLabel.percentOfLine < 0.5){
-        targetLabel.percentOfLine = 1 - targetLabel.percentOfLine;
-        targetLabel.percentOfLine = targetLabel.percentOfLine - 0.5 ;
-    } 
-    else if (targetLabel.percentOfLine > 0.5){
-        targetLabel.percentOfLine = -(targetLabel.percentOfLine - 0.5) ;
-    }
-    //changing the direction depending on how the line is drawn
-    if(targetLabel.fromX<targetLabel.centerX){ //left to right
-        targetLabel.labelMovedX = -targetLabel.percentOfLine * diffrenceX;
-    }
-    else if(targetLabel.fromX>targetLabel.centerX){//right to left
-        targetLabel.labelMovedX = targetLabel.percentOfLine * diffrenceX;
-    }
-    if(targetLabel.fromY<targetLabel.centerY){ //down to up
-        targetLabel.labelMovedY = -targetLabel.percentOfLine * diffrenceY;
-    }
-    else if(targetLabel.fromY>targetLabel.centerY){ //up to down
-        targetLabel.labelMovedY = targetLabel.percentOfLine * diffrenceY;
-    }
-    console.log(targetLabel.labelMovedY+" = "+targetLabel.highY+" - "+targetLabel.centerY);//&& targetLabel.highX-targetLabel.centerX<targetLabel.labelMovedX
-    if(targetLabel.highY-targetLabel.centerY < targetLabel.labelMovedY ){
-        targetLabel.labelMovedY = (targetLabel.highY-targetLabel.centerY)-targetLabel.height;
-        targetLabel.labelMovedX = (targetLabel.highX-targetLabel.centerX)-targetLabel.width;
-        console.log(targetLabel.labelMovedY+" = / = "+targetLabel.highY+" - "+targetLabel.centerY);
-    }
-    else if(targetLabel.lowY-targetLabel.centerY>targetLabel.labelMovedY && targetLabel.lowX-targetLabel.centerX>targetLabel.labelMovedX){
-        targetLabel.labelMovedY = (targetLabel.lowY-targetLabel.centerY)+targetLabel.height;
-        targetLabel.labelMovedX = (targetLabel.lowX-targetLabel.centerX)+targetLabel.width;
-        console.log(targetLabel.labelMovedY+" = "+targetLabel.lowY+" - "+targetLabel.centerY);
-    }
+    calculateProcentualDistance(targetLabel);
     calculateLabelDisplacement(targetLabel);
     displaceFromLine(newPosX,newPosY);
+}
+
+function calculateProcentualDistance(objectLabel,x,y){
+    // Math to calculate procentuall distance from/to centerpoint
+    var diffrenceX = objectLabel.highX - objectLabel.lowX;
+    var diffrenceY = objectLabel.highY - objectLabel.lowY;    
+    if(objectLabel.labelMovedX > objectLabel.highX - objectLabel.lowX){
+        objectLabel.labelMovedX = objectLabel.highX - objectLabel.lowX;
+    }
+    else if(objectLabel.labelMovedX < objectLabel.lowX - objectLabel.highX){
+        objectLabel.labelMovedX = objectLabel.lowX - objectLabel.highX
+    }
+    if(objectLabel.labelMovedY > objectLabel.highY - objectLabel.lowY){
+        objectLabel.labelMovedY = objectLabel.highY - objectLabel.lowY;
+    }
+    else if(objectLabel.labelMovedX < objectLabel.lowX - objectLabel.highX){
+        objectLabel.labelMovedX = objectLabel.lowX - objectLabel.highX
+    }
+    var distanceToX1 = objectLabel.centerX + objectLabel.labelMovedX - objectLabel.fromX;
+    var distanceToY1 = objectLabel.centerY + objectLabel.labelMovedY - objectLabel.fromY;
+    var lenghtToNewPos = Math.abs(Math.sqrt(distanceToX1*distanceToX1 + distanceToY1*distanceToY1));
+    var entireLinelenght = Math.abs(Math.sqrt(diffrenceX*diffrenceX+diffrenceY*diffrenceY));
+    objectLabel.percentOfLine = lenghtToNewPos/entireLinelenght;
+    // Making sure the procent is less than 0.5 to be able to use them from the centerpoint of the line as well as ensuring the direction is correct 
+    if(objectLabel.percentOfLine < 0.5){
+        objectLabel.percentOfLine = 1 - objectLabel.percentOfLine;
+        objectLabel.percentOfLine = objectLabel.percentOfLine - 0.5 ;
+    } 
+    else if (objectLabel.percentOfLine > 0.5){
+        objectLabel.percentOfLine = -(objectLabel.percentOfLine - 0.5) ;
+    }
+    if(!objectLabel.labelMoved){
+        objectLabel.percentOfLine = 0;
+    }
+    //changing the direction depending on how the line is drawn
+    if(objectLabel.fromX<objectLabel.centerX){ //left to right
+        objectLabel.labelMovedX = -objectLabel.percentOfLine * diffrenceX;
+    }
+    else if(objectLabel.fromX>objectLabel.centerX){//right to left
+        objectLabel.labelMovedX = objectLabel.percentOfLine * diffrenceX;
+    }
+
+    if(objectLabel.fromY<objectLabel.centerY){ //down to up
+        objectLabel.labelMovedY = -objectLabel.percentOfLine * diffrenceY;
+    }
+    else if(objectLabel.fromY>objectLabel.centerY){ //up to down
+        objectLabel.labelMovedY = objectLabel.percentOfLine * diffrenceY;
+    }
 }
 /**
  * @description calculates how the label should be displacesed
@@ -6724,35 +6775,35 @@ function calculateLabelDisplacement(labelObject)
     var diffrenceX = labelObject.highX-labelObject.lowX;
     var diffrenceY = labelObject.highY-labelObject.lowY;
     var entireLinelenght = Math.abs(Math.sqrt(diffrenceX*diffrenceX+diffrenceY*diffrenceY));
-    var baseLine, angle, displacementConstant=18, storeX, storeY;
+    var baseLine, angle, displacementConstant=labelObject.height, storeX, storeY;
     var distanceToOuterlines={storeX, storeY}
     // define the baseline used to calculate the angle
     if((labelObject.fromX - labelObject.toX) > 0){
-        if((labelObject.fromY - labelObject.toY) > 0){ // upp left
+        if((labelObject.fromY - labelObject.toY) > 0){ // up left
             baseLine = labelObject.fromY - labelObject.toY;
             angle = (Math.acos(Math.cos(baseLine / entireLinelenght))*90);
-            distanceToOuterlines.storeX = ((90-angle) / 5)*3 - displacementConstant*3;
-            distanceToOuterlines.storeY = displacementConstant*2 - (angle / 5)*2;
+            distanceToOuterlines.storeX = (((90-angle) / 5) - displacementConstant)*2.2;
+            distanceToOuterlines.storeY = (displacementConstant - (angle / 5))*1.2;
         }
         else if((labelObject.fromY - labelObject.toY) < 0){ // down left
             baseLine = labelObject.toY - labelObject.fromY;
             angle = -(Math.acos(Math.cos(baseLine / entireLinelenght))*90);
-            distanceToOuterlines.storeX = displacementConstant*3 - ((angle+90) / 5)*3;
-            distanceToOuterlines.storeY = displacementConstant*2 + (angle / 5)*2;
+            distanceToOuterlines.storeX = (displacementConstant - ((angle+90) / 5))*2.2;
+            distanceToOuterlines.storeY = (displacementConstant + (angle / 5))*1.2;
         }
     }
     else if((labelObject.fromX - labelObject.toX) < 0){
         if((labelObject.fromY - labelObject.toY) > 0){ // up right
             baseLine = labelObject.toY - labelObject.fromY;
             angle = (Math.acos(Math.cos(baseLine / entireLinelenght))*90);
-            distanceToOuterlines.storeX = ((90-angle) / 5)*3 - displacementConstant*3;
-            distanceToOuterlines.storeY = (angle / 5)*2 - displacementConstant*2;
+            distanceToOuterlines.storeX = (((90-angle) / 5) - displacementConstant)*2.2;
+            distanceToOuterlines.storeY = ((angle / 5) - displacementConstant)*1.2;
         }
         else if((labelObject.fromY - labelObject.toY) < 0){ // down right
             baseLine = labelObject.fromY - labelObject.toY;
             angle = -(Math.acos(Math.cos(baseLine / entireLinelenght))*90);
-            distanceToOuterlines.storeX = displacementConstant*3 - ((angle+90) / 5)*3;
-            distanceToOuterlines.storeY = -displacementConstant*2 - (angle / 5)*2;
+            distanceToOuterlines.storeX = (displacementConstant - ((angle+90) / 5))*2.2;
+            distanceToOuterlines.storeY = (-displacementConstant - (angle / 5))*1.2;
         }
     }
     return distanceToOuterlines;
@@ -6768,10 +6819,10 @@ function displaceFromLine(newX,newY)
     var y1=targetLabel.fromY,y2=targetLabel.toY,x1=targetLabel.fromX,x2=targetLabel.toX;
     var distance = ((newX - x1) * (y2 - y1)) - ((newY - y1) * (x2 - x1));
     //deciding which side of the line the label should be
-    if (distance > 3000) {
+    if (distance > 6000) {
         targetLabel.labelGroup = 1;
     }
-    else if (distance < -3000) {
+    else if (distance < -6000) {
         targetLabel.labelGroup = 2;
     }
     else {        
@@ -6915,7 +6966,7 @@ function updateCSSForAllElements()
     function updateElementDivCSS(elementData, divObject, useDelta = false)
     {
         var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
-            top = Math.round((((elementData.y - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+            top = Math.round((((elementData.y - zoomOrigo.y)-(settings.grid.gridSize/2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
         if (useDelta){
             left -= deltaX;
@@ -6925,12 +6976,12 @@ function updateCSSForAllElements()
         if (settings.grid.snapToGrid && useDelta) {
             if (element.kind == "EREntity"){
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-150) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-(settings.grid.gridSize*3)) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
                 
                 // Add the scroll values
-                left = Math.round((((objX - zoomOrigo.x)+250)* zoomfact) + (scrollx * (1.0 / zoomfact)));
-                top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+                left = Math.round((((objX - zoomOrigo.x)+(settings.grid.gridSize*5))* zoomfact) + (scrollx * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y)-(settings.grid.gridSize/2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
@@ -6939,12 +6990,12 @@ function updateCSSForAllElements()
             } 
             else if (element.kind != "EREntity"){
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-150) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-(settings.grid.gridSize*3)) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
                 
                 // Add the scroll values
-                left = Math.round((((objX - zoomOrigo.x)+200) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-                top = Math.round((((objY - zoomOrigo.y)-25) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+                left = Math.round((((objX - zoomOrigo.x)+(settings.grid.gridSize*4)) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y)-(settings.grid.gridSize/2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
             
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
@@ -6969,11 +7020,58 @@ function updateCSSForAllElements()
             // If the element was clicked and our mouse movement is not null
             var inContext = deltaX != null && findIndex(context, element.id) != -1;
             var useDelta = (inContext && movingObject);
+            var fillColor;
+            var fontColor;
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
-            var grandChild = elementDiv.children[0].children[0];
-            grandChild.style.fill = inContext ? `${"#927b9e"}` : `${element.fill}`;
-
+            // Update UMLEntity
+            if(element.kind == "UMLEntity"){
+                for (let index = 0; index < 3; index++) {
+                    fillColor = elementDiv.children[index].children[0].children[0];
+                    fontColor = elementDiv.children[index].children[0];
+                    // If more than one element is marked.
+                    if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        fillColor.style.fill = `${"#927b9e"}`;
+                        fontColor.style.fill = `${"#ffffff"}`;
+                    } else{
+                        fillColor.style.fill = `${element.fill}`;
+                        fontColor.style.fill = `${"#000000"}`;
+                    }
+                    
+                }
+            // Update Elements with double borders.
+            }else if(element.state == "weak" || element.state == "multiple"){
+                for (let index = 0; index < 2; index++){
+                    fillColor = elementDiv.children[0].children[index];
+                    fontColor = elementDiv.children[0];
+                    // If more than one element is marked.
+                    if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        fillColor.style.fill = `${"#927b9e"}`;
+                        fontColor.style.fill = `${"#ffffff"}`;
+                    } else{
+                        fillColor.style.fill = `${element.fill}`;
+                        fontColor.style.fill = `${"#000000"}`;
+                    }
+                }
+            }else{ // Update normal elements, and relations
+                fillColor = elementDiv.children[0].children[0];
+                fontColor = elementDiv.children[0];
+                // If more than one element is marked.
+                if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                    fillColor.style.fill = `${"#927b9e"}`;
+                    fontColor.style.fill = `${"#ffffff"}`;
+                    // If UMLRelation is not marked.
+                } else if(element.kind == "UMLRelation"){
+                    if(element.state == "overlapping"){
+                        fillColor.style.fill = `${"#000000"}`;
+                    }else{
+                        fillColor.style.fill = `${"#ffffff"}`;
+                    }
+                }else{
+                    fillColor.style.fill = `${element.fill}`;
+                    fontColor.style.fill = `${"#000000"}`;
+                }
+            }
         }
     }
 
@@ -7203,6 +7301,76 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }
 
 
+    if(temp.historyLog && temp.initialState){
+        // Set the history and initalState to the values of the file
+        stateMachine.historyLog = temp.historyLog;
+        stateMachine.initialState = temp.initialState;
+
+        // Update the stateMachine to the latest current index
+        stateMachine.currentHistoryIndex = stateMachine.historyLog.length -1;
+
+        // Scrub to the latest point in the diagram
+        stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
+
+        // Display success message for load
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Save-file loaded");
+
+    } else if(temp.data && temp.lines){
+        // Set data and lines to the values of the export file
+        temp.data.forEach(element => {
+            var elDefault = defaults[element.kind];
+            Object.keys(elDefault).forEach(defaultKey => {
+                if (!element[defaultKey]){
+                    element[defaultKey] = elDefault[defaultKey];
+                }
+            });
+        });
+        temp.lines.forEach(line => {
+            Object.keys(defaultLine).forEach(defaultKey => {
+                if (!line[defaultKey]){
+                    line[defaultKey] = defaultLine[defaultKey];
+                }
+            });
+        });
+
+        // Set the vaules of the intialState to the JSON-file
+        stateMachine.initialState.elements = temp.data;
+        stateMachine.initialState.lines = temp.lines;
+
+        // Goto the beginning of the diagram
+        stateMachine.gotoInitialState();
+
+        // Remove the previous history
+        stateMachine.currentHistoryIndex = -1;
+        stateMachine.lastFlag = {};
+        stateMachine.removeFutureStates();
+
+        // Display success message for load
+        if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Export-file loaded");
+    }else{
+        if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
+    }
+}
+
+function fetchDiagramFileContentOnLoad()
+{
+        let temp = window.parent.getVariantParam();
+        var fullParam = temp[0];
+        cid = temp[1];
+        cvers = temp[2];
+        diagramToLoad = temp[3];
+        diagramToLoadContent = temp[4];
+
+        console.log(fullParam);
+        console.log(cid);
+        console.log(cvers);
+        console.log(diagramToLoad);
+
+        loadDiagramFromString(JSON.parse(diagramToLoadContent));
+}
+
+function loadDiagramFromString(temp, shouldDisplayMessage = true)
+{
     if(temp.historyLog && temp.initialState){
         // Set the history and initalState to the values of the file
         stateMachine.historyLog = temp.historyLog;
