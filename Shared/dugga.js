@@ -2560,7 +2560,8 @@ function addAlertOnUnload(){
 function ReadOriginalInstructions(doc){
 	var strDoc = "";
 	for (var i = 0; i< doc.length;i++){
-		strDoc =strDoc + doc[i].textContent
+		console.log(i);	
+		strDoc =strDoc + doc[i].textContent;
 	}
 	strDoc = strDoc.trim();
 	return strDoc;
@@ -2571,18 +2572,11 @@ function ignoreEditDugga(popupForm){
 	window.close();
 }
 
-//save info from new input
+//save info from new input and close window
 function saveEditDugga(popupForm){
-	var changed =popupForm.changedinfo.value;
-	changed.trim();
+	var changed = popupForm.changedinfo.value;
 	var doc = window.opener.document.getElementsByClassName("instructions-content") 
-	
 	doc[0].textContent = changed;
-
-	for(var i = 1; i< doc.length; i++){
-		doc[i].textContent = "";
-	}
-	
 	window.close();
 }
 
