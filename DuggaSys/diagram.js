@@ -3830,7 +3830,7 @@ function generateErTableString()
             }
         }
         
-        
+        var parentAttribeList=[];
         for (var j = 0; j < currentEntityAttrList.length; j++) {
 
             //For each attribute connected to the current entity, identify if other attributes are connected to themselves.
@@ -3865,12 +3865,20 @@ function generateErTableString()
 
                         //If no hits, then push the attribute to currentEntityAttrList[] (so it will also be checked for additional attributes in future iterations) and save the ID.
                         if (hits == 0) {
+                            // 
+                            if(findIndex(parentAttribeList,currentEntityAttrList[j].id) == -1){
+                                parentAttribeList.push(currentEntityAttrList[j]);
+                            }
+                            // pu
                             currentEntityAttrList.push(attrList[k]);
                             idList.push(attrList[k].id);
                         }
                     }   
                 }
             }
+        }
+        for (let index = 0; index < parentAttribeList.length; index++) {
+            currentEntityAttrList.splice(findIndex(currentEntityAttrList,parentAttribeList[index].id),1);
         }
 
         //Add each connected attribute in stringList[i]
