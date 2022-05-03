@@ -33,6 +33,9 @@ var menuState = {
 }
 
 function setup() {
+  // Disable ghost button when page is loaded
+  document.querySelector('#hideElement').disabled = true;
+  document.querySelector('#hideElement').style.opacity = 0.7;
   AJAXService("get", {}, "SECTION");
 }
 
@@ -381,6 +384,14 @@ function markedItems(item = null){
     } else {
       hideItemList.push(active_lid);
       console.log("Added");
+      // Show ghost button when checkbox is checked
+      document.querySelector('#hideElement').disabled = false;
+      document.querySelector('#hideElement').style.opacity = 1;
+    } 
+    if (hideItemList.length == 0) {
+      // Disable ghost button when no checkboxes is checked
+      document.querySelector('#hideElement').disabled = true;
+      document.querySelector('#hideElement').style.opacity = 0.7;
     } 
     console.log(hideItemList);
 }
@@ -517,6 +528,9 @@ function cancelDelete() {
 //----------------------------------------------------------------------------------
 
 function hideMarkedItems() {
+  // Since no boxes are checked ghost button is disabled
+  document.querySelector('#hideElement').disabled = true;
+  document.querySelector('#hideElement').style.opacity = 0.7;
   for (i=0; i < hideItemList.length; i++) {  
     var lid = hideItemList[i];
       AJAXService("HIDDEN", {
