@@ -85,10 +85,8 @@ function saveTimesAccessed(){
 
 		// Loads a dugga from hash and redirects to index.php that then continues to redirect to the specified dugga
 function loadDugga(){
-	var hash = document.getElementById('hash').value;
-	/*when adding `${hash}` it redirects to validateHash.php whereas if it was just raw 
-	hash it wouldn't validate anything*/
-	window.location.href = createUrl(`${hash}`);
+	var hash = document.getElementById('hash');
+	window.location.href = "../sh/?a="+hash.value;
 }
 
 function loadDuggaType(){
@@ -674,7 +672,7 @@ function createUrl(hash) {
         url += pathArray[i];
         url += "/";
     }
-    url += "sh/?s=" + hash;
+    url += "sh/?a=" + hash;
 
     return url;
 }
@@ -1633,14 +1631,6 @@ function hideLoadDuggaPopup()
 	$("#loadDuggaBox").css("display","none");
 }
 
-function updateReceiptText(title, URL, hash, hashPW)
-{
-	//data['duggaTitle] & createUrl(data['hash']) & data['hash'] & data['hashpwd'] are often used as params
-	var textBox = document.getElementById('submission-receipt');  
-    textBox.innerHTML=(`${title}</br></br>Direct link (to be submitted in canvas): </br>` + 
-	`<a href=${URL}'> ${URL}` + 
-	`</a> </br></br> Hash: </br> ${hash}</br></br>Hash password:</br>${hashPW}`);
-}
 
 function showReceiptPopup()
 {
@@ -1678,20 +1668,8 @@ function checkScroll(obj) {
 // copySubmissionReceiptToClipboard: Copy the hash to user clipboard
 //----------------------------------------------------------------------------------
 function copySubmissionReceiptToClipboard() {
-	const tempTextArea = document.createElement('textarea');
-	tempTextArea.id = 'temp_element';
-	tempTextArea.style.height = 0;
-
-	document.body.appendChild(tempTextArea);
-
-	tempTextArea.value = document.getElementById('submission-receipt').innerText;
-
-	const selector = document.querySelector('#temp_element');
-	selector.select();
+	$('#submission-receipt').select();
 	document.execCommand('copy');
-
-	document.body.removeChild(tempTextArea);
-
 }
 
 //----------------------------------------------------------------------------------
