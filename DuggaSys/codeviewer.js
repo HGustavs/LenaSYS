@@ -2099,6 +2099,7 @@ function getBlockRanges(blocks) {
 	return boxRanges;
 }
 
+// ↓ relevant function to collapsible brackets
 function createBlocks(ranges, boxid) {
 	var wrapper = document.querySelector('#textwrapper'+boxid);
 	for (var i = 0; i < ranges.length; i++) {
