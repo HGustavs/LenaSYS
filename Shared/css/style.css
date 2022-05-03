@@ -1575,6 +1575,13 @@ div .navButt:hover {
     .box{
         margin-top: 30px !important;
     }
+    .dropdownStyle{
+      margin-top: 32px;
+    }
+    .dropdownitemStyle{
+      padding: 15px;
+      width: 250px;
+    }
 }
 
 /*MEDIA QUERIES FOR HAMBURGER MENU IN ANALYTICS.PHP*/
@@ -8254,6 +8261,17 @@ textarea#filecont {
 .accountRequestTable tr:nth-child(odd){
   background-color: #efefef;
 }
+
+@media only screen and (min-width: 600px){
+  .dropdownitemStyle{
+    padding: 15px;
+    width: 450px;
+  }
+}
+
+
+
 .bottomBorderColor{
   border-top: 2px solid var(--color-border-list); 
 }
+
