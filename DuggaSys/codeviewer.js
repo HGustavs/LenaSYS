@@ -2139,13 +2139,9 @@ function toggleRows(rows, button) {
 		display = 'none';
 		baseRow.appendChild(ellipses);
 	} else {
-		// if (encounter group .contains('closed-block')) {
-			display = 'none';
-		// } else {
 		display = 'block';
 		ellipses = baseRow.querySelector('.blockEllipses');
 		baseRow.removeChild(ellipses);
-		// }
 	}
 	
 	for (var i = 1; i < rows.length; i++) {
