@@ -24,7 +24,7 @@ var updateShowAct = true;
 var courseFileArr = [];
 
 var commitChangeArray = [];
-
+var isClickedElementBox = false;
 //sorting for multiple views
 //Restores all views when pressing the All button
 function restoreStatView() {
@@ -1069,9 +1069,13 @@ function compare(a, b) {
 		var tempB = a;
 	}
 
-  //If a column uses string or int the compare will work by default.
+  //If a column uses string the compare will work by default. If it uses an int make sure it really is an int otherwise do like if col == number
   //ghContibTable columns use arrays in the table so we need to handle them in a different way from other columns
-  
+  if(col == "number"){
+    tempA = parseInt(tempA);
+    tempB = parseInt(tempB);
+  }
+
   if (col == "dates") {
     tempA = tempA['weekStart'];
     tempB = tempB['weekStart'];
@@ -1126,19 +1130,21 @@ function returnedSection(data) {
   var str = "";
 
   str += "<div id='contributionContainer' class='contributionSort'>";
-  str += `<input type='button' id='allBtn' value='All' class='submit-button title='All' 
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'></input>`;
-  str += `<input type='button' id='basicBtn' value='Basic' class='submit-button title='Basic'
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'></input>`;
-  str += `<input type='button' id='chartsBtn' value='Charts' class='submit-button title='Charts'
-  onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
-  str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution'
-  onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
+  str += `<input type='button' id='allBtn' value='All' class='submit-button' 
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'title='View all tables and charts'></input>`;
+  str += `<input type='button' id='basicBtn' value='Basic' class='submit-button'
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'title='View basic statistics'></input>`;
+  str += `<input type='button' id='chartsBtn' value='Charts' class='submit-button'
+  onclick='statSort(value)' onmouseout='hideTooltip(this)'title='View only charts'></input>`;
+  str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button'
+  onclick='statSort(value)' onmouseout='hideTooltip(this)'title='View contribution data'></input>`;
   
   
   //Dynamically loads the year selection list based on folders in ../../contributionDBs/
-  str += `<select id='yearBtn' class='submit-button'
-  onclick='statSort(value)'onchange='courseSelection(this)'>
+
+  str += `<select id='yearBtn'
+  onclick='statSort(value)'onchange='courseSelection(this)'title='Select year dropdown'>
+
   <option value="ChooseY">Choose Year</option>`;
 
   // Add option for each year folder
@@ -1152,8 +1158,10 @@ function returnedSection(data) {
   }
   str +=`</select>`;
 
-  str += `<select id='courseBtn' class='submit-button'
-  onclick='statSort(value)'onchange='courseDBCollection(value)' style="visibility: hidden">
+
+  str += `<select id='courseBtn'
+  onclick='statSort(value)'onchange='courseDBCollection(value)' title='Select course dropdown'>
+
   <option value="ChooseC">Choose Course</option></select>`;
 
   str += "</div>"; 
@@ -1198,9 +1206,6 @@ function courseSelection(elem){
   // Clear dropdown menu
   var dropdown = document.getElementById('courseBtn');
   dropdown.options.length=0;
-
-  // Set visibility
-  dropdown.style.visibility = elem.value == "ChooseY" ? 'hidden' : "visible";
 
   // Default option
   var opt = document.createElement('option');
@@ -1404,9 +1409,9 @@ function renderCellForghContibTable(col, celldata, cellid) {
   } else if (col === 'codeContribution') {
     for (var j = 0; j < obj.files.length; j++) {
       var file = obj.files[j];
-      str += "<a href='https://github.com/HGustavs/LenaSYS/blame/" + file.path + file.filename + "'>";
       str += "<div class='contrib'>";
-      str += "<div class='contribheading'";
+      str += "<div class='contribheading'>";
+      str += "<a href='https://github.com/HGustavs/LenaSYS/blame/" + file.path + file.filename + "'>";
       str += "<span class='contribpath'>" + file.path + "</span>";
       str += "<span class='contribfile'>" + file.filename + "</span>";
       str += "</a>";
@@ -1881,6 +1886,57 @@ function toggleAccountRequestPane(){
     }
 }
 
+document.addEventListener('keydown', function(event) {
+	if(event.key === 'Escape'){
+		toggleAccountRequestPane();
+	}
+});
+
+$(document).mousedown(function (e) {
+  mouseDown(e);
+});
+
+$(document).mouseup(function (e) {
+  mouseUp(e);
+});
+
+function mouseDown(e) {
+
+  var box = $(e.target);
+  // if() - the clicked element is one of the account request elements
+  // else if() - the clicked element is a child of one of the show account request elements
+  // else - the clicked element does not belong to account request
+  if (box[0].classList.contains("show-accountRequests-pane") || box[0].classList.contains("accountRequests-pane-span") || box[0].classList.contains("hide-accountRequests-pane")) {
+    isClickedElementBox = true;
+  } else if ((findAncestor(box[0], "show-accountRequests-pane") != null) &&
+    (findAncestor(box[0], "show-accountRequests-pane").classList.contains("show-accountRequests-pane"))) {
+    isClickedElementBox = true;
+  } else {
+    isClickedElementBox = false;
+  }
+
+}
+
+function mouseUp(e) {
+  //if - the user clicks something other than the account request pane.
+  //else - the user clicks an element belonging to account request
+  if ($('.accountRequests-pane') && !$('.accountRequests-pane').is(e.target) &&
+  $('.accountRequests-pane').has(e.target).length === 0 && (!isClickedElementBox)) {
+    //if account request pane is open then close it.
+    if (document.getElementById("accountRequests-pane").className == "show-accountRequests-pane") {
+      document.getElementById('accountReqmarker').innerHTML = "Account requests";
+      document.getElementById("accountRequests-pane").className = "hide-accountRequests-pane";
+    }
+  }else{
+    if ($(e.target)[0].classList.contains("hide-accountRequests-pane")) {
+      document.getElementById('accountReqmarker').innerHTML = "Account requests";
+      document.getElementById("accountRequests-pane").className = "show-accountRequests-pane";
+    }
+  }
+}
+
+
+
 //Creates the html elements containing the commit changes
  function createCommitChange(data){
   var commitChange = data;
@@ -1919,9 +1975,9 @@ function toggleAccountRequestPane(){
 //Creates the sidebar for accepting and rejecting students when logged in as a superUser
 function createSidebar(){
   var text = document.getElementById('accountRequests-pane');
-  text.style.display="block";
+  text.style.display="inline-block";
   str = "";
-  str+= '<div id="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker">Account requests</span></div>';
+  str+= '<div id="accountRequests-pane-button" class="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker" class="accountRequests-pane-span">Account requests</span></div>';
   str+= "<table class='accountRequestTable'style='width: 85%'  border='1'><br />";
 	str+= "<tr class='accountRequestTable' style=' background-color: #ffffff';>";
   str+= "<th class='accountRequestTable'></th>";
@@ -2016,15 +2072,6 @@ function showNewGitLogin()
       forgotPwText.setAttribute("id", originalId);
 
 
-
-      // create ssn box
-      originalId = loginBox.getAttribute("id");
-      loginBox.setAttribute("id", "ssnbox");
-      loginBox.closest("tr").outerHTML += loginBox.closest("tr").innerHTML;
-      loginBox = document.querySelector("#ssnbox");
-      loginBox.setAttribute("id", originalId);
-
-
       // create another loginbox and create a new id
       originalId = loginBox.getAttribute("id");
       loginBox.setAttribute("id", originalId+1);
@@ -2036,11 +2083,9 @@ function showNewGitLogin()
       let backtologin = document.querySelector("#backtologin");
       let login_first = document.querySelector("#"+originalId);
       let login_second = document.querySelector("#"+originalId+1);
-      let ssnbox = document.querySelector("#ssnbox");
 
       login_first.setAttribute("placeholder", "Create new password");
       login_second.setAttribute("placeholder","Repeat new password");
-      ssnbox.setAttribute("placeholder", "Enter SSN YYYYMMDD-XXXX")
       backtologin.innerHTML = "Back to login";
       backtologin.setAttribute("onclick","resetForceLogin()")
 
@@ -2064,9 +2109,6 @@ function resetForceLogin()
   if(login_second != null)
     login_second.remove();
 
-  let ssnbox = document.querySelector("#ssnbox");
-  if(ssnbox != null)
-    ssnbox.remove();
 
   let forgotPwText = document.querySelector("#backtologin");
   if(forgotPwText != null)
@@ -2138,9 +2180,7 @@ function resetForceLogin()
     let pass1 = document.querySelector("#password").value;
     let pass2 = document.querySelector("#password1").value;
     let username = document.querySelector("#username").value;
-    let ssn = document.querySelector("#ssnbox").value;
 
-    // TODO MAKE SURE SSN IS ACTUALLY A VALID SSN BEFORE INSERTING INTO DB
     // TODO MAKE SURE PASSWORD IS ACTUALLY VALID BEFORE INSERT INTO DB
 
 
@@ -2148,24 +2188,10 @@ function resetForceLogin()
     {
       if(pass1 != null && pass1 != "")
       {
-        if(ssn != null && ssn != "")
-        {
-          AJAXService("requestGitUserCreation",{
-            userid: username,
-            userpass: pass1,
-            userssn: ssn
-          }, "CONTRIBUTION_LENASYS_USER_CREATION");
-        }
-        else
-        {
-          displayAlertText("#login #message", "invalid SSN <br />");
-
-          $("input#ssnbox").addClass("loginFail");
-            setTimeout(function()
-            {
-              $("input#ssnbox").removeClass("loginFail");
-            }, 2000);
-        }
+        AJAXService("requestGitUserCreation",{
+          userid: username,
+          userpass: pass1,
+        }, "CONTRIBUTION_LENASYS_USER_CREATION");
       }
       else
       {
@@ -2218,13 +2244,11 @@ function resetForceLogin()
         $("input#username").addClass("loginPass");
 		    $("input#password").addClass("loginPass");
         $("input#password1").addClass("loginPass");
-        $("input#ssnbox").addClass("loginPass");
 			  setTimeout(function()
         {
 		      $("input#username").removeClass("loginPass");
           $("input#password").removeClass("loginPass");
           $("input#password1").removeClass("loginPass");
-          $("input#ssnbox").removeClass("loginPass");
           resetForceLogin();
 				}, 2000);
       }
