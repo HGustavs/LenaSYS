@@ -61,7 +61,7 @@
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","undefined");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","undefined");'><img alt='code tag icon' class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","undefined");'><img alt='multiple users icon' class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","undefined");'><i alt='quotation mark icon' class='material-icons'>format_quote</i></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Message","undefined");'><i alt='message mark icon' class='material-icons'>format_quote</i></a></li>
 				</ol>
 		</div>
 		
@@ -203,7 +203,7 @@
 
 	<?php
 		include '../Shared/loginbox.php';
-	?>
+	?>			
 
 		<!-- Edit Section Dialog START -->
 
