@@ -19,6 +19,8 @@ var hasDuggs = false;
 var dateToday = new Date().getTime();
 var compareWeek = -604800000;
 let width = screen.width;
+var time;
+var lid;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -488,11 +490,26 @@ function prepareItem() {
 //----------------------------------------------------------------------------------
 
 function deleteItem(item_lid = null) { 
-   var lid = item_lid ? item_lid : $("#lid").val();
+  lid = item_lid ? item_lid : $("#lid").val();
+  document.getElementById("lid" + lid).style.display = "none";
+  alert("Press recycle button within 60 seconds to undo the deletion");
+  document.querySelector("#undoButton").style.display = "block";
+  // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
+  time = setTimeout(() => {
     AJAXService("DEL", {
       lid: lid
     }, "SECTION");
     $("#editSection").css("display", "none");
+    document.querySelector("#undoButton").style.display = "none";
+   }, 60000)
+}
+
+// Cancel deletion
+function cancelDelete() {
+  clearTimeout(time);
+  document.getElementById("lid" + lid).style.display = "block";
+  location.reload();
+  document.querySelector("#undoButton").style.display = "none";
 }
 
 //----------------------------------------------------------------------------------
