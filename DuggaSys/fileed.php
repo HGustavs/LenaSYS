@@ -23,6 +23,8 @@ $css = array(
 	'style.css',
 	'jquery-ui-1.10.4.min.css',
 	'markdown.css',
+    'whiteTheme.css',
+	'blackTheme.css'
 );
 
 $js = array(
@@ -43,11 +45,33 @@ $js = array(
     <title>File editor</title>
     
 	<?php
+
+    	/*/
+            We usually follow this strucutre: 
+            
+            <link id="themeWhite" type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet">
+            <link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+            <script src="darkmodeToggle.js"></script>
+
+            But, we now have to make a exception as style sheets are connected trough different means in this file.
+            We now add css and JS files directly trough PHP instead and not trough direct linking.
+        /*/
 		foreach($css as $filename) {
 			$filemtime = filemtime('../Shared/css/' . $filename);
-			echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'/>";
+
+            if($filename == "blackTheme.css"){
+                echo "<link id='themeBlack' rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
+            }
+            else if ($filename == "whiteTheme.css"){
+                continue;
+            }
+            else{
+                echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
+            } 
 		}
-	
+        echo "<script src='darkmodeToggle.js'></script>";
+
+
 		foreach($js as $filename) {
 			$filemtime = filemtime('../Shared/js/' . $filename);
 			echo "<script type='text/javascript' src='../Shared/js/$filename?$filemtime'/></script>";

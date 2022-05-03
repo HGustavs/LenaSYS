@@ -1340,10 +1340,16 @@ header td {
   margin:auto 10px auto 0;
 }
 
+
+.navButt #homeIcon img{
+  height: 87%;
+}
+
 #theme-toggle {
   transform: scale(2.8);
   margin-top: 8px;
 }
+
 .burgerButt {
   float:left;
   margin-left: 10px;
@@ -1483,6 +1489,7 @@ div .navButt:hover {
 
 #div2 {
   position: absolute;
+  overflow: hidden;
   display: grid;
   justify-items: stretch;
   grid-gap: 0px;
@@ -1512,10 +1519,7 @@ div .navButt:hover {
         #codeBurger {
         display: table-cell;
     }
-    .navButt img {
-        width: 20px;
-    }
-    
+        
     .access menuButton{
       width: 20px;
     }
@@ -1570,6 +1574,13 @@ div .navButt:hover {
     }
     .box{
         margin-top: 30px !important;
+    }
+    .dropdownStyle{
+      margin-top: 32px;
+    }
+    .dropdownitemStyle{
+      padding: 15px;
+      width: 250px;
     }
 }
 
@@ -2589,7 +2600,7 @@ label.login-label {
   height: 30px;
   line-height: 18px;
   color: #202020;
-  background-color: var(--color-sectioned-table-lo);
+  background-color: var(--color-border-3);
   background-image: none;
   border: 1px solid var(--color-border-2);
   border-radius: 0;
@@ -4286,8 +4297,8 @@ div.reset-pw:hover{
 
 .dropdown-list-container {
   padding: 8px;
-  width: 400px;
-
+  width: 200px;
+  color:#000;
   font-size: 12px;
   overflow-y: auto;
   display: none;
@@ -8250,3 +8261,17 @@ textarea#filecont {
 .accountRequestTable tr:nth-child(odd){
   background-color: #efefef;
 }
+
+@media only screen and (min-width: 600px){
+  .dropdownitemStyle{
+    padding: 15px;
+    width: 450px;
+  }
+}
+
+
+
+.bottomBorderColor{
+  border-top: 2px solid var(--color-border-list); 
+}
+
