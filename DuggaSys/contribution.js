@@ -1141,7 +1141,7 @@ function returnedSection(data) {
   
   
   //Dynamically loads the year selection list based on folders in ../../contributionDBs/
-  str += `<select id='yearBtn' class='submit-button'
+  str += `<select id='yearBtn' 
   onclick='statSort(value)'onchange='courseSelection(this)'>
   <option value="ChooseY">Choose Year</option>`;
 
@@ -1156,8 +1156,8 @@ function returnedSection(data) {
   }
   str +=`</select>`;
 
-  str += `<select id='courseBtn' class='submit-button'
-  onclick='statSort(value)'onchange='courseDBCollection(value)' style="visibility: hidden">
+  str += `<select id='courseBtn' 
+  onclick='statSort(value)'onchange='courseDBCollection(value)'>
   <option value="ChooseC">Choose Course</option></select>`;
 
   str += "</div>"; 
@@ -1202,9 +1202,6 @@ function courseSelection(elem){
   // Clear dropdown menu
   var dropdown = document.getElementById('courseBtn');
   dropdown.options.length=0;
-
-  // Set visibility
-  dropdown.style.visibility = elem.value == "ChooseY" ? 'hidden' : "visible";
 
   // Default option
   var opt = document.createElement('option');
