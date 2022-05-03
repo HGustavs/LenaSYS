@@ -2120,6 +2120,11 @@ function createBlocks(ranges, boxid) {
 }
 
 // ↓ possible relevant function to collapsible brackets
+/* 	most likely something in the code saying 
+	"expand all rows between X-Y (where the nested group is included)"
+	need to find how to exclude the nested rows 
+	```if (nested group .contains == closed-block){}```
+*/
 function toggleRows(rows, button) {
 	var baseRow = button.parentNode;
 	var wrapper = baseRow.parentNode;
@@ -2134,9 +2139,13 @@ function toggleRows(rows, button) {
 		display = 'none';
 		baseRow.appendChild(ellipses);
 	} else {
+		// if (encounter group .contains('closed-block')) {
+			display = 'none';
+		// } else {
 		display = 'block';
 		ellipses = baseRow.querySelector('.blockEllipses');
 		baseRow.removeChild(ellipses);
+		// }
 	}
 	
 	for (var i = 1; i < rows.length; i++) {
