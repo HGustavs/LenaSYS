@@ -46,7 +46,7 @@
                     </span>
                 </div>
                 <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
-                    <img src="../Shared/icons/diagram_box_select.svg"/>
+                    <img src="../Shared/icons/diagram_box_selection2.svg"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
                         <p>Click and drag to select multiple elements within the selected area</p><br>
                         <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
