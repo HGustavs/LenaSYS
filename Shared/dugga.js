@@ -672,7 +672,7 @@ function createUrl(hash) {
         url += pathArray[i];
         url += "/";
     }
-    url += "sh/?a=" + hash;
+    url += "sh/?s=" + hash;
 
     return url;
 }
