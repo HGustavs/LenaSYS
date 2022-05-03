@@ -4543,9 +4543,10 @@ function generateContextProperties()
 
         // Creates button for selecting element background color if not a UML relation since they should not be able change color
         if (element.kind != 'UMLRelation') {
-            str += `<div style="color: white">BG Color</div>`;
-            str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
-                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+            // Creates button for selecting element background color
+           str += `<div style="color: white">Color</div>`;
+           str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+               `<span id="BGColorMenu" class="colorMenu"></span></button>`;
         }
         str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
       }
@@ -4647,7 +4648,8 @@ function generateContextProperties()
 function toggleOptionsPane()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
-        document.getElementById('optmarker').innerHTML = "&#9660;Options";
+        document.getElementById("BGColorMenu").style.visibility = "hidden";
+        document.getElementById('optmarker').innerHTML = "Options";
         document.getElementById("options-pane").className = "hide-options-pane";
     } else {
         document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
@@ -4917,7 +4919,7 @@ function toggleColorMenu(buttonID)
         var buttonWidth = button.offsetWidth;
         var offsetWidth = window.innerWidth - button.getBoundingClientRect().x - (buttonWidth);
         var offsetHeight = button.getBoundingClientRect().y;
-        menu.style.top = offsetHeight + "px";
+        menu.style.top = (offsetHeight-50) + "px";
         var menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
         menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
 
