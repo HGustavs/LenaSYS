@@ -4157,7 +4157,6 @@ function resizeBoxes(parent, templateId)
 		});
 		$('#box2wrapper').resizable({
 			resize: function( event, ui ) {
-				// TODO: The alignment should take into account the original position of the boxes when resize is fired.
 				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
 
 				if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
@@ -4180,11 +4179,18 @@ function resizeBoxes(parent, templateId)
 		});
 		$('#box3wrapper').resizable({
 			resize: function( event, ui ) {
-				// TODO: The alignment should take into account the original position of the boxes when resize is fired.
-				remaining = ($(parent).height()) - $('#box3wrapper').height();
-				remaining = remaining/2;
-				$('#box2wrapper').css('height', remaining  + "px");
-				$('#box4wrapper').css('height', remaining  + "px");
+				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
+
+				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
+				}
+				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount) + "px");
+				}
+				else{
+					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/2) + "px");
+					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
+				}
 			},			
 			maxHeight: ($(parent).height()*0.70),
 			minHeight: ($(parent).height()*0.15),
