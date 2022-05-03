@@ -3782,6 +3782,8 @@ function generateErTableString()
     var relationList = [];  //All ERRelations currently in the diagram
     var stringList = [];    //List of strings where each string holds the relevant data for each entity
     var erRelationData = []; //2D-array to contain attribute for each element
+    var erForeignData = []; //2D-array to contain foreign keys for each elemenet
+    var ERRelationData = []; 
 
     //sort the data[] elements into entity-, attr- and relationList
     for (var i = 0; i < data.length; i++) {
@@ -3795,6 +3797,41 @@ function generateErTableString()
         else if (data[i].kind == elementTypesNames.ERRelation) {
             relationList.push(data[i]);
         }
+    }
+
+    //For each relation in relationList
+    for (var i = 0; i < relationList.length; i++) {
+        //List containing relation-element and connected entities
+        var currentRelationList = [];
+        //Push in current relation element
+        currentRelationList.push(relationList[i]);
+
+        //Sort all lines that are connected to the current relation into lineList[]
+        var lineList = [];
+        for (var j = 0; j < lines.length; j++) {
+            //Get connected line from element
+            if (relationList[i].id == lines[j].fromID) {
+                lineList.push(lines[j]);
+            }
+            //Get connected line to element
+            else if (relationList[i].id == lines[j].toID) {
+                lineList.push(lines[j]);
+            }
+        }
+        
+        //Identify every connected entity to relations
+        for (var j = 0; j < lineList.length; j++) {
+            //
+            for (var k = 0; k < entityList.length; k++) {
+                //
+                if (entityList[k].id == lineList[j].fromID || entityList[k].id == lineList[j].toID) {
+                    //Push in entity and line cardinality
+                    currentRelationList.push([entityList[k], lineList[j].cardinality]);
+                }
+            }
+        }
+        //Push in relation for entity and line cardinality.
+        ERRelationData.push(currentRelationList);
     }
 
     //For each entity in entityList
@@ -3826,8 +3863,7 @@ function generateErTableString()
                 if (attrList[h].id == lineList[j].fromID || attrList[h].id == lineList[j].toID) {
                 
                     currentEntityAttrList.push(attrList[h]);
-                    idList.push(attrList[h].id);
-                        
+                    idList.push(attrList[h].id);    
                 }
             }
         }
@@ -3931,6 +3967,7 @@ function generateErTableString()
         //Push list with entity at index 0 followed by its attributes
         erRelationData.push(currentRow);
     }
+
     //Add each string element in stringList[] into a single string.
     var stri = "";
     for (var i = 0; i < stringList.length; i++) {
