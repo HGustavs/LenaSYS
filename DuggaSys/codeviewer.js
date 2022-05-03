@@ -2150,7 +2150,7 @@ function toggleRows(rows, button) {
 	
 	for (var i = 1; i < rows.length; i++) {
 		wrapper.querySelector("div[id$='"+rows[i]+"']").style.display = display;
-		// numbers[rows[i] - 1].style.display = display;
+		numbers[rows[i] - 1].style.display = display;
 	}
 }
 
