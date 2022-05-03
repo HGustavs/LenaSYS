@@ -112,7 +112,6 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 {
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
-	$(".item").css("background", "#fff");
 
 	// Convert representation of swedish letters
 	var tempCoursename = coursename;
