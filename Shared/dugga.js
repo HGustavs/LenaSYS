@@ -2,6 +2,7 @@
 // changeCSS: Changes the CSS and remembers the index of the CSS.
 //            This allows us to set and remove whole CSS files
 //----------------------------------------------------------------------------------
+
 var renderId; // Used to store active rendering function
 var benchmarkData = performance.timing; // Will be updated after onload event
 var status = 0;
@@ -2559,3 +2560,66 @@ function addAlertOnUnload(){
 		}
 	}
 }
+
+
+// -----------------------  Edit dugga instructions start -------------------
+
+//read instructions as string
+function ReadOriginalInstructions(doc){
+	var strDoc = "";
+	for (var i = 0; i< doc.length;i++){
+		console.log(i);	
+		strDoc =strDoc + doc[i].textContent;
+	}
+	strDoc = strDoc.trim();
+	return strDoc;
+}
+
+//ignore changes and close window
+function ignoreEditDugga(popupForm){
+	window.close();
+}
+
+//save info from new input and close window
+function saveEditDugga(popupForm){
+	var changed = popupForm.changedinfo.value;
+	var doc = window.opener.document.getElementsByClassName("instructions-content") 
+	doc[0].textContent = changed;
+	window.close();
+}
+
+function autoUpdateText(popupForm){
+	var newInfo = popupForm.changedinfo.value;
+	console.log(newInfo);
+	
+}
+
+//create popup for editing dugga
+function createPopup(strDoc){
+	var win = window.open("","","popup,width=700, height=500");
+	win.onbeforeunload = function() {return "Changes will be discarded by leaving page.";}
+	win.document.write(`
+	<script src="../Shared/dugga.js"></script>
+	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
+	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+	<form name='changeDugga' action=''>
+		<textarea rows=30 cols=80 id='changedinfo'>
+			`+strDoc+`
+		</textarea><br>
+		<input type='submit' value='save changes' onclick='saveEditDugga(this.form)'></input>
+		<input type='button' value='cancel changes' onclick='ignoreEditDugga()'></input>
+	</form>`);
+	win.document.getElementById('changedinfo').onchange = popupForm(this.form);
+	return win;
+}
+
+//read and edit instructions on dugga.
+function editDuggaInstruction(){	
+	
+	//var doc = document.getElementsByClassName("instructions-content");
+	var strDoc = ReadOriginalInstructions(document.getElementsByClassName("instructions-content"));
+	var poppy = createPopup(strDoc);
+
+}
+
+// ----------------------------- Edit dugga instructions end ------------------------

@@ -151,6 +151,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 //Remove if you want the password to be persistent.
 //$_SESSION['hashpassword'] = 'UNK';
 ?>
+
 </div>
 	<!-- content START -->
 	<div id="content">
@@ -176,7 +177,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='rigth'>";
-						echo "<input class='submit-button large-button' type='button' value='Edit instructions'/>";	
+						echo "<input class='submit-button large-button' onclick='editDuggaInstruction()' type='button' value='Edit instructions'/>";	
 						echo "</td>";
 						echo "</tr>";
 						echo "</table>";
@@ -220,7 +221,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		
 		?>
 	</div>
-
+	
 	<!-- LoginBox (receipt&Feedback-box ) Start! -->
 	<div id='receiptBox' class="loginBoxContainer" style="display:none">
 	  <div class="receiptBox loginBox" style="max-width:400px; overflow-y:visible;">
