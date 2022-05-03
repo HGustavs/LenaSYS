@@ -4286,8 +4286,8 @@ div.reset-pw:hover{
 
 .dropdown-list-container {
   padding: 8px;
-  width: 400px;
-
+  width: 200px;
+  color:#000;
   font-size: 12px;
   overflow-y: auto;
   display: none;
@@ -8249,4 +8249,7 @@ textarea#filecont {
 }
 .accountRequestTable tr:nth-child(odd){
   background-color: #efefef;
+}
+.bottomBorderColor{
+  border-top: 2px solid var(--color-border-list); 
 }
