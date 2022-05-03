@@ -4070,37 +4070,14 @@ function resizeBoxes(parent, templateId)
 		});
 		$('#box3wrapper').resizable({
 			disabled: true
-			// resize: function( event, ui ) {
-			// 	document.querySelector('#box3wrapper').style.width = remaining + "px";
-			// 	remaining = ($(parent).height()) - $('#box3wrapper').height();
-			// 	document.querySelector('#box1wrapper').style.height = remaining + "px";
-			// 	document.querySelector('#box4wrapper').style.height = remaining + "px";
+		
 				
-			// },
-			// handles: "w",
-			// containment: parent,
-			// maxHeight: ($(parent).height()*0.85),
-			// minHeight: ($(parent).height()*0.16),
-			// maxHeight: ($(parent).height()*0.85),
-			// minHeight: ($(parent).height()*0.16)
+			
 		});
 		$('#box4wrapper').resizable({
 			disabled: true
-			// resize: function( event, ui ) {
-			// 	remaining = ($(parent).width()) - $('#box3wrapper').width();
-			// 	document.querySelector('#box3wrapper').style.width = remaining + "px";
-
-			// 	remaining = ($(parent).height()) - $('#box1wrapper').height();
-			// 	document.querySelector('#box1wrapper').style.height = remaining + "px";
-			// 	document.querySelector('#box2wrapper').style.height = remaining + "px";
-				
-			// },
-			// handles: "w, n",
-			// containment: parent,
-			// maxHeight: ($(parent).height()*0.85),
-			// minHeight: ($(parent).height()*0.16),
-			// maxHeight: ($(parent).height()*0.85),
-			// minHeight: ($(parent).height()*0.16)
+			
+			
 		});
 	}
 
