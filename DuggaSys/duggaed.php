@@ -175,14 +175,14 @@ session_start();
                     </div>
                   </div>
                   <div>
-                    <div id="selectBox" style="display:none;">
+                    <div id="selectBox">
                       <fieldset style="width:90%">
                       <!-- The json files are fetched and parsed in returnedFile() in duggaed.js -->
                         <legend>Add diagram to dugga</legend>
                         <select id="file" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))"></select>
                       </fieldset>
                     </div>
-                    <div>
+                    <div id="errorCheck">
                       <fieldset style="width:90%">
                         <legend>Error check</legend>
                         <label for="errorActive">Active</label>

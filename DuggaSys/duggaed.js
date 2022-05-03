@@ -371,10 +371,12 @@ function showVariantEditor() {
 		AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
 		$("#selectBox").css("display", "flex");
 		$("#typeCheckbox").css("display", "flex");
+		$("#errorCheck").css("display", "flex");
 	}
 	else{
 		$("#selectBox").css("display", "none");
 		$("#typeCheckbox").css("display", "none");
+		$("#errorCheck").css("display","none");
 	}
 
   if(submissionRow == 0){
