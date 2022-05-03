@@ -410,6 +410,8 @@ function markedItems(item = null){
         console.log("Adding !empty list");
         for(var j = 0; j < subItems.length; j++){
           hideItemList.push(subItems[j]);
+          console.log(subItems[j]);
+          $("#"+subItems[j]+"-checkbox").prop("checked", true);
         }
       }
     } else {
