@@ -2558,21 +2558,40 @@ function ReadOriginalInstructions(doc){
 	var strDoc = "";
 	
 	for (var i = 0; i< doc.length;i++){
-		strDoc = strDoc + doc[i].textContent
+		strDoc =strDoc + doc[i].textContent
 	}
 	console.log(strDoc);
 	return strDoc;
 
 }
 
+function ignoreEditDugga(){
+	console.log("ignoring changes");
+}
+
+function saveEditDugga(){
+	console.log("saving blabla");
+}
+
 //create popup for editing dugga
 function createPopup(strDoc){
 	var win = window.open("","","popup=true");
-	win.document.write("<p>" + strDoc + "</p>");
-/*	var textField = win.document.createElement("INPUT");
+	win.document.write(`
+	<script src="../Shared/dugga.js"></script>
+	<form>
+		<textarea  rows=30 cols=80 id='changedinfo'>
+			`+ strDoc +`
+		</textarea><br>
+		<input type='button' value='save changes' onclick='saveEditDugga()'></input><br>
+		<input type='button' value='cancel changes' onclick='ignoreEditDugga()'></input>
+	</form>`);
+	
+	//win.innerHTML= "<p>" +  strDoc+ "</p>";	
+	var textField = win.document.createElement("INPUT");
 	textField.setAttribute("type","text");
-	textField.innerHTML= "<p>" +  strDoc+ "</p>";
-*/	return win;
+	textField.setAttribute("defaultValue", strDoc)
+	
+	return win;
 }
 
 //read and edit instructions on dugga.
