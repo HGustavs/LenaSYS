@@ -96,6 +96,11 @@
 		color: #fff;
 }
 
+.filter-label {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+}
+
 .docucontentStyle h1 {
     color: white;
 }
@@ -512,6 +517,15 @@ body {
     color:rgba(255,255,255,0.6);
 }
 
+.toggle-0{
+    background-color: var(--color-sectioned-table-hi);
+}
+.toggle-1{
+   background-color: var(--color-sectioned-table-lo); 
+}
+.toggle-dugganame-filter-box{
+    background-color: var(--color-sectioned-table-hi);
+}
 
 
 }
