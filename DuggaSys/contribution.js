@@ -1130,19 +1130,19 @@ function returnedSection(data) {
   var str = "";
 
   str += "<div id='contributionContainer' class='contributionSort'>";
-  str += `<input type='button' id='allBtn' value='All' class='submit-button title='All' 
+  str += `<input type='button' id='allBtn' value='All' class='submit-button' 
   onclick='statSort(value)'onmouseout='hideTooltip(this)'title='View all tables and charts'></input>`;
-  str += `<input type='button' id='basicBtn' value='Basic' class='submit-button title='Basic'
+  str += `<input type='button' id='basicBtn' value='Basic' class='submit-button'
   onclick='statSort(value)'onmouseout='hideTooltip(this)'title='View basic statistics'></input>`;
-  str += `<input type='button' id='chartsBtn' value='Charts' class='submit-button title='Charts'
+  str += `<input type='button' id='chartsBtn' value='Charts' class='submit-button'
   onclick='statSort(value)' onmouseout='hideTooltip(this)'title='View only charts'></input>`;
-  str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution'
+  str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button'
   onclick='statSort(value)' onmouseout='hideTooltip(this)'title='View contribution data'></input>`;
   
   
   //Dynamically loads the year selection list based on folders in ../../contributionDBs/
 
-  str += `<select id='yearBtn' class='submit-button'
+  str += `<select id='yearBtn'
   onclick='statSort(value)'onchange='courseSelection(this)'title='Select year dropdown'>
 
   <option value="ChooseY">Choose Year</option>`;
@@ -1159,8 +1159,8 @@ function returnedSection(data) {
   str +=`</select>`;
 
 
-  str += `<select id='courseBtn' class='submit-button'
-  onclick='statSort(value)'onchange='courseDBCollection(value)' style="visibility: hidden"title='Select course dropdown'>
+  str += `<select id='courseBtn'
+  onclick='statSort(value)'onchange='courseDBCollection(value)' title='Select course dropdown'>
 
   <option value="ChooseC">Choose Course</option></select>`;
 
