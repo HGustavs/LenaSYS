@@ -24,7 +24,7 @@ var updateShowAct = true;
 var courseFileArr = [];
 
 var commitChangeArray = [];
-
+var isClickedElementBox = false;
 //sorting for multiple views
 //Restores all views when pressing the All button
 function restoreStatView() {
@@ -1885,6 +1885,57 @@ function toggleAccountRequestPane(){
     }
 }
 
+document.addEventListener('keydown', function(event) {
+	if(event.key === 'Escape'){
+		toggleAccountRequestPane();
+	}
+});
+
+$(document).mousedown(function (e) {
+  mouseDown(e);
+});
+
+$(document).mouseup(function (e) {
+  mouseUp(e);
+});
+
+function mouseDown(e) {
+
+  var box = $(e.target);
+  // if() - the clicked element is one of the account request elements
+  // else if() - the clicked element is a child of one of the show account request elements
+  // else - the clicked element does not belong to account request
+  if (box[0].classList.contains("show-accountRequests-pane") || box[0].classList.contains("accountRequests-pane-span") || box[0].classList.contains("hide-accountRequests-pane")) {
+    isClickedElementBox = true;
+  } else if ((findAncestor(box[0], "show-accountRequests-pane") != null) &&
+    (findAncestor(box[0], "show-accountRequests-pane").classList.contains("show-accountRequests-pane"))) {
+    isClickedElementBox = true;
+  } else {
+    isClickedElementBox = false;
+  }
+
+}
+
+function mouseUp(e) {
+  //if - the user clicks something other than the account request pane.
+  //else - the user clicks an element belonging to account request
+  if ($('.accountRequests-pane') && !$('.accountRequests-pane').is(e.target) &&
+  $('.accountRequests-pane').has(e.target).length === 0 && (!isClickedElementBox)) {
+    //if account request pane is open then close it.
+    if (document.getElementById("accountRequests-pane").className == "show-accountRequests-pane") {
+      document.getElementById('accountReqmarker').innerHTML = "Account requests";
+      document.getElementById("accountRequests-pane").className = "hide-accountRequests-pane";
+    }
+  }else{
+    if ($(e.target)[0].classList.contains("hide-accountRequests-pane")) {
+      document.getElementById('accountReqmarker').innerHTML = "Account requests";
+      document.getElementById("accountRequests-pane").className = "show-accountRequests-pane";
+    }
+  }
+}
+
+
+
 //Creates the html elements containing the commit changes
  function createCommitChange(data){
   var commitChange = data;
@@ -1923,9 +1974,9 @@ function toggleAccountRequestPane(){
 //Creates the sidebar for accepting and rejecting students when logged in as a superUser
 function createSidebar(){
   var text = document.getElementById('accountRequests-pane');
-  text.style.display="block";
+  text.style.display="inline-block";
   str = "";
-  str+= '<div id="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker">Account requests</span></div>';
+  str+= '<div id="accountRequests-pane-button" class="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker" class="accountRequests-pane-span">Account requests</span></div>';
   str+= "<table class='accountRequestTable'style='width: 85%'  border='1'><br />";
 	str+= "<tr class='accountRequestTable' style=' background-color: #ffffff';>";
   str+= "<th class='accountRequestTable'></th>";
