@@ -739,7 +739,7 @@ const keybinds = {
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},
-        TOGGLE_A4: {key: "a", ctrl: false, meta: false},
+        TOGGLE_A4: {key: "p", ctrl: false, meta: false},
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
