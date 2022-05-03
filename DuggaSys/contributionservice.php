@@ -52,8 +52,8 @@ for($i=0; $i< sizeof($directoriesYear); $i++){
 }
 
 
-
-if(checklogin()) // methods needing you to be logged in
+// TODO(future issue) make sure contributon handles git logins different from teacher logins. aka git_checklogin shouldnt be here in future
+if(checklogin() || git_checklogin()) // methods needing you to be logged in
 {
 
 
@@ -922,6 +922,72 @@ $query = $log_db->prepare('select distinct(usr) from
 	echo json_encode($addStatus); // if successfully created will be true
 
 }
+else if(strcmp($opt,"requestGitUserLogin") == 0)
+{
+	/*
+		This is a special login function just for the contribution page
+		This is only supposed to be employed on the contribution page and should not be used to login anywhere else
+	*/
+
+	global $pdo;
+
+	if($pdo == null)
+	{
+		pdoConnect();
+	}
+
+	$gituser = getOP('username');
+	$gitpass = getOP('userpass');
+
+
+	if($gituser != "UNK")
+	{
+		// retrieve a user with the same name
+		$query = $pdo->prepare("SELECT git_uid,username,password FROM git_user WHERE username=:username LIMIT 1");
+		$query->bindParam(':username',$gituser);
+
+		if(!$query->execute()) // execute and check for errors
+		{
+			$error=$query->errorInfo();
+			echo "Error reading user entries".$error[2]."\n";
+		}
+
+		if($query->rowCount() > 0) // we actually retrieved entries
+		{
+			$row = $query->fetch(PDO::FETCH_ASSOC);
+			
+			if(password_verify($gitpass, $row['password'])) // entered gitpass matched hashed password
+			{
+				$_SESSION['git_uid'] = $row['git_uid'];
+        		$_SESSION["git_loginname"]=$row['username'];
+				$_SESSION["git_passwd"]=$row['password'];
+				echo json_encode(true);
+			}
+			else // wrong password entered
+			{
+				echo json_encode(false);
+			}
+		}
+
+
+	}
+	else // logout the git
+	{
+		$_SESSION = array(); // logout so we yeet the session
+		if (ini_get("session.use_cookies")) // logout so we yeet the cookies
+		{
+			$params = session_get_cookie_params();
+			setcookie(session_name(), '', time() - 42000,$params["path"], $params["domain"],$params["secure"], $params["httponly"]);
+		}
+		session_unset();
+		session_destroy();
+		clearstatcache(); 
+
+		echo json_encode(true);
+	
+	}
+}
+
 
 
 

@@ -1095,6 +1095,14 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returned_lenasys_user_check
 		});
+	}else if(kind=="CONTRIBUTION_GIT_USER_LOGIN"){
+		$.ajax({
+			url: "contributionservice.php",
+			type: "POST",
+			data: "&opt="+opt+para,
+			dataType: "json",
+			success: returned_git_user_login
+		});
 	}else if(kind=="CONTRIBUTION_LENASYS_USER_CREATION"){
 		$.ajax({
 			url: "contributionservice.php",
@@ -2549,11 +2557,5 @@ var ClickCounter = {
 
 //if changes has been done a promt is made to ask user if they want to discard them.
 function addAlertOnUnload(){
-	window.onbeforeunload = function() {
-		try {
-			//add things here to run showing the popup for alerting someone that they got unsaved changes.
-			//for example storing stuff to localstorage.
-		}catch(e){}
-		return "Changes will be discarded by leaving page.";
-	}
+	window.onbeforeunload = function() {return "Changes will be discarded by leaving page.";}
 }
