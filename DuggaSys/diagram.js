@@ -4907,7 +4907,7 @@ function toggleColorMenu(buttonID)
         var buttonWidth = button.offsetWidth;
         var offsetWidth = window.innerWidth - button.getBoundingClientRect().x - (buttonWidth);
         var offsetHeight = button.getBoundingClientRect().y;
-        menu.style.top = offsetHeight + "px";
+        menu.style.top = (offsetHeight-50) + "px";
         var menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
         menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
 
