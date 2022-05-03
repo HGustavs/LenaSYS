@@ -1030,7 +1030,7 @@ var ghostLine = null;
 var defaults = {
     EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", attributes: ['Attribute'], functions: ['Function'] },
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER" },
-    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER" },
+    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal'},
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
     UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['Attribute'], functions: ['Function'] },     //<-- UML functionality
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "UML" }, //<-- UML functionality
@@ -3781,6 +3781,7 @@ function generateErTableString()
     var attrList = [];      //All ERAttributes currently in the diagram
     var relationList = [];  //All ERRelations currently in the diagram
     var stringList = [];    //List of strings where each string holds the relevant data for each entity
+    var erRelationData = []; //2D-array to contain attribute for each element
 
     //sort the data[] elements into entity-, attr- and relationList
     for (var i = 0; i < data.length; i++) {
@@ -3798,10 +3799,11 @@ function generateErTableString()
 
     //For each entity in entityList
     for (var i = 0; i < entityList.length; i++) {
+        var currentRow = [entityList[i]];
         
         //Add the start of the string for each entity. Example: "EMPLOYEE("
-        stringList.push(new String(entityList[i].name + "("));
-        
+        stringList.push(new String(`<p>${entityList[i].name} (`));
+
         //Sort all lines that are connected to the current entity into lineList[]
         var lineList = []; 
         for (var j = 0; j < lines.length; j++) {
@@ -3824,17 +3826,19 @@ function generateErTableString()
                 if (attrList[h].id == lineList[j].fromID || attrList[h].id == lineList[j].toID) {
                 
                     currentEntityAttrList.push(attrList[h]);
-                    idList.push(attrList[h].id)
+                    currentRow.push(attrList[h]);
+                    idList.push(attrList[h].id);
                         
                 }
             }
-        }
+        }   
         
-        
+
         for (var j = 0; j < currentEntityAttrList.length; j++) {
 
             //For each attribute connected to the current entity, identify if other attributes are connected to themselves.
             var attrLineList = [];
+
             for (var h = 0; h < lines.length; h++) {
                 
                 //If there is a line to/from the attribute that ISN'T connected to the current entity, save it in attrLineList[].
@@ -3866,6 +3870,7 @@ function generateErTableString()
                         //If no hits, then push the attribute to currentEntityAttrList[] (so it will also be checked for additional attributes in future iterations) and save the ID.
                         if (hits == 0) {
                             currentEntityAttrList.push(attrList[k]);
+                            currentRow.push(attrList[k]);
                             idList.push(attrList[k].id);
                         }
                     }   
@@ -3875,23 +3880,56 @@ function generateErTableString()
 
         //Add each connected attribute in stringList[i]
         for (var j = 0; j < currentEntityAttrList.length; j++) {
+
             if (j < currentEntityAttrList.length - 1) { //If j is not the last element
-                stringList[i] += currentEntityAttrList[j].name + ", ";
+                switch(currentEntityAttrList[j].state) {
+                    case 'key':
+                        stringList[i] += `<span style="text-decoration:underline;">${currentEntityAttrList[j].name}</span>, `;
+                        break;
+                    case 'weakKey':
+                        stringList[i] += `<span style="text-decoration:underline;">${currentEntityAttrList[j].name}</span>, `;
+                        break;
+                    case 'multiple':
+                        break;
+                    case 'computed':
+                        stringList[i] += currentEntityAttrList[j].name + ", ";
+                        break;
+                    default:
+                        stringList[i] += currentEntityAttrList[j].name + ", ";
+                        break;
+                }
+                
             }
             else if (j == currentEntityAttrList.length - 1) { //Else if j is the last element
-                stringList[i] += currentEntityAttrList[j].name + ")";
+                switch(currentEntityAttrList[j].state) {
+                    case 'key':
+                        stringList[i] += `<span style="text-decoration:underline;">${currentEntityAttrList[j].name}</span>)</p>`;
+                        break;
+                    case 'weakKey':
+                        stringList[i] += `<span style="text-decoration:underline;">${currentEntityAttrList[j].name}</span>)</p>`;
+                        break;
+                    case 'multiple':
+                        break;
+                    case 'computed':
+                        stringList[i] += currentEntityAttrList[j].name + ")</p>";
+                        break;
+                    default:
+                        stringList[i] += currentEntityAttrList[j].name + ")</p>";
+                        break;
+                }
             }
         }
+        //Push list with entity at index 0 followed by its attributes
+        erRelationData.push(currentRow);
     }
-
     //Add each string element in stringList[] into a single string.
     var stri = "";
     for (var i = 0; i < stringList.length; i++) {
         stri += new String(stringList[i] + "\n\n");
     }
-
     return stri;
 }
+
 /**
  * @description Toggles the A4 template ON/OFF.
  */
@@ -4396,10 +4434,10 @@ function generateContextProperties()
 
     //If erTableToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
     if (erTableToggle == true) {
-        str +=`<style> .textbox {resize: none; height: 250px; width: 273px;}</style><textarea readonly class="textbox">`
+        str +=`<style> .textbox {resize: none; height: 250px; width: 273px;}</style><div class="textbox">`
         var ertable = generateErTableString();
         str += ertable;
-        str += `</textarea>`
+        str += `</div>`
     }
     else {
       //One element selected, no lines
