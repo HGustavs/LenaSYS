@@ -407,8 +407,7 @@ function SortableTable(param)
           if (rowFilter(row)) {
             str += " style='box-sizing:border-box";
             // Alternate row colors
-            if(++n%2)
-            {
+            if(++n%2){
               str += ";background: #ccc"; // --color-background-2;
             }
           }
