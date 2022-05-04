@@ -244,12 +244,12 @@
 								<select style='width:55px;' id='deadlinehours'></select>
 							</span>
 							<br />
-							<span>Relative</span>
+							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
 							<span style='float:right'>
-								<select style='width:140px;' id='relativedeadlineweekdays'></select>
-								<select style='width:55px;' id='relativedeadlineweeks'></select>
-								<select style='width:55px;' id='relativedeadlineminutes'></select>
-								<select style='width:55px;' id='relativedeadlinehours'></select>
+								<select style='width:140px;' id='relativedeadlineweekdays'title="Weekday"></select>
+								<select style='width:55px;' id='relativedeadlineweeks' title="Course Week"></select>
+								<select style='width:55px;' id='relativedeadlineminutes'title="Minute"></select>
+								<select style='width:55px;' id='relativedeadlinehours' title="Hour"></select>
 							</span>
 							<span style='float:left'>
 								<p id="dialog8" style="font-size:11px; border:0px; margin-left: 10px; display:none;max-height:20px;">Deadline has to be between start date and end date</p>
