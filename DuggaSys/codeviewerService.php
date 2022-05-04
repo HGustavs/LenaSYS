@@ -130,7 +130,7 @@
 					$query->bindParam(':exampleid', $exampleId);
 					$query->execute();
 
-					if($query->fetch() < 1){	
+					if(true){	
 						// Create boxes, if some box does not exist
 						$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid,fontsize) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename, :wordlistid, :fontsize);");
 
