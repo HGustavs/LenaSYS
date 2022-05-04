@@ -435,6 +435,85 @@ function returnedTitle(data) {
 	fillBurger();
 }
 
+function handleFiles(files) {	
+	var file = files[0];
+    reader = new FileReader();
+
+	const supportedFiles = ["js", "php", "html", "txt", "java", "sr", "sql"];
+	
+	for(let type of supportedFiles) {
+		if (file.name.split('.').pop() === type) {
+			console.log(reader.readAsText(file));
+			break;
+		}
+	}
+
+    reader.onload = event => {
+		var iframe = document.getElementById("iframeFileed").contentWindow;
+		showHiddenIframe();
+
+		document.querySelector("#iframeFileed").addEventListener( "load", function(e) {
+			// IFrame querys
+			iframe.showFilePopUp('GFILE');
+			iframe.document.querySelector('#uploadedfile').files = files;
+			iframe.uploadDroppedFile();
+
+			// Lastly, apply the new file to that of the code viewer
+			updateContent(file.name);
+		}, { once: true });
+    };
+
+
+}
+
+function handleDrop(e)
+{
+	let dt = e.dataTransfer;
+	let files = dt.files;
+
+	handleFiles(files);
+}
+
+function initFileDropZone(id)
+{
+	dropArea = document.getElementById(id);
+
+	['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => 
+		{
+		  dropArea.addEventListener(eventName, preventDefaults, false);
+		})
+
+		;['dragenter', 'dragover'].forEach(eventName => 
+		{
+		  dropArea.addEventListener(eventName, highlight, false)
+		})
+
+		;['dragleave', 'drop'].forEach(eventName => 
+		{
+		  dropArea.addEventListener(eventName, unhighlight, false)
+		})
+
+		dropArea.addEventListener('drop', handleDrop, false);
+}
+
+function preventDefaults (e)
+{
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+//Supposed to highligt area when dragging file over drop-area: NOT WORKING CURRENTLY. - probably style.css related.
+function highlight(e) 
+{
+	dropArea.classList.add('highlight');
+}
+
+//Supposed to darken the area when removing dragged file from drop-area: NOT WORKING CURRENTLY. - probably style.css related.
+function unhighlight(e) 
+{
+	dropArea.classList.remove('highlight');
+} 
+
 //---------------------------------------------------------------------------------
 // This functions convert tabs to "&#9;""
 // The indexOf() method returns the position of the first time of a specified value
@@ -804,7 +883,7 @@ function editImpRows(editType)
 // updateContent: Updates the box if changes has been made
 //----------------------------------------------------------------------------------
 
-function updateContent() 
+function updateContent(file) 
 {
 	var box = retData['box'][openBoxID - 1];
 	var useBoxContent = true;
@@ -815,6 +894,16 @@ function updateContent()
 		box = retData['box'][retData['box'].length - 1];
 	}
 
+		
+	// Check if a drag and drop instance is created
+	if(file != null){
+		var useBoxContent = true;
+		filename = file;
+	}
+	else{
+		var filename = $("#filename option:selected").val();
+	}
+
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
 	// TODO: Handle null values
 	if (useBoxContent) {
@@ -823,7 +912,6 @@ function updateContent()
 				var boxtitle = document.querySelector("#boxtitle").value;
 				var boxcontent = $("#boxcontent option:selected").val();
 				var wordlist = document.querySelector("#wordlist").value;
-				var filename = $("#filename option:selected").val();
 				var fontsize = $("#fontsize option:selected").val();
 				var exampleid = querystring['exampleid'];
 				var boxid = box[0];
@@ -969,6 +1057,7 @@ function createboxmenu(contentid, boxid, type) {
 				toggleClass($("#" + boxmenu.parentNode.id).attr("id"));
 			}
 		});
+		initFileDropZone(contentid);
 	}
 }
 
@@ -4682,6 +4771,7 @@ function showBox(id) {
 	});
 }
 
+// Iframe used for editing file 
 function showIframe(boxid,kind) {
 	    var fileName = retData['box'][boxid - 1][5]+'';
 		var filePath = 'fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename=';
@@ -4689,6 +4779,15 @@ function showIframe(boxid,kind) {
 		document.querySelector(".previewWindowContainer").style.display = "block";
 		$("#iframeFileed").attr('src', filePath+fileName);
 }
+
+// Iframe used for drag and drop
+function showHiddenIframe() {
+    var filePath = 'fileed.php?courseid=' + courseid + '&coursevers=' + cvers;
+    document.querySelector(".previewWindow").style.display = "block";
+    document.querySelector(".previewWindowContainer").style.display = "block";
+    $("#iframeFileed").attr('src', filePath);
+}
+
 function hideIframe()
 {
 	document.querySelector(".previewWindow").style.display = "none";

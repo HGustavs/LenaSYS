@@ -1025,3 +1025,7 @@
 .blockEllipses {
     font-weight: bold;
 }
+
+.highlight{
+    border: 3px solid black;
+}
