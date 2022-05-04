@@ -155,6 +155,8 @@ function showFilePopUp(fileKind) {
 
 //see fileedservice.php and filerecieve.php for more details of how files are saved to local storage and meta-data is saved to DB.
 function uploadFile(kind) {
+    console.log(kind);
+    if(kind != document.querySelector(".nowrap-filename").innerHTML){
     if (kind == "MFILE") {
         var str = "<option>NONE</option>";
         for (i = 0; i < filez['lfiles'].length; i++) {
@@ -162,6 +164,7 @@ function uploadFile(kind) {
             if (item != ".." && item != ".") str += "<option>" + item + "</option>";
         }
         $("#selectedfile").html(str);
+       
     } else if (kind == "GFILE") {
         var str = "<option>NONE</option>";
         for (i = 0; i < filez['gfiles'].length; i++) {
@@ -179,6 +182,7 @@ function uploadFile(kind) {
         $("#ecourseid").val(querystring['courseid']);
         $("#ecoursevers").val(querystring['coursevers']);
         $("#selectedfile").html(str); 
+        
     } else if (kind == "LFILE" || kind == "LINK") {
         $("#selecty").css("display", "none");
     }
@@ -186,6 +190,20 @@ function uploadFile(kind) {
     $("#kind").val(kind);
     $("#courseid").val(querystring['courseid']);
     $("#coursevers").val(querystring['coursevers']);
+    console.log(document.querySelector(".nowrap-filename").innerHTML);
+    console.log(document.querySelector(".nowrap-filename").innerHTML);
+    console.log(document.querySelector(".nowrap-filename").innerHTML);
+    console.log(document.querySelector(".nowrap-filename").innerHTML);
+    console.log("worked");
+    console.log("worked");
+    console.log("worked");
+    console.log("worked");
+
+    }
+    else{
+        console.log("ERRROR");
+    }
+
 }
 
 function closeAddFile() {
