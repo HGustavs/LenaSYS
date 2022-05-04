@@ -390,6 +390,11 @@ function returned(data)
 				$("#" + contentid).css("margin-top", boxmenuheight);
 			}
 		}
+		// Add drag and drop zone
+		console.log(contentid);
+		if (retData['writeaccess'] == "w") {
+			initFileDropZone(contentid);
+		}
 	}
 
 	var ranges = getBlockRanges(allBlocks);
@@ -440,25 +445,31 @@ function returnedTitle(data) {
 //------------------------
 
 function handleFiles(files) {	
-	var file = files[0];
-    reader = new FileReader();
 	var boxcontent;
+	var file = files[0];
+    var reader = new FileReader();
+	var filetype = file.name.split('.').pop();
 
-	const supportedFiles = ["js", "php", "html", "txt", "java", "sr", "sql"];
+	// Add supported files in the array
+	const supportedFiles = ["js", "php", "html", "txt", "java", "sr", "sql", "md"];
 	
-	for(let type of supportedFiles) {
-		if (file.name.split('.').pop() === type) {
-			if(type == "txt")
-				boxcontent = "Document";
-			else
-				boxcontent = "Code"
-			console.log(reader.readAsText(file));
-			break;
+	// Go trough supported files
+	if (supportedFiles.includes(filetype)) {
+		if(filetype == "txt") {
+			boxcontent = "Document";
 		}
+		else {
+			boxcontent = "Code";
+		}
+
+		// This command is important to activate reader
+		console.log(reader.readAsText(file));
+	} else {
+		alert("FILETYPE [" + filetype + "] NOT SUPPORTED")
 	}
 
     reader.onload = event => {
-		var iframe = document.getElementById("iframeFileed").contentWindow;
+		const iframe = document.getElementById("iframeFileed").contentWindow;
 		showHiddenIframe();
 
 		document.querySelector("#iframeFileed").addEventListener( "load", function(e) {
@@ -471,8 +482,6 @@ function handleFiles(files) {
 			updateContent(file.name, boxcontent);
 		}, { once: true });
     };
-
-
 }
 
 function handleDrop(e)
@@ -892,7 +901,7 @@ function editImpRows(editType)
 // updateContent: Updates the box if changes has been made
 //----------------------------------------------------------------------------------
 
-function updateContent(file, box) 
+function updateContent(file, content) 
 {
 	var box = retData['box'][openBoxID - 1];
 	var useBoxContent = true;
@@ -903,13 +912,12 @@ function updateContent(file, box)
 		box = retData['box'][retData['box'].length - 1];
 	}
 
-		
 	// Check if a drag and drop instance is created
 	if(file != null && box != null){
-		console.log("dsfdsf")
 		var useBoxContent = true;
 		filename = file;
-		boxtitle = box;
+		boxtitle = file;
+		boxcontent = content;
 	}
 
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
@@ -917,11 +925,13 @@ function updateContent(file, box)
 	if (useBoxContent) {
 		if (box[1] != document.querySelector("#boxcontent").value || box[3] != document.querySelector("#wordlist").value || box[4] != document.querySelector("#boxtitle").value || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
 			try {
-				if(box == null)
+				if(file == null)
 					var boxtitle = document.querySelector("#boxtitle").value;
-				var boxcontent = $("#boxcontent option:selected").val();
+				if(content == null)
+					var boxcontent = $("#boxcontent option:selected").val();
 				if(file == null)
 					var filename = $("#filename option:selected").val();
+				
 				var wordlist = document.querySelector("#wordlist").value;
 				var fontsize = $("#fontsize option:selected").val();
 				var exampleid = querystring['exampleid'];
@@ -1068,7 +1078,6 @@ function createboxmenu(contentid, boxid, type) {
 				toggleClass($("#" + boxmenu.parentNode.id).attr("id"));
 			}
 		});
-		initFileDropZone(contentid);
 	}
 }
 

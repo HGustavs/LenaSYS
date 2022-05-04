@@ -1027,5 +1027,7 @@
 }
 
 .highlight{
-    border: 3px solid black;
+    background-image: url(../icons/draganddrop.png);
+    object-fit: cover;
+    background-size: 100%;
 }
