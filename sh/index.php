@@ -69,9 +69,10 @@ function GetAssignment ($hash){
 		$_SESSION["submission-$cid-$vers-$did-$moment"]=$hash;
 		$_SESSION["submission-password-$cid-$vers-$did-$moment"]=$hashpwd;
 		$_SESSION["submission-variant-$cid-$vers-$did-$moment"]=$variant;	
-		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed<br>";
+		$_SESSION["hash"]=$hash;
+		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&hash={$hash}&embed<br>";
 		echo "|$hash|$hashpwd|<br>";
-		header("Location: ../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed");
+		header("Location: ../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&hash={$hash}&embed");
 		exit();	
 	}else{
 		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed<br>";

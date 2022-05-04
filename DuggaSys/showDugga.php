@@ -103,6 +103,31 @@
 	{
 		$fileContent = "NO_FILE_FETCHED";
 	}
+
+    // if the used is redirected from 
+	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
+	{
+		$temp1Dir = "../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
+		$latest;
+		$current;
+
+		foreach(new DirectoryIterator($temp1Dir) as $file)
+   		{
+       		$ctime = $file->getCTime();    // Time file was created
+        	$fname = $file->getFileName(); // File name
+       		if( $ctime > $latest )
+        	{
+            	$latest = $ctime;
+            	$current = $fname;
+        	}
+    	}
+    	$latest = $current;
+
+		$mydir = "../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
+		$myFiles = array_diff(scandir($mydir, SCANDIR_SORT_DESCENDING), array('.', '..'));
+		$fileContent = file_get_contents("../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/{$latest}");
+	}
+	
   // for fetching file content
 	if(file_exists("../courses/global/"."$fileName"))
 	{
