@@ -80,7 +80,7 @@ session_start();
         			<div class='flexwrapper'>
   	      			<span>Name:</span>
   	      			<div class="tooltipDugga">
-  		      			<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
+  		      			<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
   		      		</div>
   		      		<input class='textinput' type='text' id='name' placeholder='New Dugga' onkeyup='validateDuggaName();' onchange='validateDuggaName();' />
   		      	</div>
