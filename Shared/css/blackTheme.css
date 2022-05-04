@@ -541,6 +541,7 @@ body {
     overflow: auto;
     overflow-x: auto;
     font-family: 'Varela', sans-serif;
+}
 
 .item a {
     text-decoration: none;
