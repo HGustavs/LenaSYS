@@ -403,7 +403,7 @@ function returnedCourse(data)
 	if (data['writeaccess']) {
 		str += "<div style='float:right;'>";
 		if(localStorage.getItem("cookieMessage")!="off"){
-			str += "<div class='fixed-action-button' style='bottom:64px;'>";
+			str += "<div class='fixed-action-button extra-margin'>";
 		}else{
 			str += "<div class='fixed-action-button'>";
 		}
