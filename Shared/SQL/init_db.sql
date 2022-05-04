@@ -172,7 +172,7 @@ CREATE TABLE userAnswer (
         gradeLastExported   timestamp null default null,
 	seen_status             TINYINT(1) NOT NULL DEFAULT 0,
 	hash					VARCHAR(8),
-	password				VARCHAR(7),
+	password				VARCHAR(8),
     timesSubmitted			INT(5),
 	timesAccessed			INT(5),
 	PRIMARY KEY (aid),
