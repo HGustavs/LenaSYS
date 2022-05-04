@@ -61,7 +61,7 @@ $vers=getOPG('coursevers');
 	<?php
 		include '../Shared/loginbox.php';
 
-		if(!checklogin()) // If not logged in, force a log in
+		if(!checklogin() && !git_checklogin()) // If not logged in, force a log in
 		{
 			echo '<script> forceUserLogin(); </script>';
 		}

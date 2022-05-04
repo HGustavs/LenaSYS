@@ -2312,7 +2312,7 @@ function resetForceLogin()
     loginBoxheader_login_password_field.style.visibility = "";
 
     let loginBoxButton = document.querySelector(".buttonLoginBox");
-    loginBoxButton.setAttribute("onClick", "processLogin()");
+    loginBoxButton.setAttribute("onClick", "git_processLogin()");
     
   }
 
@@ -2382,10 +2382,40 @@ function resetForceLogin()
 
     }
   }
+}
 
+function git_processLogin()
+  {
+    let git_username = $("#login #username").val();
+    let git_password = $("#login #password").val();
+
+
+    AJAXService("requestGitUserLogin",{
+      username: git_username,
+      userpass: git_password,
+    }, "CONTRIBUTION_GIT_USER_LOGIN");
+
+
+  }
+
+function git_logout()
+{
+  
+  let git_username = null; // nothing entered will logout
+  let git_password = null;
+
+  AJAXService("requestGitUserLogin",{
+    username: git_username,
+    userpass: git_password,
+  }, "CONTRIBUTION_GIT_USER_LOGIN");
 
 }
 
+function returned_git_user_login(data)
+{
+  if(data)
+    window.location.reload(true);  // TODO should I just reload the page here perhaps? 
+}
 
 
 console.error
