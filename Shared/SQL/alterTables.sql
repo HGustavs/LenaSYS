@@ -1,6 +1,6 @@
 /* Associated with issue #9859 */
 ALTER TABLE userAnswer ADD COLUMN hash VARCHAR(8) DEFAULT NULL;
-ALTER TABLE userAnswer ADD COLUMN password VARCHAR(8) DEFAULT NULL;
+ALTER TABLE userAnswer ADD COLUMN password VARCHAR(7) DEFAULT NULL;
 
 /* Associated with issue #10208 */
 ALTER TABLE submission ADD COLUMN hash VARCHAR(8) DEFAULT NULL;
@@ -33,7 +33,7 @@ CREATE TABLE userAnswer (
         gradeLastExported   timestamp null default null,
 	seen_status             TINYINT(1) NOT NULL DEFAULT 0,
 	hash					VARCHAR(8),
-	password				VARCHAR(8),
+	password				VARCHAR(7),
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (quiz) REFERENCES quiz(id),
