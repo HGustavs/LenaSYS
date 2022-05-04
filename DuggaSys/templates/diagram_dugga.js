@@ -21,7 +21,8 @@ function setup()
     diagramWindow = document.getElementById("diagram-iframe");
     inParams = parseGet();
     AJAXService("GETPARAM", { }, "PDUGGA");
-    document.getElementById("saveDuggaButton").onclick = function (){ uploadFile();};
+    document.getElementById("saveDuggaButton").onclick = function (){ uploadFile() , showReceiptPopup();};
+    
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
 }
 
@@ -61,7 +62,6 @@ function uploadFile()
         }
     }).done(function() {
         AJAXService("GETPARAM", { }, "PDUGGA");
-        saveClick();
     });
 }
 /**
@@ -71,18 +71,20 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-    console.log(data);
+    var textBox = document.getElementById('submission-receipt');  
+    textBox.innerHTML=(`${data['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(data['hash'])}'> ${createUrl(data['hash'])}` + `</a> </br></br> Hash: </br> ${data['hash']}</br></br>Hash password:</br>${data['hashpwd']}`);
+    //temporary solution to get the correct link in the receipt
+    //updateReceiptText(data['duggaTitle'], createUrl(data['hash']), data['hash'], data['hashpwd']);
+  
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
         //document.getElementById("assigment-instructions").innerHTML = param.instructions;
         //checking if the user is a teacher
         if(data.isTeacher==0){
             // getting the diagram types allowed and calling a function in diagram.js where the values are now set <-- UML functionality start
-
             document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type;
             // getting the error finder allowed or not
             document.getElementById("diagram-iframe").contentWindow.errorActive = param.errorActive;
-
         }
         else{
             var diagramType={ER:true,UML:true};
@@ -97,7 +99,7 @@ function returnedDugga(data)
         var lastKeyIndex = Object.keys(momentFiles).length-1;
         var lastKey = Object.keys(momentFiles)[lastKeyIndex];
         var lastFile = momentFiles[lastKey]
-        var filePath = lastFile.filepath + lastFile.filename + lastFile.seq + "." + lastFile.extension;
+        var filePath = lastFile.filepath + "/" + lastFile.filename + lastFile.seq + "." + lastFile.extension;
 
         $.ajax({
             method: "GET",
