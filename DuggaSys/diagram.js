@@ -4588,7 +4588,7 @@ function updateGridSize() {
 
     //Do not remore, for later us to make gridsize in 1cm.
     var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
-    settings.grid.gridSize = 10 * pxlength;
+    settings.grid.gridSize = 20 * pxlength;
 
     var bLayer = document.getElementById("grid");
     bLayer.setAttribute("width", settings.grid.gridSize * zoomfact + "px");
