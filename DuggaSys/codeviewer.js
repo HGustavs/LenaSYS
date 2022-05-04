@@ -435,14 +435,23 @@ function returnedTitle(data) {
 	fillBurger();
 }
 
+//------------------------
+// Drag and drop
+//------------------------
+
 function handleFiles(files) {	
 	var file = files[0];
     reader = new FileReader();
+	var boxcontent;
 
 	const supportedFiles = ["js", "php", "html", "txt", "java", "sr", "sql"];
 	
 	for(let type of supportedFiles) {
 		if (file.name.split('.').pop() === type) {
+			if(type == "txt")
+				boxcontent = "Document";
+			else
+				boxcontent = "Code"
 			console.log(reader.readAsText(file));
 			break;
 		}
@@ -459,7 +468,7 @@ function handleFiles(files) {
 			iframe.uploadDroppedFile();
 
 			// Lastly, apply the new file to that of the code viewer
-			updateContent(file.name);
+			updateContent(file.name, boxcontent);
 		}, { once: true });
     };
 
@@ -883,7 +892,7 @@ function editImpRows(editType)
 // updateContent: Updates the box if changes has been made
 //----------------------------------------------------------------------------------
 
-function updateContent(file) 
+function updateContent(file, box) 
 {
 	var box = retData['box'][openBoxID - 1];
 	var useBoxContent = true;
@@ -896,12 +905,11 @@ function updateContent(file)
 
 		
 	// Check if a drag and drop instance is created
-	if(file != null){
+	if(file != null && box != null){
+		console.log("dsfdsf")
 		var useBoxContent = true;
 		filename = file;
-	}
-	else{
-		var filename = $("#filename option:selected").val();
+		boxtitle = box;
 	}
 
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
@@ -909,8 +917,11 @@ function updateContent(file)
 	if (useBoxContent) {
 		if (box[1] != document.querySelector("#boxcontent").value || box[3] != document.querySelector("#wordlist").value || box[4] != document.querySelector("#boxtitle").value || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
 			try {
-				var boxtitle = document.querySelector("#boxtitle").value;
+				if(box == null)
+					var boxtitle = document.querySelector("#boxtitle").value;
 				var boxcontent = $("#boxcontent option:selected").val();
+				if(file == null)
+					var filename = $("#filename option:selected").val();
 				var wordlist = document.querySelector("#wordlist").value;
 				var fontsize = $("#fontsize option:selected").val();
 				var exampleid = querystring['exampleid'];
