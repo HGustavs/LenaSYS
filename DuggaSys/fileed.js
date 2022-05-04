@@ -125,6 +125,8 @@ function showLinkPopUp(fileKind) {
     $("#kind").val("LINK");
     $("#cid").val(querystring['courseid']);
     $("#coursevers").val(querystring['coursevers']);
+ 
+
 }
 
 function showFilePopUp(fileKind) {
@@ -154,13 +156,25 @@ function showFilePopUp(fileKind) {
 }
 
 //see fileedservice.php and filerecieve.php for more details of how files are saved to local storage and meta-data is saved to DB.
-function uploadFile(kind) {
-    console.log(kind);
-    if(kind != document.querySelector(".nowrap-filename").innerHTML){
+function uploadFile(kind,celldata) {
+
+   
+   
+        obj = JSON.parse(celldata);
+        console.log(obj.entry);
+        
+        obj.forEach(function(obj) { //loop through keys array
+            console.log(obj.shortfilename)
+          });
+
+   
+
+    //console.log(kind);
     if (kind == "MFILE") {
         var str = "<option>NONE</option>";
         for (i = 0; i < filez['lfiles'].length; i++) {
             var item = filez['lfiles'][i];
+            console.log(item);
             if (item != ".." && item != ".") str += "<option>" + item + "</option>";
         }
         $("#selectedfile").html(str);
@@ -190,19 +204,9 @@ function uploadFile(kind) {
     $("#kind").val(kind);
     $("#courseid").val(querystring['courseid']);
     $("#coursevers").val(querystring['coursevers']);
-    console.log(document.querySelector(".nowrap-filename").innerHTML);
-    console.log(document.querySelector(".nowrap-filename").innerHTML);
-    console.log(document.querySelector(".nowrap-filename").innerHTML);
-    console.log(document.querySelector(".nowrap-filename").innerHTML);
-    console.log("worked");
-    console.log("worked");
-    console.log("worked");
-    console.log("worked");
+    
 
-    }
-    else{
-        console.log("ERRROR");
-    }
+    
 
 }
 
@@ -383,7 +387,10 @@ function renderCell(col, celldata, cellid) {
     } else if (col == "kind") {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     }
+    //console.log(obj.shortfilename);
     return str;
+ 
+
 }
 
 function filePreview(name, path, extension){
