@@ -24,7 +24,7 @@ var updateShowAct = true;
 var courseFileArr = [];
 
 var commitChangeArray = [];
-
+var isClickedElementBox = false;
 //sorting for multiple views
 //Restores all views when pressing the All button
 function restoreStatView() {
@@ -218,10 +218,10 @@ function renderBarDiagram(data) {
   var maxDayCount = 0;
   for (var i = 0; i < 7 * numOfWeeks; i++) {
     var day = data['count'][dateString];
-    var commits = parseInt(day["commits"][0][0]);
-    var events = parseInt(day["events"][0][0]);
-    var comments = parseInt(day["comments"][0][0]);
-    var loc = parseInt(day["loc"][0][0] == null ? 0 : day["loc"][0][0]);
+    var commits = parseInt(day["commits"]);
+    var events = parseInt(day["events"]);
+    var comments = parseInt(day["comments"]);
+    var loc = parseInt(day["loc"]);
     var total = commits + events + comments + loc;
     if (total > maxDayCount) {
       maxDayCount = total;
@@ -430,6 +430,7 @@ function drawCommitDots(x1, y1, xmul, ymul, x_spacing, y_spacing){
 function renderLineDiagram(data) {
   weeks = data.weeks;
   daycounts = data['count'];
+  console.log(daycounts);
   var firstweek = data.weeks[0].weekstart;
 
 
@@ -590,10 +591,10 @@ function weekchoice(dateString) {
     var weekarray = [];
     for (i = 0; i < 70; i++) {
 
-      events = parseInt(daycounts[dateString].events[0][0]);
-      commits = parseInt(daycounts[dateString].commits[0][0]);
-      loc = parseInt(daycounts[dateString].loc[0][0] == null ? 0 : daycounts[dateString].loc[0][0]);
-      comments = parseInt(daycounts[dateString].comments[0][0]);
+      events = parseInt(daycounts[dateString].events);
+      commits = parseInt(daycounts[dateString].commits);
+      loc = parseInt(daycounts[dateString].loc);
+      comments = parseInt(daycounts[dateString].comments);
 
       weekarray[i] = [dateString, commits, events, loc, comments];
 
@@ -626,10 +627,10 @@ function weekchoice(dateString) {
   for (var key in daycounts) {
     if (key == dateString) {
       for (i = 0; i < 7; i++) {
-        var events = parseInt(daycounts[dateString].events[0][0]);
-        var commits = parseInt(daycounts[dateString].commits[0][0]);
-        var loc = parseInt(daycounts[dateString].loc[0][0] == null ? 0 : daycounts[dateString].loc[0][0]);
-        var comments = parseInt(daycounts[dateString].comments[0][0]);
+        var events = parseInt(daycounts[dateString].events);
+        var commits = parseInt(daycounts[dateString].commits);
+        var loc = parseInt(daycounts[dateString].loc);
+        var comments = parseInt(daycounts[dateString].comments);
 
         dailyCount[i] = [dateString, commits, events, loc, comments];
 
@@ -1130,19 +1131,21 @@ function returnedSection(data) {
   var str = "";
 
   str += "<div id='contributionContainer' class='contributionSort'>";
-  str += `<input type='button' id='allBtn' value='All' class='submit-button title='All' 
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'></input>`;
-  str += `<input type='button' id='basicBtn' value='Basic' class='submit-button title='Basic'
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'></input>`;
-  str += `<input type='button' id='chartsBtn' value='Charts' class='submit-button title='Charts'
-  onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
-  str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution'
-  onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
+  str += `<input type='button' id='allBtn' value='All' class='submit-button' 
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'title='View all tables and charts'></input>`;
+  str += `<input type='button' id='basicBtn' value='Basic' class='submit-button'
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'title='View basic statistics'></input>`;
+  str += `<input type='button' id='chartsBtn' value='Charts' class='submit-button'
+  onclick='statSort(value)' onmouseout='hideTooltip(this)'title='View only charts'></input>`;
+  str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button'
+  onclick='statSort(value)' onmouseout='hideTooltip(this)'title='View contribution data'></input>`;
   
   
   //Dynamically loads the year selection list based on folders in ../../contributionDBs/
-  str += `<select id='yearBtn' class='submit-button'
-  onclick='statSort(value)'onchange='courseSelection(this)'>
+
+  str += `<select id='yearBtn'
+  onclick='statSort(value)'onchange='courseSelection(this)'title='Select year dropdown'>
+
   <option value="ChooseY">Choose Year</option>`;
 
   // Add option for each year folder
@@ -1156,8 +1159,10 @@ function returnedSection(data) {
   }
   str +=`</select>`;
 
-  str += `<select id='courseBtn' class='submit-button'
-  onclick='statSort(value)'onchange='courseDBCollection(value)' style="visibility: hidden">
+
+  str += `<select id='courseBtn'
+  onclick='statSort(value)'onchange='courseDBCollection(value)' title='Select course dropdown'>
+
   <option value="ChooseC">Choose Course</option></select>`;
 
   str += "</div>"; 
@@ -1202,9 +1207,6 @@ function courseSelection(elem){
   // Clear dropdown menu
   var dropdown = document.getElementById('courseBtn');
   dropdown.options.length=0;
-
-  // Set visibility
-  dropdown.style.visibility = elem.value == "ChooseY" ? 'hidden' : "visible";
 
   // Default option
   var opt = document.createElement('option');
@@ -1885,6 +1887,57 @@ function toggleAccountRequestPane(){
     }
 }
 
+document.addEventListener('keydown', function(event) {
+	if(event.key === 'Escape'){
+		toggleAccountRequestPane();
+	}
+});
+
+$(document).mousedown(function (e) {
+  mouseDown(e);
+});
+
+$(document).mouseup(function (e) {
+  mouseUp(e);
+});
+
+function mouseDown(e) {
+
+  var box = $(e.target);
+  // if() - the clicked element is one of the account request elements
+  // else if() - the clicked element is a child of one of the show account request elements
+  // else - the clicked element does not belong to account request
+  if (box[0].classList.contains("show-accountRequests-pane") || box[0].classList.contains("accountRequests-pane-span") || box[0].classList.contains("hide-accountRequests-pane")) {
+    isClickedElementBox = true;
+  } else if ((findAncestor(box[0], "show-accountRequests-pane") != null) &&
+    (findAncestor(box[0], "show-accountRequests-pane").classList.contains("show-accountRequests-pane"))) {
+    isClickedElementBox = true;
+  } else {
+    isClickedElementBox = false;
+  }
+
+}
+
+function mouseUp(e) {
+  //if - the user clicks something other than the account request pane.
+  //else - the user clicks an element belonging to account request
+  if ($('.accountRequests-pane') && !$('.accountRequests-pane').is(e.target) &&
+  $('.accountRequests-pane').has(e.target).length === 0 && (!isClickedElementBox)) {
+    //if account request pane is open then close it.
+    if (document.getElementById("accountRequests-pane").className == "show-accountRequests-pane") {
+      document.getElementById('accountReqmarker').innerHTML = "Account requests";
+      document.getElementById("accountRequests-pane").className = "hide-accountRequests-pane";
+    }
+  }else{
+    if ($(e.target)[0].classList.contains("hide-accountRequests-pane")) {
+      document.getElementById('accountReqmarker').innerHTML = "Account requests";
+      document.getElementById("accountRequests-pane").className = "show-accountRequests-pane";
+    }
+  }
+}
+
+
+
 //Creates the html elements containing the commit changes
  function createCommitChange(data){
   var commitChange = data;
@@ -1923,9 +1976,9 @@ function toggleAccountRequestPane(){
 //Creates the sidebar for accepting and rejecting students when logged in as a superUser
 function createSidebar(){
   var text = document.getElementById('accountRequests-pane');
-  text.style.display="block";
+  text.style.display="inline-block";
   str = "";
-  str+= '<div id="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker">Account requests</span></div>';
+  str+= '<div id="accountRequests-pane-button" class="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker" class="accountRequests-pane-span">Account requests</span></div>';
   str+= "<table class='accountRequestTable'style='width: 85%'  border='1'><br />";
 	str+= "<tr class='accountRequestTable' style=' background-color: #ffffff';>";
   str+= "<th class='accountRequestTable'></th>";

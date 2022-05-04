@@ -363,7 +363,33 @@ function confirmBox(operation, item = null) {
 // Creates an array over all checked items
 function markedItems(item = null){
   var removed = false;
-    active_lid = item ? $(item).parents('table').attr('value') : null;
+  var kind = item ? $(item).parents('tr').attr('value') : null;
+  active_lid = item ? $(item).parents('table').attr('value') : null;
+  var subItems = [];
+
+    //if the checkbox belongs to one of these kinds then all elements below it should also be selected.
+    if(kind == "section" || kind == "moment"){
+      var itemInSection = true;
+      var sectionStart = false;
+      
+      $("#Sectionlist").find(".item").each(function (i) {
+        var tempItem = $(this).attr('value');
+        if(itemInSection && sectionStart){
+          var tempKind = $(this).parents('tr').attr('value');
+          if(tempKind == "section" || tempKind == "moment" || tempKind == "header"){
+            itemInSection = false;
+            //console.log("loop breaker: "+tempItem);
+          }else{
+            subItems.push(tempItem);
+            //console.log("added: "+tempItem);
+          } 
+        }else if(tempItem==active_lid) sectionStart=true;
+      });
+
+    }
+
+    
+    console.log("Active lid: "+active_lid);
     if (hideItemList.length != 0){
       for( var i = 0; i < hideItemList.length; i++){ 
         if ( hideItemList[i] === active_lid) { 
@@ -372,13 +398,32 @@ function markedItems(item = null){
           var removed = true;
           console.log("Removed from list");
         }   
+        for(var j = 0; j < subItems.length; j++){
+          if ( hideItemList[i] === subItems[j]) { 
+            $("#"+hideItemList[i]+"-checkbox").prop("checked", false);
+            hideItemList.splice(i, 1);
+            //console.log(subItems[j]+" Removed from list");
+          }
+        }
       } if(removed != true){
         hideItemList.push(active_lid);
         console.log("Adding !empty list");
+        for(var j = 0; j < subItems.length; j++){
+          hideItemList.push(subItems[j]);
+          console.log(subItems[j]);
+          $("#"+subItems[j]+"-checkbox").prop("checked", true);
+        }
       }
     } else {
       hideItemList.push(active_lid);
       console.log("Added");
+      for(var j = 0; j < subItems.length; j++){
+        hideItemList.push(subItems[j]);
+      }
+      for(i=0; i<hideItemList.length; i++){
+        $("#"+hideItemList[i]+"-checkbox").prop("checked", true);
+        //console.log(hideItemList[i]+"-checkbox");
+        }
     } 
     console.log(hideItemList);
 }
@@ -799,14 +844,14 @@ function returnedSection(data) {
 
     //Swimlane and 'Load Dugga' button.
 
-    str += "<div id='Sectionlistc'>";
+   
 
     str += "<div id='statisticsSwimlanes'>";
     str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
 		str += "</div>";
     str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
 
-
+    str += "<div id='Sectionlistc'>";
     // For now we only have two kinds of sections
     if (data['entries'].length > 0) {
       var kk = 0;
@@ -831,7 +876,7 @@ function returnedSection(data) {
 
         // Content table
         str += `<table id='lid${item['lid']}' value='${item['lid']}' 
-        style='width:100%;table-layout:fixed;'><tr style='height:32px;' `;
+        style='width:100%;table-layout:fixed;'><tr value='${makeTextArray(item['kind'], valarr)}' style='height:32px;' `;
 
         if (kk % 2 == 0) {
           str += " class='hi' ";
@@ -997,7 +1042,7 @@ function returnedSection(data) {
         }
 
         // Close Information
-        str += "  onclick='duggaRowClick(this)' >";
+        str += " value='"+item['lid']+"' onclick='duggaRowClick(this)' >";
         // Content of Section Item
         if (itemKind == 0) {
           // Header
@@ -1135,7 +1180,7 @@ function returnedSection(data) {
 
         //Generate new tab link
         str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Open link in new tab' class='' 
           src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
           str += "</td>";
@@ -1143,7 +1188,7 @@ function returnedSection(data) {
         // Generate Canvas Link Button
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
           src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
           str += "</td>";
@@ -1151,14 +1196,11 @@ function returnedSection(data) {
 
         // Cog Wheel
         if (data['writeaccess'] || data['studentteacher']) {
-          str += "<td style='width:32px;' ";
-
-          if (itemKind === 0) str += "class='header" + hideState + "' ";
-          if (itemKind === 1) str += "class='section" + hideState + "' ";
-          if (itemKind === 4) str += "class='moment" + hideState + "' ";
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
 
-          str += "><img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
+          str += "<img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
@@ -1169,7 +1211,7 @@ function returnedSection(data) {
         // Trashcan
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img alt='trashcan icon' id='dorf' title='Delete item' class='' 
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
@@ -1177,8 +1219,8 @@ function returnedSection(data) {
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:25px;' class='" + makeTextArray(itemKind,
-            ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
+          str += `<td style='width:25px;' class='${makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
             str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' onclick='markedItems(this)'>";
             str += "</td>";      
         }
