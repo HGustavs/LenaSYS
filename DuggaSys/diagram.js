@@ -6090,7 +6090,7 @@ function drawElement(element, ghosted = false)
                     <div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
-                            width:${boxw}px;
+                            width:${objectWidth}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
         if(context.includes(element)){
@@ -6132,16 +6132,16 @@ function drawElement(element, ghosted = false)
                 multi = `
                         <path d="M${linew * multioffs},${hboxh} 
                         Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
-                        Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
-                        Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
+                        Q${objectWidth - (linew * multioffs)},${linew * multioffs} ${objectWidth - (linew * multioffs)},${hboxh} 
+                        Q${objectWidth - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
                         Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
                         stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
             }    
 
             str += `<path d="M${linew},${hboxh} 
                             Q${linew},${linew} ${hboxw},${linew} 
-                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
-                            Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
+                            Q${objectWidth - linew},${linew} ${objectWidth - linew},${hboxh} 
+                            Q${objectWidth - linew},${boxh - linew} ${hboxw},${boxh - linew} 
                             Q${linew},${boxh - linew} ${linew},${hboxh}" 
                         stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}'/>
                         
