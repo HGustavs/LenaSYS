@@ -422,7 +422,13 @@ function markedItems(item = null){
     } else {
       hideItemList.push(active_lid);
       console.log("Added");
-
+      for(var j = 0; j < subItems.length; j++){
+        hideItemList.push(subItems[j]);
+      }
+      for(i=0; i<hideItemList.length; i++){
+        $("#"+hideItemList[i]+"-checkbox").prop("checked", true);
+        //console.log(hideItemList[i]+"-checkbox");
+      }
       // Show ghost button when checkbox is checked
       document.querySelector('#hideElement').disabled = false;
       document.querySelector('#hideElement').style.opacity = 1;
@@ -431,14 +437,6 @@ function markedItems(item = null){
       // Disable ghost button when no checkboxes is checked
       document.querySelector('#hideElement').disabled = true;
       document.querySelector('#hideElement').style.opacity = 0.7;
-
-      for(var j = 0; j < subItems.length; j++){
-        hideItemList.push(subItems[j]);
-      }
-      for(i=0; i<hideItemList.length; i++){
-        $("#"+hideItemList[i]+"-checkbox").prop("checked", true);
-        //console.log(hideItemList[i]+"-checkbox");
-        }
 
     } 
     console.log(hideItemList);
