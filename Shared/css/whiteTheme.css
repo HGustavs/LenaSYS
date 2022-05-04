@@ -509,6 +509,10 @@
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
+#content {
+    margin: 5px 10px 15px 10px;
+}
+
 
 /* #Sectionlist .example {
     color: var(--color-text-secondary);
