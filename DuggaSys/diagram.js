@@ -3021,7 +3021,7 @@ function getRectFromElement (element)
     return {
         x: element.x,
         y: element.y,
-        width: element.width,
+        width: objectWidth,
         height: element.height,
     };
 }
@@ -5947,6 +5947,7 @@ function drawElement(element, ghosted = false)
     // Compute size variables
     var linew = Math.round(strokewidth * zoomfact);
     var boxw  = Math.round(element.width * zoomfact);
+    var objectWidth = Math.round(element.width * zoomfact);
     var boxh  = Math.round(element.height * zoomfact);
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
@@ -5968,9 +5969,14 @@ function drawElement(element, ghosted = false)
     
     // If calculated size is larger than element width
     const margin = 10 * zoomfact;
-    var tooBig = (textWidth >= (boxw - (margin * 2)));
+    var tooBig = (textWidth >= (objectWidth - (margin * 2)));
     var xAnchor = tooBig ? margin : hboxw;
     var vAlignment = tooBig ? "left" : "middle";
+    
+    // Automatic resizing of object according to element name
+    if (textWidth>objectWidth) {
+        objectWidth=+(textWidth+20);
+    }
 
     if (errorActive) {
         // Checking for errors regarding ER Entities
@@ -6097,18 +6103,18 @@ function drawElement(element, ghosted = false)
             `;
         }
         str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}' >`;
+        str += `<svg width='${objectWidth}' height='${boxh}' >`;
         // Create svg 
         if (element.kind == "EREntity") {
             var weak = "";
 
             if(element.state == "weak") {
-                weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
+                weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${objectWidth- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
                 stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' /> 
                 `;         
             }
             
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+            str += `<rect x='${linew}' y='${linew}' width='${objectWidth - (linew * 2)}' height='${boxh - (linew * 2)}'
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
                     ${weak}
                     <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
