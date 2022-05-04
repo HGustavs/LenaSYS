@@ -382,7 +382,7 @@ function mouseOverHome() {
    if(obj != null)
    {
       var images = obj.getElementsByTagName('img');
-      images[0].src = '../Shared/icons/HomeShadow.svg';
+      images[0].src = '../Shared/icons/Home.svg';
    }
 }
 
