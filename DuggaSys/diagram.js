@@ -6167,7 +6167,7 @@ function drawElement(element, ghosted = false)
             var numOfLetters = element.name.length;
             if (tooBig) {
                 var tempName = "";
-                var maxTextWidth = boxw - margin;
+                var maxTextWidth = objectWidth - margin;
 
                 if (element.state == "weak") maxTextWidth -= (linew * multioffs) * 2;
 
@@ -6182,12 +6182,12 @@ function drawElement(element, ghosted = false)
 
             var weak = "";
             if (element.state == "weak") {
-                weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
+                weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${objectWidth - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
                     `;
                 xAnchor += linew * multioffs;
             }
-            str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+            str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${objectWidth - linew},${hboxh} ${hboxw},${boxh - linew}"  
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
                     ${weak}`;
             str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
