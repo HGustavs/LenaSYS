@@ -49,8 +49,8 @@ function returnedDugga(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	if(data['opt']=="SAVDU"){
-		$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
-		showReceiptPopup();
+		//$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
+		//showReceiptPopup();
 	}
 
 
@@ -129,6 +129,8 @@ function returnedDugga(data)
 
 function saveClick()
 {
+	$('#submission-receipt').html(`${response['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${response['link']}\n\nHash\n${response['hash']}\n\nHash password\n${response['hashpwd']}`);
+		showReceiptPopup();
 	Timer.stopTimer();
 
 	timeUsed = Timer.score;
