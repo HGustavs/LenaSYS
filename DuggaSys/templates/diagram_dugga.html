@@ -4,56 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <style>
-        .container {
-            display: flex;
-            height: 50.1rem;
-            width: 100%;
-            justify-content: space-between;
-        }
-        
-         ::-webkit-scrollbar {
-            width: 5px;
-        }
-        
-         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-         ::-webkit-scrollbar-thumb {
-            background: #888;
-        }
-        
-        .assignment_left {
-            background-color: #fffcfc;
-            width: 300px;
-            height: 800px;
-            overflow: auto;
-            margin: 0px;
-        }
-        
-        #close_open {
-            width: 23px;
-            position: fixed;
-            top: 50%;
-            left: 272px;
-            border-top: 14px solid transparent;
-            border-bottom: 14px solid transparent;
-            border-right: 14px solid #d4d2d2;
-        }
-        
-        #close_open:hover {
-            border-top: 14px solid transparent;
-            border-bottom: 14px solid transparent;
-            border-right: 14px solid #8e8e8e;
-        }
-        
-        .canvas_right {
-            flex: 1;
-            display: flex;
-            justify-content: space-around;
-        }
-    </style>
+    <link type="text/css" href="../../Shared/css/style.css" rel="stylesheet">
+
     <script>
         $(document).ready(function() {
             $("#close_open").click(function() {
@@ -142,15 +94,16 @@
 
                 </div>
             </div>
-            <div id="container" class="canvas_right">
-
-
-                <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;margin-left: 10px;" src="
-                                    ./diagram.php" title="Diagram"></iframe>
-
-
-            </div>
+            
             <div id="nextVariantBtn"></div>
+        </div>
+        <div id="container" class="canvas_right">
+
+
+            <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;margin-left: 10px;" src="
+                                ./diagram.php" title="Diagram"></iframe>
+
+
         </div>
     </div>
 </body>
