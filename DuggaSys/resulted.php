@@ -34,6 +34,7 @@ pdoConnect();
 	<script src="../Shared/markdown.js"></script>
 	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
 	<script src="resulted.js"></script>
+	<script src="backToTop.js"></script>
 </head>
 <body onload="setup();">
 	<?php

@@ -10,10 +10,10 @@ $(document).ready(function(){
 // Show the up-arrow when user has scrolled down 200 pixels on the page
 window.onscroll = function() {scrollToTop()};
 function scrollToTop() {
-var scroll = document.getElementById("fixedScroll");
-if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-    scroll.style.display = "block";
-} else {
-    scroll.style.display = "none";
-}
+    var scroll = document.getElementById("fixedScroll");
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        scroll.style.display = "block";
+    } else {
+        scroll.style.display = "none";
+    }
 }
