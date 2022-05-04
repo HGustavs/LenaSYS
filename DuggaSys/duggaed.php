@@ -27,6 +27,7 @@ session_start();
   <script src="timer.js"></script>
   <script src="clickcounter.js"></script>
   <script src="../Shared/markdown.js"></script>
+	<script src="backToTop.js"></script>
 
 </head>
 <body onload="setup();">
