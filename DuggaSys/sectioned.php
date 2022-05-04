@@ -23,7 +23,7 @@
 	<title id="sectionedPageTitle">Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-	<link type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+	<!-- <link type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet"> -->
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -61,7 +61,7 @@
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","undefined");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","undefined");'><img alt='code tag icon' class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","undefined");'><img alt='multiple users icon' class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","undefined");'><i alt='quotation mark icon' class='material-icons'>format_quote</i></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Message","undefined");'><i alt='message mark icon' class='material-icons'>format_quote</i></a></li>
 				</ol>
 		</div>
 		
@@ -135,17 +135,23 @@
 		<div id='Sectionlist'>
 
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
+			
+			<!-- Undo button -->
+					
+			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:145px; display: none;" onclick="cancelDelete();">
+			
+			<!-- Undo button END -->
 
-		<!-- Hide button -->
+			<!-- Hide button -->
 		
-		<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
-			<input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
-			<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
-		</div>
+			<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
+				<input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
+				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+			</div>
 		
-		<!-- end hide button -->
+			<!-- end hide button -->
 
-		<!-- Small FAB Button in top in the header of sectioned -->
+			<!-- Small FAB Button in top in the header of sectioned -->
 		
 			<div style="margin:10px;">
 				<img src="../Shared/icons/right_complement.svg" alt='Show List Content' id="sectionList_arrowStatisticsOpen">
@@ -164,21 +170,21 @@
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i alt='quotation mark icon' class='material-icons'>format_quote</i></a></li>
 					</ol>
 			</div>
-				<div style='flex-grow:1'>
-						<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
-						<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
-						<span id='course-versname' class='courseVersionField'>UNK</span>
-				</div>
+			<div style='flex-grow:1'>
+					<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
+					<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
+					<span id='course-versname' class='courseVersionField'>UNK</span>
+			</div>
 
 
-				<div id='course-newitem' style='display: flex;'>
+			<div id='course-newitem' style='display: flex;'>
 
-				</div>
+			</div>
 
-				<!-- test #1 -->
+			<!-- test #1 -->
 
-				<div id='course-coursevers' style='display:none; margin-right:10px;' >UNK</div>
-				<div id='course-courseid' style='display:none; margin-right:10px;' >UNK</div>
+			<div id='course-coursevers' style='display:none; margin-right:10px;' >UNK</div>
+			<div id='course-courseid' style='display:none; margin-right:10px;' >UNK</div>
 
 		</div>
 
@@ -203,7 +209,7 @@
 
 	<?php
 		include '../Shared/loginbox.php';
-	?>
+	?>			
 
 		<!-- Edit Section Dialog START -->
 
@@ -239,7 +245,7 @@
 							<legend><h3>Deadline</h3></legend>
 							<span>Absolute</span>
 							<span style='float:right'>
-								<input onchange="showCourseDate('setDeadlineValue','dialog8');quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
+								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
 								<select style='width:55px;' id='deadlineminutes'></select>
 								<select style='width:55px;' id='deadlinehours'></select>
 							</span>
@@ -266,7 +272,7 @@
 				</div>
 
 				<!-- Error message, no duggas present-->
-				<div style='padding:5px;'>
+				<div style='padding:20px;'>
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />

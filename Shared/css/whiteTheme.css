@@ -408,6 +408,7 @@
     font-size: 14px;
     outline: 0 none;
     background-color: #F2F2F2; 
+    height: auto;
 }
 
 
@@ -451,7 +452,7 @@
 	color: white;
 	cursor:text;
     	font-family: Arial, Sans-Serif;
-    	font-size: 15px;
+    	font-size: 18px;
 }
 .boxtitle{
 	font-family: Arial, Sans-Serif !important;
@@ -473,6 +474,41 @@
     vertical-align: middle;
     padding: 0px 5px;
 }
+#NewTabLink{
+    cursor: pointer;
+    filter: invert(80%);
+    -webkit-filter: invert(100%);   
+}
+
+.bottomBorderColor{
+    border-top: 2px solid var(--color-border-list); 
+}
+.dropdown-list-container {
+    padding: 8px;
+    width: 200px;
+    color:#000;
+    font-size: 12px;
+    overflow-y: auto;
+    display: none;
+    position: absolute;
+    background: var(--color-background);
+    box-shadow: 2px 2px 8px #888;
+    margin-top: 5px;
+  }
+
+.loginBox,
+.logoutBox{
+  padding: 4px;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
+  color:black;
+  min-height: 100px;
+  min-width: 200px;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
 
 /* #Sectionlist .example {
     color: var(--color-text-secondary);

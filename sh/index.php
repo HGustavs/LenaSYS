@@ -86,72 +86,161 @@ function GetAssignment ($hash){
 //
 // GetCourse($course)
 //
-// Redirect to the active course that best reflects the input string $course. The input string is 
-// split on SPACE and all substrings must be matched in the course name. If multiple courses matches
-// the the function redirects to the first course in alphabetical order.
+// Redirect to the course that uniquely reflects the input string $course. The input string 
+// must be matched with course names. If multiple courses match with the input string
+// the function does not redirects to any course.
 // 
 // To test this function, try and enter the following:
-// https://[your LenaSYS installation host]/DuggaSYS/sh/?c=datorgrafik
-// https://[your LenaSYS installation host]/DuggaSYS/sh/?c=mobil prog
+// https://[your LenaSYS installation host]/DuggaSYS/sh/?c=demo-course
+// https://[your LenaSYS installation host]/DuggaSYS/sh/?c=webbprogrammering
 //
 //------------------------------------------------------------------------------------------------
 function GetCourse($course){
 	global $pdo;
 
 	// Match parameters with SH identifiers
-	$sql = "SELECT cparam, aparam, cid FROM shregister WHERE cparam = :cparam AND aparam = 'UNK';";
+	$sql = "SELECT cid FROM shregister WHERE cparam = :cparam AND aparam = 'UNK';";
 	$query = $pdo->prepare($sql);
 	$query->bindParam(":cparam", $course,PDO::PARAM_STR);
 	$query->execute();
 
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){ // Identifier recognized
-		$cparam = $row['cparam'];
 		$cid = $row['cid'];
 
 		// echo "<script>console.log('Console: An identifier was found');</script>";
 
 		// Fetch corresponding course data
-		$sql="SELECT cid,activeversion AS vers,coursename FROM course WHERE visibility=1 AND cid = :courseid;";
+		$sql="SELECT cid,activeversion AS vers,coursename FROM course WHERE visibility = 1 AND cid = :courseid;";
 		$query = $pdo->prepare($sql);
 		$query->bindParam(":courseid", $cid,PDO::PARAM_INT);
 		$query->execute();
 
-		if($row = $query->fetch(PDO::FETCH_ASSOC)) {
+		if($row = $query->fetch(PDO::FETCH_ASSOC)) { // Course data was found
 			$cid = $row['cid'];
 			$vers = $row['vers'];
 			$coursename = $row['coursename'];
 
-			// TODO Implement handler for if couresname has no resemblance with SH parameters
-			// Check if the SH identifiers have resemblance to coursename
-			if ((stristr($cparam, $coursename) || stristr($coursename, $cparam))) {
+			// Check if the SH identifier have resemblance to coursename
+			if (!(stristr($course, $coursename) || stristr($coursename, $course))) { // SH identifier do not resemble course name
+				// Search for a course in course resembling parameter
+				$sql="SELECT cid,activeversion AS vers,coursename FROM course WHERE visibility = 1 AND coursename LIKE CONCAT('%', :cparam, '%');";
+				$query = $pdo->prepare($sql);
+				$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+				$query->execute();
 
-			} else { // SH identifiers do not resemble course name
+				if($row = $query->fetch(PDO::FETCH_ASSOC)) { // One  row resulted form query
+					if (!$query->fetch()) { // Only one row
+						$cid = $row['cid'];
+						$vers = $row['vers'];
+						$coursename = $row['coursename'];
 
+						// echo "<script>console.log('Console: SH identifier is unique');</script>";
+
+						$sql = "UPDATE shregister SET cid = :courseid WHERE cparam = :cparam AND aparam = 'UNK';";
+						$query = $pdo->prepare($sql);
+						$query->bindParam(":courseid", $cid,PDO::PARAM_INT);
+						$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+						$query->execute();
+
+						// echo "<script>console.log('Console: SH identifier updated');</script>";
+					} else { // Multiple query results
+						// echo "<script>console.log('Console: SH identifier is not unique');</script>";
+
+						$sql = "DELETE FROM shregister WHERE cparam = :cparam AND aparam = 'UNK';";
+						$query = $pdo->prepare($sql);
+						$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+						$query->execute();
+
+						unset($cid);
+						unset($vers);
+					}
+				} else { // No query results
+					// echo "<script>console.log('Console: SH identifier has no resembling query');</script>";
+
+					$sql = "DELETE FROM shregister WHERE cparam = :cparam AND aparam = 'UNK';";
+					$query = $pdo->prepare($sql);
+					$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+					$query->execute();
+					
+					unset($cid);
+					unset($vers);
+				}
+			} else { // SH identifier resemble course name
+				// echo "<script>console.log('Console: SH identifier found');</script>";
 			}
-		} else {
-			// TODO Implement handler for deleted courses, changed id for courses and deletion of identifiers
+		} else { // No corresponding course data was found
+			unset($cid);
+			// Search for a course in course resembling parameter
+			$sql="SELECT cid,activeversion AS vers,coursename FROM course WHERE visibility = 1 AND coursename LIKE CONCAT('%', :cparam, '%');";
+			$query = $pdo->prepare($sql);
+			$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+			$query->execute();
+
+			if($row = $query->fetch(PDO::FETCH_ASSOC)) { // One  row resulted form query
+				if (!$query->fetch()) { // Only one row
+					$cid = $row['cid'];
+					$vers = $row['vers'];
+					$coursename = $row['coursename'];
+
+					// echo "<script>console.log('Console: SH identifier is unique');</script>";
+
+					$sql = "UPDATE shregister SET cid = :courseid WHERE cparam = :cparam AND aparam = 'UNK';";
+					$query = $pdo->prepare($sql);
+					$query->bindParam(":courseid", $cid,PDO::PARAM_INT);
+					$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+					$query->execute();
+
+					// echo "<script>console.log('Console: SH identifier updated');</script>";
+				} else { // Multiple query results
+					// echo "<script>console.log('Console: SH identifier is not unique');</script>";
+
+					$sql = "DELETE FROM shregister WHERE cparam = :cparam AND aparam = 'UNK';";
+					$query = $pdo->prepare($sql);
+					$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+					$query->execute();
+				}
+			} else { // No query results
+				// echo "<script>console.log('Console: SH identifier has no resembling query');</script>";
+
+				$sql = "DELETE FROM shregister WHERE cparam = :cparam AND aparam = 'UNK';";
+				$query = $pdo->prepare($sql);
+				$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+				$query->execute();
+			}
 		}
-	} else { // Identifier not recognized (Create new identifier)
+	} else { // Identifier not recognized
 		// echo "<script>console.log('Console: No identifier was found' );</script>";
 		// Find a resembling coursename form course with parameters
-		$sql="SELECT cid,activeversion AS vers,coursename FROM course WHERE visibility=1 AND coursename LIKE CONCAT('%', :cparam, '%');";
+		$sql="SELECT cid,activeversion AS vers,coursename FROM course WHERE visibility = 1 AND coursename LIKE CONCAT('%', :cparam, '%');";
 		$query = $pdo->prepare($sql);
 		$query->bindParam(":cparam", $course, PDO::PARAM_STR);
 		$query->execute();
 
 		if($row = $query->fetch(PDO::FETCH_ASSOC)) { // One  row resulted form query
-			if (!$query->fetch()) {
+			if (!$query->fetch()) { // Only one row
 				$cid = $row['cid'];
 				$vers = $row['vers'];
 				$coursename = $row['coursename'];
 
-				// echo "<script>console.log('Console: SH identifier is unique');</script>";
-
-				$sql = "INSERT INTO shregister (cparam, aparam, cid) VALUES (?, ?, ?);";
+				// Prevent SH links to be created for an course if that course already has an link to it
+				$sql = "SELECT * FROM shregister WHERE cid = :courseid AND lid IS NULL;";
 				$query = $pdo->prepare($sql);
-				$query->execute([$course, "UNK", $cid]);
+				$query->bindParam(":courseid", $cid,PDO::PARAM_INT);
+				$query->execute();
+				
+				if($row = $query->fetch(PDO::FETCH_ASSOC)) { // Course already has an associated SH link
+					// echo "<script>console.log('Console: SH identifier already exists');</script>";
+					unset($cid);
+					unset($vers);
+				} else { // Course does not have an associated SH link
+					// echo "<script>console.log('Console: SH identifier is unique');</script>";
 
-				// echo "<script>console.log('Console: New SH identifier created');</script>";
+					$sql = "INSERT INTO shregister (cparam, aparam, cid) VALUES (?, ?, ?);";
+					$query = $pdo->prepare($sql);
+					$query->execute([$course, "UNK", $cid]);
+
+					// echo "<script>console.log('Console: New SH identifier created');</script>";
+				}
 			} else { // Multiple query results
 				// echo "<script>console.log('Console: SH identifier is not unique');</script>";
 			}
@@ -160,7 +249,7 @@ function GetCourse($course){
 		}
 	}
 
-	if(isset($cid)&&isset($vers)) {
+	if(isset($cid)) {
 		header("Location: ../DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}&embed");
 		exit();
 	}else{
@@ -172,89 +261,195 @@ function GetCourse($course){
 //
 // CourseAndAssignment($course, $assignment)
 //
-// Redirect to assignment and active course that best reflects the input strings $assignment and 
-// $course. The input strings is split on SPACE and all substrings must be matched in the respective 
-// parameters. If multiple courses matches the the function uses the first course in 
-// alphabetical order in the redirection, likewise if multiple assignments matches the first 
-// assignment in alphabetical order is used in the redirection.
+// Redirect to assignment and active course that uniquely reflects the input strings $assignment and 
+// $course. The input strings is must be matched in the respective 
+// parameters. If multiple courses matches the the function uses no course,
+// likewise if multiple assignments matches the no assignment is used 
 // 
 // To test this function, try and enter the following:
-// https://[your LenaSYS installation host]/DuggaSYS/sh/?c=datorgrafik&a=bit 1
-// https://[your LenaSYS installation host]/DuggaSYS/sh/?c=datorgrafik&a=bit 2
+// https://[your LenaSYS installation host]/DuggaSYS/sh/?c=demo-course&a=diagram dugga
+// https://[your LenaSYS installation host]/DuggaSYS/sh/?c=demo-course&a=dugga 1
 //
 //------------------------------------------------------------------------------------------------
 function CourseAndAssignment($course, $assignment) {	
 	global $pdo;
 
 	// Match parameters with SH identifiers
-	$sql = "SELECT cparam, aparam, cid, lid FROM shregister WHERE cparam = :cparam AND aparam = :aparam;";
+	$sql = "SELECT cid, lid FROM shregister WHERE cparam = :cparam AND aparam = :aparam;";
 	$query = $pdo->prepare($sql);
 	$query->bindParam(":cparam", $course,PDO::PARAM_STR);
 	$query->bindParam(":aparam", $assignment,PDO::PARAM_STR);
 	$query->execute();
 
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){ // Identifier recognized
-		$cparam = $row['cparam'];
-		$aparam = $row['aparam'];
 		$cid = $row['cid'];
 		$lid = $row['lid'];
 
 		// echo "<script>console.log('Console: An identifier was found');</script>";
 
 		// Fetch corresponding course and assignment data
-		$sql="SELECT course.cid AS cid,course.activeversion AS vers, course.coursename AS coursename, listentries.entryname AS entryname, listentries.lid AS lid,listentries.link AS link,listentries.highscoremode AS highscoremode,quiz.deadline AS deadline FROM listentries JOIN course ON listentries.vers=course.activeversion AND listentries.cid=course.cid LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind=3 AND course.cid = :courseid AND listentries.lid = :assignmentid;";
+		$sql="SELECT course.cid AS cid,course.activeversion AS vers, course.coursename AS coursename, listentries.entryname AS entryname, listentries.lid AS lid,listentries.link AS link,listentries.highscoremode AS highscoremode,quiz.deadline AS deadline FROM listentries JOIN course ON listentries.vers=course.activeversion AND listentries.cid=course.cid LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind = 3 AND visible = 1 AND visibility = 1 AND course.cid = :courseid AND listentries.lid = :assignmentid;";
 		$query = $pdo->prepare($sql);
 		$query->bindParam(":courseid", $cid,PDO::PARAM_INT);
 		$query->bindParam(":assignmentid", $lid,PDO::PARAM_INT);
 		$query->execute();
 
-		if($row = $query->fetch(PDO::FETCH_ASSOC)) {
+		if($row = $query->fetch(PDO::FETCH_ASSOC)) { // Course and assignment data was found
 			$cid = $row['cid'];
 			$vers = $row['vers'];
 			$coursename = $row['coursename'];
 			$entryname = $row['entryname'];
 			$lid = $row['lid'];
 			$link = $row['link'];
-			$highscoremode = $row['highscoremode'];
-			$deadline = $row['deadline'];
 
-			// TODO Implement handler for if couresname and assignmentname has no resemblance with SH parameters
 			// Check if the SH identifiers have resemblance to coursename and assignmentname
-			if ((stristr($cparam, $coursename) || stristr($coursename, $cparam)) && (stristr($aparam, $entryname) || stristr($entryname, $aparam))) {
+			if (!(stristr($course, $coursename) || stristr($coursename, $course)) || !(stristr($assignment, $entryname) || stristr($entryname, $assignment))) { // SH identifiers do not resemble course and assignment names
+				// Search for an course and assignment pair in listentries resembling with parameters
+				$sql="SELECT course.cid AS cid,course.activeversion AS vers, course.coursename AS coursename, listentries.entryname AS entryname, listentries.lid AS lid,listentries.link AS link,listentries.highscoremode AS highscoremode,quiz.deadline AS deadline FROM listentries JOIN course ON listentries.vers=course.activeversion AND listentries.cid=course.cid LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind = 3 AND visible = 1 AND visibility = 1 AND coursename LIKE CONCAT('%', :cparam, '%') AND entryname LIKE CONCAT('%', :aparam, '%');";
+				$query = $pdo->prepare($sql);
+				$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+				$query->bindParam(":aparam", $assignment, PDO::PARAM_STR);
+				$query->execute();
 
-			} else { // SH identifiers do not resemble course and assignment names
+				if($row = $query->fetch(PDO::FETCH_ASSOC)) { // One  row resulted form query
+					if (!$query->fetch()) { // Only one row
+						$cid = $row['cid'];
+						$vers = $row['vers'];
+						$coursename = $row['coursename'];
+						$entryname = $row['entryname'];
+						$lid = $row['lid'];
+						$link = $row['link'];
 
+						// echo "<script>console.log('Console: SH identifier is unique');</script>";
+
+						$sql = "UPDATE shregister SET cid = :courseid, lid = :assignmentid WHERE cparam = :cparam AND aparam = :aparam;";
+						$query = $pdo->prepare($sql);
+						$query->bindParam(":courseid", $cid,PDO::PARAM_INT);
+						$query->bindParam(":assignmentid", $lid,PDO::PARAM_INT);
+						$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+						$query->bindParam(":aparam", $assignment, PDO::PARAM_STR);
+						$query->execute();
+
+						// echo "<script>console.log('Console: SH identifier updated');</script>";
+					} else { // Multiple query results
+						// echo "<script>console.log('Console: SH identifier is not unique');</script>";
+
+						$sql = "DELETE FROM shregister WHERE cparam = :cparam AND aparam = :aparam;";
+						$query = $pdo->prepare($sql);
+						$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+						$query->bindParam(":aparam", $assignment, PDO::PARAM_STR);
+						$query->execute();
+
+						unset($cid);
+						unset($vers);
+						unset($link);
+						unset($lid);
+					}
+				} else { // No query results
+					// echo "<script>console.log('Console: SH identifier has no resembling query');</script>";
+
+					$sql = "DELETE FROM shregister WHERE cparam = :cparam AND aparam = :aparam;";
+					$query = $pdo->prepare($sql);
+					$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+					$query->bindParam(":aparam", $assignment, PDO::PARAM_STR);
+					$query->execute();
+
+					unset($cid);
+					unset($vers);
+					unset($link);
+					unset($lid);
+				}
+			} else { // SH identifier resemble course and assignment names
+				// echo "<script>console.log('Console: SH identifier found');</script>";
 			}
-		} else {
-			// TODO Implement handler for deleted courses and assignments, changed id for courses and assignments and deletion of identifiers
+		} else { // No corresponding course and assignment data was found
+			unset($cid);
+			// Search for an course and assignment pair in listentries resembling with parameters
+			$sql="SELECT course.cid AS cid,course.activeversion AS vers, course.coursename AS coursename, listentries.entryname AS entryname, listentries.lid AS lid,listentries.link AS link,listentries.highscoremode AS highscoremode,quiz.deadline AS deadline FROM listentries JOIN course ON listentries.vers=course.activeversion AND listentries.cid=course.cid LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind = 3 AND visible = 1 AND visibility = 1 AND coursename LIKE CONCAT('%', :cparam, '%') AND entryname LIKE CONCAT('%', :aparam, '%');";
+			$query = $pdo->prepare($sql);
+			$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+			$query->bindParam(":aparam", $assignment, PDO::PARAM_STR);
+			$query->execute();
+
+			if($row = $query->fetch(PDO::FETCH_ASSOC)) { // One  row resulted form query
+				if (!$query->fetch()) { // Only one row
+					$cid = $row['cid'];
+					$vers = $row['vers'];
+					$coursename = $row['coursename'];
+					$entryname = $row['entryname'];
+					$lid = $row['lid'];
+					$link = $row['link'];
+
+					// echo "<script>console.log('Console: SH identifier is unique');</script>";
+
+					$sql = "UPDATE shregister SET cid = :courseid, lid = :assignmentid WHERE cparam = :cparam AND aparam = :aparam;";
+					$query = $pdo->prepare($sql);
+					$query->bindParam(":courseid", $cid,PDO::PARAM_INT);
+					$query->bindParam(":assignmentid", $lid,PDO::PARAM_INT);
+					$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+					$query->bindParam(":aparam", $assignment, PDO::PARAM_STR);
+					$query->execute();
+
+					// echo "<script>console.log('Console: SH identifier updated');</script>";
+				} else { // Multiple query results
+					// echo "<script>console.log('Console: SH identifier is not unique');</script>";
+
+					$sql = "DELETE FROM shregister WHERE cparam = :cparam AND aparam = :aparam;";
+					$query = $pdo->prepare($sql);
+					$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+					$query->bindParam(":aparam", $assignment, PDO::PARAM_STR);
+					$query->execute();
+				}
+			} else { // No query results
+				// echo "<script>console.log('Console: SH identifier has no resembling query');</script>";
+
+				$sql = "DELETE FROM shregister WHERE cparam = :cparam AND aparam = :aparam;";
+				$query = $pdo->prepare($sql);
+				$query->bindParam(":cparam", $course, PDO::PARAM_STR);
+				$query->bindParam(":aparam", $assignment, PDO::PARAM_STR);
+				$query->execute();
+			}
 		}
-	} else { // Identifier not recognized (Create new identifier)
+	} else { // Identifier not recognized
 		// echo "<script>console.log('Console: No identifier was found' );</script>";
-		// Find a resembling coursename and assignmentname form listentry with parameters
-		$sql="SELECT course.cid AS cid,course.activeversion AS vers, course.coursename AS coursename, listentries.entryname AS entryname, listentries.lid AS lid,listentries.link AS link,listentries.highscoremode AS highscoremode,quiz.deadline AS deadline FROM listentries JOIN course ON listentries.vers=course.activeversion AND listentries.cid=course.cid LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind=3 AND coursename LIKE CONCAT('%', :cparam, '%') AND entryname LIKE CONCAT('%', :aparam, '%');";
+		// Find a resembling course and assignment form listentries with parameters
+		$sql="SELECT course.cid AS cid,course.activeversion AS vers, course.coursename AS coursename, listentries.entryname AS entryname, listentries.lid AS lid,listentries.link AS link,listentries.highscoremode AS highscoremode,quiz.deadline AS deadline FROM listentries JOIN course ON listentries.vers=course.activeversion AND listentries.cid=course.cid LEFT JOIN quiz ON listentries.link=quiz.id WHERE kind = 3 AND visible = 1 AND visibility = 1 AND coursename LIKE CONCAT('%', :cparam, '%') AND entryname LIKE CONCAT('%', :aparam, '%');";
 		$query = $pdo->prepare($sql);
 		$query->bindParam(":cparam", $course, PDO::PARAM_STR);
 		$query->bindParam(":aparam", $assignment, PDO::PARAM_STR);
 		$query->execute();
 
 		if($row = $query->fetch(PDO::FETCH_ASSOC)) { // One  row resulted form query
-			if (!$query->fetch()) {
+			if (!$query->fetch()) { // Only one row
 				$cid = $row['cid'];
 				$vers = $row['vers'];
 				$coursename = $row['coursename'];
 				$entryname = $row['entryname'];
 				$lid = $row['lid'];
 				$link = $row['link'];
-				$highscoremode = $row['highscoremode'];
-				$deadline = $row['deadline'];
 
-				// echo "<script>console.log('Console: SH identifier is unique');</script>";
-
-				$sql = "INSERT INTO shregister (cparam, aparam, cid, lid) VALUES (?, ?, ?, ?);";
+				// Prevent SH links to be created for an assignment if that assignment already has an link to it
+				$sql = "SELECT * FROM shregister WHERE cid = :courseid AND lid = :assignmentid;";
 				$query = $pdo->prepare($sql);
-				$query->execute([$course, $assignment, $cid, $lid]);
+				$query->bindParam(":courseid", $cid,PDO::PARAM_INT);
+				$query->bindParam(":assignmentid", $lid,PDO::PARAM_INT);
+				$query->execute();
+				
+				if($row = $query->fetch(PDO::FETCH_ASSOC)) { // Assignment already has an associated SH link
+					// echo "<script>console.log('Console: SH identifier already exists');</script>";
+					unset($cid);
+					unset($vers);
+					unset($link);
+					unset($lid);
+				} else { // Assignment does not have an associated SH link
+					// echo "<script>console.log('Console: SH identifier is unique');</script>";
 
-				// echo "<script>console.log('Console: New SH identifier created');</script>";
+					$sql = "INSERT INTO shregister (cparam, aparam, cid, lid) VALUES (?, ?, ?, ?);";
+					$query = $pdo->prepare($sql);
+					$query->execute([$course, $assignment, $cid, $lid]);
+
+					// echo "<script>console.log('Console: New SH identifier created');</script>";
+				}
 			} else { // Multiple query results
 				// echo "<script>console.log('Console: SH identifier is not unique');</script>";
 			}
