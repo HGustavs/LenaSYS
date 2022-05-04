@@ -1688,7 +1688,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							// Creates a new line when a line break character is in the string
 							cont += `<span class='string'>${partialTokenString}</span>`;
 							lineno++;
-							str += `<div id='${boxfilename}-line${lineno}' style='line-height:21px'><span class='blockBtnSlot'></span>${cont}</div>`;
+							str += `<div id='${boxfilename}-line${lineno}' class='normtext' style='line-height:21px'><span class='blockBtnSlot'></span>${cont}</div>`;
 							cont = "";
 							partialTokenString = "";
 						}
@@ -1824,8 +1824,10 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							htmlTagCount++;
 							if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
 								htmlTag.push(pid);
+								cont += "&lt" + "<span style='color: "+fontcolor+"' id='" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightHtml(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
+							} else {
+								cont += "&lt" + "<span style='color: "+fontcolor+"' id='" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");'>" + tokens[i + 1].val;
 							}
-							cont += "&lt" + "<span style='color: "+fontcolor+"' id='" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightHtml(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
 							cont += "</span>";
 							i = i + 1;
 						} else {
@@ -1838,11 +1840,12 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					if (htmlArray.indexOf(tokens[i + 2].val.toLowerCase()) > -1) {
 						if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
 							pid = htmlTag.pop();
+							cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"'  id='P" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
 						} else {
 							htmlTagCount++;
 							pid = "html" + htmlTagCount + boxid;
+							cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"'  id='P" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
 						}
-						cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"'  id='P" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
 						i = i + 3;
 					} else {
 						cont += "<span class='oper'>" + tokenvalue + "</span>";
@@ -1864,7 +1867,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px' ><span class='blockBtnSlot'></span>" + cont + "</div>";
+				str += `<div id='${boxfilename}-line${lineno}' class='normtext' style='line-height:21px'><span class='blockBtnSlot'></span>${cont}</div>`;
 			} else {
 				// Print out important lines
 				for (var kp = 0; kp < improws.length; kp++) {
@@ -1873,7 +1876,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px'><span class='blockBtnSlot'></span>" + cont + "</div>";
+							str += `<div id='${boxfilename}-line${lineno}' class='normtext' style='line-height:21px'><span class='blockBtnSlot'></span>${cont}</div>`;
 						}
 					}
 				}
@@ -1972,7 +1975,11 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							cssTagCount++;
 							pid = "css" + cssTagCount + boxid;
 						}
-						cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"' id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
+						if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
+							cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"' id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
+						} else {
+							cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"' id='P" + pid + "' class='oper'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
+						}
 						i = i + 3;
 					} else {
 						cont += "<span class='oper'>" + tokenvalue + "</span>";
@@ -1994,7 +2001,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px'><span class='blockBtnSlot'></span>" + cont + "</div>";
+				str += `<div id='${boxfilename}-line${lineno}' class='normtext' style='line-height:21px'><span class='blockBtnSlot'></span>${cont}</div>`;
 			} else {
 				// Print out important lines
 				for (var kp = 0; kp < improws.length; kp++) {
@@ -2003,7 +2010,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							str += "<div id='" + boxfilename + "-line" + lineno + "' style='line-height:21px' ><span class='blockBtnSlot'></span>" + cont + "</div>";
+							str += `<div id='${boxfilename}-line${lineno}' class='normtext' style='line-height:21px'><span class='blockBtnSlot'></span>${cont}</div>`;
 						}
 					}
 				}
