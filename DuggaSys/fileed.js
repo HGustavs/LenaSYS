@@ -30,6 +30,7 @@ var filekind;
 var aceData;
 var editor;
 var filedata;
+var existingFiles = [];
 
 function setup() {
     AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
@@ -156,17 +157,11 @@ function showFilePopUp(fileKind) {
 }
 
 //see fileedservice.php and filerecieve.php for more details of how files are saved to local storage and meta-data is saved to DB.
-function uploadFile(kind,celldata) {
+function uploadFile(kind) {
 
-   
-   
-        obj = JSON.parse(celldata);
-        console.log(obj.entry);
-        
-        obj.forEach(function(obj) { //loop through keys array
-            console.log(obj.shortfilename)
-          });
-
+    for(i = 0; i < existingFiles.length; i++){
+        console.log(existingFiles[i]);
+    }
    
 
     //console.log(kind);
@@ -365,6 +360,7 @@ function renderCell(col, celldata, cellid) {
             str += "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
         } else {
             str+="<span class='nowrap-filename' id='openFile' onclick='filePreview(\"" + obj.shortfilename + "\",\"" + obj.filePath + "\", \"" + obj.extension + "\")'>" + obj.shortfilename + "</span>";
+            existingFiles.push(obj.shortfilename);
         }
     } else if (col == "filesize") {
         if (obj.kind == "Link") {
@@ -387,6 +383,7 @@ function renderCell(col, celldata, cellid) {
     } else if (col == "kind") {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     }
+    
     //console.log(obj.shortfilename);
     return str;
  
