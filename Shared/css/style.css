@@ -1358,7 +1358,10 @@ header td {
   text-decoration:none;
   font-size:16px;Color:white;
 }
-
+.burgerHover:hover{
+  color: #B06DC3;
+  cursor: pointer;
+}
 .navButt:hover {
   cursor: pointer;
 }
@@ -2657,14 +2660,15 @@ button.option {
 }
 
 #courseBtn{
-  margin-left: 100px;
+  margin-left: 8px;
   font-size: 12px;
   border-radius: 5px;
 }
 
 #yearBtn{
-font-size: 12px;
-border-radius: 5px;
+  margin-left: 8px;
+  font-size: 12px;
+  border-radius: 5px;
 }
 
 
@@ -3226,9 +3230,11 @@ div.submit-button:disabled {
   padding: 0px;
 }
 
+/*
 .list tbody tr:nth-child(odd) {
   background-color: var(--color-background-2);
 }
+*/
 
 .list#testTable tr:nth-child(odd),
 .list#testTable tr:nth-child(even) {
@@ -4443,7 +4449,6 @@ div.reset-pw:hover{
   padding-top: 10px;
   padding-left: 8px;
   padding-right: 8px;
-  width: 400px;
 }
 
 .contribfile {

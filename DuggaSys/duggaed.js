@@ -876,15 +876,36 @@ function renderSortOptionsVariant(col,status,colname) {
 
 //Filtering duggas from the searchfield.
 function duggaFilter(row) {
-	if (row.qname.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
-		return true;
-	}
-	else if (row.quizFile.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
-		return true;
-	}
-	else{
-		return false;
-	}
+	var regex = new RegExp('(.*)::(.*)');
+    // Split the searchterm at each &&
+    var splitSearch = searchterm.split("&&");
+
+    var tempSearchTerm;
+    var columnToSearch;
+
+    // Loop through each searchterms. If there is a match set "match" to true.
+    // If "match" is false at the end of an iteration return false since there wasn't a match.
+    for (var i = 0; i < splitSearch.length; i++) {
+        tempSearchTerm = splitSearch[i].trim().match(regex);
+        var match = false;
+        if (tempSearchTerm != null && tempSearchTerm.length > 1) {
+            columnToSearch = tempSearchTerm[1].toLowerCase();
+            tempSearchTerm = tempSearchTerm[2];
+            if (row[columnToSearch].toUpperCase().indexOf(tempSearchTerm.toUpperCase()) != -1) match = true;
+            
+        } else {
+            tempSearchTerm = splitSearch[i].trim();
+            for (var key in row) {
+                if (row[key] != null) {
+                    if (row[key].toString().toUpperCase().indexOf(tempSearchTerm.toUpperCase()) != -1) match = true;
+                    
+                }
+            }
+
+        }
+        if (!match) return false;
+    }
+    return true;
 }
 
 //Filtering variants from the searchfield.
@@ -1076,3 +1097,23 @@ function checkDiagramTypes(num){
 	}
 	$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 }
+
+//------------------------------------------------------------------------------
+// Scroll to top of page function 
+//------------------------------------------------------------------------------
+$(document).ready(function(){
+	$("#scrollUp").on('click', function(event) {
+	  window.scrollTo(0, 0);
+	});
+  });
+  
+  // Show the up-arrow when user has scrolled down 200 pixels on the page
+  window.onscroll = function() {scrollToTop()};
+  function scrollToTop() {
+	var scroll = document.getElementById("fixedScroll");
+	if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+	  scroll.style.display = "block";
+	} else {
+	  scroll.style.display = "none";
+	}
+  }

@@ -69,6 +69,20 @@ function checklogin()
 }
 
 //------------------------------------------------------------------------------------------------
+// git_checklogin
+//------------------------------------------------------------------------------------------------
+// checks against session to see if we are logged in as a git user
+// this is a special function just for the contribution page
+// this should not be used anywhere else on the entire webpage and should be kept to contribution.php
+//------------------------------------------------------------------------------------------------
+function git_checklogin()
+{
+        return (array_key_exists('git_loginname', $_SESSION));
+}
+
+
+
+//------------------------------------------------------------------------------------------------
 // showLoginPopup
 //------------------------------------------------------------------------------------------------
 // Helper function to display the login box if the user is not authenticated

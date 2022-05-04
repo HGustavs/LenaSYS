@@ -181,6 +181,13 @@ pdoConnect();
 		<p id="exportPopUpMessage"></p>
 		<input type="button" id="gradeExportPopUpButton" value="Ok" class="submit-button" onclick="closeWindows();">
 	</div>
+	
+	<!-- Scroll up START -->
+
+	<div class='fixedScroll' id='fixedScroll'>
+		<span class='tooltiptextScroll'>Back to top</span>
+		<i class='arrow up' id='scrollUp'></i>
+	</div>
 
 
 </body>

@@ -23,7 +23,7 @@
     <script src="../Shared/markdown.js"></script>
     <script src="diagram.js"></script>
 </head>
-<body onload="getData()" style="overflow: hidden;">
+<body onload="getData();addAlertOnUnload();" style="overflow: hidden;">
 
     <!-- Markdown document with keybinds -->
     <div id="markdownKeybinds" style="display: none">

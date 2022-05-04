@@ -24,7 +24,7 @@ var updateShowAct = true;
 var courseFileArr = [];
 
 var commitChangeArray = [];
-
+var isClickedElementBox = false;
 //sorting for multiple views
 //Restores all views when pressing the All button
 function restoreStatView() {
@@ -218,10 +218,10 @@ function renderBarDiagram(data) {
   var maxDayCount = 0;
   for (var i = 0; i < 7 * numOfWeeks; i++) {
     var day = data['count'][dateString];
-    var commits = parseInt(day["commits"][0][0]);
-    var events = parseInt(day["events"][0][0]);
-    var comments = parseInt(day["comments"][0][0]);
-    var loc = parseInt(day["loc"][0][0] == null ? 0 : day["loc"][0][0]);
+    var commits = parseInt(day["commits"]);
+    var events = parseInt(day["events"]);
+    var comments = parseInt(day["comments"]);
+    var loc = parseInt(day["loc"]);
     var total = commits + events + comments + loc;
     if (total > maxDayCount) {
       maxDayCount = total;
@@ -430,6 +430,7 @@ function drawCommitDots(x1, y1, xmul, ymul, x_spacing, y_spacing){
 function renderLineDiagram(data) {
   weeks = data.weeks;
   daycounts = data['count'];
+  console.log(daycounts);
   var firstweek = data.weeks[0].weekstart;
 
 
@@ -590,10 +591,10 @@ function weekchoice(dateString) {
     var weekarray = [];
     for (i = 0; i < 70; i++) {
 
-      events = parseInt(daycounts[dateString].events[0][0]);
-      commits = parseInt(daycounts[dateString].commits[0][0]);
-      loc = parseInt(daycounts[dateString].loc[0][0] == null ? 0 : daycounts[dateString].loc[0][0]);
-      comments = parseInt(daycounts[dateString].comments[0][0]);
+      events = parseInt(daycounts[dateString].events);
+      commits = parseInt(daycounts[dateString].commits);
+      loc = parseInt(daycounts[dateString].loc);
+      comments = parseInt(daycounts[dateString].comments);
 
       weekarray[i] = [dateString, commits, events, loc, comments];
 
@@ -626,10 +627,10 @@ function weekchoice(dateString) {
   for (var key in daycounts) {
     if (key == dateString) {
       for (i = 0; i < 7; i++) {
-        var events = parseInt(daycounts[dateString].events[0][0]);
-        var commits = parseInt(daycounts[dateString].commits[0][0]);
-        var loc = parseInt(daycounts[dateString].loc[0][0] == null ? 0 : daycounts[dateString].loc[0][0]);
-        var comments = parseInt(daycounts[dateString].comments[0][0]);
+        var events = parseInt(daycounts[dateString].events);
+        var commits = parseInt(daycounts[dateString].commits);
+        var loc = parseInt(daycounts[dateString].loc);
+        var comments = parseInt(daycounts[dateString].comments);
 
         dailyCount[i] = [dateString, commits, events, loc, comments];
 
@@ -657,7 +658,7 @@ function changeDay() {
       alert("Second week can't be earlier than first week");
     } else {
       AJAXService("updateday", {
-        userid: document.getElementById('userid').value,
+        userid: localStorage.getItem('GitHubUser'),
         //userid: "HGustavs",
         today: firstSelWeek,
         secondday: secondSelWeek
@@ -725,7 +726,7 @@ function renderCircleDiagram(data, day) {
   str += '</select>';
   
   str += `<button style='margin-left: 20px' onclick='changeDay()'>Show selected dates</button>`;
-  if (updateShowAct) {
+  if (updateShowAct || firstSelWeek == null && secondSelWeek == null) {
     str += "<p style='margin-left: 10px'>Showing all activities</p>";
     updateShowAct = false;
   } else {
@@ -1069,9 +1070,13 @@ function compare(a, b) {
 		var tempB = a;
 	}
 
-  //If a column uses string or int the compare will work by default.
+  //If a column uses string the compare will work by default. If it uses an int make sure it really is an int otherwise do like if col == number
   //ghContibTable columns use arrays in the table so we need to handle them in a different way from other columns
-  
+  if(col == "number"){
+    tempA = parseInt(tempA);
+    tempB = parseInt(tempB);
+  }
+
   if (col == "dates") {
     tempA = tempA['weekStart'];
     tempB = tempB['weekStart'];
@@ -1126,19 +1131,21 @@ function returnedSection(data) {
   var str = "";
 
   str += "<div id='contributionContainer' class='contributionSort'>";
-  str += `<input type='button' id='allBtn' value='All' class='submit-button title='All' 
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'></input>`;
-  str += `<input type='button' id='basicBtn' value='Basic' class='submit-button title='Basic'
-  onclick='statSort(value)'onmouseout='hideTooltip(this)'></input>`;
-  str += `<input type='button' id='chartsBtn' value='Charts' class='submit-button title='Charts'
-  onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
-  str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution'
-  onclick='statSort(value)' onmouseout='hideTooltip(this)'></input>`;
+  str += `<input type='button' id='allBtn' value='All' class='submit-button' 
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'title='View all tables and charts'></input>`;
+  str += `<input type='button' id='basicBtn' value='Basic' class='submit-button'
+  onclick='statSort(value)'onmouseout='hideTooltip(this)'title='View basic statistics'></input>`;
+  str += `<input type='button' id='chartsBtn' value='Charts' class='submit-button'
+  onclick='statSort(value)' onmouseout='hideTooltip(this)'title='View only charts'></input>`;
+  str += `<input type='button' id='contributionBtn' value='Contribution' class='submit-button'
+  onclick='statSort(value)' onmouseout='hideTooltip(this)'title='View contribution data'></input>`;
   
   
   //Dynamically loads the year selection list based on folders in ../../contributionDBs/
-  str += `<select id='yearBtn' class='submit-button'
-  onclick='statSort(value)'onchange='courseSelection(this)'>
+
+  str += `<select id='yearBtn'
+  onclick='statSort(value)'onchange='courseSelection(this)'title='Select year dropdown'>
+
   <option value="ChooseY">Choose Year</option>`;
 
   // Add option for each year folder
@@ -1152,8 +1159,10 @@ function returnedSection(data) {
   }
   str +=`</select>`;
 
-  str += `<select id='courseBtn' class='submit-button'
-  onclick='statSort(value)'onchange='courseDBCollection(value)' style="visibility: hidden">
+
+  str += `<select id='courseBtn'
+  onclick='statSort(value)'onchange='courseDBCollection(value)' title='Select course dropdown'>
+
   <option value="ChooseC">Choose Course</option></select>`;
 
   str += "</div>"; 
@@ -1198,9 +1207,6 @@ function courseSelection(elem){
   // Clear dropdown menu
   var dropdown = document.getElementById('courseBtn');
   dropdown.options.length=0;
-
-  // Set visibility
-  dropdown.style.visibility = elem.value == "ChooseY" ? 'hidden' : "visible";
 
   // Default option
   var opt = document.createElement('option');
@@ -1404,9 +1410,9 @@ function renderCellForghContibTable(col, celldata, cellid) {
   } else if (col === 'codeContribution') {
     for (var j = 0; j < obj.files.length; j++) {
       var file = obj.files[j];
-      str += "<a href='https://github.com/HGustavs/LenaSYS/blame/" + file.path + file.filename + "'>";
       str += "<div class='contrib'>";
-      str += "<div class='contribheading'";
+      str += "<div class='contribheading'>";
+      str += "<a href='https://github.com/HGustavs/LenaSYS/blame/" + file.path + file.filename + "'>";
       str += "<span class='contribpath'>" + file.path + "</span>";
       str += "<span class='contribfile'>" + file.filename + "</span>";
       str += "</a>";
@@ -1973,6 +1979,57 @@ function toggleAccountRequestPane(){
     }
 }
 
+document.addEventListener('keydown', function(event) {
+	if(event.key === 'Escape'){
+		toggleAccountRequestPane();
+	}
+});
+
+$(document).mousedown(function (e) {
+  mouseDown(e);
+});
+
+$(document).mouseup(function (e) {
+  mouseUp(e);
+});
+
+function mouseDown(e) {
+
+  var box = $(e.target);
+  // if() - the clicked element is one of the account request elements
+  // else if() - the clicked element is a child of one of the show account request elements
+  // else - the clicked element does not belong to account request
+  if (box[0].classList.contains("show-accountRequests-pane") || box[0].classList.contains("accountRequests-pane-span") || box[0].classList.contains("hide-accountRequests-pane")) {
+    isClickedElementBox = true;
+  } else if ((findAncestor(box[0], "show-accountRequests-pane") != null) &&
+    (findAncestor(box[0], "show-accountRequests-pane").classList.contains("show-accountRequests-pane"))) {
+    isClickedElementBox = true;
+  } else {
+    isClickedElementBox = false;
+  }
+
+}
+
+function mouseUp(e) {
+  //if - the user clicks something other than the account request pane.
+  //else - the user clicks an element belonging to account request
+  if ($('.accountRequests-pane') && !$('.accountRequests-pane').is(e.target) &&
+  $('.accountRequests-pane').has(e.target).length === 0 && (!isClickedElementBox)) {
+    //if account request pane is open then close it.
+    if (document.getElementById("accountRequests-pane").className == "show-accountRequests-pane") {
+      document.getElementById('accountReqmarker').innerHTML = "Account requests";
+      document.getElementById("accountRequests-pane").className = "hide-accountRequests-pane";
+    }
+  }else{
+    if ($(e.target)[0].classList.contains("hide-accountRequests-pane")) {
+      document.getElementById('accountReqmarker').innerHTML = "Account requests";
+      document.getElementById("accountRequests-pane").className = "show-accountRequests-pane";
+    }
+  }
+}
+
+
+
 //Creates the html elements containing the commit changes
  function createCommitChange(data){
   var commitChange = data;
@@ -2011,9 +2068,9 @@ function toggleAccountRequestPane(){
 //Creates the sidebar for accepting and rejecting students when logged in as a superUser
 function createSidebar(){
   var text = document.getElementById('accountRequests-pane');
-  text.style.display="block";
+  text.style.display="inline-block";
   str = "";
-  str+= '<div id="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker">Account requests</span></div>';
+  str+= '<div id="accountRequests-pane-button" class="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker" class="accountRequests-pane-span">Account requests</span></div>';
   str+= "<table class='accountRequestTable'style='width: 85%'  border='1'><br />";
 	str+= "<tr class='accountRequestTable' style=' background-color: #ffffff';>";
   str+= "<th class='accountRequestTable'></th>";
@@ -2037,7 +2094,417 @@ function createSidebar(){
   text.innerHTML = str;
 }
 
+function forceUserLogin()
+{
+      /* 
+      make sure the loginBox is generated before you run this function as 
+      it queries for elements that exist in the loginbox and changes their properties
+      */
+      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
+			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
 
+
+
+
+      let loginBoxheader_login_username_field = document.querySelector("#username");
+      loginBoxheader_login_username_field.setAttribute("Placeholder","Github username");
+
+      let loginBoxheader_login_password_field = document.querySelector("#password");
+      loginBoxheader_login_password_field.style.visibility = "hidden";
+
+      let loginBoxButton = document.querySelector(".buttonLoginBox");
+      loginBoxButton.setAttribute("onClick", "loginGitOrUser_Check()");
+
+
+			// prepare replacement of onclick
+			loginBoxheader_login_close.removeAttribute("onClick"); // remove auto generated 
+			loginBoxheader_forgot_close.removeAttribute("onClick"); // remove auto generated
+			
+			/*
+      replace with a history back, this makes sure you dont get a blank page if you dont want to enter a password
+      and instead press the button to close down the loginBox
+      */
+			loginBoxheader_login_close.setAttribute("onClick", "history.back();"); 
+			loginBoxheader_forgot_close.setAttribute("onClick", "history.back();"); 
+
+
+      // ----
+      let FP = document.querySelector("#newpassword .forgotPw");
+      FP.setAttribute("onClick", "toggleloginnewpass(); resetForceLogin();");
+
+      // After the loginbox has been prepared/modified we display it to the user
+      showLoginPopup();
+      
+
+}
+
+function showNewGitLogin()
+{
+      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
+			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
+      let loginBox = document.querySelector("#password");
+      let loginBoxParent = loginBox.closest("tr");
+
+
+      let loginBoxheader_login_username_field = document.querySelector("#username");
+      let loginBoxheader_login_password_field = document.querySelector("#password");
+      let loginBoxButton = document.querySelector(".buttonLoginBox");
+
+      loginBoxheader_login_password_field.style.visibility = "";
+
+
+      let forgotPwText = document.querySelector(".forgotPw");
+      
+
+     
+      let originalId = forgotPwText.getAttribute("id");
+      forgotPwText.setAttribute("id", "backtologin");
+      forgotPwText.closest("td").innerHTML += forgotPwText.closest("td").innerHTML;
+      forgotPwText = document.querySelector("#backtologin");
+      forgotPwText.setAttribute("id", originalId);
+
+
+      // create another loginbox and create a new id
+      originalId = loginBox.getAttribute("id");
+      loginBox.setAttribute("id", originalId+1);
+      loginBox.closest("tr").outerHTML += loginBox.closest("tr").innerHTML;
+      loginBox = document.querySelector("#"+originalId+1);
+      loginBox.setAttribute("id", originalId);
+
+
+      let backtologin = document.querySelector("#backtologin");
+      let login_first = document.querySelector("#"+originalId);
+      let login_second = document.querySelector("#"+originalId+1);
+
+      login_first.setAttribute("placeholder", "Create new password");
+      login_second.setAttribute("placeholder","Repeat new password");
+      backtologin.innerHTML = "Back to login";
+      backtologin.setAttribute("onclick","resetForceLogin()")
+
+
+      loginBoxheader_login_username_field.setAttribute("disabled","");
+     
+      
+
+      //TODO add onclick function for requesting user creation
+      loginBoxButton.setAttribute("onClick", "requestGitUserCreation()");
+      loginBoxButton.setAttribute("Value", "Create");
+
+
+
+}
+
+function resetForceLogin()
+{
+  let originalId = ("password");
+  let login_second = document.querySelector("#"+originalId+1);
+  if(login_second != null)
+    login_second.remove();
+
+
+  let forgotPwText = document.querySelector("#backtologin");
+  if(forgotPwText != null)
+    forgotPwText.remove();
+
+  let loginBoxButton = document.querySelector(".buttonLoginBox");
+  loginBoxButton.setAttribute("Value", "Login");
+
+  let loginBoxheader_login_username_field = document.querySelector("#username");
+  loginBoxheader_login_username_field.removeAttribute("disabled");
+
+
+  forceUserLogin();
+
+}
+
+{ // scope for local-storage of in-between function variables
+
+  let userExists_Git = null; // if it exists in the git data
+  let userExists_Lenasys = null; // if it exists in the lenasys data
+ 
+  function checkIfGitUserExists(username, _callback) // checks if user exists in the git data and or the lenasys data
+{
+  userExists_Git = null; // reset back to null if we want to do a check for another user
+  userExists_Lenasys = null;
+
+
+  if(username == null || username == "" || !(typeof(username) === 'string'))
+  {
+    alert("invalid input of username");
+  }
+  else
+  {
+      AJAXService("checkForGitUser",{
+        userid: username,
+      }, "CONTRIBUTION_GIT_USER_CHECK");
+
+      // ##############################
+
+      AJAXService("checkForLenasysUser",{
+        userid: username,
+      }, "CONTRIBUTION_LENASYS_USER_CHECK");
+
+      function checkAsyncFlags() 
+      {
+        if(userExists_Git == null || userExists_Lenasys == null) 
+        {
+           window.setTimeout(checkAsyncFlags, 100);
+        } else 
+        {
+          _callback(userExists_Git,userExists_Lenasys);
+
+        }
+      }
+      checkAsyncFlags();
+
+        
+  }   
+
+
+
+  }
+
+  function requestGitUserCreation() // function to create the git user in the lenasys database, make sure requestedpasswordchange is pending(101)
+  {
+  
+    let pass1 = document.querySelector("#password").value;
+    let pass2 = document.querySelector("#password1").value;
+    let username = document.querySelector("#username").value;
+
+    // TODO MAKE SURE PASSWORD IS ACTUALLY VALID BEFORE INSERT INTO DB
+
+
+    if(pass1 == pass2)
+    {
+      if(pass1 != null && pass1 != "")
+      {
+        AJAXService("requestGitUserCreation",{
+          userid: username,
+          userpass: pass1,
+        }, "CONTRIBUTION_LENASYS_USER_CREATION");
+      }
+      else
+      {
+        displayAlertText("#login #message", "invalid password <br />");
+
+        $("input#password").addClass("loginFail");
+		    $("input#password1").addClass("loginFail");
+			  setTimeout(function()
+          {
+		        $("input#password").removeClass("loginFail");
+            $("input#password1").removeClass("loginFail");
+			  	}, 2000);
+      }
+    }
+    else
+    {
+      displayAlertText("#login #message", "password doesnt match <br />");
+
+      $("input#password").addClass("loginFail");
+		    $("input#password1").addClass("loginFail");
+			  setTimeout(function()
+        {
+		      $("input#password").removeClass("loginFail");
+          $("input#password1").removeClass("loginFail");
+				}, 2000);
+    }
+    
+  }
+
+  function returned_lenasys_user_creation(data)
+  {
+
+    if(typeof data == "boolean") // check so that the type is correct
+    {
+      if(data == false) // didnt create user
+      {
+        displayAlertText("#login #message", "could not create user <br />");
+
+        $("input#username").addClass("loginFail");
+		    $("input#password").addClass("loginFail");
+			  setTimeout(function()
+        {
+		      $("input#username").removeClass("loginFail");
+          $("input#password").removeClass("loginFail");
+          resetForceLogin();
+				}, 2000);
+      }
+      else // created user
+      {
+        $("input#username").addClass("loginPass");
+		    $("input#password").addClass("loginPass");
+        $("input#password1").addClass("loginPass");
+			  setTimeout(function()
+        {
+		      $("input#username").removeClass("loginPass");
+          $("input#password").removeClass("loginPass");
+          $("input#password1").removeClass("loginPass");
+          resetForceLogin();
+				}, 2000);
+      }
+    }
+    else
+      alert("invalid data returned from git-data");
+
+  }
+
+
+
+
+  function returned_git_user_check(data)
+  {
+    if(typeof data == "boolean") // check so that the type is correct
+    {
+      userExists_Git = data;
+    }
+    else
+      alert("invalid data returned from git-data");
+
+    return userExists_Git;
+
+  }
+
+  function returned_lenasys_user_check(data)
+  {
+    if(typeof data == "boolean")
+    {
+      userExists_Lenasys = data;
+    }
+    else
+      alert("invalid data returned from lenasys-data");
+
+    return userExists_Lenasys;
+  }
+
+  function restoreAndLockLogin()
+  {
+
+    let forgotPwText = document.querySelector(".forgotPw");
+      
+    let originalId = forgotPwText.getAttribute("id");
+    forgotPwText.setAttribute("id", "backtologin");
+    forgotPwText.closest("td").innerHTML += forgotPwText.closest("td").innerHTML;
+    forgotPwText = document.querySelector("#backtologin");
+    forgotPwText.setAttribute("id", originalId);
+
+    backtologin.innerHTML = "Back to login";
+    backtologin.setAttribute("onclick","resetForceLogin()")
+
+
+
+    let loginBoxheader_login_username_field = document.querySelector("#username");
+    loginBoxheader_login_username_field.setAttribute("Placeholder","Username");
+    loginBoxheader_login_username_field.setAttribute("disabled","");
+
+
+    let loginBoxheader_login_password_field = document.querySelector("#password");
+    loginBoxheader_login_password_field.style.visibility = "";
+
+    let loginBoxButton = document.querySelector(".buttonLoginBox");
+    loginBoxButton.setAttribute("onClick", "git_processLogin()");
+    
+  }
+
+
+
+  function loginGitOrUser_Check()
+  {
+    let loginBoxheader_login_username_field = document.querySelector("#username");
+
+
+
+    let username = loginBoxheader_login_username_field.value;
+    if(username === "") // we do a simple check if the string is empty to not call backend if nothing is entered.
+    {
+      console.log("nothing entered");
+    } 
+    else
+    {
+
+      checkIfGitUserExists(username ,function(_onGit, _onLena) 
+        {
+          
+
+          /*
+            There exists a number of combinations that we need to handle¨
+
+            onGit | onLena
+            --------------
+              T   |  T    -> Log in with lena
+              F   |  T    -> Log in with lena
+              T   |  F    -> Create new user
+              F   |  F    -> User does not exist
+          */
+
+          if(_onLena) // log in with lena
+          {
+            restoreAndLockLogin();
+          }
+          if(!_onLena && _onGit) // onlena is false, ongit true, create new user
+          {
+            showNewGitLogin();
+
+          }
+          if(!_onLena && !_onGit)
+          { // default to user does not exist if nothing else
+            displayAlertText("#login #message", "User does not exist <br />");
+
+            $("input#username").addClass("loginFail");
+		      	$("input#password").addClass("loginFail");
+			      setTimeout(function()
+            {
+		      	  $("input#username").removeClass("loginFail");
+              $("input#password").removeClass("loginFail");
+              displayAlertText("#login #message", "Try again");
+					  }, 2000);
+
+          }
+        
+
+
+        });    
+
+
+     
+
+
+
+    }
+  }
+}
+
+function git_processLogin()
+  {
+    let git_username = $("#login #username").val();
+    let git_password = $("#login #password").val();
+
+
+    AJAXService("requestGitUserLogin",{
+      username: git_username,
+      userpass: git_password,
+    }, "CONTRIBUTION_GIT_USER_LOGIN");
+
+
+  }
+
+function git_logout()
+{
+  
+  let git_username = null; // nothing entered will logout
+  let git_password = null;
+
+  AJAXService("requestGitUserLogin",{
+    username: git_username,
+    userpass: git_password,
+  }, "CONTRIBUTION_GIT_USER_LOGIN");
+
+}
+
+function returned_git_user_login(data)
+{
+  if(data)
+    window.location.reload(true);  // TODO should I just reload the page here perhaps? 
+}
 
 console.error
 

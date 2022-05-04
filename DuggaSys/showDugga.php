@@ -201,10 +201,10 @@
 			
 			echo "<script src='templates/".$duggafile.".js'></script>";
 			echo "</head>";
-			echo "<body onload='setup();'>";
-		}else{
-			echo "</head>";
-			echo "<body>";
+			echo "<body onload='setup();addAlertOnUnload();'>"; //Adds an alert when leaving page with changes.
+		}else{													//^this also works as a event for doing things before page unloads.
+			echo "</head>";										
+			echo "<body onload='addAlertOnUnload()'>"; 			//Same as above but without other stuff.
 		}
 ?>
 
@@ -268,6 +268,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 //Remove if you want the password to be persistent.
 //$_SESSION['hashpassword'] = 'UNK';
 ?>
+
 </div>
 	<!-- content START -->
 	<div id="content">
@@ -283,7 +284,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
 
 			$btnDisable = "btn-disable";
-
+			
 			if($duggafile!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
@@ -291,7 +292,13 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 					if(isSuperUser($userid)){
 						// A teacher may not submit any duggas
 						echo "<table id='submitButtonTable' class='navheader'>";
+						echo "<tr>";
+						echo "<td align='rigth'>";
+						echo "<input class='submit-button large-button' onclick='editDuggaInstruction()' type='button' value='Edit instructions'/>";	
+						echo "</td>";
+						echo "</tr>";
 						echo "</table>";
+						
 					}else if ($duggafile !== 'contribution') {						
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
@@ -331,7 +338,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		
 		?>
 	</div>
-
+	
 	<!-- LoginBox (receipt&Feedback-box ) Start! -->
 	<div id='receiptBox' class="loginBoxContainer" style="display:none">
 	  <div class="receiptBox loginBox" style="max-width:400px; overflow-y:visible;">

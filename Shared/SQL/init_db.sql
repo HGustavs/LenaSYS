@@ -24,6 +24,18 @@ INSERT INTO user(username,password,newpassword,creator,superuser) values ("Griml
 INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1); /* Password is Kong */
 INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1,"111111-1111"); /* Password is Kong */
 
+/*Table for the git_user table where users created by students existing in git data is stored*/
+CREATE TABLE git_user(
+	git_uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	username				VARCHAR(80) NOT NULL UNIQUE,
+	password				VARCHAR(255) NOT NULL,
+	status_pass				TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	status_account			TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	addedtime  				DATETIME,
+	lastvisit				DATETIME,
+	PRIMARY KEY (git_uid)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 
 /**
  * Course table contains the most essential information relating to study courses in the database.

@@ -7,6 +7,8 @@ include_once "../../coursesyspw.php";
 
 $opt=getOP('opt');
 
+$RPC = 0;
+
 if($opt=="GETQUESTION"){
 	$username=getOP('username');
   $securityquestion=getOP('securityquestion');
@@ -43,6 +45,7 @@ if($opt=="GETQUESTION"){
 			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 				$userid = $row['uid'];
         $RPC = $row['requestedpasswordchange'];
+
   }
 
 	// Default values
