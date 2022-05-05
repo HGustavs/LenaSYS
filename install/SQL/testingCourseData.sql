@@ -1,24 +1,14 @@
-INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (1885,' - This course is for testing purposes','Testing-Course',NOW(),1,1,'45656','1');
-INSERT INTO coursekeys (cid,urlkey,coursename, activeversion) VALUES (1885, 'testing', 'Testing-Course', 45656); 
+/*Adds testing course to databbase*/
+INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (1885,'G1337','Testing-Course',NOW(),1,1,'1337','1');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate,motd) VALUES (1885,'G1337','Testing-Course','Course for testing codeviewer','1337','','2020-05-01 00:00:00','2020-06:30 00:00:00','Code examples shows both templateid and boxid!');
+INSERT INTO coursekeys (cid,urlkey,coursename, activeversion) VALUES (1885, 'testing', 'Testing-Course', 1337); 
 
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1,1885,'HTML-Code:',1,1,1,1,1,'45656',0);
-
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (6,1885,'JavaScript-Code:',1,1,6,1,1,'45656',0);
-
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (11,1885,'PHP-Code:',1,1,11,1,1,'45656',0);
-
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (16,1885,'Tests:',3,1,16,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (17,1885,'ExampleTest',5,3,17,1,1,'45656',0);
-
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (18,1885,'Group Activities:',7,1,18,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (19,1885,'ExampleActivity',4,6,19,1,1,'45656',0);
-																												
-
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (20,1885,'Links:',4,1,20,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (21,1885,'Example link',4,5,21,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (22,1885,'Other:',5,1,22,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (23,1885,'TEST MESSAGE!!',5,7,23,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (24,1885,'Moment Test',5,4,24,1,1,'45656',0);
+/*Adding headings for structure*/
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1,1885,'JavaScript-Code:',1,1,1,1,1,'1337',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (2,1885,'HTML-Code:',1,1,2,1,1,'1337',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (4,1885,'SQL-CODE:',1,1,3,1,1,'1337',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (5,1885,'PHP-CODE:',1,1,4,1,1,'1337',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (6,1885,'Other:',1,1,5,1,1,'1337',0);
 
 /*Links local files to Testing-Course*/
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML-TEST1.html",2,1885,0);
@@ -27,11 +17,11 @@ INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML-TEST3.html",2,18
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML-TEST4.html",2,1885,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("SQL-TEST1.sql",2,1885,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("SQL-TEST2.sql",2,1885,0);
-INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("CSS-TEST1.css",2,1885,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("JS-TEST1.js",2,1885,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("JS-TEST2.js",2,1885,0);
-/*Attempt to create codeexample in the testing course (not working yet)*/																														
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL-TEST1.sql',"SQL-TEST1.sql","SQL-TEST1.sql",1,45656,'1','2',1,1885);
+INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("PHP-TEST1.php",2,1885,0);
+																											
+
 
 
 
