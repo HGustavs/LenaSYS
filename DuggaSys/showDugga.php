@@ -128,7 +128,7 @@
 
 			$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
 			$fileContent = file_get_contents("{$tempDir}/{$latest}");
-			echo "{$latest}";
+			header("Location: Hello.php");
 		}
 		catch(Exception $e){
 			echo 'Message: ' .$e->getMessage();
