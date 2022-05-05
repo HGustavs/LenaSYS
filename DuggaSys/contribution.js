@@ -1435,7 +1435,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
              var message = obj.commits[j].message;
              var hash = obj.commits[j].cid;
              str += `<span onclick='showCommits(this, \"${"cid: " + hash}\");'><img id='githubLink${rowNr}' class='githubLink${rowNr}' style='width:16px;display:none;' alt='githubLink icon' 
-             title='open github page' src='../Shared/icons/githubLink-icon.svg' target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}' onclick='openGithubLink(this)'> ${message}</span>`;
+             title='open github page' src='../Shared/icons/githubLink-icon.png' target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}' onclick='openGithubLink(this)'> ${message}</span>`;
            }
            str += "</div>";
            str += "</div>";
