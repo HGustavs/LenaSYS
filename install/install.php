@@ -553,7 +553,7 @@
             }
             # Add Testing_Course
             if (isset($_POST["testingCourseDB"]) && $_POST["testingCourseDB"] == 'Yes') {
-              addTestData("testingCourseDBData", $connection);
+              addTestData("testingCourseData", $connection);
             } else {
               echo "Skipped adding Testing-Course<br>";
             }
