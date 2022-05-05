@@ -71,6 +71,7 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
+    console.log(data);
     var textBox = document.getElementById('submission-receipt');  
     textBox.innerHTML=(`${data['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(data['hash'])}'> ${createUrl(data['hash'])}` + `</a> </br></br> Hash: </br> ${data['hash']}</br></br>Hash password:</br>${data['hashpwd']}`);
     //temporary solution to get the correct link in the receipt
