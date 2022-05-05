@@ -665,20 +665,20 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton){
 	var x8 = document.getElementById(rangedialogid);
 	if (emotd.value.match(Emotd) ) {
 		$(x4).fadeOut()
-		x4.style.display = "none";
+		//x4.style.display = "none";
 		window.bool9 = true;
 	} else {
 		$(x4).fadeIn()
-		x4.style.display = "block";
+		//x4.style.display = "block";
 		window.bool9 = false;
 	}
 	if (emotd.value.match(EmotdRange)){
 		$(x8).fadeOut()
-		x8.style.display = "none";
+		//x8.style.display = "none";
 		window.bool9 = true;
 	}else{
 		$(x8).fadeIn()
-		x8.style.display = "block";
+		//x8.style.display = "block";
 		window.bool9 = false;
 	}
 	if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
@@ -688,7 +688,7 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton){
 		saveButton.disabled = false;
 	}else{
 		emotd.style.backgroundColor = "#f57";
-		emotd.style.borderColor = "#000";
+		emotd.style.borderColor = "#E54";
 		emotd.style.borderWidth = "2px";
 		saveButton.disabled = true;
 	}

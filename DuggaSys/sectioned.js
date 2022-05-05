@@ -2619,32 +2619,34 @@ function validateMOTD(motd,  syntaxdialogid, rangedialogid, submitButton){
   var x4 = document.getElementById(syntaxdialogid);
 	var x8 = document.getElementById(rangedialogid);
 	if (emotd.value.match(Emotd) ) {
-    emotd.style.borderColor = "#383";
-    emotd.style.borderWidth = "2px";
-    x4.style.display = "none";
-    window.bool9 = true;
+    $(x4).fadeOut()
+		//x4.style.display = "none";
+		window.bool9 = true;
   } else {
-    emotd.style.borderColor = "#E54";
-    x4.style.display = "block";
-    emotd.style.borderWidth = "2px";
-    window.bool9 = false;
+    $(x4).fadeIn()
+		//x4.style.display = "block";
+		window.bool9 = false;
   }
 
 	if (emotd.value.match(EmotdRange)){
-		emotd.style.borderColor = "#383";
-		emotd.style.borderWidth = "2px";
-		x8.style.display = "none";
+		$(x8).fadeOut()
+		//x8.style.display = "none";
 		window.bool9 = true;
 	}else{
-		emotd.style.borderColor = "#E54";
-		x8.style.display = "block";
-		emotd.style.borderWidth = "2px";
+		$(x8).fadeIn()
+		//x8.style.display = "block";
 		window.bool9 = false;
 	}
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
+    emotd.style.backgroundColor = "#ffff";
+		emotd.style.borderColor = "#383";
+		emotd.style.borderWidth = "2px";
 		saveButton.disabled = false;
     return true;
 	}else{
+    emotd.style.backgroundColor = "#f57";
+		emotd.style.borderColor = "#E54";
+		emotd.style.borderWidth = "2px";
 		saveButton.disabled = true;
     return false;
 	}
@@ -2665,6 +2667,8 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderColor = "#E54";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
+    sdate.style.backgroundColor = "#f57";
+    edate.style.backgroundColor = "#f57";
     $(x3).fadeIn();
     x3.innerHTML = "Both start date and end date must be filled in";
     //x3.style.display = "block";
@@ -2676,6 +2680,8 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderColor = "#383";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
+    sdate.style.backgroundColor = "#fff";
+    edate.style.backgroundColor = "#fff";
     $(x3).fadeOut();
     //x3.style.display = "none";
     if (startDate === 'startdate' && endDate === 'enddate') {
@@ -2690,6 +2696,8 @@ function validateDate(startDate, endDate, dialogID) {
   if (date2 < date1) {
     sdate.style.borderColor = "#E54";
     edate.style.borderColor = "#E54";
+    sdate.style.backgroundColor = "#f57";
+    edate.style.backgroundColor = "#f57";
     $(x3).fadeIn();
     x3.innerHTML = "Start date has to be before end date";
     //x3.style.display = "block";
@@ -2870,7 +2878,7 @@ function quickValidateForm(formid, submitButton){
 
     } else {
       //alert("You have entered incorrect information");
-      endialog.innerHTML += "Entered information is incorrect </br>";
+      //endialog.innerHTML += "Entered information is incorrect </br>";
     }
     if (valid){
       saveButton.disabled = false;
@@ -2898,9 +2906,10 @@ function quickValidateForm(formid, submitButton){
     }
     // if all information is correct
     if (window.bool5 === true && window.bool3 === true && window.bool === true) {
+
     } else {
       //alert("You have entered incorrect information");
-      endialog.innerHTML += "Entered information is incorrect </br>";
+      //endialog.innerHTML += "Entered information is incorrect </br>";
     }
     if (valid){
       saveButton.disabled = false;
@@ -2924,14 +2933,14 @@ function quickValidateForm(formid, submitButton){
     //If fields empty
     if (eversName == null || eversName == "") {
       //alert("Fill in all fields");
-      endialog.innerHTML += "Fill in all fields </br>";
+      //endialog.innerHTML += "Fill in all fields </br>";
     }
 
     // if all information is correct
     if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
     } else {
       //alert("You have entered incorrect information");
-      endialog.innerHTML += "Entered information is incorrect </br>";
+      //endialog.innerHTML += "Entered information is incorrect </br>";
     }
     if (valid){
       saveButton.disabled = false;
