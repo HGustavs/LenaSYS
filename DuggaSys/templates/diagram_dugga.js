@@ -48,7 +48,7 @@ function getDiagramData()
  * */
 function uploadFile()
 {
-    console.log(hash);
+    /*
     $.ajax({
         method: "POST",
         url: "filereceive_dugga.php",
@@ -64,6 +64,7 @@ function uploadFile()
             moment: inParams["moment"]
         }
     });
+    */
 }
 /**
  * @description If the user has previus submissions to the current
