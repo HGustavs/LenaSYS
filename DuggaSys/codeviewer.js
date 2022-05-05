@@ -390,12 +390,11 @@ function returned(data)
 				$("#" + contentid).css("margin-top", boxmenuheight);
 			}
 		}
-		// Add drag and drop zone
-		console.log(contentid);
-		if (retData['writeaccess'] == "w") {
-			initFileDropZone(contentid);
-		}
 	}
+	// Add all drop zones
+	if (retData['writeaccess'] == "w") {
+		initFileDropZones();
+	}	
 
 	var ranges = getBlockRanges(allBlocks);
 	for (var i = 0; i < Object.keys(ranges).length; i++) {
@@ -444,7 +443,7 @@ function returnedTitle(data) {
 // Drag and drop
 //------------------------
 
-function handleFiles(files) {	
+function handleFiles(files, boxnumber) {	
 	var boxcontent;
 	var file = files[0];
     var reader = new FileReader();
@@ -479,7 +478,7 @@ function handleFiles(files) {
 			iframe.uploadDroppedFile();
 
 			// Lastly, apply the new file to that of the code viewer
-			updateContent(file.name, boxcontent);
+			updateContent(file.name, boxcontent, boxnumber);
 		}, { once: true });
     };
 }
@@ -489,29 +488,34 @@ function handleDrop(e)
 	let dt = e.dataTransfer;
 	let files = dt.files;
 
-	handleFiles(files);
+	// Get correct box number
+	var boxnumber = parseInt(e["currentTarget"]["id"].replace("box",""));
+
+	handleFiles(files, boxnumber);
 }
 
-function initFileDropZone(id)
+function initFileDropZones()
 {
-	dropArea = document.getElementById(id);
+	for(i = 1; i <= retData["box"].length; i++) {
+		dropArea = document.getElementById("box" + i);
 
-	['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => 
-		{
-		  dropArea.addEventListener(eventName, preventDefaults, false);
-		})
-
-		;['dragenter', 'dragover'].forEach(eventName => 
-		{
-		  dropArea.addEventListener(eventName, highlight, false)
-		})
-
-		;['dragleave', 'drop'].forEach(eventName => 
-		{
-		  dropArea.addEventListener(eventName, unhighlight, false)
-		})
-
-		dropArea.addEventListener('drop', handleDrop, false);
+		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => 
+			{
+			  dropArea.addEventListener(eventName, preventDefaults, false);
+			})
+	
+			;['dragenter', 'dragover'].forEach(eventName => 
+			{
+			  dropArea.addEventListener(eventName, highlight, false)
+			})
+	
+			;['dragleave', 'drop'].forEach(eventName => 
+			{
+			  dropArea.addEventListener(eventName, unhighlight, false)
+			})
+	
+			dropArea.addEventListener('drop', handleDrop, false);
+	}
 }
 
 function preventDefaults (e)
@@ -520,16 +524,14 @@ function preventDefaults (e)
   e.stopPropagation();
 }
 
-//Supposed to highligt area when dragging file over drop-area: NOT WORKING CURRENTLY. - probably style.css related.
 function highlight(e) 
 {
-	dropArea.classList.add('highlight');
+	e.target.closest(".box").classList.add('highlight');
 }
 
-//Supposed to darken the area when removing dragged file from drop-area: NOT WORKING CURRENTLY. - probably style.css related.
 function unhighlight(e) 
 {
-	dropArea.classList.remove('highlight');
+	e.target.closest(".box").classList.remove('highlight');
 } 
 
 //---------------------------------------------------------------------------------
@@ -901,9 +903,16 @@ function editImpRows(editType)
 // updateContent: Updates the box if changes has been made
 //----------------------------------------------------------------------------------
 
-function updateContent(file, content) 
+function updateContent(file, content, boxnumber) 
 {
-	var box = retData['box'][openBoxID - 1];
+	// Check if there is a box number
+	// Only true if function is called by drag and drop
+	if(boxnumber) {
+		var box = retData['box'][boxnumber - 1];;
+	} else {
+		var box = retData['box'][openBoxID - 1];
+	}
+	
 	var useBoxContent = true;
 
 	// Default to using openbox data and use regular retData as fallback incase it's not open
@@ -914,7 +923,6 @@ function updateContent(file, content)
 
 	// Check if a drag and drop instance is created
 	if(file != null && box != null){
-		var useBoxContent = true;
 		filename = file;
 		boxtitle = file;
 		boxcontent = content;
