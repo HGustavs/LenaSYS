@@ -25,6 +25,7 @@ var courseFileArr = [];
 
 var commitChangeArray = [];
 var isClickedElementBox = [false, false];
+var cursorY;
 //sorting for multiple views
 //Restores all views when pressing the All button
 function restoreStatView() {
@@ -1968,7 +1969,7 @@ function showCommits(object, cid){
   text.style.display="block";
   text.innerHTML = commitChangeArray[cid];
   text.style.left = (document.documentElement.scrollLeft) + "px";
-  text.style.top = (document.documentElement.scrollTop) + "px";
+  text.style.top = (document.documentElement.scrollTop+cursorY)/2 + "px";
 }
 //Hide a div when hover the commit links
  function hideCommits(){
@@ -2002,6 +2003,7 @@ document.addEventListener('keydown', function(event) {
 });
 
 $(document).mousedown(function (e) {
+  cursorY = e.pageY;
   mouseDown(e);
 });
 
@@ -2056,7 +2058,7 @@ function mouseUp(e) {
   $('.commitDiv').has(e.target).length === 0 && (!isClickedElementBox[1])) {
     hideCommits();
   }else{
-    console.log("else is");
+    //e.target is commitDiv 
   }
 }
 
