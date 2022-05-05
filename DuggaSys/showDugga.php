@@ -111,21 +111,27 @@
 		$latest;
 		$current;
 
-		foreach(new DirectoryIterator($temp1Dir) as $file)
-   		{
-       		$ctime = $file->getCTime();    // Time file was created
-        	$fname = $file->getFileName(); // File name
-       		if( $ctime > $latest )
-        	{
-            	$latest = $ctime;
-            	$current = $fname;
-        	}
-    	}
-    	$latest = $current;
+		//try and catch for using test data
+		try{
+			foreach(new DirectoryIterator($temp1Dir) as $file)
+			{
+				$ctime = $file->getCTime();    // Time file was created
+				$fname = $file->getFileName(); // File name
+				if( $ctime > $latest )
+				{
+					$latest = $ctime;
+					$current = $fname;
+				}
+			}
+			$latest = $current;
 
-		$mydir = "../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
-		$myFiles = array_diff(scandir($mydir, SCANDIR_SORT_DESCENDING), array('.', '..'));
-		$fileContent = file_get_contents("../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/{$latest}");
+			$mydir = "../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
+			$myFiles = array_diff(scandir($mydir, SCANDIR_SORT_DESCENDING), array('.', '..'));
+			$fileContent = file_get_contents("../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/{$latest}");
+		}
+		catch(Exception $e){
+			//echo 'Message: ' .$e->getMessage();
+		}
 	}
 	
   // for fetching file content
