@@ -129,7 +129,7 @@
 				$latest = $current;
 
 				$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
-				echo "{$tempDir}";
+				echo "{$tempDir}.{$latest}";
 				$fileContent = file_get_contents("{$tempDir}/{$latest}");
 				#header("Location: Hello.php");
 			}
