@@ -444,6 +444,14 @@ function markedItems(item = null){
     console.log(hideItemList);
 }
 
+//work in progress
+function unhideElements(){
+  hideItemList.forEach((element) => {
+    // visibility of hidden items should be changed here
+  });
+
+  
+}
 // Clear array of checked items - used in fabbuttons and in save to clear array. 
 // Without this, the array will be populated but checkboxes will not be reset.
 function clearHideItemList(){
