@@ -207,6 +207,7 @@ function validateDuggaName() {
 		$('#submitDugga').attr('disabled', 'disabled');
 		$('#saveDugga').attr('disabled', 'disabled');
 		nme.style.backgroundColor = "#f57";
+		nme.style.backgroundColor = "#000";
 	}
 	return retValue;
 }

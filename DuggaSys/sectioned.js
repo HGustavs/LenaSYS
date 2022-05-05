@@ -2531,19 +2531,23 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
     return false;
   }
 }
+
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
   //Regex for letters, numbers, and dashes
-  var Name = /^[A-Za-z0-9_ \-.]+$/;
+  //var Name = /^[A-Za-z0-9_ \-.]+$/;
+  var Name = /^(HT|VT|ST){1}\d{2}$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
-  var val = document.getElementById("versname").value;
+  var val = document.getElementById(versionName).value;
 
   //if versionname is 2 capital letters, 2 numbers
   if (val.match(Name)) {
+    $(x).fadeOut();
     name.style.borderColor = "#383";
     name.style.borderWidth = "2px";
-    x.style.display = "none";
+    name.style.backgroundColor = "#fff";
+    //x.style.display = "none";
     if (versionName === 'versname') {
       window.bool3 = true;
     }
@@ -2553,9 +2557,10 @@ function validateVersionName(versionName, dialogid) {
 
     return true;
   } else {
-
+    $(x).fadeIn();
     name.style.borderColor = "#E54";
-    x.style.display = "block";
+    name.style.backgroundColor = "#f57";
+    //x.style.display = "block";
     name.style.borderWidth = "2px";
 
     if (versionName === 'versname') {
@@ -2660,8 +2665,9 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderColor = "#E54";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
+    $(x3).fadeIn();
     x3.innerHTML = "Both start date and end date must be filled in";
-    x3.style.display = "block";
+    //x3.style.display = "block";
     return false;
   }
  // If start date is less than end date
@@ -2670,7 +2676,8 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderColor = "#383";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
-    x3.style.display = "none";
+    $(x3).fadeOut();
+    //x3.style.display = "none";
     if (startDate === 'startdate' && endDate === 'enddate') {
       window.bool5 = true;
     }
@@ -2683,8 +2690,9 @@ function validateDate(startDate, endDate, dialogID) {
   if (date2 < date1) {
     sdate.style.borderColor = "#E54";
     edate.style.borderColor = "#E54";
+    $(x3).fadeIn();
     x3.innerHTML = "Start date has to be before end date";
-    x3.style.display = "block";
+    //x3.style.display = "block";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
     if (startDate === 'startdate' && endDate === 'enddate') {

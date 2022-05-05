@@ -71,7 +71,7 @@ if(isset($_SESSION['uid'])){
 
 <!-- New Course Section Dialog START -->
 <div id='newCourse' class='loginBoxContainer' style='display:none;'>
-    <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
+    <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;  overflow:hidden;'>
     		<div class='loginBoxheader'>
     			<h3>New Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();' title='Close window'>x</div>
@@ -80,13 +80,15 @@ if(isset($_SESSION['uid'])){
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
-					<input oninput="elementIsValid(this);" onkeyup="quickValidateForm('newCourse','createCourse')" class='textinput validate' type='text' id='ncoursename' name='coursename' placeholder='Course Name' />
+					<input oninput="quickValidateForm('newCourse','createCourse')"  class='textinput validate' type='text' id='ncoursename' name='coursename' placeholder='Course Name' />
 				</div>
+				<div class="formDialog" style="display: block;left:50px; top:-8px;"><span id="courseNameError" style="display: none; left:0px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
 				<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
-					<input oninput="elementIsValid(this);" onkeyup="quickValidateForm('newCourse','createCourse')" class='textinput validate' type='text' id='ncoursecode' name='coursecode' placeholder='Course Code' />
+					<input oninput="quickValidateForm('newCourse','createCourse')"  class='textinput validate' type='text' id='ncoursecode' name='coursecode' placeholder='Course Code' />
 				</div>
+				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
 				<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
     		</div>
     		<div style='padding:5px;'>
@@ -98,7 +100,7 @@ if(isset($_SESSION['uid'])){
 
 	<!-- Edit Section Dialog START -->
 	<div id='editCourse' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
+      <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;  overflow:hidden;'>
     		<div class='loginBoxheader'>
     			<h3>Edit Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
@@ -107,13 +109,15 @@ if(isset($_SESSION['uid'])){
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
-					<input oninput="elementIsValid(this);" onkeyup="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
+					<input oninput="quickValidateForm('editCourse','saveCourse')"  class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
 				</div>
+				<div class="formDialog" style="display: block; left:50px; top:-10px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
 				<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
-					<input oninput="elementIsValid(this);" onkeyup="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
+					<input oninput="quickValidateForm('editCourse','saveCourse')"  class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
 				</div>
+				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
 				<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
     			<div class='inputwrapper'>
 					<span>Visibility:</span>
@@ -131,7 +135,7 @@ if(isset($_SESSION['uid'])){
 	<!-- Edit Server Settings START -->
 
 	<div id='editSettings' onmouseover="validateMOTD('motd','dialog5', 'dialog52', 'submitMotd');" class='loginBoxContainer' style='display:none;' >
-    <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;'>
+    <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
 
     		<div class='loginBoxheader'>
     			<h3>Edit Server Settings</h3>
@@ -143,8 +147,10 @@ if(isset($_SESSION['uid'])){
     			<div class='inputwrapper'><span style='font-style:italic;color:rgba(0,0,0,0.6)'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
 				
     		</div>
-			<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibited symbols</p>
-			<p id="dialog52" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>
+			<!--<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibited symbols</p>-->
+			<div class="formDialog" style="display: block; left:50px; top:-55px;"><span id="dialog5" style="display: none; " class="formDialogText">Prohibited symbols</span></div>
+			<!--<p id="dialog52" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>-->
+			<div class="formDialog" style="display: block; left:50px; top:-30px;"><span id="dialog52" style="display: none; " class="formDialogText">Message can only contain a maximum of 50 symbols</span></div>
     		<div style='padding:5px;'>
     			<input id='submitMotd' class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
     		</div>

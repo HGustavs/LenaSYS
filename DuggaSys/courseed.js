@@ -546,11 +546,10 @@ const regex = {
 //Validates single element against regular expression returning true if valid and false if invalid
 function elementIsValid(element) {
 	const messageElement = element.parentNode.nextElementSibling; //The dialog to show validation messages in
-
 	//Standard styling for a failed validation that will be changed if element passes validation
-	element.style.borderWidth = "2px";
-	element.style.borderColor = "#E54";
-	messageElement.style.display = "block";
+	element.style.backgroundColor = "#f57";
+	$(messageElement.firstChild.id).fadeIn();
+	//messageElement.style.display = "block";
 
 	//Check if value of element matches regex based on name attribute same as key for regex object
 	if(element.value.match(regex[element.name])) {
@@ -567,21 +566,25 @@ function elementIsValid(element) {
 		}
 
 		//Setting the style of the element represent being valid and not show
+		element.style.backgroundColor = "#ffff";
 		element.style.borderColor = "#383";
-		messageElement.style.display = "none";
+		$(messageElement.firstChild).fadeOut();
+		//messageElement.style.display = "none";
 		return true;
 	} else if(element.value.trim() === "") {
 		//If empty string or ettempty of only spaces remove styling and spaces and hide validation message
+		$(messageElement.firstChild).fadeOut();
 		element.removeAttribute("style");
 		element.value = "";
-		messageElement.style.display = "none";
+		//messageElement.style.display = "none";
+		return true;
 	}
 
 	//Change back to original validation error message if it has been changed when knowing course code is not duplicate
 	if(element.name === "coursecode") {
-		messageElement.innerHTML = "2 Letters, 3 digits, 1 letter";
+		messageElement.firstChild.innerHTML = "2 Letters, 3 digits, 1 letter";
 	}
-
+	$(messageElement.firstChild).hide().fadeIn();
 	//Validation falied if getting here without returning
 	return false;
 }
@@ -661,30 +664,32 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton){
 	var x4 = document.getElementById(syntaxdialogid);
 	var x8 = document.getElementById(rangedialogid);
 	if (emotd.value.match(Emotd) ) {
-	  emotd.style.borderColor = "#383";
-	  emotd.style.borderWidth = "2px";
-	  x4.style.display = "none";
-	  window.bool9 = true;
+		$(x4).fadeOut()
+		x4.style.display = "none";
+		window.bool9 = true;
 	} else {
-	  emotd.style.borderColor = "#E54";
-	  x4.style.display = "block";
-	  emotd.style.borderWidth = "2px";
-	  window.bool9 = false;
+		$(x4).fadeIn()
+		x4.style.display = "block";
+		window.bool9 = false;
 	}
 	if (emotd.value.match(EmotdRange)){
-		emotd.style.borderColor = "#383";
-		emotd.style.borderWidth = "2px";
+		$(x8).fadeOut()
 		x8.style.display = "none";
 		window.bool9 = true;
 	}else{
-		emotd.style.borderColor = "#E54";
+		$(x8).fadeIn()
 		x8.style.display = "block";
-		emotd.style.borderWidth = "2px";
 		window.bool9 = false;
 	}
 	if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
+		emotd.style.backgroundColor = "#ffff";
+		emotd.style.borderColor = "#383";
+		emotd.style.borderWidth = "2px";
 		saveButton.disabled = false;
 	}else{
+		emotd.style.backgroundColor = "#f57";
+		emotd.style.borderColor = "#000";
+		emotd.style.borderWidth = "2px";
 		saveButton.disabled = true;
 	}
   

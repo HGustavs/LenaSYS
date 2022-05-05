@@ -422,13 +422,17 @@
 				<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
-				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN, VTNN or STNN</p>
-				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse'); validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' title='Start date input' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse'); validateDate('estartdate','eenddate','dialog6'); " class='textinput' type='date' id='eenddate' title='End date input' value='' /></div>
-				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
+				<div class="formDialog" style="display: block; left:50px; top:-5px;"><span id="dialog5" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
+				<!--<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN, VTNN or STNN</p>-->
+				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='estartdate' title='Start date input' value='' /></div>
+				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='eenddate' title='End date input' value='' /></div>
+				<div class="formDialog" style="display: block; left:50px; top:-55px;"><span id="dialog6" style="display: none; left:0px;" class="formDialogText">Start date has to be before end date</span></div>
+				<!--<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>-->
 				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
-				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibted symbols</p>
-				<p id="dialog92" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>
+				<div class="formDialog" style="display: block; left:50px; top:-55px;"><span id="dialog9" style="display: none; left:0px;" class="formDialogText">Prohibited symbols</span></div>
+				<div class="formDialog" style="display: block; left:50px; top:-55px;"><span id="dialog92" style="display: none; left:0px;" class="formDialogText">Message can only contain a maximum of 50 symbols</span></div>
+				<!--<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibted symbols</p>-->
+				<!--<p id="dialog92" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>-->
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
 				<p id="EndDialog3" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
 			</div>
