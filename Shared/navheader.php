@@ -47,12 +47,12 @@
 			//---------------------------------------------------------------------
 
 			if($noup!='NONE') {
-				echo "<td class='navButt' id='back' title='Back' style='display: inline-block'>";
+				echo "<td class='navButt' id='back' title='Back'>";
 			}
-			if($noup=='COURSE'){
+			if($noup=='CONTRIBUTION'){
 				echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
-			}if($noup=='COURSE' || $noup=='CONTRIBUTION'){
+			}if($noup=='COURSE'){
 				echo "<div><a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></div></td>";
 				echo "<td class='navButt' id='messagedialog' title='Message of the day 'onclick='DisplayMSGofTDY();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
