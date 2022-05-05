@@ -47,7 +47,6 @@ function getDiagramData()
  * */
 function uploadFile()
 {
-    console.log(hash);
     $.ajax({
         method: "POST",
         url: "filereceive_dugga.php",
@@ -62,6 +61,8 @@ function uploadFile()
             kind: 4,
             moment: inParams["moment"]
         }
+    }).done(function() {
+        AJAXService("GETPARAM", { }, "PDUGGA");
     });
 }
 /**
