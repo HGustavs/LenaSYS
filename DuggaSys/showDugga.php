@@ -56,7 +56,7 @@
 	#vars for handling fetching of diagram variant file name
 	$variantParams = "UNK";
 	$filePath ="";
-	#$finalArray = [];
+	$finalArray = array();
 	$fileContent="UNK";
 	$splicedFileName = "UNK";
 	$isGlobal = -1;
@@ -64,17 +64,17 @@
 	#vars for handling fetching of diagram instruction file name and type
 	$json = "UNK";
 	$fileName = "UNK";
-	$instructions = "UNK";
+	$instructions = "";
 	
 	#create request to database and execute it
 	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
 	$response->execute();
-
+	$i=0;
 	#loop through responses, fetch param column in variant table, splice string to extract file name, then close request.
 	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
 	{
 		$variantParams=$row['jparam'];
-		/* $start = strpos($variantParams, "diagram File&quot;:&quot;") + 25;
+		/* $start = strpos($variantParams, "diagram File&quot;:&quot;") + 25; Old way to get the filename
 		$end = strpos($variantParams, "&quot;:&quot;&quot;,&quot;diagram_type") - 176;
 		$splicedFileName = substr($variantParams, strpos($variantParams, "diagram File&quot;:") + 25, ($end - $start));*/
 		$variantParams = str_replace('&quot;','"',$variantParams);
@@ -82,6 +82,26 @@
 		$splicedFileName=$parameterArray["diagram_File"];
 		$fileName=$parameterArray["filelink"];
 		$fileType=$parameterArray["type"];
+		// for fetching file content
+		if(file_exists("../courses/global/"."$fileName"))
+		{
+			$instructions = file_get_contents("../courses/global/"."$fileName");
+		}
+		else if(file_exists("../courses/".$cid."/"."$fileName"))
+		{
+			$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+		}
+		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
+		{
+			$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+		}
+		//
+		$pattern = '/\s*/m';
+		$replace = '';
+		$instructions = preg_replace( $pattern, $replace,$instructions);
+		//
+		$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions]);
+		$i++;
 	}
 	$response->closeCursor();
 
@@ -103,26 +123,7 @@
 	{
 		$fileContent = "NO_FILE_FETCHED";
 	}
-  // for fetching file content
-	if(file_exists("../courses/global/"."$fileName"))
-	{
-		$instructions = file_get_contents("../courses/global/"."$fileName");
-	}
-	else if(file_exists("../courses/".$cid."/"."$fileName"))
-	{
-		$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-	}
-	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
-	{
-		$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
-	}
-	if($instructions === "UNK")
-	{
-		$instructions = "NO_FILE_FETCHED";
-	}
-	$pattern = '/\s*/m';
-  $replace = '';
-	$instructions = preg_replace( $pattern, $replace,$instructions);
+		
 	#I have no idea what the things below
 	// if(isset($_SESSION['hashpassword'])){
 	// 	$hashpassword=$_SESSION['hashpassword'];
@@ -270,6 +271,20 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 ?>
 
 </div>
+<script type="text/javascript">
+	/**
+	 * @description get the contents of a instruction file
+	 * @param fileName the name of the file t.ex. test.html
+	 * */
+	function getInstructions(fileName)
+	{
+		for (let index = 0; index < <?php echo json_encode($finalArray);?>.length; index++) {
+			if(<?php echo json_encode($finalArray);?>[index][2]==fileName){
+				document.getElementById("assignment_discrb").innerHTML =<?php echo json_encode($finalArray);?>[index][3];
+			}					
+		}				
+	}
+</script>
 	<!-- content START -->
 	<div id="content">
 		<?php
@@ -454,13 +469,6 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		include '../Shared/loginbox.php';
 	?>
 
-	<script type="text/javascript">
-			function getInstructions()
-			{
-				document.getElementById("assignment_discrb").innerHTML =<?php echo "'$instructions'";?>
-			}
-			getInstructions();
-	</script>
 </head>
 
 </body>
