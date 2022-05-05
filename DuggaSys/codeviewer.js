@@ -1741,6 +1741,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				pid = bracket.pop();
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "{") {
+				// below row ↓ was out commented in pull request #11411
 				// [token row position, 1 = opening bracket, codeviewer box id]
 				allBlocks.push([tokens[i].row, 1, parseInt(boxid)]);
 				pid = "CBR" + cbcount + boxid;
@@ -1748,6 +1749,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cbracket.push(pid);
 				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "}") {
+				// below row ↓ was out commented in pull request #11411
 				// [token row position, 0 = closing bracket, codeviewer box id]
 				allBlocks.push([tokens[i].row, 0, parseInt(boxid)]);
 				pid = cbracket.pop();
@@ -1792,6 +1794,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						break;
 				}
 
+				// ↓ added in pull request #11411 (START) 
 				// Enables collapsible html tags
 				if (String(tokens[i + 1].kind) == "name") {
 					// Ensures that void elements do not count as opening html tags
@@ -1804,6 +1807,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					// [token row position, 0 = closing html tag, codeviewer box id]
 					allBlocks.push([tokens[i + 1].row, 0, parseInt(boxid)]);
 				}
+				// ↑ added in pull request #11411 (START) 
 
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
@@ -2095,7 +2099,9 @@ function getBlockRanges(blocks) {
 	return boxRanges;
 }
 
+// ↓ relevant function to collapsible brackets
 function createBlocks(ranges, boxid) {
+	console.log("ranges contain: "+ranges); // contain of ranges
 	var wrapper = document.querySelector('#textwrapper'+boxid);
 	for (var i = 0; i < ranges.length; i++) {
 		var blockStartRow = wrapper.querySelector("div[id$='"+ranges[i][0]+"']");
@@ -2104,6 +2110,13 @@ function createBlocks(ranges, boxid) {
 		buttonSlot.classList.add('occupied');
 		buttonSlot.id = i;
 
+		console.log("ranges[i][0]: "+ranges[i][0]+" --> ranges[i]:"+ranges[i]); // find ranges
+		/*
+			if child block has span = closed-block
+			do NOT .style.display = display
+			if range can be found inside of range do nothing
+		*/
+		if (!(ranges[i] > ranges[i-1])){ // <------	blocks nested ranges to collapse
 		buttonSlot.addEventListener('click', (e) => {
 			var button = e.target;
 			button.classList.toggle('open-block');
@@ -2111,9 +2124,16 @@ function createBlocks(ranges, boxid) {
 			var rowsInBlock = Array(ranges[button.id][1] - ranges[button.id][0]).fill().map((_, idx) => ranges[button.id][0] + idx);
 			toggleRows(rowsInBlock, button);
 		});
+		} // <------
 	}
 }
 
+// ↓ possible relevant function to collapsible brackets
+/* 	most likely something in the code saying 
+	"expand all rows between X-Y (where the nested group is included)"
+	need to find how to exclude the nested rows 
+	```if (nested group .contains == closed-block){}```
+*/
 function toggleRows(rows, button) {
 	var baseRow = button.parentNode;
 	var wrapper = baseRow.parentNode;
