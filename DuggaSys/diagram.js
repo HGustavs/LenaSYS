@@ -3021,7 +3021,7 @@ function getRectFromElement (element)
     return {
         x: element.x,
         y: element.y,
-        width: objectWidth,
+        width: element.width,
         height: element.height,
     };
 }
