@@ -33,7 +33,7 @@ var filedata;
 var existingFiles = [];
 var existingFileTypes = [];
 var fullFileName = [];
-//var allowedExtensions = ["txt","html","java","xml","js","css","php","sr","md","sql","md","py","bat","xsl","json"];
+var allowedExtensions = ["txt","html","java","xml","js","css","php","sr","md","sql","md","py","bat","xsl","json"];
 
 function setup() {
     AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
@@ -161,15 +161,17 @@ function showFilePopUp(fileKind) {
 
 //see fileedservice.php and filerecieve.php for more details of how files are saved to local storage and meta-data is saved to DB.
 function uploadFile(kind) {
-   /*  
+    
     for(i = 0; i < existingFiles.length; i++){
         //console.log(existingFiles[i]);
         for(j = 0; j < allowedExtensions.length; j++){
-            
-            alert(existingFiles[j]+"."+allowedExtensions[j]);
-           
+            for(l = 0; l < fullFileName.length; l++){
+                if(existingFiles[j]+"."+allowedExtensions[j] == fullFileName[l]){
+                    //alert(existingFiles[j]+"."+allowedExtensions[j]);
+                    alert("File already exists");
+                };
+            };
         };
-       
     };
    /* for(i = 0; i < existingFileTypes.length; i++){
         console.log(existingFileTypes[i]);
@@ -258,7 +260,7 @@ function leaveSearch() {
 // validateDummyFile <- Validates the name and extension of the file. Add extensions to "var allowedExtensions" to allow into filelink table in DB.
 //------------------------------------------------------------------
 function validateDummyFile() {
-   var allowedExtensions = [
+    allowedExtensions = [
         "txt",
         "html",
         "java",
@@ -381,8 +383,8 @@ function renderCell(col, celldata, cellid) {
             str += "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
         } else {
             str+="<span class='nowrap-filename' id='openFile' onclick='filePreview(\"" + obj.shortfilename + "\",\"" + obj.filePath + "\", \"" + obj.extension + "\")'>" + obj.shortfilename + "</span>";
-            //existingFiles.push(obj.shortfilename);
-            //fullFileName.push(obj.filename);
+            existingFiles.push(obj.shortfilename);
+            fullFileName.push(obj.filename);
             
         }
     } else if (col == "filesize") {
@@ -402,7 +404,7 @@ function renderCell(col, celldata, cellid) {
             str = "<span class='iconBox'><img alt='edit file icon' id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
         }
-        //existingFileTypes.push(obj.extension);
+        existingFileTypes.push(obj.extension);
     }
     } else if (col == "kind") {
         str += "<span>" + convertFileKind(celldata) + "</span>";
