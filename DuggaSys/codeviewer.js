@@ -953,8 +953,8 @@ function createboxmenu(contentid, boxid, type) {
 
 		// Add resize, reset and edit buttons
 		//This functionality should be changed to allow zooming.
-		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Zoom in' onclick='zoomIn(" + boxid + ", 5);'><img src='../Shared/icons/MaxButton.svg' /></div>";
-		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Zoom out' onclick='zoomOut(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
+		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Zoom in' onclick='zoomText(" + boxid + ", 5);'><img src='../Shared/icons/MaxButton.svg' /></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Zoom out' onclick='zoomText(" + boxid + ", -5);'><img src='../Shared/icons/MinButton.svg' /></div>";
 		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
     
 
@@ -2648,35 +2648,19 @@ function getTotalBoxes(template) {
 }
 
 //-----------------------------------------------------------------------------
-// zoomIn: Adding zooming functionaity for the content of the boxes.
-//			Is called with onclick() by zoomInButton. Size refers to the increment of the font size.
+// zoomText: Adding zooming functionality for text content of the boxes.
+//			Is called by zoomIn & zoomOut buttons. 
+//			Increment refers to the increment in font size.
+//			Setting increment to a negative value allows for making the text smaller.
 //-----------------------------------------------------------------------------
 
-function zoomIn(boxid, size)
+function zoomText(boxid, increment)
 {
-	var boxid = boxid;
+	var fontSize = parseInt(document.getElementById("box" + boxid).style.fontSize);
 
-	var contentDiv = document.getElementById("box" + boxid);
+	fontSize = fontSize + increment; 
 
-	console.log("Zoom In " + size + "px in box " + contentDiv);	
-
-	var fontSize = document.getElementById("box" + boxid).style.fontSize;
-	
-	console.log(fontSize);
-	
-	contentDiv.style.fontSize = size +"px";
-}
-
-//-----------------------------------------------------------------------------
-// zoomOut: Adding zooming functionaity for the content of the boxes.
-//			Is called with onclick() by zoomOutButton
-//-----------------------------------------------------------------------------
-
-function zoomOut(boxid)
-{
-	var boxid = boxid;
-	//document.getElementById("box2").fontsize 
-	console.log("Zoom Out" + document.getElementById("box" + boxid).style.fontSize);
+	document.getElementById("box" + boxid).style.fontSize = fontSize + "px";
 }
 
 //-----------------------------------------------------------------------------
