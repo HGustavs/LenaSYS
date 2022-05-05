@@ -85,7 +85,7 @@
 	}
 	$response->closeCursor();
 
-
+	
 	if(file_exists("../courses/global/"."$splicedFileName"))
 	{
 		$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
@@ -140,26 +140,29 @@
 		}
 	}
 	
-  // for fetching file content
-	if(file_exists("../courses/global/"."$fileName"))
-	{
-		$instructions = file_get_contents("../courses/global/"."$fileName");
-	}
-	else if(file_exists("../courses/".$cid."/"."$fileName"))
-	{
-		$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-	}
-	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
-	{
-		$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
-	}
-	if($instructions === "UNK")
-	{
-		$instructions = "NO_FILE_FETCHED";
-	}
-	$pattern = '/\s*/m';
-  $replace = '';
-	$instructions = preg_replace( $pattern, $replace,$instructions);
+	
+//   // for fetching file content
+// 	if(file_exists("../courses/global/"."$fileName"))
+// 	{
+// 		$instructions = file_get_contents("../courses/global/"."$fileName");
+// 	}
+// 	else if(file_exists("../courses/".$cid."/"."$fileName"))
+// 	{
+// 		$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+// 	}
+// 	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
+// 	{
+// 		$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+// 	}
+// 	if($instructions === "UNK")
+// 	{
+// 		$instructions = "NO_FILE_FETCHED";
+// 	}
+// 	$pattern = '/\s*/m';
+//   $replace = '';
+// 	$instructions = preg_replace( $pattern, $replace,$instructions);
+
+	
 	#I have no idea what the things below
 	// if(isset($_SESSION['hashpassword'])){
 	// 	$hashpassword=$_SESSION['hashpassword'];
@@ -494,9 +497,9 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	<script type="text/javascript">
 			function getInstructions()
 			{
-				document.getElementById("assignment_discrb").innerHTML =<?php echo "'$instructions'";?>
+				//document.getElementById("assignment_discrb").innerHTML =<?php echo "'$instructions'";?>
 			}
-			getInstructions();
+			//getInstructions();
 	</script>
 </head>
 
