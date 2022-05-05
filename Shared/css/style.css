@@ -8224,6 +8224,7 @@ textarea#filecont {
   padding: 10px;
   transition: right .3s ease-in-out;
   user-select: none;
+  margin-top: 50px;
 }
 
 #accountRequests-pane-button {
