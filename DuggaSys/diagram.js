@@ -3800,22 +3800,27 @@ function generateErTableString()
 {   
     //TODO: When functionality is complete, try to minimize the overall space complexity, aka try to extract
     //only useful information from entities, attributes and relations. 
+    
     var entityList = [];    //All EREntities currently in the diagram
     var attrList = [];      //All ERAttributes currently in the diagram
     var relationList = [];  //All ERRelations currently in the diagram
     var stringList = [];    //List of strings where each string holds the relevant data for each entity
-        /**
-     * @description ERRelationData[i] = [ERRelation, [EREntity, lineCardinality, lineKind], [otherEREntity, otherLineCardinality, otherLineKind]]
+
+    /**
+     * @description Multidimensional array containing data of each entity and their attribute. Index[0] is always the element
+     * @structure ERAttributeData[i] = [entityObject, attributeObject1, ..., attributeObjectN]
      */ 
-    var ERAttributeData = []; //2D-array to contain attribute for each element'
-        /**
-     * @description ERForeignData[i] = [owningEntity, [sourceEntity, source, lineKind], [otherEREntity, otherLineCardinality, otherLineKind]]
+    var ERAttributeData = [];
+    /**
+     * @description Multidimensional array containing foreign keys for every entity. The owning entity is the entity where the foreign keys are added
+     * @structure   ERForeignData[i] = [owningEntityObject, [otherEntityObject, foreignAttributeObject1, ..., foreignAttributeObjectN]] 
      */ 
     var ERForeignData = [];
     /**
-     * @description ERRelationData[i] = [ERRelation, [EREntity, lineCardinality, lineKind], [otherEREntity, otherLineCardinality, otherLineKind]]
+     * @description Multidimensional array containing relation and the connected entities. Also stores the cardinality and kind for connected entity
+     * @structure   ERRelationData[i] = [relationObject, [entityObject, lineCardinality, lineKind], [otherEREntityObject, otherLineCardinality, otherLineKind]]
      */ 
-    var ERRelationData = []; //
+    var ERRelationData = [];
 
     //sort the data[] elements into entity-, attr- and relationList
     for (var i = 0; i < data.length; i++) {
@@ -3830,14 +3835,11 @@ function generateErTableString()
             relationList.push(data[i]);
         }
     }
-
     //For each relation in relationList
     for (var i = 0; i < relationList.length; i++) {
         //List containing relation-element and connected entities
         var currentRelationList = [];
-        //Push in current relation element
         currentRelationList.push(relationList[i]);
-
         //Sort all lines that are connected to the current relation into lineList[]
         var lineList = [];
         for (var j = 0; j < lines.length; j++) {
@@ -3853,16 +3855,14 @@ function generateErTableString()
 
         //Identify every connected entity to relations
         for (var j = 0; j < lineList.length; j++) {
-            //
             for (var k = 0; k < entityList.length; k++) {
-                //
                 if (entityList[k].id == lineList[j].fromID || entityList[k].id == lineList[j].toID) {
-                    //Push in entity and line cardinality
+                    //Push in entity, line cardinality and kind
                     currentRelationList.push([entityList[k], lineList[j].cardinality, lineList[j].kind]);
                 }
             }
         }
-        //Push in relation for entity and line cardinality.
+        //Push in relation for entity, line cardinality and kind.
         ERRelationData.push(currentRelationList);
     }
 
@@ -3870,14 +3870,9 @@ function generateErTableString()
     for (var i = 0; i < entityList.length; i++) {
 
         var currentRow = [entityList[i]];
-
-        //Add the start of the string for each entity. Example: "EMPLOYEE("
-        /*stringList.push(new String(`<p>${entityList[i].name} (`));*/
-        
         //Sort all lines that are connected to the current entity into lineList[]
         var lineList = []; 
         for (var j = 0; j < lines.length; j++) {
-            
             if (entityList[i].id == lines[j].fromID) {
                 lineList.push(lines[j]);
             }
@@ -3885,16 +3880,12 @@ function generateErTableString()
                 lineList.push(lines[j]);
             }
         }
-
         // Identify all attributes that are connected to the current entity by using lineList[] and store them in currentEntityAttrList. Save their ID's in idList.
         var currentEntityAttrList = [];
         var idList = [];
         for (var j = 0; j < lineList.length; j++) {
-            
             for (var h = 0; h < attrList.length; h++) {
-
                 if (attrList[h].id == lineList[j].fromID || attrList[h].id == lineList[j].toID) {
-                
                     currentEntityAttrList.push(attrList[h]);
                     currentRow.push(attrList[h]);
                     idList.push(attrList[h].id);
@@ -3909,10 +3900,8 @@ function generateErTableString()
             //For each attribute connected to the current entity, identify if other attributes are connected to themselves.
             var attrLineList = [];
             for (var h = 0; h < lines.length; h++) {
-                
                 //If there is a line to/from the attribute that ISN'T connected to the current entity, save it in attrLineList[].
                 if((currentEntityAttrList[j].id == lines[h].toID || currentEntityAttrList[j].id == lines[h].fromID) && (lines[h].toID != entityList[i].id && lines[h].fromID != entityList[i].id)) {
-                    
                     attrLineList.push(lines[h]);
                 }
             }
@@ -3921,21 +3910,17 @@ function generateErTableString()
             for (var h = 0; h < attrLineList.length; h++) {
                 
                 for (var k = 0; k < attrList.length; k++) {
-
                     //If ID matches the current attribute AND another attribute, try pushing the other attribute to currentEntityAttrList[]
                     if (((attrLineList[h].fromID == attrList[k].id) && (attrLineList[h].toID == currentEntityAttrList[j].id)) || ((attrLineList[h].toID == attrList[k].id) && (attrLineList[h].fromID == currentEntityAttrList[j].id))) {
-                        
                         //Iterate over saved IDs
                         var hits = 0;
                         for(var p = 0; p < idList.length; p++) {
-
                             //If the ID of the attribute already exists, then increase hits and break the loop.
                             if (idList[p] == attrList[k].id) {
                                 hits++;
                                 break;
                             }
                         }
-
                         //If no hits, then push the attribute to currentEntityAttrList[] (so it will also be checked for additional attributes in future iterations) and save the ID.
                         if (hits == 0) {
                             // looking if the parent attribute is in the parentAttributeList 
@@ -3955,17 +3940,12 @@ function generateErTableString()
         for (let index = 0; index < parentAttribeList.length; index++) {
             currentRow.splice(findIndex(currentRow,parentAttribeList[index].id),1);
         }
-       
         //Push list with entity at index 0 followed by its attributes
         ERAttributeData.push(currentRow);
     }
 
     //Iterate through all relations
-    for (var i = 0; i < ERRelationData.length; i++) {
-        //
-        var currentEntity = ERRelationData[i][1];
-        var otherEntity = ERRelationData[i][2];
-        
+    for (var i = 0; i < ERRelationData.length; i++) {        
         //If it is a weak relation
         if (ERRelationData[i][0].state == 'weak') {
             //
@@ -3973,9 +3953,9 @@ function generateErTableString()
         else {
             //Array with entities foreign keys
             var foreign = [];
-            //
+            //ONE to ONE relation, key from second ONE-side is stored in the other side
             if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'ONE') {
-                console.log('ONE-to-ONE');
+                //If array is empty
                 if (ERForeignData.length < 1) {
                     //Push in first ONE-side entity
                     ERForeignData.push([ERRelationData[i][1][0]]);
@@ -3983,14 +3963,12 @@ function generateErTableString()
                 else {
                     //If entity already exist in ERForeignData, 
                     var exist = false;
-                    //Iterate through array and check if entity already exist
                     for (var j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                             exist = true;
                         }
                     }
-                    //If entity did not exist, push 
                     if (!exist) {
                         //Push in first ONE-side entity
                         ERForeignData.push([ERRelationData[i][1][0]]);
@@ -4025,24 +4003,20 @@ function generateErTableString()
                     //Push in MANY-side entity
                     ERForeignData.push([ERRelationData[i][2][0]]);
                 }
-                //If not empty
                 else {
                     //If entity already exist in ERForeignData, 
                     var exist = false;
-                    //Iterate through array and check if entity already exist
                     for (var j = 0; j < ERForeignData.length; j++) {
                         //MANY-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                             exist = true;
                         }
                     }
-                    //If entity did not exist, push 
                     if (!exist) {
                         //Push in MANY-side entity
                         ERForeignData.push([ERRelationData[i][2][0]]);
                     }
                 }
-
                 //Find current entity and iterate through its attributes
                 for (var j = 0; j < ERAttributeData.length; j++) {
                     //ONE-side entity
@@ -4072,18 +4046,15 @@ function generateErTableString()
                     //Push in MANY-side entity
                     ERForeignData.push([ERRelationData[i][1][0]]);
                 }
-                //If not empty
                 else {
-                    //If entity already exist in ERForeignData, 
                     var exist = false;
                     //Iterate through array and check if entity already exist
                     for (var j = 0; j < ERForeignData.length; j++) {
-                        
+                        //MANY-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                             exist = true;
                         }
                     }
-                    //If entity did not exist, push 
                     if (!exist) {
                         //Push in MANY-side entity
                         ERForeignData.push([ERRelationData[i][1][0]]);
@@ -4111,11 +4082,10 @@ function generateErTableString()
                     }
                 }
             }
-            //
+            //MANY to MANY relation, key from both is stored together with relation
             else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {
                 //Push in relation
                 ERForeignData.push([ERRelationData[i][0]]);
-
                 //Find currentEntity and find its key-attributes
                 for (var j = 0; j < ERAttributeData.length; j++) {
                     if(ERAttributeData[j][0].id == ERRelationData[i][1][0].id) {
@@ -4128,7 +4098,7 @@ function generateErTableString()
                         }
                     }
                 }
-                //Find currentEntity and find its key-attributes
+                //Find otherEntity and find its key-attributes
                 for (var j = 0; j < ERAttributeData.length; j++) {
                     if(ERAttributeData[j][0].id == ERRelationData[i][2][0].id) {
                         foreign.push([ERRelationData[i][2][0]]);
@@ -4140,14 +4110,13 @@ function generateErTableString()
                         }
                     }
                 }
-                //Find current entity and push found foreign attributes
+                //Find relation in ERForeignData and push found foreign attributes
                 for (var j = 0; j < ERForeignData.length; j++) {
                     //MANY-side entity
                     if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
                         //Every key-attribute is pushed into array
                         for (var k = 0; k < foreign.length; k++) {
                             ERForeignData[j].push(foreign[k]);
-                            //ERForeignData[j].push(foreign[k]);
                         }
                     }
                 }
@@ -4155,10 +4124,9 @@ function generateErTableString()
         }
     }
 
-
     //Just for testing
+    //Add foreign attribute to correct entity in ERAttributeData
     for (var i = 0; i < ERAttributeData.length; i++) {
-        console.log('Old ' + ERAttributeData[i].length);
         for(var j = 0; j < ERForeignData.length; j++) {
             if(ERAttributeData[i][0].id == ERForeignData[j][0].id) {
                 for(var k = 1; k < ERForeignData[j].length; k++) {
@@ -4167,14 +4135,12 @@ function generateErTableString()
                 break;
             }
         }
-        console.log('New ' + ERAttributeData[i].length);
     }
-    console.log('Done');
     var control = 0;
     for (var i = 0; i < ERAttributeData.length; i++) {
         stringList.push(new String(`<p>${ERAttributeData[i][0].name} ( `));
-
         for (var j = 1; j < ERAttributeData[i].length; j++) {
+            //If not last attribute
             if (j < ERAttributeData[i].length - 1) {
                 if (Array.isArray(ERAttributeData[i][j])) {
                     for(var k = 1; k < ERAttributeData[i][j].length; k++) {
@@ -4191,6 +4157,7 @@ function generateErTableString()
                     
                 }
             }
+            //If last attribute
             else if (j == ERAttributeData[i].length - 1) {
                 if (Array.isArray(ERAttributeData[i][j])) {
                     for(var k = 1; k < ERAttributeData[i][j].length; k++) {
@@ -4210,15 +4177,10 @@ function generateErTableString()
         }
         control++;
     }
-    console.log('Done again');
-    
     for(var i = 0; i < ERForeignData.length; i++) {
-
         if(ERForeignData[i][0].kind == 'ERRelation') {
-
             stringList.push(new String(`<p>${ERForeignData[i][0].name} (`));
             for(var j = 1; j < ERForeignData[i].length; j++) {
-                console.log(ERForeignData[i][j]);
                 if (j < ERForeignData[i].length - 1) {
                     stringList[control] += `<span style='text-decoration: overline underline black solid 1.5px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>, `;
                 }
@@ -4234,9 +4196,7 @@ function generateErTableString()
     for (var i = 0; i < stringList.length; i++) {
         stri += new String(stringList[i] + "\n\n");
     }
-    //
     return stri;
-
 }
 
 /**
