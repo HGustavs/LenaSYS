@@ -952,8 +952,9 @@ function createboxmenu(contentid, boxid, type) {
 		}
 
 		// Add resize, reset and edit buttons
-		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Maximize box' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
-		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Minimize box' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
+		//This functionality should be changed to allow zooming.
+		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Zoom in' onclick='zoomIn(" + boxid + ", 5);'><img src='../Shared/icons/MaxButton.svg' /></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Zoom out' onclick='zoomOut(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
 		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
     
 
@@ -2644,6 +2645,38 @@ function getTotalBoxes(template) {
 		totalboxes = 1;
 	}
 	return totalBoxes;
+}
+
+//-----------------------------------------------------------------------------
+// zoomIn: Adding zooming functionaity for the content of the boxes.
+//			Is called with onclick() by zoomInButton. Size refers to the increment of the font size.
+//-----------------------------------------------------------------------------
+
+function zoomIn(boxid, size)
+{
+	var boxid = boxid;
+
+	var contentDiv = document.getElementById("box" + boxid);
+
+	console.log("Zoom In " + size + "px in box " + contentDiv);	
+
+	var fontSize = document.getElementById("box" + boxid).style.fontSize;
+	
+	console.log(fontSize);
+	
+	contentDiv.style.fontSize = size +"px";
+}
+
+//-----------------------------------------------------------------------------
+// zoomOut: Adding zooming functionaity for the content of the boxes.
+//			Is called with onclick() by zoomOutButton
+//-----------------------------------------------------------------------------
+
+function zoomOut(boxid)
+{
+	var boxid = boxid;
+	//document.getElementById("box2").fontsize 
+	console.log("Zoom Out" + document.getElementById("box" + boxid).style.fontSize);
 }
 
 //-----------------------------------------------------------------------------
