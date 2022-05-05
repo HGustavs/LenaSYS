@@ -118,9 +118,14 @@
 				foreach(new DirectoryIterator($tempDir) as $file)
 				{
 					$ctime = $file->getCTime();    // Time file was created
-					$fname = $file->getFileName(); // File name
+					echo "</br> ctime: {$ctime}";
+
+					$fname = $file->getBaseName(); // File name
+					echo "</br> fname: {$fname}";
+
 					if( $ctime > $latest )
 					{
+						echo "</br> if ({$ctime} > {$latest})";
 						$latest = $ctime;
 						$current = $fname;
 					}
@@ -129,8 +134,8 @@
 				$latest = $current;
 
 				$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
-				echo "{$tempDir}.{$latest}\n";
-				echo "{$latest}";
+				echo "</br> TempDir + latest: {$tempDir}.{$latest}\n";
+				echo "</br> latest: {$latest}";
 				$fileContent = file_get_contents("{$tempDir}/{$latest}");
 				#header("Location: Hello.php");
 			}
