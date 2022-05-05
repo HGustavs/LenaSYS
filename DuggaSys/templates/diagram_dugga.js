@@ -105,7 +105,6 @@ function returnedDugga(data)
         var lastFile = momentFiles[lastKey]
         var filePath = lastFile.filepath + "/" + lastFile.filename + lastFile.seq + "." + lastFile.extension;
 
-        /*
         $.ajax({
             method: "GET",
             url: filePath,
@@ -113,7 +112,6 @@ function returnedDugga(data)
             setLastFile(file);
             diagramWindow.contentWindow.loadDiagram(file);
         });
-        */
     }
 }
 /**
