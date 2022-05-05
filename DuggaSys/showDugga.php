@@ -118,40 +118,21 @@
 				foreach(new DirectoryIterator($tempDir) as $file)
 				{
 					$ctime = $file->getCTime();    // Time file was created
-					echo "</br> ctime: {$ctime}";
-
 					$fname = $file->GetFileName (); // File name
-					echo "</br> fname: {$fname}";
 
 					if($fname != "." && $fname != "..")
 					{
 						if( $ctime > $latest )
 						{
-							if($fname == ".")
-							{
-								$fname = "diagramSave1.json";
-							}
-							else if ($fname == "..")
-							{
-								$fname = "diagramSave2.json";
-							}
-	
-							echo "</br> swap...";
-							echo "</br> if ({$ctime} > {$latest})";
 							$latest = $ctime;
 							$current = $fname;
-							echo "</br> new latest file is: {$fname}";
 						}
 					}
 				}
-
 				$latest = $current;
 
 				$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
-				echo "</br> TempDir + latest: {$tempDir}{$latest}\n";
-				echo "</br> latest: {$latest}";
 				$fileContent = file_get_contents("{$tempDir}{$latest}");
-				#header("Location: Hello.php");
 			}
 			catch(Exception $e){
 				echo 'Message: ' .$e->getMessage();
