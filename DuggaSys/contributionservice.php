@@ -510,6 +510,7 @@ if(strcmp($opt,"get")==0) {
 		$data = $row['eventtime'];
 		list($eventTime, $unnused) = explode("T", $data);
 		$eventcount[$eventTime]++;
+		$stuff++;
 	}
 
 	//Comments
@@ -568,10 +569,10 @@ if(strcmp($opt,"get")==0) {
 		if($commentcount[$currentdate] == NULL){
 			$commentcount[$currentdate] = 0;
 		}
-
+		//$eventcount[$currentdate]
 
 		$daycount = array();
-		$daycount = array('events' => $eventcount[$currentdate],
+		$daycount = array('events' => $stuff,
 						  'commits' => $commitcount[$currentdate],
 						  'loc' => $loccount[$currentdate],
 						  'comments' => $commentcount[$currentdate]);
