@@ -2221,12 +2221,13 @@ function resetForceLogin()
 
   let userExists_Git = null; // if it exists in the git data
   let userExists_Lenasys = null; // if it exists in the lenasys data
+  let userStatus_Lenasys = null; // if it is a super/teache
  
   function checkIfGitUserExists(username, _callback) // checks if user exists in the git data and or the lenasys data
 {
   userExists_Git = null; // reset back to null if we want to do a check for another user
   userExists_Lenasys = null;
-
+  userStatus_Lenasys = null;
 
   if(username == null || username == "" || !(typeof(username) === 'string'))
   {
@@ -2246,12 +2247,12 @@ function resetForceLogin()
 
       function checkAsyncFlags() 
       {
-        if(userExists_Git == null || userExists_Lenasys == null) 
+        if(userExists_Git == null || userExists_Lenasys == null || userStatus_Lenasys == null) 
         {
            window.setTimeout(checkAsyncFlags, 100);
         } else 
         {
-          _callback(userExists_Git,userExists_Lenasys);
+          _callback(userExists_Git,userExists_Lenasys, userStatus_Lenasys);
 
         }
       }
@@ -2366,13 +2367,8 @@ function resetForceLogin()
 
   function returned_lenasys_user_check(data)
   {
-    if(typeof data == "boolean")
-    {
-      userExists_Lenasys = data;
-    }
-    else
-      alert("invalid data returned from lenasys-data");
-
+    userExists_Lenasys = Boolean(data['success']);
+    userStatus_Lenasys = data['status'];
     return userExists_Lenasys;
   }
 
@@ -2421,7 +2417,7 @@ function resetForceLogin()
     else
     {
 
-      checkIfGitUserExists(username ,function(_onGit, _onLena) 
+      checkIfGitUserExists(username ,function(_onGit, _onLena, _userStatus) 
         {
           
 
@@ -2438,7 +2434,23 @@ function resetForceLogin()
 
           if(_onLena) // log in with lena
           {
-            restoreAndLockLogin();
+            if(_userStatus == "super" || _userStatus == "student") // if youre a teacher or youre a student with a created git account on the git_user table
+            { 
+              restoreAndLockLogin();
+            }
+            else // youre on solely lena but not a teacher/super
+            {
+              displayAlertText("#login #message", "User does not have permission <br />");
+
+              $("input#username").addClass("loginFail");
+		      	  $("input#password").addClass("loginFail");
+			        setTimeout(function()
+              {
+		      	    $("input#username").removeClass("loginFail");
+                $("input#password").removeClass("loginFail");
+                displayAlertText("#login #message", "Try again");
+					    }, 2000);
+            }
           }
           if(!_onLena && _onGit) // onlena is false, ongit true, create new user
           {
@@ -2479,7 +2491,7 @@ function git_processLogin()
     let git_password = $("#login #password").val();
 
 
-    AJAXService("requestGitUserLogin",{
+    AJAXService("requestContributionUserLogin",{
       username: git_username,
       userpass: git_password,
     }, "CONTRIBUTION_GIT_USER_LOGIN");
@@ -2493,7 +2505,7 @@ function git_logout()
   let git_username = null; // nothing entered will logout
   let git_password = null;
 
-  AJAXService("requestGitUserLogin",{
+  AJAXService("requestContributionUserLogin",{
     username: git_username,
     userpass: git_password,
   }, "CONTRIBUTION_GIT_USER_LOGIN");
@@ -2504,6 +2516,17 @@ function returned_git_user_login(data)
 {
   if(data)
     window.location.reload(true);  // TODO should I just reload the page here perhaps? 
+  else
+  {
+    displayAlertText("#login #message", "Invalid password <br />");
+
+    $("input#password").addClass("loginFail");
+    setTimeout(function()
+    {
+      $("input#password").removeClass("loginFail");
+      displayAlertText("#login #message", "Try again");
+    }, 2000);
+  }
 }
 
 console.error
