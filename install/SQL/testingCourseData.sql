@@ -149,6 +149,71 @@ INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afteri
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (4009,1885,'JS-TEST template 10',7009,2,1,1,1,'1337',0);
 INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,7009,"JS-TEST box 1","Code","[viktig=1]",3,"JS-TEST1.js");
 
+/*SQL-examples*/
+/*SQL Template 1*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL',"SQL-TEST1.SQL","SQL-TEST1.SQL",1,1337,8000,8001,1,8000);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (3110,1885,'SQL-TEST template 1',8000,2,3,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,8000,"SQL-TEST box 1","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,8000,"SQL-TEST box 2","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+/*SQL Template 2*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL',"SQL-TEST1.SQL","SQL-TEST1.SQL",1,1337,8000,8002,2,8001);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (3111,1885,'SQL-TEST template 2',8001,2,3,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,8001,"SQL-TEST box 1","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,8001,"SQL-TEST box 2","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+/*SQL Template 3*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL',"SQL-TEST1.SQL","SQL-TEST1.SQL",1,1337,8001,8003,3,8002);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (3112,1885,'SQL-TEST template 3',8002,2,3,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,8002,"SQL-TEST box 1","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,8002,"SQL-TEST box 2","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,8002,"SQL-TEST box 3","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+/*SQL Template 4*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL',"SQL-TEST1.SQL","SQL-TEST1.SQL",1,1337,8002,8004,4,8003);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (3113,1885,'SQL-TEST template 4',8003,2,3,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,8003,"SQL-TEST box 1","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,8003,"SQL-TEST box 2","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,8003,"SQL-TEST box 3","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+/*SQL Template 5*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL',"SQL-TEST1.SQL","SQL-TEST1.SQL",1,1337,8003,8005,5,8004);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (3114,1885,'SQL-TEST template 5',8004,2,3,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,8004,"SQL-TEST box 1","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,8004,"SQL-TEST box 2","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,8004,"SQL-TEST box 3","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,8004,"SQL-TEST box 4","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+/*SQL Template 6*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL',"SQL-TEST1.SQL","SQL-TEST1.SQL",1,1337,8004,8006,6,8005);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (3115,1885,'SQL-TEST template 6',8005,2,3,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,8005,"SQL-TEST box 1","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,8005,"SQL-TEST box 2","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,8005,"SQL-TEST box 3","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,8005,"SQL-TEST box 4","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+/*SQL Template 7*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL',"SQL-TEST1.SQL","SQL-TEST1.SQL",1,1337,8005,8007,7,8006);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (3116,1885,'SQL-TEST template 7',8006,2,3,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,8006,"SQL-TEST box 1","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,8006,"SQL-TEST box 2","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,8006,"SQL-TEST box 3","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,8006,"SQL-TEST box 4","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+/*SQL Template 8*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL',"SQL-TEST1.SQL","SQL-TEST1.SQL",1,1337,8006,8008,8,8007);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (3117,1885,'SQL-TEST template 8',8007,2,3,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,8007,"SQL-TEST box 1","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,8007,"SQL-TEST box 2","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,8007,"SQL-TEST box 3","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,8007,"SQL-TEST box 4","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+/*SQL Template 9*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL',"SQL-TEST1.SQL","SQL-TEST1.SQL",1,1337,8007,8009,9,8008);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (3118,1885,'SQL-TEST template 9',8008,2,3,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,8008,"SQL-TEST box 1","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,8008,"SQL-TEST box 2","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,8008,"SQL-TEST box 3","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,8008,"SQL-TEST box 4","Code","[viktig=1]",3,"SQL-TEST2.SQL");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (5,8008,"SQL-TEST box 5","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+/*SQL Template 10*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'SQL',"SQL-TEST1.SQL","SQL-TEST1.SQL",1,1337,8008,8000,10,8009);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (3119,1885,'SQL-TEST template 10',8009,2,3,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,8009,"SQL-TEST box 1","Code","[viktig=1]",3,"SQL-TEST1.SQL");
+
+
 
 
 
