@@ -3953,7 +3953,7 @@ function generateErTableString()
 
         //removes all attributes in parent attribute list from current entity attribute list
         for (let index = 0; index < parentAttribeList.length; index++) {
-            currentEntityAttrList.splice(findIndex(currentEntityAttrList,parentAttribeList[index].id),1);
+            currentRow.splice(findIndex(currentRow,parentAttribeList[index].id),1);
         }
        
         //Push list with entity at index 0 followed by its attributes
