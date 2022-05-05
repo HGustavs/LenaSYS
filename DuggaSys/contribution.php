@@ -32,6 +32,12 @@ $vers=getOPG('coursevers');
 
 </head>
 <body onload="loadContribFormLocalStorage()">
+
+	<?php
+		$noup="CONTRIBUTION";
+		include '../Shared/navheader.php';
+	?>
+
 	<div id="infoText" style="background-color:#ffffff; border:1px solid black; top:100px; display:none;position:absolute;"></div>
 
 	<!-- content START -->
