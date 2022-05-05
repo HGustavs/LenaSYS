@@ -24,7 +24,7 @@ var updateShowAct = true;
 var courseFileArr = [];
 
 var commitChangeArray = [];
-var isClickedElementBox = false;
+var isClickedElementBox = [false, false];
 //sorting for multiple views
 //Restores all views when pressing the All button
 function restoreStatView() {
@@ -1429,12 +1429,12 @@ function renderCellForghContibTable(col, celldata, cellid) {
        if(obj.commits.length > 0){
          str += `<div id='ghCommits' onclick='toggleContributionTable(this)' 
          class='contribheading' style='cursor:pointer;'><span>Made ${obj.commits.length} commit(s).</span>`;
-         str += "<div id='ghCommits"+rowNr+"' style='pointer-events:auto' class='contribcontent'>";
+         str += "<div id='ghCommits"+rowNr+"' style='pointer-events:auto' class='contribcontent' onclick='keepContribContentOpen(event)'>";
            for (j = 0; j < obj.commits.length; j++) {
              var message = obj.commits[j].message;
              var hash = obj.commits[j].cid;
-             str += `<span><a class="commitLink" onmouseover='showCommits(this, \"${"cid: " + hash}\");' onmouseout="hideCommits(this)" onclick='keepContribContentOpen(event)' 
-             target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}'>${message}</a></span>`;
+             str += `<span onclick='showCommits(this, \"${"cid: " + hash}\");'><img id='githubLink${rowNr}' class='githubLink${rowNr}' style='width:16px;display:inline-flex;' alt='githubLink icon' 
+             title='open github page' src='../Shared/icons/githubLink-icon.svg' target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}' onclick='openGithubLink(this)'> ${message}</span>`;
            }
            str += "</div>";
            str += "</div>";
@@ -1690,6 +1690,15 @@ function showMoreContribContent(id,status){
       document.getElementById(id).classList.add('contribcontentToggle')
     }else{
       document.getElementById(id).classList.remove('contribcontentToggle')
+    }
+    //if the content is of the div ghCommits then hide or show githubLink image based on status.
+    if(id.toString().includes('ghCommits')){
+      var githubLinkString = "githubLink"+id.toString().replace('ghCommits','');
+      if(status == 1){
+        $('.'+githubLinkString).show();
+      }else{
+        $('.'+githubLinkString).hide();
+      } 
     }
 }
 
@@ -1966,6 +1975,13 @@ function showCommits(object, cid){
   document.getElementById('commitDiv').style.display="none";
  }
 
+//Redirects the user to the github page when pressing the github icon
+function openGithubLink(btnobj){
+  console.log(btnobj);
+  link = $(btnobj).attr('href');
+  window.open(link, "_blank");
+}
+
 console.error
 //Toggles the account request menu being open or closed.
 function toggleAccountRequestPane(){
@@ -2000,12 +2016,21 @@ function mouseDown(e) {
   // else if() - the clicked element is a child of one of the show account request elements
   // else - the clicked element does not belong to account request
   if (box[0].classList.contains("show-accountRequests-pane") || box[0].classList.contains("accountRequests-pane-span") || box[0].classList.contains("hide-accountRequests-pane")) {
-    isClickedElementBox = true;
+    isClickedElementBox[0] = true;
   } else if ((findAncestor(box[0], "show-accountRequests-pane") != null) &&
     (findAncestor(box[0], "show-accountRequests-pane").classList.contains("show-accountRequests-pane"))) {
-    isClickedElementBox = true;
-  } else {
-    isClickedElementBox = false;
+    isClickedElementBox[0] = true;
+  } else{
+    isClickedElementBox[0] = false;
+  }
+  
+  if (box[0].classList.contains("commitDiv")) {
+    isClickedElementBox[1] = true;
+  } else if ((findAncestor(box[0], "commitDiv") != null) &&
+    (findAncestor(box[0], "commitDiv").classList.contains("commitDiv"))) {
+    isClickedElementBox[1] = true;
+  }else{
+    isClickedElementBox[1] = false;
   }
 
 }
@@ -2014,7 +2039,7 @@ function mouseUp(e) {
   //if - the user clicks something other than the account request pane.
   //else - the user clicks an element belonging to account request
   if ($('.accountRequests-pane') && !$('.accountRequests-pane').is(e.target) &&
-  $('.accountRequests-pane').has(e.target).length === 0 && (!isClickedElementBox)) {
+  $('.accountRequests-pane').has(e.target).length === 0 && (!isClickedElementBox[0])) {
     //if account request pane is open then close it.
     if (document.getElementById("accountRequests-pane").className == "show-accountRequests-pane") {
       document.getElementById('accountReqmarker').innerHTML = "Account requests";
@@ -2025,6 +2050,13 @@ function mouseUp(e) {
       document.getElementById('accountReqmarker').innerHTML = "Account requests";
       document.getElementById("accountRequests-pane").className = "show-accountRequests-pane";
     }
+  }
+  
+  if ($('.commitDiv') && !$('.commitDiv').is(e.target) &&
+  $('.commitDiv').has(e.target).length === 0 && (!isClickedElementBox[1])) {
+    hideCommits();
+  }else{
+    console.log("else is");
   }
 }
 
