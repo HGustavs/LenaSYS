@@ -488,15 +488,11 @@
     border-right: 2px solid #614875;
     padding: 0 8px 0 8px;
 }
-
-.list tbody tr:nth-child(odd) {
-  background-color: var(--color-sectioned-table-hi);
-}
-.list tbody tr:nth-child(even) {
-  background-color: var(--color-sectioned-table-lo);
-}
 .list tr {
     background-color: var(--color-sectioned-table-hi);
+}
+.changeColorInDarkModeTable:nth-of-type(odd) { 
+    background: var(--color-sectioned-table-lo);
 }
 .bottomBorderColor{
     border-top: 2px solid #614875;

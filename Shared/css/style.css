@@ -8275,4 +8275,6 @@ textarea#filecont {
 .bottomBorderColor{
   border-top: 2px solid var(--color-border-list); 
 }
-
+.changeColorInDarkModeTable:nth-of-type(odd) {
+  background: #ccc;
+}
