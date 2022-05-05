@@ -109,19 +109,10 @@
 	{
 		$tempDir = "../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
 		$latest = time() - (365 * 24 * 60 * 60);
-		$current = "UNK";	 
+		$current = "diagramSave1.json";	 
 
 		//try and catch for using test data
 		try{
-			foreach(new DirectoryIterator($tempDir) as $file)
-			{
-				if($file->getFileName() == "diagramSave1.json")
-				{
-					$latest = $file->getCTime();
-					$current = $file->getFileName();
-				}
-			}
-
 			foreach(new DirectoryIterator($tempDir) as $file)
 			{
 				$ctime = $file->getCTime();    // Time file was created
@@ -132,13 +123,15 @@
 					$current = $fname;
 				}
 			}
+
 			$latest = $current;
 
 			$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
 			$fileContent = file_get_contents("{$tempDir}/{$latest}");
+			echo "{$fileContent}";
 		}
 		catch(Exception $e){
-			//echo 'Message: ' .$e->getMessage();
+			echo 'Message: ' .$e->getMessage();
 		}
 	}
 	
