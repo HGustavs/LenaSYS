@@ -32,6 +32,8 @@ var editor;
 var filedata;
 var existingFiles = [];
 var existingFileTypes = [];
+var fullFileName = [];
+var allowedExtensions = ["txt","html","java","xml","js","css","php","sr","md","sql","md","py","bat","xsl","json"];
 
 function setup() {
     AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
@@ -159,14 +161,27 @@ function showFilePopUp(fileKind) {
 
 //see fileedservice.php and filerecieve.php for more details of how files are saved to local storage and meta-data is saved to DB.
 function uploadFile(kind) {
-
     for(i = 0; i < existingFiles.length; i++){
-        console.log(existingFiles[i]);
+        //console.log(existingFiles[i]);
+        for(j = 0; j < allowedExtensions.length; j++){
+            alert("hej");
+            alert(existingFiles[i]+"."+allowedExtensions[j]);
+            if(existingFiles[i]+"."+allowedExtensions[j] == fullFileName[i]){
+
+                console.log("hej");
+            }
+           
+        }
+       
     }
-    for(i = 0; i < existingFileTypes.length; i++){
-        console.log(existingFileTypes);
+   /* for(i = 0; i < existingFileTypes.length; i++){
+        console.log(existingFileTypes[i]);
     }
+    for(i = 0; i < fullFileName.length; i++){
+        console.log(fullFileName[i]);
+    }*/
    
+    
 
     //console.log(kind);
     if (kind == "MFILE") {
@@ -242,7 +257,7 @@ function leaveSearch() {
 // validateDummyFile <- Validates the name and extension of the file. Add extensions to "var allowedExtensions" to allow into filelink table in DB.
 //------------------------------------------------------------------
 function validateDummyFile() {
-    var allowedExtensions = [
+    allowedExtensions = [
         "txt",
         "html",
         "java",
@@ -366,6 +381,7 @@ function renderCell(col, celldata, cellid) {
         } else {
             str+="<span class='nowrap-filename' id='openFile' onclick='filePreview(\"" + obj.shortfilename + "\",\"" + obj.filePath + "\", \"" + obj.extension + "\")'>" + obj.shortfilename + "</span>";
             existingFiles.push(obj.shortfilename);
+            fullFileName.push(obj.filename);
             
         }
     } else if (col == "filesize") {
