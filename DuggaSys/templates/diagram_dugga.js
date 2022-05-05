@@ -24,6 +24,7 @@ function setup()
     AJAXService("GETPARAM", { }, "PDUGGA");
     document.getElementById("saveDuggaButton").onclick = function (){ uploadFile() , showReceiptPopup();};
     
+    showReceiptPopup();
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
 }
 
