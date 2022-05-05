@@ -31,6 +31,7 @@ var aceData;
 var editor;
 var filedata;
 var existingFiles = [];
+var existingFileTypes = [];
 
 function setup() {
     AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
@@ -161,6 +162,9 @@ function uploadFile(kind) {
 
     for(i = 0; i < existingFiles.length; i++){
         console.log(existingFiles[i]);
+    }
+    for(i = 0; i < existingFileTypes.length; i++){
+        console.log(existingFileTypes);
     }
    
 
@@ -354,6 +358,7 @@ function renderCell(col, celldata, cellid) {
         if (obj.showtrashcan) {
             str = "<span class='iconBox'><img alt='delete file icon' id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
             str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
+            
         }
     } else if (col == "filename") {
         if (obj.kind == "Link") {
@@ -361,6 +366,7 @@ function renderCell(col, celldata, cellid) {
         } else {
             str+="<span class='nowrap-filename' id='openFile' onclick='filePreview(\"" + obj.shortfilename + "\",\"" + obj.filePath + "\", \"" + obj.extension + "\")'>" + obj.shortfilename + "</span>";
             existingFiles.push(obj.shortfilename);
+            
         }
     } else if (col == "filesize") {
         if (obj.kind == "Link") {
@@ -379,6 +385,7 @@ function renderCell(col, celldata, cellid) {
             str = "<span class='iconBox'><img alt='edit file icon' id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
         }
+        existingFileTypes.push(obj.extension);
     }
     } else if (col == "kind") {
         str += "<span>" + convertFileKind(celldata) + "</span>";
