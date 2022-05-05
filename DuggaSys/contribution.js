@@ -695,7 +695,7 @@ function renderCircleDiagram(data, day) {
   if (data.hourlyevents == null){
     activities = data.events;
   }else if (data.events == null){
-    activities = data.hourlyevents;
+    activities = data.hourlyevents; 
   }
 
   if (data.weeks != null){
@@ -774,7 +774,27 @@ function renderActivityPoints(activities) {
 
   });
 
-  var uniquePoints = [];
+  var uniquePointsComment = [];
+  var uniquePointsCommit = [];
+  var uniquePointsIssue = [];
+  var uniquePointsComment2 = [];
+  var uniquePointsCommit2 = [];
+  var uniquePointsIssue2 = [];
+
+  activities.forEach(entry => {
+    if(entry.type=="comments"){
+      uniquePointsComment.push(entry);
+    }
+    else if(entry.type=="commits"){
+      uniquePointsCommit.push(entry);
+    }
+    else if(entry.type=="issues"){
+      uniquePointsIssue.push(entry);
+    }
+  });
+  console.log(uniquePointsComment.length);
+  var uniqueArrHolder=[[uniquePointsComment,[]],[uniquePointsCommit,[]],[uniquePointsIssue,[]]];
+  var uniqueArrHolder2=[[uniquePointsComment2,[]],[uniquePointsCommit2,[]],[uniquePointsIssue2,[]]];
   var activityTypes = {
     times: {},
     types: {}
@@ -782,13 +802,16 @@ function renderActivityPoints(activities) {
   const RADIUS = 220;
   const BASELINE = 75;
   const MIDDLE = 243;
-  activities.forEach(entry => {
+  for(i=0;i<uniqueArrHolder.length;i++){
+    uniqueArrHolder[i].forEach(entry => {
+    
+    console.log(entry);
     //Cast integer to string
     var hourString = entry.time.toString();
     var hour = hourString.substr(0, 2);
     var houroffset = parseInt(hour) + 6;
     var type = entry.type;
-    var activityCount = activities.length;
+    var activityCount = uniqueArrHolder[i].length;
     var percentage = hours[hour] / activityCount;
     var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
     angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
@@ -797,37 +820,52 @@ function renderActivityPoints(activities) {
 
     if (!Object.keys(activityTypes.times).includes(hour)) {
       activityTypes.times[hour] = {};
-      uniquePoints.push([xCoord, yCoord, hour, percentage]);
+          uniqueArrHolder2[i].push([xCoord, yCoord, hour, percentage]);
     }
     if (!Object.keys(activityTypes.types).includes(type)) activityTypes.types[type] = 0;
     if (!Object.keys(activityTypes.times[hour]).includes(type)) activityTypes.times[hour][type] = 0;
     activityTypes.types[type] += 1;
     activityTypes.times[hour][type] += 1;
   });
-  uniquePoints.sort(([a, b, c], [d, e, f]) => c - f);
+  uniqueArrHolder2[i].sort(([a, b, c], [d, e, f]) => c - f);
 
-  if (uniquePoints.length > 2) {
+  if (uniqueArrHolder2[i].length > 2) {
     str += "<polygon class='activityPolygon' points='";
-    for (var i = 0; i < uniquePoints.length; i++) {
-      str += (uniquePoints[i][0] + 5) + "," + (uniquePoints[i][1] + 5) + " ";
+    for (var j = 0; j < uniqueArrHolder2[j].length; j++) {
+      str += (uniqueArrHolder2[[i],[j][0]] + 5) + "," + (uniqueArrHolder2[[i],[j][1]] + 5) + " ";
     }
     str += `250,250' onmouseover='showAllActivity(event, ${JSON.stringify(activityTypes)})' onmouseout='hideActivityInfo()' />`;
   }
 
-  uniquePoints.forEach(point => {
+  uniqueArrHolder2[i].forEach(point => {
     var xCoord = point[0];
     var yCoord = point[1];
     var hour = point[2];
     var percentage = Math.round(point[3] * 100);
     var types = Object.keys(activityTypes.times[hour]);
     var values = Object.values(activityTypes.times[hour]);
-
     types.length > 1 ? type = "mixed" : type = types[0];
     str += "<rect class='activitymarker " + type + "' width='14' height='14' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
     str += "`" + type + "`, `" + hour + "`, " + percentage + ", " + JSON.stringify(activityTypes) + ")' onmouseout='hideActivityInfo()' />";
   });
+
   return str;
+  }
 }
+
+/* uniquePoints.forEach(point => {
+  var xCoord = point[0];
+  var yCoord = point[1];
+  var hour = point[2];
+  var percentage = Math.round(point[3] * 100);
+  var types = Object.keys(activityTypes.times[hour]);
+  var values = Object.values(activityTypes.times[hour]);
+  types.length > 1 ? type = "mixed" : type = types[0];
+  str += "<rect class='activitymarker " + type + "' width='14' height='14' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
+  str += "`" + type + "`, `" + hour + "`, " + percentage + ", " + JSON.stringify(activityTypes) + ")' onmouseout='hideActivityInfo()' />";
+});
+return str;
+} */
 
 function renderHourMarkers() {
   const RADIUS = 220;
