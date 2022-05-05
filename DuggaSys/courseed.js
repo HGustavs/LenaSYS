@@ -405,7 +405,7 @@ function returnedCourse(data)
 		if(localStorage.getItem("cookieMessage")!="off"){
 			str += "<div class='fixed-action-button extra-margin'>";
 		}else{
-			str += "<div class='fixed-action-button'>";
+			str += "<div class='fixed-action-button extra-margin'>";
 		}
 		str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='newCourse()'>+</a>";
 		str += "</div>";
