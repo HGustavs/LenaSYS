@@ -107,13 +107,22 @@
     // if the used is redirected from 
 	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
 	{
-		$temp1Dir = "../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
+		$tempDir = "../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
 		$latest;
 		$current;
 
 		//try and catch for using test data
 		try{
-			foreach(new DirectoryIterator($temp1Dir) as $file)
+			foreach(new DirectoryIterator($tempDir) as $file)
+			{
+				if($file->getFileName() == "saveDiagram1.json")
+				{
+					$latest = $file->getCTime();
+					$current = $file->getFileName();
+				}
+			}
+
+			foreach(new DirectoryIterator($tempDir) as $file)
 			{
 				$ctime = $file->getCTime();    // Time file was created
 				$fname = $file->getFileName(); // File name
@@ -125,9 +134,8 @@
 			}
 			$latest = $current;
 
-			$mydir = "../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
-			$myFiles = array_diff(scandir($mydir, SCANDIR_SORT_DESCENDING), array('.', '..'));
-			$fileContent = file_get_contents("../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/{$latest}");
+			$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
+			$fileContent = file_get_contents("{$tempDir}/{$latest}");
 		}
 		catch(Exception $e){
 			//echo 'Message: ' .$e->getMessage();
