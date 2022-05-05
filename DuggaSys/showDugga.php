@@ -108,7 +108,7 @@
 	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
 	{
 		$tempDir = "../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
-		$latest = new DirectoryIterator($tempDir);
+		$latest;
 		$current;
 
 		//try and catch for using test data
