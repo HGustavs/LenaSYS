@@ -47,7 +47,7 @@
 			//---------------------------------------------------------------------
 
 			if($noup!='NONE') {
-				echo "<td class='navButt' id='back' title='Back' style='display: inline-block'>";
+				echo "<td class='navButt' id='back' title='Back'>";
 			}
 			if($noup=='CONTRIBUTION'){
 				echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
