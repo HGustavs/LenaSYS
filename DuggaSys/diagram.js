@@ -6855,7 +6855,7 @@ function drawSelectionBox(str)
     deleteBtnY = 0;
     deleteBtnSize = 0;
 
-    if (context.length != 0 || contextLine.length != 0) {
+    if ((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) {
         var lowX;
         var highX;
         var lineLowX;
