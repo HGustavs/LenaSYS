@@ -123,22 +123,25 @@
 					$fname = $file->GetFileName (); // File name
 					echo "</br> fname: {$fname}";
 
-					if( $ctime > $latest )
+					if($fname != "." && $fname != "..")
 					{
-						if($fname == ".")
+						if( $ctime > $latest )
 						{
-							$fname = "diagramSave1.json";
+							if($fname == ".")
+							{
+								$fname = "diagramSave1.json";
+							}
+							else if ($fname == "..")
+							{
+								$fname = "diagramSave2.json";
+							}
+	
+							echo "</br> swap...";
+							echo "</br> if ({$ctime} > {$latest})";
+							$latest = $ctime;
+							$current = $fname;
+							echo "</br> new latest file is: {$fname}";
 						}
-						else if ($fname == "..")
-						{
-							$fname = "diagramSave2.json";
-						}
-
-						echo "</br> swap...";
-						echo "</br> if ({$ctime} > {$latest})";
-						$latest = $ctime;
-						$current = $fname;
-						echo "</br> new latest file is: {$fname}";
 					}
 				}
 
