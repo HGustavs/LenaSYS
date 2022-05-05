@@ -4309,9 +4309,10 @@ function resizeBoxes(parent, templateId)
 	}
 	if(templateId == 8){
 		$('#box2wrapper').resizable({
-			//This one currently doens't work
 			resize: function( event, ui ) {
 				remaining = ($(parent).width()) - $('#box2wrapper').width();
+				remainingHeight = ($(parent).height()) - $('#box2wrapper').height();
+				//Handles east resizing START.
 				if((remaining/$(parent).width())*100 < 16){
 					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
 					boxToHide.classList.add('hidden');
@@ -4340,21 +4341,59 @@ function resizeBoxes(parent, templateId)
 					boxToShow.classList.remove('visuallyhidden');
 	
 				}
-				document.querySelector('#box1wrapper').style.width = remaining + "px";
+				$('#box1wrapper').css('width', remaining + "px");
+				$('#box3wrapper').css('width', $('#box2wrapper').width() + "px");
+				//Handles east resizing END.
+				//Handles south resizing START.
+				$('#box3wrapper').css('height', remainingHeight + "px");
+				//Handles south resizing END.
 			},
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
-			handles:"e",
+			maxHeight: ($(parent).height()*0.85),
+			minHeight: ($(parent).height()*0.15),
+			handles:"e,s",
 			containment: parent
 		});
 		//This one currently doens't work
 		$('#box3wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box3wrapper').height();
-				document.querySelector('#box2wrapper').style.height = remaining + "px";
-			},
-			handles: "n",
+				remaining = ($(parent).width()) - $('#box3wrapper').width();
+				if((remaining/$(parent).width())*100 < 16){
+					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else if((remaining/$(parent).width())*100 > 84){
+					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+			
+					boxToHide = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else{
+					boxToShow = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+					boxToShow = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
 
+					boxToShow = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+				}
+				$('#box1wrapper').css('width', remaining + "px");
+				$('#box2wrapper').css('width', $('#box3wrapper').width() + "px");
+			},
+			handles: "e",
+			maxWidth: ($(parent).width()*0.85),
+			minWidth: ($(parent).width()*0.15),
+			containment: parent
 		});
 	}
 	if(templateId == 9){
