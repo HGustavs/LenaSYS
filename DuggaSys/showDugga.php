@@ -261,6 +261,8 @@
 <div id='login_popup'>
 <?php
 
+
+
 // Check if we have a hash/hashpwd and dugga variant
 //echo "|". print_r($_SESSION)."|<br>";
 if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
@@ -309,6 +311,17 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 </div>
 	<!-- content START -->
 	<div id="content">
+	<div id='receiptInfo'></div>
+
+<div id='emailPopup' style="display:block">
+	<p>Your dugga has been saved. Besure to store the hash and hash password in a safe place before submitting the dugga in canvas! <em>There is <strong>no way</strong> to restore a submission without the hash and hash password.</p>
+	<div id="submission-receipt" rows="15" cols="50" style="height: 180px;resize: none; background-color: white; border-style: solid; border-width: 1px; font-size: 13px; font-weight: bold;">
+	</div>					
+	<div class="button-row">
+		<input type='button' class='submit-button' onclick="copySubmissionReceiptToClipboard();" value='Copy Receipt'>
+		<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
+	</div>
+</div>
 		<?php
 		//echo "<script>console.log('".$duggafile."');</script>";
 			// Log USERID for Dugga Access
@@ -375,7 +388,17 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		
 		?>
 	</div>
-	
+				<div id='receiptInfo'></div>
+
+    		<div id='emailPopup' style="display:block">
+				<p>Your dugga has been saved. Besure to store the hash and hash password in a safe place before submitting the dugga in canvas! <em>There is <strong>no way</strong> to restore a submission without the hash and hash password.</p>
+				<div id="submission-receipt" rows="15" cols="50" style="height: 180px;resize: none; background-color: white; border-style: solid; border-width: 1px; font-size: 13px; font-weight: bold;">
+				</div>					
+				<div class="button-row">
+					<input type='button' class='submit-button' onclick="copySubmissionReceiptToClipboard();" value='Copy Receipt'>
+					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
+				</div>
+    		</div>
 	<!-- LoginBox (receipt&Feedback-box ) Start! -->
 	<div id='receiptBox' class="loginBoxContainer" style="display:none">
 	  <div class="receiptBox loginBox" style="max-width:400px; overflow-y:visible;">
@@ -423,17 +446,6 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 						<span style='color:var(--color-green); text-align: center; line-height: 2.6; Display:none;' id='submitstatus'>Feedback saved</span>
 					</div>
 			</div>
-			<div id='receiptInfo'></div>
-
-    		<div id='emailPopup' style="display:block">
-				<p>Your dugga has been saved. Besure to store the hash and hash password in a safe place before submitting the dugga in canvas! <em>There is <strong>no way</strong> to restore a submission without the hash and hash password.</p>
-				<div id="submission-receipt" rows="15" cols="50" style="height: 180px;resize: none; background-color: white; border-style: solid; border-width: 1px; font-size: 13px; font-weight: bold;">
-				</div>					
-				<div class="button-row">
-					<input type='button' class='submit-button' onclick="copySubmissionReceiptToClipboard();" value='Copy Receipt'>
-					<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
-				</div>
-    		</div>
       </div>
 	</div>
 	<!-- Login Box (receipt&Feedback-box ) End! -->
