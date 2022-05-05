@@ -971,7 +971,7 @@ function returnedSection(data) {
 
           if (itemKind === 3) {
             str += "<td class='LightBox" + hideState + "'>";
-            str += "<div ><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            str += "<div class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             
             str += "<td class='LightBox" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
@@ -1008,6 +1008,8 @@ function returnedSection(data) {
           }
         }
 
+
+      
         // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
         if (itemKind === 0) {
           // Styling for header row
@@ -1020,6 +1022,9 @@ function returnedSection(data) {
           kk = 0;
 
         } else if (itemKind === 2) {
+          str += "<td class='LightBox" + hideState + "'>";
+          str += "<div class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
           kk++;
@@ -1302,6 +1307,7 @@ function returnedSection(data) {
       // Enable sorting always if we are superuser as we refresh list on update
 
       $("#Sectionlistc").sortable({
+        handle: ".dragbleArea",
         helper: 'clone',
         update: function (event, ui) {
           str = "";
