@@ -72,17 +72,13 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-    if(response == "")
-    {
-        response = data;   
-    }
-    duggadata = data;
-    console.log(duggadata);
     //var textBox = document.getElementById('submission-receipt');  
-    //textBox.innerHTML=(`${data['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(data['hash'])}'> ${createUrl(data['hash'])}` + `</a> </br></br> Hash: </br> ${data['hash']}</br></br>Hash password:</br>${data['hashpwd']}`);
-    //temporary solution to get the correct link in the receipt
-    updateReceiptText(response['duggaTitle'], createUrl(response['hash']), response['hash'], response['hashpwd']);
+    $('#submission-receipt').html(`${data['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(data['hash'])}'> ${createUrl(data['hash'])}` + `</a> </br></br> Hash: </br> ${data['hash']}</br></br>Hash password:</br>${data['hashpwd']}`);
+   
+    //General idea below - create one method in dugga.js rather than changing recipt box in each dugga type. Currently not working.
+    //updateReceiptText(response['duggaTitle'], createUrl(response['hash']), response['hash'], response['hashpwd']);
   
+    
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
         //document.getElementById("assigment-instructions").innerHTML = param.instructions;

@@ -158,7 +158,7 @@
 		$instructions = "NO_FILE_FETCHED";
 	}
 	$pattern = '/\s*/m';
-  $replace = '';
+  	$replace = '';
 	$instructions = preg_replace( $pattern, $replace,$instructions);
 	#I have no idea what the things below
 	// if(isset($_SESSION['hashpassword'])){
