@@ -213,8 +213,66 @@ INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afteri
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (3119,1885,'SQL-TEST template 10',8009,2,3,1,1,'1337',0);
 INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,8009,"SQL-TEST box 1","Code","[viktig=1]",3,"SQL-TEST1.SQL");
 
-
-
-
-
-
+/*PHP-examples*/
+/*PHP Template 1*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'PHP',"PHP-TEST1.PHP","PHP-TEST1.PHP",1,1337,9000,9001,1,9000);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (2110,1885,'PHP-TEST template 1',9000,2,4,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,9000,"PHP-TEST box 1","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,9000,"PHP-TEST box 2","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+/*PHP Template 2*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'PHP',"PHP-TEST1.PHP","PHP-TEST1.PHP",1,1337,9000,9002,2,9001);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (2111,1885,'PHP-TEST template 2',9001,2,4,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,9001,"PHP-TEST box 1","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,9001,"PHP-TEST box 2","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+/*PHP Template 3*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'PHP',"PHP-TEST1.PHP","PHP-TEST1.PHP",1,1337,9001,9003,3,9002);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (2112,1885,'PHP-TEST template 3',9002,2,4,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,9002,"PHP-TEST box 1","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,9002,"PHP-TEST box 2","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,9002,"PHP-TEST box 3","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+/*PHP Template 4*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'PHP',"PHP-TEST1.PHP","PHP-TEST1.PHP",1,1337,9002,9004,4,9003);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (2113,1885,'PHP-TEST template 4',9003,2,4,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,9003,"PHP-TEST box 1","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,9003,"PHP-TEST box 2","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,9003,"PHP-TEST box 3","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+/*PHP Template 5*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'PHP',"PHP-TEST1.PHP","PHP-TEST1.PHP",1,1337,9003,9005,5,9004);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (2114,1885,'PHP-TEST template 5',9004,2,4,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,9004,"PHP-TEST box 1","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,9004,"PHP-TEST box 2","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,9004,"PHP-TEST box 3","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,9004,"PHP-TEST box 4","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+/*PHP Template 6*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'PHP',"PHP-TEST1.PHP","PHP-TEST1.PHP",1,1337,9004,9006,6,9005);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (2115,1885,'PHP-TEST template 6',9005,2,4,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,9005,"PHP-TEST box 1","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,9005,"PHP-TEST box 2","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,9005,"PHP-TEST box 3","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,9005,"PHP-TEST box 4","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+/*PHP Template 7*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'PHP',"PHP-TEST1.PHP","PHP-TEST1.PHP",1,1337,9005,9007,7,9006);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (2116,1885,'PHP-TEST template 7',9006,2,4,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,9006,"PHP-TEST box 1","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,9006,"PHP-TEST box 2","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,9006,"PHP-TEST box 3","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,9006,"PHP-TEST box 4","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+/*PHP Template 8*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'PHP',"PHP-TEST1.PHP","PHP-TEST1.PHP",1,1337,9006,9008,8,9007);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (2117,1885,'PHP-TEST template 8',9007,2,4,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,9007,"PHP-TEST box 1","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,9007,"PHP-TEST box 2","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,9007,"PHP-TEST box 3","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,9007,"PHP-TEST box 4","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+/*PHP Template 9*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'PHP',"PHP-TEST1.PHP","PHP-TEST1.PHP",1,1337,9007,9009,9,9008);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (2118,1885,'PHP-TEST template 9',9008,2,4,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,9008,"PHP-TEST box 1","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,9008,"PHP-TEST box 2","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,9008,"PHP-TEST box 3","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,9008,"PHP-TEST box 4","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (5,9008,"PHP-TEST box 5","Code","[viktig=1]",3,"PHP-TEST1.PHP");
+/*PHP Template 10*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'PHP',"PHP-TEST1.PHP","PHP-TEST1.PHP",1,1337,9008,9000,10,9009);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (2119,1885,'PHP-TEST template 10',9009,2,4,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,9009,"PHP-TEST box 1","Code","[viktig=1]",3,"PHP-TEST1.PHP");
