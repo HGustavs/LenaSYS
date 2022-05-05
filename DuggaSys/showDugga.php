@@ -107,7 +107,7 @@
     // if the used is redirected from 
 	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
 	{
-		$tempDir = "../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
+		$tempDir = strval(dirname(__DIR__, 2))."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
 		$latest = time() - (365 * 24 * 60 * 60);
 		$current = "diagramSave1.json";	 
 
@@ -127,8 +127,9 @@
 			$latest = $current;
 
 			$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
+			echo "{$tempDir}";
 			$fileContent = file_get_contents("{$tempDir}/{$latest}");
-			header("Location: Hello.php");
+			#header("Location: Hello.php");
 		}
 		catch(Exception $e){
 			echo 'Message: ' .$e->getMessage();
