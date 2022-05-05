@@ -111,28 +111,31 @@
 		$latest = time() - (365 * 24 * 60 * 60);
 		$current = "diagramSave1.json";	 
 
-		//try and catch for using test data
-		try{
-			foreach(new DirectoryIterator($tempDir) as $file)
-			{
-				$ctime = $file->getCTime();    // Time file was created
-				$fname = $file->getFileName(); // File name
-				if( $ctime > $latest )
+		if(is_dir($tempDir))
+		{
+			//try and catch for using test data
+			try{
+				foreach(new DirectoryIterator($tempDir) as $file)
 				{
-					$latest = $ctime;
-					$current = $fname;
+					$ctime = $file->getCTime();    // Time file was created
+					$fname = $file->getFileName(); // File name
+					if( $ctime > $latest )
+					{
+						$latest = $ctime;
+						$current = $fname;
+					}
 				}
+
+				$latest = $current;
+
+				$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
+				echo "{$tempDir}";
+				$fileContent = file_get_contents("{$tempDir}/{$latest}");
+				#header("Location: Hello.php");
 			}
-
-			$latest = $current;
-
-			$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
-			echo "{$tempDir}";
-			$fileContent = file_get_contents("{$tempDir}/{$latest}");
-			#header("Location: Hello.php");
-		}
-		catch(Exception $e){
-			echo 'Message: ' .$e->getMessage();
+			catch(Exception $e){
+				echo 'Message: ' .$e->getMessage();
+			}
 		}
 	}
 	
