@@ -6599,22 +6599,6 @@ only screen and (max-device-width: 320px) {
   touch-action: none;
 }
 
-.fixed-action-button.sectioned {
-  right: 115px;
-}
-
-.fixed-action-button.courseed {
-  right: 115px;
-}
-
-.fixed-action-button.duggaed {
-  right: 115px;
-}
-
-.fixed-action-button.accessed {
-  right: 115px;
-}
-
 .fixed-action-button.extra-margin {
   right: 115px;
 }

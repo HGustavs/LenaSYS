@@ -51,7 +51,7 @@
 
 		<!-- FAB Start -->
 		<!-- Big FAB Button in the bottom of the page -->
-		<div class='fixed-action-button sectioned' id="FABStatic" style="display:none">
+		<div class='fixed-action-button extra-margin' id="FABStatic" style="display:none">
 				<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>
 				<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed id='fabBtnList'>
 					 <li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","undefined");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
