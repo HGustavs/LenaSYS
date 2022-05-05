@@ -79,8 +79,8 @@ function returnedDugga(data)
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
         //document.getElementById("assigment-instructions").innerHTML = param.instructions;
-        //checking if the user is a teacher and that it exists a variant
-        if(param.diagramtype){
+        //checking if the user is a teacher or if there's no variant by checking if the paramater object is empty
+        if(!(Object.keys(param).length === 0)){
             // getting the diagram types allowed and calling a function in diagram.js where the values are now set <-- UML functionality start
             document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type;
             // getting the error finder allowed or not
