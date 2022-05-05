@@ -211,7 +211,7 @@
             Include test data. <br><br>
             <input title="Include Demo-Course" type="checkbox" name="demoCourseDB" value="Yes" onchange="demoCourseDBchange(this)" checked/>
             Include demo-course. <br><br>
-            <input title="Include Testing-Course" type="checkbox" name="Testing-Course" value="Yes" onchange="Testing-Coursechange(this)" unchecked/>
+            <input title="Include Testing-Course" type="checkbox" name="testingCourseDB" value="Yes" onchange="testingCourseDBchange(this)" unchecked/>
             Include Testing-Course. <br><br>
             <div id="testdataBoxes">
               <input title="Include markdown." type="checkbox" name="mdSupport" value="Yes" checked/>
@@ -353,7 +353,7 @@
             $totalSteps++;
           }
 
-          if (isset($_POST["Testing-Course"]) && $_POST["Testing-Course"] == 'Yes') {
+          if (isset($_POST["testingCourseDB"]) && $_POST["testingCourseDB"] == 'Yes') {
             $totalSteps++;
           }
           
@@ -552,8 +552,8 @@
               echo "Skipped adding demo-page<br>";
             }
             # Add Testing_Course
-            if (isset($_POST["Testing-Course"]) && $_POST["Testing-Course"] == 'Yes') {
-              addTestData("testingCourseData", $connection);
+            if (isset($_POST["testingCourseDB"]) && $_POST["testingCourseDB"] == 'Yes') {
+              addTestData("testingCourseDBData", $connection);
             } else {
               echo "Skipped adding Testing-Course<br>";
             }
