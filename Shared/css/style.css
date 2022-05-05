@@ -1492,8 +1492,6 @@ div .navButt:hover {
   display: grid;
   justify-items: stretch;
   grid-gap: 0px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-areas: 
     'a a b b'
     'c c d d'
