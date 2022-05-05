@@ -1,5 +1,6 @@
 var lastFile = null;
 var diagramWindow;
+var response = "";
 /** 
  * @description Alert message appears before closing down or refreshing the dugga viewer page window.
 
@@ -71,12 +72,16 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
+    if(response == "")
+    {
+        response = data;   
+    }
     duggadata = data;
     console.log(duggadata);
-    var textBox = document.getElementById('submission-receipt');  
-    textBox.innerHTML=(`${data['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(data['hash'])}'> ${createUrl(data['hash'])}` + `</a> </br></br> Hash: </br> ${data['hash']}</br></br>Hash password:</br>${data['hashpwd']}`);
+    //var textBox = document.getElementById('submission-receipt');  
+    //textBox.innerHTML=(`${data['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(data['hash'])}'> ${createUrl(data['hash'])}` + `</a> </br></br> Hash: </br> ${data['hash']}</br></br>Hash password:</br>${data['hashpwd']}`);
     //temporary solution to get the correct link in the receipt
-    //updateReceiptText(data['duggaTitle'], createUrl(data['hash']), data['hash'], data['hashpwd']);
+    updateReceiptText(response['duggaTitle'], createUrl(response['hash']), response['hash'], response['hashpwd']);
   
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
