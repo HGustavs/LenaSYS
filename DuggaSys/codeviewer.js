@@ -953,9 +953,9 @@ function createboxmenu(contentid, boxid, type) {
 
 		// Add resize, reset and edit buttons
 		//This functionality should be changed to allow zooming.
-		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Zoom in' onclick='zoomText(" + boxid + ", 5);'><img src='../Shared/icons/MaxButton.svg' /></div>";
-		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Zoom out' onclick='zoomText(" + boxid + ", -5);'><img src='../Shared/icons/MinButton.svg' /></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
+		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Zoom in' onclick='zoomText(" + boxid + ", 3);'><img src='../Shared/icons/MaxButton.svg' /></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Zoom out' onclick='zoomText(" + boxid + ", -3);'><img src='../Shared/icons/MinButton.svg' /></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset zoom' onclick='resetText(" + boxid + ");'><img src='../Shared/icons/ResetButton.svg' /></div>";
     
 
 		// Show the copy to clipboard button for code views only
@@ -2661,6 +2661,17 @@ function zoomText(boxid, increment)
 	fontSize = fontSize + increment; 
 
 	document.getElementById("box" + boxid).style.fontSize = fontSize + "px";
+
+}
+
+//-----------------------------------------------------------------------------
+// resetText: Resets the text size to the default value. (9px)
+//-----------------------------------------------------------------------------
+function resetText(boxid)
+{
+
+document.getElementById("box" + boxid).style.fontSize = "9px";
+
 }
 
 //-----------------------------------------------------------------------------
