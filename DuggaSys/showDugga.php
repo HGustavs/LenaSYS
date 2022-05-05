@@ -118,6 +118,7 @@
 				if($file->getFileName() == "saveDiagram1.json")
 				{
 					$latest = $file->getCTime();
+					$current = $file->getFileName();
 				}
 			}
 
