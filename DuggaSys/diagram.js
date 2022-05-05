@@ -3797,14 +3797,25 @@ function toggleErTable()
  * @returns Current ER table in the form of a string.
  */
 function generateErTableString()
-{
+{   
+    //TODO: When functionality is complete, try to minimize the overall space complexity, aka try to extract
+    //only useful information from entities, attributes and relations. 
     var entityList = [];    //All EREntities currently in the diagram
     var attrList = [];      //All ERAttributes currently in the diagram
     var relationList = [];  //All ERRelations currently in the diagram
     var stringList = [];    //List of strings where each string holds the relevant data for each entity
-    var ERAttributeData = []; //2D-array to contain attribute for each element
-    var ERForeignData = []; //2D-array to contain foreign keys for each elemenet
-    var ERRelationData = []; //Array 
+        /**
+     * @description ERRelationData[i] = [ERRelation, [EREntity, lineCardinality, lineKind], [otherEREntity, otherLineCardinality, otherLineKind]]
+     */ 
+    var ERAttributeData = []; //2D-array to contain attribute for each element'
+        /**
+     * @description ERForeignData[i] = [owningEntity, [sourceEntity, source, lineKind], [otherEREntity, otherLineCardinality, otherLineKind]]
+     */ 
+    var ERForeignData = [];
+    /**
+     * @description ERRelationData[i] = [ERRelation, [EREntity, lineCardinality, lineKind], [otherEREntity, otherLineCardinality, otherLineKind]]
+     */ 
+    var ERRelationData = []; //
 
     //sort the data[] elements into entity-, attr- and relationList
     for (var i = 0; i < data.length; i++) {
@@ -3861,7 +3872,7 @@ function generateErTableString()
         var currentRow = [entityList[i]];
 
         //Add the start of the string for each entity. Example: "EMPLOYEE("
-        stringList.push(new String(`<p>${entityList[i].name} (`));
+        /*stringList.push(new String(`<p>${entityList[i].name} (`));*/
         
         //Sort all lines that are connected to the current entity into lineList[]
         var lineList = []; 
@@ -3944,70 +3955,31 @@ function generateErTableString()
         for (let index = 0; index < parentAttribeList.length; index++) {
             currentEntityAttrList.splice(findIndex(currentEntityAttrList,parentAttribeList[index].id),1);
         }
-
-        //Add each connected attribute in stringList[i]
-        for (var j = 0; j < currentEntityAttrList.length; j++) {
-
-            if (j < currentEntityAttrList.length - 1) { //If j is not the last element
-
-                switch(currentEntityAttrList[j].state) {
-                    case 'key':
-                        stringList[i] += `<span style="text-decoration:underline;">${currentEntityAttrList[j].name}</span>, `;
-                        break;
-                    case 'weakKey':
-                        stringList[i] += `<span style="text-decoration:underline;">${currentEntityAttrList[j].name}</span>, `;
-                        break;
-                    case 'multiple':
-                        break;
-                    case 'computed':
-                        stringList[i] += currentEntityAttrList[j].name + ", ";
-                        break;
-                    default:
-                        stringList[i] += currentEntityAttrList[j].name + ", ";
-                        break;
-                }
-
-            }
-
-            else if (j == currentEntityAttrList.length - 1) { //Else if j is the last element
-
-                switch(currentEntityAttrList[j].state) {
-                    case 'key':
-                        stringList[i] += `<span style="text-decoration:underline;">${currentEntityAttrList[j].name}</span>)</p>`;
-                        break;
-                    case 'weakKey':
-                        stringList[i] += `<span style="text-decoration:underline;">${currentEntityAttrList[j].name}</span>)</p>`;
-                        break;
-                    case 'multiple':
-                        break;
-                    case 'computed':
-                        stringList[i] += currentEntityAttrList[j].name + ")</p>";
-                        break;
-                    default:
-                        stringList[i] += currentEntityAttrList[j].name + ")</p>";
-                        break;
-                }
-            }
-        }        
+       
         //Push list with entity at index 0 followed by its attributes
         ERAttributeData.push(currentRow);
     }
 
     //Iterate through all relations
     for (var i = 0; i < ERRelationData.length; i++) {
+        //
+        var currentEntity = ERRelationData[i][1];
+        var otherEntity = ERRelationData[i][2];
+        
         //If it is a weak relation
         if (ERRelationData[i][0].state == 'weak') {
             //
         }
         else {
+            //Array with entities foreign keys
+            var foreign = [];
             //
             if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'ONE') {
-                //If array is empty
+                console.log('ONE-to-ONE');
                 if (ERForeignData.length < 1) {
                     //Push in first ONE-side entity
                     ERForeignData.push([ERRelationData[i][1][0]]);
                 }
-                //If not empty
                 else {
                     //If entity already exist in ERForeignData, 
                     var exist = false;
@@ -4024,18 +3996,14 @@ function generateErTableString()
                         ERForeignData.push([ERRelationData[i][1][0]]);
                     }
                 }
-                //Array with entities foreign keys
-                var foreign = [];
-
                 //Find current entity and iterate through its attributes
                 for (var j = 0; j < ERAttributeData.length; j++) {
                     //Second ONE-side entity
                     if(ERAttributeData[j][0].id == ERRelationData[i][2][0].id) {
-                        
+                        foreign.push(ERRelationData[i][2][0]);
                         for (var k = 1; k < ERAttributeData[j].length; k++) {
                             //Push in every key-attribute
                             if(ERAttributeData[j][k].state == 'key') {
-
                                 foreign.push(ERAttributeData[j][k]);
                             }
                         }
@@ -4046,13 +4014,10 @@ function generateErTableString()
                     //First ONE-side entity
                     if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                         //Every key-attribute is pushed into array
-                        for (var k = 0; k < foreign.length; k++) {
-                            ERForeignData[j].push(foreign[k]);
-                        }
+                        ERForeignData[j].push(foreign);
                     }
                 }
             }
-
             //MANY to ONE relation, key from the ONE is foreign for MANY, case 1
             else if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'MANY') {
                 //If array is empty
@@ -4077,18 +4042,15 @@ function generateErTableString()
                         ERForeignData.push([ERRelationData[i][2][0]]);
                     }
                 }
-                //Array with entities foreign keys
-                var foreign = [];
 
                 //Find current entity and iterate through its attributes
                 for (var j = 0; j < ERAttributeData.length; j++) {
                     //ONE-side entity
                     if(ERAttributeData[j][0].id == ERRelationData[i][1][0].id) {
-                        
+                        foreign.push(ERRelationData[i][1][0]);
                         for (var k = 1; k < ERAttributeData[j].length; k++) {
                             //Push in every key-attribute
                             if(ERAttributeData[j][k].state == 'key') {
-
                                 foreign.push(ERAttributeData[j][k]);
                             }
                         }
@@ -4099,13 +4061,10 @@ function generateErTableString()
                     //Push in MANY-side entity
                     if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                         //Every key-attribute is pushed into array
-                        for (var k = 0; k < foreign.length; k++) {
-                            ERForeignData[j].push(foreign[k]);
-                        }
+                        ERForeignData[j].push(foreign);
                     }
                 }
             }
-
             //MANY to ONE relation, key from the ONE is foreign for MANY,case 2
             else if(ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'ONE') {
                 //If array is empty
@@ -4130,18 +4089,14 @@ function generateErTableString()
                         ERForeignData.push([ERRelationData[i][1][0]]);
                     }
                 }
-                //Array with entities foreign keys
-                var foreign = [];
-
                 //Find current entity and iterate through its attributes
                 for (var j = 0; j < ERAttributeData.length; j++) {
                     //ONE-side entity
                     if(ERAttributeData[j][0].id == ERRelationData[i][2][0].id) {
-                        
+                        foreign.push(ERRelationData[i][2][0]);
                         for (var k = 1; k < ERAttributeData[j].length; k++) {
                             //Push in every key-attribute
                             if(ERAttributeData[j][k].state == 'key') {
-
                                 foreign.push(ERAttributeData[j][k]);
                             }
                         }
@@ -4152,28 +4107,134 @@ function generateErTableString()
                     //MANY-side entity
                     if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                         //Every key-attribute is pushed into array
-                        for (var k = 0; k < foreign.length; k++) {
-                            ERForeignData[j].push(foreign[k]);
-                        }
+                        ERForeignData[j].push(foreign);
                     }
                 }
             }
             //
             else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {
-                console.log('Its all of us..., its a me Mario and its not a me WaaMario!');
+                //Push in relation
+                ERForeignData.push([ERRelationData[i][0]]);
+
+                //Find currentEntity and find its key-attributes
+                for (var j = 0; j < ERAttributeData.length; j++) {
+                    if(ERAttributeData[j][0].id == ERRelationData[i][1][0].id) {
+                        foreign.push([ERRelationData[i][1][0]]);
+                        for (var k = 1; k < ERAttributeData[j].length; k++) {
+                            //Push in every key-attribute
+                            if(ERAttributeData[j][k].state == 'key') {
+                                foreign[0].push(ERAttributeData[j][k]);
+                            }
+                        }
+                    }
+                }
+                //Find currentEntity and find its key-attributes
+                for (var j = 0; j < ERAttributeData.length; j++) {
+                    if(ERAttributeData[j][0].id == ERRelationData[i][2][0].id) {
+                        foreign.push([ERRelationData[i][2][0]]);
+                        for (var k = 1; k < ERAttributeData[j].length; k++) {
+                            //Push in every key-attribute
+                            if(ERAttributeData[j][k].state == 'key') {
+                                foreign[1].push(ERAttributeData[j][k]);
+                            }
+                        }
+                    }
+                }
+                //Find current entity and push found foreign attributes
+                for (var j = 0; j < ERForeignData.length; j++) {
+                    //MANY-side entity
+                    if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
+                        //Every key-attribute is pushed into array
+                        for (var k = 0; k < foreign.length; k++) {
+                            ERForeignData[j].push(foreign[k]);
+                            //ERForeignData[j].push(foreign[k]);
+                        }
+                    }
+                }
             }
         }
     }
 
+
+    //Just for testing
+    for (var i = 0; i < ERAttributeData.length; i++) {
+        console.log('Old ' + ERAttributeData[i].length);
+        for(var j = 0; j < ERForeignData.length; j++) {
+            if(ERAttributeData[i][0].id == ERForeignData[j][0].id) {
+                for(var k = 1; k < ERForeignData[j].length; k++) {
+                    ERAttributeData[i].push(ERForeignData[j][k]);
+                }
+                break;
+            }
+        }
+        console.log('New ' + ERAttributeData[i].length);
+    }
+    console.log('Done');
+    var control = 0;
+    for (var i = 0; i < ERAttributeData.length; i++) {
+        stringList.push(new String(`<p>${ERAttributeData[i][0].name} ( `));
+
+        for (var j = 1; j < ERAttributeData[i].length; j++) {
+            if (j < ERAttributeData[i].length - 1) {
+                if (Array.isArray(ERAttributeData[i][j])) {
+                    for(var k = 1; k < ERAttributeData[i][j].length; k++) {
+                        stringList[i] += `<span style='text-decoration: overline black dashed 1.5px;'>${ERAttributeData[i][j][0].name.toLowerCase() + ERAttributeData[i][j][k].name}</span>, `;
+                    }
+                }
+                else {
+                    if(ERAttributeData[i][j].state == 'key') {
+                        stringList[i] += `<span style='text-decoration: underline black solid 1.5px;'>${ERAttributeData[i][j].name}</span>, `;
+                    }
+                    else {
+                        stringList[i] += `<span>${ERAttributeData[i][j].name}</span>, `;
+                    }
+                    
+                }
+            }
+            else if (j == ERAttributeData[i].length - 1) {
+                if (Array.isArray(ERAttributeData[i][j])) {
+                    for(var k = 1; k < ERAttributeData[i][j].length; k++) {
+                        stringList[i] += `<span style='text-decoration: overline black dashed 1.5px;'>${ERAttributeData[i][j][0].name.toLowerCase() + ERAttributeData[i][j][k].name}</span>)</p>`;
+                    }
+                }
+                else {
+                    if(ERAttributeData[i][j].state == 'key') {
+                        stringList[i] += `<span style='text-decoration: underline black solid 1.5px;'>${ERAttributeData[i][j].name}</span>)</p>`;
+                    }
+                    else {
+                        stringList[i] += `<span>${ERAttributeData[i][j].name}</span>)</p>`;
+                    }
+                    
+                }
+            }
+        }
+        control++;
+    }
+    console.log('Done again');
+    
+    for(var i = 0; i < ERForeignData.length; i++) {
+
+        if(ERForeignData[i][0].kind == 'ERRelation') {
+
+            stringList.push(new String(`<p>${ERForeignData[i][0].name} (`));
+            for(var j = 1; j < ERForeignData[i].length; j++) {
+                console.log(ERForeignData[i][j]);
+                if (j < ERForeignData[i].length - 1) {
+                    stringList[control] += `<span style='text-decoration: overline underline black solid 1.5px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>, `;
+                }
+                else if (j == ERForeignData[i].length - 1) {
+                    stringList[control] += `<span style='text-decoration: overline underline black solid 1.5px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>)</p>`;
+                }
+            }
+            control++;
+        }
+    }
     //Add each string element in stringList[] into a single string.
     var stri = "";
     for (var i = 0; i < stringList.length; i++) {
         stri += new String(stringList[i] + "\n\n");
     }
-
-    console.log(ERAttributeData);
-    console.log(ERRelationData);
-    console.log(ERForeignData);
+    //
     return stri;
 
 }
