@@ -2209,7 +2209,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 
 }
 
-function displayDuggaStatus(answer,grade,submitted,marked,duggatitle){
+function displayDuggaStatus(answer,grade,submitted,marked,duggaTitle){
 		var str="<div style='display:flex;justify-content:center;align-items:center;'><div id='duggaTitleSibling' class='LightBox'>";
 		// Get proper dates
 		if(submitted!=="UNK") {
@@ -2221,10 +2221,9 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggatitle){
 			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
 		}
 
-		//If there is no name of the dugga.
-		// if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
-		// 	duggaTitle = "Untitled dugga";
-		// }
+		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
+			duggaTitle = "Untitled dugga";
+		}
   
 		str+="<div class='' style='margin:4px;'></div></div>";
 
