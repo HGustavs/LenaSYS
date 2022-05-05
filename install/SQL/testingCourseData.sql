@@ -85,7 +85,69 @@ INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afteri
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (5009,1885,'Html-test template 10',6009,2,2,1,1,'1337',0);
 INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,6009,"Html-test box 1","Code","[viktig=1]",3,"HTML-TEST1.html");
 
-
+/*Javascript examples*/
+/*js Template 1*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'js',"JS-TEST1.js","JS-TEST1.js",1,1337,7000,7001,1,7000);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (4000,1885,'JS-TEST template 1',7000,2,1,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,7000,"JS-TEST box 1","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,7000,"JS-TEST box 2","Code","[viktig=1]",3,"JS-TEST2.js");
+/*js Template 2*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'js',"JS-TEST1.js","JS-TEST1.js",1,1337,7000,7002,2,7001);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (4001,1885,'JS-TEST template 2',7001,2,1,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,7001,"JS-TEST box 1","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,7001,"JS-TEST box 2","Code","[viktig=1]",3,"JS-TEST1.js");
+/*js Template 3*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'js',"JS-TEST1.js","JS-TEST1.js",1,1337,7001,7003,3,7002);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (4002,1885,'JS-TEST template 3',7002,2,1,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,7002,"JS-TEST box 1","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,7002,"JS-TEST box 2","Code","[viktig=1]",3,"JS-TEST2.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,7002,"JS-TEST box 3","Code","[viktig=1]",3,"JS-TEST1.js");
+/*js Template 4*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'js',"JS-TEST1.js","JS-TEST1.js",1,1337,7002,7004,4,7003);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (4003,1885,'JS-TEST template 4',7003,2,1,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,7003,"JS-TEST box 1","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,7003,"JS-TEST box 2","Code","[viktig=1]",3,"JS-TEST2.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,7003,"JS-TEST box 3","Code","[viktig=1]",3,"JS-TEST1.js");
+/*js Template 5*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'js',"JS-TEST1.js","JS-TEST1.js",1,1337,7003,7005,5,7004);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (4004,1885,'JS-TEST template 5',7004,2,1,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,7004,"JS-TEST box 1","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,7004,"JS-TEST box 2","Code","[viktig=1]",3,"JS-TEST2.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,7004,"JS-TEST box 3","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,7004,"JS-TEST box 4","Code","[viktig=1]",3,"JS-TEST2.js");
+/*js Template 6*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'js',"JS-TEST1.js","JS-TEST1.js",1,1337,7004,7006,6,7005);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (4005,1885,'JS-TEST template 6',7005,2,1,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,7005,"JS-TEST box 1","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,7005,"JS-TEST box 2","Code","[viktig=1]",3,"JS-TEST2.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,7005,"JS-TEST box 3","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,7005,"JS-TEST box 4","Code","[viktig=1]",3,"JS-TEST2.js");
+/*js Template 7*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'js',"JS-TEST1.js","JS-TEST1.js",1,1337,7005,7007,7,7006);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (4006,1885,'JS-TEST template 7',7006,2,1,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,7006,"JS-TEST box 1","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,7006,"JS-TEST box 2","Code","[viktig=1]",3,"JS-TEST2.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,7006,"JS-TEST box 3","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,7006,"JS-TEST box 4","Code","[viktig=1]",3,"JS-TEST2.js");
+/*js Template 8*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'js',"JS-TEST1.js","JS-TEST1.js",1,1337,7006,7008,8,7007);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (4007,1885,'JS-TEST template 8',7007,2,1,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,7007,"JS-TEST box 1","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,7007,"JS-TEST box 2","Code","[viktig=1]",3,"JS-TEST2.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,7007,"JS-TEST box 3","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,7007,"JS-TEST box 4","Code","[viktig=1]",3,"JS-TEST2.js");
+/*js Template 9*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'js',"JS-TEST1.js","JS-TEST1.js",1,1337,7007,7009,9,7008);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (4008,1885,'JS-TEST template 9',7008,2,1,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,7008,"JS-TEST box 1","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,7008,"JS-TEST box 2","Code","[viktig=1]",3,"JS-TEST2.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,7008,"JS-TEST box 3","Code","[viktig=1]",3,"JS-TEST1.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,7008,"JS-TEST box 4","Code","[viktig=1]",3,"JS-TEST2.js");
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (5,7008,"JS-TEST box 5","Code","[viktig=1]",3,"JS-TEST1.js");
+/*js Template 10*/
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1885,'js',"JS-TEST1.js","JS-TEST1.js",1,1337,7008,7000,10,7009);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (4009,1885,'JS-TEST template 10',7009,2,1,1,1,'1337',0);
+INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,7009,"JS-TEST box 1","Code","[viktig=1]",3,"JS-TEST1.js");
 
 
 
