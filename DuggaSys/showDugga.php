@@ -108,14 +108,14 @@
 	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
 	{
 		$tempDir = "../../submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
-		$latest;
-		$current;
+		$latest = time() - (365 * 24 * 60 * 60);
+		$current = "UNK";	 
 
 		//try and catch for using test data
 		try{
 			foreach(new DirectoryIterator($tempDir) as $file)
 			{
-				if($file->getFileName() == "saveDiagram1.json")
+				if($file->getFileName() == "diagramSave1.json")
 				{
 					$latest = $file->getCTime();
 					$current = $file->getFileName();
