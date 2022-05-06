@@ -329,11 +329,28 @@ if(isSuperUser($userid)){
 					$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
 					processDuggaFiles();
 				}else{
-					$debug="[Superuser] Could not load dugga! no userAnswer entries with moment: $moment \nline 338 showDuggaservice.php";
-					$variant="UNK";
-					$answer="UNK";
-					$variantanswer="UNK";
-					$param=html_entity_decode('{}');
+					$sql="SELECT vid, variant.variantanswer AS variantanswer, variant.param AS param, quiz.cid AS cid, quiz.vers AS vers, quiz.id AS id
+					FROM listentries 
+					LEFT JOIN quiz ON listentries.link=quiz.id LEFT JOIN variant ON quiz.id=variant.quizID
+					WHERE lid=:lid";
+					$query = $pdo->prepare($sql);
+					$query->bindParam(':lid', $moment);
+					$query->execute();
+					foreach($query->fetchAll() as $row){
+						$savedvariant=$row['vid'];
+						$answer="[Superuser] Could not load dugga! no userAnswer entries with moment: $moment line 338 showDuggaservice.php";
+						$variantanswer=html_entity_decode($row['variantanswer']);
+						$param=html_entity_decode($row['param']);
+						$newcourseid=$row['cid'];
+						$newcoursevers=$row['vers'];
+						$newduggaid=$row['id'];
+					}
+					$duggatitle="$duggatitle - Useranswer not found!";
+					//$debug="[Superuser] Could not load dugga! no userAnswer entries with moment: $moment \nline 338 showDuggaservice.php";
+					//$variant="UNK";
+					//$answer="UNK";
+					//$variantanswer="UNK";
+					//$param=html_entity_decode('{}');
 				}
 			} else {
 				$debug="[Superuser] Could not load dugga! Incorrect hash/password! $hash";
