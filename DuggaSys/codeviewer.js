@@ -4402,10 +4402,10 @@ function resizeBoxes(parent, templateId)
 					boxToShow.classList.remove('visuallyhidden');
 	
 				}
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
-				document.querySelector('#box3wrapper').style.width = remaining + "px";
-				document.querySelector('#box4wrapper').style.width = remaining + "px";
-				document.querySelector('#box5wrapper').style.width = remaining + "px";
+				$('#box2wrapper').css('width', remaining + "px");
+				$('#box3wrapper').css('width', remaining + "px");
+				$('#box4wrapper').css('width', remaining + "px");
+				$('#box5wrapper').css('width', remaining + "px");
 			},
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
@@ -4414,39 +4414,174 @@ function resizeBoxes(parent, templateId)
 		});
 		$('#box2wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box2wrapper').height();
-				document.querySelector('#box3wrapper').style.height = remaining/3 + "px";
-				document.querySelector('#box4wrapper').style.height = remaining/3 + "px";
-				document.querySelector('#box5wrapper').style.height = remaining/3 + "px";
+				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
+
+				if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box3 and 4 are too small only resize box5
+					if($('#box4wrapper').height() <= $(parent).height()*0.15){
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
+					}
+					//Else if box 3 an 5 are too small only resize box 4
+					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+					}
+
+				}
+				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box3 and 4 are too small only resize box5
+					if($('#box3wrapper').height() <= $(parent).height()*0.15){
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
+					}
+					//Else if box 4 an 5 are too small only resize box 3
+					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+					}
+				}
+				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box5 and 4 are too small only resize box3
+					if($('#box4wrapper').height() <= $(parent).height()*0.15){
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
+					}
+					//Else if box 3 an 5 are too small only resize box 4
+					else if($('#box3wrapper').height() <= $(parent).height()*0.15){
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
+					}
+				}
+				else{
+					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/3) + "px");
+					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/3) + "px");
+					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
+				}
 				
 			},
-			maxHeight: ($(parent).height()*0.65),
+			maxHeight: ($(parent).height()*0.55),
 			minHeight: ($(parent).height()*0.15),
 			handles:"s",
 			containment: parent
 		});
 		$('#box3wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box3wrapper').height();
-				 document.querySelector('#box2wrapper').style.height = remaining/3 + "px";
-				 document.querySelector('#box4wrapper').style.height = remaining/3 + "px";
-				 document.querySelector('#box5wrapper').style.height = remaining/3 + "px";
-				
+				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
+				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box2 and 4 are too small only resize box5
+					if($('#box4wrapper').height() <= $(parent).height()*0.15){
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
+					}
+					//Else if box 2 an 5 are too small only resize box 4
+					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+					}
+
+				}
+				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box2 and 4 are too small only resize box5
+					if($('#box2wrapper').height() <= $(parent).height()*0.15){
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
+					}
+					//Else if box 4 an 5 are too small only resize box 2
+					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+					}
+				}
+				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box5 and 4 are too small only resize box3
+					if($('#box4wrapper').height() <= $(parent).height()*0.15){
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
+					}
+					//Else if box 2 an 5 are too small only resize box 4
+					else if($('#box2wrapper').height() <= $(parent).height()*0.15){
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
+					}
+				}
+				else{
+					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/3) + "px");
+					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/3) + "px");
+					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
+				}			
 			},
-			maxHeight: ($(parent).height()*0.65),
+			maxHeight: ($(parent).height()*0.55),
 			minHeight: ($(parent).height()*0.15),
 			handles:"s",
 			containment: parent
 		});
 		$('#box4wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box4wrapper').height();
-				 document.querySelector('#box2wrapper').style.height = remaining/3 + "px";
-				 document.querySelector('#box3wrapper').style.height = remaining/3 + "px";
-				 document.querySelector('#box5wrapper').style.height = remaining/3 + "px";
+				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
+				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box2 and 4 are too small only resize box5
+					if($('#box3wrapper').height() <= $(parent).height()*0.15){
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
+					}
+					//Else if box 3 an 5 are too small only resize box 4
+					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+					}
+
+				}
+				else if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box3 and 4 are too small only resize box5
+					if($('#box2wrapper').height() <= $(parent).height()*0.15){
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
+					}
+					//Else if box 4 an 5 are too small only resize box 3
+					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+					}
+				}
+				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box5 and 4 are too small only resize box3
+					if($('#box2wrapper').height() <= $(parent).height()*0.15){
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
+					}
+					//Else if box 3 an 5 are too small only resize box 4
+					else if($('#box3wrapper').height() <= $(parent).height()*0.15){
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
+					}
+				}
+				else{
+					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/3) + "px");
+					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/3) + "px");
+					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
+				}			
 				
 			},
-			maxHeight: ($(parent).height()*0.65),
+			maxHeight: ($(parent).height()*0.55),
 			minHeight: ($(parent).height()*0.15),
 			handles:"s",
 			containment: parent
