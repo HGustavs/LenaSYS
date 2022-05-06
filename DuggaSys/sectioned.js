@@ -481,6 +481,7 @@ function unhideElements(){
         }, "SECTION");
         $("#editSection").css("display", "none");
       }
+      hideItemList= [];
 }
 
 // Clear array of checked items - used in fabbuttons and in save to clear array. 
