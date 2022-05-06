@@ -162,63 +162,63 @@ function showFilePopUp(fileKind) {
 //see fileedservice.php and filerecieve.php for more details of how files are saved to local storage and meta-data is saved to DB.
 function uploadFile(kind) {
    
+
+    //Boolean to check if file was found during for-loop.
+    var fileExists = false;
+
     //Stores the filepath of the selected file.
     var selectedFilePath = document.getElementById("uploadedfile").value;
-   
     //splits and saves only the text after last \ in the filepath so only the filename remains.
     const selectedFile = selectedFilePath.split("\\").pop();
     
-
+    //For-loop which checkes the selected filename, with already uploaded files.
     for(i = 0; i < fullFileName.length; i++){
         if(selectedFile == fullFileName[i]){
-            alert("File already exists");
-        }
-        else{
-
+            fileExists = true;
+            alert("File Exists");
+            
         }
     };
-
-
-   
     
-    if (kind == "MFILE") {
-        var str = "<option>NONE</option>";
-        for (i = 0; i < filez['lfiles'].length; i++) {
-            var item = filez['lfiles'][i];
-            if (item != ".." && item != ".") str += "<option>" + item + "</option>";
-        }
-        $("#selectedfile").html(str);
-       
-    } else if (kind == "GFILE") {
-        var str = "<option>NONE</option>";
-        for (i = 0; i < filez['gfiles'].length; i++) {
-            var item = filez['gfiles'][i];
-            if (item != ".." && item != ".") str += "<option>" + item + "</option>";
-        }
-        $("#selectedfile").html(str);
-    } else if (kind == "EFILE") {
-        var str = "<option>NONE</option>";
-        for (i = 0; i < filez['gfiles'].length; i++) {
-            var item = filez['gfiles'][i];
-            if (item != ".." && item != ".") str += "<option>" + item + "</option>";
-        }
-        $("#ekind").val(kind);
-        $("#ecourseid").val(querystring['courseid']);
-        $("#ecoursevers").val(querystring['coursevers']);
-        $("#selectedfile").html(str); 
+    if(fileExists == false){
+        alert("Did not work");
+        if (kind == "MFILE") {
+            var str = "<option>NONE</option>";
+            for (i = 0; i < filez['lfiles'].length; i++) {
+                var item = filez['lfiles'][i];
+                if (item != ".." && item != ".") str += "<option>" + item + "</option>";
+            }
+            $("#selectedfile").html(str);
         
-    } else if (kind == "LFILE" || kind == "LINK") {
-        $("#selecty").css("display", "none");
-    }
+        } else if (kind == "GFILE") {
+            var str = "<option>NONE</option>";
+            for (i = 0; i < filez['gfiles'].length; i++) {
+                var item = filez['gfiles'][i];
+                if (item != ".." && item != ".") str += "<option>" + item + "</option>";
+            }
+            $("#selectedfile").html(str);
+        } else if (kind == "EFILE") {
+            var str = "<option>NONE</option>";
+            for (i = 0; i < filez['gfiles'].length; i++) {
+                var item = filez['gfiles'][i];
+                if (item != ".." && item != ".") str += "<option>" + item + "</option>";
+            }
+            $("#ekind").val(kind);
+            $("#ecourseid").val(querystring['courseid']);
+            $("#ecoursevers").val(querystring['coursevers']);
+            $("#selectedfile").html(str); 
+            
+        } else if (kind == "LFILE" || kind == "LINK") {
+            $("#selecty").css("display", "none");
+        }
 
-    $("#kind").val(kind);
-    $("#courseid").val(querystring['courseid']);
-    $("#coursevers").val(querystring['coursevers']);
+        $("#kind").val(kind);
+        $("#courseid").val(querystring['courseid']);
+        $("#coursevers").val(querystring['coursevers']);
+    };
+};
+
     
-
-    
-
-}
 
 function closeAddFile() {
     $("#addFile").css("display", "none");
