@@ -8,6 +8,37 @@ $cid=getOPG('cid');
 $vers=getOPG('coursevers');
 ?>
 
+<!-- Logout button and functionality, copied from navheader.php -->
+<?php
+	echo "<table class='navheader' id='navheader'><tr id='navbar'>";
+	echo "<td id='menuHook' class='navSpacer' >";
+	echo "<td id='loginbutton' class='loggedin' onclick='showLogoutPopup();'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
+	echo "</tr></table>";
+?>
+<div id='logoutBox' class="logoutBoxContainer" style="display: none">
+	<div id='logout' class="logoutBox DarkModeBackgrounds DarkModeText">
+		<div class='logoutBoxheader'>
+			<h3>Sign out</h3>
+			<div class="cursorPointer" onclick="$('#logoutBox').hide();" title="Close window">x</div>
+		</div>
+		<form action="" id="logoutForm" method="post">
+			<div>
+				<p>Are you sure you want to log out?</p>
+			</div>
+			<table class="logoutBoxTable">
+				<tr class="logoutboxTr">
+					<td>
+						<input type='button' class='buttonLogoutBox' onclick='processLogout();' value='Log out' title='Log out'>
+					</td>
+					<td>
+						<input type='button' class='buttonLogoutBox buttonLogoutCancelBox' onclick="$('#logoutBox').hide();" value='Cancel' title='CancelLogout'>
+					</td>						
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
 <!DOCTYPE html>
 <html>
 <head>
