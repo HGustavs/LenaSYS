@@ -159,22 +159,30 @@ function showFilePopUp(fileKind) {
 
 //see fileedservice.php and filerecieve.php for more details of how files are saved to local storage and meta-data is saved to DB.
 function uploadFile(kind) {
-   
+    
+    var uploadedFile;
 
     //Boolean to check if file was found during for-loop.
     var fileExists = false;
-
+   
+   
+    
     //Stores the filepath of the selected file.
-    var selectedFilePath = document.getElementById("uploadedfile").value;
+    //var selectedFilePath = document.getElementById("uploadedfile").value;
     //splits and saves only the text after last \ in the filepath so only the filename remains.
-    const selectedFile = selectedFilePath.split("\\").pop();
+    //const selectedFile = selectedFilePath.split("\\").pop();
     
     //For-loop which checkes the selected filename, with already uploaded files.
-    for(i = 0; i < fullFileName.length; i++){
-        if(selectedFile == fullFileName[i]){
-            fileExists = true;
-            alert("File with same name and filetype already exists, this file will not be uploaded");
-            
+    for(i = 0; i < document.getElementById("uploadedfile").files.length; i++){ 
+        uploadedFile = (document.getElementById("uploadedfile").files[i].name);
+        for(j = 0; j < fullFileName.length; j++){
+            console.log(fullFileName[j]);
+            console.log(uploadedFile);
+            alert("stop");
+            if(uploadedFile == fullFileName[j]){
+                fileExists = true;
+                alert(selectedFile+" File with same name and filetyp already exist in list." );
+            }; 
         }
     };
 
