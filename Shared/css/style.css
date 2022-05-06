@@ -1344,6 +1344,13 @@ header td {
 .navButt #homeIcon img{
   height: 87%;
 }
+#hamburgerIcon{
+  transform: scale(1.8);
+  margin-left: 10px;
+}
+#courseVersionDropDown{
+  vertical-align: top;
+}
 
 
 .burgerButt {
