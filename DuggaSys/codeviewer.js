@@ -2656,12 +2656,20 @@ function getTotalBoxes(template) {
 
 function zoomText(boxid, increment)
 {
+	//Upper & lower limit of how small text can get.
+	var upperLimit = 21;
+	var lowerLimit = 6; 
+
 	var fontSize = parseInt(document.getElementById("box" + boxid).style.fontSize);
+	
+	if (increment > 0 && fontSize < upperLimit || increment < 0 && fontSize > lowerLimit){
 
-	fontSize = fontSize + increment; 
+		fontSize = fontSize + increment; 
 
-	document.getElementById("box" + boxid).style.fontSize = fontSize + "px";
-
+		document.getElementById("box" + boxid).style.fontSize = fontSize + "px";
+	
+	}
+	
 }
 
 //-----------------------------------------------------------------------------
