@@ -234,9 +234,10 @@ function renderBarDiagram(data) {
 
   // Renders the diagram
 
-  var str = "<div style='width:100%;overflow-x:scroll;'>";
-  str += "<h2 style='padding-left:5px'>Weekly bar chart</h2>";
+  //var str = "<div style='width:100%;overflow-x:scroll;'>";
+  var str = "<h2 style='padding-left:5px'>Weekly bar chart</h2>";
   str += "<p style 'padding-top:10px'>Showing activities for " + dailyCount[0][0] + " - " + dailyCount[7*numOfWeeks-1][0] + " </p>";
+  str += "<div style='overflow-x:scroll;'>"
   str += `<svg  class='chart fumho'  style='background-color:#efefef;'
   width='1300' height='250' aria-labelledby='title desc' role='img'>`;
   for (var i = 0; i < numOfWeeks; i++) {
@@ -293,6 +294,7 @@ function renderBarDiagram(data) {
     str += "</g>";
   }
   str += '</svg>';
+  str += '</div>';
   str += '<div class="group2flex" id="barDiagramLegend" style="display:flex; width:900px; align-items:center; justify-content:center;">';
   str += '<div style="display:flex;align-items:center;margin-left:30px;margin-right:30px;"><p>Commits:</p>';
   str += '<div style="width:15px; height:15px; background-color:#F44336;margin-left:10px;"></div></div>';
@@ -304,7 +306,7 @@ function renderBarDiagram(data) {
   str += '<div style="width:15px; height:15px; background-color:Purple;margin-left:10px;"></div></div>';
   str += '<div style="display:flex; align-items:center;margin-left:30px;margin-right:30px;"><p>Holidays:</p>';
   str += '<div style="width:15px; height:15px; background-color:#f1c0cb;margin-left:10px;"></div></div>';
-  str += '</div>';
+
   return str;
 }
 
