@@ -24,7 +24,8 @@ var updateShowAct = true;
 var courseFileArr = [];
 
 var commitChangeArray = [];
-var isClickedElementBox = false;
+var isClickedElementBox = [false, false];
+var cursorY;
 //sorting for multiple views
 //Restores all views when pressing the All button
 function restoreStatView() {
@@ -1429,12 +1430,12 @@ function renderCellForghContibTable(col, celldata, cellid) {
        if(obj.commits.length > 0){
          str += `<div id='ghCommits' onclick='toggleContributionTable(this)' 
          class='contribheading' style='cursor:pointer;'><span>Made ${obj.commits.length} commit(s).</span>`;
-         str += "<div id='ghCommits"+rowNr+"' style='pointer-events:auto' class='contribcontent'>";
+         str += "<div id='ghCommits"+rowNr+"' style='pointer-events:auto' class='contribcontent' onclick='keepContribContentOpen(event)'>";
            for (j = 0; j < obj.commits.length; j++) {
              var message = obj.commits[j].message;
              var hash = obj.commits[j].cid;
-             str += `<span><a class="commitLink" onmouseover='showCommits(this, \"${"cid: " + hash}\");' onmouseout="hideCommits(this)" onclick='keepContribContentOpen(event)' 
-             target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}'>${message}</a></span>`;
+             str += `<span onclick='showCommits(this, \"${"cid: " + hash}\");'><img id='githubLink${rowNr}' class='githubLink${rowNr}' style='width:16px;display:none;' alt='githubLink icon' 
+             title='open github page' src='../Shared/icons/githubLink-icon.png' target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/${hash}' onclick='openGithubLink(this)'> ${message}</span>`;
            }
            str += "</div>";
            str += "</div>";
@@ -1690,6 +1691,15 @@ function showMoreContribContent(id,status){
       document.getElementById(id).classList.add('contribcontentToggle')
     }else{
       document.getElementById(id).classList.remove('contribcontentToggle')
+    }
+    //if the content is of the div ghCommits then hide or show githubLink image based on status.
+    if(id.toString().includes('ghCommits')){
+      var githubLinkString = "githubLink"+id.toString().replace('ghCommits','');
+      if(status == 1){
+        $('.'+githubLinkString).show();
+      }else{
+        $('.'+githubLinkString).hide();
+      } 
     }
 }
 
@@ -1959,12 +1969,19 @@ function showCommits(object, cid){
   text.style.display="block";
   text.innerHTML = commitChangeArray[cid];
   text.style.left = (document.documentElement.scrollLeft) + "px";
-  text.style.top = (document.documentElement.scrollTop) + "px";
+  text.style.top = (document.documentElement.scrollTop+cursorY)/2 + "px";
 }
 //Hide a div when hover the commit links
  function hideCommits(){
   document.getElementById('commitDiv').style.display="none";
  }
+
+//Redirects the user to the github page when pressing the github icon
+function openGithubLink(btnobj){
+  console.log(btnobj);
+  link = $(btnobj).attr('href');
+  window.open(link, "_blank");
+}
 
 console.error
 //Toggles the account request menu being open or closed.
@@ -1986,6 +2003,7 @@ document.addEventListener('keydown', function(event) {
 });
 
 $(document).mousedown(function (e) {
+  cursorY = e.pageY;
   mouseDown(e);
 });
 
@@ -2000,12 +2018,21 @@ function mouseDown(e) {
   // else if() - the clicked element is a child of one of the show account request elements
   // else - the clicked element does not belong to account request
   if (box[0].classList.contains("show-accountRequests-pane") || box[0].classList.contains("accountRequests-pane-span") || box[0].classList.contains("hide-accountRequests-pane")) {
-    isClickedElementBox = true;
+    isClickedElementBox[0] = true;
   } else if ((findAncestor(box[0], "show-accountRequests-pane") != null) &&
     (findAncestor(box[0], "show-accountRequests-pane").classList.contains("show-accountRequests-pane"))) {
-    isClickedElementBox = true;
-  } else {
-    isClickedElementBox = false;
+    isClickedElementBox[0] = true;
+  } else{
+    isClickedElementBox[0] = false;
+  }
+  
+  if (box[0].classList.contains("commitDiv")) {
+    isClickedElementBox[1] = true;
+  } else if ((findAncestor(box[0], "commitDiv") != null) &&
+    (findAncestor(box[0], "commitDiv").classList.contains("commitDiv"))) {
+    isClickedElementBox[1] = true;
+  }else{
+    isClickedElementBox[1] = false;
   }
 
 }
@@ -2014,7 +2041,7 @@ function mouseUp(e) {
   //if - the user clicks something other than the account request pane.
   //else - the user clicks an element belonging to account request
   if ($('.accountRequests-pane') && !$('.accountRequests-pane').is(e.target) &&
-  $('.accountRequests-pane').has(e.target).length === 0 && (!isClickedElementBox)) {
+  $('.accountRequests-pane').has(e.target).length === 0 && (!isClickedElementBox[0])) {
     //if account request pane is open then close it.
     if (document.getElementById("accountRequests-pane").className == "show-accountRequests-pane") {
       document.getElementById('accountReqmarker').innerHTML = "Account requests";
@@ -2025,6 +2052,13 @@ function mouseUp(e) {
       document.getElementById('accountReqmarker').innerHTML = "Account requests";
       document.getElementById("accountRequests-pane").className = "show-accountRequests-pane";
     }
+  }
+  
+  if ($('.commitDiv') && !$('.commitDiv').is(e.target) &&
+  $('.commitDiv').has(e.target).length === 0 && (!isClickedElementBox[1])) {
+    hideCommits();
+  }else{
+    //e.target is commitDiv 
   }
 }
 
@@ -2221,12 +2255,13 @@ function resetForceLogin()
 
   let userExists_Git = null; // if it exists in the git data
   let userExists_Lenasys = null; // if it exists in the lenasys data
+  let userStatus_Lenasys = null; // if it is a super/teache
  
   function checkIfGitUserExists(username, _callback) // checks if user exists in the git data and or the lenasys data
 {
   userExists_Git = null; // reset back to null if we want to do a check for another user
   userExists_Lenasys = null;
-
+  userStatus_Lenasys = null;
 
   if(username == null || username == "" || !(typeof(username) === 'string'))
   {
@@ -2246,12 +2281,12 @@ function resetForceLogin()
 
       function checkAsyncFlags() 
       {
-        if(userExists_Git == null || userExists_Lenasys == null) 
+        if(userExists_Git == null || userExists_Lenasys == null || userStatus_Lenasys == null) 
         {
            window.setTimeout(checkAsyncFlags, 100);
         } else 
         {
-          _callback(userExists_Git,userExists_Lenasys);
+          _callback(userExists_Git,userExists_Lenasys, userStatus_Lenasys);
 
         }
       }
@@ -2366,13 +2401,8 @@ function resetForceLogin()
 
   function returned_lenasys_user_check(data)
   {
-    if(typeof data == "boolean")
-    {
-      userExists_Lenasys = data;
-    }
-    else
-      alert("invalid data returned from lenasys-data");
-
+    userExists_Lenasys = Boolean(data['success']);
+    userStatus_Lenasys = data['status'];
     return userExists_Lenasys;
   }
 
@@ -2421,7 +2451,7 @@ function resetForceLogin()
     else
     {
 
-      checkIfGitUserExists(username ,function(_onGit, _onLena) 
+      checkIfGitUserExists(username ,function(_onGit, _onLena, _userStatus) 
         {
           
 
@@ -2438,7 +2468,23 @@ function resetForceLogin()
 
           if(_onLena) // log in with lena
           {
-            restoreAndLockLogin();
+            if(_userStatus == "super" || _userStatus == "student") // if youre a teacher or youre a student with a created git account on the git_user table
+            { 
+              restoreAndLockLogin();
+            }
+            else // youre on solely lena but not a teacher/super
+            {
+              displayAlertText("#login #message", "User does not have permission <br />");
+
+              $("input#username").addClass("loginFail");
+		      	  $("input#password").addClass("loginFail");
+			        setTimeout(function()
+              {
+		      	    $("input#username").removeClass("loginFail");
+                $("input#password").removeClass("loginFail");
+                displayAlertText("#login #message", "Try again");
+					    }, 2000);
+            }
           }
           if(!_onLena && _onGit) // onlena is false, ongit true, create new user
           {
@@ -2479,7 +2525,7 @@ function git_processLogin()
     let git_password = $("#login #password").val();
 
 
-    AJAXService("requestGitUserLogin",{
+    AJAXService("requestContributionUserLogin",{
       username: git_username,
       userpass: git_password,
     }, "CONTRIBUTION_GIT_USER_LOGIN");
@@ -2493,7 +2539,7 @@ function git_logout()
   let git_username = null; // nothing entered will logout
   let git_password = null;
 
-  AJAXService("requestGitUserLogin",{
+  AJAXService("requestContributionUserLogin",{
     username: git_username,
     userpass: git_password,
   }, "CONTRIBUTION_GIT_USER_LOGIN");
@@ -2504,6 +2550,17 @@ function returned_git_user_login(data)
 {
   if(data)
     window.location.reload(true);  // TODO should I just reload the page here perhaps? 
+  else
+  {
+    displayAlertText("#login #message", "Invalid password <br />");
+
+    $("input#password").addClass("loginFail");
+    setTimeout(function()
+    {
+      $("input#password").removeClass("loginFail");
+      displayAlertText("#login #message", "Try again");
+    }, 2000);
+  }
 }
 
 console.error
