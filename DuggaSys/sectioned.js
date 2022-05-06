@@ -367,7 +367,7 @@ function confirmBox(operation, item = null) {
     $("#noMaterialConfirmBox").css("display", "none");
   }
   else if (operation == "showItems"&& !hideItemList.length == 0) {
-    unhideElements(hideItemList);
+    showMarkedItems(hideItemList);
   }
 }
 
@@ -451,31 +451,26 @@ function markedItems(item = null){
     console.log(hideItemList);
 }
 
-//work in progress
-
+ // Shows ghost and eye button 
 function showVisibilityIcons(){
- // Show ghost button when checkbox is checked
  document.querySelector('#hideElement').disabled = false;
  document.querySelector('#hideElement').style.opacity = 1;
- // Show eye button when checkbox is checked
  document.querySelector('#showElements').disabled = false;
  document.querySelector('#showElements').style.opacity = 1;
 }
+//Disables ghost and eye button
 function hideVisibilityIcons(){
-    // Disable ghost button when page is loaded
     document.querySelector('#hideElement').disabled = true;
     document.querySelector('#hideElement').style.opacity = 0.7;
-    //   Disable eye button when page is loaded
     document.querySelector('#showElements').disabled = true;
     document.querySelector('#showElements').style.opacity = 0.7;
 }
-function unhideElements(){
- 
+
+//Changes visibility of hidden items
+function showMarkedItems(){
   hideVisibilityIcons();
-    // visibility of hidden items should be changed here
     for (i=0; i < hideItemList.length; i++) {  
     var lid = hideItemList[i];
-    console.log(hideItemList[i]);
         AJAXService("PUBLIC", {
           lid: lid
         }, "SECTION");
