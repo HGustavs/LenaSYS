@@ -29,11 +29,13 @@
             $newduggaid=$row['quiz'];
             $newmoment=$row['moment'];
         }
+        $_SESSION['should-validate'] = "FALSE";
+
         if(isset($param)){
             $_SESSION["submission-$newcourseid-$newcoursevers-$newduggaid-$newmoment"]=$hash;
             $_SESSION["submission-password-$newcourseid-$newcoursevers-$newduggaid-$newmoment"]=$hashpwd;
             $_SESSION["submission-variant-$newcourseid-$newcoursevers-$newduggaid-$newmoment"]=$variant;
-            $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
+            $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/LenaSys/sh/?s=$hash";
             header("Location: $link");
             exit();	
         }else{
