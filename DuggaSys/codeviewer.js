@@ -951,8 +951,7 @@ function createboxmenu(contentid, boxid, type) {
 			var kind = 2;
 		}
 
-		// Add resize, reset and edit buttons
-		//This functionality should be changed to allow zooming.
+		// Add zoom in, zoom out and reset buttons.
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Zoom in' onclick='zoomText(" + boxid + ", 3);'><img src='../Shared/icons/MaxButton.svg' /></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Zoom out' onclick='zoomText(" + boxid + ", -3);'><img src='../Shared/icons/MinButton.svg' /></div>";
 		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset zoom' onclick='resetText(" + boxid + ");'><img src='../Shared/icons/ResetButton.svg' /></div>";
