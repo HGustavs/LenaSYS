@@ -286,7 +286,9 @@ function selectVariant(vid, el) {
   				}
 				else if(result =="errorActive"){
 					document.getElementById("errorActive").checked = obj[result];
-				}
+				}else if(result == "diagram_File"){
+                    document.getElementById('file').value = obj[result];
+                }
   			}
 		var diagramType = obj.diagram_type; //<-- UML functionality start
 		if(diagramType){
