@@ -402,7 +402,7 @@ function returnedFile(data){
 	filteredarray = filearray.filter(x => x.extension === "json");
 
 	//Not sure how the first parameter works yet, suspect it's to know which object is selected
-	$("#file").html(makeoptionsItem("not doing anything plz fix", filteredarray, 'filename'));
+	$("#file").html(makeoptionsItem("AddEmptyField", filteredarray, 'filename','filename'));
 }
 
 // Adds a submission row
@@ -478,7 +478,7 @@ function createJSONString(formData) {
 	return JSON.stringify({
 		"type":formData[0].value,
 		"filelink":formData[1].value,
-		"diagram_File":$("#file option:selected").text(),
+		"diagram_File":$("#file option:selected").val(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
 		"submissions":submission_types,
