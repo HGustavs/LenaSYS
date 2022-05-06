@@ -4144,12 +4144,12 @@ function generateErTableString()
             if (j < ERAttributeData[i].length - 1) {
                 if (Array.isArray(ERAttributeData[i][j])) {
                     for(var k = 1; k < ERAttributeData[i][j].length; k++) {
-                        stringList[i] += `<span style='text-decoration: overline black dashed 1.5px;'>${ERAttributeData[i][j][0].name.toLowerCase() + ERAttributeData[i][j][k].name}</span>, `;
+                        stringList[i] += `<span style='text-decoration: overline black solid 2px;'>${ERAttributeData[i][j][0].name.toLowerCase() + ERAttributeData[i][j][k].name}</span>, `;
                     }
                 }
                 else {
                     if(ERAttributeData[i][j].state == 'key') {
-                        stringList[i] += `<span style='text-decoration: underline black solid 1.5px;'>${ERAttributeData[i][j].name}</span>, `;
+                        stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>, `;
                     }
                     else {
                         stringList[i] += `<span>${ERAttributeData[i][j].name}</span>, `;
@@ -4161,12 +4161,12 @@ function generateErTableString()
             else if (j == ERAttributeData[i].length - 1) {
                 if (Array.isArray(ERAttributeData[i][j])) {
                     for(var k = 1; k < ERAttributeData[i][j].length; k++) {
-                        stringList[i] += `<span style='text-decoration: overline black dashed 1.5px;'>${ERAttributeData[i][j][0].name.toLowerCase() + ERAttributeData[i][j][k].name}</span>)</p>`;
+                        stringList[i] += `<span style='text-decoration: overline black solid 2px;'>${ERAttributeData[i][j][0].name.toLowerCase() + ERAttributeData[i][j][k].name}</span>)</p>`;
                     }
                 }
                 else {
                     if(ERAttributeData[i][j].state == 'key') {
-                        stringList[i] += `<span style='text-decoration: underline black solid 1.5px;'>${ERAttributeData[i][j].name}</span>)</p>`;
+                        stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>)</p>`;
                     }
                     else {
                         stringList[i] += `<span>${ERAttributeData[i][j].name}</span>)</p>`;
@@ -4182,10 +4182,10 @@ function generateErTableString()
             stringList.push(new String(`<p>${ERForeignData[i][0].name} (`));
             for(var j = 1; j < ERForeignData[i].length; j++) {
                 if (j < ERForeignData[i].length - 1) {
-                    stringList[control] += `<span style='text-decoration: overline underline black solid 1.5px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>, `;
+                    stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>, `;
                 }
                 else if (j == ERForeignData[i].length - 1) {
-                    stringList[control] += `<span style='text-decoration: overline underline black solid 1.5px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>)</p>`;
+                    stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>)</p>`;
                 }
             }
             control++;
@@ -4703,7 +4703,7 @@ function generateContextProperties()
 
     //If erTableToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
     if (erTableToggle == true) {
-        str +=`<div style="overflow:scroll; height: 300px; width: 96%;background-color:white;color:black;padding-left:8px;border:black 2px dotted;">`
+        str +=`<div id="ERTable">`
         var ertable = generateErTableString();
         str += ertable;
         str += `</div>`
