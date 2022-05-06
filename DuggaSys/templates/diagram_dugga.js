@@ -55,7 +55,7 @@ function uploadFile()
         data: {
             inputtext: getDiagramData(),
             field: "diagramSave",
-            hash: duggaData['hash'],
+            hash: hash,
             segment: inParams["segment"],
             did: inParams["did"],
             coursevers: inParams["coursevers"],
@@ -64,7 +64,7 @@ function uploadFile()
             moment: inParams["moment"]
         }
     }).done(function() {
-        AJAXService("GETPARAM", { }, "PDUGGA");
+        AJAXService("SAVDU", { }, "PDUGGA");
     });
 }
 /**
@@ -74,10 +74,7 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-    if(data['hash'] != undefined)
-    {
         duggaData = data;
-    }
     console.log(duggaData);
     //var textBox = document.getElementById('submission-receipt');  
    
