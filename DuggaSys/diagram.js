@@ -7360,6 +7360,7 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
 
 function fetchDiagramFileContentOnLoad()
 {
+    if (typeof window.parent.getVariantParam !== "undefined") { 
         let temp = window.parent.getVariantParam();
         var fullParam = temp[0];
         cid = temp[1];
@@ -7373,6 +7374,7 @@ function fetchDiagramFileContentOnLoad()
         console.log(diagramToLoad);
 
         loadDiagramFromString(JSON.parse(diagramToLoadContent));
+    }
 }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
