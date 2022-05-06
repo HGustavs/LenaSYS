@@ -941,8 +941,7 @@ else if(strcmp($opt,"requestGitUserCreation") == 0)
 			$temp_null_str = "NULL";
 			
 			$rnd=standardPasswordHash($gitpass);
-
-			if(preg_match('/^[\w]+$/',$gitpass) ){
+			if(preg_match('/^[\w]+$/',$gitpass ) && strlen($gitpass) >= 8 && strlen($gitpass) <=64){
 
 				$querystring='INSERT INTO git_user (username, password, status_account, addedtime) VALUES(:username, :password, :status_account, now());';
 				$stmt = $pdo->prepare($querystring);
