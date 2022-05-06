@@ -47,6 +47,7 @@ function getDiagramData()
  * */
 function uploadFile()
 {
+    $('#submission-receipt').html(`${response['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(response['hash'])}'> ${createUrl(response['hash'])}` + `</a> </br></br> Hash: </br> ${response['hash']}</br></br>Hash password:</br>${response['hashpwd']}`);
     $.ajax({
         method: "POST",
         url: "filereceive_dugga.php",
@@ -72,8 +73,12 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
+
+    if(response == "")
+    {
+        response = data;
+    }
     //var textBox = document.getElementById('submission-receipt');  
-    $('#submission-receipt').html(`${data['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(data['hash'])}'> ${createUrl(data['hash'])}` + `</a> </br></br> Hash: </br> ${data['hash']}</br></br>Hash password:</br>${data['hashpwd']}`);
    
     //General idea below - create one method in dugga.js rather than changing recipt box in each dugga type. Currently not working.
     //updateReceiptText(response['duggaTitle'], createUrl(response['hash']), response['hash'], response['hashpwd']);
