@@ -69,7 +69,7 @@ function hideCollapsedMenus() {
       $('#selectionDrag'+menuState.hiddenElements[i]).toggle();
     }
     ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
-    if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {      
+    if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
       jQuery(ancestor).nextUntil('.section').hide();
       $('#selectionDrag'+menuState.hiddenElements[i]).toggle();
     }
@@ -973,13 +973,13 @@ function returnedSection(data) {
           }
 
           if (itemKind === 3) {
-            str += "<td class='LightBox" + hideState + "'>";
+            str += "<td  class='LightBox" + hideState + "'>";
             str += "<div class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             
             str += "<td class='LightBox" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
-            str += "<td class='LightBox" + hideState + "'  >";
+            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
             str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             str += "<td class='LightBoxFilled" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
@@ -1023,7 +1023,7 @@ function returnedSection(data) {
 
         } else if (itemKind === 1) {
           // Styling for Section row
-          str += "<td class='LightBox" + hideState + "'>";
+          str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
           str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
@@ -1104,7 +1104,7 @@ function returnedSection(data) {
         } else if (itemKind == 4) {
           // Moment
           var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
-          str += `<div  class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
+          str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
           str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
           str += "<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:block;'>";
           str += "<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
