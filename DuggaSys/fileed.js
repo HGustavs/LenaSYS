@@ -173,7 +173,7 @@ function uploadFile(kind) {
     for(i = 0; i < fullFileName.length; i++){
         if(selectedFile == fullFileName[i]){
             fileExists = true;
-            alert("File with same name and filetype already exists, this file will not be added");
+            alert("File with same name and filetype already exists, this file will not be uploaded");
             
         }
     };
