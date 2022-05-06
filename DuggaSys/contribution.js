@@ -2320,7 +2320,7 @@ function resetForceLogin()
 		        $("input#password").removeClass("loginFail");
             $("input#password1").removeClass("loginFail");
 			  	}, 2000);
-      }
+     /* }
       else if(!(regexVert.test(pass1) && pass1.length < 64 && pass1.length>= 8)){
         displayAlertText("#login #message", `invalid password, needs to be: <br />
           *between 8 and 64 characters <br />
@@ -2331,16 +2331,14 @@ function resetForceLogin()
           {
 		        $("input#password").removeClass("loginFail");
             $("input#password1").removeClass("loginFail");
-			  	}, 2000);
+			  	}, 2000); */
       }
       else
       {
-        
         AJAXService("requestGitUserCreation",{
           userid: username,
           userpass: pass1,
         }, "CONTRIBUTION_LENASYS_USER_CREATION");
-        
       }
     }
     

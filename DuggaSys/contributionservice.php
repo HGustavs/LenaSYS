@@ -867,7 +867,7 @@ else if(strcmp($opt,"requestGitUserCreation") == 0)
 // ------------------------
 
 
-$query = $log_db->prepare('select distinct(usr) from 
+	$query = $log_db->prepare('select distinct(usr) from 
 		(	select blameuser as usr from blame
 		union select author as usr from event
 		union select author as usr from issue
@@ -939,37 +939,36 @@ $query = $log_db->prepare('select distinct(usr) from
 			$git_accepted = 103;
 		
 			$temp_null_str = "NULL";
-
+			
 			$rnd=standardPasswordHash($gitpass);
 
+			if(preg_match('/^[\w]+$/',$gitpass) ){
 
-			$querystring='INSERT INTO git_user (username, password, status_account, addedtime) VALUES(:username, :password, :status_account, now());';
-			$stmt = $pdo->prepare($querystring);
-			$stmt->bindParam(':username', $gituser);
-			$stmt->bindParam(':password', $rnd);
-			$stmt->bindParam(':status_account', $git_pending);
-			
+				$querystring='INSERT INTO git_user (username, password, status_account, addedtime) VALUES(:username, :password, :status_account, now());';
+				$stmt = $pdo->prepare($querystring);
+				$stmt->bindParam(':username', $gituser);
+				$stmt->bindParam(':password', $rnd);
+				$stmt->bindParam(':status_account', $git_pending);
+				
+				try {
+					if(!$stmt->execute()) {
+						$error=$stmt->errorInfo();
+						$debug.="Error updating entries\n".$error[2];
+						$debug.="   ".$gituser."Does not Exist \n";
+						$debug.=" ".$uid;
+					}
+					$uid=$pdo->lastInsertId();
+					$addStatus = true;
 
-
-			try {
-				if(!$stmt->execute()) {
-					$error=$stmt->errorInfo();
-					$debug.="Error updating entries\n".$error[2];
-					$debug.="   ".$gituser."Does not Exist \n";
-					$debug.=" ".$uid;
+				} catch (PDOException $e) {
+					if ($e->errorInfo[1] == 1062) {
+						$debug="Duplicate Username";
+					} else {
+						$debug="Error updating entries\n".$error[2];
+					}
 				}
-				$uid=$pdo->lastInsertId();
-				$addStatus = true;
 
-			} catch (PDOException $e) {
-				if ($e->errorInfo[1] == 1062) {
-					$debug="Duplicate Username";
-				} else {
-					$debug="Error updating entries\n".$error[2];
-				}
 			}
-
-
 		}
 
 	}
