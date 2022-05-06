@@ -6593,7 +6593,7 @@ only screen and (max-device-width: 320px) {
 
 .fixed-action-button {
   position: fixed;
-  bottom: 24px;
+  bottom: 64px;
   right: 24px;
   z-index: 1;
   touch-action: none;
