@@ -2295,8 +2295,6 @@ function resetForceLogin()
         
   }   
 
-
-
   }
 
   function requestGitUserCreation() // function to create the git user in the lenasys database, make sure requestedpasswordchange is pending(101)
@@ -2305,22 +2303,15 @@ function resetForceLogin()
     let pass1 = document.querySelector("#password").value;
     let pass2 = document.querySelector("#password1").value;
     let username = document.querySelector("#username").value;
-
+    
     // TODO MAKE SURE PASSWORD IS ACTUALLY VALID BEFORE INSERT INTO DB
-
+    let regexVert = /[a-zA-Z0-9]+$/;
 
     if(pass1 == pass2)
     {
-      if(pass1 != null && pass1 != "")
+      if(!(pass1 != null && pass1 != ""))
       {
-        AJAXService("requestGitUserCreation",{
-          userid: username,
-          userpass: pass1,
-        }, "CONTRIBUTION_LENASYS_USER_CREATION");
-      }
-      else
-      {
-        displayAlertText("#login #message", "invalid password <br />");
+        displayAlertText("#login #message", "enter a password <br />");
 
         $("input#password").addClass("loginFail");
 		    $("input#password1").addClass("loginFail");
@@ -2330,7 +2321,29 @@ function resetForceLogin()
             $("input#password1").removeClass("loginFail");
 			  	}, 2000);
       }
+      else if(!(regexVert.test(pass1) && pass1.length < 64 && pass1.length>= 8)){
+        displayAlertText("#login #message", `invalid password, needs to be: <br />
+          *between 8 and 64 characters <br />
+          * A-Z, a-z  or numbers <br/>`);
+        $("input#password").addClass("loginFail");
+		    $("input#password1").addClass("loginFail");
+			  setTimeout(function()
+          {
+		        $("input#password").removeClass("loginFail");
+            $("input#password1").removeClass("loginFail");
+			  	}, 2000);
+      }
+      else
+      {
+        
+        AJAXService("requestGitUserCreation",{
+          userid: username,
+          userpass: pass1,
+        }, "CONTRIBUTION_LENASYS_USER_CREATION");
+        
+      }
     }
+    
     else
     {
       displayAlertText("#login #message", "password doesnt match <br />");
