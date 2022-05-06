@@ -2109,13 +2109,13 @@ function createBlocks(ranges, boxid) {
 			var button = e.target;
 			button.classList.toggle('open-block');
 			button.classList.toggle('closed-block');
-			var rowsInBlock = Array(ranges[button.id][1] - ranges[button.id][0]).fill().map((_, idx) => ranges[button.id][0] + idx);
-			toggleRows(rowsInBlock, button);
+			toggleRows(ranges, ranges[button.id][0], ranges[button.id][1], e.target);
 		});
 	}
 }
 
-function toggleRows(rows, button) {
+// Update rows encapsulated in collapsible brackets
+function toggleRows(ranges, startRow, endRow, button) {
 	var baseRow = button.parentNode;
 	var wrapper = baseRow.parentNode;
 	var box = wrapper.parentNode;
@@ -2131,12 +2131,23 @@ function toggleRows(rows, button) {
 	} else {
 		display = 'block';
 		ellipses = baseRow.querySelector('.blockEllipses');
-		baseRow.removeChild(ellipses);
+		if(ellipses)
+			baseRow.removeChild(ellipses);
 	}
 	
-	for (var i = 1; i < rows.length; i++) {
-		wrapper.querySelector("div[id$='"+rows[i]+"']").style.display = display;
-		numbers[rows[i] - 1].style.display = display;
+	// Show or hide rows between collapsible brackets
+	for (var i = 1; i < endRow - startRow; i++) {
+		var rowNumber = startRow + i;
+		var row = wrapper.querySelector("div[id$='" + rowNumber + "']");
+		var tempButton = row.querySelector("span.blockBtnSlot.occupied");
+		if (tempButton &&  display == 'block') {
+			// Update nested set of collapsible brackets recursively
+			toggleRowsTemp(ranges, ranges[tempButton.id][0], ranges[tempButton.id][1], tempButton)
+			i += ranges[tempButton.id][1] - ranges[tempButton.id][0] - 1;
+		}
+		
+		row.style.display = display;
+		numbers[rowNumber - 1].style.display = display;
 	}
 }
 
