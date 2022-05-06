@@ -55,7 +55,7 @@ function uploadFile()
         data: {
             inputtext: getDiagramData(),
             field: "diagramSave",
-            hash: hash,
+            hash: "hello",
             segment: inParams["segment"],
             did: inParams["did"],
             coursevers: inParams["coursevers"],
@@ -74,7 +74,10 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-    duggaData = data;
+    if(data['hash'] != undefined)
+    {
+        duggaData = data;
+    }
     console.log(duggaData);
     //var textBox = document.getElementById('submission-receipt');  
    
