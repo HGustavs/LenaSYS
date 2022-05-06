@@ -5354,8 +5354,11 @@ only screen and (max-device-width: 860px) {
  
   #versionCogBurger, #versionPlusBurger, #editStudentBurger,
   #testsBTNBurger, #editFilesBurger, #courseIMGBurger,
-  #editCourseBurger, #announcementBurger{
+  #editCourseBurger, #announcementBurger, #motdBurger{
     display: block;
+  }
+  #messagedialog{
+    display: none;
   }
 
   #versionCog, #versionPlus, #editStudent,
@@ -8151,7 +8154,7 @@ textarea#filecont {
 @media only screen and (min-width: 861px) {
   #versionCogBurger, #versionPlusBurger, #editStudentBurger,
   #testsBTNBurger, #editFilesBurger, #courseIMGBurger,
-  #editCourseBurger, #announcementBurger{
+  #editCourseBurger, #announcementBurger, #motdBurger{
     display: none;
   }
 
