@@ -4523,6 +4523,17 @@ function generateContextProperties()
 
               //If UML inheritance
               else if (element.kind = 'UMLRelation') {
+                //ID MUST START WITH "elementProperty_"!!!!!
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='display:none;'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
                   str += `<div style='color:white'>Inheritance</div>`;
                   //Creates drop down for changing state of ER elements
                   var value;
