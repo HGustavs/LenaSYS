@@ -79,44 +79,47 @@
 		$splicedFileName = substr($variantParams, strpos($variantParams, "diagram File&quot;:") + 25, ($end - $start));*/
 		$variantParams = str_replace('&quot;','"',$variantParams);
 		$parameterArray = json_decode($variantParams,true);
-		$splicedFileName=$parameterArray["diagram_File"];
-		$fileName=$parameterArray["filelink"];
-		$fileType=$parameterArray["type"];
-		// for fetching file content
-		if(file_exists("../courses/global/"."$fileName"))
-		{
-			$instructions = file_get_contents("../courses/global/"."$fileName");
+		if(!$parameterArray["diagram_File"]){
+			$splicedFileName=$parameterArray["diagram_File"];
+			$fileName=$parameterArray["filelink"];
+			$fileType=$parameterArray["type"];
+			// for fetching file content
+			if(file_exists("../courses/global/"."$fileName"))
+			{
+				$instructions = file_get_contents("../courses/global/"."$fileName");
+			}
+			else if(file_exists("../courses/".$cid."/"."$fileName"))
+			{
+				$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+			}
+			else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
+			{
+				$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+			}
+			//
+			$pattern = '/\s*/m';
+			$replace = '';
+			$instructions = preg_replace( $pattern, $replace,$instructions);
+			//
+			$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions]);
+			$i++;
 		}
-		else if(file_exists("../courses/".$cid."/"."$fileName"))
-		{
-			$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-		}
-		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
-		{
-			$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
-		}
-		//
-		$pattern = '/\s*/m';
-		$replace = '';
-		$instructions = preg_replace( $pattern, $replace,$instructions);
-		//
-		$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions]);
-		$i++;
 	}
 	$response->closeCursor();
 
-
-	if(file_exists("../courses/global/"."$splicedFileName"))
-	{
-		$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
-	}
-	else if(file_exists("../courses/".$cid."/"."$splicedFileName"))
-	{
-		$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
-	}
-	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))
-	{
-		$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
+	if($splicedFileName != "UNK"){
+		if(file_exists("../courses/global/"."$splicedFileName"))
+		{
+			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
+		}
+		else if(file_exists("../courses/".$cid."/"."$splicedFileName"))
+		{
+			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
+		}
+		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))
+		{
+			$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
+		}
 	}
 
 	if($fileContent === "UNK")
@@ -278,11 +281,13 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	 * */
 	function getInstructions(fileName)
 	{
-		for (let index = 0; index < <?php echo json_encode($finalArray);?>.length; index++) {
-			if(<?php echo json_encode($finalArray);?>[index][2]==fileName){
-				document.getElementById("assignment_discrb").innerHTML =<?php echo json_encode($finalArray);?>[index][3];
-			}					
-		}				
+		if(<?php echo json_encode($finalArray);?>.length >0){
+			for (let index = 0; index < <?php echo json_encode($finalArray);?>.length; index++) {
+				if(<?php echo json_encode($finalArray);?>[index][2]==fileName){
+					document.getElementById("assignment_discrb").innerHTML =<?php echo json_encode($finalArray);?>[index][3];
+				}
+			}
+		}			
 	}
 </script>
 	<!-- content START -->
