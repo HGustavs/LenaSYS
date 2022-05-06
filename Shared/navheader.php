@@ -35,9 +35,9 @@
 				$_SESSION['coursevers'] = "UNK";
 
 			// Always show home button which links to course homepage
-			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img alt='home button icon' src='../Shared/icons/Home.svg'></a></td>";
+			echo "<td class='navButt' id='home' title='Home' onclick='navigateToUrl(\"../DuggaSys/courseed.php\")'><a id='homeIcon' class='navButt'><img alt='home button icon' src='../Shared/icons/Home.svg'></a></td>";
 			// Always show toggle button. When clicked it changes between dark and light mode.
-			echo "<td class='navButt'><img id='theme-toggle' src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></td>";
+			echo "<td class='navButt' id='theme-toggle'><img src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></td>";
 
 			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
 			// Generate different back buttons depending on which page is including
@@ -47,8 +47,9 @@
 			//---------------------------------------------------------------------
 
 			if($noup!='NONE') {
-				echo "<td class='navButt' id='back' title='Back'>";
+				echo "<td class='navButt' id='back' title='Back' onclick='navigateToUrl(document.getElementById(\"upIcon\").href)'>";
 			}
+
 			if($noup=='CONTRIBUTION'){
 				echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
@@ -387,6 +388,10 @@ function mouseOverHome() {
       var images = obj.getElementsByTagName('img');
       images[0].src = '../Shared/icons/Home.svg';
    }
+}
+
+function navigateToUrl(url){
+	window.location.assign(url);
 }
 
 function mouseOutHome() {
