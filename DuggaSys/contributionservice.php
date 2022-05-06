@@ -794,6 +794,8 @@ if (strcmp($opt, "checkForGitUser")==0)
 else if(strcmp($opt, "checkForLenasysUser")==0)
 {
 	global $pdo;
+	$status = "";
+	$userExisted = false;
 
 	if($pdo == null) 
 	{
@@ -801,8 +803,8 @@ else if(strcmp($opt, "checkForLenasysUser")==0)
 	}
 	$gituser = getOP('userid');
 
-	
-	$query = $pdo->prepare("SELECT username FROM git_user WHERE username=:GU;");
+
+	$query = $pdo->prepare("SELECT username,uid FROM user WHERE username=:GU LIMIT 1;"); // check the teacher table
 	$query->bindParam(':GU', $gituser);
 	
 	if(!$query->execute()) 
@@ -811,16 +813,43 @@ else if(strcmp($opt, "checkForLenasysUser")==0)
 		$debug="Error reading entries\n".$error[2];
 	}
 
-	$rows = $query->fetchAll();
-	foreach($rows as $row)
+	$userrows = $query->fetchAll();
+
+	$query = $pdo->prepare("SELECT username,git_uid FROM git_user WHERE username=:GU LIMIT 1;"); // check the git_user table
+	$query->bindParam(':GU', $gituser);
+	
+	if(!$query->execute()) 
 	{
-		array_push($allusers, $row['usr']); 
+		$error=$query->errorInfo();
+		$debug="Error reading entries\n".$error[2];
 	}
 
+	$git_userrows = $query->fetchAll();
+
+
+	$userExisted = (!empty($userrows[0]['uid']) || !empty($git_userrows[0]['git_uid'])); // if we managed to retrieve something with the query we found the user in the lenasys DB
 	
-	$userExisted = !empty($allusers); // if we managed to retrieve something with the query we found the user in the lenasys DB
-	
-	echo json_encode($userExisted);
+
+
+	if($userExisted) // start of teacher/superuser check
+	{
+		if (isSuperUser($userrows[0]['uid'])) 
+		{
+			$status = "super";
+		}
+		else if(!empty($git_userrows[0]['git_uid']))
+		{
+			$status = "student"; // you exist in the git_user table
+		}
+	}
+
+
+	echo json_encode(array(
+		"success" => $userExisted,
+		"status" => $status,
+		"debug" => $debug
+	));
+
 }
 else if(strcmp($opt,"requestGitUserCreation") == 0)
 {
@@ -948,7 +977,7 @@ $query = $log_db->prepare('select distinct(usr) from
 	echo json_encode($addStatus); // if successfully created will be true
 
 }
-else if(strcmp($opt,"requestGitUserLogin") == 0)
+else if(strcmp($opt,"requestContributionUserLogin") == 0)
 {
 	/*
 		This is a special login function just for the contribution page
@@ -964,9 +993,31 @@ else if(strcmp($opt,"requestGitUserLogin") == 0)
 
 	$gituser = getOP('username');
 	$gitpass = getOP('userpass');
+	$status = '';
+
+	$query = $pdo->prepare("SELECT username,uid FROM user WHERE username=:GU LIMIT 1;");
+	$query->bindParam(':GU', $gituser);
+	
+	if(!$query->execute()) 
+	{
+		$error=$query->errorInfo();
+		$debug="Error reading entries\n".$error[2];
+	}
+
+	$rows = $query->fetchAll();
+	
+	$userExisted = !empty($rows[0]['uid']); // if we managed to retrieve something with the query we found the user in the lenasys DB
+	
+	if($userExisted) // start of teacher/superuser check
+	{
+		if (isSuperUser($rows[0]['uid'])) 
+		{
+			$status = "super";
+		}
+	}
 
 
-	if($gituser != "UNK")
+	if($gituser != "UNK" && $status != "super")
 	{
 		// retrieve a user with the same name
 		$query = $pdo->prepare("SELECT git_uid,username,password FROM git_user WHERE username=:username LIMIT 1");
@@ -996,6 +1047,17 @@ else if(strcmp($opt,"requestGitUserLogin") == 0)
 		}
 
 
+	}
+	else if($status == "super") // user exists on the lenasys database login with this instead of the git database
+	{
+		if(login($gituser, $gitpass, false))
+		{
+			echo json_encode(true);
+		}
+		else
+		{
+			echo json_encode(false);
+		}
 	}
 	else // logout the git
 	{

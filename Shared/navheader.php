@@ -49,14 +49,18 @@
 			if($noup!='NONE') {
 				echo "<td class='navButt' id='back' title='Back' onclick='navigateToUrl(document.getElementById(\"upIcon\").href)'>";
 			}
-			if($noup=='COURSE'){
+
+			if($noup=='CONTRIBUTION'){
+				echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
+				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
+			}if($noup=='COURSE'){
 				echo "<div><a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></div></td>";
 				echo "<td class='navButt' id='messagedialog' title='Message of the day 'onclick='DisplayMSGofTDY();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
 			}if($noup=='COURSE' && checklogin() && (isTeacher($_SESSION['uid']))){
 				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
 
-			}if ($noup == 'COURSE' && checkLogin()) {
+			}if (($noup == 'COURSE') && checkLogin()) {
 				echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
 
 			}if ($noup == 'COURSE' && checkLogin() && (isStudentUser($_SESSION['uid']))) {

@@ -99,7 +99,7 @@ function returnedDugga(data)
 			document.getElementById('feedbackBox').style.display = "block";
 			$("#showFeedbackButton").css("display","block");
 	}
-	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
 //----------------------------------------------------------------------------------
