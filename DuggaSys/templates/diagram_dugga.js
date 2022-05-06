@@ -75,6 +75,7 @@ function uploadFile()
 function returnedDugga(data)
 {
     duggaData = data;
+    console.log(duggaData);
     //var textBox = document.getElementById('submission-receipt');  
    
     //General idea below - create one method in dugga.js rather than changing recipt box in each dugga type. Currently not working.
