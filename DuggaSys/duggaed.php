@@ -209,7 +209,7 @@ session_start();
                       <!-- Submissions for dugga -->
                   <div>
                     <div id="duggaSubmissionForm">
-                      <fieldset style="width:90%; margin-top:5%;">
+                      <fieldset style="width:90%;">
                         <legend>Submission types</legend>
                         <div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:column;overflow:hidden;"></div>
                       </fieldset>
