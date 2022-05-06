@@ -2142,7 +2142,7 @@ function toggleRows(ranges, startRow, endRow, button) {
 		var tempButton = row.querySelector("span.blockBtnSlot.occupied");
 		if (tempButton &&  display == 'block') {
 			// Update nested set of collapsible brackets recursively
-			toggleRowsTemp(ranges, ranges[tempButton.id][0], ranges[tempButton.id][1], tempButton)
+			toggleRows(ranges, ranges[tempButton.id][0], ranges[tempButton.id][1], tempButton)
 			i += ranges[tempButton.id][1] - ranges[tempButton.id][0] - 1;
 		}
 		
