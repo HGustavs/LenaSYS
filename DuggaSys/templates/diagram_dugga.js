@@ -55,7 +55,7 @@ function uploadFile()
         data: {
             inputtext: getDiagramData(),
             field: "diagramSave",
-            hash: hash,
+            hash: inParams['hash'],
             segment: inParams["segment"],
             did: inParams["did"],
             coursevers: inParams["coursevers"],
