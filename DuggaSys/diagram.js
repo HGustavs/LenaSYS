@@ -1677,7 +1677,7 @@ function mdown(event)
                         cursorStyle.cursor = "grabbing";
                         if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                             wasDblClicked = true;
-                            document.getElementById("options-pane").className = "hide-options-pane";
+                            toggleOptionsPane();
                         }
                         break;
                     }
@@ -4654,7 +4654,6 @@ function generateContextProperties()
 function toggleOptionsPane()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
-        document.getElementById("BGColorMenu").style.visibility = "hidden";
         document.getElementById('optmarker').innerHTML = "Options";
         document.getElementById("options-pane").className = "hide-options-pane";
     } else {
