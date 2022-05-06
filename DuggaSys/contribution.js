@@ -233,8 +233,7 @@ function renderBarDiagram(data) {
   }
 
   // Renders the diagram
-
-  //var str = "<div style='width:100%;overflow-x:scroll;'>";
+  
   var str = "<h2 style='padding-left:5px'>Weekly bar chart</h2>";
   str += "<p style 'padding-top:10px'>Showing activities for " + dailyCount[0][0] + " - " + dailyCount[7*numOfWeeks-1][0] + " </p>";
   str += "<div style='overflow-x:scroll;'>"
