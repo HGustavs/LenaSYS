@@ -55,7 +55,7 @@ function uploadFile()
         data: {
             inputtext: getDiagramData(),
             field: "diagramSave",
-            hash: "hello",
+            hash: duggaData['hash'],
             segment: inParams["segment"],
             did: inParams["did"],
             coursevers: inParams["coursevers"],
