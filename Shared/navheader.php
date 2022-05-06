@@ -35,7 +35,7 @@
 				$_SESSION['coursevers'] = "UNK";
 
 			// Always show home button which links to course homepage
-			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img alt='home button icon' src='../Shared/icons/Home.svg'></a></td>";
+			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img id='homeImg' alt='home button icon' src='../Shared/icons/Home.svg'></a></td>";
 			// Always show toggle button. When clicked it changes between dark and light mode.
 			echo "<td class='navButt'><img id='theme-toggle' src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></td>";
 
