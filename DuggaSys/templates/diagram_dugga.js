@@ -1,7 +1,7 @@
 var lastFile = null;
 var diagramWindow;
-var response;
-var localHash;
+var response = "";
+var localHash = "";
 /** 
  * @description Alert message appears before closing down or refreshing the dugga viewer page window.
 
@@ -23,7 +23,7 @@ function setup()
     diagramWindow = document.getElementById("diagram-iframe");
     inParams = parseGet();
     AJAXService("GETPARAM", { }, "PDUGGA");
-    document.getElementById("saveDuggaButton").onclick = function (){ uploadFile();};
+    document.getElementById("saveDuggaButton").onclick = function (){ uploadFile() , showReceiptPopup();};
     
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
 }
@@ -48,9 +48,7 @@ function getDiagramData()
  * */
 function uploadFile()
 {
-    $('#submission-receipt').html(`${response['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(localHash)}'> ${createUrl(localHash)}` + `</a> </br></br> Hash: </br> ${localHash}</br></br>Hash password:</br>${response['hashpwd']}`);
-    showReceiptPopup();
-    /*
+    $('#submission-receipt').html(`${response['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(response['hash'])}'> ${createUrl(response['hash'])}` + `</a> </br></br> Hash: </br> ${response['hash']}</br></br>Hash password:</br>${response['hashpwd']}`);
     $.ajax({
         method: "POST",
         url: "filereceive_dugga.php",
@@ -68,7 +66,6 @@ function uploadFile()
     }).done(function() {
         AJAXService("GETPARAM", { }, "PDUGGA");
     });
-    */
 }
 /**
  * @description If the user has previus submissions to the current
@@ -77,19 +74,14 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-    console.log(data);
-    if(response == undefined)
+
+    if(response == "")
     {
         response = data;
 
-        if(localHash == undefined && response['hash'] != undefined)
+        if(localHash == "")
         {
-            localHash == response['hash'];
-
-            if(localHash == undefined)
-            {
-                localHash = generateHash();
-            }
+            localHash = data['hash'];
         }
     }
     //var textBox = document.getElementById('submission-receipt');  
