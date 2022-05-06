@@ -171,6 +171,18 @@ session_start();
                     </fieldset>
                   </div>
                   <div>
+                    <fieldset style="width:90%;">
+                      <legend>Instruction file</legend>
+                        <div style="display:flex;flex-wrap:wrap;flex-direction:column;overflow:hidden;"></div>
+                        <select id="instrType" name="type" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray())), updateInstructions();">
+                          <option value="md">Markdown</option>
+                          <option value="pdf">PDF</option>
+                          <option value="html">HTML</option>
+                        </select>
+                        <select id="instrFile" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))"></select>
+                    </fieldset>
+                  </div>
+                  <div>
                     <div id="duggaExtraParamForm">
                       <fieldset style="width:90%">
                         <legend>Extra parameters</legend>

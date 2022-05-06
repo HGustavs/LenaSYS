@@ -19,6 +19,8 @@ var duggaPages;
 var isClickedElementBox = false;
 var searchterm = "";
 var targetfile;
+var retdata;
+var filearray = [];
 
 function setup() {
 	/* Replaced by search bar in navheader.php. Remove this code when the new search bar has been properly tested
@@ -400,9 +402,16 @@ function returnedFile(data){
 		filearray[i] = JSON.parse(retdata['entries'][i].filename);
 	}
 	filteredarray = filearray.filter(x => x.extension === "json");
+	instrArray = filearray.filter(x => x.extension === $("#instrType").val());
 
 	//Not sure how the first parameter works yet, suspect it's to know which object is selected
 	$("#file").html(makeoptionsItem("not doing anything plz fix", filteredarray, 'filename'));
+	$("#instrFile").html(makeoptionsItem("not doing anything plz fix", instrArray, 'filename'));
+}
+
+function updateInstructions(){
+	instrArray = filearray.filter(x => x.extension === $("#instrType").val());
+	$("#instrFile").html(makeoptionsItem("not doing anything plz fix", instrArray, 'filename'));
 }
 
 // Adds a submission row
