@@ -79,7 +79,7 @@
 		$splicedFileName = substr($variantParams, strpos($variantParams, "diagram File&quot;:") + 25, ($end - $start));*/
 		$variantParams = str_replace('&quot;','"',$variantParams);
 		$parameterArray = json_decode($variantParams,true);
-		if(!$parameterArray["diagram_File"]){
+		if(!empty($parameterArray)){
 			$splicedFileName=$parameterArray["diagram_File"];
 			$fileName=$parameterArray["filelink"];
 			$fileType=$parameterArray["type"];
@@ -281,7 +281,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	 * */
 	function getInstructions(fileName)
 	{
-		if(<?php echo json_encode($finalArray);?>.length >0){
+		if(<?php echo json_encode($finalArray);?>.length > 0){
 			for (let index = 0; index < <?php echo json_encode($finalArray);?>.length; index++) {
 				if(<?php echo json_encode($finalArray);?>[index][2]==fileName){
 					document.getElementById("assignment_discrb").innerHTML =<?php echo json_encode($finalArray);?>[index][3];
