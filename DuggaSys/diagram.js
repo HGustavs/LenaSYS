@@ -8133,10 +8133,6 @@ function fetchDiagramFileContentOnLoad()
         diagramToLoad = temp[3];
         diagramToLoadContent = temp[4];
 
-        console.log(fullParam);
-        console.log(cid);
-        console.log(cvers);
-        console.log(diagramToLoad);
         //check so that it is a file with content
         if(diagramToLoadContent!="NO_FILE_FETCHED" && diagramToLoadContent != ""){
             loadDiagramFromString(JSON.parse(diagramToLoadContent));
