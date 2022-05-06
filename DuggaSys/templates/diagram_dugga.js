@@ -1,6 +1,7 @@
 var lastFile = null;
 var diagramWindow;
 var response = "";
+var duggaData;
 /** 
  * @description Alert message appears before closing down or refreshing the dugga viewer page window.
 
@@ -47,6 +48,7 @@ function getDiagramData()
  * */
 function uploadFile()
 {
+    $('#submission-receipt').html(`${duggaData['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(duggaData['hash'])}'> ${createUrl(duggaData['hash'])}` + `</a> </br></br> Hash: </br> ${duggaData['hash']}</br></br>Hash password:</br>${duggaData['hashpwd']}`);
     $.ajax({
         method: "POST",
         url: "filereceive_dugga.php",
@@ -72,8 +74,8 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
+    duggaData = data;
     //var textBox = document.getElementById('submission-receipt');  
-    $('#submission-receipt').html(`${data['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(data['hash'])}'> ${createUrl(data['hash'])}` + `</a> </br></br> Hash: </br> ${data['hash']}</br></br>Hash password:</br>${data['hashpwd']}`);
    
     //General idea below - create one method in dugga.js rather than changing recipt box in each dugga type. Currently not working.
     //updateReceiptText(response['duggaTitle'], createUrl(response['hash']), response['hash'], response['hashpwd']);
