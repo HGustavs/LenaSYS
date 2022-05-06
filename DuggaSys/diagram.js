@@ -6030,7 +6030,7 @@ function drawElement(element, ghosted = false)
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh * elemAttri - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text" x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- ${element.attributes[i]}</text>`;
+                str += `<text x='${xAnchor}' y='${hboxh + boxh * i}' dominant-baseline='middle' text-anchor='${vAlignment}'>- ${element.attributes[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
