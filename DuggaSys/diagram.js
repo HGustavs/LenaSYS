@@ -7032,57 +7032,57 @@ function updateCSSForAllElements()
             var fontColor;
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
-                // Edge creation does not highlight selected elements
-                if(mouseMode != mouseModes.EDGE_CREATION){
-                    // Update UMLEntity
-                    if(element.kind == "UMLEntity"){
-                        for (let index = 0; index < 3; index++) {
-                            fillColor = elementDiv.children[index].children[0].children[0];
-                            fontColor = elementDiv.children[index].children[0];
-                            // If more than one element is marked.
-                            if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
-                                fillColor.style.fill = `${"#927b9e"}`;
-                                fontColor.style.fill = `${"#ffffff"}`;
-                            } else{
-                                fillColor.style.fill = `${element.fill}`;
-                                fontColor.style.fill = `${"#000000"}`;
-                            }
-                            
+            // Edge creation does not highlight selected elements
+            if(mouseMode != mouseModes.EDGE_CREATION){
+                // Update UMLEntity
+                if(element.kind == "UMLEntity"){
+                    for (let index = 0; index < 3; index++) {
+                        fillColor = elementDiv.children[index].children[0].children[0];
+                        fontColor = elementDiv.children[index].children[0];
+                        // If more than one element is marked.
+                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                            fillColor.style.fill = `${"#927b9e"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
+                        } else{
+                            fillColor.style.fill = `${element.fill}`;
+                            fontColor.style.fill = `${"#000000"}`;
                         }
-                    // Update Elements with double borders.
-                    }else if(element.state == "weak" || element.state == "multiple"){
-                        for (let index = 0; index < 2; index++){
-                            fillColor = elementDiv.children[0].children[index];
-                            fontColor = elementDiv.children[0];
-                            // If more than one element is marked.
-                            if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
-                                fillColor.style.fill = `${"#927b9e"}`;
-                                fontColor.style.fill = `${"#ffffff"}`;
-                            } else{
-                                fillColor.style.fill = `${element.fill}`;
-                                fontColor.style.fill = `${"#000000"}`;
-                            }
-                        }
-                    }else{ // Update normal elements, and relations
-                        fillColor = elementDiv.children[0].children[0];
+                        
+                    }
+                // Update Elements with double borders.
+                }else if(element.state == "weak" || element.state == "multiple"){
+                    for (let index = 0; index < 2; index++){
+                        fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
                         // If more than one element is marked.
                         if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
-                            // If UMLRelation is not marked.
-                        } else if(element.kind == "UMLRelation"){
-                            if(element.state == "overlapping"){
-                                fillColor.style.fill = `${"#000000"}`;
-                            }else{
-                                fillColor.style.fill = `${"#ffffff"}`;
-                            }
-                        }else{
+                        } else{
                             fillColor.style.fill = `${element.fill}`;
                             fontColor.style.fill = `${"#000000"}`;
                         }
                     }
+                }else{ // Update normal elements, and relations
+                    fillColor = elementDiv.children[0].children[0];
+                    fontColor = elementDiv.children[0];
+                    // If more than one element is marked.
+                    if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        fillColor.style.fill = `${"#927b9e"}`;
+                        fontColor.style.fill = `${"#ffffff"}`;
+                        // If UMLRelation is not marked.
+                    } else if(element.kind == "UMLRelation"){
+                        if(element.state == "overlapping"){
+                            fillColor.style.fill = `${"#000000"}`;
+                        }else{
+                            fillColor.style.fill = `${"#ffffff"}`;
+                        }
+                    }else{
+                        fillColor.style.fill = `${element.fill}`;
+                        fontColor.style.fill = `${"#000000"}`;
+                    }
                 }
+            }
         }
     }
 
