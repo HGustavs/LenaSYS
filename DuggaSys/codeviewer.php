@@ -24,8 +24,7 @@
         'codeviewer.css',
         'style.css',
         'jquery-ui-1.10.4.min.css',
-		'whiteTheme.css',
-		'blackTheme.css'
+				'blackTheme.css'
     );
 
     $js = array(
@@ -59,13 +58,15 @@
 						/*/
             foreach($css as $filename) { 
                 $filemtime = filemtime('../Shared/css/'.$filename);
+								echo "<script> console.log('.$filename.');</script>";
 
 								if($filename == "blackTheme.css"){
 									echo "<link id='themeBlack' rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
 								}
-								else if ($filename == "whiteTheme.css"){
-									continue;
-								}
+								/* We commented out this becuase, this code says that if the file style.css is there it could not exist. */
+								// else if ($filename == "style.css"){ 
+								// 	continue; 
+								// }
 								else{
 									echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
 								} 

@@ -23,7 +23,6 @@ $css = array(
 	'style.css',
 	'jquery-ui-1.10.4.min.css',
 	'markdown.css',
-    'whiteTheme.css',
 	'blackTheme.css'
 );
 
@@ -62,9 +61,10 @@ $js = array(
             if($filename == "blackTheme.css"){
                 echo "<link id='themeBlack' rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
             }
-            else if ($filename == "whiteTheme.css"){
-                continue;
-            }
+            /* We commented out this becuase, this code says that if the file style.css is there it could not exist. */
+            // else if ($filename == "whiteTheme.css"){ 
+            //     continue;
+            // }
             else{
                 echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
             } 
