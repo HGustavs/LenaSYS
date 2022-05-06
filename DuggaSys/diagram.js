@@ -6239,6 +6239,14 @@ function checkElementError(element)
 
     // Error checking for ER Entities
     if (element.kind == "EREntity") {
+
+        // Checks for entities with the same name
+        for (var i = 0; i < data.length; i++) {
+            if (element.name == data[i].name && element.id != data[i].id) {
+                errorData.push(element);
+            }
+        }
+
         if (element.state == "weak") {
             keyQuantity = 0;
             strongEntity = 0;
@@ -6444,6 +6452,719 @@ function checkElementError(element)
 
     // Error checking for ER Relations
     if (element.kind == "ERRelation") {
+
+        // Checking for reletions with same name but different properties
+        for (var i = 0; i < data.length; i++) {
+            if (element.name == data[i].name && element.id != data[i].id && data[i].kind == "ERRelation") {
+
+                // Checking if relations have same line types
+                var linesChecked = [];
+                for (var k = 0; k < lines.length; k++) {
+                    line = lines[k];
+                    fElement = data[findIndex(data, line.fromID)];
+                    tElement = data[findIndex(data, line.toID)];
+
+                    var line0;
+                    var fElement0;
+                    var tElement0;
+
+                    if (fElement.id == element.id && tElement.kind == "EREntity") {
+                        var noLineFound = true;
+                        if (line.kind == "Normal") {
+                            if (line.cardinality == "ONE") {
+                                for (var j = 0; j < lines.length; j++) {
+                                    line0 = lines[j];
+                                    fElement0 = data[findIndex(data, line0.fromID)];
+                                    tElement0 = data[findIndex(data, line0.toID)];
+
+                                    var lineChecked = false;
+                                    for (var l = 0; l < linesChecked.length; l++) {
+                                        if (line0.id == linesChecked[l].id) lineChecked = true;
+                                    }
+
+                                    if (!lineChecked) {
+                                        if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                        if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                    }
+                                    if (!noLineFound) break;
+                                }
+                            }
+                            if (line.cardinality == "MANY") {
+                                for (var j = 0; j < lines.length; j++) {
+                                    line0 = lines[j];
+                                    fElement0 = data[findIndex(data, line0.fromID)];
+                                    tElement0 = data[findIndex(data, line0.toID)];
+
+                                    var lineChecked = false;
+                                    for (var l = 0; l < linesChecked.length; l++) {
+                                        if (line0.id == linesChecked[l].id) lineChecked = true;
+                                    }
+
+                                    if (!lineChecked) {
+                                        if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                        if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                    }
+                                    if (!noLineFound) break;
+                                }
+                            }
+                        }
+                        if (line.kind == "Double") {
+                            if (line.cardinality == "ONE") {
+                                for (var j = 0; j < lines.length; j++) {
+                                    line0 = lines[j];
+                                    fElement0 = data[findIndex(data, line0.fromID)];
+                                    tElement0 = data[findIndex(data, line0.toID)];
+
+                                    var lineChecked = false;
+                                    for (var l = 0; l < linesChecked.length; l++) {
+                                        if (line0.id == linesChecked[l].id) lineChecked = true;
+                                    }
+
+                                    if (!lineChecked) {
+                                        if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                        if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                    }
+                                    if (!noLineFound) break;
+                                }
+                            }
+                            if (line.cardinality == "MANY") {
+                                for (var j = 0; j < lines.length; j++) {
+                                    line0 = lines[j];
+                                    fElement0 = data[findIndex(data, line0.fromID)];
+                                    tElement0 = data[findIndex(data, line0.toID)];
+
+                                    var lineChecked = false;
+                                    for (var l = 0; l < linesChecked.length; l++) {
+                                        if (line0.id == linesChecked[l].id) lineChecked = true;
+                                    }
+
+                                    if (!lineChecked) {
+                                        if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                        if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                    }
+                                    if (!noLineFound) break;
+                                }
+                            }
+                        }
+                        if (noLineFound) {
+                            errorData.push(element);
+                        }
+                    }
+                    if (tElement.id == element.id && fElement.kind == "EREntity") {
+                        var noLineFound = true;
+                        if (line.kind == "Normal") {
+                            if (line.cardinality == "ONE") {
+                                for (var j = 0; j < lines.length; j++) {
+                                    line0 = lines[j];
+                                    fElement0 = data[findIndex(data, line0.fromID)];
+                                    tElement0 = data[findIndex(data, line0.toID)];
+
+                                    var lineChecked = false;
+                                    for (var l = 0; l < linesChecked.length; l++) {
+                                        if (line0.id == linesChecked[l].id) lineChecked = true;
+                                    }
+
+                                    if (!lineChecked) {
+                                        if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                        if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                    }
+                                    if (!noLineFound) break;
+                                }
+                            }
+                            if (line.cardinality == "MANY") {
+                                for (var j = 0; j < lines.length; j++) {
+                                    line0 = lines[j];
+                                    fElement0 = data[findIndex(data, line0.fromID)];
+                                    tElement0 = data[findIndex(data, line0.toID)];
+
+                                    var lineChecked = false;
+                                    for (var l = 0; l < linesChecked.length; l++) {
+                                        if (line0.id == linesChecked[l].id) lineChecked = true;
+                                    }
+
+                                    if (!lineChecked) {
+                                        if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                        if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                    }
+                                    if (!noLineFound) break;
+                                }
+                            }
+                        }
+                        if (line.kind == "Double") {
+                            if (line.cardinality == "ONE") {
+                                for (var j = 0; j < lines.length; j++) {
+                                    line0 = lines[j];
+                                    fElement0 = data[findIndex(data, line0.fromID)];
+                                    tElement0 = data[findIndex(data, line0.toID)];
+
+                                    var lineChecked = false;
+                                    for (var l = 0; l < linesChecked.length; l++) {
+                                        if (line0.id == linesChecked[l].id) lineChecked = true;
+                                    }
+
+                                    if (!lineChecked) {
+                                        if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                        if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                    }
+                                    if (!noLineFound) break;
+                                }
+                            }
+                            if (line.cardinality == "MANY") {
+                                for (var j = 0; j < lines.length; j++) {
+                                    line0 = lines[j];
+                                    fElement0 = data[findIndex(data, line0.fromID)];
+                                    tElement0 = data[findIndex(data, line0.toID)];
+
+                                    var lineChecked = false;
+                                    for (var l = 0; l < linesChecked.length; l++) {
+                                        if (line0.id == linesChecked[l].id) lineChecked = true;
+                                    }
+
+                                    if (!lineChecked) {
+                                        if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                        if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                            linesChecked.push(line0);
+                                            noLineFound = false;
+                                        }
+                                        else {
+                                            noLineFound = true;
+                                        }
+                                    }
+                                    if (!noLineFound) break;
+                                }
+                            }
+                        }
+                        if (noLineFound) {
+                            errorData.push(element);
+                        }
+                    }
+                }
+
+                // Checking if reletions have the same attributes
+                for (var k = 0; k < lines.length; k++) {
+                    line = lines[k];
+                    fElement = data[findIndex(data, line.fromID)];
+                    tElement = data[findIndex(data, line.toID)];
+
+                    var line1;
+                    var fElement1;
+                    var tElement1;
+                    var line2;
+                    var fElement2;
+                    var tElement2;
+
+                    if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                        var noLineFound = true;
+                        var attrFound = false;
+                        var attrLineFound = false;
+                        for (var j = 0; j < lines.length; j++) {
+                            line0 = lines[j];
+                            fElement0 = data[findIndex(data, line0.fromID)];
+                            tElement0 = data[findIndex(data, line0.toID)];
+
+                            if (fElement0.id == data[i].id && tElement0.kind == "ERAttr" && tElement0.state == tElement.state && tElement0.name == tElement.name) {
+                                noLineFound = false;
+                                attrFound = true;
+                                attrLineFound = true;
+
+                                for (var l = 0; l < lines.length; l++) {
+                                    line1 = lines[l];
+                                    fElement1 = data[findIndex(data, line1.fromID)];
+                                    tElement1 = data[findIndex(data, line1.toID)];
+
+                                    if (fElement1.id == tElement.id && tElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == tElement0.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == tElement0.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+                                    if (tElement1.id == tElement.id && fElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == tElement0.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == tElement0.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (fElement1.id == tElement0.id && tElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == tElement.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == tElement.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+                                    if (tElement1.id == tElement0.id && fElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == tElement.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == tElement.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                noLineFound = true;
+                            }
+                            if (tElement0.id == data[i].id && fElement0.kind == "ERAttr" && fElement0.state == tElement.state && fElement0.name == tElement.name) {
+                                noLineFound = false;
+                                attrFound = true;
+                                attrLineFound = true;
+
+                                for (var l = 0; l < lines.length; l++) {
+                                    line1 = lines[l];
+                                    fElement1 = data[findIndex(data, line1.fromID)];
+                                    tElement1 = data[findIndex(data, line1.toID)];
+
+                                    if (fElement1.id == tElement.id && tElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == fElement0.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == fElement0.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+                                    if (tElement1.id == tElement.id && fElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == fElement0.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == fElement0.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (fElement1.id == fElement0.id && tElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == tElement.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == tElement.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+                                    if (tElement1.id == fElement0.id && fElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == tElement.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == tElement.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                noLineFound = true;
+                            }
+                            if (!noLineFound) break;
+                        }
+                        if (noLineFound && !attrFound) {
+                            errorData.push(element);
+                        }
+                        if (!attrLineFound) {
+                            errorData.push(element);
+                        }
+                    }
+                    if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                        var noLineFound = true;
+                        var attrFound = false;
+                        var attrLineFound = false;
+                        for (var j = 0; j < lines.length; j++) {
+                            line0 = lines[j];
+                            fElement0 = data[findIndex(data, line0.fromID)];
+                            tElement0 = data[findIndex(data, line0.toID)];
+
+                            if (fElement0.id == data[i].id && tElement0.kind == "ERAttr" && tElement0.state == fElement.state && tElement0.name == fElement.name) {
+                                noLineFound = false;
+                                attrFound = true;
+                                attrLineFound = true;
+
+                                for (var l = 0; l < lines.length; l++) {
+                                    line1 = lines[l];
+                                    fElement1 = data[findIndex(data, line1.fromID)];
+                                    tElement1 = data[findIndex(data, line1.toID)];
+
+                                    if (fElement1.id == fElement.id && tElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == tElement0.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == tElement0.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+                                    if (tElement1.id == fElement.id && fElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == tElement0.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == tElement0.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (fElement1.id == tElement0.id && tElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == fElement.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == fElement.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+                                    if (tElement1.id == tElement0.id && fElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == fElement.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == fElement.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                noLineFound = true;
+                            }
+                            if (tElement0.id == data[i].id && fElement0.kind == "ERAttr" && fElement0.state == fElement.state && fElement0.name == fElement.name) {
+                                noLineFound = false;
+                                attrFound = true;
+                                attrLineFound = true;
+
+                                for (var l = 0; l < lines.length; l++) {
+                                    line1 = lines[l];
+                                    fElement1 = data[findIndex(data, line1.fromID)];
+                                    tElement1 = data[findIndex(data, line1.toID)];
+
+                                    if (fElement1.id == fElement.id && tElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == fElement0.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == fElement0.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+                                    if (tElement1.id == fElement.id && fElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == fElement0.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == fElement0.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (fElement1.id == fElement0.id && tElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == fElement.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == fElement.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+                                    if (tElement1.id == fElement0.id && fElement1.kind == "ERAttr") {
+                                        attrLineFound = false;
+
+                                        for (var m = 0; m < lines.length; m++) {
+                                            line2 = lines[m];
+                                            fElement2 = data[findIndex(data, line2.fromID)];
+                                            tElement2 = data[findIndex(data, line2.toID)];
+
+                                            if (fElement2.id == fElement.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                            if (tElement2.id == fElement.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                                attrLineFound = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                noLineFound = true;
+                            }
+                            if (!noLineFound) break;
+                        }
+                        if (noLineFound && !attrFound) {
+                            errorData.push(element);
+                        }
+                        if (!attrLineFound) {
+                            errorData.push(element);
+                        }
+                    }
+                }
+
+                // Checking if relations have the same amount of attributes
+                var elementAttrCount = 0;
+                var dataAttrCount = 0;
+                for (var j = 0; j < lines.length; j++) {
+                    line = lines[j];
+                    fElement = data[findIndex(data, line.fromID)];
+                    tElement = data[findIndex(data, line.toID)];
+
+                    if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                        elementAttrCount += 1;
+                    }
+                    if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                        elementAttrCount += 1;
+                    }
+
+                    if (fElement.id == data[i].id && tElement.kind == "ERAttr") {
+                        dataAttrCount += 1;
+                    }
+                    if (tElement.id == data[i].id && fElement.kind == "ERAttr") {
+                        dataAttrCount += 1;
+                    }
+                }
+                if (elementAttrCount != dataAttrCount) {
+                    errorData.push(element);
+                }
+            }
+        }
+
+        // Checking for attribute with same name on relation
+        for (var i = 0; i < lines.length; i++) {
+            line = lines[i];
+            fElement = data[findIndex(data, line.fromID)];
+            tElement = data[findIndex(data, line.toID)];
+
+            if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                for (var j = 0; j < lines.length; j++) {
+                    line0 = lines[j];
+                    fElement0 = data[findIndex(data, line0.fromID)];
+                    tElement0 = data[findIndex(data, line0.toID)];
+
+                    if (fElement0.id == element.id && tElement0.kind == "ERAttr" && tElement0.name == tElement.name && tElement0.id != tElement.id) {
+                        errorData.push(element);
+                    }
+                    if (tElement0.id == element.id && fElement0.kind == "ERAttr" && fElement0.name == tElement.name && fElement0.id != tElement.id) {
+                        errorData.push(element);
+                    }
+                }
+            }
+            if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                for (var j = 0; j < lines.length; j++) {
+                    line0 = lines[j];
+                    fElement0 = data[findIndex(data, line0.fromID)];
+                    tElement0 = data[findIndex(data, line0.toID)];
+
+                    if (fElement0.id == element.id && tElement0.kind == "ERAttr" && tElement0.name == fElement.name && tElement0.id != fElement.id) {
+                        errorData.push(element);
+                    }
+                    if (tElement0.id == element.id && fElement0.kind == "ERAttr" && fElement0.name == fElement.name && fElement0.id != fElement.id) {
+                        errorData.push(element);
+                    }
+                }
+            }
+        }
+
         if (element.state == "weak") {
             lineQuantity = 0;
             for (var i = 0; i < lines.length; i++) {
@@ -6606,6 +7327,52 @@ function checkElementError(element)
             var line0;
             var fElement0;
             var tElement0;
+
+            // Checking for attributes on the same relation with the same name
+            if (fElement.id == element.id && tElement.kind == "ERRelation") {
+                for (var j = 0; j < lines.length; j++) {
+                    line0 = lines[j];
+                    fElement0 = data[findIndex(data, line0.fromID)];
+                    tElement0 = data[findIndex(data, line0.toID)];
+
+                    if (fElement0.id == tElement.id && tElement0.kind == "ERAttr" && tElement0.name == fElement.name && tElement0.id != fElement.id) {
+                        errorData.push(element);
+                    }
+                    if (tElement0.id == tElement.id && fElement0.kind == "ERAttr" && fElement0.name == fElement.name && fElement0.id != fElement.id) {
+                        errorData.push(element);
+                    }
+                }
+            }
+            if (tElement.id == element.id && fElement.kind == "ERRelation") {
+                for (var j = 0; j < lines.length; j++) {
+                    line0 = lines[j];
+                    fElement0 = data[findIndex(data, line0.fromID)];
+                    tElement0 = data[findIndex(data, line0.toID)];
+
+                    if (fElement0.id == fElement.id && tElement0.kind == "ERAttr" && tElement0.name == tElement.name && tElement0.id != tElement.id) {
+                        errorData.push(element);
+                    }
+                    if (tElement0.id == fElement.id && fElement0.kind == "ERAttr" && fElement0.name == tElement.name && fElement0.id != tElement.id) {
+                        errorData.push(element);
+                    }
+                }
+            }
+
+            // Checking for non-normal attributes on relation
+            if (fElement.id == element.id && tElement.kind == "ERRelation" && fElement.state != null) {
+                errorData.push(element);
+            }
+            if (tElement.id == element.id && fElement.kind == "ERRelation" && tElement.state != null) {
+                errorData.push(element);
+            }
+
+            // Checking for attributes connected with the same name
+            if (fElement.id == element.id && fElement.kind == "ERAttr" && tElement.kind == "ERAttr" && fElement.name == tElement.name) {
+                errorData.push(element);
+            }
+            if (tElement.id == element.id && fElement.kind == "ERAttr" && tElement.kind == "ERAttr" && fElement.name == tElement.name) {
+                errorData.push(element);
+            }
 
             // Checking for attributes on the same entity
             if (fElement.id == element.id && tElement.kind == "EREntity") {
