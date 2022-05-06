@@ -1,7 +1,6 @@
 var lastFile = null;
 var diagramWindow;
 var response = "";
-var localHash = "";
 /** 
  * @description Alert message appears before closing down or refreshing the dugga viewer page window.
 
@@ -78,11 +77,6 @@ function returnedDugga(data)
     if(response == "")
     {
         response = data;
-
-        if(localHash == "")
-        {
-            localHash = data['hash'];
-        }
     }
     //var textBox = document.getElementById('submission-receipt');  
    
