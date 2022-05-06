@@ -161,37 +161,28 @@ function showFilePopUp(fileKind) {
 
 //see fileedservice.php and filerecieve.php for more details of how files are saved to local storage and meta-data is saved to DB.
 function uploadFile(kind) {
-    
+
+    //const slug = str.split('/').pop();
+    //Looking at file name for all files loaded in the table.
     for(i = 0; i < existingFiles.length; i++){
-        //console.log(existingFiles[i]);
+        //Looking for file typ in the list.
         for(j = 0; j < allowedExtensions.length; j++){
+            //Looking for list with complete file name
             for(l = 0; l < fullFileName.length; l++){
+                //Comparing full file name with table.
                 if(existingFiles[j]+"."+allowedExtensions[j] == fullFileName[l]){
                     //alert(existingFiles[j]+"."+allowedExtensions[j]);
-                    alert("File already exists");
+                    
                 };
             };
         };
     };
-   /* for(i = 0; i < existingFileTypes.length; i++){
-        console.log(existingFileTypes[i]);
-    }
-    for(i = 0; i < fullFileName.length; i++){
-        console.log(fullFileName[i]);
-    }
-
-    for(i = 0; i < allowedExtensions.length; i++)(
-        console.log(allowedExtensions[i])
-    );
-    */
+  
     
-
-    //console.log(kind);
     if (kind == "MFILE") {
         var str = "<option>NONE</option>";
         for (i = 0; i < filez['lfiles'].length; i++) {
             var item = filez['lfiles'][i];
-            console.log(item);
             if (item != ".." && item != ".") str += "<option>" + item + "</option>";
         }
         $("#selectedfile").html(str);
