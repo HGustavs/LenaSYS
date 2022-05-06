@@ -322,6 +322,15 @@ if(isSuperUser($userid)){
 					$newcoursevers=$row['vers'];
 					$newduggaid=$row['quiz'];
 				}
+
+				$sql="SELECT entryname FROM listentries WHERE lid=:moment";
+				$query = $pdo->prepare($sql);
+				$query->bindParam(':moment', $moment);
+				$query->execute();
+				foreach($query->fetchAll() as $row){
+					$duggatitle=$row['entryname'];
+				}
+
 				if(isset($variant)){
 					$_SESSION["submission-$courseid-$newcoursevers-$newduggaid"]=$hash;
 					$_SESSION["submission-password-$courseid-$newcoursevers-$newduggaid"]=$hashpwd;
