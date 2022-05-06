@@ -36,6 +36,9 @@ function setup() {
   // Disable ghost button when page is loaded
   document.querySelector('#hideElement').disabled = true;
   document.querySelector('#hideElement').style.opacity = 0.7;
+  //   Disable eye button when page is loaded
+  document.querySelector('#showElements').disabled = true;
+  document.querySelector('#showElements').style.opacity = 0.7;
   AJAXService("get", {}, "SECTION");
 }
 
@@ -363,6 +366,9 @@ function confirmBox(operation, item = null) {
     $("#sectionHideConfirmBox").css("display", "none");
     $("#noMaterialConfirmBox").css("display", "none");
   }
+  else if (operation == "showItems"&& !hideItemList.length == 0) {
+    unhideElements(hideItemList);
+  }
 }
 
 // Creates an array over all checked items
@@ -376,7 +382,6 @@ function markedItems(item = null){
     if(kind == "section" || kind == "moment"){
       var itemInSection = true;
       var sectionStart = false;
-      
       $("#Sectionlist").find(".item").each(function (i) {
         var tempItem = $(this).attr('value');
         if(itemInSection && sectionStart){
@@ -426,11 +431,13 @@ function markedItems(item = null){
       // Show ghost button when checkbox is checked
       document.querySelector('#hideElement').disabled = false;
       document.querySelector('#hideElement').style.opacity = 1;
+      showVisibilityIcons();
     } 
     if (hideItemList.length == 0) {
       // Disable ghost button when no checkboxes is checked
       document.querySelector('#hideElement').disabled = true;
       document.querySelector('#hideElement').style.opacity = 0.7;
+      hideVisibilityIcons();
 
       for(var j = 0; j < subItems.length; j++){
         hideItemList.push(subItems[j]);
@@ -445,13 +452,37 @@ function markedItems(item = null){
 }
 
 //work in progress
-function unhideElements(){
-  hideItemList.forEach((element) => {
-    // visibility of hidden items should be changed here
-  });
 
-  
+function showVisibilityIcons(){
+ // Show ghost button when checkbox is checked
+ document.querySelector('#hideElement').disabled = false;
+ document.querySelector('#hideElement').style.opacity = 1;
+ // Show eye button when checkbox is checked
+ document.querySelector('#showElements').disabled = false;
+ document.querySelector('#showElements').style.opacity = 1;
 }
+function hideVisibilityIcons(){
+    // Disable ghost button when page is loaded
+    document.querySelector('#hideElement').disabled = true;
+    document.querySelector('#hideElement').style.opacity = 0.7;
+    //   Disable eye button when page is loaded
+    document.querySelector('#showElements').disabled = true;
+    document.querySelector('#showElements').style.opacity = 0.7;
+}
+function unhideElements(){
+ 
+  hideVisibilityIcons();
+    // visibility of hidden items should be changed here
+    for (i=0; i < hideItemList.length; i++) {  
+    var lid = hideItemList[i];
+    console.log(hideItemList[i]);
+        AJAXService("PUBLIC", {
+          lid: lid
+        }, "SECTION");
+        $("#editSection").css("display", "none");
+      }
+}
+
 // Clear array of checked items - used in fabbuttons and in save to clear array. 
 // Without this, the array will be populated but checkboxes will not be reset.
 function clearHideItemList(){
@@ -585,8 +616,9 @@ function cancelDelete() {
 
 function hideMarkedItems() {
   // Since no boxes are checked ghost button is disabled
-  document.querySelector('#hideElement').disabled = true;
-  document.querySelector('#hideElement').style.opacity = 0.7;
+  hideVisibilityIcons();
+  document.querySelector('#hideElement').disabled = true;     //can be removed
+  document.querySelector('#hideElement').style.opacity = 0.7; //can be removed
   for (i=0; i < hideItemList.length; i++) {  
     var lid = hideItemList[i];
       AJAXService("HIDDEN", {
