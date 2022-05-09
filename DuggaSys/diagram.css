@@ -206,6 +206,7 @@
 }
 
 .diagramIcons{
+    position: relative;
     margin: auto;
     width: 31px;
     height: 31px;
@@ -335,9 +336,6 @@
 
 /*tooltip*/
 
-.diagramIcons{
-    position: relative;
-}
 
 .toolTipText{
     top:-5px;
@@ -558,7 +556,7 @@
 .placementTypeBoxIcons:hover .placementTypeToolTipText{
     visibility: visible;
 }
-
+/*  options panel  */
 .options-fieldset {
     width: 80%;
 }
