@@ -183,7 +183,9 @@ session_start();
                       <fieldset style="width:90%">
                       <!-- The json files are fetched and parsed in returnedFile() in duggaed.js -->
                         <legend>Add diagram to dugga</legend>
-                        <select id="file" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))"></select>
+                        <select id="file" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))">
+                          <option>Empty canvas</option>
+                        </select>
                       </fieldset>
                     </div>
                     <div id="errorCheck">

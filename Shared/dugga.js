@@ -311,6 +311,9 @@ function makeoptions(option,optionlist,valuelist)
 function makeoptionsItem(option,optionlist,optionstring,valuestring)
 {
 	var str="";
+	if(option=="AddEmptyField"){
+		str += "<option  selected='selected' value=''>Nothing selected</option>";
+	}
 	for(var i=0;i<optionlist.length;i++){
 		str+="<option ";
 		if(optionlist[i][valuestring]==option){
