@@ -22,7 +22,7 @@
 - Toggle grid = "G"
 - Toggle ruler = "T"
 - Toggle snap to grid = "S"
-- Toggle A4 template = "A"
+- Toggle A4 template = "P"
 
 ## Camera
 
@@ -40,4 +40,8 @@
 - Paste elements or lines = CTRL + ”V”
 - Mark all elements and lines = CTRL + ”A”
 - Toggle keybindlist - ”F1”
+
+
+## Replay-mode
+- Replay the changes made = CTRL + "R"
 

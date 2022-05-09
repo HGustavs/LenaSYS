@@ -755,6 +755,7 @@ const keybinds = {
         MOVING_OBJECT_LEFT: {key: "ArrowLeft", ctrl: false},
         MOVING_OBJECT_RIGHT: {key: "ArrowRight", ctrl: false},
         TOGGLE_KEYBINDLIST: {key: "F1", ctrl: false},
+        TOGGLE_REPLAY_MODE: {key: "r", ctrl: false},
 };
 
 /** 
@@ -1509,6 +1510,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.OPTIONS)) toggleOptionsPane();
         if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
+        if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
 
         if (isKeybindValid(e, keybinds.COPY)){
             // Remove the preivous copy-paste data from localstorage.
