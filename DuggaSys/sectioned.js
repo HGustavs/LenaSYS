@@ -66,12 +66,12 @@ function hideCollapsedMenus() {
     var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
     if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
       jQuery(ancestor).nextUntil('.moment').hide();
-      $('#selectionDrag'+menuState.hiddenElements[i]).toggle();
+      $('#selectionDrag'+menuState.hiddenElements[i]).hide();
     }
     ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
     if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
       jQuery(ancestor).nextUntil('.section').hide();
-      $('#selectionDrag'+menuState.hiddenElements[i]).toggle();
+      $('#selectionDrag'+menuState.hiddenElements[i]).hide();
     }
 
     if (menuState.hiddenElements[i] == "statistics") {
