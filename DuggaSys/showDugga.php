@@ -498,7 +498,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	<script>
 	function grabTheHash()
 	{
-		return '<?php echo (!empty($_SESSION['STASHTHEHASH'])) ?  strval($_SESSION['STASHTHEHASH']) : "'helloo'" ?>';
+		return '<?php echo (!empty($_SESSION['STASHTHEHASH'])) ?  strval($_SESSION['STASHTHEHASH']) : "helloo" ?>';
 	}
 	</script>
 

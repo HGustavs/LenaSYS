@@ -20,20 +20,12 @@ function beforeUnloadingPage()
  * */
 function setup()
 {
-    if(typeof grabTheHash === "function" && thisHash == "")
-    {
-        if(grabTheHash() != undefined && grabTheHash() != "")
-        {
-            thisHash = grabTheHash();
-            console.log(thisHash);
-        }
-    }
-
     diagramWindow = document.getElementById("diagram-iframe");
     inParams = parseGet();
     AJAXService("GETPARAM", { }, "PDUGGA");
     
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
+    console.log(thisHash);
 }
 
 /**
@@ -81,9 +73,9 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-    if(thisHash != "helloo" && thisHash != undefined && thisHash != "")
+    if(thisHash == undefined || thisHash == "" || thisHash == "halloo")
     {
-        data['hash'] = thisHash;
+        thisHash = data['hash'];
     }
     duggaData = data;
     console.log(duggaData);
