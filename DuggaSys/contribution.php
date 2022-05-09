@@ -69,7 +69,7 @@ $vers=getOPG('coursevers');
 
 		if(!checklogin() && !git_checklogin()) // If not logged in, force a log in
 		{
-			echo '<script> forceUserLogin(); </script>';
+			echo '<script> contribution_showLoginPopup(); </script>';
 		}
 	?>
 

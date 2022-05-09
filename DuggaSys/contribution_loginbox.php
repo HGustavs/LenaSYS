@@ -76,7 +76,7 @@
                             </tr>
                             <tr class="loginboxTr">
                                 <td>
-                                    <input type='button' class='buttonLoginBox' onclick="loginGitOrUser_Check();" value='Login' title='Login'>
+                                    <input type='button' class='buttonLoginBox' onclick="contribution_loginGitOrUser_Check();" value='Login' title='Login'>
                                 </td>
                             </tr>
                             <tr class="loginboxTr">
@@ -96,7 +96,7 @@
     <div id='newpassword' class='newpassword' style="display:none"> <!-- forgor pass screen display -->
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
-				<div class="cursorPointer" onclick="closeWindows(); contribution_resetLoginStatus();" title="Close window">x</div>
+				<div class="cursorPointer" onclick="contribution_resetLoginStatus();" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
 				<table class="loginBoxTable">
@@ -162,7 +162,7 @@
                             </tr>
                             <tr class="loginboxTr">
                                 <td>
-                                    <input type='button' class='buttonLoginBox' onclick="loginGitOrUser_Check();" value='Login' title='Login'>
+                                    <input type='button' class='buttonLoginBox' onclick="contribution_git_processLogin();" value='Login' title='Login'>
                                 </td>
                             </tr>
                             <tr class="loginboxTr">
@@ -220,7 +220,7 @@
                             </tr>
                             <tr class="loginboxTr">
                                 <td>
-                                    <input type='button' class='buttonLoginBox' onclick="loginGitOrUser_Check();" value='Create' title='Login'>
+                                    <input type='button' class='buttonLoginBox' onclick="contribution_requestGitUserCreation();" value='Create' title='Login'>
                                 </td>
                             </tr>
                             <tr class="loginboxTr">
