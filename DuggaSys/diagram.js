@@ -931,7 +931,7 @@ const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
 const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
-const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd"];
+const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100"];
 const strokeColors = ["#000000"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
@@ -5257,6 +5257,16 @@ function setElementColors(clickedCircleID)
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
             elementIDs[i] = context[i].id;
+
+            /*
+            // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
+            if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
+                console.log("du har klickat på svart eller rosa färg");
+               document.getElementsByClassName("text").style.color = "#ffffff";
+            }
+            else{
+                //element.id.style.color = "#000000";
+            }*/
         }
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
         StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -5929,7 +5939,7 @@ function drawLine(line, targetGhost = false)
         }
 
         // Add the line to the str
-        str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`
+        str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`
     }
 
     if (line.label && line.label != ""){
@@ -5982,7 +5992,7 @@ function drawLine(line, targetGhost = false)
             targetLabel=lineLabelList[findIndex(lineLabelList,rememberTargetLabelID)];
         }
         //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-        str += `<rect id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX+lineLabel.displacementX}" y="${labelPosY+lineLabel.labelMovedY+lineLabel.displacementY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`
+        str += `<rect class="text" id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX+lineLabel.displacementX}" y="${labelPosY+lineLabel.labelMovedY+lineLabel.displacementY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`
         //Add label
         str += `<text dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)+lineLabel.labelMovedX+lineLabel.displacementX}" y="${centerY-(2 * zoomfact)+lineLabel.labelMovedY+lineLabel.displacementY}">${line.label}</text>`;
         
@@ -6411,10 +6421,10 @@ function drawElement(element, ghosted = false)
                 `;         
             }
             
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+            str += `<rect  class="text" x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
                     ${weak}
-                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
+                    <text  class="text" x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                     `;
         }
         else if (element.kind == "ERAttr") {
@@ -6440,7 +6450,7 @@ function drawElement(element, ghosted = false)
                             Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
                             Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
                             Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}'/>
+                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew} class="text" '/>
                         
                         ${multi}
                         <text x='${xAnchor}' y='${hboxh}' `;
@@ -6480,12 +6490,12 @@ function drawElement(element, ghosted = false)
             var weak = "";
             if (element.state == "weak") {
                 weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill} class="text"'/>
                     `;
                 xAnchor += linew * multioffs;
             }
             str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill} class="text"'/>
                     ${weak}`;
             str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
 
