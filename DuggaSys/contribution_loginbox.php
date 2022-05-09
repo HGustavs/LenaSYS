@@ -95,7 +95,7 @@
     <div id='newpassword' class='newpassword' style="display:none"> <!-- forgor pass screen display -->
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
-				<div class="cursorPointer" onclick="contribution_resetLoginStatus();" title="Close window">x</div>
+				<div class="cursorPointer" onclick="history.back();" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
                     <table class="loginBoxTable">
