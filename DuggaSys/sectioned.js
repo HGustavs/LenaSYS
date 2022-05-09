@@ -86,12 +86,18 @@ function hideCollapsedMenus() {
 function toggleArrows(id) {
   $('.arrowComp').show();
   $('.arrowRight').hide();
-  $('#selectionDrag'+id).toggle();
+  $('#selectionDrag'+id).show();
+  $('#NonselectionDragI'+id).hide();
+  
   for (var i = 0; i < menuState.arrowIcons.length; i++) {
     if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
       $('#' + menuState.arrowIcons[i]).hide();
+      $('#selectionDrag'+id).hide();
+
     } else {
       $('#' + menuState.arrowIcons[i]).show();
+  $('#NonselectionDragI'+id).show();
+
     }
   }
 
@@ -1025,6 +1031,10 @@ function returnedSection(data) {
           // Styling for Section row
           str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
           str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+
+          str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
+          str += "<div id='NonselectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/nonDragableArea.jpg'></div>";
+
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
