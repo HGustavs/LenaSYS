@@ -152,7 +152,7 @@
                                 </tr>
                                 <tr class="loginboxTr">
                                     <td>
-                                        <input id="UserExistslogin_password" placeholder="Password" class='form-control textinput' type='text' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                                        <input id="UserExistslogin_password" placeholder="Password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
                                     </td>
                                 </tr>
                                 <tr class="loginboxTr">
