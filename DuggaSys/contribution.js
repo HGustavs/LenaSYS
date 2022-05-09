@@ -1889,8 +1889,8 @@ function forceUserLogin()
 
       let loginBoxButton = document.querySelector(".buttonLoginBox");
       loginBoxButton.setAttribute("onClick", "showNewGitLogin()");
-
-
+      
+  
 			// prepare replacement of onclick
 			loginBoxheader_login_close.removeAttribute("onClick"); // remove auto generated 
 			loginBoxheader_forgot_close.removeAttribute("onClick"); // remove auto generated
@@ -2148,6 +2148,8 @@ function forceUserLogin()
 
       let loginBoxButton = document.querySelector(".buttonLoginBox");
       loginBoxButton.setAttribute("onClick", "loginGitOrUser_Check()");
+      loginBoxButton.setAttribute("keypress", "loginGitOrUser_Check()");
+      show= 1;
 
 
 			// prepare replacement of onclick
@@ -2419,6 +2421,8 @@ function resetForceLogin()
 
     backtologin.innerHTML = "Back to login";
     backtologin.setAttribute("onclick","resetForceLogin()")
+    backtologin.addEventListener("keypress", loginEventHandler);
+    show= 2;
 
 
 
@@ -2432,11 +2436,12 @@ function resetForceLogin()
 
     let loginBoxButton = document.querySelector(".buttonLoginBox");
     loginBoxButton.setAttribute("onClick", "git_processLogin()");
-    
+    loginBoxButton.addEventListener("keypress", loginEventHandler);
+    show=3;
   }
 
 
-
+  
   function loginGitOrUser_Check()
   {
     let loginBoxheader_login_username_field = document.querySelector("#username");
@@ -2563,5 +2568,18 @@ function returned_git_user_login(data)
   }
 }
 
+ //Will handle enter key pressed when loginbox is showing
+ function loginEventHandler(event){
+  if(event.keyCode == "0x0D"){
+    if(show ==1){
+      loginGitOrUser_Check();
+    }
+    else if(show==2){
+      resetForceLogin();
+    }
+    else if(show==3){
+      git_processLogin();
+    }
+  }
+}
 console.error
-
