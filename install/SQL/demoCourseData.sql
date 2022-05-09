@@ -57,4 +57,86 @@ INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,mo
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3026,1894,'XMLAPI Report','37',3,25,1,1,'52432',3001,2,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3027,1894,'Seminar Dugga','38',3,25,1,1,'52432',3001,2,1,0);
 
-INSERT INTO `variant` (`vid`, `quizID`, `param`, `variantanswer`, `modified`, `creator`, `disabled`) VALUES ('24', '21', '{\"instructions\": \"Per-olof tar hand om gravar på flera olika kyrkogårdar, för att han ska kunna hålla koll på vilken kund så behöver han införskaffa en databas som håller koll på samtliga detaljer. Gravskötsel firman \\\"Per-olof Gravunderhållning aktiebolag\\\" hanterar många gravar på flera olika kyrkogårdar. Gravarna identifieras med hjälp av ett id men har även en plats på kyrkogården och text på gravstenen.\\nFör att underlätta för arbetarna så sparas även namnet på den som ligger begraven på platsen.\\nFör att kunna faktuera arbetet på en grav så finns det även information om vem som äger graven och är kund till aktiebolaget.\\nKunden har en e-postadress dit fakturan skickas samt faktureringsinformation såsom namn, kundnummer och adress samt\\nett personnummer. För att ha unika kunder så används kundnummret som identiferare. En kyrkogård har ett antal begravda personer samt ett namn,\\näven en adress finns lagrat för att lättate kunna hitta till platsen på GPSen.</p>\\nPer-olof är mycket rädd för spöken som finns på dem olika kyrogårdarna så om han träffar på ett spöke så\\nloggar han detta, informationen som han sparar är hur läsktigt spöket var, vad han kallar spöket samt vilken tid som han träffade på spöket.\\nBeroende på hur många spöken och hur läskiga dem är så rankas kyrkogårdens hemsökningsfaktor.\"\r\n}', '{variant}', current_timestamp(), NULL, '0');
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (24,13,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (25,14,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (26,15,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (27,16,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (28,17,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (29,18,'{\"variant\":\"contribution\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (30,19,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (31,20,'{\"variant\":\"daily minutes\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (32,21,'{\"variant\":\"diagram dugga\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (33,22,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (34,23,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (35,24,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (36,25,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (37,26,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (38,27,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (39,28,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (40,29,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (41,30,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (42,31,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (43,32,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (44,33,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (45,34,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (46,35,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (47,36,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (48,37,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (49,38,'{\"variant\":\"placeholder\"}','{Variant}',NOW(),2);
+
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('83','1894','13','24','3002',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('84','1894','14','25','3003',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('85','1894','15','26','3004',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('86','1894','16','27','3005',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('87','1894','17','28','3006',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('88','1894','18','29','3007',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('89','1894','19','30','3008',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('90','1894','20','31','3009',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('91','1894','21','32','3010',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('92','1894','22','33','3011',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('93','1894','23','34','3012',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('94','1894','24','35','3013',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('95','1894','25','36','3014',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('96','1894','26','37','3015',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('97','1894','27','38','3016',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('98','1894','28','39','3017',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('99','1894','29','40','3018',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('100','1894','30','41','3019',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('101','1894','31','42','3020',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('102','1894','32','43','3021',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('103','1894','33','44','3022',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('104','1894','34','45','3023',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('105','1894','35','46','3024',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('106','1894','36','47','3025',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('107','1894','37','48','3026',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('108','1894','38','49','3027',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
