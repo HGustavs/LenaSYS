@@ -200,7 +200,6 @@ $gfiles = array();
 $access = False;
 
 // Fetches information from the filelink table in the database, binds column result into vars and loops through each fetched result, building a new cell for each index.
-
 if (checklogin() && $hasAccess) {  
     //$query = $pdo->prepare("SELECT fileid,filename,kind, filesize, uploaddate FROM fileLink WHERE ((cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) OR isGlobal='1') ORDER BY filename;");
     $query = $pdo->prepare("SELECT * FROM fileLink WHERE kind=2 OR (cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) ORDER BY kind,filename;");

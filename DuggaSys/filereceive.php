@@ -18,7 +18,6 @@ date_default_timezone_set("Europe/Stockholm");
 //---------------------------------------------------------------------	
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
-
 session_start();
 
 pdoConnect(); // Connect to database and start session
@@ -356,7 +355,6 @@ if ($storefile) {
                     $kindid = -1;
 
                     //  if returned rows equals 0(the existence of the file is not in the db) add data into the db
-                    
                     if ($norows == 0) {
                         if ($kind == "LFILE") {
                             $kindid = 4;
