@@ -579,6 +579,15 @@ function confirmBox(operation, item, type) {
 			$("#sectionConfirmBox").css("display", "none");
 		}
 	}
+
+	// Allows for duggor & dugga variants to be deleted by pressing the enter-key when the confirmBox is visible.
+	document.addEventListener("keyup", event => {
+		if (event.key === 'Enter') {
+			deleteVariant(itemToDelete);
+			deleteDugga(itemToDelete);
+			$("#sectionConfirmBox").css("display", "none");
+		}
+	});
 }
 
 // Storing the celldata for future use. (Needed when editing and such)
