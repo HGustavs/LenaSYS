@@ -3942,13 +3942,13 @@ function toggleA4Template()
  * @description turns the error checking functionality on/off
  */
 function toggleErrorCheck(){
+    errorActive =! errorActive;
     if (errorActive) {
         document.getElementById("errorCheckToggle").classList.add("active");
     }  
     else{
         document.getElementById("errorCheckToggle").classList.remove("active");
     }
-    errorActive=!errorActive;
     showdata();
 }
 
