@@ -32,7 +32,6 @@ function setup()
     diagramWindow = document.getElementById("diagram-iframe");
     inParams = parseGet();
     AJAXService("GETPARAM", { }, "PDUGGA");
-    document.getElementById("saveDuggaButton").onclick = function (){ uploadFile() , showReceiptPopup();};
     
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
 }
@@ -63,7 +62,7 @@ function uploadFile()
         data: {
             inputtext: getDiagramData(),
             field: "diagramSave",
-            hash: hash,
+            hash: thisHash,
             segment: inParams["segment"],
             did: inParams["did"],
             coursevers: inParams["coursevers"],
@@ -82,6 +81,10 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
+    if(thisHash != "helloo" && thisHash != undefined && thisHash != "")
+    {
+        data['hash'] = thisHash;
+    }
     duggaData = data;
     console.log(duggaData);
     //var textBox = document.getElementById('submission-receipt');

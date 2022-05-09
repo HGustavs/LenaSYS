@@ -342,7 +342,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='left'>";
-						echo "<input id='saveDuggaButton' class='".$btnDisable." submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
+						echo "<input id='saveDuggaButton' class='".$btnDisable." submit-button large-button' type='button' value='Save' onclick='uploadFile(); showReceiptPopup();' />";
 						if ($duggafile !== 'generic_dugga_file_receive') {
 							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 							echo "<td align='right'>";
