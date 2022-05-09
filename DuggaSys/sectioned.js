@@ -1417,9 +1417,7 @@ function showMOTD(){
   if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){
     if(motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
       document.getElementById("motdArea").style.display = "none";
-      $("#messagedialog").css("display", "none");
     }else{
-      $("#messagedialog").css("display", "none");
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
       document.getElementById("FABStatic2").style.top = "auto";
@@ -1428,8 +1426,6 @@ function showMOTD(){
 }
 
 function DisplayMSGofTDY() {
-  // document.getElementById("messagedialog").style.display = "block";
-  $("#messagedialog").css("display", "none");
   document.getElementById("motdArea").style.display = "block";
   document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
   document.getElementById("FABStatic2").style.top = "auto";
@@ -1469,7 +1465,6 @@ function closeMOTD(){
   }else{
     setMOTDCookie();
   }
- $("#messagedialog").css("display", "content");
   document.getElementById('motdArea').style.display='none';
   document.getElementById("FABStatic2").style.top = "auto";
 }
