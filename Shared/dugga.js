@@ -1574,6 +1574,7 @@ function displayAlertText(selector, text){
 }
 
 function processLogout() {
+	git_logout();
 	$.ajax({
 		type:"POST",
 		url: "../Shared/loginlogout.php",

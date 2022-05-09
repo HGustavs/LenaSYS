@@ -2535,7 +2535,6 @@ function git_processLogin()
 
 function git_logout()
 {
-  
   let git_username = null; // nothing entered will logout
   let git_password = null;
 
