@@ -973,7 +973,7 @@ function returnedSection(data) {
 
           if (itemKind === 3) {
             str += "<td class='LightBox" + hideState + "'>";
-            str += "<div ><img alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
+            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
             str += "<td class='LightBoxFilled" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
@@ -1025,7 +1025,7 @@ function returnedSection(data) {
 
         } else if (itemKind === 3) {
           if (item['highscoremode'] != 0 && itemKind == 3) {
-            str += `<td style='width:20px;'><img style=';' title='Highscore' src='../Shared/icons/top10.png' 
+            str += `<td style='width:20px;'><img class='iconColorInDarkMode' style=';' title='Highscore' src='../Shared/icons/top10.png' 
             onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
           }
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
@@ -1168,7 +1168,7 @@ function returnedSection(data) {
           var dateFormat = "00-00";
 
           str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;overflow:hidden;'>"+
-          "<div class='' style='white-space:nowrap;'>";
+          "<div class='DateColorInDarkMode' style='white-space:nowrap;'>";
 
           if (dl[1] == timeFilterAndFormat) {
             str += "<div class='dateField'>";
