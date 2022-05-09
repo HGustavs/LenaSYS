@@ -307,6 +307,16 @@ function showEditVersion() {
   $("#editCourseVersion").css("display", "flex");
 }
 
+// Delete items marked as deleted when page is unloaded
+window.addEventListener('beforeunload', function(event) {
+  var deletedElements = document.querySelectorAll(".deleted")
+  for(i = 0; i < deletedElements.length; i++) {
+    var lid = deletedElements[i].id.match(/\d+/)[0];
+    AJAXService("DEL", {
+      lid: lid
+    }, "SECTION");
+  }
+});
 
 // Close the "edit course version" and "new course version" windows by pressing the ESC button
 document.addEventListener('keydown', function (event) {
@@ -550,8 +560,10 @@ function prepareItem() {
 
 function deleteItem(item_lid = null) { 
   lid = item_lid ? item_lid : $("#lid").val();
-  document.getElementById("lid" + lid).style.display = "none";
   alert("Press recycle button within 60 seconds to undo the deletion");
+  item = document.getElementById("lid" + lid);
+  item.style.display = "none";
+  item.classList.add("deleted");
   document.querySelector("#undoButton").style.display = "block";
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
   time = setTimeout(() => {
@@ -566,9 +578,11 @@ function deleteItem(item_lid = null) {
 // Cancel deletion
 function cancelDelete() {
   clearTimeout(time);
-  document.getElementById("lid" + lid).style.display = "block";
+  var deletedElements = document.querySelectorAll(".deleted")
+  for(i = 0; i < deletedElements.length; i++) { 
+    deletedElements[i].classList.remove("deleted");
+  }
   location.reload();
-  document.querySelector("#undoButton").style.display = "none";
 }
 
 //----------------------------------------------------------------------------------
