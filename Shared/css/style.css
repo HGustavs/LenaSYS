@@ -5364,6 +5364,35 @@ only screen and (max-device-width: 860px) {
     display: none;
   }
 }
+#navBurgerIcon { 
+  display: none;
+  
+}
+@media only screen and (max-width: 320px),
+only screen and (max-device-width: 320px) {
+
+  #navBurgerIcon { 
+    display: block;
+  }
+ 
+  #navBurgerBox{
+    display: block;
+    position: absolute;
+    top: 50px;
+    width: 32px;
+    padding: 10px;
+    height: 100px;
+    background-color: var(--color-primary-2);
+  }
+ 
+#homeBurger, #darkModeBurger,#goBackBurger {
+    display: block;
+  }
+
+ #homeIcon, #upIcon, #theme-toggle{
+    display: none;
+  }
+}
 
 @media only screen and (max-width: 790px),
 only screen and (max-device-width: 790px) {
