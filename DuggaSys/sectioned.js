@@ -974,13 +974,13 @@ function returnedSection(data) {
 
           if (itemKind === 3) {
             str += "<td  class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             
             str += "<td class='LightBox" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
             str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
-            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             str += "<td class='LightBoxFilled" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
           }
@@ -1024,13 +1024,13 @@ function returnedSection(data) {
         } else if (itemKind === 1) {
           // Styling for Section row
           str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
-          str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+          str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 2) {
           str += "<td class='LightBox" + hideState + "'>";
-          str += "<div class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+          str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
 
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
