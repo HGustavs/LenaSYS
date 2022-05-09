@@ -24,7 +24,6 @@ function setup()
     AJAXService("GETPARAM", { }, "PDUGGA");
     
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
-    console.log(thisHash);
 }
 
 /**
@@ -53,7 +52,7 @@ function uploadFile()
         data: {
             inputtext: getDiagramData(),
             field: "diagramSave",
-            hash: thisHash,
+            hash: hash,
             segment: inParams["segment"],
             did: inParams["did"],
             coursevers: inParams["coursevers"],
