@@ -364,7 +364,7 @@ function updateVariantTitle(number) {
 function showVariantEditor() {
 
 	//check if the selected dugga is a diagram dugga
-	if(globalData['entries'][globalVariant].quizFile == ""){
+	if(globalData['entries'][globalVariant].quizFile == "diagram_dugga"){
 		/*For now it only fetches the files when it's a diagram dugga. 
 		This might change in the future if other duggor should have
 		additional files as parameters*/

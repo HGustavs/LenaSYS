@@ -20,7 +20,6 @@
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="../Shared/markdown.js"></script>
-	<script src="templates/diagram_dugga.js"></script>
 	<script src="timer.js"></script>
 	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
@@ -139,7 +138,6 @@
 				echo 'Message: ' .$e->getMessage();
 			}
 		}
-			$_SESSION['STASHTHEHASH'] = $_GET['hash'];
 	}
 	
   // for fetching file content
@@ -484,22 +482,6 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		variantArray.push(<?php echo "'$fileContent'"?>);
 		return variantArray;
 	} 
-	</script>
-
-	<script>
-	
-	function stashTheHash()
-	{
-		$_SESSION['STASHTHEHASH'] = $_GET['hash'];
-	}
-	</script>
-
-
-	<script>
-	function grabTheHash()
-	{
-		return '<?php echo (!empty($_SESSION['STASHTHEHASH'])) ?  strval($_SESSION['STASHTHEHASH']) : "helloo" ?>';
-	}
 	</script>
 
 	<script>
