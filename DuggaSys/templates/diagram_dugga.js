@@ -62,9 +62,9 @@ function uploadFile()
             kind: 4,
             moment: inParams["moment"]
         }
-    })/*.done(function() {
+    }).done(function() {
         AJAXService("SAVDU", { }, "PDUGGA");
-    });*/
+    });
 }
 /**
  * @description If the user has previus submissions to the current
