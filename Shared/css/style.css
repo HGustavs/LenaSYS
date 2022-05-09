@@ -7001,12 +7001,14 @@ only screen and (max-device-width: 320px) {
   border: solid var(--color-border-4);
   background-color: var(--color-background-4);
   box-shadow: 0px 5px 10px grey;
-  z-index: 12000;
+  z-index: 8000;
   display: none;
   left: 0;
   right: 0;
   top: 5%;
   position: fixed;
+  overflow-y: visible;
+  max-height: 100%;
 }
 
 .fileView{
