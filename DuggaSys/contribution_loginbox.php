@@ -57,34 +57,33 @@
                 <div class="cursorPointer" onclick="history.back();">x</div>
             </div>
                 <div > 
-                    <table class="loginBoxTable">
-                        
-                            <tr class="loginboxTr">
-                                <td>
-                                    <label id="loginBoxTitle">Sign in</label>
-                                </td>
-                            </tr>
-                            <tr  class="loginboxTr">
-                                <td>
-                                    <input id="username" placeholder="Github Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-                                </td>
-                            </tr>
-                            <tr class="loginboxTr">
-                                <td class="nowrap">
-                                    <label class='text forgotPw' onclick='contribution_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
-                                </td>
-                            </tr>
-                            <tr class="loginboxTr">
-                                <td>
-                                    <input type='button' class='buttonLoginBox' onclick="contribution_loginGitOrUser_Check();" value='Login' title='Login'>
-                                </td>
-                            </tr>
-                            <tr class="loginboxTr">
-                                <!-- Message displayed when using wrong password or username -->
-                                <td id="message";></td>
-                            </tr>
-                       
-                    </table>
+                        <table class="loginBoxTable">
+                            
+                                <tr class="loginboxTr">
+                                    <td>
+                                        <label id="loginBoxTitle">Sign in</label>
+                                    </td>
+                                </tr>
+                                <tr  class="loginboxTr">
+                                    <td>
+                                        <input id="username" placeholder="Github Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                                    </td>
+                                </tr>
+                                <tr class="loginboxTr">
+                                    <td class="nowrap">
+                                        <label class='text forgotPw' onclick='contribution_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
+                                    </td>
+                                </tr>
+                                <tr class="loginboxTr">
+                                    <td>
+                                        <input id="loginBox_button" type='button' class='buttonLoginBox' onclick="contribution_loginGitOrUser_Check();" value='Login' title='Login'>
+                                    </td>
+                                </tr>
+                                <tr class="loginboxTr">
+                                    <!-- Message displayed when using wrong password or username -->
+                                    <td id="message";></td>
+                                </tr>
+                        </table>
                 </div>
         </div> 
 
@@ -99,27 +98,28 @@
 				<div class="cursorPointer" onclick="contribution_resetLoginStatus();" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
-				<table class="loginBoxTable">
-					<tr>
-						<td>
-							<label id="loginBoxTitle">Enter your username to request </br> password reset from teacher</label>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td>
-							<input id="usernamereset" placeholder="Github Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td>
-							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckUsername();" value='Continue' style='margin-top: 10px;' title='Continue'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<!-- Message displayed when using wrong password or username -->
-						<td id="message2";></td>
-					</tr>
-				</table>
+                    <table class="loginBoxTable">
+                        <tr>
+                            <td>
+                                <label id="loginBoxTitle">Enter your username to request </br> password reset from teacher</label>
+                            </td>
+                        </tr>
+                        <tr class="loginboxTr">
+                            <td>
+                                <input id="usernamereset" placeholder="Github Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                            </td>
+                        </tr>
+                        <tr class="loginboxTr">
+                            <td>
+                                <input id="newpassword_button" type='button' class='buttonLoginBox' onclick="console.log('reset pass not implemented');" value='Continue' style='margin-top: 10px;' title='Continue'>
+                            </td>
+                        </tr>
+                        <tr class="loginboxTr">
+                            <!-- Message displayed when using wrong password or username -->
+                            <td id="message2";></td>
+                        </tr>
+                    </table>
+                
 			</div>
 			<tr>
 				<td>
@@ -138,39 +138,38 @@
                 <div class="cursorPointer" onclick="history.back();">x</div>
             </div>
                 <div > 
-                    <table class="loginBoxTable">
-                        
-                            <tr class="loginboxTr">
-                                <td>
-                                    <label id="UserExistslogin_loginBoxTitle">Sign in</label>
-                                </td>
-                            </tr>
-                            <tr  class="loginboxTr">
-                                <td>
-                                    <input id="UserExistslogin_username" placeholder="Github Username" class='form-control textinput' type='text' autofocus disabled style=' opacity:0.6; width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-                                </td>
-                            </tr>
-                            <tr class="loginboxTr">
-                                <td>
-                                    <input id="UserExistslogin_password" placeholder="Password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-                                </td>
-                            </tr>
-                            <tr class="loginboxTr">
-                                <td class="nowrap">
-                                    <label class='text forgotPw' onclick='contribution_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
-                                </td>
-                            </tr>
-                            <tr class="loginboxTr">
-                                <td>
-                                    <input type='button' class='buttonLoginBox' onclick="contribution_git_processLogin();" value='Login' title='Login'>
-                                </td>
-                            </tr>
-                            <tr class="loginboxTr">
-                                <!-- Message displayed when using wrong password or username -->
-                                <td id="UserExistslogin_message";></td>
-                            </tr>
-                       
-                    </table>
+                        <table class="loginBoxTable">
+                            
+                                <tr class="loginboxTr">
+                                    <td>
+                                        <label id="UserExistslogin_loginBoxTitle">Sign in</label>
+                                    </td>
+                                </tr>
+                                <tr  class="loginboxTr">
+                                    <td>
+                                        <input id="UserExistslogin_username" placeholder="Github Username" class='form-control textinput' type='text' autofocus disabled style=' opacity:0.6; width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                                    </td>
+                                </tr>
+                                <tr class="loginboxTr">
+                                    <td>
+                                        <input id="UserExistslogin_password" placeholder="Password" class='form-control textinput' type='text' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                                    </td>
+                                </tr>
+                                <tr class="loginboxTr">
+                                    <td class="nowrap">
+                                        <label class='text forgotPw' onclick='contribution_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
+                                    </td>
+                                </tr>
+                                <tr class="loginboxTr">
+                                    <td>
+                                        <input id="UserExistslogin_button" type='button' class='buttonLoginBox' onclick="contribution_git_processLogin();" value='Login' title='Login'>
+                                    </td>
+                                </tr>
+                                <tr class="loginboxTr">
+                                    <!-- Message displayed when using wrong password or username -->
+                                    <td id="UserExistslogin_message";></td>
+                                </tr>
+                        </table>
                 </div>
             <tr>
 				<td>
@@ -189,46 +188,44 @@
                 <div class="cursorPointer" onclick="history.back();">x</div>
             </div>
                 <div > 
-                    <table class="loginBoxTable">
-                        
-                            <tr class="loginboxTr">
-                                <td>
-                                    <label id="newGit-UserCreation_loginBoxTitle">Create user</label>
-                                </td>
-                            </tr>
-                            <tr  class="loginboxTr">
-                                <td>
-                                    <input id="newGit-UserCreation_username" placeholder="Github Username" class='form-control textinput' type='text' autofocus disabled style='opacity:0.6; width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-                                </td>
-                            </tr>
+                        <table class="loginBoxTable">
+                                <tr class="loginboxTr">
+                                    <td>
+                                        <label id="newGit-UserCreation_loginBoxTitle">Create user</label>
+                                    </td>
+                                </tr>
+                                <tr  class="loginboxTr">
+                                    <td>
+                                        <input id="newGit-UserCreation_username" placeholder="Github Username" class='form-control textinput' type='text' autofocus disabled style='opacity:0.6; width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                                    </td>
+                                </tr>
 
-                            <tr class="loginboxTr">
-                                <td>
-                                    <input id="newGit-UserCreation_password1" placeholder="Create new password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-                                </td>
-                            </tr>
-                            <tr class="loginboxTr">
-                                <td>
-                                    <input id="newGit-UserCreation_password2" placeholder="Repeat new password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-                                </td>
-                            </tr>
+                                <tr class="loginboxTr">
+                                    <td>
+                                        <input id="newGit-UserCreation_password1" placeholder="Create new password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                                    </td>
+                                </tr>
+                                <tr class="loginboxTr">
+                                    <td>
+                                        <input id="newGit-UserCreation_password2" placeholder="Repeat new password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                                    </td>
+                                </tr>
 
-                            <tr class="loginboxTr">
-                                <td class="nowrap">
-                                    <label class='text forgotPw' onclick='contribution_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
-                                </td>
-                            </tr>
-                            <tr class="loginboxTr">
-                                <td>
-                                    <input type='button' class='buttonLoginBox' onclick="contribution_requestGitUserCreation();" value='Create' title='Login'>
-                                </td>
-                            </tr>
-                            <tr class="loginboxTr">
-                                <!-- Message displayed when using wrong password or username -->
-                                <td id="newGit-UserCreation_message";></td>
-                            </tr>
-                       
-                    </table>
+                                <tr class="loginboxTr">
+                                    <td class="nowrap">
+                                        <label class='text forgotPw' onclick='contribution_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
+                                    </td>
+                                </tr>
+                                <tr class="loginboxTr">
+                                    <td>
+                                        <input id="newGit-UserCreation_button" type='button' class='buttonLoginBox' onclick="contribution_requestGitUserCreation();" value='Create' title='Login'>
+                                    </td>
+                                </tr>
+                                <tr class="loginboxTr">
+                                    <!-- Message displayed when using wrong password or username -->
+                                    <td id="newGit-UserCreation_message";></td>
+                                </tr>
+                        </table>
                 </div>
 
             <tr>

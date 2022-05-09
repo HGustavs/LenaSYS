@@ -2332,6 +2332,7 @@ function returned_git_user_login(data)
 
 function contribution_showLoginPopup()
 {
+  contribution_addEventListeners();
   $("#login").css("display",""); // show inital login box
   $("#loginBox").css("display","flex"); // show background
   $("#username").focus();     
@@ -2346,6 +2347,9 @@ function contribution_userExistsLogin()
   $("#newpassword").css("display","none");
 
   $("#UserExistslogin").css("display",""); 
+
+  $("#UserExistslogin_password").focus();     
+
   
 }
 
@@ -2371,6 +2375,8 @@ function contribution_toggleloginnewpass()
   $("#newGit-UserCreation").css("display","none"); 
 
   $("#newpassword").css("display",""); // show reset
+  $("#usernamereset").focus();     
+
 }
 
 function contribution_resetLoginStatus() // return to initial login
@@ -2381,6 +2387,8 @@ function contribution_resetLoginStatus() // return to initial login
   $("#newpassword").css("display","none");
 
   $("#login").css("display",""); 
+  $("#username").focus();     
+
 }
 
 function contribution_newGitUserCreation()
@@ -2393,7 +2401,33 @@ function contribution_newGitUserCreation()
   
   $("#newGit-UserCreation").css("display","");
 
+  $("#newGit-UserCreation_password1").focus();     
+
+
 }
+
+
+function contribution_addEventListeners()
+{
+
+  // loginbox
+  $('#username').on("keyup", function(e) {if (e.keyCode == 13) {$("#loginBox_button").click();}});
+
+  // newpassword/resetpass
+  $('#usernamereset').on("keyup", function(e) {if (e.keyCode == 13) {$("#newpassword_button").click();}});
+
+  // userexists
+  $('#UserExistslogin_username').on("keyup", function(e) {if (e.keyCode == 13) {$("#UserExistslogin_button").click();}});
+  $('#UserExistslogin_password').on("keyup", function(e) {if (e.keyCode == 13) {$("#UserExistslogin_button").click();}});
+
+  // new git user
+  $('#newGit-UserCreation_username').on("keyup", function(e) {if (e.keyCode == 13) {$("#newGit-UserCreation_button").click();}});
+  $('#newGit-UserCreation_password1').on("keyup", function(e) {if (e.keyCode == 13) {$("#newGit-UserCreation_button").click();}});
+  $('#newGit-UserCreation_password2').on("keyup", function(e) {if (e.keyCode == 13) {$("#newGit-UserCreation_button").click();}});
+
+
+}
+
 
 console.error
 
