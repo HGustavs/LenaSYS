@@ -821,7 +821,8 @@ const attrState = {
     NORMAL: "normal",
     WEAK: "weakKey",
     MULTIPLE: "multiple",
-    KEY: "key",
+    CANDIDATE: "candidate",
+    PRIMARY: "primary",
     COMPUTED: "computed",
 };
 
@@ -1102,7 +1103,7 @@ function onSetup()
         { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID , isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function'] },
         { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Bdale_ID, isLocked: false, state: "Normal",  type: "ER" },
         { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: BdaleDependent_ID, isLocked: false, state: "Normal",  type: "ER" },
-        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Ssn_ID, isLocked: false, state: "key",  type: "ER"},
+        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Ssn_ID, isLocked: false, state: "candidate",  type: "ER"},
         { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Name_ID, isLocked: false,  type: "ER" },
         { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDependent_ID, isLocked: false, state: "weakKey",  type: "ER"},
         { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameProject_ID, isLocked: false, type: "ER"},
@@ -1121,7 +1122,7 @@ function onSetup()
         { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_ON_ID, isLocked: false,  type: "ER" },
         { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Hours_ID, isLocked: false,  type: "ER" },
         { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: PROJECT_ID, isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
-        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberProject_ID, isLocked: false, state: "key",  type: "ER"},
+        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberProject_ID, isLocked: false, state: "candidate",  type: "ER"},
         { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Location_ID, isLocked: false,  type: "ER"},
         { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: MANAGES_ID, isLocked: false,  type: "ER" },
         { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Start_date_ID, isLocked: false,  type: "ER" },
@@ -1129,7 +1130,7 @@ function onSetup()
         { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPARTMENT_ID, isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
         { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Locations_ID, isLocked: false, state: "multiple",  type: "ER" },
         { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_FOR_ID, isLocked: false,  type: "ER" },
-        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberDEPARTMENT_ID, isLocked: false, state: "key",  type: "ER"},
+        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberDEPARTMENT_ID, isLocked: false, state: "candidate",  type: "ER"},
         { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Number_of_employees_ID, isLocked: false, state: "computed",  type: "ER"},
     ];
 
@@ -3981,10 +3982,25 @@ function generateErTableString()
                     //Second ONE-side entity
                     if(ERAttributeData[j][0].id == ERRelationData[i][2][0].id) {
                         foreign.push(ERRelationData[i][2][0]);
+                        //Check if primary key is present
+                        var existPrimary = false;
                         for (var k = 1; k < ERAttributeData[j].length; k++) {
-                            //Push in every key-attribute
-                            if(ERAttributeData[j][k].state == 'key') {
+                            if (ERAttributeData[j][k].state == 'primary') {
+                                existPrimary = true;
+                                break;
+                            }
+                        }
+                        //Push in primary or candidate keys depending if one is present
+                        for (var k = 1; k < ERAttributeData[j].length; k++) {
+                            //Primary exist, push in primary keys
+                            if (existPrimary && ERAttributeData[j][k].state == 'primary') {
+                                //Push in every key-attribute
                                 foreign.push(ERAttributeData[j][k]);
+                            }
+                            //Primary non-existant, push in candidate keys
+                            else if (!(existPrimary) && ERAttributeData[j][k].state == 'candidate') {
+                                //Push in every key-attribute
+                                foreign.push(ERAttributeData[j][k]);                            
                             }
                         }
                     }
@@ -4024,10 +4040,25 @@ function generateErTableString()
                     //ONE-side entity
                     if(ERAttributeData[j][0].id == ERRelationData[i][1][0].id) {
                         foreign.push(ERRelationData[i][1][0]);
+                        //Check if primary key is present
+                        var existPrimary = false;
                         for (var k = 1; k < ERAttributeData[j].length; k++) {
-                            //Push in every key-attribute
-                            if(ERAttributeData[j][k].state == 'key') {
+                            if (ERAttributeData[j][k].state == 'primary') {
+                                existPrimary = true;
+                                break;
+                            }
+                        }
+                        //Push in primary or candidate keys depending if one is present
+                        for (var k = 1; k < ERAttributeData[j].length; k++) {
+                            //Primary exist, push in primary keys
+                            if (existPrimary && ERAttributeData[j][k].state == 'primary') {
+                                //Push in every key-attribute
                                 foreign.push(ERAttributeData[j][k]);
+                            }
+                            //Primary non-existant, push in candidate keys
+                            else if (!(existPrimary) && ERAttributeData[j][k].state == 'candidate') {
+                                //Push in every key-attribute
+                                foreign.push(ERAttributeData[j][k]);                            
                             }
                         }
                     }
@@ -4067,10 +4098,25 @@ function generateErTableString()
                     //ONE-side entity
                     if(ERAttributeData[j][0].id == ERRelationData[i][2][0].id) {
                         foreign.push(ERRelationData[i][2][0]);
+                        //Check if primary key is present
+                        var existPrimary = false;
                         for (var k = 1; k < ERAttributeData[j].length; k++) {
-                            //Push in every key-attribute
-                            if(ERAttributeData[j][k].state == 'key') {
+                            if (ERAttributeData[j][k].state == 'primary') {
+                                existPrimary = true;
+                                break;
+                            }
+                        }
+                        //Push in primary or candidate keys depending if one is present
+                        for (var k = 1; k < ERAttributeData[j].length; k++) {
+                            //Primary exist, push in primary keys
+                            if (existPrimary && ERAttributeData[j][k].state == 'primary') {
+                                //Push in every key-attribute
                                 foreign.push(ERAttributeData[j][k]);
+                            }
+                            //Primary non-existant, push in candidate keys
+                            else if (!(existPrimary) && ERAttributeData[j][k].state == 'candidate') {
+                                //Push in every key-attribute
+                                foreign.push(ERAttributeData[j][k]);                            
                             }
                         }
                     }
@@ -4092,10 +4138,25 @@ function generateErTableString()
                 for (var j = 0; j < ERAttributeData.length; j++) {
                     if(ERAttributeData[j][0].id == ERRelationData[i][1][0].id) {
                         foreign.push([ERRelationData[i][1][0]]);
+                        //Check if primary key is present
+                        var existPrimary = false;
                         for (var k = 1; k < ERAttributeData[j].length; k++) {
-                            //Push in every key-attribute
-                            if(ERAttributeData[j][k].state == 'key') {
+                            if (ERAttributeData[j][k].state == 'primary') {
+                                existPrimary = true;
+                                break;
+                            }
+                        }
+                        //Push in primary or candidate keys depending if one is present
+                        for (var k = 1; k < ERAttributeData[j].length; k++) {
+                            //Primary exist, push in primary keys
+                            if (existPrimary && ERAttributeData[j][k].state == 'primary') {
+                                //Push in every key-attribute
                                 foreign[0].push(ERAttributeData[j][k]);
+                            }
+                            //Primary non-existant, push in candidate keys
+                            else if (!(existPrimary) && ERAttributeData[j][k].state == 'candidate') {
+                                //Push in every key-attribute
+                                foreign[0].push(ERAttributeData[j][k]);                            
                             }
                         }
                     }
@@ -4104,10 +4165,24 @@ function generateErTableString()
                 for (var j = 0; j < ERAttributeData.length; j++) {
                     if(ERAttributeData[j][0].id == ERRelationData[i][2][0].id) {
                         foreign.push([ERRelationData[i][2][0]]);
+                        var existPrimary = false;
                         for (var k = 1; k < ERAttributeData[j].length; k++) {
-                            //Push in every key-attribute
-                            if(ERAttributeData[j][k].state == 'key') {
+                            if(ERAttributeData[j][k].state == 'primary') {
+                                existPrimary = true;
+                                break;
+                            }
+                        }
+                        //Push in primary or candidate keys depending if one is present
+                        for (var k = 1; k < ERAttributeData[j].length; k++) {
+                            //Primary exist, push in primary keys
+                            if (existPrimary && ERAttributeData[j][k].state == 'primary') {
+                                //Push in every key-attribute
                                 foreign[1].push(ERAttributeData[j][k]);
+                            }
+                            //Primary non-existant, push in candidate keys
+                            else if (!(existPrimary) && ERAttributeData[j][k].state == 'candidate') {
+                                //Push in every key-attribute
+                                foreign[1].push(ERAttributeData[j][k]);                            
                             }
                         }
                     }
@@ -4125,7 +4200,6 @@ function generateErTableString()
             }
         }
     }
-
     //Just for testing
     //Add foreign attribute to correct entity in ERAttributeData
     for (var i = 0; i < ERAttributeData.length; i++) {
@@ -4141,22 +4215,41 @@ function generateErTableString()
     var control = 0;
     for (var i = 0; i < ERAttributeData.length; i++) {
         stringList.push(new String(`<p>${ERAttributeData[i][0].name} ( `));
+        var existPrimary = false;
+        for (var j = 1; j < ERAttributeData[i].length; j++) {
+            if(ERAttributeData[i][j].state == 'primary') {
+                existPrimary = true;
+                break;
+            }
+        }
         for (var j = 1; j < ERAttributeData[i].length; j++) {
             //If not last attribute
             if (j < ERAttributeData[i].length - 1) {
+                //Check if foreign key
                 if (Array.isArray(ERAttributeData[i][j])) {
                     for(var k = 1; k < ERAttributeData[i][j].length; k++) {
                         stringList[i] += `<span style='text-decoration: overline black solid 2px;'>${ERAttributeData[i][j][0].name.toLowerCase() + ERAttributeData[i][j][k].name}</span>, `;
                     }
                 }
                 else {
-                    if(ERAttributeData[i][j].state == 'key') {
-                        stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>, `;
+                    //Primary exist, underline primary keys
+                    if (existPrimary) {
+                        if(ERAttributeData[i][j].state == 'primary') {
+                            stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>, `;
+                        }
+                        else {
+                            stringList[i] += `<span>${ERAttributeData[i][j].name}</span>, `;
+                        }
                     }
+                    //Primary non-existent, underline candidate keys
                     else {
-                        stringList[i] += `<span>${ERAttributeData[i][j].name}</span>, `;
+                        if(ERAttributeData[i][j].state == 'candidate') {
+                            stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>, `;
+                        }
+                        else {
+                            stringList[i] += `<span>${ERAttributeData[i][j].name}</span>, `;
+                        }
                     }
-                    
                 }
             }
             //If last attribute
@@ -4167,29 +4260,51 @@ function generateErTableString()
                     }
                 }
                 else {
-                    if(ERAttributeData[i][j].state == 'key') {
-                        stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>)</p>`;
+                    //Primary exist, underline primary keys
+                    if (existPrimary) {
+                        if(ERAttributeData[i][j].state == 'primary') {
+                            stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>)</p>`;
+                        }
+                        else {
+                            stringList[i] += `<span>${ERAttributeData[i][j].name}</span>)</p>`;
+                        }
                     }
+                    //Primary non-existent, underline candidate keys
                     else {
-                        stringList[i] += `<span>${ERAttributeData[i][j].name}</span>)</p>`;
+                        if(ERAttributeData[i][j].state == 'candidate') {
+                            stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>)</p>`;
+                        }
+                        else {
+                            stringList[i] += `<span>${ERAttributeData[i][j].name}</span>)</p>`;
+                        }
                     }
-                    
                 }
             }
         }
         control++;
     }
+
     for(var i = 0; i < ERForeignData.length; i++) {
         if(ERForeignData[i][0].kind == 'ERRelation') {
             stringList.push(new String(`<p>${ERForeignData[i][0].name} (`));
+            //Check if primary key is present
+            var existPrimary = false;
+            for (var j = 1; j < ERForeignData[i].length; j++) {
+                if (ERAttributeData[i][j].state == 'primary') {
+                    existPrimary = true;
+                    break;
+                }
+            }
             for(var j = 1; j < ERForeignData[i].length; j++) {
-                //If attribute has foreign attributes
-                if (ERForeignData[i][j].length > 1) {
-                    if (j < ERForeignData[i].length - 1) {
-                        stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>, `;
-                    }
-                    else if (j == ERForeignData[i].length - 1) {
-                        stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>)</p>`;
+                for (var k = 1; k < ERForeignData[i][j].length; k++) {
+                    //If attribute has foreign attributes
+                    if (ERForeignData[i][j].length > 1) {
+                        if (j < ERForeignData[i].length - 1) {
+                            stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][k].name}</span>, `;
+                        }
+                        else if (j == ERForeignData[i].length - 1) {
+                            stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][k].name}</span>)</p>`;
+                        }
                     }
                 }
             }
@@ -6432,7 +6547,7 @@ function drawElement(element, ghosted = false)
                         ${multi}
                         <text x='${xAnchor}' y='${hboxh}' `;
             
-            if(element.state == "key") {
+            if(element.state == "candidate" || element.state == 'primary') {
                 str += `class='underline'`;
             }             
             str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
@@ -6548,12 +6663,12 @@ function checkElementError(element)
 
                 // Checking for wrong key type
                 if (fElement.id == element.id && tElement.kind == "ERAttr") {
-                    if (tElement.state == "key") {
+                    if (tElement.state == "candidate") {
                         errorData.push(fElement);
                     }
                 }
                 if (tElement.id == element.id && fElement.kind == "ERAttr") {
-                    if (fElement.state == "key") {
+                    if (fElement.state == "candidate") {
                         errorData.push(tElement);
                     }
                 }
@@ -6683,12 +6798,12 @@ function checkElementError(element)
 
                 // Counting quantity of keys
                 if (fElement.id == element.id && tElement.kind == "ERAttr") {
-                    if (tElement.state == "key") {
+                    if (tElement.state == "candidate") {
                         keyQuantity += 1;
                     }
                 }
                 if (tElement.id == element.id && fElement.kind == "ERAttr") {
-                    if (fElement.state == "key") {
+                    if (fElement.state == "candidate") {
                         keyQuantity += 1;
                     }
                 }
@@ -7591,12 +7706,12 @@ function checkElementError(element)
             // Checking for wrong key type
             if ((tElement.kind == "EREntity" || fElement.kind == "EREntity") && (tElement.state == "weak" || fElement.state == "weak")) {
                 if (fElement.id == element.id && tElement.kind == "EREntity") {
-                    if (fElement.state == "key") {
+                    if (fElement.state == "candidate") {
                         errorData.push(fElement);
                     }
                 }
                 if (tElement.id == element.id && fElement.kind == "EREntity") {
-                    if (tElement.state == "key") {
+                    if (tElement.state == "candidate") {
                         errorData.push(tElement);
                     }
                 }
@@ -7684,11 +7799,11 @@ function checkElementError(element)
                     }
 
                     // Checking for more than one key attributes on the same entity
-                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "key" && tElement0.state == "key") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
+                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "candidate" && tElement0.state == "candidate") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(tElement0);
                     }
-                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "key" && fElement0.state == "key") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
+                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "candiaate" && fElement0.state == "candidate") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(fElement0);
                     }
@@ -7713,11 +7828,11 @@ function checkElementError(element)
                     }
 
                     // Checking for more than one key attributes on the same entity
-                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "key" && tElement0.state == "key") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
+                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "candidate" && tElement0.state == "candidate") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(tElement0);
                     }
-                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "key" && fElement0.state == "key") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
+                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "candidate" && fElement0.state == "candidate") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(fElement0);
                     }
