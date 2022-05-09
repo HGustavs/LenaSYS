@@ -1,5 +1,6 @@
 var querystring = parseGet();
 var retdata;
+var show;
 var contribDataArr = [];
 var daycounts = [];
 var maxDayCount = 0;
@@ -1944,10 +1945,10 @@ function showNewGitLogin()
 
       loginBoxButton.setAttribute("onClick", "");
       loginBoxButton.setAttribute("Value", "Create");
+      
 
      
       
-
 
 
 }
@@ -2148,7 +2149,6 @@ function forceUserLogin()
 
       let loginBoxButton = document.querySelector(".buttonLoginBox");
       loginBoxButton.setAttribute("onClick", "loginGitOrUser_Check()");
-      loginBoxButton.setAttribute("keypress", "loginGitOrUser_Check()");
       show= 1;
 
 
@@ -2225,7 +2225,7 @@ function showNewGitLogin()
       //TODO add onclick function for requesting user creation
       loginBoxButton.setAttribute("onClick", "requestGitUserCreation()");
       loginBoxButton.setAttribute("Value", "Create");
-
+      show= 4;
 
 
 }
@@ -2421,7 +2421,6 @@ function resetForceLogin()
 
     backtologin.innerHTML = "Back to login";
     backtologin.setAttribute("onclick","resetForceLogin()")
-    backtologin.addEventListener("keypress", loginEventHandler);
     show= 2;
 
 
@@ -2436,12 +2435,11 @@ function resetForceLogin()
 
     let loginBoxButton = document.querySelector(".buttonLoginBox");
     loginBoxButton.setAttribute("onClick", "git_processLogin()");
-    loginBoxButton.addEventListener("keypress", loginEventHandler);
     show=3;
   }
 
 
-  
+
   function loginGitOrUser_Check()
   {
     let loginBoxheader_login_username_field = document.querySelector("#username");
@@ -2572,13 +2570,17 @@ function returned_git_user_login(data)
  function loginEventHandler(event){
   if(event.keyCode == "0x0D"){
     if(show ==1){
-      loginGitOrUser_Check();
+     loginGitOrUser_Check();
     }
     else if(show==2){
       resetForceLogin();
     }
     else if(show==3){
       git_processLogin();
+    }
+    else if(show==4){
+      requestGitUserCreation();
+
     }
   }
 }
