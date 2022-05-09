@@ -160,34 +160,26 @@ function showFilePopUp(fileKind) {
 //see fileedservice.php and filerecieve.php for more details of how files are saved to local storage and meta-data is saved to DB.
 function uploadFile(kind) {
     
-    var uploadedFile;
-
+    var filesToBeUploaded;
     //Boolean to check if file was found during for-loop.
     var fileExists = false;
-   
-   
     
-    //Stores the filepath of the selected file.
-    //var selectedFilePath = document.getElementById("uploadedfile").value;
-    //splits and saves only the text after last \ in the filepath so only the filename remains.
-    //const selectedFile = selectedFilePath.split("\\").pop();
-    
-    //For-loop which checkes the selected filename, with already uploaded files.
+    //For-loop which checkes the selected file/files full name, with already uploaded/existing files.
     for(i = 0; i < document.getElementById("uploadedfile").files.length; i++){ 
-        uploadedFile = (document.getElementById("uploadedfile").files[i].name);
+        //Stores the current uploaded file in array, in the filesToBeUploaded varibal.
+        filesToBeUploaded = (document.getElementById("uploadedfile").files[i].name);
         for(j = 0; j < fullFileName.length; j++){
-            console.log(fullFileName[j]);
-            console.log(uploadedFile);
-            alert("stop");
-            if(uploadedFile == fullFileName[j]){
+            //Compare the file in varibal (removes all whitespaces in filename) with files in the list.
+            if(filesToBeUploaded.replace(/\s+/g, '') == fullFileName[j]){
+                //If a file/files have same name and filetype fileExists sets to true so the file will not be uploaded.
                 fileExists = true;
-                alert(selectedFile+" File with same name and filetyp already exist in list." );
+                alert("File with same name and filetyp as "+filesToBeUploaded+" already exist in list. Your file/files will not be uploaded");
+                break;
             }; 
-        }
+        };
     };
 
     if(fileExists == false){
-        alert("Did not work");
         if (kind == "MFILE") {
             var str = "<option>NONE</option>";
             for (i = 0; i < filez['lfiles'].length; i++) {
