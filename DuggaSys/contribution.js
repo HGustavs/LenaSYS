@@ -754,25 +754,65 @@ function renderCircleDiagram(data, day) {
 }
 
 function renderActivityPoints(activities) {
+  console.log(activities);
   var str = "";
-  var hours = {};
+  var hoursComments = {};
+  var hoursCommits = {};
+  var hoursIssues = {};
   activities.forEach(entry => {
+    if (entry.type == "comment"){
+      var keys = Object.keys(hoursComments);
+    }
+    else if (entry.type == "commit"){
+      var keys = Object.keys(hoursCommits);
+    }
+    else if (entry.type == "issue"){
+      var keys = Object.keys(hoursIssues);
+    }
     var hour = entry.time;
-    var keys = Object.keys(hours);
     var found = false;
 
     for (var i = 0; i < keys.length; i++) {
       if (keys[i] == hour) {
-        hours[hour] += 1;
+        if (entry.type == "comment"){
+          hoursComments[hour] += 1;
+        }
+        else if (entry.type == "commit"){
+          hoursCommits[hour] += 1;
+        }
+        else if (entry.type == "issue"){
+          hoursIssues[hour] += 1;
+        }
         found = true;
         return;
       }
     }
     if (!found) {
-      hours[hour] = 1;
+      if (entry.type == "comment"){
+        hoursComments[hour] = 1;
+      }
+      else if (entry.type == "commit"){
+        hoursCommits[hour] = 1;
+      }
+      else if (entry.type == "issue"){
+        hoursIssues[hour] = 1;
+      }
     }
 
   });
+  commentsCounted = [];
+  commitsCounted = [];
+  issuesCounted =[];
+  activities.forEach(entry => {
+    if(entry.type== "comment"){
+      commentsCounted.push(entry);
+    }
+    if(entry.type== "commit"){
+      commitsCounted.push(entry);
+    }
+    if(entry.type== "issue"){
+      issuesCounted.push(entry);
+    }});
 
   var uniquePointsIssues = [];
   var uniquePointsCommits = [];
@@ -796,27 +836,27 @@ function renderActivityPoints(activities) {
   
   activities.forEach(entry => {
     if(entry.type== "comment"){
-    //Cast integer to string
-    var hourString = entry.time.toString();
-    var hour = hourString.substr(0, 2);
-    var houroffset = parseInt(hour) + 6;
-    var type = entry.type;
-    var activityCount = activities.length;
-    var percentage = hours[hour] / activityCount;
-    console.log(percentage);
-    var angleFactor = ((RADIUS - 125) * percentage) + 125;
-    angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
-    var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
-    var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
+      //Cast integer to string
+      var hourString = entry.time.toString();
+      var hour = hourString.substr(0, 2);
+      var houroffset = parseInt(hour) + 6;
+      var type = entry.type;
+      var activityCount = commentsCounted.length;
+      var percentage = hoursComments[hour] / activityCount;
+      
+      var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
+      angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
+      var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
+      var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
 
-    if (!Object.keys(activityTypesComments.times).includes(hour)) {
-      activityTypesComments.times[hour] = {};
-      uniquePointsComments.push([xCoord, yCoord, hour, percentage, type]);
-    }
-    if (!Object.keys(activityTypesComments.types).includes(type)) activityTypesComments.types[type] = 0;
-    if (!Object.keys(activityTypesComments.times[hour]).includes(type)) activityTypesComments.times[hour][type] = 0;
-    activityTypesComments.types[type] += 1;
-    activityTypesComments.times[hour][type] += 1;
+      if (!Object.keys(activityTypesComments.times).includes(hour)) {
+        activityTypesComments.times[hour] = {};
+        uniquePointsComments.push([xCoord, yCoord, hour, percentage, type]);
+      }
+      if (!Object.keys(activityTypesComments.types).includes(type)) activityTypesComments.types[type] = 0;
+      if (!Object.keys(activityTypesComments.times[hour]).includes(type)) activityTypesComments.times[hour][type] = 0;
+      activityTypesComments.types[type] += 1;
+      activityTypesComments.times[hour][type] += 1;
     }
 
     if(entry.type== "commit"){
@@ -825,9 +865,10 @@ function renderActivityPoints(activities) {
       var hour = hourString.substr(0, 2);
       var houroffset = parseInt(hour) + 6;
       var type = entry.type;
-      var activityCount = activities.length;
-      var percentage = hours[hour] / activityCount;
-      var angleFactor = ((RADIUS - 100) * percentage) + 100;
+      var activityCount = commitsCounted.length;
+      var percentage = hoursCommits[hour] / activityCount;
+      //console.log(percentage, hours[hour], activityCount );
+      var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
       angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
       var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
       var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
@@ -844,36 +885,36 @@ function renderActivityPoints(activities) {
       activityTypesCommits.times[hour][type] += 1;
       }
 
-      if(entry.type== "issue"){
-        //Cast integer to string
-        var hourString = entry.time.toString();
-        var hour = hourString.substr(0, 2);
-        var houroffset = parseInt(hour) + 6;
-        var type = entry.type;
-        var activityCount = activities.length;
-        var percentage = hours[hour] / activityCount;
-        var angleFactor = ((RADIUS - 75) * percentage) + 75;
-        angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
-        var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
-        var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
-    
-        if (!Object.keys(activityTypesIssues.times).includes(hour)) {
-          activityTypesIssues.times[hour] = {};
-          uniquePointsIssues.push([xCoord, yCoord, hour, percentage, type]);
-        }else{
-          uniquePointsIssues.push([xCoord, yCoord, hour, percentage, type]);
-        }
-        if (!Object.keys(activityTypesIssues.types).includes(type)) activityTypesIssues.types[type] = 0;
-        if (!Object.keys(activityTypesIssues.times[hour]).includes(type)) activityTypesIssues.times[hour][type] = 0;
-        activityTypesIssues.types[type] += 1;
-        activityTypesIssues.times[hour][type] += 1;
-        }
+    if(entry.type== "issue"){
+      //Cast integer to string
+      var hourString = entry.time.toString();
+      var hour = hourString.substr(0, 2);
+      var houroffset = parseInt(hour) + 6;
+      var type = entry.type;
+      var activityCount = issuesCounted.length;
+      var percentage = hoursIssues[hour] / activityCount;
+      var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
+      angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
+      var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
+      var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
+  
+      if (!Object.keys(activityTypesIssues.times).includes(hour)) {
+        activityTypesIssues.times[hour] = {};
+        uniquePointsIssues.push([xCoord, yCoord, hour, percentage, type]);
+      }else{
+        uniquePointsIssues.push([xCoord, yCoord, hour, percentage, type]);
+      }
+      if (!Object.keys(activityTypesIssues.types).includes(type)) activityTypesIssues.types[type] = 0;
+      if (!Object.keys(activityTypesIssues.times[hour]).includes(type)) activityTypesIssues.times[hour][type] = 0;
+      activityTypesIssues.types[type] += 1;
+      activityTypesIssues.times[hour][type] += 1;
+      }
   });
 
 
   uniquePointsComments.sort(([a, b, c], [d, e, f]) => c - f);
   if (uniquePointsComments.length > 2) {
-    str += "<polygon class='activityPolygon' points='";
+    str += "<polygon class='activityPolygon "+uniquePointsComments[0][4]+"' points='";
     for (var i = 0; i < uniquePointsComments.length; i++) {
       str += (uniquePointsComments[i][0] + 5) + "," + (uniquePointsComments[i][1] + 5) + " ";
     }
@@ -886,7 +927,7 @@ function renderActivityPoints(activities) {
     var percentage = Math.round(point[3] * 100);
     var types = point[4];
     var values = Object.values(activityTypesComments.times[hour]);
-    str += "<rect class='activitymarker " + types + "' width='14' height='14' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
+    str += "<rect class='activitymarker " + types + "' width='7' height='7' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
     str += "`" + types + "`, `" + hour + "`, " + percentage + ", " + JSON.stringify(activityTypesComments) + ")' onmouseout='hideActivityInfo()' />";
     console.log(JSON.stringify(activityTypesComments), "Comments");
   });
@@ -895,7 +936,7 @@ function renderActivityPoints(activities) {
 
   uniquePointsCommits.sort(([a, b, c], [d, e, f]) => c - f);
   if (uniquePointsCommits.length > 2) {
-    str += "<polygon class='activityPolygon' points='";
+    str += "<polygon class='activityPolygon "+uniquePointsCommits[0][4]+"' points='";
     for (var i = 0; i < uniquePointsCommits.length; i++) {
       str += (uniquePointsCommits[i][0] + 5) + "," + (uniquePointsCommits[i][1] + 5) + " ";
     }
@@ -908,7 +949,7 @@ function renderActivityPoints(activities) {
     var percentage = Math.round(point[3] * 100);
     var types = point[4];
     var values = Object.values(activityTypesCommits.times[hour]);
-    str += "<rect class='activitymarker " + types + "' width='14' height='14' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
+    str += "<rect class='activitymarker " + types + "' width='7' height='7' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
     str += "`" + types + "`, `" + hour + "`, " + percentage + ", " + JSON.stringify(activityTypesCommits) + ")' onmouseout='hideActivityInfo()' />";
   });
 
@@ -916,7 +957,7 @@ function renderActivityPoints(activities) {
 
   uniquePointsIssues.sort(([a, b, c], [d, e, f]) => c - f);
   if (uniquePointsIssues.length > 2) {
-    str += "<polygon class='activityPolygon' points='";
+    str += "<polygon class='activityPolygon "+uniquePointsIssues[0][4]+"' points='";
     for (var i = 0; i < uniquePointsIssues.length; i++) {
       str += (uniquePointsIssues[i][0] + 5) + "," + (uniquePointsIssues[i][1] + 5) + " ";
     }
@@ -929,7 +970,7 @@ function renderActivityPoints(activities) {
     var percentage = Math.round(point[3] * 100);
     var types = point[4];
     var values = Object.values(activityTypesIssues.times[hour]);
-    str += "<rect class='activitymarker " + types + "' width='14' height='14' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
+    str += "<rect class='activitymarker " + types + "' width='7' height='7' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
     str += "`" + types + "`, `" + hour + "`, " + percentage + ", " + JSON.stringify(activityTypesIssues) + ")' onmouseout='hideActivityInfo()' />";
   });
 
@@ -937,6 +978,7 @@ function renderActivityPoints(activities) {
   
 }
 
+/* The out-commented code below was the previous function that was used to show all the points and the polygon.*/
 /* uniquePoints.forEach(point => {
   var xCoord = point[0];
   var yCoord = point[1];
