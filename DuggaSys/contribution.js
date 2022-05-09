@@ -1869,72 +1869,6 @@ function hideTooltip() {
     }
 }
 
-function contribution_showLoginPopup()
-{
-  $("#login").css("display",""); // show inital login box
-  $("#loginBox").css("display","flex"); // show background
-  $("#username").focus();     
-}
-
-function contribution_userExistsLogin()
-{
-  $("#UserExistslogin_username").val($("#username").val());
-  
-  $("#login").css("display","none");
-  $("#newGit-UserCreation").css("display","none");
-  $("#newpassword").css("display","none");
-
-  $("#UserExistslogin").css("display",""); 
-  
-}
-
-
-
-function contribution_resetFields()
-{
-  $("#login #username").val("");
-	$("#login #password").val("");
-  $("#usernamereset").val("");
-	$("#UserExistslogin_username").val("");
-	$("#UserExistslogin_password").val("");
-  $("#NewGit-UserCreation_username").val("");
-  $("#newGit-UserCreation_password1").val("");
-  $("#newGit-UserCreation_password2").val("");
-}
-
-function contribution_toggleloginnewpass()
-{
-  contribution_resetFields();
-  $("#login").css("display","none"); 
-  $("#UserExistslogin").css("display","none"); 
-  $("#newGit-UserCreation").css("display","none"); 
-
-  $("#newpassword").css("display",""); // show reset
-}
-
-function contribution_resetLoginStatus() // return to initial login
-{
-  contribution_resetFields();
-  $("#UserExistslogin").css("display","none"); 
-  $("#newGit-UserCreation").css("display","none"); 
-  $("#newpassword").css("display","none");
-
-  $("#login").css("display",""); 
-}
-
-function contribution_newGitUserCreation()
-{
-  $("#newGit-UserCreation_username").val($("#username").val());
-
-  $("#login").css("display","none");
-  $("#newpassword").css("display","none");
-  $("#UserExistslogin").css("display","none");
-  
-  $("#newGit-UserCreation").css("display","");
-
-}
-
-
 //Shows a div when hover the commit links
 function showCommits(object, cid){
   var text = document.getElementById('commitDiv');
@@ -2393,6 +2327,72 @@ function returned_git_user_login(data)
 
     }, 2000);
   }
+}
+
+
+function contribution_showLoginPopup()
+{
+  $("#login").css("display",""); // show inital login box
+  $("#loginBox").css("display","flex"); // show background
+  $("#username").focus();     
+}
+
+function contribution_userExistsLogin()
+{
+  $("#UserExistslogin_username").val($("#username").val());
+  
+  $("#login").css("display","none");
+  $("#newGit-UserCreation").css("display","none");
+  $("#newpassword").css("display","none");
+
+  $("#UserExistslogin").css("display",""); 
+  
+}
+
+
+
+function contribution_resetFields()
+{
+  $("#login #username").val("");
+	$("#login #password").val("");
+  $("#usernamereset").val("");
+	$("#UserExistslogin_username").val("");
+	$("#UserExistslogin_password").val("");
+  $("#NewGit-UserCreation_username").val("");
+  $("#newGit-UserCreation_password1").val("");
+  $("#newGit-UserCreation_password2").val("");
+}
+
+function contribution_toggleloginnewpass()
+{
+  contribution_resetFields();
+  $("#login").css("display","none"); 
+  $("#UserExistslogin").css("display","none"); 
+  $("#newGit-UserCreation").css("display","none"); 
+
+  $("#newpassword").css("display",""); // show reset
+}
+
+function contribution_resetLoginStatus() // return to initial login
+{
+  contribution_resetFields();
+  $("#UserExistslogin").css("display","none"); 
+  $("#newGit-UserCreation").css("display","none"); 
+  $("#newpassword").css("display","none");
+
+  $("#login").css("display",""); 
+}
+
+function contribution_newGitUserCreation()
+{
+  $("#newGit-UserCreation_username").val($("#username").val());
+
+  $("#login").css("display","none");
+  $("#newpassword").css("display","none");
+  $("#UserExistslogin").css("display","none");
+  
+  $("#newGit-UserCreation").css("display","");
+
 }
 
 console.error
