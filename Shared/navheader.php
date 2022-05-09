@@ -34,6 +34,43 @@
 			else
 				$_SESSION['coursevers'] = "UNK";
 
+				//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
+				if(checklogin() == false|| $_SESSION['uid'] == 0){
+					
+					echo "<td class='navBurger fa fa-bars' id='navBurgerIcon' style='font-size:24px; width: 29px; vertical-align: middle; margin-top: 15px; margin-left: 15px' onclick='navBurgerChange()'</td>";
+					echo "<td id='navBurgerIcon' style='display: none;'> </td>";
+					echo "<div id='navBurgerBox' style='display: none;'>";
+				
+					echo "<div id='homeBurgerDiv'>";
+					echo "<a id='homeBurger' href='../DuggaSys/courseed.php'>";
+					echo "<img alt ='home' class='navBurgerButt' src='../Shared/icons/Home.svg'>";
+					echo "<a/>";
+					echo"</div>";
+					
+					echo "<div id='goBackBurgerDiv'>";
+					if($noup=='COURSE'){
+					echo "<a id='goBackBurger' href='../DuggaSys/courseed.php'>";
+					}
+					else if($noup=='SECTION'){
+					echo "<a id='goBackBurger' href='";
+					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
+					echo "'>";
+					
+				}
+				echo "<img alt ='home' class='navBurgerButt' src='../Shared/icons/Up.svg'>";
+				echo "</a>";
+				echo"</div>";
+
+					echo "<div id='darkModeBurgerDiv'>";
+					echo "<a id='darkModeBurger' href='../DuggaSys/darkmodeToggle.js'";
+					echo "<img alt ='Dark' class='navBurgerButt' src='../Shared/icons/ThemeToggle.svg'></>";
+					echo "<img alt='Dark'  class='navBurgerButt' src='../Shared/icons/ThemeToggle.svg'>";
+							echo "</a>";
+					echo "</a>";
+					echo"</div>";
+					echo"</div>";
+					
+			}
 			// Always show home button which links to course homepage
 			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img alt='home button icon' src='../Shared/icons/Home.svg'></a></td>";
 			// Always show toggle button. When clicked it changes between dark and light mode.
@@ -206,7 +243,7 @@
 							echo "<a class='burgerButtText' href='accessed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >Change student access</a></div>";
 							echo "</div>";
 					}
-			}
+			}			
 			// Sort dialog - accessed / resulted /fileed					
 			//old search bar for resulted
       if($requestedService=="accessed.php" /*|| $requestedService=="resulted.php"*/ || $requestedService=="fileed.php" || $requestedService=="duggaed.php" ){
