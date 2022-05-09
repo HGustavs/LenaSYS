@@ -4181,11 +4181,14 @@ function generateErTableString()
         if(ERForeignData[i][0].kind == 'ERRelation') {
             stringList.push(new String(`<p>${ERForeignData[i][0].name} (`));
             for(var j = 1; j < ERForeignData[i].length; j++) {
-                if (j < ERForeignData[i].length - 1) {
-                    stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>, `;
-                }
-                else if (j == ERForeignData[i].length - 1) {
-                    stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>)</p>`;
+                //If attribute has foreign attributes
+                if (ERForeignData[i][j].length > 1) {
+                    if (j < ERForeignData[i].length - 1) {
+                        stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>, `;
+                    }
+                    else if (j == ERForeignData[i].length - 1) {
+                        stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][1].name}</span>)</p>`;
+                    }
                 }
             }
             control++;
