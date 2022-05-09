@@ -21,7 +21,16 @@ var compareWeek = -604800000;
 let width = screen.width;
 var time;
 var lid;
+/*navburger*/
+function navBurgerChange(operation = 'click') {
 
+  var x = document.getElementById("navBurgerBox");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
   idCounter: 0,
