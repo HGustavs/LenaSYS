@@ -1,5 +1,6 @@
 var querystring = parseGet();
 var retdata;
+var show;
 var contribDataArr = [];
 var daycounts = [];
 var maxDayCount = 0;
@@ -1890,8 +1891,8 @@ function forceUserLogin()
 
       let loginBoxButton = document.querySelector(".buttonLoginBox");
       loginBoxButton.setAttribute("onClick", "showNewGitLogin()");
-
-
+      
+  
 			// prepare replacement of onclick
 			loginBoxheader_login_close.removeAttribute("onClick"); // remove auto generated 
 			loginBoxheader_forgot_close.removeAttribute("onClick"); // remove auto generated
@@ -1945,10 +1946,10 @@ function showNewGitLogin()
 
       loginBoxButton.setAttribute("onClick", "");
       loginBoxButton.setAttribute("Value", "Create");
+      
 
      
       
-
 
 
 }
@@ -2149,6 +2150,7 @@ function forceUserLogin()
 
       let loginBoxButton = document.querySelector(".buttonLoginBox");
       loginBoxButton.setAttribute("onClick", "loginGitOrUser_Check()");
+      show= 1;
 
 
 			// prepare replacement of onclick
@@ -2224,7 +2226,7 @@ function showNewGitLogin()
       //TODO add onclick function for requesting user creation
       loginBoxButton.setAttribute("onClick", "requestGitUserCreation()");
       loginBoxButton.setAttribute("Value", "Create");
-
+      show= 4;
 
 
 }
@@ -2431,6 +2433,7 @@ function resetForceLogin()
 
     backtologin.innerHTML = "Back to login";
     backtologin.setAttribute("onclick","resetForceLogin()")
+    show= 2;
 
 
 
@@ -2444,7 +2447,7 @@ function resetForceLogin()
 
     let loginBoxButton = document.querySelector(".buttonLoginBox");
     loginBoxButton.setAttribute("onClick", "git_processLogin()");
-    
+    show=3;
   }
 
 
@@ -2575,5 +2578,22 @@ function returned_git_user_login(data)
   }
 }
 
-console.error
+ //Will handle enter key pressed when loginbox is showing
+ function loginEventHandler(event){
+  if(event.keyCode == "0x0D"){
+    if(show ==1){
+     loginGitOrUser_Check();
+    }
+    else if(show==2){
+      resetForceLogin();
+    }
+    else if(show==3){
+      git_processLogin();
+    }
+    else if(show==4){
+      requestGitUserCreation();
 
+    }
+  }
+}
+console.error
