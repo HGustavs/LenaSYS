@@ -944,7 +944,7 @@ const zoom0_75 = -0.775;
 const zoom0_5 = -3;
 const zoom0_25 = -15.01;
 
-var errorActive = true;
+var errorActive = false;
 
 // Arrow drawing stuff - diagram elements, diagram lines and labels 
 var lines = [];
@@ -4226,6 +4226,19 @@ function toggleA4Template()
         document.getElementById("a4TemplateToggle").style.backgroundColor = "#362049";
    }
    generateContextProperties();
+}
+/**
+ * @description turns the error checking functionality on/off
+ */
+function toggleErrorCheck(){
+    errorActive =! errorActive;
+    if (errorActive) {
+        document.getElementById("errorCheckToggle").classList.add("active");
+    }  
+    else{
+        document.getElementById("errorCheckToggle").classList.remove("active");
+    }
+    showdata();
 }
 
 function setA4SizeFactor(e){
