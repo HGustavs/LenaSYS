@@ -1,6 +1,7 @@
 var lastFile = null;
 var diagramWindow;
 var response = "";
+var thisHash = "";
 /** 
  * @description Alert message appears before closing down or refreshing the dugga viewer page window.
 
@@ -19,6 +20,15 @@ function beforeUnloadingPage()
  * */
 function setup()
 {
+    if(typeof grabTheHash === "function" && thisHash == "")
+    {
+        if(grabTheHash() != undefined && grabTheHash() != "")
+        {
+            thisHash = grabTheHash();
+            console.log(thisHash);
+        }
+    }
+
     diagramWindow = document.getElementById("diagram-iframe");
     inParams = parseGet();
     AJAXService("GETPARAM", { }, "PDUGGA");
@@ -72,7 +82,7 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-        duggaData = data;
+    duggaData = data;
     console.log(duggaData);
     //var textBox = document.getElementById('submission-receipt');
     $('#submission-receipt').html(`${duggaData['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(duggaData['hash'])}'> ${createUrl(duggaData['hash'])}` + `</a> </br></br> Hash: </br> ${duggaData['hash']}</br></br>Hash password:</br>${duggaData['hashpwd']}`);
