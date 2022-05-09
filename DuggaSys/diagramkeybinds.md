@@ -43,5 +43,8 @@
 
 
 ## Replay-mode
-- Replay the changes made = CTRL + "R"
+- Toggles the replay mode to show the changes made = "R"
 
+
+## Error check
+- Performs error checking if ER element is pressed in the diagram = "E"

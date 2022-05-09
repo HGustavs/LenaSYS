@@ -253,6 +253,7 @@
                 <img src="../Shared/icons/diagram_ER_table_info.svg"/>
                 <span class="toolTipText"><b>Toggle ER-Table</b><br>
                     <p>Click to toggle ER-Table in options</p><br>
+                    <p id="tooltip-TOGGLE_ER_TABLE" class="key_tooltip">Keybinding:</p>
                 </span>
         </fieldset>
     </div>
