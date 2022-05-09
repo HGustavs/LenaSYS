@@ -50,13 +50,12 @@
 <div id="overlay" style="display:none"></div>
 
 	<!-- Login Box Start! -->
-<div id='loginBox' class='loginBoxContainer' style="display:flex;">
+<div id='loginBox' class='loginBoxContainer' style="display:none;">
         <div id='login' class='loginBox' style="display:"> <!-- Initial login screen display -->
             <div class="loginBoxheader">
                 <h3>Login</h3>
                 <div class="cursorPointer" onclick="history.back();">x</div>
             </div>
-            <form action="" id="loginForm">
                 <div > 
                     <table class="loginBoxTable">
                         
@@ -72,7 +71,7 @@
                             </tr>
                             <tr class="loginboxTr">
                                 <td class="nowrap">
-                                    <label class='text forgotPw' onclick='git_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
+                                    <label class='text forgotPw' onclick='contribution_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
                                 </td>
                             </tr>
                             <tr class="loginboxTr">
@@ -87,8 +86,6 @@
                        
                     </table>
                 </div>
-            </form>
-
         </div> 
 
 
@@ -96,10 +93,10 @@
 
     <!-- I forgor password Box Start! -->
 
-    <div id='newpassword' class='newpassword' style="display:"> <!-- forgor pass screen display -->
+    <div id='newpassword' class='newpassword' style="display:none"> <!-- forgor pass screen display -->
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
-				<div class="cursorPointer" onclick="closeWindows(); resetLoginStatus();" title="Close window">x</div>
+				<div class="cursorPointer" onclick="closeWindows(); contribution_resetLoginStatus();" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
 				<table class="loginBoxTable">
@@ -126,7 +123,7 @@
 			</div>
 			<tr>
 				<td>
-					<label class='forgotPw' onclick='resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
+					<label class='forgotPw' onclick='contribution_resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
 				</td>
 			</tr>
 	</div>
@@ -135,33 +132,32 @@
 
     <!-- User exists login start -->
 
-    <div id='login' class='loginBox' style="display:"> <!-- Initial login screen display -->
+    <div id='UserExistslogin' class='loginBox' style="display:none"> <!-- Initial login screen display -->
             <div class="loginBoxheader">
                 <h3>Login</h3>
                 <div class="cursorPointer" onclick="history.back();">x</div>
             </div>
-            <form action="" id="loginForm">
                 <div > 
                     <table class="loginBoxTable">
                         
                             <tr class="loginboxTr">
                                 <td>
-                                    <label id="loginBoxTitle">Sign in</label>
+                                    <label id="UserExistslogin_loginBoxTitle">Sign in</label>
                                 </td>
                             </tr>
                             <tr  class="loginboxTr">
                                 <td>
-                                    <input id="username" placeholder="Github Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                                    <input id="UserExistslogin_username" placeholder="Github Username" class='form-control textinput' type='text' autofocus disabled style=' opacity:0.6; width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
                                 </td>
                             </tr>
                             <tr class="loginboxTr">
                                 <td>
-                                    <input id="password" placeholder="Password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                                    <input id="UserExistslogin_password" placeholder="Password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
                                 </td>
                             </tr>
                             <tr class="loginboxTr">
                                 <td class="nowrap">
-                                    <label class='text forgotPw' onclick='git_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
+                                    <label class='text forgotPw' onclick='contribution_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
                                 </td>
                             </tr>
                             <tr class="loginboxTr">
@@ -171,15 +167,14 @@
                             </tr>
                             <tr class="loginboxTr">
                                 <!-- Message displayed when using wrong password or username -->
-                                <td id="message";></td>
+                                <td id="UserExistslogin_message";></td>
                             </tr>
                        
                     </table>
                 </div>
-            </form>
             <tr>
 				<td>
-					<label class='forgotPw' onclick='resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
+					<label class='forgotPw' onclick='contribution_resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
 				</td>
 			</tr>
         </div>
@@ -188,59 +183,57 @@
 
     <!-- New git-user creation start -->
 
-    <div id='login' class='loginBox' style="display:"> <!-- Initial login screen display -->
+    <div id='newGit-UserCreation' class='loginBox' style="display:none"> <!-- Initial login screen display -->
             <div class="loginBoxheader">
                 <h3>Login</h3>
                 <div class="cursorPointer" onclick="history.back();">x</div>
             </div>
-            <form action="" id="loginForm">
                 <div > 
                     <table class="loginBoxTable">
                         
                             <tr class="loginboxTr">
                                 <td>
-                                    <label id="loginBoxTitle">Sign in</label>
+                                    <label id="newGit-UserCreation_loginBoxTitle">Create user</label>
                                 </td>
                             </tr>
                             <tr  class="loginboxTr">
                                 <td>
-                                    <input id="username" placeholder="Github Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                                    <input id="newGit-UserCreation_username" placeholder="Github Username" class='form-control textinput' type='text' autofocus disabled style='opacity:0.6; width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
                                 </td>
                             </tr>
 
                             <tr class="loginboxTr">
                                 <td>
-                                    <input id="password" placeholder="Create new password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                                    <input id="newGit-UserCreation_password1" placeholder="Create new password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
                                 </td>
                             </tr>
                             <tr class="loginboxTr">
                                 <td>
-                                    <input id="password" placeholder="Repeat new password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+                                    <input id="newGit-UserCreation_password2" placeholder="Repeat new password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
                                 </td>
                             </tr>
 
                             <tr class="loginboxTr">
                                 <td class="nowrap">
-                                    <label class='text forgotPw' onclick='git_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
+                                    <label class='text forgotPw' onclick='contribution_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
                                 </td>
                             </tr>
                             <tr class="loginboxTr">
                                 <td>
-                                    <input type='button' class='buttonLoginBox' onclick="loginGitOrUser_Check();" value='Login' title='Login'>
+                                    <input type='button' class='buttonLoginBox' onclick="loginGitOrUser_Check();" value='Create' title='Login'>
                                 </td>
                             </tr>
                             <tr class="loginboxTr">
                                 <!-- Message displayed when using wrong password or username -->
-                                <td id="message";></td>
+                                <td id="newGit-UserCreation_message";></td>
                             </tr>
                        
                     </table>
                 </div>
-            </form>
 
             <tr>
 				<td>
-					<label class='forgotPw' onclick='resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
+					<label class='forgotPw' onclick='contribution_resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
 				</td>
 			</tr>
         </div> 

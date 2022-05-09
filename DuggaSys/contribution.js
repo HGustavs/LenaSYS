@@ -1869,49 +1869,48 @@ function hideTooltip() {
     }
 }
 
-function forceUserLogin()
+function contribution_showLoginPopup()
 {
-      /* 
-      make sure the loginBox is generated before you run this function as 
-      it queries for elements that exist in the loginbox and changes their properties
-      */
-      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
-			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
-
-
-
-
-      let loginBoxheader_login_username_field = document.querySelector("#username");
-      loginBoxheader_login_username_field.setAttribute("Placeholder","Github username");
-
-      let loginBoxheader_login_password_field = document.querySelector("#password");
-      loginBoxheader_login_password_field.style.visibility = "hidden";
-
-      let loginBoxButton = document.querySelector(".buttonLoginBox");
-      loginBoxButton.setAttribute("onClick", "showNewGitLogin()");
-
-
-			// prepare replacement of onclick
-			loginBoxheader_login_close.removeAttribute("onClick"); // remove auto generated 
-			loginBoxheader_forgot_close.removeAttribute("onClick"); // remove auto generated
-			
-			/*
-      replace with a history back, this makes sure you dont get a blank page if you dont want to enter a password
-      and instead press the button to close down the loginBox
-      */
-			loginBoxheader_login_close.setAttribute("onClick", "history.back();"); 
-			loginBoxheader_forgot_close.setAttribute("onClick", "history.back();"); 
-
-
-      // ----
-      let FP = document.querySelector("#newpassword .forgotPw");
-      FP.setAttribute("onClick", "toggleloginnewpass(); resetForceLogin();");
-
-      // After the loginbox has been prepared/modified we display it to the user
-      showLoginPopup();
-      
-
+  $("#login").css("display",""); // show inital login box
+  $("#loginBox").css("display","flex"); // show background
+  $("#username").focus();     
 }
+
+
+function contribution_resetFields()
+{
+  $("#login #username").val("");
+	$("#login #password").val("");
+  $("#usernamereset").val("");
+	$("#UserExistslogin_username").val("");
+	$("#UserExistslogin_password").val("");
+  $("#NewGit-UserCreation_username").val("");
+  $("#newGit-UserCreation_password1").val("");
+  $("#newGit-UserCreation_password2").val("");
+}
+
+function contribution_toggleloginnewpass()
+{
+  contribution_resetFields();
+  $("#login").css("display","none"); 
+  $("#UserExistslogin").css("display","none"); 
+  $("#newGit-UserCreation").css("display","none"); 
+
+  $("#newpassword").css("display",""); // show reset
+}
+
+function contribution_resetLoginStatus()
+{
+  $("#UserExistslogin").css("display","none"); 
+  $("#newGit-UserCreation").css("display","none"); 
+  $("#newpassword").css("display","none");
+
+  $("#login").css("display",""); 
+}
+
+
+
+
 
 function showNewGitLogin()
 {
@@ -2435,15 +2434,13 @@ function resetForceLogin()
     
   }
 
+  
 
-
-  function loginGitOrUser_Check()
+  function contribution_loginGitOrUser_Check()
   {
     let loginBoxheader_login_username_field = document.querySelector("#username");
-
-
-
     let username = loginBoxheader_login_username_field.value;
+
     if(username === "") // we do a simple check if the string is empty to not call backend if nothing is entered.
     {
       console.log("nothing entered");
