@@ -245,6 +245,7 @@
                 <span class="toolTipText"><b>Enter replay mode</b><br>
                     <p>View history of changes made</p><br>
                 </span>
+            </div>
         </fieldset>
         <fieldset>
             <legend>ER-Table</legend>
@@ -253,7 +254,16 @@
                 <span class="toolTipText"><b>Toggle ER-Table</b><br>
                     <p>Click to toggle ER-Table in options</p><br>
                 </span>
-        </fieldset>
+            </div>
+        </fieldset>     
+        <fieldset>
+            <div id="errorCheckToggle" class="diagramIcons" onclick="toggleErrorCheck()">
+                <img src="../Shared/icons/diagram_a4.svg"/>
+                <span class="toolTipText"><b>Toggle error check</b><br>
+                    <p>Click to toggle error checking on/off</p><br>
+                </span>
+            </div>
+        </fieldset>        
     </div>
 
     <!-- Message prompt -->
