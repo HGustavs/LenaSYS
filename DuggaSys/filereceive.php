@@ -356,33 +356,34 @@ if ($storefile) {
                     $kindid = -1;
 
                     //  if returned rows equals 0(the existence of the file is not in the db) add data into the db
-                    
-                    if ($norows == 0) {
-                        if ($kind == "LFILE") {
-                            $kindid = 4;
-                            $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,vers,filesize) VALUES(:filename,:kindid,:cid,:vers,:filesize);");
-                            $query->bindParam(':vers', $vers);
-                        } else if ($kind == "MFILE") {
-                            $kindid = 3;
-                            $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:filename,:kindid,:cid,:filesize)");
-                        } else if ($kind == "GFILE") {
-                            $kindid = 2;
-                            $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:filename,:kindid,:cid,'1',:filesize);");
-                        }
+                    if((localStorage.getItem("booleanCheck") === null)){
+                        if ($norows == 0) {
+                            if ($kind == "LFILE") {
+                                $kindid = 4;
+                                $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,vers,filesize) VALUES(:filename,:kindid,:cid,:vers,:filesize);");
+                                $query->bindParam(':vers', $vers);
+                            } else if ($kind == "MFILE") {
+                                $kindid = 3;
+                                $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:filename,:kindid,:cid,:filesize)");
+                            } else if ($kind == "GFILE") {
+                                $kindid = 2;
+                                $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:filename,:kindid,:cid,'1',:filesize);");
+                            }
 
-                        $query->bindParam(':cid', $cid);
-                        $query->bindParam(':filename', $fname);
-                        $query->bindParam(':filesize', $filesize);
-                        $query->bindParam(':kindid', $kindid);
+                            $query->bindParam(':cid', $cid);
+                            $query->bindParam(':filename', $fname);
+                            $query->bindParam(':filesize', $filesize);
+                            $query->bindParam(':kindid', $kindid);
 
-                        // Execute prepared SQL query and print general error handling if it fails.
-                        if (!$query->execute()) {
-                            $error = $query->errorInfo();
-                            echo "Error updating file entries" . $error[2];
-                            $errortype ="uploadfile";
-                            $errorvar = $error[2];
-                            print_r($error);
-                            echo $errorvar;
+                            // Execute prepared SQL query and print general error handling if it fails.
+                            if (!$query->execute()) {
+                                $error = $query->errorInfo();
+                                echo "Error updating file entries" . $error[2];
+                                $errortype ="uploadfile";
+                                $errorvar = $error[2];
+                                print_r($error);
+                                echo $errorvar;
+                            }
                         }
                     }
 

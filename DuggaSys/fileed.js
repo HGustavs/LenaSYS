@@ -163,6 +163,7 @@ function uploadFile(kind) {
     var filesToBeUploaded;
     //Boolean to check if file was found during for-loop.
     var fileExists = false;
+    let data = sessionStorage.getItem('booleanCheck')
     
     //For-loop which checkes the selected file/files full name, with already uploaded/existing files.
     for(i = 0; i < document.getElementById("uploadedfile").files.length; i++){ 
@@ -173,6 +174,9 @@ function uploadFile(kind) {
             if(filesToBeUploaded.replace(/\s+/g, '') == fullFileName[j]){
                 //If a file/files have same name and filetype fileExists sets to true so the file will not be uploaded.
                 fileExists = true;
+                sessionStorage.setItem('booleanCheck', 'true');
+                alert(data);
+
                 alert("File with same name and filetyp as "+filesToBeUploaded+" already exist in list. Your file/files will not be uploaded");
                 break;
             }; 
@@ -180,6 +184,7 @@ function uploadFile(kind) {
     };
 
     if(fileExists == false){
+        sessionStorage.removeItem('booleanCheck');
         if (kind == "MFILE") {
             var str = "<option>NONE</option>";
             for (i = 0; i < filez['lfiles'].length; i++) {
