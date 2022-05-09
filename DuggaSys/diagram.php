@@ -254,6 +254,15 @@
                     <p>Click to toggle ER-Table in options</p><br>
                 </span>
         </fieldset>
+        <!-- Placeholder for the error check functionality below-->
+        <fieldset>
+            <legend>Check</legend>   
+            <div id="" class="diagramIcons" onclick="">
+                <img src="../Shared/icons/errorCheck4.svg"/> <!-- This icon is supposed to be merged with the error check functionality-->
+                <span class="toolTipText"><b>Toggle Error Check</b><br>
+                    <p>Click to toggle Error Check on objects</p><br>
+                </span>
+        </fieldset>
     </div>
 
     <!-- Message prompt -->
