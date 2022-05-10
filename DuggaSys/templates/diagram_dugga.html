@@ -79,7 +79,8 @@
                     }, "slow");
                     $("#close_open").css({
                         'display': 'fixed',
-                        'left': '-18px'
+                        'left': '7px',
+                        'transform': 'scaleX(-1)'
                     });
 
                     $("#pvalue").val("1");
@@ -94,9 +95,13 @@
                     $("#assignment_discrb").css('visibility', 'visible');
                     $("#close_open").css({
                         'display': 'block',
-                        'left': '272px'
+                        'left': '292px',
                     });
                     $("#pvalue").val("0");
+                    $("#close_open").css({
+                        'transform': 'scaleX(1)',
+                        'left': '272px'
+                    });
                 }
 
 
