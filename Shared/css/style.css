@@ -4589,6 +4589,21 @@ rect[class*="activitymarker"]:hover {
   stroke: red;
 }
 
+.activityPolygon.comment {
+  fill: #66fe75;
+  stroke: #01610b;
+}
+
+.activityPolygon.commit {
+  fill: #6675fe;
+  stroke: #010960;
+}
+
+.activityPolygon.issue {
+  fill: #fee266;
+  stroke: #9b1f00;
+}
+
 /* JQuery UI Complement for missing icons in the DatePicker */
 
 .ui-datepicker .ui-datepicker-next span {
@@ -6593,13 +6608,13 @@ only screen and (max-device-width: 320px) {
 
 .fixed-action-button {
   position: fixed;
-  bottom: 24px;
+  bottom: 64px;
   right: 24px;
   z-index: 1;
   touch-action: none;
 }
 
-.fixed-action-button.sectioned {
+.fixed-action-button.extra-margin {
   right: 115px;
 }
 
