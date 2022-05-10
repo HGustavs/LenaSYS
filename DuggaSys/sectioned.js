@@ -560,6 +560,7 @@ function deleteItem(item_lid = null) {
    }, 60000);
 }
 
+// Permanently delete elements
 function deleteAll()
 {
   for(var i = delArr.length-1; i >= 0; --i){
@@ -574,6 +575,15 @@ function deleteAll()
 // Cancel deletion
 function cancelDelete() {
   location.reload();
+}
+
+// Set all "deleted" items as hidden
+// Used when refreshing the table
+function hideDeleted()
+{
+  for(var i = 0; i < delArr.length; ++i){
+    document.getElementById("lid" + delArr[i]).style.display = "none";
+  }
 }
 
 //----------------------------------------------------------------------------------
@@ -1342,6 +1352,8 @@ function returnedSection(data) {
 
   }
 
+  // Hide items set to be deleted
+  hideDeleted();
 
   // The next 5 lines are related to collapsable menus and their state.
   getHiddenElements();
