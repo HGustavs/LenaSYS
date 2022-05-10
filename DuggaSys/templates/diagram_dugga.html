@@ -46,12 +46,13 @@
         
         #close_open {
             width: 23px;
-            position: fixed;
-            top: 50%;
+            position: absolute;
+            top: 520px;
             left: 272px;
             border-top: 14px solid transparent;
             border-bottom: 14px solid transparent;
             border-right: 14px solid #d4d2d2;
+            margin-left:10px;
         }
         
         #close_open:hover {
@@ -64,34 +65,34 @@
             flex: 1;
             display: flex;
             justify-content: space-around;
+            margin-left:10px;
         }
     </style>
     <script>
         $(document).ready(function() {
             $("#close_open").click(function() {
                 if ($("#pvalue").val() == "0") {
-
+                    // hides description when open
                     $("#assignment_discrb").css('visibility', 'hidden');
                     $("#container__left").animate({
                         width: "10px"
                     }, "slow");
                     $("#close_open").css({
                         'display': 'fixed',
-                        'left': '-18px'
+                        'left': '7px',
+                        'transform': 'scaleX(-1)',
+                        'transition': '0.55s ease-in-out'
                     });
-
                     $("#pvalue").val("1");
                 } else {
-
-                    $("#container__left").animate({
-                        width: "300px"
-                    });
+                    // opens description when closed
                     $("#container__left").animate({
                         width: "300px"
                     }, "slow");
                     $("#assignment_discrb").css('visibility', 'visible');
                     $("#close_open").css({
                         'display': 'block',
+                        'transform': 'scaleX(1)',
                         'left': '272px'
                     });
                     $("#pvalue").val("0");
