@@ -11,6 +11,17 @@
             width: 100%;
             justify-content: space-between;
         }
+
+        #container_header{
+            background-color: #ccc;
+            width:100%;
+            display:inline-block;
+            position:relative;
+            padding:3px 10px;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
         
          ::-webkit-scrollbar {
             width: 5px;
@@ -30,6 +41,7 @@
             height: 800px;
             overflow: auto;
             margin: 0px;
+            border: 1px solid #ccc;
         }
         
         #close_open {
@@ -104,7 +116,7 @@
         </div>
         <div class='instructions-container'>
             <div class='instructions-button' onclick='toggleInstructions(this)'>
-                <h3>Instructions</h3>
+                <h3>General information</h3>
             </div>
             <div class="instructions-content">
                 <p style="margin-left: 4px;">Diagram-duggan går ut på att producera det diagrammet som beskrivs i beskrivningen.
@@ -119,8 +131,8 @@
 
             <input type="hidden" id="pvalue" value="0" />
             <div class="assignment_left" id="container__left" style="overflow: auto;">
+                <div id="container_header"><h3>Instructions</h3></div>
                 <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0" style=" visibility: visible; color: rgb(0, 0, 0); padding: 4px; ">
-                    <h2 style="margin-left: 14px;">Beskrivningen</h2>
                     <h2 style="margin-left: 14px;">Modellering</h2>
                     <p style="margin-left: 14px;">Modellera nedanstående uppgifter i notationerna ER och UML.</p>
                     <ol type="1">

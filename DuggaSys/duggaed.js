@@ -286,7 +286,9 @@ function selectVariant(vid, el) {
   				}
 				else if(result =="errorActive"){
 					document.getElementById("errorActive").checked = obj[result];
-				}
+				}else if(result == "diagram_File"){
+                    document.getElementById('file').value = obj[result];
+                }
   			}
 		var diagramType = obj.diagram_type; //<-- UML functionality start
 		if(diagramType){
@@ -402,7 +404,7 @@ function returnedFile(data){
 	filteredarray = filearray.filter(x => x.extension === "json");
 
 	//Not sure how the first parameter works yet, suspect it's to know which object is selected
-	$("#file").html(makeoptionsItem("not doing anything plz fix", filteredarray, 'filename'));
+	$("#file").html(makeoptionsItem("AddEmptyField", filteredarray, 'filename','filename'));
 }
 
 // Adds a submission row
@@ -478,7 +480,7 @@ function createJSONString(formData) {
 	return JSON.stringify({
 		"type":formData[0].value,
 		"filelink":formData[1].value,
-		"diagram_File":$("#file option:selected").text(),
+		"diagram_File":$("#file option:selected").val(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
 		"submissions":submission_types,
@@ -579,6 +581,15 @@ function confirmBox(operation, item, type) {
 			$("#sectionConfirmBox").css("display", "none");
 		}
 	}
+
+	// Allows for duggor & dugga variants to be deleted by pressing the enter-key when the confirmBox is visible.
+	document.addEventListener("keyup", event => {
+		if (event.key === 'Enter') {
+			deleteVariant(itemToDelete);
+			deleteDugga(itemToDelete);
+			$("#sectionConfirmBox").css("display", "none");
+		}
+	});
 }
 
 // Storing the celldata for future use. (Needed when editing and such)
@@ -801,8 +812,8 @@ function renderCell(col, celldata, cellid) {
 
 		case "disabled":	// VARIANT-TABLE - Translades disabled status from integers
 			switch(celldata) {
-				case "0": retString = "<span style='color:black;'>Enabled</span>"; break;
-				case "1": retString = "<span style='color:red;'>Disabled</span>"; break;
+				case 0: retString = "<span style='color:black;'>Enabled</span>"; break;
+				case 1: retString = "<span style='color:red;'>Disabled</span>"; break;
 				default: retString = "<span style='color:black; opacity:0.5;'>Undefined</span>";
 			}
 			break;
