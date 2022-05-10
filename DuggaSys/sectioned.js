@@ -551,7 +551,6 @@ function prepareItem() {
 function deleteItem(item_lid = null) { 
   lid = item_lid ? item_lid : $("#lid").val();
   document.getElementById("lid" + lid).style.display = "none";
-  alert("Press recycle button within 60 seconds to undo the deletion");
   document.querySelector("#undoButton").style.display = "block";
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
   time = setTimeout(() => {

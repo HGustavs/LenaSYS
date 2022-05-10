@@ -291,6 +291,7 @@
 			</div>
 			<div style='text-align: center;'>
 					<h4>Are you sure you want to delete this item?</h4>
+					<p>(You can always undo!)</p>
 			</div>
 			<div style='display:flex; align-items:center; justify-content: center;'>
 				<input style='margin-right: 5%;' class='submit-button' id="delete-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
