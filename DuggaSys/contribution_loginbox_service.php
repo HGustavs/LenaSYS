@@ -57,7 +57,13 @@ if (strcmp($opt, "checkForGitUser")==0)
 
 	$userExisted = in_array($gituser, $allusers); // if the user existed it should be not empty, aka this checks if we retrieved the user from the DB
 		
-	echo json_encode($userExisted);
+    echo json_encode(array(
+        "returnMethod" => getOP('return'),
+        "debug" => $debug,
+        "returnData" => json_encode($userExisted)
+    ));
+
+
 }
 else if(strcmp($opt, "checkForLenasysUser")==0)
 {
@@ -112,11 +118,17 @@ else if(strcmp($opt, "checkForLenasysUser")==0)
 	}
 
 
-	echo json_encode(array(
-		"success" => $userExisted,
-		"status" => $status,
-		"debug" => $debug
-	));
+    echo json_encode(array(
+        "returnMethod" => getOP('return'),
+        "debug" => $debug,
+        "returnData" => json_encode(array(
+            "success" => $userExisted,
+            "status" => $status,
+            "debug" => $debug
+        ))
+    ));
+
+	
 
 }
 else if(strcmp($opt,"requestGitUserCreation") == 0)
@@ -240,7 +252,11 @@ else if(strcmp($opt,"requestGitUserCreation") == 0)
 
 	}
 
-	echo json_encode($addStatus); // if successfully created will be true
+    echo json_encode(array(
+        "returnMethod" => getOP('return'),
+        "debug" => $debug,
+        "returnData" => json_encode($addStatus)
+    ));
 
 }
 else if(strcmp($opt,"requestContributionUserLogin") == 0)
@@ -305,11 +321,19 @@ else if(strcmp($opt,"requestContributionUserLogin") == 0)
 				$_SESSION['git_uid'] = $row['git_uid'];
         		$_SESSION["git_loginname"]=$row['username'];
 				$_SESSION["git_passwd"]=$row['password'];
-				echo json_encode(true);
-			}
+                echo json_encode(array(
+                    "returnMethod" => getOP('return'),
+                    "debug" => $debug,
+                    "returnData" => json_encode(true)
+                ));			
+            }
 			else // wrong password entered
 			{
-				echo json_encode(false);
+                echo json_encode(array(
+                    "returnMethod" => getOP('return'),
+                    "debug" => $debug,
+                    "returnData" => json_encode(false)
+                ));
 			}
 		}
 
@@ -319,11 +343,19 @@ else if(strcmp($opt,"requestContributionUserLogin") == 0)
 	{
 		if(login($gituser, $gitpass, false))
 		{
-			echo json_encode(true);
+            echo json_encode(array(
+                "returnMethod" => getOP('return'),
+                "debug" => $debug,
+                "returnData" => json_encode(true)
+            ));
 		}
 		else
 		{
-			echo json_encode(false);
+            echo json_encode(array(
+                "returnMethod" => getOP('return'),
+                "debug" => $debug,
+                "returnData" => json_encode(false)
+            ));
 		}
 	}
 	else // logout the git
@@ -338,7 +370,11 @@ else if(strcmp($opt,"requestContributionUserLogin") == 0)
 		session_destroy();
 		clearstatcache(); 
 
-		echo json_encode(true);
+        echo json_encode(array(
+            "returnMethod" => getOP('return'),
+            "debug" => $debug,
+            "returnData" => json_encode(true)
+        ));
 	
 	}
 }

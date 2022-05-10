@@ -1213,6 +1213,15 @@ function AJAXService(opt,apara,kind)
 			dataType: "json"
 		});
 	}
+	else if(kind=="CONT_LOGINBOX_SERVICE") {
+		$.ajax({
+			url: "contribution_loginbox_service.php",
+			type:"POST",
+			data: "&opt="+opt+para,
+			dataType: "json",
+			success: CONT_LOGINBOX_SERVICE_RETURN
+		});
+	}
 	else if(kind=="INPUTCHECK") {
 		alert(JSON.stringify(querystring));
 		$.ajax({

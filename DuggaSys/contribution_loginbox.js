@@ -126,15 +126,9 @@ function contribution_git_processLogin()
     let git_password = $("#UserExistslogin_password").val();
 
     
-    $.ajax({
-        url: "contribution_loginbox_service.php",
-        type: "POST",
-        data: contribution_AJAX_prepareOPTPARA("requestContributionUserLogin",{username: git_username, userpass: git_password}),
-        dataType: "json",
-        success: returned_git_user_login
-    });
 
-
+    AJAXService("requestContributionUserLogin", 
+    {username: git_username, userpass: git_password, return: returned_git_user_login}, "CONT_LOGINBOX_SERVICE");
 
   }
 
@@ -144,13 +138,9 @@ function git_logout()
   let git_username = null; // nothing entered will logout
   let git_password = null;
 
-  $.ajax({
-    url: "contribution_loginbox_service.php",
-    type: "POST",
-    data: contribution_AJAX_prepareOPTPARA("requestContributionUserLogin",{username: git_username, userpass: git_password}),
-    dataType: "json",
-    success: returned_git_user_login
-    });
+
+    AJAXService("requestContributionUserLogin", 
+    {username: git_username, userpass: git_password, return: returned_git_user_login}, "CONT_LOGINBOX_SERVICE");
 
 }
 
@@ -173,24 +163,14 @@ function git_logout()
     else
     {
 
-        $.ajax({
-			url: "contribution_loginbox_service.php",
-			type: "POST",
-			data: contribution_AJAX_prepareOPTPARA("checkForGitUser",{userid: username}),
-			dataType: "json",
-			success: returned_git_user_check
-		});
+        AJAXService("checkForGitUser", 
+        {userid: username, return: returned_git_user_check}, "CONT_LOGINBOX_SERVICE");
   
         // ##############################
 
 
-        $.ajax({
-			url: "contribution_loginbox_service.php",
-			type: "POST",
-			data: contribution_AJAX_prepareOPTPARA("checkForLenasysUser",{userid: username}),
-			dataType: "json",
-			success: returned_lenasys_user_check
-		});
+        AJAXService("checkForLenasysUser", 
+        {userid: username, return: returned_lenasys_user_check}, "CONT_LOGINBOX_SERVICE");
 
     
   
@@ -262,13 +242,9 @@ function git_logout()
         else
         {
 
-            $.ajax({
-                url: "contribution_loginbox_service.php",
-                type: "POST",
-                data: contribution_AJAX_prepareOPTPARA("requestGitUserCreation",{userid: username, userpass: pass1}),
-                dataType: "json",
-                success: returned_lenasys_user_creation
-            });
+            AJAXService("requestGitUserCreation", 
+            {userid: username, userpass: pass1, return: returned_lenasys_user_creation}, "CONT_LOGINBOX_SERVICE");
+
             
         }
       }
@@ -480,6 +456,31 @@ function contribution_AJAX_prepareOPTPARA(opt_, apara_)
     }
 
     return ("&opt="+opt+para);
+
+}
+
+function CONT_LOGINBOX_SERVICE_RETURN(data)
+{
+    let returnData = JSON.parse(data["returnData"]);
+    let returnMethod = data["returnMethod"];
+
+
+    if(returnMethod == returned_git_user_login)
+    {
+        returned_git_user_login(returnData);
+    }
+    else if(returnMethod == returned_lenasys_user_check)
+    {
+        returned_lenasys_user_check(returnData);
+    }
+    else if(returnMethod == returned_git_user_check)
+    {
+        returned_git_user_check(returnData);
+    }
+    else if(returnMethod == returned_lenasys_user_creation)
+    {
+        returned_lenasys_user_creation(returnData);
+    }
 
 }
 
