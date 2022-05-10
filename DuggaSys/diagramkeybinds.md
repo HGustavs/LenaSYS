@@ -32,7 +32,8 @@
 
 - Toggle step forward = CTRL + ”Y”
 - Toggle step backward = CTRL + ”Z”
-- Toggle replay = Klick to start replay 
+- Toggles the replay mode to show the changes made = "R"
+
 
 ## Other
 
@@ -42,9 +43,9 @@
 - Toggle keybindlist - ”F1”
 
 
-## Replay-mode
-- Toggles the replay mode to show the changes made = "R"
+## ER-Table
+- Toggles between ER-table functionality when an ER-element is selected and option panel is open = "E"
 
 
 ## Error check
-- Performs error checking if ER element is pressed in the diagram = "E"
+- Performs error checking if an error is present = "H"

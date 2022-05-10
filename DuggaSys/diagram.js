@@ -757,6 +757,7 @@ const keybinds = {
         TOGGLE_KEYBINDLIST: {key: "F1", ctrl: false},
         TOGGLE_REPLAY_MODE: {key: "r", ctrl: false},
         TOGGLE_ER_TABLE: {key: "e", ctrl: false},
+        TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
 };
 
 /** 
@@ -1514,6 +1515,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
         if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
         if(isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
+        if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck();
 
         if (isKeybindValid(e, keybinds.COPY)){
             // Remove the preivous copy-paste data from localstorage.
@@ -4352,7 +4354,8 @@ function toggleA4Template()
  * @description turns the error checking functionality on/off
  */
 function toggleErrorCheck(){
-    errorActive =! errorActive;
+    // Inverts the errorActive variable to true or false
+    errorActive = !errorActive;
     if (errorActive) {
         document.getElementById("errorCheckToggle").classList.add("active");
     }  
