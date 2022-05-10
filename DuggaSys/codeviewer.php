@@ -365,13 +365,13 @@ Testing Link:
 
 			include '../Shared/loginbox.php';
 		?>
-	<div class="previewWindowContainer">
-    <div class="previewWindow">
+	<div class="previewWindowContainer loginBoxContainer">
+    <div class="previewWindow loginBox">
 	<div class="loginBoxheader">
             <h3 class ="fileName"></h3>
             <div style="cursor:pointer;" onclick="hideIframe();">x</div>
         </div>
-	<iframe id="iframeFileed"style="width:100%;height:90vh;"src=""></iframe>
+	<iframe id="iframeFileed"style="width:100%;height:85vh;"src=""></iframe>
 
     </div>
 

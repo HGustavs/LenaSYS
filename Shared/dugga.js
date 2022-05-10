@@ -1587,6 +1587,9 @@ function processLogout() {
 			console.log("error");
 		}
 	});
+	// Generate a logout token for the current instance
+	localStorage.setItem('logout-event', 'logout' + Math.random());
+	
 	document.cookie = "MOTD=; expires=Thu, 01 Jan 1970 00:00:00 UTC;"; // Clear MOTD cookies
 }
 
@@ -2358,7 +2361,6 @@ function hideServerMessage() {
 	$containerHeight.animate({
 		top: -$containerHeight.outerHeight()
 	},200, "easeInOutSine", () => {});
-	$("#messagedialog").css("display", "content");
 	sessionStorage.setItem('show','false');
 }
 

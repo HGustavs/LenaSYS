@@ -790,7 +790,6 @@ p {
 #Sectionlist {
   margin: 10px;
   background-color: var(--color-background);
-  color: var(--color-text-secondary);
   display: block;
   padding-top: 1px;
   border-radius: 5px;
@@ -826,13 +825,18 @@ p {
     font-size: 10pt;
   }
 	.internal-link {
-        font-size: 10px;
+        font-size: 10pt;
     }
 }
 
 #Sectionlist .section {
   color: var(--color-text-header);
   background-color: var(--color-primary)/*var(--color-primary-light)*/;
+}
+
+#Sectionlist .section #dorf {
+   filter: invert(100%);
+  -webkit-filter: invert(100%);
 }
 
 #Sectionlist .header {
@@ -1059,11 +1063,6 @@ p {
   animation: glow 2s ease-out;
 }
 
-@keyframes glow {
-  to {
-      text-shadow: 0 0 10px red;
-  }
-}
 .item a {
   text-decoration: none;
   color: var(--color-primary)/*var(--color-text-primary)*/;
@@ -1100,12 +1099,13 @@ p {
 }
 
 #Sectionlist .hi:hover {
-  background-color: var(--color-background-2);
+  background-color: #927b9e;
   color: var(--color-text-list);
 }
 
+
 #Sectionlist .lo:hover {
-  background-color: var(--color-background-2);
+  background-color: #927b9e;
   color: var(--color-text-list);
 }
 
@@ -1343,6 +1343,13 @@ header td {
 
 .navButt #homeIcon img{
   height: 87%;
+}
+#hamburgerIcon{
+  transform: scale(1.8);
+  margin-left: 10px;
+}
+#courseVersionDropDown{
+  vertical-align: top;
 }
 
 
@@ -5366,6 +5373,40 @@ only screen and (max-device-width: 860px) {
   }
 }
 
+#darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher {
+  display:none;
+}
+
+#navBurgerIcon { 
+  display: none;
+  
+}
+@media only screen and (max-width: 320px),
+only screen and (max-device-width: 320px) {
+
+  #navBurgerIcon { 
+    display: block;
+  }
+ 
+  #navBurgerBox{
+    display: block;
+    position: absolute;
+    top: 50px;
+    width: 32px;
+    padding: 10px;
+    height: 100px;
+    background-color: var(--color-primary-2);
+  }
+ 
+  #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher, #homeBurger, #darkModeBurger,#goBackBurger {
+    display: block;
+  }
+
+ #homeIcon, #upIcon, #theme-toggle{
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 790px),
 only screen and (max-device-width: 790px) {
   table.navheader td.files {
@@ -7002,12 +7043,14 @@ only screen and (max-device-width: 320px) {
   border: solid var(--color-border-4);
   background-color: var(--color-background-4);
   box-shadow: 0px 5px 10px grey;
-  z-index: 12000;
+  z-index: 8000;
   display: none;
   left: 0;
   right: 0;
   top: 5%;
   position: fixed;
+  overflow-y: visible;
+  max-height: 100%;
 }
 
 .fileView{
@@ -8695,6 +8738,18 @@ border: none !important;
   filter: invert(80%);
   -webkit-filter: invert(100%);   
 }
-/* }  /* END of "@media (prefers-color-scheme: light)" */
 
+.iconColorInDarkMode{
+  cursor: pointer;
+  filter: invert(80%);
+  -webkit-filter: invert(20%);
+}
+
+.DateColorInDarkMode{
+  cursor: pointer;
+  filter: invert(80%);
+  -webkit-filter: invert(0%);
+}
+/* }  /* END of "@media (prefers-color-scheme: light)" */
 /* White Theme code END */
+

@@ -951,10 +951,10 @@ function createboxmenu(contentid, boxid, type) {
 			var kind = 2;
 		}
 
-		// Add resize, reset and edit buttons
-		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Maximize box' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
-		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Minimize box' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
+		// Add zoom in, zoom out and reset buttons.
+		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Zoom in' onclick='zoomText(" + boxid + ", 3);'><img src='../Shared/icons/MaxButton.svg' /></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Zoom out' onclick='zoomText(" + boxid + ", -3);'><img src='../Shared/icons/MinButton.svg' /></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset zoom' onclick='resetText(" + boxid + ");'><img src='../Shared/icons/ResetButton.svg' /></div>";
     
 
 		// Show the copy to clipboard button for code views only
@@ -2644,6 +2644,41 @@ function getTotalBoxes(template) {
 		totalboxes = 1;
 	}
 	return totalBoxes;
+}
+
+//-----------------------------------------------------------------------------
+// zoomText: Adding zooming functionality for text content of the boxes.
+//			Is called by zoomIn & zoomOut buttons. 
+//			Increment refers to the increment in font size.
+//			Setting increment to a negative value allows for making the text smaller.
+//-----------------------------------------------------------------------------
+
+function zoomText(boxid, increment)
+{
+	//Upper & lower limit of how small text can get.
+	var upperLimit = 21;
+	var lowerLimit = 6; 
+
+	var fontSize = parseInt(document.getElementById("box" + boxid).style.fontSize);
+	
+	if (increment > 0 && fontSize < upperLimit || increment < 0 && fontSize > lowerLimit){
+
+		fontSize = fontSize + increment; 
+
+		document.getElementById("box" + boxid).style.fontSize = fontSize + "px";
+	
+	}
+	
+}
+
+//-----------------------------------------------------------------------------
+// resetText: Resets the text size to the default value. (9px)
+//-----------------------------------------------------------------------------
+function resetText(boxid)
+{
+
+document.getElementById("box" + boxid).style.fontSize = "9px";
+
 }
 
 //-----------------------------------------------------------------------------
@@ -4598,6 +4633,7 @@ $(document).mouseup(function (e) {
 		(!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
 	{
 		closeWindows();
+		hideIframe();
 	}
 });
 var bool;
@@ -4691,9 +4727,11 @@ function showIframe(boxid,kind) {
 }
 function hideIframe()
 {
-	document.querySelector(".previewWindow").style.display = "none";
-	document.querySelector(".previewWindowContainer").style.display = "none";
-	location.reload();
+	if (document.querySelector(".previewWindowContainer").style.display != "none") {
+		document.querySelector(".previewWindow").style.display = "none";
+		document.querySelector(".previewWindowContainer").style.display = "none";
+		location.reload();
+	}
 }
 
 function hideDescription() {
