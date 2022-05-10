@@ -2617,8 +2617,3 @@ function contribution_addEventListeners()
 
 console.error
 
-
-    }
-  }
-}
-console.error
