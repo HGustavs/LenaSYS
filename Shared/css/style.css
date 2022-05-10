@@ -5364,6 +5364,11 @@ only screen and (max-device-width: 860px) {
     display: none;
   }
 }
+
+#darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher {
+  display:none;
+}
+
 #navBurgerIcon { 
   display: none;
   
@@ -5385,7 +5390,7 @@ only screen and (max-device-width: 320px) {
     background-color: var(--color-primary-2);
   }
  
-#homeBurger, #darkModeBurger,#goBackBurger {
+  #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher, #homeBurger, #darkModeBurger,#goBackBurger {
     display: block;
   }
 
