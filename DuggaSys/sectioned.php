@@ -147,6 +147,7 @@
 			<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
 				<input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
 				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; margin-right: 55px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("showItems");'>
 			</div>
 		
 			<!-- end hide button -->
