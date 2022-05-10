@@ -22,6 +22,39 @@ let width = screen.width;
 var time;
 var lid;
 
+/*navburger*/
+function navBurgerChange(operation = 'click') {
+
+  var x = document.getElementById("navBurgerBox");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+
+}
+
+//function to change darkmode from burger menu
+function burgerToggleDarkmode(operation = 'click'){
+  const storedTheme = localStorage.getItem('themeBlack');
+    if(storedTheme){
+        themeStylesheet.href = storedTheme;
+    }
+    const themeToggle = document.getElementById('theme-toggle');
+    // if it's light -> go dark
+    if(themeStylesheet.href.includes('blackTheme')){
+      themeStylesheet.href = "../Shared/css/whiteTheme.css";
+      localStorage.setItem('themeBlack',themeStylesheet.href)
+    } 
+    else if(themeStylesheet.href.includes('whiteTheme')) {
+      // if it's dark -> go light
+      themeStylesheet.href = "../Shared/css/blackTheme.css";
+      localStorage.setItem('themeBlack',themeStylesheet.href)
+    }
+  
+  //const themeToggle = document.getElementById('theme-toggle');
+  //themeToggle.addEventListener('click', () => {});
+}
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
   idCounter: 0,
@@ -36,6 +69,9 @@ function setup() {
   // Disable ghost button when page is loaded
   document.querySelector('#hideElement').disabled = true;
   document.querySelector('#hideElement').style.opacity = 0.7;
+  //   Disable eye button when page is loaded
+  document.querySelector('#showElements').disabled = true;
+  document.querySelector('#showElements').style.opacity = 0.7;
   AJAXService("get", {}, "SECTION");
 }
 
@@ -307,6 +343,16 @@ function showEditVersion() {
   $("#editCourseVersion").css("display", "flex");
 }
 
+// Delete items marked as deleted when page is unloaded
+window.addEventListener('beforeunload', function(event) {
+  var deletedElements = document.querySelectorAll(".deleted")
+  for(i = 0; i < deletedElements.length; i++) {
+    var lid = deletedElements[i].id.match(/\d+/)[0];
+    AJAXService("DEL", {
+      lid: lid
+    }, "SECTION");
+  }
+});
 
 // Close the "edit course version" and "new course version" windows by pressing the ESC button
 document.addEventListener('keydown', function (event) {
@@ -363,6 +409,9 @@ function confirmBox(operation, item = null) {
     $("#sectionHideConfirmBox").css("display", "none");
     $("#noMaterialConfirmBox").css("display", "none");
   }
+  else if (operation == "showItems"&& !hideItemList.length == 0) {
+    showMarkedItems(hideItemList);
+  }
 }
 
 // Creates an array over all checked items
@@ -376,7 +425,6 @@ function markedItems(item = null){
     if(kind == "section" || kind == "moment"){
       var itemInSection = true;
       var sectionStart = false;
-      
       $("#Sectionlist").find(".item").each(function (i) {
         var tempItem = $(this).attr('value');
         if(itemInSection && sectionStart){
@@ -426,11 +474,13 @@ function markedItems(item = null){
       // Show ghost button when checkbox is checked
       document.querySelector('#hideElement').disabled = false;
       document.querySelector('#hideElement').style.opacity = 1;
+      showVisibilityIcons();
     } 
     if (hideItemList.length == 0) {
       // Disable ghost button when no checkboxes is checked
       document.querySelector('#hideElement').disabled = true;
       document.querySelector('#hideElement').style.opacity = 0.7;
+      hideVisibilityIcons();
 
       for(var j = 0; j < subItems.length; j++){
         hideItemList.push(subItems[j]);
@@ -442,6 +492,34 @@ function markedItems(item = null){
 
     } 
     console.log(hideItemList);
+}
+
+ // Shows ghost and eye button 
+function showVisibilityIcons(){
+ document.querySelector('#hideElement').disabled = false;
+ document.querySelector('#hideElement').style.opacity = 1;
+ document.querySelector('#showElements').disabled = false;
+ document.querySelector('#showElements').style.opacity = 1;
+}
+//Disables ghost and eye button
+function hideVisibilityIcons(){
+    document.querySelector('#hideElement').disabled = true;
+    document.querySelector('#hideElement').style.opacity = 0.7;
+    document.querySelector('#showElements').disabled = true;
+    document.querySelector('#showElements').style.opacity = 0.7;
+}
+
+//Changes visibility of hidden items
+function showMarkedItems(){
+  hideVisibilityIcons();
+    for (i=0; i < hideItemList.length; i++) {  
+    var lid = hideItemList[i];
+        AJAXService("PUBLIC", {
+          lid: lid
+        }, "SECTION");
+        $("#editSection").css("display", "none");
+      }
+      hideItemList= [];
 }
 
 // Clear array of checked items - used in fabbuttons and in save to clear array. 
@@ -550,8 +628,12 @@ function prepareItem() {
 
 function deleteItem(item_lid = null) { 
   lid = item_lid ? item_lid : $("#lid").val();
-  document.getElementById("lid" + lid).style.display = "none";
+
   alert("Press recycle button within 60 seconds to undo the deletion");
+  item = document.getElementById("lid" + lid);
+  item.style.display = "none";
+  item.classList.add("deleted");
+
   document.querySelector("#undoButton").style.display = "block";
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
   time = setTimeout(() => {
@@ -566,9 +648,11 @@ function deleteItem(item_lid = null) {
 // Cancel deletion
 function cancelDelete() {
   clearTimeout(time);
-  document.getElementById("lid" + lid).style.display = "block";
+  var deletedElements = document.querySelectorAll(".deleted")
+  for(i = 0; i < deletedElements.length; i++) { 
+    deletedElements[i].classList.remove("deleted");
+  }
   location.reload();
-  document.querySelector("#undoButton").style.display = "none";
 }
 
 //----------------------------------------------------------------------------------
@@ -577,8 +661,9 @@ function cancelDelete() {
 
 function hideMarkedItems() {
   // Since no boxes are checked ghost button is disabled
-  document.querySelector('#hideElement').disabled = true;
-  document.querySelector('#hideElement').style.opacity = 0.7;
+  hideVisibilityIcons();
+  document.querySelector('#hideElement').disabled = true;     //can be removed
+  document.querySelector('#hideElement').style.opacity = 0.7; //can be removed
   for (i=0; i < hideItemList.length; i++) {  
     var lid = hideItemList[i];
       AJAXService("HIDDEN", {
@@ -973,7 +1058,7 @@ function returnedSection(data) {
 
           if (itemKind === 3) {
             str += "<td class='LightBox" + hideState + "'>";
-            str += "<div ><img alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
+            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
             str += "<td class='LightBoxFilled" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
@@ -1025,7 +1110,7 @@ function returnedSection(data) {
 
         } else if (itemKind === 3) {
           if (item['highscoremode'] != 0 && itemKind == 3) {
-            str += `<td style='width:20px;'><img style=';' title='Highscore' src='../Shared/icons/top10.png' 
+            str += `<td style='width:20px;'><img class='iconColorInDarkMode' style=';' title='Highscore' src='../Shared/icons/top10.png' 
             onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
           }
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
@@ -1168,7 +1253,7 @@ function returnedSection(data) {
           var dateFormat = "00-00";
 
           str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;overflow:hidden;'>"+
-          "<div class='' style='white-space:nowrap;'>";
+          "<div class='DateColorInDarkMode' style='white-space:nowrap;'>";
 
           if (dl[1] == timeFilterAndFormat) {
             str += "<div class='dateField'>";
@@ -1417,9 +1502,7 @@ function showMOTD(){
   if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){
     if(motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
       document.getElementById("motdArea").style.display = "none";
-      $("#messagedialog").css("display", "none");
     }else{
-      $("#messagedialog").css("display", "none");
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
       document.getElementById("FABStatic2").style.top = "auto";
@@ -1428,8 +1511,6 @@ function showMOTD(){
 }
 
 function DisplayMSGofTDY() {
-  // document.getElementById("messagedialog").style.display = "block";
-  $("#messagedialog").css("display", "none");
   document.getElementById("motdArea").style.display = "block";
   document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
   document.getElementById("FABStatic2").style.top = "auto";
@@ -1469,7 +1550,6 @@ function closeMOTD(){
   }else{
     setMOTDCookie();
   }
- $("#messagedialog").css("display", "content");
   document.getElementById('motdArea').style.display='none';
   document.getElementById("FABStatic2").style.top = "auto";
 }
@@ -2537,7 +2617,15 @@ function validateVersionName(versionName, dialogid) {
   var Name = /^[A-Za-z0-9_ \-.]+$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
-  var val = document.getElementById("versname").value;
+  
+  if (versionName === 'versname') {
+    var Name = /^[A-Z]{2}[0-9]{2}$/;
+    var val = document.getElementById("versname").value;
+  }
+  if (versionName === 'eversname') {
+    var Name = /^[A-Z]{2}[0-9]{2}$/;
+    var val = document.getElementById("eversname").value;
+  }
 
   //if versionname is 2 capital letters, 2 numbers
   if (val.match(Name)) {
