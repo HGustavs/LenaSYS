@@ -77,26 +77,21 @@ function returnedDugga(data)
     //temporary solution to get the correct link in the receipt
     //updateReceiptText(data['duggaTitle'], createUrl(data['hash']), data['hash'], data['hashpwd']);
   
-    if (data.param.length!=0){
+    if (data.param.length!=0 ||){
         var param = JSON.parse(data.param);
         //document.getElementById("assigment-instructions").innerHTML = param.instructions;
         //checking if the user is a teacher or if there's no variant by checking if the paramater object is empty
-        if(!(Object.keys(param).length === 0)){
+        if(!(Object.keys(param).length === 0) && data.isTeacher == 0){
             // getting the diagram types allowed and calling a function in diagram.js where the values are now set <-- UML functionality start
             document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type;
+            // getting the error checker allowed or not
+            document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(param.errorActive);
             // Getting the instructions to the side of the dugga -currently using filelink which is wrong
             window.parent.getInstructions(param.filelink);
         }
         else{
             var diagramType={ER:true,UML:true};
             document.getElementById("diagram-iframe").contentWindow.diagramType = diagramType;
-        }
-         //checking if the user is not a teacher 
-        if (data.isTeacher == 0){
-            // getting the error checker allowed or not
-            document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(param.errorActive);
-        }
-        else{
             document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(true);
         }
         document.getElementById("diagram-iframe").contentWindow.showDiagramTypes();//<-- UML functionality end
