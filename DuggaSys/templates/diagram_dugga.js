@@ -74,7 +74,7 @@ function returnedDugga(data)
         duggaData = data;
     console.log(duggaData);
     //var textBox = document.getElementById('submission-receipt');
-    $('#submission-receipt').html(`${duggaData['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(duggaData['hash'])}'> ${createUrl(duggaData['hash'])}` + `</a> </br></br> Hash: </br> ${duggaData['hash']}</br></br>Hash password:</br>${duggaData['hashpwd']}`);
+    //$('#submission-receipt').html(`${duggaData['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(duggaData['hash'])}'> ${createUrl(duggaData['hash'])}` + `</a> </br></br> Hash: </br> ${duggaData['hash']}</br></br>Hash password:</br>${duggaData['hashpwd']}`);
    
     //General idea below - create one method in dugga.js rather than changing recipt box in each dugga type. Currently not working.
     //updateReceiptText(response['duggaTitle'], createUrl(response['hash']), response['hash'], response['hashpwd']);
