@@ -463,7 +463,13 @@ function returnedCourse(data)
         		str += "</span>";
       		} else {
         		str += "<div class='ellipsis'>";
-				str += `<span style='margin-right:15px;'><a class='${textStyle}' href='sectioned.php?courseid=${item['cid']}&coursename=${item['coursename']}&coursevers=${item['activeversion']}' title='\"${item['coursename']}\" [${item['coursecode']}]'>${item['coursename']}</a></span>`;
+
+				if(item['registered'] == true || uname=="Guest") {
+          			str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + item['coursename'] + "</a></span>";
+        		}else{
+          			str += "<a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode']+ "] '>" + item['coursename'] + "</a></span>";
+        		}
+
         		str += "</div>";
 			}
 
