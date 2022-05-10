@@ -8276,3 +8276,6 @@ textarea#filecont {
   border-top: 2px solid var(--color-border-list); 
 }
 
+#afterButtonIcon {
+  -webkit-touch-callout: none;
+}

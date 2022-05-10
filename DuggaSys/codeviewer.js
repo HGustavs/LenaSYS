@@ -210,7 +210,6 @@ function returned(data)
 		if (retData['exampleno'] == sectionData['entries'].length || retData['after'].length == 0) {
 			document.querySelector("#afterbutton").style.opacity = "0.4";
 			document.querySelector("#afterbutton").style.pointerEvents = "none";
-			document.querySelector("#afterbutton").style.webkitTouchCallout='none';
 		}
 	} else if (retData['before'].length == 0 && retData['after'].length == 0) {
 		document.querySelector("#beforebutton").style.opacity = "0.4";
