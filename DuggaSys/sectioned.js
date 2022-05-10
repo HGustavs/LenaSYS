@@ -21,6 +21,7 @@ var compareWeek = -604800000;
 let width = screen.width;
 var time;
 var lid;
+
 /*navburger*/
 function navBurgerChange(operation = 'click') {
 
@@ -30,6 +31,29 @@ function navBurgerChange(operation = 'click') {
   } else {
     x.style.display = "block";
   }
+
+}
+
+//function to change darkmode from burger menu
+function burgerToggleDarkmode(operation = 'click'){
+  const storedTheme = localStorage.getItem('themeBlack');
+    if(storedTheme){
+        themeStylesheet.href = storedTheme;
+    }
+    const themeToggle = document.getElementById('theme-toggle');
+    // if it's light -> go dark
+    if(themeStylesheet.href.includes('blackTheme')){
+      themeStylesheet.href = "../Shared/css/whiteTheme.css";
+      localStorage.setItem('themeBlack',themeStylesheet.href)
+    } 
+    else if(themeStylesheet.href.includes('whiteTheme')) {
+      // if it's dark -> go light
+      themeStylesheet.href = "../Shared/css/blackTheme.css";
+      localStorage.setItem('themeBlack',themeStylesheet.href)
+    }
+  
+  //const themeToggle = document.getElementById('theme-toggle');
+  //themeToggle.addEventListener('click', () => {});
 }
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
