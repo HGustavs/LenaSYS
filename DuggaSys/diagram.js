@@ -412,7 +412,7 @@ class StateMachine
 
                         if (Array.isArray(changeType)){
                             for (var index = 0; index < changeType.length && isSoft; index++) {
-                                isSoft = cha<ngeType[index].isSoft;
+                                isSoft = changeType[index].isSoft;
                             }
                             var changeTypes = changeType;
                         }else {
@@ -8412,7 +8412,7 @@ function downloadFile(filename, dataObj)
 /**
  * @description Prepares data for file creation, retrieves history and initialState
  */
-function saveDiagram()
+function exportWithHistory()
 {
 
     displayMessage(messageTypes.SUCCESS, "Generating the save file..");
@@ -8432,7 +8432,7 @@ function saveDiagram()
 /**
  * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
  */
-function exportDiagram()
+function exportWithoutHistory()
 {
     displayMessage(messageTypes.SUCCESS, "Generating the export file..");
     var objToSave = {
