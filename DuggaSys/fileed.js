@@ -889,6 +889,21 @@ function newUpdateFile(fileUrl, fileName, fileKind){
 }
 
 // ---------------------------------------------------
+// Drag and drop upload
+//----------------------------------------------------
+function uploadDroppedFile(){
+    $( document ).ready(function() {
+        // Wait for div to load, otherwise we will activate button too fast!
+        var checkExist = setInterval(function() {
+            if ($('#uploadbuttonname').length) {
+               clearInterval(checkExist);
+               document.getElementById("uploadbuttonname").childNodes[0].click();
+            }
+         }, 100);
+    });
+}
+
+// ---------------------------------------------------
 // Event listeners for fab button
 //----------------------------------------------------
 

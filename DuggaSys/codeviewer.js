@@ -391,6 +391,10 @@ function returned(data)
 			}
 		}
 	}
+	// Add all drop zones
+	if (retData['writeaccess'] == "w") {
+		initFileDropZones();
+	}	
 
 	var ranges = getBlockRanges(allBlocks);
 	for (var i = 0; i < Object.keys(ranges).length; i++) {
@@ -434,6 +438,101 @@ function returnedTitle(data) {
 	titleSpan.innerHTML = data.title;
 	fillBurger();
 }
+
+//------------------------
+// Drag and drop
+//------------------------
+
+function handleFiles(files, boxnumber) {	
+	var boxcontent;
+	var file = files[0];
+    var reader = new FileReader();
+	var filetype = file.name.split('.').pop();
+
+	// Add supported files in the array
+	const supportedFiles = ["js", "php", "html", "txt", "java", "sr", "sql", "md"];
+	
+	// Go trough supported files
+	if (supportedFiles.includes(filetype)) {
+		if(filetype == "txt") {
+			boxcontent = "Document";
+		}
+		else {
+			boxcontent = "Code";
+		}
+
+		// This command is important to activate reader
+		console.log(reader.readAsText(file));
+	} else {
+		alert("FILETYPE [" + filetype + "] NOT SUPPORTED")
+	}
+
+    reader.onload = event => {
+		const iframe = document.getElementById("iframeFileed").contentWindow;
+		showHiddenIframe();
+
+		document.querySelector("#iframeFileed").addEventListener( "load", function(e) {
+			// IFrame querys
+			iframe.showFilePopUp('GFILE');
+			iframe.document.querySelector('#uploadedfile').files = files;
+			iframe.uploadDroppedFile();
+
+			// Lastly, apply the new file to that of the code viewer
+			updateContent(file.name, boxcontent, boxnumber);
+		}, { once: true });
+    };
+}
+
+function handleDrop(e)
+{
+	let dt = e.dataTransfer;
+	let files = dt.files;
+
+	// Get correct box number
+	var boxnumber = parseInt(e["currentTarget"]["id"].replace("box",""));
+
+	handleFiles(files, boxnumber);
+}
+
+function initFileDropZones()
+{
+	for(i = 1; i <= retData["box"].length; i++) {
+		dropArea = document.getElementById("box" + i);
+
+		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => 
+			{
+			  dropArea.addEventListener(eventName, preventDefaults, false);
+			})
+	
+			;['dragenter', 'dragover'].forEach(eventName => 
+			{
+			  dropArea.addEventListener(eventName, highlight, false)
+			})
+	
+			;['dragleave', 'drop'].forEach(eventName => 
+			{
+			  dropArea.addEventListener(eventName, unhighlight, false)
+			})
+	
+			dropArea.addEventListener('drop', handleDrop, false);
+	}
+}
+
+function preventDefaults (e)
+{
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+function highlight(e) 
+{
+	e.target.closest(".box").classList.add('highlight');
+}
+
+function unhighlight(e) 
+{
+	e.target.closest(".box").classList.remove('highlight');
+} 
 
 //---------------------------------------------------------------------------------
 // This functions convert tabs to "&#9;""
@@ -804,9 +903,16 @@ function editImpRows(editType)
 // updateContent: Updates the box if changes has been made
 //----------------------------------------------------------------------------------
 
-function updateContent() 
+function updateContent(file, content, boxnumber) 
 {
-	var box = retData['box'][openBoxID - 1];
+	// Check if there is a box number
+	// Only true if function is called by drag and drop
+	if(boxnumber) {
+		var box = retData['box'][boxnumber - 1];;
+	} else {
+		var box = retData['box'][openBoxID - 1];
+	}
+	
 	var useBoxContent = true;
 
 	// Default to using openbox data and use regular retData as fallback incase it's not open
@@ -815,15 +921,26 @@ function updateContent()
 		box = retData['box'][retData['box'].length - 1];
 	}
 
+	// Check if a drag and drop instance is created
+	if(file != null && box != null){
+		filename = file;
+		boxtitle = file;
+		boxcontent = content;
+	}
+
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
 	// TODO: Handle null values
 	if (useBoxContent) {
 		if (box[1] != document.querySelector("#boxcontent").value || box[3] != document.querySelector("#wordlist").value || box[4] != document.querySelector("#boxtitle").value || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
 			try {
-				var boxtitle = document.querySelector("#boxtitle").value;
-				var boxcontent = $("#boxcontent option:selected").val();
+				if(file == null)
+					var boxtitle = document.querySelector("#boxtitle").value;
+				if(content == null)
+					var boxcontent = $("#boxcontent option:selected").val();
+				if(file == null)
+					var filename = $("#filename option:selected").val();
+				
 				var wordlist = document.querySelector("#wordlist").value;
-				var filename = $("#filename option:selected").val();
 				var fontsize = $("#fontsize option:selected").val();
 				var exampleid = querystring['exampleid'];
 				var boxid = box[0];
@@ -4865,6 +4982,7 @@ function showBox(id) {
 	});
 }
 
+// Iframe used for editing file 
 function showIframe(boxid,kind) {
 	    var fileName = retData['box'][boxid - 1][5]+'';
 		var filePath = 'fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename=';
@@ -4872,6 +4990,15 @@ function showIframe(boxid,kind) {
 		document.querySelector(".previewWindowContainer").style.display = "block";
 		$("#iframeFileed").attr('src', filePath+fileName);
 }
+
+// Iframe used for drag and drop
+function showHiddenIframe() {
+    var filePath = 'fileed.php?courseid=' + courseid + '&coursevers=' + cvers;
+    document.querySelector(".previewWindow").style.display = "block";
+    document.querySelector(".previewWindowContainer").style.display = "block";
+    $("#iframeFileed").attr('src', filePath);
+}
+
 function hideIframe()
 {
 	if (document.querySelector(".previewWindowContainer").style.display != "none") {

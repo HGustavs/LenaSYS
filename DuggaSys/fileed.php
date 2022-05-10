@@ -210,7 +210,7 @@ $js = array(
                 <div class='cursorPointer' onclick='closeAddFile();'>x</div>
             </div>
            <div class="addNewFile">
-                <form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
+                <form id="uploadfile" enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
                 <div>
                     <input type='hidden' id='courseid' name='courseid' value='Toddler'/>
                     <input type='hidden' id='coursevers' name='coursevers' value='Toddler'/>
