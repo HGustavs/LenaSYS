@@ -60,6 +60,8 @@ if(checklogin() || git_checklogin()) // methods needing you to be logged in
 if(strcmp($opt,"get")==0) {
 	if(checklogin() && isSuperUser($_SESSION['uid'])) {
 		
+		$startdate = '2019-04-01';
+		$enddate = '2019-06-10';
 		
 		//Dynamically loads PDO by path name
 		$dbPath=getOP('dbPath');
@@ -71,7 +73,9 @@ if(strcmp($opt,"get")==0) {
 		}
 
 		$gituser = getOP('userid');
-		$query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2019-03-31" and blamedate<"2020-01-01" union select author as usr from event where eventtime>"2019-03-31" and eventtime<"2020-01-01" union select author as usr from issue where issuetime>"2019-03-31" and issuetime<"2019-01-08") order by usr;');
+		$query = $log_db->prepare('SELECT distinct(usr) from ( select blameuser as usr from blame where blamedate>:startDate and blamedate<:endDate union select author as usr from event where eventtime>:startDate and eventtime<:endDate union select author as usr from issue where issuetime>:startDate and issuetime<:endDate) order by usr;');
+		$query->bindParam(':startDate', $startdate);
+		$query->bindParam(':endDate', $enddate);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries\n".$error[2];
@@ -99,8 +103,8 @@ if(strcmp($opt,"get")==0) {
 		$lastname="UNK";
 		$firstname="UNK";
 	}
-
-	$startweek = strtotime('2019-04-01');									// First monday in january
+	
+	$startweek = strtotime($startdate);									// First monday in january
 	$currentweek=$startweek;
 	$currentweekend=strtotime("+1 week",$currentweek);
 	$weekno=1;
@@ -193,7 +197,9 @@ if(strcmp($opt,"get")==0) {
   $commitgrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT COUNT(*) as rowk, author FROM commitgit WHERE thedate>"2019-03-31" AND thedate<"2020-01-01" GROUP BY author ORDER BY rowk DESC;');
+	$query = $log_db->prepare('SELECT COUNT(*) as rowk, author FROM commitgit WHERE thedate>:startDate AND thedate<:endDate GROUP BY author ORDER BY rowk DESC;');
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -222,7 +228,9 @@ if(strcmp($opt,"get")==0) {
   $rowgrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT sum(rowcnt) as rowk, blameuser FROM Bfile,Blame WHERE Blame.fileid=Bfile.id and blamedate>"2019-03-31" and blamedate<"2020-01-01" group by blameuser order by rowk desc;');
+	$query = $log_db->prepare('SELECT sum(rowcnt) as rowk, blameuser FROM Bfile,Blame WHERE Blame.fileid=Bfile.id and blamedate>:startDate and blamedate<:endDate group by blameuser order by rowk desc;');
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -251,7 +259,9 @@ if(strcmp($opt,"get")==0) {
   $eventgrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2019-03-31" AND  eventtime<"2020-01-01" and eventtime!="undefined" AND kind != "comment" group by author order by rowk desc;');
+	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>:startDate AND  eventtime<:endDate and eventtime!="undefined" AND kind != "comment" group by author order by rowk desc;');
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -280,7 +290,9 @@ if(strcmp($opt,"get")==0) {
   $commentgrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2019-03-31" and eventtime!="undefined" and eventtime<"2020-01-01" and kind="comment" group by author order by rowk desc;');
+	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>:startDate and eventtime!="undefined" and eventtime<:endDate and kind="comment" group by author order by rowk desc;');
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -309,7 +321,9 @@ if(strcmp($opt,"get")==0) {
   $issuegrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM issue where issuetime>"2019-03-31" and issuetime<"2020-01-01" and issuetime!="undefined" group by author order by rowk desc;');
+	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM issue where issuetime>:startDate and issuetime<:endDate and issuetime!="undefined" group by author order by rowk desc;');
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -463,9 +477,14 @@ if(strcmp($opt,"get")==0) {
 	
 	$hourlyevents = array();
 
+	
+	
+
 	// Events and issues by the user today
-	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>"2019-03-31" and eventtime!="undefined" and eventtime<"2020-01-01" AND kind IN ("comment", "commit");');
+	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>:startDate and eventtime!="undefined" and eventtime<:endDate AND kind IN ("comment", "commit");');
 	$query->bindParam(':gituser', $gituser);
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries\n".$error[2];
@@ -479,8 +498,10 @@ if(strcmp($opt,"get")==0) {
 			array_push($hourlyevents, $event);
 	}
 	$commits = array();
-	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>"2019-03-31" and issuetime!="undefined" and issuetime<"2020-01-01";');
+	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>:startDate and issuetime!="undefined" and issuetime<:endDate;');
 	$query->bindParam(':gituser', $gituser);
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -494,12 +515,14 @@ if(strcmp($opt,"get")==0) {
 		array_push($hourlyevents, $issue);
 	}
 
-//The following three queries three foreach loops and one for loop, all store how many commits Comments LOCs 
+	//The following three queries three foreach loops and one for loop, all store how many commits Comments LOCs 
 	//and Events a user has done every day during the course.
 
 	//Events
-	$query = $log_db->prepare('SELECT eventtime FROM event WHERE author=:gituser AND eventtime>"2019-04-01" AND eventtime<"2019-06-10" AND kind!="comment" ORDER BY eventtime');
+	$query = $log_db->prepare('SELECT eventtime FROM event WHERE author=:gituser AND eventtime>:startDate AND eventtime<:endDate AND kind!="comment" ORDER BY eventtime');
 	$query->bindParam(':gituser', $gituser);
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -513,8 +536,10 @@ if(strcmp($opt,"get")==0) {
 	}
 
 	//Comments
-	$query = $log_db->prepare('SELECT eventtime FROM event WHERE author=:gituser AND eventtime>"2019-04-01" AND eventtime<"2019-06-10" AND kind="comment" ORDER BY eventtime');
+	$query = $log_db->prepare('SELECT eventtime FROM event WHERE author=:gituser AND eventtime>:startDate AND eventtime<:endDate AND kind="comment" ORDER BY eventtime');
 	$query->bindParam(':gituser', $gituser);
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -528,8 +553,10 @@ if(strcmp($opt,"get")==0) {
 	}
 
 	//Commits and LOC
-	$query = $log_db->prepare('SELECT blamedate,rowcnt FROM Bfile,Blame where Blame.fileid=Bfile.id AND blameuser=:gituser AND blamedate>"2019-04-01" AND blamedate<"2019-06-10" ORDER BY blamedate ');
+	$query = $log_db->prepare('SELECT blamedate,rowcnt FROM Bfile,Blame where Blame.fileid=Bfile.id AND blameuser=:gituser AND blamedate>:startDate AND blamedate<:endDate ORDER BY blamedate ');
 	$query->bindParam(':gituser', $gituser);
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
