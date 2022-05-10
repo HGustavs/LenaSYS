@@ -47,7 +47,7 @@
 			//---------------------------------------------------------------------
 
 			if($noup!='NONE') {
-				echo "<td class='navButt' id='back' title='Back' onclick='navigateToUrl(document.getElementById(\"upIcon\").href)'>";
+				echo "<td class='navButt' id='back' title='Back'>";
 			}
 
 			if($noup=='CONTRIBUTION'){
