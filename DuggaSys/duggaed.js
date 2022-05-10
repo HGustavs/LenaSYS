@@ -217,6 +217,8 @@ function newVariant() {
 	document.getElementById('variantSearch').value = '';
 	document.getElementById('filelink').value = '';
 	document.getElementById('filelink').placeholder = 'File link';
+	document.getElementById('gFilelink').value = '';
+	document.getElementById('gFilelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
 	document.getElementById('extraparam').placeholder = 'Extra dugga parameters in valid JSON';
 	document.getElementById('variantparameterText').value = '';
@@ -281,6 +283,12 @@ function selectVariant(vid, el) {
   				else if(result == "filelink"){
   					document.getElementById('filelink').value = obj[result];
   				}
+				  if(result == "gType"){
+					document.getElementById('gType').value = obj[result];
+				}
+				else if(result == "gFilelink"){
+					document.getElementById('gFilelink').value = obj[result];
+				}
   				else if(result == "extraparam"){
   					document.getElementById('extraparam').value = obj[result];
   				}
@@ -316,6 +324,8 @@ function selectVariant(vid, el) {
 				// Hide information if it is deselected.
 				document.getElementById('type').value = "";
 				document.getElementById('filelink').value = "";
+				document.getElementById('gType').value = "";
+				document.getElementById('gFilelink').value = "";
 				document.getElementById('extraparam').value = "";
 		}
 
@@ -480,6 +490,8 @@ function createJSONString(formData) {
 	return JSON.stringify({
 		"type":formData[0].value,
 		"filelink":formData[1].value,
+		"gType":formData[2].value,
+		"gFilelink":formData[3].value,
 		"diagram_File":$("#file option:selected").val(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
@@ -509,6 +521,12 @@ function createJSONFormData(){
       }
       else if(result == "filelink"){
         document.getElementById('filelink').value = obj[result];
+      }
+	  else if(result == "gType"){
+        document.getElementById('gType').value = obj[result];
+      }
+      else if(result == "gFilelink"){
+        document.getElementById('gFilelink').value = obj[result];
       }
       else if(result == "extraparam"){
         document.getElementById('extraparam').value = obj[result];

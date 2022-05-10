@@ -64,7 +64,9 @@
 	#vars for handling fetching of diagram instruction file name and type
 	$json = "UNK";
 	$fileName = "UNK";
+	$gFileName = "UNK";
 	$instructions = "";
+	$information = "";
 	
 	#create request to database and execute it
 	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
@@ -83,6 +85,8 @@
 			$splicedFileName=$parameterArray["diagram_File"];
 			$fileName=$parameterArray["filelink"];
 			$fileType=$parameterArray["type"];
+			$gFileName=$parameterArray["gFilelink"];
+			$gFileType=$parameterArray["gType"];
 			// for fetching file content
 			if(file_exists("../courses/global/"."$fileName"))
 			{
@@ -96,12 +100,26 @@
 			{
 				$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
 			}
+
+			if(file_exists("../courses/global/"."$gFileName"))
+			{
+				$information = file_get_contents("../courses/global/"."$gFileName");
+			}
+			else if(file_exists("../courses/".$cid."/"."$gFileName"))
+			{
+				$information = file_get_contents("../courses/".$cid."/"."$gFileName");
+			}
+			else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))
+			{
+				$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
+			}
 			//
 			$pattern = '/\s*/m';
 			$replace = '';
 			$instructions = preg_replace( $pattern, $replace,$instructions);
+			$information = preg_replace( $pattern, $replace,$information);
 			//
-			$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions]);
+			$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions, $gFileType, $gFileName, $information]);
 			$i++;
 		}
 	}
@@ -342,6 +360,9 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 			for (let index = 0; index < <?php echo json_encode($finalArray);?>.length; index++) {
 				if(<?php echo json_encode($finalArray);?>[index][2]==fileName){
 					document.getElementById("assignment_discrb").innerHTML =<?php echo json_encode($finalArray);?>[index][3];
+				}
+				if(<?php echo json_encode($finalArray);?>[index][5]==fileName){
+					document.getElementById("diagram_instructions").innerHTML =<?php echo json_encode($finalArray);?>[index][6];
 				}
 			}
 		}			

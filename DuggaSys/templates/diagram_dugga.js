@@ -91,6 +91,7 @@ function returnedDugga(data)
             document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(param.errorActive);
             // Getting the instructions to the side of the dugga -currently using filelink which is wrong
             window.parent.getInstructions(param.filelink);
+            window.parent.getInstructions(param.gFilelink);
         }
         else{
             var diagramType={ER:true,UML:true};
