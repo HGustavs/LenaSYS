@@ -2242,6 +2242,7 @@ function mouseUp(e) {
     
     for(var j = 0; j < blameLength; j++){
       var offsetRunner = offset;
+      var emptyLine = 0;
       //Adds blame string
       str += "<h3>" + commitChange[i]['blame'][j].filename + " - " + commitChange[i]['blame'][j].rowk + " lines changed </h3>";
 
@@ -2250,10 +2251,13 @@ function mouseUp(e) {
       codeLength = commitChange[i]['blame'][j].rowk;
       for(var x = 0; x < codeLength; x++){
         //console.log("index: " + i + " x: "+ x + " code length: "+ codeLength + " offset: "+ offset);
-        str += "<p><b>" + commitChange[i]['codechange'][x+offset].rowno + "</b> - " + commitChange[i]['codechange'][x+offset].code;
+        if(commitChange[i]['codechange'][x+offset].code != ""){
+          str += "<p><b>" + commitChange[i]['codechange'][x+offset].rowno + "</b> - " + commitChange[i]['codechange'][x+offset].code;
+        }else emptyLine++
         offsetRunner++;
       }
       offset = offsetRunner;
+      str+="<p><b>"+emptyLine+" / "+codeLength+" Lines were empty</b></p><br>"
       //console.log("After for "+offset);
     }
     //If a commit didn't change anything display this instead
