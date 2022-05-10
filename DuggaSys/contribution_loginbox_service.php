@@ -27,9 +27,10 @@ if(checklogin() || git_checklogin()) // methods needing you to be logged in
 {
     // nothing yet
 }
-else
-{
-    if (strcmp($opt, "checkForGitUser")==0)
+
+// does not require you to be logged in
+
+if (strcmp($opt, "checkForGitUser")==0)
 {
 	$gituser = getOP('userid');
 	$query = $log_db->prepare('select distinct(usr) from 
@@ -260,6 +261,7 @@ else if(strcmp($opt,"requestContributionUserLogin") == 0)
 	$gitpass = getOP('userpass');
 	$status = '';
 
+
 	$query = $pdo->prepare("SELECT username,uid FROM user WHERE username=:GU LIMIT 1;");
 	$query->bindParam(':GU', $gituser);
 	
@@ -340,7 +342,7 @@ else if(strcmp($opt,"requestContributionUserLogin") == 0)
 	
 	}
 }
-}
+
 
 
 die; // end of file, kill yourself

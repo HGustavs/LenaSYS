@@ -144,14 +144,13 @@ function git_logout()
   let git_username = null; // nothing entered will logout
   let git_password = null;
 
-    $.ajax({
-        url: "contribution_loginbox_service.php",
-        type: "POST",
-        data: contribution_AJAX_prepareOPTPARA("requestContributionUserLogin",{username: git_username, userpass: git_password}),
-        dataType: "json",
-        success: returned_git_user_login
+  $.ajax({
+    url: "contribution_loginbox_service.php",
+    type: "POST",
+    data: contribution_AJAX_prepareOPTPARA("requestContributionUserLogin",{username: git_username, userpass: git_password}),
+    dataType: "json",
+    success: returned_git_user_login
     });
-
 
 }
 
