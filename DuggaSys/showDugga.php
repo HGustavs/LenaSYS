@@ -425,12 +425,15 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 			</div>
 			<div id='receiptInfo'></div>
 
+			<?php 
+			$receiptLink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
+			?>
     		<div id='emailPopup' style="display:block">
 				<p>Your dugga has been saved. Besure to store the hash and hash password in a safe place before submitting the dugga in canvas! <em>There is <strong>no way</strong> to restore a submission without the hash and hash password.</p>
 				<div id="submission-receipt" rows="15" cols="50" style="height: 180px;resize: none; background-color: white; border-style: solid; border-width: 1px; font-size: 13px; font-weight: bold;">
 					<?php echo $duggatitle; ?></br></br>
 					Direct link (to be submitted in canvas):</br>
-					<script type="text/javascript">createUrl(<?php echo $hash; ?>);</script></br></br>
+					<a type='link' href='<?php echo $receiptLink;?>' > <?php echo $receiptLink; ?></a></br></br>
 					Hash:</br>
 					<?php echo $hash; ?></br></br>
 					Hash password:</br>
@@ -456,7 +459,6 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	}
 
 	$_SESSION['pwdentrance'] = 0;
-
 	?>
 	
 	<!-- Timer START -->
