@@ -384,8 +384,9 @@ function markedItems(item = null){
       $("#Sectionlist").find(".item").each(function (i) {
         var tempItem = $(this).attr('value');
         if(itemInSection && sectionStart){
+          var tempDisplay = document.getElementById("lid"+tempItem).style.display;
           var tempKind = $(this).parents('tr').attr('value');
-          if(tempKind == "section" || tempKind == "moment" || tempKind == "header"){
+          if(tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")){
             itemInSection = false;
             //console.log("loop breaker: "+tempItem);
           }else{
@@ -1367,9 +1368,10 @@ function returnedSection(data) {
 
 
   }
-
-  // Hide items set to be deleted
-  hideDeleted();
+  
+  // Reset checkboxes
+  // Prevents a bug if they are checked when for example an item is deleted and the table refreshes
+  clearHideItemList();
 
   // The next 5 lines are related to collapsable menus and their state.
   getHiddenElements();
