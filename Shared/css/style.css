@@ -790,7 +790,6 @@ p {
 #Sectionlist {
   margin: 10px;
   background-color: var(--color-background);
-  color: var(--color-text-secondary);
   display: block;
   padding-top: 1px;
   border-radius: 5px;
