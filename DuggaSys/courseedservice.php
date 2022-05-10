@@ -194,8 +194,8 @@ if(checklogin()){
 						$debug="Error reading quiz\n".$error[2];
 				}else{
 						foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-							$ruery = $pdo->prepare("INSERT INTO quiz (cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) SELECT cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,:newvers as vers from quiz WHERE id = :oldid;");
-							$ruery->bindParam(':oldid', $row['id']);
+								$ruery = $pdo->prepare("INSERT INTO quiz (cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) SELECT cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,:newvers as vers from quiz WHERE id = :oldid;");
+								$ruery->bindParam(':oldid', $row['id']);
 								$ruery->bindParam(':newvers', $versid);
 								if(!$ruery->execute()) {
 									$error=$ruery->errorInfo();
