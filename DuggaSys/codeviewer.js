@@ -4598,6 +4598,7 @@ $(document).mouseup(function (e) {
 		(!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
 	{
 		closeWindows();
+		hideIframe();
 	}
 });
 var bool;
@@ -4691,9 +4692,11 @@ function showIframe(boxid,kind) {
 }
 function hideIframe()
 {
-	document.querySelector(".previewWindow").style.display = "none";
-	document.querySelector(".previewWindowContainer").style.display = "none";
-	location.reload();
+	if (document.querySelector(".previewWindowContainer").style.display != "none") {
+		document.querySelector(".previewWindow").style.display = "none";
+		document.querySelector(".previewWindowContainer").style.display = "none";
+		location.reload();
+	}
 }
 
 function hideDescription() {

@@ -560,10 +560,12 @@ function prepareItem() {
 
 function deleteItem(item_lid = null) { 
   lid = item_lid ? item_lid : $("#lid").val();
+
   alert("Press recycle button within 60 seconds to undo the deletion");
   item = document.getElementById("lid" + lid);
   item.style.display = "none";
   item.classList.add("deleted");
+
   document.querySelector("#undoButton").style.display = "block";
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
   time = setTimeout(() => {
@@ -1431,9 +1433,7 @@ function showMOTD(){
   if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){
     if(motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
       document.getElementById("motdArea").style.display = "none";
-      $("#messagedialog").css("display", "none");
     }else{
-      $("#messagedialog").css("display", "none");
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
       document.getElementById("FABStatic2").style.top = "auto";
@@ -1442,8 +1442,6 @@ function showMOTD(){
 }
 
 function DisplayMSGofTDY() {
-  // document.getElementById("messagedialog").style.display = "block";
-  $("#messagedialog").css("display", "none");
   document.getElementById("motdArea").style.display = "block";
   document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
   document.getElementById("FABStatic2").style.top = "auto";
@@ -1483,7 +1481,6 @@ function closeMOTD(){
   }else{
     setMOTDCookie();
   }
- $("#messagedialog").css("display", "content");
   document.getElementById('motdArea').style.display='none';
   document.getElementById("FABStatic2").style.top = "auto";
 }
@@ -2551,7 +2548,15 @@ function validateVersionName(versionName, dialogid) {
   var Name = /^[A-Za-z0-9_ \-.]+$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
-  var val = document.getElementById("versname").value;
+  
+  if (versionName === 'versname') {
+    var Name = /^[A-Z]{2}[0-9]{2}$/;
+    var val = document.getElementById("versname").value;
+  }
+  if (versionName === 'eversname') {
+    var Name = /^[A-Z]{2}[0-9]{2}$/;
+    var val = document.getElementById("eversname").value;
+  }
 
   //if versionname is 2 capital letters, 2 numbers
   if (val.match(Name)) {
