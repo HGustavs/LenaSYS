@@ -477,7 +477,10 @@
 #NewTabLink{
     cursor: pointer;
     filter: invert(80%);
-    -webkit-filter: invert(100%);   
+    -webkit-filter: invert(100%); 
+    display: block;
+    margin: auto;
+        
 }
 
 .bottomBorderColor{
