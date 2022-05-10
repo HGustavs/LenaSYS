@@ -360,6 +360,14 @@
 	</div>
 </div>
 <script type="text/javascript">
+	// Checks if a logout request has been made on ANY other instance
+	window.addEventListener('storage', function(event){
+		if (event.key == 'logout-event') { 
+			processLogout();
+			localStorage.removeItem("logout-event");
+		}
+	}, {once: true});
+
 		if(localStorage.getItem("ls-cookie-message")=="off"){
 			$("#cookiemsg").css("display", "none");
 		}else{
