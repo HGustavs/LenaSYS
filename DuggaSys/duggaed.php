@@ -144,7 +144,7 @@ session_start();
         </div>
 
         <div class='loginBoxbody' id='variantBody' style='width:100%; height:100%;'>
-            <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; border-bottom: #7f7f7f solid 3px; background-color: white; overflow-y: auto; overflow-x: hidden; margin-bottom: 5px; max-height: 300px; flex-shrink: 99; min-height: 100px;' ></div> <!-- A div to place the variant-table within. -->
+            <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; border-bottom: #7f7f7f solid 3px; background-color: white; overflow-y: auto; overflow-x: hidden; margin-bottom: 5px; max-height: 300px; flex-shrink: 99; min-height: 220px;' ></div> <!-- A div to place the variant-table within. -->
           <div id='editVariantDiv' style="display:flex; flex-shrink: 0;">
             <input type='hidden' id='vid' value='Toddler'/>
             <input type='hidden' id='disabled' value='0'/>
@@ -196,7 +196,9 @@ session_start();
                       <fieldset style="width:90%">
                       <!-- The json files are fetched and parsed in returnedFile() in duggaed.js -->
                         <legend>Add diagram to dugga</legend>
-                        <select id="file" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))"></select>
+                        <select id="file" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))">
+                          <option>Empty canvas</option>
+                        </select>
                       </fieldset>
                     </div>
                     <div id="errorCheck">
@@ -222,7 +224,7 @@ session_start();
                       <!-- Submissions for dugga -->
                   <div>
                     <div id="duggaSubmissionForm">
-                      <fieldset style="width:90%; margin-top:5%;">
+                      <fieldset style="width:90%;">
                         <legend>Submission types</legend>
                         <div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:column;overflow:hidden;"></div>
                       </fieldset>

@@ -755,6 +755,8 @@ const keybinds = {
         MOVING_OBJECT_LEFT: {key: "ArrowLeft", ctrl: false},
         MOVING_OBJECT_RIGHT: {key: "ArrowRight", ctrl: false},
         TOGGLE_KEYBINDLIST: {key: "F1", ctrl: false},
+        TOGGLE_REPLAY_MODE: {key: "r", ctrl: false},
+        TOGGLE_ER_TABLE: {key: "e", ctrl: false},
 };
 
 /** 
@@ -821,7 +823,8 @@ const attrState = {
     NORMAL: "normal",
     WEAK: "weakKey",
     MULTIPLE: "multiple",
-    KEY: "key",
+    CANDIDATE: "candidate",
+    PRIMARY: "primary",
     COMPUTED: "computed",
 };
 
@@ -931,7 +934,7 @@ const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
 const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
-const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd"];
+const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100"];
 const strokeColors = ["#000000"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
@@ -944,7 +947,7 @@ const zoom0_75 = -0.775;
 const zoom0_5 = -3;
 const zoom0_25 = -15.01;
 
-var errorActive = true;
+var errorActive = false;
 
 // Arrow drawing stuff - diagram elements, diagram lines and labels 
 var lines = [];
@@ -1040,7 +1043,7 @@ var ghostLine = null;
 var defaults = {
     EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", attributes: ['Attribute'], functions: ['Function'] },
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER" },
-    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER" },
+    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal'},
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
     UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['Attribute'], functions: ['Function'] },     //<-- UML functionality
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "UML" }, //<-- UML functionality
@@ -1102,7 +1105,7 @@ function onSetup()
         { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID , isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function'] },
         { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Bdale_ID, isLocked: false, state: "Normal",  type: "ER" },
         { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: BdaleDependent_ID, isLocked: false, state: "Normal",  type: "ER" },
-        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Ssn_ID, isLocked: false, state: "key",  type: "ER"},
+        { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Ssn_ID, isLocked: false, state: "candidate",  type: "ER"},
         { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Name_ID, isLocked: false,  type: "ER" },
         { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDependent_ID, isLocked: false, state: "weakKey",  type: "ER"},
         { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameProject_ID, isLocked: false, type: "ER"},
@@ -1121,7 +1124,7 @@ function onSetup()
         { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_ON_ID, isLocked: false,  type: "ER" },
         { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Hours_ID, isLocked: false,  type: "ER" },
         { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: PROJECT_ID, isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
-        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberProject_ID, isLocked: false, state: "key",  type: "ER"},
+        { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberProject_ID, isLocked: false, state: "candidate",  type: "ER"},
         { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Location_ID, isLocked: false,  type: "ER"},
         { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: MANAGES_ID, isLocked: false,  type: "ER" },
         { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Start_date_ID, isLocked: false,  type: "ER" },
@@ -1129,7 +1132,7 @@ function onSetup()
         { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPARTMENT_ID, isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
         { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Locations_ID, isLocked: false, state: "multiple",  type: "ER" },
         { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_FOR_ID, isLocked: false,  type: "ER" },
-        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberDEPARTMENT_ID, isLocked: false, state: "key",  type: "ER"},
+        { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberDEPARTMENT_ID, isLocked: false, state: "candidate",  type: "ER"},
         { name: "Number_of_employees", x: 750, y: 200, width: 200, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Number_of_employees_ID, isLocked: false, state: "computed",  type: "ER"},
     ];
 
@@ -1509,6 +1512,8 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.OPTIONS)) toggleOptionsPane();
         if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
+        if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
+        if(isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
 
         if (isKeybindValid(e, keybinds.COPY)){
             // Remove the preivous copy-paste data from localstorage.
@@ -3799,11 +3804,30 @@ function toggleErTable()
  * @returns Current ER table in the form of a string.
  */
 function generateErTableString()
-{
+{   
+    //TODO: When functionality is complete, try to minimize the overall space complexity, aka try to extract
+    //only useful information from entities, attributes and relations. 
+    
     var entityList = [];    //All EREntities currently in the diagram
     var attrList = [];      //All ERAttributes currently in the diagram
     var relationList = [];  //All ERRelations currently in the diagram
     var stringList = [];    //List of strings where each string holds the relevant data for each entity
+
+    /**
+     * @description Multidimensional array containing data of each entity and their attribute. Index[0] is always the element
+     * @structure ERAttributeData[i] = [entityObject, attributeObject1, ..., attributeObjectN]
+     */ 
+    var ERAttributeData = [];
+    /**
+     * @description Multidimensional array containing foreign keys for every entity. The owning entity is the entity where the foreign keys are added
+     * @structure   ERForeignData[i] = [owningEntityObject, [otherEntityObject, foreignAttributeObject1, ..., foreignAttributeObjectN]] 
+     */ 
+    var ERForeignData = [];
+    /**
+     * @description Multidimensional array containing relation and the connected entities. Also stores the cardinality and kind for connected entity
+     * @structure   ERRelationData[i] = [relationObject, [entityObject, lineCardinality, lineKind], [otherEREntityObject, otherLineCardinality, otherLineKind]]
+     */ 
+    var ERRelationData = [];
 
     //sort the data[] elements into entity-, attr- and relationList
     for (var i = 0; i < data.length; i++) {
@@ -3818,17 +3842,44 @@ function generateErTableString()
             relationList.push(data[i]);
         }
     }
+    //For each relation in relationList
+    for (var i = 0; i < relationList.length; i++) {
+        //List containing relation-element and connected entities
+        var currentRelationList = [];
+        currentRelationList.push(relationList[i]);
+        //Sort all lines that are connected to the current relation into lineList[]
+        var lineList = [];
+        for (var j = 0; j < lines.length; j++) {
+            //Get connected line from element
+            if (relationList[i].id == lines[j].fromID) {
+                lineList.push(lines[j]);
+            }
+            //Get connected line to element
+            else if (relationList[i].id == lines[j].toID) {
+                lineList.push(lines[j]);
+            }
+        }
+
+        //Identify every connected entity to relations
+        for (var j = 0; j < lineList.length; j++) {
+            for (var k = 0; k < entityList.length; k++) {
+                if (entityList[k].id == lineList[j].fromID || entityList[k].id == lineList[j].toID) {
+                    //Push in entity, line cardinality and kind
+                    currentRelationList.push([entityList[k], lineList[j].cardinality, lineList[j].kind]);
+                }
+            }
+        }
+        //Push in relation for entity, line cardinality and kind.
+        ERRelationData.push(currentRelationList);
+    }
 
     //For each entity in entityList
     for (var i = 0; i < entityList.length; i++) {
-        
-        //Add the start of the string for each entity. Example: "EMPLOYEE("
-        stringList.push(new String(entityList[i].name + "("));
-        
+
+        var currentRow = [entityList[i]];
         //Sort all lines that are connected to the current entity into lineList[]
         var lineList = []; 
         for (var j = 0; j < lines.length; j++) {
-            
             if (entityList[i].id == lines[j].fromID) {
                 lineList.push(lines[j]);
             }
@@ -3836,33 +3887,28 @@ function generateErTableString()
                 lineList.push(lines[j]);
             }
         }
-
         // Identify all attributes that are connected to the current entity by using lineList[] and store them in currentEntityAttrList. Save their ID's in idList.
         var currentEntityAttrList = [];
         var idList = [];
         for (var j = 0; j < lineList.length; j++) {
-            
             for (var h = 0; h < attrList.length; h++) {
-
                 if (attrList[h].id == lineList[j].fromID || attrList[h].id == lineList[j].toID) {
-                
                     currentEntityAttrList.push(attrList[h]);
-                    idList.push(attrList[h].id)
-                        
+                    currentRow.push(attrList[h]);
+                    idList.push(attrList[h].id);
                 }
             }
         }
         
-        
+        var parentAttribeList=[]; //list of parent attributes
+
         for (var j = 0; j < currentEntityAttrList.length; j++) {
 
             //For each attribute connected to the current entity, identify if other attributes are connected to themselves.
             var attrLineList = [];
             for (var h = 0; h < lines.length; h++) {
-                
                 //If there is a line to/from the attribute that ISN'T connected to the current entity, save it in attrLineList[].
                 if((currentEntityAttrList[j].id == lines[h].toID || currentEntityAttrList[j].id == lines[h].fromID) && (lines[h].toID != entityList[i].id && lines[h].fromID != entityList[i].id)) {
-                    
                     attrLineList.push(lines[h]);
                 }
             }
@@ -3871,24 +3917,25 @@ function generateErTableString()
             for (var h = 0; h < attrLineList.length; h++) {
                 
                 for (var k = 0; k < attrList.length; k++) {
-
                     //If ID matches the current attribute AND another attribute, try pushing the other attribute to currentEntityAttrList[]
                     if (((attrLineList[h].fromID == attrList[k].id) && (attrLineList[h].toID == currentEntityAttrList[j].id)) || ((attrLineList[h].toID == attrList[k].id) && (attrLineList[h].fromID == currentEntityAttrList[j].id))) {
-                        
                         //Iterate over saved IDs
                         var hits = 0;
                         for(var p = 0; p < idList.length; p++) {
-
                             //If the ID of the attribute already exists, then increase hits and break the loop.
                             if (idList[p] == attrList[k].id) {
                                 hits++;
                                 break;
                             }
                         }
-
                         //If no hits, then push the attribute to currentEntityAttrList[] (so it will also be checked for additional attributes in future iterations) and save the ID.
                         if (hits == 0) {
+                            // looking if the parent attribute is in the parentAttributeList 
+                            if(findIndex(parentAttribeList,currentEntityAttrList[j].id) == -1){
+                                parentAttribeList.push(currentEntityAttrList[j]);
+                            }
                             currentEntityAttrList.push(attrList[k]);
+                            currentRow.push(attrList[k]);
                             idList.push(attrList[k].id);
                         }
                     }   
@@ -3896,25 +3943,388 @@ function generateErTableString()
             }
         }
 
-        //Add each connected attribute in stringList[i]
-        for (var j = 0; j < currentEntityAttrList.length; j++) {
-            if (j < currentEntityAttrList.length - 1) { //If j is not the last element
-                stringList[i] += currentEntityAttrList[j].name + ", ";
+        //removes all attributes in parent attribute list from current entity attribute list
+        for (let index = 0; index < parentAttribeList.length; index++) {
+            currentRow.splice(findIndex(currentRow,parentAttribeList[index].id),1);
+        }
+        //Push list with entity at index 0 followed by its attributes
+        ERAttributeData.push(currentRow);
+    }
+
+    //Iterate through all relations
+    for (var i = 0; i < ERRelationData.length; i++) {        
+        if (ERRelationData[i].length >= 3) {
+            //If it is a weak relation
+            if (ERRelationData[i][0].state == 'weak') {
+                //
             }
-            else if (j == currentEntityAttrList.length - 1) { //Else if j is the last element
-                stringList[i] += currentEntityAttrList[j].name + ")";
+            else {
+                //Array with entities foreign keys
+                var foreign = [];
+                //ONE to ONE relation, key from second ONE-side is stored in the other side
+                if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'ONE') {
+                    //If array is empty
+                    if (ERForeignData.length < 1) {
+                        //Push in first ONE-side entity
+                        ERForeignData.push([ERRelationData[i][1][0]]);
+                    }
+                    else {
+                        //If entity already exist in ERForeignData, 
+                        var exist = false;
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                exist = true;
+                            }
+                        }
+                        if (!exist) {
+                            //Push in first ONE-side entity
+                            ERForeignData.push([ERRelationData[i][1][0]]);
+                        }
+                    }
+                    //Find current entity and iterate through its attributes
+                    for (var j = 0; j < ERAttributeData.length; j++) {
+                        //Second ONE-side entity
+                        if(ERAttributeData[j][0].id == ERRelationData[i][2][0].id) {
+                            foreign.push(ERRelationData[i][2][0]);
+                            //Check if primary key is present
+                            var existPrimary = false;
+                            for (var k = 1; k < ERAttributeData[j].length; k++) {
+                                if (ERAttributeData[j][k].state == 'primary') {
+                                    existPrimary = true;
+                                    break;
+                                }
+                            }
+                            //Push in primary or candidate keys depending if one is present
+                            for (var k = 1; k < ERAttributeData[j].length; k++) {
+                                //Primary exist, push in primary keys
+                                if (existPrimary && ERAttributeData[j][k].state == 'primary') {
+                                    //Push in every key-attribute
+                                    foreign.push(ERAttributeData[j][k]);
+                                }
+                                //Primary non-existant, push in candidate keys
+                                else if (!(existPrimary) && ERAttributeData[j][k].state == 'candidate') {
+                                    //Push in every key-attribute
+                                    foreign.push(ERAttributeData[j][k]);                            
+                                }
+                            }
+                        }
+                    }
+                    //Find current entity and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //First ONE-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                            //Every key-attribute is pushed into array
+                            ERForeignData[j].push(foreign);
+                        }
+                    }
+                }
+                //MANY to ONE relation, key from the ONE is foreign for MANY, case 1
+                else if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'MANY') {
+                    //If array is empty
+                    if (ERForeignData.length < 1) {
+                        //Push in MANY-side entity
+                        ERForeignData.push([ERRelationData[i][2][0]]);
+                    }
+                    else {
+                        //If entity already exist in ERForeignData, 
+                        var exist = false;
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //MANY-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
+                                exist = true;
+                            }
+                        }
+                        if (!exist) {
+                            //Push in MANY-side entity
+                            ERForeignData.push([ERRelationData[i][2][0]]);
+                        }
+                    }
+                    //Find current entity and iterate through its attributes
+                    for (var j = 0; j < ERAttributeData.length; j++) {
+                        //ONE-side entity
+                        if(ERAttributeData[j][0].id == ERRelationData[i][1][0].id) {
+                            foreign.push(ERRelationData[i][1][0]);
+                            //Check if primary key is present
+                            var existPrimary = false;
+                            for (var k = 1; k < ERAttributeData[j].length; k++) {
+                                if (ERAttributeData[j][k].state == 'primary') {
+                                    existPrimary = true;
+                                    break;
+                                }
+                            }
+                            //Push in primary or candidate keys depending if one is present
+                            for (var k = 1; k < ERAttributeData[j].length; k++) {
+                                //Primary exist, push in primary keys
+                                if (existPrimary && ERAttributeData[j][k].state == 'primary') {
+                                    //Push in every key-attribute
+                                    foreign.push(ERAttributeData[j][k]);
+                                }
+                                //Primary non-existant, push in candidate keys
+                                else if (!(existPrimary) && ERAttributeData[j][k].state == 'candidate') {
+                                    //Push in every key-attribute
+                                    foreign.push(ERAttributeData[j][k]);                            
+                                }
+                            }
+                        }
+                    }
+                    //Find current entity and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //Push in MANY-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
+                            //Every key-attribute is pushed into array
+                            ERForeignData[j].push(foreign);
+                        }
+                    }
+                }
+                //MANY to ONE relation, key from the ONE is foreign for MANY,case 2
+                else if(ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'ONE') {
+                    //If array is empty
+                    if (ERForeignData.length < 1) {
+                        //Push in MANY-side entity
+                        ERForeignData.push([ERRelationData[i][1][0]]);
+                    }
+                    else {
+                        var exist = false;
+                        //Iterate through array and check if entity already exist
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //MANY-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                exist = true;
+                            }
+                        }
+                        if (!exist) {
+                            //Push in MANY-side entity
+                            ERForeignData.push([ERRelationData[i][1][0]]);
+                        }
+                    }
+                    //Find current entity and iterate through its attributes
+                    for (var j = 0; j < ERAttributeData.length; j++) {
+                        //ONE-side entity
+                        if(ERAttributeData[j][0].id == ERRelationData[i][2][0].id) {
+                            foreign.push(ERRelationData[i][2][0]);
+                            //Check if primary key is present
+                            var existPrimary = false;
+                            for (var k = 1; k < ERAttributeData[j].length; k++) {
+                                if (ERAttributeData[j][k].state == 'primary') {
+                                    existPrimary = true;
+                                    break;
+                                }
+                            }
+                            //Push in primary or candidate keys depending if one is present
+                            for (var k = 1; k < ERAttributeData[j].length; k++) {
+                                //Primary exist, push in primary keys
+                                if (existPrimary && ERAttributeData[j][k].state == 'primary') {
+                                    //Push in every key-attribute
+                                    foreign.push(ERAttributeData[j][k]);
+                                }
+                                //Primary non-existant, push in candidate keys
+                                else if (!(existPrimary) && ERAttributeData[j][k].state == 'candidate') {
+                                    //Push in every key-attribute
+                                    foreign.push(ERAttributeData[j][k]);                            
+                                }
+                            }
+                        }
+                    }
+                    //Find current entity and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //MANY-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                            //Every key-attribute is pushed into array
+                            ERForeignData[j].push(foreign);
+                        }
+                    }
+                }
+                //MANY to MANY relation, key from both is stored together with relation
+                else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {
+                    //Push in relation
+                    ERForeignData.push([ERRelationData[i][0]]);
+                    //Find currentEntity and find its key-attributes
+                    for (var j = 0; j < ERAttributeData.length; j++) {
+                        if(ERAttributeData[j][0].id == ERRelationData[i][1][0].id) {
+                            foreign.push([ERRelationData[i][1][0]]);
+                            //Check if primary key is present
+                            var existPrimary = false;
+                            for (var k = 1; k < ERAttributeData[j].length; k++) {
+                                if (ERAttributeData[j][k].state == 'primary') {
+                                    existPrimary = true;
+                                    break;
+                                }
+                            }
+                            //Push in primary or candidate keys depending if one is present
+                            for (var k = 1; k < ERAttributeData[j].length; k++) {
+                                //Primary exist, push in primary keys
+                                if (existPrimary && ERAttributeData[j][k].state == 'primary') {
+                                    //Push in every key-attribute
+                                    foreign[0].push(ERAttributeData[j][k]);
+                                }
+                                //Primary non-existant, push in candidate keys
+                                else if (!(existPrimary) && ERAttributeData[j][k].state == 'candidate') {
+                                    //Push in every key-attribute
+                                    foreign[0].push(ERAttributeData[j][k]);                            
+                                }
+                            }
+                        }
+                    }
+                    //Find otherEntity and find its key-attributes
+                    for (var j = 0; j < ERAttributeData.length; j++) {
+                        if(ERAttributeData[j][0].id == ERRelationData[i][2][0].id) {
+                            foreign.push([ERRelationData[i][2][0]]);
+                            var existPrimary = false;
+                            for (var k = 1; k < ERAttributeData[j].length; k++) {
+                                if(ERAttributeData[j][k].state == 'primary') {
+                                    existPrimary = true;
+                                    break;
+                                }
+                            }
+                            //Push in primary or candidate keys depending if one is present
+                            for (var k = 1; k < ERAttributeData[j].length; k++) {
+                                //Primary exist, push in primary keys
+                                if (existPrimary && ERAttributeData[j][k].state == 'primary') {
+                                    //Push in every key-attribute
+                                    foreign[1].push(ERAttributeData[j][k]);
+                                }
+                                //Primary non-existant, push in candidate keys
+                                else if (!(existPrimary) && ERAttributeData[j][k].state == 'candidate') {
+                                    //Push in every key-attribute
+                                    foreign[1].push(ERAttributeData[j][k]);                            
+                                }
+                            }
+                        }
+                    }
+                    //Find relation in ERForeignData and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //MANY-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
+                            //Every key-attribute is pushed into array
+                            for (var k = 0; k < foreign.length; k++) {
+                                ERForeignData[j].push(foreign[k]);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
+    //Just for testing
+    //Add foreign attribute to correct entity in ERAttributeData
+    for (var i = 0; i < ERAttributeData.length; i++) {
+        for(var j = 0; j < ERForeignData.length; j++) {
+            if(ERAttributeData[i][0].id == ERForeignData[j][0].id) {
+                for(var k = 1; k < ERForeignData[j].length; k++) {
+                    ERAttributeData[i].push(ERForeignData[j][k]);
+                }
+                break;
+            }
+        }
+    }
+    var control = 0;
+    for (var i = 0; i < ERAttributeData.length; i++) {
+        stringList.push(new String(`<p>${ERAttributeData[i][0].name} ( `));
+        var existPrimary = false;
+        for (var j = 1; j < ERAttributeData[i].length; j++) {
+            if(ERAttributeData[i][j].state == 'primary') {
+                existPrimary = true;
+                break;
+            }
+        }
+        for (var j = 1; j < ERAttributeData[i].length; j++) {
+            //If not last attribute
+            if (j < ERAttributeData[i].length - 1) {
+                //Check if foreign key
+                if (Array.isArray(ERAttributeData[i][j])) {
+                    for(var k = 1; k < ERAttributeData[i][j].length; k++) {
+                        stringList[i] += `<span style='text-decoration: overline black solid 2px;'>${ERAttributeData[i][j][0].name.toLowerCase() + ERAttributeData[i][j][k].name}</span>, `;
+                    }
+                }
+                else {
+                    //Primary exist, underline primary keys
+                    if (existPrimary) {
+                        if(ERAttributeData[i][j].state == 'primary') {
+                            stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>, `;
+                        }
+                        else {
+                            stringList[i] += `<span>${ERAttributeData[i][j].name}</span>, `;
+                        }
+                    }
+                    //Primary non-existent, underline candidate keys
+                    else {
+                        if(ERAttributeData[i][j].state == 'candidate') {
+                            stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>, `;
+                        }
+                        else {
+                            stringList[i] += `<span>${ERAttributeData[i][j].name}</span>, `;
+                        }
+                    }
+                }
+            }
+            //If last attribute
+            else if (j == ERAttributeData[i].length - 1) {
+                if (Array.isArray(ERAttributeData[i][j])) {
+                    for(var k = 1; k < ERAttributeData[i][j].length; k++) {
+                        stringList[i] += `<span style='text-decoration: overline black solid 2px;'>${ERAttributeData[i][j][0].name.toLowerCase() + ERAttributeData[i][j][k].name}</span>)</p>`;
+                    }
+                }
+                else {
+                    //Primary exist, underline primary keys
+                    if (existPrimary) {
+                        if(ERAttributeData[i][j].state == 'primary') {
+                            stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>)</p>`;
+                        }
+                        else {
+                            stringList[i] += `<span>${ERAttributeData[i][j].name}</span>)</p>`;
+                        }
+                    }
+                    //Primary non-existent, underline candidate keys
+                    else {
+                        if(ERAttributeData[i][j].state == 'candidate') {
+                            stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>)</p>`;
+                        }
+                        else {
+                            stringList[i] += `<span>${ERAttributeData[i][j].name}</span>)</p>`;
+                        }
+                    }
+                }
+            }
+        }
+        control++;
+    }
 
+    for(var i = 0; i < ERForeignData.length; i++) {
+        if(ERForeignData[i][0].kind == 'ERRelation') {
+            stringList.push(new String(`<p>${ERForeignData[i][0].name} (`));
+            //Check if primary key is present
+            var existPrimary = false;
+            for (var j = 1; j < ERForeignData[i].length; j++) {
+                if (ERAttributeData[i][j].state == 'primary') {
+                    existPrimary = true;
+                    break;
+                }
+            }
+            for(var j = 1; j < ERForeignData[i].length; j++) {
+                for (var k = 1; k < ERForeignData[i][j].length; k++) {
+                    //If attribute has foreign attributes
+                    if (ERForeignData[i][j].length > 1) {
+                        if (j < ERForeignData[i].length - 1) {
+                            stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][k].name}</span>, `;
+                        }
+                        else if (j == ERForeignData[i].length - 1) {
+                            stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][k].name}</span>)</p>`;
+                        }
+                    }
+                }
+            }
+            control++;
+        }
+    }
     //Add each string element in stringList[] into a single string.
     var stri = "";
     for (var i = 0; i < stringList.length; i++) {
         stri += new String(stringList[i] + "\n\n");
     }
-
     return stri;
 }
+
 /**
  * @description Toggles the A4 template ON/OFF.
  */
@@ -3937,6 +4347,19 @@ function toggleA4Template()
         document.getElementById("a4TemplateToggle").style.backgroundColor = "#362049";
    }
    generateContextProperties();
+}
+/**
+ * @description turns the error checking functionality on/off
+ */
+function toggleErrorCheck(){
+    errorActive =! errorActive;
+    if (errorActive) {
+        document.getElementById("errorCheckToggle").classList.add("active");
+    }  
+    else{
+        document.getElementById("errorCheckToggle").classList.remove("active");
+    }
+    showdata();
 }
 
 function setA4SizeFactor(e){
@@ -4405,7 +4828,7 @@ function generateContextProperties()
     } */
 
     //No element or line selected
-    if (context.length == 0 && contextLine.length == 0) {
+    if (context.length == 0 && contextLine.length == 0 && !erTableToggle) {
         //Hide properties and show the other options
         propSet.classList.add('options-fieldset-hidden');
         propSet.classList.remove('options-fieldset-show');
@@ -4419,10 +4842,10 @@ function generateContextProperties()
 
     //If erTableToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
     if (erTableToggle == true) {
-        str +=`<style> .textbox {resize: none; height: 250px; width: 273px;}</style><textarea readonly class="textbox">`
+        str +=`<div id="ERTable">`
         var ertable = generateErTableString();
         str += ertable;
-        str += `</textarea>`
+        str += `</div>`
     }
     else {
       //One element selected, no lines
@@ -4525,6 +4948,17 @@ function generateContextProperties()
 
               //If UML inheritance
               else if (element.kind = 'UMLRelation') {
+                //ID MUST START WITH "elementProperty_"!!!!!
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='display:none;'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
                   str += `<div style='color:white'>Inheritance</div>`;
                   //Creates drop down for changing state of ER elements
                   var value;
@@ -4656,7 +5090,7 @@ function generateContextProperties()
 function toggleOptionsPane()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
-        document.getElementById('optmarker').innerHTML = "Options";
+        document.getElementById('optmarker').innerHTML = "&#9660;Options";
         document.getElementById("options-pane").className = "hide-options-pane";
     } else {
         document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
@@ -4955,6 +5389,16 @@ function setElementColors(clickedCircleID)
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
             elementIDs[i] = context[i].id;
+
+            /*
+            // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
+            if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
+                console.log("du har klickat på svart eller rosa färg");
+               document.getElementsByClassName("text").style.color = "#ffffff";
+            }
+            else{
+                //element.id.style.color = "#000000";
+            }*/
         }
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
         StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -5627,7 +6071,7 @@ function drawLine(line, targetGhost = false)
         }
 
         // Add the line to the str
-        str += `<text dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`
+        str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`
     }
 
     if (line.label && line.label != ""){
@@ -5680,7 +6124,7 @@ function drawLine(line, targetGhost = false)
             targetLabel=lineLabelList[findIndex(lineLabelList,rememberTargetLabelID)];
         }
         //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-        str += `<rect id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX+lineLabel.displacementX}" y="${labelPosY+lineLabel.labelMovedY+lineLabel.displacementY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`
+        str += `<rect class="text" id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX+lineLabel.displacementX}" y="${labelPosY+lineLabel.labelMovedY+lineLabel.displacementY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`
         //Add label
         str += `<text dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)+lineLabel.labelMovedX+lineLabel.displacementX}" y="${centerY-(2 * zoomfact)+lineLabel.labelMovedY+lineLabel.displacementY}">${line.label}</text>`;
         
@@ -6109,10 +6553,10 @@ function drawElement(element, ghosted = false)
                 `;         
             }
             
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+            str += `<rect  class="text" x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
                     ${weak}
-                    <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
+                    <text  class="text" x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                     `;
         }
         else if (element.kind == "ERAttr") {
@@ -6138,12 +6582,12 @@ function drawElement(element, ghosted = false)
                             Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
                             Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
                             Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}'/>
+                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew} class="text" '/>
                         
                         ${multi}
                         <text x='${xAnchor}' y='${hboxh}' `;
             
-            if(element.state == "key") {
+            if(element.state == "candidate" || element.state == 'primary') {
                 str += `class='underline'`;
             }             
             str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
@@ -6178,12 +6622,12 @@ function drawElement(element, ghosted = false)
             var weak = "";
             if (element.state == "weak") {
                 weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill} class="text"'/>
                     `;
                 xAnchor += linew * multioffs;
             }
             str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill} class="text"'/>
                     ${weak}`;
             str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
 
@@ -6259,12 +6703,12 @@ function checkElementError(element)
 
                 // Checking for wrong key type
                 if (fElement.id == element.id && tElement.kind == "ERAttr") {
-                    if (tElement.state == "key") {
+                    if (tElement.state == "candidate") {
                         errorData.push(fElement);
                     }
                 }
                 if (tElement.id == element.id && fElement.kind == "ERAttr") {
-                    if (fElement.state == "key") {
+                    if (fElement.state == "candidate") {
                         errorData.push(tElement);
                     }
                 }
@@ -6394,12 +6838,12 @@ function checkElementError(element)
 
                 // Counting quantity of keys
                 if (fElement.id == element.id && tElement.kind == "ERAttr") {
-                    if (tElement.state == "key") {
+                    if (tElement.state == "candidate") {
                         keyQuantity += 1;
                     }
                 }
                 if (tElement.id == element.id && fElement.kind == "ERAttr") {
-                    if (fElement.state == "key") {
+                    if (fElement.state == "candidate") {
                         keyQuantity += 1;
                     }
                 }
@@ -7302,12 +7746,12 @@ function checkElementError(element)
             // Checking for wrong key type
             if ((tElement.kind == "EREntity" || fElement.kind == "EREntity") && (tElement.state == "weak" || fElement.state == "weak")) {
                 if (fElement.id == element.id && tElement.kind == "EREntity") {
-                    if (fElement.state == "key") {
+                    if (fElement.state == "candidate") {
                         errorData.push(fElement);
                     }
                 }
                 if (tElement.id == element.id && fElement.kind == "EREntity") {
-                    if (tElement.state == "key") {
+                    if (tElement.state == "candidate") {
                         errorData.push(tElement);
                     }
                 }
@@ -7395,11 +7839,11 @@ function checkElementError(element)
                     }
 
                     // Checking for more than one key attributes on the same entity
-                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "key" && tElement0.state == "key") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
+                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "candidate" && tElement0.state == "candidate") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(tElement0);
                     }
-                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "key" && fElement0.state == "key") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
+                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "candiaate" && fElement0.state == "candidate") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(fElement0);
                     }
@@ -7424,11 +7868,11 @@ function checkElementError(element)
                     }
 
                     // Checking for more than one key attributes on the same entity
-                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "key" && tElement0.state == "key") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
+                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "candidate" && tElement0.state == "candidate") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(tElement0);
                     }
-                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "key" && fElement0.state == "key") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
+                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "candidate" && fElement0.state == "candidate") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(fElement0);
                     }
