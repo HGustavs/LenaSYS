@@ -31,6 +31,7 @@ var aceData;
 var editor;
 var filedata;
 var fullFileName = [];
+var fileKind = [];
 
 
 function setup() {
@@ -159,30 +160,8 @@ function showFilePopUp(fileKind) {
 
 //see fileedservice.php and filerecieve.php for more details of how files are saved to local storage and meta-data is saved to DB.
 function uploadFile(kind) {
-    
-    var filesToBeUploaded;
-    //Boolean to check if file was found during for-loop.
-    var fileExists = false;
-    
-    
-    //For-loop which checkes the selected file/files full name, with already uploaded/existing files.
-    for(i = 0; i < document.getElementById("uploadedfile").files.length; i++){ 
-        //Stores the current uploaded file in array, in the filesToBeUploaded varibal.
-        filesToBeUploaded = (document.getElementById("uploadedfile").files[i].name);
-        for(j = 0; j < fullFileName.length; j++){
-            //Compare the file in varibal (removes all whitespaces in filename) with files in the list.
-            if(filesToBeUploaded.replace(/\s+/g, '') == fullFileName[j]){
-                //If a file/files have same name and filetype fileExists sets to true so the file will not be uploaded.
-                fileExists = true;
-                
 
-                alert("File with same name and filetyp as "+filesToBeUploaded+" already exist in list. Your file/files will not be uploaded");
-                
-            }; 
-        };
-    };
-    
-    
+   
         if (kind == "MFILE") {
             var str = "<option>NONE</option>";
             for (i = 0; i < filez['lfiles'].length; i++) {
@@ -212,11 +191,11 @@ function uploadFile(kind) {
         } else if (kind == "LFILE" || kind == "LINK") {
             $("#selecty").css("display", "none");
         }
-
+    
         $("#kind").val(kind);
         $("#courseid").val(querystring['courseid']);
         $("#coursevers").val(querystring['coursevers']);
-    };
+};
 
 
     
@@ -365,47 +344,43 @@ function renderCell(col, celldata, cellid) {
     if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
         obj = JSON.parse(celldata);
     }
-
-    if (col == "trashcan") {
+    if (col == "trashcan") {   
         if (obj.showtrashcan) {
             str = "<span class='iconBox'><img alt='delete file icon' id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-            str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
-            
+            str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";  
         }
-    } else if (col == "filename") {
+        
+    } else if (col == "filename") { 
         if (obj.kind == "Link") {
             str += "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
         } else {
             str+="<span class='nowrap-filename' id='openFile' onclick='filePreview(\"" + obj.shortfilename + "\",\"" + obj.filePath + "\", \"" + obj.extension + "\")'>" + obj.shortfilename + "</span>";
-            fullFileName.push(obj.filename);
-            
+
         }
     } else if (col == "filesize") {
+        
         if (obj.kind == "Link") {
             str += "<span>-</span>";
         } else {
             str += "<span>" + formatBytes(obj.size, 0) + "</span>";
         }
     } else if (col == "extension" || col == "uploaddate") {
-        str += "<span>" + celldata + "</span>";
-    } else if (col == "editor") {
+        str += "<span>" + celldata + "</span>";        
+    } else if (col == "editor") {        
         if(obj.showeditor){
         if (obj.extension == "md" || obj.extension == "txt" || obj.extension == "html") {
             str = "<span class='iconBox'><img alt='edit file icon' id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
+            
         } else if (obj.extension == "js"  || obj.extension == "css" || obj.extension == "php") {
             str = "<span class='iconBox'><img alt='edit file icon' id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
+            str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";                     
         }
-       
     }
     } else if (col == "kind") {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     }
-    
     return str;
- 
-
 }
 
 function filePreview(name, path, extension){
