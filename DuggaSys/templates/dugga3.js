@@ -266,7 +266,7 @@ function ev_mousemove(ev) {
 		document.getElementById('debug').innerHTML = "<p>cx: " + cx + "</p><p> cy: " + cy + "</p>";
 	}
 
-	handler_mousemove(cx, cy);
+	handler_mousemove(coord.x, coord.y);
 }
 
 function ev_touchstart(event) {
@@ -549,8 +549,8 @@ function handler_mousedown(ev)
 
 function handler_mousemove(cx, cy) 
 {
-	gridx = (Math.round(((cx / sf) - (gridsize / 2.0)) / gridsize) * gridsize)-15;
-	gridy = (Math.round(((cy / sf) - (gridsize / 2.0)) / gridsize) * gridsize)-20;
+	gridx = (Math.round(((cx / sf) - (gridsize / 2.0)) / gridsize) * gridsize);
+	gridy = (Math.round(((cy / sf) - (gridsize / 2.0)) / gridsize) * gridsize);
 	
 	if (clickstate == 1) {
 		movestate = 1;
