@@ -46,6 +46,8 @@
 </style>
 
 <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+<script src="contribution_loginbox.js"></script> <!-- scripts to implement functions -->
+
 
 <div id="overlay" style="display:none"></div>
 
