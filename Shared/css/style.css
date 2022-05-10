@@ -2932,6 +2932,7 @@ div.submit-button:disabled {
 #submitButtonTable{
   position: relative;
   z-index:500;
+  margin-top: 20px;
 }
 
 #submitButtonTable input.large-button {

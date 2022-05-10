@@ -126,7 +126,64 @@
 	{
 		$fileContent = "NO_FILE_FETCHED";
 	}
-		
+
+    // if the used is redirected from 
+	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
+	{
+		$tempDir = strval(dirname(__DIR__, 2))."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
+		$latest = time() - (365 * 24 * 60 * 60);
+		$current = "diagramSave1.json";	 
+
+		if(is_dir($tempDir))
+		{
+			//try and catch for using test data
+			try{
+				foreach(new DirectoryIterator($tempDir) as $file)
+				{
+					$ctime = $file->getCTime();    // Time file was created
+					$fname = $file->GetFileName (); // File name
+
+					if($fname != "." && $fname != "..")
+					{
+						if( $ctime > $latest )
+						{
+							$latest = $ctime;
+							$current = $fname;
+						}
+					}
+				}
+				$latest = $current;
+
+				$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
+				$fileContent = file_get_contents("{$tempDir}{$latest}");
+			}
+			catch(Exception $e){
+				echo 'Message: ' .$e->getMessage();
+			}
+		}
+	}
+	
+  // for fetching file content
+	if(file_exists("../courses/global/"."$fileName"))
+	{
+		$instructions = file_get_contents("../courses/global/"."$fileName");
+	}
+	else if(file_exists("../courses/".$cid."/"."$fileName"))
+	{
+		$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+	}
+	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
+	{
+		$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+	}
+	if($instructions === "UNK")
+	{
+		$instructions = "NO_FILE_FETCHED";
+	}
+	$pattern = '/\s*/m';
+  	$replace = '';
+	$instructions = preg_replace( $pattern, $replace,$instructions);
+
 	#I have no idea what the things below
 	// if(isset($_SESSION['hashpassword'])){
 	// 	$hashpassword=$_SESSION['hashpassword'];
@@ -323,7 +380,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='left'>";
-						echo "<input id='saveDuggaButton' class='".$btnDisable." submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
+						echo "<input id='saveDuggaButton' class='".$btnDisable." submit-button large-button' type='button' value='Save' onclick='uploadFile(); showReceiptPopup();' />";
 						if ($duggafile !== 'generic_dugga_file_receive') {
 							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 							echo "<td align='right'>";
@@ -408,9 +465,19 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 			</div>
 			<div id='receiptInfo'></div>
 
+			<?php 
+			$receiptLink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
+			?>
     		<div id='emailPopup' style="display:block">
 				<p>Your dugga has been saved. Besure to store the hash and hash password in a safe place before submitting the dugga in canvas! <em>There is <strong>no way</strong> to restore a submission without the hash and hash password.</p>
 				<div id="submission-receipt" rows="15" cols="50" style="height: 180px;resize: none; background-color: white; border-style: solid; border-width: 1px; font-size: 13px; font-weight: bold;">
+					<?php echo $duggatitle; ?></br></br>
+					Direct link (to be submitted in canvas):</br>
+					<a type='link' href='<?php echo $receiptLink;?>' > <?php echo $receiptLink; ?></a></br></br>
+					Hash:</br>
+					<?php echo $hash; ?></br></br>
+					Hash password:</br>
+					<?php echo $hashpwd; ?></br></br>
 				</div>					
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="copySubmissionReceiptToClipboard();" value='Copy Receipt'>
@@ -432,7 +499,6 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	}
 
 	$_SESSION['pwdentrance'] = 0;
-
 	?>
 	
 	<!-- Timer START -->

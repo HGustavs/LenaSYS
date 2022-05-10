@@ -22,7 +22,7 @@
 - Toggle grid = "G"
 - Toggle ruler = "T"
 - Toggle snap to grid = "S"
-- Toggle A4 template = "A"
+- Toggle A4 template = "P"
 
 ## Camera
 
@@ -41,3 +41,10 @@
 - Mark all elements and lines = CTRL + ”A”
 - Toggle keybindlist - ”F1”
 
+
+## Replay-mode
+- Toggles the replay mode to show the changes made = "R"
+
+
+## Error check
+- Performs error checking if ER element is pressed in the diagram = "E"
