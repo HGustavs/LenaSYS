@@ -4589,6 +4589,21 @@ rect[class*="activitymarker"]:hover {
   stroke: red;
 }
 
+.activityPolygon.comment {
+  fill: #66fe75;
+  stroke: #01610b;
+}
+
+.activityPolygon.commit {
+  fill: #6675fe;
+  stroke: #010960;
+}
+
+.activityPolygon.issue {
+  fill: #fee266;
+  stroke: #9b1f00;
+}
+
 /* JQuery UI Complement for missing icons in the DatePicker */
 
 .ui-datepicker .ui-datepicker-next span {
