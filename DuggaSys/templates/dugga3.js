@@ -311,9 +311,10 @@ function ev_touchmove(event) {
 
 function getMousePos(evt) {
 	var rect = canvas.getBoundingClientRect();
+
 	return {
-		x : (evt.clientX - rect.left),
-		y : (evt.clientY - rect.top)
+		x : (evt.clientX ),
+		y : (evt.clientY )
 	};
 }
 
@@ -548,10 +549,9 @@ function handler_mousedown(ev)
 
 function handler_mousemove(cx, cy) 
 {
-
-	gridx = Math.round(((cx / sf) - (gridsize / 2.0)) / gridsize) * gridsize;
-	gridy = Math.round(((cy / sf) - (gridsize / 2.0)) / gridsize) * gridsize;
-
+	gridx = (Math.round(((cx / sf) - (gridsize / 2.0)) / gridsize) * gridsize)-15;
+	gridy = (Math.round(((cy / sf) - (gridsize / 2.0)) / gridsize) * gridsize)-20;
+	
 	if (clickstate == 1) {
 		movestate = 1;
 		mx = gridx;
