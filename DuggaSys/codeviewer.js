@@ -1804,6 +1804,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					// [token row position, 0 = closing html tag, codeviewer box id]
 					allBlocks.push([tokens[i + 1].row, 0, parseInt(boxid)]);
 				}
+				// ↑ added in pull request #11411 (START) 
 
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
@@ -2095,6 +2096,7 @@ function getBlockRanges(blocks) {
 	return boxRanges;
 }
 
+// ↓ relevant function to collapsible brackets
 function createBlocks(ranges, boxid) {
 	var wrapper = document.querySelector('#textwrapper'+boxid);
 	for (var i = 0; i < ranges.length; i++) {
@@ -2103,18 +2105,17 @@ function createBlocks(ranges, boxid) {
 		buttonSlot.classList.add('open-block');
 		buttonSlot.classList.add('occupied');
 		buttonSlot.id = i;
-
 		buttonSlot.addEventListener('click', (e) => {
 			var button = e.target;
 			button.classList.toggle('open-block');
 			button.classList.toggle('closed-block');
-			var rowsInBlock = Array(ranges[button.id][1] - ranges[button.id][0]).fill().map((_, idx) => ranges[button.id][0] + idx);
-			toggleRows(rowsInBlock, button);
+			toggleRows(ranges, ranges[button.id][0], ranges[button.id][1], e.target);
 		});
 	}
 }
 
-function toggleRows(rows, button) {
+// Update rows encapsulated in collapsible brackets
+function toggleRows(ranges, startRow, endRow, button) {
 	var baseRow = button.parentNode;
 	var wrapper = baseRow.parentNode;
 	var box = wrapper.parentNode;
@@ -2130,12 +2131,23 @@ function toggleRows(rows, button) {
 	} else {
 		display = 'block';
 		ellipses = baseRow.querySelector('.blockEllipses');
-		baseRow.removeChild(ellipses);
+		if(ellipses)
+			baseRow.removeChild(ellipses);
 	}
 	
-	for (var i = 1; i < rows.length; i++) {
-		wrapper.querySelector("div[id$='"+rows[i]+"']").style.display = display;
-		numbers[rows[i] - 1].style.display = display;
+	// Show or hide rows between collapsible brackets
+	for (var i = 1; i < endRow - startRow; i++) {
+		var rowNumber = startRow + i;
+		var row = wrapper.querySelector("div[id$='" + rowNumber + "']");
+		var tempButton = row.querySelector("span.blockBtnSlot.occupied");
+		if (tempButton &&  display == 'block') {
+			// Update nested set of collapsible brackets recursively
+			toggleRows(ranges, ranges[tempButton.id][0], ranges[tempButton.id][1], tempButton)
+			i += ranges[tempButton.id][1] - ranges[tempButton.id][0] - 1;
+		}
+		
+		row.style.display = display;
+		numbers[rowNumber - 1].style.display = display;
 	}
 }
 
