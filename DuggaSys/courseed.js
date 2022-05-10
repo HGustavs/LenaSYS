@@ -426,6 +426,10 @@ function returnedCourse(data)
 		for ( i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
 
+			// Do not show courses the user does not have access to.
+			if (!data['writeaccess'] && !item['registered'] && uname !="Guest" && uname)
+				continue;
+
 			str += `<div class='bigg item nowrap' style='display: flex; align-items: center; justify-content: center;' id='C${item['cid']}' data-code='${item['coursecode']}'>`;
 
 			var textStyle ="";
@@ -459,18 +463,11 @@ function returnedCourse(data)
         		str += "</span>";
       		} else {
         		str += "<div class='ellipsis'>";
-				if(item['registered'] == true || uname=="Guest") {
-          			str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + item['coursename'] + "</a></span>";
-        		}else{
-          			str += "<span style='opacity:0.3'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode']+ "] '>" + item['coursename'] + "</a></span>";
-        		}
+				str += `<span style='margin-right:15px;'><a class='${textStyle}' href='sectioned.php?courseid=${item['cid']}&coursename=${item['coursename']}&coursevers=${item['activeversion']}' title='\"${item['coursename']}\" [${item['coursecode']}]'>${item['coursename']}</a></span>`;
         		str += "</div>";
 			}
 
 			str += "</div>";
-      if (data['entries'].length-1 == i){
-        str += "<div class='bigg item nowrap' style='padding-bottom: 5px;'></div>";
-      }
 		}
 	} else {
 		// No items were returned!
