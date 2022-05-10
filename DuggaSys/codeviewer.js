@@ -4873,7 +4873,9 @@ function copyCodeToClipboard(boxid) {
 // Detects clicks
 $(document).mousedown(function (e) {
 	var box = $(e.target);
-	if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
+	if ($('#burgerMenu').is(e.target) || $('#burgerMenu').has(e.target).length !== 0) { //is the burger menu or its descendants clicked?
+		isClickedElementBox = true;
+	} else if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
 		isClickedElementBox = true;
 	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
 		&&
@@ -4882,13 +4884,17 @@ $(document).mousedown(function (e) {
 	} else {
 		isClickedElementBox = false;
 	}
-	if (!box[0].classList.contains("burgerOption")) {
-		closeBurgerMenu();
-	}
 });
 
 // Close the loginbox when clicking outside it.
 $(document).mouseup(function (e) {
+	// Click outside the burger menu
+	var notTarget = !$('#burgerMenu').is(e.target) && !$('#codeBurger').is(e.target) // if the burger menu is visible and the target of the click isn't the container or button...
+	var notDecendant = $('#burgerMenu').has(e.target).length === 0 && $('#codeBurger').has(e.target).length === 0 // ... nor a descendant of the container or button
+	if ($('#burgerMenu').is(':visible') && notTarget && notDecendant && !isClickedElementBox) {
+		closeBurgerMenu();
+	}
+
 	// Click outside the loginBox
 	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
 		&&
@@ -4900,14 +4906,12 @@ $(document).mouseup(function (e) {
 		hideIframe();
 	}
 });
-var bool;
+
 function showBurgerMenu() {
-    if(bool==true){
+    if($('#burgerMenu').is(':hidden')){
         showBurgerDropdown();
-        bool=false;
-    }else{
+    }else {
         closeBurgerMenu();
-        bool=true;
     }
 }
 
