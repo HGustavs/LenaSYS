@@ -72,7 +72,7 @@
         $(document).ready(function() {
             $("#close_open").click(function() {
                 if ($("#pvalue").val() == "0") {
-
+                    // hides description when open
                     $("#assignment_discrb").css('visibility', 'hidden');
                     $("#container__left").animate({
                         width: "10px"
@@ -80,28 +80,22 @@
                     $("#close_open").css({
                         'display': 'fixed',
                         'left': '7px',
-                        'transform': 'scaleX(-1)'
+                        'transform': 'scaleX(-1)',
+                        'transition': '0.55s ease-in-out'
                     });
-
                     $("#pvalue").val("1");
                 } else {
-
-                    $("#container__left").animate({
-                        width: "300px"
-                    });
+                    // opens description when closed
                     $("#container__left").animate({
                         width: "300px"
                     }, "slow");
                     $("#assignment_discrb").css('visibility', 'visible');
                     $("#close_open").css({
                         'display': 'block',
-                        'left': '292px',
-                    });
-                    $("#pvalue").val("0");
-                    $("#close_open").css({
                         'transform': 'scaleX(1)',
                         'left': '272px'
                     });
+                    $("#pvalue").val("0");
                 }
 
 
