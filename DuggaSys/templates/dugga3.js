@@ -313,8 +313,8 @@ function getMousePos(evt) {
 	var rect = canvas.getBoundingClientRect();
 
 	return {
-		x : (evt.clientX ),
-		y : (evt.clientY )
+		x : (evt.clientX - rect.left),
+		y : (evt.clientY - rect.top)
 	};
 }
 
