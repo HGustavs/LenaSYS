@@ -71,6 +71,7 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
+
         duggaData = data;
     console.log(duggaData);
     //var textBox = document.getElementById('submission-receipt');
@@ -78,24 +79,23 @@ function returnedDugga(data)
    
     //General idea below - create one method in dugga.js rather than changing recipt box in each dugga type. Currently not working.
     //updateReceiptText(response['duggaTitle'], createUrl(response['hash']), response['hash'], response['hashpwd']);
-  
     
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
         //document.getElementById("assigment-instructions").innerHTML = param.instructions;
         //checking if the user is a teacher or if there's no variant by checking if the paramater object is empty
-        if(!(Object.keys(param).length === 0)){
+        if(!(Object.keys(param).length === 0) && data.isTeacher == 0){
             // getting the diagram types allowed and calling a function in diagram.js where the values are now set <-- UML functionality start
             document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type;
-            // getting the error finder allowed or not
-            // document.getElementById("diagram-iframe").contentWindow.errorActive = param.errorActive;
+            // getting the error checker allowed or not
+            document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(param.errorActive);
             // Getting the instructions to the side of the dugga -currently using filelink which is wrong
             window.parent.getInstructions(param.filelink);
         }
         else{
             var diagramType={ER:true,UML:true};
             document.getElementById("diagram-iframe").contentWindow.diagramType = diagramType;
-            // document.getElementById("diagram-iframe").contentWindow.errorActive = true;
+            document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(true);
         }
         document.getElementById("diagram-iframe").contentWindow.showDiagramTypes();//<-- UML functionality end
     }

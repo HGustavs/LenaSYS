@@ -190,7 +190,7 @@ session_start();
                     </div>
                     <div id="errorCheck">
                       <fieldset style="width:90%">
-                        <legend>Error check</legend>
+                        <legend>Error check button</legend>
                         <label for="errorActive">Active</label>
                         <input type="checkbox" name="errorActive" id="errorActive" value="true" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>
                       </fieldset>

@@ -4361,7 +4361,17 @@ function toggleErrorCheck(){
     }
     showdata();
 }
-
+/**
+ * @description hides the error check button when not allowed
+ */
+function hideErrorCheck(show){
+    if(show == true){
+        document.getElementById("errorCheckToggle").style.display = "flex";
+    }
+    else{
+        document.getElementById("errorCheckToggle").style.display = "none";
+    }
+}
 function setA4SizeFactor(e){
     //store 1 + increased procent amount
     settings.grid.a4SizeFactor = parseInt(e.target.value)/100;
