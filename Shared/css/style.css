@@ -245,6 +245,7 @@ p {
 
 #content {
   background: var(--color-background);
+  margin: 5px 10px 15px 10px;
 }
 
 #accessedcontent {
