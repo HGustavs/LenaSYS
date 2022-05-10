@@ -127,7 +127,7 @@ function contribution_git_processLogin()
 
     
     $.ajax({
-        url: "contributionservice.php",
+        url: "contribution_loginbox_service.php",
         type: "POST",
         data: contribution_AJAX_prepareOPTPARA("requestContributionUserLogin",{username: git_username, userpass: git_password}),
         dataType: "json",
@@ -145,7 +145,7 @@ function git_logout()
   let git_password = null;
 
     $.ajax({
-        url: "contributionservice.php",
+        url: "contribution_loginbox_service.php",
         type: "POST",
         data: contribution_AJAX_prepareOPTPARA("requestContributionUserLogin",{username: git_username, userpass: git_password}),
         dataType: "json",
@@ -175,7 +175,7 @@ function git_logout()
     {
 
         $.ajax({
-			url: "contributionservice.php",
+			url: "contribution_loginbox_service.php",
 			type: "POST",
 			data: contribution_AJAX_prepareOPTPARA("checkForGitUser",{userid: username}),
 			dataType: "json",
@@ -186,7 +186,7 @@ function git_logout()
 
 
         $.ajax({
-			url: "contributionservice.php",
+			url: "contribution_loginbox_service.php",
 			type: "POST",
 			data: contribution_AJAX_prepareOPTPARA("checkForLenasysUser",{userid: username}),
 			dataType: "json",
@@ -264,7 +264,7 @@ function git_logout()
         {
 
             $.ajax({
-                url: "contributionservice.php",
+                url: "contribution_loginbox_service.php",
                 type: "POST",
                 data: contribution_AJAX_prepareOPTPARA("requestGitUserCreation",{userid: username, userpass: pass1}),
                 dataType: "json",
