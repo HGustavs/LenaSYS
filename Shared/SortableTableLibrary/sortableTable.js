@@ -397,7 +397,7 @@ function SortableTable(param)
     	mhvstr += "<tbody id='"+this.tableid+DELIMITER+"mhvbody'>";
       var n = 0;
     	for (var i = 0; i < tbl.tblbody.length; i++) {
-          str += "<tr id='"+this.tableid+DELIMITER+i+"'"
+          str += "<tr class='changeColorInDarkModeTable' id='"+this.tableid+DELIMITER+i+"'"
           if (this.hasRowHighlight)str+=" onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
 
           // Hide filtered rows
@@ -407,9 +407,13 @@ function SortableTable(param)
           if (rowFilter(row)) {
             str += " style='box-sizing:border-box";
             // Alternate row colors
-            if(++n%2){
-              str += ";background: #ccc"; // --color-background-2;
-            }
+
+            /* Commented out this code, because it converted the color. 
+            It prevented us from adding the right dark mode color.
+            A class was created instead called "changeColorInDarkModeTable".*/ 
+            // if(++n%2){ 
+            //   str += ";background: #ccc"; // --color-background-2;
+            // }
           }
           else {
             str += " style='visibility:collapse";

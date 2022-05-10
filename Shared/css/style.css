@@ -8751,6 +8751,12 @@ border: none !important;
   filter: invert(80%);
   -webkit-filter: invert(0%);
 }
+
+.changeColorInDarkModeTable:nth-of-type(odd) {
+  background: #ccc;
+}
+
 /* }  /* END of "@media (prefers-color-scheme: light)" */
 /* White Theme code END */
+
 
