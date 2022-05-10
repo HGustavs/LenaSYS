@@ -335,7 +335,7 @@ function validateDeadlines(){
 	}
 	
   	if($("#deadline3").val()!=""){
-		if(qdeadline3 < qstart1 || qdeadline3 < qdeadline2) {
+		if(qdeadline3 < qstart1 || qdeadline3 < qdeadline2 || qdeadline3 < qdeadline1) {
 			//alert(`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`);
 			dldialog3.innerHTML = "Cannot be before above dates";
 			$(dldialog3).fadeIn()
