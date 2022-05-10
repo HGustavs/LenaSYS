@@ -1518,14 +1518,26 @@ div .navButt:hover {
 
 }
 
+#codeBurger {
+  display: table-cell;
+}
+#burgerMenu {
+  position: absolute;
+  z-index: 9999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
+  display: none;
+}
+.burgerOption {
+  padding: 15px 15px 15px 15px;
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 800px) {
         #div2 {
         top: 80px;
         }
-        #codeBurger {
-        display: table-cell;
-    }
-        
+       
     .access menuButton{
       width: 20px;
     }
@@ -1544,17 +1556,7 @@ div .navButt:hover {
 
     }
 
-    #burgerMenu {
-        position: absolute;
-        z-index: 9999;
-        background-color: var(--color-background-2);
-        border: 2px solid var(--color-border);
-        display: none;
-    }
-    .burgerOption {
-        padding: 15px 15px 15px 15px;
-        cursor: pointer;
-    }
+    
     .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2, .PF2, .UI2{display:none;}
 
     .CD{
