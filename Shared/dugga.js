@@ -2361,7 +2361,6 @@ function hideServerMessage() {
 	$containerHeight.animate({
 		top: -$containerHeight.outerHeight()
 	},200, "easeInOutSine", () => {});
-	$("#messagedialog").css("display", "content");
 	sessionStorage.setItem('show','false');
 }
 
