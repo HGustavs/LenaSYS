@@ -77,7 +77,7 @@ function returnedDugga(data)
     //temporary solution to get the correct link in the receipt
     //updateReceiptText(data['duggaTitle'], createUrl(data['hash']), data['hash'], data['hashpwd']);
   
-    if (data.param.length!=0 ||){
+    if (data.param.length!=0){
         var param = JSON.parse(data.param);
         //document.getElementById("assigment-instructions").innerHTML = param.instructions;
         //checking if the user is a teacher or if there's no variant by checking if the paramater object is empty
