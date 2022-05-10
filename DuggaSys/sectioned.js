@@ -1242,21 +1242,23 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        //Generate new tab link
-        str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-
-          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
-          src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
-          str += "</td>";
-
-        // Generate Canvas Link Button
-        if (data['writeaccess'] || data['studentteacher']) {
+        if (itemKind != 4){ // dont create buttons for moments only for specific assignments
+          //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
-          src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
-          str += "</td>";
+
+            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
+            src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
+            str += "</td>";
+
+          // Generate Canvas Link Button
+          if (data['writeaccess'] || data['studentteacher']) {
+            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
+            src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
+            str += "</td>";
+          }
         }
 
         // Cog Wheel
