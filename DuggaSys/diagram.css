@@ -98,6 +98,7 @@
     transform-origin: top left;            
     transform: translate(20px,0px) rotate(90deg);
     cursor: pointer;
+    width: 780px;
 }
 
 #options-pane-content {
@@ -339,7 +340,7 @@
 
 .toolTipText{
     top:-5px;
-    left:105%;
+    left: 9.5%;
     visibility: hidden;
     width: 250px;
     background: rgba(0, 0, 0, 0.8);
