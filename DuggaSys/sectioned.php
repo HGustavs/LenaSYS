@@ -41,6 +41,7 @@
 	<?php
 		$noup="COURSE";
 		include '../Shared/navheader.php';
+		$_SESSION['should-validate'] = "TRUE";
 	?>
 
 	<!-- content START -->
