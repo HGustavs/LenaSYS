@@ -796,7 +796,10 @@ function renderCell(col, celldata, cellid) {
 			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
 			break;
 		
-	
+		case "note":		// DUGGA-TABLE - Note column
+			retString = `<span class='noteText'>test</span>`;
+			break;
+
 		case "param":		// DUGGA-TABLE - Parameter column
 			retString = `<span class='variants-param-col'>${celldata}</span>`;
 			break;
