@@ -577,7 +577,7 @@ function elementIsValid(element) {
 		element.removeAttribute("style");
 		element.value = "";
 		//messageElement.style.display = "none";
-		return true;
+		return false;
 	}
 
 	//Change back to original validation error message if it has been changed when knowing course code is not duplicate

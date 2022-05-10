@@ -128,7 +128,6 @@ function selectDugga(qid) {
 	}
 }
 
-
 function updateDugga() {
 	var did = $("#did").val();
 	var nme = $("#name").val();
@@ -191,6 +190,213 @@ function isNameValid(){
 	return false;
 }
 
+function quickValidateDugga(formid, submitButton){
+	const saveButton = document.getElementById(submitButton);
+	valid = true;
+	valid2 = true;
+	valid3 = true;
+	valid = validateDuggaName()
+	valid2 = validateDeadlineComments()
+	valid3 = validateDeadlines()
+
+
+	valid = valid && valid2 && valid3;
+	if (valid){
+		saveButton.disabled = false;
+	}else{
+		saveButton.disabled = true;
+	}
+	
+}
+
+function validateDeadlineComments(){
+ cmt1 = document.getElementById('deadlinecomments1')
+ cmtdialog1 = document.getElementById('deadlinecomments1Dialog')
+ cmt2 = document.getElementById('deadlinecomments2')
+ cmtdialog2 = document.getElementById('deadlinecomments2Dialog')
+ cmt3 = document.getElementById('deadlinecomments3')
+ cmtdialog3 = document.getElementById('deadlinecomments3Dialog')
+ valid = true;
+
+
+  	var regComment = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
+  	var rangeComment = /^.{0,50}$/;
+	if (cmt1.value.match(regComment) && cmt1.value.match(rangeComment)) {
+		$(cmtdialog1).fadeOut();
+		cmt1.style.backgroundColor = "#ffff";
+		cmt1.style.borderColor = "#383";
+		cmt1.style.borderWidth = "2px";
+	}else{
+		$(cmtdialog1).fadeIn();
+		cmt1.style.backgroundColor = "#f57";
+		cmt1.style.borderColor = "#E54";
+		cmt1.style.borderWidth = "2px";
+		valid = false
+	}
+	if (cmt2.value.match(regComment) && cmt2.value.match(rangeComment) ) {
+		$(cmtdialog2).fadeOut();
+		cmt2.style.backgroundColor = "#ffff";
+		cmt2.style.borderColor = "#383";
+		cmt2.style.borderWidth = "2px";
+	}else{
+		$(cmtdialog2).fadeIn();
+		cmt2.style.backgroundColor = "#f57";
+		cmt2.style.borderColor = "#E54";
+		cmt2.style.borderWidth = "2px";
+		valid = false
+	}
+	if (cmt3.value.match(regComment) && cmt3.value.match(rangeComment)) {
+		$(cmtdialog3).fadeOut();
+		cmt3.style.backgroundColor = "#ffff";
+		cmt3.style.borderColor = "#383";
+		cmt3.style.borderWidth = "2px";
+	}else{
+		$(cmtdialog3).fadeIn();
+		cmt3.style.backgroundColor = "#f57";
+		cmt3.style.borderColor = "#E54";
+		cmt3.style.borderWidth = "2px";
+		valid = false
+	}
+	return valid;
+}
+
+function validateDeadlines(){
+  startdialog = document.getElementById('StartDateDialog')
+  dldialog1 = document.getElementById('Deadline1Dialog')
+  dldialog2 = document.getElementById('Deadline2Dialog')
+  dldialog3 = document.getElementById('Deadline3Dialog')
+  rrtdialog = document.getElementById('ResultReleaseDialog')
+
+  var qstart1 = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
+  var qstartbox = document.getElementById('qstart')
+
+  var qdeadline1 = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
+  var deadlinebox = document.getElementById('deadline')
+
+  var qdeadline2 = $("#deadline2").val()+" "+$("#deadlinet2").val()+":"+$("#deadlinem2").val();
+  var deadline2box = document.getElementById('deadline2')
+
+  var qdeadline3 = $("#deadline3").val()+" "+$("#deadlinet3").val()+":"+$("#deadlinem3").val();
+  var deadline3box = document.getElementById('deadline3')
+
+  var qrelease = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
+  var releasebox = document.getElementById('release')
+
+
+  var valid = true;
+
+    if($("#qstart").val()=="") {
+		//alert("Missing Start Date");
+		startdialog.innerHTML = "Missing Start Date."
+		$(startdialog).fadeIn()
+		formStatusAppearance(qstartbox.id, 1);
+		valid = false;
+    }else{
+		$(startdialog).fadeOut()
+		formStatusAppearance(qstartbox.id, 0);
+    }
+	
+	if($("#deadline").val()==""){
+		//alert("Missing Deadline 1");
+		dldialog1.innerHTML = "Missing Deadline 1";
+		$(dldialog1).fadeIn()
+		formStatusAppearance(deadlinebox.id, 1);
+		valid = false;
+
+	}else{
+		if(qdeadline1 < qstart1) {
+			//alert(`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`);
+			dldialog1.innerHTML = "Cannot be before Start";
+			$(dldialog1).fadeIn()
+			formStatusAppearance(deadlinebox.id, 1);
+		  	valid = false;
+
+		 }else{
+			$(dldialog1).fadeOut()
+			formStatusAppearance(deadlinebox.id, 0);
+		 }
+	}
+	//The other deadlines are not required.
+  	if($("#deadline2").val()!=""){
+		if(qdeadline2 < qstart1 || qdeadline2 < qdeadline1) {
+			//alert(`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`);
+			dldialog2.innerHTML = "Cannot be before above dates";
+			$(dldialog2).fadeIn()
+			formStatusAppearance(deadline2box.id, 1);
+			valid = false;
+
+		 }else{
+			$(dldialog2).fadeOut()
+			formStatusAppearance(deadline2box.id, 0);
+		 }
+  	}else{
+		$(dldialog2).fadeOut()
+		formStatusAppearance(deadline2box.id, 3);
+	}
+	
+  	if($("#deadline3").val()!=""){
+		if(qdeadline3 < qstart1 || qdeadline3 < qdeadline2) {
+			//alert(`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`);
+			dldialog3.innerHTML = "Cannot be before above dates";
+			$(dldialog3).fadeIn()
+			formStatusAppearance(deadline3box.id, 1);
+			valid = false;
+
+		 }else{
+			$(dldialog3).fadeOut()
+			formStatusAppearance(deadline3box.id, 0);
+		 }
+
+  	} else{
+		$(dldialog3).fadeOut()
+		formStatusAppearance(deadline3box.id, 3);
+	}
+	
+	if($("#release").val()==""){
+		//alert("Missing release date");
+		rrtdialog.innerHTML = "Missing release date";
+		$(rrtdialog).fadeIn()
+		formStatusAppearance(releasebox.id, 1);
+		valid = false;
+		
+	}else{
+		if(qrelease < qstart1 || qrelease < qdeadline1) {
+			//alert(`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`);
+			rrtdialog.innerHTML = "Cannot be before above dates";
+			$(rrtdialog).fadeIn()
+			formStatusAppearance(releasebox.id, 1);
+			valid = false;
+
+		 }else{
+			$(rrtdialog).fadeOut()
+			formStatusAppearance(releasebox.id, 0);
+		 }
+	}
+return valid;
+}
+
+function formStatusAppearance(id, status){
+	//0 = success, 1 = failure, else = neutral.
+	var box = document.getElementById(id);
+ switch(status){
+	case 0:
+		box.style.backgroundColor = "#ffff";
+		box.style.borderColor = "#383";
+		box.style.borderWidth = "2px";
+		break;
+	case 1:
+		box.style.backgroundColor = "#f57";
+		box.style.borderColor = "#E54";
+		box.style.borderWidth = "2px";
+		break;
+	default:
+		box.style.backgroundColor = "#ffff";
+		box.style.borderColor = "#383";
+		box.style.borderWidth = "0px";
+ } 
+
+}
+
 // Checks if the title name includes any invalid characters
 function validateDuggaName() {
 	var retValue = false;
@@ -198,16 +404,17 @@ function validateDuggaName() {
 
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
 		$('#tooltipTxt').fadeOut();
-		$('#saveDugga').removeAttr('disabled');
-		$('#submitDugga').removeAttr('disabled');
-		nme.style.backgroundColor = "#fff";
+		//$('#saveDugga').removeAttr('disabled');
+		//$('#submitDugga').removeAttr('disabled');
+		formStatusAppearance(nme.id, 0);
+		//nme.style.backgroundColor = "#fff";
 		retValue = true;
 	} else {
 		$('#tooltipTxt').fadeIn();
-		$('#submitDugga').attr('disabled', 'disabled');
-		$('#saveDugga').attr('disabled', 'disabled');
+		//$('#submitDugga').attr('disabled', 'disabled');
+		//$('#saveDugga').attr('disabled', 'disabled');
+		formStatusAppearance(nme.id, 1);
 		nme.style.backgroundColor = "#f57";
-		nme.style.backgroundColor = "#000";
 	}
 	return retValue;
 }

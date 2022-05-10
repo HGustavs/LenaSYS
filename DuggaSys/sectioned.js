@@ -2577,32 +2577,37 @@ function validateVersionName(versionName, dialogid) {
 function validateCourseID(courseid, dialogid) {
 
   //regex numbers, letters and dashes, between 3 and 8 numbers
-  var Code = /^[A-Za-z0-9_.]{3,8}$/;
+  var Code = /^[0-9]{3,8}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
-  var val = document.getElementById("cversid").value;
+  var val = document.getElementById(courseid).value;
 
   if (val.match(Code)) {
+    $(x2).fadeOut();
     code.style.borderColor = "#383";
     code.style.borderWidth = "2px";
-    x2.style.display = "none";
+    code.style.backgroundColor = "#fff";
+    //x2.style.display = "none";
     window.bool = true;
   } else {
-
+    $(x2).fadeIn();
     code.style.borderColor = "#E54";
-    x2.innerHTML = "numbers, letters and dashes(between 3-8)";
-    x2.style.display = "block";
+    code.style.backgroundColor = "#f57";
     code.style.borderWidth = "2px";
+    //x2.innerHTML = "numbers, letters and dashes(between 3-8)";
+    //x2.style.display = "block";
     window.bool = false;
     return false;
   }
 
   const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
   if(versionIsValid) {
+    $(x2).fadeIn();
     code.style.borderColor = "#E54";
-    x2.innerHTML = "Version ID already exists, try another";
-    x2.style.display = "block";
+    code.style.backgroundColor = "#f57";
     code.style.borderWidth = "2px";
+    x2.innerHTML = "Version ID already exists, try another";
+    //x2.style.display = "block";
     window.bool = false;
   }else{
     return true;
@@ -2747,17 +2752,19 @@ function validateDate2(ddate, dialogid) {
   if (startdate <= deadline && enddate >= deadline) {
     ddate.style.borderColor = "#383";
     ddate.style.borderWidth = "2px";
-    x.style.display = "none";
+    ddate.style.backgroundColor = "#fff";
+    $(x).fadeOut();
+    //x.style.display = "none";
     window.bool8 = true;
 
     return true;
   } else {
-
+    $(x).fadeIn();
     ddate.style.borderColor = "#E54";
-    x.style.display = "block";
+    ddate.style.backgroundColor = "#f57";
+    //x.style.display = "block";
     ddate.style.borderWidth = "2px";
     window.bool8 = false;
-
     }
   }
   else{
@@ -2775,11 +2782,15 @@ function validateSectName(name){
   // Valid string
   if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
     emotd.style.borderColor = "#383";
+    emotd.style.borderWidth = "2px";
+    emotd.style.backgroundColor = "#fff";
     $('#dialog10').fadeOut();
     window.bool10 = true;
     return true;
   } else { // Invalid string
     emotd.style.borderColor = "#E54";
+    emotd.style.backgroundColor = "#f57";
+    emotd.style.borderWidth = "2px";
     window.bool10 = false;
     $('#dialog10').fadeIn();
     return false;
@@ -2855,13 +2866,16 @@ function quickValidateForm(formid, submitButton){
     valid = valid && validateSectName('sectionname');
 
     // Validates Deadline
-    showCourseDate('setDeadlineValue','dialog8');
+    if (deadlinedisplayattribute != 'none'){
+      valid = valid && showCourseDate('setDeadlineValue','dialog8');
+    }
+   
 
     //If fields empty
     if (sName == null || sName == "") {
       //alert("Fill in all fields");
-      endialog.innerHTML += "Fill in all fields </br>";
-      valid = valid && false;
+      //endialog.innerHTML += "Fill in all fields </br>";
+      valid = false;
     }
 
     //Name is a duplicate
@@ -2870,16 +2884,6 @@ function quickValidateForm(formid, submitButton){
 
     }
 
-    // if all information is correct
-    if (window.bool10 == true && window.bool11 == true) {
-      
-      //updateItem();
-      //updateDeadline();
-
-    } else {
-      //alert("You have entered incorrect information");
-      //endialog.innerHTML += "Entered information is incorrect </br>";
-    }
     if (valid){
       saveButton.disabled = false;
     }else{
@@ -2893,24 +2897,30 @@ function quickValidateForm(formid, submitButton){
     var endialog = document.getElementById("EndDialog2");
     endialog.innerHTML = "";
     valid = true;
+    //Compilator is stupid. Cannot use one bool. Does not execute other methods if bool is already false.
+    valid2 = true;
+    valid3 = true;
+    valid4 = true;
 
-    valid = valid && validateCourseID('cversid', 'dialog2');
-    valid = valid && validateVersionName('versname', 'dialog');
-    valid = valid && validateDate('startdate','enddate','dialog3');
-    valid = valid && validateMOTD('vmotd','dialog4', 'dialog42', 'submitCourseMotd');
 
-    //If fields empty
-    if (versName == null || versName == "", versId == null || versId == "") {
+    valid = (valid && validateCourseID('cversid', 'dialog2'));
+
+    //valid = (valid && validateVersionName('versname', 'dialog')); >:|
+    valid2 = (valid2 && validateVersionName('versname', 'dialog'));
+
+    valid3 = (valid3 && validateDate('startdate','enddate','dialog3'));
+
+    valid4 = (valid4 && validateMOTD('vmotd','dialog4', 'dialog42', 'submitCourseMotd'));
+
+    valid = valid && valid2 && valid3 && valid4
+
+     //If fields empty
+     if (versName == null || versName == "", versId == null || versId == "") {
       //alert("Fill in all fields");
-      endialog.innerHTML += "Fill in all fields </br>";
+      //endialog.innerHTML += "Fill in all fields </br>";
+      valid = false;
     }
-    // if all information is correct
-    if (window.bool5 === true && window.bool3 === true && window.bool === true) {
 
-    } else {
-      //alert("You have entered incorrect information");
-      //endialog.innerHTML += "Entered information is incorrect </br>";
-    }
     if (valid){
       saveButton.disabled = false;
     }else{
@@ -2929,19 +2939,14 @@ function quickValidateForm(formid, submitButton){
     valid = valid && validateDate('estartdate','eenddate','dialog6')
     valid = valid && validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse')
 
-
     //If fields empty
     if (eversName == null || eversName == "") {
       //alert("Fill in all fields");
       //endialog.innerHTML += "Fill in all fields </br>";
+      valid = false;
     }
 
-    // if all information is correct
-    if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
-    } else {
-      //alert("You have entered incorrect information");
-      //endialog.innerHTML += "Entered information is incorrect </br>";
-    }
+
     if (valid){
       saveButton.disabled = false;
     }else{
