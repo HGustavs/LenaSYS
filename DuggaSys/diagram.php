@@ -244,6 +244,7 @@
                 <img src="../Shared/icons/diagram_replay.svg"/>
                 <span class="toolTipText"><b>Enter replay mode</b><br>
                     <p>View history of changes made</p><br>
+                    <p id="tooltip-TOGGLE_REPLAY_MODE" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
         </fieldset>
@@ -253,6 +254,7 @@
                 <img src="../Shared/icons/diagram_ER_table_info.svg"/>
                 <span class="toolTipText"><b>Toggle ER-Table</b><br>
                     <p>Click to toggle ER-Table in options</p><br>
+                    <p id="tooltip-TOGGLE_ER_TABLE" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
         </fieldset>     
