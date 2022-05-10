@@ -700,7 +700,7 @@ function MOTDbtnValueX(x) {
   x.addListener(MOTDbtnValueX); 
   
  //Adds an eventlistener for keydowns. if the key is Enter and the targeted element is fab-btn-lg then perform it's onclick functionality
-  document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function(event) {
 	if(event.key === 'Enter'){
 		if ($(event.target)[0].classList.contains("fab-btn-lg")) {
 			newCourse();

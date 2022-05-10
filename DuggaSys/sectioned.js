@@ -318,6 +318,9 @@ document.addEventListener('keydown', function (event) {
     $("#newCourseVersion").css("display", "none");
     $("#userFeedbackDialog").css("display", "none");
   }
+  if(event.key === 'Enter'){
+    onEnterKeydown(event);
+	}
 })
 
 function displaymessage() {
@@ -336,7 +339,24 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
+function onEnterKeydown(e){
+  var box = $(e.target);
+  if (box[0].classList.contains("home-nav")){
 
+  }else if (box[0].classList.contains("theme-toggle-nav")){
+
+  }else if (box[0].classList.contains("messagedialog-nav")){
+
+  }else if (box[0].classList.contains("announcement-nav")){
+
+  }else if (box[0].classList.contains("editVers")){
+
+  }else if (box[0].classList.contains("newVers")){
+
+  }else if (box[0].classList.contains("loginbutton-nav")){
+
+  }
+}
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
