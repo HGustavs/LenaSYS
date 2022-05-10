@@ -1100,12 +1100,13 @@ p {
 }
 
 #Sectionlist .hi:hover {
-  background-color: var(--color-background-2);
+  background-color: #927b9e;
   color: var(--color-text-list);
 }
 
+
 #Sectionlist .lo:hover {
-  background-color: var(--color-background-2);
+  background-color: #927b9e;
   color: var(--color-text-list);
 }
 
