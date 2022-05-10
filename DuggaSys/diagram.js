@@ -4469,7 +4469,7 @@ function zoomin(scrollEvent = undefined)
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.25) zoomfact = 0.5;
+    if (zoomfact == 0.5) zoomfact = 0.5;
     else if (zoomfact == 0.5) zoomfact = 0.75;
     else if (zoomfact == 0.75) zoomfact = 1.0;
     else if (zoomfact == 1.0) zoomfact = 1.25;
