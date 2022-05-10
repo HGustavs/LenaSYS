@@ -295,12 +295,12 @@
             <defs>
             <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
 
-                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-dasharray="5,5" stroke-width="1"/>
+                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke="0.8 0.8" stroke-width="1"/>
             </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
-            <line id="origoX" x1="0%" y1="100" x2="100%" y2="100" style="stroke:rgb(171, 171, 171);stroke-width:2;"/>
-            <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" style="stroke:rgb(171, 171, 171);stroke-width:2;"/>
+            <line id="origoX" x1="0%" y1="100" x2="100%" y2="100" style="stroke:rgb(105, 105, 105);stroke-width:8;"/>
+            <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" style="stroke:rgb(105, 105, 105);stroke-width:8;"/>
         </svg>  
     </div>
     <!-- A4 template -->
