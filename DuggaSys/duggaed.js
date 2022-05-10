@@ -362,7 +362,7 @@ function validateDeadlines(){
 	}else{
 		if(qrelease < qstart1 || qrelease < qdeadline1) {
 			//alert(`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`);
-			rrtdialog.innerHTML = "Cannot be before above dates";
+			rrtdialog.innerHTML = "Cannot be before first deadline";
 			$(rrtdialog).fadeIn()
 			formStatusAppearance(releasebox.id, 1);
 			valid = false;
