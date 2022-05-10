@@ -94,9 +94,6 @@
 			}if ($noup == 'COURSE' && checkLogin()) {
 				echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
 
-			}if ($noup == 'COURSE' && checkLogin() && (isStudentUser($_SESSION['uid']))) {
-				echo "<td class='navButt' id='feedback' title='Recent Feedback'><img src='../Shared/icons/feedback_icon.svg'></td>";
-
 			}else if($noup=='SECTION'){
 				echo "<a id='upIcon' href='";
 				echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
@@ -583,32 +580,6 @@ function mouseOutAnnouncement() {
 }
 /*Shadow hover effect for announcement button END -------------*/
 
-/*Shadow hover effect for feedback button START ---------------*/
-var feedButton = document.getElementById("feedback");
-if(feedButton){
-	feedButton.addEventListener("mouseover", mouseOverFeedback);
-	feedButton.addEventListener("mouseout", mouseOutFeedback);
-}
-
-function mouseOverFeedback() {
-	var obj = document.getElementById("feedback");
-   if(obj != null)
-   {
-      var images = obj.getElementsByTagName('img');
-      images[0].src = '../Shared/icons/feedback_iconShadow.svg';
-   }
-}
-
-function mouseOutFeedback() {
-	var obj = document.getElementById("feedback");
-   if(obj != null)
-   {
-      var images = obj.getElementsByTagName('img');
-      images[0].src = '../Shared/icons/feedback_icon.svg';
-   }
-}
-
-/*Shadow hover effect for feedback button END ---------------*/
 
 var searchinput = document.getElementById("searchinput");
 if(searchinput){
