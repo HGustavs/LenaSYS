@@ -2204,5 +2204,4 @@ function createSidebar(){
   text.innerHTML = str;
 }
 
-
 console.error
