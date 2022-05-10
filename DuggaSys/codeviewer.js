@@ -391,6 +391,10 @@ function returned(data)
 			}
 		}
 	}
+	// Add all drop zones
+	if (retData['writeaccess'] == "w") {
+		initFileDropZones();
+	}	
 
 	var ranges = getBlockRanges(allBlocks);
 	for (var i = 0; i < Object.keys(ranges).length; i++) {
@@ -434,6 +438,101 @@ function returnedTitle(data) {
 	titleSpan.innerHTML = data.title;
 	fillBurger();
 }
+
+//------------------------
+// Drag and drop
+//------------------------
+
+function handleFiles(files, boxnumber) {	
+	var boxcontent;
+	var file = files[0];
+    var reader = new FileReader();
+	var filetype = file.name.split('.').pop();
+
+	// Add supported files in the array
+	const supportedFiles = ["js", "php", "html", "txt", "java", "sr", "sql", "md"];
+	
+	// Go trough supported files
+	if (supportedFiles.includes(filetype)) {
+		if(filetype == "txt") {
+			boxcontent = "Document";
+		}
+		else {
+			boxcontent = "Code";
+		}
+
+		// This command is important to activate reader
+		console.log(reader.readAsText(file));
+	} else {
+		alert("FILETYPE [" + filetype + "] NOT SUPPORTED")
+	}
+
+    reader.onload = event => {
+		const iframe = document.getElementById("iframeFileed").contentWindow;
+		showHiddenIframe();
+
+		document.querySelector("#iframeFileed").addEventListener( "load", function(e) {
+			// IFrame querys
+			iframe.showFilePopUp('GFILE');
+			iframe.document.querySelector('#uploadedfile').files = files;
+			iframe.uploadDroppedFile();
+
+			// Lastly, apply the new file to that of the code viewer
+			updateContent(file.name, boxcontent, boxnumber);
+		}, { once: true });
+    };
+}
+
+function handleDrop(e)
+{
+	let dt = e.dataTransfer;
+	let files = dt.files;
+
+	// Get correct box number
+	var boxnumber = parseInt(e["currentTarget"]["id"].replace("box",""));
+
+	handleFiles(files, boxnumber);
+}
+
+function initFileDropZones()
+{
+	for(i = 1; i <= retData["box"].length; i++) {
+		dropArea = document.getElementById("box" + i);
+
+		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => 
+			{
+			  dropArea.addEventListener(eventName, preventDefaults, false);
+			})
+	
+			;['dragenter', 'dragover'].forEach(eventName => 
+			{
+			  dropArea.addEventListener(eventName, highlight, false)
+			})
+	
+			;['dragleave', 'drop'].forEach(eventName => 
+			{
+			  dropArea.addEventListener(eventName, unhighlight, false)
+			})
+	
+			dropArea.addEventListener('drop', handleDrop, false);
+	}
+}
+
+function preventDefaults (e)
+{
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+function highlight(e) 
+{
+	e.target.closest(".box").classList.add('highlight');
+}
+
+function unhighlight(e) 
+{
+	e.target.closest(".box").classList.remove('highlight');
+} 
 
 //---------------------------------------------------------------------------------
 // This functions convert tabs to "&#9;""
@@ -804,9 +903,16 @@ function editImpRows(editType)
 // updateContent: Updates the box if changes has been made
 //----------------------------------------------------------------------------------
 
-function updateContent() 
+function updateContent(file, content, boxnumber) 
 {
-	var box = retData['box'][openBoxID - 1];
+	// Check if there is a box number
+	// Only true if function is called by drag and drop
+	if(boxnumber) {
+		var box = retData['box'][boxnumber - 1];;
+	} else {
+		var box = retData['box'][openBoxID - 1];
+	}
+	
 	var useBoxContent = true;
 
 	// Default to using openbox data and use regular retData as fallback incase it's not open
@@ -815,15 +921,26 @@ function updateContent()
 		box = retData['box'][retData['box'].length - 1];
 	}
 
+	// Check if a drag and drop instance is created
+	if(file != null && box != null){
+		filename = file;
+		boxtitle = file;
+		boxcontent = content;
+	}
+
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
 	// TODO: Handle null values
 	if (useBoxContent) {
 		if (box[1] != document.querySelector("#boxcontent").value || box[3] != document.querySelector("#wordlist").value || box[4] != document.querySelector("#boxtitle").value || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
 			try {
-				var boxtitle = document.querySelector("#boxtitle").value;
-				var boxcontent = $("#boxcontent option:selected").val();
+				if(file == null)
+					var boxtitle = document.querySelector("#boxtitle").value;
+				if(content == null)
+					var boxcontent = $("#boxcontent option:selected").val();
+				if(file == null)
+					var filename = $("#filename option:selected").val();
+				
 				var wordlist = document.querySelector("#wordlist").value;
-				var filename = $("#filename option:selected").val();
 				var fontsize = $("#fontsize option:selected").val();
 				var exampleid = querystring['exampleid'];
 				var boxid = box[0];
@@ -951,10 +1068,10 @@ function createboxmenu(contentid, boxid, type) {
 			var kind = 2;
 		}
 
-		// Add resize, reset and edit buttons
-		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Maximize box' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
-		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Minimize box' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
+		// Add zoom in, zoom out and reset buttons.
+		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Zoom in' onclick='zoomText(" + boxid + ", 3);'><img src='../Shared/icons/MaxButton.svg' /></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Zoom out' onclick='zoomText(" + boxid + ", -3);'><img src='../Shared/icons/MinButton.svg' /></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset zoom' onclick='resetText(" + boxid + ");'><img src='../Shared/icons/ResetButton.svg' /></div>";
     
 
 		// Show the copy to clipboard button for code views only
@@ -1804,6 +1921,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					// [token row position, 0 = closing html tag, codeviewer box id]
 					allBlocks.push([tokens[i + 1].row, 0, parseInt(boxid)]);
 				}
+				// ↑ added in pull request #11411 (START) 
 
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
@@ -2095,6 +2213,7 @@ function getBlockRanges(blocks) {
 	return boxRanges;
 }
 
+// ↓ relevant function to collapsible brackets
 function createBlocks(ranges, boxid) {
 	var wrapper = document.querySelector('#textwrapper'+boxid);
 	for (var i = 0; i < ranges.length; i++) {
@@ -2103,18 +2222,17 @@ function createBlocks(ranges, boxid) {
 		buttonSlot.classList.add('open-block');
 		buttonSlot.classList.add('occupied');
 		buttonSlot.id = i;
-
 		buttonSlot.addEventListener('click', (e) => {
 			var button = e.target;
 			button.classList.toggle('open-block');
 			button.classList.toggle('closed-block');
-			var rowsInBlock = Array(ranges[button.id][1] - ranges[button.id][0]).fill().map((_, idx) => ranges[button.id][0] + idx);
-			toggleRows(rowsInBlock, button);
+			toggleRows(ranges, ranges[button.id][0], ranges[button.id][1], e.target);
 		});
 	}
 }
 
-function toggleRows(rows, button) {
+// Update rows encapsulated in collapsible brackets
+function toggleRows(ranges, startRow, endRow, button) {
 	var baseRow = button.parentNode;
 	var wrapper = baseRow.parentNode;
 	var box = wrapper.parentNode;
@@ -2130,12 +2248,23 @@ function toggleRows(rows, button) {
 	} else {
 		display = 'block';
 		ellipses = baseRow.querySelector('.blockEllipses');
-		baseRow.removeChild(ellipses);
+		if(ellipses)
+			baseRow.removeChild(ellipses);
 	}
 	
-	for (var i = 1; i < rows.length; i++) {
-		wrapper.querySelector("div[id$='"+rows[i]+"']").style.display = display;
-		numbers[rows[i] - 1].style.display = display;
+	// Show or hide rows between collapsible brackets
+	for (var i = 1; i < endRow - startRow; i++) {
+		var rowNumber = startRow + i;
+		var row = wrapper.querySelector("div[id$='" + rowNumber + "']");
+		var tempButton = row.querySelector("span.blockBtnSlot.occupied");
+		if (tempButton &&  display == 'block') {
+			// Update nested set of collapsible brackets recursively
+			toggleRows(ranges, ranges[tempButton.id][0], ranges[tempButton.id][1], tempButton)
+			i += ranges[tempButton.id][1] - ranges[tempButton.id][0] - 1;
+		}
+		
+		row.style.display = display;
+		numbers[rowNumber - 1].style.display = display;
 	}
 }
 
@@ -2644,6 +2773,41 @@ function getTotalBoxes(template) {
 		totalboxes = 1;
 	}
 	return totalBoxes;
+}
+
+//-----------------------------------------------------------------------------
+// zoomText: Adding zooming functionality for text content of the boxes.
+//			Is called by zoomIn & zoomOut buttons. 
+//			Increment refers to the increment in font size.
+//			Setting increment to a negative value allows for making the text smaller.
+//-----------------------------------------------------------------------------
+
+function zoomText(boxid, increment)
+{
+	//Upper & lower limit of how small text can get.
+	var upperLimit = 21;
+	var lowerLimit = 6; 
+
+	var fontSize = parseInt(document.getElementById("box" + boxid).style.fontSize);
+	
+	if (increment > 0 && fontSize < upperLimit || increment < 0 && fontSize > lowerLimit){
+
+		fontSize = fontSize + increment; 
+
+		document.getElementById("box" + boxid).style.fontSize = fontSize + "px";
+	
+	}
+	
+}
+
+//-----------------------------------------------------------------------------
+// resetText: Resets the text size to the default value. (9px)
+//-----------------------------------------------------------------------------
+function resetText(boxid)
+{
+
+document.getElementById("box" + boxid).style.fontSize = "9px";
+
 }
 
 //-----------------------------------------------------------------------------
@@ -3894,6 +4058,8 @@ function resizeBoxes(parent, templateId)
 		$('#box1wrapper').resizable({
 			resize: function( event, ui ) {
 				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
+				//Handles east resizing START.
 				if((remaining/$(parent).width())*100 < 16){
 					//hide box 2 and 3 title
 					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
@@ -3916,32 +4082,43 @@ function resizeBoxes(parent, templateId)
 					boxToShow.classList.remove('visuallyhidden');
 	
 				}
-				//box wrapper 2 and 3 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = screen widht.)
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
+				
+				$('#box2wrapper').css('width', remaining + "px");
+				//Handles east resizing END.
+
+				//Handles south resizing START.
+				$('#box2wrapper').css('height', $('#box1wrapper').height() + "px");
+				$('#box3wrapper').css('height', remainingHeight + "px");
+				//Handles south resizing END.
 						
 			},		
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
-			handles: "e",
+			maxHeight: ($(parent).height()*0.85),
+			minHeight: ($(parent).height()*0.15),
+			handles: "e,s",
 			containment: parent
 	
 		});
 		$('#box2wrapper').resizable({
-			//This one currently doens't work
-			disabled:true,
-			handles: "n"
-		});
-		$('#box3wrapper').resizable({
-			//This one currently doens't work
-			disabled: true,
-			handles: "s"
+			resize: function( event, ui ) {
+				remaining = ($(parent).height()) - $('#box2wrapper').height();
 
+				$('#box1wrapper').css('height', $('#box2wrapper').height() + "px");
+				$('#box3wrapper').css('height', remaining + "px");
+			},
+			maxHeight: ($(parent).height()*0.85),
+			minHeight: ($(parent).height()*0.15),
+			handles: "s",
+			containment: parent
 		});
 	}
 	if(templateId == 5){
 		$('#box1wrapper').resizable({
 			resize: function( event, ui ) {
+				//Handles east resizing START.
 				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
 				if((remaining/$(parent).width())*100 < 16){
 					//hide box 2 and 3 title
 					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
@@ -3978,13 +4155,14 @@ function resizeBoxes(parent, templateId)
 					boxToShow.classList.remove('hidden');
 					boxToShow.classList.remove('visuallyhidden');
 				}
-				//box wrapper 2 and 4 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = screen widht.)
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
-				remaining = ($(parent).height()) - $('#box1wrapper').height();
-				document.querySelector('#box4wrapper').style.height = remaining + "px";
-				document.querySelector('#box3wrapper').style.height = remaining + "px";
-				
-						
+				$('#box2wrapper').css('width', remaining + "px");
+				//Handles east resizing END.
+
+				//Handles south resizing START.
+				$('#box2wrapper').css('height', $('#box1wrapper').height() + "px");
+				$('#box3wrapper').css('height', remainingHeight + "px");
+				$('#box4wrapper').css('height', remainingHeight + "px");
+				//Handles south resizing END.						
 			},		
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
@@ -3995,31 +4173,63 @@ function resizeBoxes(parent, templateId)
 		});
 		$('#box2wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box1wrapper').height();
-				document.querySelector('#box4wrapper').style.height = remaining + "px";
-				document.querySelector('#box3wrapper').style.height = remaining + "px";
-
-
+				remainingHeight = ($(parent).height()) - $('#box2wrapper').height();
+				$('#box1wrapper').css('height', $('#box2wrapper').height() + "px");
+				$('#box3wrapper').css('height', remainingHeight + "px");
+				$('#box4wrapper').css('height', remainingHeight + "px");
 			},
-
 			handles: "s",
 			containment: parent,
 			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.16),
-			maxHeight: ($(parent).height()*0.85),
 			minHeight: ($(parent).height()*0.16)	
-			
 		});
 		$('#box3wrapper').resizable({
-			disabled: true
-		
-				
-			
-		});
-		$('#box4wrapper').resizable({
-			disabled: true
-			
-			
+			resize: function( event, ui ) {
+				remaining = ($(parent).width()) - $('#box3wrapper').width();
+				if((remaining/$(parent).width())*100 < 16){
+					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+
+					boxToHide = document.querySelector('#box4wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else if((remaining/$(parent).width())*100 > 84){
+					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+
+					boxToHide = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else{
+					boxToShow = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+
+					boxToShow = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+
+					boxToShow = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+
+					boxToShow = document.querySelector('#box4wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+				}
+				$('#box1wrapper').css('width', $('#box3wrapper').width());
+				$('#box2wrapper').css('width', remaining + "px");
+				$('#box4wrapper').css('width', remaining + "px");
+
+			},
+			maxWidth: ($(parent).width()*0.85),
+			minWidth: ($(parent).width()*0.15),
+			handles: "e",
+			containment: parent
 		});
 	}
 
@@ -4309,9 +4519,10 @@ function resizeBoxes(parent, templateId)
 	}
 	if(templateId == 8){
 		$('#box2wrapper').resizable({
-			//This one currently doens't work
 			resize: function( event, ui ) {
 				remaining = ($(parent).width()) - $('#box2wrapper').width();
+				remainingHeight = ($(parent).height()) - $('#box2wrapper').height();
+				//Handles east resizing START.
 				if((remaining/$(parent).width())*100 < 16){
 					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
 					boxToHide.classList.add('hidden');
@@ -4340,21 +4551,59 @@ function resizeBoxes(parent, templateId)
 					boxToShow.classList.remove('visuallyhidden');
 	
 				}
-				document.querySelector('#box1wrapper').style.width = remaining + "px";
+				$('#box1wrapper').css('width', remaining + "px");
+				$('#box3wrapper').css('width', $('#box2wrapper').width() + "px");
+				//Handles east resizing END.
+				//Handles south resizing START.
+				$('#box3wrapper').css('height', remainingHeight + "px");
+				//Handles south resizing END.
 			},
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
-			handles:"e",
+			maxHeight: ($(parent).height()*0.85),
+			minHeight: ($(parent).height()*0.15),
+			handles:"e,s",
 			containment: parent
 		});
 		//This one currently doens't work
 		$('#box3wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box3wrapper').height();
-				document.querySelector('#box2wrapper').style.height = remaining + "px";
-			},
-			handles: "n",
+				remaining = ($(parent).width()) - $('#box3wrapper').width();
+				if((remaining/$(parent).width())*100 < 16){
+					boxToHide = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else if((remaining/$(parent).width())*100 > 84){
+					boxToHide = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+			
+					boxToHide = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToHide.classList.add('hidden');
+					boxToHide.classList.add('visuallyhidden');
+				}
+				else{
+					boxToShow = document.querySelector('#box1wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+					boxToShow = document.querySelector('#box2wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
 
+					boxToShow = document.querySelector('#box3wrapper #boxtitlewrapper');
+					boxToShow.classList.remove('hidden');
+					boxToShow.classList.remove('visuallyhidden');
+	
+				}
+				$('#box1wrapper').css('width', remaining + "px");
+				$('#box2wrapper').css('width', $('#box3wrapper').width() + "px");
+			},
+			handles: "e",
+			maxWidth: ($(parent).width()*0.85),
+			minWidth: ($(parent).width()*0.15),
+			containment: parent
 		});
 	}
 	if(templateId == 9){
@@ -4402,10 +4651,10 @@ function resizeBoxes(parent, templateId)
 					boxToShow.classList.remove('visuallyhidden');
 	
 				}
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
-				document.querySelector('#box3wrapper').style.width = remaining + "px";
-				document.querySelector('#box4wrapper').style.width = remaining + "px";
-				document.querySelector('#box5wrapper').style.width = remaining + "px";
+				$('#box2wrapper').css('width', remaining + "px");
+				$('#box3wrapper').css('width', remaining + "px");
+				$('#box4wrapper').css('width', remaining + "px");
+				$('#box5wrapper').css('width', remaining + "px");
 			},
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
@@ -4414,39 +4663,174 @@ function resizeBoxes(parent, templateId)
 		});
 		$('#box2wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box2wrapper').height();
-				document.querySelector('#box3wrapper').style.height = remaining/3 + "px";
-				document.querySelector('#box4wrapper').style.height = remaining/3 + "px";
-				document.querySelector('#box5wrapper').style.height = remaining/3 + "px";
+				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
+
+				if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box3 and 4 are too small only resize box5
+					if($('#box4wrapper').height() <= $(parent).height()*0.15){
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
+					}
+					//Else if box 3 an 5 are too small only resize box 4
+					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+					}
+
+				}
+				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box3 and 4 are too small only resize box5
+					if($('#box3wrapper').height() <= $(parent).height()*0.15){
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
+					}
+					//Else if box 4 an 5 are too small only resize box 3
+					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+					}
+				}
+				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box5 and 4 are too small only resize box3
+					if($('#box4wrapper').height() <= $(parent).height()*0.15){
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
+					}
+					//Else if box 3 an 5 are too small only resize box 4
+					else if($('#box3wrapper').height() <= $(parent).height()*0.15){
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
+					}
+				}
+				else{
+					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/3) + "px");
+					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/3) + "px");
+					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
+				}
 				
 			},
-			maxHeight: ($(parent).height()*0.65),
+			maxHeight: ($(parent).height()*0.55),
 			minHeight: ($(parent).height()*0.15),
 			handles:"s",
 			containment: parent
 		});
 		$('#box3wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box3wrapper').height();
-				 document.querySelector('#box2wrapper').style.height = remaining/3 + "px";
-				 document.querySelector('#box4wrapper').style.height = remaining/3 + "px";
-				 document.querySelector('#box5wrapper').style.height = remaining/3 + "px";
-				
+				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
+				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box2 and 4 are too small only resize box5
+					if($('#box4wrapper').height() <= $(parent).height()*0.15){
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
+					}
+					//Else if box 2 an 5 are too small only resize box 4
+					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+					}
+
+				}
+				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box2 and 4 are too small only resize box5
+					if($('#box2wrapper').height() <= $(parent).height()*0.15){
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
+					}
+					//Else if box 4 an 5 are too small only resize box 2
+					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+					}
+				}
+				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box5 and 4 are too small only resize box3
+					if($('#box4wrapper').height() <= $(parent).height()*0.15){
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
+					}
+					//Else if box 2 an 5 are too small only resize box 4
+					else if($('#box2wrapper').height() <= $(parent).height()*0.15){
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
+						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
+					}
+				}
+				else{
+					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/3) + "px");
+					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/3) + "px");
+					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
+				}			
 			},
-			maxHeight: ($(parent).height()*0.65),
+			maxHeight: ($(parent).height()*0.55),
 			minHeight: ($(parent).height()*0.15),
 			handles:"s",
 			containment: parent
 		});
 		$('#box4wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box4wrapper').height();
-				 document.querySelector('#box2wrapper').style.height = remaining/3 + "px";
-				 document.querySelector('#box3wrapper').style.height = remaining/3 + "px";
-				 document.querySelector('#box5wrapper').style.height = remaining/3 + "px";
+				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
+				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box2 and 4 are too small only resize box5
+					if($('#box3wrapper').height() <= $(parent).height()*0.15){
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
+					}
+					//Else if box 3 an 5 are too small only resize box 4
+					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+					}
+
+				}
+				else if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box3 and 4 are too small only resize box5
+					if($('#box2wrapper').height() <= $(parent).height()*0.15){
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
+					}
+					//Else if box 4 an 5 are too small only resize box 3
+					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
+						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+					}
+				}
+				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
+					//If both box5 and 4 are too small only resize box3
+					if($('#box2wrapper').height() <= $(parent).height()*0.15){
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
+					}
+					//Else if box 3 an 5 are too small only resize box 4
+					else if($('#box3wrapper').height() <= $(parent).height()*0.15){
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
+					}
+					else{
+						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
+						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
+					}
+				}
+				else{
+					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/3) + "px");
+					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/3) + "px");
+					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
+				}			
 				
 			},
-			maxHeight: ($(parent).height()*0.65),
+			maxHeight: ($(parent).height()*0.55),
 			minHeight: ($(parent).height()*0.15),
 			handles:"s",
 			containment: parent
@@ -4574,7 +4958,9 @@ function copyCodeToClipboard(boxid) {
 // Detects clicks
 $(document).mousedown(function (e) {
 	var box = $(e.target);
-	if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
+	if ($('#burgerMenu').is(e.target) || $('#burgerMenu').has(e.target).length !== 0) { //is the burger menu or its descendants clicked?
+		isClickedElementBox = true;
+	} else if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
 		isClickedElementBox = true;
 	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
 		&&
@@ -4583,13 +4969,17 @@ $(document).mousedown(function (e) {
 	} else {
 		isClickedElementBox = false;
 	}
-	if (!box[0].classList.contains("burgerOption")) {
-		closeBurgerMenu();
-	}
 });
 
 // Close the loginbox when clicking outside it.
 $(document).mouseup(function (e) {
+	// Click outside the burger menu
+	var notTarget = !$('#burgerMenu').is(e.target) && !$('#codeBurger').is(e.target) // if the burger menu is visible and the target of the click isn't the container or button...
+	var notDecendant = $('#burgerMenu').has(e.target).length === 0 && $('#codeBurger').has(e.target).length === 0 // ... nor a descendant of the container or button
+	if ($('#burgerMenu').is(':visible') && notTarget && notDecendant && !isClickedElementBox) {
+		closeBurgerMenu();
+	}
+
 	// Click outside the loginBox
 	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
 		&&
@@ -4598,16 +4988,15 @@ $(document).mouseup(function (e) {
 		(!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
 	{
 		closeWindows();
+		hideIframe();
 	}
 });
-var bool;
+
 function showBurgerMenu() {
-    if(bool==true){
+    if($('#burgerMenu').is(':hidden')){
         showBurgerDropdown();
-        bool=false;
-    }else{
+    }else {
         closeBurgerMenu();
-        bool=true;
     }
 }
 
@@ -4682,6 +5071,7 @@ function showBox(id) {
 	});
 }
 
+// Iframe used for editing file 
 function showIframe(boxid,kind) {
 	    var fileName = retData['box'][boxid - 1][5]+'';
 		var filePath = 'fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename=';
@@ -4689,11 +5079,22 @@ function showIframe(boxid,kind) {
 		document.querySelector(".previewWindowContainer").style.display = "block";
 		$("#iframeFileed").attr('src', filePath+fileName);
 }
+
+// Iframe used for drag and drop
+function showHiddenIframe() {
+    var filePath = 'fileed.php?courseid=' + courseid + '&coursevers=' + cvers;
+    document.querySelector(".previewWindow").style.display = "block";
+    document.querySelector(".previewWindowContainer").style.display = "block";
+    $("#iframeFileed").attr('src', filePath);
+}
+
 function hideIframe()
 {
-	document.querySelector(".previewWindow").style.display = "none";
-	document.querySelector(".previewWindowContainer").style.display = "none";
-	location.reload();
+	if (document.querySelector(".previewWindowContainer").style.display != "none") {
+		document.querySelector(".previewWindow").style.display = "none";
+		document.querySelector(".previewWindowContainer").style.display = "none";
+		location.reload();
+	}
 }
 
 function hideDescription() {

@@ -67,7 +67,7 @@
 				</table>
 			</form>
 		</div>
-		<div id='newpassword' class='newpassword' style="display:none">
+		<div id='newpassword' class='newpassword DarkModeBackgrounds DarkModeText' style="display:none">
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
 				<div class="cursorPointer" onclick="closeWindows(); resetLoginStatus();" title="Close window">x</div>

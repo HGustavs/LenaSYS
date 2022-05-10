@@ -34,11 +34,47 @@
 			else
 				$_SESSION['coursevers'] = "UNK";
 
+				//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
+				if(checklogin() == false|| $_SESSION['uid'] == 0){
+					
+					echo "<td class='navBurger fa fa-bars' id='navBurgerIcon' style='font-size:24px; width: 29px; vertical-align: middle; margin-top: 15px; margin-left: 15px' onclick='navBurgerChange()'</td>";
+					echo "<td id='navBurgerIcon' style='display: none;'> </td>";
+					echo "<div id='navBurgerBox' style='display: none;'>";
+				
+					echo "<div id='homeBurgerDiv'>";
+					echo "<a id='homeBurger' href='../DuggaSys/courseed.php'>";
+					echo "<img alt ='home' class='navBurgerButt' src='../Shared/icons/Home.svg'>";
+					echo "<a/>";
+					echo"</div>";
+					
+					echo "<div id='goBackBurgerDiv'>";
+					if($noup=='COURSE'){
+					echo "<a id='goBackBurger' href='../DuggaSys/courseed.php'>";
+					}
+					else if($noup=='SECTION'){
+					echo "<a id='goBackBurger' href='";
+					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
+					echo "'>";
+					
+					}
+					echo "<img alt ='home' class='navBurgerButt' src='../Shared/icons/Up.svg'>";
+					echo "</a>";
+					echo"</div>";
+					echo "<div id='darkModeBurgerDiv'>";
+					echo "<a id='darkModeBurger' onclick = 'burgerToggleDarkmode()'  >";
+					echo "<img alt ='Dark' class='navBurgerButt' src='../Shared/icons/ThemeToggle.svg'></>";
+					echo "</a>";
+					echo "</a>";
+					echo"</div>";
+					echo"</div>";
+					
+				}
+			
 			// Always show home button which links to course homepage
-			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img alt='home button icon' src='../Shared/icons/Home.svg'></a></td>";
+			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img id='homeImg' alt='home button icon' src='../Shared/icons/Home.svg'></a></td>";
 			// Always show toggle button. When clicked it changes between dark and light mode.
 			echo "<td class='navButt'><img id='theme-toggle' src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></td>";
-
+			
 			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
@@ -52,15 +88,11 @@
 			if($noup=='COURSE'){
 				echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
-				echo "<td class='navButt' id='messagedialog' title='Message of the day 'onclick='DisplayMSGofTDY();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
 			}if($noup=='COURSE' && checklogin() && (isTeacher($_SESSION['uid']))){
 				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
 
 			}if ($noup == 'COURSE' && checkLogin()) {
 				echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
-
-			}if ($noup == 'COURSE' && checkLogin() && (isStudentUser($_SESSION['uid']))) {
-				echo "<td class='navButt' id='feedback' title='Recent Feedback'><img src='../Shared/icons/feedback_icon.svg'></td>";
 
 			}else if($noup=='SECTION'){
 				echo "<a id='upIcon' href='";
@@ -74,7 +106,7 @@
 					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv'))) {
 						echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
 						echo "</td>";
-						echo "<td style='display: inline-block;' title='Choose course version'>";
+						echo "<td id='courseVersionDropDown' style='display: inline-block;' title='Choose course version'>";
 							echo "    <div class='course-dropdown-div'>";
 							echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
 							echo "    </div>";
@@ -204,9 +236,46 @@
 							echo "<img alt='give access icon'  class='burgerButt' src='../Shared/icons/lock_symbol.svg'>";
 							echo "</a>";
 							echo "<a class='burgerButtText' href='accessed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >Change student access</a></div>";
-							echo "</div>";
+					
+							//Adding home button to the teacher burger menu
+							echo "<div id='homeBurgerTeacher'>";
+							echo "<a id='homeBurgerT' href='../DuggaSys/courseed.php'>";
+							echo "<img alt ='home' class='burgerButt' src='../Shared/icons/Home.svg'>";
+							echo "<a class = 'burgerButtText' href='../DuggaSys/courseed.php'>Home Page </a>";
+							echo"</div>";
+							echo "<a/>";
+							
+							//Adding return button to the teacher burger menu
+							echo "<div id='goBackBurgerTeacher'>";
+							if($noup=='COURSE'){
+								echo "<a id='goBackBurgeTr' href='../DuggaSys/courseed.php'>";
+								echo "<img alt ='home' class='burgerButt' src='../Shared/icons/Up.svg'>";
+								echo "<a class = 'burgerButtText' href='../DuggaSys/courseed.php'> Return </a>";
+								}
+							else if($noup=='SECTION'){
+								echo "<a id='goBackBurgerT' href='";
+								echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
+								echo "'>";
+								echo "<img alt ='home' class='burgerButt' src='../Shared/icons/Up.svg'>";
+								echo "<a class = 'burgerButtText'";
+								echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
+								echo " > Return </a>";
+								}
+							echo "</a>";
+							echo"</div>";
+							
+							//Adding dark mode button to the teacher burger menu
+							echo "<div id='darkModeBurgerTeacher'>";
+							echo "<a id='darkModeBurgerT' onclick = 'burgerToggleDarkmode()'>";
+							echo "<img alt ='Dark' class='burgerButt' src='../Shared/icons/ThemeToggle.svg'></>";
+							// not working yet
+							echo "<a class = 'burgerButtText'onclick = 'burgerToggleDarkmode()'> Change Theme </a>";
+							echo "</a>";
+							echo "</a>";
+							echo"</div>";
+							echo"</div>";
 					}
-			}
+			}			
 			// Sort dialog - accessed / resulted /fileed					
 			//old search bar for resulted
       if($requestedService=="accessed.php" /*|| $requestedService=="resulted.php"*/ || $requestedService=="fileed.php" || $requestedService=="duggaed.php" ){
@@ -360,6 +429,14 @@
 	</div>
 </div>
 <script type="text/javascript">
+	// Checks if a logout request has been made on ANY other instance
+	window.addEventListener('storage', function(event){
+		if (event.key == 'logout-event') { 
+			processLogout();
+			localStorage.removeItem("logout-event");
+		}
+	}, {once: true});
+
 		if(localStorage.getItem("ls-cookie-message")=="off"){
 			$("#cookiemsg").css("display", "none");
 		}else{
@@ -503,32 +580,6 @@ function mouseOutAnnouncement() {
 }
 /*Shadow hover effect for announcement button END -------------*/
 
-/*Shadow hover effect for feedback button START ---------------*/
-var feedButton = document.getElementById("feedback");
-if(feedButton){
-	feedButton.addEventListener("mouseover", mouseOverFeedback);
-	feedButton.addEventListener("mouseout", mouseOutFeedback);
-}
-
-function mouseOverFeedback() {
-	var obj = document.getElementById("feedback");
-   if(obj != null)
-   {
-      var images = obj.getElementsByTagName('img');
-      images[0].src = '../Shared/icons/feedback_iconShadow.svg';
-   }
-}
-
-function mouseOutFeedback() {
-	var obj = document.getElementById("feedback");
-   if(obj != null)
-   {
-      var images = obj.getElementsByTagName('img');
-      images[0].src = '../Shared/icons/feedback_icon.svg';
-   }
-}
-
-/*Shadow hover effect for feedback button END ---------------*/
 
 var searchinput = document.getElementById("searchinput");
 if(searchinput){

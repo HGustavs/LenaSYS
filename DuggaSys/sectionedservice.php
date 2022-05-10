@@ -419,12 +419,21 @@ if($gradesys=="UNK") $gradesys=0;
                     $query = $pdo->prepare("UPDATE listentries SET visible=:visible WHERE lid=:lid");
                     $query->bindParam(':lid', $sectid);
                     $query->bindParam(':visible', $visible);
-
                     if(!$query->execute()) {
                         $error=$query->errorInfo();
                         $debug="Error updating entries".$error[2]; 
                     }
-				} else if (strcmp($coursevers, "null")!==0) {
+				} else if (strcmp($opt, "PUBLIC") === 0){
+					$visible = 1;
+                    $query = $pdo->prepare("UPDATE listentries SET visible=:visible WHERE lid=:lid");
+                    $query->bindParam(':lid', $sectid);
+                    $query->bindParam(':visible', $visible);
+                    if(!$query->execute()) {
+                        $error=$query->errorInfo();
+                        $debug="Error updating entries".$error[2]; 
+                    }
+				}
+					else if (strcmp($coursevers, "null")!==0) {
 					// Get every coursevers of courses so we seed groups to every courseversion
 					$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
 					$stmt->bindParam(":cid", $courseid);

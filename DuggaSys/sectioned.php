@@ -27,7 +27,7 @@
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link id="themeWhite" type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet">
+	<link id="themeWhite" type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet"> <!-- This code must be open. If users/students use an old version of lenays (version manager), it should not destroy anything else. -->
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	
 	<script src="darkmodeToggle.js"></script>
@@ -147,6 +147,7 @@
 			<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
 				<input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
 				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; margin-right: 55px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("showItems");'>
 			</div>
 		
 			<!-- end hide button -->
@@ -291,6 +292,7 @@
 			</div>
 			<div style='text-align: center;'>
 					<h4>Are you sure you want to delete this item?</h4>
+					<p>(You can always undo!)</p>
 			</div>
 			<div style='display:flex; align-items:center; justify-content: center;'>
 				<input style='margin-right: 5%;' class='submit-button' id="delete-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
@@ -391,7 +393,7 @@
 				<div class='inputwrapper'><span>Version ID:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateCourseID('cversid', 'dialog2')" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/></div>
 				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-8 numbers)</p>
 				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateVersionName('versname', 'dialog')" class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be A-Z 0-9</p>
+				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN, VTNN or STNN</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
