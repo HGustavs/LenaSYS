@@ -2035,100 +2035,6 @@ function hideTooltip() {
     }
 }
 
-function forceUserLogin()
-{
-      /* 
-      make sure the loginBox is generated before you run this function as 
-      it queries for elements that exist in the loginbox and changes their properties
-      */
-      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
-			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
-
-
-
-
-      let loginBoxheader_login_username_field = document.querySelector("#username");
-      loginBoxheader_login_username_field.setAttribute("Placeholder","Github username");
-
-      let loginBoxheader_login_password_field = document.querySelector("#password");
-      loginBoxheader_login_password_field.style.visibility = "hidden";
-
-      let loginBoxButton = document.querySelector(".buttonLoginBox");
-      loginBoxButton.setAttribute("onClick", "showNewGitLogin()");
-      
-  
-			// prepare replacement of onclick
-			loginBoxheader_login_close.removeAttribute("onClick"); // remove auto generated 
-			loginBoxheader_forgot_close.removeAttribute("onClick"); // remove auto generated
-			
-			/*
-      replace with a history back, this makes sure you dont get a blank page if you dont want to enter a password
-      and instead press the button to close down the loginBox
-      */
-			loginBoxheader_login_close.setAttribute("onClick", "history.back();"); 
-			loginBoxheader_forgot_close.setAttribute("onClick", "history.back();"); 
-
-
-      // ----
-      let FP = document.querySelector("#newpassword .forgotPw");
-      FP.setAttribute("onClick", "toggleloginnewpass(); resetForceLogin();");
-
-      // After the loginbox has been prepared/modified we display it to the user
-      showLoginPopup();
-      
-
-}
-
-function showNewGitLogin()
-{
-      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
-			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
-      let loginBox = document.querySelector("#password");
-      let loginBoxParent = loginBox.closest("tr");
-
-
-      let loginBoxheader_login_username_field = document.querySelector("#username");
-      let loginBoxheader_login_password_field = document.querySelector("#password");
-      let loginBoxButton = document.querySelector(".buttonLoginBox");
-
-      loginBoxheader_login_password_field.style.visibility = "";
-
-
-      // create another loginbox and create a new id
-      let originalId = loginBox.getAttribute("id");
-      loginBox.setAttribute("id", originalId+1);
-      loginBoxParent.outerHTML += loginBoxParent.innerHTML;
-      loginBox = document.querySelector("#"+originalId+1);
-      loginBox.setAttribute("id", originalId);
-
-
-      let login_first = document.querySelector("#"+originalId);
-      let login_second = document.querySelector("#"+originalId+1);
-
-      login_first.setAttribute("placeholder", "Create new password");
-      login_second.setAttribute("placeholder","Repeat new password");
-
-      loginBoxButton.setAttribute("onClick", "");
-      loginBoxButton.setAttribute("Value", "Create");
-      
-
-     
-      
-
-
-}
-
-function resetForceLogin()
-{
-  let originalId = ("password");
-  let login_second = document.querySelector("#"+originalId+1);
-  if(login_second != null)
-    login_second.remove();
-  let loginBoxButton = document.querySelector(".buttonLoginBox");
-  loginBoxButton.setAttribute("Value", "Login");
-  forceUserLogin();
-
-}
 //Shows a div when hover the commit links
 function showCommits(object, cid){
   var text = document.getElementById('commitDiv');
@@ -2298,130 +2204,6 @@ function createSidebar(){
   text.innerHTML = str;
 }
 
-function forceUserLogin()
-{
-      /* 
-      make sure the loginBox is generated before you run this function as 
-      it queries for elements that exist in the loginbox and changes their properties
-      */
-      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
-			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
-
-
-
-
-      let loginBoxheader_login_username_field = document.querySelector("#username");
-      loginBoxheader_login_username_field.setAttribute("Placeholder","Github username");
-
-      let loginBoxheader_login_password_field = document.querySelector("#password");
-      loginBoxheader_login_password_field.style.visibility = "hidden";
-
-      let loginBoxButton = document.querySelector(".buttonLoginBox");
-      loginBoxButton.setAttribute("onClick", "loginGitOrUser_Check()");
-      show= 1;
-
-
-			// prepare replacement of onclick
-			loginBoxheader_login_close.removeAttribute("onClick"); // remove auto generated 
-			loginBoxheader_forgot_close.removeAttribute("onClick"); // remove auto generated
-			
-			/*
-      replace with a history back, this makes sure you dont get a blank page if you dont want to enter a password
-      and instead press the button to close down the loginBox
-      */
-			loginBoxheader_login_close.setAttribute("onClick", "history.back();"); 
-			loginBoxheader_forgot_close.setAttribute("onClick", "history.back();"); 
-
-
-      // ----
-      let FP = document.querySelector("#newpassword .forgotPw");
-      FP.setAttribute("onClick", "toggleloginnewpass(); resetForceLogin();");
-
-      // After the loginbox has been prepared/modified we display it to the user
-      showLoginPopup();
-      
-
-}
-
-function showNewGitLogin()
-{
-      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
-			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
-      let loginBox = document.querySelector("#password");
-      let loginBoxParent = loginBox.closest("tr");
-
-
-      let loginBoxheader_login_username_field = document.querySelector("#username");
-      let loginBoxheader_login_password_field = document.querySelector("#password");
-      let loginBoxButton = document.querySelector(".buttonLoginBox");
-
-      loginBoxheader_login_password_field.style.visibility = "";
-
-
-      let forgotPwText = document.querySelector(".forgotPw");
-      
-
-     
-      let originalId = forgotPwText.getAttribute("id");
-      forgotPwText.setAttribute("id", "backtologin");
-      forgotPwText.closest("td").innerHTML += forgotPwText.closest("td").innerHTML;
-      forgotPwText = document.querySelector("#backtologin");
-      forgotPwText.setAttribute("id", originalId);
-
-
-      // create another loginbox and create a new id
-      originalId = loginBox.getAttribute("id");
-      loginBox.setAttribute("id", originalId+1);
-      loginBox.closest("tr").outerHTML += loginBox.closest("tr").innerHTML;
-      loginBox = document.querySelector("#"+originalId+1);
-      loginBox.setAttribute("id", originalId);
-
-
-      let backtologin = document.querySelector("#backtologin");
-      let login_first = document.querySelector("#"+originalId);
-      let login_second = document.querySelector("#"+originalId+1);
-
-      login_first.setAttribute("placeholder", "Create new password");
-      login_second.setAttribute("placeholder","Repeat new password");
-      backtologin.innerHTML = "Back to login";
-      backtologin.setAttribute("onclick","resetForceLogin()")
-
-
-      loginBoxheader_login_username_field.setAttribute("disabled","");
-     
-      
-
-      //TODO add onclick function for requesting user creation
-      loginBoxButton.setAttribute("onClick", "requestGitUserCreation()");
-      loginBoxButton.setAttribute("Value", "Create");
-      show= 4;
-
-
-}
-
-function resetForceLogin()
-{
-  let originalId = ("password");
-  let login_second = document.querySelector("#"+originalId+1);
-  if(login_second != null)
-    login_second.remove();
-
-
-  let forgotPwText = document.querySelector("#backtologin");
-  if(forgotPwText != null)
-    forgotPwText.remove();
-
-  let loginBoxButton = document.querySelector(".buttonLoginBox");
-  loginBoxButton.setAttribute("Value", "Login");
-
-  let loginBoxheader_login_username_field = document.querySelector("#username");
-  loginBoxheader_login_username_field.removeAttribute("disabled");
-
-
-  forceUserLogin();
-
-}
-
 { // scope for local-storage of in-between function variables
 
   let userExists_Git = null; // if it exists in the git data
@@ -2468,13 +2250,12 @@ function resetForceLogin()
 
   }
 
-  function requestGitUserCreation() // function to create the git user in the lenasys database, make sure requestedpasswordchange is pending(101)
+  function contribution_requestGitUserCreation() // function to create the git user in the lenasys database, make sure requestedpasswordchange is pending(101)
   {
   
-    let pass1 = document.querySelector("#password").value;
-    let pass2 = document.querySelector("#password1").value;
-    let username = document.querySelector("#username").value;
-    
+    let pass1 = document.querySelector("#newGit-UserCreation_password1").value;
+    let pass2 = document.querySelector("#newGit-UserCreation_password2").value;
+    let username = document.querySelector("#newGit-UserCreation_username").value;
     // TODO MAKE SURE PASSWORD IS ACTUALLY VALID BEFORE INSERT INTO DB
     let regexVert = /[a-zA-Z0-9]+$/;
 
@@ -2482,26 +2263,38 @@ function resetForceLogin()
     {
       if(!(pass1 != null && pass1 != ""))
       {
-        displayAlertText("#login #message", "enter a password <br />");
 
-        $("input#password").addClass("loginFail");
-		    $("input#password1").addClass("loginFail");
+        displayAlertText("#newGit-UserCreation_message", "invalid password <br />");
+
+        $("#newGit-UserCreation_password1").addClass("loginFail");
+		    $("#newGit-UserCreation_password2").addClass("loginFail");
 			  setTimeout(function()
           {
-		        $("input#password").removeClass("loginFail");
-            $("input#password1").removeClass("loginFail");
+		        $("#newGit-UserCreation_password1").removeClass("loginFail");
+            $("#newGit-UserCreation_password2").removeClass("loginFail");
+
+            setTimeout(() => {
+              displayAlertText("#newGit-UserCreation_message", "");
+            }, 2000);
+
 			  	}, 2000);
       }
       else if(!(regexVert.test(pass1) && pass1.length < 64 && pass1.length>= 8)){
-        displayAlertText("#login #message", `invalid password, needs to be: <br />
+        displayAlertText("#newGit-UserCreation_message", `invalid password, needs to be: <br />
           *between 8 and 64 characters <br />
           * A-Z, a-z  or numbers <br/>`);
-        $("input#password").addClass("loginFail");
-		    $("input#password1").addClass("loginFail");
+        $("#newGit-UserCreation_password1").addClass("loginFail");
+		    $("#newGit-UserCreation_password2").addClass("loginFail");
 			  setTimeout(function()
           {
-		        $("input#password").removeClass("loginFail");
-            $("input#password1").removeClass("loginFail");
+		        $("#newGit-UserCreation_password1").removeClass("loginFail");
+            $("#newGit-UserCreation_password2").removeClass("loginFail");
+          
+            setTimeout(function()
+            {
+               displayAlertText("#newGit-UserCreation_message", '');
+            },2000)
+          
 			  	}, 2000); 
       }
       else
@@ -2515,14 +2308,20 @@ function resetForceLogin()
     
     else
     {
-      displayAlertText("#login #message", "password doesnt match <br />");
+      displayAlertText("#newGit-UserCreation_message", "password doesnt match <br />");
 
-      $("input#password").addClass("loginFail");
-		    $("input#password1").addClass("loginFail");
+      $("#newGit-UserCreation_password1").addClass("loginFail");
+		    $("#newGit-UserCreation_password2").addClass("loginFail");
 			  setTimeout(function()
         {
-		      $("input#password").removeClass("loginFail");
-          $("input#password1").removeClass("loginFail");
+		      $("#newGit-UserCreation_password1").removeClass("loginFail");
+          $("#newGit-UserCreation_password2").removeClass("loginFail");
+
+          setTimeout(() => {
+            displayAlertText("#newGit-UserCreation_message", "");
+          }, 2000);
+
+
 				}, 2000);
     }
     
@@ -2535,28 +2334,34 @@ function resetForceLogin()
     {
       if(data == false) // didnt create user
       {
-        displayAlertText("#login #message", "could not create user <br />");
+        displayAlertText("#newGit-UserCreation_message", "could not create user <br />");
 
-        $("input#username").addClass("loginFail");
-		    $("input#password").addClass("loginFail");
+        $("#newGit-UserCreation_username").addClass("loginFail");
+		    $("#newGit-UserCreation_password1").addClass("loginFail");
+        $("#newGit-UserCreation_password2").addClass("loginFail");
+
 			  setTimeout(function()
         {
-		      $("input#username").removeClass("loginFail");
-          $("input#password").removeClass("loginFail");
-          resetForceLogin();
+		      $("#newGit-UserCreation_username").removeClass("loginFail");
+          $("#newGit-UserCreation_password1").removeClass("loginFail");
+          $("#newGit-UserCreation_password2").removeClass("loginFail");
+
+          displayAlertText("#UserExistslogin_message", "");
+          contribution_resetLoginStatus();
 				}, 2000);
       }
       else // created user
       {
-        $("input#username").addClass("loginPass");
-		    $("input#password").addClass("loginPass");
-        $("input#password1").addClass("loginPass");
+
+        $("#newGit-UserCreation_username").addClass("loginPass");
+		    $("#newGit-UserCreation_password1").addClass("loginPass");
+        $("#newGit-UserCreation_password2").addClass("loginPass");
 			  setTimeout(function()
         {
-		      $("input#username").removeClass("loginPass");
-          $("input#password").removeClass("loginPass");
-          $("input#password1").removeClass("loginPass");
-          resetForceLogin();
+		      $("#newGit-UserCreation_usernam").removeClass("loginPass");
+          $("#newGit-UserCreation_password1").removeClass("loginPass");
+          $("#newGit-UserCreation_password2").removeClass("loginPass");
+          contribution_resetLoginStatus();
 				}, 2000);
       }
     }
@@ -2587,46 +2392,13 @@ function resetForceLogin()
     userStatus_Lenasys = data['status'];
     return userExists_Lenasys;
   }
+  
+  function contribution_loginGitOrUser_Check()
 
-  function restoreAndLockLogin()
-  {
-
-    let forgotPwText = document.querySelector(".forgotPw");
-      
-    let originalId = forgotPwText.getAttribute("id");
-    forgotPwText.setAttribute("id", "backtologin");
-    forgotPwText.closest("td").innerHTML += forgotPwText.closest("td").innerHTML;
-    forgotPwText = document.querySelector("#backtologin");
-    forgotPwText.setAttribute("id", originalId);
-
-    backtologin.innerHTML = "Back to login";
-    backtologin.setAttribute("onclick","resetForceLogin()")
-    show= 2;
-
-
-
-    let loginBoxheader_login_username_field = document.querySelector("#username");
-    loginBoxheader_login_username_field.setAttribute("Placeholder","Username");
-    loginBoxheader_login_username_field.setAttribute("disabled","");
-
-
-    let loginBoxheader_login_password_field = document.querySelector("#password");
-    loginBoxheader_login_password_field.style.visibility = "";
-
-    let loginBoxButton = document.querySelector(".buttonLoginBox");
-    loginBoxButton.setAttribute("onClick", "git_processLogin()");
-    show=3;
-  }
-
-
-
-  function loginGitOrUser_Check()
   {
     let loginBoxheader_login_username_field = document.querySelector("#username");
-
-
-
     let username = loginBoxheader_login_username_field.value;
+
     if(username === "") // we do a simple check if the string is empty to not call backend if nothing is entered.
     {
       console.log("nothing entered");
@@ -2653,7 +2425,7 @@ function resetForceLogin()
           {
             if(_userStatus == "super" || _userStatus == "student") // if youre a teacher or youre a student with a created git account on the git_user table
             { 
-              restoreAndLockLogin();
+              contribution_userExistsLogin();
             }
             else // youre on solely lena but not a teacher/super
             {
@@ -2671,7 +2443,7 @@ function resetForceLogin()
           }
           if(!_onLena && _onGit) // onlena is false, ongit true, create new user
           {
-            showNewGitLogin();
+            contribution_newGitUserCreation();
 
           }
           if(!_onLena && !_onGit)
@@ -2688,24 +2460,15 @@ function resetForceLogin()
 					  }, 2000);
 
           }
-        
-
-
         });    
-
-
-     
-
-
-
     }
   }
 }
 
-function git_processLogin()
+function contribution_git_processLogin()
   {
-    let git_username = $("#login #username").val();
-    let git_password = $("#login #password").val();
+    let git_username = $("#UserExistslogin_username").val();
+    let git_password = $("#UserExistslogin_password").val();
 
 
     AJAXService("requestContributionUserLogin",{
@@ -2735,31 +2498,125 @@ function returned_git_user_login(data)
     window.location.reload(true);  // TODO should I just reload the page here perhaps? 
   else
   {
-    displayAlertText("#login #message", "Invalid password <br />");
+    displayAlertText("#UserExistslogin_message", "Invalid password <br />");
 
-    $("input#password").addClass("loginFail");
+    $("#UserExistslogin_password").addClass("loginFail");
+
     setTimeout(function()
     {
-      $("input#password").removeClass("loginFail");
-      displayAlertText("#login #message", "Try again");
+      $("#UserExistslogin_password").removeClass("loginFail");
+      displayAlertText("#UserExistslogin_message", "Try again");
+
+      setTimeout(() => {
+        displayAlertText("#UserExistslogin_message", "");
+      }, 2000);
+
+
     }, 2000);
   }
 }
 
- //Will handle enter key pressed when loginbox is showing
- function loginEventHandler(event){
-  if(event.keyCode == "0x0D"){
-    if(show ==1){
-     loginGitOrUser_Check();
-    }
-    else if(show==2){
-      resetForceLogin();
-    }
-    else if(show==3){
-      git_processLogin();
-    }
-    else if(show==4){
-      requestGitUserCreation();
+function contribution_showLoginPopup()
+{
+  contribution_addEventListeners();
+  $("#login").css("display",""); // show inital login box
+  $("#loginBox").css("display","flex"); // show background
+  $("#username").focus();     
+}
+
+function contribution_userExistsLogin()
+{
+  $("#UserExistslogin_username").val($("#username").val());
+  
+  $("#login").css("display","none");
+  $("#newGit-UserCreation").css("display","none");
+  $("#newpassword").css("display","none");
+
+  $("#UserExistslogin").css("display",""); 
+
+  $("#UserExistslogin_password").focus();     
+
+  
+}
+
+
+
+function contribution_resetFields()
+{
+  $("#login #username").val("");
+	$("#login #password").val("");
+  $("#usernamereset").val("");
+	$("#UserExistslogin_username").val("");
+	$("#UserExistslogin_password").val("");
+  $("#NewGit-UserCreation_username").val("");
+  $("#newGit-UserCreation_password1").val("");
+  $("#newGit-UserCreation_password2").val("");
+}
+
+function contribution_toggleloginnewpass()
+{
+  contribution_resetFields();
+  $("#login").css("display","none"); 
+  $("#UserExistslogin").css("display","none"); 
+  $("#newGit-UserCreation").css("display","none"); 
+
+  $("#newpassword").css("display",""); // show reset
+  $("#usernamereset").focus();     
+
+}
+
+function contribution_resetLoginStatus() // return to initial login
+{
+  contribution_resetFields();
+  $("#UserExistslogin").css("display","none"); 
+  $("#newGit-UserCreation").css("display","none"); 
+  $("#newpassword").css("display","none");
+
+  $("#login").css("display",""); 
+  $("#username").focus();     
+
+}
+
+function contribution_newGitUserCreation()
+{
+  $("#newGit-UserCreation_username").val($("#username").val());
+
+  $("#login").css("display","none");
+  $("#newpassword").css("display","none");
+  $("#UserExistslogin").css("display","none");
+  
+  $("#newGit-UserCreation").css("display","");
+
+  $("#newGit-UserCreation_password1").focus();     
+
+
+}
+
+
+function contribution_addEventListeners()
+{
+
+  // loginbox
+  $('#username').on("keyup", function(e) {if (e.keyCode == 13) {$("#loginBox_button").click();}});
+
+  // newpassword/resetpass
+  $('#usernamereset').on("keyup", function(e) {if (e.keyCode == 13) {$("#newpassword_button").click();}});
+
+  // userexists
+  $('#UserExistslogin_username').on("keyup", function(e) {if (e.keyCode == 13) {$("#UserExistslogin_button").click();}});
+  $('#UserExistslogin_password').on("keyup", function(e) {if (e.keyCode == 13) {$("#UserExistslogin_button").click();}});
+
+  // new git user
+  $('#newGit-UserCreation_username').on("keyup", function(e) {if (e.keyCode == 13) {$("#newGit-UserCreation_button").click();}});
+  $('#newGit-UserCreation_password1').on("keyup", function(e) {if (e.keyCode == 13) {$("#newGit-UserCreation_button").click();}});
+  $('#newGit-UserCreation_password2').on("keyup", function(e) {if (e.keyCode == 13) {$("#newGit-UserCreation_button").click();}});
+
+
+}
+
+
+console.error
+
 
     }
   }

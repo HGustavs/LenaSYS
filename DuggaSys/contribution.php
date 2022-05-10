@@ -65,11 +65,11 @@ $vers=getOPG('coursevers');
 	<!-- content END -->
 
 	<?php
-		include '../Shared/loginbox.php';
+		include 'contribution_loginbox.php';
 
 		if(!checklogin() && !git_checklogin()) // If not logged in, force a log in
 		{
-			echo '<script> forceUserLogin(); </script>';
+			echo '<script> contribution_showLoginPopup(); </script>';
 		}
 	?>
 
