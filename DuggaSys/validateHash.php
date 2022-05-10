@@ -10,8 +10,6 @@
     pdoConnect();    
     $hash=$_SESSION['checkhash'];
     $hashpwd = getOP('hashpwd');
-    echo "$hash <br>";
-    echo "$hashpwd <br>";
     if($hashpwd!="UNK"){
         echo "Checking $hash/$hashpwd <br>";
         $sql="SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz,moment FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=:hash AND password=:hashpwd";
