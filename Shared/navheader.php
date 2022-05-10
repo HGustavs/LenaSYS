@@ -52,7 +52,6 @@
 			if($noup=='COURSE'){
 				echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
-				echo "<td class='navButt' id='messagedialog' title='Message of the day 'onclick='DisplayMSGofTDY();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
 			}if($noup=='COURSE' && checklogin() && (isTeacher($_SESSION['uid']))){
 				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
 
@@ -360,6 +359,14 @@
 	</div>
 </div>
 <script type="text/javascript">
+	// Checks if a logout request has been made on ANY other instance
+	window.addEventListener('storage', function(event){
+		if (event.key == 'logout-event') { 
+			processLogout();
+			localStorage.removeItem("logout-event");
+		}
+	}, {once: true});
+
 		if(localStorage.getItem("ls-cookie-message")=="off"){
 			$("#cookiemsg").css("display", "none");
 		}else{
