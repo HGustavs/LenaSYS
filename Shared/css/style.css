@@ -835,6 +835,11 @@ p {
   background-color: var(--color-primary)/*var(--color-primary-light)*/;
 }
 
+#Sectionlist .section #dorf {
+   filter: invert(100%);
+  -webkit-filter: invert(100%);
+}
+
 #Sectionlist .header {
   color: var(--color-text-header);
   background-color: var(--color-primary);
