@@ -1337,12 +1337,12 @@ header td {
   margin-left: 10px;
   vertical-align: middle;
   height: 32px;
-  margin:auto 10px auto 0;
 }
 
-
-.navButt #homeIcon img{
-  height: 87%;
+#homeImg{
+  transform: scale(1.3);
+  height: 32px;
+  vertical-align: baseline;
 }
 #hamburgerIcon{
   transform: scale(1.8);
@@ -1351,7 +1351,6 @@ header td {
 #courseVersionDropDown{
   vertical-align: top;
 }
-
 
 .burgerButt {
   float:left;
