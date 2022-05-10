@@ -162,7 +162,7 @@ session_start();
                       <legend>Instruction file</legend>
                       <div style="display:flex;flex-wrap:wrap;flex-direction:row;">
                         <select name="type" id="type" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));">
-                          <option value="md">Markdown</option>
+                          <option value="md">Mwarkdown</option>
                           <option value="pdf">PDF</option>
                           <option value="html">HTML</option>
                         </select>
@@ -175,6 +175,14 @@ session_start();
                       <fieldset style="width:90%">
                         <legend>Extra parameters</legend>
                         <textarea id='extraparam' rows="5" onkeyup="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"></textarea>
+                      </fieldset>
+                    </div>
+                  </div>
+                  <div>
+                      <div id="duggaNote">  <!-- CHANGE TEXT--> 
+                      <fieldset style="width:90%">
+                        <legend>Note</legend>
+                        <textarea id='extraparam' rows="5" onkeyup="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"></textarea>  <!-- CHANGE TEXT--> 
                       </fieldset>
                     </div>
                   </div>

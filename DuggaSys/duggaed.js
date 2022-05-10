@@ -794,7 +794,8 @@ function renderCell(col, celldata, cellid) {
 			retString = "<img alt='delete dugga icon' id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
 			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
 			break;
-
+		
+	
 		case "param":		// DUGGA-TABLE - Parameter column
 			retString = `<span class='variants-param-col'>${celldata}</span>`;
 			break;
