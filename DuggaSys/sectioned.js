@@ -2537,7 +2537,15 @@ function validateVersionName(versionName, dialogid) {
   var Name = /^[A-Za-z0-9_ \-.]+$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
-  var val = document.getElementById("versname").value;
+  
+  if (versionName === 'versname') {
+    var Name = /^[A-Z]{2}[0-9]{2}$/;
+    var val = document.getElementById("versname").value;
+  }
+  if (versionName === 'eversname') {
+    var Name = /^[A-Z]{2}[0-9]{2}$/;
+    var val = document.getElementById("eversname").value;
+  }
 
   //if versionname is 2 capital letters, 2 numbers
   if (val.match(Name)) {

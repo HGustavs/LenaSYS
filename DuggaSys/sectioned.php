@@ -391,7 +391,7 @@
 				<div class='inputwrapper'><span>Version ID:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateCourseID('cversid', 'dialog2')" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/></div>
 				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-8 numbers)</p>
 				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateVersionName('versname', 'dialog')" class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be A-Z 0-9</p>
+				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN, VTNN or STNN</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
