@@ -8283,3 +8283,14 @@ textarea#filecont {
   border-top: 2px solid var(--color-border-list); 
 }
 
+.iconColorInDarkMode{
+  cursor: pointer;
+  filter: invert(80%);
+  -webkit-filter: invert(20%);
+}
+
+.DateColorInDarkMode{
+  cursor: pointer;
+  filter: invert(80%);
+  -webkit-filter: invert(0%);
+}
