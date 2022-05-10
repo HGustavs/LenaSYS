@@ -998,7 +998,7 @@ var settings = {
         isRulerActive: true,
     },
     grid: {
-        gridSize: 50,
+        gridSize: 80,
         origoWidth: 2,
         snapToGrid: false,
         a4SizeFactor: 1,
