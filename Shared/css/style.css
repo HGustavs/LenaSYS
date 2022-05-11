@@ -5431,6 +5431,26 @@ only screen and (max-device-width: 320px) {
   }
 }
 
+#darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher {
+  display:none;
+}
+
+#sectionBurger{ 
+  display: none;
+  
+}
+@media only screen and (max-width: 750px),
+only screen and (max-device-width: 750px) {
+
+  #sectionBurger {
+    display: block;
+  }
+ 
+#tabElement,#hideElement, #addElement, #showElements{
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 790px),
 only screen and (max-device-width: 790px) {
   table.navheader td.files {
