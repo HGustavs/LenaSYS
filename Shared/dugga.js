@@ -1082,38 +1082,6 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedSection
 			});
-	}else if(kind=="CONTRIBUTION_GIT_USER_CHECK"){
-		$.ajax({
-			url: "contributionservice.php",
-			type: "POST",
-			data: "&opt="+opt+para,
-			dataType: "json",
-			success: returned_git_user_check
-		});
-	}else if(kind=="CONTRIBUTION_LENASYS_USER_CHECK"){
-		$.ajax({
-			url: "contributionservice.php",
-			type: "POST",
-			data: "&opt="+opt+para,
-			dataType: "json",
-			success: returned_lenasys_user_check
-		});
-	}else if(kind=="CONTRIBUTION_GIT_USER_LOGIN"){
-		$.ajax({
-			url: "contributionservice.php",
-			type: "POST",
-			data: "&opt="+opt+para,
-			dataType: "json",
-			success: returned_git_user_login
-		});
-	}else if(kind=="CONTRIBUTION_LENASYS_USER_CREATION"){
-		$.ajax({
-			url: "contributionservice.php",
-			type: "POST",
-			data: "&opt="+opt+para,
-			dataType: "json",
-			success: returned_lenasys_user_creation
-		});
 	}else if(kind=="DIAGRAM"){
 			$.ajax({
 				url: "diagramservice.php",
@@ -1243,6 +1211,15 @@ function AJAXService(opt,apara,kind)
 			type:"POST",
 			data: "hash="+hash+"&opt="+opt+para,
 			dataType: "json"
+		});
+	}
+	else if(kind=="CONT_LOGINBOX_SERVICE") {
+		$.ajax({
+			url: "contribution_loginbox_service.php",
+			type:"POST",
+			data: "&opt="+opt+para,
+			dataType: "json",
+			success: CONT_LOGINBOX_SERVICE_RETURN
 		});
 	}
 	else if(kind=="INPUTCHECK") {
@@ -2212,7 +2189,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 
 }
 
-function displayDuggaStatus(answer,grade,submitted,marked,duggatitle){
+function displayDuggaStatus(answer,grade,submitted,marked,duggaTitle){
 		var str="<div style='display:flex;justify-content:center;align-items:center;'><div id='duggaTitleSibling' class='LightBox'>";
 		// Get proper dates
 		if(submitted!=="UNK") {
@@ -2224,10 +2201,9 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggatitle){
 			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
 		}
 
-		//If there is no name of the dugga.
-		// if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
-		// 	duggaTitle = "Untitled dugga";
-		// }
+		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
+			duggaTitle = "Untitled dugga";
+		}
   
 		str+="<div class='' style='margin:4px;'></div></div>";
 
@@ -2657,3 +2633,57 @@ function editDuggaInstruction(){
 }
 
 // ----------------------------- Edit dugga instructions end ------------------------
+
+//Code that makes it possible to navigate using tab and enter to click elements
+$(document).on('keydown', function(e) {
+	if(e.key === 'Enter'){
+		var box = $(e.target);
+
+		if (box[0].classList.contains("home-nav")){
+			box.parents('td').click();
+		}
+		else if (box[0].classList.contains("theme-toggle-nav")){
+			box.parents('td').click();
+		}
+		else if (box[0].classList.contains("loginbutton-nav")){
+			box.parents('td').click();
+		}
+		else if(box.parents('div').attr('id') =="FABStatic"){
+			box.mouseover();
+		}
+		else if(box[0].classList.contains("fab-btn-sm")){
+			box.click();	
+		}
+		else if(box.parents('div').attr('id') =="FABStatic2"){
+			box.mouseover();
+		}
+		else if(box[0].classList.contains("fab-btn-list2")){
+			box.click();	
+		}
+		else if (box[0].classList.contains("messagedialog-nav")){
+			box.parents('td').click();
+		}
+		else if (box[0].classList.contains("announcement-nav")){
+			sessionStorage.removeItem("closeUpdateForm");
+			$("#announcementBoxOverlay").toggle();
+			if($("#announcementForm").is(":hidden")){
+				$("#announcementForm").show();
+			}
+		}
+		else if (box[0].classList.contains("editVers")){
+			showEditVersion();
+		}
+		else if (box[0].classList.contains("newVers")){
+			showCreateVersion();
+		}
+		
+	}
+	else if(e.key === 'Escape'){
+		if ($('.fab-btn-list').is(':visible')) {
+			$(e.target).mouseout();
+		}
+		if ($('.fab-btn-list2').is(':visible')) {
+			$(e.target).mouseout();
+		}
+	}
+});

@@ -19,7 +19,8 @@ var hasDuggs = false;
 var dateToday = new Date().getTime();
 var compareWeek = -604800000;
 let width = screen.width;
-var time;
+var delArr = [];
+var delTimer;
 var lid;
 
 /*navburger*/
@@ -102,10 +103,12 @@ function hideCollapsedMenus() {
     var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
     if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
       jQuery(ancestor).nextUntil('.moment').hide();
+      $('#selectionDrag'+menuState.hiddenElements[i]).hide();
     }
     ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
     if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
       jQuery(ancestor).nextUntil('.section').hide();
+      $('#selectionDrag'+menuState.hiddenElements[i]).hide();
     }
 
     if (menuState.hiddenElements[i] == "statistics") {
@@ -117,9 +120,10 @@ function hideCollapsedMenus() {
 /* Show down arrow by default and then hide this arrow and show the right
    arrow if it is in the arrowIcons array.*/
 // The other way around for the statistics section.
-function toggleArrows() {
+function toggleArrows(id) {
   $('.arrowComp').show();
   $('.arrowRight').hide();
+  $('#selectionDrag'+id).toggle();
   for (var i = 0; i < menuState.arrowIcons.length; i++) {
     if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
       $('#' + menuState.arrowIcons[i]).hide();
@@ -380,7 +384,6 @@ function showSaveButton() {
 }
 
 
-
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
   if (operation == "openConfirmBox") {
@@ -428,8 +431,9 @@ function markedItems(item = null){
       $("#Sectionlist").find(".item").each(function (i) {
         var tempItem = $(this).attr('value');
         if(itemInSection && sectionStart){
+          var tempDisplay = document.getElementById("lid"+tempItem).style.display;
           var tempKind = $(this).parents('tr').attr('value');
-          if(tempKind == "section" || tempKind == "moment" || tempKind == "header"){
+          if(tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")){
             itemInSection = false;
             //console.log("loop breaker: "+tempItem);
           }else{
@@ -470,7 +474,13 @@ function markedItems(item = null){
     } else {
       hideItemList.push(active_lid);
       console.log("Added");
-
+      for(var j = 0; j < subItems.length; j++){
+        hideItemList.push(subItems[j]);
+      }
+      for(i=0; i<hideItemList.length; i++){
+        $("#"+hideItemList[i]+"-checkbox").prop("checked", true);
+        //console.log(hideItemList[i]+"-checkbox");
+      }
       // Show ghost button when checkbox is checked
       document.querySelector('#hideElement').disabled = false;
       document.querySelector('#hideElement').style.opacity = 1;
@@ -481,14 +491,6 @@ function markedItems(item = null){
       document.querySelector('#hideElement').disabled = true;
       document.querySelector('#hideElement').style.opacity = 0.7;
       hideVisibilityIcons();
-
-      for(var j = 0; j < subItems.length; j++){
-        hideItemList.push(subItems[j]);
-      }
-      for(i=0; i<hideItemList.length; i++){
-        $("#"+hideItemList[i]+"-checkbox").prop("checked", true);
-        //console.log(hideItemList[i]+"-checkbox");
-        }
 
     } 
     console.log(hideItemList);
@@ -626,7 +628,7 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-function deleteItem(item_lid = null) { 
+function deleteItem(item_lid = null) {
   lid = item_lid ? item_lid : $("#lid").val();
   item = document.getElementById("lid" + lid);
   item.style.display = "none";
@@ -634,13 +636,23 @@ function deleteItem(item_lid = null) {
 
   document.querySelector("#undoButton").style.display = "block";
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
-  time = setTimeout(() => {
+  delArr.push(lid);
+  clearTimeout(delTimer);
+  delTimer = setTimeout(() => {
+    deleteAll();
+   }, 60000);
+}
+
+// Permanently delete elements
+function deleteAll()
+{
+  for(var i = delArr.length-1; i >= 0; --i){
     AJAXService("DEL", {
-      lid: lid
+      lid: delArr.pop()
     }, "SECTION");
-    $("#editSection").css("display", "none");
-    document.querySelector("#undoButton").style.display = "none";
-   }, 60000)
+  }
+  $("#editSection").css("display", "none");
+  document.querySelector("#undoButton").style.display = "none";
 }
 
 // Cancel deletion
@@ -651,6 +663,15 @@ function cancelDelete() {
     deletedElements[i].classList.remove("deleted");
   }
   location.reload();
+}
+
+// Set all "deleted" items as hidden
+// Used when refreshing the table
+function hideDeleted()
+{
+  for(var i = 0; i < delArr.length; ++i){
+    document.getElementById("lid" + delArr[i]).style.display = "none";
+  }
 }
 
 //----------------------------------------------------------------------------------
@@ -1055,9 +1076,14 @@ function returnedSection(data) {
           }
 
           if (itemKind === 3) {
+            str += "<td  class='LightBox" + hideState + "'>";
+            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            
             str += "<td class='LightBox" + hideState + "'>";
             str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
+            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
+            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             str += "<td class='LightBoxFilled" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
           }
@@ -1090,6 +1116,8 @@ function returnedSection(data) {
           }
         }
 
+
+      
         // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
         if (itemKind === 0) {
           // Styling for header row
@@ -1098,10 +1126,15 @@ function returnedSection(data) {
 
         } else if (itemKind === 1) {
           // Styling for Section row
+          str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
+          str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 2) {
+          str += "<td class='LightBox" + hideState + "'>";
+          str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
           kk++;
@@ -1166,17 +1199,17 @@ function returnedSection(data) {
           str += `<span style='margin-left:8px;' title='${item['entryname']}'>${item['entryname']}</span>`;
         } else if (itemKind == 1) {
           // Section
-          str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;
+          str += `<div ('arrowComp${item['lid']}')" class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center ;
           ' title='${item['entryname']}'>`;
           str += `<span class='ellipsis listentries-span'>${item['entryname']}</span>`;
-          str += `<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp${item['lid']}' class='arrowComp' style='display:inline-block;'>`;
+          str += `<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp${item['lid']}' class='arrowComp' style='display:block;'>`;
           str += `<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight${item['lid']}' class='arrowRight' style='display:none;'></div>`;
         } else if (itemKind == 4) {
           // Moment
           var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
           str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
           str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
-          str += "<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:block;'>";
           str += "<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
           str += "</div>";
         } else if (itemKind == 2) {
@@ -1295,21 +1328,23 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        //Generate new tab link
-        str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-
-          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
-          src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
-          str += "</td>";
-
-        // Generate Canvas Link Button
-        if (data['writeaccess'] || data['studentteacher']) {
+        if (itemKind != 4){ // dont create buttons for moments only for specific assignments
+          //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
-          src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
-          str += "</td>";
+
+            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
+            src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
+            str += "</td>";
+
+          // Generate Canvas Link Button
+          if (data['writeaccess'] || data['studentteacher']) {
+            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
+            src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
+            str += "</td>";
+          }
         }
 
         // Cog Wheel
@@ -1384,6 +1419,7 @@ function returnedSection(data) {
       // Enable sorting always if we are superuser as we refresh list on update
 
       $("#Sectionlistc").sortable({
+        handle: ".dragbleArea",
         helper: 'clone',
         update: function (event, ui) {
           str = "";
@@ -1419,7 +1455,10 @@ function returnedSection(data) {
 
 
   }
-
+  
+  // Reset checkboxes
+  // Prevents a bug if they are checked when for example an item is deleted and the table refreshes
+  clearHideItemList();
 
   // The next 5 lines are related to collapsable menus and their state.
   getHiddenElements();
@@ -1952,7 +1991,7 @@ $(document).on('click', '.moment, .section, .statistics', function () {
     saveArrowIds(this.id);
   }
   hideCollapsedMenus();
-  toggleArrows();
+  toggleArrows(this.id);
 
 });
 
@@ -3204,22 +3243,3 @@ function showFeedbackquestion(){
   }
 }
 
-//------------------------------------------------------------------------------
-// Scroll to top of page function 
-//------------------------------------------------------------------------------
-$(document).ready(function(){
-  $("#scrollUp").on('click', function(event) {
-    window.scrollTo(0, 0);
-  });
-});
-
-// Show the up-arrow when user has scrolled down 200 pixels on the page
-window.onscroll = function() {scrollToTop()};
-function scrollToTop() {
-  var scroll = document.getElementById("fixedScroll");
-  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-    scroll.style.display = "block";
-  } else {
-    scroll.style.display = "none";
-  }
-}

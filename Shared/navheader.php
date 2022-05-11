@@ -71,11 +71,19 @@
 				}
 			
 			// Always show home button which links to course homepage
+<<<<<<< HEAD
 			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img id='homeImg' alt='home button icon' src='../Shared/icons/Home.svg'></a></td>";
 			// Always show toggle button. When clicked it changes between dark and light mode.
 			echo "<td class='navButt'><img id='theme-toggle' src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></td>";
 			
 			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
+=======
+			echo "<td class='navButt' id='home' title='Home' onclick='navigateToUrl(\"../DuggaSys/courseed.php\")'><div class='home-nav' tabindex='0'><a id='homeIcon' class='navButt'><img alt='home button icon' src='../Shared/icons/Home.svg'></a></div></td>";
+			// Always show toggle button. When clicked it changes between dark and light mode.
+			echo "<td class='navButt' id='theme-toggle'><div class='theme-toggle-nav' tabindex='0'><img src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></div></td>";
+
+			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><div class='motd-nav' tabindex='0'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></div></td>";
+>>>>>>> G3-2022-#merge6
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
@@ -85,14 +93,22 @@
 			if($noup!='NONE') {
 				echo "<td class='navButt' id='back' title='Back'>";
 			}
-			if($noup=='COURSE'){
+
+			if($noup=='CONTRIBUTION'){
 				echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
+<<<<<<< HEAD
+=======
+			}if($noup=='COURSE'){
+				echo "<div><a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
+				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></div></td>";
+				echo "<td class='navButt' id='messagedialog' title='Message of the day 'onclick='DisplayMSGofTDY();'><div class='messagedialog-nav' tabindex='0'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></div></td>";
+>>>>>>> G3-2022-#merge6
 			}if($noup=='COURSE' && checklogin() && (isTeacher($_SESSION['uid']))){
 				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
 
-			}if ($noup == 'COURSE' && checkLogin()) {
-				echo "<td class='navButt' id='announcement' title='Announcement'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></td>";
+			}if (($noup == 'COURSE') && checkLogin()) {
+				echo "<td class='navButt' id='announcement' title='Announcement'><div class='announcement-nav' tabindex='0'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></div></td>";
 
 			}else if($noup=='SECTION'){
 				echo "<a id='upIcon' href='";
@@ -113,7 +129,7 @@
 							echo "</td>";
 
 							echo "<td class='editVers' style='display: inline-block;margin-left:8px;'>";
-							echo "    <div class='editVers menuButton'>";
+							echo "    <div class='editVers menuButton' tabindex='0'>";
               echo "      <img alt='settings icon' id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
 							echo "    </div>";
 							echo "</td>";
@@ -125,7 +141,7 @@
 
 
 							echo "<td class='newVers' style='display: inline-block;'>";
-							echo "    <div class='newVers menuButton'>";
+							echo "    <div class='newVers menuButton' tabindex='0'>";
               echo "      <img alt='plus sign icon' id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
 							echo "    </div>";
 							echo "</td>";
@@ -219,7 +235,7 @@
 							echo "</a>";
 							echo "<a class='burgerButtText' href='duggaed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >Show tests</a></div>";
 
-							echo "<div id='editFilesBurger>";
+							echo "<div id='editFilesBurger'>";
 							echo "<a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
 							echo "<img alt='files icon'  class='burgerButt' src='../Shared/icons/files_icon.svg'>";
 							echo "</a>";
@@ -380,13 +396,18 @@
 
 			if(checklogin()) {
 				echo "<td class='navName' id='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
-				echo "<td id='loginbutton' class='loggedin' onclick='showLogoutPopup();'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
+        }
+				if($noup=='CONTRIBUTION'){
+					echo "<td id='loginbutton' class='loggedin' onclick='git_logout();'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
+				}else{
+					echo "<td id='loginbutton' class='loggedin' onclick='showLogoutPopup();'><div class='loginbutton-nav' tabindex='0'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></div></td>";
+				}
 			}else{
 				//---  original --- echo "<td class='navName' id='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
 				echo "<td class='navName' id='navName'><label id='userName' title='Login to view your profile'></label></td>";
 				
 				// --- original --- echo "<td id='loginbutton' class='loggedout' onclick='showLoginPopup();'><img alt='login icon' id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
-				echo "<td id='loginbutton' class='loggedout' onclick='showLoginPopup();'></td>";
+				echo "<td id='loginbutton' class='loggedout' onclick='showLoginPopup();'><div class='loginbutton-nav' tabindex='0'></div></td>";
 			}
 
 			echo "</tr></table>";
@@ -461,6 +482,10 @@ function mouseOverHome() {
       var images = obj.getElementsByTagName('img');
       images[0].src = '../Shared/icons/Home.svg';
    }
+}
+
+function navigateToUrl(url){
+	window.location.assign(url);
 }
 
 function mouseOutHome() {

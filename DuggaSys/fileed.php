@@ -92,6 +92,7 @@ $js = array(
         // $filemtime = filemtime('ace.js');
 		// echo "<script type='text/javascript' src='ace.js?$filemtime'></script>";
 	?>
+	<script src="backToTop.js"></script>
     
 </head>
 <body onload="setup();">

@@ -143,7 +143,7 @@ function returnedDugga(data) {
 	}
 	$("#submitButtonTable").appendTo("#content");
 	$("#lockedDuggaInfo").prependTo("#content");
-	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
 function reset()

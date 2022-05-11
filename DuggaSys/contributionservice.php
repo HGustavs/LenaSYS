@@ -60,6 +60,8 @@ if(checklogin() || git_checklogin()) // methods needing you to be logged in
 if(strcmp($opt,"get")==0) {
 	if(checklogin() && isSuperUser($_SESSION['uid'])) {
 		
+		$startdate = '2019-04-01';
+		$enddate = '2019-06-10';
 		
 		//Dynamically loads PDO by path name
 		$dbPath=getOP('dbPath');
@@ -71,7 +73,9 @@ if(strcmp($opt,"get")==0) {
 		}
 
 		$gituser = getOP('userid');
-		$query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2019-03-31" and blamedate<"2020-01-01" union select author as usr from event where eventtime>"2019-03-31" and eventtime<"2020-01-01" union select author as usr from issue where issuetime>"2019-03-31" and issuetime<"2019-01-08") order by usr;');
+		$query = $log_db->prepare('SELECT distinct(usr) from ( select blameuser as usr from blame where blamedate>:startDate and blamedate<:endDate union select author as usr from event where eventtime>:startDate and eventtime<:endDate union select author as usr from issue where issuetime>:startDate and issuetime<:endDate) order by usr;');
+		$query->bindParam(':startDate', $startdate);
+		$query->bindParam(':endDate', $enddate);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries\n".$error[2];
@@ -99,8 +103,8 @@ if(strcmp($opt,"get")==0) {
 		$lastname="UNK";
 		$firstname="UNK";
 	}
-
-	$startweek = strtotime('2019-04-01');									// First monday in january
+	
+	$startweek = strtotime($startdate);									// First monday in january
 	$currentweek=$startweek;
 	$currentweekend=strtotime("+1 week",$currentweek);
 	$weekno=1;
@@ -193,7 +197,9 @@ if(strcmp($opt,"get")==0) {
   $commitgrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT COUNT(*) as rowk, author FROM commitgit WHERE thedate>"2019-03-31" AND thedate<"2020-01-01" GROUP BY author ORDER BY rowk DESC;');
+	$query = $log_db->prepare('SELECT COUNT(*) as rowk, author FROM commitgit WHERE thedate>:startDate AND thedate<:endDate GROUP BY author ORDER BY rowk DESC;');
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -222,7 +228,9 @@ if(strcmp($opt,"get")==0) {
   $rowgrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT sum(rowcnt) as rowk, blameuser FROM Bfile,Blame WHERE Blame.fileid=Bfile.id and blamedate>"2019-03-31" and blamedate<"2020-01-01" group by blameuser order by rowk desc;');
+	$query = $log_db->prepare('SELECT sum(rowcnt) as rowk, blameuser FROM Bfile,Blame WHERE Blame.fileid=Bfile.id and blamedate>:startDate and blamedate<:endDate group by blameuser order by rowk desc;');
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -251,7 +259,9 @@ if(strcmp($opt,"get")==0) {
   $eventgrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2019-03-31" AND  eventtime<"2020-01-01" and eventtime!="undefined" AND kind != "comment" group by author order by rowk desc;');
+	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>:startDate AND  eventtime<:endDate and eventtime!="undefined" AND kind != "comment" group by author order by rowk desc;');
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -280,7 +290,9 @@ if(strcmp($opt,"get")==0) {
   $commentgrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2019-03-31" and eventtime!="undefined" and eventtime<"2020-01-01" and kind="comment" group by author order by rowk desc;');
+	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>:startDate and eventtime!="undefined" and eventtime<:endDate and kind="comment" group by author order by rowk desc;');
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -309,7 +321,9 @@ if(strcmp($opt,"get")==0) {
   $issuegrouprank="NOT FOUND";
 	$i=1;
   $j=1;
-	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM issue where issuetime>"2019-03-31" and issuetime<"2020-01-01" and issuetime!="undefined" group by author order by rowk desc;');
+	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM issue where issuetime>:startDate and issuetime<:endDate and issuetime!="undefined" group by author order by rowk desc;');
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -463,9 +477,14 @@ if(strcmp($opt,"get")==0) {
 	
 	$hourlyevents = array();
 
+	
+	
+
 	// Events and issues by the user today
-	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>"2019-03-31" and eventtime!="undefined" and eventtime<"2020-01-01" AND kind IN ("comment", "commit");');
+	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>:startDate and eventtime!="undefined" and eventtime<:endDate AND kind IN ("comment", "commit");');
 	$query->bindParam(':gituser', $gituser);
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries\n".$error[2];
@@ -479,8 +498,10 @@ if(strcmp($opt,"get")==0) {
 			array_push($hourlyevents, $event);
 	}
 	$commits = array();
-	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>"2019-03-31" and issuetime!="undefined" and issuetime<"2020-01-01";');
+	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>:startDate and issuetime!="undefined" and issuetime<:endDate;');
 	$query->bindParam(':gituser', $gituser);
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -494,12 +515,14 @@ if(strcmp($opt,"get")==0) {
 		array_push($hourlyevents, $issue);
 	}
 
-//The following three queries three foreach loops and one for loop, all store how many commits Comments LOCs 
+	//The following three queries three foreach loops and one for loop, all store how many commits Comments LOCs 
 	//and Events a user has done every day during the course.
 
 	//Events
-	$query = $log_db->prepare('SELECT eventtime FROM event WHERE author=:gituser AND eventtime>"2019-04-01" AND eventtime<"2019-06-10" AND kind!="comment" ORDER BY eventtime');
+	$query = $log_db->prepare('SELECT eventtime FROM event WHERE author=:gituser AND eventtime>:startDate AND eventtime<:endDate AND kind!="comment" ORDER BY eventtime');
 	$query->bindParam(':gituser', $gituser);
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -513,8 +536,10 @@ if(strcmp($opt,"get")==0) {
 	}
 
 	//Comments
-	$query = $log_db->prepare('SELECT eventtime FROM event WHERE author=:gituser AND eventtime>"2019-04-01" AND eventtime<"2019-06-10" AND kind="comment" ORDER BY eventtime');
+	$query = $log_db->prepare('SELECT eventtime FROM event WHERE author=:gituser AND eventtime>:startDate AND eventtime<:endDate AND kind="comment" ORDER BY eventtime');
 	$query->bindParam(':gituser', $gituser);
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -528,8 +553,10 @@ if(strcmp($opt,"get")==0) {
 	}
 
 	//Commits and LOC
-	$query = $log_db->prepare('SELECT blamedate,rowcnt FROM Bfile,Blame where Blame.fileid=Bfile.id AND blameuser=:gituser AND blamedate>"2019-04-01" AND blamedate<"2019-06-10" ORDER BY blamedate ');
+	$query = $log_db->prepare('SELECT blamedate,rowcnt FROM Bfile,Blame where Blame.fileid=Bfile.id AND blameuser=:gituser AND blamedate>:startDate AND blamedate<:endDate ORDER BY blamedate ');
 	$query->bindParam(':gituser', $gituser);
+	$query->bindParam(':startDate', $startdate);
+	$query->bindParam(':endDate', $enddate);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -762,257 +789,7 @@ if(strcmp($opt,"get")==0) {
 
 
 // methods not needing you to be logged in
-if (strcmp($opt, "checkForGitUser")==0)
-{
-	$gituser = getOP('userid');
-	$query = $log_db->prepare('select distinct(usr) from 
-		(	select blameuser as usr from blame
-		union select author as usr from event
-		union select author as usr from issue
-		union select author as usr from commitgit
-		union select blameuser as usr from coderow
-		order by usr);');
 
-	if(!$query->execute()) 
-	{
-		$error=$query->errorInfo();
-		$debug="Error reading entries\n".$error[2];
-	}
-
-	$rows = $query->fetchAll();
-	foreach($rows as $row)
-	{
-		//(strlen($row['usr'])<9) // the reason for this is a username check, only users with names less than 9 characters are allowed, commented out for now, i want all users of all lengths
-		array_push($allusers, $row['usr']); 
-	}
-
-
-	$userExisted = in_array($gituser, $allusers); // if the user existed it should be not empty, aka this checks if we retrieved the user from the DB
-		
-	echo json_encode($userExisted);
-}
-else if(strcmp($opt, "checkForLenasysUser")==0)
-{
-	global $pdo;
-
-	if($pdo == null) 
-	{
-		pdoConnect();
-	}
-	$gituser = getOP('userid');
-
-	
-	$query = $pdo->prepare("SELECT username FROM git_user WHERE username=:GU;");
-	$query->bindParam(':GU', $gituser);
-	
-	if(!$query->execute()) 
-	{
-		$error=$query->errorInfo();
-		$debug="Error reading entries\n".$error[2];
-	}
-
-	$rows = $query->fetchAll();
-	foreach($rows as $row)
-	{
-		array_push($allusers, $row['usr']); 
-	}
-
-	
-	$userExisted = !empty($allusers); // if we managed to retrieve something with the query we found the user in the lenasys DB
-	
-	echo json_encode($userExisted);
-}
-else if(strcmp($opt,"requestGitUserCreation") == 0)
-{
-	global $pdo;
-
-	if($pdo == null) 
-	{
-		pdoConnect();
-	}
-	$gituser = getOP('userid');
-	$gitpass = getOP('userpass');
-	
-	$addStatus = false;
-
-// ------------------------
-
-
-$query = $log_db->prepare('select distinct(usr) from 
-		(	select blameuser as usr from blame
-		union select author as usr from event
-		union select author as usr from issue
-		union select author as usr from commitgit
-		union select blameuser as usr from coderow
-		order by usr);');
-
-	if(!$query->execute()) 
-	{
-		$error=$query->errorInfo();
-		$debug="Error reading entries\n".$error[2];
-	}
-
-	$rows = $query->fetchAll();
-	foreach($rows as $row)
-	{
-		//(strlen($row['usr'])<9) // the reason for this is a username check, only users with names less than 9 characters are allowed, commented out for now, i want all users of all lengths
-		array_push($allusers, $row['usr']); 
-	}
-
-
-	$userExisted = in_array($gituser, $allusers); // if the user existed it should be not empty, aka this checks if we retrieved the user from the DB
-		
-	/*
-            There exists a number of combinations that we need to handle¨
-
-            onGit | onLena
-            --------------
-              T   |  T    -> Log in with lena
-              F   |  T    -> Log in with lena
-              T   |  F    -> Create new user
-              F   |  F    -> User does not exist
-          */
-
-
-	if($userExisted) // exists in git data
-	{
-
-		$allusers = array();
-
-		$query = $pdo->prepare("SELECT username FROM git_user WHERE username=:GU;");
-		$query->bindParam(':GU', $gituser);
-	
-		if(!$query->execute()) 
-		{
-			$error=$query->errorInfo();
-			$debug="Error reading entries\n".$error[2];
-		}
-
-		$rows = $query->fetchAll();
-		foreach($rows as $row)
-		{
-			array_push($allusers, $row['usr']); 
-		}
-
-		$userExisted = !empty($allusers); // if we managed to retrieve something with the query we found the user in the lenasys DB
-
-		if(!$userExisted) // if it isnt on the lenasys database
-		{
-			/*
-            onGit | onLena
-            --------------
-              T   |  F    -> Create new user
-
-			  At this point we have done the server side check and we can create a pending user creation from here
-        	 */
-			$git_pending = 101;
-			$git_revoked = 102;
-			$git_accepted = 103;
-		
-			$temp_null_str = "NULL";
-
-			$rnd=standardPasswordHash($gitpass);
-
-
-			$querystring='INSERT INTO git_user (username, password, status_account, addedtime) VALUES(:username, :password, :status_account, now());';
-			$stmt = $pdo->prepare($querystring);
-			$stmt->bindParam(':username', $gituser);
-			$stmt->bindParam(':password', $rnd);
-			$stmt->bindParam(':status_account', $git_pending);
-			
-
-
-			try {
-				if(!$stmt->execute()) {
-					$error=$stmt->errorInfo();
-					$debug.="Error updating entries\n".$error[2];
-					$debug.="   ".$gituser."Does not Exist \n";
-					$debug.=" ".$uid;
-				}
-				$uid=$pdo->lastInsertId();
-				$addStatus = true;
-
-			} catch (PDOException $e) {
-				if ($e->errorInfo[1] == 1062) {
-					$debug="Duplicate Username";
-				} else {
-					$debug="Error updating entries\n".$error[2];
-				}
-			}
-
-
-		}
-
-	}
-
-	echo json_encode($addStatus); // if successfully created will be true
-
-}
-else if(strcmp($opt,"requestGitUserLogin") == 0)
-{
-	/*
-		This is a special login function just for the contribution page
-		This is only supposed to be employed on the contribution page and should not be used to login anywhere else
-	*/
-
-	global $pdo;
-
-	if($pdo == null)
-	{
-		pdoConnect();
-	}
-
-	$gituser = getOP('username');
-	$gitpass = getOP('userpass');
-
-
-	if($gituser != "UNK")
-	{
-		// retrieve a user with the same name
-		$query = $pdo->prepare("SELECT git_uid,username,password FROM git_user WHERE username=:username LIMIT 1");
-		$query->bindParam(':username',$gituser);
-
-		if(!$query->execute()) // execute and check for errors
-		{
-			$error=$query->errorInfo();
-			echo "Error reading user entries".$error[2]."\n";
-		}
-
-		if($query->rowCount() > 0) // we actually retrieved entries
-		{
-			$row = $query->fetch(PDO::FETCH_ASSOC);
-			
-			if(password_verify($gitpass, $row['password'])) // entered gitpass matched hashed password
-			{
-				$_SESSION['git_uid'] = $row['git_uid'];
-        		$_SESSION["git_loginname"]=$row['username'];
-				$_SESSION["git_passwd"]=$row['password'];
-				echo json_encode(true);
-			}
-			else // wrong password entered
-			{
-				echo json_encode(false);
-			}
-		}
-
-
-	}
-	else // logout the git
-	{
-		$_SESSION = array(); // logout so we yeet the session
-		if (ini_get("session.use_cookies")) // logout so we yeet the cookies
-		{
-			$params = session_get_cookie_params();
-			setcookie(session_name(), '', time() - 42000,$params["path"], $params["domain"],$params["secure"], $params["httponly"]);
-		}
-		session_unset();
-		session_destroy();
-		clearstatcache(); 
-
-		echo json_encode(true);
-	
-	}
-}
 
 
 

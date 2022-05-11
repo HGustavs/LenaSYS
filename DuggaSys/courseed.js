@@ -400,17 +400,7 @@ function returnedCourse(data)
 	// Fill section list with information
 	str = "";
 
-	if (data['writeaccess']) {
-		str += "<div style='float:right;'>";
-		if(localStorage.getItem("cookieMessage")!="off"){
-			str += "<div class='fixed-action-button' style='bottom:64px;'>";
-		}else{
-			str += "<div class='fixed-action-button'>";
-		}
-		str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='newCourse()'>+</a>";
-		str += "</div>";
-		str += "</div>";
-	}
+	
 
 	// Course Name
 	str += "<div id='Courselistc' style='margin:60px auto;'>";
@@ -438,8 +428,8 @@ function returnedCourse(data)
 			} else if (parseInt(item['visibility']) == 2) {
 				textStyle += "login";
 			} else if (parseInt(item['visibility']) == 3) {
-				textStyle += "deleted"
-			}
+				textStyle += "deleted";
+			} else textStyle+="courseed";
 
 			var courseString = item['coursename'];
 			var courseBegin = "";
@@ -483,7 +473,13 @@ function returnedCourse(data)
 	}
 
 	str += "</div>";
-
+	if (data['writeaccess']) {
+		str += "<div style='float:right;'>";
+		str += "<div class='fixed-action-button extra-margin'>";
+		str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='newCourse()' tabindex='0'>+</a>";
+		str += "</div>";
+		str += "</div>";
+	}
 	var slist = document.getElementById('Courselist');
 	slist.innerHTML = str;
 
@@ -705,3 +701,12 @@ function MOTDbtnValueX(x) {
   var x = window.matchMedia("(max-width: 275px)");
   MOTDbtnValueX(x); 
   x.addListener(MOTDbtnValueX); 
+  
+ //Adds an eventlistener for keydowns. if the key is Enter and the targeted element is fab-btn-lg then perform it's onclick functionality
+document.addEventListener('keydown', function(event) {
+	if(event.key === 'Enter'){
+		if ($(event.target)[0].classList.contains("fab-btn-lg")) {
+			newCourse();
+		}
+	}
+});

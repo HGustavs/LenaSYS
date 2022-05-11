@@ -32,18 +32,24 @@ $vers=getOPG('coursevers');
 
 </head>
 <body onload="loadContribFormLocalStorage()">
+
+	<?php
+		$noup="CONTRIBUTION";
+		include '../Shared/navheader.php';
+	?>
+
 	<div id="infoText" style="background-color:#ffffff; border:1px solid black; top:100px; display:none;position:absolute;"></div>
 
 	<!-- content START -->
 	<div id="content"></div>
 	
-	<div id='commitDiv' style=' position: absolute; background: #f5e7ff;box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6); border-radius: 5px; width:500px; height: 500px; white-space: nowrap; display:none; margin-top: 15px; margin-left: 50px; z-index: 100; overflow-y:scroll;'></div>
+	<div id='commitDiv' class='commitDiv' style=' position: absolute; background: #f5e7ff;box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6); border-radius: 5px; width:500px; height: 500px; white-space: nowrap; display:none; margin-top: 15px; margin-left: 50px; z-index: 100; overflow-y:scroll;'></div>
 
-	<div id='commitDiagram' style='margin-left: 12px; width:70%;'></div>
+	<div id='commitDiagram' style='margin-left: 12px; width:75%;'></div>
 
 	<div class='group3 group1' id='personalRankTable' style='margin-left: 12px; width:50%; white-space: nowrap;'></div>
 
-	<div class='group2 group1' id='barchart' style='margin-left: 12px; white-space: nowrap;'></div>
+	<div class='group2 group1' id='barchart' style='margin-left: 12px; max-width:75%; white-space: nowrap;'></div>
 
 	<div class='group2' id='lineDiagram+select' style='margin-left: 12px; white-space: nowrap;'></div>
 
@@ -59,11 +65,11 @@ $vers=getOPG('coursevers');
 	<!-- content END -->
 
 	<?php
-		include '../Shared/loginbox.php';
+		include 'contribution_loginbox.php';
 
 		if(!checklogin() && !git_checklogin()) // If not logged in, force a log in
 		{
-			echo '<script> forceUserLogin(); </script>';
+			echo '<script> contribution_showLoginPopup(); </script>';
 		}
 	?>
 

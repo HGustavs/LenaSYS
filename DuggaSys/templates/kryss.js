@@ -105,7 +105,7 @@ function returnedDugga(data)
 			});
 		}
 	}		
-	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 
 	// Get answer from previously saved dugga
 	if (data.answer != "UNK") {
