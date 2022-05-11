@@ -593,3 +593,9 @@ body {
 /* } */
 /* BOXMENU STYLING STOP */
 /* } */
+
+.highlight{
+    background-image: url(../icons/draganddropBlack.png);
+    object-fit: cover;
+    background-size: 100%;
+}
