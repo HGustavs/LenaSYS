@@ -271,7 +271,7 @@
         <fieldset>
             <legend>Include</legend>
             <div id="erTableToggle" class="diagramIcons" onclick="toggleErTable()">
-                <img src="../Shared/icons/lessThen.jpg"/>
+                <img src="../Shared/icons/diagram_errorCheck.svg"/>
                 <span class="toolTipText"><b>To use less than</b><br>
                     <p>To use less than type & #60; <br><strong>"EX: <& #60;Include>>"</STRONG> </p><br>
                 </span>
