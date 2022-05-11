@@ -847,7 +847,7 @@ function renderActivityPoints(activities) {
       var activityCount = commentsCounted.length;
       var percentage = hoursComments[hour] / activityCount;
       
-      var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
+      var angleFactor = (RADIUS * percentage) + BASELINE+30;
       angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
       var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
       var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
@@ -871,7 +871,7 @@ function renderActivityPoints(activities) {
       var activityCount = commitsCounted.length;
       var percentage = hoursCommits[hour] / activityCount;
       //console.log(percentage, hours[hour], activityCount );
-      var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
+      var angleFactor = (RADIUS * percentage) + BASELINE+15;
       angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
       var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
       var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
@@ -896,7 +896,7 @@ function renderActivityPoints(activities) {
       var type = entry.type;
       var activityCount = issuesCounted.length;
       var percentage = hoursIssues[hour] / activityCount;
-      var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
+      var angleFactor = (RADIUS * percentage) + BASELINE;
       angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
       var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
       var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
