@@ -628,8 +628,6 @@ function prepareItem() {
 
 function deleteItem(item_lid = null) { 
   lid = item_lid ? item_lid : $("#lid").val();
-
-  alert("Press recycle button within 60 seconds to undo the deletion");
   item = document.getElementById("lid" + lid);
   item.style.display = "none";
   item.classList.add("deleted");
