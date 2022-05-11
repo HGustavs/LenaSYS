@@ -70,6 +70,7 @@ function createNewCourse()
 	var coursecode = $("#ncoursecode").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
+
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
 }
 
@@ -397,6 +398,7 @@ function returnedCourse(data)
 	entries = data['entries'];
 	var uname=document.getElementById('userName').innerHTML;
 
+	console.log("Yapp: " +JSON.stringify(data['LastCourseCreated']) );
 	// Fill section list with information
 	str = "";
 

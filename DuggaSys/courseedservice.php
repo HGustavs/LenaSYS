@@ -75,25 +75,6 @@ if(checklogin()){
 		// The code for modification using sessions
 		if(strcmp($opt,"DEL")===0){
 
-		}else if(strcmp($opt,"LastCourseCreated")===0){
-			// Gets username based on uid, USED FOR LOGGING
-			$query = $pdo->prepare( "SELECT cid FROM course ORDER BY id DESC LIMIT 1");
-			$query-> execute();
-
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error reading courses\n".$error[2];
-			}else{
-				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-					array_push(
-						$LastCourseCreated,
-						array(
-							'LastCourseCreatedId' => $row['cid'],
-						)
-					);
-				}
-			}
-			
 		}else if(strcmp($opt,"NEW")===0){
 			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES(:coursecode,:coursename,0,:usrid, 7.5)");
 
@@ -109,6 +90,26 @@ if(checklogin()){
 			// Logging for creating new course
 			$description=$coursename." ".$coursecode." "."Hidden";
 			logUserEvent($userid, $username, EventTypes::AddCourse, $description);
+
+			//////////////////////////////
+			// Gets username based on uid, USED FOR LOGGING
+			$query_1 = $pdo->prepare( "SELECT cid FROM course ORDER BY cid DESC LIMIT 1");
+			$query_1-> execute();
+
+			if(!$query_1->execute()) {
+				$error=$query_1->errorInfo();
+				$debug="Error reading courses\n".$error[2];
+			}else{
+				foreach($query_1->fetchAll(PDO::FETCH_ASSOC) as $row){
+					array_push(
+						$LastCourseCreated,
+						array(
+							'LastCourseCreatedId' => $row['cid'],
+						)
+					);
+				}
+			}
+			/////////////////////////////////
 
 		}else if(strcmp($opt,"NEWVRS")===0){
 			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);");
@@ -617,6 +618,7 @@ if(!$query->execute()) {
 
 
 $array = array(
+	'LastCourseCreated' => $LastCourseCreated,
 	'entries' => $entries,
 	'versions' => $versions,
 	"debug" => $debug,
