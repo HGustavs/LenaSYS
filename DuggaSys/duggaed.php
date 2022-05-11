@@ -188,7 +188,7 @@ session_start();
                     <div id="duggaExtraParamForm">
                       <fieldset style="width:90%">
                         <legend>Extra parameters</legend>
-                        <textarea id='extraparam' rows="5" onkeyup="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"></textarea>
+                        <textarea id='extraparam' rows="4" onkeyup="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"></textarea>
                       </fieldset>
                     </div>
                   </div>
@@ -196,7 +196,7 @@ session_start();
                       <div id="duggaNotes">  <!-- CHANGE TEXT--> 
                       <fieldset style="width:90%">
                         <legend>Note</legend>
-                        <textarea id="notes" value="test" rows="6"></textarea>  <!-- CHANGE TEXT--> 
+                        <textarea id="notes" value="test" name="notes" rows="3" onkeyup="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"></textarea>  <!-- CHANGE TEXT--> 
                       </fieldset>
                     </div>
                   </div>

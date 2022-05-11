@@ -488,10 +488,6 @@ function createJSONString(formData) {
 			
 		}
 	});
-	test = document.getElementById("notes").value();
-	if(test == null){
-		test = "hej";
-	}
 
 
 	return JSON.stringify({
@@ -502,7 +498,7 @@ function createJSONString(formData) {
 		"diagram_File":$("#file option:selected").val(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
-		"notes":document.getElementById("#notes").value(),
+		"notes":document.getElementById("notes").value,
 		"submissions":submission_types,
 		"errorActive":document.getElementById("errorActive").checked
 	});
@@ -539,9 +535,7 @@ function createJSONFormData(){
       else if(result == "extraparam"){
         document.getElementById('extraparam').value = obj[result];
       }
-	  else if(result == "notes"){
-        document.getElementById('notes').value = obj[result];
-      }
+	 
 	  else if(result =="file"){
 		document.getElementById('file').value = "hejsan";
 	  }
