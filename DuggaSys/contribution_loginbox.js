@@ -47,18 +47,6 @@ function contribution_resetLoginStatus() // return to initial login
 
 }
 
-function contribution_toggleloginnewpass()
-{
-  contribution_resetFields();
-  $("#login").css("display","none"); 
-  $("#UserExistslogin").css("display","none"); 
-  $("#newGit-UserCreation").css("display","none"); 
-
-  $("#newpassword").css("display",""); // show reset
-  $("#usernamereset").focus();     
-
-}
-
 
 function contribution_resetFields()
 {
