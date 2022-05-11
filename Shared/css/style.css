@@ -2656,7 +2656,7 @@ button.option {
  left: auto;
 }
 
-@media only screen and (max-width: 420px) {
+@media only screen and (max-width: 430px) {
   #MOTDbutton {
     width:20%;
    }
@@ -5392,7 +5392,7 @@ only screen and (max-device-width: 860px) {
 
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
-  #editCourse, #announcement{
+  #editCourse, #announcement, #messagedialog{
     display: none;
   }
 }
@@ -5405,8 +5405,8 @@ only screen and (max-device-width: 860px) {
   display: none;
   
 }
-@media only screen and (max-width: 320px),
-only screen and (max-device-width: 320px) {
+@media only screen and (max-width: 380px),
+only screen and (max-device-width: 380px) {
 
   #navBurgerIcon { 
     display: block;
