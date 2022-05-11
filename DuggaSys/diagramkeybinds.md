@@ -22,7 +22,7 @@
 - Toggle grid = "G"
 - Toggle ruler = "T"
 - Toggle snap to grid = "S"
-- Toggle A4 template = "A"
+- Toggle A4 template = "P"
 
 ## Camera
 
@@ -32,7 +32,8 @@
 
 - Toggle step forward = CTRL + ”Y”
 - Toggle step backward = CTRL + ”Z”
-- Toggle replay = Klick to start replay 
+- Toggles the replay mode to show the changes made = "R"
+
 
 ## Other
 
@@ -41,3 +42,10 @@
 - Mark all elements and lines = CTRL + ”A”
 - Toggle keybindlist - ”F1”
 
+
+## ER-Table
+- Toggles between ER-table functionality when an ER-element is selected and option panel is open = "E"
+
+
+## Error check
+- Performs error checking if an error is present = "H"

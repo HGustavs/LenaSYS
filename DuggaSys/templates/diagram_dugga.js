@@ -1,5 +1,6 @@
 var lastFile = null;
 var diagramWindow;
+var response = "";
 /** 
  * @description Alert message appears before closing down or refreshing the dugga viewer page window.
 
@@ -21,7 +22,6 @@ function setup()
     diagramWindow = document.getElementById("diagram-iframe");
     inParams = parseGet();
     AJAXService("GETPARAM", { }, "PDUGGA");
-    document.getElementById("saveDuggaButton").onclick = function (){ uploadFile() , showReceiptPopup();};
     
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
 }
@@ -61,7 +61,7 @@ function uploadFile()
             moment: inParams["moment"]
         }
     }).done(function() {
-        AJAXService("GETPARAM", { }, "PDUGGA");
+        AJAXService("SAVDU", { }, "PDUGGA");
     });
 }
 /**
@@ -71,25 +71,32 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-    var textBox = document.getElementById('submission-receipt');  
-    textBox.innerHTML=(`${data['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(data['hash'])}'> ${createUrl(data['hash'])}` + `</a> </br></br> Hash: </br> ${data['hash']}</br></br>Hash password:</br>${data['hashpwd']}`);
-    //temporary solution to get the correct link in the receipt
-    //updateReceiptText(data['duggaTitle'], createUrl(data['hash']), data['hash'], data['hashpwd']);
-  
+
+        duggaData = data;
+    console.log(duggaData);
+    //var textBox = document.getElementById('submission-receipt');
+    //$('#submission-receipt').html(`${duggaData['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(duggaData['hash'])}'> ${createUrl(duggaData['hash'])}` + `</a> </br></br> Hash: </br> ${duggaData['hash']}</br></br>Hash password:</br>${duggaData['hashpwd']}`);
+   
+    //General idea below - create one method in dugga.js rather than changing recipt box in each dugga type. Currently not working.
+    //updateReceiptText(response['duggaTitle'], createUrl(response['hash']), response['hash'], response['hashpwd']);
+    
     if (data.param.length!=0){
         var param = JSON.parse(data.param);
         //document.getElementById("assigment-instructions").innerHTML = param.instructions;
-        //checking if the user is a teacher
-        if(data.isTeacher==0){
+        //checking if the user is a teacher or if there's no variant by checking if the paramater object is empty
+        if(!(Object.keys(param).length === 0) && data.isTeacher == 0){
             // getting the diagram types allowed and calling a function in diagram.js where the values are now set <-- UML functionality start
             document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type;
-            // getting the error finder allowed or not
-            document.getElementById("diagram-iframe").contentWindow.errorActive = param.errorActive;
+            // getting the error checker allowed or not
+            document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(param.errorActive);
+            // Getting the instructions to the side of the dugga -currently using filelink which is wrong
+            window.parent.getInstructions(param.filelink);
+            window.parent.getInstructions(param.gFilelink);
         }
         else{
             var diagramType={ER:true,UML:true};
             document.getElementById("diagram-iframe").contentWindow.diagramType = diagramType;
-            document.getElementById("diagram-iframe").contentWindow.errorActive = true;
+            document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(true);
         }
         document.getElementById("diagram-iframe").contentWindow.showDiagramTypes();//<-- UML functionality end
     }
@@ -101,6 +108,7 @@ function returnedDugga(data)
         var lastFile = momentFiles[lastKey]
         var filePath = lastFile.filepath + "/" + lastFile.filename + lastFile.seq + "." + lastFile.extension;
 
+        
         $.ajax({
             method: "GET",
             url: filePath,
@@ -108,6 +116,7 @@ function returnedDugga(data)
             setLastFile(file);
             diagramWindow.contentWindow.loadDiagram(file);
         });
+        
     }
 }
 /**

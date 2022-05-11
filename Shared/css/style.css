@@ -2948,6 +2948,7 @@ div.submit-button:disabled {
 #submitButtonTable{
   position: relative;
   z-index:500;
+  margin-top: 20px;
 }
 
 #submitButtonTable input.large-button {
@@ -6649,7 +6650,19 @@ only screen and (max-device-width: 320px) {
   height: 100%;
   width: 3px;
 }
-
+/*  diagram ERTable css  */
+#ERTable{
+  overflow: scroll;
+  height: 300px;
+  width: 96%;
+  background-color:white;
+  color:black;
+  padding-left: 8px;
+  border:black 2px solid;
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: bold;
+}
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *
  * --------------================################================-------------- */

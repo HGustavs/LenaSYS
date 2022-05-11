@@ -145,7 +145,7 @@ session_start();
         </div>
 
         <div class='loginBoxbody' id='variantBody' style='width:100%; height:100%;'>
-            <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; border-bottom: #7f7f7f solid 3px; background-color: white; overflow-y: auto; overflow-x: hidden; margin-bottom: 5px; max-height: 300px; flex-shrink: 99; min-height: 100px;' ></div> <!-- A div to place the variant-table within. -->
+            <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; border-bottom: #7f7f7f solid 3px; background-color: white; overflow-y: auto; overflow-x: hidden; margin-bottom: 5px; max-height: 300px; flex-shrink: 99; min-height: 220px;' ></div> <!-- A div to place the variant-table within. -->
           <div id='editVariantDiv' style="display:flex; flex-shrink: 0;">
             <input type='hidden' id='vid' value='Toddler'/>
             <input type='hidden' id='disabled' value='0'/>
@@ -172,6 +172,19 @@ session_start();
                     </fieldset>
                   </div>
                   <div>
+                    <fieldset style="width:90%;">
+                      <legend>General information file</legend>
+                      <div style="display:flex;flex-wrap:wrap;flex-direction:row;">
+                        <select name="gType" id="gType" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));">
+                          <option value="md">Markdown</option>
+                          <option value="pdf">PDF</option>
+                          <option value="html">HTML</option>
+                        </select>
+                        <input id="gFilelink" type="text" name="gFilelink" style="flex:2;margin-left:5px;" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));">
+                      </div>
+                    </fieldset>
+                  </div>
+                  <div>
                     <div id="duggaExtraParamForm">
                       <fieldset style="width:90%">
                         <legend>Extra parameters</legend>
@@ -184,12 +197,14 @@ session_start();
                       <fieldset style="width:90%">
                       <!-- The json files are fetched and parsed in returnedFile() in duggaed.js -->
                         <legend>Add diagram to dugga</legend>
-                        <select id="file" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))"></select>
+                        <select id="file" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()))">
+                          <option>Empty canvas</option>
+                        </select>
                       </fieldset>
                     </div>
                     <div id="errorCheck">
                       <fieldset style="width:90%">
-                        <legend>Error check</legend>
+                        <legend>Error check button</legend>
                         <label for="errorActive">Active</label>
                         <input type="checkbox" name="errorActive" id="errorActive" value="true" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>
                       </fieldset>
@@ -210,7 +225,7 @@ session_start();
                       <!-- Submissions for dugga -->
                   <div>
                     <div id="duggaSubmissionForm">
-                      <fieldset style="width:90%; margin-top:5%;">
+                      <fieldset style="width:90%;">
                         <legend>Submission types</legend>
                         <div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:column;overflow:hidden;"></div>
                       </fieldset>

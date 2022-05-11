@@ -65,19 +65,25 @@ function GetAssignment ($hash){
 		exit();	
 	}
 
-	if(isset($cid)&&isset($coursename)&&isset($vers)&&isset($moment)&&isset($deadline)){	
+	if($_SESSION['should-validate'] == "FALSE" &&isset($cid)&&isset($coursename)&&isset($vers)&&isset($moment)&&isset($deadline)){
+		$_SESSION['should-validate'] = "TRUE";	
 		$_SESSION["submission-$cid-$vers-$did-$moment"]=$hash;
 		$_SESSION["submission-password-$cid-$vers-$did-$moment"]=$hashpwd;
 		$_SESSION["submission-variant-$cid-$vers-$did-$moment"]=$variant;	
-		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed<br>";
+		$_SESSION["hash"]=$hash;
+		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&hash={$hash}&embed<br>";
 		echo "|$hash|$hashpwd|<br>";
-		header("Location: ../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed");
+		header("Location: ../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&hash={$hash}&embed");
 		exit();	
 	}else{
+		$_SESSION['checkhash']=$hash;
+		header("Location: ../DuggaSys/validateHash.php");
+		exit();	
+		/*
 		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed<br>";
 		echo "|$hash|$hashpwd|<br>";
-//		header("Location: ../errorpages/404.php");
-		exit();	
+		header("Location: ../errorpages/404.php");
+		exit();	*/
 	}
 	
 }

@@ -244,7 +244,9 @@
                 <img src="../Shared/icons/diagram_replay.svg"/>
                 <span class="toolTipText"><b>Enter replay mode</b><br>
                     <p>View history of changes made</p><br>
+                    <p id="tooltip-TOGGLE_REPLAY_MODE" class="key_tooltip">Keybinding:</p>
                 </span>
+            </div>
         </fieldset>
         <fieldset>
             <legend>ER-Table</legend>
@@ -252,8 +254,20 @@
                 <img src="../Shared/icons/diagram_ER_table_info.svg"/>
                 <span class="toolTipText"><b>Toggle ER-Table</b><br>
                     <p>Click to toggle ER-Table in options</p><br>
+                    <p id="tooltip-TOGGLE_ER_TABLE" class="key_tooltip">Keybinding:</p>
                 </span>
-        </fieldset>
+            </div>
+        </fieldset>     
+        <fieldset>
+        <legend>Check</legend>
+            <div id="errorCheckToggle" class="diagramIcons" onclick="toggleErrorCheck()">
+                <img src="../Shared/icons/diagram_errorCheck.svg"/>
+                <span class="toolTipText"><b>Toggle error check</b><br>
+                    <p>Click to toggle error checking on/off</p><br>
+                    <p id="tooltip-TOGGLE_ERROR_CHECK" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+        </fieldset>        
     </div>
 
     <!-- Message prompt -->
@@ -282,12 +296,12 @@
             <defs>
             <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
 
-                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-dasharray="5,5" stroke-width="1"/>
+                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke="0.8 0.8" stroke-width="1"/>
             </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
-            <line id="origoX" x1="0%" y1="100" x2="100%" y2="100" style="stroke:rgb(171, 171, 171);stroke-width:2;"/>
-            <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" style="stroke:rgb(171, 171, 171);stroke-width:2;"/>
+            <line id="origoX" x1="0%" y1="100" x2="100%" y2="100" style="stroke:rgb(105, 105, 105);stroke-width:8;"/>
+            <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" style="stroke:rgb(105, 105, 105);stroke-width:8;"/>
         </svg>  
     </div>
     <!-- A4 template -->
@@ -298,7 +312,7 @@
             <text id="a4Text" x="880" y="90">A4</text>
         </svg>  
     </div>  
-    <div id="options-pane" class="hide-options-pane" onmousedown='mdown(event)'> <!-- Yellow menu on right side of screen -->
+    <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="toggleOptionsPane();"><span id='optmarker'>&#9660;Options</span>
             <span class="toolTipText"><b>Show Option Panel</b><br>
                 <p>Enable/disable the Option Panel</p><br>
@@ -322,8 +336,8 @@
             </fieldset>
             <fieldset class='options-fieldset options-section' style='position: absolute; top: 33%;'>
                 <legend>Export</legend>
-                <button class="saveButton" onclick="saveDiagram();">Save</button><br><br>
-                <button class="saveButton" onclick="exportDiagram();">Export</button>
+                <button class="saveButton" onclick="exportWithHistory();">With history</button><br><br>
+                <button class="saveButton" onclick="exportWithoutHistory();">Without history</button>
             </fieldset>
             <fieldset class='options-fieldset options-section' style="position: absolute; top: 48%; margin-top: 2%;">
                 <legend>Import</legend>
