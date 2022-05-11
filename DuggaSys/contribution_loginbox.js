@@ -199,7 +199,7 @@ function git_logout()
       let pass2 = document.querySelector("#newGit-UserCreation_password2").value;
       let username = document.querySelector("#newGit-UserCreation_username").value;
       // TODO MAKE SURE PASSWORD IS ACTUALLY VALID BEFORE INSERT INTO DB
-      let regexVert = /[a-zA-Z0-9]+$/;
+      let regexVert = /[a-z|A-Z|0-9]+$/;
   
       if(pass1 == pass2)
       {
