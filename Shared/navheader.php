@@ -380,7 +380,6 @@
 
 			if(checklogin()) {
 				echo "<td class='navName' id='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
-        }
 				if($noup=='CONTRIBUTION'){
 					echo "<td id='loginbutton' class='loggedin' onclick='git_logout();'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
 				}else{
