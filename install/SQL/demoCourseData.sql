@@ -83,7 +83,6 @@ INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (46
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (47,36,'{\"variant\":\"Transforms\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (48,37,'{\"variant\":\"XMLAPI Report\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (49,38,'{\"variant\":\"Seminar\"}','{Variant}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator,disabled) VALUES (24,21,'{\"type\":\"md\",\"filelink\":\"HTML_Ex1.txt\",\"diagram_File\":\"diagram.json\",\"diagram_type\":{\"ER\":true,\"UML\":false},\"extraparam\":\"\",\"submissions\":[{\"type\":\"pdf\",\"fieldname\":\"\",\"instruction\":\"\"}],\"errorActive\":false}', '{variant}', current_timestamp(), NULL, '0');
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
 VALUES ('83','1894','13','24','3002',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
