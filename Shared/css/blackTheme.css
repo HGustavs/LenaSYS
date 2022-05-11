@@ -75,8 +75,7 @@
 }
 
 #picktemplate img{
-	width: 140px;
-	height: 140px;
+
 }
 
 #picktemplate h1{
@@ -97,8 +96,7 @@
 
 #content {
     background-color: #121212;
-    margin: 5px 10px 15px 10px;
-		color: #fff;
+	color: #fff;
 }
 
 .filter-label {
@@ -111,19 +109,11 @@
 }
 
 .box {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    overflow-y: auto;
-    overflow-x: auto;
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
     background-color: #2c2c2c;
     color: #FFF;
-    height: auto;
 }
 
 .box h1{
@@ -132,8 +122,6 @@
 
 .box iframe {
     background-color: white;
-    width:100%;
-    height: 99%;
 }
 
 
@@ -220,7 +208,6 @@
 	border-style:solid;
 	border-width:1px;
 	border-color: white;
-	padding: 4px;
 }
 
 .dropdownitemStyle {
@@ -233,25 +220,12 @@
 }
 
 .codeborder{
-	position: absolute;
-	top:0px;
-	bottom: 0px;
-	left:0px;
-	margin: 0px !important;
-	padding: 0px !important;
 	background-color: #614875;
 	text-align: right;
-
-	/* Width of .no and .impo */
-	width: 32px !important;
-
 }
 
 .codeborder .no {
     color: #D8D8D8;
-    padding-left: 4px;
-    padding-right: 6px;
-    width: 22px;
     line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
 	background-color: #614875;
     -moz-user-select: none;
@@ -262,16 +236,11 @@
 
 .codeborder .impono {
     color: white;
-    width: 22px;
     background-color: #9569BD;
-    padding-left: 4px;
-    padding-right: 6px;
     line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
 }
 
 .normtextwrapper{
-	 /* Width of codeborder */
-  	 margin-left: 32px;
 }
 
 .normtext {
@@ -284,7 +253,6 @@
     color: #fff;
     background-color: #270c27;
     white-space:nowrap;
-    min-width: 660px;
 }
 
 .comment {
@@ -412,14 +380,11 @@
 }
 
 .codebox{
-	padding: 0px;
   font-family:Hack;
   background-color: var(--color-background);
 }
 
 .descbox{
-	padding-top: 4px;
-	padding-left: 4px;
 	background-color: var(--color-background);
 	color: #fff;
 }
@@ -476,17 +441,13 @@
 	======================*/
 
 .list {
-	  width: 100%;
-	  padding: 1px;
 	  border-bottom: 2px solid #614875;
-	  margin-top: 20px;
    	font-size: 16px;
 }
 
 .list td {
     border-left: 2px solid #614875;
     border-right: 2px solid #614875;
-    padding: 0 8px 0 8px;
 }
 .list tr {
     background-color: var(--color-sectioned-table-hi);
@@ -506,8 +467,6 @@ body {
   font-family: 'Roboto', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  width: 100%;
-  height: 100%;
   background-color: var(--color-background);
   color: white;
 }
@@ -525,15 +484,8 @@ body {
 }
 
 #announcementBoxOverlay{
-    position: relative;
     display: none;
     background-color:#121212;
-    z-index: 1004;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
     overflow: auto;
     overflow-x: auto;
     font-family: 'Varela', sans-serif;
@@ -555,16 +507,12 @@ body {
     background-color: var(--color-sectioned-table-hi);
 }
 .dropdown-list-container{
-    padding: 8px;
-    width: 200px;
     font-size: 12px;
     overflow-y: auto;
     display: none;
-    position: absolute;
     background: var(--color-sectioned-table-hi);
     color: white;
     box-shadow: none;
-    margin-top: 5px;
 }
 
 .loginBox,
