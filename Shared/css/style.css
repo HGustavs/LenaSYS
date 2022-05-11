@@ -8797,4 +8797,7 @@ border: none !important;
 /* }  /* END of "@media (prefers-color-scheme: light)" */
 /* White Theme code END */
 
-
+.lineDiagramDark{
+  border: 2px solid var(--color-border-list);
+  background-color: var(--color-sectioned-table-lo);
+}

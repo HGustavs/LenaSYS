@@ -617,4 +617,19 @@ body {
 }
 /* END */
 
+/* Style for "LineDagram" "START" */
+.lineDiagramDark{
+    background-color: var(--color-sectioned-table-lo);
+}
+.graphLabels{
+   fill:white;
+}
+.lineDiagramDark text{
+    fill:white;
+}
+.lineDiagramDark{
+    border: 2px solid #614875;
+    background-color: var(--color-sectioned-table-lo);
+  }
+/* END */
 

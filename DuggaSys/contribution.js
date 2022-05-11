@@ -468,8 +468,7 @@ function renderLineDiagram(data) {
 }
 
 function lineDiagram() {
-  str = `<svg viewBox='0 0 580 250' class='lineChart' style='max-width:900px;
-  min-width:700px;background-color:#efefef;margin-top:10px;'>`;
+  str = `<svg class='lineDiagramDark' viewBox='0 0 580 250' class='lineChart' style='max-width:900px; min-width:700px;margin-top:10px;'>`;
 
   // Calculates and render scale numbers on the left
   var decimals = Math.pow(10, Math.round(maxDayCount).toString().length - 2);
