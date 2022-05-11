@@ -338,7 +338,6 @@ function showSaveButton() {
 }
 
 
-
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
   if (operation == "openConfirmBox") {

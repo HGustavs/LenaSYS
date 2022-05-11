@@ -187,6 +187,12 @@ text-decoration: line-through !important;
   text-decoration-color: var(--color-primary-2) !important;
 }
 
+.courseed {
+  margin-left: 16px;
+  -webkit-text-decoration-color: var(--color-primary-2) !important;
+  text-decoration-color: var(--color-primary-2) !important;
+}
+
 p {
   margin: .5em auto .5em auto;
 }

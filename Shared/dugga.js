@@ -2631,3 +2631,57 @@ function editDuggaInstruction(){
 }
 
 // ----------------------------- Edit dugga instructions end ------------------------
+
+//Code that makes it possible to navigate using tab and enter to click elements
+$(document).on('keydown', function(e) {
+	if(e.key === 'Enter'){
+		var box = $(e.target);
+
+		if (box[0].classList.contains("home-nav")){
+			box.parents('td').click();
+		}
+		else if (box[0].classList.contains("theme-toggle-nav")){
+			box.parents('td').click();
+		}
+		else if (box[0].classList.contains("loginbutton-nav")){
+			box.parents('td').click();
+		}
+		else if(box.parents('div').attr('id') =="FABStatic"){
+			box.mouseover();
+		}
+		else if(box[0].classList.contains("fab-btn-sm")){
+			box.click();	
+		}
+		else if(box.parents('div').attr('id') =="FABStatic2"){
+			box.mouseover();
+		}
+		else if(box[0].classList.contains("fab-btn-list2")){
+			box.click();	
+		}
+		else if (box[0].classList.contains("messagedialog-nav")){
+			box.parents('td').click();
+		}
+		else if (box[0].classList.contains("announcement-nav")){
+			sessionStorage.removeItem("closeUpdateForm");
+			$("#announcementBoxOverlay").toggle();
+			if($("#announcementForm").is(":hidden")){
+				$("#announcementForm").show();
+			}
+		}
+		else if (box[0].classList.contains("editVers")){
+			showEditVersion();
+		}
+		else if (box[0].classList.contains("newVers")){
+			showCreateVersion();
+		}
+		
+	}
+	else if(e.key === 'Escape'){
+		if ($('.fab-btn-list').is(':visible')) {
+			$(e.target).mouseout();
+		}
+		if ($('.fab-btn-list2').is(':visible')) {
+			$(e.target).mouseout();
+		}
+	}
+});
