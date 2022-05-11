@@ -1,4 +1,5 @@
 <?php
+session_start();
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
@@ -14,7 +15,6 @@ $submission = getOPG("s");
 
 // Connect to database and start session
 pdoConnect();
-session_start();
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
