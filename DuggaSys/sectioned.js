@@ -735,6 +735,14 @@ function newItem(itemtitle) {
   element.classList.toggle("createAlertToggle");
   // Set text for the alert when create a New Item
   document.getElementById("createAlert").innerHTML = itemtitle + " has been created!";
+  setTimeout(function(){
+    console.log(adamTest);
+    adamTest.sort(function(a, b) {
+    return b - a;
+    });
+    document.getElementById('I'+adamTest[0]).style.background='blue';
+    console.log(adamTest);
+  },500);
   // Duration time for the alert before remove
   setTimeout(function(){
     $("#createAlert").removeClass("createAlertToggle");
@@ -887,7 +895,7 @@ function duggaRowClick(rowElement){
     }
   }
 }
-
+var adamTest = [];
 function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
@@ -1116,7 +1124,7 @@ function returnedSection(data) {
           }
         }
 
-
+        adamTest.push(item['lid']);
       
         // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
         if (itemKind === 0) {
