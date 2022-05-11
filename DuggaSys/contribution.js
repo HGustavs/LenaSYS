@@ -2188,20 +2188,30 @@ function createSidebar(){
   str+= "<th class='accountRequestTable'>Status</th>";
   str+= "<th class='accountRequestTable'></th>";
   str+= "</tr>";
-
-  for (var row = 0; row < 10; row++) {
-    str+= "<tr class='accountRequestTable'>";
-
-    for (var col = 1; col <= 4; col++) {
-      str+= "<td class='accountRequestTable'>" + (col + (row * 4)) +"</td>";
-    }
-
-    str+= "</tr>";
-  }
+  str+=accountInformation()
 
   str+= "</table>";
   str+= "</div>";
   text.innerHTML = str;
+}
+
+function accountInformation(){
+  var str;
+  for (var row = 0; row < 5; row++) {
+    str+= "<tr class='accountRequestTable'>";
+    
+    str+= "<td class='accountRequestTable'>" + "index" + "</td>";
+    str+= "<td class='accountRequestTable'>" + "username" + "</td>";
+    str+= "<td class='accountRequestTable'>" + "status value" + "</td>";
+    str+= "<td class='accountRequestTable'>" + "buttons for changing stuff" + "</td>";
+    
+    /*    for (var col = 1; col <= 4; col++) {
+      str+= "<td class='accountRequestTable'>" + (row+col) +"</td>";
+    }
+    */
+    str+= "</tr>";
+  }
+  return str; 
 }
 
 console.error
