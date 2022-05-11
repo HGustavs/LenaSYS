@@ -593,3 +593,28 @@ body {
 /* } */
 /* BOXMENU STYLING STOP */
 /* } */
+
+/* --------------================################================-------------- *
+ *                           BlackTheme for Contribution site 
+                                  code START
+ * --------------================################================-------------- */
+
+ /* SVG img on circle Graph*/ /*START */
+ .circleGraphCircle{
+    cursor: pointer;
+    filter: invert(10%);
+    -webkit-filter: invert(10%);
+}
+#circleGraphHours{
+    cursor: pointer;
+    filter: invert(80%);
+    -webkit-filter: invert(80%);
+}
+.circleGraphBigline {
+    cursor: pointer;
+    filter: invert(20%);
+    -webkit-filter: invert(20%);
+}
+/* END */
+
+
