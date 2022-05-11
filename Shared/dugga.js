@@ -1225,6 +1225,15 @@ function AJAXService(opt,apara,kind)
 			success: CONT_LOGINBOX_SERVICE_RETURN
 		});
 	}
+	else if(kind=="CONT_LOGIN_STATUS"){
+		$.ajax({
+			url: "contributionservice.php",
+			type:"POST",
+			data: "&opt="+opt+para,
+			dataType: "json",
+			success: requestContributionUserLogin
+		});
+	}
 	else if(kind=="INPUTCHECK") {
 		alert(JSON.stringify(querystring));
 		$.ajax({

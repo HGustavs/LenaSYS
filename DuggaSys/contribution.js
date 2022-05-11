@@ -2196,7 +2196,7 @@ function createSidebar(){
 }
 
 function accountInformation(){
-  var str;
+  var str = "";
   for (var row = 0; row < 5; row++) {
     str+= "<tr class='accountRequestTable'>";
     
@@ -2205,10 +2205,6 @@ function accountInformation(){
     str+= "<td class='accountRequestTable'>" + "status value" + "</td>";
     str+= "<td class='accountRequestTable'>" + "buttons for changing stuff" + "</td>";
     
-    /*    for (var col = 1; col <= 4; col++) {
-      str+= "<td class='accountRequestTable'>" + (row+col) +"</td>";
-    }
-    */
     str+= "</tr>";
   }
   return str; 
