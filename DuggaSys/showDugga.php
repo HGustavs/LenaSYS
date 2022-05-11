@@ -80,8 +80,8 @@
 		$end = strpos($variantParams, "&quot;:&quot;&quot;,&quot;diagram_type") - 176;
 		$splicedFileName = substr($variantParams, strpos($variantParams, "diagram File&quot;:") + 25, ($end - $start));*/
 		$variantParams = str_replace('&quot;','"',$variantParams);
-		$parameterArray = json_decode($variantParams,true);
-		if(!empty($parameterArray)){
+		$parameterArray = json_decode($variantParams,true);		
+		if(array_key_exists("diagram_File",$parameterArray)){
 			$splicedFileName=$parameterArray["diagram_File"];
 			$fileName=$parameterArray["filelink"];
 			$fileType=$parameterArray["type"];

@@ -65,7 +65,7 @@ INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (28
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (29,18,'{\"variant\":\"Contribution\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (30,19,'{\"linje\":\"10,30,19 20 40 20 50 30 50,81 65 50\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (31,20,'{\"variant\":\"Daily Minutes\"}','{Variant}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (32,21,'{\"variant\":\"Diagram\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (32,21,'{\”type\”:\”md\”,\”filelink\”:\”HTML_Ex1.txt\”,\”diagram_File\”:\”diagram.json\”,\”diagram_type\”:{\”ER\”:true,\”UML\”:false},\”extraparam\”:\”\”,\”submissions\”:[{\”type\”:\”pdf\”,\”fieldname\”:\”\”,\”instruction\”:\”\”}],\”errorActive\”:false}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (33,22,'{\"tal\":\"127\"}','{"danswer":\"01111111 7 F\"}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (34,23,'{\"color\":\"yellow\",\"colorname\":\"Gul\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (35,24,'{\"linje\":\"10,30,81 10 20,81 65 10,63 20 30 75 35,19 30 60 75 70 50 35,19 100 10 85 95 45 50,19 40 40 50 40 15 55,63 10 60 10 50,81 20 30\"}','{Variant}',NOW(),2);
