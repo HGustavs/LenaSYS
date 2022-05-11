@@ -35,7 +35,7 @@ $enddate=getOP('enddate');
 $makeactive=getOP('makeactive');
 $motd=getOP('motd');
 $readonly=getOP('readonly');
-$LastCourseCreated;
+$LastCourseCreated=array();
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
@@ -80,9 +80,19 @@ if(checklogin()){
 			$query = $pdo->prepare( "SELECT cid FROM course ORDER BY id DESC LIMIT 1");
 			$query-> execute();
 
-			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
-			$row = $query->fetch(PDO::FETCH_ASSOC);
-			$LastCourseCreated = $row['cid'];
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading courses\n".$error[2];
+			}else{
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+					array_push(
+						$LastCourseCreated,
+						array(
+							'LastCourseCreatedId' => $row['cid'],
+						)
+					);
+				}
+			}
 			
 		}else if(strcmp($opt,"NEW")===0){
 			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES(:coursecode,:coursename,0,:usrid, 7.5)");
