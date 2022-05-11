@@ -193,6 +193,14 @@ session_start();
                     </div>
                   </div>
                   <div>
+                      <div id="duggaNote">  <!-- CHANGE TEXT--> 
+                      <fieldset style="width:90%">
+                        <legend>Note</legend>
+                        <textarea id='extraparam' rows="5" onkeyup="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"></textarea>  <!-- CHANGE TEXT--> 
+                      </fieldset>
+                    </div>
+                  </div>
+                  <div>
                     <div id="selectBox">
                       <fieldset style="width:90%">
                       <!-- The json files are fetched and parsed in returnedFile() in duggaed.js -->

@@ -735,6 +735,7 @@ function renderVariant(clickedElement) {
 		var tabledata = {
 				tblhead: {
 						vid: "",
+						note: "Note",
 						param: "Parameter",
 						modified: "Modified",
 						disabled: "Status",
@@ -745,7 +746,7 @@ function renderVariant(clickedElement) {
 				tblbody: globalData['entries'][clickedElement].variants,
 				tblfoot: {}
 		}
-		var colOrderVariant=["vid","param","modified","disabled","arrowVariant","cogwheelVariant","trashcanVariant"];
+		var colOrderVariant=["vid","note","param","modified","disabled","arrowVariant","cogwheelVariant","trashcanVariant"];
 		variantTable = new SortableTable({
 				data:tabledata,
 				tableElementId:"variant",
@@ -822,6 +823,10 @@ function renderCell(col, celldata, cellid) {
 			object = JSON.parse(celldata);
 			retString = "<img alt='delete dugga icon' id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
 			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
+			break;
+
+		case "note":		// DUGGA-TABLE - Note column
+			retString = `<span class='noteText'>test</span>`;
 			break;
 
 		case "param":		// DUGGA-TABLE - Parameter column

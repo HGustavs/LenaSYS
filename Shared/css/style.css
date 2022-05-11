@@ -7865,6 +7865,14 @@ textarea#filecont {
   text-overflow: ellipsis;
 }
 
+/*.variants-note-col {
+  display: inline-block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}*/
+
 /* Modified column */
 .variant-modified {
   width: 150px;
