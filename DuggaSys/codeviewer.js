@@ -30,6 +30,7 @@ How to use
 
 *********************************************************************************/
 
+// ↓ retData (3)
 var retData; // Data returned from setup
 var tokens = []; // Array to hold the tokens.
 var allBlocks = []; // Array holding collapsible tokens
@@ -91,8 +92,10 @@ function fillBurger() {
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
 
+// ↓ data is (3)
 function returned(data) 
 {
+	// ↓ retData (3) used in function Skip (1)
 	retData = data;
 	sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
 	// User can choose template if no template has been chosen and the user has write access.
@@ -1202,12 +1205,14 @@ function popupDocumentation(id, lang) {
 
 var dmd;
 
+// ↓ found function through inspector - started from here (1)
 function Skip(skipkind) 
 {
 	if (skipkind == "bd") {
 		dmd = 1;
 	} else if (skipkind == "bu") {
 		if (retData['before'].length != 0 && dmd == 1) {
+			// ↓ function created in dugga.js (2), retData (3)
 			navigateExample(retData['before'][0][0]);
 		}
 		dmd = 0;
@@ -1235,6 +1240,7 @@ function Skip(skipkind)
 //				Used by Skip in codeviewer.js
 //----------------------------------------------------------------------------------
 
+// ↓ relevant function (4), found when scrolling through doc
 function execSkip() {
 	str = "";
 	
@@ -1242,8 +1248,11 @@ function execSkip() {
 	if (dmd == 1) {
 
 		for (i = 0; i < retData['before'].length; i++) {
+			// ↓ str holds all shown examples (5), section titles should be added here
+			// check where the titles are fetched from (5) ?
 			str += "<span id='F" + retData['before'][i][1] + "' onclick='navigateExample(\"" + retData['before'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['before'][i][1] + ":" + retData['before'][i][2] + "</span>";		
 		}
+		// ↓ (4)
 		document.getElementById("backwdropc").innerHTML = str;
 		document.getElementById("backwdrop").style.display = "block";
 		dmd = 0;
@@ -1255,6 +1264,7 @@ function execSkip() {
 		for (i = 0; i < retData['after'].length; i++) {
 			str += "<span id='F" + retData['after'][i][1] + "' onclick='navigateExample(\"" + retData['after'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['after'][i][1] + ":" + retData['after'][i][2] + "</span>";
 		}
+		// ↓ (4)
 		document.getElementById("forwdropc").innerHTML = str;
 		document.getElementById("forwdrop").style.display = "block";
 		dmd = 0;

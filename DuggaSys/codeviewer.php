@@ -233,6 +233,7 @@ Testing Link:
 
         </div>
 		<!-- Dropdowns START -->
+		<!-- ↓ (4) this is where section title should be placed -->
 		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'><!-- Name of table --></div><span id='backwdropc'>oii</span></span>
 		<span id='forwdrop' style='left:100px;display:none;' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'><!-- Name of table --></div><span id='forwdropc'>bii</span></span>
 		<!-- Dropdowns END -->
