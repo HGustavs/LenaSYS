@@ -66,24 +66,14 @@
 					echo "</a>";
 					echo "</a>";
 					echo"</div>";
-					echo"</div>";
-					
+					echo"</div>";					
 				}
 			
 			// Always show home button which links to course homepage
-<<<<<<< HEAD
-			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img id='homeImg' alt='home button icon' src='../Shared/icons/Home.svg'></a></td>";
-			// Always show toggle button. When clicked it changes between dark and light mode.
-			echo "<td class='navButt'><img id='theme-toggle' src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></td>";
-			
-			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></td>";
-=======
 			echo "<td class='navButt' id='home' title='Home' onclick='navigateToUrl(\"../DuggaSys/courseed.php\")'><div class='home-nav' tabindex='0'><a id='homeIcon' class='navButt'><img alt='home button icon' src='../Shared/icons/Home.svg'></a></div></td>";
 			// Always show toggle button. When clicked it changes between dark and light mode.
 			echo "<td class='navButt' id='theme-toggle'><div class='theme-toggle-nav' tabindex='0'><img src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></div></td>";
-
 			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><div class='motd-nav' tabindex='0'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></div></td>";
->>>>>>> G3-2022-#merge6
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
@@ -93,23 +83,17 @@
 			if($noup!='NONE') {
 				echo "<td class='navButt' id='back' title='Back'>";
 			}
-
 			if($noup=='CONTRIBUTION'){
 				echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
-<<<<<<< HEAD
-=======
 			}if($noup=='COURSE'){
 				echo "<div><a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></div></td>";
 				echo "<td class='navButt' id='messagedialog' title='Message of the day 'onclick='DisplayMSGofTDY();'><div class='messagedialog-nav' tabindex='0'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></div></td>";
->>>>>>> G3-2022-#merge6
 			}if($noup=='COURSE' && checklogin() && (isTeacher($_SESSION['uid']))){
 				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
-
 			}if (($noup == 'COURSE') && checkLogin()) {
 				echo "<td class='navButt' id='announcement' title='Announcement'><div class='announcement-nav' tabindex='0'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></div></td>";
-
 			}else if($noup=='SECTION'){
 				echo "<a id='upIcon' href='";
 				echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
