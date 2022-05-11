@@ -8778,6 +8778,14 @@ border: none !important;
   margin: auto; 
 }
 
+#addElement{
+  height: 100%;
+  padding-bottom: 10px;
+  padding-top: 5px;
+  font-size: 20px;
+  line-height: 10px;
+}
+
 .iconColorInDarkMode{
   cursor: pointer;
   filter: invert(80%);
