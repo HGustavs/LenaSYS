@@ -19,7 +19,8 @@ var hasDuggs = false;
 var dateToday = new Date().getTime();
 var compareWeek = -604800000;
 let width = screen.width;
-var time;
+var delArr = [];
+var delTimer;
 var lid;
 
 // Stores everything that relates to collapsable menus and their state.
@@ -382,8 +383,9 @@ function markedItems(item = null){
       $("#Sectionlist").find(".item").each(function (i) {
         var tempItem = $(this).attr('value');
         if(itemInSection && sectionStart){
+          var tempDisplay = document.getElementById("lid"+tempItem).style.display;
           var tempKind = $(this).parents('tr').attr('value');
-          if(tempKind == "section" || tempKind == "moment" || tempKind == "header"){
+          if(tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")){
             itemInSection = false;
             //console.log("loop breaker: "+tempItem);
           }else{
@@ -548,27 +550,43 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-function deleteItem(item_lid = null) { 
+function deleteItem(item_lid = null) {
   lid = item_lid ? item_lid : $("#lid").val();
   document.getElementById("lid" + lid).style.display = "none";
   alert("Press recycle button within 60 seconds to undo the deletion");
   document.querySelector("#undoButton").style.display = "block";
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
-  time = setTimeout(() => {
+  delArr.push(lid);
+  clearTimeout(delTimer);
+  delTimer = setTimeout(() => {
+    deleteAll();
+   }, 60000);
+}
+
+// Permanently delete elements
+function deleteAll()
+{
+  for(var i = delArr.length-1; i >= 0; --i){
     AJAXService("DEL", {
-      lid: lid
+      lid: delArr.pop()
     }, "SECTION");
-    $("#editSection").css("display", "none");
-    document.querySelector("#undoButton").style.display = "none";
-   }, 60000)
+  }
+  $("#editSection").css("display", "none");
+  document.querySelector("#undoButton").style.display = "none";
 }
 
 // Cancel deletion
 function cancelDelete() {
-  clearTimeout(time);
-  document.getElementById("lid" + lid).style.display = "block";
   location.reload();
-  document.querySelector("#undoButton").style.display = "none";
+}
+
+// Set all "deleted" items as hidden
+// Used when refreshing the table
+function hideDeleted()
+{
+  for(var i = 0; i < delArr.length; ++i){
+    document.getElementById("lid" + delArr[i]).style.display = "none";
+  }
 }
 
 //----------------------------------------------------------------------------------
@@ -973,13 +991,13 @@ function returnedSection(data) {
 
           if (itemKind === 3) {
             str += "<td  class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             
             str += "<td class='LightBox" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
             str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
-            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             str += "<td class='LightBoxFilled" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
           }
@@ -1023,13 +1041,13 @@ function returnedSection(data) {
         } else if (itemKind === 1) {
           // Styling for Section row
           str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
-          str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+          str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 2) {
           str += "<td class='LightBox" + hideState + "'>";
-          str += "<div class='dragbleArea'><img alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+          str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
 
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
@@ -1224,21 +1242,23 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        //Generate new tab link
-        str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-
-          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
-          src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
-          str += "</td>";
-
-        // Generate Canvas Link Button
-        if (data['writeaccess'] || data['studentteacher']) {
+        if (itemKind != 4){ // dont create buttons for moments only for specific assignments
+          //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
-          src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
-          str += "</td>";
+
+            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
+            src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
+            str += "</td>";
+
+          // Generate Canvas Link Button
+          if (data['writeaccess'] || data['studentteacher']) {
+            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
+            src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
+            str += "</td>";
+          }
         }
 
         // Cog Wheel
@@ -1349,7 +1369,10 @@ function returnedSection(data) {
 
 
   }
-
+  
+  // Reset checkboxes
+  // Prevents a bug if they are checked when for example an item is deleted and the table refreshes
+  clearHideItemList();
 
   // The next 5 lines are related to collapsable menus and their state.
   getHiddenElements();

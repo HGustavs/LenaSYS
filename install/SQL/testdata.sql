@@ -938,6 +938,15 @@ INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitt
 VALUES ('77','2','1','3','2002',NULL,NULL,'2 97732 2002 10010110 9 6 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,0,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','IR-ZI93p','tYtOujJ','32','7');
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
 VALUES ('78','2','1','3','2002',NULL,NULL,'2 97732 2002 01010101 5 5 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,1,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','n4nPEAJs','UWbvbEQ','1','2');
+/**More entries for duggor withouth any useranswers*/
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('79','2','2','4','2003',NULL,NULL,'2 97732 2003 10010110 9 6 1366 768 1349 662','2022-05-09 09:12:51',NULL,'97732',NULL,0,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','41eaf614','b506a9d3','2','9');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('80','2','6','14','2009',NULL,NULL,NULL,'2022-05-09 10:49:22',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','3a75c017','b03463f7','1','1');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('81','2','8','16','2012',NULL,NULL,NULL,'2022-05-09 14:40:35',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','228f1f11','c4253076','4','4');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('82','2','11','22','2034',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'97732',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','729c7a78','edcb7735','3','3');
 
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('1','wp','Webbprogrammering','45656');
 INSERT INTO coursekeys (cid,urlkey,coursename,activeversion) VALUES ('2','wgfx','Webbutveckling - datorgrafik','97732');

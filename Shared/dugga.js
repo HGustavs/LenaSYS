@@ -1082,38 +1082,6 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedSection
 			});
-	}else if(kind=="CONTRIBUTION_GIT_USER_CHECK"){
-		$.ajax({
-			url: "contributionservice.php",
-			type: "POST",
-			data: "&opt="+opt+para,
-			dataType: "json",
-			success: returned_git_user_check
-		});
-	}else if(kind=="CONTRIBUTION_LENASYS_USER_CHECK"){
-		$.ajax({
-			url: "contributionservice.php",
-			type: "POST",
-			data: "&opt="+opt+para,
-			dataType: "json",
-			success: returned_lenasys_user_check
-		});
-	}else if(kind=="CONTRIBUTION_GIT_USER_LOGIN"){
-		$.ajax({
-			url: "contributionservice.php",
-			type: "POST",
-			data: "&opt="+opt+para,
-			dataType: "json",
-			success: returned_git_user_login
-		});
-	}else if(kind=="CONTRIBUTION_LENASYS_USER_CREATION"){
-		$.ajax({
-			url: "contributionservice.php",
-			type: "POST",
-			data: "&opt="+opt+para,
-			dataType: "json",
-			success: returned_lenasys_user_creation
-		});
 	}else if(kind=="DIAGRAM"){
 			$.ajax({
 				url: "diagramservice.php",
@@ -1243,6 +1211,15 @@ function AJAXService(opt,apara,kind)
 			type:"POST",
 			data: "hash="+hash+"&opt="+opt+para,
 			dataType: "json"
+		});
+	}
+	else if(kind=="CONT_LOGINBOX_SERVICE") {
+		$.ajax({
+			url: "contribution_loginbox_service.php",
+			type:"POST",
+			data: "&opt="+opt+para,
+			dataType: "json",
+			success: CONT_LOGINBOX_SERVICE_RETURN
 		});
 	}
 	else if(kind=="INPUTCHECK") {

@@ -698,7 +698,7 @@ function renderCircleDiagram(data, day) {
   if (data.hourlyevents == null){
     activities = data.events;
   }else if (data.events == null){
-    activities = data.hourlyevents;
+    activities = data.hourlyevents; 
   }
 
   if (data.weeks != null){
@@ -757,80 +757,244 @@ function renderCircleDiagram(data, day) {
 }
 
 function renderActivityPoints(activities) {
+  console.log(activities);
   var str = "";
-  var hours = {};
+  var hoursComments = {};
+  var hoursCommits = {};
+  var hoursIssues = {};
   activities.forEach(entry => {
+    if (entry.type == "comment"){
+      var keys = Object.keys(hoursComments);
+    }
+    else if (entry.type == "commit"){
+      var keys = Object.keys(hoursCommits);
+    }
+    else if (entry.type == "issue"){
+      var keys = Object.keys(hoursIssues);
+    }
     var hour = entry.time;
-    var keys = Object.keys(hours);
     var found = false;
 
     for (var i = 0; i < keys.length; i++) {
       if (keys[i] == hour) {
-        hours[hour] += 1;
+        if (entry.type == "comment"){
+          hoursComments[hour] += 1;
+        }
+        else if (entry.type == "commit"){
+          hoursCommits[hour] += 1;
+        }
+        else if (entry.type == "issue"){
+          hoursIssues[hour] += 1;
+        }
         found = true;
         return;
       }
     }
     if (!found) {
-      hours[hour] = 1;
+      if (entry.type == "comment"){
+        hoursComments[hour] = 1;
+      }
+      else if (entry.type == "commit"){
+        hoursCommits[hour] = 1;
+      }
+      else if (entry.type == "issue"){
+        hoursIssues[hour] = 1;
+      }
     }
 
   });
+  commentsCounted = [];
+  commitsCounted = [];
+  issuesCounted =[];
+  activities.forEach(entry => {
+    if(entry.type== "comment"){
+      commentsCounted.push(entry);
+    }
+    if(entry.type== "commit"){
+      commitsCounted.push(entry);
+    }
+    if(entry.type== "issue"){
+      issuesCounted.push(entry);
+    }});
 
-  var uniquePoints = [];
-  var activityTypes = {
+  var uniquePointsIssues = [];
+  var uniquePointsCommits = [];
+  var uniquePointsComments = [];
+  var activityTypesComments = {
+    times: {},
+    types: {}
+  };
+  var activityTypesCommits = {
+    times: {},
+    types: {}
+  };
+  var activityTypesIssues = {
     times: {},
     types: {}
   };
   const RADIUS = 220;
   const BASELINE = 75;
   const MIDDLE = 243;
+
+  
   activities.forEach(entry => {
-    //Cast integer to string
-    var hourString = entry.time.toString();
-    var hour = hourString.substr(0, 2);
-    var houroffset = parseInt(hour) + 6;
-    var type = entry.type;
-    var activityCount = activities.length;
-    var percentage = hours[hour] / activityCount;
-    var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
-    angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
-    var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
-    var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
+    if(entry.type== "comment"){
+      //Cast integer to string
+      var hourString = entry.time.toString();
+      var hour = hourString.substr(0, 2);
+      var houroffset = parseInt(hour) + 6;
+      var type = entry.type;
+      var activityCount = commentsCounted.length;
+      var percentage = hoursComments[hour] / activityCount;
+      
+      var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
+      angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
+      var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
+      var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
 
-    if (!Object.keys(activityTypes.times).includes(hour)) {
-      activityTypes.times[hour] = {};
-      uniquePoints.push([xCoord, yCoord, hour, percentage]);
+      if (!Object.keys(activityTypesComments.times).includes(hour)) {
+        activityTypesComments.times[hour] = {};
+        uniquePointsComments.push([xCoord, yCoord, hour, percentage, type]);
+      }
+      if (!Object.keys(activityTypesComments.types).includes(type)) activityTypesComments.types[type] = 0;
+      if (!Object.keys(activityTypesComments.times[hour]).includes(type)) activityTypesComments.times[hour][type] = 0;
+      activityTypesComments.types[type] += 1;
+      activityTypesComments.times[hour][type] += 1;
     }
-    if (!Object.keys(activityTypes.types).includes(type)) activityTypes.types[type] = 0;
-    if (!Object.keys(activityTypes.times[hour]).includes(type)) activityTypes.times[hour][type] = 0;
-    activityTypes.types[type] += 1;
-    activityTypes.times[hour][type] += 1;
+
+    if(entry.type== "commit"){
+      //Cast integer to string
+      var hourString = entry.time.toString();
+      var hour = hourString.substr(0, 2);
+      var houroffset = parseInt(hour) + 6;
+      var type = entry.type;
+      var activityCount = commitsCounted.length;
+      var percentage = hoursCommits[hour] / activityCount;
+      //console.log(percentage, hours[hour], activityCount );
+      var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
+      angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
+      var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
+      var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
+  
+      if (!Object.keys(activityTypesCommits.times).includes(hour)) {
+        activityTypesCommits.times[hour] = {};
+        uniquePointsCommits.push([xCoord, yCoord, hour, percentage, type]);
+      }else{
+        uniquePointsCommits.push([xCoord, yCoord, hour, percentage, type]);
+      }
+      if (!Object.keys(activityTypesCommits.types).includes(type)) activityTypesCommits.types[type] = 0;
+      if (!Object.keys(activityTypesCommits.times[hour]).includes(type)) activityTypesCommits.times[hour][type] = 0;
+      activityTypesCommits.types[type] += 1;
+      activityTypesCommits.times[hour][type] += 1;
+      }
+
+    if(entry.type== "issue"){
+      //Cast integer to string
+      var hourString = entry.time.toString();
+      var hour = hourString.substr(0, 2);
+      var houroffset = parseInt(hour) + 6;
+      var type = entry.type;
+      var activityCount = issuesCounted.length;
+      var percentage = hoursIssues[hour] / activityCount;
+      var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
+      angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
+      var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
+      var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
+  
+      if (!Object.keys(activityTypesIssues.times).includes(hour)) {
+        activityTypesIssues.times[hour] = {};
+        uniquePointsIssues.push([xCoord, yCoord, hour, percentage, type]);
+      }else{
+        uniquePointsIssues.push([xCoord, yCoord, hour, percentage, type]);
+      }
+      if (!Object.keys(activityTypesIssues.types).includes(type)) activityTypesIssues.types[type] = 0;
+      if (!Object.keys(activityTypesIssues.times[hour]).includes(type)) activityTypesIssues.times[hour][type] = 0;
+      activityTypesIssues.types[type] += 1;
+      activityTypesIssues.times[hour][type] += 1;
+      }
   });
-  uniquePoints.sort(([a, b, c], [d, e, f]) => c - f);
 
-  if (uniquePoints.length > 2) {
-    str += "<polygon class='activityPolygon' points='";
-    for (var i = 0; i < uniquePoints.length; i++) {
-      str += (uniquePoints[i][0] + 5) + "," + (uniquePoints[i][1] + 5) + " ";
+
+  uniquePointsComments.sort(([a, b, c], [d, e, f]) => c - f);
+  if (uniquePointsComments.length > 2) {
+    str += "<polygon class='activityPolygon "+uniquePointsComments[0][4]+"' points='";
+    for (var i = 0; i < uniquePointsComments.length; i++) {
+      str += (uniquePointsComments[i][0] + 5) + "," + (uniquePointsComments[i][1] + 5) + " ";
     }
-    str += `250,250' onmouseover='showAllActivity(event, ${JSON.stringify(activityTypes)})' onmouseout='hideActivityInfo()' />`;
+    str += `250,250' onmouseover='showAllActivity(event, ${JSON.stringify(activityTypesComments)})' onmouseout='hideActivityInfo()' />`;
   }
-
-  uniquePoints.forEach(point => {
+  uniquePointsComments.forEach(point => {
     var xCoord = point[0];
     var yCoord = point[1];
     var hour = point[2];
     var percentage = Math.round(point[3] * 100);
-    var types = Object.keys(activityTypes.times[hour]);
-    var values = Object.values(activityTypes.times[hour]);
-
-    types.length > 1 ? type = "mixed" : type = types[0];
-    str += "<rect class='activitymarker " + type + "' width='14' height='14' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
-    str += "`" + type + "`, `" + hour + "`, " + percentage + ", " + JSON.stringify(activityTypes) + ")' onmouseout='hideActivityInfo()' />";
+    var types = point[4];
+    var values = Object.values(activityTypesComments.times[hour]);
+    str += "<rect class='activitymarker " + types + "' width='7' height='7' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
+    str += "`" + types + "`, `" + hour + "`, " + percentage + ", " + JSON.stringify(activityTypesComments) + ")' onmouseout='hideActivityInfo()' />";
+    console.log(JSON.stringify(activityTypesComments), "Comments");
   });
+  
+
+
+  uniquePointsCommits.sort(([a, b, c], [d, e, f]) => c - f);
+  if (uniquePointsCommits.length > 2) {
+    str += "<polygon class='activityPolygon "+uniquePointsCommits[0][4]+"' points='";
+    for (var i = 0; i < uniquePointsCommits.length; i++) {
+      str += (uniquePointsCommits[i][0] + 5) + "," + (uniquePointsCommits[i][1] + 5) + " ";
+    }
+    str += `250,250' onmouseover='showAllActivity(event, ${JSON.stringify(activityTypesCommits)})' onmouseout='hideActivityInfo()' />`;
+  }
+  uniquePointsCommits.forEach(point => {
+    var xCoord = point[0];
+    var yCoord = point[1];
+    var hour = point[2];
+    var percentage = Math.round(point[3] * 100);
+    var types = point[4];
+    var values = Object.values(activityTypesCommits.times[hour]);
+    str += "<rect class='activitymarker " + types + "' width='7' height='7' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
+    str += "`" + types + "`, `" + hour + "`, " + percentage + ", " + JSON.stringify(activityTypesCommits) + ")' onmouseout='hideActivityInfo()' />";
+  });
+
+
+
+  uniquePointsIssues.sort(([a, b, c], [d, e, f]) => c - f);
+  if (uniquePointsIssues.length > 2) {
+    str += "<polygon class='activityPolygon "+uniquePointsIssues[0][4]+"' points='";
+    for (var i = 0; i < uniquePointsIssues.length; i++) {
+      str += (uniquePointsIssues[i][0] + 5) + "," + (uniquePointsIssues[i][1] + 5) + " ";
+    }
+    str += `250,250' onmouseover='showAllActivity(event, ${JSON.stringify(activityTypesIssues)})' onmouseout='hideActivityInfo()' />`;
+  }
+  uniquePointsIssues.forEach(point => {
+    var xCoord = point[0];
+    var yCoord = point[1];
+    var hour = point[2];
+    var percentage = Math.round(point[3] * 100);
+    var types = point[4];
+    var values = Object.values(activityTypesIssues.times[hour]);
+    str += "<rect class='activitymarker " + types + "' width='7' height='7' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
+    str += "`" + types + "`, `" + hour + "`, " + percentage + ", " + JSON.stringify(activityTypesIssues) + ")' onmouseout='hideActivityInfo()' />";
+  });
+
   return str;
+  
 }
+
+/* The out-commented code below was the previous function that was used to show all the points and the polygon.*/
+/* uniquePoints.forEach(point => {
+  var xCoord = point[0];
+  var yCoord = point[1];
+  var hour = point[2];
+  var percentage = Math.round(point[3] * 100);
+  var types = Object.keys(activityTypes.times[hour]);
+  var values = Object.values(activityTypes.times[hour]);
+  types.length > 1 ? type = "mixed" : type = types[0];
+  str += "<rect class='activitymarker " + type + "' width='14' height='14' x='" + xCoord + "' y='" + yCoord + "' onmouseover='showActivityInfo(event, ";
+  str += "`" + type + "`, `" + hour + "`, " + percentage + ", " + JSON.stringify(activityTypes) + ")' onmouseout='hideActivityInfo()' />";
+});
+return str;
+} */
 
 function renderHourMarkers() {
   const RADIUS = 220;
@@ -1871,100 +2035,6 @@ function hideTooltip() {
     }
 }
 
-function forceUserLogin()
-{
-      /* 
-      make sure the loginBox is generated before you run this function as 
-      it queries for elements that exist in the loginbox and changes their properties
-      */
-      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
-			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
-
-
-
-
-      let loginBoxheader_login_username_field = document.querySelector("#username");
-      loginBoxheader_login_username_field.setAttribute("Placeholder","Github username");
-
-      let loginBoxheader_login_password_field = document.querySelector("#password");
-      loginBoxheader_login_password_field.style.visibility = "hidden";
-
-      let loginBoxButton = document.querySelector(".buttonLoginBox");
-      loginBoxButton.setAttribute("onClick", "showNewGitLogin()");
-      
-  
-			// prepare replacement of onclick
-			loginBoxheader_login_close.removeAttribute("onClick"); // remove auto generated 
-			loginBoxheader_forgot_close.removeAttribute("onClick"); // remove auto generated
-			
-			/*
-      replace with a history back, this makes sure you dont get a blank page if you dont want to enter a password
-      and instead press the button to close down the loginBox
-      */
-			loginBoxheader_login_close.setAttribute("onClick", "history.back();"); 
-			loginBoxheader_forgot_close.setAttribute("onClick", "history.back();"); 
-
-
-      // ----
-      let FP = document.querySelector("#newpassword .forgotPw");
-      FP.setAttribute("onClick", "toggleloginnewpass(); resetForceLogin();");
-
-      // After the loginbox has been prepared/modified we display it to the user
-      showLoginPopup();
-      
-
-}
-
-function showNewGitLogin()
-{
-      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
-			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
-      let loginBox = document.querySelector("#password");
-      let loginBoxParent = loginBox.closest("tr");
-
-
-      let loginBoxheader_login_username_field = document.querySelector("#username");
-      let loginBoxheader_login_password_field = document.querySelector("#password");
-      let loginBoxButton = document.querySelector(".buttonLoginBox");
-
-      loginBoxheader_login_password_field.style.visibility = "";
-
-
-      // create another loginbox and create a new id
-      let originalId = loginBox.getAttribute("id");
-      loginBox.setAttribute("id", originalId+1);
-      loginBoxParent.outerHTML += loginBoxParent.innerHTML;
-      loginBox = document.querySelector("#"+originalId+1);
-      loginBox.setAttribute("id", originalId);
-
-
-      let login_first = document.querySelector("#"+originalId);
-      let login_second = document.querySelector("#"+originalId+1);
-
-      login_first.setAttribute("placeholder", "Create new password");
-      login_second.setAttribute("placeholder","Repeat new password");
-
-      loginBoxButton.setAttribute("onClick", "");
-      loginBoxButton.setAttribute("Value", "Create");
-      
-
-     
-      
-
-
-}
-
-function resetForceLogin()
-{
-  let originalId = ("password");
-  let login_second = document.querySelector("#"+originalId+1);
-  if(login_second != null)
-    login_second.remove();
-  let loginBoxButton = document.querySelector(".buttonLoginBox");
-  loginBoxButton.setAttribute("Value", "Login");
-  forceUserLogin();
-
-}
 //Shows a div when hover the commit links
 function showCommits(object, cid){
   var text = document.getElementById('commitDiv');
@@ -2134,470 +2204,4 @@ function createSidebar(){
   text.innerHTML = str;
 }
 
-function forceUserLogin()
-{
-      /* 
-      make sure the loginBox is generated before you run this function as 
-      it queries for elements that exist in the loginbox and changes their properties
-      */
-      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
-			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
-
-
-
-
-      let loginBoxheader_login_username_field = document.querySelector("#username");
-      loginBoxheader_login_username_field.setAttribute("Placeholder","Github username");
-
-      let loginBoxheader_login_password_field = document.querySelector("#password");
-      loginBoxheader_login_password_field.style.visibility = "hidden";
-
-      let loginBoxButton = document.querySelector(".buttonLoginBox");
-      loginBoxButton.setAttribute("onClick", "loginGitOrUser_Check()");
-      show= 1;
-
-
-			// prepare replacement of onclick
-			loginBoxheader_login_close.removeAttribute("onClick"); // remove auto generated 
-			loginBoxheader_forgot_close.removeAttribute("onClick"); // remove auto generated
-			
-			/*
-      replace with a history back, this makes sure you dont get a blank page if you dont want to enter a password
-      and instead press the button to close down the loginBox
-      */
-			loginBoxheader_login_close.setAttribute("onClick", "history.back();"); 
-			loginBoxheader_forgot_close.setAttribute("onClick", "history.back();"); 
-
-
-      // ----
-      let FP = document.querySelector("#newpassword .forgotPw");
-      FP.setAttribute("onClick", "toggleloginnewpass(); resetForceLogin();");
-
-      // After the loginbox has been prepared/modified we display it to the user
-      showLoginPopup();
-      
-
-}
-
-function showNewGitLogin()
-{
-      let loginBoxheader_login_close = document.querySelector("#login div.loginBoxheader div.cursorPointer");
-			let loginBoxheader_forgot_close = document.querySelector("#newpassword div.loginBoxheader div.cursorPointer");
-      let loginBox = document.querySelector("#password");
-      let loginBoxParent = loginBox.closest("tr");
-
-
-      let loginBoxheader_login_username_field = document.querySelector("#username");
-      let loginBoxheader_login_password_field = document.querySelector("#password");
-      let loginBoxButton = document.querySelector(".buttonLoginBox");
-
-      loginBoxheader_login_password_field.style.visibility = "";
-
-
-      let forgotPwText = document.querySelector(".forgotPw");
-      
-
-     
-      let originalId = forgotPwText.getAttribute("id");
-      forgotPwText.setAttribute("id", "backtologin");
-      forgotPwText.closest("td").innerHTML += forgotPwText.closest("td").innerHTML;
-      forgotPwText = document.querySelector("#backtologin");
-      forgotPwText.setAttribute("id", originalId);
-
-
-      // create another loginbox and create a new id
-      originalId = loginBox.getAttribute("id");
-      loginBox.setAttribute("id", originalId+1);
-      loginBox.closest("tr").outerHTML += loginBox.closest("tr").innerHTML;
-      loginBox = document.querySelector("#"+originalId+1);
-      loginBox.setAttribute("id", originalId);
-
-
-      let backtologin = document.querySelector("#backtologin");
-      let login_first = document.querySelector("#"+originalId);
-      let login_second = document.querySelector("#"+originalId+1);
-
-      login_first.setAttribute("placeholder", "Create new password");
-      login_second.setAttribute("placeholder","Repeat new password");
-      backtologin.innerHTML = "Back to login";
-      backtologin.setAttribute("onclick","resetForceLogin()")
-
-
-      loginBoxheader_login_username_field.setAttribute("disabled","");
-     
-      
-
-      //TODO add onclick function for requesting user creation
-      loginBoxButton.setAttribute("onClick", "requestGitUserCreation()");
-      loginBoxButton.setAttribute("Value", "Create");
-      show= 4;
-
-
-}
-
-function resetForceLogin()
-{
-  let originalId = ("password");
-  let login_second = document.querySelector("#"+originalId+1);
-  if(login_second != null)
-    login_second.remove();
-
-
-  let forgotPwText = document.querySelector("#backtologin");
-  if(forgotPwText != null)
-    forgotPwText.remove();
-
-  let loginBoxButton = document.querySelector(".buttonLoginBox");
-  loginBoxButton.setAttribute("Value", "Login");
-
-  let loginBoxheader_login_username_field = document.querySelector("#username");
-  loginBoxheader_login_username_field.removeAttribute("disabled");
-
-
-  forceUserLogin();
-
-}
-
-{ // scope for local-storage of in-between function variables
-
-  let userExists_Git = null; // if it exists in the git data
-  let userExists_Lenasys = null; // if it exists in the lenasys data
-  let userStatus_Lenasys = null; // if it is a super/teache
- 
-  function checkIfGitUserExists(username, _callback) // checks if user exists in the git data and or the lenasys data
-{
-  userExists_Git = null; // reset back to null if we want to do a check for another user
-  userExists_Lenasys = null;
-  userStatus_Lenasys = null;
-
-  if(username == null || username == "" || !(typeof(username) === 'string'))
-  {
-    alert("invalid input of username");
-  }
-  else
-  {
-      AJAXService("checkForGitUser",{
-        userid: username,
-      }, "CONTRIBUTION_GIT_USER_CHECK");
-
-      // ##############################
-
-      AJAXService("checkForLenasysUser",{
-        userid: username,
-      }, "CONTRIBUTION_LENASYS_USER_CHECK");
-
-      function checkAsyncFlags() 
-      {
-        if(userExists_Git == null || userExists_Lenasys == null || userStatus_Lenasys == null) 
-        {
-           window.setTimeout(checkAsyncFlags, 100);
-        } else 
-        {
-          _callback(userExists_Git,userExists_Lenasys, userStatus_Lenasys);
-
-        }
-      }
-      checkAsyncFlags();
-
-        
-  }   
-
-  }
-
-  function requestGitUserCreation() // function to create the git user in the lenasys database, make sure requestedpasswordchange is pending(101)
-  {
-  
-    let pass1 = document.querySelector("#password").value;
-    let pass2 = document.querySelector("#password1").value;
-    let username = document.querySelector("#username").value;
-    
-    // TODO MAKE SURE PASSWORD IS ACTUALLY VALID BEFORE INSERT INTO DB
-    let regexVert = /[a-zA-Z0-9]+$/;
-
-    if(pass1 == pass2)
-    {
-      if(!(pass1 != null && pass1 != ""))
-      {
-        displayAlertText("#login #message", "enter a password <br />");
-
-        $("input#password").addClass("loginFail");
-		    $("input#password1").addClass("loginFail");
-			  setTimeout(function()
-          {
-		        $("input#password").removeClass("loginFail");
-            $("input#password1").removeClass("loginFail");
-			  	}, 2000);
-      }
-      else if(!(regexVert.test(pass1) && pass1.length < 64 && pass1.length>= 8)){
-        displayAlertText("#login #message", `invalid password, needs to be: <br />
-          *between 8 and 64 characters <br />
-          * A-Z, a-z  or numbers <br/>`);
-        $("input#password").addClass("loginFail");
-		    $("input#password1").addClass("loginFail");
-			  setTimeout(function()
-          {
-		        $("input#password").removeClass("loginFail");
-            $("input#password1").removeClass("loginFail");
-			  	}, 2000); 
-      }
-      else
-      {
-        AJAXService("requestGitUserCreation",{
-          userid: username,
-          userpass: pass1,
-        }, "CONTRIBUTION_LENASYS_USER_CREATION");
-      }
-    }
-    
-    else
-    {
-      displayAlertText("#login #message", "password doesnt match <br />");
-
-      $("input#password").addClass("loginFail");
-		    $("input#password1").addClass("loginFail");
-			  setTimeout(function()
-        {
-		      $("input#password").removeClass("loginFail");
-          $("input#password1").removeClass("loginFail");
-				}, 2000);
-    }
-    
-  }
-
-  function returned_lenasys_user_creation(data)
-  {
-
-    if(typeof data == "boolean") // check so that the type is correct
-    {
-      if(data == false) // didnt create user
-      {
-        displayAlertText("#login #message", "could not create user <br />");
-
-        $("input#username").addClass("loginFail");
-		    $("input#password").addClass("loginFail");
-			  setTimeout(function()
-        {
-		      $("input#username").removeClass("loginFail");
-          $("input#password").removeClass("loginFail");
-          resetForceLogin();
-				}, 2000);
-      }
-      else // created user
-      {
-        $("input#username").addClass("loginPass");
-		    $("input#password").addClass("loginPass");
-        $("input#password1").addClass("loginPass");
-			  setTimeout(function()
-        {
-		      $("input#username").removeClass("loginPass");
-          $("input#password").removeClass("loginPass");
-          $("input#password1").removeClass("loginPass");
-          resetForceLogin();
-				}, 2000);
-      }
-    }
-    else
-      alert("invalid data returned from git-data");
-
-  }
-
-
-
-
-  function returned_git_user_check(data)
-  {
-    if(typeof data == "boolean") // check so that the type is correct
-    {
-      userExists_Git = data;
-    }
-    else
-      alert("invalid data returned from git-data");
-
-    return userExists_Git;
-
-  }
-
-  function returned_lenasys_user_check(data)
-  {
-    userExists_Lenasys = Boolean(data['success']);
-    userStatus_Lenasys = data['status'];
-    return userExists_Lenasys;
-  }
-
-  function restoreAndLockLogin()
-  {
-
-    let forgotPwText = document.querySelector(".forgotPw");
-      
-    let originalId = forgotPwText.getAttribute("id");
-    forgotPwText.setAttribute("id", "backtologin");
-    forgotPwText.closest("td").innerHTML += forgotPwText.closest("td").innerHTML;
-    forgotPwText = document.querySelector("#backtologin");
-    forgotPwText.setAttribute("id", originalId);
-
-    backtologin.innerHTML = "Back to login";
-    backtologin.setAttribute("onclick","resetForceLogin()")
-    show= 2;
-
-
-
-    let loginBoxheader_login_username_field = document.querySelector("#username");
-    loginBoxheader_login_username_field.setAttribute("Placeholder","Username");
-    loginBoxheader_login_username_field.setAttribute("disabled","");
-
-
-    let loginBoxheader_login_password_field = document.querySelector("#password");
-    loginBoxheader_login_password_field.style.visibility = "";
-
-    let loginBoxButton = document.querySelector(".buttonLoginBox");
-    loginBoxButton.setAttribute("onClick", "git_processLogin()");
-    show=3;
-  }
-
-
-
-  function loginGitOrUser_Check()
-  {
-    let loginBoxheader_login_username_field = document.querySelector("#username");
-
-
-
-    let username = loginBoxheader_login_username_field.value;
-    if(username === "") // we do a simple check if the string is empty to not call backend if nothing is entered.
-    {
-      console.log("nothing entered");
-    } 
-    else
-    {
-
-      checkIfGitUserExists(username ,function(_onGit, _onLena, _userStatus) 
-        {
-          
-
-          /*
-            There exists a number of combinations that we need to handle¨
-
-            onGit | onLena
-            --------------
-              T   |  T    -> Log in with lena
-              F   |  T    -> Log in with lena
-              T   |  F    -> Create new user
-              F   |  F    -> User does not exist
-          */
-
-          if(_onLena) // log in with lena
-          {
-            if(_userStatus == "super" || _userStatus == "student") // if youre a teacher or youre a student with a created git account on the git_user table
-            { 
-              restoreAndLockLogin();
-            }
-            else // youre on solely lena but not a teacher/super
-            {
-              displayAlertText("#login #message", "User does not have permission <br />");
-
-              $("input#username").addClass("loginFail");
-		      	  $("input#password").addClass("loginFail");
-			        setTimeout(function()
-              {
-		      	    $("input#username").removeClass("loginFail");
-                $("input#password").removeClass("loginFail");
-                displayAlertText("#login #message", "Try again");
-					    }, 2000);
-            }
-          }
-          if(!_onLena && _onGit) // onlena is false, ongit true, create new user
-          {
-            showNewGitLogin();
-
-          }
-          if(!_onLena && !_onGit)
-          { // default to user does not exist if nothing else
-            displayAlertText("#login #message", "User does not exist <br />");
-
-            $("input#username").addClass("loginFail");
-		      	$("input#password").addClass("loginFail");
-			      setTimeout(function()
-            {
-		      	  $("input#username").removeClass("loginFail");
-              $("input#password").removeClass("loginFail");
-              displayAlertText("#login #message", "Try again");
-					  }, 2000);
-
-          }
-        
-
-
-        });    
-
-
-     
-
-
-
-    }
-  }
-}
-
-function git_processLogin()
-  {
-    let git_username = $("#login #username").val();
-    let git_password = $("#login #password").val();
-
-
-    AJAXService("requestContributionUserLogin",{
-      username: git_username,
-      userpass: git_password,
-    }, "CONTRIBUTION_GIT_USER_LOGIN");
-
-
-  }
-
-function git_logout()
-{
-  
-  let git_username = null; // nothing entered will logout
-  let git_password = null;
-
-  AJAXService("requestContributionUserLogin",{
-    username: git_username,
-    userpass: git_password,
-  }, "CONTRIBUTION_GIT_USER_LOGIN");
-
-}
-
-function returned_git_user_login(data)
-{
-  if(data)
-    window.location.reload(true);  // TODO should I just reload the page here perhaps? 
-  else
-  {
-    displayAlertText("#login #message", "Invalid password <br />");
-
-    $("input#password").addClass("loginFail");
-    setTimeout(function()
-    {
-      $("input#password").removeClass("loginFail");
-      displayAlertText("#login #message", "Try again");
-    }, 2000);
-  }
-}
-
- //Will handle enter key pressed when loginbox is showing
- function loginEventHandler(event){
-  if(event.keyCode == "0x0D"){
-    if(show ==1){
-     loginGitOrUser_Check();
-    }
-    else if(show==2){
-      resetForceLogin();
-    }
-    else if(show==3){
-      git_processLogin();
-    }
-    else if(show==4){
-      requestGitUserCreation();
-
-    }
-  }
-}
 console.error

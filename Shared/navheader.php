@@ -47,7 +47,7 @@
 			//---------------------------------------------------------------------
 
 			if($noup!='NONE') {
-				echo "<td class='navButt' id='back' title='Back' onclick='navigateToUrl(document.getElementById(\"upIcon\").href)'>";
+				echo "<td class='navButt' id='back' title='Back'>";
 			}
 
 			if($noup=='CONTRIBUTION'){
@@ -315,7 +315,12 @@
 
 			if(checklogin()) {
 				echo "<td class='navName' id='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
-				echo "<td id='loginbutton' class='loggedin' onclick='showLogoutPopup();'><div class='loginbutton-nav' tabindex='0'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></div></td>";
+        }
+				if($noup=='CONTRIBUTION'){
+					echo "<td id='loginbutton' class='loggedin' onclick='git_logout();'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
+				}else{
+					echo "<td id='loginbutton' class='loggedin' onclick='showLogoutPopup();'><div class='loginbutton-nav' tabindex='0'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></div></td>";
+				}
 			}else{
 				//---  original --- echo "<td class='navName' id='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
 				echo "<td class='navName' id='navName'><label id='userName' title='Login to view your profile'></label></td>";
