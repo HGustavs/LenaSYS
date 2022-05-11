@@ -336,8 +336,8 @@
             </fieldset>
             <fieldset class='options-fieldset options-section' style='position: absolute; top: 33%;'>
                 <legend>Export</legend>
-                <button class="saveButton" onclick="saveDiagram();">Save</button><br><br>
-                <button class="saveButton" onclick="exportDiagram();">Export</button>
+                <button class="saveButton" onclick="exportWithHistory();">With history</button><br><br>
+                <button class="saveButton" onclick="exportWithoutHistory();">Without history</button>
             </fieldset>
             <fieldset class='options-fieldset options-section' style="position: absolute; top: 48%; margin-top: 2%;">
                 <legend>Import</legend>
