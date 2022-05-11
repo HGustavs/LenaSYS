@@ -35,6 +35,7 @@ $enddate=getOP('enddate');
 $makeactive=getOP('makeactive');
 $motd=getOP('motd');
 $readonly=getOP('readonly');
+$LastCourseCreated;
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
@@ -69,9 +70,20 @@ if(checklogin()){
 	$ha = $isSuperUserVar;
 
 	if($ha){
+
+
 		// The code for modification using sessions
 		if(strcmp($opt,"DEL")===0){
 
+		}else if(strcmp($opt,"LastCourseCreated")===0){
+			// Gets username based on uid, USED FOR LOGGING
+			$query = $pdo->prepare( "SELECT cid FROM course ORDER BY id DESC LIMIT 1");
+			$query-> execute();
+
+			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+			$row = $query->fetch(PDO::FETCH_ASSOC);
+			$LastCourseCreated = $row['cid'];
+			
 		}else if(strcmp($opt,"NEW")===0){
 			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES(:coursecode,:coursename,0,:usrid, 7.5)");
 
@@ -471,6 +483,8 @@ if(checklogin()){
 			$debug="Error updating entries\n".$error[2];
 		}
 	}
+
+
 	}
 }
 //------------------------------------------------------------------------------------------------
