@@ -269,7 +269,6 @@
             </div>
         </fieldset>   
         <fieldset>
-        <fieldset>
             <legend>Include</legend>
             <div id="erTableToggle" class="diagramIcons" onclick="toggleErTable()">
                 <img src="../Shared/icons/lessThen.jpg"/>
