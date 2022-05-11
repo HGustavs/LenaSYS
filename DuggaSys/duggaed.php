@@ -196,7 +196,7 @@ session_start();
                       <div id="duggaNotes">  <!-- CHANGE TEXT--> 
                       <fieldset style="width:90%">
                         <legend>Note</legend>
-                        <textarea id='notes' rows="5" onkeyup="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"></textarea>  <!-- CHANGE TEXT--> 
+                        <textarea id="notes" value="test" rows="6"></textarea>  <!-- CHANGE TEXT--> 
                       </fieldset>
                     </div>
                   </div>

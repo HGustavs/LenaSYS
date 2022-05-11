@@ -466,25 +466,32 @@ function removeExtraSubmissionRows() {
 
 function createJSONString(formData) {
 	var submission_types = [];
-	var type, fieldname, instruction, diagramFile;
+	var type, fieldname, instruction, diagramFile ,notesText;
 
 	formData.forEach(element => {
 		if (element.name == "s_type") type = element;
 		if (element.name == "s_fieldname") fieldname = element;
 		if (element.name == "s_instruction") instruction = element;
+		
 
 		if (type && fieldname && instruction) {
 			submission_types.push({
 				"type":type.value,
 				"fieldname":fieldname.value,
-				"instruction":instruction.value
+				"instruction":instruction.value,
+				
 			});
 
 			type = undefined;
 			fieldname = undefined;
 			instruction = undefined;
+			
 		}
 	});
+	test = document.getElementById("notes").value();
+	if(test == null){
+		test = "hej";
+	}
 
 
 	return JSON.stringify({
@@ -495,6 +502,7 @@ function createJSONString(formData) {
 		"diagram_File":$("#file option:selected").val(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
+		"notes":document.getElementById("#notes").value(),
 		"submissions":submission_types,
 		"errorActive":document.getElementById("errorActive").checked
 	});
@@ -530,6 +538,9 @@ function createJSONFormData(){
       }
       else if(result == "extraparam"){
         document.getElementById('extraparam').value = obj[result];
+      }
+	  else if(result == "notes"){
+        document.getElementById('notes').value = obj[result];
       }
 	  else if(result =="file"){
 		document.getElementById('file').value = "hejsan";
@@ -826,7 +837,7 @@ function renderCell(col, celldata, cellid) {
 			break;
 
 		case "note":		// DUGGA-TABLE - Note column
-			retString = `<span class='noteText'>test</span>`;
+			retString = `<span class='noteText'>${celldata}</span>`;
 			break;
 
 		case "param":		// DUGGA-TABLE - Parameter column
