@@ -4735,7 +4735,7 @@ rect[class*="activitymarker"]:hover {
 }
 #searchBar,
 #testSearchContainer {
-  padding-left: 0px;
+  padding-left: 15px;
   padding-right: 5px;
 }
 
