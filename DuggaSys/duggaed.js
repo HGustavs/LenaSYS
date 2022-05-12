@@ -221,6 +221,8 @@ function newVariant() {
 	document.getElementById('gFilelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
 	document.getElementById('extraparam').placeholder = 'Extra dugga parameters in valid JSON';
+	document.getElementById('notes').value = '';
+	document.getElementById('notes').placeholder = 'Notes';
 	document.getElementById('variantparameterText').value = '';
 	document.getElementById('variantparameterText').placeholder = 'Undefined JSON parameter';
 	document.getElementById('variantanswerText').value = '';
@@ -292,6 +294,9 @@ function selectVariant(vid, el) {
   				else if(result == "extraparam"){
   					document.getElementById('extraparam').value = obj[result];
   				}
+				else if(result == "notes_Text"){
+					document.getElementById('notes').value = obj[result];
+				}
 				else if(result =="errorActive"){
 					document.getElementById("errorActive").checked = obj[result];
 				}else if(result == "diagram_File"){
@@ -303,6 +308,10 @@ function selectVariant(vid, el) {
 			document.getElementById('ER').checked = diagramType.ER;
 			document.getElementById('UML').checked = diagramType.UML;
 		}//<-- UML functionality end
+		var notesText = obj.notes_Text;
+		if(notesText){
+			document.getElementById('notes').value;
+		}
         var submissionTypes = obj.submissions;
         if (submissionTypes) {
   			  document.getElementById('submissionType0').value = submissionTypes[0].type;
@@ -315,6 +324,7 @@ function selectVariant(vid, el) {
   				  document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
   				  document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
   				  document.getElementById('variantparameterText').value = target_variant['param'];
+					
   			 }
   		  }
       } catch (e) {
@@ -327,6 +337,8 @@ function selectVariant(vid, el) {
 				document.getElementById('gType').value = "";
 				document.getElementById('gFilelink').value = "";
 				document.getElementById('extraparam').value = "";
+  				document.getElementById('notes').value = "";
+  				
 		}
 
   var disabled = (target_variant['disabled']);
@@ -498,7 +510,7 @@ function createJSONString(formData) {
 		"diagram_File":$("#file option:selected").val(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
-		"notes":document.getElementById("notes").value,
+		"notes_Text":document.getElementById("notes").value,
 		"submissions":submission_types,
 		"errorActive":document.getElementById("errorActive").checked
 	});
@@ -534,6 +546,9 @@ function createJSONFormData(){
       }
       else if(result == "extraparam"){
         document.getElementById('extraparam').value = obj[result];
+      }
+	  else if(result == "notes_Text"){
+        document.getElementById('notes').value = obj[result];
       }
 	 
 	  else if(result =="file"){
@@ -751,7 +766,7 @@ function renderVariant(clickedElement) {
 				tblbody: globalData['entries'][clickedElement].variants,
 				tblfoot: {}
 		}
-		var colOrderVariant=["vid","note","param","modified","disabled","arrowVariant","cogwheelVariant","trashcanVariant"];
+		var colOrderVariant=["vid","notes","param","modified","disabled","arrowVariant","cogwheelVariant","trashcanVariant"];
 		variantTable = new SortableTable({
 				data:tabledata,
 				tableElementId:"variant",
@@ -830,7 +845,8 @@ function renderCell(col, celldata, cellid) {
 			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
 			break;
 
-		case "note":		// DUGGA-TABLE - Note column
+		case "notes":
+			//object = JSON.parse(celldata);		// DUGGA-TABLE - Note column
 			retString = `<span class='noteText'>${celldata}</span>`;
 			break;
 
