@@ -134,8 +134,12 @@
 				<input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
 				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
 				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; margin-right: 55px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("showItems");'>
-				<input id='sectionBurger'  type='image' src='../Shared/icons/black-burger.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Show hidden items' onclick=''>
-				
+				<input id='sectionBurger'  type='image' src='../Shared/icons/black-burger.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Show hidden items' onclick='sectionBurgerChange();'>
+				<div id='sectionBurgerBox' style='display: none;'>
+				<input id='tabElement2'  type='button' value="&#8633;" style="padding-bottom: 5px" class='submit-button-newitem' title='Tab items2' onclick='confirmBox("openTabConfirmBox");'>
+				<input id='hideElement2'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-bottom:5px; opacity:0.7;" class='submit-button-newitem' title='Hide marked items2' onclick='confirmBox("openHideConfirmBox");'>
+				<input id='showElements2'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-bottom:5px;opacity:0.7;" class='submit-button-newitem' title='Show hidden items2' onclick='confirmBox("showItems");'>
+				</div>
 			</div>
 		
 			<!-- end hide button -->
