@@ -17,7 +17,7 @@
             width:100%;
             display:inline-block;
             position:relative;
-            padding:3px 10px;
+            padding:3px 26px;
             box-sizing: border-box;
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
@@ -40,19 +40,21 @@
             width: 300px;
             height: 800px;
             overflow: auto;
-            margin: 0px;
+            margin-left: 0px;
             border: 1px solid #ccc;
         }
         
         #close_open {
             width: 23px;
             position: absolute;
-            top: 520px;
-            left: 272px;
+            top: 420px;
+            /*left: 274px;*/
             border-top: 14px solid transparent;
             border-bottom: 14px solid transparent;
             border-right: 14px solid #d4d2d2;
             margin-left:10px;
+            transform: scaleX(-1);
+            right:-56px;
         }
         
         #close_open:hover {
@@ -65,35 +67,67 @@
             flex: 1;
             display: flex;
             justify-content: space-around;
-            margin-left:10px;
+            margin-left:0px;
         }
+
+        #close_open_border {
+            position: absolute;
+            background-color: #ccc;
+            width:20px;
+            height:800px;
+            /*top:180px;*/
+           /* left: 321px;*/
+        }
+
+       #close_open_border:hover {
+            cursor: pointer;
+        }
+
+        #instructions_arrow_border {
+            position: absolute;
+            top:180px;
+        }
+
     </style>
     <script>
         $(document).ready(function() {
-            $("#close_open").click(function() {
+            $('#instructions_arrow_border').click(function() {
                 if ($("#pvalue").val() == "0") {
-                    // hides description when open
-                    $("#assignment_discrb").css('visibility', 'hidden');
+                    // closed mode
+                    $("#assignment_discrb").css('display', 'none');
                     $("#container__left").animate({
                         width: "10px"
                     }, "slow");
-                    $("#close_open").css({
+                    $("#instructions_arrow_border").css({
                         'display': 'fixed',
-                        'left': '7px',
-                        'transform': 'scaleX(-1)',
-                        'transition': '0.55s ease-in-out'
+                        'left': '20px',
+                        'transition': '0.55s ease-in-out',
+                    });
+                    $("#diagram-iframe").css({
+                        'margin-left':'10px'
+                    });
+                    $(".canvas_right").css({
+                        'margin-left':'10px'
                     });
                     $("#pvalue").val("1");
                 } else {
-                    // opens description when closed
+                    // open mode
                     $("#container__left").animate({
                         width: "300px"
                     }, "slow");
-                    $("#assignment_discrb").css('visibility', 'visible');
-                    $("#close_open").css({
+
+                    $("#assignment_discrb").css('display', 'block');
+
+                    $("#instructions_arrow_border").css({
+                        'position':'absolute',
                         'display': 'block',
-                        'transform': 'scaleX(1)',
-                        'left': '272px'
+                        //'left': '276px'
+                    });
+                    $("#diagram-iframe").css({
+                        'margin-left':'0px'
+                    });
+                    $(".canvas_right").css({
+                        'margin-left':'0px'
                     });
                     $("#pvalue").val("0");
                 }
@@ -133,7 +167,7 @@
             <input type="hidden" id="pvalue" value="0" />
             <div class="assignment_left" id="container__left" style="overflow: auto;">
                 <div id="container_header"><h3>Instructions</h3></div>
-                <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0" style=" visibility: visible; color: rgb(0, 0, 0); padding: 4px; ">
+                <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0" style=" visibility: visible; color: rgb(0, 0, 0); padding: 12px; ">
                     <h2 style="margin-left: 14px;">Modellering</h2>
                     <p style="margin-left: 14px;">Modellera nedanstående uppgifter i notationerna ER och UML.</p>
                     <ol type="1">
@@ -151,14 +185,15 @@
                         </li><br>
                     </ol>
                 </div>
-                <div id="close_open">
-
+                <div id="instructions_arrow_border">
+                    <div id="close_open_border"></div>
+                    <div id="close_open"></div>
                 </div>
             </div>
             <div id="container" class="canvas_right">
 
 
-                <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;margin-left: 10px;" src="
+                <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;" src="
                                     ./diagram.php" title="Diagram"></iframe>
 
 
