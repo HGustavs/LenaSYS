@@ -95,15 +95,15 @@
 
 			// for fetching file content
 			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK"){
-				if(file_exists("../courses/global/"."$fileName"))						$instructions = file_get_contents("../courses/global/"."$fileName");
-				else if(file_exists("../courses/".$cid."/"."$fileName"))				$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))	$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+				if(file_exists("../courses/global/"."$fileName"))						$instructions = file_get_contents(__DIR__."../courses/global/"."$fileName");
+				else if(file_exists("../courses/".$cid."/"."$fileName"))				$instructions = file_get_contents(__DIR__."../courses/".$cid."/"."$fileName");
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))	$instructions = file_get_contents(__DIR__."../courses/".$cid."/"."$vers"."/"."$fileName");
 			}
 
 			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $fileName != "UNK"){
-				if(file_exists("../courses/global/"."$gFileName"))						$information = file_get_contents("../courses/global/"."$gFileName");
-				else if(file_exists("../courses/".$cid."/"."$gFileName"))				$information = file_get_contents("../courses/".$cid."/"."$gFileName");
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))	$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
+				if(file_exists("../courses/global/"."$gFileName"))						$information = file_get_contents(__DIR__."../courses/global/"."$gFileName");
+				else if(file_exists("../courses/".$cid."/"."$gFileName"))				$information = file_get_contents(__DIR__."../courses/".$cid."/"."$gFileName");
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))	$information = file_get_contents(__DIR__."../courses/".$cid."/"."$vers"."/"."$gFileName");
 			}
 
 			$pattern = '/\s*/m';
