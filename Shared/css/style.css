@@ -5502,6 +5502,10 @@ only screen and (max-device-width: 530px) {
     /*top: 8%;
     left: 10%;*/
   }
+  
+  #searchNavButt{
+    display: none;
+  }
 
   #cookiemsg {
     background-color: var(--color-accent);
