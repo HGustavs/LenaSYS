@@ -5689,8 +5689,8 @@ function sortElementAssociations(element)
  
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
 
-     // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
-     if (toElement.kind == "EREntity"){
+    // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
+    if (toElement.kind == "EREntity"){
         var tempElement = toElement;
         toElement = fromElement;
         fromElement = tempElement;
@@ -5698,6 +5698,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
     if (fromElement.kind == toElement.kind && fromElement.id == toElement.id) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
+        return;
+    }
+
+    if(fromElement.type != toElement.type){
+        displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements.`);
         return;
     }
 
