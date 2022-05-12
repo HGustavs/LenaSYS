@@ -10,6 +10,8 @@ var versions;
 var entries;
 var motd;
 var readonly;
+var LastCourseCreated;
+var lastCC = false; 
 var updateCourseName = false;
 
 $(document).ready(function(){
@@ -77,6 +79,8 @@ function createNewCourse()
 	var coursecode = $("#ncoursecode").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
+
+    localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
 }
 
@@ -402,6 +406,12 @@ function returnedCourse(data)
 {
 	versions = data['versions'];
 	entries = data['entries'];
+	if(data['LastCourseCreated'][0] != undefined){
+		LastCourseCreated = data['LastCourseCreated'][0]['LastCourseCreatedId'];
+		localStorage.setItem('lastCourseCreatedId', LastCourseCreated);
+
+	}
+
 	var uname=document.getElementById('userName').innerHTML;
 
 	// Fill section list with information
@@ -717,3 +727,30 @@ document.addEventListener('keydown', function(event) {
 		}
 	}
 });
+
+//Run after ajax is completed
+$( document ).ajaxComplete(function() {
+    localStorageCourse();
+});
+
+function localStorageCourse(){
+	// check if lastcourse created is true to add glow to the relative text 
+    if(localStorage.getItem("lastCC")){
+        var StorageCourseId = localStorage.getItem("lastCourseCreatedId");
+        glowNewCourse(StorageCourseId);
+        localStorage.setItem('lastCourseCreatedId', " ");
+        localStorage.setItem('lastCC', false);
+    }
+
+	// check if updateCourseName is true to add glow to the relative text 
+	if(localStorage.getItem("updateCourseName")){
+        var StorageCourseId= localStorage.getItem("courseid");
+        updateCourseColor(StorageCourseId);
+        localStorage.setItem('courseid', " ");
+        localStorage.setItem('updateCourseName', false);
+    }
+}
+
+function glowNewCourse(courseid){
+    document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
+}
