@@ -30,7 +30,6 @@ How to use
 
 *********************************************************************************/
 
-// ↓ retData (3)
 var retData; // Data returned from setup
 var tokens = []; // Array to hold the tokens.
 var allBlocks = []; // Array holding collapsible tokens
@@ -92,10 +91,8 @@ function fillBurger() {
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
 
-// ↓ data is (3)
 function returned(data) 
 {
-	// ↓ retData (3) used in function Skip (1)
 	retData = data;
 	sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
 	// User can choose template if no template has been chosen and the user has write access.
@@ -126,6 +123,7 @@ function returned(data)
 	var j = 0;
 	var posAfter = currentPos+1;
 
+	// Holds all items shown on forward button press
 	retData['after'] = [];
 	for(i = currentPos; i <= sectionData['entries'].length-1; i++){
 		if(j < 5){
@@ -137,12 +135,12 @@ function returned(data)
 				//Not ideal to have this here but this is needed to not get an arrayOutOfBounds Error.
 				break;
 			}
-			if(sectionData['entries'][posAfter + j]['kind'] == 1){
-				posAfter++;
-				continue;
-			}
 
 			retData['after'].push(sectionData['entries'][posAfter + j]);
+			if(sectionData['entries'][posAfter + j]['kind'] == 1){
+				// Text after title in list
+				retData['after'][j][2] = "	Below ⬇";
+			}
 			retData['after'][j][1] = sectionData['entries'][posAfter + j]['entryname'];
 			retData['after'][j][0] = (String)(sectionData['entries'][posAfter + j]['link']);
 
@@ -162,6 +160,8 @@ function returned(data)
 	//Fixes the five code examples before the current one in retData to match the order that was assigned in Section.
 	j = 0;
 	var posBefore = currentPos-1;
+
+	// Holds all items shown on forward button press
 	retData['before'] = [];
 	for(i = currentPos; i > 0; i--){
 		if(j < 5){
@@ -169,11 +169,6 @@ function returned(data)
 				retData['before'] = [];
 				break;
 			}
-			if(sectionData['entries'][posBefore - j]['kind']== 1){
-				posBefore--;
-				continue;
-			}
-
 			retData['before'].push(sectionData['entries'][posBefore - j]);
 			retData['before'][j][1] = sectionData['entries'][posBefore - j]['entryname'];
 			retData['before'][j][0] = (String)(sectionData['entries'][posBefore - j]['link']);
@@ -184,6 +179,10 @@ function returned(data)
 					break;
 				}
 			}
+			if(sectionData['entries'][posBefore - j]['kind']== 1){
+				// Text after title in list
+				retData['before'][j][2] = "		Above ⬆";
+			}			
 			retData['exampleno'] = posBefore;
 			j++;
 		}else{
@@ -1205,15 +1204,18 @@ function popupDocumentation(id, lang) {
 
 var dmd;
 
-// ↓ found function through inspector - started from here (1)
 function Skip(skipkind) 
 {
 	if (skipkind == "bd") {
 		dmd = 1;
 	} else if (skipkind == "bu") {
 		if (retData['before'].length != 0 && dmd == 1) {
-			// ↓ function created in dugga.js (2), retData (3)
-			navigateExample(retData['before'][0][0]);
+			// skip title examples when skipping through examples
+			if(retData['before'][0]['kind'] == 1) {
+				navigateExample(retData['before'][1][0]);
+			} else {
+				navigateExample(retData['before'][0][0]);
+			}
 		}
 		dmd = 0;
 	}
@@ -1221,7 +1223,12 @@ function Skip(skipkind)
 		dmd = 2;
 	} else if (skipkind == "fu") {
 		if (retData['after'].length != 0 && dmd == 2) {
-			navigateExample(retData['after'][0][0]);
+			// skip title examples when skipping through examples
+			if(retData['after'][0]['kind'] == 1) {
+				navigateExample(retData['after'][1][0]);
+			} else {
+				navigateExample(retData['after'][0][0]);
+			}
 		}
 		dmd = 0;
 	}
@@ -1240,19 +1247,14 @@ function Skip(skipkind)
 //				Used by Skip in codeviewer.js
 //----------------------------------------------------------------------------------
 
-// ↓ relevant function (4), found when scrolling through doc
 function execSkip() {
 	str = "";
 	
 	//Holding backwards button
 	if (dmd == 1) {
-
 		for (i = 0; i < retData['before'].length; i++) {
-			// ↓ str holds all shown examples (5), section titles should be added here
-			// check where the titles are fetched from (5) ?
 			str += "<span id='F" + retData['before'][i][1] + "' onclick='navigateExample(\"" + retData['before'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['before'][i][1] + ":" + retData['before'][i][2] + "</span>";		
 		}
-		// ↓ (4)
 		document.getElementById("backwdropc").innerHTML = str;
 		document.getElementById("backwdrop").style.display = "block";
 		dmd = 0;
@@ -1264,7 +1266,6 @@ function execSkip() {
 		for (i = 0; i < retData['after'].length; i++) {
 			str += "<span id='F" + retData['after'][i][1] + "' onclick='navigateExample(\"" + retData['after'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['after'][i][1] + ":" + retData['after'][i][2] + "</span>";
 		}
-		// ↓ (4)
 		document.getElementById("forwdropc").innerHTML = str;
 		document.getElementById("forwdrop").style.display = "block";
 		dmd = 0;
