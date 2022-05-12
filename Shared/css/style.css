@@ -8841,3 +8841,12 @@ border: none !important;
   background-color: var(--color-sectioned-table-hi);
 }
 /* END */
+
+/* Style for "Input elements" */
+select{
+  background-color: white;
+  color: black;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+/* END */
