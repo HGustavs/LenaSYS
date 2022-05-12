@@ -305,7 +305,7 @@
 					echo 	"<input id='tooltipsearchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
 					echo 	"</div><div>";
 					echo "</td>";
-					echo "<td class='navButt'>";
+					echo "<td class='navButt' id='searchNavButt'>";
 
 					if ($requestedService == "fileed.php")
 						echo   "<button id='searchbutton' class='switchContent' type='button'>";
