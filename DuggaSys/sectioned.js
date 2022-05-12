@@ -22,6 +22,7 @@ let width = screen.width;
 var delArr = [];
 var delTimer;
 var lid;
+var collectedLid = [];
 
 /*navburger*/
 function navBurgerChange(operation = 'click') {
@@ -735,14 +736,13 @@ function newItem(itemtitle) {
   element.classList.toggle("createAlertToggle");
   // Set text for the alert when create a New Item
   document.getElementById("createAlert").innerHTML = itemtitle + " has been created!";
+  // Here we have to wait 1 tenth of a second so that the ajax service completes.
   setTimeout(function(){
-    console.log(adamTest);
-    adamTest.sort(function(a, b) {
+    collectedLid.sort(function(a, b) {
     return b - a;
     });
-    document.getElementById('I'+adamTest[0]).style.background='blue';
-    console.log(adamTest);
-  },500);
+    document.getElementById('I'+collectedLid[0]).classList.add("highlightChange");
+  },100);
   // Duration time for the alert before remove
   setTimeout(function(){
     $("#createAlert").removeClass("createAlertToggle");
@@ -895,7 +895,7 @@ function duggaRowClick(rowElement){
     }
   }
 }
-var adamTest = [];
+
 function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
@@ -1123,9 +1123,8 @@ function returnedSection(data) {
             str += addColorsToTabSections(itemKind, itemVisible, "E");
           }
         }
-
-        adamTest.push(item['lid']);
-      
+        // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
+        collectedLid.push(item['lid']);
         // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
         if (itemKind === 0) {
           // Styling for header row
