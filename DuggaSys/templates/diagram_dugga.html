@@ -10,10 +10,11 @@
             height: 50.1rem;
             width: 100%;
             justify-content: space-between;
+            position: relative;
         }
 
         #container_header{
-            background-color: #ccc;
+            background-color: #d4d2d2;
             width:100%;
             display:inline-block;
             position:relative;
@@ -47,7 +48,7 @@
         #close_open {
             width: 23px;
             position: absolute;
-            top: 420px;
+            top: 220px;
             /*left: 274px;*/
             border-top: 14px solid transparent;
             border-bottom: 14px solid transparent;
@@ -61,6 +62,7 @@
             border-top: 14px solid transparent;
             border-bottom: 14px solid transparent;
             border-right: 14px solid #8e8e8e;
+            cursor: pointer;
         }
         
         .canvas_right {
@@ -71,11 +73,11 @@
         }
 
         #close_open_border {
-            position: absolute;
-            background-color: #ccc;
+           position: absolute;
+            background-color: #d4d2d2;
             width:20px;
-            height:800px;
-            /*top:180px;*/
+            height:803px;
+            top:-180px;
            /* left: 321px;*/
         }
 
@@ -98,16 +100,12 @@
                     $("#container__left").animate({
                         width: "10px"
                     }, "slow");
-                    $("#instructions_arrow_border").css({
-                        'display': 'fixed',
-                        'left': '20px',
-                        'transition': '0.55s ease-in-out',
-                    });
+
                     $("#diagram-iframe").css({
-                        'margin-left':'10px'
+                        'margin-left':'12px'
                     });
                     $(".canvas_right").css({
-                        'margin-left':'10px'
+                        'margin-left':'12px'
                     });
                     $("#pvalue").val("1");
                 } else {
@@ -119,7 +117,7 @@
                     $("#assignment_discrb").css('display', 'block');
 
                     $("#instructions_arrow_border").css({
-                        'position':'absolute',
+                        //'position':'absolute',
                         'display': 'block',
                         //'left': '276px'
                     });
