@@ -12,6 +12,7 @@ var motd;
 var readonly;
 var LastCourseCreated;
 var lastCC = false; 
+var updateCourseName = false;
 
 $(document).ready(function(){
     $('#startdate').datepicker({
@@ -34,12 +35,18 @@ function updateCourse()
 	var cid = $("#cid").val();
 	var coursecode = $("#coursecode").val();
 	var visib = $("#visib").val();
+	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
 
 	$("#overlay").css("display", "none");
-
+	
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
+	localStorage.setItem('courseid', courseid);
+	localStorage.setItem('updateCourseName', true);
+}
+function updateCourseColor(courseid){
+	document.getElementById(courseid).firstChild.classList.add("highlightChange");
 }
 
 function closeEditCourse()
@@ -47,7 +54,7 @@ function closeEditCourse()
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$("#editCourse").css("display", "none");
-
+	
 	//resets all inputs
 	resetinputs();
 }
@@ -107,7 +114,7 @@ function createVersion()
 	var cid = $("#cid").val();
 
 	AJAXService("NEWVRS", {	cid : cid, versid : versid, versname : versname	}, "COURSE");
-
+	
 	//resets all inputs
 	resetinputs();
 }
@@ -135,7 +142,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 
 	//Give data attribute to course code input to check if input value is same as actual code for validation
 	$("#coursecode").attr("data-origincode", coursecode);
-
+	
 	// Set Visibiliy
 	str = "";
 

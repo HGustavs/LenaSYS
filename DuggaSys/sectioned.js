@@ -1328,7 +1328,7 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        if (itemKind != 4){ // dont create buttons for moments only for specific assignments
+        if (itemKind != 4 && itemKind != 1 && itemKind != 0){ // dont create buttons for moments only for specific assignments
           //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
 
