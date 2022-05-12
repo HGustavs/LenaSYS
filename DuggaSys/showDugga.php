@@ -65,8 +65,6 @@
 	$json = "UNK";
 	$fileName = "UNK";
 	$gFileName = "UNK";
-	$fileType = "";
-	$gFileType = "";
 	$instructions = "";
 	$information = "";
 	
@@ -83,55 +81,37 @@
 		$splicedFileName = substr($variantParams, strpos($variantParams, "diagram File&quot;:") + 25, ($end - $start));*/
 		$variantParams = str_replace('&quot;','"',$variantParams);
 		$parameterArray = json_decode($variantParams,true);
-
-		//exception handling for default variants
-		if(!empty($parameterArray) && !isset($parameterArray["variant"])){
-
-			if(isset($parameterArray["diagram_File"])){
-				$splicedFileName=$parameterArray["diagram_File"];
-			}
-			if(isset($parameterArray["filelink"])){
-				$fileName=$parameterArray["filelink"];
-			}
-			if(isset($parameterArray["type"])){
-				$gFileType=$parameterArray["Type"];
-			}
-			if(isset($parameterArray["gFilelink"])){
-				$gFileName=$parameterArray["gFilelink"];
-			}
-			if(isset($parameterArray["gType"])){
-				$gFileType=$parameterArray["gType"];
-			}
-			
+		if(!empty($parameterArray)){
+			$splicedFileName=$parameterArray["diagram_File"];
+			$fileName=$parameterArray["filelink"];
+			$fileType=$parameterArray["type"];
+			$gFileName=$parameterArray["gFilelink"];
+			$gFileType=$parameterArray["gType"];
 			// for fetching file content
-			if(isset($fileName)){
-				if(file_exists("../courses/global/"."$fileName"))
-				{
-					$instructions = file_get_contents("../courses/global/"."$fileName");
-				}
-				else if(file_exists("../courses/".$cid."/"."$fileName"))
-				{
-					$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-				}
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
-				{
-					$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
-				}
+			if(file_exists("../courses/global/"."$fileName"))
+			{
+				$instructions = file_get_contents("../courses/global/"."$fileName");
+			}
+			else if(file_exists("../courses/".$cid."/"."$fileName"))
+			{
+				$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+			}
+			else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
+			{
+				$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
 			}
 
-			if(isset($gFileName)){
-				if(file_exists("../courses/global/"."$gFileName"))
-				{
-					$information = file_get_contents("../courses/global/"."$gFileName");
-				}
-				else if(file_exists("../courses/".$cid."/"."$gFileName"))
-				{
-					$information = file_get_contents("../courses/".$cid."/"."$gFileName");
-				}
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))
-				{
-					$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
-				}
+			if(file_exists("../courses/global/"."$gFileName"))
+			{
+				$information = file_get_contents("../courses/global/"."$gFileName");
+			}
+			else if(file_exists("../courses/".$cid."/"."$gFileName"))
+			{
+				$information = file_get_contents("../courses/".$cid."/"."$gFileName");
+			}
+			else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))
+			{
+				$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
 			}
 			//
 			$pattern = '/\s*/m';
@@ -202,27 +182,25 @@
 	}
 	
   // for fetching file content
-	if(isset($fileName)){
-		if(file_exists("../courses/global/"."$fileName"))
-		{
-			$instructions = file_get_contents("../courses/global/"."$fileName");
-		}
-		else if(file_exists("../courses/".$cid."/"."$fileName"))
-		{
-			$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-		}
-		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
-		{
-			$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
-		}
-		if($instructions === "UNK")
-		{
-			$instructions = "NO_FILE_FETCHED";
-		}
-		$pattern = '/\s*/m';
-		$replace = '';
-		$instructions = preg_replace( $pattern, $replace,$instructions);
+	if(file_exists("../courses/global/"."$fileName"))
+	{
+		$instructions = file_get_contents("../courses/global/"."$fileName");
 	}
+	else if(file_exists("../courses/".$cid."/"."$fileName"))
+	{
+		$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+	}
+	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
+	{
+		$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+	}
+	if($instructions === "UNK")
+	{
+		$instructions = "NO_FILE_FETCHED";
+	}
+	$pattern = '/\s*/m';
+  	$replace = '';
+	$instructions = preg_replace( $pattern, $replace,$instructions);
 
 	#I have no idea what the things below
 	// if(isset($_SESSION['hashpassword'])){
