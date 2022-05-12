@@ -157,9 +157,9 @@
 	}
 	
   // for fetching file content
-	if(file_exists("../courses/global/"."$fileName"))									$instructions = file_get_contents("../courses/global/"."$fileName");
-	else if(file_exists("../courses/".$cid."/"."$fileName"))							$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))				$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+	if(file_exists("../courses/global/"."$fileName" && $fileName != ""))									$instructions = file_get_contents("../courses/global/"."$fileName");
+	else if(file_exists("../courses/".$cid."/"."$fileName") && $fileName != "")							$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName") && $fileName != "")				$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
 	if($instructions === "UNK")															$instructions = "NO_FILE_FETCHED";
 	
 	$pattern = '/\s*/m';
