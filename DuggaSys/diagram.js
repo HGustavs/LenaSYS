@@ -3953,6 +3953,37 @@ function generateErTableString()
         ERAttributeData.push(currentRow);
     }
 
+    var tempEnti = [];
+    for (var i = 0; i < ERAttributeData.length; i++) {
+        var row = [];
+        row.push([ERAttributeData[i][0]]);
+        var keys = [];
+        if (ERAttributeData[i][0].state == 'weak') {
+            for (var j = 1; j < ERAttributeData[i].length; j++ ) {
+                if (ERAttributeData[i][j].state == 'weakKey') {
+                    keys.push(ERAttributeData[i][j]);
+                }
+            }
+            for (var j = 1; j < ERAttributeData[i].length; j++ ) {
+                if (ERAttributeData[i][j].state == 'primary') {
+                    keys.push(ERAttributeData[i][j]);
+                }
+            }
+            for (var j = 1; j < ERAttributeData[i].length; j++ ) {
+                if (ERAttributeData[i][j].state == 'candidate') {
+                    keys.push(ERAttributeData[i][j]);
+                }
+            }
+        }
+        row.push(keys);
+        for (var j = 1; j < ERAttributeData[i].length; j++ ) {
+            if (ERAttributeData[i][j].state == 'normal') {
+                row.push(ERAttributeData[i][j]);
+            }  
+        }
+        tempEnti.push(row);
+        console.log(tempEnti);
+    }
     //Iterate through all relations
     for (var i = 0; i < ERRelationData.length; i++) {        
         if (ERRelationData[i].length >= 3) {
