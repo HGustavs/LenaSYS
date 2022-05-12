@@ -1069,9 +1069,9 @@ function createboxmenu(contentid, boxid, type) {
 		}
 
 		// Add zoom in, zoom out and reset buttons.
-		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Zoom in' onclick='zoomText(" + boxid + ", 3);'><img src='../Shared/icons/MaxButton.svg' /></div>";
-		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Zoom out' onclick='zoomText(" + boxid + ", -3);'><img src='../Shared/icons/MinButton.svg' /></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset zoom' onclick='resetText(" + boxid + ");'><img src='../Shared/icons/ResetButton.svg' /></div>";
+		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' id='zoomIn' title='Zoom in' onclick='zoomText(" + boxid + ", 3);'><img src='../Shared/icons/MaxButton.svg' /></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' id='zoomOut' title='Zoom out' onclick='zoomText(" + boxid + ", -3);'><img src='../Shared/icons/MinButton.svg' /></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' id='resetZoom' title='Reset zoom' onclick='resetText(" + boxid + ");'><img src='../Shared/icons/ResetButton.svg' /></div>";
     
 
 		// Show the copy to clipboard button for code views only
@@ -2797,11 +2797,21 @@ function zoomText(boxid, increment)
 
 	var fontSize = parseInt(document.getElementById("box" + boxid).style.fontSize);
 	
+
 	if (increment > 0 && fontSize < upperLimit || increment < 0 && fontSize > lowerLimit){
 
 		fontSize = fontSize + increment; 
 
 		document.getElementById("box" + boxid).style.fontSize = fontSize + "px";
+	
+	}
+	
+	else { 
+	
+		var zoomButton = document.querySelector('#box'+boxid+'wrapper #zoomIn');
+		
+		zoomButton.style.opacity = "0.4";
+		zoomButton.style.pointerEvents = "none";
 	
 	}
 	
