@@ -49,7 +49,6 @@
             width: 23px;
             position: absolute;
             top: 220px;
-            /*left: 274px;*/
             border-top: 14px solid transparent;
             border-bottom: 14px solid transparent;
             border-right: 14px solid #d4d2d2;
@@ -78,7 +77,6 @@
             width:20px;
             height:803px;
             top:-180px;
-           /* left: 321px;*/
         }
 
        #close_open_border:hover {
@@ -95,7 +93,7 @@
         $(document).ready(function() {
             $('#instructions_arrow_border').click(function() {
                 if ($("#pvalue").val() == "0") {
-                    // closed mode
+                    // Closed mode
                     $("#assignment_discrb").css('display', 'none');
                     $("#container__left").animate({
                         width: "10px"
@@ -104,12 +102,14 @@
                     $("#diagram-iframe").css({
                         'margin-left':'12px'
                     });
+
                     $(".canvas_right").css({
                         'margin-left':'12px'
                     });
+
                     $("#pvalue").val("1");
                 } else {
-                    // open mode
+                    // Open mode
                     $("#container__left").animate({
                         width: "300px"
                     }, "slow");
@@ -117,22 +117,20 @@
                     $("#assignment_discrb").css('display', 'block');
 
                     $("#instructions_arrow_border").css({
-                        //'position':'absolute',
                         'display': 'block',
-                        //'left': '276px'
                     });
+
                     $("#diagram-iframe").css({
                         'margin-left':'0px'
                     });
+
                     $(".canvas_right").css({
                         'margin-left':'0px'
                     });
+
                     $("#pvalue").val("0");
                 }
-
-
             });
-
         });
     </script>
 </head>
