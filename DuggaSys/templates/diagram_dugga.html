@@ -81,12 +81,18 @@
 
        #close_open_border:hover {
             cursor: pointer;
+            background-color: #8e8e8e;
         }
 
         #instructions_arrow_border {
             position: absolute;
             top:180px;
         }
+
+/*         .instruction-border::after, #instructions_arrow_border::after, #close_open_border::after, #close_open::after {
+            cursor: pointer;
+            background-color: #8e8e8e;
+        } */
 
     </style>
     <script>
@@ -182,8 +188,8 @@
                     </ol>
                 </div>
                 <div id="instructions_arrow_border">
-                    <div id="close_open_border"></div>
-                    <div id="close_open"></div>
+                    <div id="close_open_border" class="instruction-border"></div>
+                    <div id="close_open" class="instruction-border"></div>
                 </div>
             </div>
             <div id="container" class="canvas_right">
