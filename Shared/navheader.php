@@ -190,7 +190,7 @@
 								echo "</td>";
 							}
 
-							echo "<td class='access menuButton' style='display: inline-block;'>";
+							echo "<td class='access' style='display: inline-block;'>";
 							echo "    <div class='access menuButton'>";
             			    echo "      <a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
              				echo "        <img alt='give access icon' id='editCourse' class='navButt' src='../Shared/icons/lock_symbol.svg'>";
