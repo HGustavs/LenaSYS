@@ -74,8 +74,7 @@
 	$i=0;
 
 	#loop through responses, fetch param column in variant table, splice string to extract file name, then close request.
-	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
-	{
+	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$variantParams=$row['jparam'];
 		/* $start = strpos($variantParams, "diagram File&quot;:&quot;") + 25; Old way to get the filename
 		$end = strpos($variantParams, "&quot;:&quot;&quot;,&quot;diagram_type") - 176;
@@ -93,11 +92,9 @@
 																				else	$gFileName = "UNK";
 			if(isset($parameterArray['gType']))											$gFileType=$parameterArray["gType"];
 																				else	$gFileType = "UNK";
-			print_r($parameterArray);
-			exit();
+
 			// for fetching file content
 			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK"){
-
 				if(file_exists("../courses/global/"."$fileName"))						$instructions = file_get_contents("../courses/global/"."$fileName");
 				else if(file_exists("../courses/".$cid."/"."$fileName"))				$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
 				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))	$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
@@ -110,12 +107,12 @@
 				else if(file_exists("../courses/".$cid."/"."$gFileName"))				$information = file_get_contents("../courses/".$cid."/"."$gFileName");
 				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))	$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
 			}
-			//
+
 			$pattern = '/\s*/m';
 			$replace = '';
 			$instructions = preg_replace( $pattern, $replace,$instructions);
 			$information = preg_replace( $pattern, $replace,$information);
-			//
+
 			$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions, $gFileType, $gFileName, $information]);
 			$i++;
 		}
