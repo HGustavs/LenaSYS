@@ -98,8 +98,6 @@
 				if(file_exists("../courses/global/"."$fileName"))						$instructions = file_get_contents("../courses/global/"."$fileName");
 				else if(file_exists("../courses/".$cid."/"."$fileName"))				$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
 				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))	$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
-				echo $fileName;
-				exit();
 			}
 
 			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $fileName != "UNK"){
