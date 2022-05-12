@@ -359,7 +359,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="diagramIcons" onclick="stateMachine.replay(0)">
+                <div class="diagramIcons" onclick="stateMachine.replay(-1)">
                     <img src="../Shared/icons/replay.svg">
                     <span class="toolTipText" style="top: -80px"><b>Replay</b><br>
                         <p>Replay history of changes made to the diagram</p><br>
