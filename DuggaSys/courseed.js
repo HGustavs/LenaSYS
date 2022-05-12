@@ -10,6 +10,9 @@ var versions;
 var entries;
 var motd;
 var readonly;
+var LastCourseCreated;
+var lastCC = false; 
+var updateCourseName = false;
 
 $(document).ready(function(){
     $('#startdate').datepicker({
@@ -32,12 +35,18 @@ function updateCourse()
 	var cid = $("#cid").val();
 	var coursecode = $("#coursecode").val();
 	var visib = $("#visib").val();
+	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
 
 	$("#overlay").css("display", "none");
-
+	
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
+	localStorage.setItem('courseid', courseid);
+	localStorage.setItem('updateCourseName', true);
+}
+function updateCourseColor(courseid){
+	document.getElementById(courseid).firstChild.classList.add("highlightChange");
 }
 
 function closeEditCourse()
@@ -45,7 +54,7 @@ function closeEditCourse()
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$("#editCourse").css("display", "none");
-
+	
 	//resets all inputs
 	resetinputs();
 }
@@ -70,6 +79,8 @@ function createNewCourse()
 	var coursecode = $("#ncoursecode").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
+
+    localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
 }
 
@@ -103,7 +114,7 @@ function createVersion()
 	var cid = $("#cid").val();
 
 	AJAXService("NEWVRS", {	cid : cid, versid : versid, versname : versname	}, "COURSE");
-
+	
 	//resets all inputs
 	resetinputs();
 }
@@ -131,7 +142,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 
 	//Give data attribute to course code input to check if input value is same as actual code for validation
 	$("#coursecode").attr("data-origincode", coursecode);
-
+	
 	// Set Visibiliy
 	str = "";
 
@@ -395,6 +406,12 @@ function returnedCourse(data)
 {
 	versions = data['versions'];
 	entries = data['entries'];
+	if(data['LastCourseCreated'][0] != undefined){
+		LastCourseCreated = data['LastCourseCreated'][0]['LastCourseCreatedId'];
+		localStorage.setItem('lastCourseCreatedId', LastCourseCreated);
+
+	}
+
 	var uname=document.getElementById('userName').innerHTML;
 
 	// Fill section list with information
@@ -710,3 +727,30 @@ document.addEventListener('keydown', function(event) {
 		}
 	}
 });
+
+//Run after ajax is completed
+$( document ).ajaxComplete(function() {
+    localStorageCourse();
+});
+
+function localStorageCourse(){
+	// check if lastcourse created is true to add glow to the relative text 
+    if(localStorage.getItem("lastCC") == "true"){
+        var StorageCourseId = localStorage.getItem("lastCourseCreatedId");
+        glowNewCourse(StorageCourseId);
+        localStorage.setItem('lastCourseCreatedId', " ");
+        localStorage.setItem('lastCC', false);
+    }
+
+	// check if updateCourseName is true to add glow to the relative text 
+	if(localStorage.getItem("updateCourseName") == "true"){
+        var StorageCourseId= localStorage.getItem("courseid");
+        updateCourseColor(StorageCourseId);
+        localStorage.setItem('courseid', " ");
+        localStorage.setItem('updateCourseName', false);
+    }
+}
+
+function glowNewCourse(courseid){
+    document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
+}
