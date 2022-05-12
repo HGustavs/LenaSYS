@@ -92,8 +92,8 @@
 				echo "<td class='navButt' id='messagedialog' title='Message of the day 'onclick='DisplayMSGofTDY();'><div class='messagedialog-nav' tabindex='0'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></div></td>";
 			}if($noup=='COURSE' && checklogin() && (isTeacher($_SESSION['uid']))){
 				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
-			}if (($noup == 'COURSE') && checkLogin()) {
-				echo "<td class='navButt' id='announcement' title='Announcement'><div class='announcement-nav' tabindex='0'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></div></td>";
+			//}if (($noup == 'COURSE') && checkLogin()) {
+			//	echo "<td class='navButt' id='announcement' title='Announcement'><div class='announcement-nav' tabindex='0'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></div></td>";
 			}else if($noup=='SECTION'){
 				echo "<a id='upIcon' href='";
 				echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
