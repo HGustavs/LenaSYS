@@ -8793,6 +8793,9 @@ border: none !important;
 .changeColorInDarkModeTable:nth-of-type(odd) {
   background: #ccc;
 }
+.changeColorInDarkModeTable:nth-of-type(even) {
+  background-color: var(--color-sectioned-table-lo);
+}
 
 /* }  /* END of "@media (prefers-color-scheme: light)" */
 /* White Theme code END */

@@ -466,7 +466,7 @@ function SortableTable(param)
       mhvstr += "<tfoot class='bottomBorderColor'>";
       mhvstr += "<tr style='font-style:italic;'>";
       str += "<tfoot class='bottomBorderColor'>";
-      str += "<tr style='font-style:italic;'>";
+      str += "<tr class='changeColorInDarkModeTable' style='font-style:italic;'>";
 
       if(this.hasCounter) {
           str += "<td>&nbsp;</td>";
