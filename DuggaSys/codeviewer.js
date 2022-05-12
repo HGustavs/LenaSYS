@@ -5012,7 +5012,7 @@ function showBurgerDropdown(){
 	var burgerPos = document.querySelector('#codeBurger').getBoundingClientRect();
 	menu.style.display = 'block';
 	menu.style.top = burgerPos.top + 50 + 'px';
-	menu.style.left = burgerPos.left + (-100) + 'px';
+	menu.style.left = burgerPos.left + (-90) + 'px';
 }
 
 function closeBurgerMenu() {
