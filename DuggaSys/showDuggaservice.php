@@ -135,11 +135,25 @@ function processDuggaFiles()
 	$tmphash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
 	$tmphashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
 	$tmpvariant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
-		
-	$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash ORDER BY subid,fieldnme,updtime asc;");  
+	
+	//test if the hash works to retrive a submission
+	$query = $pdo->prepare("SELECT subid from submission WHERE hash=:hash");  
 	$query->bindParam(':hash', $tmphash);
 	$result = $query->execute();
+	$dataFetchCheck = $query->fetchAll();
 	
+	//if the hash didn't work and the user is a superuser then retrive all submissions
+	if(isSuperUser($_SESSION['uid']) && $dataFetchCheck == null){
+		$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE segment=:moment ORDER BY subid,fieldnme,updtime asc;");  
+		$query->bindParam(':moment', $moment);
+		$result = $query->execute();
+	}
+	//if the hash worked or the user was not a superuser then retrive the submission
+	else{
+		$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash ORDER BY subid,fieldnme,updtime asc;");  
+		$query->bindParam(':hash', $tmphash);
+		$result = $query->execute();
+	}
 	// Store current day in string
 	$today = date("Y-m-d H:i:s");
 	
