@@ -83,14 +83,14 @@
 		$parameterArray = json_decode($variantParams,true);
 
 		//exception handling for default variants
-		if(!empty($parameterArray)){
+		if(!empty($parameterArray) && !isset($parameterArray["variant"])){
 
 				$splicedFileName=$parameterArray["diagram_File"];
 				$fileName=$parameterArray["filelink"];
 				$fileType=$parameterArray["type"];
 				$gFileName=$parameterArray["gFilelink"];
 				$gFileType=$parameterArray["gType"];
-			}
+			
 			// for fetching file content
 			if(isset($fileName)){
 				if(file_exists("../courses/global/"."$fileName"))
@@ -120,7 +120,7 @@
 				{
 					$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
 				}
-
+			}
 			//
 			$pattern = '/\s*/m';
 			$replace = '';
