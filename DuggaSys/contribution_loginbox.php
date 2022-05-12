@@ -72,11 +72,6 @@
                                     </td>
                                 </tr>
                                 <tr class="loginboxTr">
-                                    <td class="nowrap">
-                                        <label class='text forgotPw' onclick='contribution_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
-                                    </td>
-                                </tr>
-                                <tr class="loginboxTr">
                                     <td>
                                         <input id="loginBox_button" type='button' class='buttonLoginBox' onclick="contribution_loginGitOrUser_Check();" value='Login' title='Login'>
                                     </td>
@@ -92,45 +87,7 @@
 
 	<!-- Login Box End! -->
 
-    <!-- I forgor password Box Start! -->
-
-    <div id='newpassword' class='newpassword' style="display:none"> <!-- forgor pass screen display -->
-			<div class='loginBoxheader'>
-				<h3> Reset Password</h3>
-				<div class="cursorPointer" onclick="history.back();" title="Close window">x</div>
-			</div>
-			<div style='padding: 20px;'>
-                    <table class="loginBoxTable">
-                        <tr>
-                            <td>
-                                <label id="loginBoxTitle">Enter your username to request </br> password reset from teacher</label>
-                            </td>
-                        </tr>
-                        <tr class="loginboxTr">
-                            <td>
-                                <input id="usernamereset" placeholder="Github Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-                            </td>
-                        </tr>
-                        <tr class="loginboxTr">
-                            <td>
-                                <input id="newpassword_button" type='button' class='buttonLoginBox' onclick="console.log('reset pass not implemented');" value='Continue' style='margin-top: 10px;' title='Continue'>
-                            </td>
-                        </tr>
-                        <tr class="loginboxTr">
-                            <!-- Message displayed when using wrong password or username -->
-                            <td id="message2";></td>
-                        </tr>
-                    </table>
-                
-			</div>
-			<tr>
-				<td>
-					<label class='forgotPw' onclick='contribution_resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
-				</td>
-			</tr>
-	</div>
-
-    <!-- I forgor password Box End! -->
+    <!-- I forgor password Box removed by issue#11820 -->
 
     <!-- User exists login start -->
 
@@ -155,11 +112,6 @@
                                 <tr class="loginboxTr">
                                     <td>
                                         <input id="UserExistslogin_password" placeholder="Password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-                                    </td>
-                                </tr>
-                                <tr class="loginboxTr">
-                                    <td class="nowrap">
-                                        <label class='text forgotPw' onclick='contribution_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
                                     </td>
                                 </tr>
                                 <tr class="loginboxTr">
@@ -210,12 +162,6 @@
                                 <tr class="loginboxTr">
                                     <td>
                                         <input id="newGit-UserCreation_password2" placeholder="Repeat new password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-                                    </td>
-                                </tr>
-
-                                <tr class="loginboxTr">
-                                    <td class="nowrap">
-                                        <label class='text forgotPw' onclick='contribution_toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
                                     </td>
                                 </tr>
                                 <tr class="loginboxTr">
