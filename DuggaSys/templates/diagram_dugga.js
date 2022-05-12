@@ -90,7 +90,11 @@ function returnedDugga(data)
             // getting the error checker allowed or not
             document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(param.errorActive);
             // Getting the instructions to the side of the dugga -currently using filelink which is wrong
-            window.parent.getInstructions(param.filelink);
+            if(param.filelink != undefined)
+            {
+                window.parent.getInstructions(param.filelink);
+            }
+            if(param.gFilelink != undefined)
             window.parent.getInstructions(param.gFilelink);
         }
         else{

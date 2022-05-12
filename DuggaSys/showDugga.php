@@ -82,28 +82,37 @@
 		$variantParams = str_replace('&quot;','"',$variantParams);
 		$parameterArray = json_decode($variantParams,true);
 		if(!empty($parameterArray)){
-			if(isset($parameterArray['diagram_File'])
-			{
+			if(isset($parameterArray['diagram_File'])){
 				$splicedFileName=$parameterArray["diagram_File"];
-			})
-			if(isset($parameterArray['filelink']))
-			{
-				$fileName=$parameterArray["filelink"];
+			}else{
+				$splicedFileName = "UNK";
 			}
 			if(isset($parameterArray['filelink']))
 			{
+				$fileName=$parameterArray["filelink"];
+			}else{
+				$fileName = "UNK";
+			}
+			if(isset($parameterArray['type']))
+			{
 				$fileType=$parameterArray["type"];
+			}else{
+				$fileType = "UNK";
 			}
 			if(isset($parameterArray['gFilelink']))
 			{
 				$gFileName=$parameterArray["gFilelink"];
+			}else{
+				$gFileName = "UNK";
 			}
 			if(isset($parameterArray['gType']))
 			{
 				$gFileType=$parameterArray["gType"];
+			}else{
+				$gFileType = "UNK";
 			}
 			// for fetching file content
-			if($fileName != "." && $fileName != "..")
+			if($fileName != "." && $fileName != ".." && $fileName != "UNK")
 			{
 				if(file_exists("../courses/global/"."$fileName"))
 				{
@@ -119,7 +128,7 @@
 				}
 			}
 
-			if($gFileName != "." && $gFileName != "..")
+			if($gFileName != "." && $gFileName != ".." && $fileName != "UNK")
 			{
 				if(file_exists("../courses/global/"."$gFileName"))
 				{
