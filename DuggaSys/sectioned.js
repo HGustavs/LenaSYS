@@ -1328,6 +1328,17 @@ function returnedSection(data) {
           str += "</td>";
         }
 
+        // Tab example button
+        if (data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<input type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement' 
+            title='Tab example button' onclick='confirmBox("openTabConfirmBox")'>`
+          str += "</td>";
+        }
+        // <input id='tabElement'  type='button' value='&#8633' style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
+
+
         if (itemKind != 4){ // dont create buttons for moments only for specific assignments
           //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
