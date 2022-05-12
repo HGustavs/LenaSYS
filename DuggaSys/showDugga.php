@@ -55,7 +55,7 @@
 
 	#vars for handling fetching of diagram variant file name
 	$variantParams = "UNK";
-	$filePath ="";
+	$filePath ="UNK";
 	$finalArray = array();
 	$fileContent="UNK";
 	$splicedFileName = "UNK";
@@ -65,8 +65,8 @@
 	$json = "UNK";
 	$fileName = "UNK";
 	$gFileName = "UNK";
-	$instructions = "";
-	$information = "";
+	$instructions = "UNK";
+	$information = "UNK";
 	
 	#create request to database and execute it
 	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
@@ -94,13 +94,13 @@
 																				else	$gFileType = "UNK";
 
 			// for fetching file content
-			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK"){
+			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK" && $fileName != ""){
 				if(file_exists("../courses/global/"."$fileName"))						$instructions = file_get_contents(__DIR__."../courses/global/"."$fileName");
 				else if(file_exists("../courses/".$cid."/"."$fileName"))				$instructions = file_get_contents(__DIR__."../courses/".$cid."/"."$fileName");
 				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))	$instructions = file_get_contents(__DIR__."../courses/".$cid."/"."$vers"."/"."$fileName");
 			}
 
-			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $fileName != "UNK"){
+			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $fileName != "UNK" && $fileName != ""){
 				if(file_exists("../courses/global/"."$gFileName"))						$information = file_get_contents(__DIR__."../courses/global/"."$gFileName");
 				else if(file_exists("../courses/".$cid."/"."$gFileName"))				$information = file_get_contents(__DIR__."../courses/".$cid."/"."$gFileName");
 				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))	$information = file_get_contents(__DIR__."../courses/".$cid."/"."$vers"."/"."$gFileName");
@@ -117,7 +117,7 @@
 	}
 	$response->closeCursor();
 
-	if($splicedFileName != "UNK" && isset($splicedFileName)){
+	if($splicedFileName != "UNK" && isset($splicedFileName && $splicedFileName != "")){
 		if(file_exists("../courses/global/"."$splicedFileName"))						$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
 		else if(file_exists("../courses/".$cid."/"."$splicedFileName"))					$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
 		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))		$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
