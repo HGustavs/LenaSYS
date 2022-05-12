@@ -741,7 +741,15 @@ function newItem(itemtitle) {
     collectedLid.sort(function(a, b) {
     return b - a;
     });
-    document.getElementById('I'+collectedLid[0]).classList.add("highlightChange");
+    var element = document.getElementById('I'+collectedLid[0]).firstChild;
+    if(element.tagName == 'DIV') {
+    element = element.firstChild;
+    element.classList.add("highlightChange");
+    }else if (element.tagName == 'A'){
+      document.getElementById('I'+collectedLid[0]).classList.add("highlightChange");
+    }else if (element.tagName == 'SPAN'){
+      document.getElementById('I'+collectedLid[0]).firstChild.classList.add("highlightChange");
+    }
   },100);
   // Duration time for the alert before remove
   setTimeout(function(){
