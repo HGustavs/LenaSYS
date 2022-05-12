@@ -82,36 +82,57 @@
 		$variantParams = str_replace('&quot;','"',$variantParams);
 		$parameterArray = json_decode($variantParams,true);
 		if(!empty($parameterArray)){
-			$splicedFileName=$parameterArray["diagram_File"];
-			$fileName=$parameterArray["filelink"];
-			$fileType=$parameterArray["type"];
-			$gFileName=$parameterArray["gFilelink"];
-			$gFileType=$parameterArray["gType"];
+			if(isset($parameterArray['diagram_File'])
+			{
+				$splicedFileName=$parameterArray["diagram_File"];
+			})
+			if(isset($parameterArray['filelink']))
+			{
+				$fileName=$parameterArray["filelink"];
+			}
+			if(isset($parameterArray['filelink']))
+			{
+				$fileType=$parameterArray["type"];
+			}
+			if(isset($parameterArray['gFilelink']))
+			{
+				$gFileName=$parameterArray["gFilelink"];
+			}
+			if(isset($parameterArray['gType']))
+			{
+				$gFileType=$parameterArray["gType"];
+			}
 			// for fetching file content
-			if(file_exists("../courses/global/"."$fileName"))
+			if($fileName != "." && $fileName != "..")
 			{
-				$instructions = file_get_contents("../courses/global/"."$fileName");
-			}
-			else if(file_exists("../courses/".$cid."/"."$fileName"))
-			{
-				$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-			}
-			else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
-			{
-				$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+				if(file_exists("../courses/global/"."$fileName"))
+				{
+					$instructions = file_get_contents("../courses/global/"."$fileName");
+				}
+				else if(file_exists("../courses/".$cid."/"."$fileName"))
+				{
+					$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+				}
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
+				{
+					$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+				}
 			}
 
-			if(file_exists("../courses/global/"."$gFileName"))
+			if($gFileName != "." && $gFileName != "..")
 			{
-				$information = file_get_contents("../courses/global/"."$gFileName");
-			}
-			else if(file_exists("../courses/".$cid."/"."$gFileName"))
-			{
-				$information = file_get_contents("../courses/".$cid."/"."$gFileName");
-			}
-			else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))
-			{
-				$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
+				if(file_exists("../courses/global/"."$gFileName"))
+				{
+					$information = file_get_contents("../courses/global/"."$gFileName");
+				}
+				else if(file_exists("../courses/".$cid."/"."$gFileName"))
+				{
+					$information = file_get_contents("../courses/".$cid."/"."$gFileName");
+				}
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))
+				{
+					$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
+				}
 			}
 			//
 			$pattern = '/\s*/m';
