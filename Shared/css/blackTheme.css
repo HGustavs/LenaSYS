@@ -633,3 +633,22 @@ body {
   }
 /* END */
 
+/* Style for "CommitTree" START   */
+.commitTreeBarsEven {
+    fill: var(--color-sectioned-table-lo);
+}
+
+.commitTreeBarsOdd {
+    fill: var(--color-sectioned-table-hi);
+}
+
+.commitTreeText{
+    filter: invert(80%);
+    -webkit-filter: invert(80%);
+}
+
+.commitTreeLine{
+    filter: invert(80%);
+    -webkit-filter: invert(80%);
+}
+/* END */

@@ -8801,3 +8801,17 @@ border: none !important;
   border: 2px solid var(--color-border-list);
   background-color: var(--color-sectioned-table-lo);
 }
+
+/* Style for "CommitTree" START   */
+.commitTreeBarsEven {
+  fill: var(--color-sectioned-table-lo);
+}
+
+.commitTreeBarsOdd {
+  fill: var(--color-sectioned-table-hi);
+}
+
+.commitTreeLine{
+  stroke: black;
+}
+/* END */
