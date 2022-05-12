@@ -2188,7 +2188,7 @@ function createSidebar(){
   str+= "<th class='accountRequestTable'>Status</th>";
   str+= "<th class='accountRequestTable'></th>";
   str+= "</tr>";
-  str+=accountInformation()
+  str+=accountInformation();
 
   str+= "</table>";
   str+= "</div>";
@@ -2197,6 +2197,7 @@ function createSidebar(){
 
 function accountInformation(){
   var str = "";
+
   for (var row = 0; row < 5; row++) {
     str+= "<tr class='accountRequestTable'>";
     
@@ -2207,7 +2208,13 @@ function accountInformation(){
     
     str+= "</tr>";
   }
+
+  AJAXService('GET',{},'CONT_ACCOUNT_STATUS');
   return str; 
+}
+
+function testconsoleLog(data){
+  console.log("test data blablabla");
 }
 
 console.error

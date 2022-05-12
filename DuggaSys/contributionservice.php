@@ -782,7 +782,7 @@ if(strcmp($opt,"get")==0) {
 	echo json_encode($array);
 }
 else if(strcmp($opt,"requestContributionUserLogin") == 0){
-	echo "<script> console.log('php print stuff to console') </script>";
+	echo "<script> console.log('php print stuff to console'); </script>";
 }
 
 
