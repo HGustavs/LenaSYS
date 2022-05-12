@@ -258,7 +258,7 @@
                 </span>
             </div>
         </fieldset>     
-        <fieldset>
+        <fieldset id = "errorCheckField">
         <legend>Check</legend>
             <div id="errorCheckToggle" class="diagramIcons" onclick="toggleErrorCheck()">
                 <img src="../Shared/icons/diagram_errorCheck.svg"/>

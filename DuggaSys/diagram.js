@@ -4369,10 +4369,10 @@ function toggleErrorCheck(){
  */
 function hideErrorCheck(show){
     if(show == true){
-        document.getElementById("errorCheckToggle").style.display = "flex";
+        document.getElementById("errorCheckField").style.display = "flex";
     }
     else{
-        document.getElementById("errorCheckToggle").style.display = "none";
+        document.getElementById("errorCheckField").style.display = "none";
     }
 }
 function setA4SizeFactor(e){
