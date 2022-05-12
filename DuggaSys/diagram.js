@@ -936,7 +936,7 @@ const strokewidth = 2.0;
 const baseline = 10;
 const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
 const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100"];
-const strokeColors = ["#000000"];
+const strokeColors = ["#383737"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
@@ -1042,12 +1042,12 @@ var ghostLine = null;
  * @see constructElementOfType() For creating new elements with default values.
  */
 var defaults = {
-    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", attributes: ['Attribute'], functions: ['Function'] },
-    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER" },
-    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal'},
-    Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['Attribute'], functions: ['Function'] },     //<-- UML functionality
-    UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "UML" }, //<-- UML functionality
+    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff",  width: 200, height: 50, type: "ER", attributes: ['Attribute'], functions: ['Function'] },
+    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff",  width: 60, height: 60, type: "ER" },
+    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", width: 90, height: 45, type: "ER", state: 'normal'},
+    Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff",  width: 5, height: 5, type: "ER" },
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", width: 200, height: 50, type: "UML", attributes: ['Attribute'], functions: ['Function'] },     //<-- UML functionality
+    UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", width: 50, height: 50, type: "UML" }, //<-- UML functionality
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -6595,7 +6595,7 @@ function drawElement(element, ghosted = false)
                             Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
                             Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
                             Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew} class="text" '/>
+                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}' class="text" />
                         
                         ${multi}
                         <text x='${xAnchor}' y='${hboxh}' `;
@@ -7916,7 +7916,7 @@ function checkElementError(element)
 function errorReset(elements)
 {
     for (var i = 0; i < elements.length; i++) {
-        elements[i].stroke = 'black';
+        elements[i].stroke = strokeColors;
     }
 }
 /**
