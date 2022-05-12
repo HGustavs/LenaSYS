@@ -1028,6 +1028,6 @@
 
 .highlight{
     background-image: url(../icons/draganddrop.png);
-    object-fit: cover;
-    background-size: 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
