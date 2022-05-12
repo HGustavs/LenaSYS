@@ -679,3 +679,30 @@ body {
     background-color: var(--color-sectioned-table-hi);
 }
 /* END */
+
+/* Style for "Input elements" */
+button{
+    background-color: #464646;
+    color:white;
+    border-radius: 5px;
+}
+
+select{
+    background-color: #464646;
+    color:white;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+input{
+    background-color: #464646;
+    color:white;
+    color-scheme: dark; /*For date picker */
+}
+/* END */
+
+/* Style for "Date Picker" START:    */
+::-webkit-calendar-picker-indicator:hover {
+    filter: invert(1) ; 
+}
+/* END */
