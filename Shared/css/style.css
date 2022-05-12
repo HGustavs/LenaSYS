@@ -5439,6 +5439,33 @@ only screen and (max-device-width: 320px) {
   display: none;
   
 }
+#tabElement2,#hideElement2, #addElement2, #showElements2{
+  display: hide;
+}
+@media only screen and (max-width: 750px),
+only screen and (max-device-width: 750px) {
+
+  #sectionBurger {
+    display: block;
+  }
+  #sectionBurgerBox{
+    display: block;
+    position: absolute;
+    top: 30px;
+    width: 32px;
+    padding: 10px;
+    height: 100px;
+    background-color: var(--color-primary-2);
+  }
+  #tabElement2,#hideElement2, #addElement2, #showElements2{
+    display: block;
+  }
+
+#tabElement,#hideElement, #addElement, #showElements{
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 750px),
 only screen and (max-device-width: 750px) {
 
