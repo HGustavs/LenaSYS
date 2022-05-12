@@ -82,66 +82,28 @@
 		$variantParams = str_replace('&quot;','"',$variantParams);
 		$parameterArray = json_decode($variantParams,true);
 		if(!empty($parameterArray)){
-			if(isset($parameterArray['diagram_File'])){
-				$splicedFileName=$parameterArray["diagram_File"];
-			}else{
-				$splicedFileName = "UNK";
-			}
-			if(isset($parameterArray['filelink']))
-			{
-				$fileName=$parameterArray["filelink"];
-			}else{
-				$fileName = "UNK";
-			}
-			if(isset($parameterArray['type']))
-			{
-				$fileType=$parameterArray["type"];
-			}else{
-				$fileType = "UNK";
-			}
-			if(isset($parameterArray['gFilelink']))
-			{
-				$gFileName=$parameterArray["gFilelink"];
-			}else{
-				$gFileName = "UNK";
-			}
-			if(isset($parameterArray['gType']))
-			{
-				$gFileType=$parameterArray["gType"];
-			}else{
-				$gFileType = "UNK";
-			}
+			if		(isset($parameterArray['diagram_File'])) 							$splicedFileName=$parameterArray["diagram_File"];
+			else 	$splicedFileName = "UNK";
+			if		(isset($parameterArray['filelink']))								$fileName=$parameterArray["filelink"];
+			else	$fileName = "UNK";
+			if(isset($parameterArray['type']))											$fileType=$parameterArray["type"];
+			else	$fileType = "UNK";
+			if(isset($parameterArray['gFilelink']))										$gFileName=$parameterArray["gFilelink"];
+			else	$gFileName = "UNK";
+			if(isset($parameterArray['gType']))											$gFileType=$parameterArray["gType"];
+			else	$gFileType = "UNK";
+
 			// for fetching file content
-			if($fileName != "." && $fileName != ".." && $fileName != "UNK")
-			{
-				if(file_exists("../courses/global/"."$fileName"))
-				{
-					$instructions = file_get_contents("../courses/global/"."$fileName");
-				}
-				else if(file_exists("../courses/".$cid."/"."$fileName"))
-				{
-					$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-				}
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
-				{
-					$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
-				}
+			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK"){
+				if(file_exists("../courses/global/"."$fileName"))						$instructions = file_get_contents("../courses/global/"."$fileName");
+				else if(file_exists("../courses/".$cid."/"."$fileName"))				$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))	$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
 			}
 
-			if($gFileName != "." && $gFileName != ".." && $fileName != "UNK")
-			{
-				if(file_exists("../courses/global/"."$gFileName"))
-				{
-					$information = file_get_contents("../courses/global/"."$gFileName");
-				}
-				else if(file_exists("../courses/".$cid."/"."$gFileName"))
-				{
-					$information = file_get_contents("../courses/".$cid."/"."$gFileName");
-				}
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))
-				{
-					$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
-				}
+			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $fileName != "UNK"){
+				if(file_exists("../courses/global/"."$gFileName"))						$information = file_get_contents("../courses/global/"."$gFileName");
+				else if(file_exists("../courses/".$cid."/"."$gFileName"))				$information = file_get_contents("../courses/".$cid."/"."$gFileName");
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))	$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
 			}
 			//
 			$pattern = '/\s*/m';
@@ -156,45 +118,28 @@
 	$response->closeCursor();
 
 	if($splicedFileName != "UNK" && $splicedFileName != ""){
-		if(file_exists("../courses/global/"."$splicedFileName"))
-		{
-			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
-		}
-		else if(file_exists("../courses/".$cid."/"."$splicedFileName"))
-		{
-			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
-		}
-		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))
-		{
-			$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
-		}
+		if(file_exists("../courses/global/"."$splicedFileName"))						$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
+		else if(file_exists("../courses/".$cid."/"."$splicedFileName"))					$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
+		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))		$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
 	}
 
-	if($fileContent === "UNK")
-	{
-		$fileContent = "NO_FILE_FETCHED";
-	}
+	if($fileContent === "UNK")															$fileContent = "NO_FILE_FETCHED";
 
     // if the used is redirected from 
-	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
-	{
+	if(isset($_GET['hash']) && $_GET['hash'] != "UNK"){
 		$tempDir = strval(dirname(__DIR__, 2))."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
 		$latest = time() - (365 * 24 * 60 * 60);
 		$current = "diagramSave1.json";	 
 
-		if(is_dir($tempDir))
-		{
+		if(is_dir($tempDir)){
 			//try and catch for using test data
 			try{
-				foreach(new DirectoryIterator($tempDir) as $file)
-				{
+				foreach(new DirectoryIterator($tempDir) as $file){
 					$ctime = $file->getCTime();    // Time file was created
 					$fname = $file->GetFileName (); // File name
 
-					if($fname != "." && $fname != "..")
-					{
-						if( $ctime > $latest )
-						{
+					if($fname != "." && $fname != ".."){
+						if( $ctime > $latest ){
 							$latest = $ctime;
 							$current = $fname;
 						}
@@ -212,22 +157,11 @@
 	}
 	
   // for fetching file content
-	if(file_exists("../courses/global/"."$fileName"))
-	{
-		$instructions = file_get_contents("../courses/global/"."$fileName");
-	}
-	else if(file_exists("../courses/".$cid."/"."$fileName"))
-	{
-		$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-	}
-	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
-	{
-		$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
-	}
-	if($instructions === "UNK")
-	{
-		$instructions = "NO_FILE_FETCHED";
-	}
+	if(file_exists("../courses/global/"."$fileName"))									$instructions = file_get_contents("../courses/global/"."$fileName");
+	else if(file_exists("../courses/".$cid."/"."$fileName"))							$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))				$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+	if($instructions === "UNK")															$instructions = "NO_FILE_FETCHED";
+	
 	$pattern = '/\s*/m';
   	$replace = '';
 	$instructions = preg_replace( $pattern, $replace,$instructions);
