@@ -87,29 +87,30 @@
 			$fileType=$parameterArray["type"];
 			$gFileName=$parameterArray["gFilelink"];
 			$gFileType=$parameterArray["gType"];
+			
 			// for fetching file content
-			if(file_exists("../courses/global/"."$fileName"))
+			if(file_exists("../courses/global/"."$fileName") && !is_dir("../courses/global/"."$fileName"))
 			{
 				$instructions = file_get_contents("../courses/global/"."$fileName");
 			}
-			else if(file_exists("../courses/".$cid."/"."$fileName"))
+			else if(file_exists("../courses/".$cid."/"."$fileName") && !is_dir("../courses/".$cid."/"."$fileName"))
 			{
 				$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
 			}
-			else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
+			else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName") && !is_dir("../courses/".$cid."/"."$vers"."/"."$fileName"))
 			{
 				$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
 			}
 
-			if(file_exists("../courses/global/"."$gFileName"))
+			if(file_exists("../courses/global/"."$gFileName") && !is_dir("../courses/global/"."$gFileName") )
 			{
 				$information = file_get_contents("../courses/global/"."$gFileName");
 			}
-			else if(file_exists("../courses/".$cid."/"."$gFileName"))
+			else if(file_exists("../courses/".$cid."/"."$gFileName") && !is_dir("../courses/".$cid."/"."$gFileName"))
 			{
 				$information = file_get_contents("../courses/".$cid."/"."$gFileName");
 			}
-			else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))
+			else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName") && !is_dir("../courses/".$cid."/"."$vers"."/"."$gFileName"))
 			{
 				$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
 			}
@@ -182,15 +183,15 @@
 	}
 	
   // for fetching file content
-	if(file_exists("../courses/global/"."$fileName"))
+	if(file_exists("../courses/global/"."$fileName") && !is_dir("../courses/global/"."$fileName"))
 	{
 		$instructions = file_get_contents("../courses/global/"."$fileName");
 	}
-	else if(file_exists("../courses/".$cid."/"."$fileName"))
+	else if(file_exists("../courses/".$cid."/"."$fileName") && !is_dir("../courses/".$cid."/"."$fileName"))
 	{
 		$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
 	}
-	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
+	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName") && !is_dir("../courses/".$cid."/"."$vers"."/"."$fileName"))
 	{
 		$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
 	}
