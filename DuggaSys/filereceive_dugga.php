@@ -338,7 +338,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 				$seq++;
 
 				$filepath=$submissionpath;
-				if ($fieldkind = 4) {
+				if ($fieldkind == 4) {
 					$extension = "json";
 					$mime = "json";
 				}
