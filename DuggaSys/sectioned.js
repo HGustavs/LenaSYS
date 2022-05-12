@@ -34,7 +34,17 @@ function navBurgerChange(operation = 'click') {
   }
 
 }
+/*Can be made dynamic function above*/ 
+function sectionBurgerChange(operation = 'click') {
 
+  var x = document.getElementById("sectionBurgerBox");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+
+}
 //function to change darkmode from burger menu
 function burgerToggleDarkmode(operation = 'click'){
   const storedTheme = localStorage.getItem('themeBlack');
@@ -502,6 +512,10 @@ function showVisibilityIcons(){
  document.querySelector('#hideElement').style.opacity = 1;
  document.querySelector('#showElements').disabled = false;
  document.querySelector('#showElements').style.opacity = 1;
+ document.querySelector('#hideElement2').disabled = false;
+ document.querySelector('#hideElement2').style.opacity = 1;
+ document.querySelector('#showElements2').disabled = false;
+ document.querySelector('#showElements2').style.opacity = 1;
 }
 //Disables ghost and eye button
 function hideVisibilityIcons(){
@@ -509,6 +523,10 @@ function hideVisibilityIcons(){
     document.querySelector('#hideElement').style.opacity = 0.7;
     document.querySelector('#showElements').disabled = true;
     document.querySelector('#showElements').style.opacity = 0.7;
+    document.querySelector('#hideElement2').disabled = true;
+    document.querySelector('#hideElement2').style.opacity = 0.7;
+    document.querySelector('#showElements2').disabled = true;
+    document.querySelector('#showElements2').style.opacity = 0.7;
 }
 
 //Changes visibility of hidden items
