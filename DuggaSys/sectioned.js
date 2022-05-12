@@ -337,7 +337,11 @@ function calculateRelativeDeadline(rDeadline) {
   // rDeadline = [amount, type, hour, minute]
   if(rDeadline === null ){
     rDeadline = "1:1:0:0";
-  } 
+  }
+  if (typeof rDeadline === "undefined") {
+    rDeadline =  $("#relativedeadlineamount").val() + ":" + $("#relativedeadlinetype").val() + ":" + $("#relativedeadlineminutes").val() + ":" + $("#relativedeadlinehours").val();
+    console.log("sets the deadline to " + rDeadline);
+  }
   rDeadlineArr = rDeadline.split(":");
   var daysToAdd;
   switch (rDeadlineArr[1]) {
@@ -2901,12 +2905,14 @@ function validateDate(startDate, endDate, dialogID) {
 
 function showCourseDate(ddate, dialogid){
   var isCorrect = validateDate2(ddate,dialogid);
-  var startdate = new Date(retdata['startdate']);;
-  var enddate = new Date(retdata['enddate']);
-  var startdate = new String(startdate.getFullYear()+ "-" + startdate.getMonth() + "-" + startdate.getDate());
-  var enddate = new String(enddate.getFullYear()+ "-" + ("0" + enddate.getMonth()).slice(-2) + "-" + ("0" + enddate.getDate()).slice(-2));
-  document.getElementById("dialog8").innerHTML =
-  "The date has to be between " + startdate + " and " + enddate;
+  var startdate = convertDateToDeadline(new Date(retdata['startdate'])).split(" ")[0];
+  var enddate = convertDateToDeadline(new Date(retdata['enddate'])).split(" ")[0];
+
+  if (!$("#absolutedeadlinecheck").is(":checked")) {
+    $("#dialog8").html("The relative deadline will be set to " + convertDateToDeadline(calculateRelativeDeadline()));
+  } else {
+    $("#dialog8").html("The date has to be between " + startdate + " and " + enddate);
+  }
   return isCorrect;
 }
 
@@ -2925,14 +2931,10 @@ function validateDate2(ddate, dialogid) {
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
 
-  // Correct the fetched dates from database
-  startdate.setMonth(startdate.getMonth() - 1);
-  enddate.setMonth(enddate.getMonth() - 1);
-
    // If absolute deadline is not being used
    if (!$("#absolutedeadlinecheck").is(":checked")) {
     ddate.style.borderWidth = "0px";
-    x.style.display = "none";
+    x.style.display = "block";
     window.bool8 = true;
 
     return true;
