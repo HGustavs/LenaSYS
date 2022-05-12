@@ -403,8 +403,8 @@ function confirmBox(operation, item = null) {
   } else if (operation == "hideItem" && !hideItemList.length == 0) {
     hideMarkedItems(hideItemList)
     $("#sectionHideConfirmBox").css("display", "none");
-  }else if (operation == "tabItem" && !hideItemList.length == 0) {
-    tabMarkedItems(hideItemList);
+  }else if (operation == "tabItem") {
+    tabMarkedItems(active_lid);
       $("#tabConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
@@ -696,11 +696,8 @@ function hideMarkedItems() {
   //----------------------------------------------------------------------------------
   // tabMarkedItems: Tabs Item from Section List
   //----------------------------------------------------------------------------------
-  function tabMarkedItems() {
-    for (i=0; i < hideItemList.length; i++) {  
-      var lid = hideItemList[i]; 
-    }
-      hideItemList = [];
+  function tabMarkedItems(lid) {
+
   }
     
 //----------------------------------------------------------------------------------
@@ -1333,7 +1330,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<input type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement' 
-            title='Tab example button' onclick='confirmBox("openTabConfirmBox")'>`
+            title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
           str += "</td>";
         }
         // <input id='tabElement'  type='button' value='&#8633' style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
