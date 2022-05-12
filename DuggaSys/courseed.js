@@ -10,7 +10,7 @@ var versions;
 var entries;
 var motd;
 var readonly;
-var savedClicked = false;
+var updateCourseName = false;
 
 $(document).ready(function(){
     $('#startdate').datepicker({
@@ -41,11 +41,10 @@ function updateCourse()
 	
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
 	localStorage.setItem('courseid', courseid);
-	localStorage.setItem('savedClicked', true);
+	localStorage.setItem('updateCourseName', true);
 }
 function updateCourseColor(courseid){
-	localStorage.getItem("courseid");
-	document.getElementById(courseid).style.backgroundColor= "red";
+	document.getElementById(courseid).firstChild.classList.add("highlightChange");
 }
 
 function closeEditCourse()
@@ -620,14 +619,7 @@ function quickValidateForm(formid, submitButton){
 	
 	return false;
 }
-function localStorageCourse(){
-	if(localStorage.getItem("savedClicked")){
-		var saved = localStorage.getItem("courseid");
-		updateCourseColor(saved);
-		localStorage.setItem('courseid', " ");
-		localStorage.setItem('savedClicked', false);
-	}
-}
+
 
 //Validates whole form
 function validateForm(formid) {
@@ -725,7 +717,3 @@ document.addEventListener('keydown', function(event) {
 		}
 	}
 });
-
-$( document ).ajaxComplete(function() {
-	localStorageCourse();
-  });
