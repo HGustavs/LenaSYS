@@ -142,7 +142,7 @@ Testing Link:
 	codeviewer.php?exampleid=1&courseid=1&cvers=2013
 -->
 
-	<body onload="setup(); showBurgerMenu();">
+	<body onload="setup();">
 		<!-- loader START -->
 		<div id="loader"></div>
 		<!-- content START -->
