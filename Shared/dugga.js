@@ -841,7 +841,6 @@ function changeCourseVersURL(thisurl)
 // navigateExample: Upscale variant of changeURL - navigate to certain Example
 //----------------------------------------------------------------------------------
 
-// ↓ found function through inspect, used by function Skip(skipkind) in codeviewer.js (2)
 function navigateExample(exampleno)
 {
 		surl=window.location.href;
