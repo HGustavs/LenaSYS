@@ -412,9 +412,15 @@ function returnedFile(data){
 		filearray[i] = JSON.parse(retdata['entries'][i].filename);
 	}
 	filteredarray = filearray.filter(x => x.extension === "json");
+	instrArray = filearray.filter(x => x.extension === $("#type").val());
 
-	//Not sure how the first parameter works yet, suspect it's to know which object is selected
 	$("#file").html(makeoptionsItem("AddEmptyField", filteredarray, 'filename','filename'));
+	$("#filelink").html(makeoptionsItem("AddEmptyField", instrArray, 'filename', 'filename'));
+}
+
+function updateInstructions(){
+	instrArray = filearray.filter(x => x.extension === $("#type").val());
+	$("#filelink").html(makeoptionsItem("AddEmptyField", instrArray, 'filename', 'filename'));
 }
 
 // Adds a submission row

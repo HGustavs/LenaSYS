@@ -162,12 +162,12 @@ session_start();
                     <fieldset style="width:90%;">
                       <legend>Instruction file</legend>
                       <div style="display:flex;flex-wrap:wrap;flex-direction:row;">
-                        <select name="type" id="type" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));">
+                        <select name="type" id="type" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray())), updateInstructions();">
                           <option value="md">Markdown</option>
                           <option value="pdf">PDF</option>
                           <option value="html">HTML</option>
                         </select>
-                        <input id="filelink" type="text" name="filelink" style="flex:2;margin-left:5px;" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));">
+                        <select id="filelink" name="filelink" style="flex:2;margin-left:5px;" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"></select>
                       </div>
                     </fieldset>
                   </div>
