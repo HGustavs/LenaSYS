@@ -3954,8 +3954,163 @@ function generateErTableString()
     }
 
     //console.log(formatERStrongEntities(ERAttributeData));
+    var strongEntityList = formatERStrongEntities(ERAttributeData);
     var weakEntityList = formatERWeakEntities(ERAttributeData);
-    for (var i = 0; i < weakEntityList.length; i++) {
+    var ohERRelation = [];
+    var notComplete = false;
+    do {
+        /*for (var i = 0; i < ohERRelation.length; i++) {
+            if (ohERRelation[i] == 1) {
+                notComplete = True;
+                break;
+            }
+            else if (ohERRelation[i] == 0) {
+                notComplete = False;
+            }
+        }*/
+
+        //Iterate over evert weak entity list
+        for (var i = 0; i < strongEntityList.length; i++) {
+            var visitedList = [];
+            //visitedList.push(strongEntityList[i][0]);
+            var queue = []; // Queue for each entity's relation
+            queue.push(strongEntityList[i][0]);
+            var unFinishedQueue = []; //
+            var finishedQueue = []; // Final path to build weak key
+            while (queue.length > 0) {
+                var current = queue.shift(); // Get current entity
+                finishedQueue.push(current);
+                // For current entity, iterate through every relation
+                for (var j = 0; j < ERRelationData.length; j++) {
+                    // Check if relation is valid, (relation, entity1, entity2)
+                    if (ERRelationData[j].length >= 3) { 
+                        if (ERRelationData[j][0].state == 'weak') {
+                            var visited = false;
+                            for (var v = 0; v < visitedList.length; v++) {
+                                if (ERRelationData[j][1][0].id == visitedList[v].id || ERRelationData[j][2][0].id == visitedList[v].id) {
+                                    visited = true;
+                                    console.log(visited + 'Waa');
+                                    break;
+                                }
+                            }
+                            if (!visited) {
+                                console.log('Reeeeeee');
+                                console.log(current.id + ' ' + ERRelationData[j][1][0].id);
+                                console.log(current.id + ' ' + ERRelationData[j][2][0].id);
+                                // Check if entity is in weak relation on either side
+                                if (current.id == ERRelationData[j][1][0].id) {
+                                    console.log(ERRelationData[j][2][0].id);
+                                    queue.push(ERRelationData[j][2][0]); // Push in entity
+                                    visitedList.push(ERRelationData[j][2][0]);
+                                    //unFinishedQueue.push(current);
+                                    break;
+                                } 
+                                else if (current.id == ERRelationData[j][2][0].id) {
+                                    console.log(ERRelationData[j][1][0].id);
+                                    queue.push(ERRelationData[j][1][0]); // Push in entity
+                                    visitedList.push(ERRelationData[j][1][0])
+                                    //unFinishedQueue.push(current);
+                                    break;
+                                }
+                                if (unFinishedQueue.length > 0) {
+                                    if (queue.length == 0) {
+                                        queue.push(unFinishedQueue.pop());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                console.log(finishedQueue);
+            }
+        }
+
+        // Iterate over every weak entity
+        for (var i = 0; i < weakEntityList.length; i++) {
+            // For every weak entity, iterate through every relation
+            for (var j = 0; j < ERRelationData.length; j++) {
+                // Check if relation is valid, (relation, entity1, entity2)
+                if (ERRelationData[j].length >= 3) {
+                    if (ERRelationData[j][0].state == 'weak') {
+                        // Check if weak entity is in weak relation on either side
+                        if (weakEntityList[i][0].id == ERRelationData[j][1][0].id) {
+                            // Check if other entity in relation is strong or weak
+                            if (ERRelationData[j][2][0].state == 'normal') {
+                                //Iterate through 
+                                for (var k = 0; k < strongEntityList.length; k++) {
+                                    // If primary key, push in only primary keys
+                                    if (strongEntityList[k][1][0].state == 'primary') {
+                                        for (var l = 0; l < strongEntityList[k][1].length; l++) {
+                                            if (strongEntityList[k][1][l].state == 'primary') {
+                                                weakEntityList[i][1].push(strongEntityList[k][1][l]);
+                                            }
+                                            else {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    //If candidate key, push in only candidate keys
+                                    else if (strongEntityList[k][1][0].state == 'candidate') {
+                                        for (var l = 0; l < strongEntityList[k][1].length; l++) {
+                                            if (strongEntityList[k][1][l].state == 'candidate') {
+                                                weakEntityList[i][1].push(strongEntityList[k][1][l]);
+                                            }
+                                            else {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else if (ERRelationData[j][2][0].state == 'weak') {
+                                // Check if other weak entity is present in other weak relation
+                            }
+                        }
+                        else if (weakEntityList[i][0].id == ERRelationData[j][2][0].id) {
+                            // Check if other entity in relation is strong or weak
+                            if (ERRelationData[j][1][0].state == 'normal') {
+                                console.log('Match 1');
+                                //Iterate through 
+                                for (var k = 0; k < strongEntityList.length; k++) {
+                                    if (ERRelationData[j][1][0].id == strongEntityList[k][0].id) {
+                                        // If primary key, push in only primary keys
+                                        if (strongEntityList[k][1][0].state == 'primary') {
+                                            for (var l = 0; l < strongEntityList[k][1].length; l++) {
+                                                if (strongEntityList[k][1][l].state == 'primary') {
+                                                    weakEntityList[i][1].push(strongEntityList[k][1][l]);
+                                                }
+                                                else {
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        //If candidate key, push in only candidate keys
+                                        else if (strongEntityList[k][1][0].state == 'candidate') {
+                                            for (var l = 0; l < strongEntityList[k][1].length; l++) {
+                                                if (strongEntityList[k][1][l].state == 'candidate') {
+                                                    weakEntityList[i][1].push(strongEntityList[k][1][l]);
+                                                }
+                                                else {
+                                                    break;
+                                                }
+                                            }
+                                        } 
+                                    }
+                                }
+                            }
+                            else if (ERRelationData[j][1][0].state == 'weak') {
+
+                            }
+                        }
+                    }
+                }
+            }
+            console.log(weakEntityList[i][1]);
+        }
+    }
+    while (notComplete);
+
+    /*for (var i = 0; i < weakEntityList.length; i++) {
         for (var j = 0; j < ERRelationData.length; j++) {      
             if (ERRelationData[j].length >= 3) {
                 //If it is a weak relation
@@ -3995,7 +4150,7 @@ function generateErTableString()
                 }
             }
         }
-    }
+    }*/
     //Iterate through all relations
     for (var i = 0; i < ERRelationData.length; i++) {        
         if (ERRelationData[i].length >= 3) {
