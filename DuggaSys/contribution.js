@@ -239,14 +239,20 @@ function renderBarDiagram(data) {
   var str = "<h2 style='padding-left:5px'>Weekly bar chart</h2>";
   str += "<p style 'padding-top:10px'>Showing activities for " + dailyCount[0][0] + " - " + dailyCount[7*numOfWeeks-1][0] + " </p>";
   str += "<div style='overflow-x:scroll;'>"
-  str += `<svg  class='chart fumho'  style='background-color:#efefef;'
-  width='1300' height='250' aria-labelledby='title desc' role='img'>`;
+  str += `<svg  class='chart fumho' width='1300' height='250' aria-labelledby='title desc' role='img'>`;
+  // str += `<svg  class='chart fumho' width='1300' height='250' aria-labelledby='title desc' role='img'>`;
+
+  // Reuse old code. A new class and an if state were created to make the stipes vary between two shades of gray. 
   for (var i = 0; i < numOfWeeks; i++) {
-    str += `<rect x='${(65 + 120 * i)}' y='0%' width='120' height='100%' 
-    style='fill:${(i % 2 == 1 ? "#cccccc" : "#efefef")};' />`
+    if(i % 2 == 1) {
+      str += `<rect class='WeeklyBarChartEven' x='${(65 + 120 * i)}' y='0%' width='120' height='100%';' />`    
+    } else {
+      str += `<rect class='WeeklyBarChartOdd' x='${(65 + 120 * i)}' y='0%' width='120' height='100%';' />` 
+    }
   }
-  str += "<line style='stroke:#000;' x1='65' x2='65' y1='5%' y2='220'></line>";
-  str += "<line style='stroke:#000;' x1='65' x2='99%' y1='220' y2='220'></line>";
+
+  // str += "<line class='WeeklyBarChartText' style='stroke:green;' x1='65' x2='65' y1='5%' y2='220'></line>";
+  str += "<line class='WeeklyBarChartLine' x1='65' x2='100%' y1='220' y2='220'></line>";
 
   // Calculates and render scale numbers on the left
   var decimals = Math.pow(10, Math.round(maxDayCount).toString().length - 2);
@@ -256,8 +262,9 @@ function renderBarDiagram(data) {
     if (highRange > 100) {
       range = Math.round(range);
     }
-    str += `<text x='${(62 - (range.toString().length * 9))}' y='${(225 - (range / highRange) * 200)}'>${range}</text>`;
-    str += `<line style='stroke:#ccc;' x1='65' x2='99%' y1='${(220 - (range / highRange) * 200)}'
+    
+    str += `<text class'WeeklyBarChartNumber;'  x='${(62 - (range.toString().length * 9))}' y='${(225 - (range / highRange) * 200)}'>${range}</text>`;
+    str += `<line style='stroke:#ccc;' x1='65' x2='100%' y1='${(220 - (range / highRange) * 200)}'
      y2='${(220 - (range / highRange) * 200)}'></line>`;
   }
 
@@ -291,7 +298,7 @@ function renderBarDiagram(data) {
       str += "</g>";
     }
     
-    str += "<text x='" + (120 * i + 100) + "' y='240'>week " + (i + 1) + "</text>";
+    str += "<text class='WeeklyBarChartText' x='" + (120 * i + 100) + "' y='240'>week " + (i + 1) + "</text>";
     str += "</g>";
   }
   str += '</svg>';
@@ -358,7 +365,7 @@ function renderCommits(data) {
       }
     }
     
-    // Reuse old code. A new class and an if state were created to make it easier to change color in dark / light mode.
+    // Reuse old code. A new class and an if state were created to make the stipes vary between two shades of gray. 
     if(i % 2 == 1) {
       str += `<rect x='${(-300 + 120 * i)}' y='0%' width='120' height='100%' class='commitTreeBarsEven';' />`
 

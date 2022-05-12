@@ -8815,3 +8815,26 @@ border: none !important;
   stroke: black;
 }
 /* END */
+
+/* Style for "Weekly Bar Chart" START  */
+.WeeklyBarChartEven{
+  fill: var(--color-sectioned-table-lo);
+}
+
+.WeeklyBarChartOdd{
+  fill: var(--color-sectioned-table-hi);
+}
+
+.WeeklyBarChartLine{
+  stroke: black;
+}
+
+.WeeklyBarChartNumberText{
+  fill: black;
+}
+
+.chart, .fumho{
+  /* fill: white; */
+  background-color: var(--color-sectioned-table-hi);
+}
+/* END */
