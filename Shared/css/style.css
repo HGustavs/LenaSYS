@@ -5437,13 +5437,14 @@ only screen and (max-device-width: 320px) {
 
 #sectionBurger{ 
   display: none;
+  background-color: #614875;
   
 }
-#tabElement2,#hideElement2, #addElement2, #showElements2{
+#hideElement2, #showElements2{
   display: hide;
 }
-@media only screen and (max-width: 750px),
-only screen and (max-device-width: 750px) {
+@media only screen and (max-width: 800px),
+only screen and (max-device-width: 800px) {
 
   #sectionBurger {
     display: block;
@@ -5451,17 +5452,18 @@ only screen and (max-device-width: 750px) {
   #sectionBurgerBox{
     display: block;
     position: absolute;
-    top: 30px;
-    width: 32px;
-    padding: 10px;
-    height: 100px;
-    background-color: var(--color-primary-2);
+    top: 27px;
+    right: 8px;
+    width: 40px;
+    padding: 2px;
+    height: 60px;
+    background-color: #614875;
   }
-  #tabElement2,#hideElement2, #addElement2, #showElements2{
+ #hideElement2, #showElements2{
     display: block;
   }
 
-#tabElement,#hideElement, #addElement, #showElements{
+#hideElement, #showElements{
     display: none;
   }
 }
