@@ -1103,34 +1103,34 @@ function onSetup()
 
     const demoData = [
  
-        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID , isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function'] },
-        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Bdale_ID, isLocked: false, state: "Normal",  type: "ER" },
-        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: BdaleDependent_ID, isLocked: false, state: "Normal",  type: "ER" },
+        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID , isLocked: false, state: "normal", type: "ER", attributes: ['Attribute'], functions: ['Function'] },
+        { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Bdale_ID, isLocked: false, state: "normal",  type: "ER" },
+        { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: BdaleDependent_ID, isLocked: false, state: "normal",  type: "ER" },
         { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Ssn_ID, isLocked: false, state: "candidate",  type: "ER"},
         { name: "Name", x: 200, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Name_ID, isLocked: false,  type: "ER" },
         { name: "Name", x: 180, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDependent_ID, isLocked: false, state: "weakKey",  type: "ER"},
-        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameProject_ID, isLocked: false, type: "ER"},
-        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDEPARTMENT_ID, isLocked: false,  type: "ER"},
-        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Address_ID, isLocked: false,  type: "ER" },
-        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: AddressDependent_ID, isLocked: false,  type: "ER" },
-        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Relationship_ID, isLocked: false,  type: "ER" },
-        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Salary_ID, isLocked: false,  type: "ER" },
-        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: FNID, isLocked: false,  type: "ER" },
-        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Initial_ID, isLocked: false,  type: "ER" },
-        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: LNID, isLocked: false,  type: "ER" },
+        { name: "Name", x: 920, y: 600, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameProject_ID, isLocked: false, state: "normal", type: "ER"},
+        { name: "Name", x: 980, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NameDEPARTMENT_ID, isLocked: false, state: "normal",  type: "ER"},
+        { name: "Address", x: 300, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Address_ID, isLocked: false, state: "normal",  type: "ER" },
+        { name: "Address", x: 270, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: AddressDependent_ID, isLocked: false, state: "normal",  type: "ER" },
+        { name: "Relationship", x: 450, y: 700, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Relationship_ID, isLocked: false, state: "normal",  type: "ER" },
+        { name: "Salary", x: 400, y: 50, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Salary_ID, isLocked: false, state: "normal",  type: "ER" },
+        { name: "F Name", x: 100, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: FNID, isLocked: false, state: "normal",  type: "ER" },
+        { name: "Initial", x: 200, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Initial_ID, isLocked: false, state: "normal",  type: "ER" },
+        { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: LNID, isLocked: false, state: "normal",  type: "ER" },
         { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: SUPERVISION_ID, isLocked: false,  type: "ER" },
         { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak",  type: "ER"},
         { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPENDENT_ID, isLocked: false, state: "weak",  type: "ER", attributes: ['Attribute'], functions: ['Function'] },
         { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Number_of_depends_ID, isLocked: false, state: "computed",  type: "ER"},
         { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_ON_ID, isLocked: false,  type: "ER" },
-        { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Hours_ID, isLocked: false,  type: "ER" },
-        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: PROJECT_ID, isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
+        { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Hours_ID, isLocked: false, state: "normal",  type: "ER" },
+        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: PROJECT_ID, isLocked: false, state: "normal",  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
         { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberProject_ID, isLocked: false, state: "candidate",  type: "ER"},
-        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Location_ID, isLocked: false,  type: "ER"},
+        { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Location_ID, isLocked: false, state: "normal",  type: "ER"},
         { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: MANAGES_ID, isLocked: false,  type: "ER" },
-        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Start_date_ID, isLocked: false,  type: "ER" },
+        { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Start_date_ID, isLocked: false, state: "normal",  type: "ER" },
         { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: CONTROLS_ID, isLocked: false,  type: "ER" },
-        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPARTMENT_ID, isLocked: false,  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
+        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPARTMENT_ID, isLocked: false, state: "normal",  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
         { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Locations_ID, isLocked: false, state: "multiple",  type: "ER" },
         { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_FOR_ID, isLocked: false,  type: "ER" },
         { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberDEPARTMENT_ID, isLocked: false, state: "candidate",  type: "ER"},
@@ -3953,36 +3953,48 @@ function generateErTableString()
         ERAttributeData.push(currentRow);
     }
 
-    var tempEnti = [];
-    for (var i = 0; i < ERAttributeData.length; i++) {
-        var row = [];
-        row.push([ERAttributeData[i][0]]);
-        var keys = [];
-        if (ERAttributeData[i][0].state == 'weak') {
-            for (var j = 1; j < ERAttributeData[i].length; j++ ) {
-                if (ERAttributeData[i][j].state == 'weakKey') {
-                    keys.push(ERAttributeData[i][j]);
-                }
-            }
-            for (var j = 1; j < ERAttributeData[i].length; j++ ) {
-                if (ERAttributeData[i][j].state == 'primary') {
-                    keys.push(ERAttributeData[i][j]);
-                }
-            }
-            for (var j = 1; j < ERAttributeData[i].length; j++ ) {
-                if (ERAttributeData[i][j].state == 'candidate') {
-                    keys.push(ERAttributeData[i][j]);
+    //console.log(formatERStrongEntities(ERAttributeData));
+    var weakEntityList = formatERWeakEntities(ERAttributeData);
+    for (var i = 0; i < weakEntityList.length; i++) {
+        for (var j = 0; j < ERRelationData.length; j++) {      
+            if (ERRelationData[j].length >= 3) {
+                //If it is a weak relation
+                if (ERRelationData[j][0].state == 'weak') {
+                    if(weakEntityList[i][0].id == ERRelationData[j][1][0].id){
+                        if(ERRelationData[j][2][0].state == 'normal'){
+                            for (var k = 0; k < ERAttributeData.length; k++) {
+                                if(ERRelationData[j][2][0].id == ERAttributeData[k][0].id){
+                                    for (var l = 1; l < ERAttributeData[k].length; l++) {
+                                        if(ERAttributeData[k][l].state == 'primary' || ERAttributeData[k][l].state == 'candidate'){
+                                            weakEntityList[i][1].push(ERAttributeData[k][l]);
+                                        }                            
+                                    }
+                                }
+                            }
+                        }
+                        else if(ERRelationData[j][2][0].state == 'weak'){     
+                            // TODO: create while loop to get complete keys.                   
+                        }
+                    }
+                    else if (weakEntityList[i][0].id == ERRelationData[j][2][0].id){
+                        if(ERRelationData[j][1][0].state == 'normal'){
+                            for (var k = 0; k < ERAttributeData.length; k++) {
+                                if(ERRelationData[j][1][0].id == ERAttributeData[k][0].id){
+                                    for (var l = 1; l < ERAttributeData[k].length; l++) {
+                                        if(ERAttributeData[k][l].state == 'primary' || ERAttributeData[k][l].state == 'candidate'){
+                                            weakEntityList[i][1].push(ERAttributeData[k][l]);
+                                        }                            
+                                    }
+                                }
+                            }
+                        }
+                        else if(ERRelationData[j][1][0].state == 'weak'){     
+                            // TODO: create while loop to get complete keys.                   
+                        }
+                    }
                 }
             }
         }
-        row.push(keys);
-        for (var j = 1; j < ERAttributeData[i].length; j++ ) {
-            if (ERAttributeData[i][j].state == 'normal') {
-                row.push(ERAttributeData[i][j]);
-            }  
-        }
-        tempEnti.push(row);
-        console.log(tempEnti);
     }
     //Iterate through all relations
     for (var i = 0; i < ERRelationData.length; i++) {        
@@ -4356,6 +4368,89 @@ function generateErTableString()
         stri += new String(stringList[i] + "\n\n");
     }
     return stri;
+}
+/**
+ * @description Formats a list of strong/normal entitys and their attributes.
+ * @param ERDATA A list of all entities and it's attributes 
+ * @returns A formated list of all strong/normal entities and their attributes. Keys for every entity are stored in [entityRow][1].
+ */
+function formatERStrongEntities(ERData){
+    var temp = []; // The formated list of strong/normal entities 
+    // Iterating through all entities
+    for (var i = 0; i < ERData.length; i++) {
+        if (ERData[i][0].state == 'normal') {
+            var row = []; // The formated row
+            row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
+            var keys = []; // The key attributes (primary, candidate and weakKey)
+            // Pushing in weak keys last to ensure that the first key in a strong/normal entity isn't weak
+            for (var j = 1; j < ERData[i].length; j++ ) {
+                if (ERData[i][j].state == 'primary') {
+                    keys.push(ERData[i][j]);
+                }
+            }
+            for (var j = 1; j < ERData[i].length; j++ ) {
+                if (ERData[i][j].state == 'candidate') {
+                    keys.push(ERData[i][j]);
+                }
+            }
+            for (var j = 1; j < ERData[i].length; j++ ) {
+                if (ERData[i][j].state == 'weakKey') {
+                    keys.push(ERData[i][j]);
+                }
+            }
+            row.push(keys); // Pushing all keys from the entity
+            // Pushing in remaining attributes
+            for (var j = 1; j < ERData[i].length; j++ ) {
+                if (ERData[i][j].state == 'normal') {
+                    row.push(ERData[i][j]);
+                }  
+            }
+            temp.push(row); // Pushing the formated row to the temp list
+        }
+    }
+    return temp;
+}
+
+/**
+ * @description Formats a list of weak entitys and their attributes.
+ * @param ERDATA A list of all entities and it's attributes 
+ * @returns A formated list of all weak entities and their attributes. Keys for every entity are stored in [entityRow][1].
+ */
+function formatERWeakEntities(ERData){
+    var temp = []; // The formated list of weak entities 
+    // Iterating through all entities
+    for (var i = 0; i < ERData.length; i++) {
+        if (ERData[i][0].state == 'weak') {
+            var row = []; // The formated row
+            row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
+            var keys = []; // The key attributes (weakKey, primary and candidate)
+            // Pushing in weak keys first to ensure that the first key in a weak entity is weak
+            for (var j = 1; j < ERData[i].length; j++ ) {
+                if (ERData[i][j].state == 'weakKey') {
+                    keys.push(ERData[i][j]);
+                }
+            }
+            for (var j = 1; j < ERData[i].length; j++ ) {
+                if (ERData[i][j].state == 'primary') {
+                    keys.push(ERData[i][j]);
+                }
+            }
+            for (var j = 1; j < ERData[i].length; j++ ) {
+                if (ERData[i][j].state == 'candidate') {
+                    keys.push(ERData[i][j]);
+                }
+            }
+            row.push(keys); // Pushing all keys from the entity
+            // Pushing in remaining attributes
+            for (var j = 1; j < ERData[i].length; j++ ) {
+                if (ERData[i][j].state == 'normal') {
+                    row.push(ERData[i][j]);
+                }  
+            }
+            temp.push(row); // Pushing the formated row to the temp list
+        }
+    }
+    return temp;
 }
 
 /**
