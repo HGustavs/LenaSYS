@@ -117,7 +117,7 @@
 	}
 	$response->closeCursor();
 
-	if($splicedFileName != "UNK" && isset($splicedFileName && $splicedFileName != "")){
+	if($splicedFileName != "UNK" && isset($splicedFileName)){
 		if(file_exists("../courses/global/"."$splicedFileName"))						$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
 		else if(file_exists("../courses/".$cid."/"."$splicedFileName"))					$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
 		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))		$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
