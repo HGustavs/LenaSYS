@@ -5078,13 +5078,40 @@ function showBox(id) {
 	});
 }
 
-// Iframe used for editing file 
+// Show preview winodow when clicking on "Edit file"
 function showIframe(boxid,kind) {
-	    var fileName = retData['box'][boxid - 1][5]+'';
-		var filePath = 'fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename=';
-		document.querySelector(".previewWindow").style.display = "block";
-		document.querySelector(".previewWindowContainer").style.display = "block";
-		$("#iframeFileed").attr('src', filePath+fileName);
+	var fileName = retData['box'][boxid - 1][5]+'';
+    
+    // Fetch HTML text from fileed.php
+    fetch('fileed.php').then(function (response) {
+        // The API call was successful!
+        return response.text();
+    }).then(function (html) {
+        // Parse HTML test to DOM
+        var parser = new DOMParser();
+        var fileedDocument = parser.parseFromString(html, 'text/html');
+
+        // Replace the preview window from codeviewer.php with the preview window from fileed.php in DOM
+        var previewWindow = document.querySelector(".previewWindow")
+        var fileedPreviewWindow = fileedDocument.querySelector(".previewWindow");
+        document.querySelector(".previewWindowContainer").replaceChild(fileedPreviewWindow, previewWindow)
+        
+        // Display the preview window and append hideIframe() to the close window button 
+        previewWindow = document.querySelector(".previewWindow");
+		previewWindow.classList.add("loginBox");
+        previewWindow.style.display = "block";
+        document.querySelector(".editFilePart").style.display = "none";
+        previewWindow.getElementsByTagName('div')[0].getElementsByTagName('div')[0].onclick = hideIframe;
+        
+        // Load the right file in to the preview window
+        $.getScript("fileed.js", function(){
+            loadPreview(null, fileName, null);
+        });
+    }).catch(function (err) {
+        // Display potential errors as a warning
+        console.warn('Something went wrong.', err);
+    });
+    
 }
 
 // Iframe used for drag and drop
@@ -5097,11 +5124,8 @@ function showHiddenIframe() {
 
 function hideIframe()
 {
-	if (document.querySelector(".previewWindowContainer").style.display != "none") {
-		document.querySelector(".previewWindow").style.display = "none";
-		document.querySelector(".previewWindowContainer").style.display = "none";
-		location.reload();
-	}
+	document.querySelector(".previewWindow").style.display = "none";
+	document.querySelector(".previewWindowContainer").style.display = "none";
 }
 
 function hideDescription() {
