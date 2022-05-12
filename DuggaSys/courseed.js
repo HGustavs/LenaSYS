@@ -735,7 +735,7 @@ $( document ).ajaxComplete(function() {
 
 function localStorageCourse(){
 	// check if lastcourse created is true to add glow to the relative text 
-    if(localStorage.getItem("lastCC")){
+    if(localStorage.getItem("lastCC") == "true"){
         var StorageCourseId = localStorage.getItem("lastCourseCreatedId");
         glowNewCourse(StorageCourseId);
         localStorage.setItem('lastCourseCreatedId', " ");
@@ -743,7 +743,7 @@ function localStorageCourse(){
     }
 
 	// check if updateCourseName is true to add glow to the relative text 
-	if(localStorage.getItem("updateCourseName")){
+	if(localStorage.getItem("updateCourseName") == "true"){
         var StorageCourseId= localStorage.getItem("courseid");
         updateCourseColor(StorageCourseId);
         localStorage.setItem('courseid', " ");
