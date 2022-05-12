@@ -2957,6 +2957,36 @@ div.submit-button:disabled {
   line-height: 48px !important;
 }
 
+/* Form Pointing Dialogs */
+
+.formDialog {
+  position: relative;
+  display: inline-block;
+}
+
+.formDialog .formDialogText {
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 5;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.formDialog .formDialogText::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent black;
+}
 
 /* Tooltip */
 
