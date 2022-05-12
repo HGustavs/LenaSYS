@@ -2807,15 +2807,23 @@ function zoomText(boxid, increment)
 	}
 	
 	else { 
-	
-		var zoomButton = document.querySelector('#box'+boxid+'wrapper #zoomIn');
 		
-		zoomButton.style.opacity = "0.4";
-		zoomButton.style.pointerEvents = "none";
-	
+		if(increment < 0) {
+			var zoomButton = document.querySelector('#box'+boxid+'wrapper #zoomOut');
+			zoomButton.style.opacity = "0.4";
+			zoomButton.style.pointerEvents = "none";
+		}
+		
+		else if (increment > 0) {
+			var zoomButton = document.querySelector('#box'+boxid+'wrapper #zoomIn');
+			zoomButton.style.opacity = "0.4";
+			zoomButton.style.pointerEvents = "none";
+			
+		}
+		
 	}
-	
 }
+	
 
 //-----------------------------------------------------------------------------
 // resetText: Resets the text size to the default value. (9px)
