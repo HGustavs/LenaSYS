@@ -8812,3 +8812,6 @@ border: none !important;
     text-shadow: 0px 0px 0px #FF0000;
   }
 }
+.highlightChange{
+  animation: glowAnimation 4s ease-out;
+}
