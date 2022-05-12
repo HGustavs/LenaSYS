@@ -65,6 +65,8 @@
 	$json = "UNK";
 	$fileName = "UNK";
 	$gFileName = "UNK";
+	$fileType = "";
+	$gFileType = "";
 	$instructions = "";
 	$information = "";
 	
@@ -85,11 +87,21 @@
 		//exception handling for default variants
 		if(!empty($parameterArray) && !isset($parameterArray["variant"])){
 
+			if(isset($parameterArray["diagram_File"])){
 				$splicedFileName=$parameterArray["diagram_File"];
+			}
+			if(isset($parameterArray["filelink"])){
 				$fileName=$parameterArray["filelink"];
-				$fileType=$parameterArray["type"];
+			}
+			if(isset($parameterArray["type"])){
+				$gFileType=$parameterArray["Type"];
+			}
+			if(isset($parameterArray["gFilelink"])){
 				$gFileName=$parameterArray["gFilelink"];
+			}
+			if(isset($parameterArray["gType"])){
 				$gFileType=$parameterArray["gType"];
+			}
 			
 			// for fetching file content
 			if(isset($fileName)){
