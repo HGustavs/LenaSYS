@@ -83,7 +83,7 @@
 		$parameterArray = json_decode($variantParams,true);
 
 		//exception handling for default variants
-		if(!empty($parameterArray) && !isset($parameterArray["variant"])){
+		if(!empty($parameterArray)){
 
 				$splicedFileName=$parameterArray["diagram_File"];
 				$fileName=$parameterArray["filelink"];
