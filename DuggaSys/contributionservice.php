@@ -781,21 +781,27 @@ if(strcmp($opt,"get")==0) {
 	);
 	echo json_encode($array);
 }
-else if(strcmp($opt,"requestContributionUserLogin") == 0){
-	echo "<script> console.log('php print stuff to console'); </script>";
+else if(strcmp($opt,"yoyo") == 0){
+
+	oohfuck();
+	if($pdo == null) pdoConnect();
+
+	$query = $pdo->prepare('SELECT distinct username from git_user');
+	
+	if(!$query->execute()){
+		showError();
+	}
+	
+	$rows= $query->fetchAll();
+
+
+
 }
 
 
 } // end of checklogin methods
 
-
-
-
 // methods not needing you to be logged in
-
-
-
-
 
 die; // end of file, kill yourself
 ?>

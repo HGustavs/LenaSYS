@@ -2209,12 +2209,28 @@ function accountInformation(){
     str+= "</tr>";
   }
 
-  AJAXService('GET',{},'CONT_ACCOUNT_STATUS');
+  let git_username = null;
+  let status = null
+  AJAXService("yoyo",
+  {username: git_username, status_account:status},
+  'CONT_ACCOUNT_STATUS');
   return str; 
 }
 
 function testconsoleLog(data){
-  console.log("test data blablabla");
+  console.log("testconsoleLog(data) is called");
+  console.log(data['git_username']);
+}
+function shitFucked(){
+  console.log("shitFucked() called  ");
+}
+
+function showError(){
+  console.log("showError has been called. ");
+}
+
+function oohfuck(){
+  console.log("oohfuck() is called ");
 }
 
 console.error
