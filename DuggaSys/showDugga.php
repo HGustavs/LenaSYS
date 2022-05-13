@@ -105,7 +105,7 @@
 				else if(file_exists("../courses/".$cid."/"."$gFileName"))				$information = file_get_contents("../courses/".$cid."/"."$gFileName");
 				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))	$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
 			}
-
+      
 			$pattern = '/\s*/m';
 			$replace = '';
 			$instructions = preg_replace( $pattern, $replace,$instructions);
