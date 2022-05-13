@@ -2177,6 +2177,29 @@ function mouseUp(e) {
 
 //Creates the sidebar for accepting and rejecting students when logged in as a superUser
 function createSidebar(){
+
+  let git_username = null;
+  let status = null
+  AJAXService("yoyo", {username: git_username, status_account:status},'CONT_ACCOUNT_STATUS');
+}
+
+function accountInformation(data){
+  var str = "";
+  for (var row = 0; row < data.length; row++) {
+    str+= "<tr class='accountRequestTable'>";
+    
+    str+= "<td class='accountRequestTable'>" + row + "</td>";
+    str+= "<td class='accountRequestTable'>" + data[row][0] + "</td>";
+    str+= "<td class='accountRequestTable'>" + data[row][1] + "</td>";
+    str+= "<td class='accountRequestTable'>" + "buttons for changing stuff" + "</td>";
+    
+    str+= "</tr>";
+  }
+
+  return str; 
+}
+
+function testconsoleLog(data){
   var text = document.getElementById('accountRequests-pane');
   text.style.display="inline-block";
   str = "";
@@ -2188,36 +2211,14 @@ function createSidebar(){
   str+= "<th class='accountRequestTable'>Status</th>";
   str+= "<th class='accountRequestTable'></th>";
   str+= "</tr>";
-  str+=accountInformation();
+  str+=accountInformation(data);
 
   str+= "</table>";
   str+= "</div>";
   text.innerHTML = str;
-}
 
-function accountInformation(){
-  var str = "";
-
-  for (var row = 0; row < 5; row++) {
-    str+= "<tr class='accountRequestTable'>";
-    
-    str+= "<td class='accountRequestTable'>" + "index" + "</td>";
-    str+= "<td class='accountRequestTable'>" + "username" + "</td>";
-    str+= "<td class='accountRequestTable'>" + "status value" + "</td>";
-    str+= "<td class='accountRequestTable'>" + "buttons for changing stuff" + "</td>";
-    
-    str+= "</tr>";
-  }
-
-  let git_username = null;
-  let status = null
-  AJAXService("yoyo", {username: git_username, status_account:status},'CONT_ACCOUNT_STATUS');
-  return str; 
-}
-
-function testconsoleLog(data){
   console.log("testconsoleLog(data) is called");
-  console.log(data);
+  console.log();
 }
 
 function shitFucked(){
