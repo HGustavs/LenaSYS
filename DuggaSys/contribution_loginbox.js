@@ -369,6 +369,12 @@ function git_logout()
                         $("input#username").removeClass("loginFail");
                   $("input#password").removeClass("loginFail");
                   displayAlertText("#login #message", "Try again");
+
+                    setTimeout(() => {
+                      displayAlertText("#login #message", ""); // hide it
+                    }, 2000);
+
+
                           }, 2000);
               }
             }
@@ -388,7 +394,12 @@ function git_logout()
                       $("input#username").removeClass("loginFail");
                 $("input#password").removeClass("loginFail");
                 displayAlertText("#login #message", "Try again");
-                        }, 2000);
+
+                setTimeout(() => {
+                  displayAlertText("#login #message", ""); // hide it
+                }, 2000);
+
+                }, 2000);
   
             }
           });    
