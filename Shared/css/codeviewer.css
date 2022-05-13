@@ -983,11 +983,16 @@
 
 
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 520px) {
         #mobileNavHeading {
             font-size: 13px;
     }
-    .maximizebtn, .minimizebtn {
+    .maximizebtn, .minimizebtn, #templatebutton, #codeburger, #editbutton {
+        display: none;
+    }
+}
+@media only screen and (max-width: 440px) {
+    .navName {
         display: none;
     }
 }
