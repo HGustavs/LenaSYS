@@ -841,6 +841,11 @@ p {
   background-color: var(--color-primary)/*var(--color-primary-light)*/;
 }
 
+#Sectionlist .section #NewTabLink {
+  filter: invert(0%);
+  -webkit-filter: invert(0%);  
+} 
+
 #Sectionlist .section #dorf {
    filter: invert(100%);
   -webkit-filter: invert(100%);
