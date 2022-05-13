@@ -294,7 +294,7 @@ function selectVariant(vid, el) {
   				else if(result == "extraparam"){
   					document.getElementById('extraparam').value = obj[result];
   				}
-				else if(result == "notes_Text"){
+				else if(result == "notes"){
 					document.getElementById('notes').value = obj[result];
 				}
 				else if(result =="errorActive"){
@@ -308,10 +308,6 @@ function selectVariant(vid, el) {
 			document.getElementById('ER').checked = diagramType.ER;
 			document.getElementById('UML').checked = diagramType.UML;
 		}//<-- UML functionality end
-		var notesText = obj.notes_Text;
-		if(notesText){
-			document.getElementById('notes').value;
-		}
         var submissionTypes = obj.submissions;
         if (submissionTypes) {
   			  document.getElementById('submissionType0').value = submissionTypes[0].type;
@@ -510,10 +506,11 @@ function createJSONString(formData) {
 		"diagram_File":$("#file option:selected").val(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
-		"notes_Text":document.getElementById("notes").value,
+		"notes":$('#notes').val(),
 		"submissions":submission_types,
 		"errorActive":document.getElementById("errorActive").checked
 	});
+	
 }
 
 // Does the reverse of what createJSONString does.
@@ -547,13 +544,14 @@ function createJSONFormData(){
       else if(result == "extraparam"){
         document.getElementById('extraparam').value = obj[result];
       }
-	  else if(result == "notes_Text"){
+	  else if(result == "notes"){
         document.getElementById('notes').value = obj[result];
       }
 	 
 	  else if(result =="file"){
 		document.getElementById('file').value = "hejsan";
 	  }
+	  
     }
 
     var submissionTypes = obj.submissions;
@@ -755,7 +753,7 @@ function renderVariant(clickedElement) {
 		var tabledata = {
 				tblhead: {
 						vid: "",
-						note: "Note",
+						notes: "Note",
 						param: "Parameter",
 						modified: "Modified",
 						disabled: "Status",
@@ -780,6 +778,7 @@ function renderVariant(clickedElement) {
 		});
 		searchterm = '';
 		variantTable.renderTable();
+		console.log(variantTable.renderTable());
     newVariant();
     $('#did').val(globalData['entries'][clickedElement].arrow);
     $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
@@ -846,8 +845,11 @@ function renderCell(col, celldata, cellid) {
 			break;
 
 		case "notes":
-			//object = JSON.parse(celldata);		// DUGGA-TABLE - Note column
-			retString = `<span class='noteText'>${celldata}</span>`;
+			object = JSON.parse(celldata);
+			var test = document.getElementById("notes").value;
+
+			retString = `<span class='unik'></span>`;
+						
 			break;
 
 		case "param":		// DUGGA-TABLE - Parameter column
