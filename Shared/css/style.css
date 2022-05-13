@@ -8399,10 +8399,6 @@ background-color: #614875;
   color: white;
 }
 
-span[id$="examples"] {
-  background: #ffff00;
-}
-
 .codedropStyle {
   background-color: #614875;
   border-color: rgb(0,0,0) transparent;	
@@ -8430,6 +8426,23 @@ span[id$="examples"] {
 .dropdownitemStyle {
   background: #614875;
   color: #fff;
+  cursor: pointer;
+}
+
+.dropdownitemStyle:not(span[id$="examples"]){
+  margin-left: 20px;
+}
+
+span[id$="examples"] {
+  cursor: default;
+  background-color: var(--color-primary-2);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-right: 2.2rem;
+}
+
+span[id$="examples"]:hover{
+  background-color: var(--color-primary-2);
 }
 
 .dropdownitem:hover {
