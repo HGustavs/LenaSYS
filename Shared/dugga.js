@@ -2688,6 +2688,24 @@ $(document).on('keydown', function(e) {
 		else if (box[0].classList.contains("searchTab")){
 			searchByFilter();
 		}
+		else if (box[0].classList.contains("globalSortTab")){
+			filterFilesByKind('Global');
+		}
+		else if (box[0].classList.contains("courselocalSortTab")){
+			filterFilesByKind('CourseLocal');
+		}
+		else if (box[0].classList.contains("versionLocalSortTab")){
+			filterFilesByKind('Local');
+		}
+		else if (box[0].classList.contains("linkSortTab")){
+			filterFilesByKind('Link');
+		}
+		else if (box[0].classList.contains("dummyFileSortTab")){
+			filterFilesByKind('DummyFiles');
+		}
+		else if (box[0].classList.contains("fabBtnEditfile")){
+			createQuickItem();
+		}
 		
 		
 	}
