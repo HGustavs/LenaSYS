@@ -8798,4 +8798,6 @@ border: none !important;
 /* }  /* END of "@media (prefers-color-scheme: light)" */
 /* White Theme code END */
 
-
+.LightBox:hover {
+    cursor: grab;
+}
