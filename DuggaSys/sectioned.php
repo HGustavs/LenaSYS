@@ -133,7 +133,7 @@
 			<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
 				<input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
 				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
-				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; margin-right: 55px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("showItems");'>
+				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; margin-right: 55px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
 			</div>
 		
 			<!-- end hide button -->
@@ -344,6 +344,24 @@
 			</div>
 			<div style='display:flex; align-items:center; justify-content: center;'>
 				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("hideItem");' />
+				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+			</div>
+		</div>
+	</div>
+	<!-- Confirm Edit Section Hide Dialog END -->
+
+	<!-- Confirm Section Hide Dialog START -->
+	<div id='sectionShowConfirmBox' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+			<div class='loginBoxheader'>
+					<h3>Confirm show items</h3>
+					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+			</div>
+			<div style='text-align: center;'>
+					<h4>Are you sure you want to show this item?</h4>
+			</div>
+			<div style='display:flex; align-items:center; justify-content: center;'>
+				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("showItems");' />
 				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
 		</div>
