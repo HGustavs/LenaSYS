@@ -5777,8 +5777,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         }
     }
 
-    // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
-    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
+    // Check so the elements does not have the same kind, exception for the "ERAttr" and "UMLEntity" kind.
+    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" || fromElement.kind === "UMLEntity") {
 
         // Filter the existing lines and gets the number of existing lines
         var numOfExistingLines = lines.filter(function (line) {
