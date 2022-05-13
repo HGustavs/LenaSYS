@@ -709,3 +709,20 @@ input{
     filter: invert(1) ; 
 }
 /* END */
+
+/* Style for "Account Request Table" START */
+.accountRequestTable tr:nth-child(even){
+    background-color: var(--color-sectioned-table-hi);
+}
+
+.accountRequestTable tr:nth-child(odd){
+    background-color: var(--color-sectioned-table-lo);
+}
+.accountRequestTable{
+    color: white;
+}
+#accountRequests-pane{
+    background-color: #212121;
+    border: 1px solid white;
+}
+/* END */

@@ -2194,7 +2194,7 @@ function createSidebar(){
   str = "";
   str+= '<div id="accountRequests-pane-button" class="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker" class="accountRequests-pane-span">Account requests</span></div>';
   str+= "<table class='accountRequestTable'style='width: 85%'  border='1'><br />";
-	str+= "<tr class='accountRequestTable' style=' background-color: #ffffff';>";
+	str+= "<tr class='accountRequestTable' />";
   str+= "<th class='accountRequestTable'></th>";
   str+= "<th class='accountRequestTable'>Name </th>";
   str+= "<th class='accountRequestTable'>Status</th>";
