@@ -406,13 +406,6 @@ function returned(data)
 	hideMaximizeAndResetButton();
 
 	// Allows resizing of boxes on the page
-	//If firefox is the browser do not allow resizing. (firefox resizing is currently)
-	var userAgent = navigator.userAgent;
-
-	if(userAgent.match(/firefox|fxios/i)){
-		console.log('Resizing is broken in firefox');
-	}
-
 	resizeBoxes("#div2", retData["templateid"]);
 	var titles = [...document.querySelectorAll('[contenteditable="true"]')];
 
