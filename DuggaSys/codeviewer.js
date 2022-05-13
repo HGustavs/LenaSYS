@@ -2797,31 +2797,20 @@ function zoomText(boxid, increment)
 
 	var fontSize = parseInt(document.getElementById("box" + boxid).style.fontSize);
 	
+	var zoomOutButton = document.querySelector('#box'+boxid+'wrapper #zoomOut');
+	var zoomInButton = document.querySelector('#box'+boxid+'wrapper #zoomIn');
 
-	if (increment > 0 && fontSize < upperLimit || increment < 0 && fontSize > lowerLimit){
+
+	if (increment > 0 && fontSize - increment < upperLimit || increment < 0 && fontSize + increment > lowerLimit){
 
 		fontSize = fontSize + increment; 
-
 		document.getElementById("box" + boxid).style.fontSize = fontSize + "px";
-	
+		
+		enableZoomButton(zoomInButton);
+		enableZoomButton(zoomOutButton);
+
 	}
-	
-	else { 
-		
-		if(increment < 0) {
-			var zoomButton = document.querySelector('#box'+boxid+'wrapper #zoomOut');
-			zoomButton.style.opacity = "0.4";
-			zoomButton.style.pointerEvents = "none";
-		}
-		
-		else if (increment > 0) {
-			var zoomButton = document.querySelector('#box'+boxid+'wrapper #zoomIn');
-			zoomButton.style.opacity = "0.4";
-			zoomButton.style.pointerEvents = "none";
-			
-		}
-		
-	}
+
 }
 	
 
@@ -2830,9 +2819,25 @@ function zoomText(boxid, increment)
 //-----------------------------------------------------------------------------
 function resetText(boxid)
 {
+	var zoomButton = document.querySelector('#box'+boxid+'wrapper #zoomOut');
+	var zoomInButton = document.querySelector('#box'+boxid+'wrapper #zoomIn');
+	
+	enableZoomButton(zoomButton);
+	enableZoomButton(zoomInButton);
+	
+	document.getElementById("box" + boxid).style.fontSize = "9px";
 
-document.getElementById("box" + boxid).style.fontSize = "9px";
+}
 
+function enableZoomButton(zoomButton){
+	zoomButton.style.opacity = "1";
+	zoomButton.style.cssText = "";
+}
+
+function disableZoomButton(zoomButton){
+	console.log(zoomButton.style);
+	zoomButton.style.opacity = "0.4";
+	zoomButton.style.pointerEvents = "none";
 }
 
 //-----------------------------------------------------------------------------
