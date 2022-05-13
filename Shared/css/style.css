@@ -1438,6 +1438,12 @@ div .navButt:hover {
   overflow: hidden;
 }
 
+@media screen and (max-width:480px) {
+  .loginbutton-nav {
+    height: 30px;
+    }
+  }
+
 @media screen and (max-width:400px){
     .hamburger{
         display: flex;
