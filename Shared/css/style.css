@@ -8399,6 +8399,10 @@ background-color: #614875;
   color: white;
 }
 
+span[id$="examples"] {
+  background: #ffff00;
+}
+
 .codedropStyle {
   background-color: #614875;
   border-color: rgb(0,0,0) transparent;	
