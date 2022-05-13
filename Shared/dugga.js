@@ -2679,6 +2679,16 @@ $(document).on('keydown', function(e) {
 		else if (box[0].classList.contains("newVers")){
 			showCreateVersion();
 		}
+		else if (box[0].classList.contains("showDuggaFiltTab")){
+			showAvailableDuggaFilter();
+		}
+		else if (box[0].classList.contains("showColumnFiltTab")){
+			showAvailableColumnFilter();
+		}
+		else if (box[0].classList.contains("searchTab")){
+			searchByFilter();
+		}
+		
 		
 	}
 	else if(e.key === 'Escape'){
