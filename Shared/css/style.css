@@ -1710,7 +1710,7 @@ div .navButt:hover {
     width: 110px;
 
   }.logoutBox  .logoutboxTr input[type="button"]:last-child{
-    margin-left: 10px;
+    margin-left: 30px;
   }
   .viewOldFeedbacks{
     display: none;
