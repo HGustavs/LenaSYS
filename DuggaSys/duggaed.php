@@ -276,9 +276,11 @@ session_start();
   	<!-- Edit Variant Dialog END -->
 
     <div class="fixed-action-button extra-margin" id="fabButtonAcc">
+      <div class="fabBtnEditDugga" tabIndex="0">
         <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
-        <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
-        </ol>
+      </div>
+      <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
+      </ol>
 	</div>
 
   

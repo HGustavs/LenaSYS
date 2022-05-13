@@ -2703,7 +2703,7 @@ $(document).on('keydown', function(e) {
 		else if (box[0].classList.contains("dummyFileSortTab")){
 			filterFilesByKind('DummyFiles');
 		}
-		else if (box[0].classList.contains("fabBtnEditfile")){
+		else if (box[0].classList.contains("fabBtnEditfile") || (box[0].classList.contains("fabBtnEditDugga"))){
 			createQuickItem();
 		}
 		
