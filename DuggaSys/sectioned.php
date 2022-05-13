@@ -137,8 +137,8 @@
 				<div id= burgerMenuDiv>
 				<input id='sectionBurger'  type='image' src='../Shared/icons/yellow_burger.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Show hidden items' onclick='sectionBurgerChange();'>
 				<div id='sectionBurgerBox' style='display: none;' >
-				<input id='hideElement2'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; opacity:0.7; width: 30px; height: 25px;" class='submit-button-newitem' title='Hide marked items2' onclick='confirmBox("openHideConfirmBox");'>
-				<input id='showElements2'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; opacity:0.7; width: 30px; height: 25px;" class='submit-button-newitem' title='Show hidden items2' onclick='confirmBox("showItems");'>
+				<input id='hideElement2'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; opacity:0.7; width: 30px; height: 25px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+				<input id='showElements2'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; opacity:0.7; width: 30px; height: 25px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("showItems");'>
 				</div>
 				</div>
 				
