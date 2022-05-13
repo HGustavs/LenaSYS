@@ -345,7 +345,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 				}
 				$movname=$submissionpath."/".$fname.$seq.".".$extension;
 
-				if ($fieldkind = 4){ // JSON-data
+				if ($fieldkind == 4){ // JSON-data
 					file_put_contents($movname, $inputtext);
 				}else{
 					file_put_contents($movname, htmlentities($inputtext, ENT_QUOTES | ENT_IGNORE, "UTF-8"));
