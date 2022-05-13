@@ -2216,6 +2216,7 @@ function testconsoleLog(data){
   text.innerHTML = str;
 }
 
+
 function showError(){
   console.log("showError() has been called. AJAXService had a error");
 }
