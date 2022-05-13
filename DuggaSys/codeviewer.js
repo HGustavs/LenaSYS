@@ -2843,12 +2843,10 @@ function resetText(boxid)
 }
 
 function enableZoomButton(zoomButton){
-	zoomButton.style.opacity = "1";
 	zoomButton.style.cssText = "";
 }
 
 function disableZoomButton(zoomButton){
-	console.log(zoomButton.style);
 	zoomButton.style.opacity = "0.4";
 	zoomButton.style.pointerEvents = "none";
 }
