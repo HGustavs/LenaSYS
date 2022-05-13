@@ -497,7 +497,7 @@ function createJSONString(formData) {
 		}
 	});
 
-
+	//Adds values to the JSON object.
 	return JSON.stringify({
 		"type":formData[0].value,
 		"filelink":formData[1].value,
@@ -751,7 +751,7 @@ function renderVariant(clickedElement) {
 		globalVariant = clickedElement;
 		updateVariantTitle(clickedElement);
 		var tabledata = {
-				tblhead: {
+				tblhead: {					//Add header to variant window.
 						vid: "",
 						notes: "Note",
 						param: "Parameter",
