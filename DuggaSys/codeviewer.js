@@ -3952,13 +3952,14 @@ function resizeBoxes(parent, templateId)
 	{
 		$('#box1wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				remaining = ($(parent).width()) - $('#box1wrapper').width();	
+				//box wrapper 2 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = div2 widht.)
+				document.querySelector('#box2wrapper').style.width = remaining + "px";
+
+				//Check if any descriptions needs to be hidden/shown
 				for(i = 1; i <= retData["numbox"];i++){
 					toggleTitleDescription(i);
-				}	
-				//box wrapper 2 and 3 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = screen widht.)
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
-						
+				}						
 			},		
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
@@ -3982,12 +3983,13 @@ function resizeBoxes(parent, templateId)
 		$('#box1wrapper').resizable({
 			resize: function( event, ui ) {
 				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				document.querySelector('#box2wrapper').style.width = remaining + "px";
+				document.querySelector('#box3wrapper').style.width = remaining + "px";	
+
+				//Check if any descriptions needs to be hidden/shown
 				for(i = 1; i <= retData["numbox"];i++){
 					toggleTitleDescription(i);
-				}	
-				//box wrapper 2 and 3 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = screen widht.)
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
-				document.querySelector('#box3wrapper').style.width = remaining + "px";				
+				}				
 			},		
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
@@ -4009,22 +4011,22 @@ function resizeBoxes(parent, templateId)
 	if(templateId == 4){
 		$('#box1wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();
-				remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
-				//Handles east resizing START.
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
 				//Blocking widht resizing if the width of the boxes has not changed.
 				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
+					//East resizing
+					remaining = ($(parent).width()) - $('#box1wrapper').width();
 					$('#box2wrapper').css('width', remaining + "px");
-				}
-				//Handles east resizing END.
-				//Handles south resizing START.
-				$('#box2wrapper').css('height', $('#box1wrapper').height() + "px");
-				$('#box3wrapper').css('height', remainingHeight + "px");
-				//Handles south resizing END.
-						
+
+					//Check if any descriptions needs to be hidden/shown
+					for(i = 1; i <= retData["numbox"];i++){
+						toggleTitleDescription(i);
+					}	
+				}else{
+					//South resizing
+					remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
+					$('#box2wrapper').css('height', $('#box1wrapper').height() + "px");
+					$('#box3wrapper').css('height', remainingHeight + "px");
+				}		
 			},		
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
@@ -4050,24 +4052,24 @@ function resizeBoxes(parent, templateId)
 	if(templateId == 5){
 		$('#box1wrapper').resizable({
 			resize: function( event, ui ) {
-				//Handles east resizing START.
-				remaining = ($(parent).width()) - $('#box1wrapper').width();
-				remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
+
 				//Blocking widht resizing if the width of the boxes has not changed.
 				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
+					//East resizing
+					remaining = ($(parent).width()) - $('#box1wrapper').width();
 					$('#box2wrapper').css('width', remaining + "px");
-				}
-				
-				//Handles east resizing END.
 
-				//Handles south resizing START.
-				$('#box2wrapper').css('height', $('#box1wrapper').height() + "px");
-				$('#box3wrapper').css('height', remainingHeight + "px");
-				$('#box4wrapper').css('height', remainingHeight + "px");
-				//Handles south resizing END.						
+					//Check if any descriptions needs to be hidden/shown
+					for(i = 1; i <= retData["numbox"];i++){
+						toggleTitleDescription(i);
+					}	
+				}else{
+					//South resizing
+					remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
+					$('#box2wrapper').css('height', $('#box1wrapper').height() + "px");
+					$('#box3wrapper').css('height', remainingHeight + "px");
+					$('#box4wrapper').css('height', remainingHeight + "px");
+				}					
 			},		
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
@@ -4090,14 +4092,15 @@ function resizeBoxes(parent, templateId)
 		});
 		$('#box3wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box3wrapper').width();
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
+				remaining = ($(parent).width()) - $('#box3wrapper').width();	
 				$('#box1wrapper').css('width', $('#box3wrapper').width());
 				$('#box2wrapper').css('width', remaining + "px");
 				$('#box4wrapper').css('width', remaining + "px");
 
+				//Check if any descriptions needs to be hidden/shown
+				for(i = 1; i <= retData["numbox"];i++){
+					toggleTitleDescription(i);
+				}
 			},
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
@@ -4110,12 +4113,14 @@ function resizeBoxes(parent, templateId)
 		$('#box1wrapper').resizable({
 			resize: function( event, ui ) {
 				remaining = ($(parent).width()) - $('#box1wrapper').width();
+				$('#box2wrapper').css('width', remaining + "px");
+				$('#box3wrapper').css('width', remaining + "px");
+				$('#box4wrapper').css('width', remaining + "px");	
+				
+				//Check if any descriptions needs to be hidden/shown
 				for(i = 1; i <= retData["numbox"];i++){
 					toggleTitleDescription(i);
 				}	
-				$('#box2wrapper').css('width', remaining + "px");
-				$('#box3wrapper').css('width', remaining + "px");
-				$('#box4wrapper').css('width', remaining + "px");						
 			},		
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
@@ -4169,19 +4174,20 @@ function resizeBoxes(parent, templateId)
 	if(templateId == 7){
 		$('#box2wrapper').resizable({
 			resize: function( event, ui ) {
-				//Handles east resizing START.
-				remaining = ($(parent).width()) - $('#box2wrapper').width();
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
-
 				//Blocking widht resizing if the width of the boxes has not changed.
 				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
+					//East resizing
+					remaining = ($(parent).width()) - $('#box2wrapper').width();
 					$('#box1wrapper').css('width', remaining + "px");
-
 					$('#box3wrapper').css('width', $('#box2wrapper').width() + "px");
 					$('#box4wrapper').css('width', $('#box2wrapper').width() + "px");
+
+					//Check if any descriptions needs to be hidden/shown
+					for(i = 1; i <= retData["numbox"];i++){
+						toggleTitleDescription(i);
+					}
 				}else{
+					//South resizing
 					resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
 					if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
 						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
@@ -4193,8 +4199,7 @@ function resizeBoxes(parent, templateId)
 						$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/2) + "px");
 						$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
 					}
-				}
-				//Handles east resizing END.
+				}					
 			},
 			handles:"s, e",
 			maxHeight: ($(parent).height()*0.70),
@@ -4205,18 +4210,21 @@ function resizeBoxes(parent, templateId)
 		});
 		$('#box3wrapper').resizable({
 			resize: function( event, ui ) {
-				//Handles east resizing START.
-				remaining = ($(parent).width()) - $('#box3wrapper').width();
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box3wrapper').width() != $(parent).width()){				
-					$('#box1wrapper').css('width', remaining + "px");
 
+				//Blocking widht resizing if the width of the boxes has not changed.
+				if($('#box1wrapper').width()+ $('#box3wrapper').width() != $(parent).width()){
+					//East resizing	
+					remaining = ($(parent).width()) - $('#box3wrapper').width();			
+					$('#box1wrapper').css('width', remaining + "px");
 					$('#box2wrapper').css('width', $('#box3wrapper').width() + "px");
 					$('#box4wrapper').css('width', $('#box3wrapper').width() + "px");
+
+					//Check if any descriptions needs to be hidden/shown
+					for(i = 1; i <= retData["numbox"];i++){
+						toggleTitleDescription(i);
+					}
 				}else{
+					//South resizing
 					resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
 					if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
 						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
@@ -4229,12 +4237,6 @@ function resizeBoxes(parent, templateId)
 						$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
 					}	
 				}
-				//Handles east resizing END.
-				//Handles south resizing START.
-				//Blocking height resizing if the height of the boxes has not changed. The +1 is due to rounding errors.
-
-				
-				//Handles south resizing END.
 			},
 			handles: "s, e",
 			maxHeight: ($(parent).height()*0.70),
@@ -4246,16 +4248,15 @@ function resizeBoxes(parent, templateId)
 		});
 		$('#box4wrapper').resizable({
 			resize: function( event, ui ) {
-				//Handles east resizing START.
-				remaining = ($(parent).width()) - $('#box4wrapper').width();
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
+				remaining = ($(parent).width()) - $('#box4wrapper').width();	
 				$('#box1wrapper').css('width', remaining + "px");
-
 				$('#box2wrapper').css('width', $('#box4wrapper').width() + "px");
 				$('#box3wrapper').css('width', $('#box4wrapper').width() + "px");
-				//Handles east resizing END.
+
+				//Check if any descriptions needs to be hidden/shown
+				for(i = 1; i <= retData["numbox"];i++){
+					toggleTitleDescription(i);
+				}				
 			},
 			handles: "e",
 			maxHeight: ($(parent).width()*0.85),
@@ -4266,20 +4267,22 @@ function resizeBoxes(parent, templateId)
 	if(templateId == 8){
 		$('#box2wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box2wrapper').width();
-				remainingHeight = ($(parent).height()) - $('#box2wrapper').height();
-				//Handles east resizing START.
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
 				//Blocking widht resizing if the width of the boxes has not changed.
 				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
+					//East resizing
+					remaining = ($(parent).width()) - $('#box2wrapper').width();
 					$('#box1wrapper').css('width', remaining + "px");
 					$('#box3wrapper').css('width', $('#box2wrapper').width() + "px");
+
+					//Check if any descriptions needs to be hidden/shown
+					for(i = 1; i <= retData["numbox"];i++){
+						toggleTitleDescription(i);
+					}
 				}else{
+					//South resizing
+					remainingHeight = ($(parent).height()) - $('#box2wrapper').height();
 					$('#box3wrapper').css('height', remainingHeight + "px");
 				}				
-				//Handles east resizing END.
 			},
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
@@ -4292,11 +4295,13 @@ function resizeBoxes(parent, templateId)
 		$('#box3wrapper').resizable({
 			resize: function( event, ui ) {
 				remaining = ($(parent).width()) - $('#box3wrapper').width();
+				$('#box1wrapper').css('width', remaining + "px");
+				$('#box2wrapper').css('width', $('#box3wrapper').width() + "px");
+
+				//Check if any descriptions needs to be hidden/shown
 				for(i = 1; i <= retData["numbox"];i++){
 					toggleTitleDescription(i);
 				}	
-				$('#box1wrapper').css('width', remaining + "px");
-				$('#box2wrapper').css('width', $('#box3wrapper').width() + "px");
 			},
 			handles: "e",
 			maxWidth: ($(parent).width()*0.85),
@@ -4307,14 +4312,16 @@ function resizeBoxes(parent, templateId)
 	if(templateId == 9){
 		$('#box1wrapper').resizable({
 			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
+				remaining = ($(parent).width()) - $('#box1wrapper').width();	
 				$('#box2wrapper').css('width', remaining + "px");
 				$('#box3wrapper').css('width', remaining + "px");
 				$('#box4wrapper').css('width', remaining + "px");
 				$('#box5wrapper').css('width', remaining + "px");
+
+				//Check if any descriptions needs to be hidden/shown
+				for(i = 1; i <= retData["numbox"];i++){
+					toggleTitleDescription(i);
+				}				
 			},
 			maxWidth: ($(parent).width()*0.85),
 			minWidth: ($(parent).width()*0.15),
