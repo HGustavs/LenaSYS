@@ -726,3 +726,44 @@ input{
     border: 1px solid white;
 }
 /* END */
+
+/* Style for "Contribution GithHub Table START */
+.contribheading{
+    background-color: #212121;
+}
+
+.githubContribution a:-webkit-any-link, .contribheading > a {
+    color: #c5c5c5;
+}
+
+.contribcontent, .contribcontentToggle{
+    color: #c5c5c5;
+    text-decoration: underline;
+}
+
+.PopUpContributionTable{
+    position: absolute; 
+    background-color: var(--color-sectioned-table-hi);
+    box-shadow: 12px 1px 6px rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
+    width:500px;
+    height: 500px; 
+    white-space: nowrap;
+    display:none; margin-top: 15px; 
+    margin-left: 50px;
+    z-index: 100; 
+    overflow-y:scroll;
+    padding-left: 10px;
+    border: 2px solid rgb(20, 20, 20);
+}
+
+.githubLink3{
+    cursor: pointer;
+    filter: invert(80%);
+    -webkit-filter: invert(80%);
+}
+
+.contribpath, .contribfile {
+    color: #c5c5c5;
+}
+/* END */
