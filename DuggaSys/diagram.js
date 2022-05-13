@@ -3956,95 +3956,149 @@ function generateErTableString()
     //console.log(formatERStrongEntities(ERAttributeData));
     var strongEntityList = formatERStrongEntities(ERAttributeData);
     var weakEntityList = formatERWeakEntities(ERAttributeData);
-    //Iterate over every weak entity list
+    // Iterate over every strong entity
     for (var i = 0; i < strongEntityList.length; i++) {
-        var visitedList = [];
-        //visitedList.push(strongEntityList[i][0]);
+        var visitedList = []; // A list which contains entities that has been vistited in this codeblock
         var queue = []; // Queue for each entity's relation
-        queue.push(strongEntityList[i][0]);
-        var unFinishedQueue = []; // Stores the entities to search för more weak relations if a weak relation is found
-        var finishedQueue = []; // Final path to build weak key
+        queue.push(strongEntityList[i][0]); // Push in the current entity
+        // Loop while queue isn't empty
         while (queue.length > 0) {
-            var current = queue.shift(); // Get current entity
-            finishedQueue.push(current);
+            var current = queue.shift(); // Get current entity by removing first entity in queue
             // For current entity, iterate through every relation
             for (var j = 0; j < ERRelationData.length; j++) {
                 // Check if relation is valid, (relation, entity1, entity2)
                 if (ERRelationData[j].length >= 3) { 
                     if (ERRelationData[j][0].state == 'weak') {
-                        var visited = false;
+                        var visited = false;    // Boolean representing if the current entity has already been visited
                         for (var v = 0; v < visitedList.length; v++) {
-                            if (ERRelationData[j][2][0].id == visitedList[v].id ) {
+                            if (current.id == visitedList[v].id ) {
                                 visited = true;
                                 break;
                             }
                         }
-                        // Check if entity is in weak relation on either side
-                        if (current.id == ERRelationData[j][1][0].id && ERRelationData[j][2][1] == 'MANY' && !visited) {
-                            for( var k = 0; k < weakEntityList.length; k++) {
-                                if (weakEntityList[k][0].id == ERRelationData[j][2][0].id) {
-                                    if(current.state == 'normal'){
-                                        weakEntityList[k][1].push([strongEntityList[i][0],strongEntityList[i][1][0]]);
-                                    }
-                                    else if(current.state == 'weak'){
-                                        for( var l = 0; l < weakEntityList.length; l++) {
-                                            if (weakEntityList[l][0].id == current.id) {
-                                                var tempList = [weakEntityList[l][0]];
-                                                for( var m = 0; m < weakEntityList[l][1].length; m++){
-                                                    tempList.push(weakEntityList[l][1][m]);
+                        // If current entity is not visited
+                        if (!visited) {
+                            // Check if current is strong / normal
+                            if (current.state == 'normal') {
+                                // Check if entity is in relation and check its cardinality
+                                if (current.id == ERRelationData[j][1][0].id && ERRelationData[j][1][1] == 'ONE') {
+                                    // Iterate through weak entities and find its ID
+                                    for (var k = 0; k < weakEntityList.length; k++) {
+                                        // ID match
+                                        if (weakEntityList[k][0].id == ERRelationData[j][2][0].id) {
+                                            // Iterate through strong entities and find its ID
+                                            for (var l = 0; l < strongEntityList.length; l++) {
+                                                // ID match
+                                                if (strongEntityList[l][0].id == current.id) {
+                                                    var tempList = [strongEntityList[l][0]]; // Temporary list with entity and its keys
+                                                    // Iterate through key list
+                                                    for (var m = 0; m < strongEntityList[l][1].length; m++) {
+                                                        tempList.push(strongEntityList[l][1][m]) // Push in key
+                                                    }
+                                                    weakEntityList[k][1].push(tempList); // Add list to the weak entities.
                                                 }
-                                                weakEntityList[k][1].push(tempList);
                                             }
                                         }
                                     }
+                                    queue.push(ERRelationData[j][2][0]); // Push in entity to queue
+                                }   
+                                // Check if entity is in relation and check its cardinality
+                                else if (current.id == ERRelationData[j][2][0].id && ERRelationData[j][2][1] == 'ONE') {
+                                    // Iterate through weak entities and find its ID
+                                    for (var k = 0; k < weakEntityList.length; k++) {
+                                        // ID match
+                                        if (weakEntityList[k][0].id == ERRelationData[j][1][0].id) {
+                                            // Iterate through strong entities and find its ID
+                                            for (var l = 0; l < strongEntityList.length; l++) {
+                                                // ID match
+                                                if (strongEntityList[l][0].id == current.id) {
+                                                    var tempList = [strongEntityList[l][0]]; // Temporary list with entity and its keys
+                                                    for (var m = 0; m < strongEntityList[l][1].length; m++) {
+                                                        tempList.push(strongEntityList[l][1][m]) // Push in key
+                                                    }
+                                                    weakEntityList[k][1].push(tempList); // Add list to the weak entities.
+                                                }
+                                            }
+                                        }
+                                    }
+                                    queue.push(ERRelationData[j][1][0]); // Push in entity to queue
                                 }
-                            }
-                            queue.push(ERRelationData[j][2][0]); // Push in entity
-                            unFinishedQueue.push(current);
-                            break;
-                        } 
-                        var visited = false;
-                        for (var v = 0; v < visitedList.length; v++) {
-                            if (ERRelationData[j][1][0].id == visitedList[v].id ) {
-                                visited = true;
-                                break;
+                            } 
+
+                            //Check if current is weak
+                            else if (current.state == 'weak') {
+                                // Check if entity is in relation and check its cardinality
+                                if (current.id == ERRelationData[j][1][0].id && ERRelationData[j][1][1] == 'ONE') {
+                                    var exists = false; // Boolean representing if the other entity has already been visited
+                                    for (var v = 0; v < visitedList.length; v++) {
+                                        if (ERRelationData[j][2][0].id == visitedList[v].id ) {
+                                            exists = true;
+                                            break;
+                                        }
+                                    }
+                                    // If not already visited
+                                    if (!exists) {
+                                        // Iterate through weak entities and find its ID. (Entity that should have keys)
+                                        for (var k = 0; k < weakEntityList.length; k++) {
+                                            // ID match
+                                            if (weakEntityList[k][0].id == ERRelationData[j][2][0].id) {
+                                                // Iterate through weak entities and find its ID (Entity that should give keys)
+                                                for (var l = 0; l < weakEntityList.length; l++) {
+                                                    // ID match
+                                                    if (weakEntityList[l][0].id == current.id) {
+                                                        var tempList = [weakEntityList[l][0]]; // Temporary list with entity and its keys
+                                                        for (var m = 0; m < weakEntityList[l][1].length; m++) {
+                                                            tempList.push(weakEntityList[l][1][m]) // Push in key
+                                                        }
+                                                        weakEntityList[k][1].push(tempList); // Add list to the weak entities.
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        queue.push(ERRelationData[j][2][0]); // Push in entity to queue
+                                    }
+                                }
+                                // Check if entity is in relation and check its cardinality
+                                else if (current.id == ERRelationData[j][2][0].id  && ERRelationData[j][2][1] == 'ONE') {
+                                    var exists = false; // Boolean representing if the other entity has already been visited
+                                    for (var v = 0; v < visitedList.length; v++) {
+                                        if (ERRelationData[j][1][0].id == visitedList[v].id ) {//|| ERRelationData[j][2][0].id == visitedList[v].id) {
+                                            exists = true;
+                                            break;
+                                        }
+                                    }
+                                    // If not already visited
+                                    if (!exists) {
+                                        // Iterate through weak entities and find its ID. (Entity that should have keys)
+                                        for (var k = 0; k < weakEntityList.length; k++) {
+                                            // ID match
+                                            if (weakEntityList[k][0].id == ERRelationData[j][1][0].id) {
+                                                 // Iterate through weak entities and find its ID (Entity that should give keys)
+                                                for (var l = 0; l < weakEntityList.length; l++) {
+                                                    // ID match
+                                                    if (weakEntityList[l][0].id == current.id) {
+                                                        var tempList = [weakEntityList[l][0]]; // Temporary list with entity and its keys
+                                                        for (var m = 0; m < weakEntityList[i][1].length; m++) {
+                                                            tempList.push(weakEntityList[l][1][m]); // Push in key
+                                                        }
+                                                        weakEntityList[k][1].push(tempList); // Add list to the weak entities.
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        queue.push(ERRelationData[j][1][0]); // Push in entity queue
+                                    }
+                                }
                             }
                         }
-                        if (current.id == ERRelationData[j][2][0].id && ERRelationData[j][1][1] == 'MANY' && !visited) {
-                            for( var k = 0; k < weakEntityList.length; k++) {
-                                if (weakEntityList[k][0].id == ERRelationData[j][1][0].id) {
-                                    if(current.state == 'normal'){
-                                        weakEntityList[k][1].push([strongEntityList[i][0],strongEntityList[i][1][0]]);
-                                    }
-                                    else if(current.state == 'weak'){
-                                        for( var l = 0; l < weakEntityList.length; l++) {
-                                            if (weakEntityList[l][0].id == current.id) {
-                                                var tempList = [weakEntityList[l][0]];
-                                                for( var m = 0; m < weakEntityList[l][1].length; m++){
-                                                    tempList.push(weakEntityList[l][1][m]);
-                                                }
-                                                weakEntityList[k][1].push(tempList);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            queue.push(ERRelationData[j][1][0]); // Push in entity
-                            unFinishedQueue.push(current);
-                            break;
-                        }                            
                     }
-                }
-            }
-            if (unFinishedQueue.length > 0) {
-                if (queue.length == 0) {
-                    queue.push(unFinishedQueue.pop())
-                    finishedQueue = [];
                 }
             }
             visitedList.push(current);
         }
     }
+    console.log(weakEntityList);
+         
     var allEntityList = strongEntityList.concat(weakEntityList);
     //Iterate through all relations
     for (var i = 0; i < ERRelationData.length; i++) {        
@@ -4353,13 +4407,13 @@ function generateErTableString()
                     for(var k = 1; k < allEntityList[i][1][j].length; k++){
                         var currentLevel = allEntityList[i][1][j];
                         stringList[i] += currentLevel[0].name.toLowerCase();
-                        if(getArrayDepth(currentLevel[k]) < 1){
+                        if(Array.isArray(currentLevel[k])){
                             stringList[i] += `${currentLevel[k].name}, `;
                         }
                         else{
                             for(var l = 1; l < currentLevel[k].length; l++){
                                 stringList[i] += currentLevel[k][0].name.toLowerCase();
-                                if(getArrayDepth(currentLevel[k][l]) < 1){
+                                if(Array.isArray(currentLevel[k][l])){
                                     stringList[i] += `${currentLevel[k][l].name}, `;
                                 }
                                 else{
@@ -4380,19 +4434,19 @@ function generateErTableString()
                     for(var k = 1; k < allEntityList[i][1][j].length; k++){
                         var currentLevel = allEntityList[i][1][j];
                         stringList[i] += currentLevel[0].name.toLowerCase();
-                        if(getArrayDepth(currentLevel[k]) < 1){
+                        if(Array.isArray(currentLevel[k])){
                             stringList[i] += `${currentLevel[k].name}, `;
                         }
                         else{
                             for(var l = 1; l < currentLevel[k].length; l++){
                                 stringList[i] += currentLevel[k][0].name.toLowerCase();
-                                if(getArrayDepth(currentLevel[k][l]) < 1){
+                                if(Array.isArray(currentLevel[k][l])){
                                     stringList[i] += `${currentLevel[k][l].name}, `;
                                 }
                                 else{
                                     for(var m = 1; m < currentLevel[k][l].length; m++){
                                         stringList[i] += currentLevel[k][l][0].name.toLowerCase();
-                                        if(getArrayDepth(currentLevel[k][l][m]) < 1){
+                                        if(Array.isArray(currentLevel[k][l][m])){
                                             stringList[i] += `${currentLevel[k][l][m].name}, `;
                                         }
                                     }
