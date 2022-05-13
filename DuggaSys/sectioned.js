@@ -186,7 +186,7 @@ function toggleHamburger() {
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativedeadline, tabs, feedbackenabled, feedbackquestion) {
-
+  console.log("myConsole: "+ typeof lid);
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
@@ -1379,12 +1379,19 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
+          str += "<div class='settingIconTab' tabIndex='0' id='"+makeparams([item['lid'], item['entryname'],
+          item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
+          item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
+          item['tabs'], item['feedbackenabled'], item['feedbackquestion']])+"'  >";
 
           str += "<img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
           item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+
+          str += "</div>";    
+
           str += "</td>";
         }
         
