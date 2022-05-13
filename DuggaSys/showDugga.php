@@ -117,13 +117,13 @@
 	}
 	$response->closeCursor();
 
-	if($splicedFileName != "UNK" && isset($splicedFileName)){
+	if($splicedFileName != "UNK" && isset($splicedFileName) && $splicedFileName != "." && $splicedFileName != ".." && $splicedFileName != ""){
 		if(file_exists("../courses/global/"."$splicedFileName"))						$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
 		else if(file_exists("../courses/".$cid."/"."$splicedFileName"))					$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
 		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))		$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
 	}
 
-	if($fileContent === "UNK")															$fileContent = "NO_FILE_FETCHED";
+	if($fileContent === "UNK" || $fileContent === "")															$fileContent = "NO_FILE_FETCHED";
 
     // if the used is redirected from the validateHash.php page, a hash will be set and the latest "diagramSave.json" file should be loaded. 
 	if(isset($_GET['hash']) && $_GET['hash'] != "UNK"){
