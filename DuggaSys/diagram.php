@@ -314,9 +314,9 @@
     </div>  
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="toggleOptionsPane();"><span id='optmarker'>&#9660;Options</span>
-            <span class="toolTipText"><b>Show Option Panel</b><br>
+            <span id="tooltip-OPTIONS" class="toolTipText"><b>Show Option Panel</b><br>
                 <p>Enable/disable the Option Panel</p><br>
-                <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
+                <p class="key_tooltip">Keybinding:</p>
             </span>
         </div>
         <div id ="fieldsetBox">
