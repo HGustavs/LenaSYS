@@ -2810,7 +2810,20 @@ function zoomText(boxid, increment)
 		enableZoomButton(zoomOutButton);
 
 	}
-
+	
+	//Disable zoom buttons on last click
+	else if(increment < 0) {
+			fontSize = fontSize + increment; 
+			document.getElementById("box" + boxid).style.fontSize = fontSize + "px";
+			disableZoomButton(zoomOutButton);
+	}
+		
+	else if (increment > 0) {
+			fontSize = fontSize + increment; 
+			document.getElementById("box" + boxid).style.fontSize = fontSize + "px";
+			disableZoomButton(zoomInButton);
+	}
+	
 }
 	
 
