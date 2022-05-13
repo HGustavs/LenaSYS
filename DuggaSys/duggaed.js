@@ -362,16 +362,17 @@ function updateVariant(status, note) {
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
   	var parameter = $("#variantparameterText").val();
-	var notes;
+	var notes = "hej";
 
-	  if(note != null) {
+	  /*if(note != null) {
 		notes = note;
 	  } else {
 		notes = $("#notes").val();
-	  }
+	  }*/
 
 	AJAXService("SAVVARI", { cid: querystring['courseid'], vid: vid, notes: notes, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
+  $$('#notes').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
 
 	// Remove extra submission rows
@@ -530,7 +531,7 @@ function createJSONString(formData) {
 
 // Does the reverse of what createJSONString does.
 function createJSONFormData(){
-  var jsonData = $("#variantparameterText").val();
+  var jsonData = $("#notes").val();
 
   try {
     var obj = JSON.parse(jsonData);
@@ -798,7 +799,8 @@ function renderVariant(clickedElement) {
 		variantTable.renderTable();
     newVariant();
     $('#did').val(globalData['entries'][clickedElement].arrow);
-    $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
+    //$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
+	$('#notes').val(createJSONString($('#jsonForm').serializeArray()));
 
 }
 
