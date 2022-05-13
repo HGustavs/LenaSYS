@@ -341,7 +341,7 @@
 			$query->bindParam(':subid', $submission);
 			$result = $query->execute();
 			if($row = $query->fetch(PDO::FETCH_ASSOC)){
-				$attachment_location = $row['filepath'].$row['filename'].$row['seq'].'.'.$row['extension'];
+				$attachment_location = $row['filepath']."/".$row['filename'].$row['seq'].'.'.$row['extension'];
 				header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
 				header("Cache-Control: public"); // needed for internet explorer
 				//header("Content-Type: application/zip");
