@@ -397,6 +397,9 @@ function confirmBox(operation, item = null) {
   } else if (operation == "openTabConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#tabConfirmBox").css("display", "flex");
+  } else if (operation == "openItemsConfirmBox"){
+    $("#sectionShowConfirmBox").css("display", "flex");
+    $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
     deleteItem(active_lid);
     $("#sectionConfirmBox").css("display", "none");
@@ -411,9 +414,11 @@ function confirmBox(operation, item = null) {
     $("#tabConfirmBox").css("display", "none");
     $("#sectionHideConfirmBox").css("display", "none");
     $("#noMaterialConfirmBox").css("display", "none");
+    $("#sectionShowConfirmBox").css("display", "none");
   }
   else if (operation == "showItems"&& !hideItemList.length == 0) {
     showMarkedItems(hideItemList);
+    $("#sectionShowConfirmBox").css("display", "none");
   }
 }
 
