@@ -89,11 +89,8 @@
 			}if($noup=='COURSE'){
 				echo "<div><a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></div></td>";
-				echo "<td class='navButt' id='messagedialog' title='Message of the day 'onclick='DisplayMSGofTDY();'><div class='messagedialog-nav' tabindex='0'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></div></td>";
 			}if($noup=='COURSE' && checklogin() && (isTeacher($_SESSION['uid']))){
 				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
-			//}if (($noup == 'COURSE') && checkLogin()) {
-			//	echo "<td class='navButt' id='announcement' title='Announcement'><div class='announcement-nav' tabindex='0'><img alt='announcement icon' src='../Shared/icons/new_announcement_icon.svg'></div></td>";
 			}else if($noup=='SECTION'){
 				echo "<a id='upIcon' href='";
 				echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
@@ -190,7 +187,7 @@
 								echo "</td>";
 							}
 
-							echo "<td class='access menuButton' style='display: inline-block;'>";
+							echo "<td class='access' style='display: inline-block;'>";
 							echo "    <div class='access menuButton'>";
             			    echo "      <a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
              				echo "        <img alt='give access icon' id='editCourse' class='navButt' src='../Shared/icons/lock_symbol.svg'>";
@@ -201,7 +198,7 @@
 
 							//Dropdown Menu For Teachers
 							echo "<div id='hamburgerBox'>";
-							echo "<div id='announcementBurger'><img alt='announcement icon'  class='burgerButt' src='../Shared/icons/new_announcement_icon.svg'><p class='burgerHover'>Announcements</p></div>";
+							echo "<div id='announcementBurger'><img alt='announcement icon'  class='burgerButt' src='../Shared/icons/new_announcement_iconShadow.svg'><p class='burgerHover'>Announcements</p></div>";
 
 							echo "<div id='versionCogBurger' onclick=showEditVersion();><img alt='settings icon'  class='burgerButt' title='Edit the selected version'  src='../Shared/icons/CogwheelWhite.svg'><p  class='burgerHover'>Edit selected version</p></div>";
 
@@ -563,29 +560,8 @@ function mouseOutSort() {
 /*Shadow hover effect for sort button END -------------*/
 
 /*Shadow hover effect for announcement button START -------------*/
-var annButton = document.getElementById("announcement");
-if(annButton){
-	annButton.addEventListener("mouseover", mouseOverAnnouncement);
-	annButton.addEventListener("mouseout", mouseOutAnnouncement);
-}
 
-function mouseOverAnnouncement() {
-	var obj = document.getElementById("announcement");
-   if(obj != null)
-   {
-      var images = obj.getElementsByTagName('img');
-      images[0].src = '../Shared/icons/new_announcement_iconShadow.svg';
-   }
-}
 
-function mouseOutAnnouncement() {
-	var obj = document.getElementById("announcement");
-   if(obj != null)
-   {
-      var images = obj.getElementsByTagName('img');
-      images[0].src = '../Shared/icons/new_announcement_icon.svg';
-   }
-}
 /*Shadow hover effect for announcement button END -------------*/
 
 
