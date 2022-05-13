@@ -2641,7 +2641,7 @@ function editDuggaInstruction(){
 $(document).on('keydown', function(e) {
 	if(e.key === 'Enter'){
 		var box = $(e.target);
-
+		
 		if (box[0].classList.contains("home-nav")){
 			box.parents('td').click();
 		}
@@ -2706,7 +2706,12 @@ $(document).on('keydown', function(e) {
 		else if (box[0].classList.contains("fabBtnEditfile") || (box[0].classList.contains("fabBtnEditDugga"))){
 			createQuickItem();
 		}
-		
+		else if (box[0].classList.contains("newTabCanvasLink")){
+			openCanvasLink(box[0]);
+		}
+		else if (box[0].classList.contains("showCanvasLinkBoxTab")){
+			showCanvasLinkBox("open", box[0]);
+		}
 		
 	}
 	else if(e.key === 'Escape'){
