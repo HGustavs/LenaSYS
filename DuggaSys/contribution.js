@@ -2186,9 +2186,8 @@ function createSidebar(){
 function accountInformation(data){
   var str = "";
   for (var row = 0; row < data.length; row++) {
-    str+= "<tr class='accountRequestTable'>";
+    str+= "<tr class='accountRequestTable'"+ row +">";
     
-    str+= "<td class='accountRequestTable'>" + row + "</td>";
     str+= "<td class='accountRequestTable'>" + data[row][0] + "</td>";
     str+= "<td class='accountRequestTable'>" + data[row][1] + "</td>";
     str+= "<td class='accountRequestTable'>" + "buttons for changing stuff" + "</td>";
