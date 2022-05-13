@@ -8253,6 +8253,7 @@ function updateCSSForAllElements()
             var useDelta = (inContext && movingObject);
             var fillColor;
             var fontColor;
+            var weakKeyUnderline;
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
             // Edge creation does not highlight selected elements
@@ -8270,7 +8271,6 @@ function updateCSSForAllElements()
                             fillColor.style.fill = `${element.fill}`;
                             fontColor.style.fill = `${"#000000"}`;
                         }
-                        
                     }
                 // Update Elements with double borders.
                 }else if(element.state == "weak" || element.state == "multiple"){
@@ -8289,10 +8289,14 @@ function updateCSSForAllElements()
                 }else{ // Update normal elements, and relations
                     fillColor = elementDiv.children[0].children[0];
                     fontColor = elementDiv.children[0];
+                    weakKeyUnderline = elementDiv.children[0].children[2];
                     // If more than one element is marked.
                     if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
                         fillColor.style.fill = `${"#927b9e"}`;
                         fontColor.style.fill = `${"#ffffff"}`;
+                        if(element.state == "weakKey") {
+                            weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                        }
                         // If UMLRelation is not marked.
                     } else if(element.kind == "UMLRelation"){
                         if(element.state == "overlapping"){
@@ -8303,6 +8307,9 @@ function updateCSSForAllElements()
                     }else{
                         fillColor.style.fill = `${element.fill}`;
                         fontColor.style.fill = `${"#000000"}`;
+                        if(element.state == "weakKey") {
+                            weakKeyUnderline.style.stroke = `${"#000000"}`;
+                        }
                     }
                 }
             }
