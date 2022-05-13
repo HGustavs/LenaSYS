@@ -2177,6 +2177,27 @@ function mouseUp(e) {
 
 //Creates the sidebar for accepting and rejecting students when logged in as a superUser
 function createSidebar(){
+
+  let git_username = null;
+  let status = null
+  AJAXService("yoyo", {username: git_username, status_account:status},'CONT_ACCOUNT_STATUS');
+}
+
+function accountInformation(data){
+  var str = "";
+  for (var row = 0; row < data.length; row++) {
+    str+= "<tr class='accountRequestTable'"+ row +">";
+    
+    str+= "<td class='accountRequestTable'>" + data[row][0] + "</td>";
+    str+= "<td class='accountRequestTable'>" + data[row][1] + "</td>";
+    str+= "<td class='accountRequestTable'>" + "buttons for changing stuff" + "</td>";
+    str+= "</tr>";
+  }
+
+  return str; 
+}
+
+function testconsoleLog(data){
   var text = document.getElementById('accountRequests-pane');
   text.style.display="inline-block";
   str = "";
@@ -2188,20 +2209,16 @@ function createSidebar(){
   str+= "<th class='accountRequestTable'>Status</th>";
   str+= "<th class='accountRequestTable'></th>";
   str+= "</tr>";
-
-  for (var row = 0; row < 10; row++) {
-    str+= "<tr class='accountRequestTable'>";
-
-    for (var col = 1; col <= 4; col++) {
-      str+= "<td class='accountRequestTable'>" + (col + (row * 4)) +"</td>";
-    }
-
-    str+= "</tr>";
-  }
+  str+=accountInformation(data);
 
   str+= "</table>";
   str+= "</div>";
   text.innerHTML = str;
+}
+
+
+function showError(){
+  console.log("showError() has been called. AJAXService had a error");
 }
 
 console.error
