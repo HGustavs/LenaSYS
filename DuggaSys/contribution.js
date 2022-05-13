@@ -1871,16 +1871,21 @@ function showMoreContribContent(id,status){
 
 //Loads or Create a default localStorage if localStorage doesn't exists. Used onload.
 function loadContribFormLocalStorage(){
+  var user = localStorage.getItem('GitHubUser')
+  console.log('User = ' + user); //Bara för att testa
   if(localStorage.getItem('contribToggleArr') == null){
-    localStorage.setItem('contribToggleArr', JSON.stringify(createDefault()));
+    localStorage.setItem('contribToggleArr', JSON.stringify(createDefault(user))); //Måste gå att lösa snyggare
   }
 }
 
 //creates the default localStorage values. All tabs should be closed from start.
-function createDefault(){
+function createDefault(user){
   var contibArr = [];
+  var userID = user;
+
   for(var i =0; i<10; i++){ // 10 represents 10 weeks in the course.
     var values = {
+      userID : userID, //finns en tanke att identifiera på denna men det blir nog inte så bra.
       commit:0,
       issues:0,
       comments:0,
