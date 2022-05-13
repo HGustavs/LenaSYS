@@ -273,7 +273,7 @@ function selectVariant(vid, el) {
 			document.getElementById('variantparameterText').value = "";
 			document.getElementById('notes').value = "";
 			document.getElementById('variantanswerText').value = "";
-			
+			document.getElementById('notes').value = "";
 		}
 
 
@@ -358,11 +358,18 @@ function selectVariant(vid, el) {
 }
 
 
-function updateVariant(status) {
+function updateVariant(status, note) {
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
   	var parameter = $("#variantparameterText").val();
-  	var notes = $("#notes").val();
+	var notes;
+
+	  if(note != null) {
+		notes = note;
+	  } else {
+		notes = $("#notes").val();
+	  }
+
 	AJAXService("SAVVARI", { cid: querystring['courseid'], vid: vid, notes: notes, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
@@ -664,6 +671,7 @@ function returnedQuiz(data) {
 // START OF RENDERING TABELS
 //Table for duggas
 function returnedDugga(data) {
+	console.log(data);
 	//If the user dont have writeaccess, the user gets send to the startpage
 	if (!data.writeaccess) {
 		window.location.href = 'courseed.php';
@@ -854,14 +862,17 @@ function renderCell(col, celldata, cellid) {
 			break;
 
 		case "notes":
-			//object = JSON.parse(celldata);
-			var test = document.getElementById("notes").value;
-
-			retString = `<span class='unik'></span>`;
-						
+			console.log(celldata);
+			//var dv = JSON.parse(celldata);
+			//var test = document.getElementById("notes").value;
+			retString = `<span class='unik'>${celldata}</span>`;
+			
 			break;
-
-		case "param":		// DUGGA-TABLE - Parameter column
+			
+			case "param":		// DUGGA-TABLE - Parameter column
+			
+			
+			console.log(celldata);
 			retString = `<span class='variants-param-col'>${celldata}</span>`;
 			break;
 

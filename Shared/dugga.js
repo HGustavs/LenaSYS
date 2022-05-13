@@ -949,6 +949,7 @@ function getUrlParam(param){
 
 function AJAXService(opt,apara,kind)
 {
+	console.log(apara);
 	var tex = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   for(var i=0; i<15; i++){
@@ -1002,6 +1003,9 @@ function AJAXService(opt,apara,kind)
 		if(apara[key] == "") {
 				// Informs the user that his input contained nothing.
 				console.log("Your input contained nothing in " + key);
+		}
+		if(apara[key] == "notes") {
+			updateVariant(1, apara[key]);
 		}
 	}
 
