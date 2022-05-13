@@ -258,7 +258,7 @@
                 </span>
             </div>
         </fieldset>     
-        <fieldset>
+        <fieldset id = "errorCheckField">
         <legend>Check</legend>
             <div id="errorCheckToggle" class="diagramIcons" onclick="toggleErrorCheck()">
                 <img src="../Shared/icons/diagram_errorCheck.svg"/>
@@ -314,9 +314,9 @@
     </div>  
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="toggleOptionsPane();"><span id='optmarker'>&#9660;Options</span>
-            <span class="toolTipText"><b>Show Option Panel</b><br>
+            <span id="tooltip-OPTIONS" class="toolTipText"><b>Show Option Panel</b><br>
                 <p>Enable/disable the Option Panel</p><br>
-                <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
+                <p class="key_tooltip">Keybinding:</p>
             </span>
         </div>
         <div id ="fieldsetBox">
@@ -359,7 +359,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="diagramIcons" onclick="stateMachine.replay(0)">
+                <div class="diagramIcons" onclick="stateMachine.replay(-1)">
                     <img src="../Shared/icons/replay.svg">
                     <span class="toolTipText" style="top: -80px"><b>Replay</b><br>
                         <p>Replay history of changes made to the diagram</p><br>

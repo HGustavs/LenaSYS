@@ -55,7 +55,7 @@
 
 	#vars for handling fetching of diagram variant file name
 	$variantParams = "UNK";
-	$filePath ="";
+	$filePath ="UNK";
 	$finalArray = array();
 	$fileContent="UNK";
 	$splicedFileName = "UNK";
@@ -65,16 +65,16 @@
 	$json = "UNK";
 	$fileName = "UNK";
 	$gFileName = "UNK";
-	$instructions = "";
-	$information = "";
+	$instructions = "UNK";
+	$information = "UNK";
 	
 	#create request to database and execute it
 	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
 	$response->execute();
 	$i=0;
+
 	#loop through responses, fetch param column in variant table, splice string to extract file name, then close request.
-	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
-	{
+	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$variantParams=$row['jparam'];
 		/* $start = strpos($variantParams, "diagram File&quot;:&quot;") + 25; Old way to get the filename
 		$end = strpos($variantParams, "&quot;:&quot;&quot;,&quot;diagram_type") - 176;
@@ -82,89 +82,64 @@
 		$variantParams = str_replace('&quot;','"',$variantParams);
 		$parameterArray = json_decode($variantParams,true);
 		if(!empty($parameterArray)){
-			$splicedFileName=$parameterArray["diagram_File"];
-			$fileName=$parameterArray["filelink"];
-			$fileType=$parameterArray["type"];
-			$gFileName=$parameterArray["gFilelink"];
-			$gFileType=$parameterArray["gType"];
+			if(isset($parameterArray['diagram_File'])) 									$splicedFileName=$parameterArray["diagram_File"];
+																				else 	$splicedFileName = "UNK";
+			if(isset($parameterArray['filelink']))										$fileName=$parameterArray["filelink"];
+																				else	$fileName = "UNK";
+			if(isset($parameterArray['type']))											$fileType=$parameterArray["type"];
+																				else	$fileType = "UNK";
+			if(isset($parameterArray['gFilelink']))										$gFileName=$parameterArray["gFilelink"];
+																				else	$gFileName = "UNK";
+			if(isset($parameterArray['gType']))											$gFileType=$parameterArray["gType"];
+																				else	$gFileType = "UNK";
+
 			// for fetching file content
-			if(file_exists("../courses/global/"."$fileName"))
-			{
-				$instructions = file_get_contents("../courses/global/"."$fileName");
-			}
-			else if(file_exists("../courses/".$cid."/"."$fileName"))
-			{
-				$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-			}
-			else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
-			{
-				$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK" && $fileName != ""){
+				if(file_exists("../courses/global/"."$fileName"))						$instructions = file_get_contents("../courses/global/"."$fileName");
+				else if(file_exists("../courses/".$cid."/"."$fileName"))				$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))	$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
 			}
 
-			if(file_exists("../courses/global/"."$gFileName"))
-			{
-				$information = file_get_contents("../courses/global/"."$gFileName");
+			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $gFileName != "UNK" && $gFileName != ""){
+				if(file_exists("../courses/global/"."$gFileName"))						$information = file_get_contents("../courses/global/"."$gFileName");
+				else if(file_exists("../courses/".$cid."/"."$gFileName"))				$information = file_get_contents("../courses/".$cid."/"."$gFileName");
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))	$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
 			}
-			else if(file_exists("../courses/".$cid."/"."$gFileName"))
-			{
-				$information = file_get_contents("../courses/".$cid."/"."$gFileName");
-			}
-			else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))
-			{
-				$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
-			}
-			//
+
 			$pattern = '/\s*/m';
 			$replace = '';
 			$instructions = preg_replace( $pattern, $replace,$instructions);
 			$information = preg_replace( $pattern, $replace,$information);
-			//
+
 			$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions, $gFileType, $gFileName, $information]);
 			$i++;
 		}
 	}
 	$response->closeCursor();
 
-	if($splicedFileName != "UNK" && $splicedFileName != ""){
-		if(file_exists("../courses/global/"."$splicedFileName"))
-		{
-			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
-		}
-		else if(file_exists("../courses/".$cid."/"."$splicedFileName"))
-		{
-			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
-		}
-		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))
-		{
-			$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
-		}
+	if($splicedFileName != "UNK" && isset($splicedFileName) && $splicedFileName != "." && $splicedFileName != ".." && $splicedFileName != ""){
+		if(file_exists("../courses/global/"."$splicedFileName"))						$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
+		else if(file_exists("../courses/".$cid."/"."$splicedFileName"))					$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
+		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))		$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
 	}
 
-	if($fileContent === "UNK")
-	{
-		$fileContent = "NO_FILE_FETCHED";
-	}
+	if($fileContent === "UNK" || $fileContent === "")															$fileContent = "NO_FILE_FETCHED";
 
-    // if the used is redirected from 
-	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
-	{
+    // if the used is redirected from the validateHash.php page, a hash will be set and the latest "diagramSave.json" file should be loaded. 
+	if(isset($_GET['hash']) && $_GET['hash'] != "UNK"){
 		$tempDir = strval(dirname(__DIR__, 2))."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
 		$latest = time() - (365 * 24 * 60 * 60);
 		$current = "diagramSave1.json";	 
 
-		if(is_dir($tempDir))
-		{
+		if(is_dir($tempDir)){
 			//try and catch for using test data
 			try{
-				foreach(new DirectoryIterator($tempDir) as $file)
-				{
+				foreach(new DirectoryIterator($tempDir) as $file){
 					$ctime = $file->getCTime();    // Time file was created
 					$fname = $file->GetFileName (); // File name
 
-					if($fname != "." && $fname != "..")
-					{
-						if( $ctime > $latest )
-						{
+					if($fname != "." && $fname != ".."){
+						if( $ctime > $latest ){
 							$latest = $ctime;
 							$current = $fname;
 						}
@@ -182,22 +157,11 @@
 	}
 	
   // for fetching file content
-	if(file_exists("../courses/global/"."$fileName"))
-	{
-		$instructions = file_get_contents("../courses/global/"."$fileName");
-	}
-	else if(file_exists("../courses/".$cid."/"."$fileName"))
-	{
-		$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-	}
-	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
-	{
-		$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
-	}
-	if($instructions === "UNK")
-	{
-		$instructions = "NO_FILE_FETCHED";
-	}
+	if(file_exists("../courses/global/"."$fileName" && $fileName != ""))								$instructions = file_get_contents("../courses/global/"."$fileName");
+	else if(file_exists("../courses/".$cid."/"."$fileName") && $fileName != "")							$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName") && $fileName != "")				$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+	if($instructions === "UNK")																			$instructions = "NO_FILE_FETCHED";
+	
 	$pattern = '/\s*/m';
   	$replace = '';
 	$instructions = preg_replace( $pattern, $replace,$instructions);

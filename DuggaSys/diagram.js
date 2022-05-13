@@ -936,7 +936,7 @@ const strokewidth = 2.0;
 const baseline = 10;
 const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
 const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100"];
-const strokeColors = ["#000000"];
+const strokeColors = ["#383737"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
@@ -1042,6 +1042,7 @@ var ghostLine = null;
  * @see constructElementOfType() For creating new elements with default values.
  */
 var defaults = {
+
     EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", attributes: ['Attribute'], functions: ['Function'] },
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER" },
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal'},
@@ -4369,10 +4370,10 @@ function toggleErrorCheck(){
  */
 function hideErrorCheck(show){
     if(show == true){
-        document.getElementById("errorCheckToggle").style.display = "flex";
+        document.getElementById("errorCheckField").style.display = "flex";
     }
     else{
-        document.getElementById("errorCheckToggle").style.display = "none";
+        document.getElementById("errorCheckField").style.display = "none";
     }
 }
 function setA4SizeFactor(e){
@@ -5777,8 +5778,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         }
     }
 
-    // Check so the elements does not have the same kind, exception for the "ERAttr" kind.
-    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" ) {
+    // Check so the elements does not have the same kind, exception for the "ERAttr" and "UMLEntity" kind.
+    if (fromElement.kind !== toElement.kind || fromElement.kind === "ERAttr" || fromElement.kind === "UMLEntity") {
 
         // Filter the existing lines and gets the number of existing lines
         var numOfExistingLines = lines.filter(function (line) {
@@ -6023,6 +6024,10 @@ function drawLine(line, targetGhost = false)
         var posX, posY;
         var distance = Math.sqrt(Math.pow((tx - fx), 2) + Math.pow((ty - fy), 2));
 
+        var canvas = document.getElementById('canvasOverlay');
+        var canvasContext = canvas.getContext('2d');
+        var textWidth = canvasContext.measureText(line.cardinality).width;
+
         // Used to tweak the cardinality position when the line gets very short.
         var tweakOffset = 0.30; 
 
@@ -6083,8 +6088,9 @@ function drawLine(line, targetGhost = false)
             }
         }
 
-        // Add the line to the str
-        str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`
+        // Add the line to the str 12.84 10.11
+        str += `<rect class="text" id=${line.id + "Cardinality"} x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
+        str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`;
     }
 
     if (line.label && line.label != ""){
@@ -6137,7 +6143,7 @@ function drawLine(line, targetGhost = false)
             targetLabel=lineLabelList[findIndex(lineLabelList,rememberTargetLabelID)];
         }
         //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-        str += `<rect class="text" id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX+lineLabel.displacementX}" y="${labelPosY+lineLabel.labelMovedY+lineLabel.displacementY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`
+        str += `<rect class="text" id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX+lineLabel.displacementX}" y="${labelPosY+lineLabel.labelMovedY+lineLabel.displacementY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`;
         //Add label
         str += `<text dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)+lineLabel.labelMovedX+lineLabel.displacementX}" y="${centerY-(2 * zoomfact)+lineLabel.labelMovedY+lineLabel.displacementY}">${line.label}</text>`;
         
@@ -6595,7 +6601,7 @@ function drawElement(element, ghosted = false)
                             Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
                             Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
                             Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew} class="text" '/>
+                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}' class="text" />
                         
                         ${multi}
                         <text x='${xAnchor}' y='${hboxh}' `;
@@ -6635,12 +6641,12 @@ function drawElement(element, ghosted = false)
             var weak = "";
             if (element.state == "weak") {
                 weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill} class="text"'/>
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
                     `;
                 xAnchor += linew * multioffs;
             }
             str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill} class="text"'/>
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
                     ${weak}`;
             str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
 
@@ -7916,7 +7922,7 @@ function checkElementError(element)
 function errorReset(elements)
 {
     for (var i = 0; i < elements.length; i++) {
-        elements[i].stroke = 'black';
+        elements[i].stroke = strokeColors;
     }
 }
 /**
@@ -8253,6 +8259,7 @@ function updateCSSForAllElements()
             var useDelta = (inContext && movingObject);
             var fillColor;
             var fontColor;
+            var weakKeyUnderline;
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
             // Edge creation does not highlight selected elements
@@ -8270,7 +8277,6 @@ function updateCSSForAllElements()
                             fillColor.style.fill = `${element.fill}`;
                             fontColor.style.fill = `${"#000000"}`;
                         }
-                        
                     }
                 // Update Elements with double borders.
                 }else if(element.state == "weak" || element.state == "multiple"){
@@ -8289,10 +8295,14 @@ function updateCSSForAllElements()
                 }else{ // Update normal elements, and relations
                     fillColor = elementDiv.children[0].children[0];
                     fontColor = elementDiv.children[0];
+                    weakKeyUnderline = elementDiv.children[0].children[2];
                     // If more than one element is marked.
                     if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
                         fillColor.style.fill = `${"#927b9e"}`;
                         fontColor.style.fill = `${"#ffffff"}`;
+                        if(element.state == "weakKey") {
+                            weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                        }
                         // If UMLRelation is not marked.
                     } else if(element.kind == "UMLRelation"){
                         if(element.state == "overlapping"){
@@ -8303,6 +8313,9 @@ function updateCSSForAllElements()
                     }else{
                         fillColor.style.fill = `${element.fill}`;
                         fontColor.style.fill = `${"#000000"}`;
+                        if(element.state == "weakKey") {
+                            weakKeyUnderline.style.stroke = `${"#000000"}`;
+                        }
                     }
                 }
             }
