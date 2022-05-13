@@ -100,7 +100,7 @@
 				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))	$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
 			}
 
-			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $fileName != "UNK" && $fileName != ""){
+			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $gfileName != "UNK" && $gfileName != ""){
 				if(file_exists("../courses/global/"."$gFileName"))						$information = file_get_contents("../courses/global/"."$gFileName");
 				else if(file_exists("../courses/".$cid."/"."$gFileName"))				$information = file_get_contents("../courses/".$cid."/"."$gFileName");
 				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))	$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
@@ -125,7 +125,7 @@
 
 	if($fileContent === "UNK")															$fileContent = "NO_FILE_FETCHED";
 
-    // if the used is redirected from 
+    // if the used is redirected from the validateHash.php page, a hash will be set and the latest "diagramSave.json" file should be loaded. 
 	if(isset($_GET['hash']) && $_GET['hash'] != "UNK"){
 		$tempDir = strval(dirname(__DIR__, 2))."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
 		$latest = time() - (365 * 24 * 60 * 60);

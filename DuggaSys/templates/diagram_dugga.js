@@ -95,7 +95,9 @@ function returnedDugga(data)
                 window.parent.getInstructions(param.filelink);
             }
             if(param.gFilelink != undefined)
-            window.parent.getInstructions(param.gFilelink);
+            {
+                window.parent.getInstructions(param.gFilelink);
+            }
         }
         else{
             var diagramType={ER:true,UML:true};
