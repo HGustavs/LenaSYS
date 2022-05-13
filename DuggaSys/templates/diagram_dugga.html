@@ -10,6 +10,7 @@
             height: 50.1rem;
             width: 100%;
             justify-content: space-between;
+            position: relative;
         }
 
         #container_header{
@@ -17,7 +18,7 @@
             width:100%;
             display:inline-block;
             position:relative;
-            padding:3px 10px;
+            padding:3px 26px;
             box-sizing: border-box;
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
@@ -40,67 +41,87 @@
             width: 300px;
             height: 800px;
             overflow: auto;
-            margin: 0px;
+            margin-left: 0px;
             border: 1px solid #ccc;
-        }
-        
-        #close_open {
-            width: 23px;
-            position: absolute;
-            top: 520px;
-            left: 272px;
-            border-top: 14px solid transparent;
-            border-bottom: 14px solid transparent;
-            border-right: 14px solid #d4d2d2;
-            margin-left:10px;
-        }
-        
-        #close_open:hover {
-            border-top: 14px solid transparent;
-            border-bottom: 14px solid transparent;
-            border-right: 14px solid #8e8e8e;
         }
         
         .canvas_right {
             flex: 1;
             display: flex;
             justify-content: space-around;
-            margin-left:10px;
+            margin-left:0px;
         }
+
+        #close_open_border {
+            position: absolute;
+            background-color: #ccc;
+            width:20px;
+            height:803px;
+            top:0px;
+            cursor: pointer;
+        }
+
+        #close_open_border:after {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top:383px;
+            border-top: 14px solid transparent;
+            border-right: 0px solid transparent;
+            border-bottom: 14px solid transparent;
+            border-left: 14px solid #ccc;
+        }
+
+        #close_open_border:hover:after {
+            border-top: 14px solid transparent;
+            border-right: 0px solid transparent;
+            border-bottom: 14px solid transparent;
+            border-left: 14px solid #8e8e8e;
+        }
+
+        #close_open_border:hover {
+            background-color:#8e8e8e;
+        }
+        
     </style>
     <script>
         $(document).ready(function() {
-            $("#close_open").click(function() {
+            $('#close_open_border').click(function() {
                 if ($("#pvalue").val() == "0") {
-                    // hides description when open
-                    $("#assignment_discrb").css('visibility', 'hidden');
+                    // Closed mode
+                    $("#assignment_discrb").css('display', 'none');
                     $("#container__left").animate({
                         width: "10px"
                     }, "slow");
-                    $("#close_open").css({
-                        'display': 'fixed',
-                        'left': '7px',
-                        'transform': 'scaleX(-1)',
-                        'transition': '0.55s ease-in-out'
+
+                    $("#diagram-iframe").css({
+                        'margin-left':'12px'
                     });
+
+                    $(".canvas_right").css({
+                        'margin-left':'12px'
+                    });
+
                     $("#pvalue").val("1");
                 } else {
-                    // opens description when closed
+                    // Open mode
                     $("#container__left").animate({
                         width: "300px"
                     }, "slow");
-                    $("#assignment_discrb").css('visibility', 'visible');
-                    $("#close_open").css({
-                        'display': 'block',
-                        'transform': 'scaleX(1)',
-                        'left': '272px'
+
+                    $("#assignment_discrb").css('display', 'block');
+
+                    $("#diagram-iframe").css({
+                        'margin-left':'0px'
                     });
+
+                    $(".canvas_right").css({
+                        'margin-left':'0px'
+                    });
+
                     $("#pvalue").val("0");
                 }
-
-
             });
-
         });
     </script>
 </head>
@@ -133,7 +154,7 @@
             <input type="hidden" id="pvalue" value="0" />
             <div class="assignment_left" id="container__left" style="overflow: auto;">
                 <div id="container_header"><h3>Instructions</h3></div>
-                <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0" style=" visibility: visible; color: rgb(0, 0, 0); padding: 4px; ">
+                <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0" style=" visibility: visible; color: rgb(0, 0, 0); padding: 12px; ">
                     <h2 style="margin-left: 14px;">Modellering</h2>
                     <p style="margin-left: 14px;">Modellera nedanstående uppgifter i notationerna ER och UML.</p>
                     <ol type="1">
@@ -151,14 +172,12 @@
                         </li><br>
                     </ol>
                 </div>
-                <div id="close_open">
-
-                </div>
+                <div id="close_open_border"></div>
             </div>
             <div id="container" class="canvas_right">
 
 
-                <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;margin-left: 10px;" src="
+                <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;" src="
                                     ./diagram.php" title="Diagram"></iframe>
 
 
