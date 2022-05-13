@@ -5441,7 +5441,7 @@ only screen and (max-device-width: 320px) {
   
 }
 #hideElement2, #showElements2{
-  display: hide;
+  display: none;
 }
 @media only screen and (max-width: 800px),
 only screen and (max-device-width: 800px) {
@@ -5463,7 +5463,7 @@ only screen and (max-device-width: 800px) {
     display: block;
   }
 
-#hideElement, #showElements{
+#tabElement,#hideElement, #showElements{
     display: none;
   }
 }
@@ -5475,7 +5475,7 @@ only screen and (max-device-width: 750px) {
     display: block;
   }
  
-#tabElement,#hideElement, #addElement, #showElements{
+#hideElement, #showElements{
     display: none;
   }
 }
