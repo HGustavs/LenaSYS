@@ -1232,7 +1232,7 @@ function AJAXService(opt,apara,kind)
 			data: "&opt="+opt+para,
 			dataType: "json",
 			success: testconsoleLog,
-			error: shitFucked
+			error: showError
 		});
 	}
 	else if(kind=="INPUTCHECK") {

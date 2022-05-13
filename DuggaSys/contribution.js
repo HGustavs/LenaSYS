@@ -2191,7 +2191,6 @@ function accountInformation(data){
     str+= "<td class='accountRequestTable'>" + data[row][0] + "</td>";
     str+= "<td class='accountRequestTable'>" + data[row][1] + "</td>";
     str+= "<td class='accountRequestTable'>" + "buttons for changing stuff" + "</td>";
-    
     str+= "</tr>";
   }
 
@@ -2215,21 +2214,10 @@ function testconsoleLog(data){
   str+= "</table>";
   str+= "</div>";
   text.innerHTML = str;
-
-  console.log("testconsoleLog(data) is called");
-  console.log();
-}
-
-function shitFucked(){
-  console.log("shitFucked() called  ");
 }
 
 function showError(){
-  console.log("showError has been called. ");
-}
-
-function oohfuck(){
-  console.log("oohfuck() is called ");
+  console.log("showError() has been called. AJAXService had a error");
 }
 
 console.error
