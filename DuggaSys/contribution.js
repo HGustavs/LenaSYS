@@ -2211,16 +2211,15 @@ function accountInformation(){
 
   let git_username = null;
   let status = null
-  AJAXService("yoyo",
-  {username: git_username, status_account:status},
-  'CONT_ACCOUNT_STATUS');
+  AJAXService("yoyo", {username: git_username, status_account:status},'CONT_ACCOUNT_STATUS');
   return str; 
 }
 
 function testconsoleLog(data){
   console.log("testconsoleLog(data) is called");
-  console.log(data['git_username']);
+  console.log(data);
 }
+
 function shitFucked(){
   console.log("shitFucked() called  ");
 }

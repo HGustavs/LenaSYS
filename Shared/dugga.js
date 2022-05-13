@@ -1226,11 +1226,11 @@ function AJAXService(opt,apara,kind)
 		});
 	}
 	else if(kind=="CONT_ACCOUNT_STATUS"){
-		$.ajax({/*
+		$.ajax({
 			url: "contributionservice.php",
 			type:"POST",
 			data: "&opt="+opt+para,
-			dataType: "json",*/
+			dataType: "json",
 			success: testconsoleLog,
 			error: shitFucked
 		});

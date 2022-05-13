@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 // Include basic application services!
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
-
+include_once "../Shared/databse.php";
 // Connect to database and start session
 pdoConnect();
 session_start();
@@ -55,7 +55,6 @@ for($i=0; $i< sizeof($directoriesYear); $i++){
 // TODO(future issue) make sure contributon handles git logins different from teacher logins. aka git_checklogin shouldnt be here in future
 if(checklogin() || git_checklogin()) // methods needing you to be logged in
 {
-
 
 if(strcmp($opt,"get")==0) {
 	if(checklogin() && isSuperUser($_SESSION['uid'])) {
@@ -782,20 +781,26 @@ if(strcmp($opt,"get")==0) {
 	echo json_encode($array);
 }
 else if(strcmp($opt,"yoyo") == 0){
-
-	oohfuck();
-	if($pdo == null) pdoConnect();
-
-	$query = $pdo->prepare('SELECT distinct username from git_user');
 	
+	global $pdo;
+	if($pdo == null){
+		pdoConnect();
+	}
+
+	$query = $pdo->prepare('SELECT DISTINCT username, status_account  FROM git_user');	
 	if(!$query->execute()){
 		showError();
 	}
-	
-	$rows= $query->fetchAll();
-
-
-
+	$rows = $query->fetchAll();
+	$blabla = array();
+	foreach($rows as $row){
+		$temp = array(
+			$username = $row['username'],
+			$status_account = $row['status_account']
+		);
+		array_push($blabla,$temp);
+	}
+	echo json_encode($blabla);
 }
 
 
