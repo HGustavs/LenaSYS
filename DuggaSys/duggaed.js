@@ -221,7 +221,7 @@ function newVariant() {
 	document.getElementById('gFilelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
 	document.getElementById('extraparam').placeholder = 'Extra dugga parameters in valid JSON';
-	document.getElementById('notes').value = '';
+	//document.getElementById('notes').value = '';
 	document.getElementById('notes').placeholder = 'Notes';
 	document.getElementById('variantparameterText').value = '';
 	document.getElementById('variantparameterText').placeholder = 'Undefined JSON parameter';
@@ -241,7 +241,9 @@ function createVariant() {
 	var qid = $("#did").val();
 	var answer = $("#variantanswerText").val();
 	var parameter = $("#variantparameterText").val();
-	AJAXService("ADDVARI", { cid: querystring['courseid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
+	var notes = $("#notes").val();
+	//console.log(notes);
+	AJAXService("ADDVARI", { cid: querystring['courseid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, notes: notes, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
 function selectVariant(vid, el) {
@@ -262,12 +264,16 @@ function selectVariant(vid, el) {
 		if(isSelected) {
 			document.getElementById('vid').value = target_variant['vid'];
 			document.getElementById('variantparameterText').value = target_variant['param'];
+			document.getElementById('notes').value = target_variant['notes'];
 			document.getElementById('variantanswerText').value = target_variant['variantanswer'];
+			
 		} else {
 			// But hide the information if it is deselected.
 			document.getElementById('vid').value = "";
 			document.getElementById('variantparameterText').value = "";
+			document.getElementById('notes').value = "";
 			document.getElementById('variantanswerText').value = "";
+			
 		}
 
 
@@ -320,6 +326,7 @@ function selectVariant(vid, el) {
   				  document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
   				  document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
   				  document.getElementById('variantparameterText').value = target_variant['param'];
+				  document.getElementById('notes').value = target_variant['notes'];
 					
   			 }
   		  }
@@ -354,8 +361,9 @@ function selectVariant(vid, el) {
 function updateVariant(status) {
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
-  var parameter = $("#variantparameterText").val();
-	AJAXService("SAVVARI", { cid: querystring['courseid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
+  	var parameter = $("#variantparameterText").val();
+  	var notes = $("#notes").val();
+	AJAXService("SAVVARI", { cid: querystring['courseid'], vid: vid, notes: notes, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
 
@@ -566,6 +574,8 @@ function createJSONFormData(){
         document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
         document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
         document.getElementById('variantparameterText').value = jsonData;
+		document.getElementById('notes'+i).value = submissionTypes[i].notes;
+
       }
     }
   } catch (e) {
@@ -778,7 +788,6 @@ function renderVariant(clickedElement) {
 		});
 		searchterm = '';
 		variantTable.renderTable();
-		console.log(variantTable.renderTable());
     newVariant();
     $('#did').val(globalData['entries'][clickedElement].arrow);
     $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
@@ -845,7 +854,7 @@ function renderCell(col, celldata, cellid) {
 			break;
 
 		case "notes":
-			object = JSON.parse(celldata);
+			//object = JSON.parse(celldata);
 			var test = document.getElementById("notes").value;
 
 			retString = `<span class='unik'></span>`;
