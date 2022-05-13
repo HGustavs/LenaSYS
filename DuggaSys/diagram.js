@@ -6023,6 +6023,10 @@ function drawLine(line, targetGhost = false)
         var posX, posY;
         var distance = Math.sqrt(Math.pow((tx - fx), 2) + Math.pow((ty - fy), 2));
 
+        var canvas = document.getElementById('canvasOverlay');
+        var canvasContext = canvas.getContext('2d');
+        var textWidth = canvasContext.measureText(line.cardinality).width;
+
         // Used to tweak the cardinality position when the line gets very short.
         var tweakOffset = 0.30; 
 
@@ -6083,8 +6087,9 @@ function drawLine(line, targetGhost = false)
             }
         }
 
-        // Add the line to the str
-        str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`
+        // Add the line to the str 12.84 10.11
+        str += `<rect class="text" id=${line.id + "Cardinality"} x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
+        str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`;
     }
 
     if (line.label && line.label != ""){
@@ -6137,7 +6142,7 @@ function drawLine(line, targetGhost = false)
             targetLabel=lineLabelList[findIndex(lineLabelList,rememberTargetLabelID)];
         }
         //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-        str += `<rect class="text" id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX+lineLabel.displacementX}" y="${labelPosY+lineLabel.labelMovedY+lineLabel.displacementY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`
+        str += `<rect class="text" id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX+lineLabel.displacementX}" y="${labelPosY+lineLabel.labelMovedY+lineLabel.displacementY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);" />`;
         //Add label
         str += `<text dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)+lineLabel.labelMovedX+lineLabel.displacementX}" y="${centerY-(2 * zoomfact)+lineLabel.labelMovedY+lineLabel.displacementY}">${line.label}</text>`;
         
