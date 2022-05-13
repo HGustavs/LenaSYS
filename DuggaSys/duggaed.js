@@ -412,9 +412,22 @@ function returnedFile(data){
 		filearray[i] = JSON.parse(retdata['entries'][i].filename);
 	}
 	filteredarray = filearray.filter(x => x.extension === "json");
+	instrArray = filearray.filter(x => x.extension === $("#type").val());
+	infArray = filearray.filter(x => x.extension === $("#gType").val());
 
-	//Not sure how the first parameter works yet, suspect it's to know which object is selected
 	$("#file").html(makeoptionsItem("AddEmptyField", filteredarray, 'filename','filename'));
+	$("#filelink").html(makeoptionsItem("AddEmptyField", instrArray, 'filename', 'filename'));
+	$("#gFilelink").html(makeoptionsItem("AddEmptyField", infArray, 'filename', 'filename'));
+}
+
+function updateInstructions(){
+	instrArray = filearray.filter(x => x.extension === $("#type").val());
+	$("#filelink").html(makeoptionsItem("AddEmptyField", instrArray, 'filename', 'filename'));
+}
+
+function updateInformation(){
+	infArray = filearray.filter(x => x.extension === $("#gType").val());
+	$("#gFilelink").html(makeoptionsItem("AddEmptyField", infArray, 'filename', 'filename'));
 }
 
 // Adds a submission row
@@ -491,7 +504,7 @@ function createJSONString(formData) {
 		"type":formData[0].value,
 		"filelink":formData[1].value,
 		"gType":formData[2].value,
-		"gFilelink":formData[3].value,
+		"gFilelink":$("#gFilelink option:selected").val(),
 		"diagram_File":$("#file option:selected").val(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
