@@ -2180,7 +2180,7 @@ function createSidebar(){
 
   let git_username = null;
   let status = null
-  AJAXService("yoyo", {username: git_username, status_account:status},'CONT_ACCOUNT_STATUS');
+  AJAXService("AccountStatus", {username: git_username, status_account:status},'CONT_ACCOUNT_STATUS');
 }
 
 //status codes 101=pending 102=denied 0=accepted
@@ -2232,7 +2232,7 @@ function acceptAcc(){
   console.log("accepted this account");
 }
 
-function testconsoleLog(data){
+function placeSideBarInfo(data){
   var text = document.getElementById('accountRequests-pane');
   text.style.display="inline-block";
   str = "";
