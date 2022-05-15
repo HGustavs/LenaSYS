@@ -3953,9 +3953,9 @@ function generateErTableString()
         ERAttributeData.push(currentRow);
     }
 
-    //console.log(formatERStrongEntities(ERAttributeData));
     var strongEntityList = formatERStrongEntities(ERAttributeData);
     var weakEntityList = formatERWeakEntities(ERAttributeData);
+
     // Iterate over every strong entity
     for (var i = 0; i < strongEntityList.length; i++) {
         var visitedList = []; // A list which contains entities that has been vistited in this codeblock
@@ -4024,7 +4024,6 @@ function generateErTableString()
                                     queue.push(ERRelationData[j][1][0]); // Push in entity to queue
                                 }
                             } 
-
                             //Check if current is weak
                             else if (current.state == 'weak') {
                                 // Check if entity is in relation and check its cardinality
@@ -4097,66 +4096,63 @@ function generateErTableString()
             visitedList.push(current);
         }
     }
-    
-    var tempos = [];
+
+    var tempWeakList = [];
+    // Update the weak entity list to accomodate the new list of weak keys
     for (var i = 0; i < weakEntityList.length; i++) {
-        for (var j = 1; j < weakEntityList[i][1].length; j++) {
-            var tempor = [];
-            tempor.push(weakEntityList[i][0]);
-            var current = weakEntityList[i][1][j];
-            var queue = [];
-            queue.push(current);
-            var entityOrder = [];
-            entityOrder.push(weakEntityList[i][0]);
-            var completeEntityOrder = [];
-            completeEntityOrder.push(weakEntityList[i][1][0]);
-
-            while (queue.length > 0) {
-                head = queue.shift();
-                var more = false; // Boolean to tell if list goes deeper
-                // Iterate through list and check if it goes deeper
-                for (var a = 0; a < head.length; a++) {
-                    // Check if array is deeper 
-                    if (head[a].length > 1) {
-                        more = true;
-                        break;
+        var row = []; // New formatted weak entity row
+        row.push(weakEntityList[i][0]); // Push in weak entity, as usual, [0] is entity
+        row.push([]); // Push in empty list to contain the keys
+        // In the weak entity's key list, iterate and check if current is an array
+        for (var j = 0; j < weakEntityList[i][1].length; j++) {
+            if (Array.isArray(weakEntityList[i][1][j])) {
+                var strongWeakKEy = []; // List that will have the the entities and strong/weak keys required
+                var current = weakEntityList[i][1][j]; // Select the first list for the current entity
+                var queue = []; // Queue for search
+                queue.push(current); // Insert current to queue
+                // Loop until the queue is empty and at the same time, keep going deeper until the last list has been checked
+                while (queue.length > 0) {
+                    var temp = queue.shift(); // Remove from queue and store in temp
+                    // Check if algorithm should go deeper, if the last element is an array, go deeper 
+                    if ((temp[temp.length - 1].length > 0)) {
+                        //Iterate through the list, push every attribute
+                        for (var k = 0; k < temp.length - 1; k++) {
+                            strongWeakKEy.push(temp[k]); // Push in entity and / or keys
+                        }
+                        queue.push(temp[temp.length - 1]); // Push in list into queue
+                    }
+                    else {
+                        //Iterate through the list, push every attribute
+                        for (var k = 0; k < temp.length; k++) {
+                            strongWeakKEy.push(temp[k]); // Push in entity and / or keys
+                        }
                     }
                 }
-                if (more) {
-                    entityOrder.push(head[0]);
-                    completeEntityOrder.push(head[0]);
-                    completeEntityOrder.push(head[1]);
-                    queue.push(head[2]);
-                }
-                else {
-                    entityOrder.push(head[0]);
-                    entityOrder.push(head[1]);
-                    completeEntityOrder.push(head[0]);
-                    completeEntityOrder.push(head[1]);
-                }
+                row[1].push(strongWeakKEy); // Push in the created strong key
             }
-            tempor.push(completeEntityOrder);
-            tempos.push(tempor);
-        }
-    }
-
-    for (var i = 0; i < tempos.length; i++) {
-        for (var j = 0; j < weakEntityList.length; j++) {
-            var newList = [];
-            if (tempos[i][0].id == weakEntityList[j][0].id) {
-                for (var k = 0; k < weakEntityList[j][1].length; k++) {
-                    if (weakEntityList[j][1][k].kind == 'ERAttr' || weakEntityList[j][1][k].kind == 'EREntity') {
-                        console.log(weakEntityList[j][1][k]);
-                        newList.push(weakEntityList[j][1][k]);
-                    }
-                }
-                newList.push(tempos[i][1]);
-                weakEntityList[j][1] = newList;;
+            // If current element is not a list, push
+            else {
+                row[1].push(weakEntityList[i][1][j]); // Push in key
             }
         }
+        //Iterate through the entity's list and push in normal and multivalued attributes
+        for (var j = 0; j < weakEntityList[i].length; j++) {
+            // If not array, check if normal or multivalued
+            if (!Array.isArray(weakEntityList[i][j])) {
+                if (weakEntityList[i][j].state == 'normal') {
+                    row.push(weakEntityList[i][j]);
+                }
+                else if (weakEntityList[i][j].state == 'multiple') {
+                    row.push(weakEntityList[i][j]);
+                }
+            }
+        }
+        tempWeakList.push(row);
     }
+    weakEntityList = tempWeakList; // Update the values in the weakEntity list
 
-    var allEntityList = strongEntityList.concat(weakEntityList);
+    var allEntityList = strongEntityList.concat(weakEntityList); // Add the two list together
+    console.log(weakEntityList);
     //Iterate through all relations
     for (var i = 0; i < ERRelationData.length; i++) {        
         if (ERRelationData[i].length >= 3) {
@@ -4419,7 +4415,7 @@ function generateErTableString()
                 }
             }
             //If it is a weak relation
-            if (ERRelationData[i][0].state == 'weako') {
+            if (ERRelationData[i][0].state == 'weak') {
                 //Array with entities foreign keys
                 var foreign = [];
                 //ONE to ONE relation, key from second ONE-side is stored in the other side
@@ -4676,8 +4672,22 @@ function generateErTableString()
                     }
                 }
             }
+            // Case 1, two strong entities in relation
+            if (ERRelationData[i][1][0].state == 'normal' && ERRelationData[i][2][0].state == 'normal') {
+
+            }
+            // Case 2, two weak entities in relation
+            if (ERRelationData[i][1][0].state == 'weak' && ERRelationData[i][2][0].state == 'weak') {
+
+            }
+            // Case 3, one weak and one string entity in relation
+            if (ERRelationData[i][1][0].state == 'weak' && ERRelationData[i][2][0].state == 'normal' ||
+            ERRelationData[i][1][0].state == 'normal' && ERRelationData[i][2][0].state == 'weak') {
+                
+            }
         }
     }
+    console.log(ERForeignData);
     //Just for testing
     //Add foreign attribute to correct entity in allEntityList
     for (var i = 0; i < allEntityList.length; i++) {
@@ -4864,7 +4874,7 @@ function generateErTableString()
     return stri;
 }
 /**
- * @description Formats a list of strong/normal entitys and their attributes.
+ * @description Formats a list of strong/normal entities and their attributes.
  * @param ERDATA A list of all entities and it's attributes 
  * @returns A formated list of all strong/normal entities and their attributes. Keys for every entity are stored in [entityRow][1].
  */
@@ -4899,6 +4909,12 @@ function formatERStrongEntities(ERData){
                     row.push(ERData[i][j]);
                 }  
             }
+            // Pushing in remaining multivalued attributes
+            for (var j = 1; j < ERData[i].length; j++ ) {
+                if (ERData[i][j].state == 'multiple') {
+                    row.push(ERData[i][j]);
+                }  
+            }
             temp.push(row); // Pushing the formated row to the temp list
         }
     }
@@ -4906,7 +4922,7 @@ function formatERStrongEntities(ERData){
 }
 
 /**
- * @description Formats a list of weak entitys and their attributes.
+ * @description Formats a list of weak entities and their attributes.
  * @param ERDATA A list of all entities and it's attributes 
  * @returns A formated list of all weak entities and their attributes. Keys for every entity are stored in [entityRow][1].
  */
@@ -4938,6 +4954,12 @@ function formatERWeakEntities(ERData){
             // Pushing in remaining attributes
             for (var j = 1; j < ERData[i].length; j++ ) {
                 if (ERData[i][j].state == 'normal') {
+                    row.push(ERData[i][j]);
+                }  
+            }
+            // Pushing in remaining multivalued attributes
+            for (var j = 1; j < ERData[i].length; j++ ) {
+                if (ERData[i][j].state == 'multiple') {
                     row.push(ERData[i][j]);
                 }  
             }
