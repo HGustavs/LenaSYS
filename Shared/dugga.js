@@ -2688,20 +2688,10 @@ $(document).on('keydown', function(e) {
 		}
 		else if (box[0].classList.contains("newVers")){
 			showCreateVersion();
-		}else if (box[0].classList.contains("settingIconTab")){
-            var var_0 =box[0].getAttribute("id").split(",");
-            var var_1=  Object.entries(var_0);
-            var filtered = [];
-
-            for(i=0 ; i < var_1.length ; i++){
-
-				filtered.push(var_1[i][1].replace(/['"]+/g, ''));
-            }
-
-
-            selectItem(filtered[0],filtered[1],filtered[2],filtered[3],filtered[4],filtered[5],filtered[6],filtered[7],filtered[8],filtered[9],filtered[10],filtered[11],filtered[12],filtered[13],filtered[14]);
+		}
+		else if (box[0].classList.contains("settingIconTab")){
+			box[0].click();
         }
-		
 	}
 	else if(e.key === 'Escape'){
 		if ($('.fab-btn-list').is(':visible')) {
