@@ -1871,20 +1871,22 @@ function showMoreContribContent(id,status){
 
 //Loads or Create a default localStorage if localStorage doesn't exists. Used onload.
 function loadContribFormLocalStorage(){
+  var user = localStorage.getItem('GitHubUser')
   if(localStorage.getItem('contribToggleArr') == null){
-    localStorage.setItem('contribToggleArr', JSON.stringify(createDefault()));
+    localStorage.setItem('contribToggleArr', JSON.stringify(createDefault())); 
   }
 }
 
-//creates the default localStorage values. All tabs should be open from start.
+//creates the default localStorage values. All tabs should be closed from start.
 function createDefault(){
   var contibArr = [];
+
   for(var i =0; i<10; i++){ // 10 represents 10 weeks in the course.
     var values = {
-      commit:1,
-      issues:1,
-      comments:1,
-      events:1
+      commit:0,
+      issues:0,
+      comments:0,
+      events:0
     }
     contibArr.push(values);
   }
