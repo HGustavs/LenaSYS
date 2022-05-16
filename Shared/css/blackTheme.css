@@ -599,3 +599,37 @@ body {
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
+/* --------------================################================-------------- *
+ *                    Style for ALL duggas (showDugga.php) in Demo-Course.                                     *
+ * --------------================################================-------------- */
+
+/*Style for "Instructions Container "START */
+.feedback-button, .instructions-button{
+    /* border-top: 10px solid var(--color-sectioned-table-lo); */
+    background-color: var(--color-sectioned-table-lo);
+}
+
+.feedback-button:after, .instructions-button:after{
+    /* background-color: var(--color-sectioned-table-lo); */
+    border-top: 10px solid var(--color-sectioned-table-lo);
+}
+
+.instructions-content{
+    border: 2px solid  var(--color-sectioned-table-lo);
+} 
+
+.feedback-button:hover:after, .instructions-button:hover:after {
+    border-top: 10px solid  var(--color-sectioned-table-hi);
+
+}
+
+.feedback-button:hover, .instructions-button:hover {
+    background-color:  var(--color-sectioned-table-hi);
+}
+/* END */
+
+/* Style for "pane-container text" START */
+.pane{
+    color:white;
+}
+/* END */
