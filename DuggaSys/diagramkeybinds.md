@@ -45,7 +45,3 @@
 
 ## ER-Table
 - Toggles between ER-table functionality when an ER-element is selected and option panel is open = "E"
-
-
-## Error check
-- Performs error checking if an error is present = "H"
