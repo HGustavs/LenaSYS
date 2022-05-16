@@ -18,61 +18,18 @@ var hideItemList = [];
 var hasDuggs = false;
 var dateToday = new Date().getTime();
 var compareWeek = -604800000;
-let width = screen.width;
-var delArr = [];
-var delTimer;
-var lid;
 
-/*navburger*/
-function navBurgerChange(operation = 'click') {
-
-  var x = document.getElementById("navBurgerBox");
-  if (x.style.display === "block") {
-    x.style.display = "none";
-  } else {
-    x.style.display = "block";
-  }
-
-}
-
-//function to change darkmode from burger menu
-function burgerToggleDarkmode(operation = 'click'){
-  const storedTheme = localStorage.getItem('themeBlack');
-    if(storedTheme){
-        themeStylesheet.href = storedTheme;
-    }
-    const themeToggle = document.getElementById('theme-toggle');
-    // if it's light -> go dark
-    if(themeStylesheet.href.includes('blackTheme')){
-      themeStylesheet.href = "../Shared/css/whiteTheme.css";
-      localStorage.setItem('themeBlack',themeStylesheet.href)
-    } 
-    else if(themeStylesheet.href.includes('whiteTheme')) {
-      // if it's dark -> go light
-      themeStylesheet.href = "../Shared/css/blackTheme.css";
-      localStorage.setItem('themeBlack',themeStylesheet.href)
-    }
-  
-  //const themeToggle = document.getElementById('theme-toggle');
-  //themeToggle.addEventListener('click', () => {});
-}
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
   idCounter: 0,
   /* Used to give elements unique ids. This might? brake
-		 because an element is not guaranteed to recieve the
-		 same id every time. */
+						   because an element is not guaranteed to recieve the
+						   same id every time. */
   hiddenElements: [], // Stores the id of elements who's childs should be hidden.
   arrowIcons: [] // Stores ids of arrows whose state needs to be remembered.
 }
 
 function setup() {
-  // Disable ghost button when page is loaded
-  document.querySelector('#hideElement').disabled = true;
-  document.querySelector('#hideElement').style.opacity = 0.7;
-  //   Disable eye button when page is loaded
-  document.querySelector('#showElements').disabled = true;
-  document.querySelector('#showElements').style.opacity = 0.7;
   AJAXService("get", {}, "SECTION");
 }
 
@@ -103,12 +60,10 @@ function hideCollapsedMenus() {
     var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
     if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
       jQuery(ancestor).nextUntil('.moment').hide();
-      $('#selectionDrag'+menuState.hiddenElements[i]).hide();
     }
     ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
     if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
       jQuery(ancestor).nextUntil('.section').hide();
-      $('#selectionDrag'+menuState.hiddenElements[i]).hide();
     }
 
     if (menuState.hiddenElements[i] == "statistics") {
@@ -117,13 +72,12 @@ function hideCollapsedMenus() {
   }
 }
 
-/* Show down arrow by default and then hide this arrow and show the right
-   arrow if it is in the arrowIcons array.*/
-// The other way around for the statistics section.
-function toggleArrows(id) {
+// Show down arrow by default and then hide this arrow and show the right
+//   arrow if it is in the arrowIcons array.
+//	 The other way around for the statistics section.
+function toggleArrows() {
   $('.arrowComp').show();
   $('.arrowRight').hide();
-  $('#selectionDrag'+id).toggle();
   for (var i = 0; i < menuState.arrowIcons.length; i++) {
     if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
       $('#' + menuState.arrowIcons[i]).hide();
@@ -143,7 +97,7 @@ function toggleArrows(id) {
 }
 menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
-// Added some if-statements so escapePress wont always toggle
+// added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation = 'click') {
 
   if (operation != "click") {
@@ -179,17 +133,13 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativedeadline, tabs, feedbackenabled, feedbackquestion) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, tabs, feedbackenabled, feedbackquestion) {
 
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
   var minuteArrOptions=["00","05","10","15","20","25","30","35","40","45","50","55"];
   var minuteArrValue=[0,5,10,15,20,25,30,35,40,45,50,55];
-  var weekArrOptions=["1","2","3","4","5","6","7","8","9","10","11","12"];
-  var weekArrValue=[1,2,3,4,5,6,7,8,9,10,11,12];
-  var weekdayArrOptions=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-  var weekdayArrValue=[1,2,3,4,5,6,7];
 
   nameSet = false;
   if (entryname == "undefined") entryname = "New Header";
@@ -202,8 +152,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
 
   // Default showing of gradesystem. Will show if has type "Test" or "Moment"
+  if (kind != 3 || kind != 4) {
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
-
+  } else {
+    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
+    }
 
   // Default showing of set deadline. Will show if has type "Test" only
   if (kind != 3) {
@@ -217,25 +170,16 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
-  $("#tabs").html(makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "0 tab + end", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 7, 4, 5, 6]));
+  $("#tabs").html(makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
   $("#highscoremode").html(makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]));
   if(deadline !== undefined){
     $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
     $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
     $("#setDeadlineValue").val(deadline.substr(0,10));
   }
-  if(relativedeadline !== undefined) {
-    var splitdeadline = relativedeadline.split(":");
-    // relativedeadline -> week:weekday:hour:minute
-    $("#relativedeadlinehours").html(makeoptions(splitdeadline[2],hourArrOptions,hourArrValue));
-    $("#relativedeadlineminutes").html(makeoptions(splitdeadline[3],minuteArrOptions,minuteArrValue));
-
-    $("#relativedeadlineweeks").html(makeoptions(splitdeadline[0],weekArrOptions,weekArrValue ));
-    $("#relativedeadlineweekdays").html(makeoptions(splitdeadline[1],weekdayArrOptions,weekdayArrValue));
-  }
   var groups = [];
   for (var key in retdata['groups']) {
-    // Skip loop if the property is from prototype
+    // skip loop if the property is from prototype
     if (!retdata['groups'].hasOwnProperty(key)) continue;
     groups.push(key);
   }
@@ -285,7 +229,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $("#editSection").css("display", "flex");
 
   //------------------------------------------------------------------------------
-  // Checks if feedback is enabled and enables input box for feedbackquestion choice.
+  //checks if feedback is enabled and enables input box for feedbackquestion choice.
   //------------------------------------------------------------------------------
   if(kind == 3){
     $('#inputwrapper-Feedback').css("display","block");
@@ -304,9 +248,9 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   }
 }
 
-//---------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
 // changedType: When kind of section has been changed we must update dropdown lists accordingly
-//---------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
 
 
 // If type "Test" or "Moment" then Grade system will be shown
@@ -347,16 +291,6 @@ function showEditVersion() {
   $("#editCourseVersion").css("display", "flex");
 }
 
-// Delete items marked as deleted when page is unloaded
-window.addEventListener('beforeunload', function(event) {
-  var deletedElements = document.querySelectorAll(".deleted")
-  for(i = 0; i < deletedElements.length; i++) {
-    var lid = deletedElements[i].id.match(/\d+/)[0];
-    AJAXService("DEL", {
-      lid: lid
-    }, "SECTION");
-  }
-});
 
 // Close the "edit course version" and "new course version" windows by pressing the ESC button
 document.addEventListener('keydown', function (event) {
@@ -384,6 +318,7 @@ function showSaveButton() {
 }
 
 
+
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
   if (operation == "openConfirmBox") {
@@ -394,64 +329,23 @@ function confirmBox(operation, item = null) {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionHideConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
-  } else if (operation == "openTabConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#tabConfirmBox").css("display", "flex");
-  } else if (operation == "openItemsConfirmBox"){
-    $("#sectionShowConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
     deleteItem(active_lid);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "hideItem" && !hideItemList.length == 0) {
     hideMarkedItems(hideItemList)
     $("#sectionHideConfirmBox").css("display", "none");
-  }else if (operation == "tabItem" && !hideItemList.length == 0) {
-    tabMarkedItems(hideItemList);
-      $("#tabConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
-    $("#tabConfirmBox").css("display", "none");
     $("#sectionHideConfirmBox").css("display", "none");
     $("#noMaterialConfirmBox").css("display", "none");
-    $("#sectionShowConfirmBox").css("display", "none");
-  }
-  else if (operation == "showItems"&& !hideItemList.length == 0) {
-    showMarkedItems(hideItemList);
-    $("#sectionShowConfirmBox").css("display", "none");
   }
 }
 
 // Creates an array over all checked items
 function markedItems(item = null){
   var removed = false;
-  var kind = item ? $(item).parents('tr').attr('value') : null;
-  active_lid = item ? $(item).parents('table').attr('value') : null;
-  var subItems = [];
-
-    //if the checkbox belongs to one of these kinds then all elements below it should also be selected.
-    if(kind == "section" || kind == "moment"){
-      var itemInSection = true;
-      var sectionStart = false;
-      $("#Sectionlist").find(".item").each(function (i) {
-        var tempItem = $(this).attr('value');
-        if(itemInSection && sectionStart){
-          var tempDisplay = document.getElementById("lid"+tempItem).style.display;
-          var tempKind = $(this).parents('tr').attr('value');
-          if(tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")){
-            itemInSection = false;
-            //console.log("loop breaker: "+tempItem);
-          }else{
-            subItems.push(tempItem);
-            //console.log("added: "+tempItem);
-          } 
-        }else if(tempItem==active_lid) sectionStart=true;
-      });
-
-    }
-
-    
-    console.log("Active lid: "+active_lid);
+    active_lid = item ? $(item).parents('table').attr('value') : null;
     if (hideItemList.length != 0){
       for( var i = 0; i < hideItemList.length; i++){ 
         if ( hideItemList[i] === active_lid) { 
@@ -460,73 +354,15 @@ function markedItems(item = null){
           var removed = true;
           console.log("Removed from list");
         }   
-        for(var j = 0; j < subItems.length; j++){
-          if ( hideItemList[i] === subItems[j]) { 
-            $("#"+hideItemList[i]+"-checkbox").prop("checked", false);
-            hideItemList.splice(i, 1);
-            //console.log(subItems[j]+" Removed from list");
-          }
-        }
       } if(removed != true){
         hideItemList.push(active_lid);
         console.log("Adding !empty list");
-        for(var j = 0; j < subItems.length; j++){
-          hideItemList.push(subItems[j]);
-          console.log(subItems[j]);
-          $("#"+subItems[j]+"-checkbox").prop("checked", true);
-        }
       }
     } else {
       hideItemList.push(active_lid);
       console.log("Added");
-      for(var j = 0; j < subItems.length; j++){
-        hideItemList.push(subItems[j]);
-      }
-      for(i=0; i<hideItemList.length; i++){
-        $("#"+hideItemList[i]+"-checkbox").prop("checked", true);
-        //console.log(hideItemList[i]+"-checkbox");
-      }
-      // Show ghost button when checkbox is checked
-      document.querySelector('#hideElement').disabled = false;
-      document.querySelector('#hideElement').style.opacity = 1;
-      showVisibilityIcons();
-    } 
-    if (hideItemList.length == 0) {
-      // Disable ghost button when no checkboxes is checked
-      document.querySelector('#hideElement').disabled = true;
-      document.querySelector('#hideElement').style.opacity = 0.7;
-      hideVisibilityIcons();
-
     } 
     console.log(hideItemList);
-}
-
- // Shows ghost and eye button 
-function showVisibilityIcons(){
- document.querySelector('#hideElement').disabled = false;
- document.querySelector('#hideElement').style.opacity = 1;
- document.querySelector('#showElements').disabled = false;
- document.querySelector('#showElements').style.opacity = 1;
-}
-//Disables ghost and eye button
-function hideVisibilityIcons(){
-    document.querySelector('#hideElement').disabled = true;
-    document.querySelector('#hideElement').style.opacity = 0.7;
-    document.querySelector('#showElements').disabled = true;
-    document.querySelector('#showElements').style.opacity = 0.7;
-}
-
-//Changes visibility of hidden items
-function showMarkedItems(){
-  hideVisibilityIcons();
-    for (i=0; i < hideItemList.length; i++) {  
-    var lid = hideItemList[i];
-        AJAXService("PUBLIC", {
-          lid: lid
-        }, "SECTION");
-        $("#editSection").css("display", "none");
-      }
-      hideItemList= [];
 }
 
 // Clear array of checked items - used in fabbuttons and in save to clear array. 
@@ -556,12 +392,12 @@ function showCreateVersion() {
 }
 
 
-// kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
+//kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", "undefined", 0, null);
+    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", 0, null);
     clearHideItemList();
-    newItem(itemtitle);
+    newItem();
   }
 }
 
@@ -606,7 +442,7 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-  param.relativedeadline = $("#relativedeadlineweeks").val()+":"+$("#relativedeadlineweekdays").val()+":"+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
+
 
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
@@ -633,50 +469,12 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-function deleteItem(item_lid = null) {
-  lid = item_lid ? item_lid : $("#lid").val();
-  item = document.getElementById("lid" + lid);
-  item.style.display = "none";
-  item.classList.add("deleted");
-
-  document.querySelector("#undoButton").style.display = "block";
-  // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
-  delArr.push(lid);
-  clearTimeout(delTimer);
-  delTimer = setTimeout(() => {
-    deleteAll();
-   }, 60000);
-}
-
-// Permanently delete elements
-function deleteAll()
-{
-  for(var i = delArr.length-1; i >= 0; --i){
+function deleteItem(item_lid = null) { 
+   var lid = item_lid ? item_lid : $("#lid").val();
     AJAXService("DEL", {
-      lid: delArr.pop()
+      lid: lid
     }, "SECTION");
-  }
-  $("#editSection").css("display", "none");
-  document.querySelector("#undoButton").style.display = "none";
-}
-
-// Cancel deletion
-function cancelDelete() {
-  clearTimeout(time);
-  var deletedElements = document.querySelectorAll(".deleted")
-  for(i = 0; i < deletedElements.length; i++) { 
-    deletedElements[i].classList.remove("deleted");
-  }
-  location.reload();
-}
-
-// Set all "deleted" items as hidden
-// Used when refreshing the table
-function hideDeleted()
-{
-  for(var i = 0; i < delArr.length; ++i){
-    document.getElementById("lid" + delArr[i]).style.display = "none";
-  }
+    $("#editSection").css("display", "none");
 }
 
 //----------------------------------------------------------------------------------
@@ -684,10 +482,6 @@ function hideDeleted()
 //----------------------------------------------------------------------------------
 
 function hideMarkedItems() {
-  // Since no boxes are checked ghost button is disabled
-  hideVisibilityIcons();
-  document.querySelector('#hideElement').disabled = true;     //can be removed
-  document.querySelector('#hideElement').style.opacity = 0.7; //can be removed
   for (i=0; i < hideItemList.length; i++) {  
     var lid = hideItemList[i];
       AJAXService("HIDDEN", {
@@ -698,16 +492,6 @@ function hideMarkedItems() {
     hideItemList = [];
   }
 
-  //----------------------------------------------------------------------------------
-  // tabMarkedItems: Tabs Item from Section List
-  //----------------------------------------------------------------------------------
-  function tabMarkedItems() {
-    for (i=0; i < hideItemList.length; i++) {  
-      var lid = hideItemList[i]; 
-    }
-      hideItemList = [];
-  }
-    
 //----------------------------------------------------------------------------------
 // updateItem: Updates Item from Section List
 //----------------------------------------------------------------------------------
@@ -730,23 +514,12 @@ function updateDeadline() {
 // newItem: New Item for Section List
 //----------------------------------------------------------------------------------
 
-function newItem(itemtitle) {
+function newItem() {
 
   AJAXService("NEW", prepareItem(), "SECTION");
   $("#editSection").css("display", "none");
 
-  // Toggle for alert when create a New Item
-  var element = document.getElementById("createAlert");
-  element.classList.toggle("createAlertToggle");
-  // Set text for the alert when create a New Item
-  document.getElementById("createAlert").innerHTML = itemtitle + " has been created!";
-  // Duration time for the alert before remove
-  setTimeout(function(){
-    $("#createAlert").removeClass("createAlertToggle");
-    document.getElementById("createAlert").innerHTML = "";
-  },3000);
-
-  // setTimeout(scrollToBottom, 200);  Scroll to the bottom to show newly created items.
+  //setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
 }
 
 //----------------------------------------------------------------------------------
@@ -756,7 +529,7 @@ function newItem(itemtitle) {
 function createVersion() {
 
   var param = {};
-  // param.courseid = querystring['courseid'];
+  //param.courseid = querystring['courseid'];
   param.cid = querystring['courseid'];
   param.versid = document.getElementById("cversid").value;
   param.versname = document.getElementById("versname").value;
@@ -774,10 +547,10 @@ function createVersion() {
     alert("Version Name and Version ID must be entered!");
   } else {
     if (param.copycourse != "None") {
-      // Create a copy of course version
+      //create a copy of course version
       AJAXService("CPYVRS", param, "COURSE");
     } else {
-      // Create a fresh course version
+      //create a fresh course version
       AJAXService("NEWVRS", param, "COURSE");
     }
     $("#newCourseVersion").css("display", "none");
@@ -813,7 +586,7 @@ function updateVersion() {
   querystring["coursename"] + "&coursevers=" +document.getElementById("eversid").value );
 }
 
-// QueryString for coursename is added
+//queryString for coursename is added
 function goToVersion(courseDropDown) {
   var value = courseDropDown.options[courseDropDown.selectedIndex].value;
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + 
@@ -882,23 +655,13 @@ function returnedGroups(data) {
   }
 }
 
-// Dugga row click functionality
-function duggaRowClick(rowElement){
-  let children = rowElement.parentNode.querySelectorAll("*"); //get all children + grandchildren of parent node.
-  for(let i = 0; i < children.length;i++){
-    if(children[i].href != null){                             //find the one with href
-      window.location.assign(children[i].href);               //go to to the url.
-      return;
-    }
-  }
-}
 
 function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
 
-  // Data variable is put in localStorage which is then used in Codeviewer
-	// To get the right order when going backward and forward in code examples
+  //data variable is put in localStorage which is then used in Codeviewer
+	//to get the right order when going backward and forward in code examples
 	localStorage.setItem("ls-section-data", JSON.stringify(data));
 
   var now = new Date();
@@ -951,7 +714,7 @@ function returnedSection(data) {
           }
           bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
         }
-        // Save vers, versname and motd from table vers as global variables.
+        // save vers, versname and motd from table vers as global variables.
         versnme = versionname;
         if (querystring['coursevers'] == item['vers']) motd = item['motd'] ||'UNK';
         if (querystring['coursevers'] == item['vers']) versnr = item['vers'] || 'UNK';
@@ -965,15 +728,15 @@ function returnedSection(data) {
       document.getElementById("FABStatic").style.display = "Block";
       document.getElementById("FABStatic2").style.display = "Block";
       document.getElementById("HIDEStatic").style.display = "Block";
-      // Show addElement Button
-      document.getElementById("addElement").style.display = "Block";
+      
+     
     } else {
       // Hide FAB / Menu
       document.getElementById("FABStatic").style.display = "None";
       document.getElementById("FABStatic2").style.display = "None";
     }
 
-    // Hide som elements if to narrow
+    // hide som elements if to narrow
     var hiddenInline = "";
     var showInline = true;
     if ($(window).width() < 480) {
@@ -987,14 +750,14 @@ function returnedSection(data) {
 
     //Swimlane and 'Load Dugga' button.
 
-   
+    str += "<div id='Sectionlistc'>";
 
     str += "<div id='statisticsSwimlanes'>";
     str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
 		str += "</div>";
     str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
 
-    str += "<div id='Sectionlistc'>";
+
     // For now we only have two kinds of sections
     if (data['entries'].length > 0) {
       var kk = 0;
@@ -1013,13 +776,13 @@ function returnedSection(data) {
         else{
           str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
         }
-        
+
         menuState.idCounter++;
         // All are visible according to database
 
         // Content table
         str += `<table id='lid${item['lid']}' value='${item['lid']}' 
-        style='width:100%;table-layout:fixed;'><tr value='${makeTextArray(item['kind'], valarr)}' style='height:32px;' `;
+        style='width:100%;table-layout:fixed;'><tr style='height:32px;' `;
 
         if (kk % 2 == 0) {
           str += " class='hi' ";
@@ -1038,7 +801,7 @@ function returnedSection(data) {
         var itemKind = parseInt(item['kind']);
         if (itemKind === 3 || itemKind === 4) {
           
-          // If there exists atleast one test or moment swimlanes shall be hidden
+          //If there exists atleast one test or moment swimlanes shall be hidden
           hasDuggs = true;
 
           var grady = -1;
@@ -1079,23 +842,16 @@ function returnedSection(data) {
 
             }
           }
-          
-          if (retdata['writeaccess'] == "w") {
+
           if (itemKind === 3) {
-            str += "<td  class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
-            
             str += "<td class='LightBox" + hideState + "'>";
-            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
+            str += "<div ><img alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
-            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
-            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             str += "<td class='LightBoxFilled" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
           }
           str += "</td>";
-      }
-      }
+        }
 
         // Make tabs to align each section element
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 == Group || 7 == Comment
@@ -1118,13 +874,9 @@ function returnedSection(data) {
             str += addColorsToTabSections(itemKind, itemVisible, "L");
             str += addColorsToTabSections(itemKind, itemVisible, "L");
             str += addColorsToTabSections(itemKind, itemVisible, "E");
-          }else if (itemGradesys == 7) {
-            str += addColorsToTabSections(itemKind, itemVisible, "E");
           }
         }
 
-
-      
         // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
         if (itemKind === 0) {
           // Styling for header row
@@ -1133,33 +885,21 @@ function returnedSection(data) {
 
         } else if (itemKind === 1) {
           // Styling for Section row
-          if(retdata['writeaccess'] != false) {
-            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
-            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
-          }
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 2) {
-          if(retdata['writeaccess'] != false) {
-            str += "<td class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
-          }
-
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
           kk++;
 
         } else if (itemKind === 3) {
-          if (item['highscoremode'] != 0 && itemKind == 3) {
-            str += `<td style='width:20px;'><img class='iconColorInDarkMode' style=';' title='Highscore' src='../Shared/icons/top10.png' 
-            onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
-          }
+          
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
           kk++;
 
         } else if (itemKind === 4) {
-          // New moment bool equals true
+          //new moment bool equals true
           momentexists = item['lid'];
           str += `<td class='moment item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
@@ -1169,7 +909,7 @@ function returnedSection(data) {
           str += `<td class='example item' placeholder='${momentexists}' id='I${item['lid']}' `;
           kk++;
 
-        } else if (itemKind === 6) { // Group
+        } else if (itemKind === 6) { //Group
           // Alt 1
           let grpmembershp = data['grpmembershp'].split(" ");
           var grptype = item['grptype'] + "_";
@@ -1194,7 +934,7 @@ function returnedSection(data) {
           str += `<td class='section-message item' onclick='getGroups(\"${grp}\");
           ' placeholder='${momentexists}' id='I${item['lid']}' `;
 
-        } else if (itemKind === 7) { // Message
+        } else if (itemKind === 7) { //Message
           if (!(item['link'] == "" || item['link'] == "---===######===---")) {
             str += `<td style='width:32px;'><img title='Important message' 
             src='../Shared/icons/warningTriangle.svg'></td>`;
@@ -1203,25 +943,25 @@ function returnedSection(data) {
         }
 
         // Close Information
-        str += " value='"+item['lid']+"' onclick='duggaRowClick(this)' >";
+        str += ">";
         // Content of Section Item
         if (itemKind == 0) {
           // Header
           str += `<span style='margin-left:8px;' title='${item['entryname']}'>${item['entryname']}</span>`;
         } else if (itemKind == 1) {
           // Section
-          str += `<div ('arrowComp${item['lid']}')" class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center ;
+          str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;
           ' title='${item['entryname']}'>`;
           str += `<span class='ellipsis listentries-span'>${item['entryname']}</span>`;
-          str += `<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp${item['lid']}' class='arrowComp' style='display:block;'>`;
-          str += `<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight${item['lid']}' class='arrowRight' style='display:none;'></div>`;
+          str += `<img src='../Shared/icons/desc_complement.svg' id='arrowComp${item['lid']}' class='arrowComp' style='display:inline-block;'>`;
+          str += `<img src='../Shared/icons/right_complement.svg' id='arrowRight${item['lid']}' class='arrowRight' style='display:none;'></div>`;
         } else if (itemKind == 4) {
           // Moment
           var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
           str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
           str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
-          str += "<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
+          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
           str += "</div>";
         } else if (itemKind == 2) {
           // Code Example
@@ -1285,7 +1025,6 @@ function returnedSection(data) {
         }
 
         str += "</td>";
-        
 
         // Add generic td for deadlines if one exists
         if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
@@ -1294,8 +1033,8 @@ function returnedSection(data) {
           var yearFormat = "0000-";
           var dateFormat = "00-00";
 
-          str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;overflow:hidden;'>"+
-          "<div class='DateColorInDarkMode' style='white-space:nowrap;'>";
+          str += "<td class='dateSize' style='text-align:right;overflow:hidden;'>"+
+          "<div class='' style='white-space:nowrap;'>";
 
           if (dl[1] == timeFilterAndFormat) {
             str += "<div class='dateField'>";
@@ -1304,12 +1043,7 @@ function returnedSection(data) {
             str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length);
           } else {
             str += "<span class='dateField'>" + deadline.slice(0, yearFormat.length) + "</span>";
-            if(width > 430){
-              str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3);
-            }
-            else{
-              str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1);
-            }
+            str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3);
           }
 
           str += "</div></td>";
@@ -1321,7 +1055,7 @@ function returnedSection(data) {
           var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
-          // Create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
+          // create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
             if (hasGracetimeExpired(deadline, dateTimeSubmitted)) {
               str += `<td style='width:25px;'><img style='width:25px; padding-top:3px' 
@@ -1339,56 +1073,41 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        if (itemKind != 4){ // dont create buttons for moments only for specific assignments
-          //Generate new tab link
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
-            src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
-            str += "</td>";
-
-          // Generate Canvas Link Button
-          if (data['writeaccess'] || data['studentteacher']) {
-            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
-            src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
-            str += "</td>";
-          }
-        }
-
         // Cog Wheel
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind,
-            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += "<td style='width:32px;' ";
+
+          if (itemKind === 0) str += "class='header" + hideState + "' ";
+          if (itemKind === 1) str += "class='section" + hideState + "' ";
+          if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
 
-          str += "<img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
+          str += "><img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
-          item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
+          item['highscoremode'], item['comments'], item['grptype'], item['deadline'],
           item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
           str += "</td>";
         }
         
-        // Trashcan
+        // trashcan
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          "code", "test", "moment", "link", "group", "message"])} $[hideState}'>`;
           str += `<img alt='trashcan icon' id='dorf' title='Delete item' class='' 
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }
 
-        // Checkbox
+        // checkbox
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:25px;' class='${makeTextArray(itemKind,
-            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' onclick='markedItems(this)'>";
+          str += `<td style='width:32px;' class='" + makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " ${hideState}'>`;
+            str += "<input type='checkbox' name='arrayCheckBox' onclick='markedItems(this)'>";
             str += "</td>";      
         }
         
+
         str += "</tr>";
         str += "</table></div>";
       } // End of for-loop
@@ -1430,7 +1149,6 @@ function returnedSection(data) {
       // Enable sorting always if we are superuser as we refresh list on update
 
       $("#Sectionlistc").sortable({
-        handle: ".dragbleArea",
         helper: 'clone',
         update: function (event, ui) {
           str = "";
@@ -1466,10 +1184,7 @@ function returnedSection(data) {
 
 
   }
-  
-  // Reset checkboxes
-  // Prevents a bug if they are checked when for example an item is deleted and the table refreshes
-  clearHideItemList();
+
 
   // The next 5 lines are related to collapsable menus and their state.
   getHiddenElements();
@@ -1505,52 +1220,14 @@ function returnedSection(data) {
     showMOTD();
   }
 }
-
-function openCanvasLink(btnobj){
-  link = btnobj.parentNode.parentNode.querySelector('a').href;
-  window.open(link, "_blank");
-}
-
-function showCanvasLinkBox(operation,btnobj){
-  if(operation == "open"){
-
-    var canvasLink = btnobj.parentNode.parentNode.querySelector('a').href; // "<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('.internal-link').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
-    //var canvasLink = "<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('a').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
-
-    if(canvasLink == null){
-      canvasLink = "ERROR: Failed to get canvas link.";
-    }
-    // navigator.clipboard.writeText(canvasLink);  Method that requires local host or HTTPS which we dont have here.
-    // Alternative route with a text area.
-    let textArea = document.createElement("textarea");
-    textArea.value = canvasLink;
-    // Make the textarea out of viewport
-    textArea.style.position = "fixed";
-    textArea.style.left = "-999999px";
-    textArea.style.top = "-999999px";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    document.execCommand('copy');
-    textArea.remove();
-    
-
-    $("#canvasLinkBox").css("display", "flex");
-    $('#close-item-button').focus();
-
-    document.getElementById("canvasLinkText").value = canvasLink;
-  }else if(operation == "close"){
-    $("#canvasLinkBox").css("display", "none");
-  }
-}
-
-
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
   if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){
     if(motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
       document.getElementById("motdArea").style.display = "none";
+      $("#messagedialog").css("display", "none");
     }else{
+      $("#messagedialog").css("display", "none");
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
       document.getElementById("FABStatic2").style.top = "auto";
@@ -1559,6 +1236,8 @@ function showMOTD(){
 }
 
 function DisplayMSGofTDY() {
+  // document.getElementById("messagedialog").style.display = "block";
+  $("#messagedialog").css("display", "none");
   document.getElementById("motdArea").style.display = "block";
   document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
   document.getElementById("FABStatic2").style.top = "auto";
@@ -1598,6 +1277,7 @@ function closeMOTD(){
   }else{
     setMOTDCookie();
   }
+ $("#messagedialog").css("display", "content");
   document.getElementById('motdArea').style.display='none';
   document.getElementById("FABStatic2").style.top = "auto";
 }
@@ -1684,7 +1364,7 @@ function drawSwimlanes() {
 
   var deadlineEntries = [];
   var momentEntries = [];
-  // var current = new Date(2015, 02, 19);
+  //var current = new Date(2015, 02, 19);
   var current = new Date();
 
   var momentno = 0;
@@ -1723,7 +1403,7 @@ function drawSwimlanes() {
     }
   }
 
-  console.log(deadlineEntries,momentEntries);
+  
   deadlineEntries.sort(function(a,b){
     return a.pos-b.pos;
   });
@@ -1733,7 +1413,7 @@ function drawSwimlanes() {
   });
 
 
-  // var weekLength = weeksBetween(startdate, enddate);
+  //var weekLength = weeksBetween(startdate, enddate);
   var weekLength = Math.ceil((enddate - startdate) / (7 * 24 * 60 * 60 * 1000));
   var currentWeek = weeksBetween(current, startdate);
   var daywidth = 10;
@@ -1790,7 +1470,7 @@ function drawSwimlanes() {
 
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = `url("#fadeTextGrey")`;
-        // var textcol = `#FFFFFF`;
+        //var textcol = `#FFFFFF`;
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
           textcol = `url("#fadeTextRed")`;
         } else if((fillcol == "#FFEB3B") && (entry.deadline - current < 0) && (entry.submitted != null)) {
@@ -1804,7 +1484,7 @@ function drawSwimlanes() {
   }
 
   // Setting a temporary date on 'current' in case dates not updated in course 
-  // To adjust the red line showing the day in swimlanes
+  // to adjust the red line showing the day in swimlanes
   var newCurrent;
   var daySinceStart;
 
@@ -1832,7 +1512,7 @@ function drawSwimlanes() {
 
   var minDistance;
   var min_index = -1;
-  // Looks through all the deadline entries and finds the one with the shortest distance to current date
+  //Looks through all the deadline entries and finds the one with the shortest distance to current date
   for(var i = 0; i < deadlineEntries.length;i++) {
       if(deadlineEntries[i].deadline >= current) {
         if(deadlineEntries[i].deadline - current < minDistance || minDistance == undefined) {
@@ -1841,7 +1521,7 @@ function drawSwimlanes() {
         }
       }
     }
-   // index * height = topPos
+   //index * height = topPos
   var topPos =  min_index * weekheight;  
   document.getElementById('statisticsSwimlanes').scrollTop = topPos;
 
@@ -1850,7 +1530,7 @@ function drawSwimlanes() {
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
 $(document).mouseover(function (e) {
-    // showFabList(e);
+    //showFabList(e);
     FABMouseOver(e);
 });
 
@@ -1902,7 +1582,7 @@ function mouseDown(e) {
 
   var box = $(e.target);
 
-  // Is the clicked element a loginbox? or is it inside a loginbox?
+  // is the clicked element a loginbox? or is it inside a loginbox?
   if (box[0].classList.contains("loginBox")) {
     isClickedElementBox = true;
   } else if ((findAncestor(box[0], "loginBox") != null) &&
@@ -1919,8 +1599,8 @@ function mouseDown(e) {
 //----------------------------------------------------------------------------------
 
 function mouseUp(e) {
-  /* If the target of the click isn't the container nor a descendant of the container, 
-     or if we have clicked inside box and dragged it outside and released it */
+  // if the target of the click isn't the container nor a descendant of the container, 
+  // or if we have clicked inside box and dragged it outside and released it
   if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) &&
   $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
 
@@ -1941,12 +1621,12 @@ function mouseUp(e) {
 $(window).keyup(function (event) {
   var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
   if (event.keyCode == 27) {
-    // If key is escape
+    // if key is escape
     showSaveButton();
      hamburgerChange("escapePress");
-    document.activeElement.blur(); // To lose focus from the newItem button when pressing escape
+    document.activeElement.blur(); // to lose focus from the newItem button when pressing escape
   } else if (event.keyCode == 13) {
-    // Remember that keycode 13 = enter button
+    //Remember that keycode 13 = enter button
     document.activeElement.blur();
     var saveButtonDisplay = ($('#saveBtn').css('display'));
     var editSectionDisplay = ($('#editSection').css('display'));
@@ -2002,7 +1682,7 @@ $(document).on('click', '.moment, .section, .statistics', function () {
     saveArrowIds(this.id);
   }
   hideCollapsedMenus();
-  toggleArrows(this.id);
+  toggleArrows();
 
 });
 
@@ -2060,21 +1740,21 @@ $(window).load(function () {
     sessionStorage.setItem('closeUpdateForm', true);
   });
 
-  // retrieveAnnouncementAuthor();
-  // retrieveAnnouncementsCards();
+  //retrieveAnnouncementAuthor();
+  //retrieveAnnouncementsCards();
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
   multiSelect();
-  // toggleFeedbacks();
+  //toggleFeedbacks();
 });
 
 
-// Show the full announcement
+//show the full announcement
 function showAnnouncement(){
   document.getElementById('fullAnnnouncementOverlay').style.display="block";
 }
 
-// Retrieve the announcment author 
+//retrieve the announcment author 
 function retrieveAnnouncementAuthor(){
   var uname = $("#userName").html();
   var xmlhttp = new XMLHttpRequest();
@@ -2094,7 +1774,7 @@ function retrieveAnnouncementAuthor(){
 
 }
 
-// Retrieve course profile
+//retrieve course profile
 function retrieveCourseProfile(userid){
   $(".selectLabels label input").attr("disabled", true);
   var cid = '';
@@ -2170,7 +1850,7 @@ function getStudents(cid, userid){
   }
 }
 
-// Validate create announcement form
+//validate create announcement form
 function validateCreateAnnouncementForm(){
   $("#announcementForm").submit(function(e){
     var announcementTitle = ($("#announcementTitle").val()).trim();
@@ -2216,7 +1896,7 @@ function validateUpdateAnnouncementForm(){
     });  
   });
 }
-// Retrive announcements
+//retrive announcements
 function retrieveAnnouncementsCards(){
   var currentLocation = $(location).attr('href');
   var url = new URL(currentLocation);
@@ -2259,7 +1939,7 @@ function retrieveAnnouncementsCards(){
     }
   });
 }
-// Update anouncement form
+//update anouncement form
 function updateannouncementForm(updateannouncementid, cid, versid, tempFuction){
   var xmlhttp = new XMLHttpRequest();
   
@@ -2302,7 +1982,7 @@ function handleResponse(xhttp, updateannouncementid, cid, versid){
 
 }
 
-// Announcement card grid and list view
+//announcement card grid and list view
 function displayListAndGrid(){
   $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn">'+
   '<i alt="list icon" class="fa fa-bars"></i> List</button>'+
@@ -2388,7 +2068,7 @@ function scrollToTheAnnnouncementForm(){
 function closeActionLogDisplay(){
   $(".closeActionLogDisplay").parent().remove();
 }
-// Read less or more announcement card
+//read less or more announcement card
 function readLessOrMore(paragraph){
     var maxLength = 70;
 
@@ -2505,7 +2185,7 @@ function multiSelect(){
     $(select).focus();
   }).mousemove(function(e){e.preventDefault()});
 }
-// Start of recent feedback from the teacher
+//start of recent feedback from the teacher
 function toggleFeedbacks(){
   let uname = $("#userName").html();
   let studentid, parsed_data, parsed_uid, duggaFeedback, feedbackComment, unseen_feedbacks;
@@ -2619,8 +2299,6 @@ function addClasses() {
   var links = document.getElementsByTagName('a');
 
   for (var i = 0; i < links.length; i++) {
-    if(links[i].href.includes("github.com") || links[i].href.includes("youtube.com")){
-      links[i].setAttribute('target', '_blank');}
     if ((links[i].innerHTML.toLowerCase().indexOf("example") !== -1) ||
     (links[i].innerHTML.toLowerCase().indexOf("exempel") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("examples") !== -1)) {
       links[i].classList.add("example-link");
@@ -2659,24 +2337,15 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
     return false;
   }
 }
-// ------ Validates all versionnames ------
+/*Validates all versionnames*/
 function validateVersionName(versionName, dialogid) {
-  //Regex for letters, numbers, and dashes
-  var Name = /^[A-Za-z0-9_ \-.]+$/;
+  //Regex for 2 capital letters, 2 numbers
+  var Name = /^HT\d{2}$|^VT\d{2}$|^ST\d{2}$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
-  
-  if (versionName === 'versname') {
-    var Name = /^[A-Z]{2}[0-9]{2}$/;
-    var val = document.getElementById("versname").value;
-  }
-  if (versionName === 'eversname') {
-    var Name = /^[A-Z]{2}[0-9]{2}$/;
-    var val = document.getElementById("eversname").value;
-  }
 
   //if versionname is 2 capital letters, 2 numbers
-  if (val.match(Name)) {
+  if (name.value.match(Name)) {
     name.style.borderColor = "#383";
     name.style.borderWidth = "2px";
     x.style.display = "none";
@@ -2687,7 +2356,6 @@ function validateVersionName(versionName, dialogid) {
       window.bool4 = true;
     }
 
-    return true;
   } else {
 
     name.style.borderColor = "#E54";
@@ -2700,20 +2368,18 @@ function validateVersionName(versionName, dialogid) {
     if (versionName === 'eversname') {
       window.bool4 = false;
     }
-    return false;
   }
 }
 
-// ------ Validate versionID ------
+/*Validate versionID */
 function validateCourseID(courseid, dialogid) {
-
-  //regex numbers, letters and dashes, between 3 and 8 numbers
-  var Code = /^[A-Za-z0-9_.]{3,8}$/;
+  //regex for only numbers, between 3 and 6 numbers
+  var Code = /^[0-9]{3,6}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
   var val = document.getElementById("cversid").value;
 
-  if (val.match(Code)) {
+  if (code.value.match(Code)) {
     code.style.borderColor = "#383";
     code.style.borderWidth = "2px";
     x2.style.display = "none";
@@ -2721,11 +2387,10 @@ function validateCourseID(courseid, dialogid) {
   } else {
 
     code.style.borderColor = "#E54";
-    x2.innerHTML = "numbers, letters and dashes(between 3-8)";
+    x2.innerHTML = "Only numbers(between 3-6 numbers)";
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
-    return false;
   }
 
   const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
@@ -2735,21 +2400,16 @@ function validateCourseID(courseid, dialogid) {
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
-  }else{
-    return true;
   }
 
-  return false
 }
 
-function validateMOTD(motd,  syntaxdialogid, rangedialogid, submitButton){
-  const saveButton = document.getElementById(submitButton);
+function validateMOTD(motd, dialogid){
   var emotd = document.getElementById(motd);
   var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
   var EmotdRange = /^.{0,50}$/;
-  var x4 = document.getElementById(syntaxdialogid);
-	var x8 = document.getElementById(rangedialogid);
-	if (emotd.value.match(Emotd) ) {
+  var x4 = document.getElementById(dialogid);
+  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
     emotd.style.borderColor = "#383";
     emotd.style.borderWidth = "2px";
     x4.style.display = "none";
@@ -2761,27 +2421,9 @@ function validateMOTD(motd,  syntaxdialogid, rangedialogid, submitButton){
     window.bool9 = false;
   }
 
-	if (emotd.value.match(EmotdRange)){
-		emotd.style.borderColor = "#383";
-		emotd.style.borderWidth = "2px";
-		x8.style.display = "none";
-		window.bool9 = true;
-	}else{
-		emotd.style.borderColor = "#E54";
-		x8.style.display = "block";
-		emotd.style.borderWidth = "2px";
-		window.bool9 = false;
-	}
-  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
-		saveButton.disabled = false;
-    return true;
-	}else{
-		saveButton.disabled = true;
-    return false;
-	}
 }
 
-// ------ Validates that start date comes before end date ------
+/*Validates that start date comes before end date*/
 function validateDate(startDate, endDate, dialogID) {
   var sdate = document.getElementById(startDate);
   var edate = document.getElementById(endDate);
@@ -2798,9 +2440,8 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderWidth = "2px";
     x3.innerHTML = "Both start date and end date must be filled in";
     x3.style.display = "block";
-    return false;
   }
- // If start date is less than end date
+ // if start date is less than end date
   if (date1 < date2) {
     sdate.style.borderColor = "#383";
     edate.style.borderColor = "#383";
@@ -2813,9 +2454,8 @@ function validateDate(startDate, endDate, dialogID) {
     if (startDate === 'estartdate' && endDate === 'eenddate') {
       window.bool6 = true;
     }
-    return true;
   }
-  // If end date is less than start date
+  // if end date is less than start date
   if (date2 < date1) {
     sdate.style.borderColor = "#E54";
     edate.style.borderColor = "#E54";
@@ -2829,7 +2469,6 @@ function validateDate(startDate, endDate, dialogID) {
     if (startDate === 'estartdate' && endDate === 'eenddate') {
       window.bool6 = false;
     }
-    return false;
   }
 }
 
@@ -2844,33 +2483,25 @@ function showCourseDate(ddate, dialogid){
   return isCorrect;
 }
 
-// ------ Validates if deadline is between start and end date ------
+/*Validates if deadline is between start and end date*/
 function validateDate2(ddate, dialogid) {
   var inputDeadline = document.getElementById("inputwrapper-deadline");
   if (window.getComputedStyle(inputDeadline).display !== "none") {
   
   var ddate = document.getElementById(ddate);
-  var deadlinehours = document.getElementById("deadlinehours");
-  var deadlineminutes = document.getElementById("deadlineminutes");
   var x = document.getElementById(dialogid);
   var deadline = new Date(ddate.value);
-  deadline.setHours(deadlinehours.options[deadlinehours.selectedIndex].value, deadlineminutes.options[deadlineminutes.selectedIndex].value);
-  // Dates from database
+  //Dates from database
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
 
-  // Correct the fetched dates from database
-  startdate.setMonth(startdate.getMonth() - 1);
-  enddate.setMonth(enddate.getMonth() - 1);
-
-  // If deadline is between start date and end date
-  if (startdate <= deadline && enddate >= deadline) {
+  //if deadline is between start date and end date
+  if (startdate < deadline && enddate > deadline) {
     ddate.style.borderColor = "#383";
     ddate.style.borderWidth = "2px";
     x.style.display = "none";
     window.bool8 = true;
 
-    return true;
   } else {
 
     ddate.style.borderColor = "#E54";
@@ -2883,30 +2514,28 @@ function validateDate2(ddate, dialogid) {
   else{
     window.bool8 = true;
   }
-  return false;
 }
 
-function validateSectName(name){
+function validateSectName(name, dialogid){
   var emotd = document.getElementById(name);
-  var tooltipTxt = document.getElementById("dialog10");
-  tooltipTxt.style.left = 50 + "px";
-  tooltipTxt.style.top = -50 + "px";
-  emotd.style.borderWidth = "2px";
-  // Valid string
-  if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
+  var Emotd = /^[^"']+$/;
+  // var EmotdRange = /^.{0,50}$/;
+  var x4 = document.getElementById(dialogid);
+  if (emotd.value.match(Emotd)) {
     emotd.style.borderColor = "#383";
-    $('#dialog10').fadeOut();
+    emotd.style.borderWidth = "2px";
+    x4.style.display = "none";
     window.bool10 = true;
-    return true;
-  } else { // Invalid string
+  } else {
     emotd.style.borderColor = "#E54";
+    x4.style.display = "block";
+    emotd.style.borderWidth = "2px";
     window.bool10 = false;
-    $('#dialog10').fadeIn();
-    return false;
   }
+
 }
 
-// ------ Recursive functions to retrieve the deepest DOM element ------
+/*recursive functions to retrieve the deepest DOM element */
 function unNestElement(node){
   if(node == null)
     return;
@@ -2941,7 +2570,7 @@ function removeGrade(string){
   return result;
 }
 
-// ------ Write a function which gets all anchor elements of class "internal-link" ------
+/* Write a function which gets all anchor elements of class "internal-link" */
 function getCourseElements(){
   let list = [];
   var duggor = Array.from(document.getElementsByClassName("ellipsis nowrap"));
@@ -2958,130 +2587,18 @@ function getCourseElements(){
   }
   return list;
 }
-//Validate form but do not perform it.
-function quickValidateForm(formid, submitButton){
-  const saveButton = document.getElementById(submitButton);
-  var valid = true;
-  //Validates Item form
-  if (formid === 'editSection') {
-    var sName = document.getElementById("sectionname").value;
-    var deadDate = document.getElementById("setDeadlineValue").value;
-    var item = document.getElementById("editSectionDialogTitle").innerHTML;
-    var endialog = document.getElementById("EndDialog1");
-    endialog.innerHTML = "";
-    valid = true;
-    var deadlinepart = document.getElementById('inputwrapper-deadline');
-    var deadlinedisplayattribute = deadlinepart.style.display; 
-    valid = valid && validateSectName('sectionname');
-
-    // Validates Deadline
-    showCourseDate('setDeadlineValue','dialog8');
-
-    //If fields empty
-    if (sName == null || sName == "") {
-      //alert("Fill in all fields");
-      endialog.innerHTML += "Fill in all fields </br>";
-      valid = valid && false;
-    }
-
-    //Name is a duplicate
-    if(sName == item){ 
-      window.bool11 = true;
-
-    }
-
-    // if all information is correct
-    if (window.bool10 == true && window.bool11 == true) {
-      
-      //updateItem();
-      //updateDeadline();
-
-    } else {
-      //alert("You have entered incorrect information");
-      endialog.innerHTML += "Entered information is incorrect </br>";
-    }
-    if (valid){
-      saveButton.disabled = false;
-    }else{
-      saveButton.disabled = true;
-    }
-  }
-   //Validates new course version form
-  if (formid === 'newCourseVersion') {
-    var versName = document.getElementById("versname").value;
-    var versId = document.getElementById("cversid").value;
-    var endialog = document.getElementById("EndDialog2");
-    endialog.innerHTML = "";
-    valid = true;
-
-    valid = valid && validateCourseID('cversid', 'dialog2');
-    valid = valid && validateVersionName('versname', 'dialog');
-    valid = valid && validateDate('startdate','enddate','dialog3');
-    valid = valid && validateMOTD('vmotd','dialog4', 'dialog42', 'submitCourseMotd');
-
-    //If fields empty
-    if (versName == null || versName == "", versId == null || versId == "") {
-      //alert("Fill in all fields");
-      endialog.innerHTML += "Fill in all fields </br>";
-    }
-    // if all information is correct
-    if (window.bool5 === true && window.bool3 === true && window.bool === true) {
-    } else {
-      //alert("You have entered incorrect information");
-      endialog.innerHTML += "Entered information is incorrect </br>";
-    }
-    if (valid){
-      saveButton.disabled = false;
-    }else{
-      saveButton.disabled = true;
-    }
-  }
-
-  // validates edit course version form
-  if (formid === 'editCourseVersion') {
-    var eversName = document.getElementById("eversname").value;
-    var endialog = document.getElementById("EndDialog3");
-    endialog.innerHTML = "";
-    valid = true;
-
-    valid = valid && validateVersionName('eversname', 'dialog5')
-    valid = valid && validateDate('estartdate','eenddate','dialog6')
-    valid = valid && validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse')
-
-
-    //If fields empty
-    if (eversName == null || eversName == "") {
-      //alert("Fill in all fields");
-      endialog.innerHTML += "Fill in all fields </br>";
-    }
-
-    // if all information is correct
-    if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
-    } else {
-      //alert("You have entered incorrect information");
-      endialog.innerHTML += "Entered information is incorrect </br>";
-    }
-    if (valid){
-      saveButton.disabled = false;
-    }else{
-      saveButton.disabled = true;
-    }
-  }
- 
-}
-
 
 /*Validates all forms*/
 
 function validateForm(formid) {
 
-  // Validates Item form
+  //Validates Item form
   if (formid === 'editSection') {
     var sName = document.getElementById("sectionname").value;
     var deadDate = document.getElementById("setDeadlineValue").value;
     var item = document.getElementById("editSectionDialogTitle").innerHTML;
 
-    // If fields empty
+    //If fields empty
     if (sName == null || sName == "") {
       alert("Fill in all fields");
 
@@ -3099,19 +2616,8 @@ function validateForm(formid) {
     }
 
     // if all information is correct
-    if (window.bool10 == true && window.bool11 == true) {
-      
-      //Toggle for alert when update a item
-      var element = document.getElementById("updateAlert");
-      element.classList.toggle("createAlertToggle");
-      //Set text for the alert when update a item
-      document.getElementById("updateAlert").innerHTML = "The item is now updated!";
-      //Duration time for the alert before remove
-      setTimeout(function(){
-        $("#updateAlert").removeClass("createAlertToggle");
-        document.getElementById("updateAlert").innerHTML = "";
-      },3000);
-
+    if (window.bool8 == true && window.bool10 == true && window.bool11 == true) {
+      alert('The item is now updated');
       updateItem();
       updateDeadline();
 
@@ -3129,7 +2635,7 @@ function validateForm(formid) {
       alert("Fill in all fields");
 
     }
-    // If all information is correct
+    // if all information is correct
     if (window.bool5 === true && window.bool3 === true && window.bool === true) {
       alert('New version created');
       createVersion();
@@ -3140,17 +2646,17 @@ function validateForm(formid) {
     }
   }
 
-  // Validates edit course version form
+  // validates edit course version form
   if (formid === 'editCourseVersion') {
     var eversName = document.getElementById("eversname").value;
 
-    // If fields empty
+    //If fields empty
     if (eversName == null || eversName == "") {
       alert("Fill in all fields");
 
     }
 
-    // If all information is correct
+    // if all information is correct
     if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
       alert('Version updated');
       updateVersion();
@@ -3162,7 +2668,7 @@ function validateForm(formid) {
 }
 
 //------------------------------------------------------------------------------
-// Displays dialogue box and the content
+//displays dialogue box and the content
 //------------------------------------------------------------------------------
 function showUserFeedBack(lid,feedbackquestion) {
 	AJAXService("GETUF", { courseid: querystring['courseid'], moment: lid }, "USERFB");
@@ -3173,7 +2679,7 @@ function showUserFeedBack(lid,feedbackquestion) {
 }
 
 //------------------------------------------------------------------------------
-// Returns the feedbackdata and displays the feedback and statistics.
+//returns the feedbackdata and displays the feedback and statistics.
 //------------------------------------------------------------------------------
 function returnedUserFeedback(data){
   if(data.userfeedback.length == 0){
@@ -3200,7 +2706,7 @@ function returnedUserFeedback(data){
   
 }
 //------------------------------------------------------------------------------
-// Creates a table with the Feedback data.
+//Creates a table with the Feedback data.
 //------------------------------------------------------------------------------
 function createUserFeedbackTable(data){
   var str = "<table id='feedbacktable'  style='border-collapse: collapse' class='list'>";
@@ -3236,7 +2742,7 @@ function createUserFeedbackTable(data){
 }
 
 //------------------------------------------------------------------------------
-// Opens an email to the student
+//opens an email to the student
 //------------------------------------------------------------------------------
 function contactStudent(entryname,username){
   
@@ -3244,7 +2750,7 @@ function contactStudent(entryname,username){
   "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga "+entryname;
 }
 //------------------------------------------------------------------------------
-// Displays the feedback question input on enable-button toggle. 
+//Displays the feedback question input on enable-button toggle. 
 //------------------------------------------------------------------------------
 function showFeedbackquestion(){
   if($("#fdbck").prop('checked')){
@@ -3254,3 +2760,22 @@ function showFeedbackquestion(){
   }
 }
 
+//------------------------------------------------------------------------------
+// Scroll to top of page function 
+//------------------------------------------------------------------------------
+$(document).ready(function(){
+  $("#scrollUp").on('click', function(event) {
+    window.scrollTo(0, 0);
+  });
+});
+
+/*Show the up-arrow when user has scrolled down 200 pixels on the page*/
+window.onscroll = function() {scrollToTop()};
+function scrollToTop() {
+  var scroll = document.getElementById("fixedScroll");
+  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+    scroll.style.display = "block";
+  } else {
+    scroll.style.display = "none";
+  }
+}
