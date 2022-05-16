@@ -588,7 +588,7 @@ function confirmBox(operation, item, type) {
 	if (operation == "openConfirmBox") {
 		typeOfItem = type;
 		itemToDelete = item; // save the item to delete in this variable
-		$("#sectionConfirmBox").css("display", "flex");
+		$("#sectionConfirmBox").css("display", "flex");	
 	} else if (operation == "deleteItem") {
 		if (typeOfItem == "dugga") {
 			deleteDugga(itemToDelete);
@@ -808,20 +808,26 @@ function renderCell(col, celldata, cellid) {
 
 		case "arrow":		// DUGGA-TABLE - Arrow icon
 			clickedElement = JSON.parse(cellid.match(/\d+/));
-			retString = "<img alt='edit dugga icon' id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
+			retString += "<div class='markDownIconTab' tabindex='0'>";
+			retString += "<img alt='edit dugga icon' id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
 			retString += ` onclick='renderVariant(\"${clickedElement}\"); showVariantEditor();'>`;
+			retString += "</div>";
 			break;
 
 		case "cogwheel":	// DUGGA-TABLE - Cogwheel icon
 			object = JSON.parse(celldata);
-			retString = "<img alt='dugga settings icon' id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
+			retString += "<div class='settingIconTab' tabindex='0'>";
+			retString += "<img alt='dugga settings icon' id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
 			retString += ` onclick='selectDugga(\"${object}\");' >`;
+			retString += "</div>";
 			break;
 
 		case "trashcan":	// DUGGA-TABLE - Trashcan icon
 			object = JSON.parse(celldata);
-			retString = "<img alt='delete dugga icon' id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
+			retString += "<div class='traschcanDelDuggaTab' tabindex='0'>";
+			retString += "<img alt='delete dugga icon' id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
 			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
+			retString += "</div>";
 			break;
 
 		case "param":		// DUGGA-TABLE - Parameter column

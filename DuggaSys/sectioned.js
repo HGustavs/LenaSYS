@@ -1383,8 +1383,10 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<div class="traschcanDelItemTab" tabIndex="0">`;
           str += `<img alt='trashcan icon' id='dorf' title='Delete item' class='' 
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+          str += `</div>`;
           str += "</td>";
         }
 

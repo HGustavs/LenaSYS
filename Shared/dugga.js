@@ -2712,6 +2712,22 @@ $(document).on('keydown', function(e) {
 		else if (box[0].classList.contains("showCanvasLinkBoxTab")){
 			showCanvasLinkBox("open", box[0]);
 		}
+		else if (box[0].classList.contains("traschcanDelItemTab")){
+			confirmBox("openConfirmBox", box[0]);
+		}
+		else if (box[0].classList.contains("markdownIconTab")){
+			showVariantEditor();
+		}
+		else if (box[0].classList.contains("trashcanTab")){
+			deleteFile(box[0]);
+		}
+		else if (box[0].classList.contains("showeditorTab")){
+			loadPreview(box[0]);
+		}
+		else if (box[0].classList.contains("traschcanDelDuggaTab")){
+			confirmBox("openConfirmBox", box, "dugga");
+		}
+		
 		
 	}
 	else if(e.key === 'Escape'){
