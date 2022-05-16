@@ -12,6 +12,8 @@ $connection = "";
 $rootUser = "root";
 $rootPwd = "";
 $serverName = "";
+$username = "";
+$password = "";
 
 
 
@@ -24,14 +26,14 @@ $credentialsFile = "../../coursesyspw.php";
                 $tArray = explode('"', trim($cred));
             if(count($tArray) == 5) {
                 if($tArray[1]=="DB_USER"){
-                  $dbUsername = $tArray[3];
+                  $GLOBALS['username'] = $tArray[3];
                 }else if($tArray[1]=="DB_HOST"){
                  $GLOBALS['serverName'] = $tArray[3];
                    
                 }else if($tArray[1]=="DB_NAME"){
                   $GLOBALS['databaseName'] = $tArray[3];
                 }else if($tArray[1]=="DB_PASSWORD"){
-                  $dbPassword = $tArray[3];
+                  $GLOBALS['password'] = $tArray[3];
                 }
             }
             }
@@ -40,10 +42,16 @@ $credentialsFile = "../../coursesyspw.php";
 }
 
 function recreate_db() {
-    global $serverName,$rootUser,$rootPwd,$databaseName,$connection;
+    global $serverName,$rootUser,$rootPwd,$databaseName,$connection,$username,$password;
     $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
     $connection->query("DROP DATABASE {$databaseName}");
     $connection->query("CREATE DATABASE {$databaseName}");
+    
+
+    $connection->query("FLUSH PRIVILEGES");
+    $connection->query("CREATE USER '{$username}@{$serverName}' IDENTIFIED BY '{$password}'");
+    $connection->query("GRANT ALL PRIVILEGES ON *.* TO '{$username}'@'{$serverName}'");
+    $connection->query("FLUSH PRIVILEGES");
 }
 
 function fillDatabase(){
@@ -51,6 +59,7 @@ function fillDatabase(){
 }
         init_db();
         recreate_db();
+        fillDatabase();
 
     ?>
 </body>
