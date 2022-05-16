@@ -242,7 +242,7 @@ function createVariant() {
 	var answer = $("#variantanswerText").val();
 	var parameter = $("#variantparameterText").val();
 	var notes = $("#notes").val();
-	//console.log(notes);
+	console.log(notes);
 	AJAXService("ADDVARI", { cid: querystring['courseid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, notes: notes, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
@@ -864,7 +864,7 @@ function renderCell(col, celldata, cellid) {
 
 		case "notes":
 			//sconsole.log(celldata);
-			//var dv = JSON.parse(celldata);
+			var dv = JSON.parse(celldata);
 			//var test = document.getElementById("notes").value;
 			retString = `<span class='unik'>${celldata}</span>`;
 			

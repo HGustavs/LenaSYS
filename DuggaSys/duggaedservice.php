@@ -197,6 +197,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 			$entryz = array(
 				'vid' => $rowz['vid'],
 				'param' => html_entity_decode($rowz['param']),
+				'notes' => html_entity_decode($rowz['param']),
 				'variantanswer' => html_entity_decode($rowz['variantanswer']),
 				'modified' => $rowz['modified'],
 				'disabled' => $rowz['disabled'],
