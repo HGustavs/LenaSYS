@@ -133,9 +133,7 @@
       $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
       foreach ($checkBoxes AS $boxName) { //Loop trough each field
           addTestData("keywords_{$boxName}", $connection);
-      }
-        
-        
+      }  
   }
   function addTestData($file, $connection){
       $testDataQuery = @file_get_contents("SQL/{$file}.sql");
@@ -170,7 +168,12 @@
   recreate_db();
   init_db();
   fillDatabase();
-       
+  $lenaInstall = null;
+  $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
+  if(substr($lenaInstall, 0 , 2) == '/') {
+    $lenaInstall = substr($lenaInstall, 1);
+  }
+  header("Location: {$lenaInstall}/DuggaSys/courseed.php\");    
 
   ?>
 </body>
