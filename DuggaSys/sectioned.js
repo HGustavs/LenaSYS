@@ -1080,7 +1080,7 @@ function returnedSection(data) {
             }
           }
           
-          if (retData['writeaccess'] == "w") {
+          if (retdata['writeaccess'] == "w") {
           if (itemKind === 3) {
             str += "<td  class='LightBox" + hideState + "'>";
             str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
