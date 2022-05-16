@@ -811,11 +811,11 @@
 <!-- $dbname;
 
 function get_dbname(){
-
+Done
 }
 
 function drop_db(){
-
+Fullfilled.
 }
 
 function create_db(){
@@ -823,5 +823,38 @@ function create_db(){
 }
 
 function init_db{
+  Need root 
+  $rootUser = $_POST["mysqlRoot"];
+  $rootPwd = $_POST["rootPwd"];
+  $serverName = $_POST["hostname"];
+  $databaseName = $_POST["DBName"];
+  $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
 
+  <?php
+          $dbUsername = "";
+        $dbHostname = "";
+        $dbName = "";
+        $dbPassword = "";
+        $credentialsFile = "../../coursesyspw.php";
+          // check if the credentials exists in the file, store them if they do
+        if(file_exists($credentialsFile)) {
+          $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+          foreach($credentialsArray as $cred) {
+            if(stripos(trim($cred), 'DB_') !== FALSE){
+            $tArray = explode('"', trim($cred));
+              if(count($tArray) == 5) {
+                if($tArray[1]=="DB_USER"){
+                $dbUsername = $tArray[3];
+                }else if($tArray[1]=="DB_HOST"){
+                $dbHostname = $tArray[3];
+                }else if($tArray[1]=="DB_NAME"){
+                $dbName = $tArray[3];
+                }else if($tArray[1]=="DB_PASSWORD"){
+                $dbPassword = $tArray[3];
+                }
+              }
+            }
+          }
+        }
+    ?>
 } -->
